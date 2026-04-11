@@ -24,6 +24,10 @@ WS="${WORKSPACE_HUB:-$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)}"
 STATE_DIR="$WS/.claude/state/session-governor"
 GOVERNOR="$WS/scripts/workflow/session_governor.py"
 
+# Resolve Python interpreter portably (uv python find → python3 → python)
+_UV_PY=$(uv python find 2>/dev/null) || _UV_PY=""
+[[ -z "$_UV_PY" ]] && _UV_PY=$(command -v python3 2>/dev/null || command -v python 2>/dev/null || true)
+
 # Session key: $PPID is the PID of the Claude Code process that invoked this hook.
 # Each new Claude session is a new process — counter resets automatically.
 SESSION_KEY="${PPID:-0}"
@@ -63,7 +67,9 @@ fi
 
 # -- Delegate to session governor for authoritative verdict --
 GOV_EXIT=0
-uv run "$GOVERNOR" --check-limits --tool-calls "$COUNT" --consecutive-errors "$CONSEC_ERRORS" > /dev/null 2>&1 || GOV_EXIT=$?
+if [[ -n "$_UV_PY" && -f "$GOVERNOR" ]]; then
+  "$_UV_PY" "$GOVERNOR" --check-limits --tool-calls "$COUNT" --consecutive-errors "$CONSEC_ERRORS" > /dev/null 2>&1 || GOV_EXIT=$?
+fi
 
 case $GOV_EXIT in
   2) # STOP - governance ceiling reached, block further tool calls

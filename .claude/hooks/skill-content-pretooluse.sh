@@ -14,7 +14,7 @@ SCANNER="${REPO_ROOT}/.claude/hooks/check-skill-content.sh"
 INPUT="$(cat)"
 
 # Extract the tool name
-TOOL_NAME="$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('tool_name',''))" 2>/dev/null || true)"
+TOOL_NAME="$(echo "$INPUT" | jq -r '.tool_name // ""' 2>/dev/null || true)"
 
 # Only intercept Read operations
 if [[ "$TOOL_NAME" != "Read" ]]; then
@@ -22,7 +22,7 @@ if [[ "$TOOL_NAME" != "Read" ]]; then
 fi
 
 # Extract file_path from tool_input
-FILE_PATH="$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('file_path',''))" 2>/dev/null || true)"
+FILE_PATH="$(echo "$INPUT" | jq -r '.tool_input.file_path // ""' 2>/dev/null || true)"
 
 # Only scan skill files
 if [[ -z "$FILE_PATH" ]]; then
@@ -50,7 +50,7 @@ SCAN_OUTPUT="$(bash "$SCANNER" --scan-file "$FILE_PATH" 2>&1)" || {
   # Scanner found threats — emit advisory warning via hook output
   # Note: we emit as advisory (exit 0 with context) rather than blocking,
   # because Read is used broadly and we don't want false-positive deadlocks.
-  ESCAPED_OUTPUT="$(echo "$SCAN_OUTPUT" | head -20 | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo '"scan output unavailable"')"
+  ESCAPED_OUTPUT="$(echo "$SCAN_OUTPUT" | head -20 | jq -Rs '.' 2>/dev/null || echo '"scan output unavailable"')"
   cat <<ENDJSON
 {
   "hookSpecificOutput": {

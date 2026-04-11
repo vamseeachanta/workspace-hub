@@ -256,6 +256,9 @@ The following documents and issues should reference this operating model:
 | `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` | As the pyramid definition used for freshness/accessibility audits |
 | `knowledge/wikis/engineering/wiki/index.md` | As the authority for L3 durable-knowledge layer scope |
 | GitHub issues #2206, #2207, #2208, #2209 | As the parent contract they implement under |
+| `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` | Child contract for #2207 — defines provenance fields and reuse rules under this model |
+| `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` | Child policy for #2209 — defines durable/transient classification and promotion rules |
+| `docs/document-intelligence/intelligence-accessibility-map.md` | Child implementation for #2096 — inventories intelligence assets and identifies discoverability gaps |
 | `docs/plans/README.md` | Via the #2205 plan index row |
 
 ### Agent discovery

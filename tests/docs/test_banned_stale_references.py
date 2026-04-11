@@ -5,11 +5,20 @@ import pytest
 from tests.helpers.stale_reference_docs import scan_stale_reference_hits
 
 STRICT_FILES = [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "README.md",
     ".planning/templates/route-c-generic.md",
     ".planning/templates/route-c-energy.md",
     ".planning/templates/route-c-marine.md",
     ".planning/templates/route-c-structural.md",
+    "docs/README.md",
     "docs/context-pipeline.md",
+    "docs/governance/TRUST-ARCHITECTURE.md",
+    "docs/modules/workflow/SPEC_LOCALITY_POLICY.md",
+    "docs/plans/README.md",
+    "docs/work-queue-workflow.md",
 ]
 
 

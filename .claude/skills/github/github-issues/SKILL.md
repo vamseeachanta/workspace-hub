@@ -105,6 +105,57 @@ for i in json.load(sys.stdin)['items']:
 
 ## 2. Creating Issues
 
+### Recommended pre-create workflow for feature issues
+
+Before creating a new feature issue, do a quick grounding pass to avoid duplicates and align with repo taxonomy:
+
+1. Search existing issues by the key nouns/phrases in the request.
+2. Inspect existing labels in the repo and reuse the closest category/priority labels.
+3. If the feature touches an existing initiative, reference the parent/related issue numbers in the body.
+4. Prefer writing the body to a temp markdown file and using `--body-file` for long, structured issue descriptions.
+5. After creation, immediately verify the created issue's title, labels, URL, and rendered body.
+
+Example:
+
+```bash
+# 1) Search for nearby issues first
+gh issue list --limit 50 --search "llm-wiki OR document intelligence OR resource intelligence OR standards"
+
+# 2) Inspect repo labels
+gh label list
+
+# 3) Draft structured body in a file
+cat > /tmp/feature-issue.md <<'EOF'
+## Summary
+<feature summary>
+
+## Why
+<why now>
+
+## Scope
+- <item>
+- <item>
+
+## Deliverables
+- <artifact>
+- <artifact>
+
+## Related
+- Parent: #123
+- Related: #456
+EOF
+
+# 4) Create with explicit labels
+gh issue create \
+  --title "feat(area): concise issue title" \
+  --body-file /tmp/feature-issue.md \
+  --label enhancement \
+  --label priority:medium
+
+# 5) Verify the final artifact
+gh issue view <new-number> --json number,title,url,labels,body
+```
+
 **With gh:**
 
 ```bash

@@ -23,8 +23,6 @@ SCAN_FILES = [
 ]
 
 ALLOWED_LEGACY_REFERENCE_FILES = {
-    "GEMINI.md",
-    "docs/work-queue-workflow.md",
     "docs/ops/legacy-claude-reference-map.md",
     "docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md",
 }
@@ -45,6 +43,13 @@ EXTRA_BANNED_PATTERNS = [
 ]
 
 BANNED_PATTERNS = [*CORE_BANNED_STALE_REFERENCE_PATTERNS, *EXTRA_BANNED_PATTERNS]
+
+
+def test_allowlist_is_locked_to_the_two_intentional_legacy_docs() -> None:
+    assert ALLOWED_LEGACY_REFERENCE_FILES == {
+        "docs/ops/legacy-claude-reference-map.md",
+        "docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md",
+    }
 
 
 def test_stale_reference_mentions_are_confined_to_explicit_legacy_docs() -> None:

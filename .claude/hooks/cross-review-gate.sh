@@ -8,6 +8,10 @@ set -euo pipefail
 
 REPO_ROOT="${REPO_ROOT_OVERRIDE:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 
+# Resolve Python interpreter portably (uv python find → python3 → python)
+_UV_PY=$(uv python find 2>/dev/null) || _UV_PY=""
+[[ -z "$_UV_PY" ]] && _UV_PY=$(command -v python3 2>/dev/null || command -v python 2>/dev/null || true)
+
 # Read tool input from stdin (Claude hook protocol)
 INPUT=$(cat)
 
@@ -25,7 +29,9 @@ get_routing_recommendation() {
   local diff
   diff="$(git diff HEAD~1..HEAD 2>/dev/null || git diff --cached 2>/dev/null || true)"
   if [[ -n "$diff" ]]; then
-    echo "$diff" | uv run python "${REPO_ROOT}/scripts/ai/review_routing_gate.py" --stdin 2>/dev/null || true
+    if [[ -n "$_UV_PY" ]]; then
+      echo "$diff" | "$_UV_PY" "${REPO_ROOT}/scripts/ai/review_routing_gate.py" --stdin 2>/dev/null || true
+    fi
   fi
 }
 

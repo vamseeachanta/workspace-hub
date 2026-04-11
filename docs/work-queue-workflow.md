@@ -20,9 +20,9 @@ This aligns with:
 ## What is legacy
 
 Older local queue surfaces such as:
-- `.claude/work-queue/`
-- `pending/`, `working/`, `done/`, `archive/`
-- `scripts/work-queue/*`
+- legacy assistant-managed queue directories
+- status buckets like `pending/`, `working/`, `done/`, `archive/`
+- legacy queue helper scripts
 
 are retained only for compatibility with older hooks, reports, or historical artifacts. They are not the canonical source of truth for new work intake.
 
@@ -41,9 +41,9 @@ For the highest-signal legacy path mappings from historical Claude sessions, see
 
 ## Legacy closure helper
 
-The old local closure helper path appears in historical artifacts, but the script is not present in the current checkout.
+The old local closure helper appears in historical artifacts, but that script is not present in the current checkout.
 
-Do not invoke `scripts/work-queue/close-item.sh` as a live workflow step. For current completion flow, update evidence in `.planning/`, run required reviews, and close the GitHub issue as described above.
+Do not invoke any legacy local closure helper as a live workflow step. For current completion flow, update evidence in `.planning/`, run required reviews, and close the GitHub issue as described above.
 
 ## Completion checklist for current workflow
 

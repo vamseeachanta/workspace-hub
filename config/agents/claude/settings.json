@@ -1,5 +1,76 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "skipDangerousModePermissionPrompt": true,
+  "cleanupPeriodDays": 90,
+  "env": {
+    "MAX_TEAMMATES": "10",
+    "REVIEW_GATE_STRICT": "1"
+  },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "plansDirectory": ".planning",
+  "showThinkingSummaries": true,
+  "outputStyle": "Explanatory",
+  "effortLevel": "high",
+  "worktree": {
+    "symlinkDirectories": [
+      "node_modules",
+      ".cache",
+      ".venv",
+      "__pycache__"
+    ],
+    "sparsePaths": []
+  },
+  "spinnerVerbs": {
+    "mode": "append",
+    "verbs": [
+      "Engineering",
+      "Analyzing",
+      "Modeling",
+      "Simulating",
+      "Calibrating"
+    ]
+  },
+  "deny": [
+    "Bash(rm -rf /)",
+    "Bash(rm -rf ~:*)",
+    "Bash(rm -rf .:*)",
+    "Bash(dd if=/dev/zero:*)",
+    "Bash(mkfs:*)",
+    "Bash(shred:*)",
+    "Bash(sudo:*)",
+    "Bash(su :*)",
+    "Bash(pkexec:*)",
+    "Bash(doas:*)",
+    "Bash(chmod 777:*)",
+    "Bash(eval:*)",
+    "Bash(sh -c:*)",
+    "Bash(bash -c:*)",
+    "Bash(zsh -c:*)",
+    "Bash(python -c:*)",
+    "Bash(python3 -c:*)",
+    "Bash(perl -e:*)",
+    "Bash(ruby -e:*)",
+    "Bash(node -e:*)",
+    "Bash(curl * | bash:*)",
+    "Bash(curl * | sh:*)",
+    "Bash(wget * -O- | bash:*)",
+    "Bash(wget * -O- | sh:*)",
+    "Bash(| bash:*)",
+    "Bash(| sh:*)",
+    "Bash(nc:*)",
+    "Bash(ncat:*)",
+    "Bash(base64:*)",
+    "Bash(xxd:*)",
+    "Bash(git push --force:*)",
+    "Bash(git push -f:*)",
+    "Bash(git push --force-with-lease:*)",
+    "Bash(git -c core.hooksPath:*)",
+    "Bash(git -c core.hookspath:*)",
+    "Bash(crontab:*)",
+    "Bash(systemctl:*)"
+  ],
   "statusLine": {
     "type": "command",
     "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/statusline-command.sh\"",

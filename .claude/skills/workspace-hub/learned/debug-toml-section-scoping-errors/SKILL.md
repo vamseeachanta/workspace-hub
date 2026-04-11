@@ -1,6 +1,6 @@
 ---
 name: debug-toml-section-scoping-errors
-description: Identify and fix TOML config errors caused by misplaced key-value pairs in wrong sections
+description: Diagnose and fix TOML configuration errors caused by misplaced key-value pairs in named sections
 version: 1.0.0
 source: auto-extracted
 extracted: 2026-04-11
@@ -10,4 +10,4 @@ metadata:
 
 # Debug TOML Section Scoping Errors
 
-When a TOML parser reports an unexpected type error in a section (e.g., "expected a boolean, got string"), check if keys are incorrectly placed inside a `[section]` header instead of at the top level. In TOML, all key-value pairs after a section header belong to that section until the next header. Look for duplicate or stray keys that should exist in the top-level scope, remove them from the wrong section, and verify the fix by re-running the application.
+When a TOML parser reports unexpected type errors (e.g., "expected boolean, got string"), check if key-value pairs are accidentally nested inside a `[section]` header where they don't belong. In TOML, all keys after a section header belong to that table until the next header appears. Remove duplicate keys that should only exist at the top-level scope, or move them above the section header if they're needed in the parent context.
