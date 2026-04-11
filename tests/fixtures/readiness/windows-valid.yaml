@@ -1,0 +1,40 @@
+schema_version: "1.0"
+machine:
+  id: licensed-win-1
+  hostname: licensed-win-1
+  os: windows
+  role: simulation-license-host
+  workspace_root: 'D:\\workspace-hub'
+collected_at: "2026-04-11T04:58:00Z"
+source_writer:
+  name: windows-readiness-writer
+  version: "0.1.0"
+  entrypoint: scripts/readiness/windows_probe_writer.ps1
+access:
+  mode: local_gui
+  reachable: true
+  detail: Evidence dropped locally for pickup from GUI session.
+checks:
+  - id: git-bash
+    name: Git Bash available
+    status: pass
+    summary: Git Bash shell launched successfully.
+    evidence:
+      shell: MINGW64
+  - id: orcaflex-license
+    name: OrcaFlex license host
+    status: warn
+    summary: License service detected; seat usage near capacity.
+    evidence:
+      seats_in_use: 3
+      seats_total: 4
+overall:
+  verdict: degraded
+  summary: Windows machine is usable but has a license-capacity warning.
+  counts:
+    total: 2
+    pass: 1
+    warn: 1
+    fail: 0
+    error: 0
+    skip: 0

@@ -1,0 +1,17 @@
+schema_version: "1.0"
+collected_at: "2026-04-11T04:55:00Z"
+source_writer:
+  name: linux-readiness-writer
+  version: "0.1.0"
+  entrypoint: scripts/readiness/linux_probe_writer.py
+access:
+  mode: ssh
+  reachable: true
+checks:
+  - id: ssh-connectivity
+    name: SSH connectivity
+    status: pass
+    summary: Remote shell handshake succeeded.
+overall:
+  verdict: ready
+  summary: Invalid because machine identity is required.
