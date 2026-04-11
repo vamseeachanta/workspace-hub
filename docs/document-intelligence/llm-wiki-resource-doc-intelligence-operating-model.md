@@ -259,6 +259,7 @@ The following documents and issues should reference this operating model:
 | `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` | Child contract for #2207 — defines provenance fields and reuse rules under this model |
 | `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` | Child policy for #2209 — defines durable/transient classification and promotion rules |
 | `docs/document-intelligence/intelligence-accessibility-map.md` | Child implementation for #2096 — inventories intelligence assets and identifies discoverability gaps |
+| `docs/document-intelligence/pyramid-conformance-checks.md` | Child validation design for #2206 — defines conformance checks against this model |
 | `docs/plans/README.md` | Via the #2205 plan index row |
 
 ### Agent discovery

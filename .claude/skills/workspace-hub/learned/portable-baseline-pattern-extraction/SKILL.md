@@ -1,13 +1,13 @@
 ---
 name: portable-baseline-pattern-extraction
-description: Extract machine-agnostic configuration into portable templates while excluding environment-specific hooks and plugins
+description: Extract and separate portable baseline config from machine-specific overrides in multi-environment projects
 version: 1.0.0
 source: auto-extracted
 extracted: 2026-04-11
 metadata:
-  tags: ["architecture", "configuration-management", "portability", "hardening"]
+  tags: ["configuration", "portability", "multi-environment", "architecture"]
 ---
 
 # Portable Baseline Pattern Extraction
 
-When hardening multi-machine configs, separate portable baseline settings (schema, timeouts, security policies, env variables) from machine-specific wiring (hooks, plugins, marketplace config). Use canonical tool resolution patterns like `uv python find` or `command -v` for cross-platform compatibility. Verify changes with grep to ensure no execution paths reference local state, only comments and diagnostic messages remain.
+When managing config across multiple machines, separate portable baseline settings (safe on any system) from machine-specific wiring (hooks, plugins, paths). Read all target files in parallel to identify shared patterns, then use canonical resolution methods (e.g., `uv python find` or `command -v`) as the single source of truth. Wire machine-specific hooks sequentially into the template to avoid conflicts. Verify with grep to ensure no execution calls leak into portable templates.

@@ -44,7 +44,7 @@ workstations:
     ssh_target: ace2
     report_path: .claude/state/harness-readiness-dev-secondary.yaml
   licensed-win-1:
-    ws_hub_path: null
+    ws_hub_path: 'D:\\workspace-hub'
     ssh_target: null
     linux_reachable: false
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml

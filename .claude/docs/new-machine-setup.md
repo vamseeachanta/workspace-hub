@@ -190,14 +190,28 @@ Reference: `scripts/cron/crontab-template.sh`
 
 #### Windows Task Scheduler (contribute-minimal)
 
-Two tasks required — see `scripts/cron/crontab-template.sh` for the exact
-arguments.  `setup-cron.sh` prints the instructions when run on Windows.
+Five scheduled tasks — registered via `scripts/windows/setup-scheduler-tasks.ps1`
+(run as Administrator):
 
-> **Note:** Full nightly automation (comprehensive-learning, session-analysis,
-> repository-sync) runs on **dev-primary only** — it has a cron daemon.
+| Task | Time | Purpose |
+|------|------|---------|
+| ContextManagementDaily | 06:00 | Context file health check |
+| WorkstationVersionCheck | 07:00 | ANSYS + OrcaFlex version check |
+| NightlyReadiness | 23:00 | 11-check ecosystem readiness |
+| RepoSync | 23:30 | workspace-hub git pull + submodule sync |
+| MemoryBridgeSync | 04:30 | Refresh repo-tracked memory outputs (#1918) |
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.ps1
+# Dry-run: add -WhatIf
+```
+
+> **Note:** Full nightly automation (comprehensive-learning, session-analysis)
+> runs on **dev-primary only** — it has a cron daemon.
 > Windows machines (licensed-win-1, licensed-win-2) are `contribute-minimal` and
-> use Windows Task Scheduler for two tasks only; cron is not available on
-> Windows/MINGW64.
+> use Windows Task Scheduler for five tasks; cron is not available on
+> Windows/MINGW64. The MemoryBridgeSync task gives Windows write-back parity
+> for repo-tracked memory outputs (#1918).
 
 ---
 

@@ -721,10 +721,12 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 2. **`--dangerously-skip-permissions` dialog defaults to "No, exit"** — you must send Down then Enter to accept. Print mode (`-p`) skips this entirely.
 3. **`--max-budget-usd` minimum is ~$0.05** — system prompt cache creation alone costs this much. Setting lower will error immediately.
 4. **`--max-turns` is print-mode only** — ignored in interactive sessions.
-5. **`--permission-mode plan` is for planning, not applying edits** — in `claude -p` runs, plan mode may return a review/plan instead of modifying files even when the prompt asks for implementation. For actual repo edits, prefer `--permission-mode auto` (safer default) or `--dangerously-skip-permissions` when you explicitly want unattended application.
-6. **Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
-7. **Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
-8. **`--json-schema` needs enough `--max-turns`** — Claude must read files before producing structured output, which takes multiple turns.
+4. **`--max-turns` is print-mode only** — ignored in interactive sessions.
+5. **`--permission-mode plan` does NOT implement** — it is planning-only. If you want Claude to actually edit files in `-p` mode, use `--permission-mode auto` (normal implementation) or `--dangerously-skip-permissions` when you explicitly want fully non-interactive execution.
+6. **Even in `-p` mode, permission configuration still matters** — if Claude stops with an edit-permission request, rerun with `--permission-mode auto` or `--dangerously-skip-permissions`, or narrow the prompt to a single-file change. For long prompts stored in repo files, a robust pattern is: write the prompt to `docs/plans/...md`, launch `claude -p ... "$PROMPT"` in a background subprocess, then monitor with Hermes process polling and inspect git diff after completion.
+7. **Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
+8. **Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
+
 9. **Trust dialog only appears once per directory** — first-time only, then cached.
 10. **Background tmux sessions persist** — always clean up with `tmux kill-session -t <name>` when done.
 11. **Slash commands (like `/commit`) only work in interactive mode** — in `-p` mode, describe the task in natural language instead.

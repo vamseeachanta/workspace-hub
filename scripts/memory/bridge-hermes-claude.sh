@@ -1,16 +1,24 @@
 #!/usr/bin/env bash
-# bridge-hermes-claude.sh — Sync Hermes memory into .claude/memory/ (git-tracked)
+# bridge-hermes-claude.sh — Refresh repo-tracked memory outputs (.claude/memory/)
 #
 # Architecture: Memory travels with the repository via git.
-#   Hermes (Linux) writes memory → ~/.hermes/memories/  → this script extracts
-#   canonical facts → .claude/memory/  → git commit + push
+#   On Linux (ace-linux-1): Hermes writes memory → ~/.hermes/memories/ → this
+#     script extracts canonical facts → .claude/memory/ → git commit + push
+#   On Windows (licensed-win-1, Git Bash): No Hermes — this script still
+#     refreshes context.md, snapshots Claude auto-memory, and mirrors topic
+#     files → git commit + push.  Hermes-specific steps are skipped gracefully.
 #   Any machine doing git pull gets the same context automatically.
 #
 # Usage:
 #   bash scripts/memory/bridge-hermes-claude.sh           # dry-run (no commit)
 #   bash scripts/memory/bridge-hermes-claude.sh --commit  # commit if changed
 #
-# Issues: #1886 (initial), #1890 (cron), #1892 (dedup), #1893 (topic mirror), #1901 (cron fix)
+# Scheduling:
+#   Linux:   cron (04:00 daily via setup-cron.sh)
+#   Windows: Task Scheduler (04:30 daily via setup-scheduler-tasks.ps1)
+#
+# Issues: #1886 (initial), #1890 (cron), #1892 (dedup), #1893 (topic mirror),
+#         #1901 (cron fix), #1918 (Windows parity)
 
 set -euo pipefail
 
@@ -19,7 +27,9 @@ MEMORY_DIR="${REPO_ROOT}/.claude/memory"
 TEMPLATE_DIR="${MEMORY_DIR}/templates"
 TOPICS_DIR="${MEMORY_DIR}/topics"
 HERMES_MEM_DIR="${HOME}/.hermes/memories"
-CLAUDE_MEM_DIR="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
+# Derive Claude auto-memory path from workspace root (portable across Linux / Windows Git Bash)
+_project_slug="$(cd "${REPO_ROOT}" && pwd | tr '/' '-')"
+CLAUDE_MEM_DIR="${HOME}/.claude/projects/${_project_slug}/memory"
 TIMESTAMP="$(date +%Y-%m-%d)"
 COMMIT_MODE="${1:-}"
 
@@ -155,10 +165,13 @@ cat > "${MEMORY_DIR}/context.md" << 'CONTEXT_EOF'
 Memory travels with the repo via git. No Hermes needed on Windows.
 
 1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
-2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory,
-   injects it into the `<!-- BRIDGE:START/END -->` section of `agents.md` via template,
-   mirrors Claude auto-memory topic files to `topics/`, commits and pushes.
-3. **Windows (licensed-win-1)**: `git pull` — gets updated `.claude/memory/` automatically.
+2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory
+   (if present), injects it into `agents.md` via template, regenerates `context.md`,
+   snapshots Claude auto-memory, mirrors topic files, commits and pushes.
+   Runs on both Linux (cron) and Windows (Task Scheduler).
+3. **Windows (licensed-win-1)**: Runs the same bridge script via Task Scheduler.
+   Hermes steps are skipped (no Hermes on Windows); context.md, auto-memory
+   snapshot, and topic mirrors are refreshed and pushed back to repo.
 4. **Return enrichment**: New lessons learned on any machine go into `KNOWLEDGE.md`
    or topic files, committed and pushed. Next `git pull` on any machine picks them up.
 

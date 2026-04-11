@@ -1,0 +1,10 @@
+schema_version: 1
+host: licensed-win-1
+generated_at: "2026-04-11T00:00:00Z"
+overall: fail
+pass_count: 0
+fail_count: 1
+checks:
+  bootstrap:
+    status: fail
+    detail: 'Bootstrap placeholder until Windows NightlyReadiness task writes a live report.'

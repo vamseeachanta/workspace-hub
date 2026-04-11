@@ -36,13 +36,13 @@ Repo .claude/skills/ is the single source of truth.
 - #1950: backfill end-to-end test passed
 - #1951: sub-repo skill access confirmed (all 6 repos)
 - #1952: cleaned up empty ~/.hermes/skills/ dirs
+- #1918: Windows auto-memory sync — MemoryBridgeSync scheduled task + cross-platform bridge (#1918)
 
 ### OPEN
 - #1879: rebuild session-start-routine skill
 - #1917: memory backup and rollback mechanism
-- #1918: Windows auto-memory sync back to repo
 - #1919: memory ecosystem quick-reference card
-- #1977: consolidated future tracking (contains #1917, #1918, #1919)
+- #1977: consolidated future tracking (contains #1917, #1919)
 
 ## Verification Results
 
@@ -70,9 +70,8 @@ Repo .claude/skills/ is the single source of truth.
 
 See #1977 for consolidated tracking of remaining memory ecosystem work:
 1. #1917: memory backup/rollback mechanism
-2. #1918: Windows auto-memory sync
-3. #1919: quick-reference card
-4. #1879: session-start-routine skill rebuild
+2. #1919: quick-reference card
+3. #1879: session-start-routine skill rebuild
 5. #1583: Hermes config parity validation
 6. #1679: push notifications for harness failures
 7. #1720: cross-agent session corpus audit

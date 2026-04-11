@@ -7,6 +7,7 @@
 #   \Claude\WorkstationVersionCheck    — 07:00 daily  — ANSYS + OrcaFlex version check
 #   \Claude\NightlyReadiness           — 23:00 daily  — 11-check ecosystem readiness
 #   \Claude\RepoSync                   — 23:30 daily  — workspace-hub git pull + submodule sync
+#   \Claude\MemoryBridgeSync           — 04:30 daily  — refresh repo-tracked memory outputs (#1918)
 
 param(
     [switch]$WhatIf,
@@ -123,9 +124,10 @@ Register-ClaudeTask `
     -Time "07:00AM"
 
 # 3. Nightly readiness (11 ecosystem checks) — 23:00
+# Writes shared readiness proof under .claude/state/harness-readiness-licensed-win-1.yaml
 Register-ClaudeTask `
     -Name "NightlyReadiness" `
-    -Description "11-check ecosystem health: memory, context budget, submodules, harness files, ANSYS, OrcaFlex" `
+    -Description "11-check ecosystem health: memory, context budget, submodules, harness files, ANSYS, OrcaFlex; updates shared readiness proof" `
     -ScriptPath "scripts/readiness/nightly-readiness.sh" `
     -Time "11:00PM"
 
@@ -135,6 +137,16 @@ Register-ClaudeTask `
     -Description "Nightly workspace-hub git pull and submodule sync" `
     -ScriptPath "scripts/windows/repo-sync-daily.sh" `
     -Time "11:30PM"
+
+# 5. Memory bridge sync — 04:30 (#1918)
+# Refreshes context.md, Claude auto-memory snapshot, and topic mirrors; commits + pushes.
+# On Windows, Hermes is absent — the bridge gracefully skips Hermes-specific steps.
+Register-ClaudeTask `
+    -Name "MemoryBridgeSync" `
+    -Description "Refresh repo-tracked memory outputs (context.md, auto-memory snapshot, topic mirrors); commits and pushes (#1918)" `
+    -ScriptPath "scripts/memory/bridge-hermes-claude.sh" `
+    -Args "--commit" `
+    -Time "04:30AM"
 
 Write-Host ""
 Write-Host "Done. To verify:"

@@ -89,9 +89,15 @@ check_acma() {
   if [[ "$age_hours" -gt 25 ]]; then
     log_deg "licensed-win-1: report is ${age_hours}h old (>25h threshold) — DEGRADED (stale)"
   else
-    local overall
+    local overall fail_count
     overall=$(grep "^overall:" "$report" | awk '{print $2}' | head -1)
-    log_ok "licensed-win-1: report ${age_hours}h old, overall=${overall}"
+    fail_count=$(grep "^fail_count:" "$report" | awk '{print $2}' | head -1)
+    fail_count=${fail_count:-0}
+    if [[ "$overall" == "pass" ]]; then
+      log_ok "licensed-win-1: report ${age_hours}h old, overall=${overall}, fail_count=${fail_count}"
+    else
+      log_deg "licensed-win-1: report ${age_hours}h old, overall=${overall}, fail_count=${fail_count} — DEGRADED"
+    fi
   fi
 }
 check_acma

@@ -1,6 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "skipDangerousModePermissionPrompt": true,
   "cleanupPeriodDays": 90,
   "env": {
     "MAX_TEAMMATES": "10",
@@ -70,10 +69,5 @@
     "Bash(git -c core.hookspath:*)",
     "Bash(crontab:*)",
     "Bash(systemctl:*)"
-  ],
-  "statusLine": {
-    "type": "command",
-    "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/statusline-command.sh\"",
-    "padding": 0
-  }
+  ]
 }
