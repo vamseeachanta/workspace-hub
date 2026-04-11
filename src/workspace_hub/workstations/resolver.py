@@ -89,6 +89,9 @@ class WorkstationPathResolver:
                 continue
             if not suffix:
                 return "."
+            # This shared normalizer intentionally strips only known machine
+            # workspace prefixes. Callers still decide whether the rewritten
+            # suffix belongs to the current checkout/worktree.
             return suffix
         return text
 
@@ -127,4 +130,6 @@ class WorkstationPathResolver:
             normalized = normalized.replace("//", "/")
         if len(normalized) >= 2 and normalized[1] == ":":
             normalized = normalized[0].lower() + normalized[1:]
+        elif len(normalized) >= 3 and normalized[0] == "/" and normalized[2] == "/" and normalized[1].isalpha():
+            normalized = f"/{normalized[1].lower()}{normalized[2:]}"
         return normalized.rstrip("/") or "/"
