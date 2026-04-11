@@ -5,10 +5,11 @@
 # DO NOT put API keys or tokens here — those go in ~/.hermes/auth.json and ~/.hermes/.env
 #
 model:
-  default: claude-opus-4-6
-  provider: anthropic
+  default: gpt-5.4
+  provider: openai-codex
 fallback_providers: []
-credential_pool_strategies: {}
+credential_pool_strategies:
+  openai-codex: round_robin
 toolsets:
 - hermes-cli
 agent:

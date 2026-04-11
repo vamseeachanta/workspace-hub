@@ -23,6 +23,7 @@ Primary anchors:
 
 Historical paths:
 - `scripts/work-queue/verify-gate-evidence.py`
+- `scripts/work-queue/generate-html-review.py`
 - `scripts/work-queue/start_stage.py`
 - `scripts/work-queue/exit_stage.py`
 - `scripts/work-queue/verify_checklist.py`
@@ -39,6 +40,7 @@ Use now:
 
 Interpretation:
 - These old files were removed during workflow migration.
+- `generate-html-review.py` was part of the old review/gate surface; use `scripts/review/cross-review.sh` plus current review evidence instead of restoring the generator.
 - Do not try to recreate them as active executables unless a specific live integration still requires them.
 
 ### 2. Legacy work-queue lifecycle scripts
@@ -96,7 +98,32 @@ Use now:
 Interpretation:
 - The old skill tree was replaced by GSD-oriented command/workflow surfaces.
 
-### 5. Missing session-start skill path
+### 5. Removed provider wrapper tree
+
+Historical paths:
+- `scripts/agents/session.sh`
+- `scripts/agents/work.sh`
+- `scripts/agents/plan.sh`
+- `scripts/agents/execute.sh`
+- `scripts/agents/review.sh`
+- `scripts/agents/lib/workflow-guards.sh`
+- `scripts/agents/providers/claude.sh`
+- `scripts/agents/providers/codex.sh`
+- `scripts/agents/providers/gemini.sh`
+
+Use now:
+- `AGENTS.md`
+- `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`
+- `docs/work-queue-workflow.md`
+- `scripts/review/cross-review.sh`
+- `scripts/refresh-agent-work-queue.py`
+- `scripts/planning/ensemble-plan.sh` (self-contained fallback helpers; no external `scripts/agents/lib/workflow-guards.sh` dependency)
+
+Interpretation:
+- Older planning and review sessions may still reference `scripts/agents/*`.
+- Those references are stale and should be redirected, not reintroduced blindly.
+
+### 6. Missing session-start skill path
 
 Historical path:
 - `.claude/skills/workspace-hub/session-start/SKILL.md`

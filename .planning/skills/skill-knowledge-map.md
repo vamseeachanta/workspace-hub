@@ -99,9 +99,9 @@
 | Field | Content |
 |-------|---------|
 | **Triggers** | "lifecycle testpack", "wrk workflow tests", "gatepass tests"; invoked when implementing or changing workflow gate logic |
-| **Inputs** | `scripts/work-queue/verify-gate-evidence.py`; `scripts/review/orchestrator-variation-check.sh`; `scripts/work-queue/parse-session-logs.sh`; test data in WRK assets |
+| **Inputs** | `scripts/work-queue/verify-gate-evidence.py`; `scripts/review/orchestrator-variation-check.sh`; `logs/orchestrator/README.md`; `scripts/analysis/provider_session_ecosystem_audit.py`; raw provider logs under `logs/orchestrator/<provider>/session_*.jsonl`; test data in WRK assets |
 | **Outputs** | 6-test minimum suite spec; `execute.yaml` shape contract; `variation-test-results.md`; recommendation to add/update tests when gate contracts change |
-| **Handoffs** | → `workflow-gatepass` (consumes gate contracts defined there); → `work-queue` (shares `parse-session-logs.sh` and `orchestrator-variation-check.sh`) |
+| **Handoffs** | → `workflow-gatepass` (consumes gate contracts defined there); → orchestrator log workflow (shares `logs/orchestrator/<provider>/session_*.jsonl`, `scripts/analysis/provider_session_ecosystem_audit.py`, and `scripts/review/orchestrator-variation-check.sh`) |
 | **Negative scope** | Does NOT enforce gates during live WRK execution; does NOT generate HTML; does NOT define what the gate rules are (that is workflow-gatepass's domain); does NOT run as part of every WRK's lifecycle — only when workflow code itself changes |
 
 ---

@@ -55,7 +55,7 @@ Module compat shim: @src/worldenergydata/modules/__init__.py — check before ch
 ### Adding a new `@` reference
 
 1. Confirm all 4 evaluation criteria above are met.
-2. Run `bash scripts/work-queue/check-claude-md-limits.sh` before and after editing.
+2. Run `uv run --no-project python scripts/quality/check_config_drift.py --repo workspace-hub` before and after editing to verify harness-file limits still pass.
 3. If the target harness file is within 2 lines of 20, overflow to `AGENTS.md` instead.
 4. Document the decision in the **Candidate Audit** table above.
 5. Commit with `chore(context): add @ reference for <file>`.
@@ -75,6 +75,6 @@ change in a 6-month window. Use `git log --follow -p <file>` to check churn.
 
 ## Related
 
-- `scripts/work-queue/check-claude-md-limits.sh` — TDD guard for ≤20-line rule
+- `scripts/quality/check_config_drift.py --repo workspace-hub` — current harness drift/line-limit check
 - `.claude/rules/coding-style.md §Agent Harness Files` — hard limit policy
 - WRK-1111 — implementation WRK for this pipeline

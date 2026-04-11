@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-11T04:23:35Z",
+  "generated_at": "2026-04-11T10:09:55Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -11,6 +11,7 @@
       "post_records": 73646,
       "prompt_reads": 64,
       "blank_reads": 0,
+      "missing_repo_reads": 7559,
       "python3_bash_calls": 635,
       "uv_python_bash_calls": 5907,
       "top_tools": [
@@ -165,6 +166,102 @@
           "count": 42
         }
       ],
+      "missing_repo_read_remediation_hints": [
+        {
+          "rule_id": "legacy_work_queue_transition",
+          "total_count": 318,
+          "matched_paths": [
+            {
+              "path": "scripts/work-queue/start_stage.py",
+              "count": 138
+            },
+            {
+              "path": "scripts/work-queue/exit_stage.py",
+              "count": 137
+            },
+            {
+              "path": "scripts/work-queue/verify_checklist.py",
+              "count": 43
+            }
+          ],
+          "canonical_targets": [
+            "docs/governance/SESSION-GOVERNANCE.md",
+            "docs/governance/TRUST-ARCHITECTURE.md",
+            "scripts/workflow/governance-checkpoints.yaml",
+            ".claude/hooks/plan-approval-gate.sh",
+            ".claude/hooks/session-governor-check.sh",
+            "scripts/review/cross-review.sh"
+          ],
+          "guidance": "Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        },
+        {
+          "rule_id": "legacy_work_queue_html_review",
+          "total_count": 249,
+          "matched_paths": [
+            {
+              "path": "scripts/work-queue/generate-html-review.py",
+              "count": 249
+            }
+          ],
+          "canonical_targets": [
+            "scripts/review/cross-review.sh",
+            "templates/review-standard.html",
+            "docs/work-queue-workflow.md"
+          ],
+          "guidance": "Historical HTML review generation is no longer canonical; use the current cross-review workflow and stored review evidence instead.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        },
+        {
+          "rule_id": "legacy_work_queue_lifecycle",
+          "total_count": 216,
+          "matched_paths": [
+            {
+              "path": "scripts/work-queue/close-item.sh",
+              "count": 94
+            },
+            {
+              "path": "scripts/work-queue/archive-item.sh",
+              "count": 62
+            },
+            {
+              "path": "scripts/work-queue/claim-item.sh",
+              "count": 60
+            }
+          ],
+          "canonical_targets": [
+            "scripts/refresh-agent-work-queue.py",
+            "scripts/refresh-agent-work-queue.sh",
+            "notes/agent-work-queue.md",
+            ".planning/",
+            "GitHub issues"
+          ],
+          "guidance": "The repo no longer uses local queue scripts as the source of truth; prefer GitHub issue updates plus .planning evidence.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        },
+        {
+          "rule_id": "legacy_work_queue_skills",
+          "total_count": 189,
+          "matched_paths": [
+            {
+              "path": ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md",
+              "count": 123
+            },
+            {
+              "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+              "count": 66
+            }
+          ],
+          "canonical_targets": [
+            "AGENTS.md",
+            ".claude/commands/gsd/*",
+            ".gemini/get-shit-done/workflows/*",
+            "docs/work-queue-workflow.md"
+          ],
+          "guidance": "The old work-queue skill tree was replaced by GSD-oriented command/workflow surfaces; redirect readers instead of restoring deleted skill files.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        }
+      ],
       "top_missing_external_reads": [
         {
           "path": "/tmp/tmp.4XN7Wckbxl/review-content.md",
@@ -270,153 +367,156 @@
       "sessions": 42,
       "correction_sessions": 0,
       "unique_runtime_sessions": 402,
-      "post_records": 15662,
+      "post_records": 31324,
       "prompt_reads": 0,
       "blank_reads": 0,
+      "missing_repo_reads": 0,
       "python3_bash_calls": 319,
       "uv_python_bash_calls": 395,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 15256
+          "count": 30512
         },
         {
           "tool": "update_plan",
-          "count": 375
+          "count": 750
         },
         {
           "tool": "list_mcp_resources",
-          "count": 14
+          "count": 28
         },
         {
           "tool": "list_mcp_resource_templates",
-          "count": 8
+          "count": 16
         },
         {
           "tool": "request_user_input",
-          "count": 5
+          "count": 10
         },
         {
           "tool": "spawn_agent",
-          "count": 2
+          "count": 4
         },
         {
           "tool": "wait_agent",
-          "count": 1
+          "count": 2
         },
         {
           "tool": "close_agent",
-          "count": 1
+          "count": 2
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 15662
+          "count": 31324
         }
       ],
       "top_reads": [],
       "top_missing_repo_reads": [],
+      "missing_repo_read_remediation_hints": [],
       "top_missing_external_reads": [],
       "top_symbolic_reads": [],
       "top_bash_command_families": [
         {
           "prefix": "sed",
           "count": 3868,
-          "share_of_bash_calls": 25.35,
+          "share_of_bash_calls": 12.68,
           "example_command": "sed -n '230,340p' src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py"
         },
         {
           "prefix": "rg",
           "count": 1739,
-          "share_of_bash_calls": 11.4,
+          "share_of_bash_calls": 5.7,
           "example_command": "rg -n \"class ParquetStore|def save\\(\" -S src/worldenergydata/vessel_fleet -g '*.py'"
         },
         {
           "prefix": "nl",
           "count": 1308,
-          "share_of_bash_calls": 8.57,
+          "share_of_bash_calls": 4.29,
           "example_command": "nl -ba src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py | sed -n '270,300p'"
         },
         {
           "prefix": "ls",
           "count": 508,
-          "share_of_bash_calls": 3.33,
+          "share_of_bash_calls": 1.66,
           "example_command": "ls digitalmodel/artificial_lift/dynacard"
         },
         {
           "prefix": "bash",
           "count": 446,
-          "share_of_bash_calls": 2.92,
+          "share_of_bash_calls": 1.46,
           "example_command": "bash -n .claude/statusline-command.sh && echo OK"
         },
         {
           "prefix": "find",
           "count": 423,
-          "share_of_bash_calls": 2.77,
+          "share_of_bash_calls": 1.39,
           "example_command": "find worldenergydata/src/worldenergydata -maxdepth 1 -type f -name '*.py' | sed -n '1,20p'"
         },
         {
           "prefix": "for",
           "count": 306,
-          "share_of_bash_calls": 2.01,
+          "share_of_bash_calls": 1.0,
           "example_command": "for f in scripts/test/test-commit.sh scripts/test/test-task.sh scripts/test/test-session.sh scripts/test/lib/detect-repo.sh scripts/test/lib/map-tests.sh scripts/test/lib/invoke-pytest.sh scripts/test/lib/report.sh scripts/test/config/worldenergydata"
         },
         {
           "prefix": "git status",
           "count": 285,
-          "share_of_bash_calls": 1.87,
+          "share_of_bash_calls": 0.93,
           "example_command": "git status --short"
         }
       ],
       "special_counts": {
-        "exec_command": 12242,
-        "write_stdin": 3014,
-        "update_plan": 375,
-        "request_user_input": 5,
-        "list_mcp_resources": 14,
-        "list_mcp_resource_templates": 8,
-        "spawn_agent": 2,
-        "wait_agent": 1,
-        "close_agent": 1
+        "exec_command": 24484,
+        "write_stdin": 6028,
+        "update_plan": 750,
+        "request_user_input": 10,
+        "list_mcp_resources": 28,
+        "list_mcp_resource_templates": 16,
+        "spawn_agent": 4,
+        "wait_agent": 2,
+        "close_agent": 2
       },
-      "python3_per_1k_records": 20.37,
-      "uv_python_per_1k_records": 25.22
+      "python3_per_1k_records": 10.18,
+      "uv_python_per_1k_records": 12.61
     },
     "hermes": {
       "source": "raw_logs",
       "sessions": 10,
       "correction_sessions": 10,
-      "unique_runtime_sessions": 900,
-      "post_records": 58611,
-      "prompt_reads": 630,
+      "unique_runtime_sessions": 941,
+      "post_records": 61509,
+      "prompt_reads": 650,
       "blank_reads": 0,
-      "python3_bash_calls": 1271,
-      "uv_python_bash_calls": 1695,
+      "missing_repo_reads": 186,
+      "python3_bash_calls": 1293,
+      "uv_python_bash_calls": 1703,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 31008
+          "count": 31671
         },
         {
           "tool": "Read",
-          "count": 8944
+          "count": 9539
         },
         {
           "tool": "Grep",
-          "count": 7711
+          "count": 8546
         },
         {
           "tool": "Write",
-          "count": 6574
+          "count": 7133
         },
         {
           "tool": "Edit",
-          "count": 2886
+          "count": 3063
         },
         {
           "tool": "Task",
-          "count": 699
+          "count": 766
         },
         {
           "tool": "Browser",
@@ -424,27 +524,39 @@
         },
         {
           "tool": "ToolSearch",
-          "count": 182
+          "count": 184
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 58611
+          "count": 61509
         }
       ],
       "top_reads": [
         {
           "path": "config/scheduled-tasks/schedule-tasks.yaml",
-          "count": 130
+          "count": 139
+        },
+        {
+          "path": "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md",
+          "count": 114
         },
         {
           "path": "scripts/cron/harness-update.sh",
           "count": 73
         },
         {
+          "path": "docs/reports/provider-session-ecosystem-audit.md",
+          "count": 72
+        },
+        {
           "path": "scripts/gtm/job-market-scanner.py",
           "count": 67
+        },
+        {
+          "path": "analysis/provider-session-ecosystem-audit.json",
+          "count": 56
         },
         {
           "path": "docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md",
@@ -461,24 +573,16 @@
         {
           "path": "scripts/cron/gsd-researcher-nightly.sh",
           "count": 47
-        },
-        {
-          "path": "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md",
-          "count": 47
-        },
-        {
-          "path": "scripts/monitoring/cron-health-check.sh",
-          "count": 46
-        },
-        {
-          "path": "/tmp/ballymore_data.json",
-          "count": 43
         }
       ],
       "top_missing_repo_reads": [
         {
           "path": "client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py",
           "count": 24
+        },
+        {
+          "path": "scripts/hooks/pre-push.sh",
+          "count": 8
         },
         {
           "path": "docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md",
@@ -511,12 +615,9 @@
         {
           "path": "worldenergydata/.planning/quick/gemini-review.txt",
           "count": 6
-        },
-        {
-          "path": "scripts/hooks/pre-push.sh",
-          "count": 6
         }
       ],
+      "missing_repo_read_remediation_hints": [],
       "top_missing_external_reads": [
         {
           "path": "/home/vamsee/gmail-archive/config/accounts.yaml",
@@ -566,7 +667,7 @@
         },
         {
           "name": "overnight-parallel-agent-prompts",
-          "count": 65
+          "count": 67
         },
         {
           "name": "gh-work-planning",
@@ -574,7 +675,7 @@
         },
         {
           "name": "gh-work-execution",
-          "count": 37
+          "count": 39
         },
         {
           "name": "issue-portfolio-triage",
@@ -582,7 +683,7 @@
         },
         {
           "name": "claude-code",
-          "count": 32
+          "count": 33
         },
         {
           "name": "writing-plans",
@@ -604,67 +705,67 @@
       "top_bash_command_families": [
         {
           "prefix": "gh",
-          "count": 4778,
-          "share_of_bash_calls": 15.41,
+          "count": 5202,
+          "share_of_bash_calls": 16.43,
           "example_command": "gh auth status"
         },
         {
           "prefix": "uv run",
-          "count": 2662,
-          "share_of_bash_calls": 8.58,
+          "count": 2703,
+          "share_of_bash_calls": 8.53,
           "example_command": "cd /mnt/local-analysis/workspace-hub && uv run --no-project python -c \"\nimport yaml\nwith open('data/document-index/standards-transfer-ledger.yaml', 'r') as f:\n    data = yaml.safe_load(f)\nfrom collections import Counter\ndomains = Counter(s.get('domain','MISSING') for s in data['standards'])\nfor d, c in sorted(domains.items(), key=lambda x: -x[1]):\n    print(f'{d}: {c}')\n\""
         },
         {
           "prefix": "git add",
           "count": 1559,
-          "share_of_bash_calls": 5.03,
+          "share_of_bash_calls": 4.92,
           "example_command": "cd /mnt/local-analysis/workspace-hub && git add -A && git status --short | head -20"
         },
         {
           "prefix": "find",
           "count": 1376,
-          "share_of_bash_calls": 4.44,
+          "share_of_bash_calls": 4.34,
           "example_command": "cd /mnt/local-analysis/workspace-hub && find . -name \"SKILL.md\" -not -path \"./_archive/*\" 2>/dev/null | head -60"
         },
         {
           "prefix": "ls",
-          "count": 1328,
-          "share_of_bash_calls": 4.28,
+          "count": 1330,
+          "share_of_bash_calls": 4.2,
           "example_command": "cd /home/user && ls -d */ 2>/dev/null | head -30"
         },
         {
           "prefix": "cat",
-          "count": 1044,
-          "share_of_bash_calls": 3.37,
+          "count": 1046,
+          "share_of_bash_calls": 3.3,
           "example_command": "cd /mnt/local-analysis/workspace-hub && cat > /tmp/comment-1548.md << 'EOF'\n## #1548 Status Check \u2014 2026-04-01\n\n**Verdict: Not yet closable. Hardening deployed but not yet tested in real cron run.**\n\n### Evidence from real cron logs (logs/research/)\n\n| Date | Result | Notes |\n|------|--------|-------|\n| Mar 25 | FAIL | DRY RUN + empty claude result (setup day) |\n| Mar 26 | OK | Artifact written (49 lines), git push race (WARNING) |\n| Mar 27 | OK | Artifact written (45 lines), git push race (WARN"
         },
         {
           "prefix": "git log",
-          "count": 938,
-          "share_of_bash_calls": 3.03,
+          "count": 945,
+          "share_of_bash_calls": 2.98,
           "example_command": "cd /mnt/local-analysis/workspace-hub && git log --oneline --all -- scripts/cron/gsd-researcher-nightly.sh | head -10"
         },
         {
           "prefix": "echo",
           "count": 917,
-          "share_of_bash_calls": 2.96,
+          "share_of_bash_calls": 2.9,
           "example_command": "cd /mnt/local-analysis/workspace-hub && echo \"=== Research log summary ===\" && for f in logs/research/2026-03-*.log logs/research/2026-04-*.log; do echo \"--- $(basename $f) ---\"; grep -E 'ERROR|Done|written to|WARNING' \"$f\"; echo; done"
         }
       ],
       "special_counts": {
-        "memory_add": 209,
+        "memory_add": 214,
         "memory_replace": 260,
         "memory_remove": 46,
-        "skill_create": 184,
-        "skill_patch": 589,
+        "skill_create": 189,
+        "skill_patch": 605,
         "skill_view": 2,
         "skill_delete": 1,
         "skill_edit": 22,
         "skill_write_file": 4,
         "memory_list": 1
       },
-      "python3_per_1k_records": 21.69,
-      "uv_python_per_1k_records": 28.92
+      "python3_per_1k_records": 21.02,
+      "uv_python_per_1k_records": 27.69
     },
     "gemini": {
       "source": "raw_logs",
@@ -674,6 +775,7 @@
       "post_records": 5884,
       "prompt_reads": 18,
       "blank_reads": 0,
+      "missing_repo_reads": 593,
       "python3_bash_calls": 290,
       "uv_python_bash_calls": 39,
       "top_tools": [
@@ -800,6 +902,83 @@
           "count": 6
         }
       ],
+      "missing_repo_read_remediation_hints": [
+        {
+          "rule_id": "legacy_local_work_queue_items",
+          "total_count": 37,
+          "matched_paths": [
+            {
+              "path": ".claude/work-queue/WRK-149.md",
+              "count": 17
+            },
+            {
+              "path": ".claude/work-queue/working",
+              "count": 11
+            },
+            {
+              "path": ".claude/work-queue/working/",
+              "count": 9
+            }
+          ],
+          "canonical_targets": [
+            "GitHub issues",
+            ".planning/",
+            "notes/agent-work-queue.md",
+            "docs/work-queue-workflow.md"
+          ],
+          "guidance": "Local queue item files are compatibility surfaces, not canonical work tracking; prefer the GitHub issue and .planning artifact instead.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        },
+        {
+          "rule_id": "legacy_agent_wrapper_tree",
+          "total_count": 35,
+          "matched_paths": [
+            {
+              "path": "scripts/agents/lib/workflow-guards.sh",
+              "count": 11
+            },
+            {
+              "path": "scripts/agents/execute.sh",
+              "count": 10
+            },
+            {
+              "path": "scripts/agents/providers/claude.sh",
+              "count": 7
+            },
+            {
+              "path": "scripts/agents/plan.sh",
+              "count": 7
+            }
+          ],
+          "canonical_targets": [
+            "AGENTS.md",
+            "docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md",
+            "docs/work-queue-workflow.md",
+            "scripts/review/cross-review.sh",
+            "scripts/planning/ensemble-plan.sh"
+          ],
+          "guidance": "The old scripts/agents wrapper tree is gone; use the current policy-first workflow and current review/planning surfaces instead.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        },
+        {
+          "rule_id": "legacy_work_queue_skills",
+          "total_count": 12,
+          "matched_paths": [
+            {
+              "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+              "count": 12
+            }
+          ],
+          "canonical_targets": [
+            "AGENTS.md",
+            ".claude/commands/gsd/*",
+            ".gemini/get-shit-done/workflows/*",
+            "docs/work-queue-workflow.md"
+          ],
+          "guidance": "The old work-queue skill tree was replaced by GSD-oriented command/workflow surfaces; redirect readers instead of restoring deleted skill files.",
+          "reference_doc": "docs/ops/legacy-claude-reference-map.md"
+        }
+      ],
       "top_missing_external_reads": [
         {
           "path": "/tmp/pending-queue-snapshot.txt",
@@ -905,6 +1084,63 @@
       "special_counts": {},
       "python3_per_1k_records": 49.29,
       "uv_python_per_1k_records": 6.63
+    }
+  },
+  "executive_summary": {
+    "migration_debt": {
+      "ranked_providers": [
+        {
+          "provider": "gemini",
+          "known_migration_debt_reads": 84,
+          "known_migration_debt_per_1k_records": 14.28,
+          "known_migration_debt_rule_count": 3,
+          "top_migration_rule_id": "legacy_local_work_queue_items",
+          "top_migration_rule_reads": 37,
+          "top_migration_rule_share_pct": 44.05,
+          "migration_debt_status": "concentrated",
+          "scope_note": "Based on remediation-mapped stale reads from top missing repo reads.",
+          "migration_debt_rank": 1
+        },
+        {
+          "provider": "claude",
+          "known_migration_debt_reads": 972,
+          "known_migration_debt_per_1k_records": 13.2,
+          "known_migration_debt_rule_count": 4,
+          "top_migration_rule_id": "legacy_work_queue_transition",
+          "top_migration_rule_reads": 318,
+          "top_migration_rule_share_pct": 32.72,
+          "migration_debt_status": "mixed",
+          "scope_note": "Based on remediation-mapped stale reads from top missing repo reads.",
+          "migration_debt_rank": 2
+        },
+        {
+          "provider": "codex",
+          "known_migration_debt_reads": 0,
+          "known_migration_debt_per_1k_records": 0.0,
+          "known_migration_debt_rule_count": 0,
+          "top_migration_rule_id": null,
+          "top_migration_rule_reads": 0,
+          "top_migration_rule_share_pct": 0.0,
+          "migration_debt_status": "none",
+          "scope_note": "Based on remediation-mapped stale reads from top missing repo reads.",
+          "migration_debt_rank": 3
+        },
+        {
+          "provider": "hermes",
+          "known_migration_debt_reads": 0,
+          "known_migration_debt_per_1k_records": 0.0,
+          "known_migration_debt_rule_count": 0,
+          "top_migration_rule_id": null,
+          "top_migration_rule_reads": 0,
+          "top_migration_rule_share_pct": 0.0,
+          "migration_debt_status": "none",
+          "scope_note": "Based on remediation-mapped stale reads from top missing repo reads.",
+          "migration_debt_rank": 4
+        }
+      ],
+      "highest_density_provider": "gemini",
+      "highest_volume_provider": "claude",
+      "scope_note": "Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads."
     }
   }
 }

@@ -1,6 +1,6 @@
 # Trust Architecture — Agent Plan Gate Governance
 
-> WRK-381 | Created: 2026-02-24 | Status: Canonical
+> Created: 2026-02-24 | Status: Canonical
 > Cross-ref: `docs/vision/VISION.md` (Trust Chasm section) | `.planning/architecture/agent-vision.md`
 
 ---
@@ -31,7 +31,7 @@ The agent may proceed without presenting a plan or waiting for confirmation.
 | Run read-only tests | `pytest --collect-only`, `ruff check` (lint only), dry-run flags |
 | Compute calculations | Engineering module calls that return results without writing output |
 | Produce draft output | Draft commit messages, draft spec documents, summary reports |
-| Query work queue state | Read `INDEX.md`, parse frontmatter, count pending items |
+| Query issue and planning state | Read GitHub issue status/labels, inspect `docs/plans/` and `.planning/`, count approved vs pending work |
 | Retrieve docs or rules | Read `.claude/docs/`, `.claude/rules/`, `.planning/`, `docs/` |
 
 **Constraint**: A actions must not write to disk, invoke external network calls, or
@@ -49,14 +49,14 @@ executes first; the plan gate triggers before the B/C action begins.
 
 The agent must present a plan and receive explicit human approval before acting.
 No implementation begins until the plan is confirmed. This maps directly to the
-WRK gate in `CLAUDE.md` Hard Gate 4.
+issue-planning gate in `AGENTS.md` Hard Gates and the canonical workflow in `docs/work-queue-workflow.md`.
 
 | Action | Examples |
 |--------|---------|
 | Commit code or documentation | `git commit` of any staged content |
 | Create or modify source files | New Python modules, edited configs, updated YAML |
-| Run state-mutating scripts | Scripts that write files, update databases, or modify queue state |
-| Create or update WRK items | New `WRK-NNN.md` files; editing frontmatter fields |
+| Run state-mutating scripts | Scripts that write files, update databases, or change issue/planning state |
+| Create or update issue/planning artifacts | Update GitHub issue labels/comments, create or edit `docs/plans/` plan files, or update approved `.planning/` artifacts |
 | Install or update dependencies | `uv add`, `pip install`, `pyproject.toml` changes |
 | Generate reports to disk | Writing calculation packages, PDF outputs, index regeneration |
 
@@ -64,12 +64,13 @@ WRK gate in `CLAUDE.md` Hard Gate 4.
 
 | Route | Complexity | Required plan depth |
 |-------|-----------|---------------------|
-| A (quick) | Simple — single change, 1 file, <50 words | 3–5 bullet points in WRK body `## Plan` section |
-| B (standard) | Medium — 2–5 files, clear scope, 50–200 words | Numbered steps with file paths and test strategy in WRK body |
-| C (compound) | Complex — multi-phase, cross-repo, or >10 files | Full spec in `.planning/` linked via GSD phase plan |
+| A (quick) | Simple — single change, 1 file, <50 words | 3–5 bullet points in the GitHub issue comment or a short linked plan note |
+| B (standard) | Medium — 2–5 files, clear scope, 50–200 words | Numbered steps with file paths and test strategy in `docs/plans/YYYY-MM-DD-issue-NNN-slug.md` |
+| C (compound) | Complex — multi-phase, cross-repo, or >10 files | Full spec in `.planning/phases/<N>/PLAN.md` or equivalent linked `.planning/` phase artifact, referenced from the GitHub issue |
 
-**Who approves**: The human operator always approves. Both `plan_reviewed: true` and
-`plan_approved: true` must be set in the WRK frontmatter before implementation begins.
+**Who approves**: The human operator always approves. The GitHub issue must be in
+`status:plan-approved`, and the approval marker `.planning/plan-approved/<issue-number>.md`
+must exist before implementation begins.
 No exceptions. Future delegated approval (designated agent roles) is a Horizon 2 feature
 and requires a separate governance amendment.
 
@@ -118,17 +119,19 @@ Next step: Please confirm and execute, or adjust as needed.
 
 A plan is valid when all of the following are true:
 
-1. **WRK reference exists**: the action maps to a `WRK-NNN.md` in `.claude/work-queue/`
-2. **Complexity classified**: `complexity: simple | medium | complex` is set in frontmatter
-3. **Plan content present** at the required depth for the route (A/B/C above)
-4. **Acceptance criteria defined**: at least one verifiable criterion in `## Acceptance Criteria`
-5. **`plan_reviewed: true`**: plan has been cross-reviewed (Route B/C) or self-reviewed (Route A)
-6. **`plan_approved: true`**: human has given explicit approval in the chat interface
-7. **Agentic AI Horizon filled**: `## Agentic AI Horizon` section is present and substantive
+1. **GitHub issue exists**: the action maps to an open GitHub issue
+2. **Complexity is classified**: the issue/plan identifies the task as T1, T2, or T3
+3. **Plan content is present** at the required depth for the route (A/B/C above)
+4. **Acceptance criteria are defined**: at least one verifiable criterion appears in the issue or linked plan
+5. **Adversarial review is complete**: required review artifacts/verdicts exist for the plan
+6. **Human approval is recorded**: the issue is marked `status:plan-approved`
+7. **Approval marker exists**: `.planning/plan-approved/<issue-number>.md` is present before implementation
+8. **Planning artifacts are linked**: the current plan/spec lives in `docs/plans/` or `.planning/` and is referenced from the issue
 
 A plan is **invalid** and must not proceed if:
-- `plan_approved` is missing or false
-- The WRK item does not exist (action was not captured in the queue)
+- the issue does not exist or is not the current source of truth
+- the issue is missing `status:plan-approved`
+- the approval marker in `.planning/plan-approved/` is missing
 - The plan references files that do not exist and cannot be created by the action
 - The plan scope has grown beyond the original complexity class without re-approval
 
@@ -175,7 +178,7 @@ quality signals.
 
 ```yaml
 audit_entry:
-  wrk_id: WRK-NNN              # Work queue reference
+  issue_number: NNN            # GitHub issue reference
   agent: claude-sonnet-4-6     # Model ID of executing agent
   action_category: B            # A | B | C
   action_type: commit           # commit | file_edit | script_run | wrk_create | ...
@@ -193,7 +196,7 @@ audit_entry:
 
 ```yaml
 audit_entry:
-  wrk_id: WRK-381
+  issue_number: 381
   agent: claude-sonnet-4-6
   action_category: B
   action_type: commit
@@ -201,7 +204,7 @@ audit_entry:
   plan_approved_at: 2026-02-24T13:50:00Z
   files_affected:
     - docs/governance/TRUST-ARCHITECTURE.md
-    - .claude/work-queue/pending/WRK-381.md
+    - docs/plans/YYYY-MM-DD-issue-381-slug.md
   outcome: success
   error_message: null
   commit_sha: a1b2c3d
@@ -220,7 +223,7 @@ audit_entry:
 | File edit (tracked) | Yes | `git checkout -- <file>` or `git revert` |
 | File creation (tracked) | Yes | `git rm` + `git commit` |
 | Solver run (output files) | Partial | Delete output files; re-run is possible |
-| WRK item created | Yes | Move to `archived/` with `status: cancelled` |
+| Plan artifact created | Yes | Remove or supersede the draft plan in `docs/plans/` or `.planning/`, and update/close the GitHub issue accordingly |
 | Git push (remote) | Requires escalation | `git push --force` is Category C — operator only |
 | File deletion (untracked) | No | Cannot be recovered without backup |
 
@@ -258,8 +261,8 @@ level or the active capability tier. These are hard stops.
 | Cost threshold exceeded | B | Estimated token/API cost > configured threshold; show breakdown |
 | Auth failure on external service | B | Show service, error, and credentials in use (not the credential value) |
 | Legal scan block-severity violation | B | Show file, line, and matching deny-list pattern; do not proceed |
-| Conflict with another agent's working item | B | Show conflicting WRK ID and overlapping file list |
-| Missing `plan_approved: true` at execution time | B | Show current frontmatter; do not proceed until approved |
+| Conflict with another agent's working item | B | Show conflicting GitHub issue number and overlapping file list |
+| Missing `status:plan-approved` or approval marker at execution time | B | Show current issue state and `.planning/plan-approved/` status; do not proceed until approved |
 | Action scope exceeds approved plan | B | Show what was approved vs what is now required; request amendment |
 
 **Drilling / safety-critical signals** (domain-specific escalation):
@@ -269,17 +272,15 @@ level or the active capability tier. These are hard stops.
 
 ---
 
-## Integration with CLAUDE.md Hard Gates
+## Integration with AGENTS.md Hard Gates
 
-This document implements and extends the Hard Gates defined in `CLAUDE.md`:
+This document implements and extends the hard gates defined in `AGENTS.md`:
 
-| CLAUDE.md Hard Gate | Trust Architecture mapping |
-|--------------------|---------------------------|
-| Hard Gate 1: Orchestrate, don't execute | Agents are always orchestrators; subagents execute Category A/B within scope |
-| Hard Gate 2: Plan before acting | All Category B/C actions require a valid plan (see Plan Gate section) |
-| Hard Gate 3: TDD mandatory | Tests are a Category B prerequisite; no B action on implementation code without a test |
-| Hard Gate 4: WRK gate | Every Category B/C action must map to a WRK-NNN in the work queue |
-| Hard Gate 5: Retrieval first | Category A retrieval actions are always permitted and expected before B/C actions |
+| AGENTS.md Hard Gate | Trust Architecture mapping |
+|---------------------|----------------------------|
+| Plan ALL issues | Every Category B/C action must map to a GitHub issue with an approved plan in `docs/plans/` or `.planning/` |
+| TDD mandatory | Tests are a Category B prerequisite; implementation work must be test-backed |
+| Gate order: Issue → Plan → USER APPROVES → Implement → Cross-review → Close | Category B/C actions must follow that sequence, with no implementation before approval |
 
 ---
 
@@ -288,7 +289,8 @@ This document implements and extends the Hard Gates defined in `CLAUDE.md`:
 - `docs/vision/VISION.md` — Trust Chasm section; autonomy level framework
 - `.planning/architecture/agent-vision.md` — Capability tier definitions (Tier 0–3)
 - `.planning/architecture/capability-tiers.yaml` — Structured tier data per repo
-- `.claude/work-queue/process.md` — Work queue plan gate workflow (Plan stage)
+- `docs/work-queue-workflow.md` — Canonical GitHub issue + `.planning` workflow
+- `docs/plans/README.md` — Mandatory issue planning workflow and approval lifecycle
 - `.claude/rules/git-workflow.md` — Commit message format and branch rules
 - `.claude/rules/legal-compliance.md` — Legal scan requirements (escalation trigger)
 - `scripts/review/cross-review.sh` — Cross-review script (mandatory for Route B/C)
@@ -296,4 +298,4 @@ This document implements and extends the Hard Gates defined in `CLAUDE.md`:
 
 ---
 
-*Last updated: 2026-02-24 | WRK-381 | Maintained in workspace-hub/docs/governance/*
+*Last updated: 2026-02-24 | Maintained in workspace-hub/docs/governance/*

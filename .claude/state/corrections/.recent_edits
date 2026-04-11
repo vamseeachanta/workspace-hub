@@ -1,7 +1,3 @@
-2026-04-10T03:55:13-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/scheduler/jobs/bsee_refresh.py|16607
-2026-04-10T03:55:30-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/scheduler/jobs/bsee_refresh.py|16608
-2026-04-10T03:55:31-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/scheduler/jobs/bsee_refresh.py|16609
-2026-04-10T03:55:49-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/bsee/data/loaders/rig_fleet/war_acquirer.py|16610
 2026-04-10T03:55:59-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/bsee/data/loaders/rig_fleet/war_acquirer.py|16611
 2026-04-10T03:56:03-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/bsee/data/loaders/well/borehole_acquirer.py|16612
 2026-04-10T03:56:10-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/scheduler/jobs/brazil_anp_refresh.py|16613
@@ -48,3 +44,7 @@
 2026-04-10T11:27:46-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-10-today-cron-diagnostic-handoff.md|16654
 2026-04-10T15:05:09-05:00|/mnt/local-analysis/workspace-hub/scripts/automation/generate_issue_prompts.py|16655
 2026-04-10T15:07:18-05:00|/mnt/local-analysis/workspace-hub/.gitignore|16656
+2026-04-11T04:44:03-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-11-issue-2127-make-plan-approval-gate-honor-force-plan-gate-strict-and-disable-enforcement.md|16657
+2026-04-11T04:49:02-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-11-issue-2128-install-hooks-pre-push-chain-drift.md|16658
+2026-04-11T04:49:21-05:00|/mnt/local-analysis/workspace-hub/docs/plans/README.md|16659
+2026-04-11T05:44:01-05:00|/home/vamsee/.codex/config.toml|16660

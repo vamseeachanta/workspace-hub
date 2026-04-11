@@ -1,46 +1,67 @@
 # Agent Equivalence Architecture
 
+Status: legacy architecture note with current-path redirects.
+
 ## Goal
-Provide workflow-equivalent behavior across Claude Code, Codex CLI, and Gemini CLI while preserving existing Claude process as source-of-truth.
+Provide workflow-equivalent behavior across Claude Code, Codex CLI, Gemini CLI, and Hermes while using the current workspace-hub operating model rather than deleted `scripts/agents/*` wrappers.
 
 ## Session Rule
-The provider where the session starts is the **orchestrator**. Other providers are **subagents** for that session.
+The provider where the session starts is the orchestrator. Other providers are subagents for that session.
 
-- Orchestrator: can delegate and transition stages.
-- Subagents: execute delegated stages; cannot alter orchestration state.
+- Orchestrator: owns planning, approval gates, and final integration.
+- Subagents: execute delegated work or reviews; they do not redefine canonical workflow state.
 
-## Source of Truth
-- Canonical intake/tracking: GitHub issues + approved `.planning/` artifacts
-- Legacy compatibility workflow state: `.claude/work-queue/process.md`
-- Legacy compatibility work items: `.claude/work-queue/*/WRK-*.md`
-- Behavior contract: `config/agents/behavior-contract.yaml`
-- Legacy session state: `.claude/work-queue/session-state.yaml`
+## Current source of truth
+- Canonical intake/tracking: GitHub issues
+- Canonical planning artifacts: `.planning/`
+- Active workflow policy: `AGENTS.md`
+- Legacy compatibility note: `docs/work-queue-workflow.md`
+- Legacy path redirect map: `docs/ops/legacy-claude-reference-map.md`
+- Cross-review entrypoint: `scripts/review/cross-review.sh`
+- Provider session exports/audit: `logs/orchestrator/README.md`
 
-## Wrappers
-- `scripts/agents/session.sh` - initialize/show orchestrator lock.
-- `scripts/agents/work.sh` - provider-neutral work wrapper.
-- `scripts/agents/plan.sh` - plan gate wrapper.
-- `scripts/agents/execute.sh` - implementation gate wrapper.
-- `scripts/agents/review.sh` - review stage wrapper.
+## Important correction
+The old `scripts/agents/*` wrapper tree referenced by older notes is not present in the current checkout.
+Do not build new automation against these deleted paths:
+- `scripts/agents/session.sh`
+- `scripts/agents/work.sh`
+- `scripts/agents/plan.sh`
+- `scripts/agents/execute.sh`
+- `scripts/agents/review.sh`
+- `scripts/agents/providers/*.sh`
 
-## Providers
-- `scripts/agents/providers/claude.sh`
-- `scripts/agents/providers/codex.sh`
-- `scripts/agents/providers/gemini.sh`
+If a historical session or stale prompt mentions them, treat that as a migration signal and map it to current workflow surfaces instead.
 
-## Review Normalization
-Use `scripts/review/normalize-verdicts.sh` to map free-text review output to:
-- `APPROVE`
-- `MINOR`
-- `MAJOR`
-- `NO_OUTPUT`
-- `ERROR`
+## Current equivalents
+- Session startup / policy loading:
+  - `AGENTS.md`
+  - `.claude/hooks/session-governor-check.sh`
+  - `scripts/session/*`
+- Planning gate:
+  - GitHub issue -> approved `.planning/` artifact
+  - `docs/plans/README.md`
+  - `docs/standards/HARD-STOP-POLICY.md`
+- Implementation gate:
+  - TDD + repo-local tests
+  - issue state + `.planning/` evidence
+- Review gate:
+  - `scripts/review/cross-review.sh`
+  - `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+- Legacy work-queue refresh/reporting:
+  - `scripts/refresh-agent-work-queue.py`
+  - `scripts/refresh-agent-work-queue.sh`
 
-## Quick Start
+## Quick start (current model)
 ```bash
-scripts/agents/session.sh init --provider claude
-scripts/agents/plan.sh --provider claude WRK-NNN
-scripts/agents/execute.sh --provider claude WRK-NNN
-scripts/agents/review.sh WRK-NNN --all-providers
-scripts/agents/report-equivalence.sh
+# 1. Read policy + issue/plan requirements
+sed -n '1,220p' AGENTS.md
+sed -n '1,220p' docs/work-queue-workflow.md
+
+# 2. Work from the approved GitHub issue / .planning artifact
+# 3. Run implementation + tests
+# 4. Run cross-review
+bash scripts/review/cross-review.sh
+
+# 5. Refresh compatibility queue notes if needed
+bash scripts/refresh-agent-work-queue.sh
 ```

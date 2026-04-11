@@ -44,6 +44,14 @@ Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pse
 
 Update the index table in `docs/plans/README.md` with a new row.
 
+Execution discipline for delegated agents:
+- If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
+- After drafting, verify all expected artifacts exist where intended:
+  - the plan file path
+  - the `docs/plans/README.md` index row
+  - no accidental extra rows/issues were inserted
+- Keep status conservative as `draft` unless formal review artifacts actually exist under `scripts/review/results/`. GitHub comments alone are useful evidence, but they do not replace the repo’s review-artifact convention.
+
 ### Step 3: Adversarial Review
 
 Route the plan to 2+ AI providers for review. Each gives: APPROVE | MINOR | MAJOR.

@@ -1,4 +1,4 @@
-<!-- Copy this template with: scripts/work-queue/new-spec.sh WRK-NNN structural -->
+<!-- Current workflow: create/update GitHub issue #NNN, copy this structural template into docs/plans/YYYY-MM-DD-issue-NNN-slug.md, post it for review with status:plan-review, and after user approval create .planning/plan-approved/NNN.md and add status:plan-approved. -->
 <!-- Extends route-c-generic.md with Structural / FEA domain sections -->
 
 ---
@@ -71,7 +71,7 @@ and any dependencies that make now the right time.
 
 ## Plan
 
-Inline Route A plan, or reference to `specs/wrk/WRK-NNN/plan.md` for Route C.
+Inline summary only if needed; the canonical issue plan lives at `docs/plans/YYYY-MM-DD-issue-NNN-slug.md`. After approval, add `.planning/plan-approved/NNN.md` and move the GitHub issue from `status:plan-review` to `status:plan-approved`.
 
 > Stage 1: ...
 > Stage 2: ...

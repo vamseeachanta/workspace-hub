@@ -26,6 +26,7 @@ fi
 TOOL=$(echo "$INPUT" | jq -r '.tool_name // "unknown"' 2>/dev/null) || TOOL="unknown"
 FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""' 2>/dev/null) || FILE=""
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command // ""' 2>/dev/null | head -c 150) || CMD=""
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // ""' 2>/dev/null) || SESSION_ID=""
 
 # Get context
 TS=$(date -Iseconds)
@@ -43,9 +44,11 @@ ENTRY=$(jq -cn \
   --arg repo "$REPO" \
   --arg file "${FILE:-}" \
   --arg cmd "${CMD:-}" \
+  --arg session_id "${SESSION_ID:-}" \
   '{ts:$ts, epoch:$epoch, hook:$hook, tool:$tool, project:$project, repo:$repo}
    + if ($file != "") then {file:$file} else {} end
-   + if ($cmd != "") then {cmd:$cmd} else {} end' \
+   + if ($cmd != "") then {cmd:$cmd} else {} end
+   + if ($session_id != "") then {session_id:$session_id} else {} end' \
   2>/dev/null) \
   || ENTRY="{\"ts\":\"${TS}\",\"hook\":\"${HOOK_TYPE}\",\"tool\":\"${TOOL}\"}"
 

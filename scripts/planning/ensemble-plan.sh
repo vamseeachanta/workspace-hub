@@ -40,16 +40,85 @@ done
 
 [[ -z "$WRK_ID" ]] && { echo "Usage: ensemble-plan.sh [--dry-run] [--skip-ensemble] <WRK-NNN>" >&2; exit 2; }
 
-[[ -f "${AGENTS_LIB}/workflow-guards.sh" ]] || { echo "ERROR: workflow-guards.sh not found at ${AGENTS_LIB}" >&2; exit 2; }
-# shellcheck source=../agents/lib/workflow-guards.sh
-source "${AGENTS_LIB}/workflow-guards.sh"
+resolve_wrk_file() {
+    local wrk_id="$1"
+    local candidate
+    for candidate in \
+        "${WS_HUB}/.claude/work-queue/${wrk_id}.md" \
+        "${WS_HUB}/.claude/work-queue/pending/${wrk_id}.md" \
+        "${WS_HUB}/.claude/work-queue/working/${wrk_id}.md" \
+        "${WS_HUB}/.claude/work-queue/done/${wrk_id}.md" \
+        "${WS_HUB}/.claude/work-queue/archive/${wrk_id}.md" \
+        "${WS_HUB}/.planning/${wrk_id}.md" \
+        "${WS_HUB}/.planning/${wrk_id}/plan.md" \
+        "${WS_HUB}/docs/plans/${wrk_id}.md"
+    do
+        [[ -f "$candidate" ]] && { printf '%s\n' "$candidate"; return 0; }
+    done
 
-WRK_FILE="$(resolve_wrk_file "$WRK_ID")" || { echo "ERROR: $WRK_ID not found in queue" >&2; exit 2; }
+    candidate="$(find "${WS_HUB}/.claude/work-queue" "${WS_HUB}/.planning" "${WS_HUB}/docs/plans" \
+        -type f \( -name "${wrk_id}.md" -o -name "${wrk_id}*.md" -o -path "*/${wrk_id}/plan.md" \) 2>/dev/null | head -1 || true)"
+    [[ -n "$candidate" ]] && { printf '%s\n' "$candidate"; return 0; }
+    return 1
+}
 
-# Skip if already done or explicitly skipped
-current="$(wrk_get_frontmatter_value "$WRK_FILE" "plan_ensemble" 2>/dev/null || echo "")"
-if [[ "$SKIP" == "true" ]] || [[ "$current" == "true" ]] || [[ "$current" == "skip" ]]; then
-    echo "Ensemble gate skipped for $WRK_ID (plan_ensemble=${current:-unset}, --skip-ensemble=${SKIP})"
+wrk_get_frontmatter_value() {
+    local file="$1" key="$2"
+    uv run --no-project python - "$file" "$key" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+key = sys.argv[2]
+text = path.read_text(encoding='utf-8', errors='replace')
+if not text.startswith('---\n'):
+    raise SystemExit(0)
+parts = text.split('\n---\n', 1)
+if len(parts) != 2:
+    raise SystemExit(0)
+for line in parts[0].splitlines()[1:]:
+    if ':' not in line:
+        continue
+    k, v = line.split(':', 1)
+    if k.strip() == key:
+        print(v.strip())
+        break
+PY
+}
+
+wrk_set_frontmatter_value() {
+    local file="$1" key="$2" value="$3"
+    uv run --no-project python - "$file" "$key" "$value" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+key = sys.argv[2]
+value = sys.argv[3]
+text = path.read_text(encoding='utf-8', errors='replace')
+if text.startswith('---\n') and '\n---\n' in text:
+    frontmatter, body = text.split('\n---\n', 1)
+    lines = frontmatter.splitlines()
+    replaced = False
+    for idx in range(1, len(lines)):
+        if ':' not in lines[idx]:
+            continue
+        k, _ = lines[idx].split(':', 1)
+        if k.strip() == key:
+            lines[idx] = f"{key}: {value}"
+            replaced = True
+            break
+    if not replaced:
+        lines.append(f"{key}: {value}")
+    new_text = '\n'.join(lines) + '\n---\n' + body
+else:
+    new_text = f"---\n{key}: {value}\n---\n" + text
+path.write_text(new_text, encoding='utf-8')
+PY
+}
+
+if [[ "$SKIP" == "true" ]]; then
+    echo "Ensemble gate skipped for $WRK_ID (plan_ensemble=unset, --skip-ensemble=${SKIP})"
     exit 3
 fi
 
@@ -63,6 +132,15 @@ if [[ "$DRY_RUN" == "true" ]]; then
     echo "  Results  : ${RESULTS_DIR}"
     echo "  Timeout  : ${ENSEMBLE_TIMEOUT}s per agent"
     exit 0
+fi
+
+WRK_FILE="$(resolve_wrk_file "$WRK_ID")" || { echo "ERROR: $WRK_ID not found in queue" >&2; exit 2; }
+
+# Skip if already done
+current="$(wrk_get_frontmatter_value "$WRK_FILE" "plan_ensemble" 2>/dev/null || echo "")"
+if [[ "$current" == "true" ]] || [[ "$current" == "skip" ]]; then
+    echo "Ensemble gate skipped for $WRK_ID (plan_ensemble=${current:-unset}, --skip-ensemble=${SKIP})"
+    exit 3
 fi
 
 # Provider availability checks (warn only - missing provider degrades, not fatal)

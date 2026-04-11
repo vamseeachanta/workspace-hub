@@ -31,6 +31,138 @@ REPO_ALIAS_HINTS = (
     "/mnt/workspace-hub",
 )
 
+LEGACY_REMEDIATION_RULES = [
+    {
+        "rule_id": "legacy_work_queue_transition",
+        "patterns": [
+            "scripts/work-queue/verify-gate-evidence.py",
+            "scripts/work-queue/start_stage.py",
+            "scripts/work-queue/exit_stage.py",
+            "scripts/work-queue/verify_checklist.py",
+            "scripts/work-queue/stage_exit_checks.py",
+            ".claude/hooks/enforce-active-stage.sh",
+        ],
+        "canonical_targets": [
+            "docs/governance/SESSION-GOVERNANCE.md",
+            "docs/governance/TRUST-ARCHITECTURE.md",
+            "scripts/workflow/governance-checkpoints.yaml",
+            ".claude/hooks/plan-approval-gate.sh",
+            ".claude/hooks/session-governor-check.sh",
+            "scripts/review/cross-review.sh",
+        ],
+        "guidance": "Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "legacy_work_queue_html_review",
+        "patterns": ["scripts/work-queue/generate-html-review.py"],
+        "canonical_targets": [
+            "scripts/review/cross-review.sh",
+            "templates/review-standard.html",
+            "docs/work-queue-workflow.md",
+        ],
+        "guidance": "Historical HTML review generation is no longer canonical; use the current cross-review workflow and stored review evidence instead.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "legacy_work_queue_lifecycle",
+        "patterns": [
+            "scripts/work-queue/close-item.sh",
+            "scripts/work-queue/whats-next.sh",
+            "scripts/work-queue/archive-item.sh",
+            "scripts/work-queue/claim-item.sh",
+            ".claude/work-queue/scripts/generate-index.py",
+        ],
+        "canonical_targets": [
+            "scripts/refresh-agent-work-queue.py",
+            "scripts/refresh-agent-work-queue.sh",
+            "notes/agent-work-queue.md",
+            ".planning/",
+            "GitHub issues",
+        ],
+        "guidance": "The repo no longer uses local queue scripts as the source of truth; prefer GitHub issue updates plus .planning evidence.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "legacy_work_queue_skills",
+        "patterns": [
+            ".claude/skills/workspace-hub/work-queue-workflow/SKILL.md",
+            ".claude/skills/coordination/workspace/work-queue/SKILL.md",
+            ".claude/skills/workspace-hub/workflow-gatepass/SKILL.md",
+        ],
+        "canonical_targets": [
+            "AGENTS.md",
+            ".claude/commands/gsd/*",
+            ".gemini/get-shit-done/workflows/*",
+            "docs/work-queue-workflow.md",
+        ],
+        "guidance": "The old work-queue skill tree was replaced by GSD-oriented command/workflow surfaces; redirect readers instead of restoring deleted skill files.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "legacy_agent_wrapper_tree",
+        "patterns": ["scripts/agents/"],
+        "canonical_targets": [
+            "AGENTS.md",
+            "docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md",
+            "docs/work-queue-workflow.md",
+            "scripts/review/cross-review.sh",
+            "scripts/planning/ensemble-plan.sh",
+        ],
+        "guidance": "The old scripts/agents wrapper tree is gone; use the current policy-first workflow and current review/planning surfaces instead.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "legacy_local_work_queue_items",
+        "patterns": [".claude/work-queue/"],
+        "canonical_targets": [
+            "GitHub issues",
+            ".planning/",
+            "notes/agent-work-queue.md",
+            "docs/work-queue-workflow.md",
+        ],
+        "guidance": "Local queue item files are compatibility surfaces, not canonical work tracking; prefer the GitHub issue and .planning artifact instead.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+]
+
+
+def match_remediation_rule(path: str) -> dict | None:
+    for rule in LEGACY_REMEDIATION_RULES:
+        for pattern in rule["patterns"]:
+            if path == pattern or path.startswith(pattern):
+                return rule
+    return None
+
+
+def build_missing_read_remediation_hints(rows: list[dict]) -> list[dict]:
+    grouped: dict[str, dict] = {}
+    for row in rows:
+        path = str(row.get("path", "") or "")
+        count = int(row.get("count", 0) or 0)
+        rule = match_remediation_rule(path)
+        if not rule:
+            continue
+        hint = grouped.setdefault(
+            rule["rule_id"],
+            {
+                "rule_id": rule["rule_id"],
+                "total_count": 0,
+                "matched_paths": [],
+                "canonical_targets": rule["canonical_targets"],
+                "guidance": rule["guidance"],
+                "reference_doc": rule["reference_doc"],
+            },
+        )
+        hint["total_count"] += count
+        hint["matched_paths"].append({"path": path, "count": count})
+
+    hints = list(grouped.values())
+    hints.sort(key=lambda item: item["total_count"], reverse=True)
+    for hint in hints:
+        hint["matched_paths"].sort(key=lambda item: item["count"], reverse=True)
+    return hints
+
 
 def safe_exists(path: Path) -> bool:
     try:
@@ -199,6 +331,7 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         elif scope == "external":
             missing_external_reads[normalized] += 1
 
+    top_missing_repo_reads = top_items(missing_repo_reads, 10, "path")
     summary = {
         "source": "raw_logs",
         "sessions": len(sessions),
@@ -207,12 +340,14 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         "post_records": post_records,
         "prompt_reads": prompt_reads,
         "blank_reads": blank_reads,
+        "missing_repo_reads": sum(missing_repo_reads.values()),
         "python3_bash_calls": python3_bash_calls,
         "uv_python_bash_calls": uv_python_bash_calls,
         "top_tools": top_items(tool_counts, 8, "tool"),
         "top_repos": top_items(repo_counts, 8, "repo"),
         "top_reads": top_items(read_counts, 10, "path"),
-        "top_missing_repo_reads": top_items(missing_repo_reads, 10, "path"),
+        "top_missing_repo_reads": top_missing_repo_reads,
+        "missing_repo_read_remediation_hints": build_missing_read_remediation_hints(top_missing_repo_reads),
         "top_missing_external_reads": top_items(missing_external_reads, 10, "path"),
         "top_symbolic_reads": top_items(symbolic_reads, 10, "name"),
         "top_bash_command_families": [
@@ -238,6 +373,7 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
 
 def summarize_claude_precomputed(path: Path) -> dict:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    top_missing_repo_reads = payload.get("top_missing_repo_reads", [])
     summary = {
         "source": "precomputed_report",
         "sessions": payload.get("sessions_analyzed", 0),
@@ -250,7 +386,8 @@ def summarize_claude_precomputed(path: Path) -> dict:
         "top_tools": payload.get("tool_distribution", []),
         "top_repos": payload.get("repo_distribution", []),
         "top_reads": payload.get("top_reads", []),
-        "top_missing_repo_reads": payload.get("top_missing_repo_reads", []),
+        "top_missing_repo_reads": top_missing_repo_reads,
+        "missing_repo_read_remediation_hints": build_missing_read_remediation_hints(top_missing_repo_reads),
         "top_missing_external_reads": payload.get("top_missing_external_reads", []),
         "limitations": [
             "Claude raw orchestrator logs are not present in this checkout; summary comes from the saved 2026-04-09 audit artifact.",
@@ -262,6 +399,50 @@ def summarize_claude_precomputed(path: Path) -> dict:
         summary["python3_per_1k_records"] = round(summary["python3_bash_calls"] * 1000 / post_records, 2)
         summary["uv_python_per_1k_records"] = round(summary["uv_python_bash_calls"] * 1000 / post_records, 2)
     return summary
+
+
+def build_migration_debt_summary(provider_summaries: dict[str, dict]) -> dict:
+    ranked: list[dict] = []
+    for provider, summary in provider_summaries.items():
+        hints = summary.get("missing_repo_read_remediation_hints", [])
+        known_reads = sum(int(hint.get("total_count", 0) or 0) for hint in hints)
+        post_records = int(summary.get("post_records", 0) or 0)
+        density = round(known_reads * 1000 / post_records, 2) if post_records else 0.0
+        top_hint = hints[0] if hints else {}
+        top_reads = int(top_hint.get("total_count", 0) or 0)
+        top_share = round(top_reads * 100 / known_reads, 2) if known_reads else 0.0
+        ranked.append(
+            {
+                "provider": provider,
+                "known_migration_debt_reads": known_reads,
+                "known_migration_debt_per_1k_records": density,
+                "known_migration_debt_rule_count": len(hints),
+                "top_migration_rule_id": top_hint.get("rule_id"),
+                "top_migration_rule_reads": top_reads,
+                "top_migration_rule_share_pct": top_share,
+                "migration_debt_status": (
+                    "none" if known_reads == 0 else "concentrated" if top_share >= 40 else "mixed"
+                ),
+                "scope_note": "Based on remediation-mapped stale reads from top missing repo reads.",
+            }
+        )
+    ranked.sort(
+        key=lambda item: (
+            -item["known_migration_debt_per_1k_records"],
+            -item["known_migration_debt_reads"],
+            -item["top_migration_rule_reads"],
+            item["provider"],
+        )
+    )
+    for idx, item in enumerate(ranked, start=1):
+        item["migration_debt_rank"] = idx
+    return {
+        "ranked_providers": ranked,
+        "highest_density_provider": ranked[0]["provider"] if ranked else None,
+        "highest_volume_provider": max(ranked, key=lambda item: item["known_migration_debt_reads"])["provider"] if ranked else None,
+        "scope_note": "Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.",
+    }
+
 
 
 def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROOT) -> dict:
@@ -299,6 +480,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "repo_root": str(repo_root),
         "logs_root": str(logs_root),
         "providers": provider_summaries,
+        "executive_summary": {"migration_debt": build_migration_debt_summary(provider_summaries)},
     }
 
 
@@ -317,6 +499,37 @@ def render_markdown(audit: dict) -> str:
         )
     lines.append("")
 
+    migration_debt = audit.get("executive_summary", {}).get("migration_debt", {})
+    ranked_debt = migration_debt.get("ranked_providers", [])
+    if ranked_debt:
+        density_summary = ", ".join(
+            f"`{item['provider']}` {item['known_migration_debt_per_1k_records']}"
+            for item in ranked_debt
+        )
+        lines.append(f"- Migration debt density (known stale reads with redirect hints per 1k records): {density_summary}.")
+        highest_volume = max(ranked_debt, key=lambda item: item.get("known_migration_debt_reads", 0))
+        if highest_volume.get("known_migration_debt_reads", 0) > 0:
+            lines.append(
+                f"- Highest-volume known migration debt: `{highest_volume['provider']}` with {highest_volume['known_migration_debt_reads']} mapped stale reads across {highest_volume['known_migration_debt_rule_count']} rule clusters; top hotspot: `{highest_volume.get('top_migration_rule_id')}` ({highest_volume.get('top_migration_rule_reads', 0)})."
+            )
+        highest_density = ranked_debt[0]
+        if highest_density.get("known_migration_debt_reads", 0) > 0:
+            lines.append(
+                f"- Highest-density known migration debt: `{highest_density['provider']}` with {highest_density['known_migration_debt_reads']} mapped stale reads; top hotspot: `{highest_density.get('top_migration_rule_id')}` ({highest_density.get('top_migration_rule_reads', 0)}, {highest_density.get('top_migration_rule_share_pct', 0)}% of known debt)."
+            )
+        unmapped = [
+            item["provider"]
+            for item in ranked_debt
+            if item.get("known_migration_debt_reads", 0) == 0
+            and audit.get("providers", {}).get(item["provider"], {}).get("missing_repo_reads", 0) > 0
+        ]
+        if unmapped:
+            lines.append(
+                f"- Unmapped missing repo reads remain for: {', '.join(f'`{provider}`' for provider in unmapped)}; this looks more like general path drift than known migration debt."
+            )
+        lines.append(f"- Scope note: {migration_debt.get('scope_note', '')}")
+        lines.append("")
+
     def emit_rows(title: str, rows: list[dict], key: str) -> None:
         lines.append(f"### {title}")
         if not rows:
@@ -325,6 +538,21 @@ def render_markdown(audit: dict) -> str:
             return
         for row in rows:
             lines.append(f"- `{row[key]}` — {row['count']}")
+        lines.append("")
+
+    def emit_remediation_hints(title: str, hints: list[dict]) -> None:
+        lines.append(f"### {title}")
+        if not hints:
+            lines.append("- none")
+            lines.append("")
+            return
+        for hint in hints:
+            matched = ", ".join(f"`{row['path']}` ({row['count']})" for row in hint.get("matched_paths", []))
+            targets = ", ".join(f"`{target}`" for target in hint.get("canonical_targets", []))
+            lines.append(f"- {matched} — {hint.get('total_count', 0)} combined reads")
+            lines.append(f"  - Redirect to: {targets}")
+            lines.append(f"  - Guidance: {hint.get('guidance', '')}")
+            lines.append(f"  - Reference: `{hint.get('reference_doc', '')}`")
         lines.append("")
 
     for provider, summary in audit["providers"].items():
@@ -356,6 +584,10 @@ def render_markdown(audit: dict) -> str:
         emit_rows(f"{provider} top symbolic reads", summary.get("top_symbolic_reads", []), "name")
         emit_rows(f"{provider} top Bash command families", summary.get("top_bash_command_families", []), "prefix")
         emit_rows(f"{provider} top missing repo reads", summary.get("top_missing_repo_reads", []), "path")
+        emit_remediation_hints(
+            f"{provider} remediation hints for stale repo reads",
+            summary.get("missing_repo_read_remediation_hints", []),
+        )
         emit_rows(f"{provider} top missing external reads", summary.get("top_missing_external_reads", []), "path")
 
     lines += [

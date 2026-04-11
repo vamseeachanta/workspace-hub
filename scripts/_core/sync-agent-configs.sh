@@ -52,20 +52,319 @@ ensure_parent_dir() {
     mkdir -p "$(dirname "$1")"
 }
 
+sanitize_codex_managed_keys() {
+    local source_file="$1"
+    local output_file="$2"
+    local strip_status_line="${3:-false}"
+    local py_runner=()
+
+    if command -v python3 >/dev/null 2>&1; then
+        py_runner=(python3)
+    elif command -v uv >/dev/null 2>&1; then
+        py_runner=(uv run --no-project python)
+    else
+        echo "[ERROR] sanitize_codex_managed_keys requires python3 or uv" >&2
+        return 1
+    fi
+
+    "${py_runner[@]}" - "$source_file" "$output_file" "$strip_status_line" <<'PY'
+import pathlib
+import re
+import sys
+
+source_path = pathlib.Path(sys.argv[1])
+output_path = pathlib.Path(sys.argv[2])
+strip_status_line = sys.argv[3].lower() == 'true'
+managed_keys = {'model', 'model_reasoning_effort'}
+table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
+status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
+managed_line_re = re.compile(r'^\s*(model|model_reasoning_effort)\s*=')
+
+
+def split_top_level(text, delimiter=','):
+    parts = []
+    start = 0
+    brace = bracket = paren = 0
+    in_string = None
+    escape = False
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            if in_string == '"' and escape:
+                escape = False
+            elif in_string == '"' and ch == '\\':
+                escape = True
+            elif ch == in_string:
+                in_string = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_string = ch
+        elif ch == '{':
+            brace += 1
+        elif ch == '}':
+            brace -= 1
+        elif ch == '[':
+            bracket += 1
+        elif ch == ']':
+            bracket -= 1
+        elif ch == '(':
+            paren += 1
+        elif ch == ')':
+            paren -= 1
+        elif ch == delimiter and brace == 0 and bracket == 0 and paren == 0:
+            parts.append(text[start:i])
+            start = i + 1
+        i += 1
+    parts.append(text[start:])
+    return parts
+
+
+def sanitize_inline_tables(text):
+    result = []
+    i = 0
+    in_string = None
+    escape = False
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            result.append(ch)
+            if in_string == '"' and escape:
+                escape = False
+            elif in_string == '"' and ch == '\\':
+                escape = True
+            elif ch == in_string:
+                in_string = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_string = ch
+            result.append(ch)
+            i += 1
+            continue
+        if ch != '{':
+            result.append(ch)
+            i += 1
+            continue
+        depth = 1
+        j = i + 1
+        inner_string = None
+        inner_escape = False
+        while j < len(text):
+            cj = text[j]
+            if inner_string:
+                if inner_string == '"' and inner_escape:
+                    inner_escape = False
+                elif inner_string == '"' and cj == '\\':
+                    inner_escape = True
+                elif cj == inner_string:
+                    inner_string = None
+                j += 1
+                continue
+            if cj in ('"', "'"):
+                inner_string = cj
+            elif cj == '{':
+                depth += 1
+            elif cj == '}':
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        if depth != 0:
+            result.append(ch)
+            i += 1
+            continue
+        inner = text[i + 1:j]
+        entries = split_top_level(inner)
+        sanitized_entries = []
+        for entry in entries:
+            stripped = entry.strip()
+            if not stripped:
+                continue
+            key, sep, value = stripped.partition('=')
+            if sep and key.strip() in managed_keys:
+                continue
+            sanitized_entries.append(sanitize_inline_tables(stripped))
+        if sanitized_entries:
+            result.append('{ ' + ', '.join(sanitized_entries) + ' }')
+        else:
+            result.append('{}')
+        i = j + 1
+    return ''.join(result)
+
+
+def multiline_state_after(line, current_state):
+    i = 0
+    in_string = current_state
+    while i < len(line):
+        if in_string == '"""':
+            if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
+                in_string = None
+                i += 3
+            else:
+                i += 1
+            continue
+        if in_string == "'''":
+            if line.startswith("'''", i):
+                in_string = None
+                i += 3
+            else:
+                i += 1
+            continue
+        if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
+            in_string = '"""'
+            i += 3
+            continue
+        if line.startswith("'''", i):
+            in_string = "'''"
+            i += 3
+            continue
+        i += 1
+    return in_string
+
+
+skip_status = False
+multiline = None
+output = []
+for line in source_path.read_text().splitlines(keepends=True):
+    if multiline is None:
+        stripped = line.strip()
+        if skip_status:
+            if stripped and table_header_re.match(stripped):
+                skip_status = False
+            else:
+                multiline = multiline_state_after(line, multiline)
+                continue
+        if strip_status_line and stripped and status_line_re.match(stripped):
+            skip_status = True
+            multiline = multiline_state_after(line, multiline)
+            continue
+        if managed_line_re.match(line):
+            multiline = multiline_state_after(line, multiline)
+            continue
+        line = sanitize_inline_tables(line)
+    output.append(line)
+    multiline = multiline_state_after(line, multiline)
+
+output_path.write_text(''.join(output))
+PY
+}
+
+validate_toml_file() {
+    local target="$1"
+    local label="$2"
+
+    if command -v uv >/dev/null 2>&1; then
+        uv run python - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    tomllib.load(fh)
+PY
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    tomllib.load(fh)
+PY
+        return
+    fi
+
+    echo "[WARN] Skipping TOML validation for $label -> $target (uv/python3 unavailable)" >&2
+}
+
+validate_codex_managed_key_scope() {
+    local target="$1"
+    local label="$2"
+
+    if command -v uv >/dev/null 2>&1; then
+        uv run python - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+MANAGED_KEYS = {"model", "model_reasoning_effort"}
+
+
+def walk_tables(value, *, is_root=False):
+    if isinstance(value, list):
+        for child in value:
+            walk_tables(child, is_root=False)
+        return
+    if not isinstance(value, dict):
+        return
+    if not is_root:
+        overlap = MANAGED_KEYS.intersection(value)
+        if overlap:
+            raise SystemExit(f"managed keys leaked into non-root table: {sorted(overlap)}")
+    for child in value.values():
+        walk_tables(child, is_root=False)
+
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    data = tomllib.load(fh)
+
+walk_tables(data, is_root=True)
+PY
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+MANAGED_KEYS = {"model", "model_reasoning_effort"}
+
+
+def walk_tables(value, *, is_root=False):
+    if isinstance(value, list):
+        for child in value:
+            walk_tables(child, is_root=False)
+        return
+    if not isinstance(value, dict):
+        return
+    if not is_root:
+        overlap = MANAGED_KEYS.intersection(value)
+        if overlap:
+            raise SystemExit(f"managed keys leaked into non-root table: {sorted(overlap)}")
+    for child in value.values():
+        walk_tables(child, is_root=False)
+
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    data = tomllib.load(fh)
+
+walk_tables(data, is_root=True)
+PY
+        return
+    fi
+
+    echo "[WARN] Skipping Codex managed-key scope validation for $label -> $target (uv/python3 unavailable)" >&2
+}
+
 upsert_codex_root_model_defaults() {
     local target="$1"
     local label="$2"
-    local tmp_clean tmp_final
+    local tmp_clean=""
+    local tmp_final=""
+
+    trap 'rm -f "$tmp_clean" "$tmp_final"' RETURN
+
     tmp_clean="$(mktemp)"
     tmp_final="$(mktemp)"
 
-    awk '
-        BEGIN { in_root = 1 }
-        in_root && /^\[[^]]+\][[:space:]]*$/ { in_root = 0 }
-        in_root && /^model[[:space:]]*=/ { next }
-        in_root && /^model_reasoning_effort[[:space:]]*=/ { next }
-        { print }
-    ' "$target" > "$tmp_clean"
+    sanitize_codex_managed_keys "$target" "$tmp_clean"
 
     cat > "$tmp_final" <<'EOF'
 model = "gpt-5.4"
@@ -74,39 +373,54 @@ model_reasoning_effort = "medium"
 EOF
     cat "$tmp_clean" >> "$tmp_final"
 
-    if cmp -s "$tmp_final" "$target"; then
+    if ! validate_toml_file "$tmp_final" "$label"; then
+        trap - RETURN
         rm -f "$tmp_clean" "$tmp_final"
+        return 1
+    fi
+    if ! validate_codex_managed_key_scope "$tmp_final" "$label"; then
+        trap - RETURN
+        rm -f "$tmp_clean" "$tmp_final"
+        return 1
+    fi
+
+    if cmp -s "$tmp_final" "$target"; then
         log_skip "$label (already current)"
     else
         if [[ "$DRY_RUN" == "true" ]]; then
-            rm -f "$tmp_clean" "$tmp_final"
             log_change "$label (model defaults upsert)"
         else
             mv "$tmp_final" "$target"
-            rm -f "$tmp_clean"
+            tmp_final=""
             log_change "$label (model defaults upsert)"
         fi
     fi
+
+    trap - RETURN
+    rm -f "$tmp_clean" "$tmp_final"
 }
 
 sync_json_merge() {
     local template="$1"
     local target="$2"
     local label="$3"
+    local tmp=""
 
-    ensure_parent_dir "$target"
+    trap 'rm -f "$tmp"' RETURN
 
     if ! command -v jq >/dev/null 2>&1; then
         if [[ ! -f "$target" || "$FORCE" == "true" ]]; then
             if [[ "$DRY_RUN" == "true" ]]; then
                 log_change "$label -> $target (copy)"
             else
+                ensure_parent_dir "$target"
                 cp "$template" "$target"
                 log_change "$label -> $target (copy)"
             fi
         else
             log_skip "$label -> $target (jq missing and target exists)"
         fi
+        trap - RETURN
         return
     fi
 
@@ -114,102 +428,123 @@ sync_json_merge() {
         if [[ "$DRY_RUN" == "true" ]]; then
             log_change "$label -> $target (create)"
         else
+            ensure_parent_dir "$target"
             cp "$template" "$target"
             log_change "$label -> $target (create)"
         fi
+        trap - RETURN
         return
     fi
 
-    local tmp
     tmp="$(mktemp)"
     jq -s '.[0] * .[1]' "$target" "$template" > "$tmp"
 
     if cmp -s "$tmp" "$target"; then
-        rm -f "$tmp"
         log_skip "$label -> $target (already current)"
     else
         if [[ "$DRY_RUN" == "true" ]]; then
-            rm -f "$tmp"
             log_change "$label -> $target (merge)"
         else
             mv "$tmp" "$target"
+            tmp=""
             log_change "$label -> $target (merge)"
         fi
     fi
+
+    trap - RETURN
+    rm -f "$tmp"
 }
 
 sync_codex_managed_config() {
     local template="$1"
     local target="$2"
     local label="$3"
+    local tmp=""
+    local tmp_new=""
+    local template_clean=""
 
-    ensure_parent_dir "$target"
+    trap 'rm -f "$tmp" "$tmp_new" "$template_clean"' RETURN
+
+    template_clean="$(mktemp)"
+    sanitize_codex_managed_keys "$template" "$template_clean"
 
     if [[ ! -f "$target" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
             log_change "$label -> $target (create)"
-        else
-            cat > "$target" <<'EOF'
+            trap - RETURN
+            rm -f "$tmp" "$tmp_new" "$template_clean"
+            return
+        fi
+
+        ensure_parent_dir "$target"
+        tmp_new="$(mktemp)"
+        cat > "$tmp_new" <<'EOF'
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
 EOF
-            cat "$template" >> "$target"
-            log_change "$label -> $target (create)"
+        cat "$template_clean" >> "$tmp_new"
+        if ! validate_toml_file "$tmp_new" "$label"; then
+            trap - RETURN
+            rm -f "$tmp" "$tmp_new" "$template_clean"
+            return 1
         fi
+        if ! validate_codex_managed_key_scope "$tmp_new" "$label"; then
+            trap - RETURN
+            rm -f "$tmp" "$tmp_new" "$template_clean"
+            return 1
+        fi
+        mv "$tmp_new" "$target"
+        tmp_new=""
+        log_change "$label -> $target (create)"
+        trap - RETURN
+        rm -f "$tmp" "$tmp_new" "$template_clean"
         return
     fi
 
-    local tmp
     tmp="$(mktemp)"
+    tmp_new="$(mktemp)"
 
-    # Remove managed root keys before first table and remove existing managed status_line section.
-    awk '
-        BEGIN { in_root = 1; skip_status = 0 }
-        /^\[[^]]+\][[:space:]]*$/ {
-            in_root = 0
-            if (skip_status == 1) {
-                skip_status = 0
-            }
-        }
-        in_root && /^model[[:space:]]*=/ { next }
-        in_root && /^model_reasoning_effort[[:space:]]*=/ { next }
-        /^\[status_line\][[:space:]]*$/ { skip_status = 1; next }
-        skip_status == 1 {
-            if (/^\[[^]]+\][[:space:]]*$/) {
-                skip_status = 0
-                print
-            }
-            next
-        }
-        { print }
-    ' "$target" > "$tmp"
+    # Remove managed keys from any scope and replace the managed status_line section.
+    sanitize_codex_managed_keys "$target" "$tmp" true
 
-    cat > "$tmp.new" <<'EOF'
+    cat > "$tmp_new" <<'EOF'
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
 EOF
-    cat "$tmp" >> "$tmp.new"
+    cat "$tmp" >> "$tmp_new"
 
-    if [[ -s "$tmp.new" ]]; then
-        printf '\n' >> "$tmp.new"
+    if [[ -s "$tmp_new" ]]; then
+        printf '\n' >> "$tmp_new"
     fi
-    cat "$template" >> "$tmp.new"
+    cat "$template_clean" >> "$tmp_new"
 
-    if cmp -s "$tmp.new" "$target"; then
-        rm -f "$tmp" "$tmp.new"
+    if ! validate_toml_file "$tmp_new" "$label"; then
+        trap - RETURN
+        rm -f "$tmp" "$tmp_new" "$template_clean"
+        return 1
+    fi
+    if ! validate_codex_managed_key_scope "$tmp_new" "$label"; then
+        trap - RETURN
+        rm -f "$tmp" "$tmp_new" "$template_clean"
+        return 1
+    fi
+
+    if cmp -s "$tmp_new" "$target"; then
         log_skip "$label -> $target (already current)"
     else
         if [[ "$DRY_RUN" == "true" ]]; then
-            rm -f "$tmp" "$tmp.new"
             log_change "$label -> $target (managed settings upsert)"
         else
-            mv "$tmp.new" "$target"
-            rm -f "$tmp"
+            mv "$tmp_new" "$target"
+            tmp_new=""
             log_change "$label -> $target (managed settings upsert)"
         fi
     fi
+
+    trap - RETURN
+    rm -f "$tmp" "$tmp_new" "$template_clean"
 }
 
 resolve_ws_hub_path() {
@@ -247,8 +582,6 @@ sync_hermes_yaml_config() {
     local target="$2"
     local label="$3"
 
-    ensure_parent_dir "$target"
-
     # Resolve __WS_HUB_PATH__ placeholder to machine-specific path
     local ws_hub_path
     ws_hub_path="$(resolve_ws_hub_path)"
@@ -260,6 +593,7 @@ sync_hermes_yaml_config() {
         if [[ "$DRY_RUN" == "true" ]]; then
             log_change "$label -> $target (create, ws_hub=$ws_hub_path)"
         else
+            ensure_parent_dir "$target"
             cp "$resolved_template" "$target"
             log_change "$label -> $target (create, ws_hub=$ws_hub_path)"
         fi
@@ -276,15 +610,18 @@ sync_hermes_yaml_config() {
         uv run --no-project python - "$target" "$resolved_template" "$merged" <<'PY' 2>/dev/null
 import yaml, sys
 
-def deep_merge(base, overlay):
-    """Merge overlay into base. Overlay wins for scalars; recurse for dicts."""
-    result = dict(base)
-    for k, v in overlay.items():
-        if k in result and isinstance(result[k], dict) and isinstance(v, dict):
-            result[k] = deep_merge(result[k], v)
-        else:
-            result[k] = v
-    return result
+MANAGED_KEYS = {
+    "model",
+    "fallback_providers",
+    "credential_pool_strategies",
+    "toolsets",
+    "agent",
+    "terminal",
+    "browser",
+    "checkpoints",
+    "compression",
+    "skills",
+}
 
 target_path, template_path, merged_path = sys.argv[1], sys.argv[2], sys.argv[3]
 with open(target_path) as f:
@@ -292,7 +629,12 @@ with open(target_path) as f:
 with open(template_path) as f:
     template = yaml.safe_load(f) or {}
 
-merged = deep_merge(existing, template)
+merged = dict(existing)
+for key, value in template.items():
+    if key in MANAGED_KEYS:
+        merged[key] = value
+    elif key not in merged:
+        merged[key] = value
 
 with open(merged_path, 'w') as f:
     yaml.dump(merged, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
@@ -308,6 +650,7 @@ PY
                 rm -f "$merged" "$resolved_template"
                 log_change "$label -> $target (yaml merge, ws_hub=$ws_hub_path)"
             else
+                ensure_parent_dir "$target"
                 mv "$merged" "$target"
                 rm -f "$resolved_template"
                 log_change "$label -> $target (yaml merge, ws_hub=$ws_hub_path)"
@@ -324,6 +667,7 @@ PY
         if [[ "$DRY_RUN" == "true" ]]; then
             log_change "$label -> $target (overwrite, ws_hub=$ws_hub_path)"
         else
+            ensure_parent_dir "$target"
             cp "$resolved_template" "$target"
             log_change "$label -> $target (overwrite, ws_hub=$ws_hub_path)"
         fi
@@ -338,12 +682,11 @@ sync_hermes_plain_file() {
     local target="$2"
     local label="$3"
 
-    ensure_parent_dir "$target"
-
     if [[ ! -f "$target" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
             log_change "$label -> $target (create)"
         else
+            ensure_parent_dir "$target"
             cp "$template" "$target"
             log_change "$label -> $target (create)"
         fi
@@ -356,6 +699,7 @@ sync_hermes_plain_file() {
         if [[ "$DRY_RUN" == "true" ]]; then
             log_change "$label -> $target (update)"
         else
+            ensure_parent_dir "$target"
             cp "$template" "$target"
             log_change "$label -> $target (update)"
         fi

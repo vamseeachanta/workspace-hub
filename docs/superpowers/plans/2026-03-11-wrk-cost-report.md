@@ -17,7 +17,7 @@
 | Create | `config/ai-tools/pricing.yaml` | Canonical per-model pricing (input/output $/1M tokens) |
 | Create | `scripts/ai/wrk-cost-report.py` | Read cost-tracking.jsonl, aggregate by WRK, render table |
 | Create | `scripts/ai/tests/test_wrk_cost_report.py` | TDD tests for aggregation and formatting logic |
-| Legacy target | `scripts/work-queue/close-item.sh` | Historical close hook only — replace with current GitHub issue / `.planning/` close flow |
+| Close-flow integration | GitHub issue + `.planning/` completion update | Attach cost summary to the active issue / planning evidence instead of editing deleted `scripts/work-queue/close-item.sh` |
 
 ---
 
@@ -347,50 +347,43 @@ git commit -m "feat(harness): add wrk-cost-report.py — per-WRK AI token cost a
 
 ---
 
-## Chunk 2: close-item.sh Integration
+## Chunk 2: Current Close-Flow Integration
 
-### Task 4: Integrate cost summary into `close-item.sh`
+### Task 4: Attach cost summary to the GitHub issue / `.planning/` close flow
 
 **Files:**
-- Modify: `scripts/work-queue/close-item.sh`
+- Update the active `.planning/` artifact or close-out checklist
+- Update the GitHub issue comment/body used for final evidence
 
-The script currently handles HTML gate evidence. We append a cost summary block at the end of the normal close flow (before the final exit 0).
+The old `scripts/work-queue/close-item.sh` target is deleted in the current checkout, so the integration point for this feature is the issue/planning close flow rather than a local queue hook.
 
-- [ ] **Step 1: Read close-item.sh to find insertion point**
-
-```bash
-grep -n "exit 0\|echo.*Done\|echo.*Closed" scripts/work-queue/close-item.sh | tail -10
-```
-
-- [ ] **Step 2: Add cost summary call before final exit**
-
-Find the last `echo` or `exit 0` block and insert before it:
-
-```bash
-# Print WRK cost summary at close (best-effort — don't fail close if script missing)
-if [[ -f "scripts/ai/wrk-cost-report.py" ]]; then
-    echo ""
-    echo "=== AI Cost Summary: ${WRK_ID} ==="
-    uv run --no-project python scripts/ai/wrk-cost-report.py "${WRK_ID}" 2>/dev/null \
-        || echo "(no cost records found for ${WRK_ID})"
-fi
-```
-
-> Use the actual WRK_ID variable name from close-item.sh — check with `grep -n 'WRK_ID\|wrk_id' scripts/work-queue/close-item.sh | head -5`
-
-- [ ] **Step 3: Test integration**
+- [ ] **Step 1: Generate the WRK cost summary explicitly**
 
 ```bash
 # Dry-run: just check cost report for a real WRK
 uv run --no-project python scripts/ai/wrk-cost-report.py WRK-1069 2>&1
 ```
-Expected: table or "(no records)" — either is acceptable
+
+Expected: a rendered table or "(no records)" — either is acceptable.
+
+- [ ] **Step 2: Add the summary to current close-out evidence**
+
+Record the output in one of the current workflow surfaces:
+
+- the active `.planning/` artifact for the issue, or
+- the final GitHub issue comment / close-out note.
+
+Keep this best-effort: missing cost data should not block close.
+
+- [ ] **Step 3: Verify the close flow references current paths only**
+
+Confirm the plan and any implementation notes do not require `scripts/work-queue/close-item.sh`.
 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add scripts/work-queue/close-item.sh
-git commit -m "feat(harness): print AI cost summary in close-item.sh at WRK close"
+git add scripts/ai/wrk-cost-report.py scripts/ai/tests/test_wrk_cost_report.py config/ai-tools/pricing.yaml
+git commit -m "feat(ai): add WRK cost summary for issue / planning close flow"
 ```
 
 ---

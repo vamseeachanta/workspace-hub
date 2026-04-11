@@ -171,3 +171,21 @@ The weekly review is broad enough that it should be split into focused follow-on
 - Bundle checksum manifest + tree-diff helper for assembled publication outputs: #2178
 - Weekly unresolved session-read regression gate: #2179
 - Registry lineage/provenance report + unresolved-read suppression policy: #2180
+- AQWA zero-exit runtime-failure fixture suite + precedence assertions: #2181
+- OrcaWave L02 OC4 semi-sub manifest assertions + parity regression coverage: #2182
+- Publication rollback journal + recover-promotion command: #2183
+- Manifest-driven pre-promotion gate for staged weekly bundles: #2184
+- Unresolved session-read bucket classifier with deterministic reason codes: #2185
+- Suppression expiry + reviewer sign-off enforcement in unresolved-read gate: #2186
+- Cross-tool normalized Windows licensed-tool probe result reporter: #2187
+- Mixed-state golden fixture bundles for licensed-win probe reporting: #2188
+- Deterministic shared-asset canonical placement across latest/history/staged bundles: #2189
+- Manifest-indexed pruning for orphaned shared assets after publication: #2190
+- Unresolved-read suppression renewal queue + stale-waiver digest: #2191
+- Historical raw-vs-canonical unresolved-read baseline + provider-specific budgets: #2192
+- Weekly Windows licensed-tool summary artifacts from normalized reporter outputs: #2193
+- Cross-tool reporter delta artifacts against previous weekly baseline: #2194
+- Publication recovery state-machine transition suite: #2195
+- Failed-gate -> fix/resume/finalize publish integration scenarios: #2196
+- Provider-specific repeated-offender unresolved-read cohorts + escalation digest: #2197
+- Suppression auto-clear candidates + canonical unresolved-read owner assignment reports: #2198

@@ -31,3 +31,5 @@ shown:
     tips: [cc-permissions, gsd-forensics]
   - date: 2026-04-10
     tips: [cc-security-review, bp-squash-merge]
+  - date: 2026-04-11
+    tips: [cc-effort, bp-settings-not-claude-md]
