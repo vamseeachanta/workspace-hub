@@ -82,7 +82,9 @@ def test_cleanup_bash_command_drops_comments_and_cd_wrapper() -> None:
 
 
 def test_normalize_command_to_prefix_uses_multiword_prefix() -> None:
-    assert module.normalize_command_to_prefix("cd /tmp/repo && uv run --no-project python tool.py") == "uv run"
+    assert module.normalize_command_to_prefix(
+        "cd /tmp/repo && uv run --no-project python tool.py", cleanup=True
+    ) == "uv run"
 
 
 def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> None:

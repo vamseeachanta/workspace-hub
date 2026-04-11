@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-10T22:37:14Z",
+  "generated_at": "2026-04-11T04:23:35Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -259,6 +259,9 @@
         }
       ],
       "special_counts": {},
+      "limitations": [
+        "Claude raw orchestrator logs do not persist session_id, so unique runtime sessions are unavailable in this audit."
+      ],
       "python3_per_1k_records": 8.62,
       "uv_python_per_1k_records": 80.21
     },

@@ -64,11 +64,18 @@ Use the provider-wide audit below to compare Claude/Codex/Hermes/Gemini session 
 uv run --no-project python scripts/analysis/provider_session_ecosystem_audit.py --stdout
 ```
 
-Native Gemini sessions should be exported with:
+Native provider sessions should be exported with:
 
 ```bash
+bash scripts/cron/hermes-session-export.sh
+bash scripts/cron/codex-session-export.sh
 bash scripts/cron/gemini-session-export.sh
 ```
+
+Exporter state files:
+- Hermes: `logs/orchestrator/hermes/.last-export-ts`
+- Codex: `logs/orchestrator/codex/.export-state.json` (per-tool-call dedupe for mutable rollout files)
+- Gemini: `logs/orchestrator/gemini/.export-state.json` (per-tool-call dedupe for mutable native sessions)
 
 Canonical tracked outputs:
 - `analysis/provider-session-ecosystem-audit.json`

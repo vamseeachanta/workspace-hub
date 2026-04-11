@@ -21,41 +21,11 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Iterator
 
-# ---------------------------------------------------------------------------
-# Multi-word prefix table — order matters: longest match wins
-# ---------------------------------------------------------------------------
-_MULTI_WORD_PREFIXES: tuple[tuple[str, ...], ...] = (
-    ("git", "diff"),
-    ("git", "log"),
-    ("git", "add"),
-    ("git", "commit"),
-    ("git", "push"),
-    ("git", "pull"),
-    ("git", "fetch"),
-    ("git", "checkout"),
-    ("git", "status"),
-    ("git", "rebase"),
-    ("git", "merge"),
-    ("git", "stash"),
-    ("git", "show"),
-    ("git", "branch"),
-    ("git", "reset"),
-    ("git", "tag"),
-    ("git", "cherry-pick"),
-    ("git", "rev-parse"),
-    ("git", "rev-list"),
-    ("git", "hash-object"),
-    ("git", "update-index"),
-    ("git", "write-tree"),
-    ("git", "commit-tree"),
-    ("git", "update-ref"),
-    ("uv", "run"),
-    ("uv", "tool"),
-    ("uv", "add"),
-    ("uv", "sync"),
-    ("python", "-m"),
-    ("python3", "-m"),
-)
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.bash_command_prefixes import normalize_command_to_prefix
 
 # Commands that never take positional arguments — omit the wildcard suffix
 _NO_ARG_COMMANDS: frozenset[str] = frozenset({"pwd"})
@@ -105,28 +75,6 @@ def extract_bash_commands(session_file: Path) -> list[str]:
     except OSError:
         pass
     return commands
-
-
-def normalize_command_to_prefix(command: str) -> str:
-    """Normalise a raw Bash command string to a canonical prefix token."""
-    command = command.strip()
-    if not command:
-        return command
-
-    tokens = command.split()
-    # Absolute or relative paths — keep the path token up to first space
-    first_token = tokens[0]
-    if first_token.startswith("./") or first_token.startswith("/"):
-        return first_token
-
-    # Check multi-word prefix table (longest match wins; table is pre-sorted longest first)
-    for prefix_words in _MULTI_WORD_PREFIXES:
-        n = len(prefix_words)
-        if len(tokens) >= n and tuple(tokens[:n]) == prefix_words:
-            return " ".join(prefix_words)
-
-    # Fallback: single first word
-    return tokens[0]
 
 
 def suggest_allow_pattern(prefix: str) -> str:

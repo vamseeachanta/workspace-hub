@@ -1,4 +1,4 @@
-# Provider session ecosystem audit — 2026-04-10
+# Provider session ecosystem audit — 2026-04-11
 
 Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
@@ -18,6 +18,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - Blank read targets: 0
 - Bare python3 bash calls: 635
 - `uv run ... python` bash calls: 5907
+- Limitation: Claude raw orchestrator logs do not persist session_id, so unique runtime sessions are unavailable in this audit.
 
 ### claude top tools
 - `Bash` — 40093

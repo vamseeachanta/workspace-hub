@@ -165,3 +165,9 @@ The weekly review is broad enough that it should be split into focused follow-on
 - Weekly publication rerun/idempotence verification: #2172
 - Provider-session audit wiring into weekly registry build/publication bundle: #2173
 - Unresolved session-read triage report + historical alias-normalized backfill: #2174
+- OrcaFlex Windows probe smoke matrix across readiness states: #2175
+- OrcaWave diffraction smoke fixtures + AQWA install-vs-usable classification tests: #2176
+- Atomic weekly publication promotion with staged latest/history swap: #2177
+- Bundle checksum manifest + tree-diff helper for assembled publication outputs: #2178
+- Weekly unresolved session-read regression gate: #2179
+- Registry lineage/provenance report + unresolved-read suppression policy: #2180

@@ -4,12 +4,17 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.bash_command_prefixes import cleanup_bash_command, normalize_command_to_prefix
 LOGS_ROOT = REPO_ROOT / "logs" / "orchestrator"
 CLAUDE_PRECOMPUTED = REPO_ROOT / "analysis" / "claude-session-ecosystem-audit-2026-04-09.json"
 DEFAULT_MARKDOWN = REPO_ROOT / "docs" / "reports" / "provider-session-ecosystem-audit.md"
@@ -24,38 +29,6 @@ TILDE_PATH_RE = re.compile(r"^(~|~/)")
 REPO_ALIAS_HINTS = (
     "/mnt/local-analysis/workspace-hub",
     "/mnt/workspace-hub",
-)
-_MULTI_WORD_PREFIXES: tuple[tuple[str, ...], ...] = (
-    ("git", "diff"),
-    ("git", "log"),
-    ("git", "add"),
-    ("git", "commit"),
-    ("git", "push"),
-    ("git", "pull"),
-    ("git", "fetch"),
-    ("git", "checkout"),
-    ("git", "status"),
-    ("git", "rebase"),
-    ("git", "merge"),
-    ("git", "stash"),
-    ("git", "show"),
-    ("git", "branch"),
-    ("git", "reset"),
-    ("git", "tag"),
-    ("git", "cherry-pick"),
-    ("git", "rev-parse"),
-    ("git", "rev-list"),
-    ("git", "hash-object"),
-    ("git", "update-index"),
-    ("git", "write-tree"),
-    ("git", "commit-tree"),
-    ("git", "update-ref"),
-    ("uv", "run"),
-    ("uv", "tool"),
-    ("uv", "add"),
-    ("uv", "sync"),
-    ("python", "-m"),
-    ("python3", "-m"),
 )
 
 
@@ -151,33 +124,6 @@ def top_items(counter: Counter, limit: int, key_name: str) -> list[dict]:
     return [{key_name: key, "count": value} for key, value in counter.most_common(limit)]
 
 
-def cleanup_bash_command(command: str) -> str:
-    text = command.strip()
-    if not text:
-        return text
-    lines = [line.strip() for line in text.splitlines() if line.strip() and not line.strip().startswith("#")]
-    text = " ".join(lines).strip()
-    cd_match = re.match(r"^cd\s+[^&;|]+&&\s*(.+)$", text)
-    if cd_match:
-        return cd_match.group(1).strip()
-    return text
-
-
-def normalize_command_to_prefix(command: str) -> str:
-    command = cleanup_bash_command(command)
-    if not command:
-        return command
-    tokens = command.split()
-    first_token = tokens[0]
-    if first_token.startswith("./") or first_token.startswith("/"):
-        return first_token
-    for prefix_words in _MULTI_WORD_PREFIXES:
-        n = len(prefix_words)
-        if len(tokens) >= n and tuple(tokens[:n]) == prefix_words:
-            return " ".join(prefix_words)
-    return first_token
-
-
 def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> dict:
     sessions = sorted(logs_dir.glob("session_*.jsonl"))
     corrections_dir = logs_dir / "corrections"
@@ -215,7 +161,7 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         if tool == "Bash" and "uvrun" in cmd.replace(" ", "") and "python" in cmd.replace(" ", ""):
             uv_python_bash_calls += 1
         if tool == "Bash" and cmd.strip():
-            prefix = normalize_command_to_prefix(cmd)
+            prefix = normalize_command_to_prefix(cmd, cleanup=True)
             if prefix:
                 bash_family_counts[prefix] += 1
                 bash_family_examples.setdefault(prefix, cmd)
@@ -280,6 +226,10 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         ],
         "special_counts": dict(special_counts),
     }
+    if provider == "claude" and not session_ids:
+        summary["limitations"] = [
+            "Claude raw orchestrator logs do not persist session_id, so unique runtime sessions are unavailable in this audit."
+        ]
     if post_records:
         summary["python3_per_1k_records"] = round(python3_bash_calls * 1000 / post_records, 2)
         summary["uv_python_per_1k_records"] = round(uv_python_bash_calls * 1000 / post_records, 2)
