@@ -1,0 +1,456 @@
+# Intelligence Accessibility Registry
+# Inventories major intelligence surfaces (wikis, registries, maps, architecture docs)
+# with machine-reachability metadata.
+#
+# Owner issue: #2136
+# Upstream: docs/document-intelligence/intelligence-accessibility-map.md (#2096)
+# Parent model: docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md (#2205)
+#
+# asset_type enum: wiki, registry, ledger, map, architecture-doc, entry-point, seed,
+#   governance-doc, operational-template
+# layer enum: L1, L2, L3, L3-adjacent, L4, L5, L6, recurring-operational
+# source_of_truth_tier enum: git-tracked, shared-mount, local-cache
+# durability enum: durable, transient, recurring-operational
+# discoverability enum: discoverable, partially-discoverable, hard-to-discover
+
+generated: '2026-04-11'
+schema_version: '1.0.0'
+
+assets:
+
+  # ── L3 — LLM-Wiki Domains ──────────────────────────────────────────────
+
+  - asset_key: wiki-engineering
+    title: Engineering LLM Wiki
+    asset_type: wiki
+    layer: L3
+    canonical_path: knowledge/wikis/engineering/wiki/
+    human_entry_point: knowledge/wikis/engineering/wiki/index.md
+    agent_entry_point: knowledge/wikis/engineering/CLAUDE.md
+    query_command: "ls knowledge/wikis/engineering/wiki/**/*.md | wc -l"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/wikis/engineering/wiki/"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: "Not linked from docs/README.md"
+    owner_issue: null
+
+  - asset_key: wiki-marine-engineering
+    title: Marine Engineering LLM Wiki
+    asset_type: wiki
+    layer: L3
+    canonical_path: knowledge/wikis/marine-engineering/wiki/
+    human_entry_point: knowledge/wikis/marine-engineering/wiki/index.md
+    agent_entry_point: knowledge/wikis/marine-engineering/CLAUDE.md
+    query_command: "ls knowledge/wikis/marine-engineering/wiki/**/*.md | wc -l"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/wikis/marine-engineering/wiki/"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: "Largest wiki domain; not linked from docs/README.md"
+    owner_issue: null
+
+  - asset_key: wiki-maritime-law
+    title: Maritime Law LLM Wiki
+    asset_type: wiki
+    layer: L3
+    canonical_path: knowledge/wikis/maritime-law/wiki/
+    human_entry_point: knowledge/wikis/maritime-law/wiki/index.md
+    agent_entry_point: knowledge/wikis/maritime-law/CLAUDE.md
+    query_command: "ls knowledge/wikis/maritime-law/wiki/**/*.md | wc -l"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/wikis/maritime-law/wiki/"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: wiki-naval-architecture
+    title: Naval Architecture LLM Wiki
+    asset_type: wiki
+    layer: L3
+    canonical_path: knowledge/wikis/naval-architecture/wiki/
+    human_entry_point: knowledge/wikis/naval-architecture/wiki/index.md
+    agent_entry_point: knowledge/wikis/naval-architecture/CLAUDE.md
+    query_command: "ls knowledge/wikis/naval-architecture/wiki/**/*.md | wc -l"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/wikis/naval-architecture/wiki/"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: wiki-personal
+    title: Personal LLM Wiki
+    asset_type: wiki
+    layer: L3
+    canonical_path: knowledge/wikis/personal/wiki/
+    human_entry_point: knowledge/wikis/personal/wiki/index.md
+    agent_entry_point: knowledge/wikis/personal/CLAUDE.md
+    query_command: "ls knowledge/wikis/personal/wiki/**/*.md | wc -l"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/wikis/personal/wiki/"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: wiki-cross-links
+    title: Cross-Wiki Link Index
+    asset_type: entry-point
+    layer: L3
+    canonical_path: knowledge/wikis/cross-links.md
+    human_entry_point: knowledge/wikis/cross-links.md
+    agent_entry_point: knowledge/wikis/cross-links.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/wikis/cross-links.md"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "Single file; low coverage across 19K+ wiki pages"
+    owner_issue: null
+
+  - asset_key: knowledge-seeds
+    title: Knowledge Seeds Collection
+    asset_type: seed
+    layer: L3
+    canonical_path: knowledge/seeds/
+    human_entry_point: knowledge/seeds/schema.md
+    agent_entry_point: knowledge/seeds/schema.md
+    query_command: "ls knowledge/seeds/*.yaml | wc -l"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci knowledge/seeds/"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  # ── L2 — Registries, Ledgers, Manifests ────────────────────────────────
+
+  - asset_key: registry-corpus-index
+    title: Document Corpus Index
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/index.jsonl
+    human_entry_point: data/document-index/registry.yaml
+    agent_entry_point: data/document-index/index.jsonl
+    query_command: "wc -l data/document-index/index.jsonl"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci data/document-index/index.jsonl"
+    freshness_cadence: monthly
+    record_count: 1033933
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: registry-stats
+    title: Registry Statistics Summary
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/registry.yaml
+    human_entry_point: data/document-index/registry.yaml
+    agent_entry_point: data/document-index/registry.yaml
+    query_command: "yq '.total_docs' data/document-index/registry.yaml"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "yq '.generated' data/document-index/registry.yaml"
+    freshness_cadence: monthly
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: ledger-standards-transfer
+    title: Standards Transfer Ledger
+    asset_type: ledger
+    layer: L2
+    canonical_path: data/document-index/standards-transfer-ledger.yaml
+    human_entry_point: data/document-index/standards-transfer-ledger.yaml
+    agent_entry_point: data/document-index/standards-transfer-ledger.yaml
+    query_command: "yq '.total' data/document-index/standards-transfer-ledger.yaml"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "yq '.generated' data/document-index/standards-transfer-ledger.yaml"
+    freshness_cadence: monthly
+    record_count: 425
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: registry-mounted-sources
+    title: Mounted Source Registry
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/mounted-source-registry.yaml
+    human_entry_point: data/document-index/mounted-source-registry.yaml
+    agent_entry_point: data/document-index/mounted-source-registry.yaml
+    query_command: "yq '.source_roots | length' data/document-index/mounted-source-registry.yaml"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "yq '.generated' data/document-index/mounted-source-registry.yaml"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: registry-design-codes
+    title: Design Code Edition Registry
+    asset_type: registry
+    layer: L2
+    canonical_path: data/design-codes/code-registry.yaml
+    human_entry_point: data/design-codes/code-registry.yaml
+    agent_entry_point: data/design-codes/code-registry.yaml
+    query_command: "yq '.codes | length' data/design-codes/code-registry.yaml"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci data/design-codes/code-registry.yaml"
+    freshness_cadence: monthly
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: registry-online-resources
+    title: Online Resource Registry
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/online-resource-registry.yaml
+    human_entry_point: data/document-index/online-resource-registry.yaml
+    agent_entry_point: data/document-index/online-resource-registry.yaml
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci data/document-index/online-resource-registry.yaml"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "Not linked from any navigation surface"
+    owner_issue: null
+
+  - asset_key: registry-enhancement-plan
+    title: Document Intelligence Enhancement Plan
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/enhancement-plan.yaml
+    human_entry_point: data/document-index/enhancement-plan.yaml
+    agent_entry_point: data/document-index/enhancement-plan.yaml
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci data/document-index/enhancement-plan.yaml"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "Large file; not linked from navigation"
+    owner_issue: null
+
+  - asset_key: registry-conferences
+    title: Conference Paper Registry
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/conference-registry.yaml
+    human_entry_point: data/document-index/conference-registry.yaml
+    agent_entry_point: data/document-index/conference-registry.yaml
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci data/document-index/conference-registry.yaml"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "Not linked from navigation surfaces"
+    owner_issue: null
+
+  - asset_key: registry-resource-maturity
+    title: Resource Intelligence Maturity Metrics
+    asset_type: registry
+    layer: L2
+    canonical_path: data/document-index/resource-intelligence-maturity.yaml
+    human_entry_point: data/document-index/resource-intelligence-maturity.yaml
+    agent_entry_point: data/document-index/resource-intelligence-maturity.yaml
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci data/document-index/resource-intelligence-maturity.yaml"
+    freshness_cadence: monthly
+    discoverability: hard-to-discover
+    gaps: "Not linked from weekly review template"
+    owner_issue: null
+
+  # ── L3-adjacent — Architecture Docs ────────────────────────────────────
+
+  - asset_key: arch-operating-model
+    title: LLM-Wiki Resource Doc-Intelligence Operating Model
+    asset_type: architecture-doc
+    layer: L3-adjacent
+    canonical_path: docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md
+    human_entry_point: docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md
+    agent_entry_point: docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: "Not linked from docs/README.md"
+    owner_issue: '#2205'
+
+  - asset_key: arch-provenance-contract
+    title: Standards-Codes Provenance and Reuse Contract
+    asset_type: architecture-doc
+    layer: L3-adjacent
+    canonical_path: docs/document-intelligence/standards-codes-provenance-reuse-contract.md
+    human_entry_point: docs/document-intelligence/standards-codes-provenance-reuse-contract.md
+    agent_entry_point: docs/document-intelligence/standards-codes-provenance-reuse-contract.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/standards-codes-provenance-reuse-contract.md"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: "Not linked from docs/README.md"
+    owner_issue: '#2207'
+
+  - asset_key: arch-boundary-policy
+    title: Durable vs Transient Knowledge Boundary Policy
+    asset_type: architecture-doc
+    layer: L3-adjacent
+    canonical_path: docs/document-intelligence/durable-vs-transient-knowledge-boundary.md
+    human_entry_point: docs/document-intelligence/durable-vs-transient-knowledge-boundary.md
+    agent_entry_point: docs/document-intelligence/durable-vs-transient-knowledge-boundary.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/durable-vs-transient-knowledge-boundary.md"
+    freshness_cadence: on-demand
+    discoverability: partially-discoverable
+    gaps: "Not linked from docs/README.md"
+    owner_issue: '#2209'
+
+  # ── L4 — Maps and Inventories ──────────────────────────────────────────
+
+  - asset_key: map-accessibility
+    title: Intelligence Accessibility Map
+    asset_type: map
+    layer: L4
+    canonical_path: docs/document-intelligence/intelligence-accessibility-map.md
+    human_entry_point: docs/document-intelligence/intelligence-accessibility-map.md
+    agent_entry_point: docs/document-intelligence/intelligence-accessibility-map.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/intelligence-accessibility-map.md"
+    freshness_cadence: quarterly
+    discoverability: partially-discoverable
+    gaps: "Point-in-time snapshot; needs periodic refresh"
+    owner_issue: '#2096'
+
+  - asset_key: map-data-intelligence
+    title: Data Intelligence Map
+    asset_type: map
+    layer: L4
+    canonical_path: docs/document-intelligence/data-intelligence-map.md
+    human_entry_point: docs/document-intelligence/data-intelligence-map.md
+    agent_entry_point: docs/document-intelligence/data-intelligence-map.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/data-intelligence-map.md"
+    freshness_cadence: quarterly
+    discoverability: partially-discoverable
+    gaps: "May be stale"
+    owner_issue: null
+
+  - asset_key: map-engineering-docs
+    title: Engineering Documentation Map
+    asset_type: map
+    layer: L4
+    canonical_path: docs/document-intelligence/engineering-documentation-map.md
+    human_entry_point: docs/document-intelligence/engineering-documentation-map.md
+    agent_entry_point: docs/document-intelligence/engineering-documentation-map.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/engineering-documentation-map.md"
+    freshness_cadence: quarterly
+    discoverability: hard-to-discover
+    gaps: "Not linked from main navigation"
+    owner_issue: null
+
+  - asset_key: map-domain-coverage
+    title: Domain Coverage Map
+    asset_type: map
+    layer: L4
+    canonical_path: docs/document-intelligence/domain-coverage.md
+    human_entry_point: docs/document-intelligence/domain-coverage.md
+    agent_entry_point: docs/document-intelligence/domain-coverage.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/domain-coverage.md"
+    freshness_cadence: quarterly
+    discoverability: partially-discoverable
+    gaps: null
+    owner_issue: null
+
+  - asset_key: map-mount-drive
+    title: Mount Drive Knowledge Map
+    asset_type: map
+    layer: L4
+    canonical_path: docs/document-intelligence/mount-drive-knowledge-map.md
+    human_entry_point: docs/document-intelligence/mount-drive-knowledge-map.md
+    agent_entry_point: docs/document-intelligence/mount-drive-knowledge-map.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/document-intelligence/mount-drive-knowledge-map.md"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "Not linked from navigation surfaces"
+    owner_issue: null
+
+  # ── Recurring-Operational ──────────────────────────────────────────────
+
+  - asset_key: operational-weekly-review
+    title: Weekly Ecosystem Execution and Intelligence Review Template
+    asset_type: operational-template
+    layer: recurring-operational
+    canonical_path: docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md
+    human_entry_point: docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md
+    agent_entry_point: docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: recurring-operational
+    freshness_source: "git log -1 --format=%ci docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md"
+    freshness_cadence: weekly
+    discoverability: discoverable
+    gaps: null
+    owner_issue: '#2089'

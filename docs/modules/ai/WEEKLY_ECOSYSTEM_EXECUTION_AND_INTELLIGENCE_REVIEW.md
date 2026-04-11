@@ -98,6 +98,11 @@ Each weekly run should answer five questions:
 - [ ] Check whether retrieval is fast and obvious for agents and humans
 - [ ] Identify broken links, path drift, missing syncs, or discoverability gaps
 
+#### D.4 Registry Validation (#2136)
+- [ ] Run `uv run scripts/data/document-index/validate-accessibility-registry.py` — confirm zero errors
+- [ ] Verify all `canonical_path` entries in `data/document-index/intelligence-accessibility-registry.yaml` still resolve
+- [ ] Check for new intelligence assets created since last review that are not yet in the registry
+
 ### E. Output and Follow-Through
 - [ ] Write a short weekly findings summary
 - [ ] Record machine-by-machine notes
