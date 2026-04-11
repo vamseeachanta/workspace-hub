@@ -89,3 +89,7 @@ Check for:
 
 Edit this file as your wiki conventions evolve. This is the configuration that
 makes the LLM a disciplined wiki maintainer rather than a generic chatbot.
+
+## Architecture Context
+
+Parent operating model: [LLM-Wiki + Resource/Document Intelligence Operating Model](../../docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md) (#2205)

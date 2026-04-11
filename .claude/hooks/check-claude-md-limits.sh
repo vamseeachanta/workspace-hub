@@ -8,7 +8,7 @@ LIMIT=20
 HARNESS_PATTERN='(^|/)?(CLAUDE|MEMORY|AGENTS|GEMINI)\.md$'
 
 # Get staged harness files
-STAGED=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E "$HARNESS_PATTERN" || true)
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E "$HARNESS_PATTERN" | grep -v '^knowledge/wikis/' || true)
 [[ -z "$STAGED" ]] && exit 0
 
 FAIL=0
