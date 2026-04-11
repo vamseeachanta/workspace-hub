@@ -1,6 +1,8 @@
 ---
 name: "gsd-health"
 description: "Diagnose planning directory health and optionally repair issues"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Diagnose planning directory health and optionally repair issues"
 ---

@@ -1,6 +1,8 @@
 ---
 name: "gsd-check-todos"
 description: "List pending todos and select one to work on"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "List pending todos and select one to work on"
 ---

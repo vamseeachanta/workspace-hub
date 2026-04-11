@@ -123,7 +123,7 @@ tasks:
     description: Daily capability radar HTML regeneration.
 
   - id: ai-tools-status
-    label: AI CLI version check
+    label: AI CLI + provider health check
     schedule: "15 3 * * 0"
     machines: [dev-primary, ace-linux-1]
     requires: [claude, gemini]
@@ -133,7 +133,7 @@ tasks:
       >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
     log: .claude/state/learning-reports/cron.log
     is_claude_task: false
-    description: Weekly env parity audit (Sunday 03:15); overwrites ai-tools-status.yaml.
+    description: Weekly env parity + local provider health audit (Sunday 03:15); overwrites config/ai_agents/ai-tools-status.yaml and config/ai_agents/provider-health.yaml.
 
   - id: model-ids
     label: Model ID refresh

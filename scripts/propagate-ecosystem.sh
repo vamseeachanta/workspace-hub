@@ -87,6 +87,26 @@ is_link() {
     fi
 }
 
+# --- expected_link_target(target, link_name) ---
+expected_link_target() {
+    local target="$1" link_name="$2"
+    local link_parent; link_parent="$(dirname "$link_name")"
+    uv run --no-project --quiet python -c "import os.path; print(os.path.relpath('$target','$link_parent'))" 2>/dev/null \
+        || perl -e "use File::Spec; print File::Spec->abs2rel('$target','$link_parent')" 2>/dev/null \
+        || echo "$target"
+}
+
+# --- is_link_placeholder_file(path, target) ---
+# Historical placeholder format: a regular file whose first line is the intended symlink target.
+is_link_placeholder_file() {
+    local path="$1" target="$2"
+    [[ -f "$path" ]] || return 1
+    local first_line expected
+    first_line="$(head -n 1 "$path" 2>/dev/null | tr -d '\r')"
+    expected="$(expected_link_target "$target" "$path")"
+    [[ "$first_line" == "$expected" || "$first_line" == "$target" ]]
+}
+
 # --- directory_matches_template(sub_dir, tmpl_dir) ---
 # Returns 0 if template files all exist in sub_dir with same content (superset ok).
 # Ignores YAML frontmatter differences (internal copies have metadata headers).
@@ -225,6 +245,21 @@ propagate_skills() {
         # Already linked — idempotent
         if is_link "$link_path"; then
             log_ok "$repo_name/$shared_dir (link exists)"; SKILLS_ALREADY_LINKED=$((SKILLS_ALREADY_LINKED+1)); continue; fi
+
+        # Historical placeholder file exists
+        if is_link_placeholder_file "$link_path" "$target"; then
+            if [[ "$OPT_DRY_RUN" == "true" ]]; then
+                log_link "$repo_name/$shared_dir -> _internal/$shared_dir (would replace placeholder file)"
+                SKILLS_LINKED=$((SKILLS_LINKED+1)); continue; fi
+            rm -f "$link_path"
+            if create_directory_link "$target" "$link_path"; then
+                log_link "$repo_name/$shared_dir -> _internal/$shared_dir (replaced placeholder file)"
+                SKILLS_LINKED=$((SKILLS_LINKED+1))
+            else
+                log_fail "$repo_name/$shared_dir — placeholder replacement failed"
+            fi
+            continue
+        fi
 
         # Real directory exists
         if [[ -d "$link_path" ]]; then

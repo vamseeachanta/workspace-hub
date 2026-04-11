@@ -17,6 +17,7 @@ see_also:
 - web-artifacts-builder-1-interactive-dashboard
 - web-artifacts-builder-common-cdn-libraries
 - web-artifacts-builder-file-naming
+type: reference
 ---
 
 # Web Artifacts Builder

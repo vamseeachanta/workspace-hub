@@ -1,6 +1,8 @@
 ---
 name: "gsd-plant-seed"
 description: "Capture a forward-looking idea with trigger conditions — surfaces automatically at the right milestone"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Capture a forward-looking idea with trigger conditions — surfaces automatically at the right milestone"
 ---

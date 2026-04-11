@@ -1,6 +1,8 @@
 ---
 name: "gsd-debug"
 description: "Systematic debugging with persistent state across context resets"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Systematic debugging with persistent state across context resets"
 ---

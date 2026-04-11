@@ -1,6 +1,8 @@
 ---
 name: "gsd-discuss-phase"
 description: "Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (Claude picks recommended defaults)."
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (Claude picks recommended defaults)."
 ---

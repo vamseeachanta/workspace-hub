@@ -1,6 +1,8 @@
 ---
 name: "gsd-map-codebase"
 description: "Analyze codebase with parallel mapper agents to produce .planning/codebase/ documents"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Analyze codebase with parallel mapper agents to produce .planning/codebase/ documents"
 ---

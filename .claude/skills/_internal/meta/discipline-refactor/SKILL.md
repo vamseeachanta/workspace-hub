@@ -36,6 +36,7 @@ see_also:
 - discipline-refactor-python-package
 - discipline-refactor-rollback
 - discipline-refactor-verification-checklist
+type: reference
 ---
 
 # Discipline Refactor

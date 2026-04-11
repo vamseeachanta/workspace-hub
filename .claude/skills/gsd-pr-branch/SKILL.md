@@ -1,6 +1,8 @@
 ---
 name: "gsd-pr-branch"
 description: "Create a clean PR branch by filtering out .planning/ commits — ready for code review"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Create a clean PR branch by filtering out .planning/ commits — ready for code review"
 ---

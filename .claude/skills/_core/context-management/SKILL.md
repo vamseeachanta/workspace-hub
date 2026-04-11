@@ -11,6 +11,7 @@ see_also:
 - core-context-management-learning-from-past-work
 - core-context-management-validatecontextsh
 - core-context-management-windows-task-scheduler
+type: reference
 ---
 
 # Core Context Management

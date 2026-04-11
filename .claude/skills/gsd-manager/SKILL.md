@@ -1,6 +1,8 @@
 ---
 name: "gsd-manager"
 description: "Interactive command center for managing multiple phases from one terminal"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Interactive command center for managing multiple phases from one terminal"
 ---

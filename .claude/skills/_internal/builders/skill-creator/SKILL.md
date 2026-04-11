@@ -34,6 +34,7 @@ see_also:
 - skill-creator-versioning
 - skill-creator-metrics
 - skill-creator-skill-discovery
+type: reference
 ---
 
 # Skill Creator

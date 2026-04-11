@@ -1,6 +1,8 @@
 ---
 name: "gsd-add-backlog"
 description: "Add an idea to the backlog parking lot (999.x numbering)"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Add an idea to the backlog parking lot (999.x numbering)"
 ---

@@ -1,6 +1,8 @@
 ---
 name: "gsd-workstreams"
 description: "Manage parallel workstreams — list, create, switch, status, progress, complete, and resume"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Manage parallel workstreams — list, create, switch, status, progress, complete, and resume"
 ---

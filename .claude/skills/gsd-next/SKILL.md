@@ -1,6 +1,8 @@
 ---
 name: "gsd-next"
 description: "Automatically advance to the next logical step in the GSD workflow"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Automatically advance to the next logical step in the GSD workflow"
 ---

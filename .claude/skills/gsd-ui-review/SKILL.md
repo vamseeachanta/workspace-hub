@@ -1,6 +1,8 @@
 ---
 name: "gsd-ui-review"
 description: "Retroactive 6-pillar visual audit of implemented frontend code"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Retroactive 6-pillar visual audit of implemented frontend code"
 ---

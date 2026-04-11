@@ -1,6 +1,8 @@
 ---
 name: "gsd-plan-milestone-gaps"
 description: "Create phases to close all gaps identified by milestone audit"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Create phases to close all gaps identified by milestone audit"
 ---

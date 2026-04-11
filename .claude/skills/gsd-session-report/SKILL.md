@@ -1,6 +1,8 @@
 ---
 name: "gsd-session-report"
 description: "Generate a session report with token usage estimates, work summary, and outcomes"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Generate a session report with token usage estimates, work summary, and outcomes"
 ---

@@ -1,6 +1,8 @@
 ---
 name: "gsd-forensics"
 description: "Post-mortem investigation for failed GSD workflows — analyzes git history, artifacts, and state to diagnose what went wrong"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Post-mortem investigation for failed GSD workflows — analyzes git history, artifacts, and state to diagnose what went wrong"
 ---

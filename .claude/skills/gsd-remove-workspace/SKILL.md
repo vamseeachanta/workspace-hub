@@ -1,6 +1,8 @@
 ---
 name: "gsd-remove-workspace"
 description: "Remove a GSD workspace and clean up worktrees"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Remove a GSD workspace and clean up worktrees"
 ---

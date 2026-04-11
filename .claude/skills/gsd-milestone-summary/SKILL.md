@@ -1,6 +1,8 @@
 ---
 name: "gsd-milestone-summary"
 description: "Generate a comprehensive project summary from milestone artifacts for team onboarding and review"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Generate a comprehensive project summary from milestone artifacts for team onboarding and review"
 ---

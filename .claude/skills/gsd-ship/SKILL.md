@@ -1,6 +1,8 @@
 ---
 name: "gsd-ship"
 description: "Create PR, run review, and prepare for merge after verification passes"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Create PR, run review, and prepare for merge after verification passes"
 ---

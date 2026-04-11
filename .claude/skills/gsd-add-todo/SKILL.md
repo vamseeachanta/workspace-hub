@@ -1,6 +1,8 @@
 ---
 name: "gsd-add-todo"
 description: "Capture idea or task as todo from current conversation context"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Capture idea or task as todo from current conversation context"
 ---

@@ -1,6 +1,8 @@
 ---
 name: "gsd-insert-phase"
 description: "Insert urgent work as decimal phase (e.g., 72.1) between existing phases"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Insert urgent work as decimal phase (e.g., 72.1) between existing phases"
 ---

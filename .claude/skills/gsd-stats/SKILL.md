@@ -1,6 +1,8 @@
 ---
 name: "gsd-stats"
 description: "Display project statistics — phases, plans, requirements, git metrics, and timeline"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Display project statistics — phases, plans, requirements, git metrics, and timeline"
 ---

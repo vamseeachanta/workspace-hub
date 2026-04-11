@@ -1,6 +1,8 @@
 ---
 name: "gsd-progress"
 description: "Check project progress, show context, and route to next action (execute or plan)"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Check project progress, show context, and route to next action (execute or plan)"
 ---

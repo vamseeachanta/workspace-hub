@@ -1,6 +1,8 @@
 ---
 name: "gsd-add-tests"
 description: "Generate tests for a completed phase based on UAT criteria and implementation"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Generate tests for a completed phase based on UAT criteria and implementation"
 ---

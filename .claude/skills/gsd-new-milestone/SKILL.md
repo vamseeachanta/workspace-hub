@@ -1,6 +1,8 @@
 ---
 name: "gsd-new-milestone"
 description: "Start a new milestone cycle — update PROJECT.md and route to requirements"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Start a new milestone cycle — update PROJECT.md and route to requirements"
 ---

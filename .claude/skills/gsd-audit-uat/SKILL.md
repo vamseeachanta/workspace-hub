@@ -1,6 +1,8 @@
 ---
 name: "gsd-audit-uat"
 description: "Cross-phase audit of all outstanding UAT and verification items"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Cross-phase audit of all outstanding UAT and verification items"
 ---

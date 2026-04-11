@@ -21,6 +21,7 @@ see_also:
 - git-sync-manager-3-repository-status-check
 - git-sync-manager-5-safe-branch-operations
 - git-sync-manager-1-always-check-before-operating
+type: reference
 ---
 
 # Git Sync Manager

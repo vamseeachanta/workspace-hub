@@ -1,6 +1,8 @@
 ---
 name: "gsd-add-phase"
 description: "Add phase to end of current milestone in roadmap"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Add phase to end of current milestone in roadmap"
 ---

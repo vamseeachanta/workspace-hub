@@ -1,6 +1,8 @@
 ---
 name: "gsd-verify-work"
 description: "Validate built features through conversational UAT"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Validate built features through conversational UAT"
 ---

@@ -5,6 +5,7 @@
 set -euo pipefail
 WORKSPACE_ROOT="${1:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)}"
 STATUS_FILE="$WORKSPACE_ROOT/config/ai_agents/ai-tools-status.yaml"
+PROVIDER_HEALTH_FILE="$WORKSPACE_ROOT/config/ai_agents/provider-health.yaml"
 PIPELINE_FILE="$WORKSPACE_ROOT/.claude/work-queue/pipeline-state.yaml"
 USER_QUOTA_CACHE="$HOME/.cache/agent-quota.json"
 WORKSPACE_QUOTA="$WORKSPACE_ROOT/config/ai-tools/agent-quota-latest.json"
@@ -98,20 +99,112 @@ if [[ -f "$STATUS_FILE" ]]; then
     updated=$(grep "^last_updated:" "$STATUS_FILE" | awk '{print $2}' | tr -d '"')
     echo "_Last checked: ${updated}_"
     echo ""
-    echo "| Machine | Node | Claude | Codex | Gemini | gh | Status |"
-    echo "|---------|------|--------|-------|--------|----|--------|"
-    for host in dev-primary dev-secondary licensed-win-1; do
-        hfile="$WORKSPACE_ROOT/config/ai_agents/status/$host.yaml"
-        [[ ! -f "$hfile" ]] && continue
-        status=$(grep "^status:" "$hfile" | awk '{print $2}')
-        node=$(awk   '/^versions:/{f=1} f && /  node:/{   print $2; exit}' "$hfile" | tr -d '"')
-        claude=$(awk '/^versions:/{f=1} f && /  claude:/{ print $2; exit}' "$hfile" | tr -d '"')
-        codex=$(awk  '/^versions:/{f=1} f && /  codex:/{  print $2; exit}' "$hfile" | tr -d '"')
-        gemini=$(awk '/^versions:/{f=1} f && /  gemini:/{ print $2; exit}' "$hfile" | tr -d '"')
-        gh=$(awk     '/^versions:/{f=1} f && /  gh:/{     print $2; exit}' "$hfile" | tr -d '"')
-        icon="✓"; [[ "$status" == "needs-update" ]] && icon="⚠"; [[ "$status" == "manual-check-required" ]] && icon="?"
-        echo "| $host | ${node:----} | ${claude:----} | ${codex:----} | ${gemini:----} | ${gh:----} | $icon $status |"
-    done
+    python3 - "$STATUS_FILE" <<'PYEOF'
+import re
+import sys
+from pathlib import Path
+
+text = Path(sys.argv[1]).read_text(encoding='utf-8')
+machines = {}
+current_machine = None
+in_machines = False
+for line in text.splitlines():
+    if line.strip() == 'machines:':
+        in_machines = True
+        continue
+    if in_machines and line.strip() == 'drift:':
+        break
+    if not in_machines:
+        continue
+    if re.match(r'^  [^ :]+:$', line):
+        current_machine = line.strip()[:-1]
+        machines[current_machine] = {'reachable': None, 'tools': {}}
+        continue
+    if current_machine and re.match(r'^    reachable: ', line):
+        machines[current_machine]['reachable'] = line.split(':', 1)[1].strip()
+        continue
+    if current_machine and re.match(r'^      [a-z0-9]+: \{', line):
+        tool = line.strip().split(':', 1)[0]
+        raw_match = re.search(r'raw: ([^,}]+)', line)
+        status_match = re.search(r'status: ([^,}]+)', line)
+        raw = raw_match.group(1).strip().strip('"') if raw_match else 'null'
+        status = status_match.group(1).strip().strip('"') if status_match else 'unknown'
+        machines[current_machine]['tools'][tool] = {'raw': raw, 'status': status}
+
+print('| Machine | Node | Claude | Codex | Gemini | gh | Status |')
+print('|---------|------|--------|-------|--------|----|--------|')
+for host, data in machines.items():
+    tools = data.get('tools', {})
+    def val(name):
+        raw = tools.get(name, {}).get('raw', 'null')
+        return '—' if raw == 'null' else raw
+    overall = 'ok' if data.get('reachable') == 'true' else 'unreachable'
+    if any(tools.get(name, {}).get('status') == 'missing' for name in ('claude','codex','gemini')):
+        overall = 'needs-attention'
+    icon = '✓' if overall == 'ok' else '⚠' if overall == 'needs-attention' else '✕'
+    print(f"| {host} | {val('node')} | {val('claude')} | {val('codex')} | {val('gemini')} | {val('gh')} | {icon} {overall} |")
+PYEOF
+else
+    echo "_Not found — run: bash scripts/maintenance/ai-tools-status.sh_"
+fi
+echo ""
+
+# ── Provider Health ───────────────────────────────────────────────────────────
+echo "### Provider Health"
+echo ""
+if [[ -f "$PROVIDER_HEALTH_FILE" ]]; then
+    updated=$(grep "^last_updated:" "$PROVIDER_HEALTH_FILE" | awk '{print $2}' | tr -d '"')
+    echo "_Last checked: ${updated}_"
+    echo ""
+    python3 - "$PROVIDER_HEALTH_FILE" <<'PYEOF'
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = path.read_text(encoding='utf-8')
+providers = {}
+current = None
+in_providers = False
+for line in text.splitlines():
+    if line.strip() == 'providers:':
+        in_providers = True
+        continue
+    if not in_providers:
+        continue
+    if re.match(r'^  [a-z0-9_-]+:$', line):
+        current = line.strip()[:-1]
+        providers[current] = {}
+        continue
+    if current and re.match(r'^    [a-z0-9_]+:', line):
+        key, _, value = line.strip().partition(':')
+        providers[current][key] = value.strip().strip('"')
+
+print('| Provider | Status | Routing | Note | Key Signal |')
+print('|----------|--------|---------|------|------------|')
+needs_action = []
+for name in ('claude', 'codex', 'gemini'):
+    row = providers.get(name, {})
+    status = row.get('status', 'unknown')
+    routing = row.get('routing_state', 'unknown')
+    note = row.get('note', '—')
+    remediation = row.get('remediation', '')
+    if name == 'claude':
+        signal = f"auth24h={row.get('recent_auth_errors_24h', '0')}, unrecovered14d={row.get('unrecovered_auth_errors_14d', '0')}"
+    elif name == 'codex':
+        signal = f"skill_errors7d={row.get('skill_load_errors_7d', '0')}, skill_dirs={row.get('skills_tree_dirs_current', '0')}"
+    else:
+        signal = f"chat7d={row.get('chat_errors_7d', '0')}, roots30d={row.get('workspace_roots_30d', '0')}"
+    print(f'| {name} | {status} | {routing} | {note} | {signal} |')
+    if remediation and status in ('warn', 'block'):
+        needs_action.append((name, remediation))
+
+if needs_action:
+    print('')
+    print('Manual recovery / next actions:')
+    for name, remediation in needs_action:
+        print(f'- {name}: {remediation}')
+PYEOF
 else
     echo "_Not found — run: bash scripts/maintenance/ai-tools-status.sh_"
 fi

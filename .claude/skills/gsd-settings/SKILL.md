@@ -1,6 +1,8 @@
 ---
 name: "gsd-settings"
 description: "Configure GSD workflow toggles and model profile"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Configure GSD workflow toggles and model profile"
 ---

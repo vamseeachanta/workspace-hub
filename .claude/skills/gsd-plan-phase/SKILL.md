@@ -1,6 +1,8 @@
 ---
 name: "gsd-plan-phase"
 description: "Create detailed phase plan (PLAN.md) with verification loop"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Create detailed phase plan (PLAN.md) with verification loop"
 ---

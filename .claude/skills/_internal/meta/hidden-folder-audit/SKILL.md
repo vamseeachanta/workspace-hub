@@ -21,6 +21,7 @@ see_also:
 - hidden-folder-audit-migrate-agent-os-to-claude
 - hidden-folder-audit-pre-audit
 - hidden-folder-audit-verify-hidden-folder-state
+type: reference
 ---
 
 # Hidden Folder Audit

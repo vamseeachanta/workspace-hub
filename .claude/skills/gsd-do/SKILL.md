@@ -1,6 +1,8 @@
 ---
 name: "gsd-do"
 description: "Route freeform text to the right GSD command automatically"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Route freeform text to the right GSD command automatically"
 ---

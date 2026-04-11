@@ -22,13 +22,15 @@
 | 02:00 daily | comprehensive-learning | 10-phase nightly learning pipeline | `.claude/state/learning-reports/cron.log` |
 | 02:30 daily | doc-drift | Documentation drift baseline | `logs/quality/doc-drift-*.yaml` |
 | 02:30 daily | agent-radar | Agent capability radar HTML | `/tmp/agent-radar.log` |
-| 03:15 Sun | ai-tools-status | AI CLI version audit | `.claude/state/learning-reports/cron.log` |
+| 03:15 Sun | ai-tools-status | AI CLI parity + provider health audit (writes `config/ai_agents/ai-tools-status.yaml` and `config/ai_agents/provider-health.yaml`) | `.claude/state/learning-reports/cron.log` |
 | 03:30 Sun | model-ids | Model ID refresh | `.claude/state/learning-reports/cron.log` |
 | 04:00 Mon | skills-curation | Skill eval + duplicate detect | `.claude/state/learning-reports/cron.log` |
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+
+If `config/ai_agents/provider-health.yaml` shows `claude.status: "block"`, cron cannot repair auth automatically. Recover manually in a plain terminal: run `claude login`, start and exit one clean `claude` session, then rerun `bash scripts/maintenance/ai-tools-status.sh`.
 
 ## Comprehensive Learning Sub-Steps (02:00)
 

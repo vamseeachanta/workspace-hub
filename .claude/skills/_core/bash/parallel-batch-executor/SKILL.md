@@ -19,6 +19,7 @@ see_also:
 - parallel-batch-executor-1-basic-parallel-execution-with-xargs
 - parallel-batch-executor-4-progress-tracking
 - parallel-batch-executor-1-always-set-a-default
+type: reference
 ---
 
 # Parallel Batch Executor

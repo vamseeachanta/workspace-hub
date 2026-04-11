@@ -23,6 +23,7 @@ see_also:
 - json-config-loader-5-environment-variable-configuration
 - json-config-loader-6-yaml-configuration-via-yq
 - json-config-loader-1-always-provide-defaults
+type: reference
 ---
 
 # Json Config Loader

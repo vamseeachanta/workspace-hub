@@ -32,6 +32,7 @@ see_also:
 - repo-cleanup-folders-to-delete-confirmed-safe
 - repo-cleanup-structure-section-updates
 - repo-cleanup-references-to-remove
+type: reference
 ---
 
 # Repo Cleanup

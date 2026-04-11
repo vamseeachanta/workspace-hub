@@ -1,6 +1,8 @@
 ---
 name: "gsd-review-backlog"
 description: "Review and promote backlog items to active milestone"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Review and promote backlog items to active milestone"
 ---

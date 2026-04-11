@@ -25,6 +25,7 @@ triggers:
 - hidden folder consolidation
 - merge hidden folders
 tags: []
+type: reference
 ---
 
 # Module-Based Refactor Skill

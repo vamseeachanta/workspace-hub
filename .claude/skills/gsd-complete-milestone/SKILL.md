@@ -1,6 +1,8 @@
 ---
 name: "gsd-complete-milestone"
 description: "Archive completed milestone and prepare for next version"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Archive completed milestone and prepare for next version"
 ---

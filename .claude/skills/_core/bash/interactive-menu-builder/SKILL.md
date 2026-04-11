@@ -21,6 +21,7 @@ see_also:
 - interactive-menu-builder-3-table-display
 - interactive-menu-builder-5-confirmation-dialogs
 - interactive-menu-builder-1-consistent-navigation
+type: reference
 ---
 
 # Interactive Menu Builder

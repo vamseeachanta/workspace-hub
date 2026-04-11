@@ -1,6 +1,8 @@
 ---
 name: "gsd-list-workspaces"
 description: "List active GSD workspaces and their status"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "List active GSD workspaces and their status"
 ---

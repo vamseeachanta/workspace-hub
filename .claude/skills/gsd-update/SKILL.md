@@ -1,6 +1,8 @@
 ---
 name: "gsd-update"
 description: "Update GSD to latest version with changelog display"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Update GSD to latest version with changelog display"
 ---

@@ -1,6 +1,8 @@
 ---
 name: "gsd-audit-milestone"
 description: "Audit milestone completion against original intent before archiving"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Audit milestone completion against original intent before archiving"
 ---

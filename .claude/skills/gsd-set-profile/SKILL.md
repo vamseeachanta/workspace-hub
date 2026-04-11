@@ -1,6 +1,8 @@
 ---
 name: "gsd-set-profile"
 description: "Switch model profile for GSD agents (quality/balanced/budget/inherit)"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Switch model profile for GSD agents (quality/balanced/budget/inherit)"
 ---

@@ -1,6 +1,8 @@
 ---
 name: "gsd-new-project"
 description: "Initialize a new project with deep context gathering and PROJECT.md"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Initialize a new project with deep context gathering and PROJECT.md"
 ---

@@ -143,3 +143,4 @@ This skill registers a **weekly steering mode** for `/session-start`:
 - [x] AC-9: Missing portfolio-signals.yaml graceful (no crash)
 - [x] AC-10: Session-start integration point documented
 - [x] AC-11: Description triggers on portfolio/steering/harness phrases
+- [x] AC-12: Missing `.claude/work-queue/INDEX.md` degrades gracefully (no crash); script returns empty categories or uses regenerated index when available

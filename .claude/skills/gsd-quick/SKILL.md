@@ -1,6 +1,8 @@
 ---
 name: "gsd-quick"
 description: "Execute a quick task with GSD guarantees (atomic commits, state tracking) but skip optional agents"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Execute a quick task with GSD guarantees (atomic commits, state tracking) but skip optional agents"
 ---

@@ -20,6 +20,7 @@ see_also:
 - usage-tracker-3-usage-summary-reports
 - usage-tracker-5-trend-analysis
 - usage-tracker-best-practices
+type: reference
 ---
 
 # Usage Tracker

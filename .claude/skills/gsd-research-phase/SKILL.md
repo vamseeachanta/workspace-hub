@@ -1,6 +1,8 @@
 ---
 name: "gsd-research-phase"
 description: "Research how to implement a phase (standalone - usually use $gsd-plan-phase instead)"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Research how to implement a phase (standalone - usually use $gsd-plan-phase instead)"
 ---

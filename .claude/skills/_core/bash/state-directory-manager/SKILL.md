@@ -20,6 +20,7 @@ see_also:
 - state-directory-manager-4-state-file-operations
 - state-directory-manager-5-cache-management
 - state-directory-manager-best-practices
+type: reference
 ---
 
 # State Directory Manager

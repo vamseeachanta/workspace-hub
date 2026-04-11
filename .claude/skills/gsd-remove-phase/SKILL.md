@@ -1,6 +1,8 @@
 ---
 name: "gsd-remove-phase"
 description: "Remove a future phase from roadmap and renumber subsequent phases"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Remove a future phase from roadmap and renumber subsequent phases"
 ---

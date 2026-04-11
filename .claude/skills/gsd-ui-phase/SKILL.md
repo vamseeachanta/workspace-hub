@@ -1,6 +1,8 @@
 ---
 name: "gsd-ui-phase"
 description: "Generate UI design contract (UI-SPEC.md) for frontend phases"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Generate UI design contract (UI-SPEC.md) for frontend phases"
 ---

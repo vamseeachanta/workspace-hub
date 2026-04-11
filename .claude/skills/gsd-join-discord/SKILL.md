@@ -1,6 +1,8 @@
 ---
 name: "gsd-join-discord"
 description: "Join the GSD Discord community"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Join the GSD Discord community"
 ---

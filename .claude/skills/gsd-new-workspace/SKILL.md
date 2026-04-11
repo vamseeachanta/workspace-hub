@@ -1,6 +1,8 @@
 ---
 name: "gsd-new-workspace"
 description: "Create an isolated workspace with repo copies and independent .planning/"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Create an isolated workspace with repo copies and independent .planning/"
 ---

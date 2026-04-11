@@ -1,6 +1,8 @@
 ---
 name: "gsd-help"
 description: "Show available GSD commands and usage guide"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Show available GSD commands and usage guide"
 ---

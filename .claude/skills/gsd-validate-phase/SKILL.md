@@ -1,6 +1,8 @@
 ---
 name: "gsd-validate-phase"
 description: "Retroactively audit and fill Nyquist validation gaps for a completed phase"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Retroactively audit and fill Nyquist validation gaps for a completed phase"
 ---

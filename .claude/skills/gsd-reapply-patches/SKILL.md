@@ -1,6 +1,8 @@
 ---
 name: "gsd-reapply-patches"
 description: "Reapply local modifications after a GSD update"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Reapply local modifications after a GSD update"
 ---

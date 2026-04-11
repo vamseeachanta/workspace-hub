@@ -18,6 +18,7 @@ see_also:
 - bash-cli-framework-1-color-definitions
 - bash-cli-framework-5-error-handling
 - bash-cli-framework-1-always-use-set-e
+type: reference
 ---
 
 # Bash Cli Framework

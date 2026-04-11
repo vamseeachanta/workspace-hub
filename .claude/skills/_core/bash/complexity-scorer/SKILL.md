@@ -20,6 +20,7 @@ see_also:
 - complexity-scorer-3-context-aware-scoring
 - complexity-scorer-5-confidence-scoring
 - complexity-scorer-best-practices
+type: reference
 ---
 
 # Complexity Scorer

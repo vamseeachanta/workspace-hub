@@ -1,6 +1,8 @@
 ---
 name: "gsd-pause-work"
 description: "Create context handoff when pausing work mid-phase"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Create context handoff when pausing work mid-phase"
 ---

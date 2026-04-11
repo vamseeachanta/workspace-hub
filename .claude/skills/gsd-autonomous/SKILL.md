@@ -1,6 +1,8 @@
 ---
 name: "gsd-autonomous"
 description: "Run all remaining phases autonomously — discuss→plan→execute per phase"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Run all remaining phases autonomously — discuss→plan→execute per phase"
 ---

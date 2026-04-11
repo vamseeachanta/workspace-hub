@@ -44,7 +44,9 @@ DOMAIN_PERSONA_MAP = {
 
 
 def _parse_category_counts(index_path: Path) -> dict[str, int]:
-    """Parse ## By Category summary table from INDEX.md."""
+    """Parse ## By Category summary table from INDEX.md; return {} when absent."""
+    if not index_path.exists():
+        return {}
     text = index_path.read_text(encoding="utf-8")
     # Find the summary table (first By Category block)
     # Format: | harness | 45 |
@@ -55,7 +57,7 @@ def _parse_category_counts(index_path: Path) -> dict[str, int]:
             in_table = True
             continue
         if in_table:
-            m = re.match(r"\|\s*(\w+)\s*\|\s*(\d+)\s*\|", line)
+            m = re.match(r"\|\s*([\w\- ]+)\s*\|\s*(\d+)\s*\|", line)
             if m:
                 counts[m.group(1).strip()] = int(m.group(2))
             elif line.startswith("##") and "By Category" not in line:
@@ -179,7 +181,7 @@ def compute_balance(
     Returns a dict with L1 (queue balance) and L2 (provider activity) data.
     """
     cats = _parse_category_counts(index_path)
-    total = sum(cats.values()) if cats else 1
+    total = sum(cats.values())
     harness_count = cats.get("harness", 0)
     engineering_count = cats.get("engineering", 0)
     harness_pct = harness_count / total if total else 0.0
@@ -194,6 +196,8 @@ def compute_balance(
     next3 = _next3_fund(gtm)
 
     return {
+        "index_path": str(index_path),
+        "index_exists": index_path.exists(),
         "categories": cats,
         "total": total,
         "harness_pct": round(harness_pct, 4),

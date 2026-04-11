@@ -1,6 +1,8 @@
 ---
 name: "gsd-execute-phase"
 description: "Execute all plans in a phase with wave-based parallelization"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Execute all plans in a phase with wave-based parallelization"
 ---

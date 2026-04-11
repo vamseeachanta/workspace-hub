@@ -1,6 +1,8 @@
 ---
 name: "gsd-thread"
 description: "Manage persistent context threads for cross-session work"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Manage persistent context threads for cross-session work"
 ---

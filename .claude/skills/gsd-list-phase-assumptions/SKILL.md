@@ -1,6 +1,8 @@
 ---
 name: "gsd-list-phase-assumptions"
 description: "Surface the agent's assumptions about a phase approach before planning"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Surface the agent's assumptions about a phase approach before planning"
 ---

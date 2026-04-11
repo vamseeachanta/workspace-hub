@@ -1,6 +1,8 @@
 ---
 name: "gsd-note"
 description: "Zero-friction idea capture. Append, list, or promote notes to todos."
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Zero-friction idea capture. Append, list, or promote notes to todos."
 ---

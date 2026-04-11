@@ -1,6 +1,8 @@
 ---
 name: "gsd-fast"
 description: "Execute a trivial task inline — no subagents, no planning overhead"
+type: skill
+version: 1.0.0
 metadata:
   short-description: "Execute a trivial task inline — no subagents, no planning overhead"
 ---

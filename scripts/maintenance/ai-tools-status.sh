@@ -8,6 +8,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 CONFIG="$REPO_ROOT/scripts/readiness/harness-config.yaml"
 OUTPUT="$REPO_ROOT/config/ai_agents/ai-tools-status.yaml"
+PROVIDER_HEALTH_SCRIPT="$REPO_ROOT/scripts/maintenance/provider-health-check.py"
+PROVIDER_HEALTH_OUTPUT="$REPO_ROOT/config/ai_agents/provider-health.yaml"
+GEMINI_PRUNE_SCRIPT="$REPO_ROOT/scripts/maintenance/prune-gemini-tmp.py"
 NPM_PATH="\$HOME/.npm-global/bin:\$HOME/.local/bin:\$PATH"
 
 TOOLS=(uv python3 claude codex gemini gh git node)
@@ -218,10 +221,30 @@ fi
 } > "$OUTPUT" || die "Failed to write $OUTPUT"
 
 echo "✔ ai-tools-status.yaml written: $OUTPUT"
+if [[ -f "$GEMINI_PRUNE_SCRIPT" ]]; then
+  if command -v uv >/dev/null 2>&1; then
+    uv run --no-project python "$GEMINI_PRUNE_SCRIPT" >/dev/null 2>&1 || echo "WARN: Gemini tmp prune failed" >&2
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 "$GEMINI_PRUNE_SCRIPT" >/dev/null 2>&1 || echo "WARN: Gemini tmp prune failed" >&2
+  fi
+fi
+if [[ -f "$PROVIDER_HEALTH_SCRIPT" ]]; then
+  if command -v uv >/dev/null 2>&1; then
+    uv run --no-project python "$PROVIDER_HEALTH_SCRIPT" >/dev/null 2>&1 || echo "WARN: provider health check failed" >&2
+  elif command -v python3 >/dev/null 2>&1; then
+    python3 "$PROVIDER_HEALTH_SCRIPT" >/dev/null 2>&1 || echo "WARN: provider health check failed" >&2
+  else
+    echo "WARN: provider health check skipped (no python runner)" >&2
+  fi
+fi
+
 echo "  Machines: ${#MACHINES[@]} total, ${REACHABLE_COUNT} reachable"
 echo "  Drift summary:"
 for tool in "${TOOLS[@]}"; do
   sev="${DRIFT_SEVERITY[$tool]:-info}"
   [[ "$sev" != "info" ]] && echo "    ${sev^^}: ${tool} — ${DRIFT_NOTE[$tool]:-}"
 done
+if [[ -f "$PROVIDER_HEALTH_OUTPUT" ]]; then
+  echo "  Provider health: $PROVIDER_HEALTH_OUTPUT"
+fi
 echo "  Done."
