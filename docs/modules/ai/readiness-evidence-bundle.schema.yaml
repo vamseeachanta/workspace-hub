@@ -14,6 +14,57 @@ required:
   - access
   - checks
   - overall
+definitions:
+  access_mode_evidence:
+    type: object
+    additionalProperties: false
+    required:
+      - transport
+    properties:
+      transport:
+        type: string
+        enum: [ssh, local_no_ssh]
+  workspace_root_evidence:
+    type: object
+    additionalProperties: false
+    required:
+      - path
+    properties:
+      path:
+        type: string
+        minLength: 1
+  ai_cli_evidence:
+    type: object
+    additionalProperties: false
+    required:
+      - claude
+      - codex
+    properties:
+      claude:
+        type: boolean
+      codex:
+        type: boolean
+  licensed_tools_not_required_evidence:
+    type: object
+    additionalProperties: false
+    required:
+      - required
+    properties:
+      required:
+        const: false
+  licensed_tools_capacity_evidence:
+    type: object
+    additionalProperties: false
+    required:
+      - seats_in_use
+      - seats_total
+    properties:
+      seats_in_use:
+        type: integer
+        minimum: 0
+      seats_total:
+        type: integer
+        minimum: 0
 properties:
   schema_version:
     type: string
@@ -109,6 +160,57 @@ properties:
           minLength: 1
         evidence:
           type: object
+      allOf:
+        - if:
+            properties:
+              id:
+                const: access-mode
+            required:
+              - id
+          then:
+            required:
+              - evidence
+            properties:
+              evidence:
+                $ref: "#/definitions/access_mode_evidence"
+        - if:
+            properties:
+              id:
+                const: workspace-root
+            required:
+              - id
+          then:
+            required:
+              - evidence
+            properties:
+              evidence:
+                $ref: "#/definitions/workspace_root_evidence"
+        - if:
+            properties:
+              id:
+                const: ai-cli
+            required:
+              - id
+          then:
+            required:
+              - evidence
+            properties:
+              evidence:
+                $ref: "#/definitions/ai_cli_evidence"
+        - if:
+            properties:
+              id:
+                const: licensed-tools
+            required:
+              - id
+          then:
+            required:
+              - evidence
+            properties:
+              evidence:
+                oneOf:
+                  - $ref: "#/definitions/licensed_tools_not_required_evidence"
+                  - $ref: "#/definitions/licensed_tools_capacity_evidence"
     allOf:
       - contains:
           type: object
