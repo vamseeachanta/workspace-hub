@@ -199,6 +199,24 @@ tasks:
     is_claude_task: false
     description: Weekly refresh of cross-provider session audit artifacts (JSON + Markdown) after session exports.
 
+  - id: weekly-hermes-parity-review
+    label: Weekly Hermes cross-machine parity review
+    schedule: "30 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/weekly-hermes-parity-review.sh
+      >> $WORKSPACE_HUB/logs/weekly-parity/cron-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/weekly-parity/cron-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Monday 04:30 UTC — Hermes cross-machine parity review. Collects
+      evidence from all workstations (local probes, SSH, bridge artifacts),
+      classifies each as pass/drift/unreachable/blocked, writes dated artifact
+      to logs/weekly-parity/. Issues #2239, #2089, #1583.
+
   - id: claude-plugin-audit
     label: Claude plugin weekly audit
     schedule: "45 3 * * 0"
