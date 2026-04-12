@@ -190,6 +190,8 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2216 | acma-codes-llm-wiki-repo-intelligence-integration | `docs/plans/2026-04-11-issue-2216-acma-codes-llm-wiki-repo-intelligence-integration.md` | 2026-04-11 | plan-review | T2 | Integrate /mnt/ace/acma-codes (OCIMF, API, CSA) into intelligence ecosystem; recommends 4-way follow-on split |
 | 2136 | intelligence-accessibility-registry-with-machine-reachability | `docs/plans/2026-04-11-issue-2136-intelligence-accessibility-registry-with-machine-reachability.md` | 2026-04-11 | plan-review | T2 | Machine-readable meta-registry of intelligence assets with reachability, query commands, and freshness metadata |
 | 2208 | intelligence-retrieval-contract-for-github-issue-workflows | `docs/plans/2026-04-11-issue-2208-intelligence-retrieval-contract-for-github-issue-workflows.md` | 2026-04-11 | completed | T2 | Retrieval contract defining minimum intelligence sources per workflow stage and issue class, evidence placement, and measurable checks |
+| 2225 | acma-codes-source-registration-and-initial-indexing | `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md` | 2026-04-11 | plan-review | T2 | Register /mnt/ace/acma-codes as mounted source, Phase A indexing, initial dedup assessment; follow-on #1 from #2216 |
+| 2226 | ocimf-csa-ledger-provenance-backfill | `docs/plans/2026-04-11-issue-2226-ocimf-csa-ledger-provenance-backfill.md` | 2026-04-11 | plan-review | T2 | Backfill OCIMF/CSA ledger entries and provenance aliases from indexed acma-codes; 11 new entries + 2 updates; follow-on #2 from #2216 |
 
 ## Entry Format
 
