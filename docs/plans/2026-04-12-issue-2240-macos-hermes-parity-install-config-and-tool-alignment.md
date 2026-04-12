@@ -31,6 +31,8 @@
 - `scripts/readiness/harness-config.yaml` — current workstation/readiness source used by nightly readiness and Hermes managed-key checks; reveals macOS is not yet represented.
 - `config/workstations/registry.yaml` — machine registry used by cron/tooling discovery; reveals Linux and Windows coverage only.
 - `config/agents/hermes/config.yaml.template` — shared Hermes baseline whose managed keys must be portable to macOS.
+- `config/agents/claude/memory-snapshots/network_machines.md` — records concrete macOS evidence: hostname `Vamsees-MacBook-Air.local`, user `krishna`, and workspace path `~/workspace-hub/`.
+- `scripts/readiness/nightly-readiness.sh` — downstream readiness runner uses hostname-derived report naming plus GNU/BSD-sensitive shell commands (`hostname -s`, `sed -i`, `stat -c`), so macOS parity cannot be planned as pure YAML-only scaffolding.
 - Related issue #1583 — baseline-definition issue for Hermes settings across machines.
 - Related issue #2089 — weekly review/gov issue that already expects Linux + macOS parity evidence.
 - Related issue #2094 — multi-machine readiness matrix work that should be reused rather than duplicated.
@@ -71,19 +73,21 @@ A repo-tracked macOS Hermes parity contract that adds `macbook-portable` to the 
 
 ```text
 add macbook_portable_to_registry():
-    declare hostname, os=macos, role, workspace root, schedule variant, and capabilities
+    declare canonical machine key, hostname aliases, workspace root, role, and capabilities
 
 add macbook_portable_to_harness_config():
-    declare ws_hub_path, report_path, optional ssh target, and reuse Hermes managed-key checks
+    declare ws_hub_path, report_path, optional ssh target, and Hermes managed-key checks
 
-extend sync validation path_if_needed():
-    ensure resolve_ws_hub_path can map the macOS hostname or fallback path cleanly
+inventory_consumers():
+    identify every script that reads registry.yaml or harness-config.yaml
+    decide whether each consumer needs code changes, tests, or explicit out-of-scope note
 
-extend readiness/checklist docs():
-    capture what parity means on macOS and what drift is acceptable
+audit_sync_and_readiness_compatibility():
+    verify resolve_ws_hub_path can map macOS hostname/alias to the intended workspace root
+    inspect nightly-readiness.sh and related readers for BSD/macOS-incompatible shell assumptions
 
 add regression tests():
-    assert macbook-portable entries parse correctly and do not break readiness workflows
+    assert macbook-portable entries parse correctly, aliases resolve, and existing Linux/Windows flows remain unchanged
 ```
 
 ---
@@ -92,9 +96,10 @@ add regression tests():
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `config/workstations/registry.yaml` | add canonical `macbook-portable` machine identity/capabilities |
+| Modify | `config/workstations/registry.yaml` | add canonical `macbook-portable` machine identity/capabilities and hostname aliases |
 | Modify | `scripts/readiness/harness-config.yaml` | add macOS workstation path/report metadata for Hermes readiness flows |
-| Modify | `scripts/_core/sync-agent-configs.sh` | adjust hostname/path resolution only if current logic cannot map the macOS workstation cleanly |
+| Modify | `scripts/_core/sync-agent-configs.sh` | make macOS hostname/path resolution explicit and testable |
+| Modify | `scripts/readiness/nightly-readiness.sh` | audit/fix hostname/report naming and BSD/macOS shell compatibility where required |
 | Modify | `docs/ops/hermes-weekly-cross-machine-parity-checklist.md` | refine macOS evidence steps based on implementation details |
 | Modify | `tests/work-queue/test-harness-readiness.sh` | add regression coverage for the new workstation entry / readiness config parsing |
 | Update | `docs/plans/README.md` | add this plan to the index |
@@ -106,20 +111,26 @@ add regression tests():
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | `test_registry_includes_macbook_portable` | workstation registry includes the new macOS machine with expected role/capabilities | updated `registry.yaml` | parser finds `macbook-portable` with `os: macos` |
+| `test_registry_alias_maps_real_hostname` | real macOS hostname alias resolves to the canonical workstation key | alias `Vamsees-MacBook-Air.local` | workstation lookup resolves to `macbook-portable` |
 | `test_harness_config_includes_macos_report_path` | readiness config can emit/report macOS readiness state | updated `harness-config.yaml` | report path and ws_hub_path are present |
 | `test_sync_agent_configs_resolves_macos_ws_hub_path` | Hermes config sync resolves the macOS workspace path correctly | mocked hostname / config | resolved path equals macOS workspace root |
+| `test_nightly_readiness_macos_compatibility_guard` | readiness script avoids GNU-only shell assumptions that break on macOS | audited `nightly-readiness.sh` | no unsupported `grep -P` / brittle `sed -i` path remains in macOS code path |
 | `test_harness_readiness_regression_still_passes` | adding macOS metadata does not break existing readiness shell tests | updated configs | shell test suite passes |
+| `test_linux_windows_readiness_outputs_unchanged` | existing Linux/Windows readiness behavior is preserved | updated workstation/readiness config | prior report naming/paths still pass |
+
 
 ---
 
 ## Acceptance Criteria
 
 - [ ] Regression coverage passes: `bash tests/work-queue/test-harness-readiness.sh`
-- [ ] `macbook-portable` exists in `config/workstations/registry.yaml` with explicit OS/role/capabilities
+- [ ] `macbook-portable` exists in `config/workstations/registry.yaml` with explicit OS/role/capabilities and hostname alias coverage
 - [ ] `scripts/readiness/harness-config.yaml` contains a macOS workstation entry with Hermes-compatible path/report metadata
-- [ ] `scripts/_core/sync-agent-configs.sh` can resolve or explicitly document the macOS workspace path behavior
+- [ ] `scripts/_core/sync-agent-configs.sh` resolves the canonical macOS workspace path and alias mapping in tests or explicit logic review
+- [ ] `scripts/readiness/nightly-readiness.sh` is audited/updated so macOS report generation does not rely on unsupported GNU-only shell behavior
 - [ ] `docs/ops/hermes-weekly-cross-machine-parity-checklist.md` reflects the implemented macOS parity contract
 - [ ] Residual macOS-specific drift is documented rather than left implicit
+- [ ] Live macOS validation remains explicitly out of scope unless the host is reachable during execution
 - [ ] Plan review artifacts are posted before implementation begins
 
 ---

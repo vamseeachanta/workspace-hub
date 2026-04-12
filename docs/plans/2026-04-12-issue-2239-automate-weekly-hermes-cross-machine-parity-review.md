@@ -30,10 +30,12 @@
 - `docs/ops/hermes-weekly-cross-machine-parity-checklist.md` — defines the weekly evidence contract the automation should operationalize: Hermes settings review, Linux/macOS parity, Windows frontier-model repo-ecosystem parity, output capture, and follow-on issue rules.
 - `docs/ops/scheduled-tasks.md` — confirms existing weekly cadence windows and machine-role table; suggests Monday/Sunday weekly slot is acceptable and that `ace-linux-1` / `dev-primary` is the full cron host.
 - `config/scheduled-tasks/schedule-tasks.yaml` — shows the task schema (`id`, `schedule`, `machines`, `requires`, `command`, `log`, `description`) and existing weekly patterns to mirror.
-- `scripts/readiness/harness-config.yaml` — identifies Hermes managed checks already available for reuse (`binary_exists`, `venv_import`, `patch_applied`, `external_skills_dir`, `config_managed_keys`).
+- `config/workstations/registry.yaml` — canonical workstation inventory currently includes Linux and Windows hosts, but not `macbook-portable`; v1 parity automation must treat registry as the authoritative machine set plus explicitly documented exceptions.
+- `scripts/readiness/harness-config.yaml` — identifies Hermes managed checks already available for reuse (`binary_exists`, `venv_import`, `patch_applied`, `external_skills_dir`, `config_managed_keys`) but is not sufficient as the sole inventory source.
 - Related issue #2089 — governance/cadence parent for weekly review.
 - Related issue #1583 — canonical Hermes baseline-definition issue that the weekly parity job should reference in findings.
 - Related issue #2094 — multi-machine readiness matrix issue that overlaps with evidence modeling and should be referenced rather than duplicated.
+- Related issue #2240 — macOS parity scaffolding issue that should establish registry/readiness support before #2239 assumes macOS evidence can be collected automatically.
 
 ### Gaps identified
 - No executable weekly parity review script exists.
@@ -71,14 +73,16 @@ A weekly scheduled parity-review workflow that reads the canonical Hermes checkl
 
 ```text
 main():
-    load machine inventory and Hermes managed-key expectations
+    load machine inventory from config/workstations/registry.yaml
+    load Hermes managed-key expectations from scripts/readiness/harness-config.yaml
     derive weekly output path under logs/weekly-parity/
     collect local dev-primary evidence (versions, config drift, skills visibility)
-    collect remote evidence for reachable Linux/macOS hosts using existing access assumptions
-    record Windows status using best available local/bridge artifacts when direct reach is unavailable
-    classify findings as pass / drift / unreachable / blocked
-    render summary artifact with per-machine sections and follow-on issue recommendations
-    optionally post a concise summary comment to #2089 when running in scheduled mode
+    collect remote evidence for reachable Linux/macOS hosts using timeout-wrapped SSH probes
+    ingest Windows evidence from explicit bridge/readiness artifact paths when direct reach is unavailable
+    classify each machine as pass / drift / unreachable / blocked / unsupported
+    render summary artifact with per-machine sections and follow-on recommendations
+    optionally post a concise summary comment to #2089 only when an explicit flag enables it
+    never auto-create GitHub issues in v1
     exit non-zero only for script errors, not for ordinary machine drift findings
 ```
 
@@ -94,6 +98,10 @@ main():
 | Create | `tests/work-queue/test-weekly-hermes-parity-review.sh` | shell-level regression coverage for artifact generation / graceful failure behavior |
 | Update | `docs/plans/README.md` | add this plan to the index |
 
+**Dependencies / non-owned surfaces:**
+- `config/workstations/registry.yaml` and `scripts/readiness/harness-config.yaml` should be treated as read-only inputs in #2239 unless #2240 lands first or is explicitly folded into this issue during plan revision.
+
+
 ---
 
 ## TDD Test List
@@ -102,8 +110,12 @@ main():
 |---|---|---|---|
 | `test_weekly_parity_script_writes_dated_artifact` | script creates a dated output artifact in the expected directory | temp workspace + mocked commands | one `logs/weekly-parity/*` file exists |
 | `test_weekly_parity_script_marks_unreachable_machine_nonfatal` | unreachable remote host is reported but does not crash the run | mocked ssh failure for one host | artifact contains `unreachable` and script exits 0 |
+| `test_weekly_parity_script_ingests_windows_bridge_artifact` | Windows readiness artifact is parsed and surfaced explicitly | mocked `.claude/state/harness-readiness-licensed-win-1.yaml` input | artifact contains Windows machine status |
+| `test_weekly_parity_script_uses_timeout_wrapped_remote_probes` | SSH-based evidence collection cannot hang indefinitely | mocked remote probe call | script exits within timeout path and records timeout state |
 | `test_schedule_yaml_declares_weekly_parity_task` | schedule includes the new task with required fields | updated YAML | validator passes and dry-run renders the entry |
 | `test_summary_includes_issue_links_and_follow_on_guidance` | output links #1583 / #2089 and preserves follow-on guidance | generated artifact | issue references and follow-on section present |
+| `test_missing_evidence_never_counts_as_pass` | unsupported/missing machine evidence is reported honestly | absent macOS/Windows evidence sources | artifact marks machine as `blocked` or `unsupported`, never `pass` |
+
 
 ---
 
@@ -114,6 +126,9 @@ main():
 - [ ] Cron installer renders the new task: `bash scripts/cron/setup-cron.sh --dry-run | grep weekly-hermes-parity-review`
 - [ ] Manual script run writes a dated weekly artifact under `logs/weekly-parity/`
 - [ ] Script handles at least one unreachable machine without aborting the entire review
+- [ ] Script treats unsupported/missing machine evidence as `blocked` or `unsupported`, never `pass`
+- [ ] Windows evidence source(s) are explicitly defined and covered by tests before automation claims Windows parity
+- [ ] GitHub commenting is either explicitly feature-flagged for v1 or deferred from v1 scope
 - [ ] `docs/ops/scheduled-tasks.md` documents the new task and artifact path
 - [ ] Plan review artifacts are posted before implementation begins
 
