@@ -112,8 +112,9 @@ Before creating a new feature issue, do a quick grounding pass to avoid duplicat
 1. Search existing issues by the key nouns/phrases in the request.
 2. Inspect existing labels in the repo and reuse the closest category/priority labels.
 3. If the feature touches an existing initiative, reference the parent/related issue numbers in the body.
-4. Prefer writing the body to a temp markdown file and using `--body-file` for long, structured issue descriptions.
-5. After creation, immediately verify the created issue's title, labels, URL, and rendered body.
+4. If an existing open issue already substantially covers the requested feature, prefer updating that issue instead of creating a duplicate. Add a clarifying comment to expand scope, adjust labels if needed, and link any companion cadence/governance issue rather than opening a second overlapping feature ticket.
+5. Prefer writing the body to a temp markdown file and using `--body-file` for long, structured issue descriptions.
+6. After creation or update, immediately verify the final artifact's title, labels, URL, and rendered body/comments.
 
 Example:
 

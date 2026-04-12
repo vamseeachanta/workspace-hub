@@ -208,6 +208,26 @@ GitHub check-in at entry:
 - when execution is allowed to proceed, post a concise start note with scope boundary, execution mode if already known, and immediate validation intent
 - when execution cannot proceed, post the stop reason and next route (`planning`, `blocker`, or `orchestrator decision`)
 
+### Local plan-marker gate in worktrees
+
+In workspace-hub-style repos, a GitHub `status:plan-approved` label may still be insufficient for implementation if local hooks enforce `.planning/plan-approved/` markers.
+
+Before launching implementation in a fresh worktree, verify all of the following in that same worktree:
+- `.planning/plan-approved/<issue>.md` exists locally
+- the marker text uses neutral/operator approval wording (not `Worker session`, `auto-approved`, or `self-approved`)
+- the marker is committed in that worktree before write-capable Claude execution begins
+
+Safe sequence for approved issue execution in a worktree:
+1. create the worktree from `main`
+2. write `.planning/plan-approved/<issue>.md` inside the worktree
+3. commit the marker locally in that worktree
+4. only then launch Claude/Codex for implementation
+
+Why this matters:
+- the plan-approval hook evaluates the local worktree state, not just GitHub labels
+- a marker created only in another checkout, or created but not committed yet, may still be treated as missing or self-approved
+- committing the marker first avoids Claude getting blocked mid-run by the local plan gate
+
 ## Applies to
 
 - a single approved GitHub issue

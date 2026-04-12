@@ -302,6 +302,35 @@ hermes chat -q "Long running task"  # Fire-and-forget mode
 | SSH agent | `eval $(ssh-agent)` | `Start-Service ssh-agent` |
 | Home dir | `~/.hermes/` | `%USERPROFILE%\.hermes\` |
 
+## Workspace-Hub Parity Audit Findings (2026-04-11)
+
+When using Claude Code directly on a Windows machine inside the workspace-hub ecosystem, the repo preserves most Hermes advantages via git-tracked `.claude/skills/`, `.claude/memory/`, `.claude/state/`, and exported orchestrator logs. However, full parity is **not automatic** yet. Apply these checks before calling the setup complete:
+
+### Required for high-confidence parity
+
+1. **Git Bash is required** — current Claude project hooks invoke `bash` commands extensively.
+2. **Node.js + Claude Code auth must be working** — verify with `claude --version` and `claude auth status --text`.
+3. **Install `uv` on Windows Git Bash unless you have patched the hooks** — several tracked hooks still call `uv run ...`.
+4. **Provide a `python3` shim/alias or patch hooks to use `python`** — some hooks still call `python3` even though Windows conventions say `python`.
+5. **`jq` should be installed in Git Bash** — readiness and hook scripts expect it.
+
+### Repo-side caveats to check
+
+- `scripts/readiness/harness-config.yaml` may still have `licensed-win-1.ws_hub_path: null`. Set the actual Windows workspace path (for example `D:\\workspace-hub`) when hardening a real machine.
+- A tracked readiness proof file should exist after setup: `.claude/state/harness-readiness-licensed-win-1.yaml`.
+- Windows write-back parity is still incomplete if issue `#1918` (Windows auto-memory sync back to repo) is still open. Windows can consume shared context now, but may not automatically publish all new learnings back into the ecosystem.
+- Treat Windows as **repo-parity first**: Claude Code reads `.claude/` directly, so you retain most Hermes advantages even without installing Hermes locally.
+
+### Practical interpretation
+
+If the machine can:
+- `git pull`
+- run Claude Code from repo root
+- execute `.claude/settings.json` hooks successfully under Git Bash
+- see shared `.claude/skills/`, `.claude/memory/`, `.claude/state/`
+
+then it is good enough for productive Claude-on-Windows work, even if full Hermes runtime parity is not yet complete.
+
 ## Common Windows Pitfalls
 
 ### Antivirus Blocking

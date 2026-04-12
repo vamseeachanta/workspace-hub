@@ -30,7 +30,12 @@ Use when you need to audit AI-provider activity across the workspace-hub repo, i
 ### 1. Claude
 - Raw Claude orchestrator logs live at `logs/orchestrator/claude/session_*.jsonl`.
 - If raw logs exist, audit them directly; only fall back to saved Claude audit JSON when raw logs are absent.
-- Current raw Claude logs do not persist `session_id`, so `unique_runtime_sessions` is unavailable; report that limitation explicitly instead of inventing heuristics.
+- Historical Claude raw logs may not persist `session_id`, so `unique_runtime_sessions` can be unavailable on old corpus slices; report that limitation explicitly instead of inventing heuristics.
+- The minimal safe producer-side fix is in `.claude/hooks/session-logger.sh`:
+  - parse `.session_id // ""` from hook stdin JSON
+  - append optional top-level `session_id` to the emitted ENTRY object
+  - keep existing fields and both write paths unchanged
+- Once this patch is active, new Claude raw logs can support real `unique_runtime_sessions`; old logs remain legacy/no-session-id.
 
 ### 2. Codex
 - Codex log commands are often stored in a spaced-character encoding.
@@ -124,6 +129,10 @@ For shell exporters, prefer subprocess tests over string-only tests.
    - state file exists
    - mapped fields are correct
    - rerun dedup/skip behavior works where applicable
+6. Also add one hook-level behavioral test for Claude logger changes:
+   - run `.claude/hooks/session-logger.sh` directly in a temp repo
+   - pass stdin JSON containing `session_id`, `tool_name`, and `tool_input`
+   - verify both `.claude/state/sessions/session_YYYYMMDD.jsonl` and `logs/orchestrator/claude/session_YYYYMMDD.jsonl` receive the new field without breaking existing fields
 
 ## Verification checklist
 After any exporter/audit change:

@@ -49,10 +49,20 @@ A reusable provider audit should:
   - top repos
   - top reads
   - missing repo reads
+  - remediation hints for stale repo reads
   - missing external reads
   - blank-read count
   - python3 vs `uv run ... python`
+- emit an executive migration-debt summary derived from remediation-mapped stale reads
 - treat provider-specific quirks correctly.
+
+  - known migration debt per 1k records
+  - rule-cluster count
+  - top migration rule id / reads / share
+  - provider rank by migration-debt density
+- treat provider-specific quirks correctly.
+
+
 
 #### Codex command normalization rule
 Codex logs may encode commands as single characters separated by spaces.
@@ -89,6 +99,10 @@ The wrapper should:
 - log to `logs/quality/provider-session-ecosystem-audit-*.log`
 
 ### 4. Update discoverability docs
+### 4. Update discoverability docs
+Update at least:
+- `logs/orchestrator/README.md`
+### 4. Update discoverability docs
 Update at least:
 - `logs/orchestrator/README.md`
 - root `README.md`
@@ -99,6 +113,19 @@ Document:
 - canonical output paths
 - scheduled task id
 - input expectations per provider
+- where stale-path redirects live (`docs/ops/legacy-claude-reference-map.md`)
+- which docs are intentionally allowed to mention legacy paths vs which should stay clean
+
+When the audit reveals stale path drift, also patch the redirect surfaces that teach agents what to do instead. In this repo the highest-value targets were:
+- `docs/ops/legacy-claude-reference-map.md`
+- `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`
+- `GEMINI.md`
+- `.planning/templates/route-c-*.md`
+- `.planning/skills/skill-knowledge-map.md`
+
+Then add docs regression tests so deleted paths cannot silently spread back into current planning/onboarding docs.
+
+
 
 ## Gemini native session export
 Gemini is the tricky provider.
@@ -214,6 +241,84 @@ Export at least:
 
 Without per-tool-call dedupe, rerunning the exporter after Codex appends new function calls will duplicate the already-exported history and distort provider comparisons.
 
+### Migration-debt remediation summaries
+When stale repo reads cluster around known removed workflow surfaces, add redirect intelligence directly into the audit output rather than only listing missing files.
+
+Recommended pattern:
+- maintain a small static rule catalog in the audit script
+- group top missing repo reads into reusable remediation clusters
+- include for each cluster:
+  - `rule_id`
+  - `matched_paths`
+  - `total_count`
+  - `canonical_targets`
+  - `guidance`
+  - `reference_doc`
+- expose this per provider as `missing_repo_read_remediation_hints`
+- render a markdown subsection such as `### <provider> remediation hints for stale repo reads`
+
+High-value legacy clusters seen in practice:
+- old `scripts/work-queue/*` transition scripts -> governance docs/hooks
+- old `generate-html-review.py` -> `scripts/review/cross-review.sh` + current review evidence/template surfaces
+- old work-queue lifecycle scripts -> `scripts/refresh-agent-work-queue.*`, `notes/agent-work-queue.md`, `.planning/`, GitHub issues
+- removed work-queue skills -> `AGENTS.md`, GSD command/workflow surfaces
+- removed `scripts/agents/*` wrapper tree -> `AGENTS.md`, current architecture docs, review/planning entrypoints
+- local `.claude/work-queue/*` item files -> GitHub issues + `.planning/` as canonical source of truth
+
+Also add an executive-summary migration-debt ranking using remediation-mapped stale reads:
+- `known_migration_debt_reads`
+- `known_migration_debt_per_1k_records`
+- `known_migration_debt_rule_count`
+- `top_migration_rule_id`
+- `top_migration_rule_reads`
+- `top_migration_rule_share_pct`
+- `migration_debt_rank`
+
+Rank providers primarily by `known_migration_debt_per_1k_records`, then by mapped debt volume.
+Label the scope clearly: this is a bounded/actionable migration-debt view derived from remediation-mapped entries in top missing repo reads, not a full census of all missing reads.
+
+### Migration-debt and stale-path remediation summaries
+After computing `top_missing_repo_reads`, add a remediation layer:
+- match known stale paths/prefixes to canonical redirect rules
+- group matched stale paths into remediation clusters
+- emit per-provider `missing_repo_read_remediation_hints`
+- include:
+  - `rule_id`
+  - `total_count`
+  - `matched_paths`
+  - `canonical_targets`
+  - `guidance`
+  - `reference_doc`
+
+Then build an executive-summary migration-debt ranking using remediation-mapped stale reads:
+- `known_migration_debt_reads`
+- `known_migration_debt_per_1k_records`
+- `known_migration_debt_rule_count`
+- `top_migration_rule_id`
+- `top_migration_rule_reads`
+- `top_migration_rule_share_pct`
+- `migration_debt_rank`
+
+Important scope note:
+- this metric is intentionally bounded to remediation-mapped stale reads from the provider's top missing repo reads, not all missing-path drift
+
+This turns the audit from a dead-file leaderboard into an actionable migration-debt report.
+
+### Doc guardrails to keep drift from returning
+After cleaning high-value stale references in tracked planning/docs files, add regression tests such as:
+- a strict banned-reference test for curated instructional files
+- an allowlist-based test proving stale-path mentions remain confined to explicit legacy/reference docs only
+
+Good first strict targets:
+- `.planning/templates/route-c-*.md`
+- `docs/context-pipeline.md`
+
+Good allowlisted legacy/reference docs:
+- `GEMINI.md`
+- `docs/work-queue-workflow.md`
+- `docs/ops/legacy-claude-reference-map.md`
+- `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`
+
 ### Bash command-family summaries
 After provider-specific command decoding, add a lightweight cleanup pass before prefix extraction:
 - drop blank/comment-only leading lines
@@ -249,10 +354,49 @@ Example high-value verification sequence:
 - Gemini exporter must scan both repo-name and project-hash native directories
 - Gemini exporter must dedupe per tool call, not just per file timestamp
 
+## Regression guardrails for stale-path drift
+After the audit starts surfacing recurring stale repo reads, add lightweight regression tests so cleaned docs/templates do not drift back toward deleted workflow paths.
+
+Recommended pattern:
+- create a shared helper under `tests/helpers/` that centralizes banned stale-path regexes and a file scanner
+- add a strict curated docs test for high-value instructional files (for example Route-C templates and current workflow docs)
+- add an allowlist-based docs test proving stale-path mentions are confined to explicit legacy/reference docs only
+- expand the allowlist-scan over time as more live docs are cleaned
+- add an audit test proving remediation hints still cover the highest-value stale families:
+  - `scripts/work-queue/*`
+  - `scripts/agents/*`
+  - `.claude/work-queue/*`
+  - old work-queue skill paths
+
+This turns the audit from passive reporting into an active anti-regression system.
+
+## Executive migration-debt summary
+Once remediation hints exist, add a compact executive-summary ranking so the worst provider drift rises to the top immediately.
+
+Recommended derived fields:
+- `known_migration_debt_reads`
+- `known_migration_debt_per_1k_records`
+- `known_migration_debt_rule_count`
+- `top_migration_rule_id`
+- `top_migration_rule_reads`
+- `top_migration_rule_share_pct`
+- `migration_debt_rank`
+- `migration_debt_status`
+
+Preferred ranking:
+- sort by `known_migration_debt_per_1k_records` descending
+- tie-break with total known mapped debt, then top-rule volume
+
+Important scope note:
+- label this as remediation-mapped / top-missing-read migration debt, not a full census of all missing-path drift
+
 ## Outcome to aim for
 A good implementation leaves the repo with:
 - stable cross-provider audit artifacts
 - recurring scheduled refresh
 - corrected provider-specific read classification
 - raw Gemini session coverage in repo-local orchestrator logs
+- remediation hints for stale repo reads in both JSON and Markdown outputs
+- executive migration-debt ranking across providers
+- docs/tests guardrails that prevent cleaned workflow surfaces from reintroducing deleted paths
 - tests proving the wrapper/export/report path remains intact

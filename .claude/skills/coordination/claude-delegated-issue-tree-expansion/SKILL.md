@@ -52,15 +52,29 @@ Example subagent framing:
 4. Create issues yourself in the main session
 - Write each issue body to `/tmp/*.md`.
 - Use `gh issue create ... --body-file ...` from the real repo.
-- Create a small, coherent batch each round (about 4-7 issues worked well) rather than dumping dozens of siblings at once.
+- Create a small, coherent batch each round (about 4-7 issues worked well; 6 was a reliable default) rather than dumping dozens of siblings at once.
+- Use parallel tool calls when creating a batch of issue-body temp files or multiple `gh issue create` calls that are independent.
 - Do not ask subagents to create files/issues; keep all persistence local.
 
 5. Update the canonical issue map
 - Patch the main planning/review doc to add the new issue IDs.
-- Add a comment to the umbrella issue summarizing the newly created child issues.
+- Add a comment to the umbrella issue summarizing the newly created child issues after every wave, not just at the end.
 - Verify by reading the updated doc section and `gh issue view` for each created issue.
-- If a doc link was added earlier but the target file is now missing locally, recreate the file first, then restore README/doc links before continuing the tree expansion.
+- If a doc link was added earlier but the target file is now missing locally, recreate the file first, then restore README/doc links before continuing the tree expansion. This happened in practice: README links existed while the canonical weekly-review doc was missing from the worktree.
 - After each round, identify the next best split points (for example: Linux vs Windows writer, schema vs validator, runner vs schedule registration) before launching another delegation wave.
+- Once the tree gets deep, explicitly branch the next wave by implementation pressure. A pattern that worked well was:
+  - Windows/tool-validation branch
+  - publication/promotion-hardening branch
+  - registry/governance branch
+- Keep the doc's related-issues list append-only and ordered by dependency depth so later waves stay legible.
+
+5a. Favor operationally meaningful children over more umbrella restatements
+- Prefer issues like `rollback journal`, `pre-promotion gate`, `shared-asset placement`, `suppression renewal queue`, or `provider-specific budgets` over generic restatements like `improve automation`.
+- Good deep-child issues usually do one of four things:
+  1. define a narrow contract/schema
+  2. implement one adapter/writer/runner
+  3. add a targeted fixture/smoke/snapshot suite
+  4. enforce a governance gate or recovery path
 
 6. Recurse only on the strongest branches
 - Do not deepen every branch at once.
@@ -79,6 +93,16 @@ For broad ecosystem initiatives, use three Claude lanes in parallel:
 3. automation / reporting / governance
 
 Then, if needed, do another round splitting the best new issues into implementation-level children.
+
+As the tree gets deeper, a highly reusable second-stage branch pattern is:
+1. Windows/tool-validation or machine-specific execution branch
+2. publication/promotion hardening branch
+3. registry/governance/actionability branch
+
+This branch pattern worked well because each lane had a distinct failure mode:
+- Windows/tool-validation: adapters, smoke fixtures, launcher/scheduler plumbing, mixed-state reporting
+- publication/promotion: staged promotion, rollback, checksums, shared-asset lifecycle, recovery-state tests
+- registry/governance: drift budgets, suppressions, lineage, owner assignment, escalation
 
 ## Good child-issue characteristics
 
@@ -108,6 +132,17 @@ Good examples:
 - [ ] canonical doc lists the new issue IDs
 - [ ] umbrella issue has a summary comment linking the new children
 - [ ] no obvious duplicate with already-open issues in the same tree
+- [ ] branch names in the latest wave are still meaningful (avoid tiny sibling issues with no independent value)
+
+## Stop condition
+
+Stop deepening the tree when the next issues become mostly one of these anti-patterns:
+- implementation steps too small to stand alone
+- multiple proposed issues would land in the same file/PR anyway
+- the next child issue is just a rewording of its parent
+- governance/reporting branches are producing more tracking than execution value
+
+A good stopping point is when each remaining issue is clearly assignable to a single implementation pass or review pass without further decomposition.
 
 ## Reusable output structure
 

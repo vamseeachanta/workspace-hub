@@ -114,6 +114,74 @@ When delivering the prompts to the user:
 - mention real repo path and owner/repo if helpful
 - clearly state whether prompts are execution-ready or assessment-first
 - keep each prompt ready to paste into Claude
+- when useful, also save the prompt pack into the repo under `docs/plans/<date>-single-terminal-claude-agent-team-prompts-<issue-range>.md`
+- if you also perform read-only triage, save a second handoff doc such as `docs/plans/<date>-top3-issue-assessment-dossiers.md`
+
+## Sequential execution loop for approved issue chains
+
+When you are running a series of related issues one after another in fresh Claude terminals, use this loop:
+
+1. Review the just-finished issue from live artifacts, not only the Claude terminal summary.
+   - Read the created docs/review artifacts.
+   - Read the live GitHub issue comment/label state.
+   - Check repo dirtiness before preparing the next prompt.
+2. Decide the next issue from live readiness, not just planned dependency order.
+   - Prefer issues already carrying `status:plan-approved`.
+   - If the next architectural dependency is not approved, fall back to the next concrete planning-ready issue or generate a planning-only prompt instead of pretending implementation is authorized.
+3. Generate a new file-based prompt for the next issue with:
+   - exact allowed write paths
+   - explicit forbidden paths
+   - live sibling/parent references
+   - dirtiness warning if the repo has unrelated changes
+4. Launch Claude with a file-based prompt and closed stdin.
+   - Recommended pattern:
+     `PROMPT=$(< docs/plans/<prompt-file>.md)`
+     `claude -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>.log`
+   - Use `--permission-mode plan` for safety-first read-only planning passes.
+5. Monitor the subprocess with watch patterns or polling rather than assuming immediate stdout.
+   - Good watch patterns: `APPROVED`, `MAJOR`, `status:plan-review`, `What changed`, `Final review verdict`
+6. After completion, repeat the loop.
+
+This pattern is especially useful for architecture/program issues where each completed child artifact becomes authoritative input for the next prompt.
+
+## Delegated adversarial QA pattern
+
+When the user says "continue" or asks you to take the next step after the prompt pack is drafted, use Claude subagents in read-only mode to adversarially review the prompts before finalizing execution advice.
+
+Recommended pattern:
+1. Split the issue range into at most 2-3 batches
+   - e.g. `#2150-#2154` and `#2155-#2159`
+2. Delegate each batch to a Claude subagent with instructions to:
+   - inspect the live issue bodies
+   - inspect neighboring repo structure
+   - identify likely owned/read-only/forbidden paths
+   - identify likely blockers and dependency chains
+   - recommend exact validation commands
+   - explicitly account for missing `status:plan-approved`
+3. Merge the findings back into the saved prompt pack
+
+Use this when:
+- the issue cluster is non-trivial
+- owned paths are not obvious from one quick scan
+- you want adversarial review on prompt wording and dependency handling
+
+## Top-3 assessment-dossier follow-up
+
+After writing a full prompt pack, a strong next step is to delegate read-only Claude assessments for the top 3 most promising issues and save the results as a short operator dossier.
+
+Recommended order in plan-gated repos:
+1. choose the 2-3 best foundational issues
+2. delegate one issue per Claude subagent
+3. ask each subagent to return:
+   - current approval status
+   - likely owned paths
+   - likely blockers / dependencies
+   - exact first failing tests / validation commands to use after approval
+   - verdict: already done / not done / uncertain
+4. save the merged result to:
+   - `docs/plans/<date>-top3-issue-assessment-dossiers.md`
+
+This is especially useful when live `status:plan-approved` count is zero: it turns a blocked execution wave into an operator-ready approval and launch sequence.
 
 ## Example live status note
 

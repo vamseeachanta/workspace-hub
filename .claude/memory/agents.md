@@ -74,12 +74,12 @@ GSD is the sole workflow system since 2026-03-25.
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-04-12*
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 ## ACE Engineer GTM Context
 
-- `aceengineer-strategy/` — private nested repo with full GTM strategy
+- `aceengineer-strategy/` — private nested repo with full GTM strategy *verified: 2026-04-12*
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)

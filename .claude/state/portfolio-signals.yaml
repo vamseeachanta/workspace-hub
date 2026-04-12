@@ -1,4 +1,4 @@
-generated_at: '2026-04-11T07:01:33Z'
+generated_at: '2026-04-12T07:02:27Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,29 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-04-10'
+  provider: claude
+  capability: Native 3D mesh processing for finite element analysis
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://anthropic.com/news/claude-mesh-analysis-2026
+- date: '2026-04-08'
+  provider: gemini
+  capability: Multimodal fluid dynamics and multiphase flow simulation pipeline
+  engineering_domains:
+  - reservoir
+  - subsea
+  impact: high
+  source: https://blog.google/technology/ai/gemini-engineering-fluid-dynamics
+- date: '2026-04-06'
+  provider: codex
+  capability: Automated drilling trajectory optimization script generation
+  engineering_domains:
+  - drilling
+  impact: medium
+  source: https://openai.com/blog/codex-drilling-trajectory-optimization
 - date: '2026-04-10'
   provider: gemini
   capability: Gemini 2.5 Pro Physics Engine API
@@ -154,30 +177,6 @@ capability_signals:
   - reservoir
   impact: high
   source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-seismic-prediction
-- date: '2026-03-27'
-  provider: claude
-  capability: Real-time Drilling Telemetry Anomaly Detection
-  engineering_domains:
-  - drilling
-  - subsea
-  impact: medium
-  source: https://www.anthropic.com/news/drilling-telemetry-ai
-- date: '2026-03-25'
-  provider: gemini
-  capability: Native 3D Point Cloud Processing for Subsea Assets
-  engineering_domains:
-  - subsea
-  - structural
-  impact: high
-  source: https://blog.google/technology/ai/gemini-engineering-3d-point-cloud
-- date: '2026-03-24'
-  provider: claude
-  capability: FEA Solver Integration Plugin
-  engineering_domains:
-  - structural
-  - drilling
-  impact: high
-  source: https://www.anthropic.com/news/claude-fea-integration
 l3_meta:
   query_attempted: true
   query_mode: engineering
