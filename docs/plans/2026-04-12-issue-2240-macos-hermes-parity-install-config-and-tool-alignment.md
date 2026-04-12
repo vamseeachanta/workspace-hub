@@ -128,14 +128,14 @@ add regression tests():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | not yet reviewed |
-| Codex | pending | not yet reviewed |
-| Gemini | pending | not yet reviewed |
+| Claude | MAJOR | missing consumer inventory, unresolved macOS path contract, and insufficient downstream readiness-compatibility coverage |
+| Codex | MAJOR | producer files are named but reader coverage/path-contract decisions are still implicit; live validation must be deferred explicitly |
+| Gemini | MAJOR | macOS/BSD compatibility gaps in downstream readiness tooling and hostname-mapping assumptions are unaddressed |
 
-**Overall result:** pending
+**Overall result:** FAIL (re-draft required before implementation)
 
 Revisions made based on review:
-- none yet
+- none yet — plan must be revised to inventory all config consumers, define the canonical macOS workspace path/hostname mapping, and include downstream readiness compatibility checks before re-review
 
 ---
 

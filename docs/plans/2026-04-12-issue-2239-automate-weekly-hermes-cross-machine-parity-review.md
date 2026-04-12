@@ -123,14 +123,14 @@ main():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | not yet reviewed |
-| Codex | pending | not yet reviewed |
-| Gemini | pending | not yet reviewed |
+| Claude | MAJOR | inventory source is incomplete; Windows evidence interface undefined; v1 scope must explicitly defer auto issue creation |
+| Codex | MAJOR | checklist machine set does not match canonical registry/readiness sources; output retention/commenting/evidence interfaces underspecified |
+| Gemini | MINOR | add macOS + second Windows coverage to readiness source, define SSH timeout behavior, and avoid v1 issue-spam automation |
 
-**Overall result:** pending
+**Overall result:** FAIL (re-draft required before implementation)
 
 Revisions made based on review:
-- none yet
+- none yet — plan must be revised to define canonical machine inventory, explicit Windows evidence inputs, timeout behavior, and narrower v1 GitHub automation scope before re-review
 
 ---
 
