@@ -89,7 +89,13 @@
 - Stats with EWMA: `route.sh --stats`
 - Optimizer: `scripts/coordination/routing/optimize_weights.sh` *verified: 2026-04-04*
 
+## Session Log Ecosystem
+
+- Raw provider session logs under `logs/orchestrator/<provider>/session_*.jsonl` are machine-local and gitignored; portable insight should move through audit artifacts and repo-tracked memory/docs instead of committing raw logs *verified: 2026-04-11*
+- Interpret high-volume missing-path reads in provider audits as migration debt first; redirect to `docs/ops/legacy-claude-reference-map.md` rather than recreating deleted workflow files *verified: 2026-04-11*
+
 ## Topic Files
 
 - `orcawave-lessons.md` — OrcFxAPI usage, YAML gotchas, result extraction
 - `aqwa-lessons.md` — DAT format, LIS parsing, mesh quality, heading conventions
+- `session-log-portability.md` — provider export/audit pipeline, local-vs-portable session artifacts, and migration-debt interpretation

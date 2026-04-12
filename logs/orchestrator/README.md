@@ -11,6 +11,10 @@ logs/orchestrator/
 │   └── session_YYYYMMDD.jsonl             ← real-time, per tool-call (hook)
 ├── codex/
 │   └── WRK-NNN-YYYYMMDDTHHMMSSZ.log      ← per invocation (submit-to-codex.sh)
+├── hermes/
+│   ├── session_YYYYMMDD.jsonl             ← exported from native Hermes sessions
+│   ├── corrections/session_YYYYMMDD.jsonl ← Hermes self-correction sessions
+│   └── skill-patches.jsonl                ← Hermes skill patch log (unique to Hermes)
 └── gemini/
     └── WRK-NNN-YYYYMMDDTHHMMSSZ.log      ← per invocation (submit-to-gemini.sh)
 ```
@@ -21,6 +25,7 @@ logs/orchestrator/
 |--------|-----------------------|----------------|--------|
 | Claude | `session-logger.sh`   | Per tool call  | JSONL  |
 | Codex  | `submit-to-codex.sh`  | Per invocation | text   |
+| Hermes | export script (below) | Per export run | JSONL  |
 | Gemini | `submit-to-gemini.sh` | Per invocation | text   |
 
 ## Native Session Stores (per-agent, outside repo)
@@ -71,6 +76,10 @@ bash scripts/cron/hermes-session-export.sh
 bash scripts/cron/codex-session-export.sh
 bash scripts/cron/gemini-session-export.sh
 ```
+
+**Important: run exports BEFORE the audit.** The audit reads `session_*.jsonl` files
+in each provider directory. If exports haven't run recently, the audit produces stale
+results. The recommended sequence is: export all providers → run audit → commit outputs.
 
 Exporter state files:
 - Hermes: `logs/orchestrator/hermes/.last-export-ts`
