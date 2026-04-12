@@ -1,6 +1,6 @@
 # Plan for #2239: automate weekly Hermes cross-machine parity review
 
-> Status: draft
+> Status: adversarial-reviewed
 > Complexity: T2
 > Date: 2026-04-12
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2239
@@ -65,7 +65,16 @@
 
 ## Deliverable
 
-A weekly scheduled parity-review workflow that reads the canonical Hermes checklist, collects machine-by-machine evidence, writes a dated weekly artifact, and integrates cleanly with the repo’s YAML-driven scheduling system.
+A weekly scheduled parity-review workflow that reads the canonical Hermes checklist, collects direct evidence for supported machines, renders explicit `blocked`/`unsupported` status for machines without a defined evidence interface, writes a dated weekly artifact, and integrates cleanly with the repo’s YAML-driven scheduling system.
+
+### V1 machine/evidence contract
+- `dev-primary` / `ace-linux-1`: direct local probes
+- `dev-secondary` / `ace-linux-2`: timeout-wrapped SSH probes
+- `licensed-win-1`: explicit readiness/bridge artifact at `.claude/state/harness-readiness-licensed-win-1.yaml`
+- `licensed-win-2`: reported as `blocked` in v1 until a canonical artifact path/report contract exists
+- `macbook-portable`: reported as `unsupported` or `blocked` in v1 until #2240 lands canonical registry/readiness support
+
+V1 must never silently skip an in-scope machine.
 
 ---
 
@@ -111,10 +120,13 @@ main():
 | `test_weekly_parity_script_writes_dated_artifact` | script creates a dated output artifact in the expected directory | temp workspace + mocked commands | one `logs/weekly-parity/*` file exists |
 | `test_weekly_parity_script_marks_unreachable_machine_nonfatal` | unreachable remote host is reported but does not crash the run | mocked ssh failure for one host | artifact contains `unreachable` and script exits 0 |
 | `test_weekly_parity_script_ingests_windows_bridge_artifact` | Windows readiness artifact is parsed and surfaced explicitly | mocked `.claude/state/harness-readiness-licensed-win-1.yaml` input | artifact contains Windows machine status |
+| `test_weekly_parity_script_marks_licensed_win_2_blocked_without_artifact_contract` | second Windows host is not silently omitted when no canonical artifact path exists | registry includes `licensed-win-2`, no artifact mapping configured | artifact marks `licensed-win-2` as `blocked` |
+| `test_weekly_parity_script_marks_checklist_only_macos_blocked_or_unsupported` | checklist/registry mismatch is surfaced honestly | checklist includes `macbook-portable`, registry/readiness support absent | artifact marks macOS as `blocked` or `unsupported` |
 | `test_weekly_parity_script_uses_timeout_wrapped_remote_probes` | SSH-based evidence collection cannot hang indefinitely | mocked remote probe call | script exits within timeout path and records timeout state |
 | `test_schedule_yaml_declares_weekly_parity_task` | schedule includes the new task with required fields | updated YAML | validator passes and dry-run renders the entry |
 | `test_summary_includes_issue_links_and_follow_on_guidance` | output links #1583 / #2089 and preserves follow-on guidance | generated artifact | issue references and follow-on section present |
 | `test_missing_evidence_never_counts_as_pass` | unsupported/missing machine evidence is reported honestly | absent macOS/Windows evidence sources | artifact marks machine as `blocked` or `unsupported`, never `pass` |
+| `test_github_commenting_respects_explicit_flag` | commenting stays off by default and only runs when explicitly enabled | scheduled run with and without comment flag | no comment by default; comment only when flag set |
 
 
 ---
@@ -138,15 +150,16 @@ main():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | inventory source is incomplete; Windows evidence interface undefined; v1 scope must explicitly defer auto issue creation |
-| Codex | MAJOR | rerun still finds non-SSH evidence mapping underspecified, especially `licensed-win-2` / checklist-registry mismatch handling |
-| Gemini | APPROVE with MINOR | rerun accepts bounded v1 scope but asks for comment-flag test and cleanup of stale review-state text |
+| Claude | APPROVE with MINOR | latest draft closes the v1 machine/evidence contract; remaining work is editorial state cleanup only |
+| Codex | APPROVE | final lightweight rerun confirms non-SSH mapping, checklist/registry handling, and default-no-comment coverage are now explicit |
+| Gemini | APPROVE | final lightweight rerun confirms all prior blockers are resolved |
 
-**Overall result:** FAIL after rerun (re-draft still required before implementation)
+**Overall result:** PASS — ready for user approval
 
 Revisions made based on review:
 - first revision incorporated canonical registry inventory, timeout-wrapped probes, explicit Windows bridge-artifact ingestion, and v1 deferral of auto-issue creation
-- rerun still requires one more draft pass to define per-machine non-SSH evidence mapping, add `licensed-win-2` / registry-checklist mismatch tests, and normalize the plan artifact state text before approval
+- second revision defined the v1 machine/evidence contract explicitly (`licensed-win-1` supported, `licensed-win-2` blocked until canonical artifact path exists, `macbook-portable` unsupported/blocked until #2240 lands), added registry/checklist mismatch tests, and added an explicit default-no-comment test
+- final lightweight rerun from Codex and Gemini approved the plan with no remaining MAJOR blockers
 
 ---
 
