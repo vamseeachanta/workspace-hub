@@ -4,7 +4,8 @@
 > **Parent:** [#2205](https://github.com/vamseeachanta/workspace-hub/issues/2205) — LLM-Wiki + Resource/Document Intelligence Operating Model
 > **Siblings:** [#2207](https://github.com/vamseeachanta/workspace-hub/issues/2207) (provenance contract), [#2209](https://github.com/vamseeachanta/workspace-hub/issues/2209) (durable/transient boundary)
 > **Status:** Normative — approved intelligence accessibility inventory for weekly review consumption
-> **Date:** 2026-04-11
+> **Date:** 2026-04-12
+> **Last refresh:** 2026-04-12 — corrected stale assertions after #2104, #2136, #2225, #2226 landed; added ACMA-source accessibility notes (#2228)
 > **Scope:** Inventory and accessibility analysis only. Canonical entry-point design is delegated to #2104; machine-readable registry implementation is delegated to #2136.
 
 ---
@@ -124,7 +125,7 @@ Machine-readable inventory and provenance tracking surfaces.
 | Corpus index | `data/document-index/index.jsonl` | ~1,033,933 records | Per-document index (path, SHA-256, size, extension, source) |
 | Registry stats | `data/document-index/registry.yaml` | Aggregate | Counts by source, domain, repo |
 | Standards transfer ledger | `data/document-index/standards-transfer-ledger.yaml` | 425 standards | Standard-to-repo/module mapping with status |
-| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | 8 sources | Source-root inventory with mount definitions |
+| Mounted source registry | `data/document-index/mounted-source-registry.yaml` | 12 sources | Source-root inventory with mount definitions (includes `acma_codes_local` per #2225) |
 | Summaries | `data/document-index/summaries/<sha>.json` | ~639,585 files | Per-document LLM/deterministic classification |
 | Enhancement plan | `data/document-index/enhancement-plan.yaml` | 34,099 lines | Domain classification + gap analysis output |
 | Online resource registry | `data/document-index/online-resource-registry.yaml` | ~247 resources | Tracked online data sources |
@@ -175,10 +176,10 @@ This is the core deliverable. Each row maps an asset to its current discoverabil
 
 | Asset | Layer | Canonical Location | Current Entry Point(s) | Intended Users | Discoverability | Gaps |
 |---|---|---|---|---|---|---|
-| Engineering wiki | L3 | `knowledge/wikis/engineering/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md` | Agent + Human | **Discoverable** (from wiki CLAUDE.md) | Not linked from `docs/README.md`; no mention in `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` |
-| Marine-engineering wiki | L3 | `knowledge/wikis/marine-engineering/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md` | Agent + Human | **Discoverable** (from wiki CLAUDE.md) | Same gap as above; 19K pages with no curated entry beyond the index |
-| Maritime-law wiki | L3 | `knowledge/wikis/maritime-law/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md` | Agent + Human | **Discoverable** (from wiki CLAUDE.md) | Same gap as above |
-| Naval-architecture wiki | L3 | `knowledge/wikis/naval-architecture/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md` | Agent + Human | **Discoverable** (from wiki CLAUDE.md) | Same gap as above |
+| Engineering wiki | L3 | `knowledge/wikis/engineering/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md`, `docs/README.md` | Agent + Human | **Discoverable** | Now linked from `docs/README.md` and `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` |
+| Marine-engineering wiki | L3 | `knowledge/wikis/marine-engineering/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md`, `docs/README.md` | Agent + Human | **Discoverable** | Now linked from `docs/README.md`; 19K pages with no curated entry beyond the index |
+| Maritime-law wiki | L3 | `knowledge/wikis/maritime-law/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md`, `docs/README.md` | Agent + Human | **Discoverable** | Now linked from `docs/README.md` |
+| Naval-architecture wiki | L3 | `knowledge/wikis/naval-architecture/wiki/` | `CLAUDE.md` per wiki, `wiki/index.md`, `docs/README.md` | Agent + Human | **Discoverable** | Now linked from `docs/README.md` |
 | Personal wiki | L3 | `knowledge/wikis/personal/wiki/` | `CLAUDE.md` per wiki | Agent + Human | **Partially discoverable** | No external references |
 | Cross-wiki link index | L4 | `knowledge/wikis/cross-links.md` | None from docs/ | Agent + Human | **Hard to discover** | Only 25 links; no reference from `docs/README.md` or wiki indexes |
 | Knowledge seeds | L3-input | `knowledge/seeds/*.yaml` | `data-intelligence-map.md` Section 6 | Agent | **Partially discoverable** | Mentioned in data-intelligence-map but not from main docs entry points |
@@ -189,7 +190,7 @@ This is the core deliverable. Each row maps an asset to its current discoverabil
 |---|---|---|---|---|---|---|
 | Corpus index (`index.jsonl`) | L2 | `data/document-index/index.jsonl` | `data-intelligence-map.md` Section 1 | Agent (pipeline) | **Partially discoverable** | Referenced in data-intelligence-map but not from docs/README.md |
 | Standards transfer ledger | L2 | `data/document-index/standards-transfer-ledger.yaml` | `data-intelligence-map.md` Section 1 | Agent + Human | **Partially discoverable** | Same |
-| Mounted source registry | L2 | `data/document-index/mounted-source-registry.yaml` | `data-intelligence-map.md` Section 1 | Agent | **Partially discoverable** | Same |
+| Mounted source registry | L2 | `data/document-index/mounted-source-registry.yaml` | `data-intelligence-map.md` Section 1, `docs/document-intelligence/README.md` | Agent | **Partially discoverable** | Now 12 sources including `acma_codes_local` (#2225) |
 | Summaries directory | L2 | `data/document-index/summaries/` | `data-intelligence-map.md` Section 1 | Agent (pipeline) | **Partially discoverable** | 639K files; no human-navigable summary of what's covered |
 | Design code registry | L2 | `data/design-codes/code-registry.yaml` | `data-intelligence-map.md` Section 5 | Agent + Human | **Partially discoverable** | Not referenced from engineering wiki or standards wiki pages |
 | Online resource registry | L2 | `data/document-index/online-resource-registry.yaml` | `data-intelligence-map.md` Section 1 | Agent | **Hard to discover** | Only referenced from data-intelligence-map |
@@ -201,11 +202,11 @@ This is the core deliverable. Each row maps an asset to its current discoverabil
 
 | Asset | Layer | Canonical Location | Current Entry Point(s) | Intended Users | Discoverability | Gaps |
 |---|---|---|---|---|---|---|
-| Parent operating model (#2205) | L3-adj | `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` | Cross-links in #2207, #2209 docs | Human + Agent | **Partially discoverable** | Not linked from `docs/README.md`; no entry in `docs/document-intelligence/` index |
-| Provenance contract (#2207) | L3-adj | `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` | Parent operating model cross-link table | Human + Agent | **Partially discoverable** | Only reachable via parent doc or grep |
-| Boundary policy (#2209) | L3-adj | `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` | Parent operating model cross-link table | Human + Agent | **Partially discoverable** | Same |
-| Data intelligence map | L4 | `docs/document-intelligence/data-intelligence-map.md` | None from `docs/README.md` | Human + Agent | **Partially discoverable** | Best existing inventory, but not linked from main navigation |
-| Engineering documentation map | L4 | `docs/document-intelligence/engineering-documentation-map.md` | None from `docs/README.md` | Human | **Hard to discover** | Detailed but isolated |
+| Parent operating model (#2205) | L3-adj | `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` | `docs/document-intelligence/README.md`, cross-links in #2207/#2209 docs | Human + Agent | **Discoverable** | Now linked from `docs/document-intelligence/README.md` reading-order list and `docs/README.md` via intelligence landing page |
+| Provenance contract (#2207) | L3-adj | `docs/document-intelligence/standards-codes-provenance-reuse-contract.md` | `docs/document-intelligence/README.md`, parent operating model cross-link table | Human + Agent | **Discoverable** | Now linked from `docs/document-intelligence/README.md` Architecture table |
+| Boundary policy (#2209) | L3-adj | `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` | `docs/document-intelligence/README.md`, parent operating model cross-link table | Human + Agent | **Discoverable** | Now linked from `docs/document-intelligence/README.md` Architecture table |
+| Data intelligence map | L4 | `docs/document-intelligence/data-intelligence-map.md` | `docs/README.md` via intelligence landing page | Human + Agent | **Partially discoverable** | Now reachable within 2 hops from `docs/README.md` |
+| Engineering documentation map | L4 | `docs/document-intelligence/engineering-documentation-map.md` | `docs/document-intelligence/README.md` Maps table | Human | **Partially discoverable** | Now linked from `docs/document-intelligence/README.md` |
 | Document intelligence audit | L5 | `docs/assessments/document-intelligence-audit.md` | None from standard paths | Human | **Hard to discover** | Point-in-time audit; no backlink from pipeline docs |
 
 ### 5.4 Control-Plane and Weekly Review
@@ -214,53 +215,66 @@ This is the core deliverable. Each row maps an asset to its current discoverabil
 |---|---|---|---|---|---|---|
 | Weekly review template | Operational | `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` | `docs/README.md` Quick Links section | Human + Agent | **Discoverable** | Listed in docs/README.md |
 | Control-plane contract | Governance | `docs/standards/CONTROL_PLANE_CONTRACT.md` | `docs/README.md` Standards section | Human + Agent | **Discoverable** | Listed in docs/README.md |
-| Docs README index | L4 | `docs/README.md` | Repo root README → `docs/` | Human + Agent | **Discoverable** | Does not reference `knowledge/wikis/`, `data/document-index/`, or `docs/document-intelligence/` beyond a few links |
-| Capabilities summary | L4 | `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` | `docs/README.md` | Human + Agent | **Discoverable** | Does not mention LLM-wikis or document-intelligence pipeline |
+| Docs README index | L4 | `docs/README.md` | Repo root README → `docs/` | Human + Agent | **Discoverable** | Now includes "Knowledge & Intelligence Ecosystem" section linking to wikis, registries, and intelligence landing page |
+| Capabilities summary | L4 | `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` | `docs/README.md` | Human + Agent | **Discoverable** | Now includes "Knowledge & Intelligence Ecosystem" section covering LLM-wikis, document-intelligence pipeline, and knowledge seeds |
 
 ---
 
 ## 6. Current Broken and Weak Accessibility Patterns
 
-### 6.1 The `docs/README.md` blind spot
+### 6.1 ~~The `docs/README.md` blind spot~~ — RESOLVED
 
-**Problem:** `docs/README.md` is the primary human/agent documentation entry point but has **no links to**:
-- `knowledge/wikis/` (19,000+ LLM-wiki pages)
-- `data/document-index/` (1M+ indexed documents)
-- `docs/document-intelligence/` (the entire intelligence architecture directory)
-- `data/design-codes/` (design code registry)
-- The parent operating model (#2205) or any sibling contracts
+**Status:** Resolved as of 2026-04-11 (#2104 implementation).
 
-**Impact:** An agent or human entering via `docs/README.md` will not discover the intelligence ecosystem at all. They will find AI agent guidelines, workflow docs, and standards — but not the domain knowledge, provenance registries, or intelligence architecture documents.
+`docs/README.md` now includes a "Knowledge & Intelligence Ecosystem" section linking to:
+- `knowledge/wikis/` (19,300+ LLM-wiki pages across 5 domains)
+- `docs/document-intelligence/README.md` (intelligence landing page)
+- `data/document-index/` via data-intelligence-map reference
+- `data/design-codes/code-registry.yaml`
+- Weekly intelligence review
 
-**Classification:** **Broken — high severity.** This is the single biggest discoverability gap.
+**Previous classification:** Broken — high severity. **Current classification:** Resolved.
 
-### 6.2 No unified intelligence entry point
+### 6.2 ~~No unified intelligence entry point~~ — PARTIALLY RESOLVED
 
-**Problem:** There are multiple partial navigation surfaces, but none covers the full intelligence ecosystem:
-- `data-intelligence-map.md` covers registries and indexes but not wikis or architecture docs
-- `engineering-documentation-map.md` covers engineering documents by domain but not the intelligence architecture
-- Wiki `index.md` files cover individual wiki domains but have no upward link to the intelligence ecosystem
-- `holistic-resource-intelligence.md` is a plan (L5), not a navigation surface (L4)
+**Status:** Partially resolved as of 2026-04-11 (#2104 implementation).
 
-**Impact:** To get a full picture of available intelligence, an agent must consult at least 3-4 separate documents and know they exist.
+`docs/document-intelligence/README.md` now serves as a unified intelligence landing page with:
+- Reading-order guidance for newcomers (4-step sequence)
+- Architecture docs table (operating model, provenance, boundary policy, conformance)
+- Knowledge assets table (all 5 wiki domains + seeds)
+- Registries & provenance summary with key surfaces
+- Maps & inventories table
+- Backlink to `docs/README.md`
 
-**Classification:** **Weak — medium severity.** This gap is precisely what #2104 (canonical entry points) is designed to resolve. This map inventories the gap; #2104 will design the solution.
+**Remaining gap:** Wiki `index.md` files still have no upward link to the intelligence ecosystem. Wiki CLAUDE.md files now reference the parent operating model but not the landing page directly.
 
-### 6.3 `docs/document-intelligence/` has no index
+**Previous classification:** Weak — medium severity. **Current classification:** Mostly resolved; residual wiki-uplink gap is low severity.
 
-**Problem:** The `docs/document-intelligence/` directory contains 30+ files (architecture docs, plans, audits, maps) but has no `README.md` or `INDEX.md` to help a visitor understand what's there and what to read first.
+### 6.3 ~~`docs/document-intelligence/` has no index~~ — RESOLVED
 
-**Impact:** Finding the right document requires scanning file names or using grep. New arrivals to the intelligence ecosystem have no guided path.
+**Status:** Resolved as of 2026-04-11 (#2104 implementation).
 
-**Classification:** **Broken — medium severity.**
+`docs/document-intelligence/README.md` now exists and provides:
+- 4-step reading order for newcomers
+- Architecture docs table with issue cross-references
+- Knowledge assets table (all 5 wiki domains + seeds)
+- Registries & provenance summary
+- Maps & inventories table
+- Backlink to `docs/README.md`
 
-### 6.4 Wiki domains are invisible from `docs/`
+**Previous classification:** Broken — medium severity. **Current classification:** Resolved.
 
-**Problem:** The `knowledge/wikis/` tree is the largest knowledge asset in the repo (19,000+ pages across 5 domains) but is referenced from zero documents under `docs/`. The only entry points are the per-wiki `CLAUDE.md` files (which agents load contextually) and the `wiki/index.md` pages (which require you to already know the wiki exists).
+### 6.4 ~~Wiki domains are invisible from `docs/`~~ — RESOLVED
 
-**Impact:** Humans navigating `docs/` will never discover the wikis. Agents that don't load a specific wiki's CLAUDE.md will also miss them.
+**Status:** Resolved as of 2026-04-11.
 
-**Classification:** **Broken — high severity.**
+Wikis are now referenced from two navigation surfaces under `docs/`:
+- `docs/README.md` "Knowledge & Intelligence Ecosystem" section links to `knowledge/wikis/` with domain count and page scale
+- `docs/document-intelligence/README.md` "Knowledge Assets" table links each wiki domain's `wiki/index.md`
+- `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` now mentions LLM-wikis with scale
+
+**Previous classification:** Broken — high severity. **Current classification:** Resolved.
 
 ### 6.5 Machine-local knowledge accessibility
 
@@ -292,19 +306,36 @@ This is the core deliverable. Each row maps an asset to its current discoverabil
 
 **Classification:** **Weak — low severity.** Per #2209, session handoffs should expire after 30 days. These files should be cleaned up or archived.
 
-### 6.8 `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` omits intelligence ecosystem
+### 6.8 ~~`WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` omits intelligence ecosystem~~ — RESOLVED
 
-**Problem:** The capabilities summary describes the skills system (2,734 skills), multi-repo management, and agent orchestration — but does not mention:
-- LLM-wikis (19K+ pages of domain knowledge)
-- Document-intelligence pipeline (1M indexed documents, 639K summaries)
-- Resource intelligence program
-- Knowledge seeds
+**Status:** Resolved as of 2026-04-11.
 
-**Impact:** A human or agent reading the capabilities summary gets an incomplete picture of what the repo actually contains and can do.
+`docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` now includes a "Knowledge & Intelligence Ecosystem" section covering LLM-wikis (19,300+ pages), document-intelligence pipeline (1M+ indexed, 639K summaries), and knowledge seeds.
 
-**Classification:** **Weak — low severity.** This is a documentation freshness issue, not a structural problem.
+**Previous classification:** Weak — low severity. **Current classification:** Resolved.
 
-### 6.9 Trapped intelligence in transient artifacts
+### 6.9 ACMA-source accessibility after #2225 and #2226
+
+**Status:** New — added 2026-04-12 (#2228).
+
+The `/mnt/ace/acma-codes` source is now registered as `acma_codes_local` in `data/document-index/mounted-source-registry.yaml` (#2225), and OCIMF/CSA standards from that source have ledger entries in `data/document-index/standards-transfer-ledger.yaml` (#2226):
+
+| Ledger ID | Standard | Accessibility |
+|---|---|---|
+| `OCIMF-MEG-3RD-ED-2008` | OCIMF MEG 3rd Edition (2008) | Ledger-backed; existing wiki page covers MEG4 with 3rd-ed comparison (`knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md`) |
+| `OCIMF-MEG4-2018` | OCIMF MEG4 (2018) | Ledger-backed; wiki page exists |
+| `OCIMF-TANDEM-MOORING` | OCIMF Tandem Mooring Guidelines | Ledger-backed; **no wiki page yet** — promotion pending #2227 |
+| `CSA-Z276.1-20` | CSA Z276.1-20 Marine Structures for LNG | Ledger-backed; **no wiki page yet** — promotion pending #2227 |
+| `CSA-Z276.2-19` | CSA Z276.2-19 Near-Shoreline FLNG | Ledger-backed; out-of-scope for #2227 (discovered during indexing, not in original plan) |
+| `CSA-Z276.18` | CSA Z276.18 LNG Production/Storage/Handling | Ledger-backed; **no wiki page yet** — promotion pending #2227 |
+
+**Current gap:** These standards are discoverable only through direct ledger queries or `grep`. They have no wiki pages and no mention in navigation surfaces. The mounted-source-registry entry makes the source root discoverable to agents, but the individual standards are not surfaced in any human-navigable index.
+
+**Resolution path:** Wiki promotion (#2227, pending plan approval) will create pages in `knowledge/wikis/engineering/wiki/standards/` and `knowledge/wikis/marine-engineering/wiki/standards/`, making these standards discoverable through wiki indexes.
+
+**Classification:** Weak — medium severity. The intelligence is registered but not yet promoted to a navigable surface.
+
+### 6.10 Trapped intelligence in transient artifacts
 
 **Problem:** Valuable intelligence findings may be trapped in:
 - Session handoffs (`docs/handoffs/`) that will expire in 30 days
@@ -348,7 +379,7 @@ These checks are designed to be directly usable by the [weekly ecosystem executi
 
 ### D.4 Entry-Point Health
 
-- [ ] Verify `docs/README.md` exists and contains links to intelligence ecosystem docs (once added)
+- [ ] Verify `docs/README.md` exists and contains links to intelligence ecosystem docs
 - [ ] Verify `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` exists
 - [ ] Verify `docs/standards/CONTROL_PLANE_CONTRACT.md` exists
 - [ ] Check `docs/document-intelligence/` for session handoff files (should be zero; handoffs belong in `docs/handoffs/`)
@@ -372,22 +403,13 @@ These checks are designed to be directly usable by the [weekly ecosystem executi
 
 These recommendations identify what should change to improve accessibility. They are **directional guidance**, not the full entry-point design — that work belongs to #2104.
 
-### 8.1 Add intelligence ecosystem section to `docs/README.md`
+### 8.1 ~~Add intelligence ecosystem section to `docs/README.md`~~ — IMPLEMENTED
 
-**What:** Add a "Knowledge & Intelligence" section to `docs/README.md` linking to:
-- `knowledge/wikis/` (with domain list)
-- `docs/document-intelligence/` (with key documents)
-- `data/document-index/` (with key registries)
+**Status:** Implemented as of 2026-04-11. `docs/README.md` now has a "Knowledge & Intelligence Ecosystem" section linking to wikis, intelligence landing page, registries, design codes, and weekly review.
 
-**Why:** This is the single highest-impact change for discoverability. It makes the intelligence ecosystem visible from the standard navigation entry point.
+### 8.2 ~~Add `README.md` to `docs/document-intelligence/`~~ — IMPLEMENTED
 
-**Scope note:** This is a backlink addition, not entry-point design. #2104 will design the full navigation structure.
-
-### 8.2 Add `README.md` to `docs/document-intelligence/`
-
-**What:** Create an index for the `docs/document-intelligence/` directory that lists key documents with reading-order guidance.
-
-**Why:** Visitors to this directory currently face 30+ unsorted files with no guide.
+**Status:** Implemented as of 2026-04-11. `docs/document-intelligence/README.md` now provides reading-order guidance, architecture doc table, knowledge assets table, registries summary, and maps inventory.
 
 ### 8.3 Add upward links from wiki CLAUDE.md to intelligence architecture
 
@@ -395,11 +417,9 @@ These recommendations identify what should change to improve accessibility. They
 
 **Why:** Agents loading a wiki's CLAUDE.md should know they are operating within a governed architecture.
 
-### 8.4 Add wiki and intelligence links to `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`
+### 8.4 ~~Add wiki and intelligence links to `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`~~ — IMPLEMENTED
 
-**What:** Add sections covering LLM-wikis (19K+ pages), document-intelligence pipeline (1M indexed, 639K summarized), and knowledge seeds.
-
-**Why:** The capabilities summary is incomplete without the intelligence ecosystem.
+**Status:** Implemented as of 2026-04-11. Capabilities summary now includes a "Knowledge & Intelligence Ecosystem" section with LLM-wiki scale, document-intelligence pipeline metrics, and knowledge seeds.
 
 ### 8.5 Clean up transient artifacts from `docs/document-intelligence/`
 
@@ -447,12 +467,12 @@ This document MAY:
 
 These are documentation-layer and workflow-surface changes needed to close the gaps identified in Section 6. No code changes are defined here.
 
-| Surface | Current State | Recommended Change | Owner |
+| Surface | State (as of 2026-04-12) | Recommended Change | Owner |
 |---|---|---|---|
-| `docs/README.md` | No intelligence ecosystem links | Add Knowledge & Intelligence section | #2096 follow-up or #2104 |
-| `docs/document-intelligence/README.md` | Does not exist | Create directory index | #2096 follow-up or #2104 |
-| `knowledge/wikis/*/CLAUDE.md` | No link to parent operating model | Add cross-reference to #2205 doc | #2096 follow-up |
-| `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` | Missing intelligence ecosystem | Add LLM-wiki + doc-intel sections | #2096 follow-up |
+| `docs/README.md` | ~~No intelligence ecosystem links~~ **DONE** — has "Knowledge & Intelligence Ecosystem" section | — | Completed |
+| `docs/document-intelligence/README.md` | ~~Does not exist~~ **DONE** — reading-order index with architecture, assets, registries, maps | — | Completed |
+| `knowledge/wikis/*/CLAUDE.md` | Now references parent operating model (#2205) | Residual: add link to intelligence landing page | Follow-up |
+| `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` | ~~Missing intelligence ecosystem~~ **DONE** — has "Knowledge & Intelligence Ecosystem" section | — | Completed |
 | `docs/document-intelligence/session-handoff-*.md` | Session handoffs in architecture dir | Move to `docs/handoffs/` | Cleanup task |
 | Weekly review template | No link to maturity metrics file | Add reference to `resource-intelligence-maturity.yaml` | #2089 |
 
@@ -478,16 +498,15 @@ These are documentation-layer and workflow-surface changes needed to close the g
 
 Based on the gaps identified in this map, work should proceed in this order:
 
-| Order | Work item | Scope | Depends on | Related issue |
+| Order | Work item | Scope | Status | Related issue |
 |---|---|---|---|---|
-| 1 | Add intelligence ecosystem section to `docs/README.md` | Small — add ~20 lines of links | Nothing | #2096 follow-up |
-| 2 | Create `docs/document-intelligence/README.md` index | Small — directory-level navigation | Nothing | #2096 follow-up |
-| 3 | Add parent operating model cross-reference to wiki `CLAUDE.md` files | Small — edit 5 files | #1 (links exist to point to) | #2096 follow-up |
-| 4 | Update `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` with intelligence ecosystem | Small-medium | #1 | #2096 follow-up |
-| 5 | Clean transient artifacts from `docs/document-intelligence/` | Small — move files | Nothing | Cleanup |
-| 6 | Design canonical entry-point pages | Medium-large — full L4 navigation design | #1, #2, this map | #2104 |
-| 7 | Implement machine-readable accessibility registry | Large — schema, query, reachability | #6, #2207 | #2136 |
-| 8 | Add maturity metrics link to weekly review template | Small — edit template | Nothing | #2089 |
+| ~~1~~ | ~~Add intelligence ecosystem section to `docs/README.md`~~ | ~~Small~~ | **DONE** | Completed |
+| ~~2~~ | ~~Create `docs/document-intelligence/README.md` index~~ | ~~Small~~ | **DONE** | Completed |
+| 3 | Add intelligence landing page link to wiki `CLAUDE.md` files | Small — edit 5 files | Open | Follow-up |
+| ~~4~~ | ~~Update `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` with intelligence ecosystem~~ | ~~Small-medium~~ | **DONE** | Completed |
+| 5 | Clean transient artifacts from `docs/document-intelligence/` | Small — move files | Open | Cleanup |
+| 6 | Promote OCIMF Tandem Mooring + CSA Z276 wiki pages | Small-medium — 3 new pages + index updates | Open — pending approval | #2227 |
+| 7 | Add maturity metrics link to weekly review template | Small — edit template | Open | #2089 |
 
 ---
 
@@ -495,8 +514,8 @@ Based on the gaps identified in this map, work should proceed in this order:
 
 | Discoverability Level | Count | Examples |
 |---|---|---|
-| **Discoverable** | 6 | Weekly review template, control-plane contract, docs/README.md, wiki CLAUDE.md files (within wiki context) |
-| **Partially discoverable** | 12 | Parent operating model, provenance contract, boundary policy, corpus index, standards ledger, mounted source registry, knowledge seeds, data-intelligence-map, wiki indexes (from outside wiki context) |
-| **Hard to discover** | 8 | Cross-wiki link index, online resource registry, enhancement plan, conference registries, resource intelligence maturity, engineering documentation map, document intelligence audit, session handoffs in doc-intelligence dir |
+| **Discoverable** | 13 | Weekly review template, control-plane contract, docs/README.md, wiki CLAUDE.md files, all 4 wiki domains (via docs/README.md), capabilities summary, parent operating model, provenance contract, boundary policy (all via docs/document-intelligence/README.md) |
+| **Partially discoverable** | 7 | Corpus index, standards ledger, mounted source registry, knowledge seeds, data-intelligence-map, engineering documentation map, wiki indexes (from outside wiki context) |
+| **Hard to discover** | 6 | Cross-wiki link index, online resource registry, enhancement plan, conference registries, resource intelligence maturity, document intelligence audit |
 
-**Overall assessment:** The intelligence ecosystem's most valuable assets — LLM-wikis and the document-intelligence architecture — are not reachable from standard navigation surfaces. The weekly review template and control-plane contract are well-placed, but the knowledge layer beneath them is effectively invisible to anyone not already familiar with the repo structure.
+**Overall assessment (2026-04-12):** The accessibility landscape has improved significantly since the initial inventory. The primary entry points (`docs/README.md`, `docs/document-intelligence/README.md`, `WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`) now link to the intelligence ecosystem. LLM-wikis and architecture docs are reachable within 2 hops. The `acma_codes_local` source is registered and OCIMF/CSA standards are ledger-backed, though wiki promotion of these standards is pending (#2227). Remaining gaps are concentrated in secondary registries (conference, online resources, enhancement plan) that lack navigation links.
