@@ -140,13 +140,14 @@ add regression tests():
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | MAJOR | missing consumer inventory, unresolved macOS path contract, and insufficient downstream readiness-compatibility coverage |
-| Codex | MAJOR | producer files are named but reader coverage/path-contract decisions are still implicit; live validation must be deferred explicitly |
-| Gemini | MAJOR | macOS/BSD compatibility gaps in downstream readiness tooling and hostname-mapping assumptions are unaddressed |
+| Codex | MAJOR | rerun still requires explicit disposition of downstream registry/readiness consumers and a decided macOS path/alias contract |
+| Gemini | MAJOR | rerun still flags planning-to-plan drift because consumer inventory remains implicit rather than enumerated in scope/files |
 
-**Overall result:** FAIL (re-draft required before implementation)
+**Overall result:** FAIL after rerun (re-draft still required before implementation)
 
 Revisions made based on review:
-- none yet — plan must be revised to inventory all config consumers, define the canonical macOS workspace path/hostname mapping, and include downstream readiness compatibility checks before re-review
+- first revision added concrete macOS evidence, brought `nightly-readiness.sh` into scope, and expanded alias/path-coverage tests
+- rerun still requires an explicit consumer inventory/disposition list, a fixed canonical macOS workspace-path decision, and tighter boundaries on which downstream readers are in-scope vs follow-up work before approval
 
 ---
 

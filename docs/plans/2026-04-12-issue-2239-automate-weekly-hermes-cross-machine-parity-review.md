@@ -139,13 +139,14 @@ main():
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | MAJOR | inventory source is incomplete; Windows evidence interface undefined; v1 scope must explicitly defer auto issue creation |
-| Codex | MAJOR | checklist machine set does not match canonical registry/readiness sources; output retention/commenting/evidence interfaces underspecified |
-| Gemini | MINOR | add macOS + second Windows coverage to readiness source, define SSH timeout behavior, and avoid v1 issue-spam automation |
+| Codex | MAJOR | rerun still finds non-SSH evidence mapping underspecified, especially `licensed-win-2` / checklist-registry mismatch handling |
+| Gemini | APPROVE with MINOR | rerun accepts bounded v1 scope but asks for comment-flag test and cleanup of stale review-state text |
 
-**Overall result:** FAIL (re-draft required before implementation)
+**Overall result:** FAIL after rerun (re-draft still required before implementation)
 
 Revisions made based on review:
-- none yet — plan must be revised to define canonical machine inventory, explicit Windows evidence inputs, timeout behavior, and narrower v1 GitHub automation scope before re-review
+- first revision incorporated canonical registry inventory, timeout-wrapped probes, explicit Windows bridge-artifact ingestion, and v1 deferral of auto-issue creation
+- rerun still requires one more draft pass to define per-machine non-SSH evidence mapping, add `licensed-win-2` / registry-checklist mismatch tests, and normalize the plan artifact state text before approval
 
 ---
 
