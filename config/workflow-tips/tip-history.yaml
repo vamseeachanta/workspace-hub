@@ -33,3 +33,5 @@ shown:
     tips: [cc-security-review, bp-squash-merge]
   - date: 2026-04-11
     tips: [cc-effort, bp-settings-not-claude-md]
+  - date: 2026-04-12
+    tips: [bp-skill-triggers, cc-schedule-cloud]

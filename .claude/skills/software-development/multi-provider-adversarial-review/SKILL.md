@@ -210,6 +210,8 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 
 16. **Full end-to-end after implementation** — After implementing and getting adversarial review, the next logical step is always: (a) verify the wiring works (run the new script, regenerate crontab, etc.), (b) create follow-up issues for deployment to other machines and for items deferred during review (supply chain hardening, simulated breakage testing, active push notifications), (c) document everything in a closing comment on the parent issue.
 
+17. **Do NOT write long review prompts via shell heredoc inside `terminal()` when they contain markdown code spans/fences** — A real failure mode on 2026-04-12: writing a review prompt with `bash -lc 'cat <<'"'"'EOF' ... EOF'` caused shell interpretation to break and lines from the embedded markdown/code content were executed as commands (`scripts/cron/weekly-hermes-parity-review.sh`, YAML lines, benchmark scripts), producing side effects and a timeout. For long self-contained prompts on mounted filesystems, prefer `execute_code`/`write_file()` to create the prompt file, then verify with `wc -l path/to/prompt.md` before dispatching Codex/Gemini. If you must use shell, avoid embedding backticks/code fences and verify the file content before launching reviewers.
+
 ## Post-Review: Batch Follow-Up Issue Creation from Findings
 
 When review findings produce multiple follow-up issues (common with retroactive reviews across multiple streams), create them efficiently:

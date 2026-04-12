@@ -113,6 +113,8 @@ terminal(command="sleep 3 && tmux send-keys -t claude-work Down && sleep 0.3 && 
 terminal(command="sleep 15 && tmux capture-pane -t claude-work -p -S -60")
 ```
 
+**Extra submit lesson:** when you paste a long prompt into the interactive TUI via `tmux load-buffer` + `tmux paste-buffer`, Claude may show the full prompt in the input area without actually sending it yet. If `capture-pane` shows the pasted text plus a waiting prompt, send one more `Enter` explicitly. Do not assume paste-buffer submitted the message.
+
 **Note:** After the first trust acceptance for a directory, the trust dialog won't appear again. Only the permissions dialog recurs each time you use `--dangerously-skip-permissions`.
 
 ## CLI Subcommands
@@ -727,14 +729,15 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 6. **Even in `-p` mode, permission configuration still matters** — if Claude stops with an edit-permission request, rerun with `--permission-mode auto` or `--dangerously-skip-permissions`, or narrow the prompt to a single-file change. For long prompts stored in repo files, a robust pattern is: write the prompt to `docs/plans/...md`, launch `claude -p ... "$PROMPT"` in a background subprocess, then monitor with Hermes process polling and inspect git diff after completion.
 7. **For dirty worktrees, use a two-phase Claude pattern: implement first, then run a separate commit-only prompt** — when the repo already has unrelated modified/untracked files, a write-capable Claude run can drift into nearby docs or fail to stage exactly the intended paths. Safer pattern: (a) first run a file-based prompt that only creates/edits the target artifacts and explicitly forbids broad areas, then (b) run a second file-based "commit-only" prompt that verifies exact diffs, stages only the intended file paths with surgical `git add <path>...`, commits, and pushes. This worked well for session-log portability transfer in workspace-hub after an initial run drifted into `docs/plans/README.md` and hit a turn cap.
 8. **Claude `-p` may succeed with little or no useful stdout summary; verify via git and file state, not output text alone** — a background `claude -p ... | tee log` run can exit 0 with minimal stdout while still having produced the desired file changes and git commit. After completion, always inspect `git status`, `git log -1`, `git show --stat HEAD`, and the target files themselves instead of assuming the absence of a rich textual summary means the run failed.
-9. **Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
-10. **Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
-
-9. **Trust dialog only appears once per directory** — first-time only, then cached.
-10. **Background tmux sessions persist** — always clean up with `tmux kill-session -t <name>` when done.
-11. **Slash commands (like `/commit`) only work in interactive mode** — in `-p` mode, describe the task in natural language instead.
-12. **`--bare` skips OAuth** — requires `ANTHROPIC_API_KEY` env var or an `apiKeyHelper` in settings.
-13. **Context degradation is real** — AI output quality measurably degrades above 70% context window usage. Monitor with `/context` and proactively `/compact`.
+9. **In interactive tmux runs, actively police scope drift with external `git status` checks** — Claude can claim it cleaned up forbidden edits while unrelated files remain modified or newly created. For gated issue execution, periodically compare the live worktree outside the tmux session (`git status --short`, `git diff --name-only`) against the allowed path contract. If drift appears, interrupt with `Ctrl-C`, send an explicit cleanup command naming the forbidden files, then independently verify the cleanup before allowing the run to continue. Do not trust the model's verbal "cleanup complete" without an external git check.
+10. **When a scoped interactive run keeps drifting, keep the useful edit and kill the session rather than letting it wander** — if Claude repeatedly creates forbidden files (e.g. unrelated scripts/tests/skills) despite corrective prompts, stop the tmux session, manually remove the stray artifacts, keep only the intended diff if it is clean, and finish the commit/closeout yourself. This is often lower risk than trying to recover the same session indefinitely.
+11. **Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
+12. **Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
+13. **Trust dialog only appears once per directory** — first-time only, then cached.
+14. **Background tmux sessions persist** — always clean up with `tmux kill-session -t <name>` when done.
+15. **Slash commands (like `/commit`) only work in interactive mode** — in `-p` mode, describe the task in natural language instead.
+16. **`--bare` skips OAuth** — requires `ANTHROPIC_API_KEY` env var or an `apiKeyHelper` in settings.
+17. **Context degradation is real** — AI output quality measurably degrades above 70% context window usage. Monitor with `/context` and proactively `/compact`.
 
 ## Rules for Hermes Agents
 

@@ -114,7 +114,9 @@ Before creating a new feature issue, do a quick grounding pass to avoid duplicat
 3. If the feature touches an existing initiative, reference the parent/related issue numbers in the body.
 4. If an existing open issue already substantially covers the requested feature, prefer updating that issue instead of creating a duplicate. Add a clarifying comment to expand scope, adjust labels if needed, and link any companion cadence/governance issue rather than opening a second overlapping feature ticket.
 5. Prefer writing the body to a temp markdown file and using `--body-file` for long, structured issue descriptions.
-6. After creation or update, immediately verify the final artifact's title, labels, URL, and rendered body/comments.
+6. If you are creating a linked issue tree (parent + children), render any placeholders like `<PARENT_ISSUE>` / `<QUEUE_ISSUE>` into temporary files before calling `gh issue create`. Do not rely on post-hoc mental substitution.
+7. After creation or update, immediately verify the final artifact's title, labels, URL, and rendered body.
+8. If you accidentally create an issue with unresolved placeholders, fix it immediately with `gh issue edit --body-file ...` and then re-verify the rendered body.
 
 Example:
 
