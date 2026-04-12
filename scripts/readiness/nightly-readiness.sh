@@ -706,15 +706,42 @@ check_r12() {
 # ─────────────────────────────────────────────────────────────────────────────
 # Phase B: emit harness-readiness-report.yaml (host-qualified, structured)
 # ─────────────────────────────────────────────────────────────────────────────
-_emit_harness_report() {
+_resolve_workstation_key() {
+  # Resolve the current hostname to a harness-config workstation key.
+  # Checks: hostname field → hostname_aliases → key substring → raw hostname fallback.
   local hostname_short
   hostname_short=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
-  local report_path="${STATE_DIR}/harness-readiness-${hostname_short}.yaml"
+  local resolved=""
+  if [[ -f "${HARNESS_CONFIG}" ]]; then
+    resolved=$(python3 - "$HARNESS_CONFIG" "$hostname_short" <<'PY' 2>/dev/null || true
+import yaml, sys
+hostname_short = sys.argv[2].lower()
+with open(sys.argv[1]) as f:
+    cfg = yaml.safe_load(f)
+for name, ws in (cfg.get("workstations") or {}).items():
+    cfg_hostname = (ws.get("hostname") or "").lower()
+    if cfg_hostname and cfg_hostname == hostname_short:
+        print(name); raise SystemExit(0)
+    for alias in (ws.get("hostname_aliases") or []):
+        if alias.split(".")[0].lower() == hostname_short:
+            print(name); raise SystemExit(0)
+    if hostname_short in name.lower():
+        print(name); raise SystemExit(0)
+PY
+)
+  fi
+  echo "${resolved:-${hostname_short}}"
+}
+
+_emit_harness_report() {
+  local ws_key
+  ws_key=$(_resolve_workstation_key)
+  local report_path="${STATE_DIR}/harness-readiness-${ws_key}.yaml"
   local overall="pass"
   [[ "$fail_count" -gt 0 ]] && overall="fail"
   {
     echo "schema_version: 1"
-    echo "host: ${hostname_short}"
+    echo "host: ${ws_key}"
     echo "generated_at: \"${RUN_TS}\""
     echo "overall: ${overall}"
     echo "pass_count: ${pass_count}"
@@ -737,8 +764,14 @@ _emit_harness_report() {
 if [[ "${1:-}" == "--update-baseline" ]]; then
   skill_count=$(find "${WORKSPACE_HUB}/.claude/skills" -name "SKILL.md" 2>/dev/null | wc -l || echo 0)
   cmd_count=$(find "${WORKSPACE_HUB}/.claude/commands" -name "*.md" 2>/dev/null | wc -l || echo 0)
-  sed -i "s/^skill_count_baseline: .*/skill_count_baseline: ${skill_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
-  sed -i "s/^command_count_baseline: .*/command_count_baseline: ${cmd_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  # BSD-safe sed -i: macOS sed requires -i '' while GNU sed uses -i without argument.
+  if sed --version 2>/dev/null | grep -q GNU; then
+    sed -i "s/^skill_count_baseline: .*/skill_count_baseline: ${skill_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+    sed -i "s/^command_count_baseline: .*/command_count_baseline: ${cmd_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  else
+    sed -i '' "s/^skill_count_baseline: .*/skill_count_baseline: ${skill_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+    sed -i '' "s/^command_count_baseline: .*/command_count_baseline: ${cmd_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  fi
   echo "--- Baseline updated: skills=${skill_count}, commands=${cmd_count} ---"
 fi
 

@@ -49,6 +49,14 @@ workstations:
     linux_reachable: false
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml
     notes: "Windows/Git Bash — Windows Task Scheduler writes report to shared mount"
+  macbook-portable:
+    hostname: Vamsees-MacBook-Air
+    hostname_aliases: [Vamsees-MacBook-Air.local]
+    ws_hub_path: /Users/krishna/workspace-hub
+    ssh_target: null
+    linux_reachable: false
+    report_path: .claude/state/harness-readiness-macbook-portable.yaml
+    notes: "macOS portable — no SSH from Linux; no cron; report generated locally"
 
 hermes:
   external_skills_dir_suffix: .claude/skills   # appended to ws_hub_path per workstation

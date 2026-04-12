@@ -215,3 +215,51 @@ class TestStatusJson:
             f"Expected exactly 1 machine with status='local', found {len(local_machines)}: "
             f"{[m.get('name') for m in local_machines]}"
         )
+
+
+# ── macOS registry parity tests (#2240) ─────────────────────────────────────
+
+
+class TestRegistryMacOSEntry:
+    """Verify macbook-portable exists in registry with correct metadata."""
+
+    @pytest.fixture()
+    def registry(self) -> dict:
+        with open(REGISTRY_FILE) as f:
+            return yaml.safe_load(f)
+
+    def test_registry_includes_macbook_portable(self, registry: dict):
+        machines = registry.get("machines", {})
+        assert "macbook-portable" in machines, (
+            f"macbook-portable not in registry. Keys: {list(machines.keys())}"
+        )
+
+    def test_macbook_portable_os_is_macos(self, registry: dict):
+        mac = registry["machines"]["macbook-portable"]
+        assert mac.get("os") == "macos", f"Expected os=macos, got {mac.get('os')}"
+
+    def test_macbook_portable_workspace_root(self, registry: dict):
+        mac = registry["machines"]["macbook-portable"]
+        assert mac.get("workspace_root") == "/Users/krishna/workspace-hub", (
+            f"Expected /Users/krishna/workspace-hub, got {mac.get('workspace_root')}"
+        )
+
+    def test_macbook_portable_hostname_alias(self, registry: dict):
+        mac = registry["machines"]["macbook-portable"]
+        aliases = mac.get("hostname_aliases", [])
+        assert "Vamsees-MacBook-Air.local" in aliases, (
+            f"Expected Vamsees-MacBook-Air.local in aliases, got {aliases}"
+        )
+
+    def test_macbook_portable_schedule_variant_none(self, registry: dict):
+        mac = registry["machines"]["macbook-portable"]
+        assert mac.get("schedule_variant") == "none", (
+            f"Expected schedule_variant=none, got {mac.get('schedule_variant')}"
+        )
+
+    def test_existing_machines_preserved(self, registry: dict):
+        machines = registry.get("machines", {})
+        for expected in ("dev-primary", "dev-secondary", "licensed-win-1"):
+            assert expected in machines, (
+                f"{expected} missing from registry after macOS addition"
+            )

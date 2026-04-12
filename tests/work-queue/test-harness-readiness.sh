@@ -350,6 +350,124 @@ T12() {
 }
 T12
 
+# Helper: extract a YAML block for a workstation key (2-space-indented key, 4-space fields)
+_extract_block() {
+  local key="$1" file="$2"
+  awk "/^  ${key}:/{found=1;next} found && /^  [a-z]/{exit} found{print}" "$file" 2>/dev/null
+}
+
+# ── T17: macbook-portable exists in harness-config.yaml ──────────────────────
+T17() {
+  if ! grep -q "macbook-portable:" "${HARNESS_CONFIG}" 2>/dev/null; then
+    fail "T17: macbook-portable not found in harness-config.yaml"
+    return
+  fi
+  local block
+  block=$(_extract_block "macbook-portable" "${HARNESS_CONFIG}")
+  local missing=()
+  for field in ws_hub_path report_path linux_reachable hostname; do
+    echo "$block" | grep -q "${field}:" || missing+=("$field")
+  done
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    ok "T17: macbook-portable in harness-config with all required fields"
+  else
+    fail "T17: macbook-portable missing fields: ${missing[*]}"
+  fi
+}
+T17
+
+# ── T18: macbook-portable ws_hub_path is canonical macOS path ────────────────
+T18() {
+  local ws_path
+  ws_path=$(_extract_block "macbook-portable" "${HARNESS_CONFIG}" \
+    | grep 'ws_hub_path:' | sed 's/.*ws_hub_path:[[:space:]]*//' | tr -d "'" | tr -d '"')
+  if [[ "$ws_path" == "/Users/krishna/workspace-hub" ]]; then
+    ok "T18: macbook-portable ws_hub_path is /Users/krishna/workspace-hub"
+  else
+    fail "T18: expected /Users/krishna/workspace-hub, got: ${ws_path}"
+  fi
+}
+T18
+
+# ── T19: macbook-portable linux_reachable is false ───────────────────────────
+T19() {
+  local reachable
+  reachable=$(_extract_block "macbook-portable" "${HARNESS_CONFIG}" \
+    | grep 'linux_reachable:' | sed 's/.*linux_reachable:[[:space:]]*//' | tr -d "'" | tr -d '"')
+  if [[ "$reachable" == "false" ]]; then
+    ok "T19: macbook-portable linux_reachable is false"
+  else
+    fail "T19: expected linux_reachable=false, got: ${reachable}"
+  fi
+}
+T19
+
+# ── T20: existing workstation entries unchanged after macOS addition ──────────
+T20() {
+  local existing_stations=("dev-primary" "dev-secondary" "licensed-win-1")
+  local missing=()
+  for station in "${existing_stations[@]}"; do
+    grep -q "^  ${station}:" "${HARNESS_CONFIG}" 2>/dev/null || missing+=("$station")
+  done
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    ok "T20: existing workstation entries (dev-primary, dev-secondary, licensed-win-1) unchanged"
+  else
+    fail "T20: missing existing workstations after macOS addition: ${missing[*]}"
+  fi
+}
+T20
+
+# ── T21: macbook-portable in registry.yaml with os=macos ─────────────────────
+T21() {
+  local registry="${REPO_ROOT}/config/workstations/registry.yaml"
+  if ! grep -q "macbook-portable:" "$registry" 2>/dev/null; then
+    fail "T21: macbook-portable not found in registry.yaml"
+    return
+  fi
+  local block
+  block=$(_extract_block "macbook-portable" "$registry")
+  if echo "$block" | grep -q "os: macos"; then
+    ok "T21: macbook-portable in registry.yaml with os=macos"
+  else
+    fail "T21: macbook-portable found but os is not macos"
+  fi
+}
+T21
+
+# ── T22: registry hostname alias for macbook-portable ────────────────────────
+T22() {
+  local registry="${REPO_ROOT}/config/workstations/registry.yaml"
+  local block
+  block=$(_extract_block "macbook-portable" "$registry")
+  if echo "$block" | grep -q "Vamsees-MacBook-Air.local"; then
+    ok "T22: macbook-portable has Vamsees-MacBook-Air.local alias in registry"
+  else
+    fail "T22: hostname alias Vamsees-MacBook-Air.local not found for macbook-portable"
+  fi
+}
+T22
+
+# ── T23: nightly-readiness.sh contains BSD-safe sed handling ─────────────────
+T23() {
+  if grep -q "sed -i ''" "${READINESS_SCRIPT}" 2>/dev/null; then
+    ok "T23: nightly-readiness.sh has BSD-safe sed -i '' handling"
+  else
+    fail "T23: nightly-readiness.sh missing BSD-safe sed -i '' for macOS"
+  fi
+}
+T23
+
+# ── T24: sync-agent-configs.sh resolves hostname_aliases ─────────────────────
+T24() {
+  local sync_script="${REPO_ROOT}/scripts/_core/sync-agent-configs.sh"
+  if grep -q "hostname_aliases" "$sync_script" 2>/dev/null; then
+    ok "T24: sync-agent-configs.sh resolve_ws_hub_path checks hostname_aliases"
+  else
+    fail "T24: sync-agent-configs.sh missing hostname_aliases resolution"
+  fi
+}
+T24
+
 # ── T13: SSH to ace-linux-2 unreachable → DEGRADED (no crash) ────────────────
 T13() {
   if [[ ! -f "${COMPARE_SCRIPT}" ]]; then

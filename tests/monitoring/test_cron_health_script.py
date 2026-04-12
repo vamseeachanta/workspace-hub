@@ -30,3 +30,47 @@ def test_schedule_yaml_is_loadable():
     assert isinstance(data, dict)
     assert isinstance(data.get("tasks"), list)
     assert len(data["tasks"]) > 0
+
+
+# ── macOS registry alias parsing tests (#2240) ──────────────────────────────
+
+
+def test_registry_includes_macbook_portable():
+    """Verify macbook-portable is parseable in registry used by cron-health."""
+    import yaml
+
+    registry_path = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+    with open(registry_path) as f:
+        data = yaml.safe_load(f)
+    machines = data.get("machines", {})
+    assert "macbook-portable" in machines, (
+        f"macbook-portable not in registry. Keys: {list(machines.keys())}"
+    )
+
+
+def test_registry_alias_maps_to_macbook_portable():
+    """Verify Vamsees-MacBook-Air.local alias resolves to macbook-portable."""
+    import yaml
+
+    registry_path = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+    with open(registry_path) as f:
+        data = yaml.safe_load(f)
+    mac = data["machines"]["macbook-portable"]
+    aliases = mac.get("hostname_aliases", [])
+    assert "Vamsees-MacBook-Air.local" in aliases, (
+        f"Expected Vamsees-MacBook-Air.local in aliases, got {aliases}"
+    )
+
+
+def test_existing_registry_machines_preserved_after_macos_addition():
+    """Verify adding macOS entry did not break existing machine entries."""
+    import yaml
+
+    registry_path = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+    with open(registry_path) as f:
+        data = yaml.safe_load(f)
+    machines = data.get("machines", {})
+    for expected in ("dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"):
+        assert expected in machines, (
+            f"{expected} missing from registry after macOS addition"
+        )

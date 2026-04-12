@@ -107,6 +107,31 @@ machines:
     notes: >
       Secondary Windows workstation. Mirrors licensed-win-1 capabilities.
 
+  macbook-portable:
+    hostname: Vamsees-MacBook-Air
+    hostname_aliases: [Vamsees-MacBook-Air.local]
+    os: macos
+    role: portable-dev
+    workspace_root: /Users/krishna/workspace-hub
+    schedule_variant: none
+    ssh: null  # no SSH from Linux hosts
+    tailscale_ip: null
+    capabilities:
+      agent_clis: [claude]
+      languages: [python3, bash]
+      tools: [uv, git, gh]
+      gpu: false
+    storage:
+      local: /Users/krishna                 # macOS home directory
+      knowledge: null                        # no NFS — standalone portable
+      remote_mounts: []
+    repos:
+      - workspace-hub
+    notes: >
+      Portable macOS workstation. No cron — manual or launchd-based scheduling.
+      Path conventions differ from Linux (/Users/ vs /home/).
+      Some Linux-specific kernel/GPU tools not applicable.
+
   gali-linux-compute-1:
     hostname: shoerack
     hostname_aliases: []

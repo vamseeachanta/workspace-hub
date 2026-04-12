@@ -895,37 +895,50 @@ EOF
 
 resolve_ws_hub_path() {
     # Determine workspace-hub path for this machine from harness-config.yaml.
+    # Resolution order: hostname field match → hostname_aliases match → key substring → fallback.
     local config="$WS_HUB/scripts/readiness/harness-config.yaml"
-    local hostname_short
-    hostname_short="$(hostname -s)"
     local ws_path=""
 
     if [[ -f "$config" ]]; then
         if command -v python3 >/dev/null 2>&1; then
             ws_path=$(python3 - "$config" <<'PY' 2>/dev/null || true
 import yaml, socket, sys
-hostname = socket.gethostname().split('.')[0]
+hostname_short = socket.gethostname().split(".")[0].lower()
 with open(sys.argv[1]) as f:
     cfg = yaml.safe_load(f)
-for name, ws in (cfg.get('workstations') or {}).items():
-    ws_path = ws.get('ws_hub_path') or ''
-    if ws_path and hostname.lower() in name.lower():
-        print(ws_path)
-        break
+for name, ws in (cfg.get("workstations") or {}).items():
+    ws_path = ws.get("ws_hub_path") or ""
+    if not ws_path:
+        continue
+    cfg_hostname = (ws.get("hostname") or "").lower()
+    if cfg_hostname and cfg_hostname == hostname_short:
+        print(ws_path); sys.exit(0)
+    for alias in (ws.get("hostname_aliases") or []):
+        if alias.split(".")[0].lower() == hostname_short:
+            print(ws_path); sys.exit(0)
+    if hostname_short in name.lower():
+        print(ws_path); sys.exit(0)
 PY
 )
         fi
         if [[ -z "$ws_path" ]] && command -v uv >/dev/null 2>&1; then
             ws_path=$(uv run --no-project python - "$config" <<'PY' 2>/dev/null || true
 import yaml, socket, sys
-hostname = socket.gethostname().split('.')[0]
+hostname_short = socket.gethostname().split(".")[0].lower()
 with open(sys.argv[1]) as f:
     cfg = yaml.safe_load(f)
-for name, ws in (cfg.get('workstations') or {}).items():
-    ws_path = ws.get('ws_hub_path') or ''
-    if ws_path and hostname.lower() in name.lower():
-        print(ws_path)
-        break
+for name, ws in (cfg.get("workstations") or {}).items():
+    ws_path = ws.get("ws_hub_path") or ""
+    if not ws_path:
+        continue
+    cfg_hostname = (ws.get("hostname") or "").lower()
+    if cfg_hostname and cfg_hostname == hostname_short:
+        print(ws_path); sys.exit(0)
+    for alias in (ws.get("hostname_aliases") or []):
+        if alias.split(".")[0].lower() == hostname_short:
+            print(ws_path); sys.exit(0)
+    if hostname_short in name.lower():
+        print(ws_path); sys.exit(0)
 PY
 )
         fi

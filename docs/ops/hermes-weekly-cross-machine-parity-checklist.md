@@ -55,10 +55,19 @@ Compare macbook-portable against the Linux baseline:
 - [ ] Tool availability: key CLI tools present (`gh`, `uv`, `git`, `claude`)
 - [ ] Readiness check passes or known gaps are documented
 
+**Canonical macOS contract** (implemented in #2240):
+- Machine key: `macbook-portable`
+- Hostname: `Vamsees-MacBook-Air` (alias: `Vamsees-MacBook-Air.local`)
+- Workspace path: `/Users/krishna/workspace-hub`
+- Readiness report: `.claude/state/harness-readiness-macbook-portable.yaml`
+- Harness-config: `linux_reachable: false` — unreachable from Linux hosts
+
 **Documented unavoidable macOS drift** (update as discovered):
-- Cron not available; manual or launchd-based scheduling only
-- Path conventions differ (`/Users/` vs `/home/`)
+- Cron not available; manual or launchd-based scheduling only (`schedule_variant: none`)
+- Path conventions differ (`/Users/krishna/` vs `/home/vamsee/`, `/mnt/...`)
 - Some Linux-specific kernel/GPU tools not applicable
+- `sed -i` requires BSD syntax (`sed -i ''`) — nightly-readiness.sh handles this
+- `compare-harness-state.sh` does not yet include macOS (follow-up work)
 
 **Evidence to capture:** `hermes --version` on macOS, skills list diff, any path resolution errors.
 
