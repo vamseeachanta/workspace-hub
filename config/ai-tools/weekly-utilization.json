@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-06T15:44:14.124761Z",
-  "report_weeks": 4,
-  "current_week": "2026-W15",
+  "generated_at": "2026-04-13T04:00:02.242652Z",
+  "report_weeks": 5,
+  "current_week": "2026-W16",
   "subscriptions": {
     "claude": {
       "cost_monthly": 200.0,
@@ -25,12 +25,12 @@
     "2026-W11": {
       "claude": {
         "provider": "claude",
-        "sessions": 802,
-        "input_tokens": 13860000,
-        "output_tokens": 693000,
-        "total_tokens": 14553000,
-        "records": 3465,
-        "utilization_pct": 100.0
+        "sessions": 10,
+        "input_tokens": 80000,
+        "output_tokens": 4000,
+        "total_tokens": 84000,
+        "records": 20,
+        "utilization_pct": 6.7
       },
       "codex": {
         "provider": "codex",
@@ -52,12 +52,12 @@
     "2026-W12": {
       "claude": {
         "provider": "claude",
-        "sessions": 1280,
-        "input_tokens": 34708000,
-        "output_tokens": 1735400,
-        "total_tokens": 36443400,
-        "records": 8677,
-        "utilization_pct": 100.0
+        "sessions": 7,
+        "input_tokens": 56000,
+        "output_tokens": 2800,
+        "total_tokens": 58800,
+        "records": 14,
+        "utilization_pct": 4.7
       },
       "codex": {
         "provider": "codex",
@@ -79,12 +79,12 @@
     "2026-W13": {
       "claude": {
         "provider": "claude",
-        "sessions": 24664,
-        "input_tokens": 335720000,
-        "output_tokens": 16786000,
-        "total_tokens": 352506000,
-        "records": 83930,
-        "utilization_pct": 100.0
+        "sessions": 9,
+        "input_tokens": 72000,
+        "output_tokens": 3600,
+        "total_tokens": 75600,
+        "records": 18,
+        "utilization_pct": 6.0
       },
       "codex": {
         "provider": "codex",
@@ -106,12 +106,12 @@
     "2026-W14": {
       "claude": {
         "provider": "claude",
-        "sessions": 24718,
-        "input_tokens": 690104000,
-        "output_tokens": 34505200,
-        "total_tokens": 724609200,
-        "records": 172526,
-        "utilization_pct": 100.0
+        "sessions": 8,
+        "input_tokens": 64000,
+        "output_tokens": 3200,
+        "total_tokens": 67200,
+        "records": 16,
+        "utilization_pct": 5.3
       },
       "codex": {
         "provider": "codex",
@@ -133,12 +133,35 @@
     "2026-W15": {
       "claude": {
         "provider": "claude",
-        "sessions": 24594,
-        "input_tokens": 98376000,
-        "output_tokens": 4918800,
-        "total_tokens": 103294800,
-        "records": 24594,
+        "sessions": 24656,
+        "input_tokens": 196780000,
+        "output_tokens": 9839000,
+        "total_tokens": 206619000,
+        "records": 49195,
         "utilization_pct": 100.0
+      },
+      "codex": {
+        "provider": "codex",
+        "sessions": 6,
+        "messages": 14,
+        "utilization_pct": 12.0
+      },
+      "gemini": {
+        "provider": "gemini",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      },
+      "copilot": {
+        "provider": "copilot",
+        "sessions": 0,
+        "utilization_pct": 0.0
+      }
+    },
+    "2026-W16": {
+      "claude": {
+        "provider": "claude",
+        "sessions": 0,
+        "utilization_pct": 0.0
       },
       "codex": {
         "provider": "codex",
@@ -166,6 +189,13 @@
     }
   },
   "underutilization_alerts": [
+    {
+      "provider": "claude",
+      "utilization_pct": 0.0,
+      "threshold_pct": 15.0,
+      "message": "claude at 0.0% utilization (threshold: 15.0%)",
+      "subscription_cost": 200.0
+    },
     {
       "provider": "codex",
       "utilization_pct": 0.0,

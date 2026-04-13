@@ -195,6 +195,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2239 | automate-weekly-hermes-cross-machine-parity-review | `docs/plans/2026-04-12-issue-2239-automate-weekly-hermes-cross-machine-parity-review.md` | 2026-04-12 | adversarial-reviewed | T2 | Weekly parity automation plan: cron script, YAML task, dated artifact output, and follow-on issue guidance |
 | 2240 | macos-hermes-parity-install-config-and-tool-alignment | `docs/plans/2026-04-12-issue-2240-macos-hermes-parity-install-config-and-tool-alignment.md` | 2026-04-12 | adversarial-reviewed | T2 | macOS workstation parity plan: registry/readiness coverage, Hermes path resolution, and documented platform-specific drift |
 | 2227 | ocimf-tandem-csa-z276-wiki-promotion | `docs/plans/2026-04-12-issue-2227-ocimf-tandem-csa-z276-wiki-promotion.md` | 2026-04-12 | draft | T2 | Canonical bounded wiki-promotion plan for OCIMF Tandem Mooring, CSA Z276.1-20, CSA Z276.18, and a narrow provenance-grounded update to ocimf-meg4 |
+| 2245 | acma-summary-classification-unblock | `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md` | 2026-04-12 | draft | T2 | Bounded summary/classification artifact preparation to unblock #2227 without broad ACMA processing |
 
 ## Entry Format
 
