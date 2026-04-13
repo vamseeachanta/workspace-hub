@@ -1,0 +1,658 @@
+# Wave 3 Inventory — #2263
+# Parent: #2260  Related: #2207, #2216
+# Generated: 2026-04-13
+# Mode: metadata-only (title + filename + extension + path structure)
+# Hard constraint: no clause-level, normative, or design-criteria claims
+
+issue: 2263
+parent_issue: 2260
+mode: metadata_only
+generated: "2026-04-13"
+source_quality: title-and-metadata-only
+
+summary:
+  total_files: 58
+  by_org:
+    ISO_Standards: 31
+    ASTM: 16
+    IACS: 11
+  by_extension:
+    pdf: 55
+    PDF: 1
+    doc: 1
+    db: 1
+  by_action:
+    stub: 50
+    merge_into_parent: 4
+    defer: 3
+    reject: 1
+
+# ──────────────────────────────────────────────
+# ISO Standards  (31 files)
+# ──────────────────────────────────────────────
+orgs:
+  - org: ISO_Standards
+    org_full: International Organization for Standardization
+    root: /mnt/ace/acma-codes/ISO Standards
+    file_count: 31
+    files:
+      # --- Parents / standalone standards ---
+      - file: "1981 484-2 Propellers of diameter between .80 - 2.5m inclusive.pdf"
+        normalized_title: "ISO 484-2 — Ship Screw Propellers, Diameter 0.80–2.50 m"
+        year: 1981
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "1987 8862 AC & vent of machinery control rooms onboard ships.pdf"
+        normalized_title: "ISO 8862 — Air-Conditioning and Ventilation of Machinery Control Rooms on Ships"
+        year: 1987
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "1987 8864 AC & vent of wheelhouse onboard ships.pdf"
+        normalized_title: "ISO 8864 — Air-Conditioning and Ventilation of Wheelhouse on Ships"
+        year: 1987
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "1989 9089 Mobile Offshore Units-Anchor Winches.pdf"
+        normalized_title: "ISO 9089 — Mobile Offshore Units, Anchor Winches"
+        year: 1989
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "1997 2631-1 Mechanical Vibration and Shock Part 1.pdf"
+        normalized_title: "ISO 2631-1 — Mechanical Vibration and Shock, Evaluation of Human Exposure (Part 1)"
+        year: 1997
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Absorbs 2010 Amendment 1"
+
+      - file: "1998 8861 Engine-room ventilation in diesel-engined ships.pdf"
+        normalized_title: "ISO 8861 — Engine-Room Ventilation in Diesel-Engined Ships"
+        year: 1998
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2000 9001 Final Draft of Quality Management System Requirements.pdf"
+        normalized_title: "ISO 9001 — Quality Management Systems, Requirements (Final Draft)"
+        year: 2000
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Final draft status; may differ from published ISO 9001:2000"
+
+      - file: "2002 15016 Guidelines for the assessment of speed and power performance by analysis of speed trial data.pdf"
+        normalized_title: "ISO 15016 — Speed and Power Performance Assessment from Speed Trial Data"
+        year: 2002
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2002 15550 Internal Combustion Engines.PDF"
+        normalized_title: "ISO 15550 — Internal Combustion Engines, Determination and Method for the Measurement of Engine Power"
+        year: 2002
+        ext: PDF
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2002 3046-1 Reciprocating Internal Combustion Engines.PDF"
+        normalized_title: "ISO 3046-1 — Reciprocating Internal Combustion Engines, Performance (Part 1)"
+        year: 2002
+        ext: PDF
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2002 7547-Ships and marine technology-Air-conditioning and ventilation of accommodation spaces-Design conditions and basis of calculations.pdf"
+        normalized_title: "ISO 7547 — Air-Conditioning and Ventilation of Accommodation Spaces, Design Conditions (2002 ed.)"
+        year: 2002
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Superseded by ISO 7547:2022"
+
+      - file: "2005 19901-1 Petroleum and natural gas industries Part 1.pdf"
+        normalized_title: "ISO 19901-1 — Petroleum and Natural Gas Industries, Specific Requirements for Offshore Structures (Part 1: Metocean Design)"
+        year: 2005
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2005 8041 Human Response to Vibration - Measuring Instrumentation 2nd ed.pdf"
+        normalized_title: "ISO 8041 — Human Response to Vibration, Measuring Instrumentation (2nd ed.)"
+        year: 2005
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Absorbs 2007 Technical Corrigendum 1"
+
+      - file: "2005 8528-1 Reciprocating internal combustion engine.pdf"
+        normalized_title: "ISO 8528-1 — Reciprocating Internal Combustion Engine Driven Alternating Current Generating Sets (Part 1)"
+        year: 2005
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2009 9943 Vent & air-treatment of galleys and pantries with cooking appliances.pdf"
+        normalized_title: "ISO 9943 — Ventilation and Air-Treatment of Galleys and Pantries with Cooking Appliances"
+        year: 2009
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2015 15916 Safety of Hydrogen Systems.pdf"
+        normalized_title: "ISO 15916 — Safety of Hydrogen Systems"
+        year: 2015
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2020 13713 Mooring chocks.pdf"
+        normalized_title: "ISO 13713 — Ships and Marine Technology, Mooring Chocks"
+        year: 2020
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2020 13728 Panama chocks.pdf"
+        normalized_title: "ISO 13728 — Ships and Marine Technology, Panama Chocks"
+        year: 2020
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2020 13729 Closed chocks.pdf"
+        normalized_title: "ISO 13729 — Ships and Marine Technology, Closed Chocks"
+        year: 2020
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2020 13776 Pedestal Fairleads.pdf"
+        normalized_title: "ISO 13776 — Ships and Marine Technology, Pedestal Fairleads"
+        year: 2020
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2020 13795  Welded steel bollards.pdf"
+        normalized_title: "ISO 13795 — Ships and Marine Technology, Welded Steel Bollards"
+        year: 2020
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2020 24409-1-Safety Signs.pdf"
+        normalized_title: "ISO 24409-1 — Ships and Marine Technology, Design, Location, and Use of Shipboard Safety Signs (Part 1)"
+        year: 2020
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "19906_2010 Petro & Gas Ind-Arctic Offshore Struct.pdf"
+        normalized_title: "ISO 19906 — Petroleum and Natural Gas Industries, Arctic Offshore Structures"
+        year: 2010
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2022 ISO_7547-AC & vent-design cond and basis of calcs.pdf"
+        normalized_title: "ISO 7547 — Air-Conditioning and Ventilation of Accommodation Spaces, Design Conditions (2022 ed.)"
+        year: 2022
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Supersedes ISO 7547:2002"
+
+      - file: "ISO17338-2003-DwgsForFireProtection-FireRatingDiv.pdf"
+        normalized_title: "ISO 17338 — Fire Protection, Drawings for Fire-Rating Divisions on Ships"
+        year: 2003
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "ISO_24409-3_2014-Ship Signs-Code of Practice.PDF"
+        normalized_title: "ISO 24409-3 — Ships and Marine Technology, Shipboard Safety Signs, Code of Practice (Part 3)"
+        year: 2014
+        ext: PDF
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      # --- Fragments (merge into parent) ---
+      - file: "2007 8041 Technical Corrigendum 1 Human Response to Vibration - Measuring Instrumentation.pdf"
+        normalized_title: "ISO 8041:2005/Cor.1:2007 — Technical Corrigendum 1"
+        year: 2007
+        ext: pdf
+        family: fragment
+        action: merge_into_parent
+        merge_target: "ISO 8041 (2nd ed., 2005)"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2010 2631-1 Amendment 1.pdf"
+        normalized_title: "ISO 2631-1:1997/Amd.1:2010 — Amendment 1"
+        year: 2010
+        ext: pdf
+        family: fragment
+        action: merge_into_parent
+        merge_target: "ISO 2631-1 (1997)"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      # --- Jackup Site Assessment subfolder ---
+      - file: "Jackup Site Assessment/2008 Jackup Site Assessment DRAFT-19905-1_(E)_CD_G.pdf"
+        normalized_title: "ISO 19905-1 — Petroleum and Natural Gas Industries, Site-Specific Assessment of Jack-Up Units (Draft G)"
+        year: 2008
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Committee Draft G; pre-publication draft"
+
+      - file: "Jackup Site Assessment/2008 Initial Benchmarking of Clause 12 (Draft G).pdf"
+        normalized_title: "Benchmarking of Clause 12 — ISO 19905-1 Draft G"
+        year: 2008
+        ext: pdf
+        family: fragment
+        action: merge_into_parent
+        merge_target: "ISO 19905-1 (Draft G, 2008)"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "Jackup Site Assessment/2009 Phase 1 Benchmarking of ISO 19905-1.9-completeness check.pdf"
+        normalized_title: "Phase 1 Benchmarking of ISO 19905-1.9 — Completeness Check"
+        year: 2009
+        ext: pdf
+        family: fragment
+        action: merge_into_parent
+        merge_target: "ISO 19905-1 (Draft G, 2008)"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+# ──────────────────────────────────────────────
+# ASTM  (16 files)
+# ──────────────────────────────────────────────
+  - org: ASTM
+    org_full: ASTM International
+    root: /mnt/ace/acma-codes/ASTM
+    file_count: 16
+    files:
+      # --- Parents / standalone standards ---
+      - file: "1991 F1321-92 Guidelines for Conducting Stability Tests.pdf"
+        normalized_title: "ASTM F1321 — Standard Guide for Conducting Stability Tests"
+        year: 1991
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "1996 F 1166 Human Engineering Design.pdf"
+        normalized_title: "ASTM F1166 — Standard Practice for Human Engineering Design (1996 ed.)"
+        year: 1996
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Superseded by 2013 edition"
+
+      - file: "2003 B466 & B466M Seamless Copper-Nickel Pipe & Tube.pdf"
+        normalized_title: "ASTM B466/B466M — Standard Specification for Seamless Copper-Nickel Pipe and Tube"
+        year: 2003
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2004 F1155-98R04 Piping System Materials.pdf"
+        normalized_title: "ASTM F1155 — Standard Practice for Selection and Application of Piping System Materials"
+        year: 2004
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2006 F707 Modular Gage Boards.pdf"
+        normalized_title: "ASTM F707 — Standard Specification for Modular Gage Boards for Shipboard Piping Systems"
+        year: 2006
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2008 F708 Rigid Pipe Hangers.pdf"
+        normalized_title: "ASTM F708 — Standard Practice for Design and Installation of Rigid Pipe Hangers"
+        year: 2008
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2008 F721 Gaged Piping Assemblies.pdf"
+        normalized_title: "ASTM F721 — Standard Specification for Gaged and Threaded Piping Assemblies"
+        year: 2008
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2008 F986 Suction Strainer Boxes.pdf"
+        normalized_title: "ASTM F986 — Standard Specification for Suction Strainer Boxes"
+        year: 2008
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2013 F 1166 Human Engineering Design.pdf"
+        normalized_title: "ASTM F1166 — Standard Practice for Human Engineering Design (2013 ed.)"
+        year: 2013
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Supersedes 1996 edition"
+
+      - file: "2013 F1244 Standard Specification for Berths.pdf"
+        normalized_title: "ASTM F1244 — Standard Specification for Berths"
+        year: 2013
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2014 D975 Standard Specification for Diesel Fuel Oils.pdf"
+        normalized_title: "ASTM D975 — Standard Specification for Diesel Fuel Oils"
+        year: 2014
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "ASTM F3052−14, Air Incline Procedure.pdf"
+        normalized_title: "ASTM F3052 — Standard Guide for the Air Incline Procedure for Determining Intact Stability"
+        year: 2014
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "F3353 − 19 Shipboard use of Li-ion batteries.pdf"
+        normalized_title: "ASTM F3353 — Standard Guide for Shipboard Use of Lithium-Ion Batteries"
+        year: 2019
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      # --- Defer (not standards) ---
+      - file: "160519 email Workshop.pdf"
+        normalized_title: "Email / Workshop Communication (2016)"
+        year: 2016
+        ext: pdf
+        family: supporting
+        action: defer
+        defer_reason: "Email/workshop communication, not a published standard"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "ASTM LNG Tank Agenda - 5-20-2016.doc"
+        normalized_title: "ASTM LNG Tank Committee Agenda (2016)"
+        year: 2016
+        ext: doc
+        family: supporting
+        action: defer
+        defer_reason: "Meeting agenda, not a published standard"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "Portable LNG Fuel Tanks  Rev 3 Final.pdf"
+        normalized_title: "Portable LNG Fuel Tanks (Rev 3 Final Draft)"
+        year: null
+        ext: pdf
+        family: supporting
+        action: defer
+        defer_reason: "Working draft without ASTM designation number"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+# ──────────────────────────────────────────────
+# IACS  (11 files)
+# ──────────────────────────────────────────────
+  - org: IACS
+    org_full: International Association of Classification Societies
+    root: /mnt/ace/acma-codes/IACS
+    file_count: 11
+    files:
+      # --- Parents / standalone standards ---
+      - file: "2004 Jan REC_31_Inclining Test.pdf"
+        normalized_title: "IACS Rec. 31 — Recommendation on Inclining Test"
+        year: 2004
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2005 Guidelines for Surveys and Repair of Hull Structure-Containers.pdf"
+        normalized_title: "IACS — Guidelines for Surveys, Assessment, and Repair of Hull Structures, Container Ships"
+        year: 2005
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2006 Jan Common Strucutral Rules for Double Hull Oil Tankers.pdf"
+        normalized_title: "IACS — Common Structural Rules for Double Hull Oil Tankers"
+        year: 2006
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2007 April Guidelines for Surveys and Repair of Hull Structure-DH Tankers.pdf"
+        normalized_title: "IACS — Guidelines for Surveys, Assessment, and Repair of Hull Structures, Double Hull Tankers"
+        year: 2007
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2007 Sept Guidelines for Surveys and Repair of Hull Structure-Bulk Carriers.pdf"
+        normalized_title: "IACS — Guidelines for Surveys, Assessment, and Repair of Hull Structures, Bulk Carriers"
+        year: 2007
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2008 Interpretation of the International Convention on Load Lines.pdf"
+        normalized_title: "IACS — Interpretation of the International Convention on Load Lines (2008 ed.)"
+        year: 2008
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "See also 2022 ICLL 66 interpretation"
+
+      - file: "2010 IACS Unified Rules Polar Code.pdf"
+        normalized_title: "IACS — Unified Requirements for Polar Class Ships"
+        year: 2010
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2011-IACS-rec_95_BridgeDesEqArrProc-pdf688.pdf"
+        normalized_title: "IACS Rec. 95 — Recommendation on Bridge Design, Equipment Arrangement, and Procedures"
+        year: 2011
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2011 Requirements Concerning Survey and Certification.pdf"
+        normalized_title: "IACS — Requirements Concerning Survey and Certification"
+        year: 2011
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "2022-IACS-Interpr. of ICLL 66 .pdf"
+        normalized_title: "IACS — Interpretation of the International Convention on Load Lines, 1966 (2022 ed.)"
+        year: 2022
+        ext: pdf
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Updated interpretation; see also 2008 edition"
+
+      # --- Reject ---
+      - file: "Thumbs.db"
+        normalized_title: null
+        year: null
+        ext: db
+        family: reject
+        action: reject
+        reject_reason: "Windows thumbnail cache file"
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
