@@ -65,12 +65,18 @@ Post artifacts to `scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`.
 2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
 3. **STOP** — do NOT implement. Wait for user approval.
 
-### Step 5: User Approval
+### Step 6: User Approval
 
-The **user** (not the implementing agent) approves:
+The user (never the implementing agent) approves the plan:
+- `gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"`
+- Creates marker: `.planning/plan-approved/NNN.md`
 
-```bash
-gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"
+Status interpretation rule:
+- If GitHub shows multiple `status:*` labels, treat the latest/most-advanced state as authoritative.
+- Practical precedence: `status:plan-approved` outranks `status:plan-review`.
+- When local plan indexes / handoff notes / old comments disagree with current labels or approval markers, reconcile using the latest effective state instead of the oldest visible artifact.
+- Only surface a plan to the user for approval after adversarial plan review is complete and the plan is actually approval-ready. Do not ask for approval on a draft or on a plan whose review still returns MAJOR/FAIL.
+
 mkdir -p .planning/plan-approved
 echo "Approved by: <user>" > .planning/plan-approved/NNN.md
 ```

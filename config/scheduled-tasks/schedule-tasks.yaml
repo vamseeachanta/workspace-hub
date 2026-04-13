@@ -199,6 +199,20 @@ tasks:
     is_claude_task: false
     description: Weekly refresh of cross-provider session audit artifacts (JSON + Markdown) after session exports.
 
+  - id: provider-utilization-refresh
+    label: Provider quota snapshot + utilization refresh
+    schedule: "20 */4 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/provider-utilization-refresh.sh
+    log: logs/quality/provider-utilization-refresh-*.log
+    is_claude_task: false
+    description: Refreshes quota snapshots and regenerates weekly provider utilization artifacts every 4 hours.
+
   - id: weekly-hermes-parity-review
     label: Weekly Hermes cross-machine parity review
     schedule: "30 4 * * 1"

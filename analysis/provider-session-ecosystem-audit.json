@@ -1,43 +1,43 @@
 {
-  "generated_at": "2026-04-11T10:09:55Z",
+  "generated_at": "2026-04-13T11:07:11Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
     "claude": {
       "source": "raw_logs",
-      "sessions": 24,
+      "sessions": 26,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 0,
-      "post_records": 73646,
-      "prompt_reads": 64,
+      "unique_runtime_sessions": 37,
+      "post_records": 74657,
+      "prompt_reads": 70,
       "blank_reads": 0,
-      "missing_repo_reads": 7559,
-      "python3_bash_calls": 635,
-      "uv_python_bash_calls": 5907,
+      "missing_repo_reads": 7560,
+      "python3_bash_calls": 644,
+      "uv_python_bash_calls": 5914,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 40093
+          "count": 40503
         },
         {
           "tool": "Read",
-          "count": 13811
+          "count": 14202
         },
         {
           "tool": "Edit",
-          "count": 6724
+          "count": 6810
         },
         {
           "tool": "Write",
-          "count": 6436
+          "count": 6476
         },
         {
           "tool": "Grep",
-          "count": 1758
+          "count": 1836
         },
         {
           "tool": "Agent",
-          "count": 730
+          "count": 736
         },
         {
           "tool": "ToolSearch",
@@ -51,7 +51,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 70303
+          "count": 71314
         },
         {
           "repo": "digitalmodel",
@@ -308,66 +308,63 @@
       "top_bash_command_families": [
         {
           "prefix": "ls",
-          "count": 5804,
+          "count": 5865,
           "share_of_bash_calls": 14.48,
           "example_command": "ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ | grep 686"
         },
         {
           "prefix": "grep",
-          "count": 5167,
-          "share_of_bash_calls": 12.89,
+          "count": 5207,
+          "share_of_bash_calls": 12.86,
           "example_command": "# Check if submit-to-gemini.sh and submit-to-codex.sh exist and where they write logs\ngrep -n \"orchestrator\\|gemini\\|codex\" /mnt/local-analysis/worksp"
         },
         {
           "prefix": "uv run",
-          "count": 5113,
-          "share_of_bash_calls": 12.75,
+          "count": 5126,
+          "share_of_bash_calls": 12.66,
           "example_command": "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-683 2>&1 | tail -20"
         },
         {
           "prefix": "cat",
-          "count": 4291,
-          "share_of_bash_calls": 10.7,
+          "count": 4306,
+          "share_of_bash_calls": 10.63,
           "example_command": "cat .claude/work-queue/pending/WRK-683.md | head -20"
         },
         {
           "prefix": "find",
-          "count": 3117,
-          "share_of_bash_calls": 7.77,
+          "count": 3138,
+          "share_of_bash_calls": 7.75,
           "example_command": "find .claude/work-queue -name \"WRK-683*\" 2>/dev/null && git diff --stat HEAD 2>/dev/null | head -20"
         },
         {
           "prefix": "bash",
-          "count": 2771,
-          "share_of_bash_calls": 6.91,
+          "count": 2783,
+          "share_of_bash_calls": 6.87,
           "example_command": "bash tests/test_wrk687_lifecycle.sh 2>&1"
         },
         {
           "prefix": "sed",
-          "count": 1315,
-          "share_of_bash_calls": 3.28,
+          "count": 1316,
+          "share_of_bash_calls": 3.25,
           "example_command": "sed -n '32p' logs/orchestrator/claude/session_20260302.jsonl | cat -v | head -c 300"
         },
         {
           "prefix": "git add",
-          "count": 983,
+          "count": 993,
           "share_of_bash_calls": 2.45,
           "example_command": "git add .gitignore \\\n        .claude/work-queue/done/WRK-683.md \\\n        .claude/work-queue/pending/WRK-687.md \\\n        .claude/work-queue/assets/WR"
         }
       ],
       "special_counts": {},
-      "limitations": [
-        "Claude raw orchestrator logs do not persist session_id, so unique runtime sessions are unavailable in this audit."
-      ],
-      "python3_per_1k_records": 8.62,
-      "uv_python_per_1k_records": 80.21
+      "python3_per_1k_records": 8.63,
+      "uv_python_per_1k_records": 79.22
     },
     "codex": {
       "source": "raw_logs",
-      "sessions": 42,
+      "sessions": 44,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 402,
-      "post_records": 31324,
+      "unique_runtime_sessions": 407,
+      "post_records": 31413,
       "prompt_reads": 0,
       "blank_reads": 0,
       "missing_repo_reads": 0,
@@ -376,7 +373,7 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 30512
+          "count": 30558
         },
         {
           "tool": "update_plan",
@@ -384,7 +381,11 @@
         },
         {
           "tool": "list_mcp_resources",
-          "count": 28
+          "count": 31
+        },
+        {
+          "tool": "mcp__codex_apps__github_fetch_file",
+          "count": 27
         },
         {
           "tool": "list_mcp_resource_templates",
@@ -395,22 +396,18 @@
           "count": 10
         },
         {
+          "tool": "mcp__codex_apps__github_search",
+          "count": 9
+        },
+        {
           "tool": "spawn_agent",
           "count": 4
-        },
-        {
-          "tool": "wait_agent",
-          "count": 2
-        },
-        {
-          "tool": "close_agent",
-          "count": 2
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 31324
+          "count": 31413
         }
       ],
       "top_reads": [],
@@ -422,19 +419,19 @@
         {
           "prefix": "sed",
           "count": 3868,
-          "share_of_bash_calls": 12.68,
+          "share_of_bash_calls": 12.66,
           "example_command": "sed -n '230,340p' src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py"
         },
         {
           "prefix": "rg",
           "count": 1739,
-          "share_of_bash_calls": 5.7,
+          "share_of_bash_calls": 5.69,
           "example_command": "rg -n \"class ParquetStore|def save\\(\" -S src/worldenergydata/vessel_fleet -g '*.py'"
         },
         {
           "prefix": "nl",
           "count": 1308,
-          "share_of_bash_calls": 4.29,
+          "share_of_bash_calls": 4.28,
           "example_command": "nl -ba src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py | sed -n '270,300p'"
         },
         {
@@ -452,7 +449,7 @@
         {
           "prefix": "find",
           "count": 423,
-          "share_of_bash_calls": 1.39,
+          "share_of_bash_calls": 1.38,
           "example_command": "find worldenergydata/src/worldenergydata -maxdepth 1 -type f -name '*.py' | sed -n '1,20p'"
         },
         {
@@ -469,54 +466,57 @@
         }
       ],
       "special_counts": {
-        "exec_command": 24484,
+        "exec_command": 24530,
         "write_stdin": 6028,
         "update_plan": 750,
         "request_user_input": 10,
-        "list_mcp_resources": 28,
+        "list_mcp_resources": 31,
         "list_mcp_resource_templates": 16,
         "spawn_agent": 4,
         "wait_agent": 2,
-        "close_agent": 2
+        "close_agent": 2,
+        "mcp__codex_apps__github_fetch_file": 27,
+        "mcp__codex_apps__github_search": 9,
+        "mcp__codex_apps__github_fetch_issue": 4
       },
-      "python3_per_1k_records": 10.18,
-      "uv_python_per_1k_records": 12.61
+      "python3_per_1k_records": 10.16,
+      "uv_python_per_1k_records": 12.57
     },
     "hermes": {
       "source": "raw_logs",
-      "sessions": 10,
-      "correction_sessions": 10,
-      "unique_runtime_sessions": 941,
-      "post_records": 61509,
-      "prompt_reads": 650,
+      "sessions": 13,
+      "correction_sessions": 13,
+      "unique_runtime_sessions": 1097,
+      "post_records": 74634,
+      "prompt_reads": 797,
       "blank_reads": 0,
-      "missing_repo_reads": 186,
-      "python3_bash_calls": 1293,
-      "uv_python_bash_calls": 1703,
+      "missing_repo_reads": 210,
+      "python3_bash_calls": 1394,
+      "uv_python_bash_calls": 1762,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 31671
+          "count": 35289
         },
         {
           "tool": "Read",
-          "count": 9539
+          "count": 12329
         },
         {
           "tool": "Grep",
-          "count": 8546
+          "count": 12051
         },
         {
           "tool": "Write",
-          "count": 7133
+          "count": 9114
         },
         {
           "tool": "Edit",
-          "count": 3063
+          "count": 3951
         },
         {
           "tool": "Task",
-          "count": 766
+          "count": 1092
         },
         {
           "tool": "Browser",
@@ -524,55 +524,55 @@
         },
         {
           "tool": "ToolSearch",
-          "count": 184
+          "count": 194
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 61509
+          "count": 74634
         }
       ],
       "top_reads": [
         {
-          "path": "config/scheduled-tasks/schedule-tasks.yaml",
-          "count": 139
+          "path": "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md",
+          "count": 203
         },
         {
-          "path": "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md",
-          "count": 114
+          "path": "config/scheduled-tasks/schedule-tasks.yaml",
+          "count": 164
+        },
+        {
+          "path": "docs/reports/provider-session-ecosystem-audit.md",
+          "count": 145
+        },
+        {
+          "path": "analysis/provider-session-ecosystem-audit.json",
+          "count": 93
+        },
+        {
+          "path": "scripts/_core/sync-agent-configs.sh",
+          "count": 85
+        },
+        {
+          "path": "scripts/analysis/provider_session_ecosystem_audit.py",
+          "count": 76
         },
         {
           "path": "scripts/cron/harness-update.sh",
           "count": 73
         },
         {
-          "path": "docs/reports/provider-session-ecosystem-audit.md",
-          "count": 72
-        },
-        {
           "path": "scripts/gtm/job-market-scanner.py",
           "count": 67
         },
         {
-          "path": "analysis/provider-session-ecosystem-audit.json",
-          "count": 56
+          "path": "docs/plans/README.md",
+          "count": 65
         },
         {
-          "path": "docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md",
-          "count": 49
-        },
-        {
-          "path": "docs/standards/AI_REVIEW_ROUTING_POLICY.md",
-          "count": 49
-        },
-        {
-          "path": "assetutilities/src/assetutilities/agent_os/commands/create_module_agent.py",
-          "count": 49
-        },
-        {
-          "path": "scripts/cron/gsd-researcher-nightly.sh",
-          "count": 47
+          "path": "tests/analysis/test_provider_session_ecosystem_audit.py",
+          "count": 65
         }
       ],
       "top_missing_repo_reads": [
@@ -581,11 +581,15 @@
           "count": 24
         },
         {
+          "path": "docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md",
+          "count": 18
+        },
+        {
           "path": "scripts/hooks/pre-push.sh",
           "count": 8
         },
         {
-          "path": "docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md",
+          "path": ".planning/quick/review-2239.md",
           "count": 8
         },
         {
@@ -611,10 +615,6 @@
         {
           "path": "docs/handoffs/overnight-llm-wiki-stage3-architecture.md",
           "count": 7
-        },
-        {
-          "path": "worldenergydata/.planning/quick/gemini-review.txt",
-          "count": 6
         }
       ],
       "missing_repo_read_remediation_hints": [],
@@ -622,6 +622,10 @@
         {
           "path": "/home/vamsee/gmail-archive/config/accounts.yaml",
           "count": 4
+        },
+        {
+          "path": "/mnt/local-analysis/worktrees/wh-2128/scripts/hooks/pre-push.sh",
+          "count": 3
         },
         {
           "path": "/home/vamsee/.hermes/skills/mlops/research/dspy/SKILL.md",
@@ -654,142 +658,138 @@
         {
           "path": "/tmp/everything-claude-code/mcp-configs/mcp-servers.json",
           "count": 2
-        },
-        {
-          "path": "/home/vamsee/.hermes/skills/autonomous-ai-agents/hermes-agent/SKILL.md",
-          "count": 2
         }
       ],
       "top_symbolic_reads": [
         {
           "name": "github-issues",
-          "count": 82
+          "count": 119
         },
         {
           "name": "overnight-parallel-agent-prompts",
-          "count": 67
+          "count": 81
         },
         {
           "name": "gh-work-planning",
+          "count": 76
+        },
+        {
+          "name": "claude-code",
           "count": 50
         },
         {
           "name": "gh-work-execution",
-          "count": 39
+          "count": 49
+        },
+        {
+          "name": "issue-planning-mode",
+          "count": 48
+        },
+        {
+          "name": "hermes-ecosystem-integration",
+          "count": 38
         },
         {
           "name": "issue-portfolio-triage",
-          "count": 35
-        },
-        {
-          "name": "claude-code",
-          "count": 33
+          "count": 36
         },
         {
           "name": "writing-plans",
-          "count": 30
-        },
-        {
-          "name": "hermes-model-switching",
-          "count": 27
-        },
-        {
-          "name": "workspace-hub-batch-issue-execution",
-          "count": 26
+          "count": 35
         },
         {
           "name": "subagent-sandbox-limitations",
-          "count": 25
+          "count": 29
         }
       ],
       "top_bash_command_families": [
         {
           "prefix": "gh",
-          "count": 5202,
-          "share_of_bash_calls": 16.43,
+          "count": 6492,
+          "share_of_bash_calls": 18.4,
           "example_command": "gh auth status"
         },
         {
           "prefix": "uv run",
-          "count": 2703,
-          "share_of_bash_calls": 8.53,
+          "count": 2922,
+          "share_of_bash_calls": 8.28,
           "example_command": "cd /mnt/local-analysis/workspace-hub && uv run --no-project python -c \"\nimport yaml\nwith open('data/document-index/standards-transfer-ledger.yaml', 'r') as f:\n    data = yaml.safe_load(f)\nfrom collections import Counter\ndomains = Counter(s.get('domain','MISSING') for s in data['standards'])\nfor d, c in sorted(domains.items(), key=lambda x: -x[1]):\n    print(f'{d}: {c}')\n\""
         },
         {
           "prefix": "git add",
-          "count": 1559,
-          "share_of_bash_calls": 4.92,
+          "count": 1631,
+          "share_of_bash_calls": 4.62,
           "example_command": "cd /mnt/local-analysis/workspace-hub && git add -A && git status --short | head -20"
         },
         {
           "prefix": "find",
-          "count": 1376,
-          "share_of_bash_calls": 4.34,
+          "count": 1396,
+          "share_of_bash_calls": 3.96,
           "example_command": "cd /mnt/local-analysis/workspace-hub && find . -name \"SKILL.md\" -not -path \"./_archive/*\" 2>/dev/null | head -60"
         },
         {
           "prefix": "ls",
-          "count": 1330,
-          "share_of_bash_calls": 4.2,
+          "count": 1332,
+          "share_of_bash_calls": 3.77,
           "example_command": "cd /home/user && ls -d */ 2>/dev/null | head -30"
         },
         {
+          "prefix": "git status",
+          "count": 1153,
+          "share_of_bash_calls": 3.27,
+          "example_command": "cd /mnt/local-analysis/workspace-hub && git status --short 2>/dev/null | head -20"
+        },
+        {
           "prefix": "cat",
-          "count": 1046,
-          "share_of_bash_calls": 3.3,
+          "count": 1090,
+          "share_of_bash_calls": 3.09,
           "example_command": "cd /mnt/local-analysis/workspace-hub && cat > /tmp/comment-1548.md << 'EOF'\n## #1548 Status Check \u2014 2026-04-01\n\n**Verdict: Not yet closable. Hardening deployed but not yet tested in real cron run.**\n\n### Evidence from real cron logs (logs/research/)\n\n| Date | Result | Notes |\n|------|--------|-------|\n| Mar 25 | FAIL | DRY RUN + empty claude result (setup day) |\n| Mar 26 | OK | Artifact written (49 lines), git push race (WARNING) |\n| Mar 27 | OK | Artifact written (45 lines), git push race (WARN"
         },
         {
           "prefix": "git log",
-          "count": 945,
-          "share_of_bash_calls": 2.98,
+          "count": 984,
+          "share_of_bash_calls": 2.79,
           "example_command": "cd /mnt/local-analysis/workspace-hub && git log --oneline --all -- scripts/cron/gsd-researcher-nightly.sh | head -10"
-        },
-        {
-          "prefix": "echo",
-          "count": 917,
-          "share_of_bash_calls": 2.9,
-          "example_command": "cd /mnt/local-analysis/workspace-hub && echo \"=== Research log summary ===\" && for f in logs/research/2026-03-*.log logs/research/2026-04-*.log; do echo \"--- $(basename $f) ---\"; grep -E 'ERROR|Done|written to|WARNING' \"$f\"; echo; done"
         }
       ],
       "special_counts": {
-        "memory_add": 214,
-        "memory_replace": 260,
+        "memory_add": 233,
+        "memory_replace": 263,
         "memory_remove": 46,
-        "skill_create": 189,
-        "skill_patch": 605,
+        "skill_create": 202,
+        "skill_patch": 686,
         "skill_view": 2,
         "skill_delete": 1,
-        "skill_edit": 22,
+        "skill_edit": 23,
         "skill_write_file": 4,
         "memory_list": 1
       },
-      "python3_per_1k_records": 21.02,
-      "uv_python_per_1k_records": 27.69
+      "python3_per_1k_records": 18.68,
+      "uv_python_per_1k_records": 23.61
     },
     "gemini": {
       "source": "raw_logs",
-      "sessions": 36,
+      "sessions": 39,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 282,
-      "post_records": 5884,
+      "unique_runtime_sessions": 287,
+      "post_records": 5901,
       "prompt_reads": 18,
       "blank_reads": 0,
-      "missing_repo_reads": 593,
+      "missing_repo_reads": 590,
       "python3_bash_calls": 290,
       "uv_python_bash_calls": 39,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 2266
+          "count": 2267
         },
         {
           "tool": "Read",
-          "count": 2023
+          "count": 2035
         },
         {
           "tool": "Grep",
-          "count": 560
+          "count": 563
         },
         {
           "tool": "Write",
@@ -801,7 +801,7 @@
         },
         {
           "tool": "Browser",
-          "count": 96
+          "count": 97
         },
         {
           "tool": "ToolSearch",
@@ -815,7 +815,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 5884
+          "count": 5901
         }
       ],
       "top_reads": [
@@ -1035,7 +1035,7 @@
         {
           "prefix": "ls",
           "count": 463,
-          "share_of_bash_calls": 20.43,
+          "share_of_bash_calls": 20.42,
           "example_command": "ls -l scripts/operations/compliance/"
         },
         {
@@ -1046,8 +1046,8 @@
         },
         {
           "prefix": "cat",
-          "count": 181,
-          "share_of_bash_calls": 7.99,
+          "count": 182,
+          "share_of_bash_calls": 8.03,
           "example_command": "cat scripts/test/lib/detect-repo.sh"
         },
         {
@@ -1059,13 +1059,13 @@
         {
           "prefix": "grep",
           "count": 149,
-          "share_of_bash_calls": 6.58,
+          "share_of_bash_calls": 6.57,
           "example_command": "grep -h \"work_item:\" digitalmodel/specs/modules/*.md | head -n 100 | sort | uniq | wc -l"
         },
         {
           "prefix": "git",
           "count": 120,
-          "share_of_bash_calls": 5.3,
+          "share_of_bash_calls": 5.29,
           "example_command": "git -C worldenergydata status --porcelain"
         },
         {
@@ -1082,8 +1082,8 @@
         }
       ],
       "special_counts": {},
-      "python3_per_1k_records": 49.29,
-      "uv_python_per_1k_records": 6.63
+      "python3_per_1k_records": 49.14,
+      "uv_python_per_1k_records": 6.61
     }
   },
   "executive_summary": {
@@ -1092,7 +1092,7 @@
         {
           "provider": "gemini",
           "known_migration_debt_reads": 84,
-          "known_migration_debt_per_1k_records": 14.28,
+          "known_migration_debt_per_1k_records": 14.23,
           "known_migration_debt_rule_count": 3,
           "top_migration_rule_id": "legacy_local_work_queue_items",
           "top_migration_rule_reads": 37,
@@ -1104,7 +1104,7 @@
         {
           "provider": "claude",
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 13.2,
+          "known_migration_debt_per_1k_records": 13.02,
           "known_migration_debt_rule_count": 4,
           "top_migration_rule_id": "legacy_work_queue_transition",
           "top_migration_rule_reads": 318,

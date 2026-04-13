@@ -1,0 +1,186 @@
+{
+  "generated_at": "2026-04-13T12:22:23.224790Z",
+  "current_week": "2026-W16",
+  "inputs": {
+    "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
+    "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
+    "utilization_generated_at": "2026-04-13T12:22:23.056825Z",
+    "audit_generated_at": "2026-04-13T11:07:11Z"
+  },
+  "recommended_provider_order": [
+    "gemini",
+    "codex",
+    "claude"
+  ],
+  "recommendations": [
+    {
+      "provider": "claude",
+      "status": "underused",
+      "priority": "high",
+      "reported_utilization_pct": 0.0,
+      "quota_basis": "unavailable",
+      "quota_source": "unavailable",
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
+      "audit_post_records": 74657,
+      "missing_repo_reads": 7560,
+      "python3_per_1k_records": 8.63,
+      "migration_debt_per_1k_records": 13.02,
+      "top_migration_hint": "legacy_work_queue_transition",
+      "top_tools": [
+        {
+          "tool": "Bash",
+          "count": 40503
+        },
+        {
+          "tool": "Read",
+          "count": 14202
+        },
+        {
+          "tool": "Edit",
+          "count": 6810
+        },
+        {
+          "tool": "Write",
+          "count": 6476
+        },
+        {
+          "tool": "Grep",
+          "count": 1836
+        },
+        {
+          "tool": "Agent",
+          "count": 736
+        },
+        {
+          "tool": "ToolSearch",
+          "count": 681
+        },
+        {
+          "tool": "TaskUpdate",
+          "count": 541
+        }
+      ],
+      "preferred_work": [
+        "adversarial plan review",
+        "adversarial implementation review",
+        "long-context synthesis",
+        "complex repo strategy and architecture"
+      ],
+      "avoid_work": [
+        "bounded test-fix loops",
+        "mechanical refactors",
+        "commodity grep/read sweeps"
+      ],
+      "actions": [
+        "Reserve Claude for adversarial review, plan review, and long-context synthesis.",
+        "Do not burn Claude on mechanical loops that Codex can absorb.",
+        "Reduce stale-path drift before increasing provider load; wasted reads are burning credits.",
+        "Telemetry is weak; treat utilization as directional, not exact weekly headroom."
+      ]
+    },
+    {
+      "provider": "codex",
+      "status": "underused",
+      "priority": "highest",
+      "reported_utilization_pct": 1.0,
+      "quota_basis": "quota",
+      "quota_source": "history.jsonl",
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
+      "audit_post_records": 31413,
+      "missing_repo_reads": 0,
+      "python3_per_1k_records": 10.16,
+      "migration_debt_per_1k_records": 0.0,
+      "top_migration_hint": null,
+      "top_tools": [
+        {
+          "tool": "Bash",
+          "count": 30558
+        },
+        {
+          "tool": "update_plan",
+          "count": 750
+        },
+        {
+          "tool": "list_mcp_resources",
+          "count": 31
+        },
+        {
+          "tool": "mcp__codex_apps__github_fetch_file",
+          "count": 27
+        },
+        {
+          "tool": "list_mcp_resource_templates",
+          "count": 16
+        },
+        {
+          "tool": "request_user_input",
+          "count": 10
+        },
+        {
+          "tool": "mcp__codex_apps__github_search",
+          "count": 9
+        },
+        {
+          "tool": "spawn_agent",
+          "count": 4
+        }
+      ],
+      "preferred_work": [
+        "bounded implementation",
+        "test writing and repair",
+        "mechanical cleanup/refactors",
+        "issue execution with crisp scope"
+      ],
+      "avoid_work": [
+        "large open-ended research",
+        "broad ecosystem synthesis"
+      ],
+      "actions": [
+        "Route bounded implementation/test/refactor issues to Codex immediately.",
+        "Use Codex for repetitive repo-hardening tasks before spending more Claude review cycles."
+      ]
+    },
+    {
+      "provider": "gemini",
+      "status": "underused",
+      "priority": "highest",
+      "reported_utilization_pct": 0.0,
+      "quota_basis": "estimated_daily_quota",
+      "quota_source": "estimated",
+      "sessions_current_week": 1,
+      "post_records_current_week": 1,
+      "audit_post_records": 5901,
+      "missing_repo_reads": 590,
+      "python3_per_1k_records": 49.14,
+      "migration_debt_per_1k_records": 14.23,
+      "top_migration_hint": "legacy_local_work_queue_items",
+      "top_tools": [
+        {
+          "tool": "Browser",
+          "count": 1
+        }
+      ],
+      "preferred_work": [
+        "batched research/recon",
+        "risk enumeration",
+        "competitor/standards scans",
+        "issue expansion and scouting"
+      ],
+      "avoid_work": [
+        "high-volume mechanical coding",
+        "tight verification loops"
+      ],
+      "actions": [
+        "Batch 5-6 related research/recon tasks into Gemini sessions.",
+        "Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle.",
+        "Telemetry is weak; treat utilization as directional, not exact weekly headroom."
+      ]
+    }
+  ],
+  "summary": {
+    "highest_priority_provider": "gemini",
+    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
+  }
+}

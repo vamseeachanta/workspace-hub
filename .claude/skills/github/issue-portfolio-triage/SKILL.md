@@ -202,6 +202,25 @@ For data-heavy ecosystems, reclassifying/cleaning data registries IS high-levera
 - Updating audit reports with fresh stats gives the orchestrator accurate situational awareness
 - These are concrete deliverables, not just planning artifacts
 
+### 5. Prioritization Spine Pattern for Fragmented Backlogs
+When relevant work is scattered across multiple existing umbrella issues, do not just rank them in chat. Create a GitHub-native prioritization spine:
+
+1. Search and inspect the existing umbrella/execution issues with `gh issue list` + `gh issue view`
+2. Create one new parent issue that:
+   - summarizes the currently observed bottlenecks using live repo evidence
+   - groups existing issues into P0/P1/P2/P3 execution order
+   - names any uncovered gaps that do not yet have issues
+3. Create child issues for uncovered gaps rather than overloading the parent
+   - Example reusable gap types:
+     - large miscellaneous / `other` classification buckets that block file-context discovery
+     - stale summary artifacts drifting from canonical YAML/ledger sources
+4. Immediately edit the parent issue body to include links to the newly created child issues
+5. Add backlink comments to the most important existing issues so future agents see the new ordering reference
+   - Keep the comment concise: point to the new prioritization spine and state that it is the current execution-order reference
+6. Verify the final parent/child bodies after creation to ensure placeholders like `<PARENT>` were rendered correctly
+
+This pattern is especially useful when the real need is not a new execution stream, but a new coordination layer across already-open work.
+
 ### Wave sizing guidance
 - Wave 1: Quick wins + blocking fixes (download scripts, cleanup, reclassification)
 - Wave 2: Curation + architecture proposals (worked examples, knowledge persistence)

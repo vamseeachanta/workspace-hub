@@ -1,14 +1,14 @@
-# Provider session ecosystem audit — 2026-04-11
+# Provider session ecosystem audit — 2026-04-13
 
 Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
 ## Executive summary
-- `claude` — source=raw_logs | sessions=24 | post_records=73646 | python3/1k=8.62 | uv-python/1k=80.21
-- `codex` — source=raw_logs | sessions=42 | post_records=31324 | python3/1k=10.18 | uv-python/1k=12.61
-- `hermes` — source=raw_logs | sessions=10 | post_records=61509 | python3/1k=21.02 | uv-python/1k=27.69
-- `gemini` — source=raw_logs | sessions=36 | post_records=5884 | python3/1k=49.29 | uv-python/1k=6.63
+- `claude` — source=raw_logs | sessions=26 | post_records=74657 | python3/1k=8.63 | uv-python/1k=79.22
+- `codex` — source=raw_logs | sessions=44 | post_records=31413 | python3/1k=10.16 | uv-python/1k=12.57
+- `hermes` — source=raw_logs | sessions=13 | post_records=74634 | python3/1k=18.68 | uv-python/1k=23.61
+- `gemini` — source=raw_logs | sessions=39 | post_records=5901 | python3/1k=49.14 | uv-python/1k=6.61
 
-- Migration debt density (known stale reads with redirect hints per 1k records): `gemini` 14.28, `claude` 13.2, `codex` 0.0, `hermes` 0.0.
+- Migration debt density (known stale reads with redirect hints per 1k records): `gemini` 14.23, `claude` 13.02, `codex` 0.0, `hermes` 0.0.
 - Highest-volume known migration debt: `claude` with 972 mapped stale reads across 4 rule clusters; top hotspot: `legacy_work_queue_transition` (318).
 - Highest-density known migration debt: `gemini` with 84 mapped stale reads; top hotspot: `legacy_local_work_queue_items` (37, 44.05% of known debt).
 - Unmapped missing repo reads remain for: `hermes`; this looks more like general path drift than known migration debt.
@@ -16,29 +16,28 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## claude
 - Source: raw_logs
-- Sessions: 24
-- Post-hook records: 73646
+- Sessions: 26
+- Post-hook records: 74657
 - Correction sessions: 0
-- Unique runtime sessions: 0
-- Prompt-like reads: 64
+- Unique runtime sessions: 37
+- Prompt-like reads: 70
 - Blank read targets: 0
-- Missing repo reads: 7559
-- Bare python3 bash calls: 635
-- `uv run ... python` bash calls: 5907
-- Limitation: Claude raw orchestrator logs do not persist session_id, so unique runtime sessions are unavailable in this audit.
+- Missing repo reads: 7560
+- Bare python3 bash calls: 644
+- `uv run ... python` bash calls: 5914
 
 ### claude top tools
-- `Bash` — 40093
-- `Read` — 13811
-- `Edit` — 6724
-- `Write` — 6436
-- `Grep` — 1758
-- `Agent` — 730
+- `Bash` — 40503
+- `Read` — 14202
+- `Edit` — 6810
+- `Write` — 6476
+- `Grep` — 1836
+- `Agent` — 736
 - `ToolSearch` — 681
 - `TaskUpdate` — 541
 
 ### claude top repos
-- `workspace-hub` — 70303
+- `workspace-hub` — 71314
 - `digitalmodel` — 1900
 - `assetutilities` — 535
 - `worldenergydata` — 201
@@ -63,14 +62,14 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - none
 
 ### claude top Bash command families
-- `ls` — 5804
-- `grep` — 5167
-- `uv run` — 5113
-- `cat` — 4291
-- `find` — 3117
-- `bash` — 2771
-- `sed` — 1315
-- `git add` — 983
+- `ls` — 5865
+- `grep` — 5207
+- `uv run` — 5126
+- `cat` — 4306
+- `find` — 3138
+- `bash` — 2783
+- `sed` — 1316
+- `git add` — 993
 
 ### claude top missing repo reads
 - `scripts/work-queue/generate-html-review.py` — 249
@@ -116,10 +115,10 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## codex
 - Source: raw_logs
-- Sessions: 42
-- Post-hook records: 31324
+- Sessions: 44
+- Post-hook records: 31413
 - Correction sessions: 0
-- Unique runtime sessions: 402
+- Unique runtime sessions: 407
 - Prompt-like reads: 0
 - Blank read targets: 0
 - Missing repo reads: 0
@@ -127,17 +126,17 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `uv run ... python` bash calls: 395
 
 ### codex top tools
-- `Bash` — 30512
+- `Bash` — 30558
 - `update_plan` — 750
-- `list_mcp_resources` — 28
+- `list_mcp_resources` — 31
+- `mcp__codex_apps__github_fetch_file` — 27
 - `list_mcp_resource_templates` — 16
 - `request_user_input` — 10
+- `mcp__codex_apps__github_search` — 9
 - `spawn_agent` — 4
-- `wait_agent` — 2
-- `close_agent` — 2
 
 ### codex top repos
-- `workspace-hub` — 31324
+- `workspace-hub` — 31413
 
 ### codex top reads
 - none
@@ -166,80 +165,81 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## hermes
 - Source: raw_logs
-- Sessions: 10
-- Post-hook records: 61509
-- Correction sessions: 10
-- Unique runtime sessions: 941
-- Prompt-like reads: 650
+- Sessions: 13
+- Post-hook records: 74634
+- Correction sessions: 13
+- Unique runtime sessions: 1097
+- Prompt-like reads: 797
 - Blank read targets: 0
-- Missing repo reads: 186
-- Bare python3 bash calls: 1293
-- `uv run ... python` bash calls: 1703
+- Missing repo reads: 210
+- Bare python3 bash calls: 1394
+- `uv run ... python` bash calls: 1762
 
 ### hermes top tools
-- `Bash` — 31671
-- `Read` — 9539
-- `Grep` — 8546
-- `Write` — 7133
-- `Edit` — 3063
-- `Task` — 766
+- `Bash` — 35289
+- `Read` — 12329
+- `Grep` — 12051
+- `Write` — 9114
+- `Edit` — 3951
+- `Task` — 1092
 - `Browser` — 347
-- `ToolSearch` — 184
+- `ToolSearch` — 194
 
 ### hermes top repos
-- `workspace-hub` — 61509
+- `workspace-hub` — 74634
 
 ### hermes top reads
-- `config/scheduled-tasks/schedule-tasks.yaml` — 139
-- `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` — 114
+- `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` — 203
+- `config/scheduled-tasks/schedule-tasks.yaml` — 164
+- `docs/reports/provider-session-ecosystem-audit.md` — 145
+- `analysis/provider-session-ecosystem-audit.json` — 93
+- `scripts/_core/sync-agent-configs.sh` — 85
+- `scripts/analysis/provider_session_ecosystem_audit.py` — 76
 - `scripts/cron/harness-update.sh` — 73
-- `docs/reports/provider-session-ecosystem-audit.md` — 72
 - `scripts/gtm/job-market-scanner.py` — 67
-- `analysis/provider-session-ecosystem-audit.json` — 56
-- `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — 49
-- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — 49
-- `assetutilities/src/assetutilities/agent_os/commands/create_module_agent.py` — 49
-- `scripts/cron/gsd-researcher-nightly.sh` — 47
+- `docs/plans/README.md` — 65
+- `tests/analysis/test_provider_session_ecosystem_audit.py` — 65
 
 ### hermes top symbolic reads
-- `github-issues` — 82
-- `overnight-parallel-agent-prompts` — 67
-- `gh-work-planning` — 50
-- `gh-work-execution` — 39
-- `issue-portfolio-triage` — 35
-- `claude-code` — 33
-- `writing-plans` — 30
-- `hermes-model-switching` — 27
-- `workspace-hub-batch-issue-execution` — 26
-- `subagent-sandbox-limitations` — 25
+- `github-issues` — 119
+- `overnight-parallel-agent-prompts` — 81
+- `gh-work-planning` — 76
+- `claude-code` — 50
+- `gh-work-execution` — 49
+- `issue-planning-mode` — 48
+- `hermes-ecosystem-integration` — 38
+- `issue-portfolio-triage` — 36
+- `writing-plans` — 35
+- `subagent-sandbox-limitations` — 29
 
 ### hermes top Bash command families
-- `gh` — 5202
-- `uv run` — 2703
-- `git add` — 1559
-- `find` — 1376
-- `ls` — 1330
-- `cat` — 1046
-- `git log` — 945
-- `echo` — 917
+- `gh` — 6492
+- `uv run` — 2922
+- `git add` — 1631
+- `find` — 1396
+- `ls` — 1332
+- `git status` — 1153
+- `cat` — 1090
+- `git log` — 984
 
 ### hermes top missing repo reads
 - `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py` — 24
+- `docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md` — 18
 - `scripts/hooks/pre-push.sh` — 8
-- `docs/plans/2026-04-10-llm-wiki-resource-doc-repo-integration-blueprint.md` — 8
+- `.planning/quick/review-2239.md` — 8
 - `digitalmodel/docs/roadmaps/orcawave-orcaflex-capability-roadmap.md` — 7
 - `digitalmodel/docs/assessments/hull-library-audit.md` — 7
 - `digitalmodel/specs/module-registry.yaml` — 7
 - `docs/handoffs/overnight-llm-wiki-stage1-source-map.md` — 7
 - `docs/handoffs/overnight-llm-wiki-stage2-skill-repo-map.md` — 7
 - `docs/handoffs/overnight-llm-wiki-stage3-architecture.md` — 7
-- `worldenergydata/.planning/quick/gemini-review.txt` — 6
 
 ### hermes remediation hints for stale repo reads
 - none
 
 ### hermes top missing external reads
 - `/home/vamsee/gmail-archive/config/accounts.yaml` — 4
+- `/mnt/local-analysis/worktrees/wh-2128/scripts/hooks/pre-push.sh` — 3
 - `/home/vamsee/.hermes/skills/mlops/research/dspy/SKILL.md` — 2
 - `/tmp/everything-claude-code/README.md` — 2
 - `/tmp/everything-claude-code/the-longform-guide.md` — 2
@@ -248,32 +248,31 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `/tmp/everything-claude-code/AGENTS.md` — 2
 - `/tmp/everything-claude-code/hooks/hooks.json` — 2
 - `/tmp/everything-claude-code/mcp-configs/mcp-servers.json` — 2
-- `/home/vamsee/.hermes/skills/autonomous-ai-agents/hermes-agent/SKILL.md` — 2
 
 ## gemini
 - Source: raw_logs
-- Sessions: 36
-- Post-hook records: 5884
+- Sessions: 39
+- Post-hook records: 5901
 - Correction sessions: 0
-- Unique runtime sessions: 282
+- Unique runtime sessions: 287
 - Prompt-like reads: 18
 - Blank read targets: 0
-- Missing repo reads: 593
+- Missing repo reads: 590
 - Bare python3 bash calls: 290
 - `uv run ... python` bash calls: 39
 
 ### gemini top tools
-- `Bash` — 2266
-- `Read` — 2023
-- `Grep` — 560
+- `Bash` — 2267
+- `Read` — 2035
+- `Grep` — 563
 - `Write` — 535
 - `Edit` — 394
-- `Browser` — 96
+- `Browser` — 97
 - `ToolSearch` — 9
 - `ask_user` — 1
 
 ### gemini top repos
-- `workspace-hub` — 5884
+- `workspace-hub` — 5901
 
 ### gemini top reads
 - `.claude/work-queue/` — 29
@@ -302,7 +301,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 ### gemini top Bash command families
 - `ls` — 463
 - `find` — 274
-- `cat` — 181
+- `cat` — 182
 - `python3` — 173
 - `grep` — 149
 - `git` — 120
