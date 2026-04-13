@@ -154,12 +154,76 @@ health_check_gstack() {
   git -C "$dir" rev-parse HEAD &>/dev/null || { log "HEALTH" "GStack: git repo corrupt"; return 1; }
 }
 
-health_check_superpowers() {
-  local dir="${HOME}/.claude/plugins/superpowers"
-  if [[ -d "$dir/.git" ]]; then
-    git -C "$dir" rev-parse HEAD &>/dev/null || { log "HEALTH" "Superpowers: git repo corrupt"; return 1; }
+superpowers_scopes_json() {
+  local plugin_json
+  plugin_json=$(claude plugin list --json 2>/dev/null || echo '[]')
+  if command -v python3 >/dev/null 2>&1; then
+    PLUGIN_JSON="$plugin_json" python3 - <<'PY'
+import json, os
+try:
+    data = json.loads(os.environ.get("PLUGIN_JSON", "[]"))
+except Exception:
+    data = []
+for plugin in data:
+    plugin_id = plugin.get("id", "")
+    if plugin_id.startswith("superpowers@"):
+        scope = plugin.get("scope", "")
+        version = plugin.get("version", "unknown")
+        enabled = plugin.get("enabled", False)
+        print(f"{scope}|{version}|{str(enabled).lower()}|{plugin_id}")
+PY
+    return
   fi
-  return 0
+  if command -v uv >/dev/null 2>&1; then
+    PLUGIN_JSON="$plugin_json" uv run --no-project python - <<'PY'
+import json, os
+try:
+    data = json.loads(os.environ.get("PLUGIN_JSON", "[]"))
+except Exception:
+    data = []
+for plugin in data:
+    plugin_id = plugin.get("id", "")
+    if plugin_id.startswith("superpowers@"):
+        scope = plugin.get("scope", "")
+        version = plugin.get("version", "unknown")
+        enabled = plugin.get("enabled", False)
+        print(f"{scope}|{version}|{str(enabled).lower()}|{plugin_id}")
+PY
+    return
+  fi
+}
+
+superpowers_summary() {
+  local entries
+  entries=$(superpowers_scopes_json)
+  if [[ -n "$entries" ]]; then
+    echo "$entries" | while IFS='|' read -r scope version enabled plugin_id; do
+      [[ -n "$scope" ]] || continue
+      printf '%s:%s:%s\n' "$scope" "$version" "$enabled"
+    done | paste -sd ',' -
+    return
+  fi
+  local legacy_dir="${HOME}/.claude/plugins/superpowers"
+  if [[ -d "$legacy_dir/.git" ]]; then
+    git -C "$legacy_dir" rev-parse --short HEAD 2>/dev/null || echo "legacy-git"
+    return
+  fi
+  echo "not-installed"
+}
+
+health_check_superpowers() {
+  local entries legacy_dir
+  entries=$(superpowers_scopes_json)
+  if [[ -n "$entries" ]]; then
+    return 0
+  fi
+  legacy_dir="${HOME}/.claude/plugins/superpowers"
+  if [[ -d "$legacy_dir/.git" ]]; then
+    git -C "$legacy_dir" rev-parse HEAD &>/dev/null || { log "HEALTH" "Superpowers: git repo corrupt"; return 1; }
+    return 0
+  fi
+  log "HEALTH" "Superpowers: plugin not found in installed-scope inventory"
+  return 1
 }
 
 health_check_gsd() {
@@ -358,36 +422,63 @@ update_superpowers() {
   if ! command -v claude &>/dev/null; then
     log "Superpowers: claude CLI not installed — skipping"; record "Superpowers" "-" "-" "not-installed"; return
   fi
-  local before sp_installed=false
-  if claude plugin list 2>/dev/null | grep -qi superpowers; then
-    sp_installed=true
-    before=$(claude plugin list 2>/dev/null | grep -i superpowers | sed 's/^[[:space:]]*[^a-zA-Z]*//' | head -1)
+
+  local before entries updated_scopes=() failed_scopes=() legacy_dir after
+  before=$(superpowers_summary)
+  entries=$(superpowers_scopes_json)
+  legacy_dir="${HOME}/.claude/plugins/superpowers"
+
+  if [[ -z "$entries" && ! -d "$legacy_dir/.git" ]]; then
+    log "Superpowers: not installed — skipping"; record "Superpowers" "-" "-" "not-installed"; return
   fi
-  if [[ "$sp_installed" == "false" ]]; then
-    local sp_dir="${HOME}/.claude/plugins/superpowers"
-    if [[ -d "$sp_dir/.git" ]]; then
-      sp_installed=true; before=$(git -C "$sp_dir" rev-parse --short HEAD 2>/dev/null || echo "unknown")
-    else
-      log "Superpowers: not installed — skipping"; record "Superpowers" "-" "-" "not-installed"; return
-    fi
-  fi
+
   if [[ "$DRY_RUN" == "true" ]]; then
-    log "Superpowers: [dry-run]"; record "Superpowers" "$before" "(dry-run)" "dry-run"; return
+    log "Superpowers: [dry-run] scopes=${before}"
+    record "Superpowers" "$before" "(dry-run)" "dry-run"
+    return
   fi
-  log "Superpowers: updating"
-  local after
-  if timeout 60 claude plugin update superpowers 2>&1 | tee -a "$LOG_FILE"; then
-    after=$(claude plugin list 2>/dev/null | grep -i superpowers | head -1 || echo "unknown")
-    if health_check_superpowers; then
-      record "Superpowers" "$before" "$after" "updated" "healthy"
-      write_transaction "superpowers" "$before" "latest" "$after" "updated" "false" "healthy"
+
+  if [[ -n "$entries" ]]; then
+    while IFS='|' read -r scope version enabled plugin_id; do
+      [[ -n "$scope" ]] || continue
+      [[ -n "$plugin_id" ]] || plugin_id="superpowers"
+      log "Superpowers: updating scope=${scope} version=${version} enabled=${enabled} id=${plugin_id}"
+      if timeout 60 claude plugin update "$plugin_id" --scope "$scope" 2>&1 | tee -a "$LOG_FILE"; then
+        updated_scopes+=("$scope")
+      else
+        failed_scopes+=("$scope")
+      fi
+    done <<< "$entries"
+  elif [[ -d "$legacy_dir/.git" ]]; then
+    log "Superpowers: updating legacy git checkout"
+    if git -C "$legacy_dir" pull --rebase --autostash 2>&1 | tee -a "$LOG_FILE"; then
+      updated_scopes+=("legacy-git")
     else
-      record "Superpowers" "$before" "$after" "BROKEN" "broken"
-      write_transaction "superpowers" "$before" "latest" "$after" "broken" "false" "broken"
+      failed_scopes+=("legacy-git")
     fi
+  fi
+
+  after=$(superpowers_summary)
+
+  if [[ ${#failed_scopes[@]} -gt 0 ]]; then
+    log "WARN" "Superpowers: failed scopes=${failed_scopes[*]}"
+  fi
+
+  if [[ ${#updated_scopes[@]} -eq 0 && ${#failed_scopes[@]} -gt 0 ]]; then
+    record "Superpowers" "$before" "$after" "failed" "unknown"
+    write_transaction "superpowers" "$before" "latest" "$after" "failed" "false" "unknown"
+    return
+  fi
+
+  if health_check_superpowers; then
+    local status="updated"
+    [[ "$before" == "$after" && ${#failed_scopes[@]} -eq 0 ]] && status="up-to-date"
+    [[ ${#failed_scopes[@]} -gt 0 ]] && status="partial-failed"
+    record "Superpowers" "$before" "$after" "$status" "healthy"
+    write_transaction "superpowers" "$before" "latest" "$after" "$status" "false" "healthy"
   else
-    record "Superpowers" "$before" "-" "failed" "unknown"
-    write_transaction "superpowers" "$before" "latest" "-" "failed" "false" "unknown"
+    record "Superpowers" "$before" "$after" "BROKEN" "broken"
+    write_transaction "superpowers" "$before" "latest" "$after" "broken" "false" "broken"
   fi
 }
 
