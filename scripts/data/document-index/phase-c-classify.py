@@ -5,16 +5,21 @@
 """
 Usage:
     python phase-c-classify.py [--config config.yaml] [--limit N] [--dry-run]
+
+Bounded writeback mode (targeted classification runs):
+    python phase-c-classify.py --writeback --target-list targets.txt --index-path data/document-index/index.jsonl
 """
 
 import argparse
 import json
 import logging
+import os
 import sys
+import tempfile
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import yaml
 
@@ -236,6 +241,100 @@ def map_to_repos(domain: str, repo_domain_map: Dict) -> List[str]:
     )
 
 
+def load_target_list(target_path: Path) -> Set[str]:
+    """Load content_hash allowlist from a file (one hash per line)."""
+    hashes: Set[str] = set()
+    with open(target_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#"):
+                hashes.add(line)
+    return hashes
+
+
+def apply_bounded_writeback(
+    index_path: Path,
+    target_hashes: Set[str],
+    repo_domain_map: Dict[str, List[str]],
+) -> Dict[str, Any]:
+    """Classify and write back domain/status/target_repos for only allowlisted records.
+
+    Non-target records are passed through byte-for-byte unchanged.
+    Returns a verification report with counts of updated/skipped/missing records.
+    """
+    if not target_hashes:
+        # Nothing to do — return zeros without touching the file
+        total = 0
+        if index_path.exists():
+            with open(index_path) as f:
+                total = sum(1 for line in f if line.strip())
+        return {
+            "updated": 0,
+            "skipped": total,
+            "missing": 0,
+            "total": total,
+            "updated_hashes": [],
+        }
+
+    updated = 0
+    skipped = 0
+    total = 0
+    found_hashes: Set[str] = set()
+    updated_hashes: List[str] = []
+
+    tmp_fd, tmp_path = tempfile.mkstemp(
+        dir=index_path.parent, prefix=".writeback-", suffix=".jsonl",
+    )
+    try:
+        with os.fdopen(tmp_fd, "w") as out_f, open(index_path) as in_f:
+            for raw_line in in_f:
+                stripped = raw_line.strip()
+                if not stripped:
+                    continue
+                try:
+                    rec = json.loads(stripped)
+                except json.JSONDecodeError:
+                    # Preserve malformed lines as-is
+                    out_f.write(raw_line)
+                    continue
+
+                total += 1
+                content_hash = rec.get("content_hash", "")
+                if content_hash in target_hashes:
+                    found_hashes.add(content_hash)
+                    # Classify using heuristic (no summary needed for writeback)
+                    domain, status = classify_heuristic(rec, None)
+                    repos = map_to_repos(domain, repo_domain_map)
+                    rec["domain"] = domain
+                    rec["status"] = status
+                    rec["target_repos"] = repos
+                    out_f.write(json.dumps(rec) + "\n")
+                    updated += 1
+                    updated_hashes.append(content_hash)
+                else:
+                    # Pass through byte-for-byte to preserve non-target records
+                    out_f.write(stripped + "\n")
+                    skipped += 1
+
+        os.replace(tmp_path, index_path)
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
+
+    missing = len(target_hashes - found_hashes)
+
+    return {
+        "updated": updated,
+        "skipped": skipped,
+        "missing": missing,
+        "total": total,
+        "updated_hashes": updated_hashes,
+    }
+
+
 MAX_ITEMS_PER_DOMAIN = 500  # Cap items list to keep YAML manageable
 
 
@@ -312,9 +411,54 @@ def main() -> int:
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--limit", type=int, default=0, help="Max docs to classify")
     parser.add_argument("--dry-run", action="store_true", help="Classify but don't write")
+    # Bounded writeback mode
+    parser.add_argument(
+        "--writeback", action="store_true",
+        help="Bounded writeback: update domain/status in index for targeted records only",
+    )
+    parser.add_argument(
+        "--target-list", type=Path, default=None,
+        help="File with content_hash values (one per line) to target for writeback",
+    )
+    parser.add_argument(
+        "--index-path", type=Path, default=None,
+        help="Explicit index.jsonl path for writeback (overrides config)",
+    )
     args = parser.parse_args()
 
     cfg = load_config(args.config)
+
+    # --- Bounded writeback mode ---
+    if args.writeback:
+        if not args.target_list:
+            logger.error("--writeback requires --target-list")
+            return 1
+        target_hashes = load_target_list(args.target_list)
+        if not target_hashes:
+            logger.error("Target list is empty: %s", args.target_list)
+            return 1
+        wb_index = args.index_path or (HUB_ROOT / cfg["output"]["index_path"])
+        if not wb_index.exists():
+            logger.error("Index not found: %s", wb_index)
+            return 1
+        repo_domain_map = cfg.get("repo_domain_map", {})
+        logger.info(
+            "Bounded writeback: %d targets -> %s", len(target_hashes), wb_index,
+        )
+        report = apply_bounded_writeback(
+            index_path=wb_index,
+            target_hashes=target_hashes,
+            repo_domain_map=repo_domain_map,
+        )
+        logger.info(
+            "Writeback complete: %d updated, %d skipped, %d missing, %d total",
+            report["updated"], report["skipped"], report["missing"], report["total"],
+        )
+        if report["updated_hashes"]:
+            logger.info("Updated hashes: %s", report["updated_hashes"])
+        return 0
+
+    # --- Default enhancement-plan mode ---
     index_path = HUB_ROOT / cfg["output"]["index_path"]
     summaries_dir = HUB_ROOT / cfg["output"]["summaries_dir"]
     plan_path = HUB_ROOT / cfg["output"]["enhancement_plan"]
