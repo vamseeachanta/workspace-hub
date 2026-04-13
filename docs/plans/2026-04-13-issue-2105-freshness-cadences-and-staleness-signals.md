@@ -35,9 +35,9 @@ N/A — documentation / governance / operational review task
 - GitHub issue #2097 — related recurring execution path for weekly review.
 
 ### Gaps identified
-- No plan file exists for #2105.
-- No single dedicated artifact is identified as the canonical freshness cadence matrix.
-- Need a bounded plan to determine whether #2105 should primarily produce documentation, registry updates, weekly-review updates, or all three.
+- No canonical cadence/staleness matrix artifact is locked.
+- Existing staleness machinery is not yet explicitly connected to the intelligence-asset freshness contract used by weekly review.
+- The threshold semantics (`current`, `warn`, `stale`) and ownership model for applying them are not yet defined in one bounded place.
 
 ---
 
@@ -49,14 +49,16 @@ N/A — documentation / governance / operational review task
 | Weekly-review consumer | `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` |
 | Registry source | `data/document-index/intelligence-accessibility-registry.yaml` |
 | Maturity ledger | `data/document-index/resource-intelligence-maturity.yaml` |
-| Candidate cadence matrix doc | `docs/document-intelligence/` (exact path to be locked by plan) |
+| Canonical cadence matrix | `docs/document-intelligence/freshness-cadence-matrix.md` |
+| Existing scanner/runner | `scripts/docs/staleness-scanner.py`, `scripts/cron/staleness-scan-weekly.sh` |
+| Existing dashboard | `docs/dashboards/doc-freshness-dashboard.md` |
 | Planning index update | `docs/plans/README.md` |
 
 ---
 
 ## Deliverable
 
-A bounded plan for #2105 that identifies the canonical freshness/staleness artifact, its source metadata, and the exact updates needed so weekly review can evaluate intelligence freshness consistently.
+A bounded plan for #2105 that locks `docs/document-intelligence/freshness-cadence-matrix.md` as the canonical freshness/staleness artifact, defines threshold semantics and ownership, and specifies the minimal updates needed so weekly review, registry metadata, and existing scanner/dashboard surfaces work together consistently.
 
 ---
 
@@ -64,10 +66,18 @@ A bounded plan for #2105 that identifies the canonical freshness/staleness artif
 
 ```text
 inspect existing weekly-review freshness checks
-inspect registry freshness metadata fields
-inspect maturity ledger freshness-sensitive artifacts
-decide canonical output surface for cadence matrix and thresholds
-define minimal updates needed across doc + registry + weekly-review surfaces
+inspect registry freshness metadata fields and maturity ledger freshness-sensitive assets
+inspect existing staleness machinery:
+    scripts/docs/staleness-scanner.py
+    scripts/cron/staleness-scan-weekly.sh
+    docs/dashboards/doc-freshness-dashboard.md
+lock `docs/document-intelligence/freshness-cadence-matrix.md` as the canonical cadence artifact
+define threshold semantics:
+    current
+    warn
+    stale
+map each intelligence asset class to cadence + threshold + evidence source + owner
+specify minimal updates needed across matrix doc, weekly review checklist, registry metadata, and existing scanner/dashboard surfaces
 prepare closure-ready implementation slice for the issue
 ```
 
