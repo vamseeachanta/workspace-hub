@@ -57,9 +57,17 @@ def load_index(index_path: Path) -> List[Dict]:
 
 
 def summary_key_for(record: Dict) -> str:
-    """Derive summary filename key from content hash or path hash."""
-    key = record.get("content_hash") or record.get("path", "")
-    return hashlib.sha256(key.encode()).hexdigest()[:16]
+    """Derive canonical summary filename key.
+
+    Contract (must match Phase C get_summary and claude-worker write_summary):
+    - content_hash present → raw content_hash
+    - no content_hash → sha256(path)[:16] deterministic fallback
+    """
+    content_hash = record.get("content_hash") or ""
+    if content_hash:
+        return content_hash
+    path = record.get("path", "")
+    return hashlib.sha256(path.encode()).hexdigest()[:16]
 
 
 def extract_og_sqlite(record: Dict, cfg: Dict) -> Optional[str]:
