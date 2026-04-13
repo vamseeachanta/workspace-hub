@@ -189,13 +189,80 @@ This is especially useful when live `status:plan-approved` count is zero: it tur
 - `Open issues with status:plan-approved right now: 0.`
 - `So these prompts are issue-specific and real, but they should be used in assessment/verification-first mode until approval is added.`
 
+## Umbrella-issue execution wave pattern
+
+When the user asks for a single Claude prompt to execute the "remaining work" under an umbrella issue, do not treat the umbrella approval as blanket authorization for every child issue.
+
+Use this pattern:
+1. Identify the umbrella issue and list all relevant child/follow-on issues from live GitHub state.
+2. Separate them into:
+   - already completed/closed
+   - still open and explicitly approved
+   - still open but not explicitly approved
+3. Build the prompt around the live dependency state, not the original plan alone.
+4. In the prompt, require Claude to verify child approval labels/markers before any write.
+5. If a child issue is not approved, instruct Claude to stop short of implementation for that child and instead produce a concise execution dossier / blocker note.
+6. Explicitly distinguish:
+   - landed artifacts that should be consumed as authoritative inputs
+   - stale docs/claims that now need reality-refresh
+   - newly discovered adjacent scope that must not be silently absorbed
+
+This is especially important for multi-issue waves where some upstream children are already closed and others remain open.
+
+## Extra grounding rule for ecosystem-strengthening prompts
+
+If the requested work strengthens a repo ecosystem (knowledge, intelligence, navigation, registry, docs), the generated prompt should explicitly consume:
+- live GitHub issue state
+- landed sibling/parent artifacts
+- repo-level entry points (`docs/README.md`, ecosystem overview/capability docs, registry/index surfaces)
+- cross-repo context documents when the repo is a control plane for other repos
+
+Do not generate a prompt that acts as if the work is isolated to one directory when the feature is supposed to strengthen discoverability across the broader ecosystem.
+
+## Approval-pack / GH-story follow-up pattern
+
+When the user asks for both a Claude prompt and GH stories for review/approval:
+- provide a bounded approval pack that separates:
+  - approve-now work on existing issues
+  - explicitly deferred scope discovered during reconnaissance
+  - optional new follow-on issues for newly discovered breadth
+- make the deferred scope concrete (exact issue/story title and why it should stay separate)
+- call out any newly discovered assets that should NOT be silently absorbed into the current execution wave
+
+## Live interactive Claude drift-recovery pattern
+
+When you launch an interactive Claude Code execution run in tmux for a gated repo, actively monitor git status during the run instead of trusting the agent's own cleanup claims.
+
+Use this pattern:
+1. Before launch, record the initial dirty/untracked state so you know what was pre-existing.
+2. During execution, periodically check BOTH:
+   - tmux pane output
+   - external `git status --short`
+3. If Claude drifts into forbidden paths or unrelated files:
+   - interrupt the session immediately
+   - tell Claude exactly which paths are forbidden and require cleanup
+   - independently verify cleanup from outside the session using `git diff --name-only`
+4. If forbidden drift reappears after a cleanup claim:
+   - hard-stop the session
+   - manually delete/revert the forbidden artifacts yourself
+   - salvage only the allowed file(s) if they are still good
+5. If the issue turns out to be blocked mid-run by missing approvals or missing prerequisite artifacts, do not force implementation. Instead:
+   - keep any valid planning/review artifact work
+   - create the missing prerequisite issue
+   - comment back on the blocked issue and umbrella issue with the exact unblock sequence
+
+This pattern is especially important when using `claude --dangerously-skip-permissions` in tmux: the run may continue productively on the target file while also creating unrelated scripts, tests, config edits, or learned-skill artifacts. Treat external git state as authoritative.
+
 ## Pitfalls
 
 - Do not assume issues are executable just because they are open
+- Do not assume umbrella-issue approval automatically authorizes all open children
 - Do not fabricate file paths without checking the repo
 - Do not ignore repo hard gates from AGENTS.md / policy docs
 - Do not claim "direct execution" when live eligibility says otherwise
 - Do not give generic prompts when the user asked for actual repo/issues
+- Do not silently absorb newly discovered adjacent scope into a saved execution prompt
+- Do not trust an interactive Claude session's statement that cleanup is complete without verifying from outside the session
 
 ## Companion skills
 

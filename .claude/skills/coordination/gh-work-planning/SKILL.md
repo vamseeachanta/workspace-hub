@@ -671,6 +671,20 @@ Valid approval outcomes:
 
 No implementation starts until the issue is explicitly approved and labeled `status:plan-approved`.
 
+## Pre-labeled approved issue recovery rule
+
+Sometimes an issue already carries `status:plan-approved` before the canonical repo planning artifacts exist.
+Do not treat the label alone as sufficient proof that the planning route was completed.
+
+When you encounter an already-approved issue with no repo-tracked plan artifact:
+1. draft the canonical plan file under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`
+2. update `docs/plans/README.md` with the plan index row
+3. post a GitHub comment linking the new plan artifact and summarizing scope/resource-intel anchors
+4. do **not** start implementation yet just because the old approval label is present
+5. next run adversarial plan review and reconcile the issue state with the actual plan artifacts before coding
+
+This recovery pattern is especially important for harness/operations issues that were approved conversationally before the repo plan discipline was enforced.
+
 ## GitHub labels
 
 Expected labels:

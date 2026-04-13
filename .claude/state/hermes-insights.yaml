@@ -3,11 +3,11 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-11T07:00:41Z"
-  source_hash: "8b2d98f56b7747cc06e78715e289bf72"
+  generated: "2026-04-13T07:00:41Z"
+  source_hash: "926e2ceb72365f3baace038d61c5db75"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
-  entry_count: 16
+  entry_count: 17
 
 environment_facts:
   - "DEFAULT MODEL (2026-04-09): openai-codex / gpt-5.4 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default."
@@ -33,3 +33,4 @@ user_preferences:
   - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
   - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
   - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
+  - "User approves sensible commands without explicit permission prompts and explicitly approved interactive Claude Code tmux launches with --dangerously-skip-permissions when needed for implementation."

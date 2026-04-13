@@ -758,3 +758,73 @@
     git_non_conventional: 0
     git_missing_wrk_ref: 8
     git_exempt_type: 14
+- scanned_at: "2026-04-13T07:05:48Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-36-54-019d810d-2261-7f20-b9ba-bd77754d5bd9.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-13T07:05:48Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-37-01-019d810d-3a52-7152-aede-15bbd1d6eb04.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-13T07:05:48Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-54-56-019d811d-a3c9-7312-8dc1-ac8df601eb21.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-13T07:05:49Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-55-03-019d811d-bdf9-76a2-a8b5-a41949d28eae.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-13T07:05:49Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T05-08-57-019d812a-79f3-79e2-a312-323d034133c0.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-13T07:05:49Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T05-09-05-019d812a-96a8-7e42-9b2c-19c7fd83dafc.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-13T07:05:54Z"
+  log: "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude/session_20260412.jsonl"
+  provider: "claude"
+  violations:
+    python_runtime: 6
+    file_placement: 0
+    git_workflow: 10
+    git_non_conventional: 0
+    git_missing_wrk_ref: 10
+    git_exempt_type: 6

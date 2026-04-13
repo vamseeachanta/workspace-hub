@@ -20514,6 +20514,105 @@
       ],
       "native_session_file": "/home/vamsee/.codex/sessions/2026/04/11/rollout-2026-04-11T05-47-46-019d7c27-a6ec-7b50-aa9c-dee8bc493fd7.jsonl",
       "session_id": "019d7c27-a6ec-7b50-aa9c-dee8bc493fd7"
+    },
+    "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-36-54-019d810d-2261-7f20-b9ba-bd77754d5bd9.jsonl": {
+      "exported_tool_call_ids": [
+        "call_5BpP3IFg6ZttifwdHw9fzY6I",
+        "call_5EhtZq7hm0SLMx2iyqWhRXMs",
+        "call_722w5yQYbngeKJfTARpN7jUH",
+        "call_7D76165ZVuo0IRlLZpFwBDhr",
+        "call_95LT3UBz49RlLlJmnHiaR8Rr",
+        "call_BNtBftqwoqK2maHpxxHpgOQF",
+        "call_Jg3NA7xBTAtOAWShCXFrE2Hn",
+        "call_ORtHAfbwNOd2vhymimsEpRSw",
+        "call_PTREB1sCCrTlqYiA1nvajqxr",
+        "call_QJ5pgitmIdkSjfnnBBrdsxTd",
+        "call_VG39kQ1TdXpjkMC9hhMReNpP",
+        "call_WF3qG195UgfipFFFlKhAW2jR",
+        "call_cOEUT2L59HQAHLXDA7dwl4zB",
+        "call_djUP6yKPGSx57cF0AecHWvl2",
+        "call_meufh0wmpyfWpXUPBNIcRKlA",
+        "call_phHpB1QrifRuUOoSyVOiwama",
+        "call_tsS0JBFFfD4d2lqP32zHdjeG",
+        "call_unkq3VL47ScYN54Q77hQoM5K",
+        "call_yHZuaF9vOv9ddq5GLWSIUrNN"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-36-54-019d810d-2261-7f20-b9ba-bd77754d5bd9.jsonl",
+      "session_id": "019d810d-2261-7f20-b9ba-bd77754d5bd9"
+    },
+    "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-37-01-019d810d-3a52-7152-aede-15bbd1d6eb04.jsonl": {
+      "exported_tool_call_ids": [
+        "call_1QUWCtTcFaEJ9S00TyznHv4Z",
+        "call_NW704AAVU5aIpOvZaW1YOszU",
+        "call_aaMCxWqDJjB9nohLIYjiV3Gy",
+        "call_nCQswnojO93TdH94BsMWu3ae",
+        "call_zaCACXQmg9BzeW141tChH5Sr",
+        "call_zoUiYmy3jRZngADc6DBOGSjC"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-37-01-019d810d-3a52-7152-aede-15bbd1d6eb04.jsonl",
+      "session_id": "019d810d-3a52-7152-aede-15bbd1d6eb04"
+    },
+    "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-54-56-019d811d-a3c9-7312-8dc1-ac8df601eb21.jsonl": {
+      "exported_tool_call_ids": [
+        "call_2Z6OfluPJOw4Ss4WE8XocDLd",
+        "call_5P3YFp8af80cvQm3jB0kRKIj",
+        "call_66atzcycJhdqzXGsqnwRNOKb",
+        "call_AqBRU6TW92LouczsHtUBLQbR",
+        "call_F7jXcR3oeQfNlzMUpSqkX6mT",
+        "call_HZ6Y32BiogHlN13iR20XMpLa",
+        "call_JaJcLr6YsFMYokqYiV9q1U0W",
+        "call_L7iWKpQyUIm3UNfySNFpagwn",
+        "call_T3bfIV0eALsGoAmJvJKIQiKX",
+        "call_VI70E0kTRTjqdndgkSM0eFUS",
+        "call_VzHikFtkY1kmkouAE5Sos3IW",
+        "call_egYaIrXGBiL33yExzyHyWXXb",
+        "call_onZ8VpM5zYc73sneGvoVW04Z",
+        "call_tR9kFKYH4iT0e2nuQPX8sl6t",
+        "call_tkMpZvOix9N8VmPPzInWFiSO"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-54-56-019d811d-a3c9-7312-8dc1-ac8df601eb21.jsonl",
+      "session_id": "019d811d-a3c9-7312-8dc1-ac8df601eb21"
+    },
+    "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-55-03-019d811d-bdf9-76a2-a8b5-a41949d28eae.jsonl": {
+      "exported_tool_call_ids": [
+        "call_0Whk0ydXBq6SksMgv3atpi7q",
+        "call_2ObXtvMjMjqdVNU6pj8QQhNp",
+        "call_4mAbCgNS4dgI23biXS64USgr",
+        "call_5RvO49cnnStUJAXp9MbjkIlF",
+        "call_A4aMNaqG344cxZ6T8Rl0BGpZ",
+        "call_AEqQf6CtytiguOAEcASDU32a",
+        "call_BkOjaSLALbID0D0zDkLpXoFE",
+        "call_Iq6YBShfipyYNlTcEWFSmiXz",
+        "call_LMuhJKvZgTcyXOeWoV0R7wIR",
+        "call_LTFYLVi9RlEe2ZAZlwOF99gK",
+        "call_R3ZLjviARiCKm3mqqDmSTNcv",
+        "call_T8QeCOrJMP2LXI4Ml45WCFxb",
+        "call_UwdjOBBiexbpgvhHUj5mRr2M",
+        "call_b8RhRj4eNWEadyMomNerX2SJ",
+        "call_bgynXleNxVCbzAPUnRs5VWWk",
+        "call_fhWiuNmOb4sSupnwKggebugq",
+        "call_gIpNGN0kg4Kewiszx8sA0WaS",
+        "call_i0WULPcSfmAheQMFcQ9YjpaM",
+        "call_jZUQEPsOyACavDEn63xR1v8Y",
+        "call_mi161U91Wtc2FJT9jk2ebzdz",
+        "call_mnsXML3D1pXzONyU2jhoLsaU",
+        "call_qyKYRcejzcKAK7bALlVxmsY1",
+        "call_udYo0I5B7zGCS5Oh8CaSxyPL",
+        "call_yDufrsRhWShBVPFZ9qHQpaWg",
+        "call_z42J64TZUuqQo3tQxPijBeow"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T04-55-03-019d811d-bdf9-76a2-a8b5-a41949d28eae.jsonl",
+      "session_id": "019d811d-bdf9-76a2-a8b5-a41949d28eae"
+    },
+    "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T05-08-57-019d812a-79f3-79e2-a312-323d034133c0.jsonl": {
+      "exported_tool_call_ids": [],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T05-08-57-019d812a-79f3-79e2-a312-323d034133c0.jsonl",
+      "session_id": "019d812a-79f3-79e2-a312-323d034133c0"
+    },
+    "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T05-09-05-019d812a-96a8-7e42-9b2c-19c7fd83dafc.jsonl": {
+      "exported_tool_call_ids": [],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/04/12/rollout-2026-04-12T05-09-05-019d812a-96a8-7e42-9b2c-19c7fd83dafc.jsonl",
+      "session_id": "019d812a-96a8-7e42-9b2c-19c7fd83dafc"
     }
   }
 }

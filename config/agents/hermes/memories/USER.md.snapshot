@@ -13,3 +13,5 @@ Prefers preserving Codex credits for interactive/daytime work; for overnight par
 For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution.
 §
 User wants all reviews to be adversarial reviews by default for maximum productivity and impact.
+§
+User approves sensible commands without explicit permission prompts and explicitly approved interactive Claude Code tmux launches with --dangerously-skip-permissions when needed for implementation.
