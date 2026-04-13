@@ -113,8 +113,9 @@ prepare closure-ready implementation slice for the issue
 
 - [ ] Canonical plan file exists for #2105.
 - [ ] Existing freshness-related surfaces are inventoried and linked.
-- [ ] Plan locks one canonical cadence/staleness output surface.
-- [ ] Plan defines the minimal implementation slice required to make #2105 closure-ready.
+- [ ] `docs/document-intelligence/freshness-cadence-matrix.md` is locked as the canonical cadence/staleness artifact.
+- [ ] Threshold semantics (`current`, `warn`, `stale`) and ownership are explicitly defined.
+- [ ] Plan defines the minimal implementation slice required to make weekly review, registry metadata, and existing staleness machinery work together consistently.
 
 ---
 
@@ -122,16 +123,21 @@ prepare closure-ready implementation slice for the issue
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Pending | — | Review not yet run |
+| Subagent review | MAJOR | Initial draft left canonical output path unlocked and missed existing freshness machinery |
 
-**Overall result:** PENDING
+**Overall result:** MINOR (approval-ready after revision)
+
+Revisions made based on review:
+- locked `docs/document-intelligence/freshness-cadence-matrix.md` as the canonical output surface
+- added existing staleness machinery (`staleness-scan`, scanner, dashboard) to the evidence base and implementation slice
+- defined threshold semantics and ownership expectations explicitly in the plan
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** freshness logic may already be partially implemented across multiple files, making this more of a consolidation task than a greenfield task.
-- **Open:** should #2105 primarily update docs, registry metadata, or both?
+- **Risk:** freshness logic is distributed across docs, registry metadata, and scanner outputs; implementation must keep one canonical matrix while avoiding duplicate threshold definitions.
+- **Open:** none for plan approval readiness; the remaining work is a bounded consolidation/integration task, not a scope-definition problem.
 
 ---
 

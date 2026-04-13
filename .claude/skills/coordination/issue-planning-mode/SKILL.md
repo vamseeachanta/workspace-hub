@@ -83,6 +83,38 @@ echo "Approved by: <user>" > .planning/plan-approved/NNN.md
 
 Self-approval by the implementing agent is blocked by the plan-approval gate.
 
+### Status authority and surfacing rule
+
+When plan status signals disagree across artifacts, use this precedence:
+1. Latest/most-advanced GitHub `status:*` label is authoritative for live issue state
+2. `.planning/plan-approved/NNN.md` marker is authoritative local evidence that approval happened
+3. `docs/plans/README.md` is a convenience index and may lag; update it when you notice drift, but do not let it override GitHub + approval-marker reality
+
+Practical rules:
+- If both `status:plan-review` and `status:plan-approved` appear, treat `status:plan-approved` as authoritative and clean up the stale lower-status label when possible.
+- Do **not** surface a plan to the user for approval until adversarial plan review is complete and the plan is actually approval-ready.
+- If a GitHub issue is already at a more advanced latest status (for example `status:plan-approved`), do not downgrade it just to match a stale local plan file or README row.
+
+### Status precedence and stale-state handling
+
+When issue state drifts across artifacts, use this precedence order for operational decisions:
+
+1. `status:plan-approved` label on the GitHub issue
+2. `.planning/plan-approved/NNN.md` local approval marker
+3. `status:plan-review` label on the GitHub issue
+4. local plan status in `docs/plans/README.md`
+
+Rules:
+- Treat the **latest / most-advanced status** as authoritative. Example: if both `status:plan-review` and `status:plan-approved` are present, treat the issue as `plan-approved` until labels are cleaned up.
+- `docs/plans/README.md` can lag reality; do not rely on it alone for approval state.
+- A plan should be surfaced to the user for approval only after adversarial review is complete and the plan content is actually approval-ready. Do not surface draft plans just because a stale label suggests `plan-review`.
+- If you find label drift or README drift, clean it up or annotate it immediately so the queue stays trustworthy.
+
+Important operational rule learned in live use:
+- If multiple `status:*` labels are present on the same GitHub issue, treat the **latest / most-advanced status** as authoritative (for example, `status:plan-approved` outranks `status:plan-review`). Clean up stale lower-status labels when possible, but do not block execution-state interpretation on label drift alone.
+- Only surface a plan to the user for approval **after adversarial plan review is complete**. Draft plans with pending review findings should not be presented as approval-ready just because a local plan file exists.
+- `docs/plans/README.md` can drift from GitHub labels and `.planning/plan-approved/*.md`; when auditing readiness, reconcile all three and use the latest effective state rather than trusting the README row blindly.
+
 ### Status precedence and surfacing rules
 
 - If a GitHub issue has multiple `status:*` labels, treat the **latest/most-advanced** state as authoritative. In practice: `status:plan-approved` outranks `status:plan-review`.

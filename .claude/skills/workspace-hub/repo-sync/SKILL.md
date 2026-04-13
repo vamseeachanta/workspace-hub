@@ -49,6 +49,28 @@ Apply the appropriate fix per failure type:
 | Diverged branches | `git pull --no-rebase` (merge strategy) |
 | Uncommitted changes | `git stash && git pull --no-rebase && git stash pop` |
 | No upstream | Report only, no auto-fix |
+| Archived/read-only remote | Do not force workaround; preserve/export local-only commits and open a follow-up issue |
+
+### Archived / Read-only Remote Exception Handling
+
+If a repo is ahead locally but push fails because the remote is archived or read-only:
+
+1. Confirm the state explicitly:
+   - current branch
+   - local HEAD vs upstream HEAD
+   - ahead commit list (`git log @{u}..HEAD`)
+   - diffstat for the ahead range
+2. Do NOT try to bypass the archive/read-only state.
+3. If the ahead range is non-trivial, export a preservation artifact:
+   - `git format-patch -1 <commit> --stdout > <workspace-hub-artifact>.patch`
+4. Write a short decision memo with explicit options:
+   - abandon
+   - archive-only
+   - selective port to a writable successor
+5. Open a GitHub issue documenting the exception and link the exported patch artifact.
+6. Default recommendation when there is no clear writable successor and the diff is large/destructive: `archive-only`.
+
+This came up with `pyproject-starter`, where the remote was archived/read-only and the only ahead commit was a massive destructive sync commit. The safe action was to preserve the patch in repo artifacts and require explicit human review before any migration.
 
 ### Phase 4: Encoding Health Check
 After pulling, run the encoding check against all work queue and skill files
