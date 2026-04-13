@@ -147,11 +147,62 @@ Use the script where it works. Fall back to manual git commands per-repo when th
 - Shell scripts must use LF endings (CRLF breaks bash)
 - Enable long paths: `git config --global core.longpaths true`
 
+## Git LFS Push Failure Triage
+
+If a repo push fails only because a Git LFS pre-push hook is installed but `git-lfs` is missing on the machine:
+
+1. Check whether the outgoing commit actually includes any files tracked by LFS patterns from `.gitattributes`.
+2. If the commit only changes normal text/code/docs files and does not add or modify any LFS-tracked files, a safe fallback is:
+
+```bash
+git push --no-verify origin main
+```
+
+3. Record that `git-lfs` is missing and recommend proper installation for future binary/LFS pushes.
+
+Do **not** use `--no-verify` if the commit includes files that match LFS patterns such as `*.zip`, `*.pdf`, `*.pptx`, or any other configured LFS paths.
+
+## Stale Gitlink / Missing `.gitmodules` Triage
+
+If root verification fails with:
+
+```text
+fatal: no submodule mapping found in .gitmodules for path '<path>'
+```
+
+then the repo likely contains a stale gitlink entry (mode `160000`) for a path that is no longer declared in `.gitmodules`.
+
+Diagnosis:
+
+```bash
+git ls-files --stage <path>
+git ls-tree HEAD <path>
+git show HEAD:.gitmodules
+```
+
+If `HEAD`/index still show the path as a gitlink but `.gitmodules` is missing or has no matching entry, and the directory on disk is just an empty leftover, a safe cleanup is:
+
+```bash
+git rm --cached <path>
+rmdir <path> 2>/dev/null || true
+git commit -m "fix(git): remove stale <path> gitlink"
+```
+
+Then rerun:
+
+```bash
+git submodule status
+git status --short
+```
+
+Do not remove the gitlink blindly if the path still has a valid `.gitmodules` entry or contains real local work that has not been reviewed.
+
 ## Anti-Patterns (NEVER do these)
 
 - NEVER parse `.gitignore` to discover repos — use `.gitmodules`
 - NEVER report sync as successful without verification phase
 - NEVER auto-resolve stash pop conflicts or merge conflicts
+- NEVER bypass Git LFS hooks with `--no-verify` before confirming the pushed commit contains no LFS-tracked files
 - NEVER force-push without explicit user confirmation
 - NEVER skip repos silently — report every repo's status
 - NEVER use `git add -A` without first running `git status`
