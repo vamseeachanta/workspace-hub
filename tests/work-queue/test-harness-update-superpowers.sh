@@ -41,6 +41,15 @@ T3() {
 }
 T3
 
+T4() {
+  if grep -q 'plugin_id.startswith("superpowers@")' "$SCRIPT" && grep -q 'claude plugin update "$plugin_id" --scope "$scope"' "$SCRIPT"; then
+    ok "T4: harness-update uses full installed plugin id for Superpowers updates"
+  else
+    failcase "T4: expected full plugin id routing for Superpowers updates"
+  fi
+}
+T4
+
 echo
 if [[ "$fail" -eq 0 ]]; then
   echo "All ${pass} tests passed"
