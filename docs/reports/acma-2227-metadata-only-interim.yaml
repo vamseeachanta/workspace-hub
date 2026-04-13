@@ -1,0 +1,78 @@
+issue: 2227
+mode: metadata_only_interim
+ready_for_full_wiki_promotion: false
+source_text_available: false
+provenance_level: title_and_metadata_only
+notes:
+  - Prepared after local extraction and public-web search both failed to produce a legitimate, readable, source-text-backed path for the three blocked targets.
+  - This artifact is for triage, planning, and placeholder/wiki-stub generation only.
+  - It must not be treated as clause-level source extraction.
+targets:
+  - standard_id: OCIMF-TANDEM-MOORING
+    title: OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities
+    org: OCIMF
+    domain: marine
+    metadata:
+      pages: 128
+      encrypted: false
+      creator: Xerox WorkCentre 7655
+      producer: Xerox WorkCentre 7655
+      creation_date: 2010-03-04
+      local_doc_path: /mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf
+    interim_summary: OCIMF guidance focused on tandem mooring and offloading operations involving conventional tankers at FPSO facilities.
+    confidence: low
+    blocker: No readable source text extracted in the current environment; summary is metadata-only.
+    allowed_use:
+      - queue triage
+      - placeholder wiki stub
+      - dependency tracking
+    forbidden_use:
+      - clause-level technical claims
+      - detailed design criteria
+      - normative requirement extraction
+
+  - standard_id: CSA-Z276.1-20
+    title: CSA Z276.1-20 Marine Structures Associated with LNG Facilities
+    org: CSA
+    domain: marine
+    metadata:
+      visible_alt_title: CSA SPE-276.1:20, Design requirements for marine structures associated with LNG facilities (DRMS)
+      author: CSA Group
+      pages: 55
+      encrypted: true
+      drm: Vitrium
+      creation_date: 2024-01-15
+      local_doc_path: /mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
+    interim_summary: CSA standard concerning design requirements for marine structures associated with LNG facilities.
+    confidence: low
+    blocker: PDF is DRM/encrypted and readable source text is not available on this machine.
+    allowed_use:
+      - queue triage
+      - placeholder wiki stub
+      - dependency tracking
+    forbidden_use:
+      - clause-level technical claims
+      - structural requirement details
+      - normative requirement extraction
+
+  - standard_id: CSA-Z276.18
+    title: CSA Z276.18 LNG Production, Storage, and Handling
+    org: CSA
+    domain: marine
+    metadata:
+      pages: 214
+      encrypted: true
+      drm: Vitrium
+      creation_date: 2024-01-15
+      local_doc_path: /mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
+    interim_summary: CSA standard related to LNG production, storage, and handling operations.
+    confidence: low
+    blocker: PDF is DRM/encrypted and readable source text is not available on this machine.
+    allowed_use:
+      - queue triage
+      - placeholder wiki stub
+      - dependency tracking
+    forbidden_use:
+      - clause-level technical claims
+      - operational requirement details
+      - normative requirement extraction

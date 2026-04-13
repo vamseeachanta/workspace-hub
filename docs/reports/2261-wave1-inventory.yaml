@@ -1,0 +1,845 @@
+# Wave 1 Inventory — #2261
+# Parent: #2260  Related: #2207, #2227, #2245, #2216
+# Generated: 2026-04-13
+# Mode: metadata-only (title + filename + PDF header metadata + path structure)
+# Hard constraint: no clause-level, normative, or design-criteria claims
+
+issue: 2261
+parent_issue: 2260
+mode: metadata_only
+generated: "2026-04-13"
+source_quality: title-and-metadata-only
+
+summary:
+  total_files: 86
+  by_org:
+    OCIMF_MEG4: 59
+    OCIMF: 22
+    CSA: 5
+  by_extension:
+    pdf: 72
+    jpg: 4
+    xlsx: 2
+    docx: 2
+    txt: 1
+    db: 1
+    docx_temp: 1
+  by_action:
+    stub: 11
+    merge_into_parent: 65
+    supporting: 3
+    defer: 5
+    reject: 2
+
+# ──────────────────────────────────────────────
+# OCIMF (MEG 4)  (59 files)
+# ──────────────────────────────────────────────
+orgs:
+  - org: OCIMF
+    org_full: Oil Companies International Marine Forum
+    collection: MEG4
+    root: "/mnt/ace/acma-codes/OCIMF (MEG 4)"
+    file_count: 59
+    files:
+      # --- Parent ---
+      - file: "Mooring Equipment Guidelines - MEG4.pdf"
+        normalized_title: "OCIMF MEG4 — Mooring Equipment Guidelines (4th ed.)"
+        standard_id: OCIMF-MEG4-4E
+        org: OCIMF
+        domain: marine / mooring
+        ext: pdf
+        pages: 297
+        encrypted: false
+        creator: "Adobe Acrobat Pro DC (32-bit) 21.5.20060"
+        creation_date: "2021-08-14"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        fragments_absorbed: 50
+
+      # --- Top-level fragments (merge into OCIMF-MEG4-4E) ---
+      - file: "OCIMF MEG4 Fig 1.3 Comp percent of Ship Design MBL.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-13"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Fig 5.2 Comp Mooring Line Working Range.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-13"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP.pdf"
+        pages: 9
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 OCIMF MEG4 pg179 Fig 7.12 Req & Stds for mooring fittings Panama Canal Allowance.pdf"
+        pages: 2
+        encrypted: false
+        creation_date: "2023-04-11"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Section 3, Ship Design MBL.pdf"
+        pages: 12
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      # --- Supporting ---
+      - file: "OCIMF MEG 4 Tables.xlsx"
+        ext: xlsx
+        family: supporting
+        action: supporting
+        notes: "Tabular data extracted from MEG4"
+
+      - file: "OCIMF MEG4 (Working Document).docx"
+        ext: docx
+        family: supporting
+        action: supporting
+        notes: "Working/annotated MEG4 document (7 MB)"
+
+      # --- Reject ---
+      - file: "~$IMF MEG4 (Working Document).docx"
+        ext: docx_temp
+        family: reject
+        action: reject
+        notes: "MS Office temporary lock file"
+
+      # --- Mooring Lines/ subdirectory (4 files, all merge) ---
+      - file: "Mooring Lines/Mooring Lines-pp96-98.pdf"
+        pages: 3
+        encrypted: false
+        creation_date: "2023-09-14"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "Mooring Lines/pg 96.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-09-14"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "Mooring Lines/pg 97.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-09-14"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "Mooring Lines/pg 98.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-09-14"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      # --- Appendix A Drag Coefficients/ subdirectory (9 files, all merge) ---
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/01 OCIMF MEG4 Wind Coefs for Prismatic Tank Gas Carriers [Fig. A13, A14, A15]-p246.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/02 OCIMF MEG4 Wind Coefs for Spherical Tank Gas Carriers [Fig. A16, A17, A18]-p247.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/03 OCIMF MEG4 Current Coefs for LNG Carriers [Fig. A19, A20]-p248.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/04 OCIMF MEG4 Current Coefs for LNG Carriers [Fig. A21] & Example pg1-p249.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/05 OCIMF MEG4 Example pg2-p250.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/06 OCIMF MEG4 Example pg3-p251.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/07 OCIMF MEG4 Current Coefs for Tanker Ballast Cxc & Cyc-p242.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-05-12"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/08 OCIMF MEG4 Current Coefs for Tanker Ballast Cxyc-p243.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-05-12"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Appendix A Drag Coefficients-pp242&243,246-251/09 OCIMF-MEG4-A4-GasCarrierWind&CurrentDragCoeff.pdf"
+        pages: 8
+        encrypted: false
+        creator: "Brother Scanner System : MFC-J6955DW"
+        creation_date: "2024-12-06"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      # --- MSMP pages/ subdirectory (11 files, all merge) ---
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg21.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg22.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg23.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg24.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg25.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg26.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg27.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg28.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 MSMP pg29.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 pg177 Fig 7.12 Req & Stds for mooring fittings.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-11"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 MSMP pages/OCIMF MEG4 pg178.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-11"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      # --- other pages/ subdirectory (2 files, all merge) ---
+      - file: "OCIMF MEG4 other pages/OCIMF MEG4 pg179 Fig 7.12 Req & Stds for mooring fittings.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-11"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 other pages/OCIMF MEG4 pg180.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-11"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      # --- screen shots/ subdirectory (11 files: 6 merge, 4 defer, 1 reject) ---
+      - file: "OCIMF MEG4 screen shots/6.1 Introduction Adobe Scan Mar 10, 2023.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-10"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 screen shots/6.4.6 Winch brake testing Adobe Scan Mar 10, 2023.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-10"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 screen shots/pg176 7.3.2.2 Geometric Factor.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-20"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 screen shots/pg176 7.3.3 Use of standards for the des & const of mooring fittings.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-10"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 screen shots/pg178 7.3.2.4 Safety Factors.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-20"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 screen shots/pg178 Variable Geometric Factor Cases, Pedestal Fairlead.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-04-20"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 screen shots/pg176 7.3.2.2 Geometric Factor Screenshot 2023-04-20 090334.jpg"
+        ext: jpg
+        family: defer
+        action: defer
+        notes: "JPG duplicate of PDF version in same directory"
+
+      - file: "OCIMF MEG4 screen shots/pg176 7.3.3 Use of standards for the des & const of mooring fittings.jpg"
+        ext: jpg
+        family: defer
+        action: defer
+        notes: "JPG duplicate of PDF version in same directory"
+
+      - file: "OCIMF MEG4 screen shots/pg178 7.3.2.4 Safety Factors.jpg"
+        ext: jpg
+        family: defer
+        action: defer
+        notes: "JPG duplicate of PDF version in same directory"
+
+      - file: "OCIMF MEG4 screen shots/pg178 Variable Geometric Factor Cases, Pedestal Fairlead.jpg"
+        ext: jpg
+        family: defer
+        action: defer
+        notes: "JPG duplicate of PDF version in same directory"
+
+      - file: "OCIMF MEG4 screen shots/Thumbs.db"
+        ext: db
+        family: reject
+        action: reject
+        notes: "Windows thumbnail cache"
+
+      # --- Ship Design MBL pages/ subdirectory (13 files, all merge) ---
+      - file: "OCIMF MEG4 Ship Design MBL pages/MEG4 Sect 3 MBL pg 46 to 57.pdf"
+        pages: 12
+        encrypted: false
+        creation_date: "2024-01-15"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg46.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg47.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg48.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg49.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg50.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg51.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg52.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg53.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg54.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg55.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg56.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+      - file: "OCIMF MEG4 Ship Design MBL pages/OCIMF MEG4 Ship Design MBL pg57.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2023-03-09"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG4-4E
+
+  # ──────────────────────────────────────────────
+  # OCIMF  (22 files)
+  # ──────────────────────────────────────────────
+  - org: OCIMF
+    org_full: Oil Companies International Marine Forum
+    collection: general
+    root: /mnt/ace/acma-codes/OCIMF
+    file_count: 22
+    files:
+      # --- Parents / standalone ---
+      - file: "OCIMF - 2008 - Mooring Equipment Guidelines.pdf"
+        normalized_title: "OCIMF MEG3 — Mooring Equipment Guidelines (3rd ed., 2008)"
+        standard_id: OCIMF-MEG-3E
+        org: OCIMF
+        domain: marine / mooring
+        ext: pdf
+        pages: 293
+        encrypted: false
+        creator: "Xerox WorkCentre 7655"
+        creation_date: "2010-02-23"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        fragments_absorbed: 15
+        notes: "Scanned copy; 3rd edition predates MEG4"
+
+      - file: "Mooring Equipment Guidelines (MEG4) justification.pdf"
+        normalized_title: "OCIMF MEG4 Justification — Mooring Equipment Guidelines (MEG4) Justification"
+        standard_id: OCIMF-MEG4-JUSTIFICATION
+        org: OCIMF
+        domain: marine / mooring
+        ext: pdf
+        pages: 9
+        encrypted: false
+        creation_date: "2022-01-28"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "OCIMF OVID OVPQ-Master-Full.pdf"
+        normalized_title: "OCIMF OVID OVPQ — Offshore Vessel Inspection Database, Operator Vessel Particulars Questionnaire"
+        standard_id: OCIMF-OVID-OVPQ
+        org: OCIMF
+        domain: marine / vessel inspection
+        ext: pdf
+        pages: 40
+        encrypted: false
+        creator: "Alive PDF 0.1.4.8"
+        creation_date: "2012-08-21"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "OVID_operator_application_ovpq.pdf"
+        normalized_title: "OCIMF OVID Application — OVID Operator Application"
+        standard_id: OCIMF-OVID-APP
+        org: OCIMF
+        domain: marine / vessel inspection
+        ext: pdf
+        pages: 10
+        encrypted: true
+        encryption_detail: "RC4; print:yes copy:no change:no"
+        author: "Oil Companies International Marine Forum"
+        creation_date: "2010-01-06"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf"
+        normalized_title: "OCIMF Tandem Mooring — Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities"
+        standard_id: OCIMF-TANDEM-MOORING
+        org: OCIMF
+        domain: marine / mooring
+        ext: pdf
+        pages: 128
+        encrypted: false
+        creator: "Xerox WorkCentre 7655"
+        creation_date: "2010-03-04"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Previously covered in #2227; extended here with full directory context"
+
+      # --- Merge-into-parent (OCIMF-MEG-3E) ---
+      - file: "OCIMF - 2008 - Mooring Equipment Guidelines, CDs.pdf"
+        pages: 18
+        encrypted: false
+        creator: "Xerox WorkCentre 7655"
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+        notes: "Companion Document (CDs) supplement to MEG 3rd edition"
+
+      # --- Figures/ subdirectory (14 files, all merge into OCIMF-MEG-3E) ---
+      - file: "Figures/A5, Longitudinal Current Drag Force Coefficient {Cxc) - Loaded Tanker {WDT=1.1).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A6, Longitudinal Current Drag Force Coefficient (Cxc) - Loaded Tanker (WDT=1.2).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A7, Longitudinal Current Drag Force Coefficient (Cxc) - Loaded Tanker (WDT=1.5).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A8, Longitudinal Current Drag Force Coefficient {Cxc) - Loaded Tanker {WDT=3.0).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A9, Longitudinal Current Drag Force Coefficient (Cxc) - Loaded Tanker (WDT=4.4).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A10, Lateral Current Drag Force Coefficient (CycJ - Loaded Tanker.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A11, Current Yaw Moment Coefficient (Cxyc) - Loaded Tanker.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A12, Longitudinal Current Drag Force Coefficient (Cxc) - Ballasted Tanker (40% T).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A13, Lateral Current Force Drag Coefficient {Cyc) - Ballasted Tanker {40% T).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A14, Current Yaw Moment Coefficient {Cxyc) - Ballasted Tanker.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2019-08-13"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+        notes: "Re-exported by Acrobat Distiller; author 'douglaso'"
+
+      - file: "Figures/A16, Current Velocity Correction Factor (K).pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A17, Longitudinal Wind Drag Force Coefficient (Cxw)- Gas Carrier.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A18, Lateral Wind Drag Force Coefficient (Cyw) - Gas Carrier.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      - file: "Figures/A19, Wind Yaw Moment Coefficient (Cxvw) - Gas Carrier.pdf"
+        pages: 1
+        encrypted: false
+        creation_date: "2010-02-23"
+        family: fragment
+        action: merge_into_parent
+        merge_target: OCIMF-MEG-3E
+
+      # --- Supporting ---
+      - file: "OCIMF Coef.xlsx"
+        ext: xlsx
+        family: supporting
+        action: supporting
+        notes: "Coefficient data extracted from MEG publications"
+
+      # --- Defer ---
+      - file: "Box Code.txt"
+        ext: txt
+        family: defer
+        action: defer
+        notes: "Administrative reference code (162 bytes)"
+
+  # ──────────────────────────────────────────────
+  # CSA  (5 files)
+  # ──────────────────────────────────────────────
+  - org: CSA
+    org_full: CSA Group
+    collection: standards
+    root: /mnt/ace/acma-codes/CSA
+    file_count: 5
+    files:
+      - file: "276.1-20 marine structures associated with LNG facilities.pdf"
+        normalized_title: "CSA Z276.1-20 — Marine Structures Associated with LNG Facilities"
+        standard_id: CSA-Z276.1-20
+        org: CSA
+        domain: marine / LNG
+        ext: pdf
+        pages: 55
+        encrypted: true
+        encryption_detail: "AES; Vitrium DRM"
+        author: "CSA Group"
+        title_from_metadata: "CSA SPE-276.1:20, Design requirements for marine structures associated with LNG facilities (DRMS)"
+        creation_date: "2024-01-15"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Previously covered in #2227; extended here"
+
+      - file: "276.2-19 near-shoreline FLNG facilities.pdf"
+        normalized_title: "CSA Z276.2-19 — Near-Shoreline FLNG Facilities"
+        standard_id: CSA-Z276.2-19
+        org: CSA
+        domain: marine / LNG
+        ext: pdf
+        pages: 102
+        encrypted: true
+        encryption_detail: "AES; Vitrium DRM"
+        creation_date: "2024-01-15"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "B625-13 Portable tanks for the transport of dangerous goods.pdf"
+        normalized_title: "CSA B625-13 — Portable Tanks for the Transport of Dangerous Goods"
+        standard_id: CSA-B625-13
+        org: CSA
+        domain: transport / hazardous materials
+        ext: pdf
+        pages: 176
+        encrypted: true
+        encryption_detail: "AES; Vitrium DRM"
+        title_from_metadata: "B625-13EN.book"
+        creation_date: "2024-01-15"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+
+      - file: "CSA 22.1-12.pdf"
+        normalized_title: "CSA 22.1-12 — Canadian Electrical Code (Part I)"
+        standard_id: CSA-22.1-12
+        org: CSA
+        domain: electrical
+        ext: pdf
+        pages: unknown
+        encrypted: true
+        encryption_detail: "FOPN/FileOpen DRM; pdfinfo cannot read metadata"
+        creation_date: unknown
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "pdfinfo reports 'Couldn't find the FOPN_foweb security handler'; metadata extraction failed"
+
+      - file: "Z276.18 LNG Production, storage, and handling.pdf"
+        normalized_title: "CSA Z276.18 — LNG Production, Storage, and Handling"
+        standard_id: CSA-Z276.18
+        org: CSA
+        domain: marine / LNG
+        ext: pdf
+        pages: 214
+        encrypted: true
+        encryption_detail: "AES; Vitrium DRM"
+        creation_date: "2024-01-15"
+        family: parent
+        action: stub
+        status: blocked-metadata-only
+        confidence: low
+        source_quality: title-and-metadata-only
+        notes: "Previously covered in #2227; extended here"

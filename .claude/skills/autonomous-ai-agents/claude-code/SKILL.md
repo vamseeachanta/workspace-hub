@@ -738,6 +738,12 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 15. **Slash commands (like `/commit`) only work in interactive mode** — in `-p` mode, describe the task in natural language instead.
 16. **`--bare` skips OAuth** — requires `ANTHROPIC_API_KEY` env var or an `apiKeyHelper` in settings.
 17. **Context degradation is real** — AI output quality measurably degrades above 70% context window usage. Monitor with `/context` and proactively `/compact`.
+18. **Interactive Claude sessions can fail immediately with API 500 before any tool use** — if a tmux-launched `claude --dangerously-skip-permissions` session shows repeated `API Error: 500 ... Internal server error` at the first prompt, the launch plumbing may still be fine while the upstream Claude service is unhealthy. Practical recovery pattern:
+   - verify the failure in-pane with `tmux capture-pane`
+   - retry once with a fresh tmux session and, if useful, a different model flag (for example `--model sonnet`)
+   - if failures persist, stop burning time on retries and fall back to a non-Claude path for the same deliverable (for example: prepare the execution packet manually, use another agent/provider, or convert the task into approval-safe prep work)
+   - keep the tmux session names and captured errors as evidence so the user can see the requested interactive-Claude method was attempted
+   - when the issue is not yet approved, use the outage as a cue to produce execution-support artifacts rather than unauthorized implementation
 
 ## Rules for Hermes Agents
 
