@@ -53,6 +53,14 @@ class TargetRecord:
     ext: str
 
 
+@dataclass(frozen=True)
+class ArtifactResult:
+    record: TargetRecord
+    summary_artifact: str
+    ready_for_2227: bool
+    blocker: str | None
+
+
 def summary_output_path(summaries_dir: Path, content_hash: str) -> Path:
     return summaries_dir / f"{content_hash}.json"
 
@@ -132,14 +140,33 @@ def summarise_text(title: str, text: str) -> str:
     return cleaned[:280]
 
 
+def preview_is_usable(title: str, text: str) -> bool:
+    cleaned = re.sub(r"\s+", " ", text).strip().lower()
+    if not cleaned:
+        return False
+    title_tokens = {
+        token.lower()
+        for token in re.findall(r"[a-zA-Z]{3,}", title)
+        if token.lower() not in {"guidelines", "associated", "conventional", "tankers", "facilities"}
+    }
+    if not title_tokens:
+        return len(cleaned) >= 80
+    return any(token in cleaned for token in title_tokens)
+
+
 def write_summary_artifact(
     record: TargetRecord,
     summaries_dir: Path,
     text_extractor: Callable[[Path], str] = extract_text_preview,
-) -> Path:
+) -> ArtifactResult:
     summaries_dir.mkdir(parents=True, exist_ok=True)
     artifact_path = summary_output_path(summaries_dir, record.content_hash)
     preview = text_extractor(Path(record.path))
+    usable = preview_is_usable(record.title, preview)
+    blocker = None
+    if not usable:
+        blocker = "pdftotext preview was empty or did not contain usable title/domain-aligned text; bounded helper cannot produce a reliable reusable summary from this source file on this machine"
+
     payload = {
         "path": record.path,
         "sha256": record.content_hash,
@@ -147,48 +174,61 @@ def write_summary_artifact(
         "title": record.title,
         "discipline": record.domain,
         "domain": record.domain,
-        "summary": summarise_text(record.title, preview),
+        "summary": summarise_text(record.title, preview) if usable else "",
         "text_preview": preview[:1000],
         "extraction_method": "pdftotext_p3" if preview else "title_fallback",
         "issue": 2245,
         "downstream_issue": 2227,
+        "ready_for_2227": usable,
+        "blocker": blocker,
     }
     artifact_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return artifact_path
+    return ArtifactResult(
+        record=record,
+        summary_artifact=str(artifact_path),
+        ready_for_2227=usable,
+        blocker=blocker,
+    )
 
 
-def build_handoff_payload(records: list[TargetRecord], summaries_dir: Path) -> dict:
+def build_handoff_payload(results: list[ArtifactResult]) -> dict:
     return {
         "issue": 2245,
         "downstream_issue": 2227,
         "generated_from": "scripts/data/document-index/acma_wiki_unblock.py",
+        "ready_for_2227": all(result.ready_for_2227 for result in results),
         "targets": [
             {
-                **asdict(record),
-                "summary_artifact": str(summary_output_path(summaries_dir, record.content_hash)),
+                **asdict(result.record),
+                "summary_artifact": result.summary_artifact,
+                "ready_for_2227": result.ready_for_2227,
+                "blocker": result.blocker,
             }
-            for record in records
+            for result in results
         ],
     }
 
 
-def write_handoff_payload(records: list[TargetRecord], summaries_dir: Path, output_path: Path) -> Path:
+def write_handoff_payload(results: list[ArtifactResult], output_path: Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    payload = build_handoff_payload(records, summaries_dir=summaries_dir)
+    payload = build_handoff_payload(results)
     output_path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
     return output_path
 
 
 def run(index_path: Path, ledger_path: Path, summaries_dir: Path, handoff_path: Path) -> dict:
     records = resolve_target_records(index_path=index_path, ledger_path=ledger_path)
-    summary_paths = [
-        str(write_summary_artifact(record, summaries_dir=summaries_dir))
-        for record in records
-    ]
-    handoff_file = write_handoff_payload(records, summaries_dir=summaries_dir, output_path=handoff_path)
+    results = [write_summary_artifact(record, summaries_dir=summaries_dir) for record in records]
+    handoff_file = write_handoff_payload(results, output_path=handoff_path)
     return {
-        "records": [asdict(record) for record in records],
-        "summary_paths": summary_paths,
+        "records": [asdict(result.record) for result in results],
+        "summary_paths": [result.summary_artifact for result in results],
+        "ready_for_2227": all(result.ready_for_2227 for result in results),
+        "blockers": [
+            {"standard_id": result.record.standard_id, "blocker": result.blocker}
+            for result in results
+            if result.blocker
+        ],
         "handoff_path": str(handoff_file),
     }
 

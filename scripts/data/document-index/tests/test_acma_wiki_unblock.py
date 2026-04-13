@@ -13,8 +13,10 @@ if str(SCRIPT_DIR) not in sys.path:
 from acma_wiki_unblock import (  # noqa: E402
     TARGET_SPECS,
     build_handoff_payload,
+    preview_is_usable,
     resolve_target_records,
     summary_output_path,
+    write_summary_artifact,
 )
 
 
@@ -133,12 +135,51 @@ def test_build_handoff_payload_names_exact_artifact_refs(tmp_path: Path) -> None
         ],
     )
     resolved = resolve_target_records(index_path=index_path, ledger_path=ledger_path)
+    results = [
+        write_summary_artifact(record, summaries_dir=summaries_dir, text_extractor=lambda _path, t=record.title: t)
+        for record in resolved
+    ]
 
-    payload = build_handoff_payload(resolved, summaries_dir=summaries_dir)
+    payload = build_handoff_payload(results)
 
     assert payload["issue"] == 2245
     assert payload["downstream_issue"] == 2227
+    assert payload["ready_for_2227"] is True
     assert len(payload["targets"]) == 3
     assert {item["domain"] for item in payload["targets"]} == {"marine"}
     assert all(item["summary_artifact"].endswith(".json") for item in payload["targets"])
     assert all("content_hash" in item for item in payload["targets"])
+
+
+def test_preview_is_usable_rejects_garbled_or_empty_text() -> None:
+    title = "CSA Z276.18 LNG Production, Storage, and Handling"
+    assert preview_is_usable(title, "") is False
+    assert preview_is_usable(title, "monen kuunnella cannikka camoin pyctyvat vaatteitaan") is False
+    assert preview_is_usable(title, "LNG production, storage, and handling requirements for marine terminals") is True
+
+
+def test_write_summary_artifact_marks_blocker_for_unusable_preview(tmp_path: Path) -> None:
+    summaries_dir = tmp_path / "summaries"
+    record = TARGET_SPECS[0]
+    target = type("Target", (), {
+        "standard_id": record["id"],
+        "title": record["title"],
+        "path": record["doc_path"],
+        "content_hash": "sha256:blocker",
+        "source": "acma_codes",
+        "domain": "marine",
+        "ext": "pdf",
+    })()
+
+    result = write_summary_artifact(
+        target,
+        summaries_dir=summaries_dir,
+        text_extractor=lambda _path: "monen kuunnella cannikka camoin pyctyvat vaatteitaan",
+    )
+
+    payload = json.loads(Path(result.summary_artifact).read_text(encoding="utf-8"))
+    assert result.ready_for_2227 is False
+    assert result.blocker is not None
+    assert payload["ready_for_2227"] is False
+    assert payload["blocker"]
+    assert payload["summary"] == ""

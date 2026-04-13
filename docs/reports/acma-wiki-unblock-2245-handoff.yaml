@@ -1,6 +1,7 @@
 issue: 2245
 downstream_issue: 2227
 generated_from: scripts/data/document-index/acma_wiki_unblock.py
+ready_for_2227: false
 targets:
 - standard_id: OCIMF-TANDEM-MOORING
   title: OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at
@@ -12,6 +13,10 @@ targets:
   domain: marine
   ext: pdf
   summary_artifact: /mnt/local-analysis/workspace-hub/data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json
+  ready_for_2227: false
+  blocker: pdftotext preview was empty or did not contain usable title/domain-aligned
+    text; bounded helper cannot produce a reliable reusable summary from this source
+    file on this machine
 - standard_id: CSA-Z276.1-20
   title: CSA Z276.1-20 Marine Structures Associated with LNG Facilities
   path: /mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
@@ -20,6 +25,10 @@ targets:
   domain: marine
   ext: pdf
   summary_artifact: /mnt/local-analysis/workspace-hub/data/document-index/summaries/sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd.json
+  ready_for_2227: false
+  blocker: pdftotext preview was empty or did not contain usable title/domain-aligned
+    text; bounded helper cannot produce a reliable reusable summary from this source
+    file on this machine
 - standard_id: CSA-Z276.18
   title: CSA Z276.18 LNG Production, Storage, and Handling
   path: /mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
@@ -28,3 +37,7 @@ targets:
   domain: marine
   ext: pdf
   summary_artifact: /mnt/local-analysis/workspace-hub/data/document-index/summaries/sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4.json
+  ready_for_2227: false
+  blocker: pdftotext preview was empty or did not contain usable title/domain-aligned
+    text; bounded helper cannot produce a reliable reusable summary from this source
+    file on this machine
