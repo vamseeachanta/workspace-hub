@@ -88,9 +88,10 @@ prepare closure-ready implementation slice for the issue
 | Action | Path | Reason |
 |---|---|---|
 | Create | `docs/plans/2026-04-13-issue-2105-freshness-cadences-and-staleness-signals.md` | canonical plan artifact |
+| Create/Update | `docs/document-intelligence/freshness-cadence-matrix.md` | canonical cadence/staleness matrix |
 | Update (if needed) | `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` | align weekly checks |
 | Update (if needed) | `data/document-index/intelligence-accessibility-registry.yaml` | align freshness metadata |
-| Create/Update (to be determined) | `docs/document-intelligence/...` | cadence matrix / staleness doc |
+| Update (if needed) | `scripts/docs/staleness-scanner.py` or `scripts/cron/staleness-scan-weekly.sh` | connect existing freshness machinery to the canonical matrix |
 | Update | `docs/plans/README.md` | add plan index row |
 
 ---
@@ -102,6 +103,8 @@ prepare closure-ready implementation slice for the issue
 | test_weekly_review_has_freshness_section | consumer surface already references freshness checks | weekly review doc | freshness section present |
 | test_registry_has_freshness_metadata | registry exposes cadence metadata fields | registry yaml | freshness fields present |
 | test_plan_locks_canonical_output_surface | plan names one canonical cadence artifact | plan content | exact artifact path/owner |
+| test_threshold_semantics_are_defined | canonical matrix defines `current` / `warn` / `stale` semantics | matrix doc | threshold definitions present |
+| test_existing_staleness_machinery_is_integrated | plan references scanner/runner/dashboard instead of duplicating them | plan content | existing machinery explicitly integrated |
 | test_maturity_ledger_included_in_scope | key ledger is included in freshness scope | plan content | maturity ledger referenced |
 
 ---
