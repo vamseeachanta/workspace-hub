@@ -9,3 +9,5 @@
 {"ts":"2026-04-10T08:24:13Z","agent":"unknown","action":"modify","skill_path":".claude/skills/_internal/meta/module-based-refactor/SKILL.md","commit":"d4f0ab67374d08c6f2319b1f81730e84c0d0796d"}
 {"ts":"2026-04-10T08:24:13Z","agent":"unknown","action":"modify","skill_path":".claude/skills/_internal/meta/repo-cleanup/SKILL.md","commit":"d4f0ab67374d08c6f2319b1f81730e84c0d0796d"}
 {"ts":"2026-04-10T08:24:13Z","agent":"unknown","action":"modify","skill_path":".claude/skills/operations/devtools/ai-tool-assessment/SKILL.md","commit":"d4f0ab67374d08c6f2319b1f81730e84c0d0796d"}
+{"ts":"2026-04-13T13:24:17Z","agent":"hermes","action":"create","skill_path":".claude/skills/ai/provider-utilization-scorecard/SKILL.md","commit":"08ab8a5c6c4f264ed81a9042296a3636459f98fd"}
+{"ts":"2026-04-13T13:24:17Z","agent":"hermes","action":"modify","skill_path":".claude/skills/coordination/knowledge-source-recon/SKILL.md","commit":"08ab8a5c6c4f264ed81a9042296a3636459f98fd"}

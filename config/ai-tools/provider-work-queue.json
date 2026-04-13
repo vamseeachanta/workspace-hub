@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-13T12:22:25.168787Z",
+  "generated_at": "2026-04-13T13:20:06.283013Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-13T12:22:23.224790Z",
+  "scorecard_generated_at": "2026-04-13T13:20:04.340197Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -96,13 +96,14 @@
             "priority:high",
             "cat:data-pipeline",
             "cat:documentation",
+            "agent:claude",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-13T10:43:45Z",
+          "updatedAt": "2026-04-13T12:23:00Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
+          "routing_reason": "existing claude agent label",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
@@ -120,13 +121,14 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
+            "agent:claude",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-11T15:40:14Z",
+          "updatedAt": "2026-04-13T12:23:02Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
+          "routing_reason": "existing claude agent label",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
@@ -224,13 +226,14 @@
             "enhancement",
             "priority:medium",
             "cat:documentation",
+            "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-13T10:39:01Z",
+          "updatedAt": "2026-04-13T12:22:58Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [

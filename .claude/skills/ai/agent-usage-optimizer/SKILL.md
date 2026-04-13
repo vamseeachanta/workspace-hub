@@ -164,7 +164,78 @@ but no scheduled task keeping them fresh.
 
 Check `config/scheduled-tasks/schedule-tasks.yaml` for explicit quota-refresh / usage-log jobs. If missing, record that as a telemetry gap and do not overstate optimization confidence.
 
-## Operational scorecard + work-queue pattern
+## Operationalized control-plane artifacts
+
+A reusable provider-utilization control plane now exists in workspace-hub. Prefer these generated artifacts over ad hoc interpretation when deciding where to route work:
+
+- `config/ai-tools/provider-utilization-weekly.json`
+- `docs/reports/provider-utilization-weekly.md`
+- `config/ai-tools/provider-routing-scorecard.json`
+- `docs/reports/provider-routing-scorecard.md`
+- `config/ai-tools/provider-work-queue.json`
+- `docs/reports/provider-work-queue.md`
+- `config/ai-tools/provider-autolabel-candidates.json`
+- `docs/reports/provider-autolabel-candidates.md`
+- handoff/reference snapshot: `docs/reports/provider-routing-system-handoff-YYYY-MM-DD.md`
+
+Supporting scripts:
+- `scripts/ai/credit-utilization-tracker.py`
+- `scripts/ai/provider-routing-scorecard.py`
+- `scripts/ai/provider-work-queue.py`
+- `scripts/ai/provider-autolabel.py`
+- wrapper: `scripts/cron/provider-utilization-refresh.sh`
+
+The scheduled task is:
+- `provider-utilization-refresh` in `config/scheduled-tasks/schedule-tasks.yaml`
+
+## Recommended operational loop
+
+Use this order:
+1. Refresh telemetry and derived routing artifacts:
+```bash
+bash scripts/cron/provider-utilization-refresh.sh
+```
+2. Read the routing scorecard to decide provider order.
+3. Read the provider work queue to see issue candidates by provider.
+4. Review the autolabel candidate report.
+5. Only then consider applying labels.
+
+## Conservative auto-labeling rule
+
+Auto-labeling should remain conservative. The current reusable pattern is:
+- only consider issues with no existing `agent:*` label
+- only label high-confidence candidates
+- prefer execution-ready issues (`status:plan-approved`) first
+- require strong provider-specific routing reasons, not just generic keyword matches
+- apply only a small bounded batch per run
+
+Current command pattern:
+```bash
+# Dry run
+uv run --no-project python scripts/ai/provider-autolabel.py
+
+# Conservative live apply
+uv run --no-project python scripts/ai/provider-autolabel.py --apply --limit 3
+```
+
+Confidence threshold lessons from live use:
+- `>= 0.90` is reasonable for safe automatic labeling
+- around `0.60` is still useful for reporting, but not for automatic label application
+
+## Provider-specific practical guidance from live telemetry
+
+- Codex: best lane for bounded implementation, tests, repair, cleanup, refactors. If underused and quota is visible, push more execution here first.
+- Gemini: best lane for batched research/recon/risk-analysis packets. Do not auto-label aggressively until Gemini confidence logic is stronger than simple keyword matching.
+- Claude: keep for adversarial review, planning, long-context synthesis, architecture, and governance-heavy work. Avoid burning Claude on mechanical loops Codex can absorb.
+
+## Follow-on improvement areas
+
+If the control plane is working but still imperfect, the next high-value upgrades are:
+- add explanatory GitHub comments when high-confidence auto-labels are applied
+- strengthen Gemini-specific routing confidence using research-readiness signals, not just broad research keywords
+- improve Claude/Gemini quota observability so utilization can be exact rather than heuristic
+
+## Sub-Skills
 
 When the goal is not just analysis but active weekly credit utilization, use this artifact chain:
 

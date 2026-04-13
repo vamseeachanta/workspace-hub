@@ -429,3 +429,11 @@ find /mnt/local-analysis/workspace-hub/{.claude,CAD-DEVELOPMENTS/.claude,\
     across 3+ agents, prefix output paths by phase (phase-a-*, phase-b-*, etc.) and
     enforce negative write boundaries (explicit DO NOT WRITE TO lists) in each prompt.
     Agents will "helpfully" fix files in other terminals' territory without this.
+11. **Claude plugin updates must use the installed plugin id, not just the slug** —
+    for Superpowers, `claude plugin update superpowers --scope project` can fail with
+    `Plugin "superpowers" not found` even when the plugin is installed and enabled.
+    First inspect `claude plugin list --json`, then use the returned `id` field, e.g.
+    `superpowers@claude-plugins-official`, with the detected scope:
+    `claude plugin update superpowers@claude-plugins-official --scope project`.
+    For automation, treat `claude plugin list --json` as the source of truth for
+    plugin id + scope + enabled state, and summarize installed scopes in dry-run output.

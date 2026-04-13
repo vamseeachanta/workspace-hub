@@ -1,14 +1,11 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-13T12:23:03.144038Z
-Apply mode: True
+Generated: 2026-04-13T13:20:06.458811Z
+Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
-| #2227 feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2248 epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2129 chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2205 feat(knowledge): define multi-machine llm-wiki + resource/document intelligence operating model | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |

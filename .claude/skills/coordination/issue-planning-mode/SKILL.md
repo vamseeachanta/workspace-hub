@@ -71,17 +71,24 @@ The user (never the implementing agent) approves the plan:
 - `gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"`
 - Creates marker: `.planning/plan-approved/NNN.md`
 
-Status interpretation rule:
-- If GitHub shows multiple `status:*` labels, treat the latest/most-advanced state as authoritative.
-- Practical precedence: `status:plan-approved` outranks `status:plan-review`.
-- When local plan indexes / handoff notes / old comments disagree with current labels or approval markers, reconcile using the latest effective state instead of the oldest visible artifact.
-- Only surface a plan to the user for approval after adversarial plan review is complete and the plan is actually approval-ready. Do not ask for approval on a draft or on a plan whose review still returns MAJOR/FAIL.
+### Step 5: User Approval
 
+The **user** (not the implementing agent) approves:
+
+```bash
+gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"
 mkdir -p .planning/plan-approved
 echo "Approved by: <user>" > .planning/plan-approved/NNN.md
 ```
 
 Self-approval by the implementing agent is blocked by the plan-approval gate.
+
+### Status precedence and surfacing rules
+
+- If a GitHub issue has multiple `status:*` labels, treat the **latest/most-advanced** state as authoritative. In practice: `status:plan-approved` outranks `status:plan-review`.
+- When local plan indexes (for example `docs/plans/README.md`) disagree with newer approval markers or newer GitHub status labels, reconcile to the newer/more-advanced state before deciding whether user approval is still needed.
+- Use `.planning/plan-approved/<issue>.md` as the canonical local proof that approval happened.
+- Do **not** surface a plan to the user for approval until adversarial plan review is complete and the plan is actually approval-ready. Draft plans with pending/failed review should be revised first, then surfaced.
 
 ### Step 6: Implement (TDD)
 

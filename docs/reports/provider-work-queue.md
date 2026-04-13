@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-13T12:22:25.168787Z
+Generated: 2026-04-13T13:20:06.283013Z
 Current week: 2026-W16
 Recommended provider order: gemini, codex, claude
 
@@ -17,8 +17,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2055 feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | yes | existing claude agent label | enhancement, priority:high, cat:engineering, wip:ace-linux-1, dark-intelligence, agent:claude |
 | #2127 fix(governance): make plan-approval-gate honor FORCE_PLAN_GATE_STRICT and DISABLE_ENFORCEMENT | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
 | #2128 fix(governance): wire enforcement-env and require-review-on-push into install-hooks pre-push chain | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
-| #2248 epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:documentation, status:plan-approved |
-| #2129 chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:ai-orchestration, cat:harness, status:plan-approved |
+| #2248 epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution | yes | existing claude agent label | enhancement, priority:high, cat:data-pipeline, cat:documentation, agent:claude, status:plan-approved |
+| #2129 chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts | yes | existing claude agent label | enhancement, priority:medium, cat:ai-orchestration, cat:harness, agent:claude, status:plan-approved |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
 | #2205 feat(knowledge): define multi-machine llm-wiki + resource/document intelligence operating model | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:documentation, cat:harness, status:plan-approved |
 | #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
@@ -31,7 +31,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2227 feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis | yes | implementation/test/fix language | enhancement, priority:medium, cat:documentation, status:plan-approved |
+| #2227 feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis | yes | existing codex agent label | enhancement, priority:medium, cat:documentation, agent:codex, status:plan-approved |
 | #2118 chore(gtm): run all 5 demos end-to-end and validate HTML reports | no | implementation/test/fix language | priority:high, cat:engineering, domain:gtm |
 | #2037 feat(gtm): manim mooring layout / force explainer animation | no | implementation/test/fix language | enhancement, priority:medium, cat:business, domain:gtm |
 | #2038 feat(gtm): manim installation sequence / operability envelope animation | no | implementation/test/fix language | enhancement, priority:medium, cat:business, domain:gtm |
