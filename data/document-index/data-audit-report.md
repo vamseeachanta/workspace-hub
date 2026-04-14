@@ -51,9 +51,18 @@ Note: Index 'other' records (44,705) are project documents, correspondence,
 and miscellaneous files — not standards. Standards 'other' has been fully
 reclassified (see below).
 
-## Standards Transfer Ledger Status
+## Active Maturity Scope Snapshot
 
-425 standards tracked across 10 domains (reclassified 2026-04-01).
+This section tracks the bounded active-maturity scope from
+`resource-intelligence-maturity.yaml`, not the live entry count in
+`standards-transfer-ledger.yaml`.
+
+Active scope: 425 standards across 10 domains (reclassified 2026-04-01).
+
+Live ledger note: `standards-transfer-ledger.yaml` currently contains 436
+entries across 13 domains with status split `done: 435`, `implemented: 1`.
+Those live-ledger totals are a different metric family from the bounded
+425-item maturity scope summarized below.
 
 The former 'other' domain (166 standards) has been fully decomposed into
 proper engineering domains. Two new domains were created: `process` (55)
