@@ -1,0 +1,334 @@
+# LLM-Wiki External-Source Priority Queue
+#
+# Owner issues: #2242 (prioritization), #2243 (batch packs)
+# Parent umbrella: #2241
+# Architecture: #2205 operating model, #2208 retrieval contract
+#
+# This queue is grounded in existing registries — no brute-force rescanning.
+# Source registries consumed:
+#   - data/document-index/online-resource-registry.yaml (247 entries)
+#   - data/document-index/conference-paper-catalog.yaml (30 conferences, ~22k PDFs)
+#   - data/document-index/conference-registry.yaml (27,735 files)
+#   - data/document-index/mounted-source-registry.yaml (8 source roots)
+#   - data/document-index/dde-literature-catalog.yaml (87 items, 5,456 PDFs)
+#   - data/document-index/resource-intelligence-maturity.yaml (425 standards in scope)
+#   - data/document-index/intelligence-accessibility-registry.yaml (wiki domain map)
+
+generated: '2026-04-14'
+schema_version: '1.0.0'
+owner_issues: ['#2242', '#2243']
+parent_umbrella: '#2241'
+
+# Wiki domain current state (pages as of 2026-04-14)
+wiki_domain_state:
+  engineering: {pages: 81, gap_severity: high}
+  marine-engineering: {pages: 19172, gap_severity: low}
+  naval-architecture: {pages: 45, gap_severity: high}
+  maritime-law: {pages: 22, gap_severity: high}
+  personal: {pages: 0, gap_severity: deferred}
+
+# Priority tiers:
+#   P1 — high ROI, promotable now with existing metadata/summaries
+#   P2 — medium ROI, needs bounded extraction but well-organized
+#   P3 — low ROI or high token cost, defer unless specifically needed
+#   P4 — do not process yet (explicit defer list)
+
+source_families:
+
+  - family_id: online-data-apis-and-portals
+    display_name: "Online Data APIs & Standards Portals"
+    priority: P1
+    promotion_strategy: metadata-first
+    description: >
+      Structured online resources with API access or standards portal navigation.
+      Rich metadata already captured in online-resource-registry notes fields.
+      Low token cost to extract wiki-ready summaries.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "type in [data_api, standard_portal]"
+    entry_count: 40
+    domains_covered: [hydrodynamics, oil_and_gas, pipeline, marine, structural, subsea]
+    target_wiki_domains: [engineering, marine-engineering, naval-architecture]
+    gap_fill_value: high
+    token_cost_estimate: low
+    mount_dependency: none
+    network_dependency: none-for-metadata
+    related_issues: ['#1609', '#2039', '#2067']
+    batch_pack_ref: batch-pack-1
+    notes: >
+      31 data_api + 9 standard_portal entries. Includes ERA5/Copernicus, NOAA NDBC,
+      DNV Standards Explorer, API addenda portal, BOEM, BSEE, EIA, SODIR.
+      Registry notes already contain structured capability summaries.
+      Promotion to wiki stubs requires only reformatting existing metadata.
+
+  - family_id: indexed-conference-papers
+    display_name: "Conference Papers — Indexed Collections (DOT, OMAE, ISOPE)"
+    priority: P1
+    promotion_strategy: summary-backed
+    description: >
+      Three major conference collections with phase_a indexing already complete.
+      Summaries and title/abstract data exist from prior batch-ingest work (#2001).
+      Can promote to wiki topic stubs using existing indexed evidence.
+    source_registry: data/document-index/conference-paper-catalog.yaml
+    source_filter: "indexing_status = phase_a_complete"
+    entry_count_collections: 3
+    entry_count_pdfs: ~18000
+    domains_covered: [subsea, pipeline, marine, structural, viv, hydrodynamics]
+    target_wiki_domains: [marine-engineering, naval-architecture, engineering]
+    gap_fill_value: high
+    token_cost_estimate: medium
+    mount_dependency: /mnt/ace/docs/conferences
+    network_dependency: none
+    related_issues: ['#2001', '#2039', '#2067', '#2068']
+    batch_pack_ref: batch-pack-2
+    notes: >
+      DOT (3,636 files, subsea/pipeline focus), OMAE (10,130 files, structural/marine),
+      ISOPE (4,183 files, marine/hydrodynamics). Phase_a indexing provides
+      title/abstract/domain classification for each paper.
+      Conference-index-batch.jsonl and conference-phase-a-results.jsonl contain
+      the indexed outputs.
+
+  - family_id: standards-with-existing-summaries
+    display_name: "Standards Collections with Existing Index Summaries"
+    priority: P1
+    promotion_strategy: summary-backed
+    description: >
+      The document index already contains 639,585 summaries out of 1,033,933 records
+      (61.9% coverage). Standards with existing summaries can be promoted to wiki
+      stubs without re-reading source PDFs.
+    source_registry: data/document-index/resource-intelligence-maturity.yaml
+    source_filter: "standards with existing index summaries"
+    entry_count: ~639000
+    domains_covered: [cathodic-protection, pipeline, structural, marine, process, drilling]
+    target_wiki_domains: [engineering, marine-engineering]
+    gap_fill_value: high
+    token_cost_estimate: low
+    mount_dependency: none-for-summaries
+    network_dependency: none
+    related_issues: ['#2216', '#2207', '#2039']
+    batch_pack_ref: batch-pack-4
+    notes: >
+      425 standards in active maturity scope; 29 marked read (6.8%).
+      10 standards domains after reclassification (formerly 166 in "other").
+      Summary-to-wiki promotion can proceed domain by domain.
+      Key domains with existing calculation implementations:
+      cathodic-protection (47.4%), pipeline (21.8%), structural (5.6%), marine (12.1%).
+
+  - family_id: online-github-repos-and-tools
+    display_name: "Online GitHub Repos & Engineering Tools"
+    priority: P2
+    promotion_strategy: metadata-first
+    description: >
+      Open-source engineering tools and GitHub repositories tracked in the
+      online resource registry. README/description data can be scraped for
+      wiki tool-profile pages.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "type in [github_repo, tool]"
+    entry_count: 153
+    domains_covered: [cad, hydrodynamics, data_science, general, cfd, orcaflex, marine]
+    target_wiki_domains: [engineering, marine-engineering]
+    gap_fill_value: medium
+    token_cost_estimate: low
+    mount_dependency: none
+    network_dependency: required-for-scraping
+    related_issues: ['#2039', '#2042']
+    batch_pack_ref: batch-pack-3
+    notes: >
+      56 github_repo + 97 tool entries. Includes CadQuery, Gmsh, NGSolve,
+      PythonOCC, wavespectra, OpenFOAM variants, and MCP tool registries.
+      Many already have structured notes in the registry.
+      Network access required only for README scraping of entries
+      without sufficient existing notes.
+
+  - family_id: online-papers-and-tutorials
+    display_name: "Online Papers & Tutorials"
+    priority: P2
+    promotion_strategy: summary-backed
+    description: >
+      Academic papers and tutorial resources from the online resource registry.
+      Abstracts and descriptions are available in registry notes for most entries.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "type in [paper, tutorial]"
+    entry_count: 46
+    domains_covered: [oil_and_gas, hydrodynamics, structural, marine, naval_architecture]
+    target_wiki_domains: [engineering, marine-engineering, naval-architecture]
+    gap_fill_value: medium
+    token_cost_estimate: low
+    mount_dependency: none
+    network_dependency: none-for-metadata
+    related_issues: ['#2039', '#2067']
+    batch_pack_ref: null
+    notes: >
+      31 paper + 15 tutorial entries. Includes SPE OnePetro (80k+ docs,
+      abstract-level search free), ASME JOMAE/OMAE proceedings,
+      Semantic Scholar API, wavespectra docs, Open-Meteo marine API docs.
+      Most have sufficient registry notes for metadata-first promotion.
+
+  - family_id: research-literature-mounted
+    display_name: "Research Literature (Mounted Domain Directories)"
+    priority: P2
+    promotion_strategy: raw-extraction-needed
+    description: >
+      Domain-organized research literature on mounted drives.
+      Each domain directory contains PDFs organized by subtopic.
+      Requires PDF parsing for content extraction.
+    source_registry: data/document-index/mounted-source-registry.yaml
+    source_filter: "source_id = research_literature_local"
+    entry_count_domains: 7
+    domains_covered: [cathodic_protection, geotechnical, hydrodynamics, naval_architecture, pipeline, structural, subsea]
+    target_wiki_domains: [engineering, marine-engineering, naval-architecture]
+    gap_fill_value: high
+    token_cost_estimate: high
+    mount_dependency: "/mnt/ace-data/digitalmodel/docs/domains"
+    network_dependency: none
+    related_issues: ['#2034', '#2039']
+    batch_pack_ref: null
+    notes: >
+      Each domain has literature/<subtopic>/<author-year-title>.pdf structure.
+      Download scripts with source URLs in each domain folder.
+      High domain relevance but requires PDF extraction pipeline.
+      Should be sequenced after metadata-first families are complete.
+
+  - family_id: unindexed-conference-papers
+    display_name: "Conference Papers — Unindexed Collections"
+    priority: P3
+    promotion_strategy: raw-extraction-needed
+    description: >
+      Remaining ~27 conference collections without phase_a indexing.
+      Requires raw PDF parsing and domain classification before promotion.
+    source_registry: data/document-index/conference-paper-catalog.yaml
+    source_filter: "indexing_status != phase_a_complete"
+    entry_count_collections: ~27
+    entry_count_pdfs: ~4000
+    domains_covered: [marine, drilling, subsea, cathodic-protection, structural]
+    target_wiki_domains: [marine-engineering, engineering]
+    gap_fill_value: medium
+    token_cost_estimate: high
+    mount_dependency: /mnt/ace/docs/conferences
+    network_dependency: none
+    related_issues: ['#2001']
+    batch_pack_ref: null
+    notes: >
+      Includes NACE (440 PDFs, cathodic-protection), Arctic Technology (136 files),
+      Flow Induced Vibration (193 files), DeepGulf (43 files), IMarEST (20 files).
+      Some are small enough for single-batch indexing.
+      NACE collection highest value in this tier due to CP domain.
+
+  - family_id: dde-literature-remote
+    display_name: "DDE Literature Collection (Remote Mount)"
+    priority: P3
+    promotion_strategy: raw-extraction-needed
+    description: >
+      Historical literature on remote-mounted DDE drive. Requires active
+      remote mount session. Contains mixed engineering and O&G literature.
+    source_registry: data/document-index/dde-literature-catalog.yaml
+    source_filter: "all catalog entries"
+    entry_count: 87
+    entry_count_pdfs: 5456
+    total_size_gb: 14.6
+    domains_covered: [structural, cathodic-protection, pipeline, marine, hydrodynamics, materials, drilling]
+    target_wiki_domains: [engineering, marine-engineering]
+    gap_fill_value: medium
+    token_cost_estimate: high
+    mount_dependency: "/mnt/remote/ace-linux-2/dde/Literature"
+    network_dependency: remote-mount-required
+    related_issues: ['#2034']
+    batch_pack_ref: null
+    notes: >
+      Engineering: 2,182 files (823 PDFs, 8.6 GB).
+      Oil & Gas: 9,601 files (4,633 PDFs, 6 GB).
+      Remote mount to ace-linux-2 required.
+      Fallback: use indexed metadata when mount unavailable.
+      87 catalog items already have domain/doc_type classification.
+
+# ── Do Not Process Yet ──────────────────────────────────────────────
+
+do_not_process_yet:
+
+  - family_id: riser-engineering-archives
+    reason: >
+      15,449 files across 4 projects totaling 93 GB. Extremely specialized
+      (riser/VIV/fatigue analysis). Requires dedicated scoping issue before
+      any batch processing. domain-index-full.yaml exists but volume is
+      too high for general wiki strengthening.
+    source_registry: data/document-index/mounted-source-registry.yaml
+    source_filter: "source_id = riser_eng_job_local"
+    revisit_trigger: "dedicated riser-wiki scoping issue created"
+
+  - family_id: large-simulation-datasets
+    reason: >
+      The Well dataset (15 TB physics simulations) and similar large
+      data sources are unsuitable for wiki strengthening. Too large to
+      process, too specialized for general wiki pages.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "entries related to The Well / Polymathic AI"
+    revisit_trigger: "never for wiki — useful only for computation modules"
+
+  - family_id: general-non-domain-tools
+    reason: >
+      MCP server registries, general data-science tools, and non-engineering
+      GitHub repos add noise to engineering wiki domains. Low ROI for
+      domain-specific wiki strengthening.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "domain = general AND type in [tool, github_repo]"
+    revisit_trigger: "if engineering wiki adds a tooling/infrastructure section"
+
+  - family_id: course-materials
+    reason: >
+      Only 3 entries in the online resource registry. Too few to justify
+      a batch execution slice. Can be handled ad-hoc during related work.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "type = course_material"
+    revisit_trigger: "if registry grows beyond 10 course entries"
+
+  - family_id: professional-body-publications
+    reason: >
+      4 entries (IOGP, IMCA, etc.). Valuable but behind access restrictions
+      or requiring manual download. Not suitable for automated batch processing.
+    source_registry: data/document-index/online-resource-registry.yaml
+    source_filter: "type = professional_body"
+    revisit_trigger: "if #1609 download pipeline adds auth-gated source support"
+
+# ── Execution Order ─────────────────────────────────────────────────
+
+recommended_execution_order:
+  - step: 1
+    families: [online-data-apis-and-portals]
+    rationale: "Lowest token cost, highest metadata quality, fills engineering + naval-arch gaps"
+    batch_pack: batch-pack-1
+    overnight_safe: true
+
+  - step: 2
+    families: [indexed-conference-papers]
+    rationale: "Leverages existing phase_a indexing, high domain relevance for thin wikis"
+    batch_pack: batch-pack-2
+    overnight_safe: true
+
+  - step: 3
+    families: [standards-with-existing-summaries]
+    rationale: "639k summaries already exist, domain-by-domain promotion is cheap"
+    batch_pack: batch-pack-4
+    overnight_safe: true
+
+  - step: 4
+    families: [online-github-repos-and-tools]
+    rationale: "README scraping fills tool-profile gaps in engineering wiki"
+    batch_pack: batch-pack-3
+    overnight_safe: conditional
+
+  - step: 5
+    families: [online-papers-and-tutorials]
+    rationale: "Abstracts available, supplements domain coverage"
+    batch_pack: null
+    overnight_safe: true
+
+  - step: 6
+    families: [research-literature-mounted]
+    rationale: "High value but high extraction cost, sequence after metadata-first waves"
+    batch_pack: null
+    overnight_safe: true
+
+  - step: 7
+    families: [unindexed-conference-papers, dde-literature-remote]
+    rationale: "Lowest priority, highest cost, may require dedicated child issues"
+    batch_pack: null
+    overnight_safe: false
