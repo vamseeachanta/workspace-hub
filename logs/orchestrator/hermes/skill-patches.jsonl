@@ -17,3 +17,8 @@
 {"ts":"2026-04-13T14:24:08Z","agent":"unknown","action":"modify","skill_path":".claude/skills/coordination/issue-planning-mode/SKILL.md","commit":"d020ce397e322bc4c897e7f12878a1b3ab3ad6f6"}
 {"ts":"2026-04-13T14:24:08Z","agent":"unknown","action":"modify","skill_path":".claude/skills/workspace-hub/repo-sync/SKILL.md","commit":"d020ce397e322bc4c897e7f12878a1b3ab3ad6f6"}
 {"ts":"2026-04-14T11:32:09Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/learned/corporate-tax-filing-reconciliation/SKILL.md","commit":"5bd900c5fb55fc78de34376236fcb43e92e651c0"}
+{"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/cash-basis-corporate-tax-reconciliation/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
+{"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/git-worktree-cleanup-and-branch-hygiene/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
+{"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/git-worktree-cleanup-and-branch-reconciliation/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
+{"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/git-worktree-cleanup-at-scale/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
+{"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/large-scale-branch-hygiene/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
