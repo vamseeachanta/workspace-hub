@@ -1,0 +1,286 @@
+---
+# maritime-law-cases.yaml — Landmark public maritime law cases
+# Queried by: bash scripts/knowledge/query-knowledge.sh --category maritime-law
+# Legal: no client identifiers; all cases are public-domain court/tribunal records
+entries:
+  - id: MARITIME-cases-mv-prestige
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "MV Prestige (2002) — Spain/International; flag-state liability and CLC limits"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The single-hulled Bahamian-flagged tanker MV Prestige broke apart off the Galician
+      coast in November 2002, releasing 63,000 tonnes of heavy fuel oil. The Spanish and
+      French governments refused port access, worsening the spill. The Spanish Supreme Court
+      (2016) found the captain and insurers jointly liable. The total damages exceeded €1B,
+      far beyond the CLC 1992 cap of ~89.77M SDR for the vessel's tonnage. France and Spain
+      pursued the P&I Club (London Steamship) directly. The case exposed limits of CLC 1992
+      in catastrophic spills and accelerated the EU ban on single-hull tankers (MARPOL Annex I
+      Reg 13G). Flag-state (Bahamas) liability was argued but ultimately focused on owners
+      and insurers.
+    patterns:
+      - "CLC 1992 caps can be breached when cleanup and environmental damage claims aggregate"
+      - "Port state denial-of-refuge may increase total spill damage and attract regulatory scrutiny"
+      - "P&I Club direct action possible in some jurisdictions under CLC and local law"
+      - "Single-hull tankers face accelerated phase-out obligations post-Prestige"
+    follow_ons:
+      - type: reference
+        title: "Spanish Supreme Court judgment STS 865/2016"
+        url: "https://www.mjusticia.gob.es"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-mv-erika
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "MV Erika (1999) — France; corporate liability and 'préjudice écologique'"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The Maltese-flagged tanker MV Erika split in two off Brittany in December 1999,
+      spilling 20,000 tonnes of heavy fuel oil. The Cour de Cassation (2012) upheld
+      conviction of Total SA (charterer), the classification society RINA, and the
+      ship manager. The landmark ruling introduced "préjudice écologique" (ecological
+      damage) as a standalone compensable harm in French law, subsequently codified in
+      the French Civil Code (Art. 1246). Fines and damages reached ~€200M. The case
+      established that charterers can bear criminal and civil liability for pollution
+      from vessels they charter.
+    patterns:
+      - "Charterers can face criminal liability for pollution from chartered vessels"
+      - "Classification societies may be liable if negligent surveys contribute to casualty"
+      - "Ecological damage is compensable as a standalone tort in French jurisdiction"
+      - "Corporate veil does not automatically shield parent companies from spill liability"
+    follow_ons:
+      - type: reference
+        title: "Cour de Cassation, Chambre criminelle, 25 September 2012"
+        url: "https://www.legifrance.gouv.fr"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-mv-ever-given
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "MV Ever Given (2021) — Egypt/Suez Canal; canal blockage liability and salvage"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The 20,000 TEU container ship MV Ever Given ran aground in the Suez Canal in March
+      2021, blocking global trade for six days. The Suez Canal Authority (SCA) initially
+      claimed US$916M covering salvage, lost revenue, and reputational damage. The vessel
+      was detained by Egyptian courts. After negotiation, SCA and owner Shoei Kisen Kaisha
+      settled for an undisclosed amount reported around US$200M; the P&I Club (UK P&I)
+      provided security. The case highlighted the scope of canal authority claims under
+      Egyptian law and the role of P&I clubs in providing letters of undertaking (LOUs)
+      to release arrested vessels.
+    patterns:
+      - "Canal authority claims may far exceed insured hull values in total blockage scenarios"
+      - "P&I club LOUs are the standard instrument to secure vessel release from arrest"
+      - "Egyptian maritime law allows SCA to detain vessel pending settlement"
+      - "Business interruption claims from third parties are generally not recoverable under P&I"
+    follow_ons:
+      - type: reference
+        title: "Egyptian court order and SCA press releases, March–July 2021"
+        url: "https://www.suezcanal.gov.eg"
+        added_at: "2026-03-11"
+        note: "Public record"
+
+  - id: MARITIME-cases-msc-flaminia
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "MSC Flaminia (2012) — Germany/US; shipper liability for dangerous cargo"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      In July 2012, an explosion and fire aboard the MSC Flaminia in the North Atlantic
+      killed three crew and severely damaged the vessel. The cause was identified as
+      dangerous cargo (divinylbenzene) that had been misdeclared by its US shipper.
+      Litigation in US and German courts produced significant decisions on shipper liability
+      under COGSA and the Hague-Visby Rules, Art. 4(6), which imposes strict liability on
+      shippers for undeclared dangerous goods. Total cargo and salvage claims exceeded
+      US$200M. The case reinforced that shippers bear primary liability for correct IMDG
+      classification and that carriers can recover from shippers when misdeclaration causes loss.
+    patterns:
+      - "Shippers bear strict liability under HVR Art. 4(6) for undeclared dangerous goods"
+      - "IMDG Code misdeclaration can override bill-of-lading contractual defences"
+      - "Carrier can pursue shipper indemnity even when cargo is damaged by the dangerous goods"
+      - "Dangerous goods incidents trigger both civil liability and SOLAS criminal exposure"
+    follow_ons:
+      - type: reference
+        title: "MSC Mediterranean Shipping Co. v. Conti Lines — US SDNY and German Admiralty"
+        url: "https://law.justia.com"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-mv-wakashio
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "MV Wakashio (2020) — Mauritius; MARPOL prosecution and MLC crew welfare"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The Japanese Capesize bulk carrier MV Wakashio grounded on a reef off Mauritius in
+      July 2020, spilling approximately 1,000 tonnes of fuel oil in a UNESCO marine-
+      protected area. The captain and first officer were convicted under Mauritius law and
+      sentenced to imprisonment. The Mauritius government pursued the owner Nagashiki Shipping
+      and its insurer under CLC 1992 equivalent provisions. The MARPOL fine was reported at
+      US$9.4M. The case also raised MLC 2006 crew welfare questions as crew distraction
+      (birthday party) was cited in the investigation. This is among the first cases to link
+      MLC crew management failures directly to a pollution incident prosecution.
+    patterns:
+      - "CLC equivalent national legislation can apply to non-tanker vessels for bunker spills"
+      - "Criminal prosecution of individual officers under MARPOL/domestic law is standard"
+      - "MLC 2006 safe manning and rest-hours violations can aggravate liability findings"
+      - "UNESCO marine-protected-area location increases restoration damages substantially"
+    follow_ons:
+      - type: reference
+        title: "Mauritius District Court judgment, 2022; MARPOL final report"
+        url: "https://www.imo.org/en/MediaCentre/Pages/WhatsNew-1549.aspx"
+        added_at: "2026-03-11"
+        note: "Public record"
+
+  - id: MARITIME-cases-eurasian-dream
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "The Eurasian Dream (2002) — UK LMAA; carrier identity and Hague-Visby Rules"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The Eurasian Dream [2002] 1 Lloyd's Rep 719 is a key English High Court decision on
+      carrier identity under bills of lading and the application of the Hague-Visby Rules
+      to on-deck cargo (vehicles). The court examined the distinction between the contracting
+      carrier (who issued the B/L) and the performing carrier (the actual shipowner), ruling
+      that the B/L issuer bore primary liability. The case is frequently cited for the
+      demarcation between contractual and tortious duties in cargo claims and for the proper
+      stowage obligations for ro-ro cargo under the Rules.
+    patterns:
+      - "B/L issuing carrier remains liable to cargo owner regardless of sub-charter arrangements"
+      - "On-deck cargo stowage is subject to Hague-Visby Rules when declared or customary"
+      - "Carrier identity clauses in B/Ls are subject to UK Unfair Contract Terms scrutiny"
+      - "NYPE time-charter employment clauses do not transfer cargo liability to charterer by default"
+    follow_ons:
+      - type: reference
+        title: "The Eurasian Dream [2002] 1 Lloyd's Rep 719 (UK High Court)"
+        url: "https://www.bailii.org"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-sea-empress
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "The Sea Empress (1996) — Wales; port authority duty of care and pollution"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The Sea Empress grounded at the entrance to Milford Haven in February 1996 spilling
+      72,000 tonnes of crude oil, causing £60M in cleanup costs and economic damage to the
+      Welsh fishing and tourism sectors. The Milford Haven Port Authority was prosecuted under
+      the Merchant Shipping Act 1995 and fined £4M — the largest environmental fine in the
+      UK at that time — for failing to exercise proper pilotage control. The case established
+      that port authorities can bear criminal liability for marine pollution arising from
+      inadequate pilotage oversight, extending beyond direct vessel operators.
+    patterns:
+      - "Port authorities owe a duty of care in pilotage that can give rise to criminal liability"
+      - "Compulsory pilotage does not automatically transfer all liability from the shipowner"
+      - "Economic loss claims from fishers and tourism operators are cognisable in UK courts"
+      - "Merchant Shipping Act 1995 s.131 creates a strict pollution offence for UK waters"
+    follow_ons:
+      - type: reference
+        title: "R v Milford Haven Port Authority [2000] 2 Cr App R (S) 423"
+        url: "https://www.bailii.org"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-amoco-cadiz
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "The Amoco Cadiz (1978) — France/US; trans-boundary pollution damages precedent"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The supertanker Amoco Cadiz grounded off Brittany in March 1978, releasing 223,000
+      tonnes of crude oil — the largest oil spill at the time. US and French litigation ran
+      for 14 years. The US Seventh Circuit (1992) awarded US$477M to the French government
+      and communes, holding Standard Oil (parent of Amoco) liable as the beneficial owner
+      through piercing the corporate veil and finding negligent maintenance of the steering
+      gear. The case is foundational for: (1) trans-boundary pollution damages recoverable
+      in foreign courts, (2) corporate group liability in maritime casualties, and
+      (3) the principle that inadequate maintenance of critical navigation systems constitutes
+      actionable negligence.
+    patterns:
+      - "Beneficial owners can be held liable through corporate veil piercing in casualty litigation"
+      - "Trans-boundary pollution damages are recoverable in US federal admiralty courts"
+      - "Negligent maintenance of steering and propulsion systems creates primary liability"
+      - "Amoco Cadiz directly influenced creation of MARPOL 73/78 Annex I double-hull requirements"
+    follow_ons:
+      - type: reference
+        title: "In re Oil Spill by the Amoco Cadiz, 954 F.2d 1279 (7th Cir. 1992)"
+        url: "https://law.justia.com/cases/federal/appellate-courts/F2/954/1279/364014/"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-deepwater-horizon
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "Deepwater Horizon (2010) — US BSEE/MDL; OPA 90 and gross negligence liability"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The blowout and explosion of the Deepwater Horizon drilling rig on 20 April 2010
+      killed 11 workers and released 4.9 million barrels of crude into the Gulf of Mexico.
+      BP's total settlement reached US$20.8B across DOJ, EPA, and civil class actions.
+      The MDL court (EDLA) found BP grossly negligent, which under OPA 90 removes the
+      per-barrel liability cap and renders the responsible party liable for all removal
+      costs and damages without limit. Transocean and Halliburton also faced significant
+      liability. The case is the definitive authority for OPA 90 gross negligence cap
+      removal and the scope of natural resource damages (NRD) claims by federal and
+      state trustees under CERCLA/OPA.
+    patterns:
+      - "OPA 90 cap removal applies when gross negligence or wilful misconduct is found"
+      - "Natural resource damages under OPA/CERCLA can exceed direct cleanup costs"
+      - "Drilling contractors and cementing service providers can be co-defendants in blowout litigation"
+      - "BSEE regulatory violations are strong evidence of negligence per se in civil litigation"
+    follow_ons:
+      - type: reference
+        title: "In re Oil Spill by Oil Rig Deepwater Horizon, MDL 2179 (E.D. La. 2014)"
+        url: "https://www.justice.gov/enrd/deepwater-horizon"
+        added_at: "2026-03-11"
+        note: "Public court record"
+
+  - id: MARITIME-cases-torrey-canyon
+    type: career
+    category: maritime-law
+    subcategory: case-law
+    title: "The Torrey Canyon (1967) — UK/France; foundational oil pollution liability trigger"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-law-cases.yaml
+    context: >
+      The Liberian-flagged Torrey Canyon ran aground on Seven Stones reef off Cornwall in
+      March 1967, spilling 119,000 tonnes of crude oil. The wreck was bombed by the Royal
+      Navy — the first deliberate destruction of a ship to prevent pollution. Neither the UK
+      nor France could recover cleanup costs under existing admiralty law because the
+      shipowner had already limited liability under LLMC. This legal vacuum directly
+      triggered the International Legal Conference on Marine Pollution Damage (1969),
+      producing CLC 1969 (revised to CLC 1992) and subsequently MARPOL 73/78. The case is
+      the acknowledged catalyst for the entire modern international marine pollution
+      liability regime.
+    patterns:
+      - "Torrey Canyon exposed the inadequacy of LLMC for pollution; CLC 1969 filled the gap"
+      - "State bombing of a grounded vessel to prevent pollution established an interventional right"
+      - "MARPOL 73/78 discharge standards trace directly to the post-Torrey Canyon legislative push"
+      - "Flag-state (Liberia) had no enforcement mechanism — key driver of port-state control regime"
+    follow_ons:
+      - type: reference
+        title: "International Legal Conference on Marine Pollution Damage 1969 (IMO records)"
+        url: "https://www.imo.org"
+        added_at: "2026-03-11"
+        note: "Public record"

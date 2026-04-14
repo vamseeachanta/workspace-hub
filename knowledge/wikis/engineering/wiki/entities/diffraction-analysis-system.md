@@ -48,3 +48,4 @@ These are the most common sources of error in diffraction analysis:
 - **Related entity**: [OrcaFlex Solver](../entities/orcaflex-solver.md)
 - **Related concept**: [CFD Offshore Hydrodynamics](../concepts/cfd-offshore-hydrodynamics.md)
 - **Related standard**: [DNV-RP-C205](../standards/dnv-rp-c205.md)
+- **Cross-wiki (marine-engineering)**: [Cathodic Protection System](../../../marine-engineering/wiki/concepts/cathodic-protection-system.md) -- similar slugs (57%); similar titles (57%)

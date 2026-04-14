@@ -1,0 +1,179 @@
+---
+# maritime-liabilities.yaml — International maritime liability conventions with cap values
+# Queried by: bash scripts/knowledge/query-knowledge.sh --category maritime-law
+# Legal: no client identifiers; all conventions are public international law
+entries:
+  - id: MARITIME-liability-clc-1992
+    type: career
+    category: maritime-law
+    subcategory: liability-convention
+    title: "CLC 1992 — Civil Liability Convention for oil tanker spills"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-liabilities.yaml
+    context: >
+      The International Convention on Civil Liability for Oil Pollution Damage 1992 (CLC 1992)
+      imposes strict liability on the registered shipowner of an oil tanker for pollution
+      damage caused by a spill. Liability is channelled exclusively to the shipowner (not
+      cargo owner, charterer, or classification society) unless gross negligence is proven.
+      Cap formula: 3M SDR for ships ≤5,000 GT; 3M + 420 SDR per GT above 5,000 GT;
+      maximum 89.77M SDR for ships ≥140,000 GT (as of 2003 revision). Compulsory insurance
+      is required for tankers >2,000 GT trading in Contracting State waters. The International
+      Oil Pollution Compensation Fund (IOPC Fund 1992) provides supplementary compensation
+      up to 203M SDR per incident when spill damages exceed the CLC cap.
+    patterns:
+      - "CLC 1992 strict liability cap: 89.77M SDR maximum for ≥140,000 GT tankers"
+      - "Liability channelling means only the registered owner is liable under CLC 1992"
+      - "IOPC Fund 1992 tops up to 203M SDR when CLC cap is exhausted"
+      - "Compulsory P&I insurance certificate (Blue Card) required for tankers >2,000 GT"
+      - "CLC 1992 cap can be broken if spill caused by owner's personal gross negligence"
+    follow_ons:
+      - type: reference
+        title: "CLC 1992 — IMO LEG/CONF.8/4 as amended"
+        url: "https://www.imo.org/en/About/Conventions/Pages/International-Convention-on-Civil-Liability-for-Oil-Pollution-Damage-(CLC).aspx"
+        added_at: "2026-03-11"
+        note: "IMO public record"
+
+  - id: MARITIME-liability-bunker-2001
+    type: career
+    category: maritime-law
+    subcategory: liability-convention
+    title: "Bunker Convention 2001 — Liability for bunker fuel spills from non-tankers"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-liabilities.yaml
+    context: >
+      The International Convention on Civil Liability for Bunker Oil Pollution Damage 2001
+      (Bunker Convention) fills the gap left by CLC 1992 for pollution from non-tanker
+      vessels (e.g., bulk carriers, container ships, cruise ships). It imposes strict
+      liability on the shipowner and other registered persons (bareboat charterer, operator,
+      manager). Unlike CLC 1992, the Bunker Convention does not itself set a liability cap;
+      instead it allows the shipowner to limit liability under the applicable LLMC 1976/1996
+      Protocol limits. For vessels >400 GT, compulsory insurance is required up to the LLMC
+      limit (e.g., ~3M SDR for a 70,000 GT bulker). The convention does not create a
+      supplementary fund; claimants above LLMC limits have no international fallback.
+    patterns:
+      - "Bunker Convention applies to non-tanker vessels; tankers use CLC 1992 for persistent oil"
+      - "No dedicated cap: LLMC 1976/1996 limits apply to bunker spill claims"
+      - "Multiple persons (owner, bareboat charterer, manager) are jointly liable under Art. 1(3)"
+      - "Compulsory insurance required for vessels >400 GT in Contracting State waters"
+    follow_ons:
+      - type: reference
+        title: "Bunker Convention 2001 — IMO LEG/CONF.12/19"
+        url: "https://www.imo.org/en/About/Conventions/Pages/International-Convention-on-Civil-Liability-for-Bunker-Oil-Pollution-Damage-(BUNKER).aspx"
+        added_at: "2026-03-11"
+        note: "IMO public record"
+
+  - id: MARITIME-liability-hns-2010
+    type: career
+    category: maritime-law
+    subcategory: liability-convention
+    title: "HNS Convention 2010 — Hazardous and noxious substance spill liability"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-liabilities.yaml
+    context: >
+      The 2010 Protocol to the International Convention on Liability and Compensation for
+      Damage in Connection with the Carriage of Hazardous and Noxious Substances (HNS 2010)
+      mirrors the CLC/Fund structure for non-oil cargoes (chemicals, LNG, LPG, bulk solids).
+      Ship liability cap: 10M SDR for ships ≤2,000 GT; sliding scale to 100M SDR maximum.
+      An HNS Fund provides supplementary compensation: general account (up to 250M SDR per
+      incident) plus separate LNG and LPG accounts. The convention has not yet entered into
+      force (as of 2026); a threshold number of states with qualifying HNS receipts must
+      ratify. Key challenge: defining which substances are HNS for contribution calculation.
+    patterns:
+      - "HNS 2010 ship cap: max 100M SDR; HNS Fund tops up to 250M SDR per incident"
+      - "Separate LNG and LPG accounts within HNS Fund reflect distinct risk profiles"
+      - "HNS 2010 not yet in force — national law or LLMC applies in the interim"
+      - "Chemical tanker operators should monitor HNS ratification for insurance adequacy"
+    follow_ons:
+      - type: reference
+        title: "HNS Protocol 2010 — IMO LEG/CONF.17/10"
+        url: "https://www.imo.org/en/About/Conventions/Pages/HNS-Convention.aspx"
+        added_at: "2026-03-11"
+        note: "IMO public record"
+
+  - id: MARITIME-liability-athens-2002
+    type: career
+    category: maritime-law
+    subcategory: liability-convention
+    title: "Athens Convention 2002 — Passenger death and injury liability"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-liabilities.yaml
+    context: >
+      The 2002 Protocol to the Athens Convention relating to the Carriage of Passengers and
+      their Luggage by Sea (PAL 2002) establishes strict liability for passenger death or
+      personal injury attributable to shipping incidents. Cap per passenger per incident:
+      400,000 SDR for shipping incidents (collision, fire, grounding); higher amounts for
+      war/terrorism (250,000 SDR strict, up to 400,000 SDR with negligence). Compulsory
+      insurance required for ships carrying >12 passengers, up to 250,000 SDR per passenger.
+      The EU Regulation 392/2009 gives PAL 2002 force of law in EU member states and
+      extended it to domestic voyages. Key issue: the "shipping incident" vs "non-shipping
+      incident" distinction determines whether strict or fault-based liability applies.
+    patterns:
+      - "Athens 2002 cap: 400,000 SDR per passenger for shipping incident claims"
+      - "EU Reg 392/2009 extends Athens 2002 to domestic EU passenger voyages"
+      - "Strict liability applies to shipping incidents; fault required for non-shipping events"
+      - "Cruise lines must maintain compulsory insurance certificate (Athens Blue Card)"
+    follow_ons:
+      - type: reference
+        title: "Athens Convention 2002 Protocol — IMO LEG/CONF.13/20"
+        url: "https://www.imo.org/en/About/Conventions/Pages/Athens-Convention-regarding-the-Carriage-of-Passengers-and-their-Luggage-by-Sea-(PAL).aspx"
+        added_at: "2026-03-11"
+        note: "IMO public record"
+
+  - id: MARITIME-liability-llmc-1996
+    type: career
+    category: maritime-law
+    subcategory: liability-convention
+    title: "LLMC 1976/1996 Protocol — General limitation of maritime claims"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-liabilities.yaml
+    context: >
+      The Convention on Limitation of Liability for Maritime Claims 1976 and its 1996
+      Protocol (LLMC 1996) provide the baseline limitation fund for most maritime claims
+      (personal injury, property damage, wreck removal) excluding oil pollution (CLC/Bunker)
+      and passenger injury (Athens). Cap formula under 1996 Protocol: personal injury
+      claims — 2M SDR for ships ≤2,000 GT, plus 800 SDR/GT (2,001–30,000 GT), 600 SDR/GT
+      (30,001–70,000 GT), 400 SDR/GT above 70,000 GT. Property claims — half of personal
+      injury fund. Total limitation fund for a 70,000 GT vessel: ~6.51M SDR. The 1996
+      Protocol also raised the "conduct breaking limitation" bar to actual intent or reckless
+      conduct with knowledge of probable loss. Wreck removal claims were added to the
+      convention scope in many states via the Nairobi Wreck Removal Convention 2007.
+    patterns:
+      - "LLMC 1996 fund for 70,000 GT vessel: ~6.51M SDR (personal injury account)"
+      - "Conduct breaking LLMC requires actual intent or reckless conduct — very hard to prove"
+      - "LLMC does not cover CLC oil pollution or Athens passenger claims (separate regimes)"
+      - "Nairobi Convention 2007 wires wreck removal costs into LLMC framework in signatory states"
+    follow_ons:
+      - type: reference
+        title: "LLMC 1996 Protocol — IMO LEG/CONF.10/8"
+        url: "https://www.imo.org/en/About/Conventions/Pages/Convention-on-Limitation-of-Liability-for-Maritime-Claims-(LLMC).aspx"
+        added_at: "2026-03-11"
+        note: "IMO public record"
+
+  - id: MARITIME-liability-opa-90
+    type: career
+    category: maritime-law
+    subcategory: liability-convention
+    title: "OPA 90 (US) — Oil Pollution Act 1990; US waters unlimited gross-negligence liability"
+    learned_at: "2026-03-11T00:00:00Z"
+    source: maritime-liabilities.yaml
+    context: >
+      The US Oil Pollution Act 1990 (OPA 90), enacted after the Exxon Valdez, governs oil
+      spill liability in US navigable waters and the EEZ. Statutory caps: US$2,000 per GT
+      or US$17M (whichever is greater) for tank vessels over 3,000 GT; US$939,800 or
+      US$600 per GT for smaller vessels (amounts subject to periodic adjustment). CRITICALLY:
+      caps do not apply when the spill results from gross negligence, wilful misconduct, or
+      violation of a federal safety regulation — making OPA 90 effectively unlimited in
+      major casualties. The National Pollution Fund Center (NPFC) provides advance funding
+      up to US$1B per incident, recovered from the responsible party. OPA 90 liability is
+      in addition to CERCLA natural resource damages, creating a dual-track federal liability.
+    patterns:
+      - "OPA 90 caps removed entirely for gross negligence — Deepwater Horizon settled at US$20.8B"
+      - "Responsible party must present a certificate of financial responsibility (COFR) for US waters"
+      - "OPA 90 operates in parallel with CERCLA NRD claims — both can be pursued simultaneously"
+      - "USCG NPFC funds immediate removal, then recoups from responsible party with interest"
+    follow_ons:
+      - type: reference
+        title: "Oil Pollution Act 1990, 33 U.S.C. §§ 2701–2762"
+        url: "https://www.govinfo.gov/content/pkg/STATUTE-104/pdf/STATUTE-104-Pg484.pdf"
+        added_at: "2026-03-11"
+        note: "Public US federal law"

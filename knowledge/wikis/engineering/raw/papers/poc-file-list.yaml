@@ -1,0 +1,77 @@
+wrk_id: WRK-1247
+selected_files:
+- path: /mnt/ace/docs/disciplines/drilling/projects/0173_km_riser_analysis/00_inbox/0173
+    KM Riser Analysis/COD/orcaflex/Automation/D3/dataManager/FatigueProcess_fatigueLoadingTemplateWH045.xlsx
+  filename: FatigueProcess_fatigueLoadingTemplateWH045.xlsx
+  extension: .xlsx
+  size_mb: 131.382
+  source: ace_project
+  domain: structural
+- path: /mnt/ace/docs/disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057
+    - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/Superseded/31057-CAL-0003-1
+    NOAA Current Data (CHECKED).xlsx
+  filename: 31057-CAL-0003-1 NOAA Current Data (CHECKED).xlsx
+  extension: .xlsx
+  size_mb: 49.289
+  source: ace_project
+  domain: pipeline
+- path: /mnt/ace/docs/disciplines/misc/projects/614_sewol/00_inbox/614 Sewol/Dropbox/1000
+    Orcaflex Analysis/SLING REPORT/NewSlings/New Sling Length Calculator.xlsx
+  filename: New Sling Length Calculator.xlsx
+  extension: .xlsx
+  size_mb: 32.136
+  source: ace_project
+  domain: marine
+- path: /mnt/ace/docs/disciplines/misc/projects/614_sewol/00_inbox/614 Sewol/Dropbox/SLINGS/New
+    Sling Report/New Sling Length Calculator V3.xlsx
+  filename: New Sling Length Calculator V3.xlsx
+  extension: .xlsx
+  size_mb: 31.853
+  source: ace_project
+  domain: project-management
+- path: /mnt/remote/dev-secondary/dde/0000 O&G/Production/!!Permian Resources/Surveillance
+    Standards/Training/FBHP Profile Calculator/CC 23 6H Flowback Calculator 4.xlsx
+  filename: CC 23 6H Flowback Calculator 4.xlsx
+  extension: .xlsx
+  size_mb: 12.621
+  source: dde_project
+  domain: other
+- path: /mnt/ace/docs/disciplines/drilling/projects/31126_anadarko_jujak_1_conductor_analysis/06_review/31126
+    - Anadarko Jujak-1 Conductor Analysis/CAL/31126-CAL-0001-1 Conductor Length Assessment
+    (VA CHECKED).xlsx
+  filename: 31126-CAL-0001-1 Conductor Length Assessment (VA CHECKED).xlsx
+  extension: .xlsx
+  size_mb: 3.528
+  source: ace_project
+  domain: installation
+- path: /mnt/remote/dev-secondary/dde/documents/0163 FDAS Support/ANL/Superseded/0163-CAL-0001-01
+    Surface Wellhead SITP Calculations(Draft1).xlsx
+  filename: 0163-CAL-0001-01 Surface Wellhead SITP Calculations(Draft1).xlsx
+  extension: .xlsx
+  size_mb: 0.83
+  source: dde_project
+  domain: energy-economics
+- path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245
+    - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0018-01 SN Curve Definitions
+    for Riser Analysis (BaseMetal- Free Corrosion).xlsx
+  filename: 31245-CAL-0018-01 SN Curve Definitions for Riser Analysis (BaseMetal-
+    Free Corrosion).xlsx
+  extension: .xlsx
+  size_mb: 0.31
+  source: ace_project
+  domain: cathodic-protection
+- path: /mnt/ace/docs/disciplines/knowledge_skills/projects/permian_resources/00_inbox/!!Permian
+    Resources/!Production Optimization - Surveillance/Production Optimization Tracking/ebs/Spotfire
+    formulas for calc variables.xlsx
+  filename: Spotfire formulas for calc variables.xlsx
+  extension: .xlsx
+  size_mb: 0.1
+  source: ace_project
+  domain: portfolio
+- path: /mnt/ace/docs/disciplines/knowledge_skills/projects/ri/00_inbox/ri/Maj Bassey
+    - Backup Old Hard drive - 102218/Maj/Desktop/AutoCad Names/C & K Flow Rate Calculation.xlsx
+  filename: C & K Flow Rate Calculation.xlsx
+  extension: .xlsx
+  size_mb: 0.012
+  source: ace_project
+  domain: cad

@@ -1,0 +1,414 @@
+# Naval Architecture Resources — WRK-1151
+# Downloaded to /mnt/ace/docs/_standards/SNAME/
+# Generated: 2026-03-12, updated: 2026-03-12
+
+category: naval-architecture
+subcategory: references
+created_at: "2026-03-12"
+
+# ─────────────────────────────────────────────
+# TEXTBOOKS (17 PDFs)
+# ─────────────────────────────────────────────
+textbooks:
+
+  - title: "Principles of Naval Architecture, Volume I — Stability and Strength"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol1-SNAME.pdf"
+    source_url: "https://navalifpe.wordpress.com/wp-content/uploads/2011/09/principles-of-naval-architecture-vol-1-sname.pdf"
+    size_mb: 29
+    topics: [stability, strength, hull-form]
+    notes: "Classic SNAME 3-volume set. Vol I covers buoyancy, stability, subdivisions, ship forms."
+
+  - title: "Principles of Naval Architecture, Volume II — Resistance, Propulsion and Vibration"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol2-SNAME.pdf"
+    source_url: "https://navalifpe.files.wordpress.com/2011/09/principles-of-naval-architecture-vol-2-sname.pdf"
+    size_mb: 30
+    topics: [resistance, propulsion, vibration]
+    notes: "SNAME 3-volume set Vol II."
+
+  - title: "Principles of Naval Architecture, Volume II — Resistance, Propulsion and Vibration (Internet Archive scan)"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf"
+    source_url: "https://archive.org/details/principles-of-naval-architecture-vol-ii-resistance-propulsion-and-vibration"
+    size_mb: 84
+    topics: [resistance, propulsion, vibration]
+    notes: "Higher-quality archive.org scan — same content as Vol2-SNAME.pdf but better OCR."
+
+  - title: "Principles of Naval Architecture (Second Revision), Volume I"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf"
+    source_url: "https://ftp.idu.ac.id/wp-content/uploads/ebook/tdg/ADNVANCED%20MILITARY%20PLATFORM%20DESIGN/Principles%20of%20Naval%20Architecture%20(Second%20Revision),%20Volume%20I.pdf"
+    size_mb: 32
+    topics: [stability, strength, hull-form]
+    notes: "Second revision edition of Vol I."
+
+  - title: "Principles of Naval Architecture (Second Revision), Volume II — Resistance and Propulsion"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf"
+    size_mb: 55
+    topics: [resistance, propulsion]
+    notes: "Second revision edition of Vol II."
+
+  - title: "Principles of Naval Architecture (Second Revision), Volume III — Motions and Controllability"
+    author: "SNAME"
+    year: ~1988
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf"
+    size_mb: 34
+    topics: [seakeeping, motions, controllability]
+    notes: "Second revision edition of Vol III."
+
+  - title: "Introduction to Naval Architecture"
+    author: "E. C. Tupper"
+    year: 1996
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Tupper-1996.pdf"
+    source_url: "https://home.hvl.no/ansatte/gste/ftp/MarinLab_files/Litteratur/IntroductionToNavalArchitecture_Tupper1996.pdf"
+    size_mb: 19
+    topics: [general, hull-form, stability, resistance, structures]
+    notes: "Standard undergraduate introduction. Covers all core NA disciplines."
+
+  - title: "Introduction to Naval Architecture"
+    author: "John P. Comstock"
+    year: 1942
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Introduction-to-Naval-Architecture-Comstock-1942.pdf"
+    source_url: "https://archive.org/details/Comstock1942NavalArchitecture"
+    size_mb: 5.7
+    topics: [general, stability, propulsion]
+    notes: "Classic 1942 SNAME text. Public domain. OCR'd text version."
+
+  - title: "Basic Ship Theory, Volume 1"
+    author: "K. J. Rawson & E. C. Tupper"
+    year: 2001
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Basic-Ship-Theory-Vol1-Rawson-Tupper-2001.pdf"
+    size_mb: 3.9
+    topics: [hydrostatics, stability, hull-form, structures]
+    notes: "5th edition. Companion to Tupper's Introduction — more mathematical treatment."
+
+  - title: "Design Principles of Ships and Marine Structures"
+    author: "Various"
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Design-Principles-Ships-Marine-Structures.pdf"
+    size_mb: 18
+    topics: [ship-design, marine-structures, general]
+    notes: "Comprehensive design principles textbook."
+
+  - title: "Engineering Mathematics for Ship Design"
+    author: "Various"
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Engineering-Mathematics-Ship-Design.pdf"
+    size_mb: 20
+    topics: [mathematics, ship-design, numerical-methods]
+    notes: "Mathematics foundations for naval architecture calculations."
+
+  - title: "Hybrid Ship Hulls — Engineering Design"
+    author: "Various"
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Hybrid-Ship-Hulls-Engineering-Design.pdf"
+    size_mb: 6.7
+    topics: [hull-design, composite-structures, ship-construction]
+    notes: "Advanced hull design with hybrid materials."
+
+  - title: "Ship Construction"
+    author: "D. J. Eyres"
+    year: 2001
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Ship-Construction-Eyres-2001.pdf"
+    size_mb: 17
+    topics: [ship-construction, structural-design, shipbuilding]
+    notes: "Standard reference for ship construction methods and materials."
+
+  - title: "Jane's Fighting Ships 2009–2010"
+    author: "Jane's Information Group"
+    year: 2009
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Janes-Fighting-Ships-2009-2010.pdf"
+    size_mb: 198
+    topics: [warships, naval-vessels, fleet-reference]
+    notes: "Comprehensive world naval fleet reference. Large file (198 MB)."
+
+  - title: "ABS — Introduction to Rules and Guides"
+    author: "American Bureau of Shipping"
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/ABS-Intro-to-Rules-and-Guides.pdf"
+    source_url: "https://ww2.eagle.org/content/dam/eagle/rules-and-resources/RuleManager2/intro/Intro%20to%20ABS%20Rules%20and%20Guides-Jul25.pdf"
+    size_mb: 2.1
+    topics: [classification, rules, ABS]
+    notes: "Overview of ABS classification rules and guides."
+
+  - title: "Warship 2011 — Naval Submarines and UUVs"
+    author: "Various"
+    year: 2011
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Warship-2011-Naval-Submarines-UUVs.pdf"
+    size_mb: 31
+    topics: [submarines, UUV, naval-warfare]
+    notes: "Warship annual series — submarine and UUV focus."
+
+  - title: "Warship — Naval Submarines (Vol 9)"
+    author: "Various"
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Warship-Naval-Submarines-9.pdf"
+    size_mb: 22
+    topics: [submarines, naval-warfare]
+    notes: "Warship series volume 9 — submarine technology."
+
+# ─────────────────────────────────────────────
+# HYDROSTATICS, STABILITY & RESISTANCE (10 PDFs)
+# ─────────────────────────────────────────────
+hydrostatics_stability:
+
+  - title: "Ship Hydrostatics and Stability"
+    author: "A. B. Biran"
+    year: ~2003
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydrostatics-and-Stability-Biran.pdf"
+    source_url: "https://home.hvl.no/ansatte/gste/ftp/mas124_intro_marinteknikk/Litteratur/Kompendier_Books/Ship_hydrostatics_and_stability_Biran.pdf"
+    size_mb: 9.3
+    topics: [hydrostatics, stability, GZ-curve, trim]
+    notes: "Rigorous treatment of hydrostatics and stability. Used in HVL MarinLab course."
+
+  - title: "Ship Hydrostatics and Stability (2nd Edition)"
+    author: "A. B. Biran & R. López Pulido"
+    year: ~2014
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydrostatics-and-Stability-2ndEd.pdf"
+    source_url: "https://rexresearch1.com/BoatShipBuildingLibrary/ShipHydrostaticsStability.pdf"
+    size_mb: 10
+    topics: [hydrostatics, stability, GZ-curve, trim, parametric-rolling]
+    notes: "Updated 2nd edition — includes new IMO stability regulations and parametric resonance."
+
+  - title: "Principles of Naval Architecture Series — Ship Resistance and Flow"
+    author: "SNAME"
+    year: ~2010
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Principles-Naval-Architecture-Ship-Resistance-Flow.pdf"
+    source_url: "https://rexresearch1.com/BoatShipBuildingLibrary/PrinciplesNavalArchitShipResistanceFlow.pdf"
+    size_mb: 9.7
+    topics: [resistance, hull-form, CFD, viscous-flow]
+    notes: "Part of the newer SNAME Principles series covering ship resistance and computational methods."
+
+  - title: "Marine Hydrodynamics"
+    author: "J. N. Newman"
+    year: 2018
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Marine-Hydrodynamics-Newman-2018.pdf"
+    size_mb: 11
+    topics: [hydrodynamics, wave-theory, potential-flow, viscous-flow]
+    notes: "MIT classic. Comprehensive marine hydrodynamics — wave theory, potential flow, viscous flow."
+
+  - title: "Practical Ship Hydrodynamics"
+    author: "V. Bertram"
+    year: 2000
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Practical-Ship-Hydrodynamics-Bertram-2000.pdf"
+    size_mb: 2.2
+    topics: [hydrodynamics, resistance, propulsion, seakeeping, CFD]
+    notes: "Practical engineering approach to ship hydrodynamics."
+
+  - title: "Fluid-Dynamic Drag"
+    author: "S. F. Hoerner"
+    year: 1965
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Fluid-Dynamic-Drag-Hoerner-1965.pdf"
+    size_mb: 22
+    topics: [drag, aerodynamics, hydrodynamics, resistance]
+    notes: "Classic reference for drag coefficients. Widely cited in naval architecture."
+
+  - title: "Handbook of Offshore Engineering"
+    author: "S. Chakrabarti"
+    year: 2005
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Handbook-Offshore-Engineering-Chakrabarti-2005.pdf"
+    size_mb: 36
+    topics: [offshore-engineering, wave-loads, mooring, platform-design]
+    notes: "Comprehensive offshore engineering reference — waves, loads, platforms, moorings."
+
+  - title: "Offshore Hydromechanics"
+    author: "J.M.J. Journée & W.W. Massie"
+    year: 2001
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Offshore-Hydromechanics-2001.pdf"
+    size_mb: 12
+    topics: [hydromechanics, wave-loads, floating-structures, mooring]
+    notes: "TU Delft lecture notes. Excellent free reference on offshore hydromechanics."
+
+  - title: "Ship Hydromechanics — Introduction"
+    author: "Various"
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/Ship-Hydromechanics-Intro.pdf"
+    size_mb: 3.5
+    topics: [hydromechanics, ship-motions, resistance]
+    notes: "Introductory text on ship hydromechanics."
+
+  - title: "PNA — GZ Curves"
+    author: "SNAME"
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/PNA-GZ-Curves.pdf"
+    size_mb: 1.8
+    topics: [stability, GZ-curve, righting-arm]
+    notes: "Extracted GZ curve reference from Principles of Naval Architecture."
+
+# ─────────────────────────────────────────────
+# SHIP PLANS (maritime.org) — 110 PDFs
+# ─────────────────────────────────────────────
+ship_plans:
+  source: "https://maritime.org/doc/plans/index.php"
+  local_dir: "/mnt/ace/docs/_standards/SNAME/ship-plans/"
+  count: 110
+  description: >
+    Historical US Navy and Allied vessel general arrangement / inboard profile drawings
+    scanned by San Francisco Maritime National Park Association. Covers 1863–2008.
+    Includes battleships, carriers, destroyers, submarines, coast guard, and research vessels.
+  categories:
+    - US Navy combatants (BB, CV, DD, SS, CG, etc.)
+    - US Coast Guard (WAGL, WLB, WPC, etc.)
+    - Allied vessels (RN, RCN)
+    - Commercial / research (Liberty cargo, NS Savannah, NOAA vessels)
+
+# ─────────────────────────────────────────────
+# REFERENCE PORTALS (not downloadable — access online)
+# ─────────────────────────────────────────────
+online_portals:
+
+  - title: "USNA Nimitz Library — Naval Architecture & Ocean Engineering Guide"
+    url: "https://libguides.usna.edu/c.php?g=410506&p=8554464"
+    notes: "Links to ship registers, LOC resources, Lloyd's Register Foundation, National Archives plans."
+
+  - title: "USNA Nimitz Library — Naval Architecture Tools & Databases"
+    url: "https://libguides.usna.edu/c.php?g=410506&p=2795318"
+    notes: "Knovel access, ABS Rules, US Army Corps Coastal Engineering Manual, key textbook list."
+
+  - title: "National Archives — Ship Plans"
+    url: "https://www.archives.gov/research/cartographic/ship-plans"
+    notes: "Naval engineering drawings 1790s–Korean War. Free browse, prints on request."
+
+  - title: "Lloyd's Register Foundation Heritage & Education Centre"
+    url: "https://hec.lrfoundation.org.uk/archive-library/digital-resources"
+    notes: "Historic Lloyd's Register editions, ship plans, survey reports."
+
+  - title: "Internet Archive — Naval Architecture Collection"
+    url: "https://archive.org/search?query=naval+architecture&mediatype=texts"
+    notes: >
+      Large collection including Comstock 1942, PNA Vol II (freely downloadable).
+      Gillmer, Baxter, Lewis, PNA Vol III are borrow-only (restricted access).
+
+# ─────────────────────────────────────────────
+# ADDITIONAL RESOURCES (web search — Step 2)
+# ─────────────────────────────────────────────
+additional_resources:
+
+  - title: "USNA EN400 — Principles of Ship Performance (Course Notes)"
+    author: "US Naval Academy, Dept. of Naval Architecture & Ocean Engineering"
+    year: 2020
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/USNA-EN400-Principles-Ship-Performance-2020.pdf"
+    source_url: "https://www.usna.edu/NAOE/_files/documents/Courses/EN400/EN400_Course_Notes,_Summer_2020.pdf"
+    size_mb: 9.6
+    topics: [general, hull-form, hydrostatics, stability, structures, resistance, seakeeping, maneuvering, submarines]
+    notes: "Comprehensive single-PDF course textbook. Excellent coverage of all core NA topics."
+
+  - title: "Text-book of Theoretical Naval Architecture"
+    author: "Edward L. Attwood"
+    year: 1899
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Theoretical-Naval-Architecture-Attwood-1899.pdf"
+    source_url: "https://www.dieselduck.info/historical/06%20books/1899%20Therory%20of%20Naval%20Architecture.pdf"
+    size_mb: 12
+    topics: [general, stability, metacentric-height, resistance, propulsion]
+    notes: "Public domain. Classical foundational text."
+
+  - title: "Ship Structural Analysis and Design"
+    author: "Owen F. Hughes & Jeom Kee Paik"
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/Ship-Structural-Analysis-Design-Hughes-Paik.pdf"
+    source_url: "https://rexresearch1.com/BoatShipBuildingLibrary/ShipStructuralAnalysisDesign.pdf"
+    size_mb: 14
+    topics: [structural-design, hull-girder, buckling, fatigue, FEA]
+    notes: "SNAME publication. ~650 pages. Hull girder analysis, ultimate strength, finite elements."
+
+  - title: "DNV-RP-C205 Environmental Conditions and Environmental Loads"
+    author: "DNV"
+    year: 2007
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/DNV-RP-C205-Environmental-Conditions-Loads-2007.pdf"
+    source_url: "https://rules.dnv.com/docs/pdf/dnvpm/codes/docs/2007-10/RP-C205.pdf"
+    size_mb: 2.9
+    topics: [environmental-loads, wind, waves, current, tides]
+    notes: "Older edition. Key reference for wave/wind/current load specifications."
+
+  - title: "DNV-RP-H103 Modelling and Analysis of Marine Operations"
+    author: "DNV"
+    year: 2010
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/DNV-RP-H103-Marine-Operations-2010.pdf"
+    source_url: "https://rules.dnv.com/docs/pdf/dnvpm/codes/docs/2010-04/RP-H103.pdf"
+    size_mb: 2.4
+    topics: [marine-operations, lifting, towing, installation, hydrodynamic-loads]
+    notes: "Older edition. Marine operations modelling and analysis."
+
+# ─────────────────────────────────────────────
+# IMO / REGULATORY (2 PDFs)
+# ─────────────────────────────────────────────
+regulatory:
+
+  - title: "UK MCA MSIS43 — Instructions to Surveyors: Intact Stability"
+    author: "UK Maritime & Coastguard Agency"
+    year: 2023
+    local_path: "/mnt/ace/docs/_standards/SNAME/hydrostatics-stability/UK-MCA-MSIS43-Intact-Stability-Guidance.pdf"
+    source_url: "https://assets.publishing.service.gov.uk/media/6441189f22ef3b000f66f5dc/MSIS43_Intact_Stability_R05.23.pdf"
+    size_mb: 4.7
+    topics: [intact-stability, IMO, regulations, surveys]
+    notes: "Official UK MCA guidance on intact stability requirements and survey procedures."
+
+  - title: "SOLAS 2020 Consolidated Edition"
+    author: "IMO / Icelandic Transport Authority"
+    year: 2020
+    local_path: "/mnt/ace/docs/_standards/SNAME/textbooks/SOLAS-2020-Consolidated-Edition.pdf"
+    source_url: "https://www.samgongustofa.is/media/english/SOLAS-2020-Consolidated-Edition.pdf"
+    size_mb: 2.1
+    topics: [SOLAS, safety, regulations, fire-protection, life-saving]
+    notes: "Consolidated SOLAS convention text."
+
+# ─────────────────────────────────────────────
+# STILL TO RETRIEVE (manual / borrow-only)
+# ─────────────────────────────────────────────
+pending_manual:
+
+  - title: "ABS Marine Vessel Rules — Part 4 (2024)"
+    url: "https://ww2.eagle.org/content/dam/eagle/rules-and-guides/current/other/1-rules-for-building-and-classing-marine-vessels-2024/1-mvr-part-4-jan24.pdf"
+    notes: "ABS WAF blocks wget. Download manually via browser from eagle.org."
+
+  - title: "IMO Guidelines on Intact Stability 2014"
+    url: "https://maritime-mutual.com/wp-content/uploads/2020/06/Vol_3_2014_Guidelines_on_Intact_Stabili.pdf"
+    notes: "Download failed via wget. Try manually."
+
+  - title: "DTIC — Engineering for Ship Production"
+    url: "https://apps.dtic.mil/sti/pdfs/ADA452843.pdf"
+    notes: "DTIC blocks wget. Download manually via browser."
+
+  - title: "DTIC — Small Craft Design Guide (1977)"
+    url: "https://apps.dtic.mil/sti/tr/pdf/ADA047494.pdf"
+    notes: "DTIC blocks wget. Download manually via browser."
+
+  - title: "University of Michigan — Basic Naval Architecture Vol I & II"
+    url: "https://deepblue.lib.umich.edu/handle/2027.42/809"
+    notes: "Deep Blue redirects wget. Download manually via browser."
+
+  - title: "Introduction to Naval Architecture — Gillmer & Johnson"
+    url: "https://archive.org/details/introductiontona0000gill"
+    notes: "Borrow-only on archive.org."
+
+# ─────────────────────────────────────────────
+# CLASSIFICATION SOCIETY PORTALS (online reference)
+# ─────────────────────────────────────────────
+classification_portals:
+
+  - title: "ClassNK — Technical Rules and Guidance (complete set)"
+    url: "https://www.classnk.com/hp/en/rules/tech_rules.aspx"
+    notes: "Free PDF download, no registration for most. Full classification rules."
+
+  - title: "Bureau Veritas — Rules, Rule Notes & Guidance Notes (130+ publications)"
+    url: "https://marine-offshore.bureauveritas.com/rules-guidelines"
+    notes: "All in-force rules/guidance notes as free PDFs."
+
+  - title: "DNV — Rules and Standards"
+    url: "https://www.dnv.com/rules-standards/"
+    notes: "Current editions may require subscription. Older editions at rules.dnv.com are free."
+
+  - title: "Lloyd's Register — Rules for Classification (July 2022, Internet Archive)"
+    url: "https://archive.org/details/lloyds-register-rules-and-regulations-for-the-classification-of-ships-july-2022_202310"
+    notes: "Complete classification rules archived on Internet Archive."
+
+  - title: "MIT OCW 2.20 — Marine Hydrodynamics Lecture Notes (24 PDFs)"
+    url: "https://ocw.mit.edu/courses/2-20-marine-hydrodynamics-13-021-spring-2005/pages/lecture-notes/"
+    notes: "MIT OpenCourseWare. Companion to Newman's textbook (already in collection)."
+
+  - title: "MIT OCW 2.019 — Design of Ocean Systems Lecture Notes"
+    url: "https://ocw.mit.edu/courses/2-019-design-of-ocean-systems-spring-2011/pages/lecture-notes/"
+    notes: "Seakeeping, offshore structures, FPSO, drift loads."
+
+  - title: "Aalto University — Lecture Notes on Basic Naval Architecture (2021, CC BY)"
+    url: "https://aaltodoc.aalto.fi/items/8562f849-caf4-48af-9340-b981be1f64c4"
+    notes: "Spyros Hirdaris. 160 pages. Ship design spiral, resistance estimation (Holtrop)."

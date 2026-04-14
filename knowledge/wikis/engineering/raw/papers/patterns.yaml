@@ -1,0 +1,22 @@
+compression_stats:
+  compression_ratio: 1.0
+  total_cells: 3
+  unique_patterns: 3
+domain: energy-economics
+patterns:
+  =(-(D18*D19*D17+D15)*2)/D18:
+    canonical: =(-(D18*D19*D17+D15)*2)/D18
+    cell_count: 1
+    cells:
+    - C46
+  =D16*0.3048:
+    canonical: =D16*0.3048
+    cell_count: 1
+    cells:
+    - D17
+  =SQRT(C46):
+    canonical: =SQRT(C46)
+    cell_count: 1
+    cells:
+    - C47
+stem: 0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1
