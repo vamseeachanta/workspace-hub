@@ -323,6 +323,50 @@ Profiles use `~/.hermes/profiles/<name>/` with the same layout.
 
 Edit with `hermes config edit` or `hermes config set section.key value`.
 
+### Skill-Specific Config
+
+Some skills declare their own config keys in SKILL.md frontmatter under `metadata.hermes.config`.
+Hermes stores these under `skills.config.*` in `~/.hermes/config.yaml`, prompts for missing values during `hermes config migrate`, and shows them in `hermes config` under `◆ Skill Settings`.
+
+Example:
+
+```yaml
+metadata:
+  hermes:
+    config:
+      - key: wiki.path
+        description: Path to the LLM Wiki knowledge base directory
+        default: "~/wiki"
+```
+
+Stored in config as:
+
+```yaml
+skills:
+  config:
+    wiki:
+      path: /home/user/wiki
+```
+
+Useful commands:
+
+```bash
+hermes config check
+hermes config migrate
+hermes config set skills.config.wiki.path /home/user/wiki
+hermes config
+```
+
+Current learned behavior/pitfalls:
+- Hermes stores skill-specific config under `skills.config.*` in `config.yaml`, even when prompts display the logical key (for example `wiki.path`).
+- In the audited install, the only discovered skill-declared custom config key across built-in Hermes skills plus external workspace-hub skill dirs was `wiki.path` from `llm-wiki`.
+- Verify the configured path actually exists before accepting a migrated default; one observed config had `wiki.path=/home/vamsee/wiki` even though that directory was missing, while the real workspace wiki root lived at `/mnt/local-analysis/workspace-hub/knowledge/wikis`.
+- `hermes config` is the quickest way to verify skill settings after `config set`; `hermes config check` may still report optional web env vars as missing even when toolsets are enabled.
+- Approval-mode naming is inconsistent across this codebase: runtime approval logic in `tools/approval.py` recognizes `manual`, `smart`, and `off`, while `hermes_cli/web_server.py` exposes `ask`, `yolo`, and `deny`. Treat `manual/smart/off` as authoritative for runtime behavior unless the UI mapping is verified in the current build.
+- Web tool availability is backend-credential driven. If `hermes doctor` reports missing `EXA_API_KEY`, `PARALLEL_API_KEY`, `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, or `FIRECRAWL_API_URL`, then `web_search`/`web_extract` are not fully enabled regardless of the toolset toggle.
+
+To audit which installed skills declare custom config, search SKILL frontmatter for `metadata.hermes.config` / `key:` entries across both built-in and external skill directories.
+
 | Section | Key options |
 |---------|-------------|
 | `model` | `default`, `provider`, `base_url`, `api_key`, `context_length` |
@@ -363,6 +407,21 @@ Full config reference: https://hermes-agent.nousresearch.com/docs/user-guide/con
 Plus: AI Gateway, OpenCode Zen, OpenCode Go, MiniMax CN, GitHub Copilot ACP.
 
 Full provider docs: https://hermes-agent.nousresearch.com/docs/integrations/providers
+
+### Approval Mode Caveat
+
+Hermes currently has a config/UI mismatch in some builds:
+
+- **Runtime approval engine** (`tools/approval.py`) uses `approvals.mode` values: `manual`, `smart`, `off`
+- **Some web UI schemas** (`hermes_cli/web_server.py`) may still show: `ask`, `yolo`, `deny`
+
+Prefer editing `approvals.mode` directly in `config.yaml` or via `hermes config set approvals.mode ...` using the runtime values `manual`, `smart`, or `off`.
+
+- `manual` — normal approval prompts
+- `smart` — auxiliary LLM auto-approves clearly safe commands, auto-denies clearly dangerous ones, escalates uncertain cases
+- `off` — bypass approval prompts entirely
+
+Treat `ask/yolo/deny` as stale UI labels unless you have verified the mapping in your installed build.
 
 ### Toolsets
 
@@ -517,6 +576,7 @@ terminal(command="tmux new-session -d -s resumed 'hermes --resume 20260225_14305
 1. `hermes tools` — check if toolset is enabled for your platform
 2. Some tools need env vars (check `.env`)
 3. `/reset` after enabling tools
+4. For **web** tool debugging, verify the provider vars are actually present in both the current shell environment and `~/.hermes/.env` (`EXA_API_KEY`, `PARALLEL_API_KEY`, `TAVILY_API_KEY`, `FIRECRAWL_API_KEY`, `FIRECRAWL_API_URL`). `hermes doctor` reports availability from real runtime config — don't assume a transient shell export or another process has made them persistent.
 
 ### Model/provider issues
 1. `hermes doctor` — check config and dependencies

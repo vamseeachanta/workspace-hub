@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-13T13:20:06.283013Z",
+  "generated_at": "2026-04-14T09:20:06.154060Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-13T13:20:04.340197Z",
+  "scorecard_generated_at": "2026-04-14T09:20:04.143378Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 19,
+      "execution_ready_count": 28,
       "total_candidates": 137,
       "top_issues": [
         {
@@ -113,42 +113,63 @@
           ]
         },
         {
-          "number": 2129,
-          "title": "chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2129",
+          "number": 2249,
+          "title": "feat(doc-intel): triage index-level other bucket into bounded context packs",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2249",
           "labels": [
             "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-13T14:20:08Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2046,
+          "title": "Audit compliance of strict issue planning workflow after rollout",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2046",
+          "labels": [
             "priority:medium",
             "cat:ai-orchestration",
-            "cat:harness",
-            "agent:claude",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-13T12:23:02Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2152,
-          "title": "test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2152",
-          "labels": [
-            "enhancement",
-            "priority:medium",
             "cat:operations",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-13T14:20:31Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2096,
+          "title": "feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2096",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-11T13:19:52Z",
+          "updatedAt": "2026-04-13T14:33:56Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -162,18 +183,17 @@
           ]
         },
         {
-          "number": 2205,
-          "title": "feat(knowledge): define multi-machine llm-wiki + resource/document intelligence operating model",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2205",
+          "number": 2105,
+          "title": "chore(knowledge): define freshness cadences and staleness signals for intelligence assets",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2105",
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:data-pipeline",
             "cat:documentation",
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-13T10:40:33Z",
+          "updatedAt": "2026-04-13T14:33:53Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -182,31 +202,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2206,
-          "title": "feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2206",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-11T17:04:17Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
             "strategy"
           ]
         }
@@ -216,7 +211,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 54,
+      "total_candidates": 57,
       "top_issues": [
         {
           "number": 2227,
@@ -229,7 +224,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-13T12:22:58Z",
+          "updatedAt": "2026-04-13T20:58:17Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -399,7 +394,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 9,
+      "total_candidates": 6,
       "top_issues": [
         {
           "number": 2116,
@@ -423,48 +418,6 @@
           ]
         },
         {
-          "number": 2003,
-          "title": "Fix 5 failing tests in worldenergydata \u2014 test suite cleanup (#1962 Phase 3)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2003",
-          "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "agent:gemini"
-          ],
-          "updatedAt": "2026-04-13T04:00:30Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "gemini",
-          "routing_reason": "existing gemini agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2005,
-          "title": "audit(digitalmodel): worldenergydata test collection timeout + 14K bytecode files \u2014 investigate and resolve",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2005",
-          "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "agent:gemini"
-          ],
-          "updatedAt": "2026-04-13T04:00:29Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "gemini",
-          "routing_reason": "existing gemini agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2039,
           "title": "feat: engineering wiki \u2014 ingest remaining high-value sources (skills metadata, closed issues)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2039",
@@ -478,26 +431,6 @@
           "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
-          ]
-        },
-        {
-          "number": 2006,
-          "title": "audit(worldenergydata): 14000+ orphan modules \u2014 triage for archival vs active use (#1962 Phase 3)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2006",
-          "labels": [
-            "priority:low",
-            "cat:engineering",
-            "agent:gemini"
-          ],
-          "updatedAt": "2026-04-13T04:00:30Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "gemini",
-          "routing_reason": "existing gemini agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
@@ -547,6 +480,22 @@
           "number": 2123,
           "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123",
+          "labels": [],
+          "updatedAt": "2026-04-10T16:00:58Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
+        {
+          "number": 2125,
+          "title": "feat(llm-wiki): auto-refresh ingestion on new Orcina releases",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2125",
           "labels": [],
           "updatedAt": "2026-04-10T16:00:58Z",
           "execution_ready": false,

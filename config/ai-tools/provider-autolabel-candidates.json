@@ -1,56 +1,86 @@
 {
-  "generated_at": "2026-04-13T13:20:06.458811Z",
+  "generated_at": "2026-04-14T09:20:06.343264Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 3,
+  "eligible_count": 4,
   "applied": [],
   "candidates": [
     {
-      "number": 2152,
-      "title": "test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2152",
+      "number": 2249,
+      "title": "feat(doc-intel): triage index-level other bucket into bounded context packs",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2249",
       "labels": [
         "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-11T13:19:52Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2205,
-      "title": "feat(knowledge): define multi-machine llm-wiki + resource/document intelligence operating model",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2205",
-      "labels": [
-        "enhancement",
-        "priority:medium",
+        "priority:high",
         "cat:data-pipeline",
+        "cat:document-intelligence",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-13T14:20:08Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2046,
+      "title": "Audit compliance of strict issue planning workflow after rollout",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2046",
+      "labels": [
+        "priority:medium",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-13T14:20:31Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2096,
+      "title": "feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2096",
+      "labels": [
+        "enhancement",
+        "priority:medium",
         "cat:documentation",
         "cat:harness",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-13T10:40:33Z",
+      "updatedAt": "2026-04-13T14:33:56Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -73,9 +103,9 @@
       "eligible": true
     },
     {
-      "number": 2206,
-      "title": "feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2206",
+      "number": 2105,
+      "title": "chore(knowledge): define freshness cadences and staleness signals for intelligence assets",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2105",
       "labels": [
         "enhancement",
         "priority:medium",
@@ -83,7 +113,7 @@
         "cat:harness",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-11T17:04:17Z",
+      "updatedAt": "2026-04-13T14:33:53Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -92,7 +122,6 @@
       "provider_status": "underused",
       "work_type": [
         "research",
-        "implementation",
         "strategy"
       ],
       "target_label": "agent:claude",
@@ -427,6 +456,29 @@
       "number": 2123,
       "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123",
+      "labels": [],
+      "updatedAt": "2026-04-10T16:00:58Z",
+      "execution_ready": false,
+      "priority_rank": 4,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.45,
+      "confidence_reasons": [
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2125,
+      "title": "feat(llm-wiki): auto-refresh ingestion on new Orcina releases",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2125",
       "labels": [],
       "updatedAt": "2026-04-10T16:00:58Z",
       "execution_ready": false,

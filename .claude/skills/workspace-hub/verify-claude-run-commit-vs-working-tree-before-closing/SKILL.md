@@ -42,27 +42,54 @@ After the run finishes, do all of these before declaring success:
 git show --stat --name-only <commit>
 ```
 
-2. Compare that file list against the files Claude claimed to have changed in its final summary
+2. Verify the commit landed in the intended checkout / branch, not just somewhere in the repo ecosystem
+```bash
+git rev-parse --show-toplevel
+git branch --show-current
+git branch --contains <commit>
+```
+- if you launched Claude from an isolated worktree, confirm the commit is actually on that worktree branch
+- do not assume `workdir=` or prompt text was sufficient protection
+- if the commit landed on another local branch / checkout (for example dirty `main`) treat the worker result as only partially integrated
+
+3. Compare that file list against the files Claude claimed to have changed in its final summary
 - look for any claimed files missing from the commit stat
 
-3. Inspect current working tree for owned-path leftovers
+4. Inspect current working tree for owned-path leftovers
 ```bash
 git status --short
 ```
 - look specifically for files owned by the executed issue
 - ignore unrelated dirty files outside the issue's owned paths
 
-4. If a claimed file is still modified after the run:
+5. If a claimed file is still modified after the run:
 - read it and confirm whether the intended change is present only in the working tree
 - decide whether to:
   - make a tiny fixup commit, or
   - reopen the issue and finish properly
 
-5. Verify GitHub closeout state
+6. Verify GitHub closeout state
 - read the latest issue comments
 - check whether the issue is open/closed
 - if closed with residual owned-path changes still uncommitted, treat the closeout as incomplete
+- if the issue comment says work landed in the isolated branch but the commit actually landed on another checkout, post a correction/update before closeout
 
+## Recovery pattern when commit lands in the wrong checkout
+
+Observed failure mode:
+- Claude was launched from an isolated worktree
+- Claude reported success and produced a valid commit
+- the commit actually landed on local `main` instead of the intended issue worktree branch
+- the intended worktree remained unchanged
+
+Safe recovery:
+1. identify the real landed commit hash
+2. verify the diff and tests in the checkout where it actually landed
+3. cherry-pick that exact commit into the intended clean worktree/branch
+4. re-run the targeted validation in the intended worktree
+5. treat the clean worktree commit as the authoritative execution result for push/closeout
+
+This is distinct from the older “residual dirty files” failure mode: the code may be correct, but it is landed in the wrong branch context and must be re-homed before integration/closeout.
 ## Decision rules
 
 ### Case A — clean success
@@ -112,19 +139,39 @@ gh issue view <issue> --json state,comments
 
 4. Only then decide whether the implementation is truly done.
 
-## Workspace-hub-specific lesson
+## Workspace-hub-specific lessons
 
 In workspace-hub, this matters when:
 - docs or generated files violate local repo conventions
 - some wiki/domain files are already oversized or shaped in ways that trip repo expectations
 - the run stages only a subset of the owned-path edits
+- a Claude run launched from an isolated worktree may still create the commit on an unexpected local branch / checkout, even when the orchestrator passed the intended worktree as cwd
 
-A concrete example pattern:
+Concrete example pattern A:
 - worker committed 10 files
 - claimed 12 intended updates
 - 2 wiki `CLAUDE.md` files were still modified in working tree
 - issue was already closed
 - correct response was to treat the issue as substantially complete but with a small residual follow-up
+
+Concrete example pattern B:
+- orchestrator launched `claude -p` from a clean issue worktree
+- Claude reported success and a commit hash
+- the intended issue worktree branch did **not** move
+- the reported commit actually landed on the dirty local `main` checkout instead
+- correct response was:
+  1. verify the reported commit hash really contains the claimed file set
+  2. confirm which branch/worktree actually contains that commit
+  3. cherry-pick the validated commit into the clean execution worktree
+  4. re-run the targeted tests in the clean worktree
+  5. treat the clean worktree commit as the authoritative execution artifact for push/closeout
+
+Add these checks when the worker was supposed to run in an isolated worktree:
+- `git branch --contains <commit>` from the parent repo
+- `git log --oneline -3` in both the intended worktree and the default/main checkout
+- verify the expected issue branch tip actually advanced
+
+If the commit landed on the wrong local branch but the diff/tests are valid, prefer cherry-picking into the clean worktree over trying to salvage closeout directly from the dirty checkout.
 
 ## Output template for post-run review
 

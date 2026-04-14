@@ -40,3 +40,4 @@ Structural integrity of marine vessels under operational loads.
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
+- **Cross-wiki (engineering)**: [FEA Structural Analysis](../../../engineering/wiki/concepts/fea-structural-analysis.md) -- similar slugs (53%); similar titles (62%); shared tags: fatigue
