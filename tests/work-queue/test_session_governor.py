@@ -525,6 +525,73 @@ class TestPlanApprovalGate:
                 f"Should allow with marker, got: {result.stdout}"
             )
 
+    @staticmethod
+    def _clean_gate_env(**overrides):
+        """Build env dict for plan-gate tests, excluding SKIP_PLAN_APPROVAL_GATE."""
+        env = {k: v for k, v in os.environ.items() if k != "SKIP_PLAN_APPROVAL_GATE"}
+        env.update(overrides)
+        return env
+
+    def test_hook_bypasses_with_disable_enforcement(self):
+        """DISABLE_ENFORCEMENT=1 must bypass the gate entirely (#2127)."""
+        import subprocess
+        import tempfile
+
+        hook = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # No approval markers — would normally block
+            input_json = '{"tool_name":"Write","tool_input":{"file_path":"/src/app.py"}}'
+            result = subprocess.run(
+                ["bash", hook],
+                input=input_json, capture_output=True, text=True, timeout=10,
+                env=self._clean_gate_env(WORKSPACE_HUB=tmpdir, DISABLE_ENFORCEMENT="1"),
+            )
+            assert "block" not in result.stdout.lower(), (
+                f"DISABLE_ENFORCEMENT=1 should bypass, got stdout={result.stdout!r}"
+            )
+            assert result.returncode == 0
+
+    def test_hook_warns_with_relaxed_strict(self):
+        """FORCE_PLAN_GATE_STRICT=0 must warn (stderr) but not block (no decision JSON) (#2127)."""
+        import subprocess
+        import tempfile
+
+        hook = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # No approval markers — would normally block in strict mode
+            input_json = '{"tool_name":"Write","tool_input":{"file_path":"/src/app.py"}}'
+            result = subprocess.run(
+                ["bash", hook],
+                input=input_json, capture_output=True, text=True, timeout=10,
+                env=self._clean_gate_env(WORKSPACE_HUB=tmpdir, FORCE_PLAN_GATE_STRICT="0"),
+            )
+            # Must NOT emit {"decision":"block"} on stdout
+            assert '"decision"' not in result.stdout, (
+                f"FORCE_PLAN_GATE_STRICT=0 must not block, got stdout={result.stdout!r}"
+            )
+            # Must emit a warning on stderr
+            assert "warn" in result.stderr.lower() or "plan" in result.stderr.lower(), (
+                f"FORCE_PLAN_GATE_STRICT=0 should warn on stderr, got stderr={result.stderr!r}"
+            )
+            assert result.returncode == 0
+
+    def test_hook_still_blocks_by_default_strict(self):
+        """Default (no env override) must still block writes without approval (#2127)."""
+        import subprocess
+        import tempfile
+
+        hook = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            input_json = '{"tool_name":"Write","tool_input":{"file_path":"/src/app.py"}}'
+            result = subprocess.run(
+                ["bash", hook],
+                input=input_json, capture_output=True, text=True, timeout=10,
+                env=self._clean_gate_env(WORKSPACE_HUB=tmpdir),
+            )
+            assert '"decision":"block"' in result.stdout or '"decision": "block"' in result.stdout, (
+                f"Default strict mode should block, got stdout={result.stdout!r}"
+            )
+
 
 # ── Strict review gate tests (#1839) ─────────────────────────────
 

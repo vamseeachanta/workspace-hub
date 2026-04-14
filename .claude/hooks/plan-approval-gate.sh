@@ -25,6 +25,12 @@ if [[ "${SKIP_PLAN_APPROVAL_GATE:-}" == "1" ]]; then
   exit 0
 fi
 
+# Honor enforcement-env contract (#2127)
+if [[ "${DISABLE_ENFORCEMENT:-0}" == "1" ]]; then
+  echo "[plan-gate] SKIP: All enforcement disabled (DISABLE_ENFORCEMENT=1)." >&2
+  exit 0
+fi
+
 has_approval() {
   if [[ -d "$APPROVAL_DIR" ]]; then
     local markers
@@ -92,6 +98,11 @@ if [[ "$TOOL_NAME" == "Write" || "$TOOL_NAME" == "Edit" || "$TOOL_NAME" == "Mult
   is_safe_path "$FILE_PATH" && exit 0
   has_approval && exit 0
 
+  # FORCE_PLAN_GATE_STRICT=0 → warn only, do not block (#2127)
+  if [[ "${FORCE_PLAN_GATE_STRICT:-1}" == "0" ]]; then
+    echo "[plan-gate] WARN: No plan-approval marker found (advisory mode, FORCE_PLAN_GATE_STRICT=0)." >&2
+    exit 0
+  fi
   echo "[plan-gate] BLOCKED: No plan-approval marker found." >&2
   echo "[plan-gate] Create: .planning/plan-approved/<issue>.md after user approves plan." >&2
   printf '{"decision":"block","reason":"Plan approval required before implementation. No marker in .planning/plan-approved/. Safe paths: .planning/, docs/plans/, docs/governance/, .claude/, scripts/enforcement/."}\n'
@@ -101,6 +112,11 @@ fi
 if [[ "$TOOL_NAME" == "Bash" && -n "$COMMAND" ]]; then
   if echo "$COMMAND" | grep -qE 'git\s+push'; then
     has_approval && exit 0
+    # FORCE_PLAN_GATE_STRICT=0 → warn only, do not block (#2127)
+    if [[ "${FORCE_PLAN_GATE_STRICT:-1}" == "0" ]]; then
+      echo "[plan-gate] WARN: git push without plan approval (advisory mode)." >&2
+      exit 0
+    fi
     echo "[plan-gate] BLOCKED: git push requires plan approval." >&2
     printf '{"decision":"block","reason":"Plan approval required before pushing. No marker in .planning/plan-approved/."}\n'
     exit 0

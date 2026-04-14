@@ -131,6 +131,11 @@ to implementation paths when no approval marker exists in `.planning/plan-approv
 
 **Also gates:** `git push` commands via Bash tool — requires approval marker.
 
+**Enforcement-env integration (#2127):**
+- `DISABLE_ENFORCEMENT=1` → bypasses the gate entirely (logged to stderr)
+- `FORCE_PLAN_GATE_STRICT=0` → advisory mode: warns on stderr but does not emit `{"decision":"block"}`
+- Default (`FORCE_PLAN_GATE_STRICT=1` or unset) → strict mode: blocks writes and pushes
+
 **Bypass:** `SKIP_PLAN_APPROVAL_GATE=1` (emergency only, logged to stderr).
 
 ### Strict Review Gate Default
@@ -382,8 +387,10 @@ post-commit:
      -> track-skill-patches.sh
      -> extract-learnings.sh HEAD
 
-pre-push:
+pre-push (#2128):
+  source enforcement-env (DISABLE_ENFORCEMENT, FORCE_PLAN_GATE_STRICT, REVIEW_GATE_STRICT)
   -> require-review-on-push.sh (blocks without review evidence)
+  -> require-stage-prompt-drift.sh (blocks on stage prompt drift)
 ```
 
 ## What Was Implemented (Phase 3e) — 2026-04-09

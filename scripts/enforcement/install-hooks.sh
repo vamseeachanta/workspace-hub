@@ -68,10 +68,52 @@ else
   log "SKIP: pre-commit hook not found"
 fi
 
-# ── Step 3: Wire stage prompt drift guard into pre-push ─────────────────
+# ── Step 3: Wire full pre-push enforcement chain (#2128) ──────────────
+# Order: enforcement-env → review-gate → stage-prompt-drift-gate
 PRE_PUSH="${REPO_ROOT}/.git/hooks/pre-push"
 
 if [[ -f "$PRE_PUSH" ]]; then
+  # 3a: Source enforcement-env
+  if grep -q "enforcement-env" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: enforcement-env already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire enforcement-env into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
+
+# ── Enforcement environment (installed by install-hooks.sh #2128) ──────
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
+if [[ -f "${ENFORCEMENT_ENV}" ]]; then
+  source "${ENFORCEMENT_ENV}"
+fi
+EOF
+      log "OK: Wired enforcement-env into pre-push"
+    fi
+  fi
+
+  # 3b: Wire require-review-on-push.sh
+  if grep -q "require-review-on-push.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: review gate already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire review gate into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
+
+# ── Review gate (installed by install-hooks.sh #2128) ──────────────────
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+REVIEW_GATE="${REPO_ROOT}/scripts/enforcement/require-review-on-push.sh"
+if [[ -f "$REVIEW_GATE" ]]; then
+  bash "$REVIEW_GATE" || exit $?
+fi
+EOF
+      log "OK: Wired review gate into pre-push"
+    fi
+  fi
+
+  # 3c: Wire stage prompt drift guard
   if grep -q "require-stage-prompt-drift.sh" "$PRE_PUSH" 2>/dev/null; then
     log "OK: stage prompt drift guard already wired into pre-push"
   else
@@ -87,10 +129,11 @@ if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
   bash "$STAGE_PROMPT_DRIFT_GATE" || exit $?
 fi
 EOF
-      chmod +x "$PRE_PUSH"
       log "OK: Wired stage prompt drift guard into pre-push"
     fi
   fi
+
+  chmod +x "$PRE_PUSH"
 else
   log "SKIP: pre-push hook not found"
 fi
@@ -151,7 +194,7 @@ fi
 log ""
 log "Enforcement hook chain:"
 log "  pre-commit -> enforcement-env -> plan-approval-gate"
-log "  pre-push -> review-gate -> stage-prompt-drift-gate -> repo/test gates"
+log "  pre-push -> enforcement-env -> review-gate -> stage-prompt-drift-gate"
 log "  post-commit -> auto-push -> learning pipeline -> extract-learnings"
 log ""
 if [[ "$DRY_RUN" == "1" ]]; then
