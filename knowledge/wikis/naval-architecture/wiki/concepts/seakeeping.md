@@ -33,3 +33,9 @@ Vessel behavior in waves — motions, accelerations, and operability.
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
+- **Cross-wiki (engineering)**: [CFD Offshore Hydrodynamics](../../../engineering/wiki/concepts/cfd-offshore-hydrodynamics.md) — CFD methods for computing vessel RAOs and wave loading beyond linear potential theory
+- **Cross-wiki (engineering)**: [AQWA Solver](../../../engineering/wiki/entities/aqwa-solver.md) — AQWA diffraction solver for computing vessel motion RAOs
+- **Cross-wiki (engineering)**: [DNV-RP-C205](../../../engineering/wiki/standards/dnv-rp-c205.md) — wave spectra (JONSWAP, Pierson-Moskowitz) and environmental load methods
+- **Cross-wiki (engineering)**: [Wave Theory for Offshore Engineering](../../../engineering/wiki/concepts/wave-theory-offshore.md) — wave spectra theory (JONSWAP, PM), statistics, and extreme value analysis as inputs to seakeeping
+- **Cross-wiki (engineering)**: [Seakeeping and 6-DOF Ship Dynamics](../../../engineering/wiki/concepts/seakeeping-6dof.md) — digitalmodel seakeeping module implementing RAO-based motion response, operability, and extreme motions
+- **Cross-wiki (engineering)**: [Fatigue Analysis for Offshore Structures](../../../engineering/wiki/concepts/fatigue-analysis-offshore.md) — spectral fatigue methods for vessel structural details under wave loading

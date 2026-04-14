@@ -46,3 +46,7 @@ Long-period swell events can make LNG loading impossible for a full week, forcin
 - **Related entity**: [[lng-carrier-mooring]]
 - **Related concept**: [[mooring-line-failure]]
 - **Related concept**: [[cathodic-protection-system]] (both are offshore marine engineering topics)
+- **Cross-wiki (engineering)**: [CFD Offshore Hydrodynamics](../../../engineering/wiki/concepts/cfd-offshore-hydrodynamics.md) — CFD and diffraction methods for modelling wave-induced vessel response
+- **Cross-wiki (engineering)**: [DNV-RP-C205](../../../engineering/wiki/standards/dnv-rp-c205.md) — wave spectra (JONSWAP) and second-order drift force methods
+- **Cross-wiki (engineering)**: [Wave Theory for Offshore Engineering](../../../engineering/wiki/concepts/wave-theory-offshore.md) — wave spectra theory and long-period swell physics driving resonant mooring response
+- **Cross-wiki (engineering)**: [Seakeeping and 6-DOF Ship Dynamics](../../../engineering/wiki/concepts/seakeeping-6dof.md) — 6-DOF vessel motion amplification from long-period swell excitation
