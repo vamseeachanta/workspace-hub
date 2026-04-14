@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-14T09:20:06.343264Z",
+  "generated_at": "2026-04-14T13:20:06.880107Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 4,
@@ -39,50 +39,20 @@
       "eligible": true
     },
     {
-      "number": 2046,
-      "title": "Audit compliance of strict issue planning workflow after rollout",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2046",
-      "labels": [
-        "priority:medium",
-        "cat:ai-orchestration",
-        "cat:operations",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-13T14:20:31Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2096,
-      "title": "feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2096",
+      "number": 2268,
+      "title": "feat(portability): establish core engineering portability contract and machine roles",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2268",
       "labels": [
         "enhancement",
-        "priority:medium",
+        "priority:high",
         "cat:documentation",
         "cat:harness",
+        "machine:multi",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-13T14:33:56Z",
+      "updatedAt": "2026-04-14T09:34:13Z",
       "execution_ready": true,
-      "priority_rank": 2,
+      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -103,17 +73,50 @@
       "eligible": true
     },
     {
-      "number": 2105,
-      "title": "chore(knowledge): define freshness cadences and staleness signals for intelligence assets",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2105",
+      "number": 2269,
+      "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
       "labels": [
         "enhancement",
-        "priority:medium",
+        "priority:high",
+        "cat:engineering",
         "cat:documentation",
-        "cat:harness",
+        "machine:dev-secondary",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-13T14:33:53Z",
+      "updatedAt": "2026-04-14T09:34:14Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2046,
+      "title": "Audit compliance of strict issue planning workflow after rollout",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2046",
+      "labels": [
+        "priority:medium",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-13T14:20:31Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-14T09:20:06.154060Z",
+  "generated_at": "2026-04-14T13:20:06.673323Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-14T09:20:04.143378Z",
+  "scorecard_generated_at": "2026-04-14T13:20:04.338090Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 28,
-      "total_candidates": 137,
+      "execution_ready_count": 33,
+      "total_candidates": 139,
       "top_issues": [
         {
           "number": 2055,
@@ -137,6 +137,56 @@
           ]
         },
         {
+          "number": 2268,
+          "title": "feat(portability): establish core engineering portability contract and machine roles",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2268",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "cat:harness",
+            "machine:multi",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-14T09:34:13Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2269,
+          "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "machine:dev-secondary",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-14T09:34:14Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2046,
           "title": "Audit compliance of strict issue planning workflow after rollout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2046",
@@ -157,53 +207,6 @@
             "research",
             "strategy"
           ]
-        },
-        {
-          "number": 2096,
-          "title": "feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2096",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-13T14:33:56Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2105,
-          "title": "chore(knowledge): define freshness cadences and staleness signals for intelligence assets",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2105",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-13T14:33:53Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
         }
       ]
     },
@@ -211,7 +214,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 57,
+      "total_candidates": 55,
       "top_issues": [
         {
           "number": 2227,

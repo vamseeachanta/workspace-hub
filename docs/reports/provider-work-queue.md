@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-14T09:20:06.154060Z
+Generated: 2026-04-14T13:20:06.673323Z
 Current week: 2026-W16
 Recommended provider order: gemini, codex, claude
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 28
-- Total routed candidates: 137
+- Execution-ready candidates: 33
+- Total routed candidates: 139
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -19,15 +19,15 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2128 fix(governance): wire enforcement-env and require-review-on-push into install-hooks pre-push chain | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
 | #2248 epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution | yes | existing claude agent label | enhancement, priority:high, cat:data-pipeline, cat:documentation, agent:claude, status:plan-approved |
 | #2249 feat(doc-intel): triage index-level other bucket into bounded context packs | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:document-intelligence, status:plan-approved |
+| #2268 feat(portability): establish core engineering portability contract and machine roles | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:harness, machine:multi, status:plan-approved |
+| #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:documentation, machine:dev-secondary, status:plan-approved |
 | #2046 Audit compliance of strict issue planning workflow after rollout | yes | strategy/workflow/architecture language | priority:medium, cat:ai-orchestration, cat:operations, status:plan-approved |
-| #2096 feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
-| #2105 chore(knowledge): define freshness cadences and staleness signals for intelligence assets | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 1
-- Total routed candidates: 57
+- Total routed candidates: 55
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
