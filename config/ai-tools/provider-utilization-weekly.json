@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-14T13:20:04.115227Z",
+  "generated_at": "2026-04-14T17:20:03.522522Z",
   "current_week": "2026-W16",
   "report_weeks": 8,
   "subscriptions": {
@@ -872,23 +872,23 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W16",
-        "sessions": 11,
-        "post_records": 253,
-        "activity_utilization_pct": 0.6,
+        "sessions": 12,
+        "post_records": 359,
+        "activity_utilization_pct": 0.9,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.6,
+        "reported_utilization_pct": 0.9,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-04-14T13:20:01Z",
+        "quota_snapshot_ts": "2026-04-14T17:20:01Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 134
+            "count": 236
           },
           {
             "tool": "Read",
-            "count": 70
+            "count": 74
           },
           {
             "tool": "Write",
@@ -904,7 +904,7 @@
           }
         ],
         "first_ts": "2026-04-13T14:42:39Z",
-        "last_ts": "2026-04-14T11:27:34Z",
+        "last_ts": "2026-04-14T15:02:15Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -918,7 +918,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-04-14T13:20:01Z",
+        "quota_snapshot_ts": "2026-04-14T17:20:01Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -935,7 +935,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-04-14T13:20:01Z",
+        "quota_snapshot_ts": "2026-04-14T17:20:01Z",
         "top_tools": [
           {
             "tool": "Browser",
@@ -989,9 +989,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 0.6,
+      "reported_utilization_pct": 0.9,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 0.6% (activity_vs_recent_peak)"
+      "message": "claude at 0.9% (activity_vs_recent_peak)"
     },
     {
       "provider": "codex",
