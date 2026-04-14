@@ -1,0 +1,55 @@
+schema_version: "1.0"
+machine:
+  id: licensed-win-1
+  hostname: licensed-win-1
+  user: vamsee
+  os: windows
+  role: simulation-license-host
+  workspace_root: 'D:\\workspace-hub'
+collected_at: "2026-04-11T04:58:00.1234567+00:00"
+source_writer:
+  name: windows-readiness-writer
+  version: "0.1.0"
+  entrypoint: scripts/readiness/windows_probe_writer.ps1
+access:
+  mode: local_no_ssh
+  reachable: true
+  detail: Evidence dropped locally for pickup from a no-SSH scheduled task.
+  launcher: scheduled_task
+checks:
+  - id: access-mode
+    name: Access mode
+    status: pass
+    summary: Machine is only reachable through local no-SSH execution.
+    evidence:
+      transport: local_no_ssh
+  - id: workspace-root
+    name: Workspace root present
+    status: pass
+    summary: Workspace root exists and is writable.
+    evidence:
+      path: 'D:\\workspace-hub'
+  - id: ai-cli
+    name: AI CLI availability
+    status: pass
+    summary: Required AI CLIs are available in the local environment.
+    evidence:
+      claude: true
+      codex: true
+  - id: licensed-tools
+    name: Licensed tools
+    status: warn
+    summary: License service detected; seat usage near capacity.
+    evidence:
+      seats_in_use: 3
+      seats_total: 4
+overall:
+  verdict: degraded
+  summary: Windows machine is usable but has a license-capacity warning.
+  counts:
+    total: 4
+    pass: 3
+    warn: 1
+    fail: 0
+    error: 0
+    skip: 0

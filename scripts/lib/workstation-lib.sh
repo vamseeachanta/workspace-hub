@@ -16,16 +16,17 @@ _WS_HOSTNAME=$(printf '%s' "$_WS_HOSTNAME" | tr '[:upper:]' '[:lower:]')
 _ws_query() {
   local field="$1"
   uv run --no-project python -c "
-import yaml
-with open('${_WS_REGISTRY}') as f:
-    data = yaml.safe_load(f)
-host = '${_WS_HOSTNAME}'
-for name, m in data.get('machines', {}).items():
-    candidates = [m['hostname']] + m.get('hostname_aliases', [])
-    candidates = [c.lower() for c in candidates]
-    if host in candidates:
-        print(m.get('${field}', ''))
-        break
+import sys
+from pathlib import Path
+
+workspace_hub = Path('${WORKSPACE_HUB:-$(git rev-parse --show-toplevel 2>/dev/null)}')
+sys.path.insert(0, str(workspace_hub / 'src'))
+from workspace_hub.workstations.resolver import WorkstationPathResolver
+
+resolver = WorkstationPathResolver.from_registry_path(Path('${_WS_REGISTRY}'))
+value = resolver.field_for('${_WS_HOSTNAME}', '${field}')
+if value is not None:
+    print(value)
 " 2>/dev/null
 }
 
@@ -43,16 +44,15 @@ ws_is() {
 # Export machine list for Python consumers
 ws_valid_machines() {
   uv run --no-project python -c "
-import yaml
-with open('${_WS_REGISTRY}') as f:
-    data = yaml.safe_load(f)
-machines = set()
-for name, m in data.get('machines', {}).items():
-    machines.add(name)
-    machines.add(m['hostname'])
-    for a in m.get('hostname_aliases', []):
-        machines.add(a)
-for m in sorted(machines):
-    print(m)
+import sys
+from pathlib import Path
+
+workspace_hub = Path('${WORKSPACE_HUB:-$(git rev-parse --show-toplevel 2>/dev/null)}')
+sys.path.insert(0, str(workspace_hub / 'src'))
+from workspace_hub.workstations.resolver import WorkstationPathResolver
+
+resolver = WorkstationPathResolver.from_registry_path(Path('${_WS_REGISTRY}'))
+for machine in resolver.valid_machine_identifiers():
+    print(machine)
 " 2>/dev/null
 }
