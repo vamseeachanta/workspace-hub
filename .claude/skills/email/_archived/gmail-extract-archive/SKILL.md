@@ -27,7 +27,7 @@ Extract Gmail messages into `~/gmail-archive/` — a dedicated private repo as t
 ## Repo Structure
 ```
 gmail-archive/
-├── CLAUDE.md                 # Archive conventions
+├── README.md                 # Archive conventions
 ├── config/
 │   ├── accounts.yaml         # Account definitions (tokens external)
 │   └── deny-list.yaml        # Legal scan patterns

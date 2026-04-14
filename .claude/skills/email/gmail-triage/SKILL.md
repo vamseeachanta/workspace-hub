@@ -4,7 +4,7 @@ description: Daily multi-account Gmail inbox triage — scan unread, classify by
 version: 1.0.0
 author: vamsee
 tags: [email, gmail, triage, digest, automation]
-related_skills: [gmail-multi-account, himalaya, gmail-unsubscribe, gmail-touchbase]
+related_skills: [gmail-multi-account, himalaya, gmail-outreach, gmail-extract-and-act]
 metadata:
   hermes:
     tags: [email, gmail, triage, digest]
@@ -289,4 +289,4 @@ for item in deny.get("client_references", []):
 4. Rate limit Gmail IMAP — space requests 1-2 seconds apart
 5. Some emails have no From header — skip gracefully
 6. Do NOT archive entire email bodies to repos — extract structured data only (#2017)
-7. Old skills (gmail-extract-and-clean, gmail-extract-archive) use the deprecated archive-everything model — use the queue model instead
+7. Old skills (now in _archived/) used the archive-everything model — use the queue model via gmail-extract-and-act instead (#2019)
