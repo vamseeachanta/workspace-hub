@@ -1,0 +1,122 @@
+meta:
+  generated_on: "2026-04-14"
+  repo: "vamseeachanta/workspace-hub"
+  worktree: "/mnt/local-analysis/worktrees/workspace-hub-issue-2157-2158"
+  branch: "issue-2157-2158-codex-planning"
+  purpose: "Planning-only execution-readiness contracts for GitHub issues #2157 and #2158"
+
+issues:
+  "2157":
+    title: "feat(operations): implement native PowerShell probe collector for Windows readiness bundles"
+    url: "https://github.com/vamseeachanta/workspace-hub/issues/2157"
+    state: "planning-only"
+    depends_on:
+      - issue: "2150"
+        role: "downstream writer consumer"
+      - issue: "2151"
+        role: "existing schema/status vocabulary anchor"
+      - issue: "2155"
+        role: "existing shared path resolver anchor"
+    owned_paths:
+      create:
+        - path: "scripts/windows/windows-readiness-probe-collector.ps1"
+          kind: "powershell_collector"
+          parent_dir: "scripts/windows"
+          parent_dir_exists: true
+        - path: "tests/analysis/test_windows_readiness_probe_collector.py"
+          kind: "pytest_contract"
+          parent_dir: "tests/analysis"
+          parent_dir_exists: true
+        - path: "tests/fixtures/readiness/windows-probe-collector-healthy.json"
+          kind: "fixture"
+          parent_dir: "tests/fixtures/readiness"
+          parent_dir_exists: true
+        - path: "tests/fixtures/readiness/windows-probe-collector-degraded.json"
+          kind: "fixture"
+          parent_dir: "tests/fixtures/readiness"
+          parent_dir_exists: true
+        - path: "tests/fixtures/readiness/windows-probe-collector-partial-permission.json"
+          kind: "fixture"
+          parent_dir: "tests/fixtures/readiness"
+          parent_dir_exists: true
+      read_only_dependencies:
+        - "config/workstations/registry.yaml"
+        - "docs/modules/ai/readiness-evidence-bundle.schema.yaml"
+        - "scripts/analysis/readiness_bundle_schema.py"
+        - "tests/fixtures/readiness/windows-valid.yaml"
+      forbidden_modifications:
+        - "scripts/readiness/nightly-readiness.sh"
+        - "scripts/windows/setup-scheduler-tasks.ps1"
+        - "src/workspace_hub/workstations/resolver.py"
+    proposed_validation_commands:
+      - "uv run pytest tests/analysis/test_readiness_bundle_schema.py -q"
+      - "uv run pytest tests/analysis/test_windows_readiness_probe_collector.py -q"
+      - "pwsh -NoProfile -File scripts/windows/windows-readiness-probe-collector.ps1 -OutputPath $env:TEMP/windows-probe.json"
+
+  "2158":
+    title: "feat(operations): add Git Bash launcher and path-normalization bridge for Windows evidence writer"
+    url: "https://github.com/vamseeachanta/workspace-hub/issues/2158"
+    state: "planning-only"
+    depends_on:
+      - issue: "2150"
+        role: "writer entrypoint target"
+      - issue: "2155"
+        role: "existing shared path resolver anchor"
+      - issue: "2163"
+        role: "follow-on scheduler harness if launcher wiring needs task integration"
+    owned_paths:
+      create:
+        - path: "scripts/windows/windows-readiness-launcher.ps1"
+          kind: "powershell_launcher"
+          parent_dir: "scripts/windows"
+          parent_dir_exists: true
+        - path: "tests/workstations/test_windows_readiness_launcher.py"
+          kind: "pytest_contract"
+          parent_dir: "tests/workstations"
+          parent_dir_exists: true
+        - path: "tests/fixtures/readiness/windows-launcher-path-cases.yaml"
+          kind: "fixture"
+          parent_dir: "tests/fixtures/readiness"
+          parent_dir_exists: true
+      optional_modify:
+        - path: "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md"
+          kind: "runbook_snippet"
+          exists_now: true
+      read_only_dependencies:
+        - "config/workstations/registry.yaml"
+        - "src/workspace_hub/workstations/resolver.py"
+        - "tests/workstations/test_machine_path_resolver.py"
+        - "scripts/windows/setup-scheduler-tasks.ps1"
+      forbidden_modifications:
+        - "scripts/readiness/nightly-readiness.sh"
+        - "scripts/windows/setup-scheduler-tasks.ps1"
+        - "broad src/workspace_hub path refactors"
+    proposed_validation_commands:
+      - "uv run pytest tests/workstations/test_machine_path_resolver.py -q"
+      - "uv run pytest tests/workstations/test_windows_readiness_launcher.py -q"
+      - "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/windows/windows-readiness-launcher.ps1 -DryRun -WorkspaceRoot 'D:\\workspace-hub'"
+
+shared_anchors:
+  existing_paths:
+    - "config/workstations/registry.yaml"
+    - "docs/modules/ai/readiness-evidence-bundle.schema.yaml"
+    - "scripts/analysis/readiness_bundle_schema.py"
+    - "src/workspace_hub/workstations/resolver.py"
+    - "tests/analysis/test_readiness_bundle_schema.py"
+    - "tests/workstations/test_machine_path_resolver.py"
+    - "scripts/windows/setup-scheduler-tasks.ps1"
+    - "scripts/readiness/nightly-readiness.sh"
+  sequencing:
+    recommended_order:
+      - "2157"
+      - "2150"
+      - "2158"
+    rationale: "Collector work is lower-risk and less coupled; launcher completion depends on the final writer target from #2150."
+
+current_validation_for_this_planning_run:
+  yaml_parse_command: "uv run python -c \"from pathlib import Path; import yaml; yaml.safe_load(Path('docs/reports/2157-2158-windows-readiness-path-contracts.yaml').read_text())\""
+  path_reference_checks:
+    - "test -f docs/modules/ai/readiness-evidence-bundle.schema.yaml"
+    - "test -f config/workstations/registry.yaml"
+    - "test -f src/workspace_hub/workstations/resolver.py"
+    - "test -f tests/workstations/test_machine_path_resolver.py"
