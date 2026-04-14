@@ -128,3 +128,18 @@ correlation = analyzer.compute_correlation(
 - [Automated Validation in Pipeline](automated-validation-in-pipeline/SKILL.md)
 - [Convention Differences (+3)](convention-differences/SKILL.md)
 - [Single-Page HTML Report Structure (+3)](single-page-html-report-structure/SKILL.md)
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Theory,First-orderequations.md` -- first-order panel method (OrcaWave side)
+- `Results,Addedmassanddamping.md` -- AMD results for comparison
+- `Results,DisplacementRAOs.md` -- RAO results for comparison
+- `Theory,Coordinatesystems.md` -- coordinate conventions (key for cross-tool alignment)
+- `Data,Validation.md` -- built-in validation checks
+
+OrcaFlex topics (`data/llm-wiki/orcaflex/`):
+- `Importinghydrodynamicdata,AQWA.md` -- AQWA import conventions
+- `Importinghydrodynamicdata,OrcaWave.md` -- OrcaWave import conventions
+- `Vesseltypes,CheckingRAOs.md` -- RAO quality checks

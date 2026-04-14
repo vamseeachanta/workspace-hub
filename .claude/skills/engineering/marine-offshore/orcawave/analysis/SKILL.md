@@ -147,3 +147,22 @@ mesh_sizes = [2.0, 1.5, 1.0, 0.75, 0.5]
 - [OrcFxAPI Result Extraction (+3)](orcfxapi-result-extraction/SKILL.md)
 - [DiffractionSpec Conventions (spec.yml to OrcaWave)](diffractionspec-conventions-specyml-to-orcawave/SKILL.md)
 - [OrcaWave API Properties Reference](orcawave-api-properties-reference/SKILL.md)
+
+
+## Documentation Reference
+
+llm-wiki base: `data/llm-wiki/orcawave/`
+
+Core theory and data topics:
+- `Theory,Governingequations.md` -- BVP formulation for diffraction/radiation
+- `Theory,First-orderequations.md` -- first-order panel method equations
+- `Theory,Green'sfunction.md` -- Green's function approach
+- `Theory,Irregularfrequencies.md` -- irregular frequency removal
+- `Data,Bodies.md` -- body definition and mesh assignment
+- `Data,Calculationandoutput.md` -- frequency range, output control
+- `Results,Addedmassanddamping.md` -- added mass/damping matrix results
+- `Results,DisplacementRAOs.md` -- displacement RAO output
+
+Papers (`data/llm-wiki/papers/`):
+- `OrcaWave-working-with-meshes.md` -- mesh best practices for OrcaWave
+- `Generating-Spectral-RAOs.md` -- spectral RAO generation guidance

@@ -110,3 +110,17 @@ Templates ship with the `digitalmodel` package under:
 - Implementation: `digitalmodel/src/digitalmodel/workflows/agents/orcaflex/template_library.py`
 - Tests: `digitalmodel/tests/workflows/agents/orcaflex/test_template_library.py`
 - Templates: `digitalmodel/src/digitalmodel/workflows/agents/orcaflex/templates/base_files/`
+
+
+## Documentation Reference
+
+llm-wiki base: `data/llm-wiki/orcaflex/`
+
+Relevant topics by template type:
+- general: `Generaldata.md`, `Generaldata,Statics.md`, `Generaldata,Dynamics.md`
+- environment: `Environment.md`, `Environment,Wavedata.md`, `Environment,Currentdata.md`
+- vessel: `Vesseltypes.md`, `Vesseltypes,RAOs.md`, `Vesseltypes,Stiffness,addedmassanddamping.md`
+- lines: `Lines.md`, `Linedata.md`, `Linetypes,Data.md`, `Linetypes,Structuredata.md`
+- buoys: `6Dbuoys.md`, `6Dbuoys,Commondata.md`
+- Libraries: `Libraries.md`, `Usinglibraries.md`, `Buildingalibrary.md`
+- API: `data/llm-wiki/orcfxapi/Modelbuilding,Settingthedata.md`, `data/llm-wiki/orcfxapi/Modelbuilding,Morecomplexdata.md`

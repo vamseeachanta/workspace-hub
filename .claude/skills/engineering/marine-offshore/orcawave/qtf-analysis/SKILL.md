@@ -143,3 +143,18 @@ slow_drift.load_qtf("results/fpso_qtf.yml")
 - [QTF Analysis Configuration (+1)](qtf-analysis-configuration/SKILL.md)
 - [Available Data (+1)](available-data/SKILL.md)
 - [CLI Usage](cli-usage/SKILL.md)
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Data,QTFs.md` -- QTF computation configuration
+- `Theory,Second-orderequations.md` -- second-order BVP theory
+- `Results,Quadraticloads.md` -- QTF output (mean drift, full QTF matrices)
+- `Results,Potentialloads.md` -- potential-based load results
+- `Data,Environment.md` -- water depth affecting second-order effects
+
+OrcaFlex topics (`data/llm-wiki/orcaflex/`):
+- `Vesseltypes,WavedriftandsumfrequencyQTFs.md` -- QTF data in vessel types
+- `Vesseltheory,Wavedriftandsumfrequencyloads.md` -- drift/sum-frequency theory
+- `Modellingvesselslowdrift.md` -- slow drift modelling in OrcaFlex

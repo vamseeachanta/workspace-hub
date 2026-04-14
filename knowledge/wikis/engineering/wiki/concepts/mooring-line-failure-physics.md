@@ -59,3 +59,4 @@ At Elba Island (2006), a 14-knot passing vessel's wake knocked the Golar Freeze 
 - **Related concept**: [Wave Theory for Offshore Engineering](../concepts/wave-theory-offshore.md)
 - **Related standard**: [OCIMF MEG4](../standards/ocimf-meg4.md)
 - **Related standard**: [DNV-OS-E301](../standards/dnv-os-e301.md)
+- **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) -- similar slugs (83%); similar titles (83%); shared tags: hmpe, snap-back; shared keywords: concept, cross-references, failure, hmpe, line

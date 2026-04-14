@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Engineering — ACE Engineer Methodology</title>
+    <meta name="description" content="ACE Engineer's 5-lesson compound engineering framework turns every project into a knowledge asset. Systematic planning, execution, review, and learning for offshore and marine engineering.">
+    <meta property="og:title" content="Compound Engineering — ACE Engineer Methodology">
+    <meta property="og:description" content="ACE Engineer's 5-lesson compound engineering framework turns every project into a knowledge asset. Systematic planning, execution, review, and learning.">
+    <meta property="og:type" content="article">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a202c;
+            background: #f7fafc;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: #fff;
+            padding: 64px 24px 48px;
+            text-align: center;
+        }
+        header .brand {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ed8936;
+            margin-bottom: 16px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        header .subtitle {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #bee3f8;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        main {
+            background: #fff;
+            padding: 48px 40px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        main h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        main h2:first-child { margin-top: 0; }
+        main h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin: 32px 0 12px;
+        }
+        main p { margin-bottom: 16px; }
+        main ul, main ol {
+            margin: 0 0 16px 24px;
+        }
+        main li { margin-bottom: 8px; }
+        main strong { color: #1a365d; }
+        .highlight-box {
+            background: #ebf8ff;
+            border-left: 4px solid #2c5282;
+            padding: 20px 24px;
+            border-radius: 0 6px 6px 0;
+            margin: 24px 0;
+        }
+        .highlight-box p { margin-bottom: 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+        thead th {
+            background: #1a365d;
+            color: #fff;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+        }
+        thead th:first-child { border-radius: 6px 0 0 0; }
+        thead th:last-child { border-radius: 0 6px 0 0; }
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        tbody tr:nth-child(even) { background: #f7fafc; }
+        tbody tr:hover { background: #ebf8ff; }
+        pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 24px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #2c5282;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #cbd5e0, transparent);
+            margin: 48px 0;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: #fff;
+            padding: 48px 40px;
+            text-align: center;
+            margin-top: 0;
+        }
+        .cta-section h2 {
+            color: #fff;
+            border: none;
+            font-size: 1.75rem;
+            margin: 0 0 16px;
+        }
+        .cta-section p {
+            color: #bee3f8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #ed8936;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 14px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .cta-button:hover { background: #dd6b20; }
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: #718096;
+            font-size: 0.85rem;
+        }
+        footer .disclaimer {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+        .phase-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #ed8936;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .phase-header h3 {
+            margin: 0;
+        }
+        @media print {
+            body { background: #fff; font-size: 11pt; }
+            header { background: #1a365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cta-section { background: #1a365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cta-button { background: #ed8936 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            main { box-shadow: none; }
+        }
+        @media (max-width: 640px) {
+            header h1 { font-size: 1.75rem; }
+            main { padding: 32px 20px; }
+            .cta-section { padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">ACE Engineer -- Engineering Intelligence</div>
+        <h1>Compound Engineering</h1>
+        <p class="subtitle">Every project makes the next one better. A 5-lesson framework where planning is 40% of the work and knowledge compounds across engagements.</p>
+    </header>
+
+    <main class="page-wrapper">
+        <h2>The Problem with Linear Engineering</h2>
+        <p>Most engineering consultancies treat each project as a standalone effort. The team finishes a riser analysis, delivers the report, and moves on. <strong>Lessons learned stay locked in people's heads</strong> -- or worse, in email threads that nobody searches.</p>
+        <p>The result: every new project starts nearly from scratch. The same environmental load combinations get debated. The same code-check edge cases get rediscovered. The same client questions get answered for the fifth time.</p>
+
+        <div class="highlight-box">
+            <p><strong>Compound engineering</strong> is a systematic approach where every deliverable -- every analysis, every review, every client interaction -- generates reusable knowledge that accelerates future work.</p>
+        </div>
+
+        <h2>The 4-Phase Loop</h2>
+        <p>Our compound engineering process follows a disciplined loop for every significant engineering task. The time allocation is deliberate: <strong>planning and review consume 80% of effort</strong>, because that is where quality and learning happen.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Effort</th>
+                    <th>What Happens</th>
+                    <th>Output</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Plan</strong></td>
+                    <td>40%</td>
+                    <td>Knowledge retrieval, code archaeology, standards research, synthesis into an actionable plan</td>
+                    <td>Engineering plan with basis of design</td>
+                </tr>
+                <tr>
+                    <td><strong>Work</strong></td>
+                    <td>10%</td>
+                    <td>Execute the plan -- calculations, modeling, analysis</td>
+                    <td>Technical deliverable</td>
+                </tr>
+                <tr>
+                    <td><strong>Review</strong></td>
+                    <td>40%</td>
+                    <td>Multi-perspective technical review covering correctness, safety, constructability, and 9 other dimensions</td>
+                    <td>Verified deliverable with review record</td>
+                </tr>
+                <tr>
+                    <td><strong>Compound</strong></td>
+                    <td>10%</td>
+                    <td>Extract patterns, gotchas, and reusable knowledge; store for future retrieval</td>
+                    <td>Knowledge entries, updated checklists</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <h2>Five Lessons That Shape Our Practice</h2>
+
+        <div class="phase-header">
+            <span class="phase-number">1</span>
+            <h3>Planning Is Not Overhead -- It Is the Work</h3>
+        </div>
+        <p>When 40% of effort goes into planning, the execution phase becomes mechanical. Every load case is defined. Every acceptance criterion is explicit. Every standard clause is cited. The team does not discover scope gaps mid-analysis -- they were resolved during planning.</p>
+        <p>For clients, this means <strong>fewer change orders, faster turnaround, and no surprises</strong> during review.</p>
+
+        <div class="phase-header">
+            <span class="phase-number">2</span>
+            <h3>Review From 12 Perspectives, Not One</h3>
+        </div>
+        <p>A single reviewer catches the errors they know to look for. Our review process examines every deliverable from twelve distinct perspectives:</p>
+        <ul>
+            <li><strong>Correctness</strong> -- Are the calculations right?</li>
+            <li><strong>Safety</strong> -- Do results meet all safety factors and code requirements?</li>
+            <li><strong>Constructability</strong> -- Can this actually be built/installed as designed?</li>
+            <li><strong>Performance</strong> -- Are computational methods efficient and results converged?</li>
+            <li><strong>Maintainability</strong> -- Can the analysis be updated when inputs change?</li>
+            <li><strong>Scalability</strong> -- Does the approach work for the full parameter space?</li>
+            <li><strong>Error Handling</strong> -- Are edge cases and failure modes addressed?</li>
+            <li><strong>Dependencies</strong> -- Are all input data sources verified and traceable?</li>
+            <li><strong>Consistency</strong> -- Do results align across load cases and disciplines?</li>
+            <li><strong>Documentation</strong> -- Is the methodology transparent and auditable?</li>
+            <li><strong>Deployment</strong> -- Can the client team use these results operationally?</li>
+            <li><strong>Testability</strong> -- Can results be independently verified?</li>
+        </ul>
+
+        <div class="phase-header">
+            <span class="phase-number">3</span>
+            <h3>Knowledge Must Be Captured at the Moment of Creation</h3>
+        </div>
+        <p>If you wait until the end of a project to write lessons learned, you lose the detail. Our compound phase runs <strong>immediately after every significant deliverable</strong>, extracting three types of knowledge:</p>
+        <ul>
+            <li><strong>Patterns</strong> -- Reusable approaches (e.g., "For shallow-water pipelay, always check lateral buckling before on-bottom stability")</li>
+            <li><strong>Gotchas</strong> -- Pitfalls to avoid (e.g., "DNV-ST-F101 Section 5.4.2 uses a different safety class for temporary conditions -- do not apply permanent-condition factors")</li>
+            <li><strong>Tips</strong> -- Efficiency gains (e.g., "OrcaFlex batch scripting with parametric load cases reduces runtime by 70% vs. manual model copies")</li>
+        </ul>
+
+        <div class="phase-header">
+            <span class="phase-number">4</span>
+            <h3>Retrieved Knowledge Transforms Future Planning</h3>
+        </div>
+        <p>Every planning phase begins by querying our accumulated knowledge base. When a new deepwater riser project starts, the plan automatically incorporates:</p>
+        <ul>
+            <li>Patterns from previous riser analyses in similar water depths</li>
+            <li>Gotchas encountered during past regulatory reviews</li>
+            <li>Client-specific preferences and standards interpretations</li>
+            <li>Optimized workflows proven on prior engagements</li>
+        </ul>
+        <p>This is not a static template. It is a <strong>living knowledge system</strong> that gets smarter with every project.</p>
+
+        <div class="phase-header">
+            <span class="phase-number">5</span>
+            <h3>Compounding Creates Competitive Advantage Over Time</h3>
+        </div>
+        <p>After 100 engineering tasks through this loop, our knowledge base contains thousands of patterns, gotchas, and tips. A new project in a familiar domain does not start from zero -- it starts from the <strong>accumulated intelligence of every prior engagement</strong>.</p>
+        <p>For clients, this means:</p>
+        <ul>
+            <li><strong>Faster project delivery</strong> -- planning draws on proven approaches</li>
+            <li><strong>Higher quality</strong> -- reviews catch issues that only surface after many projects</li>
+            <li><strong>Lower risk</strong> -- known pitfalls are flagged before they become costly</li>
+            <li><strong>Transparent methodology</strong> -- every decision is traceable to a documented rationale</li>
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <h2>How This Works in Practice</h2>
+
+        <h3>Example: Deepwater Flowline Design</h3>
+        <p>A client needs a 12-inch flowline design for 1,500m water depth in the Gulf of Mexico.</p>
+
+        <ol>
+            <li><strong>Plan (40%)</strong> -- Retrieve knowledge from 8 prior deepwater flowline projects. Identify that lateral buckling and walking are the governing phenomena at this water depth. Pull DNV-ST-F101 and DNVGL-RP-F110 requirements. Build a detailed analysis plan with all load cases, acceptance criteria, and software workflows defined before any modeling begins.</li>
+            <li><strong>Work (10%)</strong> -- Execute the plan. Run OrcaFlex models for installation. Run Abaqus for in-place lateral buckling. The plan is so detailed that execution is largely mechanical.</li>
+            <li><strong>Review (40%)</strong> -- Twelve-perspective review catches a soil friction coefficient assumption that would have been non-conservative for the clay conditions at this site. Flagged and corrected before the client sees the first draft.</li>
+            <li><strong>Compound (10%)</strong> -- Capture the soil friction gotcha as a knowledge entry. Next Gulf of Mexico deepwater project will automatically surface this during planning.</li>
+        </ol>
+
+        <div class="highlight-box">
+            <p><strong>Result:</strong> The client receives a design that benefits from the collective experience of every prior deepwater flowline project we have executed -- delivered faster and with fewer iterations than a traditional linear approach.</p>
+        </div>
+    </main>
+
+    <section class="cta-section">
+        <h2>Apply This Methodology to Your Project</h2>
+        <p>See how our 5-lesson framework accelerates your project from concept to commissioning.</p>
+        <a href="mailto:info@aceengineer.com?subject=Methodology Inquiry — Compound Engineering" class="cta-button">
+            Start a Conversation &rarr;
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ACE Engineer &middot; aceengineer.com</p>
+        <p class="disclaimer">This page describes ACE Engineer's internal engineering methodology. Specific project outcomes depend on scope, data quality, and regulatory requirements.</p>
+    </footer>
+</body>
+</html>

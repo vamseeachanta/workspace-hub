@@ -97,3 +97,4 @@ Until the industry solves the data quality problem — standardised digital repo
 - **Related concept**: [[energy-field-economics]] — well cost is the largest capex component; DWOP optimisation directly reduces cost per well
 - **Related concept**: [[fea-structural-analysis]] — casing design and wellhead structural analysis feed into the DWOP
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)
+- **Cross-wiki (marine-engineering)**: [AI in Drill Well on Paper (DWOP)](../../../marine-engineering/wiki/entities/ai-dwop.md) -- similar titles (100%); shared tags: drilling, dwop, genai, well-planning; shared keywords: ai, application, automated, cross-references, drill

@@ -1,0 +1,537 @@
+# drive-layout-migration.yaml — Ace drive layout standardization plan
+# Issue: #1544
+# Generated: 2026-03-31
+# Status: PLAN ONLY — no data moves or script edits in this PR
+#
+# Convention:
+#   /mnt/ace/<repo-name>/<domain>/...
+#   Scripts use ${ACE_DATA_ROOT:-/mnt/ace} — never hardcode mount prefix
+#   Remote mounts mirror the same tree so paths are portable across hosts
+
+schema_version: "1.0.0"
+generated: "2026-03-31"
+issue: 1544
+depends_on: 1543  # mount-map.yaml, .env.example
+
+# ── Target convention ────────────────────────────────────────────────────────
+
+convention:
+  pattern: "${ACE_DATA_ROOT}/<repo-name>/<domain>/..."
+  env_var: ACE_DATA_ROOT
+  default_value: /mnt/ace
+  rules:
+    - level_1: repo name (matches GitHub repo exactly)
+    - level_2: domain (functional area within that repo)
+    - level_3_plus: free-form per domain needs
+    - scripts: "must use ${ACE_DATA_ROOT:-/mnt/ace}, never hardcode /mnt/ace"
+    - remote: "ace-linux-2 mounts at /mnt/remote/ace-linux-1/ace — same subtree"
+  examples:
+    - "${ACE_DATA_ROOT}/workspace-hub/document-index/summaries/"
+    - "${ACE_DATA_ROOT}/digitalmodel/hydro/"
+    - "${ACE_DATA_ROOT}/digitalmodel/docs/domains/"
+
+# ── Current ace drive inventory (/mnt/ace top-level) ────────────────────────
+# Observed via NFS at /mnt/remote/ace-linux-1/ace/ on 2026-03-31
+
+current_ace_layout:
+  repo_aligned:
+    # These already match the <repo-name> convention
+    - path: /mnt/ace/digitalmodel
+      proposed: "${ACE_DATA_ROOT}/digitalmodel"
+      status: already_aligned
+      contents: docs, projects, tests, assetutilities-from-temp
+
+    - path: /mnt/ace/capytaine
+      proposed: "${ACE_DATA_ROOT}/capytaine"
+      status: already_aligned
+
+    - path: /mnt/ace/HAMS
+      proposed: "${ACE_DATA_ROOT}/HAMS"
+      status: already_aligned
+
+    - path: /mnt/ace/MoorDyn
+      proposed: "${ACE_DATA_ROOT}/MoorDyn"
+      status: already_aligned
+
+    - path: /mnt/ace/MoorPy
+      proposed: "${ACE_DATA_ROOT}/MoorPy"
+      status: already_aligned
+
+    - path: /mnt/ace/openfast
+      proposed: "${ACE_DATA_ROOT}/openfast"
+      status: already_aligned
+
+    - path: /mnt/ace/WEC-Sim
+      proposed: "${ACE_DATA_ROOT}/WEC-Sim"
+      status: already_aligned
+
+    - path: /mnt/ace/aceengineer-admin
+      proposed: "${ACE_DATA_ROOT}/aceengineer-admin"
+      status: already_aligned
+
+    - path: /mnt/ace/saipem
+      proposed: "${ACE_DATA_ROOT}/saipem"
+      status: already_aligned
+
+    - path: /mnt/ace/2H
+      proposed: "${ACE_DATA_ROOT}/2H"
+      status: already_aligned
+
+    - path: /mnt/ace/doris
+      proposed: "${ACE_DATA_ROOT}/doris"
+      status: already_aligned
+
+    - path: /mnt/ace/frontierdeepwater
+      proposed: "${ACE_DATA_ROOT}/frontierdeepwater"
+      status: already_aligned
+
+    - path: /mnt/ace/seanation
+      proposed: "${ACE_DATA_ROOT}/seanation"
+      status: already_aligned
+
+    - path: /mnt/ace/worldenergydata
+      proposed: "${ACE_DATA_ROOT}/worldenergydata"
+      status: already_aligned
+
+    - path: /mnt/ace/rock-oil-field
+      proposed: "${ACE_DATA_ROOT}/rock-oil-field"
+      status: already_aligned
+
+    - path: /mnt/ace/gmsh
+      proposed: "${ACE_DATA_ROOT}/gmsh"
+      status: already_aligned
+
+    - path: /mnt/ace/opm-common
+      proposed: "${ACE_DATA_ROOT}/opm-common"
+      status: already_aligned
+
+    - path: /mnt/ace/0_mrv
+      proposed: "${ACE_DATA_ROOT}/0_mrv"
+      status: already_aligned
+      note: MRV data repo
+
+  needs_relocation:
+    # These do NOT follow <repo-name>/<domain> and need restructuring
+
+    - path: /mnt/ace/O&G-Standards
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/standards/og/"
+      status: needs_relocation
+      reason: "standards library used by workspace-hub document-index; not a repo"
+      referenced_by:
+        - data/document-index/mounted-source-registry.yaml
+        - digitalmodel/scripts/python/digitalmodel/index_assets.py
+        - scripts/data/document-index/config.yaml
+        - scripts/data/document-index/phase-b-claude-worker.py
+        - scripts/data/document-index/phase_b_astm_classifier.py
+        - scripts/data/document-index/summarise-worker.py
+      note: >
+        Large collection — may keep in place and create symlink from proposed path.
+        Alternative: leave at current path, just ensure scripts use env var.
+
+    - path: /mnt/ace/docs
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/project-docs/"
+      status: needs_relocation
+      reason: "generic 'docs' folder; contains project documents + standards subfolders"
+      referenced_by:
+        - data/document-index/mounted-source-registry.yaml (ace_project source)
+        - scripts/data/document-index/config.yaml
+        - scripts/data/doc-intelligence/batch-extract-naval.sh
+        - scripts/data/doc-intelligence/build-ship-plans-index.py
+        - knowledge/seeds/naval-architecture-resources.yaml (40+ paths)
+      note: >
+        Contains _standards/SNAME/ subtree heavily referenced in knowledge/seeds.
+        Very large — symlink approach recommended.
+
+    - path: /mnt/ace/data
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/data/"
+      status: needs_relocation
+      reason: "generic 'data' folder; contains document-index, archive, osi-datasets"
+      contents:
+        - document-index/  # document-intelligence index files
+        - archive/
+        - osi-datasets/
+        - va-hdd-2/
+        - 2021-11-22-sd-HDD/
+      referenced_by:
+        - scripts/data/document-index/config.yaml
+
+    - path: /mnt/ace/Production
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/production/"
+      status: needs_relocation
+      reason: "generic top-level name; production data referenced from document-index"
+      referenced_by:
+        - scripts/data/document-index/config.yaml
+        - digitalmodel/scripts/python/digitalmodel/index_assets.py
+
+    - path: /mnt/ace/umbilical
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/umbilical/"
+      status: needs_relocation
+      reason: "domain data, not a repo name"
+      referenced_by:
+        - scripts/data/document-index/config.yaml
+
+    - path: /mnt/ace/client_projects
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/client-projects/"
+      status: needs_relocation
+      reason: "client project archives; not a repo"
+      referenced_by:
+        - digitalmodel/examples/domains/artificial_lift/dynacard_demo.py
+        - digitalmodel/examples/domains/artificial_lift/field_troubleshooter.py
+
+    - path: /mnt/ace/scripts
+      proposed: "${ACE_DATA_ROOT}/workspace-hub/scripts/"
+      status: needs_relocation
+      reason: "top-level scripts folder; not a repo"
+
+  utility_files:
+    - path: /mnt/ace/assets.json
+      note: asset index file; keep at root or move to workspace-hub/
+    - path: /mnt/ace/README.md
+      note: drive-level readme; keep at root
+
+# ── Hardcoded path migration map ────────────────────────────────────────────
+# Comprehensive listing of scripts/configs with hardcoded mount paths
+
+hardcoded_paths:
+
+  # ── Category 1: /mnt/github/ (LEGACY, highest priority) ──────────────────
+  - category: "legacy /mnt/github/ references"
+    priority: high
+    total_files: 300
+    action: "replace with ${WORKSPACE_HUB_ROOT} or $(git rev-parse --show-toplevel)"
+    subcategories:
+
+      - name: shell automation scripts
+        pattern: '/mnt/github/workspace-hub'
+        files:
+          - digitalmodel/scripts/automation/agent_orchestrator.sh
+          - digitalmodel/scripts/automation/gate_pass_review.sh
+          - digitalmodel/scripts/automation/update_ai_agents_daily.sh
+        action: "use WORKSPACE_ROOT=${WORKSPACE_HUB_ROOT:-$(git rev-parse --show-toplevel)}"
+
+      - name: digitalmodel claude hooks
+        pattern: '/mnt/github/workspace-hub'
+        files:
+          - digitalmodel/.claude/hooks/capture-corrections.sh
+          - digitalmodel/.claude/hooks/pre-task.sh
+        action: "already has fallback pattern; update primary path"
+
+      - name: digitalmodel claude settings.json
+        pattern: '/mnt/github/workspace-hub'
+        files:
+          - digitalmodel/.claude/settings.json
+        action: "update hardcoded fallback paths in hook commands"
+
+      - name: legacy python scripts (digitalmodel/.claude/commands/legacy-scripts/)
+        pattern: '/mnt/github/github'
+        files:
+          - digitalmodel/.claude/commands/legacy-scripts/git.py
+          - digitalmodel/.claude/commands/legacy-scripts/agent.py
+          - digitalmodel/.claude/commands/legacy-scripts/ai_agent.py
+          - digitalmodel/.claude/commands/legacy-scripts/git-commit-push-merge-all.py
+          - digitalmodel/.claude/commands/legacy-scripts/git-sync-all-enhanced.py
+          - digitalmodel/.claude/commands/legacy-scripts/git-trunk-flow-enhanced.py
+          - digitalmodel/.claude/commands/legacy-scripts/git-trunk-status.py
+          - digitalmodel/.claude/commands/legacy-scripts/git-trunk-sync-all.py
+          - digitalmodel/.claude/commands/legacy-scripts/git_sync.py
+          - digitalmodel/.claude/commands/legacy-scripts/git_trunk_flow.py
+          - digitalmodel/.claude/commands/legacy-scripts/git_trunk_flow_enhanced.py
+          - digitalmodel/.claude/commands/legacy-scripts/install_ecosystem_awareness.py
+          - digitalmodel/.claude/commands/legacy-scripts/search_commands.py
+          - digitalmodel/.claude/commands/legacy-scripts/spec_enhanced.py
+          - digitalmodel/.claude/commands/legacy-scripts/sync_all_commands.py
+        note: "these are explicitly 'legacy-scripts' — consider deprecation over migration"
+
+      - name: orcaflex legacy scripts
+        pattern: '/mnt/github/digitalmodel'
+        files:
+          - digitalmodel/.claude/commands/legacy-scripts/orcaflex-run-to-sim.py
+          - digitalmodel/.claude/commands/legacy-scripts/orcaflex-universal.py
+        action: "migrate to REPO_ROOT-relative paths"
+
+      - name: documentation with hardcoded paths
+        pattern: '/mnt/github/'
+        files:
+          - digitalmodel/.claude/product/MISSION_IMPROVEMENT_SUMMARY.md
+          - digitalmodel/.claude/skills/skills-catalog.json
+          - digitalmodel/docs/domains/agents/AI_AGENT_ORCHESTRATION.md
+          - digitalmodel/docs/domains/cathodic_protection/cp_bug_fixes_summary.md
+          - digitalmodel/docs/domains/cathodic_protection/saipem_cp_comparison_analysis.md
+          - digitalmodel/docs/domains/project-docs/HTML_REPORTING_STANDARDS.md
+          - digitalmodel/docs/domains/project-docs/PHASE_2_2_BASE_SOLVERS_IMPLEMENTATION.md
+          - digitalmodel/docs/domains/development/DEPLOYMENT-PROMPT-WEB-CONTEXTUALIZATION.md
+          - digitalmodel/docs/domains/development/web-contextualization-deployment-prompt.md
+          - digitalmodel/docs/domains/ecosystem/MANDATORY_SLASH_COMMAND_ECOSYSTEM.md
+          - digitalmodel/docs/domains/testing/engine_test_strategy.md
+          - digitalmodel/docs/domains/testing/TEST_PERFORMANCE_REPORT.md
+          - digitalmodel/src/digitalmodel/visualization/design_tools/IMPLEMENTATION_GUIDE.md
+          - digitalmodel/src/digitalmodel/visualization/design_tools/pilot_program/user_onboarding.md
+        action: "update paths in docs; low urgency but improves accuracy"
+
+      - name: python examples with hardcoded save paths
+        pattern: '/mnt/github/github/digitalmodel/examples'
+        files:
+          - digitalmodel/examples/domains/reservoir/reservoir_analysis_examples.py
+          - digitalmodel/examples/domains/stress/stress_examples/nonlinear_example.py
+          - digitalmodel/examples/domains/stress/stress_examples/stress_strain_example.py
+          - digitalmodel/examples/domains/stress/stress_examples/vm_stress_example.py
+        action: "use Path(__file__).parent for output paths"
+
+      - name: test/doc analysis scripts
+        pattern: '/mnt/github/github/digitalmodel'
+        files:
+          - digitalmodel/docs/domains/project-docs/test_analysis.py
+          - digitalmodel/docs/domains/project-docs/test_performance_dashboard.py
+          - digitalmodel/docs/domains/project-docs/test_resource_monitor.py
+        action: "use relative or REPO_ROOT paths"
+
+      - name: tool deployment scripts
+        pattern: '/mnt/github/github'
+        files:
+          - digitalmodel/scripts/python/digitalmodel/tools/deploy-web-contextualization.py
+          - digitalmodel/scripts/python/digitalmodel/tools/implement-web-resources.py
+        action: "use env var or relative path"
+
+      - name: data conversion scripts
+        pattern: '/mnt/github/workspace-hub'
+        files:
+          - digitalmodel/scripts/excel_to_csv_converter.py
+          - digitalmodel/scripts/verify_excel_csv_conversion.py
+        action: "use WORKSPACE_HUB_ROOT or relative path"
+
+      - name: client project examples
+        pattern: '/mnt/github/workspace-hub/client_projects'
+        files:
+          - digitalmodel/examples/domains/artificial_lift/dynacard_demo.py
+          - digitalmodel/examples/domains/artificial_lift/field_troubleshooter.py
+        action: "use ${ACE_DATA_ROOT}/client_projects or env var"
+
+  # ── Category 2: /mnt/ace/ (ace drive data paths) ─────────────────────────
+  - category: "ace drive /mnt/ace/ references"
+    priority: medium
+    total_files: 86
+    action: "replace with ${ACE_DATA_ROOT}/..."
+    subcategories:
+
+      - name: document-index scripts and config
+        files:
+          - scripts/data/document-index/config.yaml
+          - scripts/data/document-index/phase-b-claude-worker.py
+          - scripts/data/document-index/phase_b_astm_classifier.py
+          - scripts/data/document-index/summarise-worker.py
+          - scripts/data/document-index/remap_og_standards_paths.py
+          - scripts/data/document-index/provenance.py
+          - scripts/data/document-index/enrich-category-from-path.py
+          - scripts/data/document-index/calc-examples-mapper.py
+          - scripts/data/document-index/naval-arch-intelligence.py
+          - scripts/data/document-index/create-domain-symlinks.py
+        action: "use ${ACE_DATA_ROOT} prefix; update config.yaml paths"
+
+      - name: doc-intelligence extraction scripts
+        files:
+          - scripts/data/doc-intelligence/batch-extract-naval.sh
+          - scripts/data/doc-intelligence/build-ship-plans-index.py
+          - scripts/data/doc-intelligence/re-extract-cid-manifests.sh
+        action: "use ${ACE_DATA_ROOT}/docs/_standards/SNAME"
+
+      - name: knowledge seed files
+        files:
+          - knowledge/seeds/naval-architecture-resources.yaml
+        note: "40+ local_path entries with /mnt/ace/docs/_standards/SNAME/"
+        action: "replace prefix with ${ACE_DATA_ROOT} or add path_prefix field"
+
+      - name: mounted-source-registry
+        files:
+          - data/document-index/mounted-source-registry.yaml
+        action: "update mount_root values to use ${ACE_DATA_ROOT} variable"
+
+      - name: digitalmodel index_assets.py
+        files:
+          - digitalmodel/scripts/python/digitalmodel/index_assets.py
+        action: "use ${ACE_DATA_ROOT} for source roots"
+
+      - name: test references
+        files:
+          - digitalmodel/tests/fixtures/test_vectors/document_intelligence/high-value-sources.yaml
+          - digitalmodel/tests/naval_architecture/test_propeller_4_quadrant.py
+        action: "use env var or document as ace-linux-1 specific"
+
+      - name: document-index test fixtures
+        files:
+          - scripts/data/document-index/tests/test_provenance.py
+          - scripts/data/document-index/tests/test_remap_og_standards_paths.py
+        action: "use test constants; paths in asserts are fine"
+
+  # ── Category 3: /mnt/local-analysis/ (local drive refs) ──────────────────
+  - category: "local drive /mnt/local-analysis/ references"
+    priority: medium
+    total_files: 151
+    action: "replace with ${LOCAL_ANALYSIS_ROOT} or ${WORKSPACE_HUB_ROOT}"
+    subcategories:
+
+      - name: codex agent TOML configs
+        files:
+          - .codex/agents/gsd-phase-researcher.toml
+          - .codex/agents/gsd-debugger.toml
+          - .codex/agents/gsd-executor.toml
+          - .codex/agents/gsd-plan-checker.toml
+          - .codex/agents/gsd-planner.toml
+          - .codex/agents/gsd-project-researcher.toml
+          - .codex/agents/gsd-research-synthesizer.toml
+          - .codex/agents/gsd-roadmapper.toml
+          - .codex/agents/gsd-ui-researcher.toml
+          - .codex/agents/gsd-verifier.toml
+        note: "10 TOML files with heavy /mnt/local-analysis/workspace-hub/.codex/ usage"
+        action: "blocked — codex TOML does not support env var expansion; needs wrapper script or symlink"
+
+      - name: capytaine test benchmarks
+        files:
+          - digitalmodel/tests/hydrodynamics/capytaine/test_cylinder_benchmark.py
+          - digitalmodel/tests/hydrodynamics/capytaine/test_oc4_semisub_benchmark.py
+          - digitalmodel/tests/hydrodynamics/capytaine/test_sphere_benchmark.py
+        action: "use CAPYTAINE_ENV env var with os.environ.get()"
+
+      - name: asset integrity test data fixtures
+        files:
+          - digitalmodel/tests/asset_integrity/test_data/API579/*.yml
+          - digitalmodel/tests/asset_integrity/test_data/fracture_mechanics/*.yml
+        note: "6+ YAML files with absolute paths in CustomInputFile, analysis_root_folder, etc."
+        action: "use relative paths or REPO_ROOT variable"
+
+      - name: hull library test
+        files:
+          - digitalmodel/tests/hydrodynamics/hull_library/test_panel_inventory.py
+        action: "use WORKSPACE_HUB_ROOT or Path(__file__).parents[n]"
+
+      - name: claude settings.local.json
+        files:
+          - .claude/settings.local.json
+        action: "machine-specific file; keep hardcoded (not committed to other machines)"
+
+  # ── Category 4: /mnt/dde (DDE drive) ─────────────────────────────────────
+  - category: "DDE drive /mnt/dde references"
+    priority: low
+    total_files: 3
+    action: "replace with ${DDE_ROOT:-/mnt/dde}"
+    files:
+      - config/workstations/registry.yaml
+      - scripts/data/document-index/phase-b-claude-worker.py
+      - scripts/operations/wrk-294-finish.sh
+
+  # ── Category 5: /mnt/workspace-hub (convenience alias) ───────────────────
+  - category: "/mnt/workspace-hub convenience alias"
+    priority: low
+    total_files: 8
+    action: "replace with ${WORKSPACE_HUB_ROOT}"
+    files:
+      - .claude/settings.local.json
+      - config/tmux/start-session.sh
+      - config/workstations/registry.yaml
+      - .planning/archive/modules/hardware-inventory/manifests/dev-secondary.yml
+      - scripts/cron/comprehensive-learning-nightly.sh
+      - scripts/readiness/check-network-mounts.sh
+      - scripts/readiness/compare-harness-state.sh
+      - scripts/readiness/harness-config.yaml
+
+# ── Migration execution order ───────────────────────────────────────────────
+# When ready to execute (separate issues):
+
+execution_phases:
+
+  - phase: 1
+    title: "Environment variable foundation"
+    description: >
+      Create a shared env-loading script (scripts/lib/env.sh) that sources
+      .env and exports all standardized variables. Add to shell profiles.
+    files_to_create:
+      - scripts/lib/env.sh
+    blocked_by: []
+
+  - phase: 2
+    title: "Script migration — automation and coordination"
+    description: >
+      Update all scripts/automation/*.sh and scripts/coordination/git/*.sh
+      to source env.sh and use ${WORKSPACE_HUB_ROOT}.
+    target_categories:
+      - "legacy /mnt/github/ references → shell automation scripts"
+    blocked_by: [1]
+
+  - phase: 3
+    title: "Script migration — document-index and doc-intelligence"
+    description: >
+      Update document-index scripts to use ${ACE_DATA_ROOT}.
+      Update config.yaml with env-var-aware paths.
+    target_categories:
+      - "ace drive /mnt/ace/ references → document-index scripts and config"
+      - "ace drive /mnt/ace/ references → doc-intelligence extraction scripts"
+    blocked_by: [1]
+
+  - phase: 4
+    title: "Test fixture cleanup"
+    description: >
+      Convert absolute paths in test data YAML files to relative paths.
+      Update capytaine benchmarks to use CAPYTAINE_ENV env var.
+    target_categories:
+      - "local drive references → asset integrity test data fixtures"
+      - "local drive references → capytaine test benchmarks"
+    blocked_by: [1]
+
+  - phase: 5
+    title: "Ace drive directory restructuring"
+    description: >
+      Create symlinks for non-repo-aligned directories under /mnt/ace/.
+      E.g., /mnt/ace/workspace-hub/standards/og → /mnt/ace/O&G-Standards.
+      No data moves — symlinks only for backward compatibility.
+    blocked_by: [1, 2, 3]
+
+  - phase: 6
+    title: "Codex TOML and knowledge files"
+    description: >
+      Address .codex/agents/*.toml hardcoded paths. May require wrapper
+      scripts or symlinks since TOML doesn't support env var expansion.
+      Update knowledge/seeds/ YAML files.
+    target_categories:
+      - "local drive references → codex agent TOML configs"
+      - "ace drive references → knowledge seed files"
+    blocked_by: [1]
+
+  - phase: 7
+    title: "Legacy script deprecation"
+    description: >
+      Mark digitalmodel/.claude/commands/legacy-scripts/ as deprecated.
+      Either update paths or add deprecation notices pointing to replacements.
+    target_categories:
+      - "legacy /mnt/github/ references → legacy python scripts"
+    blocked_by: [2]
+
+# ── Risks and notes ─────────────────────────────────────────────────────────
+
+risks:
+  - id: codex_toml_no_env_vars
+    severity: medium
+    description: >
+      Codex TOML files (10 files, 50+ path references) do not support
+      environment variable expansion. Options: (a) wrapper script that
+      generates TOML from template, (b) symlink /mnt/local-analysis/workspace-hub
+      to canonical location on all machines, (c) accept as machine-specific.
+
+  - id: knowledge_seed_bulk_paths
+    severity: low
+    description: >
+      naval-architecture-resources.yaml has 40+ hardcoded /mnt/ace/ paths.
+      Could add a path_prefix field at the top level and use relative paths
+      in individual entries.
+
+  - id: large_directory_moves
+    severity: high
+    description: >
+      /mnt/ace/O&G-Standards and /mnt/ace/docs are very large directories.
+      Use symlinks rather than physical moves to avoid multi-hour copy operations
+      and to maintain backward compatibility.
+
+  - id: mounted_source_registry_coupling
+    severity: medium
+    description: >
+      mounted-source-registry.yaml defines mount_root paths used by the
+      document-intelligence pipeline. Changes here must be coordinated with
+      any running indexing jobs.

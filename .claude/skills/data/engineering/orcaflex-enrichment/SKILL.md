@@ -150,3 +150,18 @@ spec = lookup.match_od_wt(od_m=0.2731, wt_m=0.012)
 
 - WRK-593: expand drilling_riser_components.csv + add construction_vessels.csv
 - WRK-594: create api_5l_pipe_schedule.csv + PipelineSpecLookup class
+
+
+## Documentation Reference
+
+llm-wiki base: `data/llm-wiki/orcaflex/`
+
+Relevant OrcaFlex topics:
+- `Textdatafiles.md` -- YAML/text data file format for .dat extraction
+- `Vesseldata.md`, `Vesseltypes.md` -- vessel object properties extracted in Stage 1
+- `Lines.md`, `Linedata.md`, `Linetypes,Geometry,massexpansiondata.md` -- line object properties (OD, WT)
+- `Environment.md`, `Generaldata.md` -- general/environment parameters
+
+OrcFxAPI topics (`data/llm-wiki/orcfxapi/`):
+- `Modelbuilding,Settingthedata.md` -- programmatic data extraction via OrcFxAPI
+- `Pythoninterface,Objectdata.md` -- Python object data access for .dat reading

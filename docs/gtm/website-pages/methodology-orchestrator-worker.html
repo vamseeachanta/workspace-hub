@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchestrator-Worker Architecture — ACE Engineer Methodology</title>
+    <meta name="description" content="ACE Engineer separates engineering judgment from task execution. Our orchestrator-worker architecture ensures senior engineers drive decisions while AI handles computation.">
+    <meta property="og:title" content="Orchestrator-Worker Architecture — ACE Engineer Methodology">
+    <meta property="og:description" content="Senior engineers drive decisions, AI handles computation. Our orchestrator-worker architecture separates planning from execution for better outcomes.">
+    <meta property="og:type" content="article">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a202c;
+            background: #f7fafc;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        .page-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: #fff;
+            padding: 64px 24px 48px;
+            text-align: center;
+        }
+        header .brand {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ed8936;
+            margin-bottom: 16px;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        header .subtitle {
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: #bee3f8;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        main {
+            background: #fff;
+            padding: 48px 40px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        main h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin: 48px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        main h2:first-child { margin-top: 0; }
+        main h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #2c5282;
+            margin: 32px 0 12px;
+        }
+        main p { margin-bottom: 16px; }
+        main ul, main ol {
+            margin: 0 0 16px 24px;
+        }
+        main li { margin-bottom: 8px; }
+        main strong { color: #1a365d; }
+        .highlight-box {
+            background: #ebf8ff;
+            border-left: 4px solid #2c5282;
+            padding: 20px 24px;
+            border-radius: 0 6px 6px 0;
+            margin: 24px 0;
+        }
+        .highlight-box p { margin-bottom: 0; }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+        .comparison-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        .comparison-card.orchestrator {
+            border-top: 4px solid #1a365d;
+        }
+        .comparison-card.worker {
+            border-top: 4px solid #ed8936;
+        }
+        .comparison-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .comparison-card.orchestrator h4 { color: #1a365d; }
+        .comparison-card.worker h4 { color: #c05621; }
+        .comparison-card ul {
+            margin: 0 0 0 20px;
+            padding: 0;
+        }
+        .comparison-card li {
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+        thead th {
+            background: #1a365d;
+            color: #fff;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+        }
+        thead th:first-child { border-radius: 6px 0 0 0; }
+        thead th:last-child { border-radius: 0 6px 0 0; }
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        tbody tr:nth-child(even) { background: #f7fafc; }
+        tbody tr:hover { background: #ebf8ff; }
+        pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px 24px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 24px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        code {
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            color: #2c5282;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #cbd5e0, transparent);
+            margin: 48px 0;
+        }
+        .flow-diagram {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 32px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .flow-step {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin: 4px;
+        }
+        .flow-step.orch { background: #1a365d; color: #fff; }
+        .flow-step.work { background: #ed8936; color: #fff; }
+        .flow-step.gate { background: #48bb78; color: #fff; }
+        .flow-arrow {
+            display: inline-block;
+            color: #718096;
+            font-size: 1.2rem;
+            margin: 0 8px;
+            vertical-align: middle;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: #fff;
+            padding: 48px 40px;
+            text-align: center;
+            margin-top: 0;
+        }
+        .cta-section h2 {
+            color: #fff;
+            border: none;
+            font-size: 1.75rem;
+            margin: 0 0 16px;
+        }
+        .cta-section p {
+            color: #bee3f8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: #ed8936;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.05rem;
+            padding: 14px 36px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .cta-button:hover { background: #dd6b20; }
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            color: #718096;
+            font-size: 0.85rem;
+        }
+        footer .disclaimer {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+        @media print {
+            body { background: #fff; font-size: 11pt; }
+            header { background: #1a365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cta-section { background: #1a365d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .cta-button { background: #ed8936 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            main { box-shadow: none; }
+            .comparison-grid { display: block; }
+            .comparison-card { margin-bottom: 16px; }
+        }
+        @media (max-width: 640px) {
+            header h1 { font-size: 1.75rem; }
+            main { padding: 32px 20px; }
+            .cta-section { padding: 32px 20px; }
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">ACE Engineer -- Engineering Intelligence</div>
+        <h1>Orchestrator-Worker Architecture</h1>
+        <p class="subtitle">Engineering judgment drives every decision. AI and automation handle computation. The separation is deliberate and non-negotiable.</p>
+    </header>
+
+    <main class="page-wrapper">
+        <h2>The Core Principle</h2>
+        <p>Modern engineering benefits enormously from AI-augmented workflows -- automated load calculations, parametric modeling, code compliance checking, report generation. But there is a critical distinction between <strong>using AI as a tool</strong> and <strong>letting AI make engineering decisions</strong>.</p>
+        <p>ACE Engineer's orchestrator-worker architecture enforces this distinction structurally. Senior engineering judgment controls <em>what</em> gets done and <em>why</em>. AI and automation handle <em>how</em> the computation executes.</p>
+
+        <div class="highlight-box">
+            <p><strong>The orchestrator decides.</strong> The workers execute. No worker can change scope, override acceptance criteria, or skip verification steps. This is not a management hierarchy -- it is an architectural constraint that ensures engineering accountability.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>Orchestrator vs. Worker Responsibilities</h2>
+
+        <div class="comparison-grid">
+            <div class="comparison-card orchestrator">
+                <h4>Orchestrator (Senior Engineer)</h4>
+                <ul>
+                    <li>Defines scope and acceptance criteria</li>
+                    <li>Selects governing codes and standards</li>
+                    <li>Chooses analysis methodology</li>
+                    <li>Sets safety class and environmental conditions</li>
+                    <li>Reviews and approves all results</li>
+                    <li>Makes engineering judgment calls</li>
+                    <li>Signs off on deliverables</li>
+                    <li>Decides when to override tool output</li>
+                </ul>
+            </div>
+            <div class="comparison-card worker">
+                <h4>Worker (AI / Automation / Analyst)</h4>
+                <ul>
+                    <li>Executes defined calculation procedures</li>
+                    <li>Runs parametric analyses across load cases</li>
+                    <li>Generates code compliance check reports</li>
+                    <li>Formats and assembles deliverable documents</li>
+                    <li>Performs data validation and unit checks</li>
+                    <li>Flags anomalies for orchestrator review</li>
+                    <li>Cannot modify scope or acceptance criteria</li>
+                    <li>Cannot approve its own output</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>How the Architecture Works</h2>
+
+        <div class="flow-diagram">
+            <span class="flow-step orch">Orchestrator: Define Scope</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step orch">Orchestrator: Set Criteria</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step work">Worker: Execute Analysis</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step gate">Gate: Verify</span>
+            <span class="flow-arrow">&rarr;</span>
+            <span class="flow-step orch">Orchestrator: Review &amp; Approve</span>
+        </div>
+
+        <h3>Step 1: Orchestrator Sets the Framework</h3>
+        <p>Before any computation begins, the orchestrator (a senior engineer) defines the complete engineering framework:</p>
+        <ul>
+            <li><strong>Design basis</strong> -- Water depth, environmental conditions, fluid properties, soil parameters</li>
+            <li><strong>Governing standards</strong> -- DNV-ST-F101 for pipeline design, API RP 2SK for mooring, ASME B31.8 for onshore tie-in</li>
+            <li><strong>Acceptance criteria</strong> -- Maximum utilization ratios, minimum fatigue life, allowable displacements</li>
+            <li><strong>Analysis methodology</strong> -- Static or dynamic, linear or nonlinear, deterministic or probabilistic</li>
+            <li><strong>Load case matrix</strong> -- Every combination of functional, environmental, and accidental loads</li>
+        </ul>
+
+        <h3>Step 2: Workers Execute Within Boundaries</h3>
+        <p>Workers -- whether AI agents, automated scripts, or junior analysts -- execute the defined analysis within strict boundaries. They <strong>cannot expand scope</strong>, <strong>cannot relax acceptance criteria</strong>, and <strong>cannot skip prescribed load cases</strong>.</p>
+        <p>What workers can do is execute rapidly and at scale:</p>
+        <ul>
+            <li>Run 500 load case combinations in parallel instead of 20 sequential runs</li>
+            <li>Perform mesh sensitivity studies across 8 refinement levels automatically</li>
+            <li>Check every pipeline span against free-span screening criteria simultaneously</li>
+            <li>Generate code compliance tables for the entire route in minutes</li>
+        </ul>
+
+        <h3>Step 3: Automated Gates Verify Output</h3>
+        <p>Between worker execution and orchestrator review, automated verification gates check that:</p>
+        <ul>
+            <li>All prescribed load cases were analyzed (no gaps)</li>
+            <li>Results are numerically converged (mesh sensitivity, time-step sensitivity)</li>
+            <li>No acceptance criterion was exceeded without flagging</li>
+            <li>Input data matches the design basis (no accidental parameter drift)</li>
+        </ul>
+
+        <h3>Step 4: Orchestrator Reviews and Decides</h3>
+        <p>The senior engineer reviews results with <strong>full visibility</strong> into what was computed, how it was computed, and what the automated gates flagged. The orchestrator can:</p>
+        <ul>
+            <li>Accept results and proceed to deliverable</li>
+            <li>Request additional analysis (e.g., "run the critical span with nonlinear soil springs")</li>
+            <li>Override a worker's result with engineering judgment (e.g., "the dynamic amplification factor should be 1.3 based on field measurements, not the calculated 1.1")</li>
+            <li>Send the entire analysis back with modified criteria</li>
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <h2>Why This Matters for Your Project</h2>
+
+        <h3>Engineering Accountability Is Preserved</h3>
+        <p>When a deliverable carries an engineer's stamp, that engineer must have controlled the decision framework. Our architecture guarantees this. The orchestrator defined the criteria, reviewed the results, and approved the output. <strong>AI accelerated the computation -- it did not make the engineering decisions.</strong></p>
+
+        <h3>AI Limitations Are Contained</h3>
+        <p>AI tools are powerful at pattern matching, numerical computation, and document generation. They are unreliable at engineering judgment -- knowing when a code clause applies, when a simplifying assumption is invalid, or when field conditions override analytical results. By restricting AI to the worker role, we <strong>leverage its strengths while containing its weaknesses</strong>.</p>
+
+        <h3>Scalability Without Compromising Quality</h3>
+        <p>Traditional engineering scales by adding people, which introduces variability. Our architecture scales by adding workers under the same orchestrator framework. <strong>More computation, same judgment quality.</strong></p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Traditional Approach</th>
+                    <th>Orchestrator-Worker</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Load cases analyzed</strong></td>
+                    <td>20-50 (budget-limited)</td>
+                    <td>500+ (automated execution)</td>
+                </tr>
+                <tr>
+                    <td><strong>Sensitivity studies</strong></td>
+                    <td>1-2 parameters varied</td>
+                    <td>Full parametric sweeps</td>
+                </tr>
+                <tr>
+                    <td><strong>Code compliance checks</strong></td>
+                    <td>Spot-checked at critical locations</td>
+                    <td>Every location, every load case</td>
+                </tr>
+                <tr>
+                    <td><strong>Engineering judgment</strong></td>
+                    <td>Applied at review stage</td>
+                    <td>Applied at framework stage (earlier, more impactful)</td>
+                </tr>
+                <tr>
+                    <td><strong>Audit trail</strong></td>
+                    <td>Calculation notes + review comments</td>
+                    <td>Full computation log + gate records + review decisions</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <h2>Practical Example: Mooring System Design</h2>
+        <p>A floating production vessel needs a mooring system designed for a West Africa deepwater field.</p>
+
+        <ol>
+            <li><strong>Orchestrator defines framework:</strong> FPSO in 1,200m water depth. Governing standard: API RP 2SK. Permanent mooring, safety class 2. 100-year return period environment. 12-line spread mooring. Acceptance criteria: maximum vessel offset 8% of water depth, minimum line safety factor 1.67 intact / 1.25 damaged.</li>
+            <li><strong>Workers execute:</strong> AI agents run 2,400 time-domain simulations (200 environmental headings x 12 sea states) in parallel. Each simulation produces maximum tensions, vessel offsets, and fatigue damage. Automated scripts extract governing results per line per load case.</li>
+            <li><strong>Gates verify:</strong> All 2,400 simulations converged. All line tensions within physical bounds. All headings covered. No gaps in the load case matrix. Two simulations flagged for re-run due to numerical instability.</li>
+            <li><strong>Orchestrator reviews:</strong> Senior engineer examines governing load cases, verifies that the damaged condition (line 7 removed) produces the expected shift in vessel response, and approves the preliminary design for detailed fatigue analysis.</li>
+        </ol>
+
+        <div class="highlight-box">
+            <p><strong>Result:</strong> 2,400 simulations instead of the traditional 120. Full environmental coverage instead of spot-checked headings. Same senior engineering judgment controlling the entire framework. Delivered in half the calendar time.</p>
+        </div>
+    </main>
+
+    <section class="cta-section">
+        <h2>Apply This Methodology to Your Project</h2>
+        <p>We separate planning from execution so engineering judgment drives the work, not tool limitations.</p>
+        <a href="mailto:info@aceengineer.com?subject=Methodology Inquiry — Orchestrator-Worker Architecture" class="cta-button">
+            Start a Conversation &rarr;
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ACE Engineer &middot; aceengineer.com</p>
+        <p class="disclaimer">The orchestrator-worker architecture described here reflects ACE Engineer's engineering workflow. Specific analysis scope and methods are tailored to each project's requirements and governing codes.</p>
+    </footer>
+</body>
+</html>

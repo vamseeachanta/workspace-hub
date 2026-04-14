@@ -148,3 +148,7 @@ text = config.read_text()
 - [Shell Scripting Patterns](shell-scripting-patterns.md) -- calling Python from shell with subprocess
 - [JSONL Knowledge Stores](jsonl-knowledge-stores.md) -- typed data parsing with json.loads
 - [Test-Driven Development](test-driven-development.md) -- combining mypy with pytest for full coverage
+
+## Cross-References
+
+- **Cross-wiki (marine-engineering)**: [Process Safety](../../../marine-engineering/wiki/concepts/process-safety.md) -- similar slugs (62%); similar titles (62%)

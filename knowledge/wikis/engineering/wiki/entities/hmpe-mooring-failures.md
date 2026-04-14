@@ -47,3 +47,4 @@ BW Fleet Management's fleet-wide switch from jacketed HMPE to non-jacketed Samso
 - **Related concept**: [Mooring Line Failure Physics](../concepts/mooring-line-failure-physics.md)
 - **Related entity**: [NW Shelf LNG Mooring Investigation](../entities/nws-lng-mooring-investigation.md)
 - **Related standard**: [OCIMF MEG4](../standards/ocimf-meg4.md)
+- **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) -- similar slugs (73%); similar titles (87%); shared tags: hmpe, snap-back; shared keywords: asterix, at, busan, bw, concept

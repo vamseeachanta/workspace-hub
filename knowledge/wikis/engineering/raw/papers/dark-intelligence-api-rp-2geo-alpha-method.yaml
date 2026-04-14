@@ -1,0 +1,111 @@
+source_type: "textbook"
+source_description: "Pile axial capacity in clay using alpha method per API RP 2GEO Section 7.3"
+extracted_date: "2026-03-15"
+legal_scan_passed: true
+category: "geotechnical"
+subcategory: "pile_capacity"
+
+equations:
+  - name: "Alpha factor"
+    latex: "\\alpha = 0.5 \\left(\\frac{S_u}{\\sigma'_v}\\right)^{-0.5}"
+    description: "Adhesion factor relating unit skin friction to undrained shear strength"
+    standard: "API RP 2GEO Sec 7.3"
+
+  - name: "Unit skin friction"
+    latex: "f = \\alpha \\cdot S_u"
+    description: "Unit skin friction capacity for pile in clay"
+
+  - name: "Total axial capacity"
+    latex: "Q = \\pi D L f + N_c S_u A_p"
+    description: "Sum of skin friction plus end bearing for single homogeneous clay layer"
+    standard: "API RP 2GEO Eq. 7.3-1"
+
+inputs:
+  - name: "Pile diameter"
+    symbol: "D"
+    unit: "m"
+    typical_range: [0.3, 3.0]
+    test_value: 1.0
+
+  - name: "Pile length"
+    symbol: "L"
+    unit: "m"
+    typical_range: [10.0, 100.0]
+    test_value: 30.0
+
+  - name: "Undrained shear strength"
+    symbol: "S_u"
+    unit: "kPa"
+    typical_range: [10.0, 200.0]
+    test_value: 60.0
+
+  - name: "Effective overburden pressure"
+    symbol: "sigma_v_eff"
+    unit: "kPa"
+    typical_range: [10.0, 500.0]
+    test_value: 150.0
+
+  - name: "Bearing capacity factor"
+    symbol: "N_c"
+    unit: "-"
+    typical_range: [9.0, 9.0]
+    test_value: 9.0
+
+outputs:
+  - name: "Alpha factor"
+    symbol: "alpha"
+    unit: "-"
+    test_expected: 0.7906
+    tolerance: 0.001
+
+  - name: "Unit skin friction"
+    symbol: "f"
+    unit: "kPa"
+    test_expected: 47.43
+    tolerance: 0.01
+
+  - name: "Skin friction capacity"
+    symbol: "Q_f"
+    unit: "kN"
+    test_expected: 4470.56
+    tolerance: 0.5
+
+  - name: "End bearing capacity"
+    symbol: "Q_p"
+    unit: "kN"
+    test_expected: 424.12
+    tolerance: 0.5
+
+  - name: "Total axial capacity"
+    symbol: "Q"
+    unit: "kN"
+    test_expected: 4894.68
+    tolerance: 1.0
+
+worked_examples:
+  - description: "1.0m diameter pile, 30m long, in firm clay (Su=60kPa, sigma_v'=150kPa)"
+    inputs:
+      pile_diameter_m: 1.0
+      pile_length_m: 30.0
+      undrained_shear_strength_kpa: 60.0
+      effective_overburden_kpa: 150.0
+      bearing_capacity_factor: 9.0
+    outputs:
+      alpha: 0.7906
+      unit_skin_friction_kpa: 47.43
+      skin_friction_capacity_kn: 4470.56
+      end_bearing_capacity_kn: 424.12
+      total_axial_capacity_kn: 4894.68
+    use_as_test: true
+
+assumptions:
+  - "Single homogeneous clay layer"
+  - "Driven pile (not drilled)"
+  - "No pile group effects"
+  - "Alpha method valid for Su/sigma_v' <= 1.0"
+  - "Deep pile assumption for Nc = 9.0"
+
+references:
+  - "API RP 2GEO, 1st Edition, April 2011 — Geotechnical and Foundation Design Considerations"
+
+notes: "Alpha method applies when Su/sigma_v' <= 1.0. For higher ratios, use the alternative branch in API RP 2GEO Sec 7.3."

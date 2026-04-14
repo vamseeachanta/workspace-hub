@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACE Engineer — Capability Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #1a365d;
+    --blue: #2c5282;
+    --orange: #ed8936;
+    --light-bg: #f7fafc;
+    --text: #2d3748;
+    --text-light: #718096;
+    --border: #e2e8f0;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    background: #fff;
+  }
+
+  .page {
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    color: #fff;
+    padding: 28px 36px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-left h1 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .header-left h1 span {
+    color: var(--orange);
+  }
+
+  .header-left p {
+    font-size: 0.72rem;
+    font-weight: 500;
+    opacity: 0.88;
+    letter-spacing: 0.02em;
+  }
+
+  .header-right {
+    text-align: right;
+    font-size: 0.72rem;
+    font-weight: 600;
+    opacity: 0.92;
+    white-space: nowrap;
+  }
+
+  .header-right .accent {
+    color: var(--orange);
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  /* ── Body Grid ── */
+  .body {
+    display: grid;
+    grid-template-columns: 1fr 0.7fr;
+    gap: 0;
+    padding: 24px 36px 16px;
+  }
+
+  .col-left {
+    padding-right: 28px;
+    border-right: 2px solid var(--border);
+  }
+
+  .col-right {
+    padding-left: 28px;
+  }
+
+  /* ── Section Titles ── */
+  .section-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+    margin-bottom: 12px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--orange);
+    display: inline-block;
+  }
+
+  /* ── Service Lines ── */
+  .services { margin-bottom: 20px; }
+
+  .service {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .service-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--light-bg);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    margin-top: 1px;
+    font-size: 0.78rem;
+  }
+
+  .service-text {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .service-text strong {
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .service-text .codes {
+    color: var(--text-light);
+    font-size: 0.7rem;
+  }
+
+  /* ── Proof Point ── */
+  .proof {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .proof .number {
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 0.92rem;
+  }
+
+  .proof::before {
+    content: "\201C";
+    position: absolute;
+    top: 4px;
+    left: 10px;
+    font-size: 2rem;
+    color: rgba(255,255,255,0.15);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  /* ── Engagement Table ── */
+  .engagement { margin-bottom: 20px; }
+
+  .eng-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.72rem;
+  }
+
+  .eng-table thead th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 6px 8px;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .eng-table thead th:first-child { border-radius: 4px 0 0 0; }
+  .eng-table thead th:last-child { border-radius: 0 4px 0 0; }
+
+  .eng-table tbody td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .eng-table tbody tr:nth-child(even) td {
+    background: var(--light-bg);
+  }
+
+  .eng-table .tier-name {
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .eng-table .price {
+    color: var(--orange);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* ── Standards & Software ── */
+  .tags-section { margin-bottom: 18px; }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    background: var(--light-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 9px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .tag.software {
+    background: #fff;
+    border-color: var(--orange);
+    color: var(--blue);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 2px solid var(--navy);
+    margin: 0 36px;
+    padding: 12px 0;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    font-size: 0.72rem;
+    color: var(--text-light);
+  }
+
+  .footer a {
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .footer .sep {
+    color: var(--border);
+  }
+
+  /* ── Print ── */
+  @media print {
+    @page {
+      size: letter;
+      margin: 0;
+    }
+
+    html { font-size: 14px; }
+
+    body {
+      background: #fff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      max-width: none;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .body { flex: 1; }
+
+    .header {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .proof {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .eng-table thead th {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>ACE <span>Engineer</span></h1>
+      <p>Offshore &amp; Subsea Engineering Consulting&ensp;|&ensp;AI-Augmented Parametric Analysis</p>
+    </div>
+    <div class="header-right">
+      <div class="accent">Engineering Intelligence</div>
+      <div>P.E.&ensp;|&ensp;23 Years&ensp;|&ensp;Houston, TX</div>
+    </div>
+  </div>
+
+  <!-- Two-Column Body -->
+  <div class="body">
+
+    <!-- Left Column: What We Do -->
+    <div class="col-left">
+      <div class="services">
+        <div class="section-title">What We Do</div>
+
+        <div class="service">
+          <div class="service-icon">&#9875;</div>
+          <div class="service-text">
+            <strong>Marine Installation Analysis</strong><br>
+            Vessel screening, lift studies, operability
+            <span class="codes">(DNV-RP-H103)</span>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="service-icon">&#9866;</div>
+          <div class="service-text">
+            <strong>Pipeline Integrity</strong><br>
+            Wall thickness, freespan/VIV, on-bottom stability
+            <span class="codes">(DNV-ST-F101, RP-F105)</span>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="service-icon">&#9821;</div>
+          <div class="service-text">
+            <strong>Mooring &amp; Riser Design</strong><br>
+            OrcaFlex analysis, fatigue, metocean loading
+            <span class="codes">(API RP 2SK)</span>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="service-icon">&#9638;</div>
+          <div class="service-text">
+            <strong>Structural Assessment</strong><br>
+            FEA, fitness-for-service, cathodic protection
+            <span class="codes">(API 579, DNV-RP-B401)</span>
+          </div>
+        </div>
+
+        <div class="service">
+          <div class="service-icon">&#9881;</div>
+          <div class="service-text">
+            <strong>AI-Augmented Engineering</strong><br>
+            Overnight parametric sweeps, real-time operations support
+          </div>
+        </div>
+      </div>
+
+      <!-- Proof Point -->
+      <div class="proof">
+        <span class="number">1,292</span> parametric engineering cases screened overnight&thinsp;&mdash;&thinsp;from freespan VIV to deepwater installation
+      </div>
+    </div>
+
+    <!-- Right Column: How We Work -->
+    <div class="col-right">
+
+      <div class="engagement">
+        <div class="section-title">How We Work</div>
+        <table class="eng-table">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Scope</th>
+              <th>Timeline</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tier-name">Screening</td>
+              <td>Parametric analysis, go/no-go report</td>
+              <td>48 hours<br><span class="price">$5K&ndash;15K</span></td>
+            </tr>
+            <tr>
+              <td class="tier-name">Detailed</td>
+              <td>OrcaFlex/FEA model, sensitivity studies</td>
+              <td>2&ndash;4 weeks<br><span class="price">$25K&ndash;75K</span></td>
+            </tr>
+            <tr>
+              <td class="tier-name">Operations</td>
+              <td>Real-time decision support</td>
+              <td>Ongoing<br><span class="price">$10K/month</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tags-section">
+        <div class="section-title">Standards</div>
+        <div class="tags">
+          <span class="tag">DNV</span>
+          <span class="tag">API</span>
+          <span class="tag">ASME</span>
+          <span class="tag">ISO</span>
+          <span class="tag">BS 7608</span>
+        </div>
+      </div>
+
+      <div class="tags-section">
+        <div class="section-title">Software</div>
+        <div class="tags">
+          <span class="tag software">OrcaFlex</span>
+          <span class="tag software">OrcaWave</span>
+          <span class="tag software">ANSYS</span>
+          <span class="tag software">Python/digitalmodel</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>info@aceengineer.com</span>
+    <span class="sep">|</span>
+    <a href="https://aceengineer.com">aceengineer.com</a>
+    <span class="sep">|</span>
+    <span>Licensed P.E. &mdash; Texas #XXXXX</span>
+  </div>
+
+</div>
+
+</body>
+</html>

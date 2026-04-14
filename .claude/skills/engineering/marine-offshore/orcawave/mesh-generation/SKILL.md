@@ -131,3 +131,18 @@ refiner.load_mesh("geometry/hull_coarse.gdf")
 - [Panel Quality Thresholds (+1)](panel-quality-thresholds/SKILL.md)
 - [CLI Usage](cli-usage/SKILL.md)
 - [Integration with gmsh-meshing Skill](integration-with-gmsh-meshing-skill/SKILL.md)
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Data,Meshfileformats.md` -- supported mesh file formats (GDF, etc.)
+- `Data,Meshdetails.md` -- panel mesh detail parameters
+- `Data,Bodies.md` -- body-to-mesh assignment
+- `Meshview.md` -- mesh visualization and inspection
+- `Meshview,Viewcontrol.md` -- mesh view navigation
+- `Data,Validation.md` -- mesh validation checks
+
+Papers (`data/llm-wiki/papers/`):
+- `OrcaWave-working-with-meshes.md` -- comprehensive mesh guidance (panel sizing, waterline, symmetry)
+- `Buoy-Discretisation.md` -- panel discretization for buoy geometries

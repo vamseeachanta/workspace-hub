@@ -1,0 +1,31 @@
+source_type: excel
+source_description: Engineering calculation spreadsheet (energy-economics domain)
+extracted_date: '2026-03-16'
+legal_scan_passed: true
+category: energy-economics
+subcategory: 0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1
+equations:
+- name: D17
+  excel_formula: =D16*0.3048
+  latex: ''
+  description: Cell D17 in Sheet1
+- name: C46
+  excel_formula: =(-(D18*D19*D17+D15)*2)/D18
+  latex: ''
+  description: Cell C46 in Sheet1
+- name: C47
+  excel_formula: =SQRT(C46)
+  latex: ''
+  description: Cell C47 in Sheet1
+inputs: []
+outputs:
+- name: C47
+  symbol: C47
+  unit: ''
+  test_expected: '#NUM!'
+  tolerance: 1.0e-06
+worked_examples: []
+assumptions: []
+references: []
+notes: 'Auto-extracted by WRK-1247 POC. Cache quality: {''total_formulas'': 3, ''cached_ok'':
+  3, ''cached_missing'': 0, ''quality_pct'': 100.0}'
