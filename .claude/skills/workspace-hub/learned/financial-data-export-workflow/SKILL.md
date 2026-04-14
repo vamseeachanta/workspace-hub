@@ -1,13 +1,13 @@
 ---
 name: financial-data-export-workflow
-description: Workflow for gathering and analyzing dispersed financial transaction data when direct API/browser access is restricted
+description: Structured process for exporting and analyzing multi-year brokerage transaction history when browser automation is blocked
 version: 1.0.0
 source: auto-extracted
-extracted: 2026-04-13
+extracted: 2026-04-14
 metadata:
-  tags: ["finance", "data-extraction", "workflow", "csv-parsing", "multi-year-analysis"]
+  tags: ["finance", "data-export", "fidelity", "portfolio-analysis"]
 ---
 
-# Financial Data Export & Multi-Year Analysis Workflow
+# Financial Data Export & Historical Analysis Workflow
 
-When browser automation is blocked on financial sites (safety restriction), use manual export + local parsing: (1) Request user export transactions as CSV from brokerage interface, (2) Locate historical exports already stored in project repo (e.g., `_finance/fidelity/`), (3) Write format-agnostic parser script to handle varying CSV schemas across years, (4) Synthesize complete transaction history to identify investor patterns and portfolio evolution. This preserves security while enabling analysis.
+When browser automation is blocked on financial sites (e.g., Fidelity), use manual CSV export + historical archive strategy: (1) Export current YTD transactions from the brokerage UI; (2) Locate historical transaction files already downloaded in data repo (e.g., `achantas-data/_finance/fidelity/`); (3) Build a parsing script that handles CSV format variations across years; (4) Aggregate transaction data to compute net positions, cost basis, and portfolio composition. This bypasses browser restrictions while enabling full multi-year analysis.

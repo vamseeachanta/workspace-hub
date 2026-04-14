@@ -56,3 +56,4 @@ Uses rectifiers to apply external DC current via inert anodes (mixed metal oxide
 - **Related concept**: [[coating-breakdown]]
 - **Cross-wiki (engineering)**: [Cathodic Protection Design](../../../engineering/wiki/concepts/cathodic-protection-design.md) — detailed CP design with anode sizing equations, material selection, ICCP vs sacrificial comparison, and CIPS verification
 - **Career seed**: CAREER-engineering-cathodic-protection (DNV RP-F103, ABS rules, anode mass sizing)
+- **Cross-wiki (engineering)**: [Diffraction Analysis System](../../../engineering/wiki/entities/diffraction-analysis-system.md) -- similar slugs (57%); similar titles (57%)

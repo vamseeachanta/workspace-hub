@@ -47,6 +47,8 @@ Required live checks:
 4. Verify the relevant repo/worktree is not already in a conflicting dirty state.
 5. Verify required local repos/data paths actually exist now.
 6. Re-read the latest issue body/comments if the issue may have become partially or fully completed.
+7. Check local execution evidence for stale-open issues before assigning them: inspect the current day's `.claude/state/session-signals/YYYY-MM-DD.jsonl`, relevant handoff docs under `docs/handoffs/`, and any newly created deliverable artifacts referenced by the issue/plan. An issue can remain open and even keep `status:plan-approved` while same-day Claude runs have already produced the intended artifacts and posted execution comments. Treat those as **verify/close candidates**, not fresh implementation candidates.
+8. Check the current repo state before launching: if the main checkout is dirty or other Claude runs are already active (`git status --short`, `ps aux | grep claude`), prefer fresh worktrees and exclude overlapping issues from the batch.
 
 If fewer than N issues pass the live eligibility check, do **not** pretend you found N directly executable implementation issues. Instead, explicitly switch the batch into one of these modes:
 - **assessment-only pack**: each Claude session determines whether one candidate issue is directly executable now and writes a verdict + exact blocker + implementation prompt if eligible

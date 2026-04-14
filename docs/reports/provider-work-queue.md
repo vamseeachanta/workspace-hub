@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-13T13:20:06.283013Z
+Generated: 2026-04-14T09:20:06.154060Z
 Current week: 2026-W16
 Recommended provider order: gemini, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 19
+- Execution-ready candidates: 28
 - Total routed candidates: 137
 
 | Issue | Ready | Why routed here | Labels |
@@ -18,16 +18,16 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2127 fix(governance): make plan-approval-gate honor FORCE_PLAN_GATE_STRICT and DISABLE_ENFORCEMENT | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
 | #2128 fix(governance): wire enforcement-env and require-review-on-push into install-hooks pre-push chain | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
 | #2248 epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution | yes | existing claude agent label | enhancement, priority:high, cat:data-pipeline, cat:documentation, agent:claude, status:plan-approved |
-| #2129 chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts | yes | existing claude agent label | enhancement, priority:medium, cat:ai-orchestration, cat:harness, agent:claude, status:plan-approved |
-| #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
-| #2205 feat(knowledge): define multi-machine llm-wiki + resource/document intelligence operating model | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:documentation, cat:harness, status:plan-approved |
-| #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
+| #2249 feat(doc-intel): triage index-level other bucket into bounded context packs | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:document-intelligence, status:plan-approved |
+| #2046 Audit compliance of strict issue planning workflow after rollout | yes | strategy/workflow/architecture language | priority:medium, cat:ai-orchestration, cat:operations, status:plan-approved |
+| #2096 feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
+| #2105 chore(knowledge): define freshness cadences and staleness signals for intelligence assets | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 1
-- Total routed candidates: 54
+- Total routed candidates: 57
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -44,16 +44,14 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 9
+- Total routed candidates: 6
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2116 feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links | no | research/triage/audit language | enhancement, priority:high, cat:business, domain:gtm |
-| #2003 Fix 5 failing tests in worldenergydata — test suite cleanup (#1962 Phase 3) | no | existing gemini agent label | priority:medium, cat:engineering, agent:gemini |
-| #2005 audit(digitalmodel): worldenergydata test collection timeout + 14K bytecode files — investigate and resolve | no | existing gemini agent label | priority:medium, cat:engineering, agent:gemini |
 | #2039 feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues) | no | research/triage/audit language | enhancement, priority:medium, domain:knowledge-management |
-| #2006 audit(worldenergydata): 14000+ orphan modules — triage for archival vs active use (#1962 Phase 3) | no | existing gemini agent label | priority:low, cat:engineering, agent:gemini |
 | #2041 chore: add LaTeX to manim-env for MathTex rendering | no | research/triage/audit language | enhancement, priority:low |
 | #2042 feat: engineering wiki — ingest skill metadata as wiki pages | no | research/triage/audit language | enhancement, cat:harness, domain:knowledge-management |
 | #2123 feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation | no | research/triage/audit language |  |
+| #2125 feat(llm-wiki): auto-refresh ingestion on new Orcina releases | no | research/triage/audit language |  |
 

@@ -3,8 +3,8 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-13T07:00:41Z"
-  source_hash: "926e2ceb72365f3baace038d61c5db75"
+  generated: "2026-04-14T07:00:58Z"
+  source_hash: "7300a2549b8d0786530b820ef4c58f4e"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
@@ -36,7 +36,7 @@ hermes_insights:
     - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
     - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
     - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-    - "User approves sensible commands without explicit permission prompts and explicitly approved interactive Claude Code tmux launches with --dangerously-skip-permissions when needed for implementation."
+    - "User approves sensible commands. For Claude implementation work, use tmux/interactive Claude Code with --dangerously-skip-permissions by default. For GitHub issues, use latest status:* as authoritative and proactively create follow-up issues as needed. If approval is needed, surface the plan only after plan review completes."
 
 claude_memory_index:
   files:

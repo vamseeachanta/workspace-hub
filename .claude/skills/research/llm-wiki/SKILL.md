@@ -53,6 +53,22 @@ skills:
 Falls back to `~/wiki` default. The resolved path is injected when this
 skill loads — check the `[Skill config: ...]` block above for the active value.
 
+Before setting `wiki.path`, verify the target actually exists. A stale default like
+`~/wiki` is easy to leave behind even when the real wiki lives elsewhere.
+
+For the workspace-hub multi-wiki layout, the preferred root is usually:
+
+```yaml
+skills:
+  config:
+    wiki:
+      path: /mnt/local-analysis/workspace-hub/knowledge/wikis
+```
+
+This points at the domain-wiki root (`engineering/`, `marine-engineering/`,
+`maritime-law/`, `naval-architecture/`, etc.) rather than a single flat `~/wiki`
+folder.
+
 The wiki is just a directory of markdown files — open it in Obsidian, VS Code, or
 any editor. No database, no special tooling required.
 

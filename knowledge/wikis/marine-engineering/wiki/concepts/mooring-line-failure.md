@@ -44,3 +44,5 @@ Port Hedland (BHP): 35% reduction in mooring line failures via active monitoring
 - **Source**: [Mooring Failures at LNG Terminals](../sources/mooring-failures-lng-terminals.md)
 - **Related concept**: [[long-period-swell-resonance]]
 - **Related concept**: [[cathodic-protection-system]]
+- **Cross-wiki (engineering)**: [HMPE Mooring Line Failures](../../../engineering/wiki/entities/hmpe-mooring-failures.md) -- similar slugs (73%); similar titles (87%); shared tags: hmpe, snap-back; shared keywords: asterix, at, busan, bw, concept
+- **Cross-wiki (engineering)**: [Mooring Line Failure Physics](../../../engineering/wiki/concepts/mooring-line-failure-physics.md) -- similar slugs (83%); similar titles (83%); shared tags: hmpe, snap-back; shared keywords: concept, cross-references, failure, hmpe, line
