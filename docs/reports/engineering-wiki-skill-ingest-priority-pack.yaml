@@ -1,0 +1,285 @@
+# Engineering Wiki — Skill Ingest Priority Pack
+# Planning artifact for #2039 and #2042
+# Generated: 2026-04-14 by Claude (fallback for failed Gemini batch)
+# Branch: issue-2039-2042-gemini-research
+#
+# Each slice is a bounded unit of work for a future implementation session.
+# Slices are ordered by recommended execution priority.
+
+meta:
+  generated: "2026-04-14"
+  generator: claude-opus-4-6
+  issues: [2039, 2042]
+  wiki_baseline_pages: 75
+  active_engineering_skills: 87
+  uningested_engineering_skills: 73
+  estimated_total_new_pages: "40-60"
+
+slices:
+
+  - id: slice-01-orcaflex-depth
+    title: "OrcaFlex Sub-Skill Expansion"
+    priority: 1
+    source_family: marine-offshore/orcaflex
+    source_path: ".claude/skills/engineering/marine-offshore/orcaflex/"
+    candidate_skills:
+      - orcaflex-batch-manager
+      - orcaflex-code-check
+      - orcaflex-environment-config
+      - orcaflex-extreme-analysis
+      - orcaflex-file-conversion
+      - orcaflex-installation-analysis
+      - orcaflex-jumper-analysis
+      - orcaflex-line-wizard
+      - orcaflex-modal-analysis
+      - orcaflex-model-generator
+      - orcaflex-modeling
+      - orcaflex-model-sanitization
+      - orcaflex-monolithic-to-modular
+      - orcaflex-mooring-iteration
+      - orcaflex-operability
+      - orcaflex-post-processing
+      - orcaflex-rao-import
+      - orcaflex-results-comparison
+      - orcaflex-spec-audit
+      - orcaflex-specialist
+      - orcaflex-static-debug
+      - orcaflex-vessel-setup
+      - orcaflex-visualization
+      - orcaflex-yaml-gotchas
+    candidate_count: 24
+    existing_wiki_overlap:
+      - "entities/orcaflex-solver.md (root entity — extends, not duplicates)"
+    overlap_risk: low
+    target_wiki_sections:
+      - concepts  # analysis methods (extreme, modal, installation, operability)
+      - workflows  # pipelines (batch, post-processing, visualization)
+      - entities  # tool sub-systems if substantial enough
+    estimated_new_pages: "8-12"
+    grouping_strategy: |
+      Group related sub-skills into thematic pages:
+        - Analysis methods: extreme, modal, installation, jumper, operability, mooring-iteration
+        - Model management: generator, sanitization, monolithic-to-modular, spec-audit
+        - Data flow: file-conversion, rao-import, results-comparison, yaml-gotchas
+        - Visualization: visualization, post-processing
+        - Debugging: static-debug, code-check, environment-config
+    promotion_mode: "group-then-create"
+    recommended: true
+
+  - id: slice-02-cad-gis-bootstrap
+    title: "CAD + GIS Domain Bootstrap"
+    priority: 2
+    source_family: cad + gis
+    source_paths:
+      - ".claude/skills/engineering/cad/"
+      - ".claude/skills/engineering/gis/"
+    candidate_skills:
+      - blender-interface
+      - cad-engineering
+      - freecad-automation
+      - gmsh-meshing
+      - pyvista-3d
+      - gis-informed-workflow
+      - google-earth-engine
+      - python-gis-ecosystem
+      - qgis
+    candidate_count: 9
+    existing_wiki_overlap: []
+    overlap_risk: none
+    target_wiki_sections:
+      - entities  # tool pages (FreeCAD, GMSH, PyVista, QGIS, GEE)
+      - concepts  # methodologies (GIS workflow, CAD engineering)
+    estimated_new_pages: "6-8"
+    grouping_strategy: |
+      One entity page per major tool. CAD-engineering and GIS-workflow
+      become concept pages linking to tool entities.
+      Cross-reference: PyVista links to OrcaFlex/OpenFOAM visualization.
+    promotion_mode: "one-skill-one-page"
+    recommended: true
+
+  - id: slice-03-standards-issues
+    title: "Standards Family + Closed Issues Deep Dive"
+    priority: 3
+    source_family: standards + closed-issues
+    source_paths:
+      - ".claude/skills/engineering/standards/"
+      - "GitHub: cat:engineering closed issues"
+      - "GitHub: cat:engineering-calculations closed issues"
+    candidate_skills:
+      - api
+      - astm
+      - dnv
+      - iso
+      - norsok
+    candidate_issue_pools:
+      cat_engineering_closed: 74  # 79 total minus 5 already ingested
+      cat_engineering_calculations_closed: 13
+    candidate_count: 92  # 5 skills + 87 issues (triage required)
+    existing_wiki_overlap:
+      - "standards/api-579-ffs.md"
+      - "standards/dnv-rp-c203.md"
+      - "standards/dnv-rp-c205.md"
+      - "standards/dnv-rp-f101.md"
+      - "standards/dnv-rp-f105.md"
+      - "standards/dnv-os-e301.md"
+      - "standards/ocimf-meg4.md"
+    overlap_risk: medium
+    target_wiki_sections:
+      - standards  # family overview pages (ASTM, ISO, NORSOK)
+      - concepts  # from instructive issue decisions
+      - workflows  # from implementation-pattern issues
+    estimated_new_pages: "8-12"
+    grouping_strategy: |
+      Standards: create family-level overview pages that link to existing
+      specific-standard pages. Do not duplicate existing content.
+      Issues: triage pass first — identify ~10 most instructive issues,
+      then create concept/workflow pages from decisions and patterns.
+    promotion_mode: "triage-then-create"
+    recommended: true
+
+  - id: slice-04-orcawave-aqwa-depth
+    title: "OrcaWave + AQWA Sub-Skill Expansion"
+    priority: 4
+    source_family: marine-offshore/orcawave + marine-offshore/aqwa
+    source_paths:
+      - ".claude/skills/engineering/marine-offshore/orcawave/"
+      - ".claude/skills/engineering/marine-offshore/aqwa/"
+    candidate_skills:
+      - orcawave-analysis
+      - orcawave-aqwa-benchmark
+      - orcawave-damping-sweep
+      - orcawave-mesh-generation
+      - orcawave-multi-body
+      - orcawave-qtf-analysis
+      - orcawave-to-orcaflex
+      - aqwa-analysis
+      - aqwa-batch-execution
+      - aqwa-input
+      - aqwa-output
+      - aqwa-reference
+    candidate_count: 12
+    existing_wiki_overlap:
+      - "entities/orcawave-solver.md"
+      - "entities/aqwa-solver.md"
+      - "entities/diffraction-analysis-system.md"
+      - "workflows/orcawave-to-orcaflex-pipeline.md"
+    overlap_risk: medium
+    target_wiki_sections:
+      - concepts  # QTF analysis, damping sweep, multi-body
+      - workflows  # benchmark pipeline, batch execution
+    estimated_new_pages: "4-6"
+    grouping_strategy: |
+      Extend existing entity pages with sub-skill depth where possible.
+      Create new concept pages only for substantial analysis methods
+      (QTF, damping sweep, multi-body). Benchmark becomes a workflow.
+    promotion_mode: "extend-existing-then-create"
+    recommended: false
+
+  - id: slice-05-doc-extraction-drilling
+    title: "Doc Extraction + Drilling + Remaining Marine"
+    priority: 5
+    source_family: doc-extraction + drilling + marine-individual
+    source_paths:
+      - ".claude/skills/engineering/doc-extraction/"
+      - ".claude/skills/engineering/drilling/"
+      - ".claude/skills/engineering/marine-offshore/"
+    candidate_skills:
+      - doc-extraction
+      - doc-extraction-cp
+      - doc-extraction-drilling-riser
+      - doc-extraction-naval-architecture
+      - drillbotics
+      - drilling
+      - risk-assessment
+      - production-engineering
+      - signal-analysis
+      - solver-benchmark
+      - marine-safety
+      - mesh-utilities
+      - catenary-riser
+      - marine-offshore-engineering
+    candidate_count: 14
+    existing_wiki_overlap:
+      - "concepts/cathodic-protection-design.md (partial for doc-extraction-cp)"
+      - "entities/naval-architecture-skill.md (partial for doc-extraction-naval-architecture)"
+    overlap_risk: low
+    target_wiki_sections:
+      - workflows  # doc-extraction methodology
+      - entities  # drilling tools
+      - concepts  # risk assessment, production engineering
+    estimated_new_pages: "8-10"
+    grouping_strategy: |
+      Doc-extraction skills group into one workflow page.
+      Drilling becomes one entity + one concept page.
+      Remaining marine skills: one page each for substantial skills,
+      skip thin CLI-reference-only skills.
+    promotion_mode: "group-then-create"
+    recommended: false
+
+  - id: slice-06-mooring-failures-completion
+    title: "Mooring Failures Seed Completion"
+    priority: 6
+    source_family: mooring-failures-seed
+    source_path: "knowledge/seeds/mooring-failures-lng-terminals.yaml"
+    candidate_count: 33  # 40 total minus 7 already ingested
+    existing_wiki_overlap:
+      - "entities/nws-lng-mooring-investigation.md"
+      - "entities/hmpe-mooring-failures.md"
+      - "entities/prelude-flng-mooring.md"
+      - "entities/elba-island-mooring-incident.md"
+      - "concepts/mooring-line-failure-physics.md"
+      - "standards/ocimf-meg4.md"
+      - "standards/dnv-os-e301.md"
+    overlap_risk: low
+    target_wiki_sections:
+      - entities  # additional incident pages
+      - concepts  # additional failure mechanism pages
+      - standards  # additional standard pages
+    estimated_new_pages: "5-8"
+    grouping_strategy: |
+      Group remaining 33 entries by theme. Avoid one-page-per-entry.
+      Create entity pages only for major incidents not yet covered.
+      Extend existing concept/standard pages where possible.
+    promotion_mode: "group-then-create"
+    recommended: false
+
+  - id: slice-07-utility-skills
+    title: "Utility and Adjacent Skills"
+    priority: 7
+    source_family: various
+    candidate_skills:
+      - units
+      - oil-and-gas
+      - maritime-legal
+      - financial-analysis
+      - fitness-for-service
+      - naval-architect-expert  # from digitalmodel/
+    candidate_count: 6
+    existing_wiki_overlap:
+      - "concepts/energy-field-economics.md (partial for oil-and-gas)"
+      - "concepts/field-development-economics.md (partial for financial-analysis)"
+      - "standards/api-579-ffs.md (partial for fitness-for-service)"
+      - "entities/naval-architecture-skill.md (partial for naval-architect-expert)"
+    overlap_risk: high
+    target_wiki_sections:
+      - concepts
+      - entities
+    estimated_new_pages: "2-4"
+    grouping_strategy: |
+      Only create pages where skill adds substantial content beyond
+      existing wiki coverage. Units becomes a concept page. Maritime-legal
+      is a new entity. Others extend existing pages.
+    promotion_mode: "extend-existing-only"
+    recommended: false
+
+# Execution summary
+#
+# Recommended execution order: slice-01, slice-02, slice-03
+# Total estimated new pages from top 3 slices: 22-32
+# Total estimated new pages from all 7 slices: 41-60
+#
+# Pre-requisites for execution:
+#   - Issues #2039 and #2042 must have status:plan-approved
+#   - SOURCE_INVENTORY.md must be updated with new class entries after each slice
+#   - Wiki index and log must be updated after each slice
+#   - Lint must pass clean after each slice
