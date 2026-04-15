@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-15T05:20:07.176967Z",
+  "generated_at": "2026-04-15T09:20:08.956080Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-15T05:20:05.536873Z",
+  "scorecard_generated_at": "2026-04-15T09:20:06.959165Z",
   "recommended_provider_order": [
-    "gemini",
     "codex",
+    "gemini",
     "claude"
   ],
   "provider_queues": {

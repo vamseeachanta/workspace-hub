@@ -1,0 +1,15 @@
+Now revise docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md to address the latest Codex and Gemini re-review blockers.
+
+Edit only that plan file.
+Do not commit.
+Preserve draft status.
+
+Required fixes:
+1. Make the 3-real-plans requirement airtight. If #2045 itself is one of the three, state that explicitly and make the workstream/acceptance criteria unambiguous.
+2. Tighten the “all agents” boundary: enumerate the finite in-repo onboarding surfaces and state explicitly if shared repo docs are the supported mechanism for some providers.
+3. Strengthen TDD/validation from abstract assertions to concrete executable/manual checks with evidence artifacts and pass/fail criteria.
+4. Replace soft wording like “validate or update if needed” with explicit decision rules for policy/config file changes.
+5. Remove any remaining wording that blurs plan-revision artifact maintenance with issue-completion deliverables.
+6. If Claude plan-review evidence is missing, make that requirement explicit in a way that does not block the plan from being intelligible.
+
+After editing, summarize exactly what you changed in 5-10 bullets and stop. Do not touch other files.

@@ -124,12 +124,13 @@ Important operational rule learned in live use:
 
 ### Pending cross-review audit routine
 
-When the user asks which plans are still pending cross-provider review, audit all four signals before answering:
+When the user asks which plans are still pending cross-provider review, audit all five signals before answering:
 
 1. `docs/plans/README.md` plan row/status
-2. live GitHub issue labels/state via `gh issue view/list`
-3. local approval marker `.planning/plan-approved/<issue>.md`
-4. review artifacts under `scripts/review/results/`
+2. direct `docs/plans/` file search for `issue-<NNN>-*.md` (catches orphaned/unindexed local plans)
+3. live GitHub issue labels/state via `gh issue view/list`
+4. local approval marker `.planning/plan-approved/<issue>.md`
+5. review artifacts under `scripts/review/results/`
 
 Operational rules:
 - `status:plan-review` label alone is **not** sufficient to say a plan is truly pending; verify whether the issue already advanced to `status:plan-approved` or already has a local approval marker.
@@ -142,6 +143,23 @@ Operational rules:
   - state-drift items (labels/README/markers disagree)
 
 This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty.
+
+### Governance cleanup after fresh MAJOR re-review
+
+If a plan had previously advanced to `status:plan-approved` or gained a local approval marker, and a later fresh adversarial re-review returns blocking `MAJOR` findings, treat that as **state rollback required**, not just a note in comments.
+
+Cleanup sequence:
+1. Post the new review summary/comment linking the fresh review artifacts.
+2. If the GitHub issue is still open and labeled `status:plan-approved`, remove `status:plan-approved` and add `status:plan-review`.
+3. If the issue has a stale local approval marker `.planning/plan-approved/<issue>.md` but the live issue is now back in `status:plan-review`, remove the stale marker.
+4. Update `docs/plans/README.md` to match the rolled-back live state (`plan-review` rather than `plan-approved`).
+5. Leave a governance-cleanup comment on the issue explaining that the rollback is due to fresh blocking review evidence, not arbitrary relabeling.
+
+Practical rules:
+- For **open** issues, stale approval markers should be removed once the issue is rolled back to `status:plan-review`.
+- For **closed** issues, stale `status:plan-approved` labels are misleading and should be removed, but marker cleanup can be treated as historical hygiene rather than an operational blocker.
+- If a provider is unavailable (for example Gemini 429 capacity exhaustion), do not stall indefinitely; record the provider failure explicitly and continue with available review evidence while keeping the issue in a non-approved state until blocking findings are resolved.
+- Fresh MAJOR review evidence outranks older optimistic comments, stale README rows, and stale marker files.
 
 ### Fresh-review rollback rule (critical drift cleanup)
 

@@ -1,6 +1,6 @@
 # Plan for #2281: implement v1 weekly audit for existing skills-curation workflow
 
-> Status: draft
+> Status: plan-review
 > Complexity: T2
 > Date: 2026-04-14
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2281
