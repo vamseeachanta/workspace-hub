@@ -22,3 +22,5 @@
 {"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/git-worktree-cleanup-and-branch-reconciliation/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
 {"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/git-worktree-cleanup-at-scale/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
 {"ts":"2026-04-14T15:01:23Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/learned/large-scale-branch-hygiene/SKILL.md","commit":"bdcea0220e07d8fee6a709bf84a4f3631309c9df"}
+{"ts":"2026-04-15T01:51:01Z","agent":"unknown","action":"modify","skill_path":".claude/skills/workspace-hub/learned/corporate-tax-filing-reconciliation/SKILL.md","commit":"1c12d8a9df98d39692e7094852e7fc3003ae31cd"}
+{"ts":"2026-04-15T01:51:01Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/learned/form-1120-preparation-from-expense-sheet/SKILL.md","commit":"1c12d8a9df98d39692e7094852e7fc3003ae31cd"}
