@@ -1,133 +1,69 @@
-# Weekly Skills Audit — Classification and Ranking Policy
+# Weekly skills audit policy
 
-> **Authoritative source:** `config/skills/weekly-audit-policy.yaml`
-> This document is explanatory only. If any rule here conflicts with the YAML,
-> the YAML governs. Issue: #2282.
+Authoritative source: `config/skills/weekly-audit-policy.yaml`
 
----
+This document explains the v1 policy contract for weekly skills-audit output. If this document ever conflicts with the YAML file, the YAML file wins.
 
 ## Purpose
 
-This policy defines how the weekly skills audit classifies, ranks, and reports
-skill-ecosystem findings. It is consumed by the #2281 implementation so that
-classification decisions are deterministic and reproducible across agents and runs.
+The weekly audit is meant to produce low-noise, deterministic maintenance signals for the skills ecosystem. It is not a license for broad taxonomy redesign, bulk renames, or automatic merges.
 
----
+## Signal vocabulary
 
-## Classification Buckets (highest → lowest priority)
+The YAML locks a small machine-readable signal vocabulary so #2281 does not invent classification inputs ad hoc. The main signals are:
 
-| Priority | Bucket | When it applies |
-|---|---|---|
-| 1 | `exact-duplicate` | Same canonical name (`name:` frontmatter) regardless of path |
-| 2 | `canonical-wrapper-pair` | One skill is a thin stub that explicitly redirects to another |
-| 3 | `adjacent-specialization` | Same broad domain, distinct scope — both substantive, neither a stub |
-| 4 | `generic-leaf-collision` | Same leaf directory name, different canonical names, no deeper overlap |
-| 5 | `needs-human-review` | Signals absent, incomplete, or contradictory (fallback) |
+- `same_canonical_name`
+- `same_primary_intent`
+- `wrapper_redirect`
+- `explicit_canonical_target`
+- `substantial_overlap`
+- `distinct_deliverable_surface`
+- `generic_leaf_only`
+- `maintained_replacement_exists`
+- `conflicting_evidence`
+- `insufficient_evidence`
 
-**Precedence rule:** the first bucket (lowest priority number) whose required signals
-are all present and no excluded signals are present wins. If `conflicting_signals` is
-detected the finding always routes to `needs-human-review` regardless of other criteria.
-If no bucket matches, `needs-human-review` is the fallback.
+Each classification bucket in YAML declares `match_all`, `match_any`, and `exclude_if_any` conditions against these signals.
 
----
+## Bucket intent
 
-## Classification Signals
+- `exact-duplicate`: same canonical intent, strong consolidation signal
+- `canonical-wrapper-pair`: thin pointer to a canonical skill, not a merge candidate
+- `near-duplicate-same-intent`: likely duplicate but not proven enough for automatic action
+- `adjacent-specialization`: related skills that should remain separate
+- `generic-leaf-collision`: naming/path collision without same-intent proof
+- `stale-superseded`: older skill replaced by a maintained canonical successor
+- `needs-human-review`: ambiguity remains after deterministic rules are applied
 
-| Signal | Meaning |
-|---|---|
-| `canonical_names_match` | Both frontmatter `name` values are identical strings |
-| `is_stub` | One skill has minimal content (<5 non-frontmatter lines) redirecting elsewhere |
-| `references_other_canonical` | One skill's body names the other's canonical name as alias/redirect |
-| `leaf_dir_match` | Both skills share the same leaf directory name |
-| `scope_differs` | Skills demonstrably differ in scope, audience, or domain depth |
-| `both_substantive` | Both skills carry independent substantive content |
-| `conflicting_signals` | Signals are mutually contradictory; cannot be resolved automatically |
+## Precedence
 
----
+The precedence order is intentionally explicit and single-winner. If multiple buckets appear plausible, the first matching bucket in the YAML precedence list wins. If evidence is still ambiguous, route the finding to `needs-human-review`.
 
-## Severity Rubric
+## Ranking
 
-| Severity | Meaning |
-|---|---|
-| `high` | Active functional conflict or likely user confusion today |
-| `medium` | Structural inconsistency that could cause confusion over time |
-| `low` | Cosmetic or naming inconsistency; minimal operational impact |
+The YAML also locks deterministic ranking behavior so #2281 does not invent its own ordering. Weekly sections appear in this order:
 
----
+1. `new_findings`
+2. `changed_findings`
+3. `unresolved_high_confidence_findings`
+4. `suppressed_carry_forward_findings`
+5. `operational_errors_or_skipped_inputs`
 
-## Confidence Rubric
+Within a section, findings sort by the YAML contract in this order:
+- `escalation_state` (`candidate` before `no-escalation`)
+- `severity` (`high`, `medium`, `low`)
+- `confidence` (`high`, `medium`, `low`)
+- `is_new` (newer first)
+- `finding_key` ascending as the deterministic final tie-breaker
 
-| Confidence | Meaning |
-|---|---|
-| `high` | All signals explicitly detected; human review unlikely to change outcome |
-| `medium` | At least one signal inferred from heuristic; spot-check recommended |
-| `low` | Signals missing, inferred, or contradictory; treat as provisional |
+## Carry-forward behavior
 
----
+Unchanged findings should be compacted into carry-forward output instead of resurfacing as headline churn. A finding that remains unresolved but changes materially must appear in `changed_findings`.
 
-## Finding Schema
+## Escalation
 
-Every finding must carry these fields:
+v1 uses a binary escalation model only:
+- `no-escalation`
+- `candidate`
 
-```
-finding_key          str   deterministic key (canonical_names + classification)
-classification       str   one of the five bucket names
-severity             str   high | medium | low
-confidence           str   high | medium | low
-canonical_names      list  frontmatter name of each involved skill
-paths                list  repo-relative paths of each involved skill
-summary              str   one-line human-readable description
-recommended_action   str   suggested remediation
-escalation_state     str   no-escalation | candidate
-is_new               bool  true if not present in prior run
-is_changed           bool  true if in prior run but materially changed
-```
-
----
-
-## Carry-Forward Rules
-
-| Rule | Condition | Action | Weekly section |
-|---|---|---|---|
-| `unchanged` | Identical across runs | Compact carry-forward | suppressed/carry-forward |
-| `changed` | Any change trigger fired | Surface explicitly | changed |
-| `suppressed` | Manually suppressed | Compact carry-forward | suppressed/carry-forward |
-| `resolved` | No longer detected | Remove from active | (none) |
-
-**Change triggers:** severity, confidence, escalation_state, canonical_names, or paths differ.
-
-A finding that is still present but worsened (e.g., severity went from medium→high) must
-appear in the **changed** section, not hidden under compact carry-forward.
-
----
-
-## Escalation (v1 — binary)
-
-| State | Condition |
-|---|---|
-| `candidate` | severity=high AND confidence=high |
-| `no-escalation` | everything else |
-
-The escalation_state is computed from current severity and confidence each run.
-Given identical inputs the result is always identical (idempotent).
-Multi-tier models are deferred until weekly signal quality is proven.
-
----
-
-## Weekly Summary Sections
-
-Every weekly report must include all five sections (even if empty):
-
-1. **New Findings** — `is_new == true`
-2. **Changed Findings** — `is_changed == true AND is_new == false`
-3. **Unresolved High-Confidence** — not new, not changed, confidence=high, severity in [high, medium]
-4. **Suppressed / Carry-Forward** — unchanged + manually suppressed (compact)
-5. **Operational Errors** — run errors and skipped inputs
-
----
-
-## Fixture Examples
-
-See the `fixtures:` block in `config/skills/weekly-audit-policy.yaml` for one
-canonical example per bucket. These fixtures are the test inputs for
-`tests/skills/test_weekly_skills_audit_policy.py`.
+The YAML rules define when a finding becomes a `candidate` versus staying `no-escalation`, and repeated weekly runs must keep the same escalation state unless the evidence changes materially.

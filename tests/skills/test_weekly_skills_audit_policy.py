@@ -1,433 +1,281 @@
-"""Tests for weekly skills audit classification and ranking policy (#2282).
-
-Policy source: config/skills/weekly-audit-policy.yaml (authoritative)
-Companion doc:  docs/standards/weekly-skills-audit-policy.md (explanatory only)
-"""
+"""Tests for the weekly skills-audit classification and ranking policy (#2282)."""
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
-import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 POLICY_PATH = REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml"
+DOC_PATH = REPO_ROOT / "docs" / "standards" / "weekly-skills-audit-policy.md"
+
+REQUIRED_BUCKETS = [
+    "exact-duplicate",
+    "canonical-wrapper-pair",
+    "near-duplicate-same-intent",
+    "stale-superseded",
+    "adjacent-specialization",
+    "generic-leaf-collision",
+    "needs-human-review",
+]
+REQUIRED_SUMMARY_SECTIONS = [
+    "new_findings",
+    "changed_findings",
+    "unresolved_high_confidence_findings",
+    "suppressed_carry_forward_findings",
+    "operational_errors_or_skipped_inputs",
+]
+REQUIRED_FINDING_FIELDS = [
+    "finding_key",
+    "classification",
+    "severity",
+    "confidence",
+    "canonical_names",
+    "paths",
+    "summary",
+    "recommended_action",
+    "escalation_state",
+    "is_new",
+    "is_changed",
+]
+VALID_ESCALATION_STATES = {"no-escalation", "candidate"}
+REQUIRED_SIGNALS = {
+    "same_canonical_name",
+    "same_primary_intent",
+    "wrapper_redirect",
+    "explicit_canonical_target",
+    "substantial_overlap",
+    "distinct_deliverable_surface",
+    "generic_leaf_only",
+    "maintained_replacement_exists",
+    "conflicting_evidence",
+    "insufficient_evidence",
+}
 
 
-# ---------------------------------------------------------------------------
-# Minimal policy engine — loads YAML rules, applies them in test assertions
-# ---------------------------------------------------------------------------
-
-class PolicyValidationError(ValueError):
-    """Raised when a policy YAML fails structural validation."""
-
-
-def load_policy(path: Path = POLICY_PATH) -> dict[str, Any]:
-    """Load and validate the policy YAML."""
-    if not path.exists():
-        raise FileNotFoundError(f"Policy file not found: {path}")
-    policy = yaml.safe_load(path.read_text())
-    validate_policy(policy)
+def _load_policy() -> dict:
+    assert POLICY_PATH.exists(), f"Missing policy file: {POLICY_PATH}"
+    policy = yaml.safe_load(POLICY_PATH.read_text(encoding="utf-8"))
+    assert isinstance(policy, dict), "Policy must parse to a mapping"
     return policy
 
 
-def validate_policy(policy: dict[str, Any]) -> None:
-    """Raise PolicyValidationError if the policy is structurally invalid."""
-    required_top_level = [
-        "version",
-        "finding_schema",
+def _validate_policy(policy: dict) -> None:
+    required_keys = {
+        "signal_vocabulary",
         "classification_buckets",
-        "severity_rubric",
-        "confidence_rubric",
-        "carry_forward_rules",
-        "escalation",
-        "weekly_summary",
+        "precedence_order",
+        "finding_schema",
+        "severity_levels",
+        "confidence_levels",
+        "weekly_summary_sections",
+        "ranking_policy",
+        "escalation_model",
+        "carry_forward",
         "fixtures",
-        "fallback_bucket",
+    }
+    missing = required_keys - set(policy)
+    assert not missing, f"Missing top-level keys: {sorted(missing)}"
+
+
+def _bucket_map(policy: dict) -> dict[str, dict]:
+    return {bucket["id"]: bucket for bucket in policy["classification_buckets"]}
+
+
+def _signal_ids(policy: dict) -> set[str]:
+    return {signal["id"] for signal in policy["signal_vocabulary"]}
+
+
+def _matches_rule(signals: set[str], rule: dict) -> bool:
+    match_all = set(rule.get("match_all", []))
+    match_any = set(rule.get("match_any", []))
+    exclude_if_any = set(rule.get("exclude_if_any", []))
+    if exclude_if_any & signals:
+        return False
+    if not match_all.issubset(signals):
+        return False
+    if match_any and not (match_any & signals):
+        return False
+    return True
+
+
+def _classify_fixture(policy: dict, fixture: dict) -> str:
+    signals = set(fixture["signals"])
+    buckets = _bucket_map(policy)
+    for bucket_id in policy["precedence_order"]:
+        if _matches_rule(signals, buckets[bucket_id]["rule"]):
+            return bucket_id
+    raise AssertionError(f"No bucket matched fixture {fixture['id']}")
+
+
+def _expected_escalation_from_rules(policy: dict, classification: str) -> str:
+    for rule in policy["escalation_model"]["rules"]:
+        if classification in set(rule["when"]["classification_in"]):
+            return rule["result"]
+    raise AssertionError(f"No escalation rule for classification {classification}")
+
+
+def _sort_findings(policy: dict, findings: list[dict]) -> list[dict]:
+    ranking = policy["ranking_policy"]["finding_sort_order"]
+
+    def key_for(item: dict):
+        key = []
+        for entry in ranking:
+            value = item[entry["field"]]
+            if "rank_order" in entry:
+                rank = entry["rank_order"].index(value)
+                key.append(rank)
+            elif isinstance(value, bool):
+                key.append((0 if value else 1) if entry["direction"] == "desc" else (1 if value else 0))
+            else:
+                key.append(value)
+        return tuple(key)
+
+    return sorted(findings, key=key_for)
+
+
+def test_policy_file_exists_and_parses():
+    _validate_policy(_load_policy())
+
+
+def test_policy_rejects_invalid_policy_schema():
+    invalid_policy = {"classification_buckets": []}
+    try:
+        _validate_policy(invalid_policy)
+    except AssertionError as exc:
+        assert "Missing top-level keys" in str(exc)
+    else:
+        raise AssertionError("Invalid policy must fail validation")
+
+
+def test_policy_defines_signal_vocabulary_and_bounded_buckets():
+    policy = _load_policy()
+    assert _signal_ids(policy) == REQUIRED_SIGNALS
+    assert [bucket["id"] for bucket in policy["classification_buckets"]] == REQUIRED_BUCKETS
+
+
+def test_policy_rules_reference_only_known_signals():
+    policy = _load_policy()
+    known_signals = _signal_ids(policy)
+    for bucket in policy["classification_buckets"]:
+        rule = bucket["rule"]
+        referenced = set(rule.get("match_all", [])) | set(rule.get("match_any", [])) | set(rule.get("exclude_if_any", []))
+        assert referenced <= known_signals, f"Unknown signal in rule for {bucket['id']}"
+
+
+def test_policy_precedence_is_single_winner_contract():
+    policy = _load_policy()
+    assert policy["precedence_order"] == REQUIRED_BUCKETS
+
+
+def test_policy_defines_finding_schema_and_summary_sections():
+    policy = _load_policy()
+    schema_fields = [field["name"] for field in policy["finding_schema"]]
+    assert schema_fields == REQUIRED_FINDING_FIELDS
+    sections = [section["id"] for section in policy["weekly_summary_sections"]]
+    assert sections == REQUIRED_SUMMARY_SECTIONS
+
+
+def test_policy_defines_severity_and_confidence_levels():
+    policy = _load_policy()
+    assert [item["id"] for item in policy["severity_levels"]] == ["high", "medium", "low"]
+    assert [item["id"] for item in policy["confidence_levels"]] == ["high", "medium", "low"]
+
+
+def test_each_bucket_has_default_severity_and_confidence():
+    policy = _load_policy()
+    severities = {item["id"] for item in policy["severity_levels"]}
+    confidences = {item["id"] for item in policy["confidence_levels"]}
+    for bucket in policy["classification_buckets"]:
+        assert bucket["default_severity"] in severities
+        assert bucket["default_confidence"] in confidences
+
+
+def test_fixture_classification_matches_bucket_rules():
+    policy = _load_policy()
+    for fixture in policy["fixtures"]:
+        assert _classify_fixture(policy, fixture) == fixture["expected_bucket"]
+
+
+def test_every_bucket_has_a_fixture_example():
+    policy = _load_policy()
+    fixture_buckets = {fixture["expected_bucket"] for fixture in policy["fixtures"]}
+    assert fixture_buckets == set(REQUIRED_BUCKETS)
+
+
+def test_fixture_fields_are_complete_and_reference_valid_values():
+    policy = _load_policy()
+    bucket_ids = set(REQUIRED_BUCKETS)
+    severity_ids = {item["id"] for item in policy["severity_levels"]}
+    confidence_ids = {item["id"] for item in policy["confidence_levels"]}
+    for fixture in policy["fixtures"]:
+        assert {"id", "scenario", "signals", "expected_bucket", "expected_severity", "expected_confidence", "expected_escalation"} <= set(fixture)
+        assert set(fixture["signals"]) <= _signal_ids(policy)
+        assert fixture["expected_bucket"] in bucket_ids
+        assert fixture["expected_severity"] in severity_ids
+        assert fixture["expected_confidence"] in confidence_ids
+        assert fixture["expected_escalation"] in VALID_ESCALATION_STATES
+
+
+def test_needs_human_review_fixture_wins_when_conflicting_evidence_is_present():
+    policy = _load_policy()
+    fixture = next(item for item in policy["fixtures"] if item["expected_bucket"] == "needs-human-review")
+    assert _classify_fixture(policy, fixture) == "needs-human-review"
+
+
+def test_policy_defines_deterministic_escalation_and_matches_fixtures():
+    policy = _load_policy()
+    states = {state["id"] for state in policy["escalation_model"]["states"]}
+    assert states == VALID_ESCALATION_STATES
+    for fixture in policy["fixtures"]:
+        classification = fixture["expected_bucket"]
+        assert _expected_escalation_from_rules(policy, classification) == fixture["expected_escalation"]
+
+
+def test_policy_defines_carry_forward_behavior():
+    policy = _load_policy()
+    carry_forward = policy["carry_forward"]
+    assert "unchanged_behavior" in carry_forward
+    assert "suppression_rule" in carry_forward
+    assert carry_forward["changed_but_unresolved_rule"]["surfaces_in"] == "changed_findings"
+
+
+def test_policy_defines_ranking_contract():
+    policy = _load_policy()
+    ranking_policy = policy["ranking_policy"]
+    assert ranking_policy["section_order"] == REQUIRED_SUMMARY_SECTIONS
+    assert [item["field"] for item in ranking_policy["finding_sort_order"]] == [
+        "escalation_state",
+        "severity",
+        "confidence",
+        "is_new",
+        "finding_key",
     ]
-    missing = [k for k in required_top_level if k not in policy]
-    if missing:
-        raise PolicyValidationError(f"Policy missing required top-level keys: {missing}")
-
-    buckets = policy.get("classification_buckets", [])
-    if not buckets:
-        raise PolicyValidationError("classification_buckets must be non-empty")
-
-    bucket_names = {b["bucket"] for b in buckets}
-    required_buckets = {
-        "exact-duplicate",
-        "canonical-wrapper-pair",
-        "adjacent-specialization",
-        "generic-leaf-collision",
-        "needs-human-review",
-    }
-    missing_buckets = required_buckets - bucket_names
-    if missing_buckets:
-        raise PolicyValidationError(f"Policy missing required buckets: {missing_buckets}")
 
 
-class PolicyEngine:
-    """Minimal engine that reads the YAML policy and applies its rules."""
-
-    def __init__(self, policy: dict[str, Any]) -> None:
-        self._policy = policy
-        # Non-fallback buckets sorted by precedence (ascending = highest priority first)
-        self._buckets = sorted(
-            [b for b in policy["classification_buckets"] if not b.get("is_fallback")],
-            key=lambda b: b["precedence"],
-        )
-        self._fallback = policy.get("fallback_bucket", "needs-human-review")
-
-    def classify(self, signals: dict[str, bool]) -> str:
-        """Return the classification bucket for a given signal set.
-
-        Global rules are checked before bucket matching.  If no bucket matches,
-        ``fallback_bucket`` is returned.
-        """
-        # 1. Global override rules (e.g. conflicting_signals always wins)
-        for rule in self._policy.get("global_rules", []):
-            if signals.get(rule["trigger_signal"]):
-                return rule["forced_bucket"]
-
-        # 2. Bucket matching in precedence order (lowest precedence number = highest priority)
-        for bucket_def in self._buckets:
-            required = bucket_def["criteria"]["required_signals"]
-            excluded = bucket_def["criteria"]["excluded_signals"]
-            if all(signals.get(s) for s in required) and not any(
-                signals.get(s) for s in excluded
-            ):
-                return bucket_def["bucket"]
-
-        # 3. Fallback
-        return self._fallback
-
-    def compute_escalation(self, severity: str, confidence: str) -> str:
-        """Return escalation_state computed from current severity and confidence."""
-        criteria = self._policy["escalation"]["candidate_criteria"]
-        if severity == criteria["severity"] and confidence == criteria["confidence"]:
-            return "candidate"
-        return "no-escalation"
-
-    def compute_carry_forward(self, prior: dict[str, Any], current: dict[str, Any]) -> str:
-        """Return the carry-forward rule name ('unchanged', 'changed', 'suppressed')."""
-        if current.get("suppressed"):
-            return "suppressed"
-
-        change_triggers = self._policy["carry_forward_rules"]["changed"]["change_triggers"]
-        trigger_map = {
-            "severity_changed": ("severity", prior, current),
-            "confidence_changed": ("confidence", prior, current),
-            "escalation_state_changed": ("escalation_state", prior, current),
-            "canonical_names_changed": ("canonical_names", prior, current),
-            "paths_changed": ("paths", prior, current),
-        }
-        for trigger in change_triggers:
-            if trigger in trigger_map:
-                field, p, c = trigger_map[trigger]
-                if p.get(field) != c.get(field):
-                    return "changed"
-
-        return "unchanged"
-
-
-# ---------------------------------------------------------------------------
-# Pytest fixtures
-# ---------------------------------------------------------------------------
-
-@pytest.fixture(scope="module")
-def policy() -> dict[str, Any]:
-    return load_policy()
-
-
-@pytest.fixture(scope="module")
-def engine(policy: dict[str, Any]) -> PolicyEngine:
-    return PolicyEngine(policy)
-
-
-def _fixture(policy: dict[str, Any], bucket_key: str, index: int = 0) -> dict[str, Any]:
-    return policy["fixtures"][bucket_key][index]
-
-
-# ---------------------------------------------------------------------------
-# 1. Classification tests — one per bucket
-# ---------------------------------------------------------------------------
-
-def test_policy_classifies_exact_duplicate(policy: dict, engine: PolicyEngine) -> None:
-    fixture = _fixture(policy, "exact_duplicate")
-    result = engine.classify(fixture["signals"])
-    assert result == "exact-duplicate"
-    assert fixture["expected_bucket"] == "exact-duplicate"
-
-
-def test_policy_classifies_canonical_wrapper_pair(policy: dict, engine: PolicyEngine) -> None:
-    fixture = _fixture(policy, "canonical_wrapper_pair")
-    result = engine.classify(fixture["signals"])
-    assert result == "canonical-wrapper-pair"
-    assert fixture["expected_bucket"] == "canonical-wrapper-pair"
-
-
-def test_policy_classifies_adjacent_specialization(policy: dict, engine: PolicyEngine) -> None:
-    fixture = _fixture(policy, "adjacent_specialization")
-    result = engine.classify(fixture["signals"])
-    assert result == "adjacent-specialization"
-    assert fixture["expected_bucket"] == "adjacent-specialization"
-
-
-def test_policy_classifies_generic_leaf_collision(policy: dict, engine: PolicyEngine) -> None:
-    fixture = _fixture(policy, "generic_leaf_collision")
-    result = engine.classify(fixture["signals"])
-    assert result == "generic-leaf-collision"
-    assert fixture["expected_bucket"] == "generic-leaf-collision"
-
-
-def test_policy_routes_ambiguous_case_to_needs_human_review(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    fixture = _fixture(policy, "needs_human_review")
-    result = engine.classify(fixture["signals"])
-    assert result == "needs-human-review"
-    assert fixture["expected_bucket"] == "needs-human-review"
-
-
-# ---------------------------------------------------------------------------
-# 2. Precedence — multi-match resolves to highest-priority bucket
-# ---------------------------------------------------------------------------
-
-def test_policy_precedence_picks_highest_priority_bucket(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    fixture = _fixture(policy, "precedence_multi_match")
-    result = engine.classify(fixture["signals"])
-    assert result == fixture["expected_bucket"]
-
-    # Verify every declared loser would have matched on its own criteria
-    for loser_name in fixture.get("expected_precedence_losers", []):
-        loser_def = next(
-            b for b in policy["classification_buckets"] if b["bucket"] == loser_name
-        )
-        required = loser_def["criteria"]["required_signals"]
-        excluded = loser_def["criteria"]["excluded_signals"]
-        sigs = fixture["signals"]
-        loser_matches = all(sigs.get(s) for s in required) and not any(
-            sigs.get(s) for s in excluded
-        )
-        assert loser_matches, f"Expected loser '{loser_name}' should have matched but didn't"
-
-        winner_def = next(
-            b for b in policy["classification_buckets"] if b["bucket"] == result
-        )
-        assert winner_def["precedence"] < loser_def["precedence"], (
-            f"Winner precedence {winner_def['precedence']} should be lower than "
-            f"loser precedence {loser_def['precedence']}"
-        )
-
-
-# ---------------------------------------------------------------------------
-# 3. Mutual exclusivity — every fixture resolves to exactly one bucket
-# ---------------------------------------------------------------------------
-
-def test_policy_bucket_resolution_is_mutually_exclusive(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    primary_keys = [
-        "exact_duplicate",
-        "canonical_wrapper_pair",
-        "adjacent_specialization",
-        "generic_leaf_collision",
-        "needs_human_review",
+def test_ranking_contract_sorts_findings_deterministically():
+    policy = _load_policy()
+    findings = [
+        {"finding_key": "z-last", "escalation_state": "no-escalation", "severity": "low", "confidence": "low", "is_new": False},
+        {"finding_key": "a-candidate-medium", "escalation_state": "candidate", "severity": "medium", "confidence": "medium", "is_new": True},
+        {"finding_key": "b-candidate-high", "escalation_state": "candidate", "severity": "high", "confidence": "high", "is_new": True},
+        {"finding_key": "c-candidate-high-old", "escalation_state": "candidate", "severity": "high", "confidence": "high", "is_new": False},
     ]
-    for key in primary_keys:
-        fixture = _fixture(policy, key)
-        result = engine.classify(fixture["signals"])
-        assert result == fixture["expected_bucket"], (
-            f"Fixture '{fixture['finding_key']}' → expected '{fixture['expected_bucket']}', "
-            f"got '{result}'"
-        )
+    ordered = _sort_findings(policy, findings)
+    assert [item["finding_key"] for item in ordered] == [
+        "b-candidate-high",
+        "c-candidate-high-old",
+        "a-candidate-medium",
+        "z-last",
+    ]
 
 
-# ---------------------------------------------------------------------------
-# 4. Severity and confidence rubric
-# ---------------------------------------------------------------------------
-
-def test_policy_assigns_severity_and_confidence_levels(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    valid_severities = {"high", "medium", "low"}
-    valid_confidences = {"high", "medium", "low"}
-
-    for bucket_def in policy["classification_buckets"]:
-        name = bucket_def["bucket"]
-        assert "severity" in bucket_def, f"{name} missing severity"
-        assert bucket_def["severity"] in valid_severities, (
-            f"{name} has invalid severity: {bucket_def['severity']}"
-        )
-        assert "confidence_default" in bucket_def, f"{name} missing confidence_default"
-        assert bucket_def["confidence_default"] in valid_confidences, (
-            f"{name} has invalid confidence_default: {bucket_def['confidence_default']}"
-        )
-
-    # Fixture expected values must match bucket defaults
-    for key in ("exact_duplicate", "canonical_wrapper_pair"):
-        fixture = _fixture(policy, key)
-        bucket_def = next(
-            b for b in policy["classification_buckets"]
-            if b["bucket"] == fixture["expected_bucket"]
-        )
-        assert fixture["expected_severity"] == bucket_def["severity"], (
-            f"Fixture {fixture['finding_key']}: expected_severity mismatch"
-        )
-        assert fixture["expected_confidence"] == bucket_def["confidence_default"], (
-            f"Fixture {fixture['finding_key']}: expected_confidence mismatch"
-        )
-
-
-# ---------------------------------------------------------------------------
-# 5. Carry-forward — unchanged findings stay compact
-# ---------------------------------------------------------------------------
-
-def test_policy_defines_carry_forward_behavior(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    finding = {
-        "finding_key": "k1",
-        "classification": "exact-duplicate",
-        "severity": "high",
-        "confidence": "high",
-        "escalation_state": "candidate",
-        "canonical_names": ["foo", "foo"],
-        "paths": ["a/foo", "b/foo"],
-        "suppressed": False,
-    }
-    # Identical prior and current → unchanged
-    rule = engine.compute_carry_forward(finding, finding)
-    assert rule == "unchanged"
-
-    carry_rule = policy["carry_forward_rules"]["unchanged"]
-    assert carry_rule["action"] == "compact_carry_forward"
-    assert carry_rule["surface_as_new"] is False
-
-
-# ---------------------------------------------------------------------------
-# 6. Carry-forward — changed-but-unresolved findings surface as changed
-# ---------------------------------------------------------------------------
-
-def test_policy_handles_changed_but_unresolved_finding(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    prior = {
-        "finding_key": "k1",
-        "severity": "medium",
-        "confidence": "medium",
-        "escalation_state": "no-escalation",
-        "canonical_names": ["foo", "bar"],
-        "paths": ["a/foo", "b/bar"],
-        "suppressed": False,
-    }
-    current = {
-        "finding_key": "k1",
-        "severity": "high",
-        "confidence": "high",
-        "escalation_state": "candidate",
-        "canonical_names": ["foo", "bar"],
-        "paths": ["a/foo", "b/bar"],
-        "suppressed": False,
-    }
-    rule = engine.compute_carry_forward(prior, current)
-    assert rule == "changed"
-
-    carry_rule = policy["carry_forward_rules"]["changed"]
-    assert carry_rule["surface_as_changed"] is True
-    assert carry_rule["include_in_section"] == "changed"
-
-
-# ---------------------------------------------------------------------------
-# 7. Escalation thresholds
-# ---------------------------------------------------------------------------
-
-def test_policy_defines_issue_escalation_threshold(
-    policy: dict, engine: PolicyEngine
-) -> None:
-    assert engine.compute_escalation("high", "high") == "candidate"
-    assert engine.compute_escalation("high", "medium") == "no-escalation"
-    assert engine.compute_escalation("medium", "high") == "no-escalation"
-    assert engine.compute_escalation("low", "low") == "no-escalation"
-
-    escalation = policy["escalation"]
-    assert set(escalation["states"]) == {"no-escalation", "candidate"}
-
-
-# ---------------------------------------------------------------------------
-# 8. Escalation idempotence — same inputs always produce same output
-# ---------------------------------------------------------------------------
-
-def test_policy_escalation_is_idempotent(policy: dict, engine: PolicyEngine) -> None:
-    # high/high is always candidate across repeated calls
-    assert engine.compute_escalation("high", "high") == "candidate"
-    assert engine.compute_escalation("high", "high") == "candidate"
-
-    # medium/high is always no-escalation
-    assert engine.compute_escalation("medium", "high") == "no-escalation"
-    assert engine.compute_escalation("medium", "high") == "no-escalation"
-
-
-# ---------------------------------------------------------------------------
-# 9. Weekly summary sections contract
-# ---------------------------------------------------------------------------
-
-def test_policy_weekly_summary_sections_are_minimum_contract(policy: dict) -> None:
-    required = {
-        "new",
-        "changed",
-        "unresolved_high_confidence",
-        "suppressed_carry_forward",
-        "operational_errors",
-    }
-    actual = {s["section_id"] for s in policy["weekly_summary"]["sections"]}
-    assert required.issubset(actual), f"Missing summary sections: {required - actual}"
-
-
-# ---------------------------------------------------------------------------
-# 10. Schema validation — malformed policy fails fast
-# ---------------------------------------------------------------------------
-
-def test_policy_rejects_invalid_policy_schema() -> None:
-    # Case A: missing required top-level keys
-    with pytest.raises(PolicyValidationError, match="missing required top-level keys"):
-        validate_policy({"version": "1.0"})
-
-    # Case B: empty classification_buckets list
-    with pytest.raises(PolicyValidationError, match="non-empty"):
-        validate_policy(
-            {
-                "version": "1.0",
-                "finding_schema": {},
-                "classification_buckets": [],
-                "severity_rubric": {},
-                "confidence_rubric": {},
-                "carry_forward_rules": {},
-                "escalation": {},
-                "weekly_summary": {},
-                "fixtures": {},
-                "fallback_bucket": "needs-human-review",
-            }
-        )
-
-    # Case C: missing one of the required named buckets
-    with pytest.raises(PolicyValidationError, match="missing required buckets"):
-        validate_policy(
-            {
-                "version": "1.0",
-                "finding_schema": {},
-                "classification_buckets": [
-                    {"bucket": "exact-duplicate", "precedence": 1}
-                ],
-                "severity_rubric": {},
-                "confidence_rubric": {},
-                "carry_forward_rules": {},
-                "escalation": {},
-                "weekly_summary": {},
-                "fixtures": {},
-                "fallback_bucket": "needs-human-review",
-            }
-        )
+def test_companion_doc_stays_consistent_with_yaml():
+    policy = _load_policy()
+    doc_text = DOC_PATH.read_text(encoding="utf-8")
+    for signal in sorted(_signal_ids(policy)):
+        assert f"`{signal}`" in doc_text
+    for bucket in REQUIRED_BUCKETS:
+        assert f"`{bucket}`" in doc_text
+    for state in sorted(VALID_ESCALATION_STATES):
+        assert f"`{state}`" in doc_text
