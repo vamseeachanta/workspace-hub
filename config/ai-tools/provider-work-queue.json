@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-14T22:23:56.593819Z",
+  "generated_at": "2026-04-15T01:20:07.381059Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-14T22:23:54.843321Z",
+  "scorecard_generated_at": "2026-04-15T01:20:05.590118Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 26,
-      "total_candidates": 138,
+      "execution_ready_count": 17,
+      "total_candidates": 137,
       "top_issues": [
         {
           "number": 2055,
@@ -39,126 +39,6 @@
           "work_type": [
             "research",
             "implementation"
-          ]
-        },
-        {
-          "number": 2127,
-          "title": "fix(governance): make plan-approval-gate honor FORCE_PLAN_GATE_STRICT and DISABLE_ENFORCEMENT",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2127",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:ai-orchestration",
-            "agent:claude",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-11T10:33:21Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2128,
-          "title": "fix(governance): wire enforcement-env and require-review-on-push into install-hooks pre-push chain",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2128",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:ai-orchestration",
-            "agent:claude",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-11T10:34:09Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2248,
-          "title": "epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2248",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:documentation",
-            "agent:claude",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-13T12:23:00Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2249,
-          "title": "feat(doc-intel): triage index-level other bucket into bounded context packs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2249",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:document-intelligence",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-13T14:20:08Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2268,
-          "title": "feat(portability): establish core engineering portability contract and machine roles",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2268",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "cat:harness",
-            "machine:multi",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-14T09:34:13Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
@@ -196,7 +76,7 @@
             "cat:operations",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-13T14:20:31Z",
+          "updatedAt": "2026-04-14T22:48:06Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -207,6 +87,126 @@
             "research",
             "strategy"
           ]
+        },
+        {
+          "number": 2105,
+          "title": "chore(knowledge): define freshness cadences and staleness signals for intelligence assets",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2105",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:harness",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-14T23:12:09Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2129,
+          "title": "chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2129",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "agent:claude",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-13T12:23:02Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2152,
+          "title": "test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2152",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-11T13:19:52Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2206,
+          "title": "feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2206",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:harness",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-11T17:04:17Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2207,
+          "title": "feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2207",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "cat:documentation",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-12T03:04:21Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -214,7 +214,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 56,
+      "total_candidates": 57,
       "top_issues": [
         {
           "number": 2227,
@@ -335,7 +335,7 @@
             "cat:operations",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-10T19:56:07Z",
+          "updatedAt": "2026-04-14T23:16:23Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -357,7 +357,7 @@
             "cat:operations",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-10T19:56:10Z",
+          "updatedAt": "2026-04-14T23:16:23Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -429,7 +429,7 @@
             "priority:medium",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-09T20:54:43Z",
+          "updatedAt": "2026-04-14T23:14:43Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -468,7 +468,7 @@
             "cat:harness",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-08T17:40:25Z",
+          "updatedAt": "2026-04-14T23:14:52Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "gemini",

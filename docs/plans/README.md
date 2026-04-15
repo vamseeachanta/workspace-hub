@@ -181,7 +181,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 |---|---|---|---|---|---|---|
 | 1963 | email-infrastructure-cluster-a | `docs/plans/2026-04-09-issue-1963-email-infrastructure-cluster-a.md` | 2026-04-09 | draft | T3 | Cluster A architecture plan anchored by #1963 |
 | 2045 | agent-planning-onboarding | `docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md` | 2026-04-09 | plan-approved | T2 | Onboard all agents to strict planning workflow |
-| 2046 | planning-compliance-audit | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | 2026-04-09 | adversarial-reviewed | T2 | Audit agent compliance with planning workflow |
+| 2046 | planning-compliance-audit | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | 2026-04-09 | plan-review | T2 | Audit agent compliance with planning workflow |
 | 2047 | planning-enforcement-escalation | `docs/plans/2026-04-09-issue-2047-planning-enforcement-escalation.md` | 2026-04-09 | draft | T2 | Stronger enforcement if audit fails; depends on #2046 |
 | 2018 | agent-bypass-resistance-technical-gates | `docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md` | 2026-04-13 | plan-approved | T3 | Parent enforcement plan mapping landed gates, remaining bypass gaps, and bounded follow-on slices |
 | 2024 | gmail-extract-and-act-pipeline | `docs/plans/2026-04-13-issue-2024-gmail-extract-and-act-pipeline.md` | 2026-04-13 | draft | T3 | T3 plan for replacing raw email archiving with structured extraction, thread state, and delete/reactivation workflow |

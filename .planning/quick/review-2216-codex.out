@@ -1,0 +1,1 @@
+2026-04-15T01:50:49.847786Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)

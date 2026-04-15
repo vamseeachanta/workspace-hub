@@ -1,13 +1,13 @@
 ---
 name: corporate-tax-filing-reconciliation
-description: Reconcile multi-source tax documents, verify line-item accuracy against settlement/1099 records, and build audit-ready filing guides for C-Corp 1120 returns.
+description: Reconcile multi-document corporate tax packets, verify line-item accuracy against source documents, and coordinate parallel form generation for same-day filing
 version: 1.0.0
 source: auto-extracted
 extracted: 2026-04-14
 metadata:
-  tags: ["tax-preparation", "reconciliation", "form-1120", "document-verification", "audit-support"]
+  tags: ["tax-filing", "corporate-tax", "reconciliation", "form-1120", "multi-document-verification"]
 ---
 
 # Corporate Tax Filing Reconciliation
 
-When reconciling a corporate tax filing across multiple source documents (1099s, HUD statements, depreciation studies, loan agreements), verify line-by-line totals rather than just aggregate figures—settlement charges and expense allocations are common error points where totals match but individual items don't. Load all authoritative files in parallel, cross-reference box amounts/TINs/account numbers explicitly, and identify gaps (balance sheet, property-tax allocations) before drafting forms. Use a master worksheet as the single source of truth, then build form-specific guides that show source-to-line mapping for each 1120 schedule, making audit trails explicit.
+When reconciling a corporate tax packet with multiple authoritative sources (1099s, settlement statements, loan docs, worksheets), verify line-by-line against source docs—not just totals—since totals can match while individual items are wrong. Load all source files in parallel, establish a master reconciliation document, then use parallel task agents to generate dependent forms (1120, 8825, 4562, Schedules). Always rebuild the balance sheet from first principles using loan agreements, capital structure, and cash flows. Flag data gaps (e.g., property-tax allocation) that require separate source documents before forms lock.

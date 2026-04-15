@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-14T22:23:56.593819Z
+Generated: 2026-04-15T01:20:07.381059Z
 Current week: 2026-W16
 Recommended provider order: gemini, codex, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 26
-- Total routed candidates: 138
+- Execution-ready candidates: 17
+- Total routed candidates: 137
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2055 feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | yes | existing claude agent label | enhancement, priority:high, cat:engineering, wip:ace-linux-1, dark-intelligence, agent:claude |
-| #2127 fix(governance): make plan-approval-gate honor FORCE_PLAN_GATE_STRICT and DISABLE_ENFORCEMENT | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
-| #2128 fix(governance): wire enforcement-env and require-review-on-push into install-hooks pre-push chain | yes | existing claude agent label | bug, priority:high, cat:ai-orchestration, agent:claude, status:plan-approved |
-| #2248 epic(knowledge): prioritize resource/document intelligence backlog for file-context discovery and execution | yes | existing claude agent label | enhancement, priority:high, cat:data-pipeline, cat:documentation, agent:claude, status:plan-approved |
-| #2249 feat(doc-intel): triage index-level other bucket into bounded context packs | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, cat:document-intelligence, status:plan-approved |
-| #2268 feat(portability): establish core engineering portability contract and machine roles | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:harness, machine:multi, status:plan-approved |
 | #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:documentation, machine:dev-secondary, status:plan-approved |
 | #2046 Audit compliance of strict issue planning workflow after rollout | yes | strategy/workflow/architecture language | priority:medium, cat:ai-orchestration, cat:operations, status:plan-approved |
+| #2105 chore(knowledge): define freshness cadences and staleness signals for intelligence assets | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
+| #2129 chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts | yes | existing claude agent label | enhancement, priority:medium, cat:ai-orchestration, cat:harness, agent:claude, status:plan-approved |
+| #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
+| #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
+| #2207 feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:documentation, status:plan-approved |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 1
-- Total routed candidates: 56
+- Total routed candidates: 57
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

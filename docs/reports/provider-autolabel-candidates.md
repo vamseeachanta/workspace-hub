@@ -1,15 +1,17 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-14T22:23:56.805993Z
+Generated: 2026-04-15T01:20:07.571329Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
-| #2249 feat(doc-intel): triage index-level other bucket into bounded context packs | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2268 feat(portability): establish core engineering portability contract and machine roles | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2046 Audit compliance of strict issue planning workflow after rollout | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2105 chore(knowledge): define freshness cadences and staleness signals for intelligence assets | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2207 feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2116 feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2118 chore(gtm): run all 5 demos end-to-end and validate HTML reports | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2037 feat(gtm): manim mooring layout / force explainer animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
