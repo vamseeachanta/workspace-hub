@@ -1,0 +1,125 @@
+Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.
+Now I have a complete picture of the actual repo state versus the plan's claims. Let me compile the adversarial review.
+
+`★ Insight ─────────────────────────────────────`
+This review cross-references every claim in the plan against the live repo. The most instructive finding: the plan correctly fixed the self-approval and waived-review issues from prior Codex/Gemini reviews, but introduced a new category of gap — it classifies `.codex/CODEX.md` as "validation-only" despite it containing structural contradictions (legacy WRK-* workflow references) that directly conflict with the AGENTS.md contract the plan is trying to enforce.
+`─────────────────────────────────────────────────`
+
+---
+
+# Adversarial Review — Plan #2045 (Claude)
+
+**Date:** 2026-04-15  
+**Issue:** #2045  
+**Plan:** `docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md`  
+**Reviewer:** Claude (Opus 4.6)  
+**Reviewer mode:** adversarial  
+
+---
+
+## 1. Verdict
+
+**MINOR** — The plan is substantially improved from the prior MAJOR revisions and addresses the core Codex/Gemini findings. Two high findings remain that should be resolved but are bounded and do not require a structural rewrite.
+
+## 2. Ready for user approval: Yes (conditional)
+
+Conditional on addressing the two High findings below, or documenting them as accepted scope-outs with explicit user sign-off.
+
+## 3. Retrieval adequacy: adequate
+
+The Resource Intelligence Summary cites 10+ concrete file paths with specific findings. It identifies gaps, corrects the false safe-path blocker from prior revisions, enumerates the four agent surfaces with a provider table, and consults standards docs. This meets the ≥3 distinct sources requirement and is meaningfully more thorough than the prior revision.
+
+## 4. Top blockers (numbered)
+
+1. `.codex/CODEX.md` contains structural contradictions with `AGENTS.md` (legacy WRK-* workflow, legacy skill paths) but is classified as "validation-only / no change unless contradiction found" — the contradictions already exist and should be in implementation scope.
+2. `test_issue_2045_onboarding_docs.sh` is too permissive — matching the substring `AGENTS.md` anywhere in a file does not prove planning-workflow discoverability.
+
+## 5. Critical findings
+
+**None.** The prior critical findings (self-approval, waived review, false safe-path blocker) have been resolved in the current revision.
+
+## 6. High findings
+
+### H1: `.codex/CODEX.md` has active contradictions, not just potential ones
+
+**Evidence:** CODEX.md (`/mnt/local-analysis/workspace-hub/.codex/CODEX.md`) currently states:
+
+- Line 6: *"Every task maps to WRK-\* in `.claude/work-queue/`"* — the WRK-\* system is legacy; the current workflow uses GitHub issues.
+- Line 9: *"Workflow lifecycle skills are mandatory: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md`"* — these are legacy skills, not the current `issue-planning-mode` skill referenced by AGENTS.md.
+- CODEX.md does not mention resource intelligence, adversarial review, or `status:plan-review`/`status:plan-approved` labels.
+
+**Impact:** A Codex session loading CODEX.md will follow a fundamentally different workflow than what AGENTS.md prescribes. The plan claims Codex has "None — most explicit gate wording" in the onboarding-gap column, but this is only true for the narrow claim "Plan + explicit approval before implementation" — the surrounding workflow machinery contradicts the current system.
+
+**Required action:** Move CODEX.md from "Validation-only" to "Implementation scope." Update it to reference `issue-planning-mode` skill, remove WRK-\* references, and align with AGENTS.md gate order. Or explicitly document this as a known pre-existing debt that #2045 does not address (with user sign-off).
+
+### H2: `test_issue_2045_onboarding_docs.sh` is too permissive
+
+**Evidence:** The test checks `grep -l` for `AGENTS.md` or `issue-planning-mode` or `plan.*approval` in each entry surface. This has two problems:
+
+1. **Trivially true for AGENTS.md itself** — checking that `AGENTS.md` contains the substring "AGENTS.md" adds no value.
+2. **Presence ≠ discoverability** — GEMINI.md mentions `AGENTS.md` on line 2 as *"Canonical instructions: AGENTS.md"* but never mentions the planning workflow, the template path, or the `issue-planning-mode` skill. A Gemini session that reads only GEMINI.md will know AGENTS.md exists but won't know there's a mandatory planning workflow.
+
+**Required action:** Tighten the test. At minimum, require each non-AGENTS.md file to match a planning-specific keyword (e.g., `plan.*approv|issue-planning-mode|planning workflow`), not just a generic `AGENTS.md` reference. For AGENTS.md itself, check for the specific gate order string.
+
+## 7. Medium findings
+
+### M1: GEMINI.md contains stale workflow surface references
+
+**Evidence:** GEMINI.md lines 5-7 reference `docs/work-queue-workflow.md` and `docs/governance/SESSION-GOVERNANCE.md` as current workflow anchors, alongside `AGENTS.md`. If these are stale/legacy, they could misdirect Gemini sessions by pointing to a deprecated workflow contract.
+
+**Impact:** The plan claims Gemini's onboarding gap is "None — functional via AGENTS.md reference." This is technically true if Gemini sessions follow the `AGENTS.md` pointer, but the competing stale references weaken discoverability.
+
+**Recommendation:** Add GEMINI.md to the validation-only table with a decision rule: "Modify only if `docs/work-queue-workflow.md` or `docs/governance/SESSION-GOVERNANCE.md` are stale or refer to a deprecated workflow." This makes the stale-reference risk visible and auditable.
+
+### M2: `test_issue_2045_policy_alignment.sh` check method is under-specified
+
+**Evidence:** The test description says *"Extract workflow-order keywords from AGENTS.md; verify...do not state a different gate order."* But the concrete check method column doesn't specify how keyword-order comparison works in a shell script — is it positional grep? Sequence checking? Simple presence?
+
+**Impact:** An implementer would need to invent the comparison logic. If they implement it as simple presence-check (like the onboarding-docs test), it becomes another permissive test.
+
+**Recommendation:** Add one concrete example of what "contradiction" looks like in the check method column. E.g., *"A file that says 'Implement → Plan' (reversed order) or 'no adversarial review needed' would fail. A file that simply doesn't mention gate order passes."*
+
+### M3: `issue-planning-mode/SKILL.md` has structural issues beyond gate-order alignment
+
+**Evidence:** The skill file has:
+- Duplicate "Step 6" headings (lines 69 and 182/229)
+- A misnumbered "Step 5" (line 74) that duplicates Step 6 content
+- Repeated "Status precedence" sections (four near-identical blocks, lines 86-146)
+- Repeated "Governance cleanup" sections (three blocks, lines 147-228)
+
+**Impact:** The plan says it will *"correct the skill if workflow steps diverge from AGENTS.md gate order"* but the skill needs structural cleanup beyond just gate-order alignment. An implementer following the plan might fix the gate order but leave the duplicate/misnumbered sections.
+
+**Recommendation:** Add a note in Files to Change acknowledging structural cleanup is needed, or explicitly scope it out as a separate issue.
+
+## 8. Low findings
+
+### L1: Plan status header says "draft" despite two addressed MAJOR reviews
+
+The plan has undergone Codex and Gemini review, and the current revision addresses those findings. Per the status definitions in `docs/plans/README.md`, a plan that has completed adversarial review (even if awaiting Claude review) could be `adversarial-reviewed` rather than `draft`. Minor consistency point — this Claude review would complete the three-provider set.
+
+### L2: Hermes onboarding mechanism is documented but untestable in practice
+
+The plan correctly identifies Hermes has no dedicated entry surface and documents this as the supported mechanism. `test_issue_2045_hermes_documented.sh` checks that the plan itself documents this fact. This is meta-verification (the plan says it documents something, the test checks the plan). There's no way to verify that Hermes actually discovers the planning workflow at runtime, since Hermes depends entirely on the caller loading context. This is an inherent limitation, not a plan defect.
+
+### L3: `.codex/config.toml` role system_prompts don't reference planning workflow
+
+The `config.toml` system prompts for roles (default, coder, worker, etc.) reference TDD and `.claude/rules/` but not the planning workflow, `AGENTS.md`, or `issue-planning-mode`. The plan's validation-only check targets CODEX.md and config.toml but the test focuses on gate-order contradictions. Missing a reference isn't flagged as a contradiction — but it means Codex role-based sessions won't discover the planning workflow from config.toml alone.
+
+## 9. Required revisions before user approval
+
+| # | Finding | Severity | Required action |
+|---|---------|----------|-----------------|
+| 1 | CODEX.md legacy contradictions | High | Move to implementation scope or explicitly document as accepted pre-existing debt with user sign-off |
+| 2 | Onboarding-docs test too permissive | High | Tighten keyword matching to require planning-specific terms, not just `AGENTS.md` substring |
+| 3 | GEMINI.md stale workflow references | Medium | Add to validation-only table with stale-reference decision rule |
+| 4 | Policy alignment test under-specified | Medium | Add concrete contradiction example to check method |
+| 5 | Skill file structural issues | Medium | Acknowledge or scope out duplicate/misnumbered sections |
+
+---
+
+**Summary:** This is a materially better plan than what Codex and Gemini reviewed. The prior critical findings (self-approval, waived review, false safe-path assumption) are genuinely resolved. The remaining issues are bounded: a misclassification of CODEX.md's scope, one over-permissive test, and a few under-specified validation details. None require a structural rewrite — they require the plan to more honestly characterize what it already found.
+
+`★ Insight ─────────────────────────────────────`
+1. The most common failure mode in governance plans is classifying a file as "validation-only" when it actually has active contradictions — this happens because the planner reads the file looking for gate-order keywords and misses structural misalignment (legacy skill references, deprecated workflow systems).
+2. Substring-presence tests (grep for keyword X in file Y) are a common TDD anti-pattern for governance work — they prove the string exists, not that the workflow is discoverable. The fix is to test for *specific* planning-workflow language, not generic cross-references.
+`─────────────────────────────────────────────────`

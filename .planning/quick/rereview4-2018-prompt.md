@@ -1,3 +1,77 @@
+# Adversarial Re-Review Request: Issue #2018
+
+You are an independent adversarial reviewer. This plan was revised multiple times after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, unresolved decisions, weak retrieval, non-falsifiable tests/acceptance criteria, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2018
+- Title: feat: agent bypass resistance -- enforce workflow with technical gates, not text instructions
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2018
+- Labels: priority:high, cat:engineering, cat:harness, domain:workflow, status:plan-review
+
+GitHub issue body:
+## Mission: Agents must follow the workflow without exceptions
+
+### Current State
+- Review compliance at 4% (#2012)
+- Text-based instructions in CLAUDE.md and AGENTS.md get bypassed over time
+- Agents (all of them) act like humans who want to get shit done and skip the hard parts
+- Plan gate and commit gate testing in progress (#1876)
+
+### Core Insight
+> "Even hermes is not confident LLM text will make it adhere to it -- overtime agents just bypass"
+
+The problem is fundamental: LLMs optimize for task completion, not process adherence. Telling an agent to follow rules is like telling a developer to write tests -- it happens sometimes, not always.
+
+### Required: Infrastructure Enforcement
+
+Text instructions MUST be backed by technical enforcement:
+
+1. **Pre-commit hook** -- blocks commits without plan approval marker
+2. **CI gate** -- rejects PRs without cross-review evidence
+3. **Agent prefill** -- injects workflow constraints into session context
+4. **Compliance dashboard** -- tracks and alerts on violations
+5. **Auto-rollback** -- reverts commits that bypass gates
+
+### Why This Matters
+Without enforcement mode, every single artifact produced is potentially lower quality. The 3-agent review system only works if agents actually use it.
+
+### Acceptance Criteria
+- [ ] Pre-commit hook blocks 100% of non-compliant commits
+- [ ] CI pipeline rejects PRs without review sign-off
+- [ ] Compliance rate > 80% (from current 4%)
+- [ ] Zero engineering commits without plan review for 30+ days
+- [ ] All agents tested: Hermes, Claude Code, Codex, Gemini
+
+### Notes
+- #1876 covers the implementation details
+- #2012 tracks the compliance audit backlog
+- This is the PRIORITY for any serious engineering work
+
+### Related
+- #1876 (Enforce engineering workflow via Hermes prefill + Claude Code hooks)
+- #2012 (Review backlog audit - 4% compliance)
+- docs/standards/HARD-STOP-POLICY.md
+- docs/standards/AI_REVIEW_ROUTING_POLICY.md
+
+Plan under review (docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md):
 # Plan for #2018: agent bypass resistance -- enforce workflow with technical gates, not text instructions
 
 > **Status:** draft
@@ -140,7 +214,7 @@ Harden the enforcement surfaces listed in the bypass matrix so that each surface
 | #2045 | onboarding workflow adoption | #2018 assumes onboarding exists but does not replace onboarding scope | None — no cross-dependency |
 | #2046 | compliance audit | #2018 consumes audit outputs but does not replace the audit plan itself | None — advisory input only |
 | #2047 | escalation follow-on | if controls remain weak, escalation is linked rather than silently absorbed | None — #2047 is downstream of #2018 findings |
-| `#2289` (rollback child) | mandatory child issue for bypass rollback | #2018 owns detection/prevention; child owns recovery/revert | **Blocking:** #2289 already exists; before #2018 can close, #2289 must also have its own plan artifact and reach `status:plan-review` |
+| `#NNNN` (rollback child) | mandatory child issue for bypass rollback | #2018 owns detection/prevention; child owns recovery/revert | **Blocking:** child must exist and reach `status:plan-review` before #2018 can close |
 
 ---
 
@@ -197,15 +271,13 @@ Harden the enforcement surfaces listed in the bypass matrix so that each surface
 - [ ] Cross-review hook and push gate produce equivalent pass/fail for the same review-evidence state (`test_cross_review_hook_behavior`).
 - [ ] CI enforcement gate rejects the same missing-plan/missing-review states as local gates (`test_ci_gate_rejects_missing_plan_or_review`).
 - [ ] Hermes bootstrap gap is closed: either `config/agents/hermes/SOUL.md` references `AGENTS.md` gates, or Hermes is documented as non-implementation provider (`test_agent_bootstrap_surfaces_receive_constraints`).
-- [ ] Manual `--no-verify` / direct-shell bypass attempts cannot reach compliant push/merge state without explicit bypass evidence (`test_manual_git_manual_shell_path`).
-- [ ] Rollback child issue #2289 exists, and before #2018 closes it has its own plan artifact and is in `status:plan-review` or later (`test_rollback_child_issue_exists`).
+- [ ] Rollback child issue exists on GitHub and is in `status:plan-review` or later (`test_rollback_child_issue_exists`).
 
 ### Plan approval gate (required before implementation begins)
 
 - [ ] Bypass matrix covers all 11 surfaces listed above.
-- [ ] Real rollback child issue #2289 is linked in this plan.
+- [ ] Rollback child issue is created and linked in this plan (placeholder `#NNNN` replaced with real issue number).
 - [ ] Adversarial review returns APPROVE or MINOR (no unresolved MAJOR findings).
-- [ ] Reviewers explicitly accept the prevention/detection vs child-recovery split for rollback, or require issue-scope revision before approval.
 
 ---
 
@@ -235,3 +307,11 @@ Full review artifacts: `scripts/review/results/2026-04-14-plan-2018-codex.md`, `
 ## Complexity: T3
 
 **T3** — cross-surface enforcement/governance plan spanning runtime hooks, git gates, CI, compliance measurement, and multi-agent bootstrap behavior.
+
+
+Review questions — address ALL:
+1. Did the revision resolve prior MAJOR blockers concretely?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there unresolved scope/governance/status inconsistencies that should still block approval?
+5. Should this revised plan now be approved, revised again, or split?

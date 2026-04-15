@@ -1,0 +1,13 @@
+Continue improving docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md.
+
+Edit only that plan file.
+Do not commit.
+
+Latest remaining Codex blockers to fix:
+1. Rollback scope is still not fully reconciled with the issue's original required deliverable. Strengthen the plan text so the parent scope vs delegated child scope is unambiguous.
+2. Replace placeholder child issue `#NNNN` with a concrete named placeholder convention and explicit required next action, or otherwise make the dependency handling more governance-safe.
+3. Tighten the distinction between blocking controls vs advisory/reporting controls in the bypass matrix and acceptance criteria.
+4. Strengthen provider bootstrap validation beyond text-presence language as much as possible within a plan.
+5. Clarify direct-push vs PR gating responsibilities even more explicitly if needed.
+
+After editing, summarize exactly what changed in 5-10 bullets and stop. Do not touch other files.

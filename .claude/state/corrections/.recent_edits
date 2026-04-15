@@ -1,12 +1,3 @@
-2026-04-15T05:24:52-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16930
-2026-04-15T05:25:03-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16931
-2026-04-15T05:25:18-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16932
-2026-04-15T05:25:38-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16933
-2026-04-15T05:26:10-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16934
-2026-04-15T05:26:37-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16935
-2026-04-15T05:26:42-05:00|/mnt/local-analysis/workspace-hub/docs/reports/2026-04-15-skills-audit-execution-prep.md|16936
-2026-04-15T05:26:57-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16937
-2026-04-15T05:27:10-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16938
 2026-04-15T05:27:23-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md|16939
 2026-04-15T05:28:27-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md|16940
 2026-04-15T05:28:49-05:00|/mnt/local-analysis/workspace-hub/docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md|16941
@@ -48,3 +39,12 @@
 2026-04-15T07:19:26-05:00|/mnt/local-analysis/workspace-hub/aceengineer-admin/taxes/2025/fill_f1120_amended.py|16977
 2026-04-15T07:20:06-05:00|/mnt/local-analysis/workspace-hub/aceengineer-admin/taxes/2025/2025-form-1120-fill-guide-amended.md|16978
 2026-04-15T07:20:55-05:00|/mnt/local-analysis/workspace-hub/aceengineer-admin/taxes/2025/2025-form-1120-filing-packet.yaml|16979
+2026-04-15T11:06:10-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2282/tests/skills/test_weekly_skills_audit_policy.py|16980
+2026-04-15T11:07:03-05:00|/mnt/local-analysis/workspace-hub/docs/plans/README.md|16981
+2026-04-15T11:45:04-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/tests/cron/test_skills_curation.py|16982
+2026-04-15T11:46:20-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/tests/skills/test_weekly_skills_audit.py|16983
+2026-04-15T11:48:25-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/scripts/skills/weekly_skills_audit.py|16984
+2026-04-15T11:48:48-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/scripts/cron/skills-curation.sh|16985
+2026-04-15T11:49:10-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/config/scheduled-tasks/schedule-tasks.yaml|16986
+2026-04-15T11:49:17-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/docs/ops/scheduled-tasks.md|16987
+2026-04-15T11:49:28-05:00|/mnt/local-analysis/worktrees/workspace-hub-issue-2281/config/skills/weekly-audit-waivers.yaml|16988

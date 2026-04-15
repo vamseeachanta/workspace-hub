@@ -1,0 +1,12 @@
+Revise docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md only.
+
+Do not touch other files. Do not commit.
+
+Goals:
+1. Resolve the rollback scope wording so the parent scope vs delegated child scope is completely unambiguous.
+2. Replace placeholder child issue notation with a governance-safe convention that does not pretend a real issue exists yet.
+3. Tighten the distinction between blocking controls vs advisory/reporting controls in both bypass matrix and acceptance criteria.
+4. Improve provider bootstrap validation as much as possible in-plan.
+5. Reduce any remaining meta-plan flavor.
+
+After editing, summarize exactly what you changed in 5-10 bullets and stop.

@@ -1,3 +1,90 @@
+2026-04-15T14:50:01.066700Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d919f-29a1-7b41-aaee-1c03709c7889
+--------
+user
+# Adversarial Re-Review Request: Issue #2018
+
+You are an independent adversarial reviewer. This plan was revised multiple times after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, unresolved decisions, weak retrieval, non-falsifiable tests/acceptance criteria, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2018
+- Title: feat: agent bypass resistance -- enforce workflow with technical gates, not text instructions
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2018
+- Labels: priority:high, cat:engineering, cat:harness, domain:workflow, status:plan-review
+
+GitHub issue body:
+## Mission: Agents must follow the workflow without exceptions
+
+### Current State
+- Review compliance at 4% (#2012)
+- Text-based instructions in CLAUDE.md and AGENTS.md get bypassed over time
+- Agents (all of them) act like humans who want to get shit done and skip the hard parts
+- Plan gate and commit gate testing in progress (#1876)
+
+### Core Insight
+> "Even hermes is not confident LLM text will make it adhere to it -- overtime agents just bypass"
+
+The problem is fundamental: LLMs optimize for task completion, not process adherence. Telling an agent to follow rules is like telling a developer to write tests -- it happens sometimes, not always.
+
+### Required: Infrastructure Enforcement
+
+Text instructions MUST be backed by technical enforcement:
+
+1. **Pre-commit hook** -- blocks commits without plan approval marker
+2. **CI gate** -- rejects PRs without cross-review evidence
+3. **Agent prefill** -- injects workflow constraints into session context
+4. **Compliance dashboard** -- tracks and alerts on violations
+5. **Auto-rollback** -- reverts commits that bypass gates
+
+### Why This Matters
+Without enforcement mode, every single artifact produced is potentially lower quality. The 3-agent review system only works if agents actually use it.
+
+### Acceptance Criteria
+- [ ] Pre-commit hook blocks 100% of non-compliant commits
+- [ ] CI pipeline rejects PRs without review sign-off
+- [ ] Compliance rate > 80% (from current 4%)
+- [ ] Zero engineering commits without plan review for 30+ days
+- [ ] All agents tested: Hermes, Claude Code, Codex, Gemini
+
+### Notes
+- #1876 covers the implementation details
+- #2012 tracks the compliance audit backlog
+- This is the PRIORITY for any serious engineering work
+
+### Related
+- #1876 (Enforce engineering workflow via Hermes prefill + Claude Code hooks)
+- #2012 (Review backlog audit - 4% compliance)
+- docs/standards/HARD-STOP-POLICY.md
+- docs/standards/AI_REVIEW_ROUTING_POLICY.md
+
+Plan under review (docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md):
 # Plan for #2018: agent bypass resistance -- enforce workflow with technical gates, not text instructions
 
 > **Status:** draft
@@ -140,7 +227,7 @@ Harden the enforcement surfaces listed in the bypass matrix so that each surface
 | #2045 | onboarding workflow adoption | #2018 assumes onboarding exists but does not replace onboarding scope | None — no cross-dependency |
 | #2046 | compliance audit | #2018 consumes audit outputs but does not replace the audit plan itself | None — advisory input only |
 | #2047 | escalation follow-on | if controls remain weak, escalation is linked rather than silently absorbed | None — #2047 is downstream of #2018 findings |
-| `#2289` (rollback child) | mandatory child issue for bypass rollback | #2018 owns detection/prevention; child owns recovery/revert | **Blocking:** #2289 already exists; before #2018 can close, #2289 must also have its own plan artifact and reach `status:plan-review` |
+| `#NNNN` (rollback child) | mandatory child issue for bypass rollback | #2018 owns detection/prevention; child owns recovery/revert | **Blocking:** child must exist and reach `status:plan-review` before #2018 can close |
 
 ---
 
@@ -197,15 +284,13 @@ Harden the enforcement surfaces listed in the bypass matrix so that each surface
 - [ ] Cross-review hook and push gate produce equivalent pass/fail for the same review-evidence state (`test_cross_review_hook_behavior`).
 - [ ] CI enforcement gate rejects the same missing-plan/missing-review states as local gates (`test_ci_gate_rejects_missing_plan_or_review`).
 - [ ] Hermes bootstrap gap is closed: either `config/agents/hermes/SOUL.md` references `AGENTS.md` gates, or Hermes is documented as non-implementation provider (`test_agent_bootstrap_surfaces_receive_constraints`).
-- [ ] Manual `--no-verify` / direct-shell bypass attempts cannot reach compliant push/merge state without explicit bypass evidence (`test_manual_git_manual_shell_path`).
-- [ ] Rollback child issue #2289 exists, and before #2018 closes it has its own plan artifact and is in `status:plan-review` or later (`test_rollback_child_issue_exists`).
+- [ ] Rollback child issue exists on GitHub and is in `status:plan-review` or later (`test_rollback_child_issue_exists`).
 
 ### Plan approval gate (required before implementation begins)
 
 - [ ] Bypass matrix covers all 11 surfaces listed above.
-- [ ] Real rollback child issue #2289 is linked in this plan.
+- [ ] Rollback child issue is created and linked in this plan (placeholder `#NNNN` replaced with real issue number).
 - [ ] Adversarial review returns APPROVE or MINOR (no unresolved MAJOR findings).
-- [ ] Reviewers explicitly accept the prevention/detection vs child-recovery split for rollback, or require issue-scope revision before approval.
 
 ---
 
@@ -235,3 +320,139 @@ Full review artifacts: `scripts/review/results/2026-04-14-plan-2018-codex.md`, `
 ## Complexity: T3
 
 **T3** — cross-surface enforcement/governance plan spanning runtime hooks, git gates, CI, compliance measurement, and multi-agent bootstrap behavior.
+
+
+Review questions — address ALL:
+1. Did the revision resolve prior MAJOR blockers concretely?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there unresolved scope/governance/status inconsistencies that should still block approval?
+5. Should this revised plan now be approved, revised again, or split?
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the revised plan text against the repo’s approval bar and the issue’s stated mission. I’m checking for remaining blockers in scope definition, retrieval, falsifiability, and governance before judging whether it is actually approval-ready.
+codex
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+Insufficient
+
+4. Top blockers (numbered)
+
+1. The plan explicitly removes auto-rollback from #2018 even though the issue body lists it as required infrastructure enforcement; there is no scope-change approval, issue split artifact, or replacement acceptance criteria that makes this safe.
+2. The rollback dependency is still unresolved in the plan text itself: `#NNNN` is a placeholder, yet the plan makes that child issue a pre-approval / pre-close gate.
+3. The direct bypass path is still accepted in the TDD list: `git commit --no-verify` is allowed to succeed and only later be detected by the dashboard, which contradicts the issue’s “technical gates, not text instructions” goal and the issue AC “Pre-commit hook blocks 100% of non-compliant commits.”
+4. The provider-bootstrap test is too weak to prove enforcement. Grepping for `AGENTS.md` or keywords does not verify that constraints are actually injected into live agent sessions.
+5. Retrieval does not cover the actual hook-install / invocation chain, so the plan still does not prove that the named scripts are the real effective gates on the direct-push path.
+
+5. Critical findings
+
+- Scope conflict on rollback: the issue body defines auto-rollback as part of the required enforcement set, but the plan declares rollback out of scope. That is not a minor implementation detail; it changes what “done” means for #2018.
+- Governance/status inconsistency on rollback child creation: the plan says the child must exist before `status:plan-approved`, later says it is required before implementation begins, and also says #2018 cannot close until it exists. Those are different gates.
+- The plan is not approval-ready while still containing a mandatory unresolved placeholder dependency (`#NNNN`). A plan cannot be “ready for user approval” if one of its own approval gates is undefined.
+- `test_manual_git_manual_shell_path` institutionalizes a known bypass by accepting successful `--no-verify` commits. That fails the issue mission and weakens the headline claim of bypass resistance.
+
+6. High findings
+
+- Retrieval is missing the effective hook wiring layer. Reviewing individual scripts is not enough for this issue class; the plan needs retrieval for how those scripts are installed and invoked in the real git lifecycle.
+- `test_agent_bootstrap_surfaces_receive_constraints` is not a real enforcement test. String presence in files does not prove runtime loading, precedence, or that the provider actually receives the constraint.
+- The CI/local parity claim is still under-specified. “Verify/align `.github/workflows/enforcement-gate.yml`” is weaker than the plan’s stated goal to prove end-to-end bypass resistance.
+- The plan keeps the compliance dashboard advisory while also using it as the fallback detector for bypassed commits. Advisory reporting is not a technical gate.
+
+7. Medium findings
+
+- The acceptance criteria are partly mismatched with the issue AC. The issue demands “All agents tested: Hermes, Claude Code, Codex, Gemini,” but the current provider test only checks file text, not agent behavior.
+- `test_ci_gate_rejects_missing_plan_or_review` is still broad; the fixtures and expected CI failure modes are not defined enough to guarantee deterministic regression protection.
+- The plan says “Every bypass matrix row owned by #2018 has a passing test,” but ownership remains blurry around rollback, dashboard behavior, and manual shell paths.
+- “narrowed or justified” for exclusions/safe paths is still somewhat permissive. For a bypass-resistance issue, justification alone may preserve risky exemptions unless bounded by explicit invariants.
+
+8. Low findings
+
+- The plan mixes prevention, detection, and advisory reporting under one “bypass matrix” without always distinguishing which surfaces are intended to hard-block versus merely observe.
+- “tests/enforcement/ or tests/work-queue/” was improved in places, but there is still some directory ambiguity in the artifact map versus files-to-change section.
+- Review history says prior MAJORs were addressed, but the remaining scope conflict on rollback means the revision is not yet cleanly converged.
+
+9. Required revisions before user approval
+
+1. Resolve rollback scope explicitly. Either:
+   - keep rollback in #2018 and plan it here with concrete files/tests, or
+   - formally split the issue and update #2018 scope/acceptance criteria so the parent no longer claims auto-rollback as required deliverable.
+2. Replace `#NNNN` with a real child issue before seeking approval, and make the gate timing consistent in one place only.
+3. Remove the “successful `--no-verify` commit is acceptable if later detected” position. If this path cannot be blocked technically, the plan must say #2018 cannot satisfy the issue AC as written and must revise scope/AC accordingly.
+4. Expand retrieval to include the real hook installation/invocation chain for direct-push enforcement, not just the gate scripts themselves.
+5. Replace the bootstrap grep test with behavior-level validation that each provider entry surface is actually loaded or enforced in the supported execution path.
+6. Tighten acceptance criteria to distinguish:
+   - blocking controls,
+   - advisory/reporting controls,
+   - deferred child-issue work.
+7. Reconcile all approval/implementation/closure dependencies so the plan has one unambiguous gate order.
+tokens used
+116,270
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+Insufficient
+
+4. Top blockers (numbered)
+
+1. The plan explicitly removes auto-rollback from #2018 even though the issue body lists it as required infrastructure enforcement; there is no scope-change approval, issue split artifact, or replacement acceptance criteria that makes this safe.
+2. The rollback dependency is still unresolved in the plan text itself: `#NNNN` is a placeholder, yet the plan makes that child issue a pre-approval / pre-close gate.
+3. The direct bypass path is still accepted in the TDD list: `git commit --no-verify` is allowed to succeed and only later be detected by the dashboard, which contradicts the issue’s “technical gates, not text instructions” goal and the issue AC “Pre-commit hook blocks 100% of non-compliant commits.”
+4. The provider-bootstrap test is too weak to prove enforcement. Grepping for `AGENTS.md` or keywords does not verify that constraints are actually injected into live agent sessions.
+5. Retrieval does not cover the actual hook-install / invocation chain, so the plan still does not prove that the named scripts are the real effective gates on the direct-push path.
+
+5. Critical findings
+
+- Scope conflict on rollback: the issue body defines auto-rollback as part of the required enforcement set, but the plan declares rollback out of scope. That is not a minor implementation detail; it changes what “done” means for #2018.
+- Governance/status inconsistency on rollback child creation: the plan says the child must exist before `status:plan-approved`, later says it is required before implementation begins, and also says #2018 cannot close until it exists. Those are different gates.
+- The plan is not approval-ready while still containing a mandatory unresolved placeholder dependency (`#NNNN`). A plan cannot be “ready for user approval” if one of its own approval gates is undefined.
+- `test_manual_git_manual_shell_path` institutionalizes a known bypass by accepting successful `--no-verify` commits. That fails the issue mission and weakens the headline claim of bypass resistance.
+
+6. High findings
+
+- Retrieval is missing the effective hook wiring layer. Reviewing individual scripts is not enough for this issue class; the plan needs retrieval for how those scripts are installed and invoked in the real git lifecycle.
+- `test_agent_bootstrap_surfaces_receive_constraints` is not a real enforcement test. String presence in files does not prove runtime loading, precedence, or that the provider actually receives the constraint.
+- The CI/local parity claim is still under-specified. “Verify/align `.github/workflows/enforcement-gate.yml`” is weaker than the plan’s stated goal to prove end-to-end bypass resistance.
+- The plan keeps the compliance dashboard advisory while also using it as the fallback detector for bypassed commits. Advisory reporting is not a technical gate.
+
+7. Medium findings
+
+- The acceptance criteria are partly mismatched with the issue AC. The issue demands “All agents tested: Hermes, Claude Code, Codex, Gemini,” but the current provider test only checks file text, not agent behavior.
+- `test_ci_gate_rejects_missing_plan_or_review` is still broad; the fixtures and expected CI failure modes are not defined enough to guarantee deterministic regression protection.
+- The plan says “Every bypass matrix row owned by #2018 has a passing test,” but ownership remains blurry around rollback, dashboard behavior, and manual shell paths.
+- “narrowed or justified” for exclusions/safe paths is still somewhat permissive. For a bypass-resistance issue, justification alone may preserve risky exemptions unless bounded by explicit invariants.
+
+8. Low findings
+
+- The plan mixes prevention, detection, and advisory reporting under one “bypass matrix” without always distinguishing which surfaces are intended to hard-block versus merely observe.
+- “tests/enforcement/ or tests/work-queue/” was improved in places, but there is still some directory ambiguity in the artifact map versus files-to-change section.
+- Review history says prior MAJORs were addressed, but the remaining scope conflict on rollback means the revision is not yet cleanly converged.
+
+9. Required revisions before user approval
+
+1. Resolve rollback scope explicitly. Either:
+   - keep rollback in #2018 and plan it here with concrete files/tests, or
+   - formally split the issue and update #2018 scope/acceptance criteria so the parent no longer claims auto-rollback as required deliverable.
+2. Replace `#NNNN` with a real child issue before seeking approval, and make the gate timing consistent in one place only.
+3. Remove the “successful `--no-verify` commit is acceptable if later detected” position. If this path cannot be blocked technically, the plan must say #2018 cannot satisfy the issue AC as written and must revise scope/AC accordingly.
+4. Expand retrieval to include the real hook installation/invocation chain for direct-push enforcement, not just the gate scripts themselves.
+5. Replace the bootstrap grep test with behavior-level validation that each provider entry surface is actually loaded or enforced in the supported execution path.
+6. Tighten acceptance criteria to distinguish:
+   - blocking controls,
+   - advisory/reporting controls,
+   - deferred child-issue work.
+7. Reconcile all approval/implementation/closure dependencies so the plan has one unambiguous gate order.

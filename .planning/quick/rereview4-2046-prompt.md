@@ -1,3 +1,52 @@
+# Adversarial Re-Review Request: Issue #2046
+
+You are an independent adversarial reviewer. This plan was revised multiple times after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, unresolved decisions, weak retrieval, non-falsifiable tests/acceptance criteria, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2046
+- Title: Audit compliance of strict issue planning workflow after rollout
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2046
+- Labels: priority:medium, cat:ai-orchestration, cat:operations, status:plan-review
+
+GitHub issue body:
+After the new strict planning workflow has been used for a short period, audit compliance across agent activity.
+
+Audit focus:
+- Was `issue-planning-mode` used for all issues?
+- Were plans created in `docs/plans/` using the template?
+- Were adversarial reviews completed before user review?
+- Were labels `status:plan-review` and `status:plan-approved` used correctly?
+- Did any agent begin coding before approval?
+
+Deliverables:
+- Markdown report under `docs/reports/`
+- Compliance summary with examples
+- Gaps, failure modes, and recommendations
+- Decision: keep current approach or escalate enforcement
+
+Suggested trigger:
+- Run after 1-2 weeks of usage or after at least 10 issues have gone through the new workflow
+
+
+Plan under review (docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md):
 # Plan for #2046: Audit Compliance of Strict Issue Planning Workflow After Rollout
 
 > **Status:** draft
@@ -21,8 +70,6 @@
 ### Standards
 - `AGENTS.md` — hard-gate order and TDD expectation.
 - `docs/plans/README.md` — planning workflow contract and status precedence.
-- `docs/plans/_template-issue-plan.md` — canonical section contract for discovered plan artifacts.
-- `.claude/skills/coordination/issue-planning-mode/SKILL.md` — canonical workflow skill named by the repo hard gate.
 - `docs/standards/HARD-STOP-POLICY.md` — engineering-critical enforcement policy.
 - `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — adversarial review expectations.
 
@@ -30,8 +77,6 @@
 - GitHub issue #2045 — onboarding baseline / rollout origin
 - GitHub issue #2047 — likely escalation path if audit fails
 - `docs/plans/README.md`
-- `docs/plans/_template-issue-plan.md`
-- `.claude/skills/coordination/issue-planning-mode/SKILL.md`
 - `docs/standards/HARD-STOP-POLICY.md`
 - `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 - `docs/governance/TRUST-ARCHITECTURE.md`
@@ -39,7 +84,6 @@
 - `.claude/skills/coordination/workflow-compliance-audit/SKILL.md`
 - `.claude/hooks/plan-approval-gate.sh`
 - `scripts/enforcement/require-plan-approval.sh`
-- `gh issue view <issue> --json timelineItems` equivalent timeline/event retrieval path (must be implemented concretely in the audit script, not approximated by label snapshots alone)
 
 ### Gaps identified
 - Current plan logic still over-relies on artifact presence and commit timestamps instead of chronology and evidence confidence.
@@ -89,20 +133,7 @@ gh issue list --state all --limit 500 --json number,labels,createdAt
 **Minimum issue-count rule:** if fewer than 10 issues are in-scope at audit time, the audit still runs but the report must note the low sample size and flag that statistical conclusions are unreliable.
 
 ### Approval signal precedence
-
-### User-approval evidence rule table
-
-| Rank | Evidence source | What qualifies | Use in audit |
-|---|---|---|---|
-| 1 | GitHub timeline event by human actor | issue comment or label-change event attributable to repository owner/collaborator that explicitly approves the plan or applies `status:plan-approved` after review | authoritative |
-| 2 | `.planning/plan-approved/<issue>.md` marker committed after the human approval event | local corroboration only; never sufficient by itself | corroborating |
-| 3 | Issue comment quoting explicit user approval but lacking label change | acceptable only if actor is human and timestamps are consistent with later approval label or marker | fallback / may become indeterminate |
-| 4 | Agent-authored marker or label change with no human event | does not qualify as user approval evidence | non-compliant |
-
-**Actor classification rule:** treat `github-actions`, known bot accounts, and agent-owned service identities as non-human actors. Treat repository owner/collaborator/member accounts as human unless the event text itself states it was automated; ambiguous actors must be reported as `indeterminate`, not silently human.
-
-### Approval signal precedence
-1. GitHub timeline evidence showing `status:plan-approved` added after review/user-approval event by a human actor.
+1. GitHub timeline evidence showing `status:plan-approved` added after review/user-approval event.
 2. Local `.planning/plan-approved/<issue>.md` marker as corroborating local evidence only.
 3. If GitHub and local signals disagree, classify by the stronger timeline evidence and report the conflict explicitly.
 
@@ -137,7 +168,7 @@ Review artifacts must correspond to the plan revision that was actually approved
 
 1. **Revision date match:** the review artifact filename contains a date (`YYYY-MM-DD`) that is on or after the plan file's most recent substantive edit (determined by `git log -1 --format="%ai" -- docs/plans/*-issue-NNNN-*.md`).
 2. **Content hash match (when available):** if the review artifact references a plan hash or revision identifier, it must match the approved plan's content at the time of review.
-3. **Falsifiable stale-review heuristic:** if any diff after the review timestamp touches the headings `## Acceptance Criteria`, `## TDD Test List`, `## Files to Change`, or `## Risks and Open Questions`, the prior review is stale and the issue is classified as **indeterminate** on the review dimension until re-reviewed.
+3. **Stale review detection:** if the plan was substantively edited after the review artifact was created (new sections added, acceptance criteria changed, TDD list modified), the review is **stale** and the issue is classified as **indeterminate** on the review dimension until re-reviewed.
 4. **No review artifact at all:** if no review artifact exists for the issue, the review dimension is **non-compliant** regardless of other evidence.
 
 ### Decision rubric
@@ -248,16 +279,14 @@ generate canonical report with:
 | `test_issue_planning_mode_usage_evidence_tiers` | authoritative (session log) → compliant; secondary (plan + review artifacts) → compliant (inferred); fallback (issue comment only) → indeterminate; none → non-compliant | fixture set: one issue per tier | correct tier classification for each |
 | `test_template_conformance_for_discovered_plan_artifacts` | plan artifact contains all required template headings per `_template-issue-plan.md` | fixture: conformant plan; fixture: plan missing Acceptance Criteria heading | conformant → pass; missing heading → fail with specific heading named |
 | `test_review_artifact_matches_plan_revision` | review artifact date is on or after plan's last substantive edit | fixture: review dated after plan edit; fixture: plan edited after review (stale) | after → compliant; stale → indeterminate on review dimension |
-| `test_stale_review_after_plan_edit` | plan was substantively edited after review artifact was created | fixture: plan edited at T2, review at T1 < T2 | indeterminate; report flags stale review via changed-headings heuristic |
-| `test_commit_only_signal_is_low_confidence` | commit timestamps without timeline or approval evidence are treated as suggestive only, never as sole proof of compliant approval order | fixture: commit history present but no timeline events | indeterminate / low-confidence flag, not compliant |
+| `test_stale_review_after_plan_edit` | plan was substantively edited after review artifact was created | fixture: plan edited at T2, review at T1 < T2 | indeterminate; report flags stale review |
 | `test_retroactive_label_is_flagged` | `status:plan-approved` added >24h after the last review artifact date, suggesting retroactive labeling | fixture: review at T1, label at T1+48h | non-compliant or indeterminate with retroactive flag |
 | `test_malformed_review_artifact_is_not_treated_as_valid_review` | review artifact exists but is empty, has no verdict line, or is <100 bytes | fixture: empty file; fixture: file with "APPROVE" verdict | empty → non-compliant; valid → compliant |
 | `test_commits_without_issue_reference` | commits with no `#NNN` reference are excluded from issue evidence rather than forcing false negative | fixture: commits without issue refs | excluded from per-issue matrix; reported in audit summary as unattributed |
 | `test_conflicting_evidence_resolution` | GitHub timeline evidence beats local marker when they conflict | fixture: label says approved at T1, marker commit says T2 ≠ T1 | classification follows GitHub timeline (T1); conflict reported |
 | `test_report_emits_included_and_excluded_issue_lists` | report contains explicit `## Included Issues` and `## Excluded Issues` sections with issue numbers and reasons | fixture: mixed cohort | both sections present with ≥1 entry each |
 | `test_report_splits_by_cohort` | report has separate compliance counts for engineering-critical and non-engineering cohorts | fixture: 2 eng-critical + 2 non-eng issues | separate count rows in report |
-| `test_engineering_critical_override_triggers_escalation` | any engineering-critical non-compliance forces escalation recommendation regardless of aggregate rate | fixture: high overall compliance but one engineering-critical failure | recommendation = `Escalate enforcement` with override rationale |
-| `test_report_includes_decision_rubric_outcome` | report contains a `## Recommendation` section stating which rubric row was selected | fixture: 60% compliant, 15% indeterminate | `Tighten guidance` recommendation with rubric citation |
+| `test_report_includes_decision_rubric_outcome` | report contains a `## Recommendation` section stating which rubric row was selected | fixture: 60% compliant, 15% indeterminate | "Tighten guidance" recommendation with rubric citation |
 
 ---
 
@@ -269,11 +298,10 @@ generate canonical report with:
 - [ ] Audit verifies `status:plan-review` → `status:plan-approved` chronology and detects all six misuse patterns from the `status:plan-approved` usage checks table.
 - [ ] Audit detects implementation-before-approval using commit evidence against safe-path exclusion list per the definition above.
 - [ ] Audit classifies `issue-planning-mode` usage across all three evidence tiers (authoritative/secondary/fallback) with correct indeterminate handling.
-- [ ] Audit checks plan-revision matching: stale reviews (plan edited after review) are flagged as indeterminate using the changed-headings heuristic.
+- [ ] Audit checks plan-revision matching: stale reviews (plan edited after review) are flagged as indeterminate.
 - [ ] Report output written to `docs/reports/2026-04-09-planning-workflow-compliance-audit.md` (refresh, not duplicate) containing: included/excluded issue lists, per-issue evidence summary, cohort-split compliance counts, and a recommendation section citing the decision rubric.
-- [ ] Commit-only chronology signals without timeline evidence are treated as low-confidence only (`test_commit_only_signal_is_low_confidence`).
-- [ ] Engineering-critical issues failing compliance at any rate trigger escalation recommendation regardless of overall rate (`test_engineering_critical_override_triggers_escalation`).
-- [ ] All TDD tests pass in `tests/enforcement/test_audit_planning_compliance.py` using fixtures in `tests/fixtures/planning-compliance/`.
+- [ ] All 21 TDD tests pass in `tests/enforcement/test_audit_planning_compliance.py` using fixtures in `tests/fixtures/planning-compliance/`.
+- [ ] Engineering-critical issues failing compliance at any rate trigger escalation recommendation regardless of overall rate.
 
 ### Plan approval gate (required before implementation begins)
 
@@ -311,3 +339,11 @@ Full review artifacts: `scripts/review/results/2026-04-14-plan-2046-codex.md`, `
 ## Complexity: T2
 
 **T2** — moderate audit/reporting implementation with timeline parsing, evidence classification, and fixture-backed verification.
+
+
+Review questions — address ALL:
+1. Did the revision resolve prior MAJOR blockers concretely?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there unresolved scope/governance/status inconsistencies that should still block approval?
+5. Should this revised plan now be approved, revised again, or split?

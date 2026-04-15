@@ -1,0 +1,13 @@
+Continue improving docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md.
+
+Edit only that plan file.
+Do not commit.
+
+Latest remaining Codex blockers to fix:
+1. Make the timeline retrieval mechanism and actor-identity logic more concrete.
+2. Tighten the user-approval evidence rule into one explicit rule set.
+3. Make the stale-review heuristic more falsifiable (for example, tie it to concrete changed sections).
+4. Add explicit engineering-critical escalation override test/acceptance language.
+5. Remove any remaining ambiguity in implementation path or status semantics.
+
+After editing, summarize exactly what changed in 5-10 bullets and stop. Do not touch other files.
