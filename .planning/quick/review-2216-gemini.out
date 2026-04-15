@@ -579,3 +579,140 @@ Attempt 1 failed with status 429. Retrying with backoff... _GaxiosError: [{
   status: 429,
   Symbol(gaxios-gaxios-error): '6.7.1'
 }
+Attempt 2 failed with status 429. Retrying with backoff... _GaxiosError: [{
+  "error": {
+    "code": 429,
+    "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+    "errors": [
+      {
+        "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+        "domain": "global",
+        "reason": "rateLimitExceeded"
+      }
+    ],
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "reason": "MODEL_CAPACITY_EXHAUSTED",
+        "domain": "cloudcode-pa.googleapis.com",
+        "metadata": {
+          "model": "gemini-3.1-pro-preview"
+        }
+      }
+    ]
+  }
+}
+]
+    at Gaxios._request (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:6581:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async _OAuth2Client.requestAsync (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:8544:16)
+    at async CodeAssistServer.requestStreamingPost (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:276956:17)
+    at async CodeAssistServer.generateContentStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:276756:23)
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:277597:19
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:254636:23
+    at async retryWithBackoff (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:274556:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:309884:28)
+    at async GeminiChat.streamWithRetries (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:309727:29) {
+  config: {
+    url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+    method: 'POST',
+    params: { alt: 'sse' },
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'GeminiCLI/0.37.2/gemini-3.1-pro-preview (linux; x64; terminal) google-api-nodejs-client/9.15.1',
+      Authorization: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      'x-goog-api-client': 'gl-node/24.14.1'
+    },
+    responseType: 'stream',
+    body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+    signal: AbortSignal { aborted: false },
+    retry: false,
+    paramsSerializer: [Function: paramsSerializer],
+    validateStatus: [Function: validateStatus],
+    errorRedactor: [Function: defaultErrorRedactor]
+  },
+  response: {
+    config: {
+      url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+      method: 'POST',
+      params: [Object],
+      headers: [Object],
+      responseType: 'stream',
+      body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      signal: [AbortSignal],
+      retry: false,
+      paramsSerializer: [Function: paramsSerializer],
+      validateStatus: [Function: validateStatus],
+      errorRedactor: [Function: defaultErrorRedactor]
+    },
+    data: '[{\n' +
+      '  "error": {\n' +
+      '    "code": 429,\n' +
+      '    "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '    "errors": [\n' +
+      '      {\n' +
+      '        "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '        "domain": "global",\n' +
+      '        "reason": "rateLimitExceeded"\n' +
+      '      }\n' +
+      '    ],\n' +
+      '    "status": "RESOURCE_EXHAUSTED",\n' +
+      '    "details": [\n' +
+      '      {\n' +
+      '        "@type": "type.googleapis.com/google.rpc.ErrorInfo",\n' +
+      '        "reason": "MODEL_CAPACITY_EXHAUSTED",\n' +
+      '        "domain": "cloudcode-pa.googleapis.com",\n' +
+      '        "metadata": {\n' +
+      '          "model": "gemini-3.1-pro-preview"\n' +
+      '        }\n' +
+      '      }\n' +
+      '    ]\n' +
+      '  }\n' +
+      '}\n' +
+      ']',
+    headers: {
+      'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+      'content-length': '630',
+      'content-type': 'application/json; charset=UTF-8',
+      date: 'Wed, 15 Apr 2026 01:54:58 GMT',
+      server: 'ESF',
+      'server-timing': 'gfet4t7; dur=7730',
+      vary: 'Origin, X-Origin, Referer',
+      'x-cloudaicompanion-trace-id': '52875e82700ef2c4',
+      'x-content-type-options': 'nosniff',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-xss-protection': '0'
+    },
+    status: 429,
+    statusText: 'Too Many Requests',
+    request: {
+      responseURL: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse'
+    }
+  },
+  error: undefined,
+  status: 429,
+  Symbol(gaxios-gaxios-error): '6.7.1'
+}
+1. Verdict: MAJOR
+2. Ready for user approval: No
+3. Retrieval adequacy: insufficient
+4. Top blockers (numbered)
+   1. The plan proposes adding `acma_codes_local` to `mounted-source-registry.yaml`, but this entry **already exists** in the repository.
+   2. The plan proposes adding OCIMF and CSA standards to `standards-transfer-ledger.yaml`, but multiple entries (including `OCIMF-TANDEM-MOORING`, `CSA-Z276.1-20`, and `CSA-Z276.18`) are **already present** in the ledger and marked as `status: done`.
+   3. The plan's proposed follow-on issues #1 and #2 (Source registration and Ledger entries) duplicate work that is already complete in the target files.
+   4. The plan's "Real Inventory" is factually incomplete and fails to account for other CSA/OCIMF documents already tracked in the ledger (e.g., `CSA-Z276.2-19`, `OCIMF-MEG-3RD-ED-CDS`).
+5. Critical findings
+   - **Inadequate Retrieval / Hallucination of State:** The plan asserts that `/mnt/ace/acma-codes` is NOT registered and that OCIMF/CSA are entirely absent from the ledger. Live repository inspection proves both assertions false. Proceeding with this plan would cause duplicate entries or overwrite existing completed work.
+   - **Violation of Empirical Verification:** The plan explicitly relies on a "pre-session observation" instead of live retrieval to define its scope.
+6. High findings
+   - **Invalid Follow-On Split:** The dependency chain for the proposed follow-on issues is broken because the foundational tasks (registration and ledger population) have already been performed by another agent or in a previous session.
+7. Medium findings
+   - **Sandbox Limitation Workaround:** The plan failed to use the existing `standards-transfer-ledger.yaml` as a fallback mechanism to verify the contents of the `acma-codes` directory when direct filesystem access was purportedly denied.
+8. Low findings
+   - **Taxonomy expansion:** The plan recommends classifying CSA Z276 under the `marine` domain as a workaround since `LNG` doesn't exist, which is acceptable, but it misses that the current ledger already correctly uses `marine` and other domains for these entries.
+9. Required revisions before user approval
+   - Perform a live retrieval of `data/document-index/mounted-source-registry.yaml` and `data/document-index/standards-transfer-ledger.yaml` to ground the plan in the actual current state.
+   - Remove all tasks related to registering the `acma_codes_local` source and adding OCIMF/CSA entries to the ledger, as they are already complete.
+   - Adjust the scope to focus exclusively on the remaining pipeline steps (verifying Phase A indexing, Phase B summarization, and Phase C classification) and L3 LLM-Wiki promotion.
+   - Re-evaluate the follow-on issue split to reflect the drastically reduced implementation scope.
