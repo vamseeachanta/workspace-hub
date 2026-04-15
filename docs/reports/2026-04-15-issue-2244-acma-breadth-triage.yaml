@@ -1,0 +1,226 @@
+# ACMA Breadth Triage — Machine-Readable Companion
+# Issue: #2244
+# Parent umbrella: #2216
+# Generated: 2026-04-15
+# Source quality: metadata-only — no clause-level claims
+
+meta:
+  issue: 2244
+  parent_umbrella: 2216
+  bounded_issue: 2227
+  generated: "2026-04-15"
+  report_path: docs/reports/2026-04-15-issue-2244-acma-breadth-triage.md
+  evidence_base:
+    - docs/reports/2261-wave1-family-map.md
+    - docs/reports/2262-wave2-family-map.md
+    - docs/reports/2261-wave1-metadata-stubs.md
+    - docs/reports/2262-wave2-metadata-stubs.md
+    - docs/handoffs/2026-04-12-acma-wiki-exit-handoff.md
+
+# Items already in #2227 scope (NOT triaged here)
+in_scope_2227:
+  - standard_id: OCIMF-TANDEM-MOORING
+  - standard_id: CSA-Z276.1-20
+  - standard_id: CSA-Z276.18
+
+# Triage decisions for explicitly named candidates
+triage_named_candidates:
+  - standard_id: CSA-Z276.2-19
+    title: "CSA Z276.2-19 — Near-Shoreline FLNG Facilities"
+    org: CSA
+    domain: marine/LNG
+    pages: 102
+    drm: AES/Vitrium
+    artifact_quality: blocked-metadata-only
+    recommended_layer: L3-wiki-deferred
+    target_domain: LNG
+    target_repo: workspace-hub
+    follow_on_issue: A
+    rationale: "Same CSA Z276 family as Z276.1-20 and Z276.18; strong LNG domain candidate once DRM resolved"
+
+  - standard_id: CSA-B625-13
+    title: "CSA B625-13 — Portable Tanks for Transport of Dangerous Goods"
+    org: CSA
+    domain: transport/hazmat
+    pages: 176
+    drm: AES/Vitrium
+    artifact_quality: blocked-metadata-only
+    recommended_layer: L2-ledger
+    target_domain: null
+    target_repo: null
+    follow_on_issue: null
+    rationale: "Out of domain — portable tank transport, not marine/mooring/LNG"
+
+  - standard_id: CSA-22.1-12
+    title: "CSA 22.1-12 — Canadian Electrical Code (Part I)"
+    org: CSA
+    domain: electrical
+    pages: unknown
+    drm: FileOpen/FOPN
+    artifact_quality: blocked-metadata-only
+    recommended_layer: L2-ledger
+    target_domain: null
+    target_repo: null
+    follow_on_issue: null
+    rationale: "General electrical code; no marine/offshore focus; FOPN DRM blocked even metadata extraction"
+    naming_note: "Issue body uses CSA-C22.1-12; repo artifacts use CSA-22.1-12 (without C prefix). Both refer to same standard."
+
+  - standard_id: API-RP-2SK-3E
+    title: "API RP 2SK — Stationkeeping Systems (3rd ed., 2005 + 2008 addendum)"
+    org: API
+    domain: offshore/mooring
+    year: 2005
+    fragments: 2
+    artifact_quality: blocked-metadata-only
+    recommended_layer: L3-wiki
+    target_domain: mooring
+    target_repo: workspace-hub
+    follow_on_issue: C
+    rationale: "Primary API stationkeeping standard; directly relevant to mooring domain"
+
+  - standard_id: API-RP-2SK-2E
+    title: "API RP 2SK — Stationkeeping Systems (2nd ed.)"
+    org: API
+    domain: offshore/mooring
+    year: 1996
+    artifact_quality: blocked-metadata-only
+    recommended_layer: L2-ledger
+    target_domain: null
+    target_repo: null
+    follow_on_issue: null
+    rationale: "Superseded by 3rd edition; keep in ledger for provenance"
+
+# Triage decisions for grouped API family
+triage_api_grouped:
+  - group: offshore-structural
+    standard_ids: [API-RP-2A-WSD, API-BULL-2U-3E, API-RP-2H-9E]
+    count: 3
+    recommended_layer: L2-ledger
+    rationale: "Structural engineering — no current wiki domain"
+
+  - group: offshore-cranes
+    standard_ids: [API-RP-2D-6E, API-RP-2D-5E, API-RP-2C]
+    count: 3
+    recommended_layer: L2-ledger
+    rationale: "Crane operations — distinct engineering domain"
+
+  - group: offshore-safety
+    standard_ids: [API-RP-14C-7E, API-RP-14G, API-RP-14J-2013, API-RP-14J-2002, API-RP-54, API-RP-75]
+    count: 6
+    recommended_layer: L2-ledger
+    rationale: "Safety/fire/hazards — distinct domain, no current wiki target"
+
+  - group: offshore-electrical
+    standard_ids: [API-RP-14F, API-RP-505, API-RP-500]
+    count: 3
+    recommended_layer: L2-ledger
+    rationale: "Electrical classification — distinct domain"
+
+  - group: api-other
+    standard_ids: [API-RP-1111-3E, API-SPEC-7K, API-SPEC-4F, API-2INT-MET, API-RP-95J]
+    count: 5
+    recommended_layer: L2-ledger
+    rationale: "Miscellaneous API — pipelines, drilling, metocean; no wiki domain alignment"
+
+# Triage decisions for other org families
+triage_other_orgs:
+  - group: ocimf-meg
+    org: OCIMF
+    standard_ids: [OCIMF-MEG4-4E, OCIMF-MEG-3E]
+    count: 2
+    recommended_layer: L3-wiki
+    target_domain: mooring
+    follow_on_issue: B
+    rationale: "Definitive mooring equipment guidelines; strong wiki promotion candidates"
+
+  - group: ocimf-supporting
+    org: OCIMF
+    standard_ids: [OCIMF-MEG4-JUSTIFICATION, OCIMF-OVID-OVPQ, OCIMF-OVID-APP]
+    count: 3
+    recommended_layer: L2-ledger
+    follow_on_issue: null
+    rationale: "Justification doc (supporting), OVID items (vessel inspection domain)"
+
+  - group: lr-full-corpus
+    org: Lloyd's Register
+    count: 24
+    recommended_layer: downstream-assessment
+    follow_on_issue: E
+    rationale: "Large classification corpus with complex edition history; better suited to dedicated downstream repo"
+
+  - group: sigtto-lng-mooring
+    org: SIGTTO
+    count: 8
+    recommended_layer: L3-wiki-deferred
+    target_domain: LNG + mooring
+    follow_on_issue: D
+    rationale: "SIGTTO LNG and mooring publications relevant to existing wiki domains"
+
+  - group: sigtto-operational
+    org: SIGTTO
+    count: 5
+    recommended_layer: L2-ledger
+    follow_on_issue: null
+    rationale: "Training/safety/operational materials — not engineering standards"
+
+  - group: noble-denton
+    org: Noble Denton / DNV GL
+    count: 8
+    recommended_layer: downstream-assessment
+    follow_on_issue: E
+    rationale: "Marine transportation/towage/lifting guidelines; distinct domains, complex edition history"
+
+# Follow-on issue map
+follow_on_issues:
+  - id: A
+    title: "feat(wiki): promote CSA Z276.2-19 to LNG wiki domain"
+    items: [CSA-Z276.2-19]
+    why_split: "Same Z276 family as #2227 targets but must not expand #2227 scope"
+    labels: [enhancement, "cat:documentation", "priority:medium"]
+    target_domain: LNG
+    blocked_by: [2227]
+    parent: 2216
+
+  - id: B
+    title: "feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain"
+    items: [OCIMF-MEG4-4E, OCIMF-MEG-3E]
+    why_split: "Major standards (297pp + 293pp) deserving dedicated wiki pages with edition lineage"
+    labels: [enhancement, "cat:documentation", "priority:medium"]
+    target_domain: mooring
+    blocked_by: []
+    parent: 2216
+
+  - id: C
+    title: "feat(wiki): promote API RP 2SK 3rd ed. to mooring wiki domain"
+    items: [API-RP-2SK-3E]
+    why_split: "Different org and standard from #2227 targets; requires own promotion issue"
+    labels: [enhancement, "cat:documentation", "priority:medium"]
+    target_domain: mooring
+    blocked_by: []
+    parent: 2216
+
+  - id: D
+    title: "feat(wiki): promote SIGTTO LNG and mooring publications as batch"
+    items: [SIGTTO-DAM-QRH-01, SIGTTO-ROLLOVER-PREVENTION, SIGTTO-HMPE-MOORING, SIGTTO-LNG-HARD-ARMS, SIGTTO-RISK-MITIGATION-LNG, SIGTTO-FIRE-LNG-CONTAINMENT, SIGTTO-LNG-SHIPPING-50, SIGTTO-HCB-NOV06]
+    why_split: "8 relevant publications across LNG + mooring domains; batch to avoid issue proliferation"
+    labels: [enhancement, "cat:documentation", "priority:low"]
+    target_domain: LNG + mooring
+    blocked_by: []
+    parent: 2216
+
+  - id: E
+    title: "feat(architecture): assess LR and Noble Denton corpus for downstream repo routing"
+    items_summary: "LR (24 stubs) + Noble Denton (8 stubs)"
+    why_split: "Large classification/marine-transport corpora with complex edition histories; need routing decision before any promotion"
+    labels: [enhancement, "cat:architecture", "priority:low"]
+    target_domain: TBD
+    blocked_by: []
+    parent: 2216
+
+# Summary statistics
+summary:
+  total_items_triaged: 74
+  l3_wiki_future: 12
+  l2_ledger: 30
+  downstream_assessment: 32
+  excluded_in_2227: 3
