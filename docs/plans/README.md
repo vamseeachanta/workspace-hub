@@ -206,7 +206,9 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2280 | weekly-skill-ecosystem-audit-and-consolidation-maintenance-loop | `docs/plans/2026-04-14-issue-2280-weekly-skill-ecosystem-audit-and-consolidation-maintenance-loop.md` | 2026-04-14 | draft | T2 | Parent governance plan defining weekly skills-maintenance audit rules, child implementation split, and cron artifact contract |
 | 2281 | implement-v1-weekly-audit-for-existing-skills-curation-workflow | `docs/plans/2026-04-14-issue-2281-implement-v1-weekly-audit-for-existing-skills-curation-workflow.md` | 2026-04-14 | plan-review | T2 | Child implementation plan for deterministic read-only weekly skills audit under the existing skills-curation scheduler path |
 | 2282 | lock-classification-and-ranking-policy-for-weekly-skills-audit | `docs/plans/2026-04-14-issue-2282-lock-classification-and-ranking-policy-for-weekly-skills-audit.md` | 2026-04-14 | completed | T2 | Follow-up policy plan defining deterministic classification, ranking, carry-forward, and escalation rules for weekly skills audit output |
-
+| 2269 | openfoam-v2312-baseline-workflow-and-validation | `docs/plans/2026-04-15-issue-2269-openfoam-v2312-baseline-workflow-and-validation.md` | 2026-04-15 | plan-review | T2 | Canonical OpenFOAM ESI v2312 baseline workflow, smoke-case manifest, and deterministic validation contract for dev-secondary |
+| 2291 | cron-health-hardening-and-task-evidence-contracts | `docs/plans/2026-04-15-issue-2291-cron-health-hardening-and-task-evidence-contracts.md` | 2026-04-15 | draft | T2 | Bounded fix plan for cron-health false greens / false missing states and task evidence-contract drift |
+| 2290 | deduplicate-7-exact-copy-skills-and-reconcile-3-dev-ops-leaf-collisions | `docs/plans/2026-04-15-issue-2290-deduplicate-7-exact-copy-skills-and-reconcile-3-dev-ops-leaf-collisions.md` | 2026-04-15 | plan-review | T2 | Wave 2 post-audit consolidation: remove 7 canonical-name duplicate skill copies (1 byte-identical, 6 need diff/merge), preserve auxiliary files, and reconcile 3 dev/ops leaf collisions with cross-agent reference checks |
 ## Entry Format
 
 Add one row per plan:

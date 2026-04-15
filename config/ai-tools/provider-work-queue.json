@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-15T09:20:08.956080Z",
+  "generated_at": "2026-04-15T17:20:09.424482Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-15T09:20:06.959165Z",
+  "scorecard_generated_at": "2026-04-15T17:20:07.451340Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 5,
-      "total_candidates": 138,
+      "execution_ready_count": 3,
+      "total_candidates": 134,
       "top_issues": [
         {
           "number": 2055,
@@ -66,64 +66,19 @@
           ]
         },
         {
-          "number": 2244,
-          "title": "feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2244",
+          "number": 2281,
+          "title": "feat(skills): implement v1 weekly audit for existing skills-curation workflow",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2281",
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation",
+            "cat:harness",
+            "cat:automation",
+            "domain:skills",
+            "domain:deduplication",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-13T10:40:30Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2246,
-          "title": "fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2246",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:documentation",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-14T09:36:29Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2247,
-          "title": "feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2247",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:documentation",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-14T09:36:32Z",
+          "updatedAt": "2026-04-15T16:56:19Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -144,7 +99,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-04-14T11:45:08Z",
+          "updatedAt": "2026-04-15T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -202,6 +157,54 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2066,
+          "title": "fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2066",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:knowledge-management",
+            "agent:claude"
+          ],
+          "updatedAt": "2026-04-10T10:18:56Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2067,
+          "title": "feat(knowledge): wire .planning/research into engineering wiki nightly ingest",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2067",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:harness",
+            "domain:knowledge-management",
+            "agent:claude"
+          ],
+          "updatedAt": "2026-04-10T10:18:59Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -209,7 +212,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 56,
+      "total_candidates": 60,
       "top_issues": [
         {
           "number": 2037,

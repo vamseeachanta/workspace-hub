@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-15T09:20:08.956080Z
+Generated: 2026-04-15T17:20:09.424482Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 5
-- Total routed candidates: 138
+- Execution-ready candidates: 3
+- Total routed candidates: 134
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2055 feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | yes | existing claude agent label | enhancement, priority:high, cat:engineering, wip:ace-linux-1, dark-intelligence, agent:claude |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
-| #2244 feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, status:plan-approved |
-| #2246 fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:documentation, status:plan-approved |
-| #2247 feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:documentation, status:plan-approved |
+| #2281 feat(skills): implement v1 weekly audit for existing skills-curation workflow | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, cat:automation, domain:skills, domain:deduplication |
 | #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:critical, compliance-alert |
 | #2024 build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model | no | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline |
 | #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | no | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, domain:knowledge-management, wip:ace-linux-1 |
+| #2066 fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs | no | existing claude agent label | bug, priority:high, cat:harness, domain:knowledge-management, agent:claude |
+| #2067 feat(knowledge): wire .planning/research into engineering wiki nightly ingest | no | existing claude agent label | enhancement, priority:high, cat:harness, domain:knowledge-management, agent:claude |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 56
+- Total routed candidates: 60
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

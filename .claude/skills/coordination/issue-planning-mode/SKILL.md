@@ -137,12 +137,37 @@ Operational rules:
 - `status:plan-approved` without `.planning/plan-approved/<issue>.md` is approval-state drift; flag it as governance cleanup, not a clean approval-ready item.
 - README rows can be stale in either direction. Treat them as discovery/index hints, not final authority.
 - For cross-provider plan review, explicitly check whether provider-specific artifacts exist for Codex and Gemini (or documented substitutes when a provider was unavailable). Files like `*-subagent.md`, `*-hermes.md`, or `*-final.md` do not by themselves prove Codex/Gemini review happened.
+- Also verify that a canonical local plan file actually exists under `docs/plans/`. An open issue in `status:plan-review` with no plan file and no review artifacts is **not** a true pending cross-provider review item; it is earlier-stage governance drift / missing-plan work.
 - Separate the queue into:
-  - true pending review items (open, not approved, cross-review incomplete)
-  - needs-revision items (review artifact exists with MAJOR / not approval-ready)
+  - true pending review items (open, not approved, plan file exists, cross-review incomplete)
+  - needs-revision items (review artifact set exists, but latest provider findings still return MAJOR / not approval-ready)
+  - missing-plan items (live `status:plan-review` but no canonical `docs/plans/` artifact exists yet)
   - state-drift items (labels/README/markers disagree)
+- In practice, audit in this order for each candidate issue: GitHub labels/state → local plan file under `docs/plans/` → local approval marker → review artifacts by provider. This prevents wasting time chasing “missing provider reviews” for items that are actually missing the plan itself.
+- Missing-plan remediation sequence (important):
+  1. Draft the canonical local plan under `docs/plans/` and add the `docs/plans/README.md` row with local status `draft`.
+  2. Post a short governance comment on the issue explaining that the item was mislabeled as `status:plan-review` without a canonical plan artifact.
+  3. If the issue truly had no local plan and no provider review artifacts yet, remove the stale live `status:plan-review` label while the plan is still only a local draft.
+  4. Run the real adversarial review wave (Claude/Codex/Gemini as available).
+  5. Only after provider artifacts exist, update the plan + README to `plan-review` and restore/apply the live `status:plan-review` label.
+- This keeps live issue state aligned with actual plan maturity and avoids pretending a draft-only item is already in cross-provider review.
+- When only the Claude review artifact is missing, a concise file-path-based `claude -p` review prompt is often more reliable than embedding the full plan text inline. If a long inline Claude review prompt hangs or hits a turn cap, retry immediately with a shorter prompt that names the plan file path and explicitly requests the required review headings.
+- For plan-review items that are being iteratively tightened after MAJOR findings, keep the `## Adversarial Review Summary` current after each wave: record the latest provider verdicts, explicitly say whether the plan is still not approval-ready, and summarize what changed in the latest patch wave. Do not leave the summary stuck at `PENDING` once real artifacts exist.
+  2. add/update the `docs/plans/README.md` row with local status `draft`
+  3. post a short governance comment explaining the issue was in missing-plan drift
+  4. if you need labels to reflect reality strictly, remove stale `status:plan-review` until real provider review artifacts exist
+  5. run the provider review wave
+  6. once review artifacts exist, update local status to `plan-review`, restore/add the live `status:plan-review` label, and post the review-state update
+- When only the Claude review artifact is missing, a concise file-path-based `claude -p` review prompt is often more reliable than embedding the full plan text inline. If a long inline Claude review prompt hangs or hits a turn cap, retry immediately with a shorter prompt that names the plan file path and explicitly requests the required review headings.
+- For new or recovered plan drafts, keep the local plan file status conservative as `draft` until actual provider artifacts exist. After the first real review wave lands, update the plan file/README row to `plan-review` and summarize the live blocker state in `## Adversarial Review Summary` rather than leaving placeholder `PENDING` language.
+- If you launch a long-running background Claude review and then recover with a shorter fallback prompt, do not assume the first run is dead forever. Poll or inspect the original background process/log later. If it eventually completes with a fuller or sharper review, refresh the canonical repo artifact with the stronger findings and post a short GitHub follow-up comment noting that the completed long-form review supersedes or sharpens the earlier summary.
+- Practical artifact rule: the repo artifact under `scripts/review/results/` should represent the best available current-review content, not merely the first usable fallback. Late-arriving stronger findings should replace the weaker stopgap artifact rather than being ignored in terminal/process logs.
 
-This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty.
+This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty, and it avoids misclassifying missing-plan issues as pending provider-review work.
+Additional triage rule learned in live queue audits:
+- For feature/intake sweeps, do not describe an issue as "pending other-provider cross-review" unless a local plan artifact already exists and at least one real provider review artifact exists. If the issue only has the live `status:plan-review` label but lacks both the local plan file and `scripts/review/results/` artifacts, classify it as earlier-stage governance drift / missing-plan work, not as a pending cross-review item.
+
+This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty, and also prevents overstating unlived/missing-plan items as if they were already in the provider review stage.
 
 ### Governance cleanup after fresh MAJOR re-review
 

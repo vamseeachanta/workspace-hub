@@ -1,0 +1,86 @@
+Good — all three review artifacts exist. Now I have enough evidence to write a thorough adversarial review. Let me verify one more thing: the exact bootstrap path on the live runner versus the research doc claims.
+
+`★ Insight ─────────────────────────────────────`
+The plan identifies a bootstrap-path contradiction between `run-openfoam-tutorials.sh` (line 10: `/usr/lib/openfoam/openfoam2312/etc/bashrc`) and the research notes (line 27/42/94: `/opt/openfoam2312/etc/bashrc`). Both paths appear in different repo sources as "the" canonical path. The plan proposes an ordered probe, but the *existing runner* hardcodes only one. This is the most consequential ambiguity to resolve before implementation.
+`─────────────────────────────────────────────────`
+
+Here is the adversarial review:
+
+---
+
+## Adversarial Review — Plan #2269 (Post-Patch Wave)
+
+### Overall verdict
+
+**CONDITIONAL PASS** — The plan is substantially improved from its initial draft and addresses the bulk of the three-provider MAJOR findings. Five narrow issues remain, none individually plan-breaking, but together they create enough ambiguity that an implementer could make conflicting choices. These should be resolved textually before user approval.
+
+### Ready for user approval
+
+**Not yet.** Five required revisions below must land first. Estimated revision effort: < 30 minutes of plan text edits, no new research needed.
+
+### Retrieval adequacy
+
+**Strong.** Nine distinct sources with version-pinned evidence. The plan correctly surfaced the bootstrap-path disagreement (runner says `/usr/lib/...`, research notes say `/opt/...`) and the existing runner's CLI contract. One minor gap: the plan cites `ENGINEERING_DELIVERY_CHECKLIST.md` but does not reconcile against its seven-item bundle — see Medium finding #1.
+
+### Top blockers
+
+1. **Bootstrap-path normalization is deferred to "live verification" but the plan doesn't say which path wins if both exist.** The probe order (line 86-87) is clear for the "neither exists" case, but silent on the "both exist" case — which is plausible if a user or package manager creates a symlink.
+2. **The wrapper-vs-runner YAML handoff mechanism is underspecified.** The pseudocode says the wrapper "imports tutorial rows from the runner" (line 98), but the runner currently writes a full YAML file (lines 85-99 of `run-openfoam-tutorials.sh`). Who creates the file? Does the wrapper parse/merge/overwrite the runner's YAML, or does the runner write partial output that the wrapper assembles? This must be decided in the plan, not discovered during implementation.
+
+### Critical findings
+
+None.
+
+### High findings
+
+**H1. Both-paths-exist case is unhandled.**
+The ordered probe contract (pseudocode lines 85-89) specifies "if neither exists: fail." It does not specify behavior when *both* paths exist (e.g., dual-install or symlink). The probe should document a "first-found wins, log that secondary was skipped" policy, or explicitly assert that dual presence is an error.
+- *Location:* Pseudocode lines 85-89, AC bullet 3.
+- *Fix:* Add one sentence: "If both paths exist, the first in probe order wins and the unused path is logged as informational. If the sourced bashrc sets a WM_PROJECT_DIR that doesn't match the expected v2312 fork, fail with a version-mismatch error."
+
+**H2. Runner YAML handoff contract is ambiguous.**
+The runner (`run-openfoam-tutorials.sh`) currently writes a complete YAML file with `generated_at`, `machine`, `openfoam_version`, `overall_verdict`, and `tutorials`. The plan's new wrapper must produce a *superset* schema (adds `resolved_bashrc_path`, `fork`, `verification_method`). The plan says "wrapper owns final artifact schema even if it imports tutorial rows from the runner" (line 98) but doesn't specify the integration mechanism.
+- *Location:* Pseudocode line 98, Artifact Map, Files to Change row for `run-openfoam-tutorials.sh`.
+- *Fix:* State one of: (a) wrapper invokes runner with `--verdict /tmp/...`, parses the runner's YAML, merges into its own schema, writes final file; or (b) runner is refactored to write only tutorial rows (no top-level fields), wrapper adds envelope fields. Either is fine, but the plan must pick one.
+
+### Medium findings
+
+**M1. Engineering Delivery Checklist alignment is asserted but not mapped.**
+The plan lists `ENGINEERING_DELIVERY_CHECKLIST.md` in the artifact map and mentions cross-referencing it, but the traceability table (lines 183-191) doesn't map plan deliverables to checklist items. For a T2 issue this is likely "documentation-only update" tier (items 4+7), but it should be stated.
+- *Fix:* Add a one-line note in the "Risks and Open Questions" or a footnote to the traceability table: "Per ENGINEERING_DELIVERY_CHECKLIST, this issue is 'documentation-only update' tier — items 4 (workflow documentation) and 7 (issue closure) apply."
+
+**M2. YAML schema lacks field-type precision.**
+The required fields are listed (line 96) but their types are not constrained. For a "deterministic for a fixed environment/result" claim, the plan should specify at minimum: `overall_verdict` is enum `{PASS, FAIL}`, `tutorials[].status` is enum `{PASS, FAIL, NOT_FOUND}`, `time_directories` is non-negative integer, `version` is string matching `v\d{4}`. Without this, the pytest harness tests (TDD line: `test_verify_script_normalizes_final_yaml_contract`) have no spec to validate against.
+- *Fix:* Add a 4-5 row type table below the field list in the pseudocode or as a footnote.
+
+**M3. Pytest harness testability on dev-primary is unaddressed.**
+The plan creates `tests/openfoam/test_verify_openfoam_baseline.py` but the test list implicitly requires a working OpenFOAM installation (e.g., `test_verify_script_succeeds_and_emits_schema_valid_verdict` needs `icoFoam`). Since dev-primary lacks OpenFOAM, the plan should state whether these tests are: (a) integration-only, marked `@pytest.mark.skip` or `@pytest.mark.openfoam` on non-OpenFOAM hosts; (b) use the existing `stub_openfoam.py` for schema-validation tests; or (c) are exclusively run on dev-secondary. This directly affects CI discoverability.
+- *Fix:* Add one decision line under Risks: "Pytest harness uses `@pytest.mark.openfoam` to skip on hosts without OpenFOAM; schema-only tests (e.g., `test_verify_script_normalizes_final_yaml_contract`) validate against a fixture YAML and run anywhere."
+
+### Low findings
+
+**L1. `docs/README.md` update is vague.**
+The Files to Change table says "add discoverability link to the canonical OpenFOAM baseline workflow if the portability section does not already expose it." The conditional phrasing ("if needed") means an implementer might skip it. Either commit to adding the link or remove the row.
+
+**L2. Smoke manifest path convention inconsistency.**
+The plan uses `examples/openfoam/cavity-v2312/README.md`. No `examples/` directory exists in the repo today. The Engineering Delivery Checklist places validation cases under `tests/<domain>/test_data/`. The plan should acknowledge this divergence and justify the `examples/` choice (documentation-only manifest vs. test data), or align with the checklist path.
+
+**L3. The `damBreak` tutorial is in the runner but absent from the plan's smoke/benchmark tiers.**
+The existing runner executes both `cavity` and `damBreak`. The plan defines mandatory=`cavity`, optional=`pitzDaily`, but doesn't mention `damBreak`. Will the runner still execute `damBreak`? Will the wrapper suppress it? This should be a one-line clarification.
+
+### Required revisions before user approval
+
+| # | Finding | Action |
+|---|---------|--------|
+| 1 | H1 — both-paths-exist | Add first-found-wins policy + version-mismatch guard to pseudocode |
+| 2 | H2 — YAML handoff | Pick merge-parse or refactor-to-rows and state it in pseudocode |
+| 3 | M2 — field types | Add type/enum constraints for YAML schema fields |
+| 4 | M3 — pytest skip policy | State `@pytest.mark.openfoam` strategy and fixture-based schema tests |
+| 5 | L3 — damBreak status | Clarify whether damBreak remains in runner scope or is dropped |
+
+---
+
+`★ Insight ─────────────────────────────────────`
+- The plan's three-provider adversarial review cycle caught the major issues early. The remaining gaps are *integration seam* problems — they happen at boundaries between components (wrapper↔runner YAML, plan↔checklist, dev-primary↔dev-secondary test host). These are the hardest to catch in single-component reviews and the most common source of implementation surprises.
+- The bootstrap-path probe is a good pattern for portable tooling, but probing alone isn't sufficient — the plan also needs a *verification step* after sourcing (check `$WM_PROJECT_DIR` or `foamVersion`) to confirm the sourced environment actually matches v2312 ESI. The plan mentions "named command/mechanism" but should pin it.
+`─────────────────────────────────────────────────`

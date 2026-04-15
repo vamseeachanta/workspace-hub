@@ -1,0 +1,148 @@
+I now have all the evidence needed. Here's the adversarial review:
+
+`★ Insight ─────────────────────────────────────`
+This review cross-references every claim in the plan's Resource Intelligence against the actual repo state. The most important adversarial finding is that the plan's identified risk about bashrc path divergence is actually **already live in production code** — the existing runner script and all research docs disagree on the path. A baseline plan that doesn't resolve this before implementation would inherit the inconsistency into the new validator.
+`─────────────────────────────────────────────────`
+
+---
+
+# Adversarial Review — #2269 OpenFOAM v2312 Baseline Workflow and Validation
+
+**Reviewer:** Claude (adversarial)  
+**Plan date:** 2026-04-15  
+**Plan status:** draft  
+
+---
+
+## Overall Verdict
+
+**MINOR** — The plan is structurally sound and follows the template faithfully. Retrieval is above-threshold. However, one unresolved internal contradiction (bashrc path) would propagate into both deliverables if not locked before implementation, and the validator-vs-runner division of labor is vague enough to invite scope drift. Fixable without restructuring.
+
+---
+
+## Ready for User Approval
+
+**Not yet.** Two required revisions (C-1, H-1 below) must be resolved in the plan text before posting to `status:plan-review`. Remaining findings are implementer guidance, not plan blockers.
+
+---
+
+## Retrieval Adequacy
+
+**Adequate with gaps.** The plan cites 9 distinct sources (well above the 3-source minimum), all with specific file paths and concrete findings. Three relevant sources in the same repo neighborhoods were missed:
+
+| Missed source | Path | Why it matters |
+|---|---|---|
+| Engineering Delivery Checklist | `docs/engineering/portability/ENGINEERING_DELIVERY_CHECKLIST.md` | Defines minimum reusable artifact bundle — the baseline doc lands in this directory and should satisfy or reference the checklist |
+| OpenFOAM dict patterns | `docs/research/openfoam-dict-patterns.md` | May contain fork-specific dict syntax that the baseline doc should freeze or reference |
+| OpenFOAM WRK-047 refresh | `docs/research/openfoam-wrk047-refresh.md` | Downstream consumer of the baseline — confirms what the workflow doc must provide |
+
+**Retrieval verdict:** `adequate` — gaps are additive (they'd improve the plan), not structural (they don't invalidate it).
+
+---
+
+## Top Blockers
+
+1. **Bashrc path contradiction is live in production code** — must be resolved in the plan, not deferred to implementation (C-1)
+2. **Validator vs. runner responsibility split is ambiguous** — plan must state which script owns what (H-1)
+
+---
+
+## Critical Findings
+
+### C-1: Bashrc path divergence is not a risk — it is a live contradiction
+
+The plan's Risks section correctly notes two bashrc paths appear in the repo. But it treats this as an open risk to "resolve during implementation." In fact:
+
+- `scripts/openfoam/run-openfoam-tutorials.sh:10` hardcodes **`/usr/lib/openfoam/openfoam2312/etc/bashrc`**
+- `docs/research/openfoam-tutorials.md` (lines 27, 42, 94, 131, 174) consistently uses **`/opt/openfoam2312/etc/bashrc`**
+
+One of these is wrong **today** in committed code. The plan proposes to create a new validator that wraps the existing runner — if the runner's path is wrong, the validator inherits the bug silently. The plan must:
+1. State which path is canonical (requires a one-line check on dev-secondary: `ls /opt/openfoam2312/etc/bashrc /usr/lib/openfoam/openfoam2312/etc/bashrc 2>&1`)
+2. Add a Files to Change row to fix the incorrect source
+
+**Required:** Resolve before user approval.
+
+---
+
+## High Findings
+
+### H-1: Validator vs. runner division of responsibility is underspecified
+
+The Artifact Map lists two scripts:
+- `scripts/openfoam/verify-openfoam-baseline.sh` (Create) — "deterministic validation entrypoint"
+- `scripts/openfoam/run-openfoam-tutorials.sh` (Update) — "reuse/tighten existing tutorial runner"
+
+The existing `run-openfoam-tutorials.sh` **already** checks bashrc existence, sources OpenFOAM, runs cavity + damBreak, writes a YAML verdict with pass/fail, and exits non-zero on failure. That is ~90% of what the pseudocode describes for the new validator.
+
+The plan should explicitly state the boundary:
+- What does `verify-openfoam-baseline.sh` do that the runner does not? (e.g., version/fork fingerprinting, prerequisite enumeration beyond bashrc, multi-path detection)
+- Does the new script call the old one as a subprocess, or does it absorb its logic?
+- If the runner is "tightened," what specifically changes?
+
+Without this, implementers will either duplicate logic or make arbitrary boundary decisions.
+
+### H-2: Smoke-case manifest content is undefined
+
+The plan creates `examples/openfoam/cavity-v2312/README.md` as a "repo-tracked smoke-case manifest/example path." But:
+- The `examples/openfoam/` directory does not exist yet
+- The plan doesn't specify whether this directory contains actual OpenFOAM case dicts (`blockMeshDict`, `controlDict`, etc.) or merely a README pointing to the tutorial installation path
+- For a "reproducible smoke-case manifest," a README alone is not reproducible — it depends on OpenFOAM being installed to copy tutorials from
+
+The plan should state: does `examples/openfoam/cavity-v2312/` contain a self-contained case (portable), or a documentation pointer (not portable)?
+
+---
+
+## Medium Findings
+
+### M-1: Two TDD tests assert document content, not system behavior
+
+- `test_baseline_doc_locks_esi_v2312` — greps a markdown file for text strings
+- `test_failure_modes_are_documented` — greps a markdown file for a troubleshooting section
+
+These are content assertions on prose, not engineering tests. They're fragile (any rewording breaks them) and don't validate functionality. Consider replacing with acceptance-criteria checks during review rather than automated tests, or reframe them as linting assertions with clear regex contracts.
+
+### M-2: Open questions lack resolution strategy
+
+Two open questions are listed without a decision path:
+1. Include `pitzDaily` as a second optional smoke case?
+2. Standardize a default artifact directory under `logs/engineering/`?
+
+Neither is tagged as "requires user input" or "will be decided by implementer." The plan should either resolve them (the evidence already in-repo strongly supports including `pitzDaily` — it has the strongest convergence data per `openfoam-tutorials.md`) or explicitly defer to user with a recommendation.
+
+### M-3: Deliverable partially overlaps PORTABILITY_CONTRACT.md Baselines table
+
+`PORTABILITY_CONTRACT.md:70` already declares: "CFD | OpenFOAM (ESI) | v2312 | dev-secondary". The plan's deliverable says "freezes ESI v2312 as the canonical fork/version" — but this freezing already happened. The plan should articulate the **incremental** value: the workflow doc provides the *how* (bootstrap, commands, failure modes) that the contract's Baselines table does not.
+
+### M-4: Retrieval missed co-located ENGINEERING_DELIVERY_CHECKLIST.md
+
+The baseline workflow doc lands at `docs/engineering/portability/openfoam-v2312-baseline-workflow.md`. The same directory contains `ENGINEERING_DELIVERY_CHECKLIST.md` which defines the minimum reusable artifact bundle. The plan should confirm the baseline doc satisfies (or cross-references) that checklist.
+
+---
+
+## Low Findings
+
+### L-1: `test_tutorial_runner_contract_is_reused` is fragile coupling
+
+Testing that one script calls another specific script creates an implementation-coupling test that breaks on any legitimate refactor (e.g., inlining the runner logic). Prefer testing the *behavior* (tutorials were run, verdict was produced) over the *mechanism* (which script was called).
+
+### L-2: Complexity rating is accurate
+
+T2 is correct — bounded documentation + validation across a small file set. No objection.
+
+### L-3: Governance state is clean
+
+- Status `draft` with all three review slots PENDING — correct for a pre-review artifact
+- Plan index row in `docs/plans/README.md` line 209 — present and accurate
+- Review artifact paths declared but not yet created — expected
+
+---
+
+## Required Revisions Before User Approval
+
+| # | Finding | Action |
+|---|---|---|
+| 1 | C-1 | Resolve the bashrc path: determine which is correct on dev-secondary, update the plan to lock the canonical path, and add a Files to Change row to fix the incorrect source (either the runner script or the research doc) |
+| 2 | H-1 | Add 2-3 sentences to the pseudocode or a new "Responsibility Split" subsection stating what the new validator does vs. what the existing runner does, and the call relationship between them |
+| 3 | H-2 | Clarify whether `examples/openfoam/cavity-v2312/` is a self-contained case directory or a documentation pointer, and update the deliverable description accordingly |
+
+Optional but recommended: resolve M-2 open questions with explicit recommendations, reframe M-1 doc-content tests as review checks rather than automated tests, and add `ENGINEERING_DELIVERY_CHECKLIST.md` to the Resource Intelligence (M-4).

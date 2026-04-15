@@ -1,0 +1,81 @@
+Good — the version landscape doc references `foamVersion` as an "environment variable or `$WM_PROJECT_VERSION`", not as a command. This is a key discrepancy with the plan's assumption that `foamVersion` is a command whose stdout is parsed.
+
+Here is the adversarial review:
+
+---
+
+`★ Insight ─────────────────────────────────────`
+This plan has gone through multiple review waves and is substantially improved. The remaining issues cluster around **runtime-truth verification** (the `foamVersion` mechanism has never been confirmed by live execution) and **under-specified behavioral seams** between the wrapper and the runner. The plan is close but not yet safe to approve as-is because an implementer could hit ambiguity on several critical points.
+`─────────────────────────────────────────────────`
+
+---
+
+# Adversarial Review — Plan #2269 (post latest patch wave)
+
+## Overall verdict
+
+**MINOR** — materially improved since wave 2; no structural defects remain, but several specification gaps would force the implementer to make unplanned design decisions at runtime. One finding borders on MAJOR because it concerns the untested `foamVersion` command assumption that underpins the entire `verification_method` contract.
+
+## Ready for user approval
+
+**Conditional YES** — approvable after the 3 required revisions below are addressed. No further wave needed if those are resolved inline.
+
+## Retrieval adequacy
+
+**Good.** Nine distinct sources consulted, both forks documented, bootstrap path discrepancy identified, existing runner read in full, portability contract cross-referenced. One gap: the plan never confirmed `foamVersion` behavior via live execution on dev-secondary — the version landscape doc (line 344) treats it as an *environment variable*, not a command with stdout. This is the single biggest retrieval-to-plan disconnect.
+
+## Top blockers
+
+1. `foamVersion` command assumption is unverified — the entire `verification_method` contract depends on it.
+2. damBreak's presence in runner output vs. its exclusion from baseline acceptance creates an ambiguous wrapper filter behavior.
+3. The `--benchmark pitzDaily` trigger has no runner-side support path documented.
+
+## Critical findings
+
+None.
+
+## High findings
+
+**H1 — `foamVersion` as command vs. environment variable.**
+The plan (line 97–100) specifies: "`foamVersion` stdout must equal `OpenFOAM-v2312`". However, `docs/research/openfoam-version-landscape.md:344` says "Add runtime version detection: `foamVersion` environment variable or `$WM_PROJECT_VERSION`" — treating it as a variable, not a command. In ESI v2312, `foamVersion` may be a shell function that prints `v2312` (not `OpenFOAM-v2312`), or it may be the value of `$WM_PROJECT_VERSION`. The plan pins the exact expected output without a single live confirmation. **Fix:** Add a pre-implementation gate: "run `type foamVersion && foamVersion` on dev-secondary and record the exact output; update the parse rule and `verification_method` format accordingly." Alternatively, use `$WM_PROJECT_VERSION` as the primary mechanism (it's guaranteed to be set after sourcing bashrc) and keep `foamVersion` as a secondary cross-check if it exists.
+
+**H2 — damBreak filter behavior unspecified.**
+The runner always executes cavity + damBreak (lines 62–82 of `run-openfoam-tutorials.sh`). The plan says damBreak is "runner-internal" and "not part of the canonical baseline acceptance contract." But the pseudocode says the wrapper loads runner YAML and writes the final normalized artifact. The plan never says whether:
+- (a) the wrapper **strips** damBreak rows from the final YAML, or
+- (b) the wrapper **includes** damBreak rows but only evaluates `cavity` for `overall_verdict`, or
+- (c) the wrapper passes runner verdict through as-is (meaning a damBreak failure = baseline FAIL, contradicting the "not part of baseline" language).
+This ambiguity affects the YAML schema, the `overall_verdict` logic, and test expectations. **Fix:** State explicitly which approach (a/b/c) the wrapper uses.
+
+**H3 — `--benchmark pitzDaily` has no runner-side path.**
+The current runner (`run-openfoam-tutorials.sh`) hardcodes cavity + damBreak. It has no support for pitzDaily. The plan says the wrapper invokes the runner, but the plan also says benchmark is triggered by `--benchmark pitzDaily` on the wrapper. How does the wrapper run pitzDaily if the runner doesn't know about it? Does the wrapper run pitzDaily directly, bypassing the runner? Does the runner need a new `--tutorials` flag? **Fix:** State whether pitzDaily is executed by the wrapper directly or by an updated runner, and what changes to the runner (if any) are needed to support it.
+
+## Medium findings
+
+**M1 — `WM_PROJECT_DIR` "resolve" ambiguity.**
+Line 98: "WM_PROJECT_DIR basename must resolve to `openfoam2312`". The word "resolve" is ambiguous. On ESI v2312, `$WM_PROJECT_DIR` is typically `/usr/lib/openfoam/openfoam2312` — whose `basename` is `openfoam2312`. But some package layouts have `/usr/lib/openfoam/openfoam2312/platforms/...` structures where `$WM_PROJECT_DIR` points to a different level. **Fix:** Say "basename of `$WM_PROJECT_DIR` must equal `openfoam2312`" (using `basename`, not "resolve").
+
+**M2 — Runner's `openfoam_version` field disposition.**
+The existing runner emits `openfoam_version: v2312` (line 89). The plan's wrapper schema requires `fork`, `version`, and `verification_method` but never mentions `openfoam_version`. Does the wrapper drop it? Rename it? Pass it through? If the runner continues to emit it and the wrapper normalizes, this is fine — but the plan should explicitly say `openfoam_version` from the runner is superseded by `fork` + `version` in the wrapper's output.
+
+**M3 — Pytest test-mark partitioning not explicit.**
+The plan says "`@pytest.mark.openfoam` for host-dependent tests, fixture-only schema tests runnable anywhere" but never assigns each test in the TDD list to one category. Of the 9 tests, at least `test_verify_script_succeeds_and_emits_schema_valid_verdict` clearly requires dev-secondary, and `test_verify_script_normalizes_final_yaml_contract` is clearly fixture-only. The other 7 are ambiguous. **Fix:** Add a `Mark` column to the TDD table indicating `openfoam` or `fixture` for each test.
+
+**M4 — Python invocation not specified for embedded snippet.**
+The wrapper uses "embedded Python snippet (not bash-native YAML editing)" but doesn't specify which Python: system `python3`, `uv run python`, or something else. Dev-secondary has Python, but the plan should pin the invocation mechanism for reproducibility. **Fix:** State `python3` (system) or the specific invocation.
+
+## Low findings
+
+**L1 — `logs/` directory lifecycle.**
+Default verdict path is `logs/engineering/openfoam-baseline/latest-verdict.yaml`. The plan doesn't mention whether `logs/` is gitignored, whether the directory must be created by the wrapper, or whether a `.gitkeep` is needed. Minor, but an implementer will hit this immediately.
+
+**L2 — No example of the complete final YAML.**
+The plan defines fields and types in prose/pseudocode but never shows a complete, copy-pasteable example of the final YAML artifact. A 10-line example would eliminate most schema ambiguity.
+
+**L3 — `OPENFOAM_BASHRC_PATHS` override scope.**
+The plan introduces `OPENFOAM_BASHRC_PATHS` for test dependency injection but doesn't say whether this env var is also honored in production runs (a potential security/correctness concern) or is a test-only back-door. **Fix:** State that the override is for testing only and should be documented as such in the wrapper script's usage block, or state that it's a legitimate production override.
+
+## Required revisions before user approval
+
+1. **Verify `foamVersion` live on dev-secondary** (or switch to `$WM_PROJECT_VERSION` as primary) and update the `verification_method` format string and parse rule to match reality. (Addresses H1)
+2. **Specify damBreak filter behavior** — does the wrapper strip, include-but-ignore, or evaluate damBreak rows? (Addresses H2)
+3. **Specify how `pitzDaily` benchmark is actually executed** — via the runner (requiring runner changes) or directly by the wrapper? (Addresses H3)

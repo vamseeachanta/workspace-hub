@@ -1,15 +1,13 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-15T09:20:09.153437Z
+Generated: 2026-04-15T17:20:09.612309Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2244 feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2246 fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2247 feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2281 feat(skills): implement v1 weekly audit for existing skills-curation workflow | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2116 feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2037 feat(gtm): manim mooring layout / force explainer animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2038 feat(gtm): manim installation sequence / operability envelope animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |

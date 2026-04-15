@@ -1,0 +1,456 @@
+Reading additional input from stdin...
+2026-04-15T20:10:03.951963Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d92c4-b058-71f0-9d04-b54969fa32fa
+--------
+user
+# Adversarial Plan Review Request: Issue #2290
+
+You are an independent adversarial reviewer. Find gaps, risks, missing tests, weak assumptions, scope creep, and flawed acceptance criteria. Do NOT rubber-stamp.
+
+Your output must include exactly these sections:
+1. Verdict: APPROVE | MINOR | MAJOR
+2. Strengths
+3. Gaps
+4. Risks
+5. Missing tests
+6. Scope creep concerns
+7. Weakest assumption and what breaks if it is false
+8. Most likely implementation failure mode
+9. Most likely test gap
+10. Future issues suggested
+11. Review confidence
+
+Review dimensions:
+- correctness
+- completeness
+- feasibility
+- TDD adequacy
+- scope discipline
+- risk handling
+- verification readiness
+- consistency with workspace-hub planning rules
+
+Important repo policy:
+- This is plan review only. Do not implement.
+- A single MAJOR means the plan is not approval-ready.
+- Watch for mismatches between issue wording and live evidence.
+
+Issue #2290 title: chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions
+Issue URL: https://github.com/vamseeachanta/workspace-hub/issues/2290
+
+Issue summary:
+- Deduplicate 7 canonical-name duplicate skill pairs and reconcile 3 development-vs-operations leaf-name collisions identified by the 2026-04-15 weekly skills audit.
+- Scope excludes #2019 email skill consolidation, #2083 session-corpus-audit, and #2214 architecture doc split.
+- Important live nuance: only 1 of 7 exact-duplicate pairs is byte-identical; the other 6 have divergent content and require diff/merge before deletion.
+
+## Draft plan under review
+
+# Plan for #2290: deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-15
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2290
+> **Review artifacts:** scripts/review/results/2026-04-15-plan-2290-claude.md | ...-codex.md | ...-gemini.md
+
+**Implementation is blocked pending adversarial review + user approval.**
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+
+- Found: `.claude/skills/` — all 20 paths (10 pairs) confirmed present on disk. Live sha256 comparison shows **only 1 of 7 "exact-duplicate" pairs is byte-identical** (`corporate-tax-strategic-planning`). The remaining 6 pairs share canonical frontmatter names but have divergent file content, requiring diff/compare/merge before any deletion.
+- Found: `scripts/skills/detect_duplicate_skills.py` — deterministic detector for duplicate frontmatter names and leaf-directory collisions; the 2026-04-15 weekly audit run surfaced the 10 findings addressed by this issue.
+- Found: `scripts/cron/skills-curation.sh` — cron wrapper for the weekly skills audit; this is the entrypoint that produces the audit JSON/Markdown artifacts used to identify these findings.
+- Found: `operations/devtools/` — contains 9 skill subdirectories (ai-tool-assessment, background-service-manager, cli-productivity, docker, git-advanced, pyproject-toml, raycast-alfred, uv-package-manager, vscode-extensions) plus INDEX.md. Removing pyproject-toml and uv-package-manager will **not** empty this directory; the issue's conditional `operations/devtools/` removal step is inapplicable.
+
+### Standards
+
+| Standard | Status | Source |
+|---|---|---|
+| Weekly skills audit classification/ranking policy | done (landed) | `#2282` — locked classification and ranking policy |
+| Deterministic weekly audit implementation | done (landed) | `#2281` — v1 weekly audit script |
+| Skills governance umbrella | done (landed) | `#2280` — parent governance plan |
+
+### LLM Wiki pages consulted
+
+- No relevant wiki pages; this is a mechanical skill-tree hygiene issue grounded in audit output and repo structure.
+
+### Documents consulted
+
+- `docs/plans/2026-04-14-issue-2280-weekly-skill-ecosystem-audit-and-consolidation-maintenance-loop.md` — parent governance plan defining the audit contract, classification ladder, and canonical identity rule (frontmatter `name` wins over leaf name). The classification `exact-duplicate` and `generic-leaf-collision` used by #2290 originate from this policy.
+- `docs/plans/2026-04-14-issue-2282-lock-classification-and-ranking-policy-for-weekly-skills-audit.md` — locked the severity/confidence rubric and finding-key schema that the weekly audit uses to surface the 10 findings addressed here.
+- `docs/plans/2026-04-14-issue-2281-implement-v1-weekly-audit-for-existing-skills-curation-workflow.md` — child implementation plan for the deterministic audit script; the JSON output from this script is the primary evidence source for #2290.
+- GitHub issue #2290 — scope, keep/delete table, acceptance criteria, and out-of-scope boundaries.
+- GitHub issue #2019 — email skill consolidation (open); explicitly out of scope for #2290.
+- GitHub issue #2083 — session-corpus-audit dedup (open); explicitly out of scope for #2290.
+- GitHub issue #2214 — architecture doc split / legacy wrapper redirects (open); explicitly out of scope for #2290.
+
+### Gaps identified
+
+- No existing merge/reconciliation tooling for skill pairs with divergent content — the 6 non-identical "duplicate" pairs require manual or semi-automated diff/merge that does not yet exist as a script.
+- No regression test currently validates that the 10 specific findings from the 2026-04-15 audit are resolved after implementation.
+- No cross-reference scan is currently wired to verify zero dangling references after skill directory removal.
+
+<!-- Verification: distinct sources >= 3. Current count: 10 (6 repo code/paths, 3 prior plans, 4 GitHub issues) -->
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-15-issue-2290-deduplicate-7-exact-copy-skills-and-reconcile-3-dev-ops-leaf-collisions.md` |
+| Parent issue | #2290 |
+| Prior work — governance | #2280 (landed) |
+| Prior work — audit implementation | #2281 (landed) |
+| Prior work — policy lock | #2282 (landed) |
+| Weekly audit wrapper | `scripts/cron/skills-curation.sh` |
+| Duplicate detector | `scripts/skills/detect_duplicate_skills.py` |
+| Skill paths (7 exact-duplicate pairs) | see Files to Change table below |
+| Skill paths (3 leaf-collision pairs) | see Files to Change table below |
+| Plan review — Claude | `scripts/review/results/2026-04-15-plan-2290-claude.md` |
+| Plan review — Codex | `scripts/review/results/2026-04-15-plan-2290-codex.md` |
+| Plan review — Gemini | `scripts/review/results/2026-04-15-plan-2290-gemini.md` |
+| Docs index update | `docs/plans/README.md` |
+| Future: regression test | `tests/skills/test_issue_2290_dedup_regression.py` (to be created during implementation) |
+
+---
+
+## Deliverable
+
+A net reduction of 10 skill directories from `.claude/skills/` — 7 stale duplicate copies removed and 3 leaf-collision pairs merged into their canonical locations — with zero dangling references and zero audit findings for the 10 resolved skill names.
+
+---
+
+## Pseudocode
+
+```text
+deduplicate_and_reconcile():
+    for each of the 7 "exact-duplicate" pairs:
+        diff canonical_path vs stale_path
+        if byte-identical:
+            delete stale_path directory
+        else:
+            compare content; merge any unique material from stale into canonical
+            delete stale_path directory after merge verified
+    
+    for each of the 3 leaf-collision pairs:
+        diff canonical_path vs merge_from_path
+        merge any unique content from merge_from into canonical
+        delete merge_from directory
+    
+    grep -r for every deleted path across .claude/skills/, config/, scripts/
+    fix any dangling references to point to canonical paths
+    
+    run scripts/cron/skills-curation.sh (or underlying audit)
+    assert zero findings for the 10 resolved skill names
+```
+
+---
+
+## Files to Change
+
+### Now (planning phase — this PR)
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | `docs/plans/2026-04-15-issue-2290-deduplicate-7-exact-copy-skills-and-reconcile-3-dev-ops-leaf-collisions.md` | canonical plan artifact |
+| Update | `docs/plans/README.md` | add plan index row for #2290 |
+
+### Future (implementation phase — after plan approval)
+
+**Exact-duplicate pairs — delete stale copy (diff/merge first if not byte-identical)**
+
+| Action | Keep (canonical) | Delete (stale) | Byte-identical? |
+|---|---|---|---|
+| Delete | `.claude/skills/coordination/cross-agent-skill-audit/` | `.claude/skills/cross-agent-skill-audit/` | No — diff required |
+| Delete | `.claude/skills/development/github/code-review/` | `.claude/skills/github/github-code-review/` | No — diff required |
+| Delete | `.claude/skills/business/productivity/obsidian/` | `.claude/skills/note-taking/obsidian/` | No — diff required |
+| Delete | `.claude/skills/business-finance/corporate-tax-strategic-planning/` | `.claude/skills/corporate-tax-strategic-planning/` | **Yes** — safe direct delete |
+| Delete | `.claude/skills/development/planning/writing-plans/` | `.claude/skills/software-development/writing-plans/` | No — diff required |
+| Delete | `.claude/skills/ai/prompting/dspy/` | `.claude/skills/mlops/research/dspy/` | No — diff required |
+| Delete | `.claude/skills/development/systematic-debugging/` | `.claude/skills/software-development/systematic-debugging/` | No — diff required |
+
+**Leaf-collision pairs — merge unique content into canonical, then delete merge-from**
+
+| Action | Canonical | Merge-from | Notes |
+|---|---|---|---|
+| Merge+Delete | `.claude/skills/development/github/code-review/` | `.claude/skills/software-development/code-review/` | Different content; merge needed |
+| Merge+Delete | `.claude/skills/development/devtools/pyproject-toml/` | `.claude/skills/operations/devtools/pyproject-toml/` | Different content; merge needed |
+| Merge+Delete | `.claude/skills/development/devtools/uv-package-manager/` | `.claude/skills/operations/devtools/uv-package-manager/` | Different content; merge needed |
+
+**Reference cleanup**
+
+| Action | Scope | Reason |
+|---|---|---|
+| Grep+Fix | `.claude/skills/**/*.md`, `config/**`, `scripts/**` | Update any references to deleted paths |
+
+**Note:** `operations/devtools/` contains 7 other skill directories beyond the 2 being removed and will NOT be empty after this work — no directory removal needed.
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_no_exact_duplicate_findings_for_resolved_skills` | Weekly audit produces zero `exact-duplicate` findings for the 7 resolved canonical names | Run `detect_duplicate_skills.py` or weekly audit | Zero findings matching: cross-agent-skill-audit, github-code-review, obsidian, corporate-tax-strategic-planning, writing-plans, dspy, systematic-debugging |
+| `test_no_leaf_collision_findings_for_resolved_skills` | Weekly audit produces zero `generic-leaf-collision` findings for the 3 resolved pairs | Run audit | Zero findings matching: code-review/github-code-review, pyproject-toml, uv-package-manager |
+| `test_stale_paths_do_not_exist` | All 10 stale/merge-from directories are absent from disk | `os.path.exists()` on each deleted path | All return `False` |
+| `test_canonical_paths_exist_and_have_content` | All 10 canonical paths still exist with non-empty SKILL.md | `os.path.exists()` + file size check | All return `True`, size > 0 |
+| `test_no_dangling_references` | No file in `.claude/skills/`, `config/`, `scripts/` references a deleted path | `grep -r` for each of 10 deleted directory basepaths | Zero matches |
+| `test_merged_content_not_lost` | For the 6 non-identical duplicate pairs and 3 collision pairs, any unique content from the stale copy is present in the canonical copy | Diff pre-merge snapshots against post-merge canonical | All unique non-trivial content accounted for |
+| `test_operations_devtools_intact` | `operations/devtools/` still contains its remaining 7 skill subdirectories | `ls operations/devtools/` | ai-tool-assessment, background-service-manager, cli-productivity, docker, git-advanced, raycast-alfred, vscode-extensions all present |
+
+---
+
+## Acceptance Criteria
+
+- [ ] All 7 stale exact-duplicate directories removed from `.claude/skills/`
+- [ ] All 3 leaf-collision merge-from directories removed from `.claude/skills/`
+- [ ] For the 6 non-identical duplicate pairs: diff reviewed and any unique content merged into canonical before deletion
+- [ ] For the 3 collision pairs: content merged into canonical, no information lost
+- [ ] `grep -r` for every deleted path returns zero hits in `.claude/skills/`, `config/`, and `scripts/`
+- [ ] Running `bash scripts/cron/skills-curation.sh` (or the underlying weekly audit) produces zero findings for the 10 resolved skill names
+- [ ] Canonical copies are content-complete — no information lost from merged pairs
+- [ ] PR diff is net-negative in file count (expect -10 SKILL.md files minimum)
+- [ ] `operations/devtools/` retains its remaining 7 skill subdirectories
+- [ ] Regression tests pass: `uv run pytest tests/skills/test_issue_2290_dedup_regression.py -v`
+- [ ] Review artifacts posted to `scripts/review/results/`
+
+---
+
+## Adversarial Review Summary
+
+<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | _pending_ | — |
+| Codex | _pending_ | — |
+| Gemini | _pending_ | — |
+
+**Overall result:** _pending_
+
+Revisions made based on review:
+- (none yet)
+
+---
+
+## Risks and Open Questions
+
+- **Risk: "exact-duplicate" label is misleading for 6 of 7 pairs.** Live sha256 verification shows only `corporate-tax-strategic-planning` is byte-identical. The other 6 pairs share canonical frontmatter names but have divergent file content. Implementation must diff each pair and merge unique content before deleting — a blind `rm` risks information loss. The issue title uses "exact-copy" but the plan treats these as **canonical-name duplicate reconciliation** requiring compare-before-delete.
+- **Risk: content divergence may reveal intentional specialization.** Some "duplicate" pairs may have diverged intentionally (e.g., one copy evolved for a specific agent context). During implementation, if a diff reveals substantial unique content in the stale copy, flag for user review rather than auto-merging.
+- **Risk: hidden references.** Deleted paths may be referenced in skill INDEX.md files, agent routing configs, or session logs not covered by the grep scope. Implementation should expand the reference scan to include `.claude/rules/` and any skill index files.
+- **Risk: `operations/devtools/` NOT emptied.** The issue mentions conditional removal of `operations/devtools/` if empty after pyproject-toml + uv-package-manager removal. Live inspection shows 7 other skill directories remain — this conditional step is **inapplicable** and should be skipped.
+- **Open: merge strategy for collision pairs.** The 3 leaf-collision pairs have different content under the same functional name. The plan recommends merging unique content from merge-from into canonical, but the exact merge strategy (append sections, reconcile overlapping sections, preserve both variants) needs case-by-case judgment during implementation.
+- **Open: should stale parent directories be removed?** After deleting `github/github-code-review/`, should `github/` be removed if empty? Similarly for `note-taking/`, `software-development/`, `mlops/research/`. Implementation should check and clean up empty parent directories.
+
+---
+
+## Scope Boundaries
+
+### In scope (this issue)
+
+- The 7 canonical-name duplicate pairs listed in the issue
+- The 3 leaf-collision pairs listed in the issue
+- Reference cleanup for deleted paths
+- Regression test creation
+- Audit verification
+
+### Explicitly out of scope (covered by other issues)
+
+| Topic | Covered by | Why excluded |
+|---|---|---|
+| Email skill consolidation (gmail, email-management, etc.) | #2019 | Separate domain; different merge complexity |
+| session-corpus-audit dedup | #2083 | Different finding class; separate scoping |
+| Architecture doc split / legacy wrapper redirects | #2214 | Broader structural refactor beyond skill dedup |
+| Adjacent-specialization findings (openfoam vs orcawave, etc.) | Future issue TBD | Require domain judgment, not mechanical dedup |
+| Remaining leaf collisions not in scope (competitive-analysis, naval-architecture, etc.) | Future issue TBD | Cross domain boundaries; separate scoping needed |
+| Top-level directory taxonomy refactoring | Future issue TBD | This issue removes orphans and merges within existing trees only |
+
+---
+
+## Complexity: T2
+
+**T2** — mechanical but multi-file dedup across 10 skill pairs, requiring diff/compare for 9 of 10 pairs, content merging for at least 3 collision pairs, reference cleanup, and regression test creation. No architecture-wide changes, but not trivial single-file work either.
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the draft plan against live repo state first. I’m checking the detector, the cited skill paths, and whether the proposed verification steps are actually sufficient before judging approval readiness.
+2026-04-15T20:11:19.189835Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' scripts/cron/skills-curation.sh"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T20:11:19.189980Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "pwd && rg --files .claude/skills | rg '("'^|/)(SKILL'"\\.md|INDEX\\.md)"'$'"' | wc -l"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T20:11:19.194291Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' scripts/skills/detect_duplicate_skills.py"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T20:11:19.196015Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "for p in \\
+'.claude/skills/coordination/cross-agent-skill-audit/SKILL.md' \\
+'.claude/skills/cross-agent-skill-audit/SKILL.md' \\
+'.claude/skills/development/github/code-review/SKILL.md' \\
+'.claude/skills/github/github-code-review/SKILL.md' \\
+'.claude/skills/business/productivity/obsidian/SKILL.md' \\
+'.claude/skills/note-taking/obsidian/SKILL.md' \\
+'.claude/skills/business-finance/corporate-tax-strategic-planning/SKILL.md' \\
+'.claude/skills/corporate-tax-strategic-planning/SKILL.md' \\
+'.claude/skills/development/planning/writing-plans/SKILL.md' \\
+'.claude/skills/software-development/writing-plans/SKILL.md' \\
+'.claude/skills/ai/prompting/dspy/SKILL.md' \\
+'.claude/skills/mlops/research/dspy/SKILL.md' \\
+'.claude/skills/development/systematic-debugging/SKILL.md' \\
+'.claude/skills/software-development/systematic-debugging/SKILL.md' \\
+'.claude/skills/software-development/code-review/SKILL.md' \\
+'.claude/skills/development/devtools/pyproject-toml/SKILL.md' \\
+'.claude/skills/operations/devtools/pyproject-toml/SKILL.md' \\
+'.claude/skills/development/devtools/uv-package-manager/SKILL.md' \\
+'.claude/skills/operations/devtools/uv-package-manager/SKILL.md'; do test -f \""'$p" && echo "FOUND $p" || echo "MISSING $p"; done'`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell is blocked in this environment, so I’m switching to repo resources/tooling that can still read the relevant files. I need the detector and a couple of skill files to verify whether the plan’s acceptance criteria match the actual implementation surface.
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+mcp: codex_apps/github_search_repositories started
+mcp: codex_apps/github_search_repositories (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+codex
+I’ve confirmed the issue text and the planning policy. Now I’m checking whether the proposed tests line up with the detector/audit’s real behavior, because that’s the main place these maintenance plans usually overclaim verification.
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+codex
+I’ve confirmed the audit is key-based and path-based, not just a raw grep of SKILL names. I’m checking whether the merge/delete plan accounts for full skill directories rather than only the top-level `SKILL.md`, because that’s where “mechanical dedup” plans often miss real content.
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+codex
+1. Verdict: MAJOR
+
+2. Strengths
+- The plan correctly catches the key live nuance that 6 of the 7 so-called “exact duplicates” are not byte-identical and therefore cannot be deleted blindly.
+- It is scoped tightly against the issue and explicitly excludes #2019, #2083, and #2214.
+- It also correctly identifies that `operations/devtools/` will not become empty, so the issue’s conditional cleanup step is currently inapplicable.
+- The plan uses the real audit entrypoints (`scripts/skills/weekly_skills_audit.py`, `scripts/cron/skills-curation.sh`) rather than inventing new verification logic.
+
+3. Gaps
+- The merge plan is defined almost entirely at `SKILL.md` level, but the issue deletes whole skill directories. The plan never proves those 10 directories contain only `SKILL.md` and no `references/`, `scripts/`, `assets/`, or sibling files. That is a material correctness gap.
+- `test_merged_content_not_lost` is not implementable from this plan as written. It requires “pre-merge snapshots” or a defined merge oracle, but the plan never creates or preserves either.
+- The plan verifies audit cleanliness, missing paths, and grep cleanliness, but does not verify that the surviving canonical skills remain usable as skills after merge. Audit success is weaker than behavior preservation.
+- Reference cleanup scope is inconsistent. The plan notes hidden references may exist beyond `.claude/skills/`, `config/`, and `scripts/`, but acceptance criteria still hard-code the narrower scope.
+
+4. Risks
+- The biggest risk is silent content loss outside `SKILL.md`. The weekly audit only checks duplicate names and leaf collisions; it will still pass if auxiliary files are deleted incorrectly.
+- The second risk is bad merges caused by subjective “unique non-trivial content” judgments. That phrase is too loose for a plan that intends deletion after merge.
+- There is also a risk of preserving the wrong canonical wording or metadata when reconciling divergent pairs, especially for skills that may have intentionally specialized descriptions under the same frontmatter name.
+
+5. Missing tests
+- A directory-level inventory test per affected skill pair, asserting whether non-`SKILL.md` files exist before any deletion and requiring explicit disposition for each.
+- A test that canonical frontmatter identity remains stable after merge: at minimum `name`, and any fields used by discovery/governance.
+- A fixture-based regression test for the audit output keyed to the exact expected finding keys or path sets, not only loose name matching.
+- A post-merge usability test that the canonical directories still parse cleanly as skills and are not malformed after manual merge edits.
+
+6. Scope creep concerns
+- Cleaning up empty parent directories is borderline scope creep unless the plan explicitly limits it to parents made empty by this issue.
+- Expanding the work from dedup to broad content harmonization would also be scope creep; the plan should state that only loss-preventing merges are in scope, not editorial rewrites.
+- Broad repo-wide reference hunting outside the agreed paths may be valuable, but it should be framed as a separate follow-up unless the issue is amended.
+
+7. Weakest assumption and what breaks if it is false
+- Weakest assumption: each affected skill directory is effectively just a `SKILL.md` plus maybe trivial metadata.
+- If false, the implementation can delete scripts, references, or assets that the surviving canonical skill still needs. The audit will report success, but the repo will have lost real skill functionality and content.
+
+8. Most likely implementation failure mode
+- The implementer diffs and merges the `SKILL.md` files correctly enough to satisfy the audit, then deletes the stale directories and unintentionally drops auxiliary directory content because the plan never required a full directory inventory first.
+
+9. Most likely test gap
+- Tests will prove that duplicate findings disappear, but not that all unique content from the deleted directories survived in the canonical locations.
+
+10. Future issues suggested
+- Add a directory-level skill dedup safety harness that inventories all files under candidate duplicate skills before deletion and enforces explicit preservation decisions.
+- Add audit/regression coverage for exact finding keys and path sets, not just summary-name checks.
+- Triage the remaining non-mechanical leaf collisions separately with a stricter specialization-vs-duplication rubric.
+
+11. Review confidence
+- High on correctness/completeness of the review of this plan’s verification gaps, because the issue text and live audit scripts make clear that audit success does not prove content preservation.
+- Medium on repo-specific auxiliary-file risk for these exact 10 directories, because the plan did not provide a directory inventory and the environment prevented local shell inspection.
+tokens used
+144,377
+1. Verdict: MAJOR
+
+2. Strengths
+- The plan correctly catches the key live nuance that 6 of the 7 so-called “exact duplicates” are not byte-identical and therefore cannot be deleted blindly.
+- It is scoped tightly against the issue and explicitly excludes #2019, #2083, and #2214.
+- It also correctly identifies that `operations/devtools/` will not become empty, so the issue’s conditional cleanup step is currently inapplicable.
+- The plan uses the real audit entrypoints (`scripts/skills/weekly_skills_audit.py`, `scripts/cron/skills-curation.sh`) rather than inventing new verification logic.
+
+3. Gaps
+- The merge plan is defined almost entirely at `SKILL.md` level, but the issue deletes whole skill directories. The plan never proves those 10 directories contain only `SKILL.md` and no `references/`, `scripts/`, `assets/`, or sibling files. That is a material correctness gap.
+- `test_merged_content_not_lost` is not implementable from this plan as written. It requires “pre-merge snapshots” or a defined merge oracle, but the plan never creates or preserves either.
+- The plan verifies audit cleanliness, missing paths, and grep cleanliness, but does not verify that the surviving canonical skills remain usable as skills after merge. Audit success is weaker than behavior preservation.
+- Reference cleanup scope is inconsistent. The plan notes hidden references may exist beyond `.claude/skills/`, `config/`, and `scripts/`, but acceptance criteria still hard-code the narrower scope.
+
+4. Risks
+- The biggest risk is silent content loss outside `SKILL.md`. The weekly audit only checks duplicate names and leaf collisions; it will still pass if auxiliary files are deleted incorrectly.
+- The second risk is bad merges caused by subjective “unique non-trivial content” judgments. That phrase is too loose for a plan that intends deletion after merge.
+- There is also a risk of preserving the wrong canonical wording or metadata when reconciling divergent pairs, especially for skills that may have intentionally specialized descriptions under the same frontmatter name.
+
+5. Missing tests
+- A directory-level inventory test per affected skill pair, asserting whether non-`SKILL.md` files exist before any deletion and requiring explicit disposition for each.
+- A test that canonical frontmatter identity remains stable after merge: at minimum `name`, and any fields used by discovery/governance.
+- A fixture-based regression test for the audit output keyed to the exact expected finding keys or path sets, not only loose name matching.
+- A post-merge usability test that the canonical directories still parse cleanly as skills and are not malformed after manual merge edits.
+
+6. Scope creep concerns
+- Cleaning up empty parent directories is borderline scope creep unless the plan explicitly limits it to parents made empty by this issue.
+- Expanding the work from dedup to broad content harmonization would also be scope creep; the plan should state that only loss-preventing merges are in scope, not editorial rewrites.
+- Broad repo-wide reference hunting outside the agreed paths may be valuable, but it should be framed as a separate follow-up unless the issue is amended.
+
+7. Weakest assumption and what breaks if it is false
+- Weakest assumption: each affected skill directory is effectively just a `SKILL.md` plus maybe trivial metadata.
+- If false, the implementation can delete scripts, references, or assets that the surviving canonical skill still needs. The audit will report success, but the repo will have lost real skill functionality and content.
+
+8. Most likely implementation failure mode
+- The implementer diffs and merges the `SKILL.md` files correctly enough to satisfy the audit, then deletes the stale directories and unintentionally drops auxiliary directory content because the plan never required a full directory inventory first.
+
+9. Most likely test gap
+- Tests will prove that duplicate findings disappear, but not that all unique content from the deleted directories survived in the canonical locations.
+
+10. Future issues suggested
+- Add a directory-level skill dedup safety harness that inventories all files under candidate duplicate skills before deletion and enforces explicit preservation decisions.
+- Add audit/regression coverage for exact finding keys and path sets, not just summary-name checks.
+- Triage the remaining non-mechanical leaf collisions separately with a stricter specialization-vs-duplication rubric.
+
+11. Review confidence
+- High on correctness/completeness of the review of this plan’s verification gaps, because the issue text and live audit scripts make clear that audit success does not prove content preservation.
+- Medium on repo-specific auxiliary-file risk for these exact 10 directories, because the plan did not provide a directory inventory and the environment prevented local shell inspection.

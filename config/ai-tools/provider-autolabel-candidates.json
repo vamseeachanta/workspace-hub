@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-15T09:20:09.153437Z",
+  "generated_at": "2026-04-15T17:20:09.612309Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 4,
+  "eligible_count": 2,
   "applied": [],
   "candidates": [
     {
@@ -39,82 +39,19 @@
       "eligible": true
     },
     {
-      "number": 2244,
-      "title": "feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2244",
+      "number": 2281,
+      "title": "feat(skills): implement v1 weekly audit for existing skills-curation workflow",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2281",
       "labels": [
         "enhancement",
         "priority:medium",
-        "cat:documentation",
+        "cat:harness",
+        "cat:automation",
+        "domain:skills",
+        "domain:deduplication",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-13T10:40:30Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2246,
-      "title": "fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2246",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:data-pipeline",
-        "cat:documentation",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-14T09:36:29Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2247,
-      "title": "feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2247",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:data-pipeline",
-        "cat:documentation",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-14T09:36:32Z",
+      "updatedAt": "2026-04-15T16:56:19Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -441,7 +378,7 @@
         "priority:critical",
         "compliance-alert"
       ],
-      "updatedAt": "2026-04-14T11:45:08Z",
+      "updatedAt": "2026-04-15T11:45:07Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",
