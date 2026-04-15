@@ -240,7 +240,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 ### hermes top missing external reads
 - `/home/vamsee/gmail-archive/config/accounts.yaml` — 4
 - `/mnt/local-analysis/worktrees/wh-2128/scripts/hooks/pre-push.sh` — 3
-- `/home/vamsee/.hermes/skills/mlops/research/dspy/SKILL.md` — 2
+- `/home/vamsee/.hermes/skills/ai/prompting/dspy/SKILL.md` — 2
 - `/tmp/everything-claude-code/README.md` — 2
 - `/tmp/everything-claude-code/the-longform-guide.md` — 2
 - `/tmp/everything-claude-code/the-shortform-guide.md` — 2

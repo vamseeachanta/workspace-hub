@@ -115,6 +115,9 @@ gh api repos/:owner/:repo/pulls/123/comments \
   -F line=42
 ```
 
+A reusable review output template is preserved at:
+- `references/review-output-template.md`
+
 ## Multi-Agent Review Mode
 
 Use this when you want more than one reviewer:
@@ -135,9 +138,34 @@ Treat the final decision as the merged outcome of all collected reviews, not jus
 - REJECT
   - Fundamentally unsafe, mis-scoped, or not ready for merge
 
-## Fallback Without gh
+## Supplemental Generic Review Checklist
 
-If gh is unavailable, use git diff locally and the GitHub REST API via curl for comments/reviews if credentials are available.
+This checklist was preserved from the former `software-development/code-review` path during deduplication.
+
+### 1. Security First
+- [ ] No hardcoded secrets, API keys, or credentials
+- [ ] Input validation on all user-provided data
+- [ ] SQL queries use parameterized statements (no string concatenation)
+- [ ] File operations validate paths (no path traversal)
+- [ ] Authentication/authorization checks present where needed
+
+### 2. Error Handling
+- [ ] All external calls (API, DB, file) have try/catch
+- [ ] Errors are logged with context (but no sensitive data)
+- [ ] User-facing errors are helpful but don't leak internals
+- [ ] Resources are cleaned up in finally blocks or context managers
+
+### 3. Code Quality
+- [ ] Functions do one thing and are reasonably sized (<50 lines ideal)
+- [ ] Variable names are descriptive (no single letters except loops)
+- [ ] No commented-out code left behind
+- [ ] Complex logic has explanatory comments
+- [ ] No duplicate code (DRY principle)
+
+### 4. Testing Considerations
+- [ ] Edge cases handled (empty inputs, nulls, boundaries)
+- [ ] Happy path and error paths both work
+- [ ] New code has corresponding tests (if test suite exists)
 
 ## Notes
 

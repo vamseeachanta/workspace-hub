@@ -77,7 +77,7 @@ Source: `/mnt/github/workspace-hub/digitalmodel/.claude/agents/github/`
 | Agent | Skill Name | Target Path | Status |
 |-------|------------|-------------|--------|
 | pr-manager.md | github-pr-manager | development/github/github-pr-manager/ | Pending |
-| code-review-swarm.md | github-code-review | development/github/github-code-review/ | Pending |
+| code-review-swarm.md | github-code-review | development/github/code-review/ | Pending |
 | issue-tracker.md | github-issue-tracker | development/github/github-issue-tracker/ | Pending |
 | release-manager.md | github-release-manager | development/github/github-release-manager/ | Pending |
 | release-swarm.md | github-release-swarm | development/github/github-release-swarm/ | Pending |
