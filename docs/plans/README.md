@@ -205,7 +205,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2250 | reconcile-stale-intelligence-summary-artifacts | `docs/plans/2026-04-13-issue-2250-reconcile-stale-intelligence-summary-artifacts.md` | 2026-04-13 | adversarial-reviewed | T2 | Control-plane drift remediation plan for stale convenience summaries versus canonical ledgers |
 | 2280 | weekly-skill-ecosystem-audit-and-consolidation-maintenance-loop | `docs/plans/2026-04-14-issue-2280-weekly-skill-ecosystem-audit-and-consolidation-maintenance-loop.md` | 2026-04-14 | draft | T2 | Parent governance plan defining weekly skills-maintenance audit rules, child implementation split, and cron artifact contract |
 | 2281 | implement-v1-weekly-audit-for-existing-skills-curation-workflow | `docs/plans/2026-04-14-issue-2281-implement-v1-weekly-audit-for-existing-skills-curation-workflow.md` | 2026-04-14 | plan-review | T2 | Child implementation plan for deterministic read-only weekly skills audit under the existing skills-curation scheduler path |
-| 2282 | lock-classification-and-ranking-policy-for-weekly-skills-audit | `docs/plans/2026-04-14-issue-2282-lock-classification-and-ranking-policy-for-weekly-skills-audit.md` | 2026-04-14 | plan-review | T2 | Follow-up policy plan defining deterministic classification, ranking, carry-forward, and escalation rules for weekly skills audit output |
+| 2282 | lock-classification-and-ranking-policy-for-weekly-skills-audit | `docs/plans/2026-04-14-issue-2282-lock-classification-and-ranking-policy-for-weekly-skills-audit.md` | 2026-04-14 | completed | T2 | Follow-up policy plan defining deterministic classification, ranking, carry-forward, and escalation rules for weekly skills audit output |
 
 ## Entry Format
 

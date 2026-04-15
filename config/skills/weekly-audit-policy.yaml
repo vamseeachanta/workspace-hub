@@ -1,0 +1,440 @@
+# Weekly Skills Audit — Classification and Ranking Policy
+# Issue: https://github.com/vamseeachanta/workspace-hub/issues/2282
+#
+# AUTHORITATIVE SOURCE: this file.
+# Companion doc docs/standards/weekly-skills-audit-policy.md is explanatory only
+# and must not introduce rules that conflict with this file.
+#
+# Consumed by: #2281 weekly audit implementation
+# Tests:       tests/skills/test_weekly_skills_audit_policy.py
+
+version: "1.0"
+
+# ---------------------------------------------------------------------------
+# Finding Schema
+# Required fields every weekly-audit finding must carry.
+# ---------------------------------------------------------------------------
+finding_schema:
+  required_fields:
+    - finding_key          # str: deterministic key derived from canonical_names + classification
+    - classification       # str: one of the five bucket names below
+    - severity             # str: high | medium | low
+    - confidence           # str: high | medium | low
+    - canonical_names      # list[str]: frontmatter `name` of each involved skill
+    - paths                # list[str]: repo-relative paths of each involved skill
+    - summary              # str: one-line human-readable description
+    - recommended_action   # str: suggested remediation
+    - escalation_state     # str: no-escalation | candidate
+    - is_new               # bool: true if not present in prior run
+    - is_changed           # bool: true if present in prior run but materially changed
+
+# ---------------------------------------------------------------------------
+# Classification Signals
+# Boolean properties detectable about a candidate finding pair.
+# ---------------------------------------------------------------------------
+signals:
+  canonical_names_match:
+    description: "Both canonical names (frontmatter `name`) are identical strings."
+  is_stub:
+    description: "One skill has minimal content (e.g., fewer than 5 non-frontmatter lines) that redirects to another skill."
+  references_other_canonical:
+    description: "One skill's body explicitly references the other skill's canonical name as an alias or redirect target."
+  leaf_dir_match:
+    description: "Both skills share the same leaf directory name (final path component)."
+  scope_differs:
+    description: "Skills address demonstrably different scope, audience, or domain depth."
+  both_substantive:
+    description: "Both skills have substantive independent content (neither is a stub)."
+  conflicting_signals:
+    description: "Detected signals are mutually contradictory and cannot be resolved automatically."
+
+# ---------------------------------------------------------------------------
+# Global Rules
+# Applied before bucket matching. A matching global rule short-circuits
+# the entire precedence chain and forces the specified bucket.
+# ---------------------------------------------------------------------------
+global_rules:
+  - rule_id: conflicting_signals_override
+    description: >
+      If conflicting_signals is true the finding always routes to needs-human-review
+      regardless of any other criteria match.
+    trigger_signal: conflicting_signals
+    forced_bucket: needs-human-review
+
+# ---------------------------------------------------------------------------
+# Classification Buckets
+# Checked in precedence order (lower number = higher priority).
+# First bucket whose required_signals are all true and no excluded_signals
+# are true wins.  Global rules fire before this check.
+# If no bucket matches, fallback_bucket is used.
+# ---------------------------------------------------------------------------
+classification_buckets:
+  - bucket: exact-duplicate
+    precedence: 1
+    description: >
+      Two skills with identical canonical names, or skills that are content-identical
+      regardless of path. The highest-priority finding: merge or delete one.
+    criteria:
+      required_signals:
+        - canonical_names_match
+      excluded_signals: []
+    severity: high
+    confidence_default: high
+    recommended_action: "Merge or delete one copy; keep the canonical path."
+
+  - bucket: canonical-wrapper-pair
+    precedence: 2
+    description: >
+      One skill is a thin stub or redirect that explicitly references another skill as
+      its canonical implementation. Different canonical names, but one is explicitly
+      subordinate.
+    criteria:
+      required_signals:
+        - is_stub
+        - references_other_canonical
+      excluded_signals:
+        - canonical_names_match
+    severity: medium
+    confidence_default: high
+    recommended_action: "Collapse the stub into the canonical skill; update any consumers."
+
+  - bucket: adjacent-specialization
+    precedence: 3
+    description: >
+      Two skills address the same broad domain with distinct scope, audience, or depth.
+      Neither is a stub. Both carry substantive independent content.
+      Retain both; optionally cross-reference.
+    criteria:
+      required_signals:
+        - scope_differs
+        - both_substantive
+      excluded_signals:
+        - canonical_names_match
+        - is_stub
+    severity: low
+    confidence_default: medium
+    recommended_action: "Keep both; optionally add cross-references between them."
+
+  - bucket: generic-leaf-collision
+    precedence: 4
+    description: >
+      Two skills share the same leaf directory name but have different canonical names.
+      No semantic overlap qualifies for a higher bucket.
+      Low-risk naming collision only.
+    criteria:
+      required_signals:
+        - leaf_dir_match
+      excluded_signals:
+        - canonical_names_match
+        - is_stub
+    severity: low
+    confidence_default: medium
+    recommended_action: "Monitor; rename leaf directory if naming confusion risk is real."
+
+  - bucket: needs-human-review
+    precedence: 5
+    is_fallback: true
+    description: >
+      Signals are absent, incomplete, or contradictory. Cannot classify deterministically.
+      Routes to human review rather than ad hoc guessing.
+    criteria:
+      required_signals: []
+      excluded_signals: []
+    severity: medium
+    confidence_default: low
+    recommended_action: "Inspect manually; supply missing signals before re-running audit."
+
+fallback_bucket: needs-human-review
+
+# ---------------------------------------------------------------------------
+# Severity Rubric
+# ---------------------------------------------------------------------------
+severity_rubric:
+  high:
+    description: >
+      Finding represents a functional conflict or likely user confusion that
+      actively degrades the skill ecosystem today.
+    criteria:
+      - "Two or more skills resolve to the same canonical name"
+      - "A stub references a deleted or renamed canonical skill"
+      - "Duplicate content creates ambiguity for automated consumers"
+  medium:
+    description: >
+      Finding represents a structural inconsistency that could cause confusion over
+      time but does not actively break anything today.
+    criteria:
+      - "Wrapper pair where the stub is outdated but still functional"
+      - "Ambiguous signals requiring human review"
+      - "Escalation-candidate finding awaiting resolution"
+  low:
+    description: >
+      Finding represents a cosmetic or naming inconsistency with minimal operational impact.
+    criteria:
+      - "Adjacent specializations that happen to share a leaf directory"
+      - "Leaf directory naming collision with distinct canonical names"
+      - "Informational findings only"
+
+# ---------------------------------------------------------------------------
+# Confidence Rubric
+# ---------------------------------------------------------------------------
+confidence_rubric:
+  high:
+    description: >
+      All required signals are present and no contradictory signals exist.
+      Human verification is unlikely to change the bucket assignment.
+    criteria:
+      - "All required signals explicitly detected (not inferred)"
+      - "No conflicting_signals flag present"
+      - "canonical_names are unambiguous frontmatter values"
+  medium:
+    description: >
+      Most required signals are present but one or more were inferred rather
+      than explicitly detected.  Human spot-check is recommended.
+    criteria:
+      - "At least one required signal was inferred from heuristic"
+      - "scope_differs was estimated from path structure, not content analysis"
+      - "both_substantive was estimated from line-count threshold"
+  low:
+    description: >
+      Signals are incomplete, inferred, or contradictory. Bucket assignment
+      should be treated as provisional until human-confirmed.
+    criteria:
+      - "conflicting_signals flag present"
+      - "Required signals missing or absent"
+      - "canonical name could not be resolved from frontmatter"
+
+# ---------------------------------------------------------------------------
+# Carry-Forward Rules
+# Govern how prior-run findings are presented in the current weekly report.
+# ---------------------------------------------------------------------------
+carry_forward_rules:
+  unchanged:
+    description: >
+      Finding appears in both prior and current runs with identical finding_key,
+      classification, severity, confidence, and escalation_state.
+    action: compact_carry_forward
+    surface_as_new: false
+    surface_as_changed: false
+    include_in_section: suppressed_carry_forward
+
+  changed:
+    description: >
+      Finding persists across runs but one or more change_triggers differ.
+      Must be surfaced in the changed section, not hidden as compact carry-forward.
+    change_triggers:
+      - severity_changed
+      - confidence_changed
+      - escalation_state_changed
+      - canonical_names_changed
+      - paths_changed
+    action: surface_as_changed
+    surface_as_new: false
+    surface_as_changed: true
+    include_in_section: changed
+
+  suppressed:
+    description: >
+      Finding was manually marked as suppressed in a prior run.
+      Carry forward in the suppressed section; do not re-surface as new.
+    action: compact_carry_forward
+    surface_as_new: false
+    surface_as_changed: false
+    include_in_section: suppressed_carry_forward
+
+  resolved:
+    description: >
+      Finding no longer appears in the current scan.
+    action: remove_from_active
+    surface_as_new: false
+    surface_as_changed: false
+    include_in_section: none
+
+# ---------------------------------------------------------------------------
+# Escalation Model (v1: binary)
+# Multi-tier escalation is deferred until weekly signal quality is proven.
+# ---------------------------------------------------------------------------
+escalation:
+  states:
+    - no-escalation
+    - candidate
+  candidate_criteria:
+    severity: high
+    confidence: high
+  idempotence_rule: >
+    escalation_state is computed deterministically from current severity and
+    confidence values each run. Given identical inputs the output is always
+    identical, guaranteeing idempotence across repeated weekly runs.
+
+# ---------------------------------------------------------------------------
+# Weekly Summary Sections
+# Minimum contract for downstream consumers of the weekly report.
+# ---------------------------------------------------------------------------
+weekly_summary:
+  sections:
+    - section_id: new
+      label: "New Findings"
+      description: "Findings where is_new=true."
+      filter: "is_new == true"
+
+    - section_id: changed
+      label: "Changed Findings"
+      description: >
+        Findings where is_changed=true and is_new=false. Covers findings that
+        persist across weeks but whose severity, confidence, scope footprint, or
+        escalation_state changed materially.
+      filter: "is_changed == true AND is_new == false"
+
+    - section_id: unresolved_high_confidence
+      label: "Unresolved High-Confidence Findings"
+      description: >
+        Findings that are not new, not changed, confidence=high, and severity in
+        [high, medium]. Surfaced to prevent indefinite carry-forward of high-signal
+        unresolved issues.
+      filter: "is_new == false AND is_changed == false AND confidence == high AND severity in [high, medium]"
+
+    - section_id: suppressed_carry_forward
+      label: "Suppressed / Carry-Forward"
+      description: >
+        Unchanged findings and manually suppressed findings presented in compact
+        form to keep the weekly report low-noise.
+      filter: "carry_forward_rule in [unchanged, suppressed]"
+
+    - section_id: operational_errors
+      label: "Operational Errors"
+      description: >
+        Errors, exceptions, or skipped inputs encountered during the audit run.
+        Always included even when empty to confirm the audit ran cleanly.
+      filter: "type == operational_error"
+
+# ---------------------------------------------------------------------------
+# Fixtures
+# One canonical example per bucket.  Consumed by tests and documentation.
+# ---------------------------------------------------------------------------
+fixtures:
+  exact_duplicate:
+    - finding_key: "exact-dup-ex-001"
+      description: "Two skills with the same frontmatter name installed in different directories."
+      canonical_names:
+        - "foo-analysis"
+        - "foo-analysis"
+      paths:
+        - "plugins/cache/vendor-a/foo-analysis"
+        - "plugins/cache/vendor-b/foo-analysis"
+      signals:
+        canonical_names_match: true
+        is_stub: false
+        references_other_canonical: false
+        leaf_dir_match: true
+        scope_differs: false
+        both_substantive: true
+        conflicting_signals: false
+      expected_bucket: exact-duplicate
+      expected_severity: high
+      expected_confidence: high
+
+  canonical_wrapper_pair:
+    - finding_key: "wrapper-ex-001"
+      description: "A thin stub skill that redirects all callers to the canonical gsd skill."
+      canonical_names:
+        - "gsd-quick"
+        - "gsd"
+      paths:
+        - ".claude/skills/workspace-hub/gsd/quick"
+        - ".claude/skills/workspace-hub/gsd"
+      signals:
+        canonical_names_match: false
+        is_stub: true
+        references_other_canonical: true
+        leaf_dir_match: false
+        scope_differs: false
+        both_substantive: false
+        conflicting_signals: false
+      expected_bucket: canonical-wrapper-pair
+      expected_severity: medium
+      expected_confidence: high
+
+  adjacent_specialization:
+    - finding_key: "adj-spec-ex-001"
+      description: "Two analysis skills for different engineering domains sharing the 'analysis' leaf."
+      canonical_names:
+        - "openfoam-analysis"
+        - "orcaflex-analysis"
+      paths:
+        - "engineering/cfd/openfoam/analysis"
+        - "engineering/marine-offshore/orcaflex/analysis"
+      signals:
+        canonical_names_match: false
+        is_stub: false
+        references_other_canonical: false
+        leaf_dir_match: true
+        scope_differs: true
+        both_substantive: true
+        conflicting_signals: false
+      expected_bucket: adjacent-specialization
+      expected_severity: low
+      expected_confidence: medium
+
+  generic_leaf_collision:
+    - finding_key: "leaf-col-ex-001"
+      description: "Two skills share the 'competitive-analysis' leaf but serve distinct business domains with no detected scope overlap."
+      canonical_names:
+        - "marketing-competitive-analysis"
+        - "product-competitive-analysis"
+      paths:
+        - "business/marketing/competitive-analysis"
+        - "business/product/competitive-analysis"
+      signals:
+        canonical_names_match: false
+        is_stub: false
+        references_other_canonical: false
+        leaf_dir_match: true
+        scope_differs: false
+        both_substantive: true
+        conflicting_signals: false
+      expected_bucket: generic-leaf-collision
+      expected_severity: low
+      expected_confidence: medium
+
+  needs_human_review:
+    - finding_key: "human-rev-ex-001"
+      description: "Signals indicate a wrapper (is_stub + references_other_canonical) but also indicate independent substantive content — contradictory."
+      canonical_names:
+        - "research-synthesis"
+        - "synthesis"
+      paths:
+        - "workflows/research-synthesis"
+        - "data/synthesis"
+      signals:
+        canonical_names_match: false
+        is_stub: true
+        references_other_canonical: true
+        leaf_dir_match: false
+        scope_differs: true
+        both_substantive: true
+        conflicting_signals: true
+      expected_bucket: needs-human-review
+      expected_severity: medium
+      expected_confidence: low
+
+  precedence_multi_match:
+    - finding_key: "prec-ex-001"
+      description: >
+        A finding qualifying for both adjacent-specialization (P3) and
+        generic-leaf-collision (P4).  Expected winner: adjacent-specialization (P3).
+      canonical_names:
+        - "cfd-solver"
+        - "mooring-solver"
+      paths:
+        - "engineering/cfd/solver"
+        - "engineering/marine/mooring/solver"
+      signals:
+        canonical_names_match: false
+        is_stub: false
+        references_other_canonical: false
+        leaf_dir_match: true
+        scope_differs: true
+        both_substantive: true
+        conflicting_signals: false
+      expected_bucket: adjacent-specialization
+      expected_precedence_losers:
+        - generic-leaf-collision
