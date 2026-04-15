@@ -178,6 +178,11 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 1. **Codex sandbox blocks file reads** — Codex `exec` runs in a bwrap sandbox that may block filesystem access. Pass ALL context in the prompt text itself, not via file references. The prompt must be fully self-contained.
 
 2. **Gemini capacity limits** — `gemini-3.1-pro-preview` can hit 429 MODEL_CAPACITY_EXHAUSTED errors. Gemini CLI retries automatically but may take longer. Allow extra timeout.
+   - In large parallel review waves, Gemini may fail repeatedly and never produce a usable verdict.
+   - Treat that as **missing provider evidence**, not as approval or as a silent pass.
+   - Continue with Codex (and any existing Claude/Hermes evidence), but post a GitHub comment explicitly noting that Gemini re-review was blocked by provider capacity exhaustion.
+   - Do not mark the plan fully cross-reviewed if the Gemini artifact is only a 429/capacity log with no substantive verdict.
+   - If the remaining provider returns `MAJOR`, keep the issue in `status:plan-review` and proceed with revision work instead of waiting indefinitely for Gemini capacity to recover.
 
 3. **Shell escaping** — Long prompts with backticks, single quotes, and parentheses break `gh issue comment --body '...'`. Always use `--body-file` instead. Same for `gh issue edit --body` — always use `--body-file`.
 
@@ -234,6 +239,13 @@ Despite these warnings, both CLIs still produced valid review content. Do not tr
 - canonical saved reviews: `scripts/review/results/YYYY-MM-DD-plan-<issue>-codex.md` and `...-gemini.md`
 Then post a concise GitHub issue comment summarizing verdicts, shared blockers, provider-specific emphasis, and artifact paths. This keeps raw CLI noise separate from the durable review artifact and makes later governance audits much easier.
 
+21. **When a provider is unavailable, still save an explicit review artifact instead of leaving the slot blank** — In live use on 2026-04-15, Gemini repeatedly returned `429 RESOURCE_EXHAUSTED / MODEL_CAPACITY_EXHAUSTED` for plan reviews. The reliable pattern is:
+- save the successful reviewer artifact(s) normally
+- save a provider-specific `scripts/review/results/YYYY-MM-DD-plan-<issue>-gemini.md` artifact with `Verdict: UNAVAILABLE`
+- include the concrete failure reason (for example model capacity exhaustion) and point to the raw CLI log path
+- treat the plan review wave as incomplete unless repo policy explicitly allows reduced-provider review for that run
+This avoids ambiguous "pending" review state, preserves evidence for governance audits, and makes it clear the blocker was provider availability rather than missing execution.
+
 ## Post-Review: Batch Follow-Up Issue Creation from Findings
 
 When review findings produce multiple follow-up issues (common with retroactive reviews across multiple streams), create them efficiently:
@@ -277,3 +289,25 @@ Add Gemini when ANY apply:
 - [ ] Context saturation (Claude's context is full)
 
 Skip Gemini for: routine implementation, standard refactors, test additions, docs-only changes.
+
+## Provider-unavailable artifact rule
+
+If a required provider cannot complete review (for example Gemini returns repeated `429 RESOURCE_EXHAUSTED` / `MODEL_CAPACITY_EXHAUSTED`), do NOT leave the review slot missing.
+
+Always write a canonical artifact file anyway, for example:
+- `scripts/review/results/YYYY-MM-DD-plan-<issue>-gemini.md`
+- `scripts/review/results/YYYY-MM-DD-implementation-<issue>-gemini.md`
+
+That placeholder artifact should record:
+- reviewer/provider name
+- timestamp
+- verdict: `UNAVAILABLE` or equivalent explicit status
+- concrete failure reason (capacity, auth, CLI crash, etc.)
+- whether startup warnings were non-fatal
+- path to raw CLI output/log if captured
+- operational decision taken (`retry later`, `proceed with reduced-provider review`, or `block approval`)
+
+Why this matters:
+- governance audits can distinguish "provider unavailable" from "review never attempted"
+- plan metadata stays truthful when it references expected artifact paths
+- later reruns can replace a documented placeholder rather than reconstructing what happened from chat history

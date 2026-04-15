@@ -1,0 +1,213 @@
+# Adversarial Re-Review Request: Issue #2045
+
+You are an independent adversarial reviewer. This plan was revised after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, risks, missing edge cases, unclear scope boundaries, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2045
+- Title: Onboard all agents to strict issue planning workflow
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2045
+- Labels: priority:medium, cat:ai-orchestration, cat:documentation, status:plan-review
+
+GitHub issue body:
+The new strict planning workflow is now formalized in-repo and must be adopted consistently by all agents for **all issues**.
+
+Scope:
+- Load and use `.claude/skills/coordination/issue-planning-mode/SKILL.md`
+- Copy `docs/plans/_template-issue-plan.md` for every new issue plan
+- Run resource intelligence before drafting
+- Include artifact map + pseudocode in every plan
+- Run adversarial plan review with Claude, Codex, and Gemini before user review
+- Post plan to GitHub and apply `status:plan-review`
+- Wait for explicit user approval before implementation
+- Mark approved issues `status:plan-approved`
+
+Artifacts already in place:
+- `.claude/skills/coordination/issue-planning-mode/SKILL.md`
+- `.claude/skills/coordination/engineering-issue-workflow/SKILL.md`
+- `docs/plans/README.md`
+- `docs/plans/_template-issue-plan.md`
+
+Acceptance criteria:
+- Agent onboarding docs explicitly reference the planning workflow
+- New issues created/handled by agents follow the new workflow
+- At least 3 real issue plans are created using the template and labels
+
+
+Plan under review (docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md):
+# Plan for #2045: Onboard All Agents to Strict Issue Planning Workflow
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-09
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2045
+> **Review artifacts:** scripts/review/results/2026-04-14-plan-2045-codex.md | scripts/review/results/2026-04-14-plan-2045-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `.claude/skills/coordination/issue-planning-mode/SKILL.md` is the canonical repo skill for the workflow and must be treated as a primary onboarding surface.
+- Found: `.claude/skills/coordination/engineering-issue-workflow/SKILL.md` extends the planning workflow for engineering-critical issues.
+- Found: `docs/plans/_template-issue-plan.md` defines the minimum plan structure and review-artifact convention.
+- Found: `docs/plans/README.md` is both onboarding guide and plan index and must stay aligned with live workflow state.
+- Found: `docs/standards/AI_REVIEW_ROUTING_POLICY.md` defines default multi-provider review expectations.
+- Found: `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` constrains how agents and subagents should be framed.
+- Found: `.claude/hooks/plan-approval-gate.sh` already whitelists `*/.claude/*`, so updating `.claude/skills/...` is not blocked by the plan-approval gate.
+
+### Standards
+- `AGENTS.md` — repo hard-gate order and mandatory workflow statement.
+- `docs/plans/README.md` — plan workflow contract.
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — review routing and multi-provider expectations.
+- `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` — agent-context handling policy.
+
+### Documents consulted
+- `CLAUDE.md`
+- `AGENTS.md`
+- `docs/document-intelligence/README.md`
+- `docs/plans/README.md`
+- `docs/plans/_template-issue-plan.md`
+- `.claude/skills/coordination/issue-planning-mode/SKILL.md`
+- `.claude/skills/coordination/engineering-issue-workflow/SKILL.md`
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+- `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md`
+- related plans in `docs/plans/`, especially #2046 and #2047
+
+### Gaps identified
+- Current onboarding coverage is uneven across agent-facing surfaces; the repo must explicitly define what “all agents” means in-repo.
+- The previous plan incorrectly assumed `.claude/skills/` edits were blocked by the plan gate.
+- The previous plan waived adversarial review even though the issue’s purpose is universal planning/review adoption.
+- Example-plan validation and label/template verification need concrete checks rather than “manual only” wording.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md` |
+| CLAUDE entry surface | `CLAUDE.md` |
+| AGENTS entry surface | `AGENTS.md` |
+| Onboarding/index guide | `docs/plans/README.md` |
+| Planning template | `docs/plans/_template-issue-plan.md` |
+| Core skill | `.claude/skills/coordination/issue-planning-mode/SKILL.md` |
+| Engineering extension | `.claude/skills/coordination/engineering-issue-workflow/SKILL.md` |
+| Review-routing policy | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
+| Subagent isolation policy | `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` |
+| Example plan #2046 | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` |
+| Example plan #2047 | `docs/plans/2026-04-09-issue-2047-planning-enforcement-escalation.md` |
+
+---
+
+## Deliverable
+
+Updated repo onboarding surfaces, core planning skill guidance, and example plan references so Claude, Codex, Gemini, and Hermes all have a discoverable in-repo path to the same strict planning workflow, review routing expectations, and template/label conventions.
+
+---
+
+## Pseudocode
+
+```text
+identify every in-repo onboarding surface that claims to guide agents
+for each surface:
+    verify whether it points to the same planning workflow, review routing, and label/template rules
+rewrite stale or incomplete surfaces so they converge on one workflow
+verify that example plans actually demonstrate template usage, review-artifact convention, and correct status/label semantics
+update docs/plans README/index so onboarding guide and plan queue stay aligned
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Rewrite | `docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md` | correct governance state and make validations concrete |
+| Modify | `CLAUDE.md` | keep onboarding/reference path aligned |
+| Modify | `AGENTS.md` | keep hard-gate statement aligned |
+| Modify | `docs/plans/README.md` | keep onboarding guide/index aligned |
+| Modify | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | keep canonical skill guidance aligned |
+| Validate / update if needed | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` | ensure policy references match onboarding guidance |
+| Validate / update if needed | `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` | ensure agent-context references stay aligned |
+| Validate example | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | example plan correctness |
+| Validate example | `docs/plans/2026-04-09-issue-2047-planning-enforcement-escalation.md` | example plan correctness |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_all_claimed_onboarding_surfaces_are_enumerated` | every claimed “all agents” onboarding surface is explicitly listed | artifact map / docs set | complete enumerated set |
+| `test_review_routing_guidance_is_consistent` | onboarding surfaces agree on Claude/Codex/Gemini review expectations | docs/policy fixtures | no contradiction |
+| `test_plan_gate_safe_path_assumption_is_correct` | plan does not rely on false `.claude/*` blocker assumptions | live hook/path policy | assumption removed |
+| `test_example_plans_use_template_and_status_conventions` | example plans show correct template/review/status behavior | example plan files | pass/fail evidence |
+| `test_readme_and_skill_point_to_same_workflow` | README and core skill converge on same workflow | README + SKILL | aligned guidance |
+
+---
+
+## Acceptance Criteria
+
+- [ ] Plan status is no longer self-approved or review-waived; real external review artifacts are recorded.
+- [ ] Every claimed onboarding surface for Claude/Codex/Gemini/Hermes is either explicitly enumerated or the scope is narrowed to the enumerated set.
+- [ ] False claims about `.claude/skills/` being blocked by the plan gate are removed.
+- [ ] README, AGENTS, CLAUDE, and the core planning skill point to the same workflow and review-routing expectations.
+- [ ] Example plans are validated against the template and status/label conventions.
+- [ ] Validation steps are concrete and pass/fail, not just “manual verification exists.”
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Codex | MAJOR | Plan self-approved, waived review, weak validation, incomplete “all agents” scope |
+| Gemini | MAJOR | Plan violates its own universal-review goal, carries false safe-path blocker assumptions, and misses baseline retrieval |
+
+**Overall result:** MAJOR — not approval-ready
+
+Revisions required before approval:
+- remove self-approved / waived-review state
+- expand retrieval to required governance/onboarding sources
+- correct false `.claude/*` blocker assumptions
+- make scope and validations concrete for “all agents”
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** “all agents” can become an empty claim unless the in-repo onboarding surfaces are explicitly enumerated.
+- **Risk:** example plans can teach the wrong workflow if they are not validated against the current template and review/status conventions.
+- **Open:** none for approval readiness; scope and validation must be explicit before this plan returns to review.
+
+---
+
+## Complexity: T2
+
+**T2** — multi-surface governance/onboarding alignment across docs, skills, and example-plan validation.
+
+
+Review questions — address ALL:
+1. Did the revision resolve the prior MAJOR blockers in a concrete way?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there still unresolved scope/governance/status inconsistencies that should block approval?
+5. Should this revised plan now be approved, revised again, or split?

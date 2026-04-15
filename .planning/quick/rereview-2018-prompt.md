@@ -1,3 +1,77 @@
+# Adversarial Re-Review Request: Issue #2018
+
+You are an independent adversarial reviewer. This plan was revised after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, risks, missing edge cases, unclear scope boundaries, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2018
+- Title: feat: agent bypass resistance -- enforce workflow with technical gates, not text instructions
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2018
+- Labels: priority:high, cat:engineering, cat:harness, domain:workflow, status:plan-review
+
+GitHub issue body:
+## Mission: Agents must follow the workflow without exceptions
+
+### Current State
+- Review compliance at 4% (#2012)
+- Text-based instructions in CLAUDE.md and AGENTS.md get bypassed over time
+- Agents (all of them) act like humans who want to get shit done and skip the hard parts
+- Plan gate and commit gate testing in progress (#1876)
+
+### Core Insight
+> "Even hermes is not confident LLM text will make it adhere to it -- overtime agents just bypass"
+
+The problem is fundamental: LLMs optimize for task completion, not process adherence. Telling an agent to follow rules is like telling a developer to write tests -- it happens sometimes, not always.
+
+### Required: Infrastructure Enforcement
+
+Text instructions MUST be backed by technical enforcement:
+
+1. **Pre-commit hook** -- blocks commits without plan approval marker
+2. **CI gate** -- rejects PRs without cross-review evidence
+3. **Agent prefill** -- injects workflow constraints into session context
+4. **Compliance dashboard** -- tracks and alerts on violations
+5. **Auto-rollback** -- reverts commits that bypass gates
+
+### Why This Matters
+Without enforcement mode, every single artifact produced is potentially lower quality. The 3-agent review system only works if agents actually use it.
+
+### Acceptance Criteria
+- [ ] Pre-commit hook blocks 100% of non-compliant commits
+- [ ] CI pipeline rejects PRs without review sign-off
+- [ ] Compliance rate > 80% (from current 4%)
+- [ ] Zero engineering commits without plan review for 30+ days
+- [ ] All agents tested: Hermes, Claude Code, Codex, Gemini
+
+### Notes
+- #1876 covers the implementation details
+- #2012 tracks the compliance audit backlog
+- This is the PRIORITY for any serious engineering work
+
+### Related
+- #1876 (Enforce engineering workflow via Hermes prefill + Claude Code hooks)
+- #2012 (Review backlog audit - 4% compliance)
+- docs/standards/HARD-STOP-POLICY.md
+- docs/standards/AI_REVIEW_ROUTING_POLICY.md
+
+Plan under review (docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md):
 # Plan for #2018: agent bypass resistance -- enforce workflow with technical gates, not text instructions
 
 > **Status:** draft
@@ -98,33 +172,6 @@ define sibling-boundary table against #1839 and adjacent enforcement issues
 define parent completion criteria based on closed bypass paths and passing tests, not document existence
 ```
 
-## Bypass Matrix
-
-| Surface | Current control | Known bypass / weakness | Target state | Owner | Proof / test |
-|---|---|---|---|---|---|
-| Runtime write gate | `.claude/hooks/plan-approval-gate.sh` | env-var bypasses and broad safe paths can weaken runtime enforcement | runtime semantics narrowed and tested | #2018 | `test_runtime_write_blocked_without_marker` |
-| Pre-commit gate | `scripts/enforcement/require-plan-approval.sh` | broad exclusions can miss behavior-changing control-plane files | implementation classification narrowed or justified | #2018 | `test_precommit_blocks_unapproved_implementation_change` |
-| Pre-push gate | `scripts/enforcement/require-review-on-push.sh` | broken chain ordering or stale inline block can preserve weak review defaults | push gate remains in fail-fast chain with preserved stdin/ref data | #2018 / related hook work | `test_prepush_blocks_missing_review_evidence` |
-| Cross-review hook | `.claude/hooks/cross-review-gate.sh` | local review enforcement can drift from push/CI expectations | review semantics aligned with push and CI | #2018 | `test_cross_review_hook_behavior` |
-| CI / PR gate | `.github/workflows/enforcement-gate.yml` | CI/local parity drift | CI rejects same missing-plan/missing-review states as local gates | #2018 | `test_ci_gate_rejects_missing_plan_or_review` |
-| Approval-state signaling | GitHub labels + `.planning/plan-approved/` | stale markers, stale labels, self-approval spoofing | stale-state drift surfaced and spoofing rejected | #2018 + #2129 | `test_self_approved_marker_spoofing_rejected` |
-| Env-var bypasses | hook / script env variables | advisory/skip flags can silently disable controls | every env var has explicit scope, precedence, and logging/test coverage | #2018 | `test_env_var_bypass_behavior_is_explicit` |
-| Safe-path abuse | hook safe-path exemptions | control-plane paths can be used to mutate enforcement behavior without approval | safe-path policy narrowed or explicitly justified | #2018 | `test_control_plane_safe_path_cannot_mask_bypass` |
-| Manual git/manual shell path | direct git/manual execution | manual operator path may bypass expected workflow sequence | explicit classification and tested behavior | #2018 | `test_manual_git_manual_shell_path` |
-| Agent bootstrap surfaces | `CLAUDE.md`, `GEMINI.md`, `.codex/config.toml`, Hermes entry surfaces | constraints may not actually reach all providers | provider surfaces explicitly mapped and validated | #2018 | `test_agent_bootstrap_surfaces_receive_constraints` |
-| Rollback | currently unresolved | bypassed changes may persist after detection | delegated to mandatory child issue before approval if not designed here | mandatory child issue | `test_rollback_behavior_or_delegation_is_explicit` |
-
-## Sibling / Boundary Table
-
-| Issue | Relationship to #2018 | Boundary |
-|---|---|---|
-| #1839 | umbrella governance/enforcement context | #2018 must preserve umbrella intent and report residual bypasses, not redefine umbrella scope |
-| #1876 | related implementation-detail/testing stream | #2018 owns parent bypass-resistance closure criteria; #1876 may own narrower implementation slices |
-| #2012 | compliance backlog / measurement context | #2018 consumes compliance signals but does not replace backlog reporting |
-| #2045 | onboarding workflow adoption | #2018 assumes onboarding exists but does not replace onboarding scope |
-| #2046 | compliance audit | #2018 consumes audit outputs but does not replace the audit plan itself |
-| #2047 | escalation follow-on | if controls remain weak, escalation is linked rather than silently absorbed |
-
 ---
 
 ## Files to Change
@@ -140,9 +187,6 @@ define parent completion criteria based on closed bypass paths and passing tests
 | Planned implementation surface | `.claude/hooks/cross-review-gate.sh` | review-enforcement alignment |
 | Planned implementation surface | `.github/workflows/enforcement-gate.yml` | CI gate alignment |
 | Planned implementation surface | `scripts/enforcement/compliance-dashboard.sh` | compliance measurement role clarified |
-| Planned provider surface | `CLAUDE.md` | Claude bootstrap/workflow entry-point validation |
-| Planned provider surface | `GEMINI.md` | Gemini bootstrap/workflow entry-point validation |
-| Planned provider surface | `.codex/config.toml` | Codex bootstrap/config entry-point validation |
 | Planned test surface | `tests/work-queue/test_session_governor.py` or `tests/enforcement/` | functional bypass-resistance tests |
 
 ---
@@ -158,19 +202,16 @@ define parent completion criteria based on closed bypass paths and passing tests
 | `test_ci_gate_rejects_missing_plan_or_review` | PR/CI gate enforces same invariants as local gates | CI fixture | CI failure |
 | `test_env_var_bypass_behavior_is_explicit` | env-var bypasses are either rejected or explicitly scoped/logged | env-var matrix | deterministic behavior |
 | `test_self_approved_marker_spoofing_rejected` | stale/self-approved marker spoofing does not satisfy gate | spoofed marker fixture | rejected |
-| `test_manual_git_manual_shell_path` | direct manual git/manual shell path cannot silently bypass required controls | manual execution fixture | blocked or explicitly classified |
 | `test_agent_bootstrap_surfaces_receive_constraints` | Hermes/Claude/Codex/Gemini bootstrap surfaces carry workflow constraints | provider-specific config/prompt fixtures | explicit references present |
-| `test_cross_review_hook_behavior` | cross-review hook semantics align with push/CI review enforcement expectations | hook fixture | pass/fail |
-| `test_compliance_dashboard_reports_real_enforcement_signals` | dashboard reports actionable signals tied to real gate outcomes | dashboard/report fixture | deterministic output |
 | `test_rollback_behavior_or_delegation_is_explicit` | rollback is either implemented/testable or formally delegated to a mandatory child issue | rollback decision fixture | explicit pass/fail outcome |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] Bypass matrix exists in this plan and covers runtime hook, pre-commit, pre-push, cross-review hook, CI, approval marker/label drift, env-var bypasses, safe-path abuse, manual git path, and agent bootstrap surfaces.
+- [ ] Bypass matrix exists and covers runtime hook, pre-commit, pre-push, cross-review hook, CI, approval marker/label drift, env-var bypasses, safe-path abuse, manual git path, and agent bootstrap surfaces.
 - [ ] Each bypass row has a current control, known weakness, desired target state, owner issue, and required test/evidence.
-- [ ] Rollback is no longer an open question: it is either concretely designed here or explicitly delegated to a named mandatory child issue before approval.
+- [ ] Rollback is no longer an open question: it is either concretely designed here or explicitly delegated to a mandatory child issue before approval.
 - [ ] Parent/sibling issue boundary table exists and makes clear what #2018 still owns after related enforcement issues.
 - [ ] Functional enforcement tests are defined for runtime, git, CI, env-var, spoofing, and provider bootstrap behavior.
 - [ ] Plan review state is fully reconciled with review artifacts and GitHub labels before implementation begins.
@@ -205,3 +246,11 @@ Revisions required before approval:
 ## Complexity: T3
 
 **T3** — cross-surface enforcement/governance plan spanning runtime hooks, git gates, CI, compliance measurement, and multi-agent bootstrap behavior.
+
+
+Review questions — address ALL:
+1. Did the revision resolve the prior MAJOR blockers in a concrete way?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there still unresolved scope/governance/status inconsistencies that should block approval?
+5. Should this revised plan now be approved, revised again, or split?

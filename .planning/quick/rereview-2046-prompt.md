@@ -1,3 +1,52 @@
+# Adversarial Re-Review Request: Issue #2046
+
+You are an independent adversarial reviewer. This plan was revised after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, risks, missing edge cases, unclear scope boundaries, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2046
+- Title: Audit compliance of strict issue planning workflow after rollout
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2046
+- Labels: priority:medium, cat:ai-orchestration, cat:operations, status:plan-review
+
+GitHub issue body:
+After the new strict planning workflow has been used for a short period, audit compliance across agent activity.
+
+Audit focus:
+- Was `issue-planning-mode` used for all issues?
+- Were plans created in `docs/plans/` using the template?
+- Were adversarial reviews completed before user review?
+- Were labels `status:plan-review` and `status:plan-approved` used correctly?
+- Did any agent begin coding before approval?
+
+Deliverables:
+- Markdown report under `docs/reports/`
+- Compliance summary with examples
+- Gaps, failure modes, and recommendations
+- Decision: keep current approach or escalate enforcement
+
+Suggested trigger:
+- Run after 1-2 weeks of usage or after at least 10 issues have gone through the new workflow
+
+
+Plan under review (docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md):
 # Plan for #2046: Audit Compliance of Strict Issue Planning Workflow After Rollout
 
 > **Status:** draft
@@ -41,32 +90,6 @@
 - No authoritative policy matrix is yet defined for engineering-critical, non-engineering, mixed, and legacy issue cohorts.
 - No fixture corpus yet covers retroactive labels, malformed review artifacts, marker/label mismatches, or commits without issue references.
 
-### Cohort policy matrix
-| Cohort | Inclusion rule | Compliance rule |
-|---|---|---|
-| Engineering-critical | Issue has engineering-critical labels and entered planning workflow after #2045 rollout | Must prove plan artifact, adversarial review, `status:plan-review`, `status:plan-approved`, approval marker, and no implementation evidence before approval |
-| Non-engineering | Non-engineering issue entered planning workflow after #2045 rollout | Must prove same planning/review/approval sequence, but report separately from engineering-critical cohort |
-| Legacy / pre-rollout | Issue activity predates rollout or cannot be shown to have entered planning after rollout | Excluded from primary denominator; report separately |
-| Mixed / ambiguous | Conflicting evidence on cohort or sequencing | Included only as `indeterminate` unless stronger evidence resolves classification |
-
-### Evidence model for `issue-planning-mode` usage
-- Primary evidence: session/transcript evidence explicitly showing `issue-planning-mode` load/use.
-- Secondary evidence: plan artifact in `docs/plans/` that follows the template, paired with correctly sequenced review/approval artifacts.
-- Fallback evidence: issue comment/report evidence showing the workflow steps were performed.
-- If only downstream artifacts exist and no direct skill-use evidence can be proven, classify `issue-planning-mode` usage as `indeterminate` rather than inferred-true.
-
-### Audited population definition
-- Rollout start: issues entering planning workflow on or after the #2045 rollout window.
-- Trigger threshold: run the audit only once at least 10 issues have traversed the workflow or after 1-2 weeks of usage, matching the issue body.
-- Included: issues with evidence of entering the planning workflow during the rollout window.
-- Excluded: clearly pre-rollout issues with no post-rollout planning activity.
-- Mixed/legacy: include only as `indeterminate` unless timeline evidence clearly shows post-rollout planning entry.
-
-### Approval signal precedence
-1. GitHub timeline evidence showing `status:plan-approved` added after review/user-approval event.
-2. Local `.planning/plan-approved/<issue>.md` marker as corroborating local evidence only.
-3. If GitHub and local signals disagree, classify by the stronger timeline evidence and report the conflict explicitly.
-
 ---
 
 ## Artifact Map
@@ -74,7 +97,7 @@
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` |
-| Audit script | `scripts/enforcement/audit_planning_compliance.py` |
+| Audit script | `scripts/enforcement/audit-planning-compliance.sh` or equivalent implementation path chosen during execution |
 | Fixture corpus | `tests/fixtures/planning-compliance/` |
 | Script tests | `tests/enforcement/test_audit_planning_compliance.py` |
 | Canonical report | `docs/reports/2026-04-09-planning-workflow-compliance-audit.md` |
@@ -105,10 +128,9 @@ for each in-scope issue:
         commits
         session evidence when available
         bypass evidence when available
-    build per-issue evidence matrix including skill-usage confidence
+    build per-issue evidence matrix
     verify chronology:
         status:plan-review before approval
-        status:plan-approved applied only after user approval evidence
         adversarial review before approval
         approval before implementation evidence
     classify result as:
@@ -120,8 +142,6 @@ generate canonical report with:
     excluded issue list with reasons
     per-issue evidence summary
     cohort counts for compliant/non-compliant/indeterminate
-    final decision: keep current approach or escalate enforcement
-    gaps, failure modes, and recommendations section
 ```
 
 ---
@@ -131,7 +151,7 @@ generate canonical report with:
 | Action | Path | Reason |
 |---|---|---|
 | Rewrite | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | strengthen evidence model and chronology requirements |
-| Create | `scripts/enforcement/audit_planning_compliance.py` | compliance audit implementation |
+| Create | `scripts/enforcement/audit-planning-compliance.sh` or equivalent implementation file | compliance audit implementation |
 | Create | `tests/fixtures/planning-compliance/` | frozen issue/timeline/review/marker/commit fixtures |
 | Create | `tests/enforcement/test_audit_planning_compliance.py` | falsifiable regression tests for chronology and cohort logic |
 | Update | `docs/reports/2026-04-09-planning-workflow-compliance-audit.md` | canonical audit report output |
@@ -145,15 +165,10 @@ generate canonical report with:
 | `test_evidence_matrix_records_all_required_signals` | each issue record contains plan/review/label/marker/implementation evidence fields | fixture issue set | complete evidence matrix |
 | `test_status_plan_review_precedes_approval` | chronology proves plan-review happened before approval | timeline fixture | pass/fail |
 | `test_review_precedes_approval` | adversarial review timestamps precede approval | review + timeline fixture | pass/fail |
-| `test_status_plan_approved_applied_after_user_approval` | `status:plan-approved` is not applied before user approval evidence | approval timeline fixture | pass/fail |
-| `test_issue_planning_mode_usage_evidence_tiers` | direct/secondary/fallback evidence for skill usage is classified correctly | mixed evidence fixture | compliant or indeterminate |
-| `test_template_conformance_for_discovered_plan_artifacts` | discovered plan artifacts actually conform to required template structure | plan fixture set | pass/fail |
 | `test_marker_without_timeline_proof_is_not_auto_compliant` | marker alone is insufficient | marker-only fixture | indeterminate or non-compliant |
 | `test_commit_only_signal_is_low_confidence` | commit timestamps alone do not overstate proof | commit-only fixture | indeterminate |
 | `test_retroactive_label_is_flagged` | retroactive approval/review label drift is surfaced | retroactive label fixture | non-compliant or indeterminate |
 | `test_commits_without_issue_reference_do_not_force_false_negative` | lack of #NNN in commit history does not wrongly prove compliance | no-issue-ref fixture | indeterminate |
-| `test_malformed_review_artifact_is_not_treated_as_valid_review` | malformed/empty review artifacts are rejected or downgraded | malformed review fixture | indeterminate or non-compliant |
-| `test_conflicting_evidence_resolution_prefers_stronger_sources` | conflicting timeline/label/marker/review signals are adjudicated deterministically | conflicting evidence fixture | deterministic classification |
 | `test_report_emits_included_and_excluded_issue_lists` | report denominator is reproducible | mixed cohort fixture | explicit included/excluded lists |
 | `test_report_splits_compliant_noncompliant_indeterminate_by_cohort` | headline metrics are cohort-aware and falsifiable | mixed fixture set | separate counts |
 
@@ -163,14 +178,9 @@ generate canonical report with:
 
 - [ ] Audit logic uses a per-issue evidence matrix rather than simple artifact presence checks.
 - [ ] The audit explicitly verifies chronology for `status:plan-review`, adversarial review, approval evidence, and implementation evidence.
-- [ ] The audit explicitly verifies chronology for `status:plan-approved` and user approval evidence before implementation.
 - [ ] Engineering-critical, non-engineering, mixed, and legacy cohort rules are defined before implementation.
-- [ ] The audit defines direct, secondary, and fallback evidence rules for `issue-planning-mode` usage and uses `indeterminate` when proof is weak.
-- [ ] The audit defines how discovered plan artifacts are checked for template adherence.
 - [ ] Report output includes included issue list, excluded issue list with reasons, and per-issue evidence summary.
 - [ ] Report output distinguishes compliant, non-compliant, and indeterminate issues by cohort.
-- [ ] Report output includes a final decision section: keep current approach or escalate enforcement.
-- [ ] Report output includes explicit gaps, failure modes, and recommendations.
 - [ ] Fixture-backed tests cover retroactive labels, malformed/missing review artifacts, marker/label drift, and weak implementation evidence cases.
 - [ ] Existing canonical report path is refreshed rather than replaced with a parallel reporting surface.
 
@@ -197,10 +207,18 @@ Revisions required before approval:
 
 - **Risk:** GitHub timeline/event history may be incomplete for some historical issues; those cases must remain indeterminate rather than silently compliant.
 - **Risk:** weak evidence sources such as commit timestamps can distort the audit if not explicitly treated as lower confidence.
-- **Open:** exact transcript/session evidence availability may vary by provider; where unavailable, the audit must fall back to weaker sources and classify results as indeterminate.
+- **Open:** none for approval readiness; chronology, cohort rules, and output reproducibility must be explicit before this plan returns to review.
 
 ---
 
 ## Complexity: T2
 
 **T2** — moderate audit/reporting implementation with timeline parsing, evidence classification, and fixture-backed verification.
+
+
+Review questions — address ALL:
+1. Did the revision resolve the prior MAJOR blockers in a concrete way?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there still unresolved scope/governance/status inconsistencies that should block approval?
+5. Should this revised plan now be approved, revised again, or split?

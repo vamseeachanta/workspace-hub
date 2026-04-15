@@ -143,6 +143,71 @@ Operational rules:
 
 This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty.
 
+### Fresh-review rollback rule (critical drift cleanup)
+
+If a plan receives fresh external review artifacts (for example Codex/Gemini) with `MAJOR` / `not approval-ready` after the issue had already drifted to `status:plan-approved`, treat that as a governance-state regression that must be cleaned up immediately.
+
+Required cleanup sequence:
+1. Post a short GitHub comment summarizing that fresh review evidence returned `MAJOR` and link the new review artifacts.
+2. Move the issue label back from `status:plan-approved` to `status:plan-review`.
+3. If a local approval marker exists at `.planning/plan-approved/NNN.md`, remove it so local state no longer implies approval.
+4. Update the corresponding `docs/plans/README.md` row from `plan-approved` to `plan-review`.
+5. Re-verify all three signals after cleanup:
+   - GitHub labels
+   - local approval marker presence/absence
+   - README row status
+
+Operational rule:
+- Fresh blocking review evidence outranks stale prior approval signals. Do not leave an issue in `status:plan-approved` just because it was previously approved if the newest adversarial review says it is not approval-ready.
+- Closed issues with stale `status:plan-approved` but no matching local approval evidence should at minimum have the misleading label removed, even if you do not reopen the issue.
+
+### Step 6: Implement (TDD)
+
+When fresh external plan reviews land (especially Codex + Gemini) and they materially disagree with the current issue state, reconcile the workflow state immediately instead of leaving the queue misleading.
+
+Required checks after a review wave:
+1. live GitHub `status:*` labels
+2. `.planning/plan-approved/<issue>.md` local marker
+3. `docs/plans/README.md` row status
+4. latest provider verdicts in `scripts/review/results/`
+
+Remediation rules:
+- If any fresh provider review returns `MAJOR`, do **not** leave the issue surfaced as effectively approval-ready. For open issues, roll the issue back to `status:plan-review` unless there is newer authoritative user approval after the reviewed plan revision.
+- If an open issue is `status:plan-review` but still has a local `.planning/plan-approved/<issue>.md` marker from an older state, remove the stale marker so local state no longer implies approval.
+- If an open issue is `status:plan-approved` but has no local approval marker, remove or downgrade the stale approval label unless there is other authoritative approval evidence you can point to.
+- Sync `docs/plans/README.md` to the effective live state once labels/markers are corrected.
+- Post a short GitHub comment when you perform governance cleanup so future readers know why approval-state signals changed.
+
+Practical sequencing:
+1. finish/post review artifacts
+2. classify issues into approval-ready vs needs-revision
+3. fix GitHub labels/comments
+4. fix local marker drift
+5. update `docs/plans/README.md`
+6. verify the final open queue
+
+This keeps the plan queue operationally trustworthy after large review waves instead of letting stale `plan-approved` signals linger.
+### Governance cleanup when fresh review evidence contradicts current status
+
+If a plan already carries `status:plan-approved` but fresh Codex/Gemini review returns `MAJOR` or otherwise says "not ready for user approval":
+
+1. Treat the fresh review evidence as a governance problem, not as permission to continue.
+2. Reconcile all four surfaces:
+   - GitHub `status:*` labels
+   - `.planning/plan-approved/<issue>.md` marker
+   - `docs/plans/README.md` row status
+   - `scripts/review/results/` artifacts
+3. If the issue is still open and there is no local approval marker, remove stale `status:plan-approved` and move it back to `status:plan-review`.
+4. If the issue is closed but still carries stale `status:plan-approved` without a marker, remove the stale approval label and post a cleanup note; do not silently leave misleading approval state behind.
+5. Post a short GitHub comment explaining the cleanup and linking the blocking review artifacts.
+6. Update `docs/plans/README.md` if it still claims `adversarial-reviewed` or `plan-approved` in a way that no longer matches the effective live state.
+
+Practical rule:
+- After fresh external review, the queue should distinguish between:
+  - pending review
+  - needs revision after MAJOR review
+  - state drift cleaned / still needs rewrite
+
 ### Step 6: Implement (TDD)
 
 Only after `status:plan-approved` label AND `.planning/plan-approved/NNN.md` marker exist:

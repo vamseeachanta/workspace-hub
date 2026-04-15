@@ -1,0 +1,40 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'1. **Verdict:** MAJOR
+2. **Ready for user approval:** No
+3. **Retrieval adequacy:** adequate
+4. **Top blockers:**
+   1. **Missing `issue-planning-mode` usage verification:** The issue explicitly requests auditing "Was `issue-planning-mode` used for all issues?". The plan checks for the presence of artifacts and labels, but completely omits how it will verify the actual agent mode was utilized (e.g., by checking session logs, specific commit signatures, or defining a proxy).
+   2. **Missing template adherence check:** The issue requires checking if plans "using the template" were created. The plan's pseudocode and TDD only verify the *presence* of a plan artifact, but fail to specify logic or tests for validating structural template compliance (e.g., parsing frontmatter, verifying required headers).
+   3. **Implementation vs. Testing Language Mismatch:** The plan specifies a Bash script (`audit-planning-compliance.sh`) for implementation but a Python file (`test_audit_planning_compliance.py`) for TDD. Verifying GitHub timeline chronology, label event sequences, and building a "per-issue evidence matrix" is highly complex in bash/jq. The implementation should be explicitly aligned to Python to allow for robust API handling and direct unit testing.
+   4. **Self-Contradictory Document State:** The proposed plan text includes a hardcoded "Adversarial Review Summary" at the bottom that explicitly states "Overall result: MAJOR — not approval-ready" and lists required revisions. The plan cannot be approved while it contains a section formally rejecting itself.
+
+5. **Critical findings:**
+   - The plan fails to address the very first audit focus defined in the issue (`issue-planning-mode` usage).
+   - The document state is contradictory, containing an embedded rejection verdict from a prior review cycle that was never cleared.
+
+6. **High findings:**
+   - No logic or AC provided to ensure plans adhere to the mandatory template structure.
+   - Using Bash to fetch, parse, and evaluate chronological GitHub Issue Timeline Events (for retroactive label checks and approval sequences) is brittle; this requires a Python implementation using the GitHub API/GraphQL.
+
+7. **Medium findings:**
+   - The plan mentions classifying issues by a "cohort policy matrix" (engineering-critical, non-engineering, etc.) but does not actually define these rules in the plan. This pushes critical business logic definition into the execution phase, which violates strict planning protocols.
+   - The suggested trigger ("Run after 1-2 weeks... or 10 issues") from the issue is not reflected in the script's design (e.g., missing a `--since` or `--limit` parameter definition).
+
+8. **Low findings:**
+   - The plan mentions `scripts/review/results/...` in the Artifact Map as specific dated files. It should clarify that these are examples of dynamic review outputs rather than static dependencies for the script.
+
+9. **Required revisions before user approval:**
+   - **Add Mode Verification:** Add explicit logic, TDD tests, and implementation steps to audit whether `issue-planning-mode` was actually used (or define the exact proxy that will be used to prove this).
+   - **Add Template Validation:** Add logic and TDD tests to verify that the discovered plan artifacts actually conform to the required `docs/plans/` template.
+   - **Align Implementation Language:** Change the implementation file in "Files to Change" to a Python script (e.g., `scripts/enforcement/audit_planning_compliance.py`) to properly support the complex timeline parsing and Python-based TDD suite.
+   - **Define Cohort Rules:** Explicitly define the "cohort policy matrix" rules within the plan document so the implementation phase has a strict specification to follow.
+   - **Clean Up Document:** Remove the lingering "Adversarial Review Summary" block at the bottom of the plan that falsely declares the document is not ready for approval.
+
+---
+**Answers to Review Questions:**
+1. **Did the revision resolve the prior MAJOR blockers in a concrete way?** Partially; it added chronology and evidence matrix logic, but missed core issue requirements and left the old rejection block in the text.
+2. **Is retrieval now adequate for the issue class?** Yes, the referenced standards and policies are correct.
+3. **Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?** Mostly, but the Bash/Python mismatch makes the TDD technically unfalsifiable without heavy sub-process wrapping, and the missing template/mode checks leave the AC incomplete.
+4. **Are there still unresolved scope/governance/status inconsistencies that should block approval?** Yes, missing the template adherence check and the mode usage check directly ignores the issue's stated scope.
+5. **Should this revised plan now be approved, revised again, or split?** Revised again.

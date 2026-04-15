@@ -56,6 +56,25 @@ Typical workflow:
 
 ## Creating a Cron Job
 
+### 0. Check whether the job already exists in weak/stale form
+
+Before creating a new scheduled workflow or a GitHub issue to add one, inspect the existing control-plane surfaces first:
+- `config/scheduled-tasks/schedule-tasks.yaml`
+- `scripts/cron/<task>.sh`
+- `docs/ops/scheduled-tasks.md`
+- related cron tests under `tests/cron/`
+
+Common real-world pattern:
+- the repo already has a scheduled task entry
+- the wrapper script exists but is only a thin AI prompt shell
+- tests already exist and may be failing
+- the correct move is to **upgrade/replace the existing task path**, not create a second overlapping cron job
+
+Planning rule learned from weekly skills-maintenance work:
+- if a weekly job already exists canonically in `schedule-tasks.yaml`, treat that as the upgrade target
+- do **not** introduce a second parallel cron for the same concern just because the current implementation is weak
+- use failing wrapper tests as resource-intelligence evidence that the workflow is drifted and needs deterministic replacement
+
 ### 1. Define the task in YAML
 
 Include:
@@ -225,6 +244,20 @@ Important operational lesson:
 - compare `crontab -l` with `setup-cron.sh --dry-run`
 - if YAML is canonical, reconcile with `bash scripts/cron/setup-cron.sh --replace`
 - do NOT use the default additive install mode for drift repair
+
+### Converting an LLM-driven cron wrapper to a deterministic script
+When a weekly/daily task used to shell out to Claude/Codex/Gemini and you replace it with a deterministic script, update the scheduler metadata and test contract at the same time — not just the script body.
+
+Required checks:
+- update `requires:` in `config/scheduled-tasks/schedule-tasks.yaml` so it matches the new runtime (`python3`/`uv`/`bash` instead of `claude`, etc.)
+- update `is_claude_task:` (or equivalent task metadata) so the scheduler no longer advertises the job as provider-driven when it is now deterministic
+- update the task `description:` to remove mutating/agent-only behavior that is no longer true
+- preserve the canonical task `id` when the cadence/path should stay stable; replace the implementation behind it instead of creating a second overlapping task
+- add/refresh wrapper tests so `--dry-run` / print-mode output reflects the new deterministic command line
+- support redirectable output roots (CLI flag or env var) so tests and manual runs can write to temp directories instead of dirtying the repo
+
+Common failure mode:
+- the script becomes deterministic, but YAML still says `requires: [claude, ...]` and `is_claude_task: true`, while tests/log paths still assume the old wrapper behavior. This creates governance drift and confusing operator docs even if the new script itself works.
 
 Recommended safe sequence:
 ```bash
