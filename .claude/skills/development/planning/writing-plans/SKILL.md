@@ -1,127 +1,296 @@
 ---
 name: writing-plans
-description: Create detailed implementation plans with granular, actionable tasks (2-5 min each) and enough context for a low-context implementer.
-type: reference
+description: Use when you have a spec or requirements for a multi-step task. Creates comprehensive implementation plans with bite-sized tasks, exact file paths, and complete code examples.
 version: 1.1.0
-category: development
-last_updated: 2026-04-03
-source: https://github.com/obra/superpowers
-related_skills:
-- tdd-obra
-- subagent-driven
-- brainstorming
-capabilities: []
-requires: []
-tags: []
+author: Hermes Agent (adapted from obra/superpowers)
+license: MIT
+metadata:
+  hermes:
+    tags: [planning, design, implementation, workflow, documentation]
+    related_skills: [subagent-driven-development, test-driven-development, requesting-code-review]
 ---
 
-# Writing Plans
+# Writing Implementation Plans
 
 ## Overview
 
-Write plans so the implementer does not have to guess. Include exact file paths, concrete task order, test commands, expected outcomes, and minimal implementation direction.
+Write comprehensive implementation plans assuming the implementer has zero context for the codebase and questionable taste. Document everything they need: which files to touch, complete code, testing commands, docs to check, how to verify. Give them bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
 
-## Core Principles
+Assume the implementer is a skilled developer but knows almost nothing about the toolset or problem domain. Assume they don't know good test design very well.
 
-- DRY
-- YAGNI
-- TDD
-- frequent commits
-- tasks should be 2-5 minutes each when possible
+**Core principle:** A good plan makes implementation obvious. If someone has to guess, the plan is incomplete.
 
 ## When to Use
 
-- multi-step features
-- complex bug fixes across files
-- refactors with sequencing risk
-- any work likely to outlast current context
+**Always use before:**
+- Implementing multi-step features
+- Breaking down complex requirements
+- Delegating to subagents via subagent-driven-development
 
-## Header Template
+**Don't skip when:**
+- Feature seems simple (assumptions cause bugs)
+- You plan to implement it yourself (future you needs guidance)
+- Working alone (documentation matters)
 
+## Bite-Sized Task Granularity
+
+**Each task = 2-5 minutes of focused work.**
+
+Every step is one action:
+- "Write the failing test" — step
+- "Run it to make sure it fails" — step
+- "Implement the minimal code to make the test pass" — step
+- "Run the tests and make sure they pass" — step
+- "Commit" — step
+
+**Too big:**
 ```markdown
-# <Feature Name> Implementation Plan
-
-## Goal
-<one sentence>
-
-## Architecture
-<2-3 sentences>
-
-## Tech Stack
-- language/framework/tools
+### Task 1: Build authentication system
+[50 lines of code across 5 files]
 ```
 
-## Task Template
+**Right size:**
+```markdown
+### Task 1: Create User model with email field
+[10 lines, 1 file]
+
+### Task 2: Add password hash field to User
+[8 lines, 1 file]
+
+### Task 3: Create password hashing utility
+[15 lines, 1 file]
+```
+
+## Plan Document Structure
+
+### Header (Required)
+
+Every plan MUST start with:
 
 ```markdown
-### Task N: <Descriptive Name>
+# [Feature Name] Implementation Plan
 
-**Objective:** <what this task accomplishes>
+> **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task.
+
+**Goal:** [One sentence describing what this builds]
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+---
+```
+
+### Task Structure
+
+Each task follows this format:
+
+````markdown
+### Task N: [Descriptive Name]
+
+**Objective:** What this task accomplishes (one sentence)
 
 **Files:**
-- Create: `path/to/new_file.py`
-- Modify: `path/to/existing.py`
-- Test: `tests/path/test_file.py`
+- Create: `exact/path/to/new_file.py`
+- Modify: `exact/path/to/existing.py:45-67` (line numbers if known)
+- Test: `tests/path/to/test_file.py`
 
 **Step 1: Write failing test**
+
 ```python
-# concrete test here
+def test_specific_behavior():
+    result = function(input)
+    assert result == expected
 ```
 
-**Step 2: Run test and verify failure**
-`uv run pytest tests/path/test_file.py::test_name -v`
+**Step 2: Run test to verify failure**
+
+Run: `pytest tests/path/test.py::test_specific_behavior -v`
+Expected: FAIL — "function not defined"
 
 **Step 3: Write minimal implementation**
+
 ```python
-# concrete implementation here
+def function(input):
+    return expected
 ```
 
-**Step 4: Re-run test and verify pass**
-`uv run pytest tests/path/test_file.py::test_name -v`
+**Step 4: Run test to verify pass**
+
+Run: `pytest tests/path/test.py::test_specific_behavior -v`
+Expected: PASS
 
 **Step 5: Commit**
-`git add <files> && git commit -m "type: message"`
+
+```bash
+git add tests/path/test.py src/path/file.py
+git commit -m "feat: add specific feature"
 ```
+````
 
 ## Writing Process
 
-1. Understand the requirement
-2. Inspect existing code and tests
-3. Design the smallest sensible approach
-4. Break work into ordered tasks
-5. Add exact commands and expected outputs
-6. Review the plan for ambiguity
-7. Save plan under `docs/plans/` when appropriate
+### Step 1: Understand Requirements
 
-## What Good Plans Include
+Read and understand:
+- Feature requirements
+- Design documents or user description
+- Acceptance criteria
+- Constraints
 
-- exact file paths
-- copy-pasteable commands
-- expected failures before implementation
-- expected pass conditions after implementation
-- edge cases or constraints worth checking
-- explicit verification steps
+### Step 2: Explore the Codebase
+
+Use Hermes tools to understand the project:
+
+```python
+# Understand project structure
+search_files("*.py", target="files", path="src/")
+
+# Look at similar features
+search_files("similar_pattern", path="src/", file_glob="*.py")
+
+# Check existing tests
+search_files("*.py", target="files", path="tests/")
+
+# Read key files
+read_file("src/app.py")
+```
+
+### Step 3: Design Approach
+
+Decide:
+- Architecture pattern
+- File organization
+- Dependencies needed
+- Testing strategy
+
+### Step 4: Write Tasks
+
+Create tasks in order:
+1. Setup/infrastructure
+2. Core functionality (TDD for each)
+3. Edge cases
+4. Integration
+5. Cleanup/documentation
+
+### Step 5: Add Complete Details
+
+For each task, include:
+- **Exact file paths** (not "the config file" but `src/config/settings.py`)
+- **Complete code examples** (not "add validation" but the actual code)
+- **Exact commands** with expected output
+- **Verification steps** that prove the task works
+
+### Step 6: Review the Plan
+
+Check:
+- [ ] Tasks are sequential and logical
+- [ ] Each task is bite-sized (2-5 min)
+- [ ] File paths are exact
+- [ ] Code examples are complete (copy-pasteable)
+- [ ] Commands are exact with expected output
+- [ ] No missing context
+- [ ] DRY, YAGNI, TDD principles applied
+
+### Step 7: Save the Plan
+
+```bash
+mkdir -p docs/plans
+# Save plan to docs/plans/YYYY-MM-DD-feature-name.md
+git add docs/plans/
+git commit -m "docs: add implementation plan for [feature]"
+```
+
+## Principles
+
+### DRY (Don't Repeat Yourself)
+
+**Bad:** Copy-paste validation in 3 places
+**Good:** Extract validation function, use everywhere
+
+### YAGNI (You Aren't Gonna Need It)
+
+**Bad:** Add "flexibility" for future requirements
+**Good:** Implement only what's needed now
+
+```python
+# Bad — YAGNI violation
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+        self.preferences = {}  # Not needed yet!
+        self.metadata = {}     # Not needed yet!
+
+# Good — YAGNI
+class User:
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+```
+
+### TDD (Test-Driven Development)
+
+Every task that produces code should include the full TDD cycle:
+1. Write failing test
+2. Run to verify failure
+3. Write minimal code
+4. Run to verify pass
+
+See `test-driven-development` skill for details.
+
+### Frequent Commits
+
+Commit after every task:
+```bash
+git add [files]
+git commit -m "type: description"
+```
 
 ## Common Mistakes
 
-- vague tasks like "implement auth"
-- missing file paths
-- missing test commands
-- embedding abstract advice instead of concrete steps
-- tasks too large to execute confidently
+### Vague Tasks
 
-## Handoff Guidance
+**Bad:** "Add authentication"
+**Good:** "Create User model with email and password_hash fields"
 
-When the plan is done, state the intended execution mode clearly:
-- subagent-driven execution for isolated tasks
-- sequential local execution for tightly coupled changes
-- parallel sessions only when files/workstreams do not contend
+### Incomplete Code
 
-## Save Convention
+**Bad:** "Step 1: Add validation function"
+**Good:** "Step 1: Add validation function" followed by the complete function code
 
-When saving a formal plan, prefer:
-- `docs/plans/YYYY-MM-DD-feature-name.md`
+### Missing Verification
 
-## Final Check
+**Bad:** "Step 3: Test it works"
+**Good:** "Step 3: Run `pytest tests/test_auth.py -v`, expected: 3 passed"
 
-A good plan makes implementation obvious. If the implementer must guess, the plan is incomplete.
+### Missing File Paths
+
+**Bad:** "Create the model file"
+**Good:** "Create: `src/models/user.py`"
+
+## Execution Handoff
+
+After saving the plan, offer the execution approach:
+
+**"Plan complete and saved. Ready to execute using subagent-driven-development — I'll dispatch a fresh subagent per task with two-stage review (spec compliance then code quality). Shall I proceed?"**
+
+When executing, use the `subagent-driven-development` skill:
+- Fresh `delegate_task` per task with full context
+- Spec compliance review after each task
+- Code quality review after spec passes
+- Proceed only when both reviews approve
+
+## Remember
+
+```
+Bite-sized tasks (2-5 min each)
+Exact file paths
+Complete code (copy-pasteable)
+Exact commands with expected output
+Verification steps
+DRY, YAGNI, TDD
+Frequent commits
+```
+
+**A good plan makes implementation obvious.**
