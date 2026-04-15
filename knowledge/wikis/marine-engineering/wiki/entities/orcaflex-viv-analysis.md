@@ -50,3 +50,6 @@ Adjacent risers create wake effects that increase effective VIV amplitude:
 - **Related entity**: [[fea-structural-analysis]] (local stress analysis at connections)
 - **Cross-wiki (engineering)**: [VIV Riser Fatigue](../../../engineering/wiki/concepts/viv-riser-fatigue.md) — comprehensive VIV fatigue methodology: current discretisation, wake interference, S-N curve selection, and DFF guidelines
 - **Cross-wiki (engineering)**: [OrcaFlex Solver](../../../engineering/wiki/entities/orcaflex-solver.md) — OrcFxAPI automation, frequency conventions, and unit traps when comparing solvers
+- **Cross-wiki (engineering)**: [FEA Structural Analysis](../../../engineering/wiki/concepts/fea-structural-analysis.md) -- similar slugs (55%); similar titles (55%); shared tags: fatigue
+- **Cross-wiki (engineering)**: [Hydrodynamic Analysis](../../../engineering/wiki/concepts/hydrodynamic-analysis.md) -- similar slugs (57%); similar titles (57%)
+- **Cross-wiki (engineering)**: [Mooring Analysis System](../../../engineering/wiki/entities/mooring-analysis-system.md) -- similar slugs (55%); similar titles (55%); shared keywords: analysis, cross-references, cross-wiki, design, entity

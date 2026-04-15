@@ -1,19 +1,16 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-15T01:20:07.571329Z
+Generated: 2026-04-15T05:20:07.380950Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
-| #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2046 Audit compliance of strict issue planning workflow after rollout | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2105 chore(knowledge): define freshness cadences and staleness signals for intelligence assets | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2207 feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2244 feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2246 fix(doc-intel): normalize summary-artifact identity between Phase B and Phase C | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2247 feat(doc-intel): add bounded authoritative domain writeback for targeted classification runs | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2116 feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
-| #2118 chore(gtm): run all 5 demos end-to-end and validate HTML reports | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2037 feat(gtm): manim mooring layout / force explainer animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2038 feat(gtm): manim installation sequence / operability envelope animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2039 feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues) | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
@@ -21,6 +18,11 @@ Threshold: 0.9
 | #2157 feat(operations): implement native PowerShell probe collector for Windows readiness bundles | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2158 feat(operations): add Git Bash launcher and path-normalization bridge for Windows evidence writer | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2161 feat(knowledge): ingest provider-session ecosystem audit reads into seeded accessibility registry | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2162 feat(schema): define machine/path alias schema for seeded accessibility registry entries | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2163 feat(operations): add Windows Task Scheduler invocation harness for readiness evidence runs | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2251 Compliance alert: W16 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2024 build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2041 chore: add LaTeX to manim-env for MathTex rendering | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
 | #2042 feat: engineering wiki — ingest skill metadata as wiki pages | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
 | #2123 feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |

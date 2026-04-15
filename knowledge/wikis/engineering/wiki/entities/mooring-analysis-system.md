@@ -47,3 +47,4 @@ Mooring analysis setup in OrcaFlex is a primary workflow. The `mooring-iteration
 - **Related concept**: [S-N Curve Fatigue Definitions](../concepts/sn-curve-fatigue-definitions.md)
 - **Related standard**: [DNV-RP-C205](../standards/dnv-rp-c205.md)
 - **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md)
+- **Cross-wiki (marine-engineering)**: [OrcaFlex VIV Analysis](../../../marine-engineering/wiki/entities/orcaflex-viv-analysis.md) -- similar slugs (55%); similar titles (55%); shared keywords: analysis, cross-references, cross-wiki, design, entity

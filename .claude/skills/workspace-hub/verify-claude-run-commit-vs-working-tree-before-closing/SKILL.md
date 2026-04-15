@@ -172,6 +172,40 @@ Add these checks when the worker was supposed to run in an isolated worktree:
 - verify the expected issue branch tip actually advanced
 
 If the commit landed on the wrong local branch but the diff/tests are valid, prefer cherry-picking into the clean worktree over trying to salvage closeout directly from the dirty checkout.
+If the commit landed on the wrong local branch but the diff/tests are valid, prefer cherry-picking into the clean worktree over trying to salvage closeout directly from the dirty checkout.
+
+## Separate remote landing from parent-checkout state
+
+Another live-use failure mode:
+- Claude runs in a clean issue worktree
+- the commit is pushed successfully to `origin/main`
+- GitHub issues auto-close correctly
+- but the user's current parent checkout (`/mnt/local-analysis/workspace-hub`) is still dirty and remains one commit behind remote main
+
+This is easy to misreport as "everything is updated locally" when only the remote and worker branch are updated.
+
+Required post-push checks when working from a side worktree:
+1. verify the push target really contains the commit
+```bash
+git fetch origin
+git rev-parse <commit>
+git rev-parse origin/main
+git branch --contains <commit>
+```
+2. separately inspect the parent/default checkout state
+```bash
+cd <parent-checkout>
+git status --short
+git rev-list --left-right --count HEAD...origin/main
+```
+3. report these as two different truths:
+- `remote landed state` (did the change reach `origin/main`?)
+- `current local checkout state` (is the user's working checkout updated/clean?)
+
+Decision rule:
+- if remote landed but parent checkout is dirty/behind, do **not** say the repo is fully synced locally
+- say the implementation landed remotely and the parent checkout still needs an explicit sync/reconciliation step
+- avoid auto-pulling into a dirty parent checkout unless the user asked for that reconciliation work
 
 ## Output template for post-run review
 

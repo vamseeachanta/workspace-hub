@@ -53,3 +53,4 @@ Plate critical stress: `sigma_cr = k*pi^2*E/(12*(1-nu^2))*(t/b)^2` with k=4.0 fo
 - **Related concept**: [Pipeline Integrity Assessment](../concepts/pipeline-integrity-assessment.md)
 - **Related standard**: [DNV-RP-C203](../standards/dnv-rp-c203.md)
 - **Related standard**: [API 579-1/ASME FFS-1](../standards/api-579-ffs.md)
+- **Cross-wiki (marine-engineering)**: [FEA Structural Analysis](../../../marine-engineering/wiki/entities/fea-structural-analysis.md) -- similar slugs (75%); similar titles (58%); shared tags: structural; shared keywords: analysis, cross-references, design, related, structural

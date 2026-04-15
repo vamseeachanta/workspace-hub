@@ -132,3 +132,4 @@ Scour protection design (rock dump, mattresses, frond mats) must account for the
 - **Cross-wiki (naval-architecture)**: [Seakeeping and Ship Motions](../../../naval-architecture/wiki/concepts/seakeeping.md) — CFD for vessel RAO computation and seakeeping optimization
 - **Cross-wiki (naval-architecture)**: [Ship Resistance and Propulsion](../../../naval-architecture/wiki/concepts/resistance-propulsion.md) — CFD for resistance prediction and propeller-hull interaction
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)
+- **Cross-wiki (marine-engineering)**: [CFD for Offshore Applications](../../../marine-engineering/wiki/entities/cfd-offshore.md) -- similar slugs (63%); similar titles (71%); shared tags: cfd, openfoam, scour, wave-loading; shared keywords: cfd, coefficients, cross-references, cross-wiki, equation

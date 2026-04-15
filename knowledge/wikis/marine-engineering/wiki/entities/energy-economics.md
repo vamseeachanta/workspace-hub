@@ -50,3 +50,4 @@ NPV = sum(cashflow_t / (1+r)^t) where:
 - **Related entity**: [[pipeline-integrity]] (field life extension decisions)
 - **Related entity**: [[cfd-offshore]] (development concept selection)
 - **Cross-wiki (engineering)**: [Energy Field Economics](../../../engineering/wiki/concepts/energy-field-economics.md) — comprehensive NPV analysis, Arps decline curves, Monte Carlo simulation, and fiscal regime assessment
+- **Cross-wiki (engineering)**: [Field Development Economics](../../../engineering/wiki/concepts/field-development-economics.md) -- similar slugs (56%); similar titles (56%); shared tags: economics, field-development, npv; shared keywords: cross-references, economics, entity, fiscal, regimes

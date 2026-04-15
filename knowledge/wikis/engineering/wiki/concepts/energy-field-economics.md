@@ -147,3 +147,4 @@ Run 10,000+ iterations to get stable P10/P50/P90 NPV estimates. Plot the cumulat
 - **Cross-wiki (maritime-law)**: [Environmental Liability](../../../maritime-law/wiki/concepts/environmental-liability.md) — environmental liability exposure (CLC, OPA 90) is a material risk in field development economics
 - **Cross-wiki (maritime-law)**: [OPA 90](../../../maritime-law/wiki/concepts/opa-90.md) — unlimited gross-negligence liability impacts deepwater project risk assessment and insurance costs
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)
+- **Cross-wiki (marine-engineering)**: [Energy Economics](../../../marine-engineering/wiki/entities/energy-economics.md) -- similar slugs (84%); similar titles (64%); shared tags: economics, field-development, monte-carlo, npv

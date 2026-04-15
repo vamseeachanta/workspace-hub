@@ -42,3 +42,4 @@ Significant coupling exists when `|A_ij(omega)| / max(|A_ii(omega)|, |A_jj(omega
 - **Related concept**: [Wave Theory for Offshore Engineering](../concepts/wave-theory-offshore.md)
 - **Related concept**: [Seakeeping and 6-DOF Ship Dynamics](../concepts/seakeeping-6dof.md)
 - **Related standard**: [DNV-RP-C205](../standards/dnv-rp-c205.md)
+- **Cross-wiki (marine-engineering)**: [OrcaFlex VIV Analysis](../../../marine-engineering/wiki/entities/orcaflex-viv-analysis.md) -- similar slugs (57%); similar titles (57%)

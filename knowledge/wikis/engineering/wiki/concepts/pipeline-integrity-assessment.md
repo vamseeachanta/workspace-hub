@@ -83,3 +83,4 @@ Every assessment requires these inputs regardless of framework:
 - **Cross-wiki (marine-engineering)**: [Sour Service](../../../marine-engineering/wiki/concepts/sour-service.md) — H2S-induced cracking (SSC, HIC) as a pipeline integrity threat beyond metal loss
 - **Cross-wiki (maritime-law)**: [Environmental Liability](../../../maritime-law/wiki/concepts/environmental-liability.md) — pipeline failure leading to spills triggers strict liability under CLC/OPA 90
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)
+- **Cross-wiki (marine-engineering)**: [Pipeline Integrity Assessment](../../../marine-engineering/wiki/entities/pipeline-integrity.md) -- similar slugs (77%); similar titles (100%); shared tags: corrosion, fitness-for-service, integrity, pipeline; shared keywords: api, asme, assessment, concept, cross-references

@@ -45,3 +45,4 @@ Five country-specific fiscal regime models:
 
 - **Related concept**: [Energy Field Economics](../concepts/energy-field-economics.md)
 - **Related entity**: [digitalmodel](../entities/digitalmodel.md)
+- **Cross-wiki (marine-engineering)**: [Energy Economics](../../../marine-engineering/wiki/entities/energy-economics.md) -- similar slugs (56%); similar titles (56%); shared tags: economics, field-development, npv; shared keywords: cross-references, economics, entity, fiscal, regimes

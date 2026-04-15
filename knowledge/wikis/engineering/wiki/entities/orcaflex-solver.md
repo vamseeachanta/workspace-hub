@@ -55,3 +55,4 @@ When correlating OrcaFlex results with other hydrodynamic solvers:
 - **Related workflow**: [Solver Debugging Protocol](../workflows/solver-debugging-protocol.md)
 - **Cross-wiki (marine-engineering)**: [LNG Carrier Mooring](../../../marine-engineering/wiki/entities/lng-carrier-mooring.md) — OrcaFlex used for mooring analysis of LNG carriers at terminals
 - **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) — OrcaFlex models dynamic mooring loads that drive line failure assessment
+- **Cross-wiki (marine-engineering)**: [OrcaFlex VIV Analysis](../../../marine-engineering/wiki/entities/orcaflex-viv-analysis.md) -- similar slugs (56%); similar titles (56%); shared tags: orcaflex, riser; shared keywords: analysis, cross-references, cross-wiki, entity, fatigue

@@ -103,3 +103,4 @@ The TDP and buried sections of an SCR are typically classified as not inspectabl
 - **Related concept**: [[pipeline-integrity-assessment]] — fatigue-corrosion interaction at girth welds
 - **Cross-wiki (marine-engineering)**: [Mooring Line Failure](../../../marine-engineering/wiki/concepts/mooring-line-failure.md) — wire rope mooring lines also subject to fatigue from cyclic loading
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)
+- **Cross-wiki (marine-engineering)**: [OrcaFlex VIV Analysis](../../../marine-engineering/wiki/entities/orcaflex-viv-analysis.md) -- similar titles (51%); shared tags: fatigue, orcaflex, riser, viv; shared keywords: analysis, build, cross-references, cross-wiki, design

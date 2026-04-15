@@ -118,3 +118,5 @@ Point loads, sharp re-entrant corners, and crack tips produce **mathematically i
 - **Related concept**: [[cfd-offshore-hydrodynamics]] — CFD loads as input to structural FEA
 - **Cross-wiki (naval-architecture)**: [Ship Structural Design](../../../naval-architecture/wiki/concepts/ship-structures.md) — FEA for hull girder strength, plate buckling, and fatigue of ship structures
 - **Source**: [Career Learnings Seed](../sources/career-learnings-seed.md)
+- **Cross-wiki (marine-engineering)**: [FEA Structural Analysis](../../../marine-engineering/wiki/entities/fea-structural-analysis.md) -- similar slugs (100%); similar titles (100%); shared tags: fatigue, fea, finite-element, meshing; shared keywords: analysis, boundary, conditions, cross-references, cross-wiki
+- **Cross-wiki (marine-engineering)**: [OrcaFlex VIV Analysis](../../../marine-engineering/wiki/entities/orcaflex-viv-analysis.md) -- similar slugs (55%); similar titles (55%); shared tags: fatigue

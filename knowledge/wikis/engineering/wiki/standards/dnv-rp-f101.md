@@ -82,3 +82,7 @@ Compare to MAOP --> Fit for service? --> Yes: Continue operation
 
 - [API 579-1/ASME FFS-1: Fitness-for-Service](api-579-ffs.md) -- general FFS framework covering all defect types
 - [Pipeline Integrity Assessment](../concepts/pipeline-integrity-assessment.md) -- broader context for integrity management programs
+
+## Cross-References
+
+- **Cross-wiki (marine-engineering)**: [Pipeline Integrity Assessment](../../../marine-engineering/wiki/entities/pipeline-integrity.md) -- shared tags: corrosion, dnv, fitness-for-service, integrity, pipeline; shared keywords: api, asme, assessment, ffs-1, key

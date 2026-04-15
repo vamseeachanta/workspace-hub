@@ -50,3 +50,5 @@ meshing strategy, boundary condition modelling, convergence checks, and fatigue 
 - **Related entity**: [[pipeline-integrity]] (FFS assessment may use FEA Level 3)
 - **Related entity**: [[cfd-offshore]] (CFD loads as FEA input)
 - **Cross-wiki (engineering)**: [FEA Structural Analysis](../../../engineering/wiki/concepts/fea-structural-analysis.md) — detailed FEA methodology: meshing strategy, boundary conditions, convergence checks, hot-spot stress extrapolation
+- **Cross-wiki (engineering)**: [Structural Analysis for Offshore Structures](../../../engineering/wiki/concepts/structural-analysis-offshore.md) -- similar slugs (75%); similar titles (58%); shared tags: structural; shared keywords: analysis, cross-references, design, related, structural
+- **Cross-wiki (naval-architecture)**: [Ship Structural Design](../../../naval-architecture/wiki/concepts/ship-structures.md) -- similar slugs (53%); similar titles (62%); shared tags: fatigue

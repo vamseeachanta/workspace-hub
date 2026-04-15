@@ -9,7 +9,7 @@
 - All development must be compatible with Linux, Windows, and macOS
 - Shell scripts: `#!/usr/bin/env bash`, LF line endings, test on all 3 platforms
 - Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
-- Symlinks: use `ln -s` on Linux/macOS, `cmd //c mklink /J` on Windows (no elevation)
+- Symlinks: use `ln -s` on Linux/macOS, `cmd //c mklink /J` on Windows (no elevation) *stale: 2026-04-15*
 - MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var *stale: 2026-03-11*
 - Never commit symlinks to git cross-platform — use runtime linking + `.gitignore`
 
@@ -61,7 +61,7 @@
 - Pre-existing test failures: AQWA runner detect tests (real exe found), CLI integration tests
 - WRK-NNN references: Always include brief description inline (never bare IDs)
 - `.gitignore` blanket rules (e.g., `lib/`, `memory/`) override earlier whitelists — add negation AFTER the blanket rule *stale: 2026-04-03*
-- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *stale: 2026-04-05*
+- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *verified: 2026-04-15*
 - Always verify new `lib/` directories: `git check-ignore <path>` *stale: 2026-04-07*
 
 ## Shell Script Portability

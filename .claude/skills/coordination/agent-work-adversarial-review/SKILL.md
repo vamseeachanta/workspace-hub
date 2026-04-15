@@ -100,6 +100,26 @@ gh issue list --state open --search '<keywords>' --limit 20
 
 Important: distinguish exact duplicates from umbrella issues. If an umbrella exists, reference it in the new issue instead of skipping automatically.
 
+### 6.5 Reopen incorrectly closed issues when live validation contradicts prior completion claims
+If a previously closed issue is directly contradicted by a reproduced live failure, prefer reopening the original issue instead of creating a duplicate regression ticket.
+
+Use this when:
+- the closed issue claimed a fix landed
+- your focused repro shows the same path still fails now
+- the reopened issue is a hard blocker for a downstream approval gate
+
+Pattern:
+```bash
+gh issue reopen <number>
+gh issue comment <number> --body-file /tmp/repro.md
+```
+
+Your comment should include:
+- exact repro command
+- current result vs expected result
+- concrete error message/stack clue
+- downstream issue(s) now blocked by the regression
+
 ### 7. Prefer root-cause follow-up issues
 Create issues for systemic gaps, not every symptom.
 
