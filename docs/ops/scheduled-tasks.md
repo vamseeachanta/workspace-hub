@@ -25,7 +25,7 @@
 | 02:30 daily | agent-radar | Agent capability radar HTML | `/tmp/agent-radar.log` |
 | 03:15 Sun | ai-tools-status | AI CLI version audit | `.claude/state/learning-reports/cron.log` |
 | 03:30 Sun | model-ids | Model ID refresh | `.claude/state/learning-reports/cron.log` |
-| 04:00 Mon | skills-curation | Skill eval + duplicate detect | `.claude/state/learning-reports/cron.log` |
+| 04:00 Mon | skills-curation | Deterministic weekly skills audit (JSON + Markdown) | `logs/maintenance/skills-curation-*.log` |
 | 04:30 Mon | weekly-hermes-parity-review | Hermes cross-machine parity review | `logs/weekly-parity/cron-*.log` |
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |

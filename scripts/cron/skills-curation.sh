@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
-# skills-curation.sh — Wrapper for the weekly Claude-driven skills curation cron.
+# skills-curation.sh — Thin wrapper for the deterministic weekly skills audit.
+# Launches scripts/skills/weekly_skills_audit.py with correct env.
 set -euo pipefail
 
 usage() {
   cat <<'EOF'
 Usage: bash scripts/cron/skills-curation.sh [--dry-run]
 
+Deterministic weekly skills audit wrapper.
+
 Options:
-  --dry-run   Print the Claude CLI invocation without executing it.
+  --dry-run   Print the audit command without executing it.
   -h, --help  Show this help text.
 EOF
 }
@@ -32,16 +35,27 @@ while [[ $# -gt 0 ]]; do
 done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
-PROMPT="Archive stale skills (unused >90 days), validate frontmatter (name, description, type fields) on all .claude/skills/ files, and report findings."
-CLAUDE_CMD=(claude -p "$PROMPT" --dangerously-skip-permissions)
+WORKSPACE_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+export WORKSPACE_HUB
+
+AUDIT_SCRIPT="${WORKSPACE_HUB}/scripts/skills/weekly_skills_audit.py"
+AUDIT_CMD=(uv run --no-project python "$AUDIT_SCRIPT")
+
+# Forward output root if set
+if [[ -n "${SKILLS_AUDIT_OUTPUT_ROOT:-}" ]]; then
+  AUDIT_CMD+=(--output-dir "$SKILLS_AUDIT_OUTPUT_ROOT")
+fi
 
 cd "$WORKSPACE_HUB"
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   printf 'Working directory: %s\n' "$WORKSPACE_HUB"
-  printf 'Command: claude -p "%s" --dangerously-skip-permissions\n' "$PROMPT"
+  printf 'Command: uv run --no-project python %s' "$AUDIT_SCRIPT"
+  if [[ -n "${SKILLS_AUDIT_OUTPUT_ROOT:-}" ]]; then
+    printf ' --output-dir %s' "$SKILLS_AUDIT_OUTPUT_ROOT"
+  fi
+  printf '\n'
   exit 0
 fi
 
-exec "${CLAUDE_CMD[@]}"
+exec "${AUDIT_CMD[@]}"

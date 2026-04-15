@@ -173,17 +173,21 @@ tasks:
     description: Weekly audit (Monday 03:30) of CLAUDE.md, AGENTS.md, memory, rules for bloat; flags line budget violations, stale memory, promotion candidates.
 
   - id: skills-curation
-    label: Skills curation
+    label: Weekly skills audit
     schedule: "0 4 * * 1"
     machines: [dev-primary, ace-linux-1]
-    requires: [claude, bash, git]
+    requires: [python3, uv, bash]
     command: >-
+      PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
       bash scripts/cron/skills-curation.sh
       >> $WORKSPACE_HUB/logs/maintenance/skills-curation-$(date +\%Y\%m\%d).log 2>&1
     log: logs/maintenance/skills-curation-*.log
-    is_claude_task: true
-    description: Weekly skills curation (Monday 04:00); archives stale skills, validates frontmatter.
+    is_claude_task: false
+    description: >-
+      Weekly deterministic skills audit (Monday 04:00); scans .claude/skills/
+      for duplicate names, leaf collisions, wrapper pairs. Emits JSON + Markdown
+      artifacts to logs/maintenance/skills-curation/. Read-only in v1. Issue #2281.
 
   - id: provider-session-ecosystem-audit
     label: Provider session ecosystem audit refresh
