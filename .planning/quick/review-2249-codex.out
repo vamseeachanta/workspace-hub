@@ -1,0 +1,453 @@
+2026-04-14T22:31:45.112794Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d8e1f-7750-74e3-92e4-45ab07ca4be6
+--------
+user
+# Adversarial Review Request: Issue #2249
+
+You are an independent adversarial reviewer. Find gaps, risks, missing edge cases, missing retrieval, unclear scope boundaries, unsafe assumptions, and workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial review
+- Existing Hermes review already returned MAJOR with retrieval insufficiency.
+- Focus on whether this plan is genuinely approval-ready and whether it uses authoritative machine-readable inputs rather than stale summaries.
+
+GitHub issue metadata:
+- Issue: #2249
+- Title: feat(doc-intel): triage index-level other bucket into bounded context packs
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2249
+- Labels: enhancement, priority:high, cat:data-pipeline, cat:document-intelligence, status:plan-approved
+
+GitHub issue body:
+## Summary
+Triage and reclassify the remaining index-level `other` bucket into bounded, source-aware packs so agents can identify file context without repeatedly hitting a large miscellaneous pool.
+
+Current evidence:
+- `data/document-index/data-audit-report.md` reports 44,705 index-level `other` records
+- this bucket is explicitly described as project documents, correspondence, and miscellaneous files
+- standards-level `other` has already been eliminated, so this remaining `other` bucket is now the main classification/context blind spot
+
+## Why
+Even with high raw indexing coverage, file-context discovery is still degraded when tens of thousands of records remain in a miscellaneous bucket. This hurts:
+- issue planning resource intel
+- target-source retrieval for LLM-wiki promotion
+- downstream selection of which files deserve summarization or extraction
+
+## Scope
+- segment the 44,705 `other` records by source root, file type, and probable sub-family
+- identify bounded packs that can be reclassified or summarized together
+- separate true low-value miscellany from high-value project documents that need context
+- define writeback targets for improved classification metadata and/or summary artifacts
+- produce a recommended execution order for bounded batches rather than one monolithic cleanup
+
+## Deliverables
+- breakdown of `other` by source / extension / probable family
+- shortlist of high-value packs for immediate context enrichment
+- recommended classification tags or domain targets
+- explicit list of records that should remain miscellaneous for now
+- follow-on execution batches linked to existing summary/index workflows
+
+## Related
+- Parent prioritization spine: #2248
+- Existing umbrella: #1563
+- Summary coverage: #1924
+- Undiscovered resources audit: #1579
+- Bounded authoritative writeback: #2247
+- Summary/classification artifact prep: #2245
+- Summary identity normalization: #2246
+
+## Acceptance criteria
+- [ ] `other` bucket is broken into bounded packs with counts
+- [ ] at least one high-value pack is identified for immediate execution
+- [ ] proposed writeback path is explicit
+- [ ] linkages to existing doc-intel execution issues are documented
+
+
+Plan under review (docs/plans/2026-04-13-issue-2249-index-level-other-bucket-bounded-context-packs.md):
+# Plan for #2249: triage index-level other bucket into bounded context packs
+
+> **Status:** adversarial-reviewed
+> **Complexity:** T2
+> **Date:** 2026-04-13
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2249
+> **Review artifacts:** scripts/review/results/2026-04-13-plan-2249-hermes.md | scripts/review/results/2026-04-13-plan-2249-subagent.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `data/document-index/index.jsonl` is the actual live execution surface for this work. Records include `source`, `ext`, `domain`, `path_category`, and `path_subcategory`, which are the required dimensions for bounded pack decomposition.
+- Found: `data/document-index/registry.yaml` reports the current aggregate corpus totals and currently lists `other: 44705` at the registry layer.
+- Found: `data/document-index/data-audit-report.md` also reports index-level `other = 44,705`, but explicitly distinguishes this from standards-ledger `other`; this artifact should be treated as the current human-readable audit summary, not the only execution input.
+- Found: `data/document-index/enhancement-plan.yaml` is a large classified planning artifact with itemized examples and historical `by_domain` planning data; it is useful for examples and heuristics but appears older than newer audit artifacts and must not control authoritative pack counts.
+- Found: `data/document-index/resource-intelligence-maturity.yaml` records 61.9% summary coverage (639,585 / 1,033,933), confirming that semantic context enrichment remains the main bottleneck.
+- Found: `data/document-index/mounted-source-registry.yaml` provides the source-root ownership model needed to make packs source-aware instead of ad hoc.
+- Found: issue #2247 defines the downstream bounded authoritative writeback path for targeted classification runs; this plan must hand off exact bounded packs into that issue rather than treating triage output as authoritative by itself.
+- Gap: there is no existing issue focused specifically on decomposing the live index-level `other` bucket into source-aware packs for context recovery.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Not a standards-implementation issue | not applicable | `data/document-index/data-audit-report.md` distinguishes index-level `other` from standards-ledger `other` |
+
+### LLM Wiki pages consulted
+- No dedicated LLM wiki page was found for the index-level `other` bucket itself.
+- Related architecture context comes from `docs/plans/2026-04-11-issue-2205-multi-machine-llm-wiki-resource-doc-intelligence-operating-model.md`, which treats registries as the control layer and durable wikis as downstream promoted knowledge.
+
+### Documents consulted
+- GitHub issue #2249 — defines the bounded triage/reclassification objective and acceptance criteria.
+- `data/document-index/index.jsonl` — authoritative live corpus input for actual pack construction.
+- `data/document-index/registry.yaml` — current registry-layer aggregate count for `other`.
+- `data/document-index/data-audit-report.md` — current human-readable audit summary and narrative interpretation of the `other` bucket.
+- `data/document-index/resource-intelligence-maturity.yaml` — confirms remaining summary/context coverage gap at the corpus level.
+- `data/document-index/enhancement-plan.yaml` — contains itemized examples and historical `by_domain.other` planning data useful for heuristics but not authoritative counts.
+- `data/document-index/mounted-source-registry.yaml` — authoritative source-root map for source-aware packing.
+- GitHub issue #2247 — bounded authoritative domain writeback path for targeted classification runs.
+- GitHub issues #2245 and #2246 — recent bounded doc-intel unblock issues that establish the preferred pattern: exact allowlists, minimal writeback, and explicit verification.
+- `docs/plans/2026-04-11-issue-2205-multi-machine-llm-wiki-resource-doc-intelligence-operating-model.md` — establishes that this belongs in the registry/provenance layer, not the durable-wiki layer.
+
+### Gaps identified
+- No bounded decomposition exists for the live `index.jsonl` `other` records by source root, extension, or likely family.
+- Current aggregate `other` counts must be treated as a two-layer problem: `registry.yaml` / `data-audit-report.md` agree on 44,705, but execution must still verify the live index slice before pack generation and explain any drift.
+- No execution slice currently identifies which portions of `other` are high-value project documents versus low-value miscellany.
+- No existing reporting artifact appears to tie `other`-bucket pack selection directly to the authoritative writeback workflow in #2247.
+- No deterministic scoring rubric currently exists for deciding `reclassify now` vs `summarize first` vs `leave miscellaneous`.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-13-issue-2249-index-level-other-bucket-bounded-context-packs.md` |
+| Triage report | `docs/reports/index-other-bucket-bounded-packs.md` |
+| Canonical handoff artifact for #2247 | `data/document-index/index-other-bucket-pack-manifest.yaml` |
+| Supporting script(s) | `scripts/data/document-index/` (bounded triage helper, if needed) |
+| Plan review — Hermes | `scripts/review/results/2026-04-13-plan-2249-hermes.md` |
+| Plan review — Subagent | `scripts/review/results/2026-04-13-plan-2249-subagent.md` |
+| Planning index update | `docs/plans/README.md` |
+
+---
+
+## Scope Boundaries
+
+### Canonical output ownership
+- `docs/reports/index-other-bucket-bounded-packs.md` is the human-readable review/report surface.
+- `data/document-index/index-other-bucket-pack-manifest.yaml` is the canonical machine-readable handoff artifact consumed by #2247.
+- The first execution slice is source-root-first, then extension/family within each selected source-root pack. This removes ambiguity about whether source or extension drives the initial cut.
+- #2247 authoritative downstream mechanics are now fixed for plan readiness: it consumes the handoff manifest and applies bounded writeback only for records explicitly listed or matched by manifest rule, updating authoritative classification state for the target set only. Required manifest fields: `pack_id`, `selection_rule`, `candidate_count`, `record_keys` (content hashes or exact record IDs), `proposed_domain`, `proposed_status`, `writeback_target`, and `provenance_note`.
+
+### In scope now
+- Decompose the live `other` bucket into bounded packs.
+- Define deterministic selection rules and source-priority order.
+- Produce the canonical handoff manifest for #2247 with exact allowlists and expected writeback fields.
+
+### Out of scope now
+- Performing the authoritative writeback itself (#2247 scope).
+- Full reclassification of the entire `other` bucket in this issue.
+
+---
+
+## Deliverable
+
+A bounded triage package that breaks the index-level `other` bucket into source-aware, extension-aware context packs, plus a canonical machine-readable handoff manifest for #2247 containing exact allowlists, selection rules, and expected authoritative writeback fields.
+
+---
+
+## Pseudocode
+load aggregate `other` counts from registry.yaml and data-audit-report.md
+load live `other` records from index.jsonl as the execution input
+verify whether live index count matches current aggregate artifacts and record any drift
+segment live `other` records by source root, extension, path_category, and path_subcategory
+apply a deterministic scoring rubric with explicit thresholds:
+    reclassify now if source in {ace_project,dde_project} AND readability in {native,ocr} AND ext in {pdf,doc,docx,xlsx,xls} AND path_category != standards
+    summarize first if readability in {native,ocr} but source/family signal is ambiguous or mixed
+    leave miscellaneous for now if readability == missing OR ext in {tmp,log,bak,msg} OR path_category/path_subcategory indicate admin/duplicate/general-standards residue
+    break ties by source priority: ace_project > dde_project > ace_standards > og_standards > workspace_spec > api_metadata
+emit a bounded pack manifest with counts, rationale, exact selection rules, and one example path per pack
+handoff the top approved packs to #2247 as an explicit allowlist artifact:
+    pack_id
+    exact selection rule
+    candidate record count
+    target action (reclassify/summarize)
+    expected authoritative writeback fields
+write a human-readable report and verification summary explaining any count drift and the exact #2247 handoff contract
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | `docs/reports/index-other-bucket-bounded-packs.md` | primary bounded triage report |
+| Create (if needed) | `data/document-index/index-other-bucket-pack-manifest.yaml` | machine-readable pack definitions |
+| Create/Modify (if needed) | `scripts/data/document-index/*.py` | bounded triage helper or reporting script |
+| Update | `docs/plans/README.md` | add plan index row |
+| Update | GitHub issue `#2249` | surface reviewed plan once adversarial review is complete |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_other_bucket_count_matches_authoritative_audit | plan/execution uses the current 44,705 figure from the audit artifact | `data/document-index/data-audit-report.md` | count = 44,705 |
+| test_pack_builder_preserves_bounded_scope | helper/report only touches `other`-bucket candidates | selected `other` records | no non-`other` records included |
+| test_pack_manifest_groups_by_source_and_extension | output groups records into useful bounded packs | sample `other` records | grouped counts by source/extension/family |
+| test_priority_scoring_identifies_high_value_packs | scoring highlights likely high-value project-document packs | grouped pack data | ranked shortlist |
+| test_writeback_handoff_is_explicit | report + handoff manifest name downstream authoritative path and exact fields | final report + handoff artifact | references #2247, allowlist schema, expected writeback fields |
+| test_scoring_thresholds_are_deterministic | the rubric yields the same classification for the same candidate records | fixed candidate fixture set | stable `reclassify now` / `summarize first` / `leave miscellaneous` output |
+
+---
+
+## Acceptance Criteria
+
+- [ ] The live `index.jsonl` `other` slice is used as the execution input for bounded pack generation.
+- [ ] Aggregate `other` counts from `registry.yaml` and `data-audit-report.md` are reconciled against the live index slice, with any drift explicitly explained.
+- [ ] The output decomposes the `other` bucket into bounded packs with counts, source-root attribution, and exact selection rules.
+- [ ] The report distinguishes likely high-value project-document packs from low-value miscellany using a deterministic scoring rubric.
+- [ ] At least one immediate execution slice is identified and linked to a downstream authoritative writeback path.
+- [ ] The output avoids broad corpus mutation and stays at bounded triage/reporting scope.
+- [ ] Review artifacts are saved under `scripts/review/results/` before surfacing the plan for user approval.
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Hermes | MAJOR | Missing live-index anchoring, unresolved count drift, and missing deterministic scoring thresholds |
+| Subagent review | MAJOR | Review gate incomplete, #2247 handoff underdefined, deterministic rubric still too subjective |
+
+**Overall result:** MINOR (approval-ready with implementation-time caution)
+
+Revisions made based on review:
+- anchored execution to `index.jsonl` and added `registry.yaml` / `mounted-source-registry.yaml`
+- defined explicit scoring thresholds and tie-break ordering
+- strengthened deliverable and test coverage around the #2247 allowlist handoff contract
+- locked the downstream handoff artifact schema and #2247 bounded writeback mechanics for plan readiness
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** `enhancement-plan.yaml` may overstate or lag current `other` counts; the plan must anchor counts to `data-audit-report.md`.
+- **Risk:** item-level extraction for all 44,705 records could expand scope; keep the deliverable at bounded-pack triage, not full reclassification.
+- **Open:** none for plan approval readiness; this plan now commits to source-root-first slicing, a canonical handoff manifest, markdown-as-report / YAML-as-machine artifact ownership, and explicit #2247 bounded writeback mechanics.
+
+---
+
+## Complexity: T2
+
+**T2** — bounded multi-artifact planning/reporting work with explicit downstream linkage, but not a full multi-module architecture redesign.
+
+
+Review questions — address ALL:
+1. Does the plan anchor itself to authoritative live inputs and current corpus state?
+2. Are decomposition, scoring, and pack-generation rules deterministic and testable?
+3. Does the plan resolve drift between convenience summaries and canonical ledgers/index data?
+4. Are the outputs, dependencies, and handoff into follow-on issues explicit and falsifiable?
+5. Is retrieval adequate for approval under repo policy?
+6. Should this plan be approved as-is, revised, or split?
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+I’m reviewing the plan against the actual repo artifacts and policy gates, not just the pasted summary. First step is to verify whether the plan really anchors on current machine-readable inputs and whether the review state matches repo workflow requirements.
+2026-04-14T22:32:13.599028Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' .claude/skills/coordination/issue-planning-mode/SKILL.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-14T22:32:13.599038Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/plans/2026-04-13-issue-2249-index-level-other-bucket-bounded-context-packs.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-14T22:32:13.599099Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg -n "44705|44,705|other" data/document-index/{registry.yaml,data-audit-report.md,resource-intelligence-maturity.yaml,mounted-source-registry.yaml,enhancement-plan.yaml}'`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-14T22:32:13.599691Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' docs/standards/HARD-STOP-POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell is blocked in this sandbox, so I’m switching to repository-backed reads through GitHub metadata and file fetches. I’m validating the live artifacts directly so the review stays grounded in current repo state rather than the plan text alone.
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+codex
+I’ve confirmed the key control artifacts and the plan file. Next I’m checking the claimed downstream contract and the actual review artifacts, because the current plan text says “approval-ready” while both upstream reviews reportedly found MAJOR issues.
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+codex
+I’ve got enough to see the workflow mismatch: both saved review artifacts still say `MAJOR`, while the plan claims `MINOR` and “approval-ready.” I’m checking one more layer now: whether the proposed rubric and manifest schema even align with fields that actually exist in the index pipeline.
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_search started
+mcp: codex_apps/github_search (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+codex
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval
+
+No
+
+3. Retrieval adequacy
+
+insufficient
+
+4. Top blockers
+
+1. The plan’s own review gate is failed, not passed. Both saved review artifacts for this exact plan are still `MAJOR`, but the plan rewrites that history as `MINOR` and “approval-ready.”
+2. The downstream #2247 handoff contract is described inaccurately. The current writeback implementation in [phase-c-classify.py](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/data/document-index/phase-c-classify.py) is content-hash allowlist driven, not a generic manifest-rule consumer.
+3. The scoring rubric relies on fields and semantics that were not retrieved from authoritative implementation surfaces. In particular, `readability` is not established as an available index/writeback field in the consulted evidence.
+4. Retrieval did not meet the repo’s data-pipeline planning contract because the plan skipped key machine-readable implementation surfaces such as `scripts/data/document-index/config.yaml` and the actual writeback/classification scripts before claiming approval readiness.
+
+5. Critical findings
+
+- The plan falsifies adversarial review state. [scripts/review/results/2026-04-13-plan-2249-hermes.md](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/review/results/2026-04-13-plan-2249-hermes.md) says `Overall verdict: MAJOR`; [scripts/review/results/2026-04-13-plan-2249-subagent.md](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/review/results/2026-04-13-plan-2249-subagent.md) says `Overall verdict: MAJOR` and `Ready for user approval: No`. The plan file claims `Overall result: MINOR (approval-ready with implementation-time caution)`. That is a workflow/governance violation under [issue-planning-mode](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/skills/coordination/issue-planning-mode/SKILL.md), which requires revision and re-review if any reviewer returns `MAJOR`.
+- The #2247 contract is overstated and partly invented. The plan says #2247 “consumes the handoff manifest” and supports records “explicitly listed or matched by manifest rule,” but [phase-c-classify.py](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/data/document-index/phase-c-classify.py) currently exposes bounded writeback via `--target-list` of `content_hash` values. That is materially narrower than the proposed manifest semantics.
+- The rubric is not grounded in retrieved schema. The plan’s pseudocode uses `readability in {native,ocr,missing}`, but the retrieved implementation surfaces show `content_hash`, `source`, `ext`, `path_category`, `path_subcategory`, `domain`, `status`, and summary/extraction fields such as `extraction_method` and `discipline` instead. The plan introduces a decision axis it did not verify exists.
+- The issue is labeled `cat:data-pipeline`, so [HARD-STOP-POLICY](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/HARD-STOP-POLICY.md) applies. Given the unresolved `MAJOR` reviews, this is not approval-ready regardless of local plan wording or stale labels.
+
+6. High findings
+
+- Retrieval missed required data-pipeline implementation surfaces. [docs/plans/README.md](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/plans/README.md) says data-pipeline issues should consult `registry.yaml`, pipeline config, and `resource-intelligence-maturity.yaml`. The plan cited `registry.yaml` and maturity YAML, but not the pipeline config and not the actual classifier/writeback scripts before defining execution and handoff behavior.
+- The plan claims “source-root-first” decomposition without reconciling source-root registry semantics against current index reality. [data-audit-report.md](https://github.com/vamseeachanta/workspace-hub/blob/main/data/document-index/data-audit-report.md) reports 6 distinct sources, while [mounted-source-registry.yaml](https://github.com/vamseeachanta/workspace-hub/blob/main/data/document-index/mounted-source-registry.yaml) contains a much broader source-root catalog. The plan does not define how indexed `source` values map to registry roots for packing.
+- The proposed output may generate writeback targets outside the current authoritative taxonomy. [phase-c-classify.py](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/data/document-index/phase-c-classify.py) has a constrained `VALID_DOMAINS` list. The plan asks for “recommended classification tags or domain targets” but does not constrain recommendations to domains that the current writeback path can actually persist.
+- The plan says there are no open questions left for approval readiness. That is not credible while schema assumptions, source-root mapping, and #2247 consumer semantics remain unresolved.
+
+7. Medium findings
+
+- The TDD list is pointed at the wrong authority for the baseline count. `test_other_bucket_count_matches_authoritative_audit` hard-codes the audit count instead of asserting live-index count and reconciling it against `registry.yaml` and `data-audit-report.md`.
+- The plan cites `index.jsonl` as authoritative but does not show retrieval from it beyond assertion. It should prove the live slice shape and count from machine-readable inspection, not merely mention the file path.
+- The plan says `enhancement-plan.yaml` is “older” and non-authoritative, which may be reasonable, but it does not define a concrete exclusion rule for any fields/examples borrowed from that artifact.
+- “Exact selection rules” and “exact allowlists” are both mentioned, but the plan does not decide which one is authoritative when they disagree. That matters because the current #2247 path is allowlist-based.
+
+8. Low findings
+
+- Listing “Update GitHub issue #2249” under “Files to Change” is sloppy plan-stage phrasing; issue comments/labels are workflow actions, not repo files.
+- The plan README row marks #2249 as `adversarial-reviewed`, but the actual saved reviews still fail approval readiness.
+- `resource-intelligence-maturity.yaml` is used more as narrative support than as a direct execution input.
+
+9. Required revisions before user approval
+
+- Revise the plan to reflect the real review state: `MAJOR`, not `MINOR`.
+- Re-run adversarial review after revision and do not surface for approval until all plan-stage blockers are resolved.
+- Retrieve and cite the actual execution surfaces before redefining behavior:
+  - `scripts/data/document-index/config.yaml`
+  - `scripts/data/document-index/phase-c-classify.py`
+  - any existing helper used to read/write `index.jsonl`
+- Replace the invented `readability` rubric with a rubric based on verified fields already present in the pipeline, or explicitly add a prerequisite issue if a new field is required.
+- Narrow the #2247 handoff contract to what exists now: content-hash-targeted bounded writeback, unless #2247 is separately extended first.
+- Define the mapping from index `source` values to mounted source-root ownership so “source-root-first” packs are falsifiable.
+- Fix the tests so live `index.jsonl` is the primary authority and audit/registry counts are reconciliation checks, not the source of truth.
+- Constrain proposed domain/writeback outputs to currently valid authoritative taxonomy values.
+tokens used
+166,642
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval
+
+No
+
+3. Retrieval adequacy
+
+insufficient
+
+4. Top blockers
+
+1. The plan’s own review gate is failed, not passed. Both saved review artifacts for this exact plan are still `MAJOR`, but the plan rewrites that history as `MINOR` and “approval-ready.”
+2. The downstream #2247 handoff contract is described inaccurately. The current writeback implementation in [phase-c-classify.py](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/data/document-index/phase-c-classify.py) is content-hash allowlist driven, not a generic manifest-rule consumer.
+3. The scoring rubric relies on fields and semantics that were not retrieved from authoritative implementation surfaces. In particular, `readability` is not established as an available index/writeback field in the consulted evidence.
+4. Retrieval did not meet the repo’s data-pipeline planning contract because the plan skipped key machine-readable implementation surfaces such as `scripts/data/document-index/config.yaml` and the actual writeback/classification scripts before claiming approval readiness.
+
+5. Critical findings
+
+- The plan falsifies adversarial review state. [scripts/review/results/2026-04-13-plan-2249-hermes.md](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/review/results/2026-04-13-plan-2249-hermes.md) says `Overall verdict: MAJOR`; [scripts/review/results/2026-04-13-plan-2249-subagent.md](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/review/results/2026-04-13-plan-2249-subagent.md) says `Overall verdict: MAJOR` and `Ready for user approval: No`. The plan file claims `Overall result: MINOR (approval-ready with implementation-time caution)`. That is a workflow/governance violation under [issue-planning-mode](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/skills/coordination/issue-planning-mode/SKILL.md), which requires revision and re-review if any reviewer returns `MAJOR`.
+- The #2247 contract is overstated and partly invented. The plan says #2247 “consumes the handoff manifest” and supports records “explicitly listed or matched by manifest rule,” but [phase-c-classify.py](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/data/document-index/phase-c-classify.py) currently exposes bounded writeback via `--target-list` of `content_hash` values. That is materially narrower than the proposed manifest semantics.
+- The rubric is not grounded in retrieved schema. The plan’s pseudocode uses `readability in {native,ocr,missing}`, but the retrieved implementation surfaces show `content_hash`, `source`, `ext`, `path_category`, `path_subcategory`, `domain`, `status`, and summary/extraction fields such as `extraction_method` and `discipline` instead. The plan introduces a decision axis it did not verify exists.
+- The issue is labeled `cat:data-pipeline`, so [HARD-STOP-POLICY](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/HARD-STOP-POLICY.md) applies. Given the unresolved `MAJOR` reviews, this is not approval-ready regardless of local plan wording or stale labels.
+
+6. High findings
+
+- Retrieval missed required data-pipeline implementation surfaces. [docs/plans/README.md](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/plans/README.md) says data-pipeline issues should consult `registry.yaml`, pipeline config, and `resource-intelligence-maturity.yaml`. The plan cited `registry.yaml` and maturity YAML, but not the pipeline config and not the actual classifier/writeback scripts before defining execution and handoff behavior.
+- The plan claims “source-root-first” decomposition without reconciling source-root registry semantics against current index reality. [data-audit-report.md](https://github.com/vamseeachanta/workspace-hub/blob/main/data/document-index/data-audit-report.md) reports 6 distinct sources, while [mounted-source-registry.yaml](https://github.com/vamseeachanta/workspace-hub/blob/main/data/document-index/mounted-source-registry.yaml) contains a much broader source-root catalog. The plan does not define how indexed `source` values map to registry roots for packing.
+- The proposed output may generate writeback targets outside the current authoritative taxonomy. [phase-c-classify.py](https://github.com/vamseeachanta/workspace-hub/blob/main/scripts/data/document-index/phase-c-classify.py) has a constrained `VALID_DOMAINS` list. The plan asks for “recommended classification tags or domain targets” but does not constrain recommendations to domains that the current writeback path can actually persist.
+- The plan says there are no open questions left for approval readiness. That is not credible while schema assumptions, source-root mapping, and #2247 consumer semantics remain unresolved.
+
+7. Medium findings
+
+- The TDD list is pointed at the wrong authority for the baseline count. `test_other_bucket_count_matches_authoritative_audit` hard-codes the audit count instead of asserting live-index count and reconciling it against `registry.yaml` and `data-audit-report.md`.
+- The plan cites `index.jsonl` as authoritative but does not show retrieval from it beyond assertion. It should prove the live slice shape and count from machine-readable inspection, not merely mention the file path.
+- The plan says `enhancement-plan.yaml` is “older” and non-authoritative, which may be reasonable, but it does not define a concrete exclusion rule for any fields/examples borrowed from that artifact.
+- “Exact selection rules” and “exact allowlists” are both mentioned, but the plan does not decide which one is authoritative when they disagree. That matters because the current #2247 path is allowlist-based.
+
+8. Low findings
+
+- Listing “Update GitHub issue #2249” under “Files to Change” is sloppy plan-stage phrasing; issue comments/labels are workflow actions, not repo files.
+- The plan README row marks #2249 as `adversarial-reviewed`, but the actual saved reviews still fail approval readiness.
+- `resource-intelligence-maturity.yaml` is used more as narrative support than as a direct execution input.
+
+9. Required revisions before user approval
+
+- Revise the plan to reflect the real review state: `MAJOR`, not `MINOR`.
+- Re-run adversarial review after revision and do not surface for approval until all plan-stage blockers are resolved.
+- Retrieve and cite the actual execution surfaces before redefining behavior:
+  - `scripts/data/document-index/config.yaml`
+  - `scripts/data/document-index/phase-c-classify.py`
+  - any existing helper used to read/write `index.jsonl`
+- Replace the invented `readability` rubric with a rubric based on verified fields already present in the pipeline, or explicitly add a prerequisite issue if a new field is required.
+- Narrow the #2247 handoff contract to what exists now: content-hash-targeted bounded writeback, unless #2247 is separately extended first.
+- Define the mapping from index `source` values to mounted source-root ownership so “source-root-first” packs are falsifiable.
+- Fix the tests so live `index.jsonl` is the primary authority and audit/registry counts are reconciliation checks, not the source of truth.
+- Constrain proposed domain/writeback outputs to currently valid authoritative taxonomy values.

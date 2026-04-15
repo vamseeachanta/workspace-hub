@@ -125,7 +125,7 @@ gh issue comment NNNN --body-file /tmp/consolidated-review.md
 
 ## Post-Review: Acting on MAJOR Verdicts
 
-When both reviewers return MAJOR, the plan must be revised before implementation. Typical pattern:
+If ANY reviewer returns MAJOR at plan stage, the plan is not approval-ready and must be revised before implementation or user approval. Do not average this down because another provider returned APPROVE or MINOR. Typical pattern:
 
 1. **Deduplicate findings** across providers — they often converge on the same core problems independently
 2. **Phase the work** — both Codex and Gemini consistently recommend splitting monolith issues into 3-7 independent deliverables when scope is too large
@@ -194,7 +194,9 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 
 8. **Gemini exec syntax** — Use `gemini exec "prompt"` not `gemini "prompt"`. Same pattern as `codex exec "prompt"`.
 
-9. **Codex output is duplicated** — Codex `exec` prints the full review twice in the terminal output (once during streaming, once as final summary). When parsing with `process(action="log")`, the review content appears doubled. Extract only the first occurrence or use the tee'd file.
+9. **Gemini startup warnings are often non-fatal** — Gemini CLI may emit agent-loading validation warnings (for example around `.gemini/agents/*.md` keys such as `permissionMode`) or a failed tool lookup before the actual review body. Do not discard the run automatically; inspect the output after the warnings because the substantive review often still completes successfully.
+
+10. **Codex output is duplicated** — Codex `exec` prints the full review twice in the terminal output (once during streaming, once as final summary). When parsing with `process(action="log")`, the review content appears doubled. Extract only the first occurrence or use the tee'd file.
 
 10. **Sandbox filesystem mismatch** — On machines with mounted volumes (e.g., /mnt/local-analysis/), the `write_file` and `patch` tools may write to a sandbox overlay instead of the real mount. Files appear written but don't land on disk. Use `execute_code` with `from hermes_tools import write_file` for mounted filesystems. ALWAYS verify with `terminal("wc -l /path")` after writing. This caused a broken commit where old file content was committed instead of new implementation — the entire Checkpoint 2 review then reviewed stale code, producing false MAJOR findings.
 
@@ -211,6 +213,26 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 16. **Full end-to-end after implementation** — After implementing and getting adversarial review, the next logical step is always: (a) verify the wiring works (run the new script, regenerate crontab, etc.), (b) create follow-up issues for deployment to other machines and for items deferred during review (supply chain hardening, simulated breakage testing, active push notifications), (c) document everything in a closing comment on the parent issue.
 
 17. **Do NOT write long review prompts via shell heredoc inside `terminal()` when they contain markdown code spans/fences** — A real failure mode on 2026-04-12: writing a review prompt with `bash -lc 'cat <<'"'"'EOF' ... EOF'` caused shell interpretation to break and lines from the embedded markdown/code content were executed as commands (`scripts/cron/weekly-hermes-parity-review.sh`, YAML lines, benchmark scripts), producing side effects and a timeout. For long self-contained prompts on mounted filesystems, prefer `execute_code`/`write_file()` to create the prompt file, then verify with `wc -l path/to/prompt.md` before dispatching Codex/Gemini. If you must use shell, avoid embedding backticks/code fences and verify the file content before launching reviewers.
+
+18. **Mixed verdict synthesis rule** — If Codex and Gemini disagree (for example APPROVE from one and MAJOR from the other), treat the plan as NOT approval-ready until the MAJOR findings are addressed. A single MAJOR is sufficient to block plan approval under adversarial review discipline.
+
+18. **Plan-review backlog triage must not rely on `status:plan-review` labels alone** — In live use on 2026-04-14, there were zero open issues labeled `status:plan-review`, yet several open issues still lacked Codex/Gemini plan-review artifacts or had drift between plan file status, `docs/plans/README.md`, `.planning/plan-approved/*.md`, GitHub labels, and actual review artifacts. For plan cross-review sweeps, inspect ALL of these together:
+- `docs/plans/README.md`
+- `scripts/review/results/`
+- `.planning/plan-approved/*.md`
+- `gh issue view <n> --json labels,state,...`
+Treat missing Codex/Gemini artifacts as pending cross-review even when GitHub labels suggest a more advanced state.
+
+19. **Provider CLI warnings can be non-fatal; distinguish startup noise from failed review output** — In live plan-review runs on 2026-04-14:
+- Codex emitted a startup warning about a missing `.claude/skills/skills` symlink.
+- Gemini emitted agent-loading warnings about `.gemini/agents/*.md` containing unsupported `permissionMode` keys.
+Despite these warnings, both CLIs still produced valid review content. Do not treat these warnings alone as review failure. Confirm success by reading the tee'd output file and checking for a complete verdict/findings block before deciding whether to retry.
+
+20. **For one-by-one plan review waves, always materialize three artifacts per issue** — The reliable pattern is:
+- prompt file: `.planning/quick/review-<issue>-prompt.md`
+- raw provider logs: `.planning/quick/review-<issue>-codex.out` and `.planning/quick/review-<issue>-gemini.out`
+- canonical saved reviews: `scripts/review/results/YYYY-MM-DD-plan-<issue>-codex.md` and `...-gemini.md`
+Then post a concise GitHub issue comment summarizing verdicts, shared blockers, provider-specific emphasis, and artifact paths. This keeps raw CLI noise separate from the durable review artifact and makes later governance audits much easier.
 
 ## Post-Review: Batch Follow-Up Issue Creation from Findings
 

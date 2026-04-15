@@ -1,0 +1,34 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'```markdown
+1. Verdict: MAJOR
+2. Ready for user approval: No
+3. Retrieval adequacy: adequate
+4. Top blockers:
+   1. The proposed insertion logic (`insert_before_final_exit`) inverts the required execution order, placing governance gates *after* repo test gates instead of before them.
+   2. The plan explicitly recommends "skipping wiring if already present" for the review gate, which would leave the exact bug (hardcoded `REVIEW_GATE_STRICT:-0`) unfixed in all existing clones.
+   3. Relying on `sed`/`awk` to parse bash syntax (finding the "last exit" line) is extremely brittle and will corrupt hooks that use early exits, lack an explicit exit, or are written in other languages (e.g., Python).
+
+5. Critical findings:
+   - **Execution Order Inversion (Fail-Fast Violation):** The plan dictates inserting the governance chain via `insert_before_final_exit`. However, `SESSION-GOVERNANCE.md` and standard workflow rules require `pre-push -> review-gate -> stage-prompt-drift-gate -> repo/test gates`. Inserting right before the final exit means AI governance checks will run *after* potentially minutes-long test suites. Governance gates must fail fast and run immediately after environment setup/stdin buffering.
+   - **Brittle Injection Logic / Hook Corruption Risk:** Attempting to inject code by searching for the "last `exit`" is fundamentally unsafe. It fails if the script has no `exit` (organic termination), contains conditional early exits, defines helper functions at the bottom of the script, or isn't a bash script at all.
+
+6. High findings:
+   - **Leaving the Bug Intact ("Skip if present" risk):** Under "Risks and Open Questions", the plan recommends "option (a) skip wiring if already present" for the existing inline review-gate block. If the installer skips wiring, the hook retains the hardcoded `REVIEW_GATE_STRICT:-0` and will NOT source `enforcement-env`, meaning the bug remains fully active for anyone who has already run the installer previously.
+   - **Stdin Data Loss & Propagation:** The plan notes the risk of stdin consumption (push ref data) but the pseudocode fails to pass this data to the gates. Git passes `local_ref local_oid remote_ref remote_oid` via stdin. If `require-review-on-push.sh` requires these OIDs to classify the pushed commits, the plan must explicitly pass the buffered `PUSH_LINES` to the script invocation.
+
+7. Medium findings:
+   - **Missing "No Exit" Edge Case in Tests:** The pseudocode `find_last_exit_line(lines)` assumes the file has an exit. The TDD test list does not include a test for modifying a perfectly valid hook that simply ends without an `exit` command.
+   - **Idempotency Strategy:** Moving dead code and replacing existing blocks requires a robust idempotency strategy. If the script is run 5 times, it should not leave behind 5 commented-out blocks or backup files.
+
+8. Low findings:
+   - **Portability of sed/awk:** If the implementation relies on `sed -i`, it will encounter compatibility issues between GNU Linux and macOS BSD `sed`. 
+   - **Missing Cleanup:** The pseudocode defines `remove_blocks_after_final_exit`, which is dangerous if users have legitimate functions or variables defined at the bottom of their hook.
+
+9. Required revisions before user approval:
+   1. **Change Insertion Target:** Discard `insert_before_final_exit`. Inject the governance chain near the *top* of the hook (immediately after `set -e` and stdin buffering) so it runs *before* repo/test gates, fulfilling the documented fail-fast execution order.
+   2. **Fix Existing Broken States:** Mandate the detection and *replacement* (or removal) of the existing hardcoded `require-review-on-push.sh` inline block (lines 170-185). Do not skip it.
+   3. **Use a Safe Patching Mechanism:** Replace the brittle `awk`/`sed` exit-searching logic. Use a standardized header/footer injection with clear `# BEGIN MANAGED BLOCK` / `# END MANAGED BLOCK` markers, or migrate the hook to a dispatcher pattern (e.g., executing scripts in `.git/hooks/pre-push.d/`).
+   4. **Explicit Stdin/OID Propagation:** Update the pseudocode and plan to explicitly show how the buffered stdin push data is safely passed to the review and drift gates.
+   5. **Add Missing Tests:** Add TDD cases for installing into hooks with no explicit `exit` statement, hooks with early conditional exits, and replacing the legacy hardcoded review-gate block.
+```

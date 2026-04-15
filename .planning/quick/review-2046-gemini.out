@@ -1,0 +1,27 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "grep_search", "cli_help", "read_file"?
+Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "grep_search", "cli_help", "read_file"?
+1. Verdict: MAJOR
+2. Ready for user approval: No
+3. Retrieval adequacy: insufficient
+4. Top blockers:
+   1. Missing chronological verification of adversarial review relative to user review.
+   2. Complete omission of `status:plan-review` label verification.
+   3. Missing verification of explicit `issue-planning-mode` skill usage (relies solely on artifact proxies).
+5. Critical findings:
+   - **Missing Workflow Order Verification:** The issue explicitly asks "Were adversarial reviews completed before user review?". The proposed pseudocode only checks for artifact presence (`has_review = check scripts/review/results/`). It fails to compare the creation timestamp of the review artifact against the timeline event for `status:plan-review` or the user's approval comment. This defeats the purpose of the audit, which must verify the *order* of workflow steps, not just artifact existence.
+   - **Ignored Label Requirement:** The prompt explicitly asks if both `status:plan-review` and `status:plan-approved` were used correctly. The plan entirely ignores `status:plan-review`, checking only for the approved label.
+6. High findings:
+   - **Proxy Assumption for Skill Usage:** The prompt asks "Was `issue-planning-mode` used for all issues?". The plan assumes checking for output artifacts (plan file, review file) is equivalent to auditing if the skill was invoked. While artifacts are strong indicators, an agent might bypass the formal skill and manually create the files. The audit must either check agent transcripts/logs for actual skill invocation or explicitly document why artifact proxying is the only feasible method.
+7. Medium findings:
+   - **Implementation Detection Limit:** Implementation-before-approval logic relies strictly on git commit timestamps (`git log --grep`). If an agent begins coding but fails/errors out before committing, this script won't catch it. The script should acknowledge this limitation or check local file modification timelines relative to approval markers.
+   - **Cohort Cutoff Logic:** Filtering "issues created on/after rollout cutoff" misses older issues that were created *before* the rollout but planned *after* it. The cutoff should evaluate the timeline of when the issue entered the planning phase, rather than just the issue creation date.
+8. Low findings:
+   - **Test Coverage Gaps:** The TDD test list lacks tests for the correct chronological sequencing of `status:plan-review`, adversarial review completion, and user approval.
+9. Required revisions before user approval:
+   - Update the pseudocode and script logic to check for the presence and timing of the `status:plan-review` label in the GitHub issue timeline.
+   - Add chronological checks to verify that the adversarial review artifact's timestamp strictly precedes the user's approval timestamp or the `status:plan-approved` label event.
+   - Define a mechanism to verify actual `issue-planning-mode` skill execution (e.g., parsing transcript/session logs) or explicitly document the artifact-proxy limitation in the audit scope.
+   - Update the cohort filtering logic to include legacy issues that entered planning after the workflow rollout, rather than strictly relying on creation date.
+   - Add specific TDD test cases verifying the correct sequence of adversarial review vs. user approval and the correct usage of `status:plan-review`.

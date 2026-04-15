@@ -122,6 +122,27 @@ Important operational rule learned in live use:
 - Use `.planning/plan-approved/<issue>.md` as the canonical local proof that approval happened.
 - Do **not** surface a plan to the user for approval until adversarial plan review is complete and the plan is actually approval-ready. Draft plans with pending/failed review should be revised first, then surfaced.
 
+### Pending cross-review audit routine
+
+When the user asks which plans are still pending cross-provider review, audit all four signals before answering:
+
+1. `docs/plans/README.md` plan row/status
+2. live GitHub issue labels/state via `gh issue view/list`
+3. local approval marker `.planning/plan-approved/<issue>.md`
+4. review artifacts under `scripts/review/results/`
+
+Operational rules:
+- `status:plan-review` label alone is **not** sufficient to say a plan is truly pending; verify whether the issue already advanced to `status:plan-approved` or already has a local approval marker.
+- `status:plan-approved` without `.planning/plan-approved/<issue>.md` is approval-state drift; flag it as governance cleanup, not a clean approval-ready item.
+- README rows can be stale in either direction. Treat them as discovery/index hints, not final authority.
+- For cross-provider plan review, explicitly check whether provider-specific artifacts exist for Codex and Gemini (or documented substitutes when a provider was unavailable). Files like `*-subagent.md`, `*-hermes.md`, or `*-final.md` do not by themselves prove Codex/Gemini review happened.
+- Separate the queue into:
+  - true pending review items (open, not approved, cross-review incomplete)
+  - needs-revision items (review artifact exists with MAJOR / not approval-ready)
+  - state-drift items (labels/README/markers disagree)
+
+This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty.
+
 ### Step 6: Implement (TDD)
 
 Only after `status:plan-approved` label AND `.planning/plan-approved/NNN.md` marker exist:

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-14T17:20:05.586476Z",
+  "generated_at": "2026-04-14T22:23:56.593819Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-14T17:20:03.699220Z",
+  "scorecard_generated_at": "2026-04-14T22:23:54.843321Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 33,
-      "total_candidates": 139,
+      "execution_ready_count": 26,
+      "total_candidates": 138,
       "top_issues": [
         {
           "number": 2055,
@@ -214,7 +214,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 55,
+      "total_candidates": 56,
       "top_issues": [
         {
           "number": 2227,

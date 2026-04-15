@@ -132,3 +132,49 @@ budget:
 4. Flag transactions requiring review
 5. Generate expense reports
 6. Update expense tracking spreadsheet
+
+## Locating the Latest AceEngineer Expense Workbook Across Machines
+
+Use this when the user asks for the latest workbook and mentions network machines such as `home-win`, `aceengineer-va`, or the Mac portable machine.
+
+### Recommended retrieval order
+
+1. Check the local repo copy first:
+   - `aceengineer-admin/Sabitha/<year>/EXPENSES Jan <year>-Dec<year> ...`
+   - Search both `*.xlsx` and `*.ods`
+2. Compare mtimes before assuming the newest year/file:
+   - local repo can already contain the newest workbook even if remote access fails
+3. Test live network reachability before attempting access:
+   - Windows/home-win: ping + port 445 (SMB)
+   - Mac portable: resolve hostname via mDNS/avahi, then test ping + port 22
+4. Treat documented IPs as hints, not ground truth:
+   - hostname/IP mappings can drift
+   - prefer fresh resolution over stale notes
+5. If the newest workbook is `.ods`, convert/export a values-only `.xlsx` copy for downstream users who expect Excel
+
+### Important operational findings
+
+- `home-win` may be reachable on LAN with SMB open, but stored SMB credentials can be stale; verify authentication before promising remote retrieval.
+- The portable Mac may resolve on the LAN via mDNS even when the documented IP is stale; use `avahi-resolve`/hostname resolution rather than relying only on old registry values.
+- A machine can respond to ping while still having SSH/File Sharing disabled; verify service ports explicitly.
+- For AceEngineer expense files, the newest artifact may be `.ods` rather than `.xlsx`.
+
+### ODS handling pattern
+
+When the newest workbook is an ODS file and the user needs an Excel workbook:
+
+1. Read ODS sheets programmatically with `odfpy`
+2. Preserve sheet names and cell text values
+3. Write a values-only `.xlsx` copy with `openpyxl`
+4. Tell the user clearly that formulas/formatting may not be preserved in the exported copy
+
+### Verification checklist
+
+- Confirm exact source path of the newest workbook
+- Report whether it was local or remotely retrieved
+- Extract headline totals the user likely cares about:
+  - total revenue
+  - total expenses
+  - net income
+  - any major line items already populated
+- State any access limitations explicitly if remote machines were unreachable or auth failed

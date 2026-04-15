@@ -1,0 +1,502 @@
+2026-04-14T22:28:26.938897Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d8e1c-6585-7e21-aa15-aa0bb28d6cbe
+--------
+user
+# Adversarial Review Request: Issue #2024
+
+You are an independent adversarial reviewer. Find gaps, risks, missing edge cases, missing retrieval, unclear scope boundaries, unsafe assumptions, and workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial review
+- User expectation: strong adversarial review via external providers (Codex and Gemini)
+- Mandatory workflow: Issue -> Resource Intel -> Draft Plan -> Adversarial Review -> status:plan-review -> USER APPROVES -> implementation
+- Focus on whether the plan is actually approval-ready, not whether the project idea is good.
+- Existing Hermes/subagent review already returned MAJOR on this plan, so verify whether that verdict stands and what additional issues exist.
+
+GitHub issue metadata:
+- Issue: #2024
+- Title: build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2024
+- Labels: enhancement, priority:high, cat:data-pipeline
+
+GitHub issue body:
+## Parent: #2017 — Email-as-Queue Workflow
+
+## Objective
+
+Rewrite `scripts/email/gmail-archive-extract.py` to follow the new queue model: extract structured data, commit to repos, track thread state, and delete emails when topics complete. The current script archives entire raw email bodies to repos, which is the wrong approach.
+
+## Current Script Analysis
+
+`gmail-archive-extract.py` (19KB, ~500 lines) currently:
+- Fetches full email (headers + body + attachments)
+- Saves raw markdown dump to `/mnt/ace/<repo>/docs/email/`
+- Optional: deletes from inbox after archiving
+
+## New Script Requirements
+
+### What to BUILD
+
+1. **Structured extraction** — Parse subject/body/attachments into structured data (YAML/JSON) based on domain-specific templates:
+   - CRE listings: property_name, tenant, price, cap_rate, address, state, lease_years, building_sf
+   - Client emails: sender, company, project, deliverable_type, deadline, action_required
+   - Tenant comms: store_number, issue_type, resolution, date_reported
+   - Invoices: invoice_number, vendor, amount, due_date, status
+
+2. **Thread state tracking** — Gmail labels (`wh-email/extracted`, `wh-email/awaiting-reply`, `wh-email/completed`) + local state file at `~/.hermes/email-state.yaml`
+
+3. **Smart deletion** — 7-day grace period for completed threads, immediate for noise, NEVER for awaiting-reply
+
+4. **Re-activation** — Check for new replies on "completed"/"awaiting-reply" threads, re-label as inbox
+
+5. **Legal scan** — Run legal-sanity-scan.sh before every commit
+
+### What to REMOVE
+
+- Raw email body archiving to repos
+- Full markdown dumps of email threads
+- The `--delete` flag (deletion is now state-driven, not extraction-driven)
+
+### Migration Plan
+
+```
+Phase 1: Build the new gmail-extract-and-act.py script
+Phase 2: Test against a small batch (e.g., Sands IG CRE listings)
+Phase 3: Compare extraction quality between old and new approach
+Phase 4: Replace gmail-archive-extract.py with new script
+Phase 5: Backfill — re-process previously archived emails to structured format
+```
+
+## Script Interface (proposed)
+
+```bash
+# Extract CRE data from Sands IG
+uv run scripts/email/gmail-extract-and-act.py --account ace --domain sandsig.com --max 200
+
+# Check for completed threads ready for deletion
+uv run scripts/email/gmail-extract-and-act.py --account ace --action delete-completed --grace-days 7
+
+# Dry run — show what would happen
+uv run scripts/email/gmail-extract-and-act.py --account personal --action triage --dry-run
+
+# State report — show all tracked threads and their status
+uv run scripts/email/gmail-extract-and-act.py --state-report
+
+# Re-activate stale awaiting-reply threads
+uv run scripts/email/gmail-extract-and-act.py --account ace --action check-replies
+```
+
+## Deliverables
+1. `scripts/email/gmail-extract-and-act.py` — new extraction script
+2. `~/.hermes/email-state.yaml` — thread state tracker
+3. Per-domain extraction templates in `scripts/email/templates/`
+4. State machine diagram and documentation
+5. Tests for extraction logic
+
+## Depends On
+- #2017 — workflow design decisions
+- Existing: `email-routing.yaml`, OAuth setup, legal-sanity-scan.sh
+
+Plan under review (docs/plans/2026-04-13-issue-2024-gmail-extract-and-act-pipeline.md):
+# Plan for #2024: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model
+
+> **Status:** draft
+> **Complexity:** T3
+> **Date:** 2026-04-13
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2024
+> **Review artifacts:** pending
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `scripts/email/gmail-archive-extract.py` is the current implementation (~470 lines) and currently fetches full Gmail messages, routes by sender domain via `email-routing.yaml`, saves raw markdown/email artifacts into repo paths, optionally parses spreadsheets, and can delete messages via `--delete`.
+- Found: `scripts/email/email-routing.yaml` already defines the current routing policy, including explicit CRE listing routes to `assethold/data/cre-listings` and delete/review actions.
+- Found: `scripts/email/templates/cre-listing.yaml` already exists as a structured extraction template and explicitly says it is intended for `scripts/email/gmail-extract-and-act.py (planned)`.
+- Found: the current script already contains a legal scan surface and deny-list handling, so the new pipeline should reuse and strengthen that rather than invent a second legal gate path.
+- Gap: no `gmail-extract-and-act.py` implementation exists yet, no local state file contract is defined, and the existing script is built around raw email archiving rather than structured extraction + queue state transitions.
+
+### Standards
+N/A — email/data-pipeline/workflow task
+
+### Documents consulted
+- GitHub issue #2024 — required migration from raw archive model to extract-first queue model.
+- `scripts/email/gmail-archive-extract.py` — current behavior and reusable Gmail/OAuth/extraction helpers.
+- `scripts/email/email-routing.yaml` — current sender routing and delete/review policy.
+- `scripts/email/templates/cre-listing.yaml` — existing structured extraction template and legal-scan requirement.
+- Parent issue #2017 — Email-as-Queue workflow parent context from #2024 body.
+
+### Gaps identified
+- No canonical state-file schema for thread lifecycle (`extracted`, `awaiting-reply`, `completed`).
+- No explicit deletion state machine yet replaces the current `--delete` flag behavior.
+- No plan yet defines which parts of `gmail-archive-extract.py` are retained, wrapped, or replaced.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-13-issue-2024-gmail-extract-and-act-pipeline.md` |
+| Existing script to replace/refactor | `scripts/email/gmail-archive-extract.py` |
+| New pipeline script | `scripts/email/gmail-extract-and-act.py` |
+| Routing rules | `scripts/email/email-routing.yaml` |
+| Extraction templates | `scripts/email/templates/` |
+| State file | `~/.hermes/email-state.yaml` |
+| Tests | `tests/email/` (exact files to be created by implementation) |
+| Planning index update | `docs/plans/README.md` |
+
+---
+
+## Deliverable
+
+A T3 implementation plan for a stateful Gmail extract-and-act pipeline that replaces raw email archiving with structured extraction, thread-state tracking, safe deletion/re-activation logic, and domain-template-driven output.
+
+---
+
+## Pseudocode
+
+```text
+load routing rules and extraction templates
+query Gmail for candidate messages/threads
+for each message/thread:
+    classify sender/domain and select template/action
+    if action == DELETE:
+        mark/delete per policy
+    elif action == REVIEW:
+        label and defer
+    else:
+        extract structured fields from subject/body/attachments
+        write structured output to target repo path
+        update local state file with thread status and metadata
+        apply legal scan before commit/writeback
+periodically:
+    inspect completed threads for grace-period deletion
+    inspect completed/awaiting threads for new replies and reactivate when needed
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | `docs/plans/2026-04-13-issue-2024-gmail-extract-and-act-pipeline.md` | canonical plan artifact |
+| Create | `scripts/email/gmail-extract-and-act.py` | new extract-first queue pipeline |
+| Modify | `scripts/email/gmail-archive-extract.py` | slim, deprecate, or wrap existing behavior as needed |
+| Modify | `scripts/email/email-routing.yaml` | align routing semantics with new queue actions if needed |
+| Add/Modify | `scripts/email/templates/` | domain-specific extraction templates |
+| Create | `tests/email/` | state-machine and extraction tests |
+| Update | `docs/plans/README.md` | add plan row |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_template_selection_by_sender | correct template/action selected from routing rules | sender domain fixture | expected template/action |
+| test_structured_extraction_cre_listing | CRE listing email becomes structured YAML/JSON fields | Sands/LoopNet style fixture | populated structured record |
+| test_state_file_transition_extracted_to_completed | thread state changes correctly | extracted thread fixture | completed status |
+| test_completed_thread_grace_period_delete | deletion only happens after grace period | completed thread older than threshold | delete action |
+| test_new_reply_reactivates_thread | new reply moves thread back to active state | completed/awaiting thread with new message | reactivated state |
+| test_no_raw_body_archive_written | new pipeline does not dump full raw email bodies into repo docs paths | normal extraction fixture | structured output only |
+| test_legal_scan_blocks_disallowed_output | legal/deny-list hit prevents unsafe write | flagged content fixture | blocked result |
+
+---
+
+## Acceptance Criteria
+
+- [ ] Canonical local plan exists for #2024.
+- [ ] Plan defines the state model for extracted / awaiting-reply / completed threads.
+- [ ] Plan defines how deletion and re-activation replace the old `--delete` flag semantics.
+- [ ] Plan makes explicit whether `gmail-archive-extract.py` is replaced, wrapped, or partially reused.
+- [ ] Plan is ready for adversarial review before implementation begins.
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Pending | — | Review not yet run |
+
+**Overall result:** PENDING
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** legal/compliance rules may require stronger guarantees than the current deny-list approach when structured extraction writes into repo paths.
+- **Risk:** Gmail thread semantics can be tricky if deletion/re-activation is modeled at message level instead of thread level.
+- **Open:** should the first implementation store state per message or per thread as the canonical unit?
+- **Open:** should attachments be persisted selectively, transformed, or merely referenced in state/output metadata?
+
+---
+
+## Complexity: T3
+
+**T3** — new stateful pipeline replacing a live extraction script, with routing, templates, legal scanning, and lifecycle state transitions.
+
+
+Review questions — address ALL:
+1. Is the plan specific enough to execute without hidden design decisions surfacing during implementation?
+2. Does the resource intelligence satisfy the repo's planning contract, or are important sources missing?
+3. Is the state model and unit of work (message vs thread vs thread-instance) concretely defined and safe?
+4. Are migration, deletion, legal-scan, attachment handling, and reactivation semantics explicit enough for approval?
+5. Are TDD scope, acceptance criteria, files-to-change, and risks concrete and falsifiable?
+6. Should this plan be approved as-is, revised, or split?
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the plan artifact against the repo’s planning contract first, then I’ll check the referenced docs and in-repo assets to see whether the resource intelligence and workflow claims actually hold up.
+2026-04-14T22:28:51.700044Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "pwd && rg --files docs scripts tests | rg 'docs/plans/README.md|docs/plans/_template-issue-plan.md|docs/standards/HARD-STOP-POLICY.md|docs/standards/AI_REVIEW_ROUTING_POLICY.md|scripts/email/gmail-archive-extract.py|scripts/email/email-routing.yaml|scripts/email/templates/cre-listing.yaml|.claude/skills/coordination/issue-planning-mode/SKILL.md'"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-14T22:28:51.708777Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/plans/2026-04-13-issue-2024-gmail-extract-and-act-pipeline.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-14T22:28:51.722637Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/plans/_template-issue-plan.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-14T22:28:51.744402Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' docs/standards/HARD-STOP-POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+Shell access is blocked in this session, so I’m switching to available local-resource interfaces and the plan text you provided. I’m checking whether I can verify the planning template and policy files through MCP resources before finalizing the review.
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+insufficient
+
+4. Top blockers (numbered)
+
+1. The plan does not resolve the core design decisions it claims as gaps: canonical unit of work, state schema, deletion semantics, attachment persistence policy, and replacement strategy for `gmail-archive-extract.py` are still open.
+2. Resource intelligence is too thin for approval on a stateful data-pipeline rewrite. It cites a few local files, but not the governing workflow/policy artifacts, parent issue decisions, Gmail label constraints, or the downstream repos/data contracts the pipeline will write into.
+3. The migration/backfill scope is materially underspecified. Backfilling previously archived emails is potentially a separate issue with different legal, quality, and data-reconciliation risks, but the plan leaves it bundled without acceptance boundaries.
+4. TDD scope is not approval-ready for the risky behaviors: idempotency, partial failure recovery, duplicate extraction prevention, cross-account state isolation, concurrent runs, label drift, and commit/write ordering around legal scan are all missing.
+5. Acceptance criteria are process-oriented rather than outcome-oriented. They do not make the implementation falsifiable on safety, state transitions, deletion protection, or no-raw-body persistence.
+
+5. Critical findings
+
+- The plan leaves the canonical lifecycle model undecided. It explicitly asks whether state should be per message or per thread, but that is the highest-risk design choice in the whole issue. A plan with this still open is not approval-ready.
+- The deletion model is unsafe as written. “completed older than threshold -> delete action” is not enough. The plan does not define:
+  - whether deletion means trash vs permanent delete
+  - whether all messages in a thread must be completed
+  - what happens if a thread contains mixed classified messages
+  - what metadata proves a thread is safe to delete
+- The legal-scan step is wrongly abstracted. The plan says “run legal scan before commit/writeback” and “blocked result,” but does not define whether scan happens before repo write, before git add, before commit, or before any attachment persistence. That sequencing matters for avoiding unsafe local artifacts.
+- The migration scope is internally contradictory. It says “Build new script,” “Replace old script,” and “Modify `gmail-archive-extract.py` slim/deprecate/wrap existing behavior as needed.” Those are materially different execution paths with different rollback strategies.
+- The plan has no explicit rollback/failure model for a stateful workflow that touches Gmail labels, local state, repo writes, and deletions. Without ordered transaction semantics, the implementation can easily create orphaned state or double-processing.
+
+6. High findings
+
+- Retrieval is inadequate for a plan-stage review under this repo’s contract. The plan should have pulled in and summarized the actual planning policy/hard-stop requirements, plus any parent issue decisions from `#2017`, not just mention the parent issue body indirectly.
+- The downstream write contract is missing. The plan says outputs go to target repo paths, but does not define:
+  - per-template destination schemas
+  - file naming/idempotency keys
+  - update-vs-create behavior
+  - dedupe rules when the same thread is reprocessed
+- Attachment handling remains an open question even though attachments are a first-class part of the current script and likely essential for invoices and CRE data. “persist selectively, transformed, or merely referenced” cannot stay open at approval time.
+- Reactivation semantics are too vague. “new reply moves thread back to active state” does not define:
+  - whether any inbound message reactivates
+  - how outbound-only replies are treated
+  - whether labels are removed atomically
+  - whether reactivation creates a new extraction event or updates the prior record
+- The state file contract is missing. There is no schema, versioning story, locking/concurrency strategy, corruption recovery, or account namespacing for `~/.hermes/email-state.yaml`.
+- The proposed CLI is not backed by plan decisions. Actions like `triage`, `delete-completed`, `check-replies`, and `state-report` imply a state machine and operator model that the plan never concretely defines.
+
+7. Medium findings
+
+- The TDD list misses idempotency and replay safety. A queue-style Gmail processor must prove that rerunning the same command does not duplicate outputs, mutate state incorrectly, or relabel threads unexpectedly.
+- The TDD list misses mixed-policy routing cases, such as a sender/domain route saying delete/review while the content template implies structured extraction.
+- The TDD list misses account isolation, especially since the examples use both `ace` and `personal`.
+- The plan does not define how labels are bootstrapped or validated if they do not already exist.
+- “Standards: N/A” is too loose for this repo. Even if there is no engineering standard, there are workflow/governance standards and likely email/legal-scan skills or docs that should have been consulted.
+- The backfill phase lacks success criteria. It does not state whether old raw archives remain authoritative, are transformed in place, are ignored if incomplete, or require manual review.
+- The acceptance criteria do not mention observability, dry-run guarantees, or auditability, which are important for destructive operations.
+- The plan does not state whether commits occur per email, per thread, per batch, or per repo. That affects legal scan scope, failure recovery, and reviewability.
+
+8. Low findings
+
+- `tests/email/` is too vague. Approval-stage plans should name expected test modules more concretely for a T3 rewrite.
+- The risk section is too short relative to the destructive nature of deletion and reactivation behavior.
+- “Review artifacts: pending” is fine for draft state, but the plan should reserve a section for external-provider review deltas or required dispositions.
+- The pseudocode collapses multiple irreversible operations into one loop and hides ordering decisions that should be explicit in the plan.
+
+9. Required revisions before user approval
+
+- Decide and document the canonical unit of work. If it is thread-based, specify exactly how per-message events roll up into thread state and how reactivation works.
+- Define the state schema for `~/.hermes/email-state.yaml`:
+  - account keying
+  - thread id / message ids tracked
+  - current state enum
+  - timestamps used for grace period
+  - extracted artifact references
+  - last-seen message id / history marker
+  - schema version and lock/update strategy
+- Make deletion semantics explicit and safe:
+  - trash vs permanent delete
+  - required preconditions
+  - how mixed-state threads are handled
+  - what “noise” means operationally
+  - operator-visible dry-run output
+- Define exact legal-scan sequencing:
+  - before local write?
+  - before staging?
+  - before commit?
+  - before attachment persistence?
+  - cleanup behavior on scan failure
+- Resolve replacement scope:
+  - either full replacement with deprecation shim
+  - or staged coexistence
+  - but not “replace/wrap/slim as needed”
+- Split or narrow migration scope. Backfill should likely be a separate follow-on issue unless this plan adds explicit data source, validation, and rollback details.
+- Expand resource intelligence to include the actual governing workflow/policy artifacts and parent issue decisions, plus any existing email/Gmail/label/state-management docs or skills used by this repo.
+- Upgrade the TDD section to cover:
+  - idempotent reruns
+  - concurrent/locked state updates
+  - duplicate prevention
+  - label bootstrap/failure
+  - mixed routing outcomes
+  - attachment policy branches
+  - legal-scan failure cleanup
+  - cross-account isolation
+- Replace process-only acceptance criteria with falsifiable behavioral criteria for extraction, state transitions, no raw-body persistence, safe deletion, reactivation, and rollback/recovery behavior.
+
+The earlier MAJOR verdict stands. The current plan is directionally useful, but it is not approval-ready because the risky design decisions are still deferred into implementation.
+tokens used
+114,489
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+insufficient
+
+4. Top blockers (numbered)
+
+1. The plan does not resolve the core design decisions it claims as gaps: canonical unit of work, state schema, deletion semantics, attachment persistence policy, and replacement strategy for `gmail-archive-extract.py` are still open.
+2. Resource intelligence is too thin for approval on a stateful data-pipeline rewrite. It cites a few local files, but not the governing workflow/policy artifacts, parent issue decisions, Gmail label constraints, or the downstream repos/data contracts the pipeline will write into.
+3. The migration/backfill scope is materially underspecified. Backfilling previously archived emails is potentially a separate issue with different legal, quality, and data-reconciliation risks, but the plan leaves it bundled without acceptance boundaries.
+4. TDD scope is not approval-ready for the risky behaviors: idempotency, partial failure recovery, duplicate extraction prevention, cross-account state isolation, concurrent runs, label drift, and commit/write ordering around legal scan are all missing.
+5. Acceptance criteria are process-oriented rather than outcome-oriented. They do not make the implementation falsifiable on safety, state transitions, deletion protection, or no-raw-body persistence.
+
+5. Critical findings
+
+- The plan leaves the canonical lifecycle model undecided. It explicitly asks whether state should be per message or per thread, but that is the highest-risk design choice in the whole issue. A plan with this still open is not approval-ready.
+- The deletion model is unsafe as written. “completed older than threshold -> delete action” is not enough. The plan does not define:
+  - whether deletion means trash vs permanent delete
+  - whether all messages in a thread must be completed
+  - what happens if a thread contains mixed classified messages
+  - what metadata proves a thread is safe to delete
+- The legal-scan step is wrongly abstracted. The plan says “run legal scan before commit/writeback” and “blocked result,” but does not define whether scan happens before repo write, before git add, before commit, or before any attachment persistence. That sequencing matters for avoiding unsafe local artifacts.
+- The migration scope is internally contradictory. It says “Build new script,” “Replace old script,” and “Modify `gmail-archive-extract.py` slim/deprecate/wrap existing behavior as needed.” Those are materially different execution paths with different rollback strategies.
+- The plan has no explicit rollback/failure model for a stateful workflow that touches Gmail labels, local state, repo writes, and deletions. Without ordered transaction semantics, the implementation can easily create orphaned state or double-processing.
+
+6. High findings
+
+- Retrieval is inadequate for a plan-stage review under this repo’s contract. The plan should have pulled in and summarized the actual planning policy/hard-stop requirements, plus any parent issue decisions from `#2017`, not just mention the parent issue body indirectly.
+- The downstream write contract is missing. The plan says outputs go to target repo paths, but does not define:
+  - per-template destination schemas
+  - file naming/idempotency keys
+  - update-vs-create behavior
+  - dedupe rules when the same thread is reprocessed
+- Attachment handling remains an open question even though attachments are a first-class part of the current script and likely essential for invoices and CRE data. “persist selectively, transformed, or merely referenced” cannot stay open at approval time.
+- Reactivation semantics are too vague. “new reply moves thread back to active state” does not define:
+  - whether any inbound message reactivates
+  - how outbound-only replies are treated
+  - whether labels are removed atomically
+  - whether reactivation creates a new extraction event or updates the prior record
+- The state file contract is missing. There is no schema, versioning story, locking/concurrency strategy, corruption recovery, or account namespacing for `~/.hermes/email-state.yaml`.
+- The proposed CLI is not backed by plan decisions. Actions like `triage`, `delete-completed`, `check-replies`, and `state-report` imply a state machine and operator model that the plan never concretely defines.
+
+7. Medium findings
+
+- The TDD list misses idempotency and replay safety. A queue-style Gmail processor must prove that rerunning the same command does not duplicate outputs, mutate state incorrectly, or relabel threads unexpectedly.
+- The TDD list misses mixed-policy routing cases, such as a sender/domain route saying delete/review while the content template implies structured extraction.
+- The TDD list misses account isolation, especially since the examples use both `ace` and `personal`.
+- The plan does not define how labels are bootstrapped or validated if they do not already exist.
+- “Standards: N/A” is too loose for this repo. Even if there is no engineering standard, there are workflow/governance standards and likely email/legal-scan skills or docs that should have been consulted.
+- The backfill phase lacks success criteria. It does not state whether old raw archives remain authoritative, are transformed in place, are ignored if incomplete, or require manual review.
+- The acceptance criteria do not mention observability, dry-run guarantees, or auditability, which are important for destructive operations.
+- The plan does not state whether commits occur per email, per thread, per batch, or per repo. That affects legal scan scope, failure recovery, and reviewability.
+
+8. Low findings
+
+- `tests/email/` is too vague. Approval-stage plans should name expected test modules more concretely for a T3 rewrite.
+- The risk section is too short relative to the destructive nature of deletion and reactivation behavior.
+- “Review artifacts: pending” is fine for draft state, but the plan should reserve a section for external-provider review deltas or required dispositions.
+- The pseudocode collapses multiple irreversible operations into one loop and hides ordering decisions that should be explicit in the plan.
+
+9. Required revisions before user approval
+
+- Decide and document the canonical unit of work. If it is thread-based, specify exactly how per-message events roll up into thread state and how reactivation works.
+- Define the state schema for `~/.hermes/email-state.yaml`:
+  - account keying
+  - thread id / message ids tracked
+  - current state enum
+  - timestamps used for grace period
+  - extracted artifact references
+  - last-seen message id / history marker
+  - schema version and lock/update strategy
+- Make deletion semantics explicit and safe:
+  - trash vs permanent delete
+  - required preconditions
+  - how mixed-state threads are handled
+  - what “noise” means operationally
+  - operator-visible dry-run output
+- Define exact legal-scan sequencing:
+  - before local write?
+  - before staging?
+  - before commit?
+  - before attachment persistence?
+  - cleanup behavior on scan failure
+- Resolve replacement scope:
+  - either full replacement with deprecation shim
+  - or staged coexistence
+  - but not “replace/wrap/slim as needed”
+- Split or narrow migration scope. Backfill should likely be a separate follow-on issue unless this plan adds explicit data source, validation, and rollback details.
+- Expand resource intelligence to include the actual governing workflow/policy artifacts and parent issue decisions, plus any existing email/Gmail/label/state-management docs or skills used by this repo.
+- Upgrade the TDD section to cover:
+  - idempotent reruns
+  - concurrent/locked state updates
+  - duplicate prevention
+  - label bootstrap/failure
+  - mixed routing outcomes
+  - attachment policy branches
+  - legal-scan failure cleanup
+  - cross-account isolation
+- Replace process-only acceptance criteria with falsifiable behavioral criteria for extraction, state transitions, no raw-body persistence, safe deletion, reactivation, and rollback/recovery behavior.
+
+The earlier MAJOR verdict stands. The current plan is directionally useful, but it is not approval-ready because the risky design decisions are still deferred into implementation.
