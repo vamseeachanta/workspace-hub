@@ -57,13 +57,13 @@ else
 import json, sys
 try:
     data = json.load(open('${CONFORMANCE_REPORT}'))
-    print(sum(1 for c in data.get('checks', []) if c.get('status') == 'FAIL'))
+    print(sum(1 for c in data.get('checks', []) if c.get('status') == 'fail'))
 except: print('?')
 " 2>/dev/null)
         log "WARNING: conformance check found ${FAIL_COUNT} failure(s) (exit ${CONFORMANCE_EXIT})"
 
         # Create or skip GitHub issue
-        EXISTING=$(gh issue list --label "conformance" --state open --json number --jq '.[0].number' 2>/dev/null || true)
+        EXISTING=$(gh issue list --state open --search '"Pyramid conformance failure"' --json number --jq '.[0].number' 2>/dev/null || true)
         if [[ -z "$EXISTING" ]]; then
             gh issue create \
                 --title "Pyramid conformance failure (${DATE})" \
@@ -74,7 +74,7 @@ except: print('?')
 - Run locally: \`uv run scripts/knowledge/pyramid-conformance-check.py\`
 
 Issues: #2206, #2105" \
-                --label "conformance,priority:medium" 2>>"$LOG_FILE" || \
+                --label "bug,priority:medium,domain:knowledge-management" 2>>"$LOG_FILE" || \
                 log "WARN: Failed to create conformance issue"
         else
             log "Open conformance issue already exists (#${EXISTING}) — skipping"
@@ -119,7 +119,7 @@ except: print('?')
     log "Freshness check: ${ALIVE_COUNT}/${TOTAL_COUNT} alive, ${DEAD_COUNT} dead"
 
     if [[ "$DEAD_COUNT" != "0" && "$DEAD_COUNT" != "?" ]]; then
-        EXISTING=$(gh issue list --label "registry-health" --state open --json number --jq '.[0].number' 2>/dev/null || true)
+        EXISTING=$(gh issue list --state open --search '"Registry freshness"' --json number --jq '.[0].number' 2>/dev/null || true)
         if [[ -z "$EXISTING" ]]; then
             gh issue create \
                 --title "Registry freshness: ${DEAD_COUNT} dead link(s) (${DATE})" \
@@ -130,7 +130,7 @@ except: print('?')
 - Run locally: \`uv run scripts/knowledge/registry-freshness-check.py\`
 
 Issue: #1614" \
-                --label "registry-health,priority:medium" 2>>"$LOG_FILE" || \
+                --label "bug,priority:medium,cat:document-intelligence" 2>>"$LOG_FILE" || \
                 log "WARN: Failed to create freshness issue"
         else
             log "Open registry-health issue already exists (#${EXISTING}) — skipping"
