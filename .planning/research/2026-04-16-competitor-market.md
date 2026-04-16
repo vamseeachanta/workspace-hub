@@ -1,0 +1,75 @@
+# Research: competitor-market — 2026-04-16
+
+## Key Findings
+
+- **Sesam (DNV) introduces three advanced time-domain methods for floating offshore wind turbine (FOWT) analysis (late 2025), significantly reducing computational time while improving fatigue/ULS accuracy — Direct Load Generation, Load Reconstruction, Response Reconstruction.** No new subsea pipeline, on-bottom stability, or cathodic protection modules announced for 2026 H1. Sesam's positioning remains enterprise offshore engineering suite (30+ integrated modules); pricing model unchanged (enterprise negotiated licensing via Veracity cloud platform). This represents continuation of 2025 pattern: innovation concentrated in floating wind structures, not commodity subsea analysis. ([Sesam for offshore wind modules](https://www.dnv.com/services/sesam-for-offshore-wind-modules-2442/), [Sesam floating structures](https://www.dnv.com/services/floating-structure-design-and-modification-sesam-for-floating-structures-2410/))
+
+- **SACS Offshore Structure (Bentley) pricing stable at ~$13,328/year (2026 subscription); SACS Cloud Services (Azure-based) remains primary differentiation with 10x speedup for large load case batches — no new modules announced, cloud parallelization is strategic positioning.** Enterprise subscription model unchanged; pricing information reflects late 2024 baseline, suggesting no significant 2026 price increases publicly disclosed. Cloud-first strategy positions SACS against on-premise competitors (OrcaFlex, Sesam desktop); commodity calculators (SkyCiv, TheNavalArch) compete on cost/ease-of-use, not raw compute power. ([SACS Offshore Structure — Bentley Systems](https://www.bentley.com/software/sacs-offshore-structure/), [SACS Offshore Structure pricing — G2](https://www.g2.com/products/sacs-offshore-structure/pricing))
+
+- **OrcaFlex (Orcina) maintains market leadership for dynamic riser/mooring analysis with no 2026 feature announcements identified; version maturity (11.x series stable) and Python API established as industry baseline for parametric automation.** Recent research (2024–2025) validates OrcaFlex's continued use for flexible riser analysis (SCRs, TTRs, hybrids, umbilicals); no competing tools at comparable dynamic analysis capability for mid-market price point ($500–2000/year commercial license). ([OrcaFlex documentation](https://www.orcina.com/orcaflex/), [OrcaFlex examples](https://www.orcina.com/resources/examples/))
+
+- **Flexcom (Wood Group) shows no 2026 announcements; recent development focused on OpenFAST coupling for floating wind turbines and pipe-in-pipe riser modeling.** Specialized niche tool; no commodity calculator competition. Flexcom's trajectory suggests strategic focus on offshore wind (floating) rather than oil & gas subsea expansion. ([Flexcom overview — Wood Group](https://www.woodplc.com/solutions/expertise/flexcom))
+
+- **ANSYS 2026 R1 (Synopsys integration) introduces Mesh Agent (AI-assisted meshing), GPU acceleration, and GeomAI (generative geometry exploration); offshore/subsea applications unchanged from 2025 — no dedicated subsea design modules announced.** ANSYS Mechanical remains FEA platform of choice for coupled structural analysis (AQWA hydrodynamics + Mechanical fatigue/buckling checks); pricing/licensing model unchanged. ([ANSYS 2026 R1 — Engineering.com](https://www.engineering.com/synopsys-releases-ansys-2026-r1-engineering-platform/), [ANSYS Mechanical offshore](https://www.ansys.com/products/structures/ansys-mechanical))
+
+- **OpenFAST v5.0 (February 2026 update) adds marine turbine buoyancy loads and generalized floating design evaluation; remains focused on wind/wave energy, not subsea risers/cables — no direct threat to OrcaFlex.** Blue Kenue (NRC Canada) remains free hydrodynamic mesh generation tool, not integrated structural solver. Two separate ecosystems: OpenFAST/Blue Kenue for renewable energy loads, OrcaFlex for dynamic analysis. ([OpenFAST documentation](https://openfast.readthedocs.io/), [OpenFAST marine updates — DOE](https://www.energy.gov/eere/water/articles/openfast-modeling-tool-updated-new-capabilities-marine-energy-developers))
+
+- **SkyCiv reports new Direct Strength Method (DSM) factors, expanded section libraries, and Quick Design calculators for 2026; positioning as cost-effective cloud-based FEA alternative to desktop SACS/Sesam.** TheNavalArch continues as free/low-cost marine engineering calculator suite (surveyors, shipyard operators). Neither tool addresses specialized offshore subsea domains (VIV, cathodic protection, fitness-for-service); commodity calculator space remains fragmented, low-cost/free tier highly competitive. No "CalcForge" product identified — may be internal tool or misidentified brand. ([SkyCiv monthly highlights](https://skyciv.com/product/skyciv-monthly-highlights-march-2026/), [TheNavalArch marine tools](https://thenavalarch.com/), [SkyCiv offshore](https://skyciv.com/industries/offshore-oil-and-gas/))
+
+## Relevance to Project
+
+| Finding | Affected Workflow / Package |
+|---|---|
+| **Sesam FOWT time-domain methods (late 2025), no subsea/CP updates** | **digitalmodel Phase 7 (OrcaWave Automation) + Phase 999.2 (Wind/Turbine FFS)** — Sesam's floating wind focus validates aceengineer's differentiation on **specialized subsea domains** (VIV, cathodic protection, on-bottom stability). No competitive threat from Sesam for wall thickness/spectral fatigue modules; FOWT methods are DNV-specific, not open-source parity with OrcaFlex. Opportunity: aceengineer's library-first Python approach can address floating platform analysis (Phase 999.1 ship/platform CAD pipeline) without licensing friction. |
+| **SACS Cloud 10x speedup, $13.3k/yr, no new modules** | **aceengineer GTM + pricing strategy** — SACS Cloud remains table-stakes for enterprise load case parallelization (days → hours for 100+ cases). aceengineer's consultation-based pricing ($500–2000/engagement) is **sustainable only** for non-commoditized work (VIV, CP, fatigue with DNV 2024 curves). Generic wall thickness/stability calculators face margin compression; differentiation on **standards currency + domain expertise** is critical. SACS silence on new modules (2026) is notable — no innovation signaling; opportunity window for aceengineer to establish specialized domains first. |
+| **OrcaFlex stability (11.x series), Python API production-ready** | **digitalmodel Phase 7 (solver verification gate) + Phase 1.1 (OrcaWave sensitivity automation)** — No API breaking changes anticipated; OrcFxAPI Python integration mature. Phase 7 smoke tests on licensed-win-1 can confidently target latest OrcaFlex production version. Python variable loads (11.6c feature from prior research) unlock parametric sweep automation; competitive moat with SACS (raw compute parallelization) stays with aceengineer's structured design iteration workflows. |
+| **Flexcom OpenFAST coupling, floating wind focus** | **Phase 999.1 (ship CAD pipeline) + Phase 999.2 (monopile/jacket, floating offshore wind)** — Flexcom's trajectory (floating wind + wind turbine coupling) suggests Wood Group is betting on FOWT/fixed-bottom wind markets, not oil & gas subsea. **Opportunity:** aceengineer can own subsea/marine structures space (ship analysis, riser FFS, cathodic protection) without Flexcom competition in these domains. Monopile/jacket (Phase 999.2) remains open; DNV-ST-0126 (not Flexcom-proprietary) is standard reference. |
+| **ANSYS 2026 R1 (Mesh Agent, GPU, GeomAI), no subsea modules** | **Phase 1 (digitalmodel + ANSYS integration for FEA coupling), Phase 7 (future GPU acceleration for sensitivity analysis)** — ANSYS silence on subsea design modules is notable (same as 2025). GPU acceleration roadmap may affect Phase 1.1 OrcaWave sensitivity analysis if client engagements scale to 100+ load cases (ANSYS GPU FEA < SACS Cloud Azure parallelization, but cheaper). Mesh Agent (AI-assisted meshing) is orthogonal; no threat to calculation module business. |
+| **OpenFAST v5.0 marine buoyancy, remains wind/wave energy focused** | **Phase 999.1 (ship design, buoyancy loads for floating structures) + Phase 999.2 (monopile buoyancy, floating wind)** — OpenFAST marine extensions are complementary to OrcaFlex (preprocessing loads, not dynamics). Blue Kenue free mesh generation (no direct structural solver) means **no commoditization of specialized riser/mooring dynamics analysis** (OrcaFlex's moat). Opportunity: aceengineer can couple OpenFAST vessel loads → OrcaFlex dynamic analysis → aceengineer fatigue assessment as **value-add workflow** (standards-traceable, not black-box cloud compute). |
+| **SkyCiv DSM factors + Quick Design, TheNavalArch free tools** | **aceengineer positioning on specialized domains vs. commodity calculators** — SkyCiv and TheNavalArch remain **low-cost/free alternatives for generic structural checks** (beam buckling, connection design, basic wall thickness). Neither tool addresses VIV, cathodic protection, or DNV-RP-C203 spectral fatigue. aceengineer's differentiation rests on **specialized engineering domains** that commodity tools cannot commoditize (unique calculation logic, standards traceability, domain expertise). Margin compression on generic tools is ongoing; focus remains on **non-commoditized specialties**. |
+
+## Recommended Actions
+
+- [x] **Promote to PROJECT.md** — Add under Current Milestone (v1.1 OrcaWave Automation): "Competitive landscape 2026 H1 (Sesam FOWT-focused, SACS Cloud parallelization, OrcaFlex stable, OpenFAST marine preprocessing, SkyCiv/TheNavalArch free calculators) confirms aceengineer differentiation on **specialized subsea domains** (VIV, cathodic protection, DNV-RP-C203 2024 spectral fatigue, API 579-1 fitness-for-service). No new competitors in dynamic riser analysis (OrcaFlex unmatched at mid-market price point). Sesam/SACS silence on subsea module innovation creates window for library-first Python tooling (open-standards, no licensing gates) to capture cost-conscious engineering teams. Commodity calculator space (SkyCiv, TheNavalArch) remains low-cost/free; margin compression on generic wall thickness/stability. Focus Phase 1.1 + Phase 999.2 on **non-commoditized specialties**."
+
+- [x] **Already documented in prior research (2026-04-02 through 2026-04-15)** — OrcaFlex 11.6c stability, SACS Cloud $13.3k/yr, market consolidation (7.4% CAGR), standards currency (DNV-RP-C203 2024, ASME B31.4-2025, IEC 61400-1:2026), all converted to actionable issues. This week's findings validate prior competitive intelligence; no new action items beyond Phase 7 verification gate + Phase 1.1 standards-currency positioning.
+
+- [ ] **Ignore (low priority)** — Flexcom 2026 updates (none identified) — specialized niche, no client demand signal yet. Sesam pricing (enterprise negotiated, no public 2026 changes) — competitively irrelevant at consultation pricing tier. ANSYS 2026 subsea modules (none announced) — continued parity with 2025 positioning (general FEA tool, not offshore-specific).
+
+---
+
+## Cross-Research Synthesis (2026-04-09 through 2026-04-16)
+
+**Competitive landscape consolidates around three strategic axes:**
+
+### 1. **Cloud Parallelization as Table-Stakes (SACS Azure, ANSYS GPU, OpenFAST preprocessing)**
+
+SACS Cloud's 10x speedup ($13.3k/yr) establishes cloud execution as competitive baseline for enterprise load case batches. ANSYS 2026 R1 GPU acceleration and OpenFAST v5.0 marine loads suggest the trend accelerates. aceengineer's consultation-based pricing is sustainable **only** if value anchors to **standards traceability + domain expertise**, not raw compute speed. Phase 1.1 OrcaWave sensitivity analysis should emphasize systematic design iteration (parametric sweeps with full calculation transparency) vs. cloud parallelization (opaque batch execution).
+
+### 2. **Specialized Subsea Domains Remain Uncontested (VIV, CP, Fatigue, FFS)**
+
+Sesam (FOWT focus), SACS (platform parallelization), Flexcom (floating wind), OpenFAST (renewable energy preprocessing) — **no competitor announced subsea-specific modules** (VIV, cathodic protection, fitness-for-service). This is the market window. aceengineer can establish specialized domain leadership (VIV calculator, adaptive CP optimization, DNV-RP-C203 2024 spectral fatigue, API 579-1 FRP fitness assessment) before competitors react. Phase 999.2 (Wind Energy, Turbines, FFS) targets this expansion.
+
+### 3. **Commodity Calculator Space Remains Fragmented (SkyCiv, TheNavalArch, free/low-cost)**
+
+SkyCiv and TheNavalArch continue no-moat competition on cost/ease-of-use. Neither tool differentiates on standards traceability or domain expertise. aceengineer should **avoid competing on this axis** — instead, emphasize calculation accuracy, standards alignment, and specialized domains that free calculators cannot address. Phase 1.1 calculation report refinement should showcase this differentiation (calculation → DNV/ASME/IEC reference chain, not just a number).
+
+**Net assessment:** 2026 H1 competitive landscape validates workspace-hub's library-first, standards-traceable, domain-expert positioning. No new direct competitors in specialized subsea analysis. Market consolidation (Sesam/SACS/Bentley/DNV partnerships) creates headroom for independent developers willing to specialize. Phase 7 (OrcaWave solver verification) shipping with DNV 2026 Edition compliance + Phase 1.1 reports citing current standards (DNV-RP-C203:2024, ASME B31.4-2025, IEC 61400-1:2026) positions aceengineer as **"standards-current by default"** vs. competitors still on 2020–2022 baselines.
+
+---
+
+Sources:
+- [Sesam for offshore wind modules — DNV](https://www.dnv.com/services/sesam-for-offshore-wind-modules-2442/)
+- [Sesam floating structures design — DNV](https://www.dnv.com/services/floating-structure-design-and-modification-sesam-for-floating-structures-2410/)
+- [SACS Offshore Structure — Bentley Systems](https://www.bentley.com/software/sacs-offshore-structure/)
+- [SACS Offshore Structure pricing — G2](https://www.g2.com/products/sacs-offshore-structure/pricing)
+- [OrcaFlex dynamic analysis software](https://www.orcina.com/orcaflex/)
+- [OrcaFlex example files](https://www.orcina.com/resources/examples/)
+- [Flexcom — Wood Group](https://www.woodplc.com/solutions/expertise/flexcom/)
+- [ANSYS 2026 R1 engineering platform — Engineering.com](https://www.engineering.com/synopsys-releases-ansys-2026-r1-engineering-platform/)
+- [ANSYS Mechanical structural FEA software](https://www.ansys.com/products/structures/ansys-mechanical)
+- [OpenFAST documentation — v5.0.0](https://openfast.readthedocs.io/)
+- [OpenFAST marine energy updates — Department of Energy](https://www.energy.gov/eere/water/articles/openfast-modeling-tool-updated-new-capabilities-marine-energy-developers)
+- [SkyCiv monthly highlights — March 2026](https://skyciv.com/product/skyciv-monthly-highlights-march-2026/)
+- [TheNavalArch marine tools](https://thenavalarch.com/)
+- [SkyCiv offshore design analysis](https://skyciv.com/industries/offshore-oil-and-gas/)
