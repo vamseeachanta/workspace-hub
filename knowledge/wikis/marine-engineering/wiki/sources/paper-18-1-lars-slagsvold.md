@@ -2,6 +2,8 @@
 title: "Paper 18-1 - Lars Slagsvold.pdf"
 slug: paper-18-1-lars-slagsvold
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

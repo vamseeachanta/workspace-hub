@@ -2,6 +2,8 @@
 title: "A Decision Model for E&P Petroleum Projects Using Real Options & Preference Theory.pdf"
 slug: a-decision-model-for-e-p-petroleum-projects-using-real-options-preference-theory
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "ISO-162-Lawton-Voice of the Customer to WOW-The Innovation Roadmap-HANDOUT.pdf"
 slug: iso-162-lawton-voice-of-the-customer-to-wow-the-innovation-roadmap-handout
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

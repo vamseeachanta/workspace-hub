@@ -2,6 +2,8 @@
 title: "I07CY-01wan.pdf"
 slug: i07cy-01wan
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

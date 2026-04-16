@@ -2,6 +2,8 @@
 title: "2012-EL-07Kashiima.pdf"
 slug: 2012-el-07kashiima
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

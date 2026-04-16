@@ -2,6 +2,8 @@
 title: "SPE International-142076-Well Integrity Analysis in Gulf of Mexico Wells Using Passive Ultrasonic....pdf"
 slug: spe-international-142076-well-integrity-analysis-in-gulf-of-mexico-wells-using-p
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Wire Rope - Bureau of Mines Article - Stress Analysis of Wire Hoist Rope PART 2 of 2.pdf"
 slug: wire-rope-bureau-of-mines-article-stress-analysis-of-wire-hoist-rope-part-2-of-2
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

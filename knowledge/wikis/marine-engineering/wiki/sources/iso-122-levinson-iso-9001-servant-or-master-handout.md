@@ -2,6 +2,8 @@
 title: "ISO-122-Levinson-ISO 9001 Servant or Master-HANDOUT.pdf"
 slug: iso-122-levinson-iso-9001-servant-or-master-handout
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

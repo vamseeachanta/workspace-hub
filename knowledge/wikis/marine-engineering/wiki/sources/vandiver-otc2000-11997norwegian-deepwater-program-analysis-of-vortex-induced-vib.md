@@ -2,6 +2,8 @@
 title: "VANDIVER@OTC2000_11997Norwegian Deepwater Program, Analysis of Vortex-Induced Vibrations of Marine Risers Based on Full-Scale Measurements.pdf"
 slug: vandiver-otc2000-11997norwegian-deepwater-program-analysis-of-vortex-induced-vib
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

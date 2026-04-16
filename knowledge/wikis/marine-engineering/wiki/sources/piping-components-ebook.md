@@ -6,6 +6,7 @@ domain: piping
 source_file: "Piping-Components-Ebook.pdf"
 size: "3.6 MB"
 added: 2026-04-07 02:23 UTC
+last_updated: 2026-04-16
 tags: [piping, components, flanges, fittings, gasket, reference]
 ---
 

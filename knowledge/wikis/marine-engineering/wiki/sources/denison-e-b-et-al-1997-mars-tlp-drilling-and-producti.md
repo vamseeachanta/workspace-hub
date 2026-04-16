@@ -2,6 +2,8 @@
 title: "Denison, E.B., et al, 1997 - Mars TLP Drilling and Producti.pdf"
 slug: denison-e-b-et-al-1997-mars-tlp-drilling-and-producti
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

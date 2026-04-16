@@ -2,6 +2,8 @@
 title: "SPE International-142443-Worlds First Lodding With Fiber-Optic-Enabled Coiled Tubing.pdf"
 slug: spe-international-142443-worlds-first-lodding-with-fiber-optic-enabled-coiled-tu
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

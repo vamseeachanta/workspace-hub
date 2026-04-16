@@ -2,6 +2,8 @@
 title: "Dunlap, Bhojanala, Morris (1990) - Burial of Vertically Loaded Offshore Pipelines in Weak Sediments - OT.pdf"
 slug: dunlap-bhojanala-morris-1990-burial-of-vertically-loaded-offshore-pipelines-in-w
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

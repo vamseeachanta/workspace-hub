@@ -2,6 +2,8 @@
 title: "Society of Petroleum Engineers 2011 Fact sheet.pdf"
 slug: society-of-petroleum-engineers-2011-fact-sheet
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

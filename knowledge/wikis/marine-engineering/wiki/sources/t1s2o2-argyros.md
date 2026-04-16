@@ -2,6 +2,8 @@
 title: "T1S2O2-argyros.pdf"
 slug: t1s2o2-argyros
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

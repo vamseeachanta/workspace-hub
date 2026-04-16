@@ -2,6 +2,8 @@
 title: "11QL-01Pan.pdf"
 slug: 11ql-01pan
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

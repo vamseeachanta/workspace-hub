@@ -2,6 +2,8 @@
 title: "Characterisation of Sulphate Scaling Formation Damage from Laboratory Measurements to Predict Well Produ.pdf"
 slug: characterisation-of-sulphate-scaling-formation-damage-from-laboratory-measuremen
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "5_SUT_-_02_Floaters_Revi_-_Chucks__2014.pdf"
 slug: 5-sut-02-floaters-revi-chucks-2014
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

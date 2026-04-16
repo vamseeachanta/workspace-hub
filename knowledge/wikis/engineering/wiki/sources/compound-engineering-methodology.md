@@ -1,5 +1,7 @@
 ---
 title: "Compound Engineering Methodology (Source)"
+added: 2026-04-08
+last_updated: 2026-04-08
 tags: [source, methodology, compound-engineering]
 source_path: docs/methodology/compound-engineering.md
 source_type: methodology-doc

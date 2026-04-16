@@ -2,6 +2,8 @@
 title: "34 -Key Technical Alignments in the Harmonization of Fixed Offshore Platform Design Codes.pdf"
 slug: 34-key-technical-alignments-in-the-harmonization-of-fixed-offshore-platform-desi
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "The Importance of Verifiable Fire Protection Design.pdf"
 slug: the-importance-of-verifiable-fire-protection-design
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

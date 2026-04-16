@@ -2,6 +2,8 @@
 title: "An Integrated Design Experience on a Wet-Tree Production Semisubmersible.pdf"
 slug: an-integrated-design-experience-on-a-wet-tree-production-semisubmersible
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

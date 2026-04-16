@@ -2,6 +2,8 @@
 title: "SPE International-142854-Assessing Well Integrity Risk A Qualitative Model.pdf"
 slug: spe-international-142854-assessing-well-integrity-risk-a-qualitative-model
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

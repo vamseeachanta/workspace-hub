@@ -2,6 +2,8 @@
 title: "Paper_28_21st_Offshore_Symposium - SLWR FJ Rev 2.pdf"
 slug: paper-28-21st-offshore-symposium-slwr-fj-rev-2
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "I07SYH-01Kim.pdf"
 slug: i07syh-01kim
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

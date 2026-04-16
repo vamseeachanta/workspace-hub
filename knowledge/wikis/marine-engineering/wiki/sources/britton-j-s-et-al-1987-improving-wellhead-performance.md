@@ -2,6 +2,8 @@
 title: "Britton, J.S., et al, 1987 - Improving Wellhead Performance.pdf"
 slug: britton-j-s-et-al-1987-improving-wellhead-performance
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

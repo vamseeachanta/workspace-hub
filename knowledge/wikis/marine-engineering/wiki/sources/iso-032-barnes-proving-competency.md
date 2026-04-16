@@ -2,6 +2,8 @@
 title: "ISO-032-Barnes-Proving Competency.pdf"
 slug: iso-032-barnes-proving-competency
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "ISO-051-Ambrosecchia-A Five Year Journey to Excellence-rev2.pdf"
 slug: iso-051-ambrosecchia-a-five-year-journey-to-excellence-rev2
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

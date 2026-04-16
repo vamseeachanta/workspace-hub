@@ -2,6 +2,8 @@
 title: "How to inspect SCR's in deep and ultra-deep water (Applus).pdf"
 slug: how-to-inspect-scr-s-in-deep-and-ultra-deep-water-applus
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

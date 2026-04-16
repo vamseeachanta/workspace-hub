@@ -2,6 +2,8 @@
 title: "High Revenue The Ultimate Challenge of Upstream Companies.pdf"
 slug: high-revenue-the-ultimate-challenge-of-upstream-companies
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Paper 01-3 - Gary Mitchell.pdf"
 slug: paper-01-3-gary-mitchell
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "SPE International-142254-CT-Conveyed Sand Jetting Performation on Deep, Tight Gas Well....pdf"
 slug: spe-international-142254-ct-conveyed-sand-jetting-performation-on-deep-tight-gas
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

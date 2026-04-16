@@ -2,6 +2,8 @@
 title: "Sewol 2017 v1 Oasis, The Online Abstract Submission System a.pdf"
 slug: sewol-2017-v1-oasis-the-online-abstract-submission-system-a
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

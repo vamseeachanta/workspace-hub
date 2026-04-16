@@ -2,6 +2,8 @@
 title: "New High-Performance Water-Based Fluid Benefits Santos Basin Operations with Excellent Inhibition and Dr.pdf"
 slug: new-high-performance-water-based-fluid-benefits-santos-basin-operations-with-exc
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

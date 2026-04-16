@@ -2,6 +2,8 @@
 title: "2 setting_the_scene-sut_format_2014_wpd.pdf"
 slug: 2-setting-the-scene-sut-format-2014-wpd
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

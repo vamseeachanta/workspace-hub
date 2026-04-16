@@ -2,6 +2,8 @@
 title: "Coiled Tubing & Well Intervention 2011-Program Comittee.pdf"
 slug: coiled-tubing-well-intervention-2011-program-comittee
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

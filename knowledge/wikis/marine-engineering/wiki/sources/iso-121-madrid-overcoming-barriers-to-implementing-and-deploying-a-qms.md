@@ -2,6 +2,8 @@
 title: "ISO-121-Madrid-Overcoming Barriers to Implementing and Deploying a QMS.pdf"
 slug: iso-121-madrid-overcoming-barriers-to-implementing-and-deploying-a-qms
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

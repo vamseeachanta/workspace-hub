@@ -2,6 +2,8 @@
 title: "Paper 29-3 - Davinder Manku.pdf"
 slug: paper-29-3-davinder-manku
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

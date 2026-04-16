@@ -2,6 +2,8 @@
 title: "14TPC-0790Kang.pdf"
 slug: 14tpc-0790kang
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

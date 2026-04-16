@@ -2,6 +2,8 @@
 title: "SPE International-142887-Downhole Safety Valve for Well Intervention Operations.pdf"
 slug: spe-international-142887-downhole-safety-valve-for-well-intervention-operations
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

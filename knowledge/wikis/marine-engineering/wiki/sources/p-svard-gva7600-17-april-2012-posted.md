@@ -2,6 +2,8 @@
 title: "P-Svard-GVA7600-17-APRIL-2012-POSTED.pdf"
 slug: p-svard-gva7600-17-april-2012-posted
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

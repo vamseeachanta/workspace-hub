@@ -2,6 +2,8 @@
 title: "Paper 18-3 - Per Ingeberg.pdf"
 slug: paper-18-3-per-ingeberg
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

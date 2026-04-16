@@ -2,6 +2,8 @@
 title: "Hugh Pressure Fracturing in Colombia_A Quantum Leap.pdf"
 slug: hugh-pressure-fracturing-in-colombia-a-quantum-leap
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

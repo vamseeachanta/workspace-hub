@@ -2,6 +2,8 @@
 title: "Brooks, I.H., 1987 - A Pragmatic Approach to Vortex-Induced.pdf"
 slug: brooks-i-h-1987-a-pragmatic-approach-to-vortex-induced
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

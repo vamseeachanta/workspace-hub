@@ -2,6 +2,8 @@
 title: "BR01039-BP-36 Rev C    (BP - BOREAS - Insulation Systems for Angola Block 18).pdf"
 slug: br01039-bp-36-rev-c-bp-boreas-insulation-systems-for-angola-block-18
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

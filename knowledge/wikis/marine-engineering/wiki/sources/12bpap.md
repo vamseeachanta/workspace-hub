@@ -2,6 +2,8 @@
 title: "12bpap.pdf"
 slug: 12bpap
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

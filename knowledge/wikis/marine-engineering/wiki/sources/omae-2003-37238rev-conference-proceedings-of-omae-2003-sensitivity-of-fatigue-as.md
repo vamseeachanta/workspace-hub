@@ -2,6 +2,8 @@
 title: "OMAE 2003 - 37238rev- Conference Proceedings of OMAE 2003 - Sensitivity of Fatigue Assesment.pdf"
 slug: omae-2003-37238rev-conference-proceedings-of-omae-2003-sensitivity-of-fatigue-as
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

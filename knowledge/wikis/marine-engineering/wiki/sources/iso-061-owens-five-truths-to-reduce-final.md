@@ -2,6 +2,8 @@
 title: "ISO-061-Owens-Five Truths to Reduce-final.pdf"
 slug: iso-061-owens-five-truths-to-reduce-final
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

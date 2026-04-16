@@ -2,6 +2,8 @@
 title: "I07JSC-328yang.pdf"
 slug: i07jsc-328yang
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

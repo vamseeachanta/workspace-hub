@@ -2,6 +2,8 @@
 title: "SPE International-137642-Application of CT-Conveyed Preforating With the Sand Jetting Tecnology.pdf"
 slug: spe-international-137642-application-of-ct-conveyed-preforating-with-the-sand-je
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

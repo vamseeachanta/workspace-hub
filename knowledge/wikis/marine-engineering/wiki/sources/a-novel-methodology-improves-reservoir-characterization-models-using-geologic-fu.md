@@ -2,6 +2,8 @@
 title: "A Novel Methodology Improves Reservoir Characterization Models Using Geologic Fuzzy Variables.pdf"
 slug: a-novel-methodology-improves-reservoir-characterization-models-using-geologic-fu
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

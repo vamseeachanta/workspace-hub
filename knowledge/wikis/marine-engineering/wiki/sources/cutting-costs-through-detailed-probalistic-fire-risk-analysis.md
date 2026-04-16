@@ -2,6 +2,8 @@
 title: "Cutting Costs Through Detailed Probalistic Fire Risk Analysis.pdf"
 slug: cutting-costs-through-detailed-probalistic-fire-risk-analysis
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

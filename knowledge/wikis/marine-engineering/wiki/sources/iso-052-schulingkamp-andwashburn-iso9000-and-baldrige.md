@@ -2,6 +2,8 @@
 title: "ISO-052-Schulingkamp andWashburn-ISO9000 and Baldrige.pdf"
 slug: iso-052-schulingkamp-andwashburn-iso9000-and-baldrige
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Langner, C.G., (1980) Effect of Fixed Radius Bend on Burst Pressure.pdf"
 slug: langner-c-g-1980-effect-of-fixed-radius-bend-on-burst-pressure
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

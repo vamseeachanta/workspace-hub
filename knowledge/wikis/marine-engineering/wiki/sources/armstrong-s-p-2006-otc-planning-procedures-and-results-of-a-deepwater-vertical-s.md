@@ -2,6 +2,8 @@
 title: "Armstrong, S.P., 2006, OTC, Planning, Procedures, and Results of a Deepwater Vertical SCR VIV Suppression Retrofit Project.pdf"
 slug: armstrong-s-p-2006-otc-planning-procedures-and-results-of-a-deepwater-vertical-s
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

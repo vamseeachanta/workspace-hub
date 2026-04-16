@@ -2,6 +2,8 @@
 title: "Conversion of Toluene to Benzene & Mixed Xylenes on Old Thermofor Catalytic Cracking Units in Russia.pdf"
 slug: conversion-of-toluene-to-benzene-mixed-xylenes-on-old-thermofor-catalytic-cracki
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

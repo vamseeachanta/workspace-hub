@@ -2,6 +2,8 @@
 title: "Full Scale Installation of a Subsurface Buoy Prototype of Production Steel Catenary Risers Support in Ultra-Deep Waters.pdf"
 slug: full-scale-installation-of-a-subsurface-buoy-prototype-of-production-steel-caten
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "ASME 67354 (2005) Vargas, P., FEA of Ou-Of-Plane Fatigue Mechanism of Chain Links.pdf"
 slug: asme-67354-2005-vargas-p-fea-of-ou-of-plane-fatigue-mechanism-of-chain-links
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

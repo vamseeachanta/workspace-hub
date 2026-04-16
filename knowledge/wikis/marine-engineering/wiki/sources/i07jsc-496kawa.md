@@ -2,6 +2,8 @@
 title: "I07JSC-496kawa.pdf"
 slug: i07jsc-496kawa
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

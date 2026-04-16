@@ -2,6 +2,8 @@
 title: "058 - Sparks C.P. 1984 - The Influence of Tension Pressure and Weight on Pipe and Riser Deformations and Stresses1.pdf"
 slug: 058-sparks-c-p-1984-the-influence-of-tension-pressure-and-weight-on-pipe-and-ris
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

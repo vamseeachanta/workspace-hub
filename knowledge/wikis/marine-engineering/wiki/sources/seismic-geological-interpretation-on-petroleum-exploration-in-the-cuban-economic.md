@@ -2,6 +2,8 @@
 title: "Seismic & Geological Interpretation on Petroleum Exploration in the Cuban Economic Area in The Gulf of M.pdf"
 slug: seismic-geological-interpretation-on-petroleum-exploration-in-the-cuban-economic
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

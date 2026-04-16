@@ -2,6 +2,8 @@
 title: "Garry-Davis-IADC-Rio-Deepwater-2012-Presentation.pdf"
 slug: garry-davis-iadc-rio-deepwater-2012-presentation
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

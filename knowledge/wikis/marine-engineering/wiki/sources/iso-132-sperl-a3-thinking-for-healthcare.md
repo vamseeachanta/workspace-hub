@@ -2,6 +2,8 @@
 title: "ISO-132-Sperl-A3 Thinking for Healthcare.pdf"
 slug: iso-132-sperl-a3-thinking-for-healthcare
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

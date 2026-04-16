@@ -2,6 +2,8 @@
 title: "Integrated Production Surveillance_A Case Study in Brazil.pdf"
 slug: integrated-production-surveillance-a-case-study-in-brazil
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

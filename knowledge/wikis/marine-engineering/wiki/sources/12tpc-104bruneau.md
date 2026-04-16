@@ -2,6 +2,8 @@
 title: "12TPC-104Bruneau.pdf"
 slug: 12tpc-104bruneau
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "ISO-033-Barlow-The Risk and Compliance Paradigm.pdf"
 slug: iso-033-barlow-the-risk-and-compliance-paradigm
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

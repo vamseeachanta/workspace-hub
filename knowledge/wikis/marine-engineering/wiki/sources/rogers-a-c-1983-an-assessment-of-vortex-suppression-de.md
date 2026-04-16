@@ -2,6 +2,8 @@
 title: "Rogers, A.C., 1983 - An Assessment of Vortex Suppression De.pdf"
 slug: rogers-a-c-1983-an-assessment-of-vortex-suppression-de
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "SPE 94300 (2005) Hall, Russell W., et al Contact Pressure Threshold- An Important New Aspect of Casing Wear.pdf"
 slug: spe-94300-2005-hall-russell-w-et-al-contact-pressure-threshold-an-important-new-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

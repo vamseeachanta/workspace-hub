@@ -2,6 +2,8 @@
 title: "Evelyn Lundhild_88.pdf"
 slug: evelyn-lundhild-88
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

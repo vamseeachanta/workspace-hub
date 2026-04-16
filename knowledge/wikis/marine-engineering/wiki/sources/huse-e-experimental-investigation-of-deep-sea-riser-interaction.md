@@ -2,6 +2,8 @@
 title: "Huse, E., Experimental Investigation of Deep Sea Riser Interaction.pdf"
 slug: huse-e-experimental-investigation-of-deep-sea-riser-interaction
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

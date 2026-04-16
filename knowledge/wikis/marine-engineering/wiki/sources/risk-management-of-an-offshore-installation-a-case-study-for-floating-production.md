@@ -2,6 +2,8 @@
 title: "Risk Management of an Offshore Installation_A Case Study for Floating Production Storage & Offloading Fa.pdf"
 slug: risk-management-of-an-offshore-installation-a-case-study-for-floating-production
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

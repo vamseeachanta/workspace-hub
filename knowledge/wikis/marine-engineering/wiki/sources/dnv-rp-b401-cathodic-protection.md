@@ -6,6 +6,7 @@ domain: cathodic_protection
 source_file: "Dnv-Rp-b401-Cathodic Protection Design.pdf"
 size: "2.1 MB"
 added: 2026-04-07 02:23 UTC
+last_updated: 2026-04-16
 tags: [cathodic-protection, anode, corrosion, offshore]
 ---
 

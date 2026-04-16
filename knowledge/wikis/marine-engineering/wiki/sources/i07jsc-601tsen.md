@@ -2,6 +2,8 @@
 title: "I07JSC-601tsen.pdf"
 slug: i07jsc-601tsen
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

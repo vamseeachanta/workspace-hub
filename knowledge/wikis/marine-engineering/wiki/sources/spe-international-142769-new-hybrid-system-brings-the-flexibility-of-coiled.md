@@ -2,6 +2,8 @@
 title: "SPE International-142769-New Hybrid System Brings the Flexibility  of coiled.pdf"
 slug: spe-international-142769-new-hybrid-system-brings-the-flexibility-of-coiled
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

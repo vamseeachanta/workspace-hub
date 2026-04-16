@@ -2,6 +2,8 @@
 title: "Subsea Houston 2004 Framo Engineering.pdf"
 slug: subsea-houston-2004-framo-engineering
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

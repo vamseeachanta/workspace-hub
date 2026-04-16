@@ -1,5 +1,7 @@
 ---
 title: "AI Agent Guidelines (Source)"
+added: 2026-04-08
+last_updated: 2026-04-08
 tags: [source, agents, guidelines, cross-review, workflow]
 source_path: docs/modules/ai/AI_AGENT_GUIDELINES.md
 source_type: module-doc

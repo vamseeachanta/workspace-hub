@@ -2,6 +2,8 @@
 title: "Guaranteeing Flow Assurance in the Deep Waters of the Independence Hub (Roxar).pdf"
 slug: guaranteeing-flow-assurance-in-the-deep-waters-of-the-independence-hub-roxar
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

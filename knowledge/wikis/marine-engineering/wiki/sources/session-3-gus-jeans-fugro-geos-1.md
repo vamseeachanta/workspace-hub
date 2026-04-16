@@ -2,6 +2,8 @@
 title: "Session 3_Gus Jeans_Fugro GEOS[1].pdf"
 slug: session-3-gus-jeans-fugro-geos-1
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

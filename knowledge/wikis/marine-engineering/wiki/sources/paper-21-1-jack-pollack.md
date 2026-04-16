@@ -2,6 +2,8 @@
 title: "Paper 21-1 - Jack Pollack.pdf"
 slug: paper-21-1-jack-pollack
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

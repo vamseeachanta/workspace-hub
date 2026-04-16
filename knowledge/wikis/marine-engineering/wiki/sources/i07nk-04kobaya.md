@@ -2,6 +2,8 @@
 title: "I07NK-04kobaya.pdf"
 slug: i07nk-04kobaya
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,7 @@
 title: "6 International Maritime Liability Conventions"
 source_file: "maritime-liabilities.yaml"
 added: 2026-04-07
+last_updated: 2026-04-16
 tags: [maritime-law, conventions, liability, compensation, international-law]
 ---
 

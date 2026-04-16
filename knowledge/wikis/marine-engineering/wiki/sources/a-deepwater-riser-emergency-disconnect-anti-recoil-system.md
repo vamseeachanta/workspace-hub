@@ -2,6 +2,8 @@
 title: "A Deepwater Riser Emergency Disconnect Anti-Recoil System.pdf"
 slug: a-deepwater-riser-emergency-disconnect-anti-recoil-system
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "11TPC-136Tsushi.pdf"
 slug: 11tpc-136tsushi
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

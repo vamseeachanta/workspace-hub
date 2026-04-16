@@ -2,6 +2,8 @@
 title: "11TPC-405Gong.pdf"
 slug: 11tpc-405gong
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Reliability of Welded Austenitic Stainless Steel Containing Base Metal Delta Ferrite.pdf"
 slug: reliability-of-welded-austenitic-stainless-steel-containing-base-metal-delta-fer
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

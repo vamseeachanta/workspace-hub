@@ -2,6 +2,8 @@
 title: "Estimation of Block Values Using a Competitive Bidding in Brazil_ The Impact of Petrobras.pdf"
 slug: estimation-of-block-values-using-a-competitive-bidding-in-brazil-the-impact-of-p
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

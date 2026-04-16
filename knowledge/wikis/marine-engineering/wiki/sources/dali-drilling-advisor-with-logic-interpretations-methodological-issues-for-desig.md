@@ -2,6 +2,8 @@
 title: "Dali-Drilling Advisor with Logic Interpretations Methodological Issues for Designing Under-Balanced Dril.pdf"
 slug: dali-drilling-advisor-with-logic-interpretations-methodological-issues-for-desig
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

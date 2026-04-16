@@ -2,6 +2,8 @@
 title: "Timothy Daigle_Fluor_5 Major Challenges to Using Subsea Multiphase Flow Meters.pdf"
 slug: timothy-daigle-fluor-5-major-challenges-to-using-subsea-multiphase-flow-meters
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

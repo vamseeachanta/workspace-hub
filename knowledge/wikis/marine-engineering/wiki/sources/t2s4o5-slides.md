@@ -2,6 +2,8 @@
 title: "T2S4O5-slides.pdf"
 slug: t2s4o5-slides
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

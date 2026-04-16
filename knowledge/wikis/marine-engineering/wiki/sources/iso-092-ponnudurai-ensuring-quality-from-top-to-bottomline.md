@@ -2,6 +2,8 @@
 title: "ISO-092-Ponnudurai-Ensuring Quality From Top to Bottomline.pdf"
 slug: iso-092-ponnudurai-ensuring-quality-from-top-to-bottomline
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

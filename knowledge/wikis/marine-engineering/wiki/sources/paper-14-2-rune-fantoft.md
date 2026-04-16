@@ -2,6 +2,8 @@
 title: "Paper 14-2 - Rune Fantoft.pdf"
 slug: paper-14-2-rune-fantoft
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Shanks, F.E., et al, 1979, Experience Drilling in Deepwater High Current Areas.pdf"
 slug: shanks-f-e-et-al-1979-experience-drilling-in-deepwater-high-current-areas
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

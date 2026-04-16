@@ -2,6 +2,8 @@
 title: "SPE International-142422-Merging Coiled Tubing and wellable Paker Technologies.pdf"
 slug: spe-international-142422-merging-coiled-tubing-and-wellable-paker-technologies
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

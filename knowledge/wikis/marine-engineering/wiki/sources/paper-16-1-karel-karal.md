@@ -2,6 +2,8 @@
 title: "Paper 16-1 - Karel Karal.pdf"
 slug: paper-16-1-karel-karal
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

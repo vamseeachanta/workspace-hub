@@ -2,6 +2,8 @@
 title: "Lim, F.K., et al, 1991 - Snorre Field TLP Rigid Riser System - An Overview.pdf"
 slug: lim-f-k-et-al-1991-snorre-field-tlp-rigid-riser-system-an-overview
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -5,6 +5,7 @@ type: incident_compilation
 domain: mooring_engineering
 source_file: "mooring-failures-lng-terminals.yaml"
 added: 2026-04-07
+last_updated: 2026-04-16
 tags: [mooring, lng, failures, hmpe, resonance, incidents, terminals]
 ---
 

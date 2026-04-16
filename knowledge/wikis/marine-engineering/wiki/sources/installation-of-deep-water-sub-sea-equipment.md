@@ -2,6 +2,8 @@
 title: "Installation of Deep Water Sub-Sea Equipment.pdf"
 slug: installation-of-deep-water-sub-sea-equipment
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

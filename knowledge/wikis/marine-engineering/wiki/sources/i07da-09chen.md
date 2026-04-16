@@ -2,6 +2,8 @@
 title: "I07DA-09chen.pdf"
 slug: i07da-09chen
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

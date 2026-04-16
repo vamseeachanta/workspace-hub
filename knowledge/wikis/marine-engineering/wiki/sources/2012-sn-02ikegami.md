@@ -2,6 +2,8 @@
 title: "2012-SN-02Ikegami.pdf"
 slug: 2012-sn-02ikegami
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

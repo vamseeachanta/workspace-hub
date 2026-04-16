@@ -2,6 +2,8 @@
 title: "Vandiver, J.K., et al, 1987 - Hydrodynamic Damping on Flexi.pdf"
 slug: vandiver-j-k-et-al-1987-hydrodynamic-damping-on-flexi
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "SPE International-143079-Use of strenth Coiled Tubing in high pressure, High tempature....pdf"
 slug: spe-international-143079-use-of-strenth-coiled-tubing-in-high-pressure-high-temp
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

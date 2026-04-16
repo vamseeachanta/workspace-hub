@@ -2,6 +2,8 @@
 title: "ISO-143-Schwartz-Integration at Medium Size Community Hospital.pdf"
 slug: iso-143-schwartz-integration-at-medium-size-community-hospital
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

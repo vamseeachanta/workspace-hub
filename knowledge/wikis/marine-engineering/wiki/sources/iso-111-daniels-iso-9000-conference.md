@@ -2,6 +2,8 @@
 title: "ISO-111-Daniels-ISO 9000 Conference.pdf"
 slug: iso-111-daniels-iso-9000-conference
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

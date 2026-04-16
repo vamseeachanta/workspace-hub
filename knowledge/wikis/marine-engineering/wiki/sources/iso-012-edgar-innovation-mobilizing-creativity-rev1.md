@@ -2,6 +2,8 @@
 title: "ISO-012-Edgar-Innovation-Mobilizing Creativity_rev1.pdf"
 slug: iso-012-edgar-innovation-mobilizing-creativity-rev1
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

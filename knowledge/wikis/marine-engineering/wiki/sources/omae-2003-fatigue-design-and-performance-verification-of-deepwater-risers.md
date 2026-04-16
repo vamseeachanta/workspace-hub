@@ -2,6 +2,8 @@
 title: "OMAE 2003 Fatigue Design and Performance Verification of Deepwater Risers.pdf"
 slug: omae-2003-fatigue-design-and-performance-verification-of-deepwater-risers
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

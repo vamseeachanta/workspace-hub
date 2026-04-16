@@ -2,6 +2,8 @@
 title: "OTC 6891-Analysis and Design of Anti-Recoil System.pdf"
 slug: otc-6891-analysis-and-design-of-anti-recoil-system
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Vandiver, J.K., 1985 - The Prediction of Lockin Vibration o.pdf"
 slug: vandiver-j-k-1985-the-prediction-of-lockin-vibration-o
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

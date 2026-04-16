@@ -2,6 +2,8 @@
 title: "2012-HGS-08Jeong.pdf"
 slug: 2012-hgs-08jeong
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Bednar & Loes (1993) - Total Quality Management Applications on the Zinc Subsea Production System - OTC7.pdf"
 slug: bednar-loes-1993-total-quality-management-applications-on-the-zinc-subsea-produc
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

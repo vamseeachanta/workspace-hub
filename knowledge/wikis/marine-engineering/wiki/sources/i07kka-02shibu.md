@@ -2,6 +2,8 @@
 title: "I07KKA-02Shibu.pdf"
 slug: i07kka-02shibu
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

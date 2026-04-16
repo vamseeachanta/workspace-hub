@@ -2,6 +2,8 @@
 title: "Paper 17-2 - Giles Cousin.pdf"
 slug: paper-17-2-giles-cousin
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "OTC Paper 7770 - Development and Deployment of a Freestanding Production Riser in the Gulf of Mexico.pdf"
 slug: otc-paper-7770-development-and-deployment-of-a-freestanding-production-riser-in-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

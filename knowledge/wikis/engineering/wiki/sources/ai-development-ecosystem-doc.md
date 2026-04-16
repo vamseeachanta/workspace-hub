@@ -1,5 +1,7 @@
 ---
 title: "AI Development Ecosystem (Source)"
+added: 2026-04-08
+last_updated: 2026-04-08
 tags: [source, ecosystem, agents, architecture, mcp]
 source_path: docs/modules/automation/AI_ECOSYSTEM.md
 source_type: module-doc

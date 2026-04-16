@@ -2,6 +2,8 @@
 title: "Factors Affecting Bond Cement Across Casing Leak Zones in Oil & Gas Wells.pdf"
 slug: factors-affecting-bond-cement-across-casing-leak-zones-in-oil-gas-wells
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "D'Souza, R., et al, 2002 - The Next Generation Production D.pdf"
 slug: d-souza-r-et-al-2002-the-next-generation-production-d
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

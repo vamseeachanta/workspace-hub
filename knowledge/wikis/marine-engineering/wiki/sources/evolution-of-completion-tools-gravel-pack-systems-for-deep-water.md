@@ -2,6 +2,8 @@
 title: "Evolution of Completion Tools Gravel Pack Systems for Deep-Water.pdf"
 slug: evolution-of-completion-tools-gravel-pack-systems-for-deep-water
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "17otctoc_VA_Signed.pdf"
 slug: 17otctoc-va-signed
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

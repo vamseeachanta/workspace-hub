@@ -2,6 +2,8 @@
 title: "SPE International-143152-New higher-strength coiled tubing developed to extend coiled tubing operating envelopes.pdf"
 slug: spe-international-143152-new-higher-strength-coiled-tubing-developed-to-extend-c
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

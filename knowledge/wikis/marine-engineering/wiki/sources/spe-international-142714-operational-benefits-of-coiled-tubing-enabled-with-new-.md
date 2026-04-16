@@ -2,6 +2,8 @@
 title: "SPE International-142714-Operational Benefits of Coiled Tubing  Enabled With New Real Time....pdf"
 slug: spe-international-142714-operational-benefits-of-coiled-tubing-enabled-with-new-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

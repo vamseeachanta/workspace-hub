@@ -2,6 +2,8 @@
 title: "ISO-063-Liu-Seven New Quality Tools and Appreciative.pdf"
 slug: iso-063-liu-seven-new-quality-tools-and-appreciative
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

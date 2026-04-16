@@ -2,6 +2,8 @@
 title: "15 -Shape Monitoring of Subsea Pipelines through Optical Fiber Sensors  S-Lay process case study.pdf"
 slug: 15-shape-monitoring-of-subsea-pipelines-through-optical-fiber-sensors-s-lay-proc
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

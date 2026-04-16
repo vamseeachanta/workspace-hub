@@ -2,6 +2,8 @@
 title: "Numerical Analysis of Open-Hole Multilateral Completions Minimizes the Risk of Costly Junction Failures.pdf"
 slug: numerical-analysis-of-open-hole-multilateral-completions-minimizes-the-risk-of-c
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

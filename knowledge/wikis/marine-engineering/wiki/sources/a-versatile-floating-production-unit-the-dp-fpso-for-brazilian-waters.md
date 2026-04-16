@@ -2,6 +2,8 @@
 title: "A Versatile Floating Production Unit, The DP FPSO For Brazilian Waters.pdf"
 slug: a-versatile-floating-production-unit-the-dp-fpso-for-brazilian-waters
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

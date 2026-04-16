@@ -2,6 +2,8 @@
 title: "Miller, J.E., et al, 1985 - Influence of Mud Column dynamic.pdf"
 slug: miller-j-e-et-al-1985-influence-of-mud-column-dynamic
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Berner, P., et al, 1997 - Neptune Project - Production Rise.pdf"
 slug: berner-p-et-al-1997-neptune-project-production-rise
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

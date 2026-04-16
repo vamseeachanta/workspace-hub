@@ -2,6 +2,8 @@
 title: "Offshore Magazine Sep 07 - Aluminum may be key to long, deepwater wells.pdf"
 slug: offshore-magazine-sep-07-aluminum-may-be-key-to-long-deepwater-wells
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

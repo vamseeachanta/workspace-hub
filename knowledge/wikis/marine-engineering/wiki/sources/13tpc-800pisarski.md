@@ -2,6 +2,8 @@
 title: "13TPC-800Pisarski.pdf"
 slug: 13tpc-800pisarski
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

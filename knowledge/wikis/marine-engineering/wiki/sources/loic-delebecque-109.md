@@ -2,6 +2,8 @@
 title: "Loic Delebecque_109.pdf"
 slug: loic-delebecque-109
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

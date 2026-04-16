@@ -2,6 +2,8 @@
 title: "11MK-05deLauzon.pdf"
 slug: 11mk-05delauzon
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

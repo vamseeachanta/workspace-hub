@@ -2,6 +2,8 @@
 title: "11TPC-1173Araki.pdf"
 slug: 11tpc-1173araki
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

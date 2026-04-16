@@ -2,6 +2,8 @@
 title: "Tahiti Sour Service Testing (Riser) OMAE2008-57059.pdf"
 slug: tahiti-sour-service-testing-riser-omae2008-57059
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

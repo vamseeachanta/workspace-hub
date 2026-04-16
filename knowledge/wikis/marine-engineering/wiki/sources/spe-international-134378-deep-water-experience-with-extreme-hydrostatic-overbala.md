@@ -2,6 +2,8 @@
 title: "SPE International-134378 Deep Water Experience With Extreme Hydrostatic Overbalance.pdf"
 slug: spe-international-134378-deep-water-experience-with-extreme-hydrostatic-overbala
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

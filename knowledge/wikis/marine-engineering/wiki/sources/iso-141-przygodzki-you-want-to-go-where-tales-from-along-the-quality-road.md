@@ -2,6 +2,8 @@
 title: "ISO-141-Przygodzki-You Want to Go Where-Tales from along the Quality Road.pdf"
 slug: iso-141-przygodzki-you-want-to-go-where-tales-from-along-the-quality-road
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

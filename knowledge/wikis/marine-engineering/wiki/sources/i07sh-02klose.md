@@ -2,6 +2,8 @@
 title: "I07SH-02klose.pdf"
 slug: i07sh-02klose
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

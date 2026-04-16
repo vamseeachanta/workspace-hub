@@ -2,6 +2,8 @@
 title: "OMAE2002 Fatigue Strength of Titanium Riser Welds.pdf"
 slug: omae2002-fatigue-strength-of-titanium-riser-welds
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

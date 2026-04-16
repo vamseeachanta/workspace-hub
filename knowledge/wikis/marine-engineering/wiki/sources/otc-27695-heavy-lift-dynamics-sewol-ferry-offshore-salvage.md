@@ -2,6 +2,8 @@
 title: "OTC-27695 Heavy Lift Dynamics, Sewol Ferry Offshore Salvage.pdf"
 slug: otc-27695-heavy-lift-dynamics-sewol-ferry-offshore-salvage
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

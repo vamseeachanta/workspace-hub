@@ -1,5 +1,7 @@
 ---
 title: "Mooring Failures LNG Terminals Seed"
+added: 2026-04-09
+last_updated: 2026-04-09
 tags: [source, mooring-failures, lng, knowledge-seed]
 type: knowledge-seed
 ingested: 2026-04-09

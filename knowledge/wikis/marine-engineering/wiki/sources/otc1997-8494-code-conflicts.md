@@ -2,6 +2,8 @@
 title: "OTC1997-8494 Code Conflicts.pdf"
 slug: otc1997-8494-code-conflicts
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

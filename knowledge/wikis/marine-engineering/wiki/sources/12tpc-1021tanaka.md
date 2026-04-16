@@ -2,6 +2,8 @@
 title: "12TPC-1021Tanaka.pdf"
 slug: 12tpc-1021tanaka
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

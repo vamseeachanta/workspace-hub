@@ -2,6 +2,8 @@
 title: "SPE International-142449-The Seven Pillars of Well Integrity Management....pdf"
 slug: spe-international-142449-the-seven-pillars-of-well-integrity-management
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

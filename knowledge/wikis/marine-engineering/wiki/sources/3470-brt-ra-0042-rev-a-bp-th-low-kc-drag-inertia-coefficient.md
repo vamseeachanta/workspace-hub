@@ -2,6 +2,8 @@
 title: "3470-BRT-RA-0042 Rev A    (BP TH  Low KC Drag & Inertia Coefficient).pdf"
 slug: 3470-brt-ra-0042-rev-a-bp-th-low-kc-drag-inertia-coefficient
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

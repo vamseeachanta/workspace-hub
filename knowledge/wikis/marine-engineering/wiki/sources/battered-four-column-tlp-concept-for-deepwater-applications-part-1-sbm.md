@@ -2,6 +2,8 @@
 title: "Battered Four Column TLP Concept for Deepwater Applications PART 1 (SBM).pdf"
 slug: battered-four-column-tlp-concept-for-deepwater-applications-part-1-sbm
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Use of the Single Trip Perf Pack Gun Hanger Completion System Yields Savings for an Operator in the Gulf.pdf"
 slug: use-of-the-single-trip-perf-pack-gun-hanger-completion-system-yields-savings-for
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

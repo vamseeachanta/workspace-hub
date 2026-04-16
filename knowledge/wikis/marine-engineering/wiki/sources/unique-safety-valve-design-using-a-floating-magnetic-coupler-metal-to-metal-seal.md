@@ -2,6 +2,8 @@
 title: "Unique Safety Valve Design Using a Floating Magnetic Coupler & Metal-to-Metal Sealing Capability Reduces.pdf"
 slug: unique-safety-valve-design-using-a-floating-magnetic-coupler-metal-to-metal-seal
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

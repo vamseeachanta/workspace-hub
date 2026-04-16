@@ -2,6 +2,8 @@
 title: "T3S6O3-green.pdf"
 slug: t3s6o3-green
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

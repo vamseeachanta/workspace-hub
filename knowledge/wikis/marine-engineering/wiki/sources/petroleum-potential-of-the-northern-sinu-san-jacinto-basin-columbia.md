@@ -2,6 +2,8 @@
 title: "Petroleum Potential of the Northern Sinu-San Jacinto Basin Columbia.pdf"
 slug: petroleum-potential-of-the-northern-sinu-san-jacinto-basin-columbia
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

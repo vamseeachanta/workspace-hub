@@ -2,6 +2,8 @@
 title: "Fisher, E., Holley, P., Brashier,E., 1995, OTC, Development and Deployment of a Freestanding Production Riser in the GoM.pdf"
 slug: fisher-e-holley-p-brashier-e-1995-otc-development-and-deployment-of-a-freestandi
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

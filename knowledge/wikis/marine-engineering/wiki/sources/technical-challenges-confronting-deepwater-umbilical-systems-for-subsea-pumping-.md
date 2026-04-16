@@ -2,6 +2,8 @@
 title: "Technical Challenges Confronting Deepwater Umbilical Systems for Subsea Pumping Applications PART 2 (Oceaneering).pdf"
 slug: technical-challenges-confronting-deepwater-umbilical-systems-for-subsea-pumping-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

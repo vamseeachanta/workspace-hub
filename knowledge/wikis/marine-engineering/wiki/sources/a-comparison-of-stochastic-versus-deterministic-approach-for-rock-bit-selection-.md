@@ -2,6 +2,8 @@
 title: "A Comparison of Stochastic Versus Deterministic Approach for Rock Bit Selection, Insights for a Better D.pdf"
 slug: a-comparison-of-stochastic-versus-deterministic-approach-for-rock-bit-selection-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

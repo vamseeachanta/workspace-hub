@@ -2,6 +2,8 @@
 title: "Paper 10-4 - Bjorn Koi.pdf"
 slug: paper-10-4-bjorn-koi
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

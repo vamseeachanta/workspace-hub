@@ -2,6 +2,8 @@
 title: "Numerical Method for Nitrogen & Steam Injection in a Porous Medium with Water.pdf"
 slug: numerical-method-for-nitrogen-steam-injection-in-a-porous-medium-with-water
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

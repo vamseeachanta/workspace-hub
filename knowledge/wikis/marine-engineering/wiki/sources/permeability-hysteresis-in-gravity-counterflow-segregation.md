@@ -2,6 +2,8 @@
 title: "Permeability Hysteresis in Gravity Counterflow Segregation.pdf"
 slug: permeability-hysteresis-in-gravity-counterflow-segregation
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

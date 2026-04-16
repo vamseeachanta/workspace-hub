@@ -1,5 +1,7 @@
 ---
 title: "Closed Engineering Issues"
+added: 2026-04-09
+last_updated: 2026-04-09
 tags: [source, github-issues, engineering, closed]
 type: closed-issues
 ingested: 2026-04-09

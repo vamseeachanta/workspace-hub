@@ -2,6 +2,8 @@
 title: "Challenges on Preparing Unitization Agreements in Brazil.pdf"
 slug: challenges-on-preparing-unitization-agreements-in-brazil
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

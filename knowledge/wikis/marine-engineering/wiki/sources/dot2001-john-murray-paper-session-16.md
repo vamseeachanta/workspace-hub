@@ -2,6 +2,8 @@
 title: "DOT2001 - John Murray paper Session 16.pdf"
 slug: dot2001-john-murray-paper-session-16
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

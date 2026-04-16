@@ -2,6 +2,8 @@
 title: "SPE International-142427-Combining Elastic and Plastic Fatigue Damage in Coiled Tubing.pdf"
 slug: spe-international-142427-combining-elastic-and-plastic-fatigue-damage-in-coiled-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

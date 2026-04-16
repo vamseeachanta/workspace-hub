@@ -2,6 +2,8 @@
 title: "37-SOS2017_Revisiting Global Response of FPSOs in Shallow Water and the Riser Analysis Requirements.pdf"
 slug: 37-sos2017-revisiting-global-response-of-fpsos-in-shallow-water-and-the-riser-an
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

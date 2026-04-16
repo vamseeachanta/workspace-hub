@@ -1,5 +1,7 @@
 ---
 title: "Baseline Testing Standards (Source)"
+added: 2026-04-08
+last_updated: 2026-04-08
 tags: [source, testing, tdd, pytest, standards]
 source_path: docs/modules/testing/baseline-testing-standards.md
 source_type: module-doc

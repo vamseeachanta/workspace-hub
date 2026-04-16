@@ -1,5 +1,7 @@
 ---
 title: "Nightly Research Outputs"
+added: 2026-04-09
+last_updated: 2026-04-09
 tags: [source, research, standards, nightly]
 type: research-outputs
 ingested: 2026-04-09

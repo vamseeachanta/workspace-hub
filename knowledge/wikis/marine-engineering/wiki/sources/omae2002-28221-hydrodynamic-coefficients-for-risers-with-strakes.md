@@ -2,6 +2,8 @@
 title: "OMAE2002-28221, Hydrodynamic Coefficients for Risers with Strakes.pdf"
 slug: omae2002-28221-hydrodynamic-coefficients-for-risers-with-strakes
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

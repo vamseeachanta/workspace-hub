@@ -2,6 +2,8 @@
 title: "ISO-042-Robitaille-Changing Preventive Action in ISO9001.pdf"
 slug: iso-042-robitaille-changing-preventive-action-in-iso9001
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

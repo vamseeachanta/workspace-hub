@@ -2,6 +2,8 @@
 title: "SPE International-142744-Best Practices for Multizone Stimulation Using Composite Plugs.pdf"
 slug: spe-international-142744-best-practices-for-multizone-stimulation-using-composit
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

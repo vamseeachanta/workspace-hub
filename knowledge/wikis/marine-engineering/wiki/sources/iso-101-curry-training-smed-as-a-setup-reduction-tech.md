@@ -2,6 +2,8 @@
 title: "ISO-101-Curry-Training SMED as a Setup Reduction Tech.pdf"
 slug: iso-101-curry-training-smed-as-a-setup-reduction-tech
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

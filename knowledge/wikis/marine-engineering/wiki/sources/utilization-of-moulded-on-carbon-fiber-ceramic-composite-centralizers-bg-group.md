@@ -2,6 +2,8 @@
 title: "Utilization of Moulded-On Carbon Fiber Ceramic Composite Centralizers (BG Group).pdf"
 slug: utilization-of-moulded-on-carbon-fiber-ceramic-composite-centralizers-bg-group
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

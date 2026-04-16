@@ -2,6 +2,8 @@
 title: "Karunakaran, D., et al, 2005 - Weight Optimized SCRs for Deepwater Harsh Environments.pdf"
 slug: karunakaran-d-et-al-2005-weight-optimized-scrs-for-deepwater-harsh-environments
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

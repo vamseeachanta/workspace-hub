@@ -2,6 +2,8 @@
 title: "Fines Stabilizing Agent Reduces Production Decline Rates in Steam Injected Wells.pdf"
 slug: fines-stabilizing-agent-reduces-production-decline-rates-in-steam-injected-wells
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

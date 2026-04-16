@@ -2,6 +2,8 @@
 title: "Selection of Candidate Wells & Optimization of Conformance Treatment Design in the Barrancus Field Using.pdf"
 slug: selection-of-candidate-wells-optimization-of-conformance-treatment-design-in-the
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

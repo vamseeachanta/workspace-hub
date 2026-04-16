@@ -2,6 +2,8 @@
 title: "OMAE2002 Fatigue of 28-inch Titanium Riser.pdf"
 slug: omae2002-fatigue-of-28-inch-titanium-riser
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

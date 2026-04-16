@@ -2,6 +2,8 @@
 title: "1_SUT_tieback_introduction_Schlater 2014.pdf"
 slug: 1-sut-tieback-introduction-schlater-2014
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

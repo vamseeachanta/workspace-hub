@@ -2,6 +2,8 @@
 title: "A.T. Kearney_Proven Approaches for Catastrophic Management.pdf"
 slug: a-t-kearney-proven-approaches-for-catastrophic-management
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

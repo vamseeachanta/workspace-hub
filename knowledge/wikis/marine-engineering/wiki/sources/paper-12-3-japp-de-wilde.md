@@ -2,6 +2,8 @@
 title: "Paper 12-3 - Japp de Wilde.pdf"
 slug: paper-12-3-japp-de-wilde
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

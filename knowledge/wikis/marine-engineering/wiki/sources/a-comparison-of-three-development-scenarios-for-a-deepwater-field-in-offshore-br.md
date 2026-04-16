@@ -2,6 +2,8 @@
 title: "A Comparison of Three Development Scenarios for a Deepwater Field in Offshore Brazil.pdf"
 slug: a-comparison-of-three-development-scenarios-for-a-deepwater-field-in-offshore-br
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

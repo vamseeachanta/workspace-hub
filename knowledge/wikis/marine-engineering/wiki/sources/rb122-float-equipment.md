@@ -6,6 +6,7 @@ domain: well_cementing
 source_file: "RB122_Float_Equiment.pdf"
 size: "691 KB"
 added: 2026-04-07 02:23 UTC
+last_updated: 2026-04-16
 tags: [cementing, float-equipment, well-construction, halliburton]
 ---
 

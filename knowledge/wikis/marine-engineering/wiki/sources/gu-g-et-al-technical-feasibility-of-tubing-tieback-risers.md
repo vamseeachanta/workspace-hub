@@ -2,6 +2,8 @@
 title: "Gu, G, et al, Technical Feasibility of Tubing Tieback Risers.pdf"
 slug: gu-g-et-al-technical-feasibility-of-tubing-tieback-risers
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

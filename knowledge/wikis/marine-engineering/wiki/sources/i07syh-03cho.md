@@ -2,6 +2,8 @@
 title: "I07SYH-03cho.pdf"
 slug: i07syh-03cho
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

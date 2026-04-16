@@ -2,6 +2,8 @@
 title: "2012-TPC-287Arima.pdf"
 slug: 2012-tpc-287arima
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

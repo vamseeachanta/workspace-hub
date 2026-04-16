@@ -2,6 +2,8 @@
 title: "Controlling Fluid Film Temperatures - The Key to Increasing Fired Heater Run Lengths & Capacity.pdf"
 slug: controlling-fluid-film-temperatures-the-key-to-increasing-fired-heater-run-lengt
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

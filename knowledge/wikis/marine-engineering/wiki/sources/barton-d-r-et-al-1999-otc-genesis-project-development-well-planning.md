@@ -2,6 +2,8 @@
 title: "Barton, D.R., et al, 1999, OTC,  Genesis Project - Development Well Planning.pdf"
 slug: barton-d-r-et-al-1999-otc-genesis-project-development-well-planning
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

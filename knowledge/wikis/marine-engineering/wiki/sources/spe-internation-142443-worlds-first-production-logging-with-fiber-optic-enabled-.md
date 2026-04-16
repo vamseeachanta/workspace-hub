@@ -2,6 +2,8 @@
 title: "SPE Internation-142443-Worlds First Production Logging with Fiber-Optic-Enabled Coiled Tubing.pdf"
 slug: spe-internation-142443-worlds-first-production-logging-with-fiber-optic-enabled-
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

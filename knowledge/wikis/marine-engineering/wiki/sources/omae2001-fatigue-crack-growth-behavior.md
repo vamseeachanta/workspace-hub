@@ -2,6 +2,8 @@
 title: "OMAE2001 Fatigue Crack Growth Behavior.pdf"
 slug: omae2001-fatigue-crack-growth-behavior
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "SPE 39296 Riser Recoil During Unscheduled Lower Marine.pdf"
 slug: spe-39296-riser-recoil-during-unscheduled-lower-marine
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

@@ -2,6 +2,8 @@
 title: "Javanmardi, K., et al, 1995 - Auger TLP Well System Challen.pdf"
 slug: javanmardi-k-et-al-1995-auger-tlp-well-system-challen
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

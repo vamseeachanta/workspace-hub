@@ -2,6 +2,8 @@
 title: "5_ M Kabir Hossain.pdf"
 slug: 5-m-kabir-hossain
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

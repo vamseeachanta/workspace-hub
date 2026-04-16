@@ -2,6 +2,8 @@
 title: "Paper 01-4 - Travis Jordan.pdf"
 slug: paper-01-4-travis-jordan
 domain: marine-engineering
+added: 2026-04-07
+last_updated: 2026-04-07
 ingested: 2026-04-07 10:31 UTC
 tags: []
 ---

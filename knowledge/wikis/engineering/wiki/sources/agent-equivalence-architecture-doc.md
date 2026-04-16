@@ -1,5 +1,7 @@
 ---
 title: "Agent Equivalence Architecture (Source)"
+added: 2026-04-08
+last_updated: 2026-04-08
 tags: [source, agents, equivalence, architecture]
 source_path: docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md
 source_type: module-doc

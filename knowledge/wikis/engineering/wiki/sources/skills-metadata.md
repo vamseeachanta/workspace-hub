@@ -1,5 +1,7 @@
 ---
 title: "Skills Metadata"
+added: 2026-04-09
+last_updated: 2026-04-09
 tags: [source, skills, engineering, marine-offshore, cfd, cad]
 type: skills-metadata
 ingested: 2026-04-09
