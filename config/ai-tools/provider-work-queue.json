@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-15T21:20:07.954876Z",
+  "generated_at": "2026-04-16T01:20:05.952665Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-15T21:20:06.206171Z",
+  "scorecard_generated_at": "2026-04-16T01:20:04.292370Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 3,
+      "execution_ready_count": 2,
       "total_candidates": 135,
       "top_issues": [
         {
@@ -53,30 +53,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-11T13:19:52Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2290,
-          "title": "chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2290",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:skills",
-            "cat:maintenance",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-15T21:05:41Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -202,6 +178,27 @@
           "work_type": [
             "research",
             "implementation"
+          ]
+        },
+        {
+          "number": 2219,
+          "title": "chore(sync): resolve main branch divergence \u2014 9 local vs 134 origin commits",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2219",
+          "labels": [
+            "priority:high",
+            "cat:engineering"
+          ],
+          "updatedAt": "2026-04-11T17:19:07Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
           ]
         }
       ]

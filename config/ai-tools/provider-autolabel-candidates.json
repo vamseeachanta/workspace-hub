@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-15T21:20:08.157278Z",
+  "generated_at": "2026-04-16T01:20:06.147632Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 2,
+  "eligible_count": 1,
   "applied": [],
   "candidates": [
     {
@@ -17,39 +17,6 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-04-11T13:19:52Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2290,
-      "title": "chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2290",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:skills",
-        "cat:maintenance",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-15T21:05:41Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -380,6 +347,35 @@
         "wip:ace-linux-1"
       ],
       "updatedAt": "2026-04-09T19:45:29Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2219,
+      "title": "chore(sync): resolve main branch divergence \u2014 9 local vs 134 origin commits",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2219",
+      "labels": [
+        "priority:high",
+        "cat:engineering"
+      ],
+      "updatedAt": "2026-04-11T17:19:07Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "claude",

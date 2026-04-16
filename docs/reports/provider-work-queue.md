@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-15T21:20:07.954876Z
+Generated: 2026-04-16T01:20:05.952665Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -9,19 +9,19 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 3
+- Execution-ready candidates: 2
 - Total routed candidates: 135
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2055 feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | yes | existing claude agent label | enhancement, priority:high, cat:engineering, wip:ace-linux-1, dark-intelligence, agent:claude |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
-| #2290 chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:skills, cat:maintenance, status:plan-approved |
 | #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:critical, compliance-alert |
 | #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | no | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, domain:knowledge-management, wip:ace-linux-1 |
 | #2066 fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs | no | existing claude agent label | bug, priority:high, cat:harness, domain:knowledge-management, agent:claude |
 | #2067 feat(knowledge): wire .planning/research into engineering wiki nightly ingest | no | existing claude agent label | enhancement, priority:high, cat:harness, domain:knowledge-management, agent:claude |
 | #2112 data(field-dev): backfill SubseaIQ equipment counts to unblock cost benchmarking | no | existing claude agent label | enhancement, priority:high, cat:engineering, agent:claude |
+| #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | no | strategy/workflow/architecture language | priority:high, cat:engineering |
 
 ## codex
 

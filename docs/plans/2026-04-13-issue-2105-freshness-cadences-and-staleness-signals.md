@@ -1,10 +1,10 @@
 # Plan for #2105: define freshness cadences and staleness signals for intelligence assets
 
-> **Status:** adversarial-reviewed
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-04-13
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2105
-> **Review artifacts:** scripts/review/results/2026-04-13-plan-2105-subagent.md
+> **Review artifacts:** `scripts/review/results/2026-04-13-plan-2105-subagent.md`, `scripts/review/results/2026-04-14-plan-2105-codex.md`, `scripts/review/results/2026-04-14-plan-2105-gemini.md`, `scripts/review/results/2026-04-15-plan-2105-claude.md`
 
 ---
 
@@ -121,16 +121,24 @@ prepare closure-ready implementation slice for the issue
 
 ## Adversarial Review Summary
 
+Fresh external adversarial review completed on 2026-04-14/15 and returned blocking findings from Codex, Gemini, and Claude. The issue was correctly rolled back from premature approval to `status:plan-review`, and the stale local approval marker has already been removed.
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Subagent review | MAJOR | Initial draft left canonical output path unlocked and missed existing freshness machinery |
+| Subagent review (2026-04-13) | MAJOR then tightened to approval-ready draft | Initial tightening pass locked a canonical matrix path and added existing scanner/dashboard surfaces, but did not fully close the deeper governance and tooling-scope questions. |
+| Codex (2026-04-14) | MAJOR | Governance/review state was inconsistent, multi-provider review was missing, source-of-truth precedence was unresolved, and the implementation path hid a major scanner/tooling design decision. |
+| Gemini (2026-04-14) | MAJOR | Existing doc-only staleness tooling does not obviously cover the mixed intelligence-asset scope; scanner scope, threshold unification, and exact registry-field changes were under-specified. |
+| Claude (2026-04-15) | MAJOR | Threshold vocabulary collides with the live scanner/dashboard constants; retrieval missed required Knowledge/Intelligence sources (#2207, #2209); scanner extension vs separate handling remains unresolved; #2250 dependency/risk is not explicit. |
 
-**Overall result:** MINOR (approval-ready after revision)
+**Overall result:** MAJOR — not approval-ready. Keep this issue in `status:plan-review` until the freshness semantics, scanner scope, and governance retrieval are rewritten and re-reviewed.
 
-Revisions made based on review:
-- locked `docs/document-intelligence/freshness-cadence-matrix.md` as the canonical output surface
-- added existing staleness machinery (`staleness-scan`, scanner, dashboard) to the evidence base and implementation slice
-- defined threshold semantics and ownership expectations explicitly in the plan
+Revisions now required from review:
+- Resolve the threshold naming collision explicitly: adopt, rename, or map `current / warn / stale` against the live scanner/dashboard vocabulary.
+- Reclassify and re-ground the issue as Knowledge/Intelligence work, adding the missing #2207 and #2209 evidence plus the fuller scanner inventory.
+- Make source-of-truth precedence explicit between the canonical matrix, registry freshness metadata, and existing scanners/dashboards.
+- Decide and state clearly whether scanner extension to non-doc intelligence assets is in scope now or deferred to separate intelligence-specific handling.
+- Specify exact freshness metadata fields to add/modify in `intelligence-accessibility-registry.yaml`.
+- Add #2250 as an explicit downstream dependency/risk and strengthen acceptance criteria to prove semantic consistency, not just artifact existence.
 
 ---
 
