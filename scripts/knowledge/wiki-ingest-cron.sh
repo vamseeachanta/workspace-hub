@@ -74,6 +74,8 @@ SOURCE_LABELS=(
     "knowledge-seeds"
     "dark-intelligence"
     "session-memory"
+    "skills-metadata"
+    "research-outputs"
 )
 SOURCE_PATHS=(
     "docs/methodology"
@@ -83,6 +85,8 @@ SOURCE_PATHS=(
     "knowledge/seeds"
     "knowledge/dark-intelligence"
     ".claude/memory/KNOWLEDGE.md"
+    ".claude/skills"
+    ".planning/research"
 )
 
 # ── Scan for new/modified source files ───────────────────────────────────────
@@ -202,10 +206,18 @@ run_ingest() {
     fi
 
     local ingest_output
-    if ingest_output=$(cd "$REPO_ROOT" && uv run scripts/knowledge/llm_wiki.py ingest "$file" --wiki engineering 2>&1); then
+    local ingest_exit=0
+    ingest_output=$(cd "$REPO_ROOT" && uv run scripts/knowledge/llm_wiki.py ingest "$file" --wiki engineering 2>&1) || ingest_exit=$?
+
+    if [[ $ingest_exit -eq 0 ]]; then
         INGEST_COUNT=$((INGEST_COUNT + 1))
         INGESTED_FILES+=("$rel_path")
         log "    OK"
+    elif echo "$ingest_output" | grep -qiE 'already exists|duplicate'; then
+        # Source already known — normal for incremental re-ingest; not an error
+        INGEST_COUNT=$((INGEST_COUNT + 1))
+        INGESTED_FILES+=("$rel_path")
+        log "    OK (source already exists — skipped)"
     else
         INGEST_ERRORS=$((INGEST_ERRORS + 1))
         log "    ERROR: ingest failed for ${rel_path}"
@@ -322,11 +334,11 @@ $(printf '  - %s\n' "${INGESTED_FILES[@]}")"
         git_safe_commit "$COMMIT_MSG" \
             "knowledge/wikis/engineering/" \
             "$MARKER_FILE"
-        git_safe_push 2>>"$LOG_FILE" || {
-            log "WARNING: push failed — changes remain local"
-        }
-
-        log "Changes committed and pushed"
+        if git_safe_push 2>>"$LOG_FILE"; then
+            log "Changes committed and pushed"
+        else
+            log "WARNING: push failed — changes committed but remain local"
+        fi
     else
         log "No wiki file changes to commit"
         # Still commit updated marker

@@ -1,0 +1,127 @@
+# Standards Promotion Batch — Phase 4 of Unified Review
+# Issues: #2283 (CSA Z276), #2284 (OCIMF MEG), #2285 (API RP 2SK), #2286 (SIGTTO), #2227 (Tandem Mooring)
+# Target wiki: marine-engineering
+# Created: 2026-04-16
+records:
+  - title: "CSA Z276.2-19 — Near-Shoreline FLNG Facilities"
+    slug: csa-z276-2-19-flng-facilities
+    id: CSA-Z276.2-19
+    org: CSA
+    domain: LNG
+    tags: [LNG, FLNG, CSA, nearshore, facility-design, cryogenic, safety]
+    doc_key: "sha256:ea0777be24937a342b1f51ce982959d305373135f399839771ea8c438547493e"
+    doc_path: "/mnt/ace/acma-codes/CSA/276.2-19 near-shoreline FLNG facilities.pdf"
+    summary: "Canadian Standards Association standard for near-shoreline floating LNG facilities. Covers siting, design, construction, operation, and maintenance of FLNG installations in Canadian waters. Addresses cryogenic containment, emergency response, and environmental considerations specific to nearshore FLNG deployments."
+    issue: "#2283"
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "CSA Z276.1-20 — Marine Structures Associated with LNG Facilities"
+    slug: csa-z276-1-20-lng-marine-structures
+    id: CSA-Z276.1-20
+    org: CSA
+    domain: LNG
+    tags: [LNG, marine-structures, CSA, jetty, berth, mooring, loading-arm]
+    doc_key: "sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd"
+    doc_path: "/mnt/ace/acma-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf"
+    summary: "Canadian Standards Association standard for marine structures associated with LNG facilities including jetties, berths, dolphins, trestles, loading platforms, and associated mooring systems. Covers structural design loads, environmental forces, vessel-structure interaction, and operational requirements."
+    issue: "#2283"
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "CSA Z276.18 — LNG Production, Storage, and Handling"
+    slug: csa-z276-18-lng-production-storage
+    id: CSA-Z276.18
+    org: CSA
+    domain: LNG
+    tags: [LNG, production, storage, handling, CSA, cryogenic, safety]
+    doc_key: "sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4"
+    doc_path: "/mnt/ace/acma-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf"
+    summary: "Canadian Standards Association standard covering LNG production, storage, and handling operations. Addresses liquefaction process safety, storage tank design, transfer operations, vaporization, and odorization. Key reference for LNG facility engineering and operations."
+    issue: "#2283"
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "OCIMF Mooring Equipment Guidelines — 3rd Edition (MEG3, 2008)"
+    slug: ocimf-meg3-mooring-equipment-guidelines
+    id: OCIMF-MEG-3RD-ED-2008
+    org: OCIMF
+    domain: mooring
+    tags: [mooring, OCIMF, MEG3, equipment, guidelines, tanker, terminal, chocks, fairleads, winches]
+    doc_key: "sha256:51de0e48fa14366a49d93b4e65e9289cdf2f45a13f359641035594cf73b3419a"
+    doc_path: "/mnt/ace/acma-codes/OCIMF/OCIMF - 2008 - Mooring Equipment Guidelines.pdf"
+    summary: "Oil Companies International Marine Forum mooring equipment guidelines, 3rd edition (2008). Industry-standard reference for ship mooring equipment design, maintenance, and operation. Covers mooring lines (wire, synthetic, mixed), winches, windlasses, capstans, bitts, fairleads, pedestal rollers. 297 pages. Superseded by MEG4 (2018) but still widely referenced for legacy fleet."
+    issue: "#2284"
+    pages: 297
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "OCIMF Mooring Equipment Guidelines — 4th Edition (MEG4, 2018)"
+    slug: ocimf-meg4-mooring-equipment-guidelines
+    id: OCIMF-MEG4-2018
+    org: OCIMF
+    domain: mooring
+    tags: [mooring, OCIMF, MEG4, equipment, guidelines, tanker, terminal, HMPE, synthetic-rope]
+    doc_key: "sha256:b2627091310d45735b7c6048ec0554d5c77943a34be9dc2839aacb197f14416b"
+    doc_path: "/mnt/ace/acma-codes/OCIMF (MEG 4)/Mooring Equipment Guidelines - MEG4.pdf"
+    summary: "Oil Companies International Marine Forum mooring equipment guidelines, 4th edition (2018). Major update from MEG3 — incorporates HMPE rope guidance, updated line load calculations, new SWL methodology, tail design guidance, and lessons from mooring incidents. Current industry standard for vessel mooring equipment design and procurement. 293 pages."
+    issue: "#2284"
+    pages: 293
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "API RP 2SK — Design and Analysis of Stationkeeping Systems (3rd Edition, 2005)"
+    slug: api-rp-2sk-stationkeeping-systems
+    id: API-RP-2SK-3RD-ED
+    org: API
+    domain: mooring
+    tags: [mooring, API, stationkeeping, floating-structures, catenary, taut-leg, CALM, SALM, turret]
+    doc_key: "sha256:8117eb28e9c6f9af7a1ddfee75e9004ccf77f8268fbaf6d3b195a676bdaa39ba"
+    doc_path: "/mnt/ace/acma-codes/API/2005 RP 2SK with 2008 Add/2005 Oct RP 2SK.pdf"
+    summary: "American Petroleum Institute recommended practice for design and analysis of stationkeeping systems for floating offshore structures. Covers catenary, taut-leg, semi-taut mooring, and single-point mooring (CALM, SALM, turret) systems. Addresses environmental loading, mooring analysis methods (quasi-static, dynamic, coupled), safety factors, and inspection requirements. Key reference for offshore mooring engineering with 2008 addendum."
+    issue: "#2285"
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "OCIMF Tandem Mooring and Offloading Guidelines"
+    slug: ocimf-tandem-mooring-offloading-guidelines
+    id: OCIMF-TANDEM-MOORING
+    org: OCIMF
+    domain: mooring
+    tags: [mooring, OCIMF, tandem, offloading, FPSO, shuttle-tanker, hawser]
+    doc_key: "sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af"
+    doc_path: "/mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf"
+    summary: "OCIMF guidelines for tandem mooring and offloading operations between conventional tankers and FPSO facilities. Covers approach procedures, hawser connection, station-keeping during offloading, emergency disconnect, and operational limits. Critical reference for FPSO offloading operations and hawser design."
+    issue: "#2227"
+    status: promoted
+    source_registry: standards-transfer-ledger
+
+  - title: "SIGTTO LNG Operations in Port Areas"
+    slug: sigtto-lng-operations-port-areas
+    id: SIGTTO-LNG-PORT-OPS
+    org: SIGTTO
+    domain: LNG
+    tags: [LNG, SIGTTO, port-operations, terminal, safety, carrier]
+    summary: "Society of International Gas Tanker and Terminal Operators guidance on LNG operations in port areas. Covers berth approach, mooring, cargo transfer, emergency procedures, and port-specific safety requirements for LNG carriers. Key reference for LNG terminal operations and marine risk assessment."
+    issue: "#2286"
+    status: promoted
+
+  - title: "SIGTTO Liquefied Gas Handling Principles on Ships and in Terminals"
+    slug: sigtto-liquefied-gas-handling-principles
+    id: SIGTTO-LG-HANDLING
+    org: SIGTTO
+    domain: LNG
+    tags: [LNG, LPG, SIGTTO, cargo-handling, containment, reliquefaction, boil-off]
+    summary: "SIGTTO comprehensive reference for liquefied gas handling on ships and terminals. Covers cargo containment systems, cargo handling equipment, reliquefaction, boil-off management, safety systems, and emergency procedures. Fundamental training and reference document for LNG/LPG shipping operations."
+    issue: "#2286"
+    status: promoted
+
+  - title: "SIGTTO Mooring at Single Point Moorings"
+    slug: sigtto-mooring-single-point-moorings
+    id: SIGTTO-SPM-MOORING
+    org: SIGTTO
+    domain: mooring
+    tags: [mooring, SIGTTO, SPM, CALM, single-point, LNG, tanker]
+    summary: "SIGTTO guidance on mooring operations at single point moorings (SPMs) for gas carriers. Covers approach procedures, hawser management, environmental limits, and emergency disconnect for CALM buoy and tower-type SPM systems. Relevant to both LNG and LPG operations."
+    issue: "#2286"
+    status: promoted

@@ -1,9 +1,9 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-09
-page_count: 19170
-source_count: 19149
+last_updated: 2026-04-16
+page_count: 19180
+source_count: 19159
 ---
 
 # Knowledge Index: Marine Engineering
@@ -21591,4 +21591,14 @@ _No query outputs filed yet._
 | [[Session 4_Gavin Munro_BJ Services[1].pdf]](sources/session-4-gavin-munro-bj-services-1.md) |  | 2026-04-07 |
 | [[Session 4_JohndeLange_BG[1].pdf]](sources/session-4-johndelange-bg-1.md) |  | 2026-04-07 |
 | [[Session 3_Gus Jeans_Fugro GEOS[1].pdf]](sources/session-3-gus-jeans-fugro-geos-1.md) |  | 2026-04-07 |
+| [[CSA Z276.2-19 — Near-Shoreline FLNG Facilities]](sources/csa-z276-2-19-flng-facilities.md) | Canadian Standards Association standard for near-shoreline floating LNG facilities. Covers siting, d... | 2026-04-16 |
+| [[CSA Z276.1-20 — Marine Structures Associated with LNG Facilities]](sources/csa-z276-1-20-lng-marine-structures.md) | Canadian Standards Association standard for marine structures associated with LNG facilities includi... | 2026-04-16 |
+| [[CSA Z276.18 — LNG Production, Storage, and Handling]](sources/csa-z276-18-lng-production-storage.md) | Canadian Standards Association standard covering LNG production, storage, and handling operations. A... | 2026-04-16 |
+| [[OCIMF Mooring Equipment Guidelines — 3rd Edition (MEG3, 2008)]](sources/ocimf-meg3-mooring-equipment-guidelines.md) | Oil Companies International Marine Forum mooring equipment guidelines, 3rd edition (2008). Industry-... | 2026-04-16 |
+| [[OCIMF Mooring Equipment Guidelines — 4th Edition (MEG4, 2018)]](sources/ocimf-meg4-mooring-equipment-guidelines.md) | Oil Companies International Marine Forum mooring equipment guidelines, 4th edition (2018). Major upd... | 2026-04-16 |
+| [[API RP 2SK — Design and Analysis of Stationkeeping Systems (3rd Edition, 2005)]](sources/api-rp-2sk-stationkeeping-systems.md) | American Petroleum Institute recommended practice for design and analysis of stationkeeping systems... | 2026-04-16 |
+| [[OCIMF Tandem Mooring and Offloading Guidelines]](sources/ocimf-tandem-mooring-offloading-guidelines.md) | OCIMF guidelines for tandem mooring and offloading operations between conventional tankers and FPSO... | 2026-04-16 |
+| [[SIGTTO LNG Operations in Port Areas]](sources/sigtto-lng-operations-port-areas.md) | Society of International Gas Tanker and Terminal Operators guidance on LNG operations in port areas.... | 2026-04-16 |
+| [[SIGTTO Liquefied Gas Handling Principles on Ships and in Terminals]](sources/sigtto-liquefied-gas-handling-principles.md) | SIGTTO comprehensive reference for liquefied gas handling on ships and terminals. Covers cargo conta... | 2026-04-16 |
+| [[SIGTTO Mooring at Single Point Moorings]](sources/sigtto-mooring-single-point-moorings.md) | SIGTTO guidance on mooring operations at single point moorings (SPMs) for gas carriers. Covers appro... | 2026-04-16 |
 
