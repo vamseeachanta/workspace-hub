@@ -33,8 +33,8 @@ INDEX_JSONL = REPO_ROOT / "data" / "document-index" / "index.jsonl"
 # Wiki domains to scan (skip health-reports — temporary)
 WIKI_DOMAINS = ["engineering", "marine-engineering", "maritime-law", "naval-architecture", "personal"]
 
-# Frontmatter fields required by DT-1 (from #2209 GR-1)
-DT1_REQUIRED_FIELDS = {"title", "tags", "last_updated"}
+# Frontmatter fields required by DT-1 (from #2209 GR-1 / llm_wiki.py schema)
+DT1_REQUIRED_FIELDS = {"title", "tags", "added", "last_updated"}
 DT1_RECOMMENDED_FIELDS = {"sources"}
 
 # Parent operating model filename (ACC-3 target)
@@ -117,7 +117,7 @@ def parse_frontmatter(filepath: Path) -> Optional[dict]:
 # ──────────────────────────────────────────────────────
 
 def check_dt1(sample_size: int = 0) -> CheckResult:
-    """Verify wiki pages have required frontmatter fields (title, tags, last_updated).
+    """Verify wiki pages have required frontmatter fields.
 
     Scans all wiki domains. Reports missing fields per page.
     """

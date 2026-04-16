@@ -200,6 +200,7 @@ def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
         "standards_ledger": [],
         "wiki_pages": [],
     }
+    total = 0
 
     if by == "key":
         results["index_records"] = search_index_by_key(query)
@@ -223,6 +224,12 @@ def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
                 path_results = search_index_by_path(Path(doc_path).name, limit=5)
                 results["index_records"].extend(path_results)
 
+    total = (
+        len(results["index_records"])
+        + len(results["standards_ledger"])
+        + len(results["wiki_pages"])
+    )
+
     if json_output:
         # Simplify index records for JSON output
         for rec in results["index_records"]:
@@ -231,8 +238,6 @@ def run_lookup(query: str, by: str = "key", json_output: bool = False) -> int:
                     del rec[key]
         print(json.dumps(results, indent=2, default=str))
     else:
-        total = (len(results["index_records"]) + len(results["standards_ledger"])
-                 + len(results["wiki_pages"]))
         print(f"{'=' * 60}")
         print(f" doc_key Lookup: {query}")
         print(f" Type: {by} | Found: {total} artifact(s)")
