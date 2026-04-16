@@ -26,6 +26,14 @@ from typing import Any, Dict, Iterator, List, Optional
 REPO_ROOT = Path(__file__).resolve().parents[2]  # workspace-hub root
 WIKIS_DIR = REPO_ROOT / "knowledge" / "wikis"
 
+# Frontmatter schema constants
+FRONTMATTER_REQUIRED = {"title", "tags", "added", "last_updated"}
+FRONTMATTER_RECOMMENDED = {"sources"}
+FRONTMATTER_OPTIONAL = {"domain", "cross_links", "source"}  # 'source' accepted as alias
+FRONTMATTER_DATE_FIELDS = {"added", "last_updated"}
+FRONTMATTER_LIST_FIELDS = {"tags", "sources", "cross_links"}
+ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
 
 # ──────────────────────────────────────────────────────
 # Init: scaffold a new domain wiki
@@ -69,8 +77,22 @@ wiki/         # LLM-maintained markdown pages
 
 ## Conventions
 
+### Frontmatter Schema
+
+All wiki pages use YAML frontmatter (`---` delimited) with the following fields:
+
+| Field | Required | Type | Description |
+|-------|----------|------|-------------|
+| `title` | **required** | string | Page title |
+| `tags` | **required** | list | Classification tags |
+| `added` | **required** | date | ISO date when page was created (`YYYY-MM-DD`) |
+| `last_updated` | **required** | date | ISO date of last modification (`YYYY-MM-DD`) |
+| `sources` | recommended | list | Source documents referenced |
+| `domain` | optional | string | Explicit domain classification |
+| `cross_links` | optional | list | Cross-wiki references |
+
 ### Page format
-- Title in YAML frontmatter
+- Title in YAML frontmatter (see schema above)
 - Tags for categorization
 - Cross-references as markdown links: `[[entity-name]]` or `[text](../concepts/topic.md)`
 
@@ -525,6 +547,139 @@ def cmd_query(args: argparse.Namespace) -> int:
 # ──────────────────────────────────────────────────────
 
 
+def _parse_frontmatter(content: str) -> Optional[Dict[str, Any]]:
+    """Extract YAML frontmatter from a markdown file's content.
+
+    Returns a dict of frontmatter fields, or None if no frontmatter block found.
+    Uses a simple parser to avoid a PyYAML dependency.
+    """
+    if not content.startswith("---"):
+        return None
+    end = content.find("\n---", 3)
+    if end == -1:
+        return None
+    fm_text = content[3:end].strip()
+    result: Dict[str, Any] = {}
+    current_key: Optional[str] = None
+    list_items: List[str] = []
+
+    def _flush_list() -> None:
+        nonlocal current_key, list_items
+        if current_key and list_items:
+            result[current_key] = list_items
+            list_items = []
+            current_key = None
+
+    for line in fm_text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        # List continuation: "  - value"
+        if stripped.startswith("- ") and current_key:
+            list_items.append(stripped[2:].strip().strip('"').strip("'"))
+            continue
+        # New key-value pair
+        if ":" in stripped:
+            _flush_list()
+            key, _, val = stripped.partition(":")
+            key = key.strip()
+            val = val.strip()
+            if not val:
+                # Could be a list that follows on next lines
+                current_key = key
+                list_items = []
+                continue
+            # Inline list: [a, b, c]
+            if val.startswith("[") and val.endswith("]"):
+                inner = val[1:-1]
+                items = [v.strip().strip('"').strip("'") for v in inner.split(",") if v.strip()]
+                result[key] = items
+                current_key = None
+            else:
+                result[key] = val.strip('"').strip("'")
+                current_key = None
+
+    _flush_list()
+    return result
+
+
+def _check_frontmatter(wiki_root: Path, issues: list, max_reported: int = 10) -> int:
+    """Validate frontmatter fields on all wiki pages.
+
+    Required fields trigger ERROR severity.
+    Recommended fields trigger WARNING severity.
+    Reports up to *max_reported* individual issues to keep output manageable;
+    the returned count always reflects the true total.
+    """
+    wiki_dir = wiki_root / "wiki"
+    if not wiki_dir.exists():
+        return 0
+
+    fm_issue_count = 0
+    reported = 0
+
+    def _add_issue(severity: str, message: str) -> None:
+        nonlocal fm_issue_count, reported
+        fm_issue_count += 1
+        if reported < max_reported:
+            issues.append({
+                "severity": severity,
+                "category": "frontmatter",
+                "message": message,
+            })
+            reported += 1
+
+    for category in ["entities", "concepts", "sources", "comparisons", "standards", "workflows"]:
+        subdir = wiki_dir / category
+        if not subdir.exists():
+            continue
+        for md_file in sorted(subdir.glob("*.md")):
+            content = md_file.read_text()
+            fm = _parse_frontmatter(content)
+            page_name = f"{category}/{md_file.name}"
+
+            if fm is None:
+                _add_issue("error", f"'{page_name}' has no YAML frontmatter block")
+                continue
+
+            # Check required fields
+            for field in sorted(FRONTMATTER_REQUIRED):
+                if field not in fm:
+                    _add_issue("error", f"'{page_name}' missing required field '{field}'")
+
+            # Check recommended fields
+            for field in sorted(FRONTMATTER_RECOMMENDED):
+                # Accept 'source' as alias for 'sources'
+                if field == "sources" and ("sources" in fm or "source" in fm):
+                    continue
+                if field not in fm:
+                    _add_issue("warning", f"'{page_name}' missing recommended field '{field}'")
+
+            # Check that tags is a list
+            if "tags" in fm and not isinstance(fm["tags"], list):
+                _add_issue("error", f"'{page_name}' field 'tags' must be a list, got string")
+
+            # Check date fields are valid ISO dates
+            for date_field in sorted(FRONTMATTER_DATE_FIELDS):
+                if date_field in fm:
+                    val = str(fm[date_field])
+                    if not ISO_DATE_RE.match(val):
+                        _add_issue(
+                            "error",
+                            f"'{page_name}' field '{date_field}' is not a valid ISO date (got '{val}')",
+                        )
+
+    # If we hit the cap, add a summary line
+    if fm_issue_count > max_reported:
+        issues.append({
+            "severity": "info",
+            "category": "frontmatter",
+            "message": f"... and {fm_issue_count - max_reported} more frontmatter issues (showing first {max_reported})",
+        })
+
+    return fm_issue_count
+
+
 def cmd_lint(args: argparse.Namespace) -> int:
     """Health-check the wiki and report issues."""
     domain = args.wiki
@@ -534,7 +689,7 @@ def cmd_lint(args: argparse.Namespace) -> int:
         print(f"[ERROR] Wiki not found: {domain}")
         return 1
 
-    issues = []
+    issues: List[Dict[str, str]] = []
 
     # 1. Orphan pages (no inbound links from other wiki pages)
     orphan_count = _check_orphan_pages(wiki_root, issues)
@@ -550,6 +705,9 @@ def cmd_lint(args: argparse.Namespace) -> int:
 
     # 5. Check cross-reference density
     link_density = _check_link_density(wiki_root, issues)
+
+    # 6. Validate frontmatter on wiki pages
+    fm_issues = _check_frontmatter(wiki_root, issues)
 
     # Report
     print(f"=== Wiki Lint: {domain} ===")
@@ -571,9 +729,12 @@ def cmd_lint(args: argparse.Namespace) -> int:
     print(f"  Empty pages:      {empty_count}")
     print(f"  Index issues:     {index_issues}")
     print(f"  Log issues:       {log_issues}")
+    print(f"  Frontmatter:      {fm_issues}")
     print(f"  Link density:     {link_density:.1f} avg per page")
 
-    return 1 if issues else 0
+    # Return error only if there are error-severity issues
+    has_errors = any(i["severity"] in ("error", "critical") for i in issues)
+    return 1 if has_errors else 0
 
 
 def _check_orphan_pages(wiki_root: Path, issues: list) -> int:
@@ -848,10 +1009,13 @@ def _build_source_page(record: Dict[str, Any], slug: str, domain: str, now: str)
         tags_raw = [t.strip() for t in tags_raw.split(",") if t.strip()]
     tags_yaml = ", ".join(f'"{t}"' for t in tags_raw[:10])
 
+    now_date = now[:10]  # "YYYY-MM-DD" from "YYYY-MM-DD HH:MM UTC"
     frontmatter = f"""---
 title: "{title}"
 slug: {slug}
 domain: {domain}
+added: {now_date}
+last_updated: {now_date}
 ingested: {now}
 tags: [{tags_yaml}]
 ---"""
@@ -887,6 +1051,58 @@ tags: [{tags_yaml}]
 > Source page auto-created by `llm-wiki batch-ingest` on {now}
 > Domain: {domain}
 {summary_section}{meta_table}"""
+
+
+def _repair_legacy_source_page_frontmatter(page_path: Path, now_date: str) -> bool:
+    """Backfill required date fields for legacy batch-ingested source pages.
+
+    Older source pages used only `ingested:` and omitted the schema-required
+    `added` / `last_updated` fields. When such a page is encountered during a
+    resumed batch-ingest, repair it in-place without regenerating the body.
+    Returns True if the page was modified.
+    """
+    if not page_path.exists():
+        return False
+
+    text = page_path.read_text(encoding="utf-8")
+    fm = _parse_frontmatter(text)
+    if fm is None:
+        return False
+
+    missing_dates = [field for field in ("added", "last_updated") if field not in fm]
+    if not missing_dates:
+        return False
+
+    repair_date = now_date
+    ingested = str(fm.get("ingested", ""))
+    if len(ingested) >= 10 and ISO_DATE_RE.match(ingested[:10]):
+        repair_date = ingested[:10]
+
+    end = text.find("\n---", 3)
+    if end == -1:
+        return False
+
+    frontmatter_lines = text[4:end].splitlines()
+    rest = text[end + 4:]
+
+    insert_at = len(frontmatter_lines)
+    for i, line in enumerate(frontmatter_lines):
+        stripped = line.strip()
+        if stripped.startswith("ingested:") or stripped.startswith("tags:"):
+            insert_at = i
+            break
+
+    new_lines = list(frontmatter_lines)
+    to_insert = []
+    if "added" in missing_dates:
+        to_insert.append(f"added: {repair_date}")
+    if "last_updated" in missing_dates:
+        to_insert.append(f"last_updated: {repair_date}")
+    new_lines[insert_at:insert_at] = to_insert
+
+    repaired_text = "---\n" + "\n".join(new_lines) + "\n---" + rest
+    page_path.write_text(repaired_text, encoding="utf-8")
+    return True
 
 
 def _read_checkpoint(checkpoint_path: Path) -> set:
@@ -1075,6 +1291,7 @@ def cmd_batch_ingest(args: argparse.Namespace) -> int:
     # Process in batches ------------------------------------------------------
     total = len(records)
     created = 0
+    repaired = 0
     skipped = 0
     errors = 0
     batch_num = 0
@@ -1098,16 +1315,19 @@ def cmd_batch_ingest(args: argparse.Namespace) -> int:
 
     for i, record in enumerate(records, 1):
         slug = _record_to_slug(record, i)
+        page_path = sources_dir / f"{slug}.md"
 
-        # Skip already processed
+        # Skip already processed, but repair legacy source pages if needed
         if slug in done_slugs:
+            if not dry_run and _repair_legacy_source_page_frontmatter(page_path, now_date):
+                repaired += 1
+                print(f"  [REPAIR] Backfilled required frontmatter dates: wiki/sources/{slug}.md")
+                continue
             skipped += 1
             continue
 
         title = record.get("title") or record.get("filename") or slug
         summary = record.get("summary") or record.get("abstract") or record.get("description") or ""
-
-        page_path = sources_dir / f"{slug}.md"
 
         if dry_run:
             # Preview only
@@ -1147,6 +1367,7 @@ def cmd_batch_ingest(args: argparse.Namespace) -> int:
     print(f"[batch-ingest] Complete" + (" (DRY-RUN)" if dry_run else ""))
     print(f"  Total records:    {total}")
     print(f"  Created:          {created}")
+    print(f"  Repaired:         {repaired}")
     print(f"  Skipped (done):   {skipped}")
     print(f"  Errors:           {errors}")
     print(f"  Batches flushed:  {batch_num}")

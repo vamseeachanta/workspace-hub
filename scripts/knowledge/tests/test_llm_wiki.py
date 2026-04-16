@@ -1,5 +1,6 @@
 """Tests for llm_wiki.py CLI."""
 
+import json
 import os
 import shutil
 import tempfile
@@ -13,6 +14,9 @@ import pytest
 # Point REPO_ROOT and WIKIS_DIR at temp dirs for testing
 REPO_ROOT = Path(os.environ.get("LLM_WIKI_TEST_ROOT", tempfile.mkdtemp()))
 WIKIS_DIR = REPO_ROOT / "knowledge" / "wikis"
+
+# Fixture data shipped with the test suite
+FIXTURES_DIR = Path(__file__).parent / "fixtures" / "wiki-test-data"
 
 
 @pytest.fixture(autouse=True)
@@ -364,3 +368,197 @@ class TestWikiSnapshot:
         from scripts.knowledge.llm_wiki import get_wiki_snapshot
         result = get_wiki_snapshot(WIKIS_DIR / "test-domain")
         assert "calm-buoy" in result
+
+
+# ────────────────────────────────────────────────────
+# Fixture-backed tests
+# ────────────────────────────────────────────────────
+
+
+def _copy_fixture_wiki(domain: str) -> Path:
+    """Copy a fixture wiki into the test WIKIS_DIR and return its path."""
+    src = FIXTURES_DIR / domain
+    dst = WIKIS_DIR / domain
+    if dst.exists():
+        shutil.rmtree(dst)
+    shutil.copytree(src, dst)
+    return dst
+
+
+class TestQueryRelevanceRanking:
+    """Given 3 pages with different relevance, verify ranking order."""
+
+    def test_query_relevance_ranking(self, capsys):
+        _copy_fixture_wiki("engineering")
+        # Add a low-relevance page that mentions corrosion only once
+        low = WIKIS_DIR / "engineering" / "wiki" / "concepts" / "fatigue.md"
+        low.parent.mkdir(parents=True, exist_ok=True)
+        low.write_text(
+            "---\ntitle: \"Fatigue Analysis\"\ntags: [fatigue, steel]\n"
+            "added: \"2026-04-03\"\nlast_updated: \"2026-04-03\"\n---\n\n"
+            "# Fatigue Analysis\n\nFatigue is a failure mode. "
+            "Corrosion may accelerate fatigue crack growth.\n"
+        )
+        capsys.readouterr()
+        # Use keywords that appear many times in pipeline-integrity but rarely elsewhere
+        assert run_cmd("query", "corrosion fitness integrity metal loss", "--wiki", "engineering") == 0
+        captured = capsys.readouterr()
+        lines = captured.out.splitlines()
+        # Find the ranked result lines — they start with [1], [2], etc.
+        ranked = [l for l in lines if l.strip().startswith("[")]
+        assert len(ranked) >= 2, f"Expected at least 2 results, got: {ranked}"
+        # The pipeline-integrity page should rank first (most keyword matches)
+        assert "pipeline-integrity" in ranked[0]
+
+
+class TestLintFrontmatterValidation:
+    """Verify lint catches missing/invalid frontmatter."""
+
+    def test_lint_frontmatter_invalid(self, capsys):
+        """Pages with missing required frontmatter fields trigger errors."""
+        _copy_fixture_wiki("engineering")
+        # Create a page missing required fields (no tags, no dates)
+        bad = WIKIS_DIR / "engineering" / "wiki" / "entities" / "bad-page.md"
+        bad.write_text(
+            "---\ntitle: \"Bad Page\"\n---\n\n# Bad Page\n\nNo tags or dates.\n"
+        )
+        capsys.readouterr()
+        result = run_cmd("lint", "--wiki", "engineering")
+        captured = capsys.readouterr()
+        assert result == 1
+        assert "missing required field" in captured.out.lower() or "frontmatter" in captured.out.lower()
+
+    def test_lint_frontmatter_valid(self, capsys):
+        """Fixture pages with correct frontmatter pass lint without frontmatter errors."""
+        _copy_fixture_wiki("engineering")
+        # Add log.md so lint doesn't complain about missing log
+        log = WIKIS_DIR / "engineering" / "wiki" / "log.md"
+        log.write_text("# Wiki Log: engineering\n\n> Auto-generated\n")
+        capsys.readouterr()
+        run_cmd("lint", "--wiki", "engineering")
+        captured = capsys.readouterr()
+        # No frontmatter errors for the fixture pages themselves
+        assert "missing required field 'concepts/pipeline-integrity" not in captured.out
+        assert "missing required field 'entities/orcaflex-solver" not in captured.out
+
+
+class TestIngestCreatesSourcePage:
+    """Given a raw source markdown file, verify ingest copies it correctly."""
+
+    def test_ingest_creates_source_page(self, capsys):
+        run_cmd("init", "test-ingest")
+        src = FIXTURES_DIR / "raw-sources" / "sample-paper.md"
+        assert src.exists(), f"Fixture not found: {src}"
+        assert run_cmd("ingest", str(src), "--wiki", "test-ingest") == 0
+        target = WIKIS_DIR / "test-ingest" / "raw" / "papers" / "sample-paper.md"
+        assert target.exists()
+        content = target.read_text()
+        assert "Subsea Pipeline Corrosion" in content
+        captured = capsys.readouterr()
+        assert "Ingest Request" in captured.out
+        assert "sample-paper.md" in captured.out
+
+
+class TestCrossLinkDiscovery:
+    """Given two wikis with related pages, verify cross-links are present."""
+
+    def test_cross_link_discovery(self):
+        _copy_fixture_wiki("engineering")
+        _copy_fixture_wiki("marine-engineering")
+
+        # Verify cross_links field in engineering/entities/orcaflex-solver.md
+        from scripts.knowledge.llm_wiki import _parse_frontmatter
+        orcaflex = WIKIS_DIR / "engineering" / "wiki" / "entities" / "orcaflex-solver.md"
+        fm = _parse_frontmatter(orcaflex.read_text())
+        assert fm is not None
+        assert "cross_links" in fm
+        assert any("marine-engineering" in link for link in fm["cross_links"])
+
+        # Verify cross_links in marine-engineering/entities/pipeline-integrity.md
+        marine = WIKIS_DIR / "marine-engineering" / "wiki" / "entities" / "pipeline-integrity.md"
+        fm2 = _parse_frontmatter(marine.read_text())
+        assert fm2 is not None
+        assert "cross_links" in fm2
+        assert any("engineering" in link for link in fm2["cross_links"])
+
+        # Verify the markdown body contains an actual link to the other wiki
+        body = marine.read_text()
+        assert "engineering/wiki/concepts/pipeline-integrity.md" in body
+
+
+class TestBatchIngestWithFixtures:
+    """Given a JSONL metadata file, verify batch-ingest creates expected pages."""
+
+    def test_batch_ingest_with_fixtures(self, tmp_path, capsys):
+        run_cmd("init", "batch-test")
+        # Create a JSONL metadata file
+        metadata = tmp_path / "papers.jsonl"
+        records = [
+            {"title": "DNV-RP-F101 Corroded Pipelines", "tags": ["dnv", "pipeline", "corrosion"],
+             "summary": "Standard for assessment of corroded pipelines."},
+            {"title": "API 579 Fitness-For-Service", "tags": ["api", "ffs"],
+             "summary": "Procedures for evaluating equipment fitness for continued service."},
+            {"title": "ASME B31G Manual", "tags": ["asme", "pipeline"],
+             "summary": "Manual for determining remaining strength of corroded pipelines."},
+        ]
+        with metadata.open("w") as f:
+            for r in records:
+                f.write(json.dumps(r) + "\n")
+
+        capsys.readouterr()
+        assert run_cmd("batch-ingest", str(metadata), "--wiki", "batch-test", "--batch-size", "10") == 0
+
+        # Verify source pages were created
+        sources = WIKIS_DIR / "batch-test" / "wiki" / "sources"
+        created = sorted(p.name for p in sources.glob("*.md"))
+        assert len(created) == 3
+        assert "dnv-rp-f101-corroded-pipelines.md" in created
+        assert "api-579-fitness-for-service.md" in created
+
+        # Verify index.md was updated
+        index = WIKIS_DIR / "batch-test" / "wiki" / "index.md"
+        idx_text = index.read_text()
+        assert "page_count: 3" in idx_text
+        assert "source_count: 3" in idx_text
+
+        # Verify checkpoint file exists
+        checkpoint = WIKIS_DIR / "batch-test" / ".checkpoint.jsonl"
+        assert checkpoint.exists()
+        lines = [l for l in checkpoint.read_text().splitlines() if l.strip()]
+        assert len(lines) == 3
+
+    def test_batch_ingest_repairs_legacy_source_page_dates(self, tmp_path, capsys):
+        run_cmd("init", "batch-test")
+        metadata = tmp_path / "legacy.jsonl"
+        record = {
+            "title": "Legacy Source",
+            "tags": ["legacy", "repair"],
+            "summary": "Backfill required frontmatter dates for legacy batch-ingested pages.",
+        }
+        metadata.write_text(json.dumps(record) + "\n")
+
+        slug = "legacy-source"
+        page_path = WIKIS_DIR / "batch-test" / "wiki" / "sources" / f"{slug}.md"
+        page_path.write_text(
+            "---\n"
+            'title: "Legacy Source"\n'
+            f"slug: {slug}\n"
+            "domain: batch-test\n"
+            "ingested: 2026-04-08 12:34 UTC\n"
+            'tags: ["legacy", "repair"]\n'
+            "---\n\n"
+            "# Legacy Source\n\n"
+            "Legacy content.\n",
+            encoding="utf-8",
+        )
+
+        checkpoint = WIKIS_DIR / "batch-test" / ".checkpoint.jsonl"
+        checkpoint.write_text(json.dumps({"slug": slug, "ts": "2026-04-08T12:34:56", "title": "Legacy Source"}) + "\n")
+
+        capsys.readouterr()
+        assert run_cmd("batch-ingest", str(metadata), "--wiki", "batch-test", "--batch-size", "10") == 0
+
+        repaired = page_path.read_text(encoding="utf-8")
+        assert "added: 2026-04-08" in repaired
+        assert "last_updated: 2026-04-08" in repaired
+        assert "ingested: 2026-04-08 12:34 UTC" in repaired
