@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T13:20:06.924774Z",
+  "generated_at": "2026-04-16T17:20:07.461205Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 1,
@@ -22,7 +22,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -349,39 +349,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2034,
-      "title": "feat: engineering LLM wiki seed + incremental ingest pipeline",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2034",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:harness",
-        "domain:knowledge-management",
-        "wip:ace-linux-1"
-      ],
-      "updatedAt": "2026-04-09T19:45:29Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -410,7 +378,38 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2254,
+      "title": "fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2254",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:harness",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-13T13:22:19Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",

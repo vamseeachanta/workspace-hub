@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-16T13:20:06.924774Z
+Generated: 2026-04-16T17:20:07.461205Z
 Apply mode: False
 Threshold: 0.9
 
@@ -18,8 +18,8 @@ Threshold: 0.9
 | #2162 feat(schema): define machine/path alias schema for seeded accessibility registry entries | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2163 feat(operations): add Windows Task Scheduler invocation harness for readiness evidence runs | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2251 Compliance alert: W16 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2254 fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2041 chore: add LaTeX to manim-env for MathTex rendering | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
 | #2042 feat: engineering wiki — ingest skill metadata as wiki pages | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
 | #2123 feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |

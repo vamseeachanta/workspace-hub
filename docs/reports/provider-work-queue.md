@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-16T13:20:06.722127Z
+Generated: 2026-04-16T17:20:07.230148Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -10,24 +10,24 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 2
-- Total routed candidates: 134
+- Total routed candidates: 136
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2055 feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | yes | existing claude agent label | enhancement, priority:high, cat:engineering, wip:ace-linux-1, dark-intelligence, agent:claude |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
 | #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:critical, compliance-alert |
-| #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | no | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, domain:knowledge-management, wip:ace-linux-1 |
 | #2066 fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs | no | existing claude agent label | bug, priority:high, cat:harness, domain:knowledge-management, agent:claude |
 | #2067 feat(knowledge): wire .planning/research into engineering wiki nightly ingest | no | existing claude agent label | enhancement, priority:high, cat:harness, domain:knowledge-management, agent:claude |
 | #2112 data(field-dev): backfill SubseaIQ equipment counts to unblock cost benchmarking | no | existing claude agent label | enhancement, priority:high, cat:engineering, agent:claude |
 | #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | no | strategy/workflow/architecture language | priority:high, cat:engineering |
+| #2254 fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting | no | strategy/workflow/architecture language | bug, priority:high, cat:harness, domain:agent-cost-tracking |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 60
+- Total routed candidates: 58
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
