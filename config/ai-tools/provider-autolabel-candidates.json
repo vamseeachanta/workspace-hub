@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T01:20:06.147632Z",
+  "generated_at": "2026-04-16T05:20:06.771021Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 1,
@@ -37,6 +37,35 @@
         "provider-high-priority"
       ],
       "eligible": true
+    },
+    {
+      "number": 2295,
+      "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:personal-finance",
+        "domain:tax-preparation"
+      ],
+      "updatedAt": "2026-04-16T02:54:39Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
     },
     {
       "number": 2037,

@@ -26,3 +26,12 @@
 {"ts":"2026-04-15T01:51:01Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/learned/form-1120-preparation-from-expense-sheet/SKILL.md","commit":"1c12d8a9df98d39692e7094852e7fc3003ae31cd"}
 {"ts":"2026-04-15T01:54:59Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/learned/form-1120-cash-basis-filing/SKILL.md","commit":"956f659bf0032829368246cd84eb79944e7b7512"}
 {"ts":"2026-04-15T01:55:59Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/learned/cash-basis-tax-reconciliation-workflow/SKILL.md","commit":"d566e23612cb6f9261300c73dd61366b0deeaaf8"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/business_admin/taxact-business-c-corp-filing-packet/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/coordination/gtm-cross-review-readiness/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/development/semantic-taxonomy-reporting-consistency/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub-learned/gtm-demo-workflow-gif-generation/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub-learned/gtm-site-readiness-audit-local-vs-production/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub-learned/gtm-workflow-gif-generation/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub-learned/skill-dedup-collision-reconciliation-with-content-security-scan/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/interactive-claude-to-file-based-fallback/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/mixed-ops-vs-repo-fix-plan-boundary/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}

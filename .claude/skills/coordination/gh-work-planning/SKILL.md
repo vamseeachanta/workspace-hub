@@ -174,6 +174,21 @@ Every major claim from resource intelligence should be backed by explicit proof,
 
 Do not rely on vague impressions like "seems to exist" or "probably handled elsewhere."
 
+## Operational-diagnosis vs repo-remediation split
+
+For operations / cron / scheduler / environment issues, explicitly separate:
+- live-state diagnosis on the current machine or host
+- repo-owned code/config remediation
+
+Do not assume a repo patch is the right answer just because the symptom appears in repo logs.
+
+Required planning behavior for these issues:
+1. Capture a reviewable live-state classification artifact first (for example: installed vs not-installed, firing vs not-firing, failing before startup vs failing after startup).
+2. State which branch is operational-only and which branch is repo-fixable.
+3. If the live cause is operational drift (for example missing crontab installation), do not pretend a repo-code patch solves it. Record the classification explicitly and either stop at operator guidance or create a follow-up ops issue.
+4. Only draft implementation files/tests for the repo-owned failure branch that has actually been evidenced.
+5. Keep acceptance criteria aligned to the chosen branch; avoid mixing "diagnose the live host" and "ship a code fix" as if both must always happen in one issue.
+
 ### a) Repo code
 Check whether the feature/fix already exists partially or fully.
 Record exact files, modules, functions, tests, configs, scripts, and docs found.
@@ -218,6 +233,27 @@ Canonical plan artifact location:
 - `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`
 
 Do not use `.hermes/plans/` for the canonical GitHub issue plan.
+
+### i) Operational-vs-repo fault isolation for cron/scheduler issues
+For issues about cron jobs, scheduled tasks, wrappers, health monitors, or other automation that depends on live machine state, do not assume the fix is in repo code.
+
+Before drafting an implementation-heavy plan:
+- capture at least one reviewable live-state probe artifact when possible (for example: `crontab -l`, generated scheduler dry-run output, current log directory contents, current health JSON/log snapshot)
+- save the probe in a durable repo-visible artifact such as `docs/reports/YYYY-MM-DD-issue-NNN-<slug>-probe.md` when the result materially changes the decision tree
+- explicitly separate these branches:
+  - not installed / not scheduled
+  - installed but not firing yet / operational drift
+  - installed and failing after launch
+  - repo-owned command/config defect
+- if live evidence eliminates one branch, update the draft plan immediately rather than carrying stale hypothetical branches forward
+- if the live cause appears operational rather than repo-owned, the plan must say whether the correct outcome is:
+  - diagnosis + operator guidance only
+  - diagnosis + follow-up issue
+  - bounded repo patch plus separate operational remediation
+
+Important rule:
+- do not present a repo-code patch as the solution if the strongest evidence says the issue is host-state or installation drift
+- for mixed issues, make the stop condition explicit: exactly when do we stop at diagnosis, and exactly when do repo changes become in-scope?
 
 ## Required Step 2 output schema
 
@@ -431,6 +467,24 @@ Before dispatching reviewers, ensure the review package includes:
 
 If the package is incomplete, fix the package before review instead of sending a weak review prompt.
 
+### Practical packaging rule for local draft plans
+
+When the plan is still only in local/uncommitted repo state, do **not** rely on the reviewer being able to fetch it from GitHub or rediscover it from the filesystem.
+
+Use this order of preference:
+1. Provide the full revised plan text inline / via stdin bundle in the review prompt
+2. If needed, include the minimal supporting excerpts inline too
+3. Only rely on path-based retrieval when the artifact is definitely readable from the review environment
+
+Why:
+- non-interactive provider runs can fail to read local drafts because of sandbox, trust, or repo-state limitations
+- a reviewer may return a misleading `MAJOR` caused by retrieval failure rather than by the plan itself
+- path-only prompts are best for stable readable files, not for fresh local draft artifacts
+
+Operational rule:
+- if a review artifact is being refreshed, write the new review to a temp file first and only replace the canonical artifact after the run succeeds; this avoids accidentally truncating a previously good artifact with a failed rerun
+- if a reviewer returns `MAJOR` primarily because retrieval adequacy was insufficient, treat that as a packaging failure first; fix the package, rerun review, and only then treat remaining findings as substantive plan criticism
+
 ## Blind-first rule
 
 Each reviewer should critique independently before seeing any other reviewer conclusions.
@@ -488,6 +542,43 @@ If reviewers disagree materially:
 - do not average the disagreement away
 - resolve it using Step 2 evidence, Step 3 traceability, and explicit reasoning
 - revise and re-review if the disagreement affects correctness, scope, tests, or feasibility
+
+## Diagnosis-vs-remediation branch rule
+
+When an issue can resolve in more than one fundamentally different way — especially:
+- operational/environment diagnosis only
+- repo-owned code/config remediation
+
+make that branch decision explicit in the plan.
+
+Required pattern:
+- identify the live-state classification artifact you will use to choose the branch
+- state the stop condition for the diagnosis-only path
+- state the stop condition for the repo-remediation path
+- avoid mixing both as if implementation is guaranteed
+- if a diagnosis-only outcome is plausible, say explicitly that the issue may end with operator guidance and no repo code changes
+
+Good examples:
+- installed vs not-installed cron entry
+- host drift vs repo defect
+- external service outage vs local integration bug
+
+This prevents approval-ready plans from smuggling in speculative code changes before the branch is actually chosen.
+
+## Review-iteration stop rule
+
+When a plan keeps returning fresh `MAJOR` findings across multiple re-review passes, do not iterate indefinitely.
+
+After 2-3 substantive tightening passes, explicitly choose one:
+- continue because the remaining blocker is shrinking and clearly actionable
+- park the issue in draft with a concise blocker summary
+- switch to planning a sibling/follow-up issue that may unblock faster
+
+Operational guidance:
+- treat repeated `MAJOR` findings with shrinking but persistent scope as a signal of diminishing returns
+- post a GitHub update summarizing the remaining blocker instead of silently grinding through more revisions
+- do not move the issue to `status:plan-review` just because the plan is "close"
+- if you switch away, record why and what exact blocker remains
 
 ## No silent downgrade rule
 

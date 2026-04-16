@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-16T01:20:05.952665Z
+Generated: 2026-04-16T05:20:06.583601Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 2
-- Total routed candidates: 135
+- Total routed candidates: 134
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -44,10 +44,11 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 5
+- Total routed candidates: 6
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
+| #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | no | research/triage/audit language | enhancement, priority:high, cat:personal-finance, domain:tax-preparation |
 | #2039 feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues) | no | research/triage/audit language | enhancement, priority:medium, domain:knowledge-management |
 | #2041 chore: add LaTeX to manim-env for MathTex rendering | no | research/triage/audit language | enhancement, priority:low |
 | #2042 feat: engineering wiki — ingest skill metadata as wiki pages | no | research/triage/audit language | enhancement, cat:harness, domain:knowledge-management |

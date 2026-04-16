@@ -61,7 +61,33 @@ A fresh integration worktree gives you a clean room for landing only the approve
 - Also run a nearby regression set that covers touched consumers.
 - Do not assume per-worktree validation is enough; the combined landing set needs its own green run.
 
-6. Prepare landing artifacts before push
+6. Pre-landing already-landed check (critical)
+Before you prepare push/closeout artifacts or cherry-pick into the integration worktree, explicitly verify the issue has not already landed elsewhere.
+
+Check all of:
+- `git fetch origin main --quiet`
+- `git log --oneline origin/main -5`
+- `gh issue view <issue> --json state,comments,labels,url`
+- if useful, `git log --oneline --grep='#<issue>' origin/main`
+
+Interpretation rules:
+- If `origin/main` already contains an implementation commit for the issue, treat the issue as potentially already landed.
+- If the GitHub issue is already CLOSED with a landed-summary comment, treat that as strong evidence the work is already upstream.
+- If your local isolated worktree re-implemented the same issue independently, stop before push and switch from landing mode to verification/reconciliation mode.
+
+What to do if already landed upstream:
+- do NOT push a duplicate implementation branch
+- do NOT post duplicate closeout comments
+- compare your local worktree against `origin/main` and determine whether it contains any extra learnings or fixes not upstream
+- if your work is fully superseded, keep it as local evidence only and clean up the redundant worktree after documenting the discovery
+- if your work contains additional value beyond upstream, create a fresh follow-up issue/branch for just that delta instead of re-landing the full issue
+
+Why this matters:
+- parallel agent execution can cause an issue to land on `origin/main` while your isolated worktree is still implementing
+- a late cherry-pick conflict in the clean integration worktree is often the first signal that the issue was already landed elsewhere
+- checking issue state + origin/main before landing avoids duplicate pushes and misleading second closeouts
+
+7. Prepare landing artifacts before push
 Create:
 - an integration runbook with:
   - issue links
@@ -76,7 +102,7 @@ Create:
   - git evidence
   - residual risk
 
-7. Push/close only after user approval for side effects
+8. Push/close only after user approval for side effects
 - Pushing, posting GH comments, and closing issues are external side effects.
 - If user approval for execution existed but not explicit approval for external landing side effects, stop and ask for final go-ahead.
 

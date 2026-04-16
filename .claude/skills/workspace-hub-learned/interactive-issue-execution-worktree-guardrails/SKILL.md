@@ -86,6 +86,32 @@ Mitigation:
 - switch to a deterministic local method (`execute_code`) for machine-generated artifacts such as inventories, manifests, and validation reports
 - use the agent again only for review/final polish if needed
 
+### 5) Repo-local wrappers and audit scripts break in worktrees due to inherited environment
+Observed:
+- repo-local wrappers that trust inherited `WORKSPACE_HUB` can accidentally execute against the dirty main checkout instead of the isolated worktree
+- direct/manual script runs can also mis-read config or policy files from the wrong checkout when `WORKSPACE_HUB` points elsewhere
+
+Mitigation:
+- for repo-local wrappers, derive repo root from the wrapper/script path (`BASH_SOURCE` / `__file__`) instead of trusting inherited `WORKSPACE_HUB`
+- treat environment variables like `WORKSPACE_HUB` as optional overrides only when that is explicitly intended and tested
+- add a wrapper test that sets a stale `WORKSPACE_HUB` and verifies dry-run output still points at the worktree-local script path
+- when validating a new deterministic script in a worktree, test both:
+  - normal dry-run/runtime
+  - stale-env dry-run/runtime
+
+### 6) Baseline/delta artifact identity churn hides real changes
+Observed in deterministic weekly audit work:
+- using absolute checkout/worktree paths in `audit_scope` makes baseline reuse fail across worktrees
+- including volatile path lists inside the finding identity key causes path-footprint changes to look like brand-new findings instead of `is_changed`
+- carry-forward sections can silently omit unchanged lower-confidence findings unless explicitly reconciled into the markdown/report totals
+
+Mitigation:
+- derive a stable audit scope from repo-relative semantics when possible (for example `.claude/skills`) rather than absolute worktree paths
+- define finding identity from semantic fields that should survive normal location churn (classification + canonical names), not from volatile path lists
+- detect path/canonical-name/classification changes in delta comparison so scope changes are surfaced as changed findings
+- ensure carry-forward markdown/report sections reconcile with summary counts, including unchanged non-high-confidence findings that remain active
+- if `_core` / `_internal` findings are meant to be informational-only, propagate that flag through every finding path (including leaf-collision findings), not just duplicate-name findings
+
 ## Verification checklist
 - `git status --short` contains only owned files
 - no forbidden files remain modified

@@ -166,6 +166,85 @@ examples/demos/gtm/media/
 
 These were all kept under ~1 MB using Playwright screenshots + ffmpeg palette generation.
 
+## Converting interim GIFs into issue-aligned deliverables
+For issue #1809-style work, a fast next step is to normalize the preview names into the requested deliverable names rather than regenerating the 5 demo GIFs.
+
+### Verified rename/copy pattern
+Create these final names under `examples/demos/gtm/media/`:
+- `demo_01_freespan.gif`
+- `demo_02_wall_thickness.gif`
+- `demo_03_mudmat_installation.gif`
+- `demo_04_shallow_pipelay.gif`
+- `demo_05_jumper_installation.gif`
+
+If the preview GIF content is already acceptable, copy/rename them first, then remove the `_preview` versions once references are checked. Git will usually detect these as renames if content is unchanged.
+
+## Comparison-matrix GIF pattern
+The missing sixth deliverable for #1809 can be generated from:
+- `examples/demos/gtm/results/vessel_comparison_matrix.json`
+- `examples/demos/gtm/results/structure_comparison_matrix.json`
+
+### Reusable approach
+1. Build a lightweight self-contained HTML page summarizing both matrices.
+2. Use Playwright to render the page at `1024x640`.
+3. Capture a full-page screenshot once.
+4. Slice it into viewport-height frames to simulate smooth scrolling.
+5. Assemble frames into `demo_comparison_matrix.gif` with Pillow or ffmpeg.
+6. Add a short `media/README.md` documenting the files and regeneration command.
+
+### Environment-specific finding
+On this machine, the default `python3` pointed to a 3.13 environment that did not have the Playwright Python module, while `python3.12` did.
+
+Working pattern:
+```bash
+python3.12 -c "from playwright.sync_api import sync_playwright; print('OK')"
+python3.12 -m playwright install chromium
+python3.12 examples/demos/gtm/media/generate_comparison_matrix_gif.py
+```
+
+If Playwright is available via `npx` but not in the default Python interpreter, do not assume `python3 -m playwright` will work. Probe `python3.12` explicitly before rewriting the workflow.
+
+### Proven output set after normalization
+- `demo_01_freespan.gif`
+- `demo_02_wall_thickness.gif`
+- `demo_03_mudmat_installation.gif`
+- `demo_04_shallow_pipelay.gif`
+- `demo_05_jumper_installation.gif`
+- `demo_comparison_matrix.gif`
+- `media/README.md`
+- optional generator: `media/generate_comparison_matrix_gif.py`
+
+## Interactive Claude Code execution pattern for scoped media work
+When the user explicitly wants implementation via interactive Claude Code, use tmux and pass the full issue context in the prompt rather than assuming Claude can read the parent repo issue from a nested repo.
+
+### Why
+In the nested `digitalmodel/` repo, `gh issue view 1809` may fail or resolve against the wrong repository context. Passing the exact issue requirements in the prompt avoids this ambiguity.
+
+### Verified launch pattern
+```bash
+tmux new-session -d -s claude-1809 -x 160 -y 48
+cd /mnt/local-analysis/workspace-hub/digitalmodel && \
+claude --setting-sources user --dangerously-skip-permissions "$(cat /tmp/claude_1809_prompt.txt)"
+```
+
+Then handle dialogs in order:
+1. Trust dialog: `Enter`
+2. Bypass-permissions warning: `Down`, then `Enter`
+
+### Monitoring pattern
+Use repeated pane captures while Claude works:
+```bash
+tmux capture-pane -t claude-1809 -p -S -200
+```
+
+This worked well for a scoped media-only task where Claude:
+- copied/renamed the preview GIFs
+- wrote `generate_comparison_matrix_gif.py`
+- adapted to the local Python/Playwright mismatch
+- generated `demo_comparison_matrix.gif`
+- wrote `media/README.md`
+- committed and pushed the work
+
 ## Git hygiene
 Running validation regenerates tracked HTML/JSON files. If the run is intended as evidence, commit and push the refreshed artifacts. If not, revert them before finishing.
 

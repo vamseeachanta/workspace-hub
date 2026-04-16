@@ -185,6 +185,19 @@ If execution is blocked, post a GitHub update immediately with:
 
 If the blocker is substantial and not resolvable inside current scope, create a future issue or dependency-tracking issue instead of letting the current issue absorb it silently.
 
+Runtime / machine-availability blocker rule:
+- When an approved issue explicitly requires a licensed tool, external machine, or runtime that is not available in the current session, do not fake implementation and do not treat repo-side helper code as satisfying the issue.
+- First, gather local evidence that sharpens the blocker:
+  - verify the required runtime/tool is actually unavailable on this machine
+  - verify any relevant repo-side precursor code/tests that already exist
+  - confirm whether the acceptance target still requires the missing machine/runtime for final proof
+- Then post a GitHub update that clearly separates:
+  - what was verified locally
+  - what remains blocked on the missing runtime/machine
+  - why the issue is not yet satisfiable from the current environment
+- If another approved issue is executable from the current environment, pivot immediately to that next bounded target rather than stalling.
+- Typical examples: OrcaFlex/OrcaWave/ANSYS issues requiring `licensed-win-1`, CFD/OpenFOAM issues requiring absent solver binaries, or hardware-dependent validation unavailable from the current host.
+
 ## Entry condition
 
 Only start execution when the issue is already labeled `status:plan-approved`.
@@ -251,11 +264,12 @@ Do not treat "looks done" as enough; require evidence that would justify closing
 
 Minimum pre-check sequence:
 1. inspect the expected deliverable surface: files, flags, config, docs, behavior, or output named by the issue/plan
-2. run the most relevant targeted tests/validators if they exist
-3. read issue comments/linked PRs for prior implementation or landing evidence
-4. inspect recent commits/history when comments or repo state suggest the work may already have landed partially or fully
-5. compare current repo behavior against the approved acceptance target, not just against changed files
-6. make an explicit decision: `already done`, `not done`, or `uncertain`
+2. if this is a verification-first closeout, first make sure the local checkout actually reflects the candidate landed state (`git fetch`, compare `HEAD` vs `origin/main`, and fast-forward/rebase or switch to a clean worktree as needed). Do not conclude a file/test is missing from the repo until you have ruled out local checkout staleness.
+3. run the most relevant targeted tests/validators if they exist
+4. read issue comments/linked PRs for prior implementation or landing evidence
+5. inspect recent commits/history when comments or repo state suggest the work may already have landed partially or fully
+6. compare current repo behavior against the approved acceptance target, not just against changed files
+7. make an explicit decision: `already done`, `not done`, or `uncertain`
 
 Evidence required to conclude `already done`:
 - at least one direct proof of the deliverable in the current repo state
@@ -267,6 +281,10 @@ Decision outcomes:
 - `already done` -> post a GitHub update with the evidence bundle, state that implementation is already satisfied, and close the issue from the verification-first path
 - `not done` -> post a concise note only if the pre-check revealed meaningful findings, then continue to execution mode selection
 - `uncertain` -> do not start broad implementation yet; stay in central recon until you can prove `already done` or `not done`
+
+Important verification-first nuances:
+- If the issue asked for an intermediate tranche (for example: tests-only, xfail-only, or a narrowly scoped sub-step) but the repo has already moved past that point with stronger landed work, treat that as `already done` when the stronger landed state still satisfies the requested acceptance target. Say explicitly that the repo exceeded the originally proposed intermediate stop.
+- For parent / claim-boundary / umbrella issues, open follow-on hardening issues do not automatically block closeout. If the parent acceptance criteria are satisfied by landed child work and the remaining items are clearly future hardening rather than missing parent requirements, close the parent with explicit linkage to the still-open follow-ons.
 
 GitHub posting for this stage:
 - if the issue is already done, the comment must include what was checked, what passed or was observed, and what artifact proves the work landed

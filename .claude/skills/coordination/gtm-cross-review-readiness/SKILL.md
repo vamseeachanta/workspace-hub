@@ -1,13 +1,17 @@
 ---
 name: gtm-cross-review-readiness
-description: Adversarial review workflow for GTM feature work before user approval — validate shipped artifacts, live URLs, public-facing collateral, and issue/body status drift.
+description: "Adversarial review workflow for GTM feature work before user approval\
+  \ \u2014 validate shipped artifacts, live URLs, public-facing collateral, and issue/body\
+  \ status drift."
 version: 1.0.0
 category: coordination
-tags: [gtm, adversarial-review, approval, github, website, collateral]
-related_skills:
-  - coordination/agent-work-adversarial-review
-  - development/code-reviewer
-  - github/github-issues
+tags:
+- gtm
+- adversarial-review
+- approval
+- github
+- website
+- collateral
 ---
 
 # GTM Cross-Review Readiness

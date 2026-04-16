@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-16T01:20:05.952665Z",
+  "generated_at": "2026-04-16T05:20:06.583601Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-16T01:20:04.292370Z",
+  "scorecard_generated_at": "2026-04-16T05:20:04.948394Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 135,
+      "total_candidates": 134,
       "top_issues": [
         {
           "number": 2055,
@@ -391,8 +391,29 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 5,
+      "total_candidates": 6,
       "top_issues": [
+        {
+          "number": 2295,
+          "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:personal-finance",
+            "domain:tax-preparation"
+          ],
+          "updatedAt": "2026-04-16T02:54:39Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
         {
           "number": 2039,
           "title": "feat: engineering wiki \u2014 ingest remaining high-value sources (skills metadata, closed issues)",
