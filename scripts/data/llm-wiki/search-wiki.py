@@ -8,8 +8,9 @@ from __future__ import annotations
 import argparse, json, math, re
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
-WIKI_DIR = REPO_ROOT / "data" / "llm-wiki"
+from resolve_wiki_path import resolve_wiki_dir
+
+WIKI_DIR = resolve_wiki_dir()
 INDEX_PATH = WIKI_DIR / "search-index.json"
 PRODUCTS = ["orcaflex", "orcawave", "orcfxapi", "papers"]
 TITLE_W, SECTION_W, BODY_W = 3.0, 2.0, 1.0

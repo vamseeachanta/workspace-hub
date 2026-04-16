@@ -553,12 +553,14 @@ def ingest_papers(output_root: Path) -> list[dict]:
 
 def main():
     parser = argparse.ArgumentParser(description="Ingest Orcina docs into llm-wiki")
+    # Import portable path resolver (#2140)
+    from resolve_wiki_path import resolve_wiki_dir
+
     parser.add_argument(
         "--output-dir",
-        default="/mnt/local-analysis/workspace-hub/data/llm-wiki",
-        # Actual data lives on ace drive: /mnt/remote/ace-linux-1/ace/digitalmodel/llm-wiki/
-        # Local path is a symlink per data-placement policy (#1540, #2102)
-        help="Root output directory (default: data/llm-wiki symlink -> ace drive)",
+        default=None,
+        # Resolved via resolve_wiki_path.py: env var → config → data/llm-wiki → knowledge/wikis
+        help="Root output directory (default: auto-resolved via resolve_wiki_path.py)",
     )
     parser.add_argument(
         "--products",
@@ -569,7 +571,7 @@ def main():
     )
     args = parser.parse_args()
 
-    output_root = Path(args.output_dir)
+    output_root = Path(args.output_dir) if args.output_dir else resolve_wiki_dir()
     output_root.mkdir(parents=True, exist_ok=True)
 
     print(f"Output directory: {output_root}")

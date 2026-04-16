@@ -17,7 +17,7 @@ mkdir -p "${KNOWLEDGE_BASE_DIR}"
     flock -w 30 200 || { echo "[build-knowledge-index] Lock timeout — skip" >&2; exit 0; }
 
     uv run --no-project --with pyyaml python - <<PYEOF
-import json, os, sys
+import json, os, sys, hashlib
 
 kb_dir = "${KNOWLEDGE_BASE_DIR}"
 seeds_dir = "${KNOWLEDGE_SEEDS_DIR}"
@@ -26,20 +26,54 @@ index_tmp = "${INDEX_TMP}"
 entries = []
 seen_ids = set()
 
+def _synth_id(entry):
+    """Generate a deterministic ID from entry content."""
+    digest = hashlib.sha256(json.dumps(entry, sort_keys=True).encode()).hexdigest()[:12]
+    return f"learned-{digest}"
+
 def load_jsonl(path):
+    """Load JSON objects from strict JSONL or concatenated pretty-printed JSON."""
     out = []
     try:
         with open(path) as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    out.append(json.loads(line))
-                except json.JSONDecodeError:
-                    print(f"[build-knowledge-index] WARN: skipping malformed line in {path}", file=sys.stderr)
+            content = f.read()
     except FileNotFoundError:
-        pass
+        return out
+    if not content.strip():
+        return out
+    # Fast path: try strict JSONL (one object per line)
+    lines = content.splitlines()
+    strict_ok = True
+    strict_out = []
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            strict_out.append(json.loads(line))
+        except json.JSONDecodeError:
+            strict_ok = False
+            break
+    if strict_ok:
+        return strict_out
+    # Slow path: streaming decode for concatenated multi-line JSON
+    decoder = json.JSONDecoder()
+    idx = 0
+    length = len(content)
+    while idx < length:
+        # Skip whitespace
+        while idx < length and content[idx] in ' \t\n\r':
+            idx += 1
+        if idx >= length:
+            break
+        try:
+            obj, end_idx = decoder.raw_decode(content, idx)
+            out.append(obj)
+            idx = idx + end_idx
+        except json.JSONDecodeError:
+            # Skip one character and try again
+            print(f"[build-knowledge-index] WARN: skipping malformed content at offset {idx} in {path}", file=sys.stderr)
+            idx += 1
     return out
 
 # Load all *.jsonl except index.jsonl
@@ -49,7 +83,10 @@ if os.path.isdir(kb_dir):
             path = os.path.join(kb_dir, fname)
             for e in load_jsonl(path):
                 eid = e.get("id", "")
-                if eid and eid not in seen_ids:
+                if not eid:
+                    eid = _synth_id(e)
+                    e["id"] = eid
+                if eid not in seen_ids:
                     seen_ids.add(eid)
                     entries.append(e)
 

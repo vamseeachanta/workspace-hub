@@ -35,6 +35,17 @@ scripts_exempt: true
 
 # Orcaflex Batch Manager
 
+## Wiki Context (query before execution)
+
+Before starting a batch simulation campaign, query the wiki for relevant domain knowledge:
+
+```bash
+bash scripts/knowledge/wiki-query-context.sh "OrcaFlex batch simulation" --domains engineering,marine-engineering
+```
+
+Check results for: solver settings, convergence guidance, known pitfalls, and related standards.
+Log consulted wiki pages in your output per the retrieval contract (#2208).
+
 ## When to Use
 
 - Running large simulation campaigns (100+ cases)

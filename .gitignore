@@ -434,7 +434,8 @@ specs/
 data/modules/**/cache/
 
 # LLM-Wiki — crawled/converted documentation for agent consumption (#2088)
-data/llm-wiki/
+# Symlink is machine-specific; re-create locally or use resolve_wiki_path.py (#2140)
+data/llm-wiki
 
 # Document intelligence pipeline (WRK-309)
 data/document-index/index.jsonl

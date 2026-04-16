@@ -226,6 +226,85 @@ run_test "test_index_deduplicates" bash -c "
     [[ \"\${count}\" -eq 1 ]]
 "
 
+# test_index_multiline_jsonl — concatenated pretty-printed JSON objects are ingested
+run_test "test_index_multiline_jsonl" bash -c "
+    mkdir -p '${TMP_DIR}/kb-multiline'
+    cat > '${TMP_DIR}/kb-multiline/learned-patterns.jsonl' << 'MLEOF'
+{
+  \"id\": \"ML-001\",
+  \"type\": \"learned\",
+  \"fact_type\": \"stage_exit\",
+  \"title\": \"Multiline entry one\"
+}
+{
+  \"id\": \"ML-002\",
+  \"type\": \"learned\",
+  \"fact_type\": \"stage_exit\",
+  \"title\": \"Multiline entry two\"
+}
+MLEOF
+    KNOWLEDGE_BASE_DIR='${TMP_DIR}/kb-multiline' \
+    KNOWLEDGE_SEEDS_DIR='${TMP_DIR}/knowledge/seeds' \
+    bash '${SCRIPTS_DIR}/build-knowledge-index.sh' &&
+    [[ -f '${TMP_DIR}/kb-multiline/index.jsonl' ]] &&
+    grep -q 'ML-001' '${TMP_DIR}/kb-multiline/index.jsonl' &&
+    grep -q 'ML-002' '${TMP_DIR}/kb-multiline/index.jsonl' &&
+    count=\$(wc -l < '${TMP_DIR}/kb-multiline/index.jsonl')
+    # seeds entry + 2 multiline entries = at least 3 entries
+    [[ \"\${count}\" -ge 2 ]]
+"
+
+# test_index_synth_id_for_missing — entries without id get a stable synthesized id
+run_test "test_index_synth_id_for_missing" bash -c "
+    mkdir -p '${TMP_DIR}/kb-synthid'
+    cat > '${TMP_DIR}/kb-synthid/learned-patterns.jsonl' << 'SIEOF'
+{
+  \"type\": \"learned\",
+  \"fact_type\": \"stage_exit\",
+  \"title\": \"No-id entry\"
+}
+SIEOF
+    KNOWLEDGE_BASE_DIR='${TMP_DIR}/kb-synthid' \
+    KNOWLEDGE_SEEDS_DIR='${TMP_DIR}/knowledge/seeds' \
+    bash '${SCRIPTS_DIR}/build-knowledge-index.sh' &&
+    [[ -f '${TMP_DIR}/kb-synthid/index.jsonl' ]] &&
+    grep -q '\"learned-' '${TMP_DIR}/kb-synthid/index.jsonl' &&
+    grep -q 'No-id entry' '${TMP_DIR}/kb-synthid/index.jsonl'
+"
+
+# test_index_synth_id_stable — same content produces same id across runs
+run_test "test_index_synth_id_stable" bash -c "
+    mkdir -p '${TMP_DIR}/kb-stable'
+    cat > '${TMP_DIR}/kb-stable/patterns.jsonl' << 'STEOF'
+{
+  \"type\": \"learned\",
+  \"fact_type\": \"test\",
+  \"title\": \"Stability check\"
+}
+STEOF
+    KNOWLEDGE_BASE_DIR='${TMP_DIR}/kb-stable' \
+    KNOWLEDGE_SEEDS_DIR='${TMP_DIR}/knowledge/seeds-empty' \
+    bash '${SCRIPTS_DIR}/build-knowledge-index.sh'
+    id1=\$(grep -o '\"learned-[a-f0-9]*\"' '${TMP_DIR}/kb-stable/index.jsonl' | head -1)
+    # Rebuild — id must be identical
+    KNOWLEDGE_BASE_DIR='${TMP_DIR}/kb-stable' \
+    KNOWLEDGE_SEEDS_DIR='${TMP_DIR}/knowledge/seeds-empty' \
+    bash '${SCRIPTS_DIR}/build-knowledge-index.sh'
+    id2=\$(grep -o '\"learned-[a-f0-9]*\"' '${TMP_DIR}/kb-stable/index.jsonl' | head -1)
+    [[ \"\${id1}\" == \"\${id2}\" ]] && [[ -n \"\${id1}\" ]]
+"
+
+# test_index_mixed_strict_and_multiline — file with strict JSONL still works
+run_test "test_index_mixed_strict_and_multiline" bash -c "
+    mkdir -p '${TMP_DIR}/kb-strict'
+    echo '{\"id\":\"STRICT-001\",\"type\":\"wrk\",\"title\":\"Strict entry\"}' \
+        > '${TMP_DIR}/kb-strict/completions.jsonl'
+    KNOWLEDGE_BASE_DIR='${TMP_DIR}/kb-strict' \
+    KNOWLEDGE_SEEDS_DIR='${TMP_DIR}/knowledge/seeds' \
+    bash '${SCRIPTS_DIR}/build-knowledge-index.sh' &&
+    grep -q 'STRICT-001' '${TMP_DIR}/kb-strict/index.jsonl'
+"
+
 # ── Phase 3 tests ─────────────────────────────────────────────────────────────
 
 echo ""

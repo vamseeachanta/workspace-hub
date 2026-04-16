@@ -6,16 +6,21 @@ and content keywords, then compares across wikis for concept overlap using
 fuzzy matching on titles and tag intersection. Outputs discovered links in
 the same format as knowledge/wikis/cross-links.md.
 
+Phase 2 adds provenance-based (shared sources), entity co-reference,
+and standards-chain link types, plus JSONL output (#2068).
+
 Usage:
     uv run scripts/knowledge/wiki-cross-links.py --dry-run          # report only
     uv run scripts/knowledge/wiki-cross-links.py --apply            # update pages
     uv run scripts/knowledge/wiki-cross-links.py --wikis engineering,marine-engineering
     uv run scripts/knowledge/wiki-cross-links.py --min-score 0.4    # tune sensitivity
+    uv run scripts/knowledge/wiki-cross-links.py --jsonl             # emit cross-links.jsonl
 
-Issue: #2011
+Issue: #2011, #2068
 """
 
 import argparse
+import json
 import re
 import sys
 from collections import defaultdict
@@ -51,6 +56,8 @@ class WikiPage:
     title: str  # from frontmatter
     tags: Set[str] = field(default_factory=set)
     keywords: Set[str] = field(default_factory=set)
+    sources: Set[str] = field(default_factory=set)  # frontmatter sources
+    entities: Set[str] = field(default_factory=set)  # entity co-references
     existing_cross_links: Set[str] = field(default_factory=set)
     file_path: Path = field(default_factory=Path)
 
@@ -73,6 +80,7 @@ class CrossLink:
     target: WikiPage
     score: float
     link_type: str  # human-readable reason
+    link_types: List[str] = field(default_factory=list)  # machine-readable types
 
     def __hash__(self):
         # Deduplicate: A->B and B->A are different entries
@@ -88,9 +96,31 @@ class CrossLink:
 # ── Parsing ──────────────────────────────────────────────────────────────────
 
 
+def _parse_yaml_list(fm_text: str, key: str) -> List[str]:
+    """Parse a YAML list field from frontmatter (inline or multi-line)."""
+    # Inline format: key: [a, b, c]
+    inline_match = re.search(rf"^{key}:\s*\[(.*?)\]", fm_text, re.MULTILINE)
+    if inline_match:
+        raw = inline_match.group(1)
+        return [t.strip().strip("\"'") for t in raw.split(",") if t.strip()]
+
+    # Multi-line format: key:\n  - a\n  - b
+    block_match = re.search(
+        rf"^{key}:\s*\n((?:\s+-\s+.*\n?)+)", fm_text, re.MULTILINE
+    )
+    if block_match:
+        return [
+            t.strip().lstrip("- ").strip("\"'")
+            for t in block_match.group(1).strip().split("\n")
+            if t.strip()
+        ]
+
+    return []
+
+
 def parse_frontmatter(text: str) -> dict:
     """Extract YAML frontmatter fields from markdown text."""
-    result = {"title": "", "tags": []}
+    result = {"title": "", "tags": [], "sources": []}
     fm_match = re.match(r"^---\s*\n(.*?)\n---", text, re.DOTALL)
     if not fm_match:
         return result
@@ -103,23 +133,10 @@ def parse_frontmatter(text: str) -> dict:
         result["title"] = title_match.group(1).strip()
 
     # Tags — handle both [a, b] and - a\n- b formats
-    tags_match = re.search(r"^tags:\s*\[(.*?)\]", fm_text, re.MULTILINE)
-    if tags_match:
-        raw = tags_match.group(1)
-        result["tags"] = [
-            t.strip().strip("\"'") for t in raw.split(",") if t.strip()
-        ]
-    else:
-        # Multi-line YAML list
-        tags_block = re.search(
-            r"^tags:\s*\n((?:\s+-\s+.*\n?)+)", fm_text, re.MULTILINE
-        )
-        if tags_block:
-            result["tags"] = [
-                t.strip().lstrip("- ").strip("\"'")
-                for t in tags_block.group(1).strip().split("\n")
-                if t.strip()
-            ]
+    result["tags"] = _parse_yaml_list(fm_text, "tags")
+
+    # Sources — same two formats
+    result["sources"] = _parse_yaml_list(fm_text, "sources")
 
     return result
 
@@ -142,6 +159,55 @@ def extract_keywords(text: str) -> Set[str]:
         keywords.update(words)
 
     return keywords
+
+
+# Common short uppercase words that are NOT meaningful entities
+_ENTITY_STOPWORDS = frozenset({
+    "THE", "AND", "FOR", "NOT", "BUT", "ARE", "WAS", "HAS", "HAD", "ITS",
+    "CAN", "MAY", "USE", "SET", "GET", "ALL", "NEW", "OLD", "SEE", "RUN",
+    "YES", "KEY", "TOP", "END", "ADD", "FIT", "MAX", "MIN", "REF", "PDF",
+    "CSV", "PNG", "JPG", "GIF", "SVG", "URL", "CLI", "CWD", "TMP",
+    "TODO", "NOTE", "THEN", "WHEN", "WITH", "FROM", "EACH", "ALSO",
+    "MUST", "WILL", "DOES", "THIS", "THAT", "THEY", "USED", "USES",
+    "NEXT", "LAST", "FILE", "PAGE", "LINK", "TEXT", "CODE", "DATA",
+    "NAME", "TYPE", "LEFT", "TRUE", "NULL", "NONE",
+})
+
+
+def extract_entities(text: str) -> Set[str]:
+    """Extract named entities from page body for co-reference linking.
+
+    Looks for:
+    - CamelCase tool names: OrcaFlex, BEMRosetta, DeepLines
+    - Standards codes: DNV-RP-C205, API-579, ISO-19901-7
+    - Uppercase acronyms (3+ chars): OCIMF, SIGTTO, ASTM, FPSO
+    - Standards references: "API 2SK", "ISO 19901"
+    """
+    entities = set()
+
+    # CamelCase tool/product names (e.g. OrcaFlex, BEMRosetta, DeepLines)
+    for match in re.finditer(r"\b([A-Z][a-z]+[A-Z][A-Za-z0-9]*)\b", text):
+        entities.add(match.group(1))
+
+    # Hyphenated standard codes: DNV-RP-C205, DNV-OS-E301, API-579-1
+    for match in re.finditer(
+        r"\b([A-Z]{2,}-(?:[A-Z]{2,}-)?[A-Z0-9][A-Za-z0-9-]*)\b", text
+    ):
+        entities.add(match.group(1))
+
+    # Uppercase acronyms (3+ chars, not common words)
+    for match in re.finditer(r"\b([A-Z]{3,})\b", text):
+        acronym = match.group(1)
+        if acronym not in _ENTITY_STOPWORDS:
+            entities.add(acronym)
+
+    # Standards references with space: "API 2SK", "ISO 19901", "ASME B31"
+    for match in re.finditer(r"\b([A-Z]{2,})\s+(\d{2,}[A-Za-z0-9]*)\b", text):
+        prefix = match.group(1)
+        if prefix not in _ENTITY_STOPWORDS:
+            entities.add(f"{prefix} {match.group(2)}")
+
+    return entities
 
 
 def extract_existing_cross_links(text: str, wiki_name: str) -> Set[str]:
@@ -184,6 +250,8 @@ def scan_wiki(wiki_dir: Path, wiki_name: str) -> List[WikiPage]:
             title = fm["title"] or slug.replace("-", " ").title()
             tags = {t.lower() for t in fm["tags"]}
             keywords = extract_keywords(text)
+            sources = {s.lower() for s in fm["sources"] if s}
+            entities = extract_entities(text)
             existing = extract_existing_cross_links(text, wiki_name)
 
             page = WikiPage(
@@ -193,6 +261,8 @@ def scan_wiki(wiki_dir: Path, wiki_name: str) -> List[WikiPage]:
                 title=title,
                 tags=tags,
                 keywords=keywords,
+                sources=sources,
+                entities=entities,
                 existing_cross_links=existing,
                 file_path=md_file,
             )
@@ -232,40 +302,106 @@ def keyword_overlap(a: Set[str], b: Set[str]) -> float:
     return len(intersection) / len(union) if union else 0.0
 
 
+def entity_overlap(a: Set[str], b: Set[str]) -> float:
+    """Jaccard similarity of entity sets."""
+    if not a or not b:
+        return 0.0
+    intersection = a & b
+    union = a | b
+    return len(intersection) / len(union) if union else 0.0
+
+
+def source_overlap_score(a: Set[str], b: Set[str]) -> Tuple[float, Set[str]]:
+    """Compute provenance score from shared sources.
+
+    Returns (score, shared_sources). Score is 0.3 per shared source, capped at 0.6.
+    """
+    if not a or not b:
+        return 0.0, set()
+    shared = a & b
+    if not shared:
+        return 0.0, set()
+    return min(len(shared) * 0.3, 0.6), shared
+
+
 def compute_similarity(page_a: WikiPage, page_b: WikiPage) -> Tuple[float, str]:
     """Compute weighted similarity score between two pages from different wikis.
 
     Returns (score, reason_string).
+
+    Scoring factors:
+      - Slug similarity (0.25 weight)
+      - Title similarity (0.25 weight)
+      - Tag overlap (0.20 weight)
+      - Keyword overlap (0.10 weight)
+      - Entity co-reference overlap (0.20 weight)
+      - Provenance bonus: shared sources add up to +0.6
+      - Standards-chain bonus: standards pages get boosted tag weight
     """
     s_slug = slug_similarity(page_a.slug, page_b.slug)
     s_title = title_similarity(page_a.title, page_b.title)
     s_tags = tag_overlap(page_a.tags, page_b.tags)
     s_keywords = keyword_overlap(page_a.keywords, page_b.keywords)
+    s_entities = entity_overlap(page_a.entities, page_b.entities)
+
+    # Standards-chain boost: if both pages are in standards/ category,
+    # tag overlap is a stronger signal (standards reference each other)
+    tag_weight = 0.20
+    if page_a.category == "standards" and page_b.category == "standards":
+        tag_weight = 0.30
 
     # Weighted composite score
-    # High weight on slug/title similarity (strongest signal for concept overlap)
-    # Medium weight on tags (curated by author)
-    # Low weight on keywords (noisy but catches non-obvious connections)
-    score = (s_slug * 0.30) + (s_title * 0.30) + (s_tags * 0.25) + (s_keywords * 0.15)
+    score = (
+        (s_slug * 0.25)
+        + (s_title * 0.25)
+        + (s_tags * tag_weight)
+        + (s_keywords * 0.10)
+        + (s_entities * 0.20)
+    )
 
-    # Build human-readable reason
+    # Provenance bonus: shared sources are a strong signal
+    s_provenance, shared_sources = source_overlap_score(
+        page_a.sources, page_b.sources
+    )
+    score += s_provenance
+
+    # Build human-readable reason and collect link_types
     reasons = []
+    link_types = []
+
     if s_slug > 0.5:
         reasons.append(f"similar slugs ({s_slug:.0%})")
+        link_types.append("slug-similarity")
     if s_title > 0.5:
         reasons.append(f"similar titles ({s_title:.0%})")
+        link_types.append("title-similarity")
     if s_tags > 0.0:
         shared_tags = page_a.tags & page_b.tags
         if shared_tags:
             reasons.append(f"shared tags: {', '.join(sorted(shared_tags))}")
+            link_types.append("shared-tags")
     if s_keywords > 0.1:
         shared_kw = page_a.keywords & page_b.keywords
         top_kw = sorted(shared_kw)[:5]
         if top_kw:
             reasons.append(f"shared keywords: {', '.join(top_kw)}")
+            link_types.append("shared-keywords")
+    if shared_sources:
+        reasons.append(f"shared sources: {', '.join(sorted(shared_sources))}")
+        link_types.append("shared-provenance")
+    if s_entities > 0.05:
+        shared_ents = page_a.entities & page_b.entities
+        top_ents = sorted(shared_ents)[:5]
+        if top_ents:
+            reasons.append(f"shared entities: {', '.join(top_ents)}")
+            link_types.append("entity-coref")
+    if page_a.category == "standards" and page_b.category == "standards" and s_tags > 0.0:
+        link_types.append("standards-chain")
 
     reason = "; ".join(reasons) if reasons else f"composite score {score:.2f}"
-    return score, reason
+    if not link_types:
+        link_types.append("composite")
+    return score, reason, link_types
 
 
 def discover_cross_links(
@@ -280,7 +416,7 @@ def discover_cross_links(
         for wiki_b in wiki_names[i + 1 :]:
             for page_a in all_pages[wiki_a]:
                 for page_b in all_pages[wiki_b]:
-                    score, reason = compute_similarity(page_a, page_b)
+                    score, reason, ltypes = compute_similarity(page_a, page_b)
                     if score >= min_score:
                         # Create bidirectional links
                         links.append(
@@ -289,6 +425,7 @@ def discover_cross_links(
                                 target=page_b,
                                 score=score,
                                 link_type=reason,
+                                link_types=ltypes,
                             )
                         )
                         links.append(
@@ -297,6 +434,7 @@ def discover_cross_links(
                                 target=page_a,
                                 score=score,
                                 link_type=reason,
+                                link_types=ltypes,
                             )
                         )
 
@@ -377,6 +515,39 @@ def format_cross_links_md(links: List[CrossLink], all_pages: Dict[str, List[Wiki
     lines.append("")
 
     return "\n".join(lines)
+
+
+def format_cross_links_jsonl(links: List[CrossLink]) -> str:
+    """Format cross-links as JSONL (one JSON object per line, deduplicated).
+
+    Each line contains: source_wiki, source_page, target_wiki, target_page,
+    link_types, score, evidence, discovered.
+    """
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    # Deduplicate: keep only one direction per pair (A->B)
+    seen_pairs: Set[Tuple[str, str]] = set()
+    lines = []
+
+    for link in links:
+        pair_key = tuple(sorted([link.source.page_id, link.target.page_id]))
+        if pair_key in seen_pairs:
+            continue
+        seen_pairs.add(pair_key)
+
+        record = {
+            "source_wiki": link.source.wiki,
+            "source_page": link.source.short_id,
+            "target_wiki": link.target.wiki,
+            "target_page": link.target.short_id,
+            "link_types": link.link_types,
+            "score": round(link.score, 2),
+            "evidence": link.link_type,
+            "discovered": today,
+        }
+        lines.append(json.dumps(record, ensure_ascii=False))
+
+    return "\n".join(lines) + "\n" if lines else ""
 
 
 def identify_new_links(
@@ -497,6 +668,11 @@ def main():
         help="Write cross-links index to this file (default: knowledge/wikis/cross-links.md)",
     )
     parser.add_argument(
+        "--jsonl",
+        action="store_true",
+        help="Also emit cross-links.jsonl alongside the markdown output",
+    )
+    parser.add_argument(
         "--quiet",
         action="store_true",
         help="Suppress progress output",
@@ -577,11 +753,21 @@ def main():
 
     md_content = format_cross_links_md(links, all_pages)
 
+    # ── Generate JSONL (if requested) ───────────────────────────────────────
+    jsonl_content = format_cross_links_jsonl(links) if args.jsonl else ""
+    jsonl_path = output_path.with_suffix(".jsonl")
+
     if args.dry_run:
         if not args.quiet:
             print("--- cross-links.md preview ---")
             print(md_content)
             print("--- end preview ---")
+            if jsonl_content:
+                print()
+                print("--- cross-links.jsonl preview (first 10 lines) ---")
+                for line in jsonl_content.splitlines()[:10]:
+                    print(line)
+                print(f"--- ({jsonl_content.count(chr(10))} total lines) ---")
             print()
             print("[dry-run] No files modified. Use --apply to update pages.")
     else:
@@ -589,6 +775,12 @@ def main():
         output_path.write_text(md_content, encoding="utf-8")
         if not args.quiet:
             print(f"Wrote: {output_path}")
+
+        # Write cross-links.jsonl (if requested)
+        if jsonl_content:
+            jsonl_path.write_text(jsonl_content, encoding="utf-8")
+            if not args.quiet:
+                print(f"Wrote: {jsonl_path}")
 
         # Apply new cross-links to pages
         modified_pages = 0

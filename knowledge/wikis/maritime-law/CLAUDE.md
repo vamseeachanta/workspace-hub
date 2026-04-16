@@ -6,6 +6,32 @@
 
 See `knowledge/wikis/marine-engineering/CLAUDE.md` for conventions.
 
+## Frontmatter Schema
+
+All wiki pages use YAML frontmatter (`---` delimited) with the following fields:
+
+| Field | Required | Type | Description |
+|-------|----------|------|-------------|
+| `title` | **required** | string | Page title |
+| `tags` | **required** | list | Classification tags, e.g. `[maritime-law, case]` |
+| `added` | **required** | date | ISO date when page was created (`YYYY-MM-DD`) |
+| `last_updated` | **required** | date | ISO date of last modification (`YYYY-MM-DD`) |
+| `sources` | recommended | list | Source documents referenced (prefer `sources` over `source`) |
+| `domain` | optional | string | Explicit domain classification |
+| `cross_links` | optional | list | Cross-wiki references (e.g. `[marine-engineering/entities/fpso]`) |
+
+Example:
+```yaml
+---
+title: "DEEPWATER HORIZON (2010)"
+tags: [maritime-law, case]
+sources:
+  - maritime-law-cases.yaml
+added: 2026-04-07
+last_updated: 2026-04-07
+---
+```
+
 ## Domain Scope
 
 Maritime law and international conventions governing liability, compensation, and prosecution for maritime incidents.

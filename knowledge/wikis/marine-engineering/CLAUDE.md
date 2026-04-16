@@ -24,8 +24,34 @@ wiki/         # LLM-maintained markdown pages
 
 ## Conventions
 
+### Frontmatter Schema
+
+All wiki pages use YAML frontmatter (`---` delimited) with the following fields:
+
+| Field | Required | Type | Description |
+|-------|----------|------|-------------|
+| `title` | **required** | string | Page title |
+| `tags` | **required** | list | Classification tags, e.g. `[cfd, openfoam]` |
+| `added` | **required** | date | ISO date when page was created (`YYYY-MM-DD`) |
+| `last_updated` | **required** | date | ISO date of last modification (`YYYY-MM-DD`) |
+| `sources` | recommended | list | Source documents referenced, e.g. `[dnv-rp-b401]` |
+| `domain` | optional | string | Explicit domain classification |
+| `cross_links` | optional | list | Cross-wiki references (e.g. `[naval-architecture/concepts/stability]`) |
+
+Example:
+```yaml
+---
+title: "CALM Buoy"
+tags: [mooring, buoy, offshore]
+sources:
+  - dnv-os-e301
+added: 2026-04-07
+last_updated: 2026-04-07
+---
+```
+
 ### Page format
-- Title in YAML frontmatter
+- Title in YAML frontmatter (see schema above)
 - Tags for categorization
 - Cross-references as markdown links: `[[entity-name]]` or `[text](../concepts/topic.md)`
 
