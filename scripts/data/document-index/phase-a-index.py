@@ -34,6 +34,11 @@ HUB_ROOT = SCRIPT_DIR.parents[2]
 # provenance.py lives alongside this script (same directory)
 sys.path.insert(0, str(SCRIPT_DIR))
 from provenance import apply_provenance_to_pipeline  # noqa: E402
+from _carryover_metadata import (  # noqa: E402
+    apply_carryover,
+    atomic_write_index,
+    extract_enriched_fields,
+)
 
 DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
 HASH_CHUNK_SIZE = 65536
@@ -314,6 +319,26 @@ def write_index(
     return len(merged)
 
 
+def write_merged_index_with_carryover(
+    *,
+    index_path: Path,
+    merged_index: Dict[str, Dict],
+    preserve_metadata: bool,
+    today: Optional[str] = None,
+) -> int:
+    """Atomic index write with optional enriched-field carryover (#1878).
+
+    When preserve_metadata=True, extracts content_type/summary_done from the
+    existing index.jsonl (by path) and merges them into merged_index records
+    that don't already have those fields. Writes atomically with a dated
+    backup of the prior file.
+    """
+    side = extract_enriched_fields(index_path) if preserve_metadata else {}
+    records = apply_carryover(list(merged_index.values()), side)
+    atomic_write_index(index_path, records, today=today)
+    return len(records)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Phase A: Multi-source document index (WRK-309)"
@@ -328,6 +353,19 @@ def main() -> int:
     parser.add_argument("--source", help="Scan only this source (default: all)")
     parser.add_argument(
         "--dry-run", action="store_true", help="Scan but don't write"
+    )
+    parser.add_argument(
+        "--preserve-metadata",
+        dest="preserve_metadata",
+        action="store_true",
+        default=True,
+        help="Carry over content_type/summary_done from prior index (default)",
+    )
+    parser.add_argument(
+        "--no-preserve-metadata",
+        dest="preserve_metadata",
+        action="store_false",
+        help="Ignore prior enriched fields (for #1878 regression-test fixtures)",
     )
     args = parser.parse_args()
 
@@ -378,12 +416,13 @@ def main() -> int:
             print(json.dumps(rec, indent=2))
         return 0
 
-    # Write merged index
+    # Write merged index with enriched-field carryover (#1878)
     index_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(index_path, "w") as f:
-        for rec in merged_index.values():
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    total = len(merged_index)
+    total = write_merged_index_with_carryover(
+        index_path=index_path,
+        merged_index=merged_index,
+        preserve_metadata=args.preserve_metadata,
+    )
     logger.info("Index written: %s (%d total records)", index_path, total)
     return 0
 
