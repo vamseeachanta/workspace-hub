@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-16T05:20:06.583601Z",
+  "generated_at": "2026-04-16T09:20:06.395277Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-16T05:20:04.948394Z",
+  "scorecard_generated_at": "2026-04-16T09:20:04.418153Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -409,7 +409,7 @@
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -429,7 +429,7 @@
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -448,7 +448,7 @@
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -468,7 +468,7 @@
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -484,7 +484,7 @@
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]
@@ -500,7 +500,7 @@
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research"
           ]

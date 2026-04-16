@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T05:20:06.771021Z",
+  "generated_at": "2026-04-16T09:20:06.598860Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 1,
@@ -54,7 +54,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research"
       ],
@@ -142,7 +142,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research"
       ],
@@ -439,7 +439,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research"
       ],
@@ -466,7 +466,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research"
       ],
@@ -489,7 +489,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research"
       ],
@@ -512,7 +512,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research"
       ],
