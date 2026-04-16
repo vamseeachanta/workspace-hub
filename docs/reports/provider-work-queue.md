@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-15T17:20:09.424482Z
+Generated: 2026-04-15T21:20:07.954876Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -10,18 +10,18 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 3
-- Total routed candidates: 134
+- Total routed candidates: 135
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2055 feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | yes | existing claude agent label | enhancement, priority:high, cat:engineering, wip:ace-linux-1, dark-intelligence, agent:claude |
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
-| #2281 feat(skills): implement v1 weekly audit for existing skills-curation workflow | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, cat:automation, domain:skills, domain:deduplication |
+| #2290 chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:skills, cat:maintenance, status:plan-approved |
 | #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:critical, compliance-alert |
-| #2024 build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model | no | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline |
 | #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | no | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, domain:knowledge-management, wip:ace-linux-1 |
 | #2066 fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs | no | existing claude agent label | bug, priority:high, cat:harness, domain:knowledge-management, agent:claude |
 | #2067 feat(knowledge): wire .planning/research into engineering wiki nightly ingest | no | existing claude agent label | enhancement, priority:high, cat:harness, domain:knowledge-management, agent:claude |
+| #2112 data(field-dev): backfill SubseaIQ equipment counts to unblock cost benchmarking | no | existing claude agent label | enhancement, priority:high, cat:engineering, agent:claude |
 
 ## codex
 
@@ -44,11 +44,10 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 6
+- Total routed candidates: 5
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2116 feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links | no | research/triage/audit language | enhancement, priority:high, cat:business, domain:gtm |
 | #2039 feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues) | no | research/triage/audit language | enhancement, priority:medium, domain:knowledge-management |
 | #2041 chore: add LaTeX to manim-env for MathTex rendering | no | research/triage/audit language | enhancement, priority:low |
 | #2042 feat: engineering wiki — ingest skill metadata as wiki pages | no | research/triage/audit language | enhancement, cat:harness, domain:knowledge-management |

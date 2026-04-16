@@ -1,12 +1,12 @@
 # Plan for #2226: Backfill OCIMF/CSA Ledger Entries and Provenance Aliases from Indexed Source
 
-> **Status:** adversarial-reviewed
+> **Status:** completed
 > **Complexity:** T2
 > **Date:** 2026-04-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2226
 > **Parent:** https://github.com/vamseeachanta/workspace-hub/issues/2216
 > **Upstream:** https://github.com/vamseeachanta/workspace-hub/issues/2225 (source registration + indexing)
-> **Review artifacts:** scripts/review/results/2026-04-11-plan-2226-claude.md | scripts/review/results/2026-04-11-plan-2226-final.md
+> **Review artifacts:** historical artifacts only — `scripts/review/results/2026-04-11-plan-2226-claude.md`, `scripts/review/results/2026-04-11-plan-2226-final.md`
 
 ---
 

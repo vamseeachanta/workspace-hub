@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T17:20:09.612309Z",
+  "generated_at": "2026-04-15T21:20:08.157278Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 2,
@@ -39,19 +39,17 @@
       "eligible": true
     },
     {
-      "number": 2281,
-      "title": "feat(skills): implement v1 weekly audit for existing skills-curation workflow",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2281",
+      "number": 2290,
+      "title": "chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2290",
       "labels": [
         "enhancement",
         "priority:medium",
-        "cat:harness",
-        "cat:automation",
-        "domain:skills",
-        "domain:deduplication",
+        "cat:skills",
+        "cat:maintenance",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-15T16:56:19Z",
+      "updatedAt": "2026-04-15T21:05:41Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -72,35 +70,6 @@
         "provider-high-priority"
       ],
       "eligible": true
-    },
-    {
-      "number": 2116,
-      "title": "feat(gtm): aceengineer.com demo gallery page \u2014 embed GIFs + report links",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2116",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:business",
-        "domain:gtm"
-      ],
-      "updatedAt": "2026-04-10T15:53:07Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
     },
     {
       "number": 2037,
@@ -381,36 +350,6 @@
       "updatedAt": "2026-04-15T11:45:07Z",
       "execution_ready": false,
       "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2024,
-      "title": "build: gmail-extract-and-act pipeline \u2014 rewrite gmail-archive-extract.py for extract-first, delete-later queue model",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2024",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data-pipeline"
-      ],
-      "updatedAt": "2026-04-14T22:30:54Z",
-      "execution_ready": false,
-      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",

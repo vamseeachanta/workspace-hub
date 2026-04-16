@@ -41,6 +41,7 @@
 - No deterministic validation that task output paths match the `log:` pattern declared in `schedule-tasks.yaml`.
 - No bounded reconciliation path for tasks that emit non-log artifacts (`.md`) but are still monitored by log-glob assumptions.
 - Both `queue-refresh-weekly` and `weekly-hermes-parity-review` can fail before wrapper startup if cron redirects into a non-existent log directory.
+- This issue will not introduce a generic repo-wide task-evidence contract layer; it will only enforce a narrow invariant for the two named tasks: the declared `log:` glob, the generated cron redirection target, and the wrapper-log destination family must all agree.
 
 ---
 
@@ -52,10 +53,10 @@
 | Planning index update | `docs/plans/README.md` |
 | Implementation | `scripts/monitoring/cron-health-check.sh` |
 | Implementation | `config/scheduled-tasks/schedule-tasks.yaml` |
-| Implementation | `scripts/cron/validate-schedule.py` |
+| Verification path | `scripts/cron/setup-cron.sh` |
 | Tests (existing canonical cron-health suite) | `scripts/monitoring/tests/test_cron_health_check.sh` |
-| Tests (new/extended schedule validation coverage) | `tests/cron/test_validate_schedule.py` |
-| Tests (required parity contract coverage) | `tests/cron/test_weekly_hermes_parity_review.py` |
+| Tests (existing schedule validator suite, keep passing) | `scripts/cron/tests/test_validate_schedule.py` |
+| Tests (new setup-cron dry-run + clean-runtime coverage) | `tests/cron/test_setup_cron.py` |
 | Plan review — Claude | `scripts/review/results/2026-04-15-plan-2291-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-15-plan-2291-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-04-15-plan-2291-gemini.md` |
@@ -64,7 +65,7 @@
 
 ## Deliverable
 
-A bounded cron-health hardening change that (1) classifies `/bin/sh` bootstrap failures correctly, (2) keeps `weekly-hermes-parity-review`'s cron wrapper log as the authoritative execution-health artifact while treating the markdown parity report as secondary domain output, and (3) makes `queue-refresh-weekly` emit deterministic cron evidence by ensuring its log directory exists before shell redirection is evaluated.
+A bounded cron-health hardening change that (1) classifies `/bin/sh` bootstrap failures correctly, (2) keeps `weekly-hermes-parity-review`'s cron wrapper log as the authoritative execution-health artifact while treating the markdown parity report as secondary domain output, and (3) makes both `weekly-hermes-parity-review` and `queue-refresh-weekly` emit deterministic cron evidence by ensuring their log directories exist before shell redirection is evaluated.
 
 ---
 
@@ -79,15 +80,18 @@ capture failing behavior first with the existing bash cron-health test suite plu
 set target contract decisions in-plan before coding:
     weekly-hermes-parity-review execution health stays tied to `cron-*.log`
     parity markdown report remains secondary domain artifact, not the authoritative execution-health signal
-    queue-refresh-weekly schedule command pre-creates its log directory before shell redirection
+    both parity and queue-refresh schedule commands pre-create their log directories before shell redirection
 
 implement bounded changes:
     update cron-health failure taxonomy with anchored `/bin/sh`/shell bootstrap patterns and false-positive guards
-    prevent self-log scanning from poisoning cron-health status
-    patch schedule-tasks.yaml command strings where pre-redirection directory creation is required
-    add/extend schedule validation coverage so these contract bugs are caught mechanically
+    for the `cron-health` task itself, skip generic `ERROR_PATTERNS` body scanning and classify only from fresh artifact presence/staleness
+    patch only the two named scheduled commands in `schedule-tasks.yaml` so pre-redirection directory creation is explicit
+    enforce one narrow invariant for those two tasks only:
+        declared `log:` glob == generated cron redirection family == wrapper log destination family
+    verify generated cron lines through `setup-cron.sh --dry-run`
+    run a hermetic clean-temp harness with stub downstream commands so shell/redirection semantics are tested without depending on real `uv`, repo state, or external services
 
-rerun targeted tests and schedule validation
+rerun targeted tests, validator suite, setup-cron dry-run verification, hermetic clean-runtime command execution checks, and confirm JSON health output reflects corrected classifications
 write JSON health report with corrected status/details for the affected tasks
 ```
 
@@ -97,12 +101,10 @@ write JSON health report with corrected status/details for the affected tasks
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `scripts/monitoring/cron-health-check.sh` | broaden anchored bootstrap-failure detection, add false-positive guards, and prevent self-log poisoning |
-| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add pre-redirection directory creation where required and keep authoritative execution-evidence contracts explicit |
-| Modify | `scripts/cron/validate-schedule.py` | add regression coverage/checks for schedule command patterns that can fail before script startup |
-| Modify | `scripts/monitoring/tests/test_cron_health_check.sh` | extend the existing canonical bash suite with the new failure and self-reference cases |
-| Create/Modify | `tests/cron/test_validate_schedule.py` | verify schedule validation catches pre-redirection directory/contract problems |
-| Create/Modify | `tests/cron/test_weekly_hermes_parity_review.py` | only if needed for parity-specific contract assertions beyond generic schedule validation |
+| Modify | `scripts/monitoring/cron-health-check.sh` | broaden anchored bootstrap-failure detection, add false-positive guards, and make the self-log rule explicit: skip generic `ERROR_PATTERNS` scanning for the `cron-health` task and classify it only by fresh artifact presence/staleness |
+| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add pre-redirection directory creation to the two named affected commands and keep authoritative execution-evidence contracts explicit |
+| Modify | `scripts/monitoring/tests/test_cron_health_check.sh` | extend the existing canonical bash suite with the new failure, appended-log, and self-reference cases |
+| Create/Modify | `tests/cron/test_setup_cron.py` | verify `setup-cron.sh --dry-run` emits the corrected generated cron lines and that a hermetic clean-temp harness using stub downstream commands proves the two generated command shapes work under real shell/redirection semantics |
 | Update | `docs/plans/README.md` | add this plan to the index |
 
 ---
@@ -114,18 +116,23 @@ write JSON health report with corrected status/details for the affected tasks
 | `test_cron_health_flags_sh_style_program_not_found_as_error` | shell/bootstrap dependency failures using `/bin/sh: ...: not found` are classified as ERROR | failing log fixture containing `/bin/sh: 1: uv: not found` and variant fixtures like `python3: not found` | status `ERROR`, not `OK` |
 | `test_cron_health_not_found_guard_avoids_benign_false_positive` | anchored failure detection does not misclassify benign prose containing `not found` | fixture log with informational text like `config key timeout: not found, using default` | status remains non-ERROR |
 | `test_cron_health_handles_weekly_tasks_without_daily_bias` | weekly tasks are not misclassified solely due to cadence | weekly schedule + fresh execution log fixture | within threshold |
-| `test_cron_health_self_log_does_not_error_on_echoed_task_failures` | cron-health does not mark itself ERROR solely because its own log echoes other task error lines | synthetic cron-health log with reported task errors | self status stays correct |
-| `test_schedule_validation_rejects_pre_redirection_missing_dir_pattern` | schedule validation catches commands that redirect into a directory before ensuring it exists | YAML fixture with `>> $WORKSPACE_HUB/logs/queue-refresh/...` but no preceding `mkdir -p` | validation failure |
-| `test_schedule_validation_accepts_queue_refresh_after_dir_creation` | fixed queue-refresh command shape passes validation | YAML fixture with directory creation before redirection | validation pass |
+| `test_cron_health_self_log_uses_presence_and_staleness_only` | `cron-health` does not scan its own body for generic `ERROR:` strings and instead classifies itself only by artifact presence/staleness | synthetic cron-health log containing echoed task errors | self status stays correct |
+| `test_setup_cron_dry_run_preserves_validator_compatibility` | existing validator suite keeps passing while new end-to-end setup-cron tests own the command-shape regression | current repo validator suite plus dry-run verification | pass |
+| `test_setup_cron_dry_run_emits_fixed_queue_refresh_command` | generated cron line for queue-refresh includes directory creation before redirection and still targets the declared log family | `setup-cron.sh --dry-run` on fixture/config or controlled environment | emitted line contains expected `mkdir -p ... && ... >> ...` shape and queue-refresh log family |
+| `test_setup_cron_dry_run_emits_fixed_parity_command` | generated cron line for parity includes directory creation before wrapper-log redirection and still targets the declared log family | `setup-cron.sh --dry-run` on fixture/config or controlled environment | emitted line contains expected `mkdir -p ... && ... >> ...` shape and parity cron-log family |
+| `test_generated_queue_refresh_command_runs_in_clean_temp_env_with_stub_downstream` | the generated queue-refresh command succeeds in a hermetic clean temp environment where the target log dir starts absent | emitted command + stub downstream command + clean temp workspace | evidence log is created |
+| `test_generated_parity_command_runs_in_clean_temp_env_with_stub_downstream` | the generated parity command succeeds in a hermetic clean temp environment where the target log dir starts absent | emitted command + stub downstream command + clean temp workspace | wrapper log is created |
 | `test_parity_execution_health_uses_wrapper_log_not_manual_md_artifact` | manual parity markdown artifacts do not satisfy cron execution health | `.md` artifact present, wrapper log absent | execution status remains `MISSING` |
-| `test_latest_artifact_selection_prefers_fresh_success_over_stale_error` | monitor selects current evidence correctly when stale error and fresh success artifacts coexist | mixed-age artifact fixtures | fresh success governs classification |
+| `test_cron_health_json_report_reflects_corrected_statuses` | machine-readable cron-health JSON matches the corrected classifications after the fix | fixture run producing report JSON | expected task statuses in `.claude/state/cron-health/*.json` |
+| `test_latest_artifact_selection_prefers_fresh_success_over_stale_error` | monitor selects current evidence correctly when stale error and fresh success artifacts coexist in appended-log environments | mixed-age artifact fixtures | fresh success governs classification |
 
 ### TDD sequencing
-1. Extend `scripts/monitoring/tests/test_cron_health_check.sh` first to reproduce the current false green and self-log poisoning.
-2. Add schedule-validation fixtures/tests proving pre-redirection directory bugs are caught.
-3. Capture the parity execution-health rule: wrapper log is authoritative; markdown artifact is secondary only.
-4. Confirm all new tests fail on current code before any implementation edits.
-5. Implement bounded code/config changes, then rerun targeted suites.
+1. Extend `scripts/monitoring/tests/test_cron_health_check.sh` first to reproduce the current false green and to lock the self-log rule (`cron-health` uses artifact presence/staleness only, not generic body grep).
+2. Keep `scripts/cron/tests/test_validate_schedule.py` green while adding end-to-end `setup-cron.sh --dry-run` tests for the two affected commands.
+3. Run the generated cron command lines in a hermetic clean temp environment with stub downstream commands so runtime redirection behavior is proven without depending on real `uv`, repo state, or external services.
+4. Add JSON-output assertions so `.claude/state/cron-health/*.json` is verified alongside shell output.
+5. Confirm all new tests fail on current code before any implementation edits.
+6. Implement bounded code/config changes, then rerun targeted suites, validator suite, setup-cron dry-run checks, hermetic runtime checks, and JSON-report assertions.
 
 ---
 
@@ -133,11 +140,14 @@ write JSON health report with corrected status/details for the affected tasks
 
 - [ ] `cron-health-check` classifies `/bin/sh: 1: uv: not found`-style fixtures as `ERROR` rather than `OK`
 - [ ] Anchored bootstrap-failure detection does not create a benign `not found` false positive in targeted regression tests
-- [ ] `cron-health-check` no longer marks itself `ERROR` solely because its own log echoes other task failures
+- [ ] `cron-health-check` no longer marks itself `ERROR` solely because its own log echoes other task failures; for the `cron-health` task, generic body grep is skipped and classification uses artifact presence/staleness only
 - [ ] `weekly-hermes-parity-review` execution health remains tied to `logs/weekly-parity/cron-*.log`; a manual `.md` artifact alone does not satisfy cron execution success
-- [ ] `queue-refresh-weekly` schedule command creates its log directory before shell redirection, so cron execution can emit evidence deterministically
-- [ ] `scripts/cron/validate-schedule.py` (plus targeted tests) catches the pre-redirection directory bug shape going forward
-- [ ] Compatibility impact of any `schedule-tasks.yaml` contract change is validated by rerunning the relevant schedule consumers / validators before approval to implement
+- [ ] Both `weekly-hermes-parity-review` and `queue-refresh-weekly` schedule commands create their log directories before shell redirection, so cron execution can emit evidence deterministically
+- [ ] `scripts/cron/tests/test_validate_schedule.py` still passes after the targeted command changes
+- [ ] `setup-cron.sh --dry-run` verification proves the generated cron lines for the two affected tasks create their log directories before shell redirection and still target the declared log families
+- [ ] Hermetic clean-temp execution of the generated cron command lines with stub downstream commands proves the fix works under actual shell/redirection semantics, not just string inspection
+- [ ] `.claude/state/cron-health/*.json` regression assertions confirm the corrected classifications appear in machine-readable output as well as shell output
+- [ ] Compatibility impact of any `schedule-tasks.yaml` contract change is validated during implementation by rerunning `scripts/cron/tests/test_validate_schedule.py` plus the targeted `setup-cron.sh --dry-run` checks before closeout
 - [ ] Targeted suites pass, including the existing bash cron-health suite and new schedule-validation coverage
 - [ ] No unrelated scheduled-task contracts are regressed
 - [ ] Non-goals remain enforced: no broad scheduler redesign, no auto-remediation, no attempt to fix unrelated broken jobs inside #2291
@@ -149,24 +159,28 @@ write JSON health report with corrected status/details for the affected tasks
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | review not run yet |
-| Codex | PENDING | review not run yet |
-| Gemini | PENDING | review not run yet |
+| Claude | MINOR | Keep the existing bash cron-health suite canonical, explicitly gate the self-log fix, and keep queue-refresh diagnosis front-loaded rather than assuming wrapper-only failure. |
+| Codex | MAJOR | Plan still needs a sharper bounded rule for schedule validation and more concrete end-to-end validation of generated cron command shapes / appended-log behavior before it is approval-ready. |
+| Gemini | APPROVE | Bounded monitor+schedule fix direction is sound; keep `cron-*.log` authoritative, keep `validate-schedule.py` checks simple, and avoid false-positive `not found` matching. |
 
-**Overall result:** PENDING
+**Overall result:** FAIL (re-draft required before plan-review)
 
 Revisions made based on review:
-- none yet
+- Clarified that both parity and queue-refresh can fail before wrapper startup because shell redirection happens before script execution.
+- Locked the execution-evidence rule: `cron-*.log` is authoritative; markdown parity report is secondary.
+- Promoted the existing bash cron-health suite to canonical status in the plan.
+- Added bounded schedule-validation coverage, appended-log considerations, and stronger acceptance criteria.
+- Remaining blocker: Codex still considers the validator scope and end-to-end cron-line validation insufficiently bounded/specified.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk:** anchored shell-failure detection must stay specific enough to catch real `/bin/sh` bootstrap failures without misclassifying benign prose or tool-probe output.
-- **Risk:** changing `schedule-tasks.yaml` command strings can affect current consumers (`setup-cron.sh`, `validate-schedule.py`, `workstation-dispatch.sh`, and compliance scripts) if validation coverage is incomplete.
-- **Risk:** queue-refresh may still have an additional install/runtime problem even after pre-redirection directory creation is fixed; this issue only commits to making scheduler evidence deterministic and classification truthful.
-- **Open:** do existing consumers need a first-class notion of execution log vs secondary domain artifact, or is the bounded `cron-*.log authoritative / .md secondary` rule sufficient for the named tasks?
-- **Open:** should `cron-health` explicitly skip scanning its own log body, or should it parse only structured task-status lines when self-monitoring?
+- **Risk:** changing `schedule-tasks.yaml` command strings can affect current consumers (`setup-cron.sh`, `validate-schedule.py`, `workstation-dispatch.sh`, and compliance scripts) if verification coverage is incomplete.
+- **Risk:** queue-refresh and parity may still have an additional install/runtime problem even after pre-redirection directory creation is fixed; this issue only commits to making scheduler evidence deterministic and classification truthful.
+- **Open:** after the bounded fix, should the repo later add a first-class notion of execution log vs secondary domain artifact, or is the narrow invariant in this issue sufficient for the two named tasks: declared `log:` glob == generated cron redirection family == wrapper-log destination family?
+- **Open:** should `cron-health` explicitly skip scanning its own log body, or should it parse only structured task-status lines when self-monitoring? Current planned direction: skip generic body grep for the `cron-health` task and rely on fresh artifact presence/staleness.
 - **Non-goals:** no redesign of the full scheduled-task schema, no repo-wide artifact-type abstraction, no host-level cron repair workflow, and no bundling of unrelated broken jobs (`claude-plugin-audit`, `wiki-ingest-nightly`, `gtm-job-market-scan`) into #2291.
 
 ---

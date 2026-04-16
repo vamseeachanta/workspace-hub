@@ -1,11 +1,11 @@
 # Plan for #2225: Register /mnt/ace/acma-codes as Mounted Source and Run Initial Indexing/Dedup
 
-> **Status:** adversarial-reviewed
+> **Status:** completed
 > **Complexity:** T2
 > **Date:** 2026-04-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2225
 > **Parent:** https://github.com/vamseeachanta/workspace-hub/issues/2216
-> **Review artifacts:** scripts/review/results/2026-04-11-plan-2225-claude.md | scripts/review/results/2026-04-11-plan-2225-final.md
+> **Review artifacts:** historical artifacts only — `scripts/review/results/2026-04-11-plan-2225-claude.md`, `scripts/review/results/2026-04-11-plan-2225-final.md`
 
 ---
 

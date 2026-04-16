@@ -177,7 +177,14 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 
 1. **Codex sandbox blocks file reads** — Codex `exec` runs in a bwrap sandbox that may block filesystem access. Pass ALL context in the prompt text itself, not via file references. The prompt must be fully self-contained.
 
-2. **Gemini capacity limits** — `gemini-3.1-pro-preview` can hit 429 MODEL_CAPACITY_EXHAUSTED errors. Gemini CLI retries automatically but may take longer. Allow extra timeout.
+2. **Argument-size limits on giant inline prompts** — very large review prompts can fail before the provider even starts with shell errors like `Argument list too long` when you do `codex exec "$(cat prompt.md)"` or `gemini exec "$(cat prompt.md)"`.
+   - Symptom: the shell fails immediately; no provider verdict is produced.
+   - Fix: write a **compact review prompt** containing only the essential context, exact artifact under review, specific questions, and required output format.
+   - Keep the full context in a separate workspace file if needed, but do not force the entire issue history/diff corpus into argv.
+   - Save the compact prompt as its own artifact (for example `.planning/quick/review-<issue>-implementation-compact-prompt.md`) so the recovery path is reproducible.
+   - Prefer compact self-contained prompts over retrying the same oversized command.
+
+3. **Gemini capacity limits** — `gemini-3.1-pro-preview` can hit 429 MODEL_CAPACITY_EXHAUSTED errors. Gemini CLI retries automatically but may take longer. Allow extra timeout.
    - In large parallel review waves, Gemini may fail repeatedly and never produce a usable verdict.
    - Treat that as **missing provider evidence**, not as approval or as a silent pass.
    - Continue with Codex (and any existing Claude/Hermes evidence), but post a GitHub comment explicitly noting that Gemini re-review was blocked by provider capacity exhaustion.

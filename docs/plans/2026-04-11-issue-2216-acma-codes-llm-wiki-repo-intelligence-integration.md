@@ -1,10 +1,10 @@
 # Plan for #2216: Integrate /mnt/ace/acma-codes into LLM-Wiki and Repo Intelligence Ecosystem
 
-> **Status:** adversarial-reviewed
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-04-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2216
-> **Review artifacts:** scripts/review/results/2026-04-11-plan-2216-claude.md | scripts/review/results/2026-04-11-plan-2216-final.md
+> **Review artifacts:** `scripts/review/results/2026-04-11-plan-2216-claude.md`, `scripts/review/results/2026-04-11-plan-2216-final.md`, `scripts/review/results/2026-04-14-plan-2216-codex.md`, `scripts/review/results/2026-04-14-plan-2216-gemini.md`
 
 ---
 
@@ -241,17 +241,22 @@ These are the files that will be modified during **future implementation**. This
 
 ## Adversarial Review Summary
 
+Fresh external adversarial review completed on 2026-04-14 and returned blocking findings from both Codex and Gemini. The issue was correctly rolled back to `status:plan-review`, and there is no local approval marker remaining.
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (self-review) | MINOR | 3 findings: sandbox limitation on live inventory, edition-matching ambiguity for API RP 2SK, CSA domain assignment (marine vs LNG) needs clarification |
+| Claude (2026-04-11 initial review) | MINOR | Initial draft was considered directionally workable but depended on sandbox-limited inventory assumptions and recommended a 4-way implementation split. |
+| Codex (2026-04-14) | MAJOR | Plan reframed the issue too narrowly relative to the original integration scope, missed prerequisite governance retrieval (#2104/#2136/#2208), mixed planning and implementation deliverables, and previously sat in premature approval state. |
+| Gemini (2026-04-14) | MAJOR | Plan relied on stale/false state assumptions: source registration and ledger backfill were already complete, so the proposed follow-on split and current-scope decomposition were invalid. |
 
-**Overall result:** PASS with minor caveats
+**Overall result:** MAJOR — not approval-ready. Keep this issue in `status:plan-review` until the plan is rewritten against current live repo state and re-reviewed.
 
-Revisions made based on review:
-- Added explicit sandbox limitation callout in inventory section
-- Added edition-matching note for API RP 2SK (2nd vs 4th edition)
-- Clarified CSA domain should be `marine` per existing taxonomy (LNG is not a separate domain; the closest is `marine`)
-- Recommended follow-on issue split to manage scope
+Revisions now required from review:
+- Re-ground the plan in current live repo state, especially `mounted-source-registry.yaml`, `standards-transfer-ledger.yaml`, and the child issues already completed (#2225, #2226, #2228, plus the new breadth triage outputs from #2244).
+- Remove already-completed registration / ledger-population work from the umbrella scope.
+- Recompute the remaining bounded scope and child decomposition from current reality rather than pre-session observations.
+- Clarify whether #2216 remains an umbrella/integration-governance issue only, versus a still-executable implementation issue.
+- Keep acceptance criteria aligned with plan-stage outcomes, not already-invalidated implementation assumptions.
 
 ---
 

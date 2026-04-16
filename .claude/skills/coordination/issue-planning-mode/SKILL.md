@@ -136,6 +136,7 @@ Operational rules:
 - `status:plan-review` label alone is **not** sufficient to say a plan is truly pending; verify whether the issue already advanced to `status:plan-approved` or already has a local approval marker.
 - `status:plan-approved` without `.planning/plan-approved/<issue>.md` is approval-state drift; flag it as governance cleanup, not a clean approval-ready item.
 - README rows can be stale in either direction. Treat them as discovery/index hints, not final authority.
+- Also ignore/example-filter template rows or placeholder examples in `docs/plans/README.md` (for example the sample `1234` entry in the "Entry Format" section). Do not treat README sample rows as real pending work; always verify against a live GitHub issue and an actual plan file before classifying an item.
 - For cross-provider plan review, explicitly check whether provider-specific artifacts exist for Codex and Gemini (or documented substitutes when a provider was unavailable). Files like `*-subagent.md`, `*-hermes.md`, or `*-final.md` do not by themselves prove Codex/Gemini review happened.
 - Also verify that a canonical local plan file actually exists under `docs/plans/`. An open issue in `status:plan-review` with no plan file and no review artifacts is **not** a true pending cross-provider review item; it is earlier-stage governance drift / missing-plan work.
 - Separate the queue into:
@@ -143,6 +144,13 @@ Operational rules:
   - needs-revision items (review artifact set exists, but latest provider findings still return MAJOR / not approval-ready)
   - missing-plan items (live `status:plan-review` but no canonical `docs/plans/` artifact exists yet)
   - state-drift items (labels/README/markers disagree)
+  - closed-stale-index items (issue already CLOSED or otherwise completed, but `docs/plans/README.md` and/or the local plan header still claim `plan-review` / `adversarial-reviewed`)
+- Closed-stale-index remediation rule:
+  1. verify the live GitHub issue is actually CLOSED (or otherwise definitively completed)
+  2. verify any implementation/closeout evidence in issue comments or landed commits if needed
+  3. update `docs/plans/README.md` from `plan-review`/`adversarial-reviewed` to `completed`
+  4. update the local plan header status to `completed`
+  5. do not treat partial historical review artifacts as pending cross-provider work once the issue itself is already complete
 - In practice, audit in this order for each candidate issue: GitHub labels/state → local plan file under `docs/plans/` → local approval marker → review artifacts by provider. This prevents wasting time chasing “missing provider reviews” for items that are actually missing the plan itself.
 - Missing-plan remediation sequence (important):
   1. Draft the canonical local plan under `docs/plans/` and add the `docs/plans/README.md` row with local status `draft`.

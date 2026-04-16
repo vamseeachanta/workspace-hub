@@ -1,10 +1,10 @@
 # Plan for #2136: Build Intelligence Accessibility Registry with Machine Reachability Metadata
 
-> **Status:** adversarial-reviewed
+> **Status:** completed
 > **Complexity:** T2
 > **Date:** 2026-04-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2136
-> **Review artifacts:** scripts/review/results/2026-04-11-plan-2136-claude.md | scripts/review/results/2026-04-11-plan-2136-final.md
+> **Review artifacts:** historical artifacts only — `scripts/review/results/2026-04-11-plan-2136-claude.md`, `scripts/review/results/2026-04-11-plan-2136-final.md`
 
 ---
 

@@ -1,10 +1,10 @@
 # Plan for #2129: Automate Issue-State Drift and Redundancy Audit Across GitHub + Analysis Artifacts
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-04-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2129
-> **Review artifacts:** pending — `scripts/review/results/2026-04-11-plan-2129-claude.md`, `scripts/review/results/2026-04-11-plan-2129-codex.md`, `scripts/review/results/2026-04-11-plan-2129-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-04-15-plan-2129-claude.md`, `scripts/review/results/2026-04-15-plan-2129-codex.md`, `scripts/review/results/2026-04-15-plan-2129-gemini.md`
 
 ---
 
@@ -150,20 +150,23 @@ function integrate_weekly_review():
 
 ## Adversarial Review Summary
 
-Pre-review findings captured from live repo evidence and issue comments; formal multi-provider plan review is still pending.
+Formal multi-provider plan review completed on 2026-04-15. All three providers returned `MAJOR`, so the plan is not approval-ready yet and must be revised before any user-approval step.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Live repo review confirms the current script gap: `review-open-issues.py` only groups labels, while stale examples already exist (`#2050`, `#2020`, `#2027`, `#2056` closed after analysis generation; `#1899` still open as an umbrella; `#53` remains open despite overlap audit recommending re-evaluation). |
-| Codex | PENDING | Not yet run; review artifact not collected. Planned focus: schema stability, fixture strategy, and false-positive guards for duplicate detection. |
-| Gemini | PENDING | Not yet run; review artifact not collected. Planned focus: breadth of artifact scanning and weekly-review integration risks. |
+| Claude | MAJOR | Plan is not indexed in `docs/plans/README.md`; acceptance depends on live repo examples; weekly-review integration is only documentation-level; needs explicit decomposition and CLI-level non-regression coverage. |
+| Codex | MAJOR | Artifact intake is too loose; output schema / sort order / timestamp policy are underspecified; duplicate and parent-child heuristics need tighter deterministic evidence rules; current acceptance still depends on live-state checks. |
+| Gemini | MAJOR | Weekly-review “gate” needs a real invocation point, not just docs; known false-positive hardening from follow-up issues (#2217, #2218) must be folded into plan scope/TDD; scan scope versus generic “analysis artifacts” claim must be made explicit. |
 
-**Overall result:** PENDING — keep status `draft` until formal adversarial review artifacts are collected.
+**Overall result:** MAJOR — keep issue in `status:plan-review`, revise the plan, and re-run adversarial review before surfacing for approval.
 
-Revisions made based on review:
-- Added explicit four-category P0 boundary from issue comments: stale artifacts, duplicates, repo-reality contradictions/stale premises, and parent/child drift.
-- Added false-positive guard that duplicate detection must require structural evidence beyond title similarity.
-- Added explicit live anchors for current stale-state examples (`#2050`, `#2020`, `#2027`, `#2056`, `#1899`, `#53`).
+Revisions now required from review:
+- Add a concrete audit-mode CLI contract and explicit backward-compatibility / non-regression expectations for `scripts/knowledge/review-open-issues.py`.
+- Replace live-state acceptance gates with deterministic fixture-based verification and separate optional smoke/demo checks.
+- Narrow or explicitly bound artifact intake and define parser eligibility markers plus parent/child evidence precedence.
+- Add a real weekly-review invocation/consumption contract instead of only a documentation reference.
+- Fold the known false-positive hardening discovered in #2217 / #2218 into the plan’s required work or explicit non-goals.
+- Keep duplicate detection anchored to strong structural evidence rather than shared label/category clusters.
 
 ---
 

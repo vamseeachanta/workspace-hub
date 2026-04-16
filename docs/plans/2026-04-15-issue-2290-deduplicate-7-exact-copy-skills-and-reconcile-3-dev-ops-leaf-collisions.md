@@ -1,6 +1,6 @@
 # Plan for #2290: deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions
 
-> **Status:** plan-review
+> **Status:** completed
 > **Complexity:** T2
 > **Date:** 2026-04-15
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2290

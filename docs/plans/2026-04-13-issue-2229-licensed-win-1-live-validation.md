@@ -1,10 +1,10 @@
 # Plan for #2229: validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live
 
-> **Status:** adversarial-reviewed
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-04-13
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2229
-> **Review artifacts:** scripts/review/results/2026-04-13-plan-2229-subagent.md
+> **Review artifacts:** `scripts/review/results/2026-04-13-plan-2229-subagent.md`, `scripts/review/results/2026-04-14-plan-2229-codex.md`, `scripts/review/results/2026-04-14-plan-2229-gemini.md`, `scripts/review/results/2026-04-15-plan-2229-claude.md`
 
 ---
 
@@ -123,16 +123,24 @@ else:
 
 ## Adversarial Review Summary
 
+Fresh external adversarial review completed on 2026-04-14/15 and returned blocking findings from Codex, Gemini, and Claude. The issue was correctly rolled back from premature approval to `status:plan-review`, and the stale local approval marker has already been removed.
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Subagent review | MAJOR | initial draft lacked concrete Task Scheduler proof requirements and explicit MemoryBridgeSync commit-path evidence |
+| Subagent review (2026-04-13) | MAJOR then tightened to approval-ready draft | Initial tightening pass added Task Scheduler evidence, explicit MemoryBridgeSync commit-path evidence, and a bounded reboot-persistence decision. |
+| Codex (2026-04-14) | MAJOR | Governance was ahead of review state; acceptance criteria were still plan-centric rather than execution-facing; exact task/evidence contracts, reboot scope, and `MemoryBridgeSync` side effects remained underspecified. |
+| Gemini (2026-04-14) | MAJOR | Manual script execution does not prove headless Task Scheduler behavior; plan missed local Windows approval-marker/strict-hook implications, headless push credential risk, and Linux parity verification. |
+| Claude (2026-04-15) | MAJOR | Plan still lacked scheduler-triggered execution proof, a full `--commit` side-effect contract, full readiness-artifact structure requirements, and complete `cat:harness` retrieval grounding. |
 
-**Overall result:** MINOR (approval-ready after revision)
+**Overall result:** MAJOR — not approval-ready. Keep this issue in `status:plan-review` until the execution contract is rewritten and re-reviewed.
 
-Revisions made based on review:
-- added explicit Task Scheduler evidence requirements (registration, last-run result/time, action/arguments)
-- added explicit MemoryBridgeSync scheduled/commit-path evidence requirements
-- made reboot-persistence a bounded explicit v1 decision rather than an unowned open question
+Revisions now required from review:
+- Require at least one scheduler-triggered execution per task (`NightlyReadiness`, `MemoryBridgeSync`) with captured Task Scheduler evidence, not just manual runs.
+- Make the `MemoryBridgeSync --commit` contract explicit: expected changed files, commit/no-op/fail semantics, push expectations, and evidence bundle.
+- Tighten success criteria for `.claude/state/harness-readiness-licensed-win-1.yaml` from “non-placeholder” to full expected readiness structure plus scheduler-observed provenance.
+- Add the missing harness-specific retrieval sources and reflect their findings in Resource Intelligence.
+- Explicitly cover approval-marker/hook behavior on `licensed-win-1`, headless push credentials, and final Linux parity validation.
+- Keep plan header/status aligned with live governance state and keep the full cross-provider review set current.
 
 ---
 

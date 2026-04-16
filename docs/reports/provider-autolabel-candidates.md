@@ -1,14 +1,13 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-15T17:20:09.612309Z
+Generated: 2026-04-15T21:20:08.157278Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2281 feat(skills): implement v1 weekly audit for existing skills-curation workflow | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2116 feat(gtm): aceengineer.com demo gallery page — embed GIFs + report links | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
+| #2290 chore(skills): deduplicate 7 exact-copy skills and reconcile 3 dev/ops leaf collisions | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2037 feat(gtm): manim mooring layout / force explainer animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2038 feat(gtm): manim installation sequence / operability envelope animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2039 feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues) | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
@@ -19,7 +18,6 @@ Threshold: 0.9
 | #2162 feat(schema): define machine/path alias schema for seeded accessibility registry entries | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2163 feat(operations): add Windows Task Scheduler invocation harness for readiness evidence runs | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2251 Compliance alert: W16 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2024 build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2034 feat: engineering LLM wiki seed + incremental ingest pipeline | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2041 chore: add LaTeX to manim-env for MathTex rendering | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
 | #2042 feat: engineering wiki — ingest skill metadata as wiki pages | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
