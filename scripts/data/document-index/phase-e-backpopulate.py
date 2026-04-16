@@ -120,6 +120,95 @@ def map_to_repos(domain: str, repo_domain_map: Dict) -> List[str]:
     )
 
 
+def backpopulate_index(
+    index_path: Path,
+    repo_domain_map: Dict[str, List[str]],
+    *,
+    limit: int = 0,
+    dry_run: bool = False,
+    classify_fn=None,
+) -> Dict[str, int]:
+    """Stream index.jsonl, back-populate domain/status/target_repos for records
+    that lack them. Enriched fields (content_type, summary_done) survive by
+    design — the rec dict is read, mutated in place, and re-emitted (#1878).
+
+    Returns a report dict with processed/already_populated/domain_counts.
+    """
+    classify_fn = classify_fn or classify
+    domain_counts: Dict[str, int] = {}
+    already_populated = 0
+    processed = 0
+
+    if dry_run:
+        with open(index_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if rec.get("domain") is not None:
+                    already_populated += 1
+                domain, _ = classify_fn(rec)
+                domain_counts[domain] = domain_counts.get(domain, 0) + 1
+                processed += 1
+                if limit and processed >= limit:
+                    break
+        return {
+            "processed": processed,
+            "already_populated": already_populated,
+            "domain_counts": domain_counts,
+        }
+
+    tmp_fd, tmp_path = tempfile.mkstemp(
+        dir=index_path.parent, prefix=".backpop-", suffix=".jsonl"
+    )
+    try:
+        with os.fdopen(tmp_fd, "w") as out_f, open(index_path) as in_f:
+            for line in in_f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+
+                if rec.get("domain") is None:
+                    domain, status = classify_fn(rec)
+                    repos = map_to_repos(domain, repo_domain_map)
+                    rec["domain"] = domain
+                    rec["status"] = status
+                    rec["target_repos"] = repos
+                else:
+                    domain = rec["domain"]
+                    if not rec.get("target_repos"):
+                        rec["target_repos"] = map_to_repos(domain, repo_domain_map)
+
+                domain_counts[domain] = domain_counts.get(domain, 0) + 1
+                out_f.write(json.dumps(rec) + "\n")
+                processed += 1
+
+                if limit and processed >= limit:
+                    break
+
+        os.replace(tmp_path, index_path)
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
+
+    return {
+        "processed": processed,
+        "already_populated": already_populated,
+        "domain_counts": domain_counts,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Phase E back-populate (WRK-309)")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
@@ -137,85 +226,29 @@ def main() -> int:
 
     logger.info("Back-populating domain/target_repos/status in %s", index_path)
 
-    domain_counts: Dict[str, int] = {}
-    already_populated = 0
-    processed = 0
-
-    if args.dry_run:
-        with open(index_path) as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    rec = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-                if rec.get("domain") is not None:
-                    already_populated += 1
-                domain, _ = classify(rec)
-                domain_counts[domain] = domain_counts.get(domain, 0) + 1
-                processed += 1
-                if args.limit and processed >= args.limit:
-                    break
-        logger.info("Dry-run complete: %d records", processed)
-        logger.info("Already populated: %d", already_populated)
-        for d, c in sorted(domain_counts.items(), key=lambda x: -x[1]):
-            logger.info("  %-25s %d", d, c)
-        return 0
-
-    # Write to temp file alongside index, then atomic rename
-    tmp_fd, tmp_path = tempfile.mkstemp(
-        dir=index_path.parent, prefix=".backpop-", suffix=".jsonl"
-    )
     try:
-        with os.fdopen(tmp_fd, "w") as out_f, open(index_path) as in_f:
-            for line in in_f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    rec = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-
-                # Skip if already populated (resume-safe)
-                if rec.get("domain") is None:
-                    domain, status = classify(rec)
-                    repos = map_to_repos(domain, repo_domain_map)
-                    rec["domain"] = domain
-                    rec["status"] = status
-                    rec["target_repos"] = repos
-                else:
-                    domain = rec["domain"]
-                    # Ensure target_repos is populated even on already-classified records
-                    if not rec.get("target_repos"):
-                        rec["target_repos"] = map_to_repos(domain, repo_domain_map)
-
-                domain_counts[domain] = domain_counts.get(domain, 0) + 1
-                out_f.write(json.dumps(rec) + "\n")
-                processed += 1
-
-                if processed % 100_000 == 0:
-                    logger.info("  %d records processed...", processed)
-
-                if args.limit and processed >= args.limit:
-                    break
-
-        # Atomic replace
-        os.replace(tmp_path, index_path)
-        logger.info("Back-population complete: %d records updated", processed)
-        for d, c in sorted(domain_counts.items(), key=lambda x: -x[1]):
-            logger.info("  %-25s %d", d, c)
-        return 0
-
+        report = backpopulate_index(
+            index_path=index_path,
+            repo_domain_map=repo_domain_map,
+            limit=args.limit,
+            dry_run=args.dry_run,
+        )
     except Exception as exc:
         logger.error("Failed: %s", exc)
-        try:
-            os.unlink(tmp_path)
-        except OSError:
-            pass
         return 1
+
+    processed = report["processed"]
+    domain_counts = report["domain_counts"]
+    already_populated = report["already_populated"]
+
+    if args.dry_run:
+        logger.info("Dry-run complete: %d records", processed)
+        logger.info("Already populated: %d", already_populated)
+    else:
+        logger.info("Back-population complete: %d records updated", processed)
+    for d, c in sorted(domain_counts.items(), key=lambda x: -x[1]):
+        logger.info("  %-25s %d", d, c)
+    return 0
 
 
 if __name__ == "__main__":
