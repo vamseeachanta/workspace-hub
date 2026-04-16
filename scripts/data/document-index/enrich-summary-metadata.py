@@ -18,14 +18,17 @@ Usage:
 
     # Full enrichment, 8 parallel workers, resume-safe
     uv run --no-project python scripts/data/document-index/enrich-summary-metadata.py --workers 8 --resume
-
-(The CLI wiring + parallel/resume machinery lands in Wave 3. Wave 2 ships the
-pure-function core: content_type_for_ext, summary_done_from_file, enrich_one.)
 """
 
 from __future__ import annotations
 
+import argparse
+import datetime as _dt
 import json
+import os
+import shutil
+import sys
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from functools import lru_cache
 from pathlib import Path
 
@@ -82,3 +85,122 @@ def enrich_one(record: dict, summaries_dir: Path) -> dict:
         False if summary_path is None else summary_done_from_file(summary_path)
     )
     return record
+
+
+def _enrich_worker(payload: tuple[str, str]) -> str:
+    """Worker used by ProcessPoolExecutor. Takes (record_json, summaries_dir_str)."""
+    record_json, summaries_dir_str = payload
+    record = json.loads(record_json)
+    enriched = enrich_one(record, Path(summaries_dir_str))
+    return json.dumps(enriched, ensure_ascii=False)
+
+
+def _is_already_enriched(record: dict) -> bool:
+    return "content_type" in record and "summary_done" in record
+
+
+def enrich_index(
+    *,
+    index_path: Path,
+    summaries_dir: Path,
+    workers: int = 1,
+    resume: bool = False,
+    dry_run: bool = False,
+    today: str | None = None,
+) -> dict:
+    """Enrich an index.jsonl in place with atomic write + dated backup.
+
+    Returns a stats dict for dry-run reporting / logging."""
+    today = today or _dt.date.today().isoformat()
+    index_path = Path(index_path)
+    summaries_dir = Path(summaries_dir)
+
+    records: list[dict] = []
+    with open(index_path, encoding="utf-8") as f:
+        for line in f:
+            if line.strip():
+                records.append(json.loads(line))
+
+    stats = {"total": len(records), "content_type_non_other": 0, "summary_done_true": 0}
+    out_records: list[dict] = []
+
+    if workers <= 1:
+        for r in records:
+            if resume and _is_already_enriched(r):
+                out_records.append(r)
+                continue
+            out_records.append(enrich_one(r, summaries_dir))
+    else:
+        indices_to_enrich: list[int] = []
+        out_records = [None] * len(records)  # type: ignore[list-item]
+        for i, r in enumerate(records):
+            if resume and _is_already_enriched(r):
+                out_records[i] = r
+            else:
+                indices_to_enrich.append(i)
+
+        payloads = [
+            (json.dumps(records[i], ensure_ascii=False), str(summaries_dir))
+            for i in indices_to_enrich
+        ]
+        with ProcessPoolExecutor(max_workers=workers) as ex:
+            futures = {
+                ex.submit(_enrich_worker, p): i for i, p in zip(indices_to_enrich, payloads)
+            }
+            for fut in as_completed(futures):
+                i = futures[fut]
+                out_records[i] = json.loads(fut.result())
+
+    for r in out_records:
+        if r.get("content_type") and r.get("content_type") != "other":
+            stats["content_type_non_other"] += 1
+        if r.get("summary_done") is True:
+            stats["summary_done_true"] += 1
+
+    if dry_run:
+        return stats
+
+    backup_path = index_path.with_name(f"{index_path.name}.backup-{today}")
+    if not backup_path.exists():
+        shutil.copy2(index_path, backup_path)
+
+    tmp_path = index_path.with_suffix(index_path.suffix + ".tmp")
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        for r in out_records:
+            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    os.replace(tmp_path, index_path)
+    return stats
+
+
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--index", type=Path, default=Path("data/document-index/index.jsonl"))
+    p.add_argument("--summaries-dir", type=Path, default=DEFAULT_SUMMARIES_DIR)
+    p.add_argument("--workers", type=int, default=1)
+    p.add_argument("--resume", action="store_true", help="Skip records that already have both fields")
+    p.add_argument("--dry-run", action="store_true", help="Report coverage without writing")
+    return p.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parse_args(argv)
+    stats = enrich_index(
+        index_path=args.index,
+        summaries_dir=args.summaries_dir,
+        workers=args.workers,
+        resume=args.resume,
+        dry_run=args.dry_run,
+    )
+    total = stats["total"] or 1
+    pct_ct = 100.0 * stats["content_type_non_other"] / total
+    pct_sd = 100.0 * stats["summary_done_true"] / total
+    print(
+        f"Enriched {stats['total']} records. "
+        f"content_type non-other: {stats['content_type_non_other']} ({pct_ct:.1f}%). "
+        f"summary_done true: {stats['summary_done_true']} ({pct_sd:.1f}%)."
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
