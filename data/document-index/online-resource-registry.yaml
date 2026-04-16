@@ -1541,16 +1541,17 @@ entries:
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/aqwa/context/external/web/web_resources.yaml
   notes: ANSYS AQWA Training Course - Official training materials [aqwa agent]
 - id: ww2_eagle_org_content_dam_eagle_063ed3
-  url: https://ww2.eagle.org/content/dam/eagle/rules-and-guides/current/other/1-rules-for-building-and-classing-marine-vessels-2024/1-mvr-part-4-jan24.pdf
+  url: https://ww2.eagle.org/en/rules-and-resources/rules-and-guides-v2.html
   name: ABS Marine Vessel Rules — Part 4 (2024)
   type: paper
   domain: naval_architecture
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
-  notes: ABS WAF blocks wget. Download manually via browser from eagle.org.
+  notes: ABS WAF blocks wget. Download manually via browser from eagle.org. Direct PDF link retired; use ABS Rule Manager
+    portal to locate Part 4 (Vessel Systems and Machinery).
 - id: ww2_eagle_org_content_dam_eagle_cca9ee
   url: https://ww2.eagle.org/content/dam/eagle/rules-and-resources/RuleManager2/intro/Intro%20to%20ABS%20Rules%20and%20Guides-Jul25.pdf
   name: ABS — Introduction to Rules and Guides
@@ -2137,12 +2138,13 @@ entries:
   type: github_repo
   domain: oil_and_gas
   local_backup_path: ''
-  download_status: not_started
-  last_checked: '2026-04-02'
+  download_status: dead_link
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
   notes: 'Python-native where available. Check individual repo licenses before integration. PVT calculations can feed into
-    assetutilities fluid property modules.
+    assetutilities fluid property modules. GitHub organization whitson-org no longer exists; Whitson is now a commercial SaaS
+    platform at whitson.com with no public GitHub presence.
 
     '
 - id: whitson_com_0238dd
@@ -2183,16 +2185,17 @@ entries:
     /mnt/local-analysis/workspace-hub/knowledge/seeds/naval-architecture-resources.yaml
   notes: DNV offshore standards for OrcaFlex analysis validation [orcaflex agent]
 - id: orcina_com_softwareproducts_orcaflex_documentation_9eb495
-  url: https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm
-  name: https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/htm/index.htm
+  url: https://www.orcina.com/resources/documentation/
+  name: Orcina OrcaFlex Documentation
   type: tool
   domain: orcaflex
   local_backup_path: ''
   download_status: reference_only
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
-  notes: OrcaFlex Python API documentation [orcaflex agent]
+  notes: OrcaFlex Python API documentation [orcaflex agent]. Old deep-link retired; Orcina consolidated docs at /resources/documentation/
+    with online help browser at /webhelp/OrcaFlex/.
 - id: orcina_com_resources_examples_0dfd1e
   url: https://www.orcina.com/resources/examples/
   name: https://www.orcina.com/resources/examples/
@@ -2227,31 +2230,33 @@ entries:
   source_catalog: /mnt/local-analysis/workspace-hub/digitalmodel/.claude/agents/orcaflex/context/external/web/web_resources.yaml
   notes: OrcaFlex official documentation and API reference [orcaflex agent]
 - id: github_com_sintef_thermopack_805919
-  url: https://github.com/SINTEF/thermopack
+  url: https://github.com/thermotools/thermopack
   name: AweSim (Awesome Simulations)
   type: github_repo
   domain: pipeline
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
-  notes: 'pip-installable Python API (thermopack). Direct NumPy integration for property arrays. MIT license allows unrestricted
-    use. Can replace proprietary PVT packages in assetutilities.
+  notes: 'pip-installable Python API (thermopack). Direct NumPy integration for property arrays. Apache 2.0 license allows
+    unrestricted use. Can replace proprietary PVT packages in assetutilities. Repo moved from SINTEF org to thermotools org
+    on GitHub.
 
     '
 - id: thermopack_readthedocs_io_b37eb9
-  url: https://thermopack.readthedocs.io/
+  url: https://thermotools.github.io/thermopack/
   name: AweSim (Awesome Simulations) (docs)
   type: tutorial
   domain: pipeline
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/catalog/open-source-engineering-catalog.yaml
-  notes: 'pip-installable Python API (thermopack). Direct NumPy integration for property arrays. MIT license allows unrestricted
-    use. Can replace proprietary PVT packages in assetutilities.
+  notes: 'pip-installable Python API (thermopack). Direct NumPy integration for property arrays. Apache 2.0 license allows
+    unrestricted use. Can replace proprietary PVT packages in assetutilities. Docs moved from ReadTheDocs to GitHub Pages
+    under thermotools org.
 
     '
 - id: github_com_danwbr_dwsim_04373d
@@ -2539,18 +2544,19 @@ entries:
 
     '
 - id: iacs_unified_requirements
-  url: https://iacs.org.uk/publications/unified-requirements/
+  url: https://iacs.org.uk/resolutions/unified-requirements
   name: IACS Unified Requirements and Blue Book
   type: standard_portal
   domain: structural
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
   notes: 'All IACS Unified Requirements (URs) and Unified Interpretations (UIs) are freely downloadable. Blue Book (complete
     UR/UI) free at iacs.org.uk/publications. UR E26/27 cybersecurity requirements (2024) notable recent addition. Provides
-    minimum classification standards; each member society (LR, BV, DNV, ABS, ClassNK) may exceed these.
+    minimum classification standards; each member society (LR, BV, DNV, ABS, ClassNK) may exceed these. URL moved from /publications/unified-requirements/
+    to /resolutions/unified-requirements.
 
     '
 - id: github_com_kratosmultiphysics_kratos_a02f32
@@ -2757,12 +2763,12 @@ entries:
   domain: sustainability
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 4
   source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
   notes: 'EU JRC EDGAR_2025_GHG: 1970-2024 data (published 2025). CO2, CH4, N2O, F-gases per sector/country. IPCC methodology
     Tier 1/2. Available via JRC Data Catalogue and World Bank Data 360. Structured NetCDF/CSV download. Reference dataset
-    for national inventory cross-checking.
+    for national inventory cross-checking. URL verified live 2026-04-16; prior 404 was likely a transient issue or WAF block.
 
     '
 - id: fossil_fuel_registry
@@ -2839,16 +2845,17 @@ entries:
 
     '
 - id: blm_gov_services_national_data_dd0cc5
-  url: https://www.blm.gov/services/national-data
+  url: https://www.blm.gov/about/data/National-Datasets
   name: BLM Federal Land Records
   type: data_api
   domain: general
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 3
   source_catalog: /mnt/local-analysis/workspace-hub/data/document-index/public-og-data-sources.yaml
-  notes: Federal mineral leases, mining claims, land use data — partially referenced in landman module but not ingested
+  notes: Federal mineral leases, mining claims, land use data — partially referenced in landman module but not ingested. URL
+    moved from /services/national-data to /about/data/National-Datasets.
 - id: energyinst_org_statistical_review_d12812
   url: https://www.energyinst.org/statistical-review
   name: BP Statistical Review of World Energy
@@ -3204,17 +3211,18 @@ entries:
 
     '
 - id: opensees
-  url: https://opensees.github.io/
+  url: https://opensees.berkeley.edu/
   name: OpenSees (Seismic Structural/Geotechnical FEM)
   type: tool
   domain: structural
   local_backup_path: ''
   download_status: not_started
-  last_checked: '2026-04-02'
+  last_checked: '2026-04-16'
   relevance_score: 3
   source_catalog: /mnt/local-analysis/workspace-hub/.planning/archive/online-resources/catalog.yaml
   notes: 'FEM framework for seismic response of structural and geotechnical systems. Strong Python API (OpenSeesPy). Relevant
-    to jacket structure dynamic analysis and geotechnical pile modelling. Offshore community extensions exist.
+    to jacket structure dynamic analysis and geotechnical pile modelling. Offshore community extensions exist. Homepage moved
+    from opensees.github.io to opensees.berkeley.edu; docs at opensees.github.io/OpenSeesDocumentation/; source at github.com/OpenSees/OpenSees.
 
     '
 - id: openturns
