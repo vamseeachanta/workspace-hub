@@ -588,3 +588,23 @@ tasks:
       Nightly 02:15 UTC — scans source class directories for new/modified files,
       triggers incremental ingest via llm_wiki.py, runs lint, auto-commits changes.
       Alerts via GitHub issue on page count drops or lint failures. Issue #2036.
+
+  - id: weekly-governance-check
+    label: Weekly pyramid conformance + registry freshness check
+    schedule: "45 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/knowledge/weekly-governance-check.sh
+      >> $WORKSPACE_HUB/logs/conformance/governance-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/conformance/governance-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Monday 04:45 UTC — runs pyramid-conformance-check.py (5 Tier-1
+      checks: DT-1, ACC-1, OWN-3, ID-1, ACC-3) and registry-freshness-check.py
+      (248 URL validation). Creates GitHub issues on conformance failures
+      (label: conformance) or dead links (label: registry-health).
+      Issues #2206, #1614, #2105.
