@@ -121,9 +121,9 @@ class StandardsInventory:
         return ext in self.config.get('file_extensions', ['.pdf'])
 
     def _compute_hash(self, file_path: str, chunk_size: int = 8192) -> Optional[str]:
-        """Compute MD5 hash of file content."""
+        """Compute SHA-256 hash of file content."""
         try:
-            hasher = hashlib.md5()
+            hasher = hashlib.sha256()
             with open(file_path, 'rb') as f:
                 while chunk := f.read(chunk_size):
                     hasher.update(chunk)

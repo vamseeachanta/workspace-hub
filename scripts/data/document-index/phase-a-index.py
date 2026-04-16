@@ -127,8 +127,11 @@ def scan_og_standards(
 
             size_bytes = row["file_size"] or 0
             content_hash = row["content_hash"]
-            if content_hash and not content_hash.startswith("sha256:"):
-                content_hash = f"sha256:{content_hash}"
+            if content_hash and not content_hash.startswith(("sha256:", "md5:")):
+                if len(content_hash) == 32:
+                    content_hash = f"md5:{content_hash}"    # legacy MD5 from og_standards
+                else:
+                    content_hash = f"sha256:{content_hash}"
 
             rec = {
                 "path": fpath,
