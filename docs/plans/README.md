@@ -223,7 +223,10 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2271 | harden-shared-skill-propagation-for-engineering-portability | `docs/plans/2026-04-16-issue-2271-harden-shared-skill-propagation-for-engineering-portability.md` | 2026-04-16 | draft | T2 | Harden shared-skill propagation with dry-run safety and regression tests |
 | 2272 | repeatable-openfoam-and-blender-smoke-verification | `docs/plans/2026-04-16-issue-2272-repeatable-openfoam-and-blender-smoke-verification.md` | 2026-04-16 | draft | T2 | Unified smoke verification for OpenFOAM and Blender baselines; depends on #2269 and #2270 |
 | 1878 | restore-index-metadata | `docs/plans/2026-04-16-issue-1878-restore-index-metadata.md` | 2026-04-16 | completed | T2 | Closed via ops run 2026-04-16; 100% content_type, 16.1% summary_done; follow-ups #2305-#2309 |
-| 2308 | gotcha-refresh | `docs/plans/2026-04-16-issue-2308-gotcha-refresh.md` | 2026-04-16 | adversarial-reviewed | T1 | Rev-2 after Claude MINOR; 5 prose blocks across 3 skill/doc files refreshed to post-#1878 reality |
+| 2308 | gotcha-refresh | `docs/plans/2026-04-16-issue-2308-gotcha-refresh.md` | 2026-04-16 | completed | T1 | Closed 2026-04-17 — commits f90c34311 + 11c0861d5 + 8c9d73690 |
+| 2306 | maturity-yaml-additive | `docs/plans/2026-04-17-issue-2306-maturity-yaml-additive.md` | 2026-04-17 | adversarial-reviewed | T1 | Claude APPROVE+MINOR; additive `index_jsonl_only` block capturing #1878 numbers; preserves combined 61.9% figure |
+| 2311 | stage-transition-stale-reference-cleanup | `docs/plans/2026-04-17-issue-2311-stage-transition-stale-reference-cleanup.md` | 2026-04-17 | draft | T2 | Bounded plan to confine deleted stage-transition script names to intentional legacy/history surfaces and add targeted regression coverage |
+| 2312 | lifecycle-script-authority-cleanup | `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md` | 2026-04-17 | draft | T2 | Bounded plan to replace deleted lifecycle-script guidance in current templates/docs with GitHub + .planning + refresh-helper authority |
 ## Entry Format
 
 Add one row per plan:

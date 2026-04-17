@@ -1,6 +1,6 @@
 generated: "2026-04-01T19:05:00Z"
 version: "1.1.0"
-schema_version: "1.0.0"
+schema_version: "1.1.0"
 target_window: "3 months"
 target_start: "2026-03-01"
 metric:
@@ -34,9 +34,23 @@ status:
   gap_standards: 235
   reference_standards: 138
   wrk_captured_standards: 23
+  # Post-#1878 single-corpus figures (additive to the combined-scope values above).
+  # These measure index.jsonl alone (649K records), not the 1.03M combined scope.
+  # Run evidence: see issue #1878 close comment 2026-04-16.
+  index_jsonl_only:
+    total_records: 649564
+    content_type_non_other_percent: 99.9988  # 649,556 / 649,564 — 8 records hit "other" fallback
+    summary_done_percent: 16.1               # 104,767 / 649,564 — content-quality signal (#2309 will split)
+    measurement_date: "2026-04-16"
+    source: "scripts/data/document-index/validate-index-metadata.py"
+    notes:
+      - "summary_done=True is dominated by non-CAD records; 72% of the corpus is CAD with no extractable text."
+      - "See #2309 for planned summary_file_exists field split (file-existence vs content-quality decoupling)."
 notes:
   - "YAML is the source of truth."
   - "Markdown summary must link here and must not diverge."
   - "2026-04-01: Updated after standards reclassification. 'other' domain fully eliminated."
   - "2026-04-01: 76 standards reclassified into proper engineering domains."
   - "2026-04-01: Two new domains created: process (55), drilling (9)."
+  - "2026-04-17: schema_version bumped 1.0.0 → 1.1.0 to accommodate additive index_jsonl_only block (#2306)."
+  - "2026-04-17: Combined-scope index_summary_coverage_percent:61.9 preserved unchanged; single-corpus numbers captured under status.index_jsonl_only."
