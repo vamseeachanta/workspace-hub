@@ -225,9 +225,15 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 1878 | restore-index-metadata | `docs/plans/2026-04-16-issue-1878-restore-index-metadata.md` | 2026-04-16 | completed | T2 | Closed via ops run 2026-04-16; 100% content_type, 16.1% summary_done; follow-ups #2305-#2309 |
 | 2308 | gotcha-refresh | `docs/plans/2026-04-16-issue-2308-gotcha-refresh.md` | 2026-04-16 | completed | T1 | Closed 2026-04-17 — commits f90c34311 + 11c0861d5 + 8c9d73690 |
 | 2306 | maturity-yaml-additive | `docs/plans/2026-04-17-issue-2306-maturity-yaml-additive.md` | 2026-04-17 | completed | T1 | Closed 2026-04-17 — commit a13da73df |
-| 2307 | accessibility-registry-declaration | `docs/plans/2026-04-17-issue-2307-accessibility-registry-declaration.md` | 2026-04-17 | adversarial-reviewed | T1 | Claude APPROVE+2×MINOR; declare content_type/summary_done in registry-corpus-index; schema 1.0.0 → 1.1.0 |
+| 2307 | accessibility-registry-declaration | `docs/plans/2026-04-17-issue-2307-accessibility-registry-declaration.md` | 2026-04-17 | completed | T1 | Closed 2026-04-17 — commit 25d90339c |
+| 2305 | conference-batch-baseline | `docs/plans/2026-04-17-issue-2305-conference-batch-baseline.md` | 2026-04-17 | adversarial-reviewed | T1 | Claude APPROVE+MINOR (5 memo asks addressed); conference corpus 0% coverage + schema divergence; defer to new enrichment issue |
 | 2311 | stage-transition-stale-reference-cleanup | `docs/plans/2026-04-17-issue-2311-stage-transition-stale-reference-cleanup.md` | 2026-04-17 | draft | T2 | Bounded plan to confine deleted stage-transition script names to intentional legacy/history surfaces and add targeted regression coverage |
 | 2312 | lifecycle-script-authority-cleanup | `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md` | 2026-04-17 | draft | T2 | Bounded plan to replace deleted lifecycle-script guidance in current templates/docs with GitHub + .planning + refresh-helper authority |
+| 2320 | skill-usage-audit | `docs/plans/2026-04-17-issue-2320-skill-usage-audit.md` | 2026-04-17 | plan-review | T2 | Claude MINOR + Codex MAJOR + Gemini MAJOR — 90d vs 15d retention, provider-schema gap; needs revision before approval |
+| 2321 | plugin-consolidation | `docs/plans/2026-04-17-issue-2321-plugin-consolidation.md` | 2026-04-17 | plan-review | T2 | Fix or remove failing semantic-scholar-mcp plus consolidate gsd/sparc/workflows overlap via `_archive/` |
+| 2322 | rule-promotion | `docs/plans/2026-04-17-issue-2322-rule-promotion.md` | 2026-04-17 | plan-review | T2 | Promote three binary-checkable prose rules in `.claude/rules/*.md` to Level-2 scripts under `scripts/enforcement/` |
+| 2323 | cross-ai-review-fanout | `docs/plans/2026-04-17-issue-2323-cross-ai-review-fanout.md` | 2026-04-17 | plan-review | T2 | Single-command plan-review fan-out across Claude/Codex/Gemini with disagreement report artifact |
+| 2324 | memory-md-curation | `docs/plans/2026-04-17-issue-2324-memory-md-curation.md` | 2026-04-17 | plan-review | T1 | Claude MAJOR (memory-system conflation); re-scope required before approval |
 ## Entry Format
 
 Add one row per plan:
