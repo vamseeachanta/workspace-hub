@@ -3,6 +3,28 @@
 > **Generated:** 2026-04-17 (end of context-heavy session)
 > **For:** fresh Claude Code session continuing the approved cadence-cron rollout
 > **Parent session last commit:** `6b32a7312` (#2313 memory-health shipped)
+>
+> **Status:** ✅ **COMPLETE** — 2026-04-17 follow-up session shipped all 7
+> remaining cadences + the wed#309 cross-repo sync machinery. All 8 original
+> issues CLOSED. Four follow-ups (#2335-#2338) filed per §Followups below.
+>
+> **Commit chain (workspace-hub, after parent `6b32a7312`):**
+> - `ee7f4b333` feat(cron): #2315 monthly coverage-drift report
+> - `1b40a98c1` feat(cron): #2317 quarterly control-plane-drift audit
+> - `162280413` feat(cron): #2314 monthly broken-windows test sweep
+> - `c35d0dbd4` feat(cron): #2318 quarterly external-doc-reingest audit
+> - `59b813cf2` feat(cron): #2316 quarterly MCP re-evaluation report
+> - `9eb24d080` feat(sync):  cadence-common.sh byte-identical guard (wed#309 support)
+> - `99e1f0d57` feat(cron): #2319 quarterly ecosystem-rework re-triage
+>
+> **Commit (worldenergydata):**
+> - `39f7a448`  feat(cron): #309 weekly scheduler-health (vendored helper)
+>
+> **Verification:** 96 tests green across `tests/cron/` + `tests/sync/`. All
+> 8 sample reports committed. Both repos pushed. See §Verification below.
+>
+> **Follow-ups filed:** #2335 (state-size retrofit), #2336 (retention
+> policy), #2337 (schedule-index generator), #2338 (cadence-lib smoke test).
 
 ---
 
