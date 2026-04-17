@@ -119,7 +119,9 @@ coverage.xml
 # Backup files
 *.bak
 *.backup
+*.backup-*
 *.old
+data/document-index/*.jsonl.backup-*
 
 # Agent OS and swarm directories (already initialized)
 .agent-os/
@@ -484,3 +486,4 @@ knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_c
 /knowledge/wikis/*
 !/knowledge/wikis/engineering/
 !/knowledge/wikis/cross-links.md
+assethold-worktrees/
