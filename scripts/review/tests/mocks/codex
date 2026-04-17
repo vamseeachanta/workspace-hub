@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Mock codex CLI — captures argv + pwd + stdin, emits canned review.
 set -u
+[[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
 capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/codex.capture"
 {
   printf 'ARGV:'

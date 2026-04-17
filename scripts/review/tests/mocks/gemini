@@ -2,6 +2,7 @@
 # Mock gemini CLI — captures argv + pwd + stdin, emits canned review.
 # Extra: supports ${MOCK_GEMINI_FAIL:-0}=1 to simulate quota/outage (exit 1, no stdout).
 set -u
+[[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
 capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/gemini.capture"
 {
   printf 'ARGV:'

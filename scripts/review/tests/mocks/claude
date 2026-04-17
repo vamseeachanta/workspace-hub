@@ -2,6 +2,7 @@
 # Mock claude CLI — captures argv + pwd + stdin to PLAN_REVIEW_CAPTURE_DIR/claude.capture,
 # emits a canned review on stdout.
 set -u
+[[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
 capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/claude.capture"
 {
   printf 'ARGV:'

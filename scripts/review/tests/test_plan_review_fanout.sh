@@ -216,6 +216,87 @@ test_gemini_runs_from_tmp_cwd() {
   rm -rf "$td"
 }
 
+test_writes_claude_artifact() {
+  run_test "writes claude artifact to <output-dir>/<date>-plan-<num>-claude.md"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  # Fixture plan is 2026-04-17-issue-9999-test-slug.md. Date in filename comes
+  # from `date +%Y-%m-%d` at runtime, so we search by suffix.
+  local artifact
+  artifact="$(ls "$td/results/"*-plan-9999-claude.md 2>/dev/null | head -1)"
+  if [[ -z "$artifact" ]]; then
+    fail "no artifact matching *-plan-9999-claude.md in $td/results/"
+    rm -rf "$td"; return
+  fi
+
+  # Artifact should contain the canned mock verdict header.
+  if grep -q '^## Verdict' "$artifact" && grep -qF 'Mock finding from claude' "$artifact"; then
+    pass "claude artifact present at $(basename "$artifact") and contains mock review text"
+  else
+    fail "claude artifact at $artifact missing expected content"
+  fi
+  rm -rf "$td"
+}
+
+test_parallel_execution() {
+  run_test "3 providers run in parallel (wall time ≈ slowest, not sum)"
+
+  local td; td="$(mktemp -d)"
+  # Each mock sleeps 2s. Serial = 6s, parallel ≈ 2s. Pass threshold: < 4s.
+  local t0 t1 elapsed
+  t0="$(date +%s)"
+  MOCK_SLEEP_S=2 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+  t1="$(date +%s)"
+  elapsed=$((t1 - t0))
+
+  if (( elapsed < 4 )); then
+    pass "wall time ${elapsed}s < 4s (parallel behavior confirmed)"
+  else
+    fail "wall time ${elapsed}s ≥ 4s (looks serial — 3×2s=6s)" "expected <4s"
+  fi
+  rm -rf "$td"
+}
+
+test_gemini_unavailable_does_not_abort_codex() {
+  run_test "gemini CLI failure leaves codex + claude artifacts intact, writes UNAVAILABLE for gemini"
+
+  local td; td="$(mktemp -d)"
+
+  # Invoke wrapper with MOCK_GEMINI_FAIL=1 in a subshell so other tests aren't affected.
+  (
+    export PATH="$MOCKS_DIR:$PATH"
+    export PLAN_REVIEW_CAPTURE_DIR="$td/captures"
+    export MOCK_GEMINI_FAIL=1
+    mkdir -p "$td/captures" "$td/results"
+    local fixture="$td/2026-04-17-issue-9999-test-slug.md"
+    printf '%s\n%s\n' "$FIXTURE_FIRST_LINE" "Plan body line 2." > "$fixture"
+    bash "$WRAPPER" "$fixture" --output-dir="$td/results"
+  ) >/dev/null 2>&1 || true
+
+  local gemini_art codex_art claude_art
+  gemini_art="$(ls "$td/results/"*-plan-9999-gemini.md 2>/dev/null | head -1)"
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  claude_art="$(ls "$td/results/"*-plan-9999-claude.md 2>/dev/null | head -1)"
+
+  if [[ -z "$gemini_art" || -z "$codex_art" || -z "$claude_art" ]]; then
+    fail "missing one or more artifact files" "gemini='$gemini_art' codex='$codex_art' claude='$claude_art'"
+    rm -rf "$td"; return
+  fi
+
+  if ! grep -q '^UNAVAILABLE' "$gemini_art" && ! grep -qF 'UNAVAILABLE' "$gemini_art"; then
+    fail "gemini artifact missing UNAVAILABLE verdict"
+  elif ! grep -qF 'Mock finding from codex' "$codex_art"; then
+    fail "codex artifact does not contain normal mock output (was it aborted?)"
+  elif ! grep -qF 'Mock finding from claude' "$claude_art"; then
+    fail "claude artifact does not contain normal mock output"
+  else
+    pass "gemini=UNAVAILABLE, codex + claude = normal mock output"
+  fi
+  rm -rf "$td"
+}
+
 # --- Runner ---
 
 test_extracts_issue_num_from_filename
@@ -225,6 +306,9 @@ test_claude_invocation_uses_path_reference
 test_codex_invocation_inlines_plan_body
 test_gemini_invocation_inlines_plan_body
 test_gemini_runs_from_tmp_cwd
+test_writes_claude_artifact
+test_parallel_execution
+test_gemini_unavailable_does_not_abort_codex
 
 echo ""
 echo "=================================="
