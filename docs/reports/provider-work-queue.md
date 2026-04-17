@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-17T13:20:08.384485Z
+Generated: 2026-04-17T17:20:07.881429Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 3
-- Total routed candidates: 142
+- Execution-ready candidates: 7
+- Total routed candidates: 140
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:operations, cat:harness, status:plan-approved |
-| #2309 Add summary_file_exists field (decouple existence from content-quality, follow-up to #1878) | yes | strategy/workflow/architecture language | priority:low, cat:document-intelligence, status:plan-approved |
-| #2070 Guard Claude state sync against oversized session-signal files | yes | strategy/workflow/architecture language | status:plan-approved |
+| #2320 chore(skills): mine session logs for dead-skill candidates — usage-signal input to #2280 weekly audit | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:skills, domain:skills, status:plan-approved |
+| #2321 chore(plugins): fix or remove failing semantic-scholar-mcp + consolidate gsd/sparc/workflows overlap | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness/skills, domain:skills, status:plan-approved |
+| #2322 chore(rules): promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:agent-discipline, status:plan-approved |
+| #2323 feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:ai-orchestration, domain:ai-orchestration, status:plan-approved |
+| #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | yes | strategy/workflow/architecture language | priority:medium, cat:maintenance, domain:memory, status:plan-approved |
+| #2327 digitalmodel: CadQuery spike for parametric offshore geometry generation | yes | strategy/workflow/architecture language | priority:low, cat:engineering, cat:research, status:plan-approved |
 | #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:medium, priority:critical, compliance-alert |
-| #2066 fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs | no | existing claude agent label | bug, priority:high, cat:harness, domain:knowledge-management, agent:claude |
-| #2067 feat(knowledge): wire .planning/research into engineering wiki nightly ingest | no | existing claude agent label | enhancement, priority:high, cat:harness, domain:knowledge-management, agent:claude |
-| #2112 data(field-dev): backfill SubseaIQ equipment counts to unblock cost benchmarking | no | existing claude agent label | enhancement, priority:high, cat:engineering, agent:claude |
-| #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | no | strategy/workflow/architecture language | priority:high, cat:engineering |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 55
+- Total routed candidates: 57
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

@@ -1,14 +1,18 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-17T13:20:08.629977Z
+Generated: 2026-04-17T17:20:08.078393Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2309 Add summary_file_exists field (decouple existence from content-quality, follow-up to #1878) | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
-| #2070 Guard Claude state sync against oversized session-signal files | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
+| #2320 chore(skills): mine session logs for dead-skill candidates — usage-signal input to #2280 weekly audit | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2321 chore(plugins): fix or remove failing semantic-scholar-mcp + consolidate gsd/sparc/workflows overlap | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2322 chore(rules): promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2323 feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2327 digitalmodel: CadQuery spike for parametric offshore geometry generation | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2149 feat(knowledge): generate seeded intelligence accessibility registry from existing inventories | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2157 feat(operations): implement native PowerShell probe collector for Windows readiness bundles | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
@@ -19,6 +23,5 @@ Threshold: 0.9
 | #2164 test(operations): build cygpath/native-path fixture suite for Windows launcher bridge | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2167 test(knowledge): build session-read coherence golden fixture suite for alias, symbolic, and missing-path cases | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2251 Compliance alert: W16 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2123 feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |
 | #2125 feat(llm-wiki): auto-refresh ingestion on new Orcina releases | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-17T13:20:08.629977Z",
+  "generated_at": "2026-04-17T17:20:08.078393Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 1,
+  "eligible_count": 6,
   "applied": [],
   "candidates": [
     {
@@ -39,17 +39,19 @@
       "eligible": true
     },
     {
-      "number": 2309,
-      "title": "Add summary_file_exists field (decouple existence from content-quality, follow-up to #1878)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2309",
+      "number": 2320,
+      "title": "chore(skills): mine session logs for dead-skill candidates \u2014 usage-signal input to #2280 weekly audit",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2320",
       "labels": [
-        "priority:low",
-        "cat:document-intelligence",
+        "enhancement",
+        "priority:medium",
+        "cat:skills",
+        "domain:skills",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-17T13:11:41Z",
+      "updatedAt": "2026-04-17T14:30:20Z",
       "execution_ready": true,
-      "priority_rank": 3,
+      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -60,24 +62,158 @@
         "strategy"
       ],
       "target_label": "agent:claude",
-      "confidence": 0.75,
+      "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
+        "priority-labeled",
         "strong-claude-language-match",
         "provider-high-priority"
       ],
-      "eligible": false
+      "eligible": true
     },
     {
-      "number": 2070,
-      "title": "Guard Claude state sync against oversized session-signal files",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2070",
+      "number": 2321,
+      "title": "chore(plugins): fix or remove failing semantic-scholar-mcp + consolidate gsd/sparc/workflows overlap",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2321",
       "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness/skills",
+        "domain:skills",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-17T10:44:14Z",
+      "updatedAt": "2026-04-17T14:30:22Z",
       "execution_ready": true,
-      "priority_rank": 4,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2322,
+      "title": "chore(rules): promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2322",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "domain:agent-discipline",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-17T14:30:23Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2323,
+      "title": "feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2323",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:ai-orchestration",
+        "domain:ai-orchestration",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-17T14:30:24Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2324,
+      "title": "chore(memory): curate MEMORY.md index before 200-line truncation \u2014 consolidate stale project_* and feedback_*",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2324",
+      "labels": [
+        "priority:medium",
+        "cat:maintenance",
+        "domain:memory",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-17T14:30:25Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2327,
+      "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
+      "labels": [
+        "priority:low",
+        "cat:engineering",
+        "cat:research",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-17T14:55:48Z",
+      "execution_ready": true,
+      "priority_rank": 3,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -377,35 +513,6 @@
       "updatedAt": "2026-04-17T11:45:07Z",
       "execution_ready": false,
       "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2219,
-      "title": "chore(sync): resolve main branch divergence \u2014 9 local vs 134 origin commits",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2219",
-      "labels": [
-        "priority:high",
-        "cat:engineering"
-      ],
-      "updatedAt": "2026-04-11T17:19:07Z",
-      "execution_ready": false,
-      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
