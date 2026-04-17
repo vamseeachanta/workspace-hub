@@ -39,13 +39,15 @@ status:
   # Run evidence: see issue #1878 close comment 2026-04-16.
   index_jsonl_only:
     total_records: 649564
-    content_type_non_other_percent: 99.9988  # 649,556 / 649,564 — 8 records hit "other" fallback
-    summary_done_percent: 16.1               # 104,767 / 649,564 — content-quality signal (#2309 will split)
-    measurement_date: "2026-04-16"
+    content_type_non_other_percent: 99.9988   # 649,556 / 649,564 — 8 records hit "other" fallback
+    summary_done_percent: 16.13               # 104,767 / 649,564 — content-quality signal (non-empty summary text)
+    summary_file_exists_percent: 87.90        # 570,984 / 649,564 — file-existence signal (#2309 field split, 2026-04-17)
+    measurement_date: "2026-04-17"
     source: "scripts/data/document-index/validate-index-metadata.py"
     notes:
       - "summary_done=True is dominated by non-CAD records; 72% of the corpus is CAD with no extractable text."
-      - "See #2309 for planned summary_file_exists field split (file-existence vs content-quality decoupling)."
+      - "summary_file_exists=True (#2309 field split) measures file presence on the ace drive regardless of content."
+      - "The 71.77pp gap between summary_file_exists (87.90%) and summary_done (16.13%) is dominated by CAD summary files marked extraction_method=skipped."
 notes:
   - "YAML is the source of truth."
   - "Markdown summary must link here and must not diverge."
@@ -54,3 +56,4 @@ notes:
   - "2026-04-01: Two new domains created: process (55), drilling (9)."
   - "2026-04-17: schema_version bumped 1.0.0 → 1.1.0 to accommodate additive index_jsonl_only block (#2306)."
   - "2026-04-17: Combined-scope index_summary_coverage_percent:61.9 preserved unchanged; single-corpus numbers captured under status.index_jsonl_only."
+  - "2026-04-17: #2309 field split landed — status.index_jsonl_only gains summary_file_exists_percent (87.90%); measurement_date refreshed to 2026-04-17 after live re-enrichment."

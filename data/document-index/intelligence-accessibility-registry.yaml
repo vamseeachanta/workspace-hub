@@ -16,9 +16,10 @@
 # schema_version history:
 #   1.0.0 (2026-04-11) — initial registry
 #   1.1.0 (2026-04-17) — additive: per-asset `fields:` sub-block for structural field declarations (#2307)
+#   1.1.1 (2026-04-17) — declared `summary_file_exists` alongside `summary_done` after #2309 field split; added `semantic` and `semantic_pair` keys on field entries to document companion relationships
 
 generated: '2026-04-11'
-schema_version: '1.1.0'
+schema_version: '1.1.1'
 
 assets:
 
@@ -175,16 +176,25 @@ assets:
         provenance: "#1878; current coverage 99.9988% (see #2306 maturity YAML for live figure)"
       - name: summary_done
         type: boolean
+        semantic: "True iff a summary file exists AND has non-empty `summary` text. Content-quality signal."
         derivation: "scripts/data/document-index/enrich-summary-metadata.py (summary_done_from_file: True iff non-empty summary text on ace drive)"
         query_example: 'jq "select(.summary_done == true)" data/document-index/index.jsonl'
         coverage_source: "data/document-index/resource-intelligence-maturity.yaml::status.index_jsonl_only.summary_done_percent"
-        provenance: "#1878; current coverage 16.1% (see #2306). NOTE: #2309 will split this into `summary_done` (content-quality) and `summary_file_exists` (existence, ~87.8%)."
+        provenance: "#1878 (original field) + #2309 (content-quality semantic locked after field split). Current coverage 16.13% (see #2306 maturity YAML for live figure)."
         known_consumers:
           - scripts/data/document-index/build-capability-map.py
           - scripts/data/document-index/assess-deep-extraction-yield.py
           - scripts/data/document-index/generate-coverage-report.py
           - scripts/data/document-index/ghost-audit.py
           - scripts/data/document-index/dde-migration-report.py
+      - name: summary_file_exists
+        type: boolean
+        semantic: "True iff _summary_lookup.find_summary() resolves to a file on disk. File-existence signal (companion to summary_done)."
+        derivation: "scripts/data/document-index/enrich-summary-metadata.py (summary_path = find_summary(...) is not None)"
+        query_example: 'jq "select(.summary_file_exists == true and .summary_done == false)" data/document-index/index.jsonl'
+        coverage_source: "data/document-index/resource-intelligence-maturity.yaml::status.index_jsonl_only.summary_file_exists_percent"
+        provenance: "#2309 — added 2026-04-17 to decouple existence from content-quality. Current coverage 87.90% (see #2306 maturity YAML for live figure)."
+        semantic_pair: "summary_done (content-quality). Records where summary_file_exists=True and summary_done=False are files present but with no extractable summary text — most commonly CAD files flagged extraction_method=skipped."
 
   - asset_key: registry-stats
     title: Registry Statistics Summary
