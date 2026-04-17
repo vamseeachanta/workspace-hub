@@ -82,12 +82,18 @@ Rationale: user feedback 2026-04-17 — "Make all the reviews adversarial in nat
 
 ## Pseudocode
 
+> **Revised 2026-04-17** after pre-execution contradiction review (see "Execution-time revisions" section below).
+> Reason: v1 pseudocode was empirically broken — Codex and Gemini both drop context when the plan is passed by path reference; Codex then falls back to GitHub MCP lookups and returns false MAJOR. Verified in this project's v1 adversarial review wave. Per-provider invocation shape is now:
+> - **Claude** — path reference via `@$prompt_file` + plan path arg (claude -p resolves `@` sigils natively).
+> - **Codex** — inline prompt text AND inline plan body concatenated into a single prompt argument.
+> - **Gemini** — same inline-body treatment as Codex.
+
 ```
 main(plan_file, providers=[claude,codex,gemini]):
     validate plan_file exists and matches docs/plans/YYYY-MM-DD-issue-NNN-slug.md
     issue_num = extract_issue_num(plan_file)
     today = YYYY-MM-DD
-    prompt_file = scripts/review/plan-review-prompt.md   # file-path based
+    prompt_file = scripts/review/plan-review-prompt.md
 
     tmpdir = mktemp -d
     for provider in providers:
@@ -99,9 +105,19 @@ main(plan_file, providers=[claude,codex,gemini]):
 
 provider_cli_invoke(provider, plan_file, prompt_file):
     case provider:
-        claude: claude -p "@$prompt_file on plan file $plan_file — return sections VERDICT, RETRIEVAL, FINDINGS, BLOCKERS"
-        codex:  codex exec --no-interactive "$(cat $prompt_file) $plan_file"
-        gemini: gemini -p "$(cat $prompt_file) $plan_file"
+        claude:
+            # Path-reference style — claude -p resolves @file sigils natively.
+            claude -p "@$prompt_file — review the plan at $plan_file. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS."
+        codex:
+            # INLINE style — Codex drops context on path refs and falls back to GitHub MCP (produces false MAJOR).
+            prompt_body="$(cat $prompt_file)"
+            plan_body="$(cat $plan_file)"
+            codex exec --no-interactive "$prompt_body\n\n--- PLAN ($plan_file) ---\n$plan_body"
+        gemini:
+            # INLINE style — same reason as Codex. Run from /tmp cwd to dodge local .gemini/agents/*.md permissionMode bug.
+            prompt_body="$(cat $prompt_file)"
+            plan_body="$(cat $plan_file)"
+            (cd /tmp && gemini -p "$prompt_body\n\n--- PLAN ($plan_file) ---\n$plan_body")
     on failure: write scripts/review/results/$today-plan-$issue_num-$provider.md with `## Verdict: UNAVAILABLE (reason)`
 
 summarize_disagreement(artifact_glob):
@@ -128,6 +144,8 @@ summarize_disagreement(artifact_glob):
 
 ## TDD Test List
 
+> **Revised 2026-04-17** — the v1 `test_prompt_is_file_path_based` test is dropped; it encoded a premise (no-inline-ever) that wave v1 proved empirically false for Codex/Gemini. New per-provider assertions replace it.
+
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | test_extracts_issue_num_from_filename | `2026-04-17-issue-2323-slug.md` → `2323` | valid plan path | `2323` returned |
@@ -136,7 +154,11 @@ summarize_disagreement(artifact_glob):
 | test_parallel_execution | 3 providers run in parallel, not serial | mocks with sleep 2 | total wall time <3 s |
 | test_gemini_unavailable_does_not_abort_codex | Gemini fails, Codex succeeds | mock gemini exit 1 | gemini artifact has `UNAVAILABLE`, codex artifact normal |
 | test_disagreement_report_captures_unique_finding | one reviewer flags X, others miss | fixture artifacts | disagreement.md lists X under that provider's unique column |
-| test_prompt_is_file_path_based | wrapper never inlines full plan text | mock CLI record | invocation string contains `@$prompt_file` and plan path, not plan body |
+| test_claude_invocation_uses_path_reference | `claude -p` receives `@<prompt>` sigil + plan path, NOT plan body | mock claude recording invocation | command string contains `@$prompt_file` and `$plan_file`, does not contain first line of plan body |
+| test_codex_invocation_inlines_plan_body | `codex exec --no-interactive` receives concatenated prompt+plan text | mock codex recording invocation | command string contains first line of plan body AND the `--- PLAN` delimiter |
+| test_gemini_invocation_inlines_plan_body | `gemini -p` receives concatenated prompt+plan text | mock gemini recording invocation | command string contains first line of plan body AND the `--- PLAN` delimiter |
+| test_gemini_runs_from_tmp_cwd | Gemini invocation chdir'd to /tmp to dodge local `.gemini/agents/*.md` permissionMode bug | mock gemini recording pwd | pwd at time of call is `/tmp` |
+| test_prompt_file_contains_all_six_stance_clauses | shared prompt carries adversarial stance verbatim | `scripts/review/plan-review-prompt.md` | all 6 clause keywords present (adversarial reviewer, no praise, default-to-non-approve, evidence, retrieval-skepticism, silence-is-failure) |
 
 ---
 
@@ -150,7 +172,16 @@ summarize_disagreement(artifact_glob):
 - [ ] `docs/plans/README.md` documents the command as the canonical way to run adversarial review.
 - [ ] At least 5 tests pass.
 - [ ] `scripts/review/plan-review-prompt.md` contains all 6 clauses from the "Reviewer-stance contract" section above; a regression test asserts their presence verbatim.
-- [ ] Provider outputs for the wrapper's own self-test must include at least one non-APPROVE verdict against a deliberately-weak fixture plan, proving the stance contract produces adversarial behavior in practice.
+- [ ] **Two-fixture self-test** (replaces v1 circular AC): the repo ships `scripts/review/tests/fixtures/known-good-plan.md` and `scripts/review/tests/fixtures/known-broken-plan.md`. A test asserts that when the wrapper is run against each fixture with a mocked provider (mock returns a prompt-echo), the resulting per-provider artifact files contain distinguishable prompt text for the two fixtures. This tests the wrapper's plumbing, not the provider's adversarial behavior. The provider's adversarial behavior is tested separately by the `test_prompt_file_contains_all_six_stance_clauses` assertion and is out of scope for the wrapper's CI.
+
+## Execution-time revisions (2026-04-17)
+
+Two contradictions surfaced during pre-execution review against the approval-with-debt marker `.planning/plan-approved/2323.md`:
+
+1. **File-path vs inline content.** v1 pseudocode + v1 AC #7 (`test_prompt_is_file_path_based`) encoded "never inline plan body." Empirical v1 wave proved Codex + Gemini both need INLINE plan body; without it, Codex falls back to GitHub MCP and returns false MAJOR. Resolution: invert per-provider — `claude -p` takes `@path` sigil; `codex`/`gemini` receive inline concatenated prompt+plan. v1 test is dropped; replaced by three per-provider invocation-shape tests (see TDD list).
+2. **Circular self-test AC.** v1 AC #8 required the wrapper's self-test to produce non-APPROVE against a deliberately-weak fixture under adversarial stance. Wave v2 flagged this as circular: stance + weak fixture guarantees non-APPROVE regardless of wrapper correctness. Resolution: two-fixture prompt-plumbing test (see revised AC above); adversarial-behavior assertion is separated out as a prompt-contents-only test.
+
+Both resolutions approved by user on 2026-04-17 before worktree spawn.
 
 ---
 
