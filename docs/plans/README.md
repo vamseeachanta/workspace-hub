@@ -235,7 +235,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2322 | rule-promotion | `docs/plans/2026-04-17-issue-2322-rule-promotion.md` | 2026-04-17 | plan-review | T2 | Promote three binary-checkable prose rules in `.claude/rules/*.md` to Level-2 scripts under `scripts/enforcement/` |
 | 2323 | cross-ai-review-fanout | `docs/plans/2026-04-17-issue-2323-cross-ai-review-fanout.md` | 2026-04-17 | plan-review | T2 | Single-command plan-review fan-out across Claude/Codex/Gemini with disagreement report artifact |
 | 2324 | memory-md-curation | `docs/plans/2026-04-17-issue-2324-memory-md-curation.md` | 2026-04-17 | plan-review | T1 | Claude MAJOR (memory-system conflation); re-scope required before approval |
-| 2334 | validator-summary-done-min | `docs/plans/2026-04-17-issue-2334-validator-summary-done-min.md` | 2026-04-17 | plan-review | T1 | rev-2 after Claude MAJOR + Codex MAJOR — recommends default 0.55→0.13 (#2309 precedent rule); fresh review in flight |
+| 2334 | validator-summary-done-min | `docs/plans/2026-04-17-issue-2334-validator-summary-done-min.md` | 2026-04-17 | plan-approved | T1 | User-approved via GH GUI after 3 review waves (Claude APPROVE rev-3; Codex sandbox unavailable rev-3). Lower `--summary-done-min` default 0.55 → 0.13 with docstring calibration note. |
 ## Entry Format
 
 Add one row per plan:

@@ -83,10 +83,13 @@ def test_validator_rejects_missing_content_type_field(tmp_path):
 
 # ─────────────────────── Test 22 ───────────────────────
 def test_validator_rejects_low_summary_done(tmp_path):
-    """<55% summary_done True → exit 1."""
+    """<13% summary_done True → exit 1."""
     index = tmp_path / "index.jsonl"
-    # 100 records, 95 non-other, 50 summary_done True = 50% → FAIL
-    _write_index(index, _mix(n_non_other=95, n_other=5, n_missing=0, n_summary_true=50, n_summary_false=0))
+    # #2334: 100 records, 95 non-other, 10 summary_done True, 80 file_exists True.
+    # 10% summary_done < 13% default → FAIL on summary_done dimension;
+    # 80% file_exists > 70% default → adjacent dimension clean, isolates the test.
+    _write_index(index, _mix_with_file_exists(
+        n_non_other=95, n_other=5, n_summary_true=10, n_file_exists_true=80))
     r = _run(index)
     assert r.returncode == 1
     assert "summary_done" in (r.stdout + r.stderr).lower()
@@ -105,15 +108,15 @@ def test_validator_passes_healthy_index(tmp_path):
 
 # ─────────────────────── Test 24 ───────────────────────
 def test_validator_thresholds_overridable_via_cli(tmp_path):
-    """--summary-done-min 0.40 relaxes the default 0.55 threshold."""
+    """--summary-done-min 0.05 relaxes the default 0.13 threshold."""
     index = tmp_path / "index.jsonl"
-    # #2309: 100 records, 95 non-other, 50 summary_done True, 80 summary_file_exists True
+    # #2334: 100 records, 95 non-other, 10 summary_done True, 80 summary_file_exists True
     _write_index(index, _mix_with_file_exists(
-        n_non_other=95, n_other=5, n_summary_true=50, n_file_exists_true=80))
-    # Default 0.55 threshold → FAIL
+        n_non_other=95, n_other=5, n_summary_true=10, n_file_exists_true=80))
+    # Default 0.13 threshold → FAIL (10% < 13%)
     assert _run(index).returncode == 1
-    # Relaxed to 0.40 → PASS (summary_file_exists at 80% also passes 70% default)
-    assert _run(index, "--summary-done-min", "0.40").returncode == 0
+    # Relaxed to 0.05 → PASS (10% > 5%; file_exists 80% > 70% default)
+    assert _run(index, "--summary-done-min", "0.05").returncode == 0
 
 
 def test_validator_empty_index_exits_1(tmp_path):
@@ -185,3 +188,27 @@ def test_validator_passes_when_all_three_thresholds_met(tmp_path):
         n_non_other=95, n_other=5, n_summary_true=70, n_file_exists_true=90))
     r = _run(index)
     assert r.returncode == 0, f"stdout={r.stdout!r} stderr={r.stderr!r}"
+
+
+# ═══════════════ #2334 default calibration tests ═══════════════
+
+def test_default_summary_done_min_is_point_one_three(tmp_path):
+    """Pin the post-#2334 calibration floor (~3pp below measured 16.13%)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("validator_mod", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    ns = mod._parse_args(["--index", str(tmp_path / "ignored.jsonl")])
+    assert ns.summary_done_min == 0.13
+
+
+def test_docstring_summary_done_min_matches_argparse_default():
+    """Prevent docstring-argparse drift — pins both sides in lockstep."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("validator_mod", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    assert "--summary-done-min           0.13" in mod.__doc__, (
+        "Docstring threshold value drifted from argparse default. "
+        "Both scripts/data/document-index/validate-index-metadata.py:19 and :35 must be updated together."
+    )

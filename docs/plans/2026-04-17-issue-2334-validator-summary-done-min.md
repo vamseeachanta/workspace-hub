@@ -1,8 +1,8 @@
 # Plan for #2334: Reconcile validator default `summary_done_min=0.55` with production reality
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T1
-> **Date:** 2026-04-17 (rev-3 after Claude MINOR + Codex MAJOR on rev-2)
+> **Date:** 2026-04-17 (rev-3.1 — Claude APPROVE; Codex sandbox unavailable; user approved via GH GUI)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2334
 > **Parents:** #1878 (closed), #2309 (closed)
 > **Review artifacts:** scripts/review/results/2026-04-17-plan-2334-claude.md | ...-codex.md
