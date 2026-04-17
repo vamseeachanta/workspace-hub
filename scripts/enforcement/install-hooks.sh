@@ -133,6 +133,28 @@ EOF
     fi
   fi
 
+  # 3d: Wire state-file size guard pre-push (#2070) — sees blobs already in HEAD
+  if grep -q "check-state-file-size-prepush.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: state-file size guard already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire state-file size guard into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
+
+# ── State-file size guard pre-push (#2070) ───────────────────────────────
+# Pre-push reads <local_ref local_sha remote_ref remote_sha> on stdin; tee it
+# into the size-guard hook so it can scan the to-be-pushed commit range.
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+STATE_SIZE_PREPUSH="${REPO_ROOT}/.claude/hooks/check-state-file-size-prepush.sh"
+if [[ -f "$STATE_SIZE_PREPUSH" ]]; then
+  bash "$STATE_SIZE_PREPUSH" || exit $?
+fi
+EOF
+      log "OK: Wired state-file size guard into pre-push"
+    fi
+  fi
+
   chmod +x "$PRE_PUSH"
 else
   log "SKIP: pre-push hook not found"
