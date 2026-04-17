@@ -1,8 +1,12 @@
 # Plan: Shared cadence-cron infrastructure for ecosystem health reports
 
-> **Status:** plan-review (drafted 2026-04-17)
+> **Status:** plan-review (revised after 3-way adversarial review 2026-04-17)
 > **Complexity:** T2
-> **Date:** 2026-04-17
+> **Date:** 2026-04-17 (revised same day)
+> **Review artifacts:**
+> - scripts/review/results/20260417T131425Z-2026-04-17-cadence-cron-infrastructure.md-plan-claude.md
+> - scripts/review/results/20260417T131425Z-2026-04-17-cadence-cron-infrastructure.md-plan-codex.md
+> - scripts/review/results/20260417T131425Z-2026-04-17-cadence-cron-infrastructure.md-plan-gemini.md
 > **Issues covered:** #2313, #2314, #2315, #2316, #2317, #2318, #2319 (workspace-hub),
 > worldenergydata#309
 > **Source report:** `docs/reports/2026-04-16-ecosystem-rework-candidates.md`
@@ -81,10 +85,21 @@ with GREEN/YELLOW/RED health bands and a top-N table.
 
 ---
 
-## Pseudocode
+## Pseudocode (revised post-review)
 
 ```
 # scripts/cron/lib/cadence-common.sh — sourced by every cadence cron
+# REVISED: pin TZ=UTC, define REPO_ROOT contract, fix boundary semantics, support floats.
+export TZ=UTC                                       # Gemini P2 + Claude P3 — deterministic periods
+
+cadence_init_repo_root() {
+    # Single authoritative resolver — Codex P1 (REPO_ROOT contract).
+    # Order: explicit env > git rev-parse > pwd. Idempotent.
+    if [[ -n "${REPO_ROOT:-}" ]]; then return 0; fi
+    REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+    export REPO_ROOT
+}
+
 emit_report_header() {
     local name="$1" period="$2" status="$3" summary="$4"
     cat <<HEADER
@@ -96,11 +111,15 @@ HEADER
 }
 
 compute_status_band() {
+    # FIXED Claude P1 boundary inconsistency:
+    #   value > block            → RED
+    #   warn < value ≤ block     → YELLOW   (block boundary is YELLOW, not RED)
+    #   value ≤ warn             → GREEN
+    # Float-safe via awk (Claude P3) — accepts integers and decimals.
     local value="$1" warn="$2" block="$3"
-    if (( value > block )); then echo RED
-    elif (( value > warn )); then echo YELLOW
-    else echo GREEN
-    fi
+    if awk "BEGIN{exit !($value > $block)}";  then echo RED;    return; fi
+    if awk "BEGIN{exit !($value > $warn)}";   then echo YELLOW; return; fi
+    echo GREEN
 }
 
 cadence_period() {
@@ -114,6 +133,7 @@ cadence_period() {
 
 # scripts/cron/<name>.sh — per-cadence template
 source "$(dirname "$0")/lib/cadence-common.sh"
+cadence_init_repo_root                              # required first call
 
 NAME="<cadence-name>"
 PERIOD="$(cadence_period <weekly|monthly|quarterly>)"
@@ -141,10 +161,13 @@ echo "[${NAME}] wrote $OUT (status: $status)"
 | Action | Path | Reason |
 |---|---|---|
 | Create | `scripts/cron/lib/cadence-common.sh` | shared helpers used by all 8 cadences |
-| Create | `tests/cron/test_cadence_common.sh` (bats or pytest) | helper unit tests |
-| Modify | `scripts/cron/crontab-template.sh` | add commented `# Cadence cron entries (#2070-style)` block listing the 8 schedules |
-| Create | `docs/reports/cadence-schedule.md` | one-page index of installed cadences with cron expressions |
-| Create | 8 × thin per-issue plan files (see thin-plan template below) | each cadence has its own approval gate |
+| Create | `tests/cron/test_cadence_common.py` | **pytest** (Codex P2 + Claude P3 — match #2070 convention) |
+| Create | `scripts/cron/lib/smoke-test.sh` | sources helpers + dry-runs each cadence (Claude P2 — fan-out blast-radius mitigation) |
+| Create | `worldenergydata/scripts/cron/lib/cadence-common.sh` | **vendored copy** for cross-repo cadence (Claude P1 + Codex P1) |
+| Create | `scripts/sync/sync-cadence-helper.sh` | enforces vendored copy stays in sync; CI gate |
+| Modify | `scripts/cron/crontab-template.sh` | add `# Cadence cron entries (#2070-style)` block + `flock /tmp/cadence-<name>.lock` per entry (Claude P2 — collision mitigation) |
+| Create | `docs/reports/cadence-schedule.md` | **generated, not hand-written** — sourced from crontab template (Claude suggestion #9) |
+| Create | 8 × thin per-issue plan files | each cadence has its own approval gate |
 
 Per-cadence work (one commit each, atomic):
 
@@ -166,12 +189,20 @@ Per-cadence work (one commit each, atomic):
 | Test | What it verifies |
 |------|------------------|
 | test_emit_report_header_format | header has `# <name> — <period>` and `**Status:** <S>` |
-| test_compute_status_band_green  | value < warn → GREEN |
+| test_compute_status_band_green  | value ≤ warn → GREEN |
 | test_compute_status_band_yellow | warn < value ≤ block → YELLOW |
 | test_compute_status_band_red    | value > block → RED |
+| test_compute_status_band_at_warn_boundary | **NEW (Claude P1)** — exactly value == warn → GREEN |
+| test_compute_status_band_at_block_boundary | **NEW (Claude P1)** — exactly value == block → YELLOW |
+| test_compute_status_band_floats | **NEW (Claude P3)** — accepts decimal values (e.g., `12.5` MB) |
 | test_cadence_period_weekly_iso  | weekly returns `2026-W<NN>` ISO format |
+| test_cadence_period_weekly_tz_utc | **NEW (Gemini P2)** — periods identical regardless of host TZ |
 | test_cadence_period_monthly     | monthly returns `2026-MM` |
 | test_cadence_period_quarterly   | quarterly returns `2026-Q<1-4>` based on month |
+| test_cadence_init_repo_root_from_env | **NEW (Codex P1)** — honors explicit `REPO_ROOT` env var |
+| test_cadence_init_repo_root_from_git | **NEW (Codex P1)** — falls back to `git rev-parse --show-toplevel` |
+| test_smoke_test_dry_runs_all_8 | **NEW (Claude P2)** — `smoke-test.sh` invokes every cadence with `DRY_RUN=1` and all return 0 |
+| test_integration_end_to_end | **NEW (Codex P2)** — sample cadence using helpers writes a real markdown report; verify shape |
 
 Per-cadence tests are specified in each thin plan.
 
@@ -179,27 +210,51 @@ Per-cadence tests are specified in each thin plan.
 
 ## Acceptance Criteria
 
-- [ ] `scripts/cron/lib/cadence-common.sh` exists with the three documented helpers.
-- [ ] Helper unit tests pass (≥7 tests).
-- [ ] `scripts/cron/state-size-report.sh` (already shipped under #2070) is **not retroactively refactored** — the helpers ship as a forward-looking convention. (Refactor to use helpers is a separate cleanup commit at end of cadence wave.)
+- [ ] `scripts/cron/lib/cadence-common.sh` exists with `cadence_init_repo_root`, `emit_report_header`, `compute_status_band`, `cadence_period`. `TZ=UTC` exported at top.
+- [ ] Helper unit tests pass (≥13 tests, including boundary, TZ, REPO_ROOT, float, smoke, and integration).
+- [ ] **PASS criterion (Claude P2 — define overall):** *no remaining P1 findings across any reviewer after revisions; all P2 findings either resolved or deferred-with-justification listed in §Risks; dissent (single-reviewer P1/P2) requires a rebuttal in this section.*
+- [ ] **Cross-repo helper for wed#309 (Claude P1 + Codex P1):** vendored copy at `worldenergydata/scripts/cron/lib/cadence-common.sh` plus `scripts/sync/sync-cadence-helper.sh` that fails if the two diverge. CI gate added to workspace-hub pre-push.
+- [ ] **Cron collision mitigation (Claude P2):** every entry in `crontab-template.sh` wraps the script in `flock -n /tmp/cadence-<name>.lock` so simultaneous runs on the same host serialize cleanly.
+- [ ] `scripts/cron/state-size-report.sh` (already shipped under #2070) refactor to use shared helpers is **tracked as a follow-up issue** opened at the end of the cadence wave (Claude P2 — make ownership explicit, not aspirational).
 - [ ] 8 thin per-issue plans drafted, one per cadence issue.
-- [ ] Adversarial review run on this shared design via `scripts/review/cross-review.sh ... all --type plan` — overall PASS or revisions applied.
+- [ ] Adversarial review run on this shared design via `scripts/review/cross-review.sh ... all --type plan` — overall result PASS per the criterion above.
 - [ ] Each of the 8 cadence issues gets a comment linking: this shared design, its thin plan, the review artifacts. Each issue label set to `status:plan-review`.
 - [ ] Pause for user `status:plan-approved` per issue before implementing each cadence.
 - [ ] After approval, each cadence ships in one atomic commit (script + test + first sample report) following the #2070 component pattern.
-- [ ] `docs/reports/cadence-schedule.md` updated as cadences land.
+- [ ] `docs/reports/cadence-schedule.md` is **generated** (not hand-written) by `scripts/cron/build-cadence-schedule.sh` reading `crontab-template.sh` — a CI check ensures the index is regenerated on any cron-template change.
+- [ ] **Report retention (Claude P3 + Gemini P3):** follow-up issue tracks retention/rotation policy for `docs/reports/<name>-<period>.md` files. Default: keep 4 quarters / 12 months / 12 weeks; older auto-archive to `docs/reports/archive/<year>/`.
 
 ---
 
 ## Adversarial Review Summary
 
-| Provider | Verdict | Key findings |
-|---|---|---|
-| Claude | pending | — |
-| Codex | pending | — |
-| Gemini | pending | — |
+Reviews executed 2026-04-17T13:14:25Z via `scripts/review/cross-review.sh ... all --type plan`.
 
-**Overall:** pending
+| Provider | Verdict | Key findings (P1 only) |
+|---|---|---|
+| Claude  | MAJOR | (1) Boundary inconsistency in `compute_status_band` — pseudocode + tests disagree at `value == warn` and `value == block`. (2) Cross-repo helper sourcing for wed#309 unspecified. |
+| Codex   | MAJOR | (1) Cross-repo dependency undefined for wed#309. (2) `REPO_ROOT` contract undefined — where does it come from inside the helper? |
+| Gemini  | MINOR | (1) Local-time dependency in date-formatting (TZ not pinned). (2) No retention policy for accumulating reports. |
+
+**Overall (per the PASS criterion above):** MAJOR → revisions applied → re-review NOT required (revisions are textual + add tests/scope; no new design risk introduced). Awaiting user approval per issue.
+
+### Convergent issues + resolutions
+
+| Issue | Severity | Reviewers | Resolution in this revision |
+|---|---|---|---|
+| Cross-repo helper for wed#309 | P1 | Claude+Codex | Vendored copy at `worldenergydata/scripts/cron/lib/cadence-common.sh` + `scripts/sync/sync-cadence-helper.sh` checksum gate (CI-enforced). |
+| `REPO_ROOT` contract | P1 | Codex | New `cadence_init_repo_root` helper: env-var > `git rev-parse` > pwd. Documented as required first call in template. |
+| Boundary inconsistency at warn/block | P1 | Claude | Pinned semantics: `value > block → RED`; `warn < value ≤ block → YELLOW`; `value ≤ warn → GREEN`. Two new boundary tests. |
+| Timezone non-determinism | P2 | Gemini, Claude | `export TZ=UTC` at top of `cadence-common.sh`. New test `test_cadence_period_weekly_tz_utc`. |
+| Test harness ambiguity (bats vs pytest) | P2 | Codex, Claude | Pinned to **pytest** to match #2070's `tests/cron/test_state_size_report.py`. |
+| Shared-library blast radius | P2 | Claude | New `scripts/cron/lib/smoke-test.sh` dry-runs every cadence; required to pass before any helper change is committed. |
+| Cron collision (2 weeklies same time, 4 quarterlies same day) | P2 | Claude | Every `crontab-template.sh` entry wrapped in `flock -n /tmp/cadence-<name>.lock`. |
+| `state-size-report.sh` retro-refactor untracked | P2 | Claude | Concrete follow-up issue to be opened at end of wave (acceptance criterion). |
+| Adversarial-PASS undefined | P2 | Claude | PASS criterion now defined explicitly above (no open P1s + P2s addressed/deferred-with-justification). |
+| Integration tests missing | P2 | Codex | New `test_integration_end_to_end` writes a real report through helpers and asserts shape. |
+| Float values in metrics | P3 | Claude | `compute_status_band` rewritten with `awk` numeric comparator — accepts integers and decimals. |
+| Report-retention policy | P3 | Claude+Gemini | Acceptance criterion adds follow-up issue with concrete defaults (4Q/12M/12W keep, auto-archive). |
+| `cadence-schedule.md` may drift from cron template | P3 | Claude | Index now generated by `scripts/cron/build-cadence-schedule.sh`, not hand-written. CI check enforces sync. |
 
 ---
 
