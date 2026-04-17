@@ -8,7 +8,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_UNDER_TEST="${SCRIPT_DIR}/../lib/plan-file-parse.sh"
 PROMPT_FILE="${SCRIPT_DIR}/../plan-review-prompt.md"
 WRAPPER="${SCRIPT_DIR}/../plan-review-fanout.sh"
+DISAGREEMENT_LIB="${SCRIPT_DIR}/../lib/disagreement-diff.sh"
 MOCKS_DIR="${SCRIPT_DIR}/mocks"
+FIXTURES_DIR="${SCRIPT_DIR}/fixtures"
 FIXTURE_FIRST_LINE="FIXTURE_PLAN_FIRST_LINE_MARKER"
 
 # run_wrapper_under_mocks <out-dir> — echoes nothing, leaves side effects:
@@ -259,6 +261,93 @@ test_parallel_execution() {
   rm -rf "$td"
 }
 
+test_disagreement_report_captures_unique_finding() {
+  run_test "disagreement report highlights findings unique to one provider"
+
+  local td; td="$(mktemp -d)"
+  local rdir="$td/results"
+  mkdir -p "$rdir"
+
+  # Pre-seed three artifacts with divergent findings.
+  # claude + codex both say MAJOR + Shared finding A.
+  # gemini says MINOR + Uniquely-gemini finding OMEGA.
+  printf '## Verdict\nMAJOR\n\n## Findings\n1. Shared finding A\n' > "$rdir/2026-04-17-plan-8888-claude.md"
+  printf '## Verdict\nMAJOR\n\n## Findings\n1. Shared finding A\n' > "$rdir/2026-04-17-plan-8888-codex.md"
+  printf '## Verdict\nMINOR\n\n## Findings\n1. Uniquely-gemini finding OMEGA\n' > "$rdir/2026-04-17-plan-8888-gemini.md"
+
+  local out="$td/disagreement.md"
+  bash "$DISAGREEMENT_LIB" "$rdir" "2026-04-17" "8888" > "$out" 2>/dev/null
+
+  # The unique gemini finding must appear under the gemini section.
+  # Using awk to extract content between "### gemini" and next "###" or EOF.
+  local gemini_section
+  gemini_section="$(awk '/^### gemini$/{flag=1;next}/^### /{flag=0}flag' "$out")"
+
+  if [[ "$gemini_section" == *"Uniquely-gemini finding OMEGA"* ]]; then
+    pass "unique gemini finding appeared under gemini section"
+  else
+    fail "gemini section missing unique finding" "$(echo "$gemini_section" | head -5)"
+  fi
+  rm -rf "$td"
+}
+
+test_two_fixture_plumbing() {
+  run_test "two fixtures produce distinguishable per-provider artifacts (wrapper routes prompts correctly)"
+
+  local td1; td1="$(mktemp -d)"
+  local td2; td2="$(mktemp -d)"
+
+  # Known-good fixture (#9001).
+  (
+    export PATH="$MOCKS_DIR:$PATH"
+    export PLAN_REVIEW_CAPTURE_DIR="$td1"
+    mkdir -p "$td1/results"
+    bash "$WRAPPER" "$FIXTURES_DIR/2026-04-17-issue-9001-known-good.md" --output-dir="$td1/results"
+  ) >/dev/null 2>&1 || true
+
+  # Known-broken fixture (#9002).
+  (
+    export PATH="$MOCKS_DIR:$PATH"
+    export PLAN_REVIEW_CAPTURE_DIR="$td2"
+    mkdir -p "$td2/results"
+    bash "$WRAPPER" "$FIXTURES_DIR/2026-04-17-issue-9002-known-broken.md" --output-dir="$td2/results"
+  ) >/dev/null 2>&1 || true
+
+  # Each run must produce three per-provider artifacts (claude/codex/gemini).
+  # The wrapper ALSO writes a <issue>-disagreement.md; we require its presence
+  # separately so the provider count stays honest.
+  local missing=()
+  for prov in claude codex gemini; do
+    [[ -f "$(ls "$td1/results/"*-plan-9001-"$prov".md 2>/dev/null | head -1)" ]] || missing+=("good/$prov")
+    [[ -f "$(ls "$td2/results/"*-plan-9002-"$prov".md 2>/dev/null | head -1)" ]] || missing+=("broken/$prov")
+  done
+  [[ -f "$(ls "$td1/results/"*-plan-9001-disagreement.md 2>/dev/null | head -1)" ]] || missing+=("good/disagreement")
+  [[ -f "$(ls "$td2/results/"*-plan-9002-disagreement.md 2>/dev/null | head -1)" ]] || missing+=("broken/disagreement")
+
+  if (( ${#missing[@]} != 0 )); then
+    fail "missing expected artifacts" "${missing[*]}"
+    rm -rf "$td1" "$td2"; return
+  fi
+
+  # Capture files must differ: the plan body passed to codex/gemini differs
+  # between the two fixtures, so the recorded ARGV must differ too.
+  if diff -q "$td1/codex.capture" "$td2/codex.capture" >/dev/null 2>&1; then
+    fail "codex captures identical across both fixtures (wrapper not routing per-fixture)"
+    rm -rf "$td1" "$td2"; return
+  fi
+
+  # Specifically, the known-good fixture should mention 'hello' (its deliverable),
+  # and the known-broken fixture should mention 'kernel 2.6' (its deliberate defect).
+  if ! grep -qF 'hello' "$td1/codex.capture"; then
+    fail "known-good codex capture missing fixture-specific marker 'hello'"
+  elif ! grep -qF 'kernel 2.6' "$td2/codex.capture"; then
+    fail "known-broken codex capture missing fixture-specific marker 'kernel 2.6'"
+  else
+    pass "per-fixture per-provider artifacts + captures differ as expected"
+  fi
+  rm -rf "$td1" "$td2"
+}
+
 test_gemini_unavailable_does_not_abort_codex() {
   run_test "gemini CLI failure leaves codex + claude artifacts intact, writes UNAVAILABLE for gemini"
 
@@ -309,6 +398,8 @@ test_gemini_runs_from_tmp_cwd
 test_writes_claude_artifact
 test_parallel_execution
 test_gemini_unavailable_does_not_abort_codex
+test_disagreement_report_captures_unique_finding
+test_two_fixture_plumbing
 
 echo ""
 echo "=================================="
