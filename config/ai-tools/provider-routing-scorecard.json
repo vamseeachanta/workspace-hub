@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-17T05:20:03.875938Z",
+  "generated_at": "2026-04-17T09:20:04.727118Z",
   "current_week": "2026-W16",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-17T05:20:03.706145Z",
+    "utilization_generated_at": "2026-04-17T09:20:04.553458Z",
     "audit_generated_at": "2026-04-16T23:34:23Z"
   },
   "recommended_provider_order": [
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 1.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 41,
-      "post_records_current_week": 683,
+      "sessions_current_week": 43,
+      "post_records_current_week": 759,
       "audit_post_records": 32096,
       "missing_repo_reads": 0,
       "python3_per_1k_records": 9.94,
@@ -84,7 +84,7 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 385
+          "count": 440
         },
         {
           "tool": "mcp__codex_apps__github_fetch_file",
@@ -100,7 +100,7 @@
         },
         {
           "tool": "list_mcp_resources",
-          "count": 23
+          "count": 24
         }
       ],
       "preferred_work": [
@@ -125,8 +125,8 @@
       "reported_utilization_pct": 5.3,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 22,
-      "post_records_current_week": 164,
+      "sessions_current_week": 23,
+      "post_records_current_week": 165,
       "audit_post_records": 6064,
       "missing_repo_reads": 665,
       "python3_per_1k_records": 47.99,
@@ -147,7 +147,7 @@
         },
         {
           "tool": "Browser",
-          "count": 2
+          "count": 3
         },
         {
           "tool": "generalist",

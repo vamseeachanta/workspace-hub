@@ -57,6 +57,8 @@ Parse `$ARGUMENTS` before loading any context:
 - First positional token → `PHASE_ARG`
 - Optional `--wave N` → `WAVE_FILTER`
 - Optional `--gaps-only` keeps its current meaning
+- Optional `--cross-ai` → `CROSS_AI_FORCE=true` (force all plans through cross-AI execution)
+- Optional `--no-cross-ai` → `CROSS_AI_DISABLED=true` (disable cross-AI for this run, overrides config and frontmatter)
 
 If `--wave` is absent, preserve the current behavior of executing all incomplete waves in the phase.
 </step>
@@ -80,6 +82,15 @@ Read worktree config:
 USE_WORKTREES=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.use_worktrees 2>/dev/null || echo "true")
 ```
 
+If the project uses git submodules, worktree isolation is skipped regardless of the `workflow.use_worktrees` config — the executor commit protocol cannot correctly handle submodule commits inside isolated worktrees. Sequential execution handles submodules transparently.
+
+```bash
+if [ -f .gitmodules ]; then
+  echo "[worktree] Submodule project detected (.gitmodules exists) — falling back to sequential execution"
+  USE_WORKTREES=false
+fi
+```
+
 When `USE_WORKTREES` is `false`, all executor agents run without `isolation="worktree"` — they execute sequentially on the main working tree instead of in parallel worktrees.
 
 Read context window size for adaptive prompt enrichment:
@@ -92,6 +103,12 @@ When `CONTEXT_WINDOW >= 500000` (1M-class models), subagent prompts include rich
 - Executor agents receive prior wave SUMMARY.md files and the phase CONTEXT.md/RESEARCH.md
 - Verifier agents receive all PLAN.md, SUMMARY.md, CONTEXT.md files plus REQUIREMENTS.md
 - This enables cross-phase awareness and history-aware verification
+
+When `CONTEXT_WINDOW < 200000` (sub-200K models), subagent prompts are thinned to reduce static overhead:
+- Executor agents omit extended deviation rule examples and checkpoint examples from inline prompt — load on-demand via @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/executor-examples.md
+- Planner agents omit extended anti-pattern lists and specificity examples from inline prompt — load on-demand via @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/planner-antipatterns.md
+- Core rules and decision logic remain inline; only verbose examples and edge-case lists are extracted
+- This reduces executor static overhead by ~40% while preserving behavioral correctness
 
 **If `phase_found` is false:** Error — phase directory not found.
 **If `plan_count` is 0:** Error — no plans found in phase.
@@ -243,6 +260,77 @@ Report:
 ```
 </step>
 
+<step name="cross_ai_delegation">
+**Optional step 2.5 — Delegate plans to an external AI runtime.**
+
+This step runs after plan discovery and before normal wave execution. It identifies plans
+that should be delegated to an external AI command and executes them via stdin-based prompt
+delivery. Plans handled here are removed from the execute_waves plan list so the normal
+executor skips them.
+
+**Activation logic:**
+
+1. If `CROSS_AI_DISABLED` is true (`--no-cross-ai` flag): skip this step entirely.
+2. If `CROSS_AI_FORCE` is true (`--cross-ai` flag): mark ALL incomplete plans for cross-AI execution.
+3. Otherwise: check each plan's frontmatter for `cross_ai: true` AND verify config
+   `workflow.cross_ai_execution` is `true`. Plans matching both conditions are marked for cross-AI.
+
+```bash
+CROSS_AI_ENABLED=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.cross_ai_execution --default false 2>/dev/null)
+CROSS_AI_CMD=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.cross_ai_command --default "" 2>/dev/null)
+CROSS_AI_TIMEOUT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.cross_ai_timeout --default 300 2>/dev/null)
+```
+
+**If no plans are marked for cross-AI:** Skip to execute_waves.
+
+**If plans are marked but `cross_ai_command` is empty:** Error — tell user to set
+`workflow.cross_ai_command` via `gsd-tools.cjs config-set workflow.cross_ai_command "<command>"`.
+
+**For each cross-AI plan (sequentially):**
+
+1. **Construct the task prompt** from the plan file:
+   - Extract `<objective>` and `<tasks>` sections from the PLAN.md
+   - Append PROJECT.md context (project name, description, tech stack)
+   - Format as a self-contained execution prompt
+
+2. **Check for dirty working tree before execution:**
+   ```bash
+   if ! git diff --quiet HEAD 2>/dev/null; then
+     echo "WARNING: dirty working tree detected — the external AI command may produce uncommitted changes that conflict with existing modifications"
+   fi
+   ```
+
+3. **Run the external command** from the project root, writing the prompt to stdin.
+   Never shell-interpolate the prompt — always pipe via stdin to prevent injection:
+   ```bash
+   echo "$TASK_PROMPT" | timeout "${CROSS_AI_TIMEOUT}s" ${CROSS_AI_CMD} > "$CANDIDATE_SUMMARY" 2>"$ERROR_LOG"
+   EXIT_CODE=$?
+   ```
+
+4. **Evaluate the result:**
+
+   **Success (exit 0 + valid summary):**
+   - Read `$CANDIDATE_SUMMARY` and validate it contains meaningful content
+     (not empty, has at least a heading and description — a valid SUMMARY.md structure)
+   - Write it as the plan's SUMMARY.md file
+   - Update STATE.md plan status to complete
+   - Update ROADMAP.md progress
+   - Mark plan as handled — skip it in execute_waves
+
+   **Failure (non-zero exit or invalid summary):**
+   - Display the error output and exit code
+   - Warn: "The external command may have left uncommitted changes or partial edits
+     in the working tree. Review `git status` and `git diff` before proceeding."
+   - Offer three choices:
+     - **retry** — run the same plan through cross-AI again
+     - **skip** — fall back to normal executor for this plan (re-add to execute_waves list)
+     - **abort** — stop execution entirely, preserve state for resume
+
+5. **After all cross-AI plans processed:** Remove successfully handled plans from the
+   incomplete plan list so execute_waves skips them. Any skipped-to-fallback plans remain
+   in the list for normal executor processing.
+</step>
+
 <step name="execute_waves">
 Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZATION=true`, sequential if `false`.
 
@@ -348,29 +436,46 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        Run:
        ```bash
        ACTUAL_BASE=$(git merge-base HEAD {EXPECTED_BASE})
-       CURRENT_HEAD=$(git rev-parse HEAD)
        ```
 
        If `ACTUAL_BASE` != `{EXPECTED_BASE}` (i.e. the worktree branch was created from an older
-       base such as `main` instead of the feature branch HEAD), rebase onto the correct base:
+       base such as `main` instead of the feature branch HEAD), hard-reset to the correct base:
        ```bash
-       git rebase --onto {EXPECTED_BASE} $(git rev-parse --abbrev-ref HEAD~1 2>/dev/null || git rev-parse HEAD^) HEAD 2>/dev/null || true
-       # If rebase fails or is a no-op, reset the branch to start from the correct base:
-       git reset --soft {EXPECTED_BASE}
+       # Safe: this runs before any agent work, so no uncommitted changes to lose
+       git reset --hard {EXPECTED_BASE}
+       # Verify correction succeeded
+       if [ "$(git rev-parse HEAD)" != "{EXPECTED_BASE}" ]; then
+         echo "ERROR: Could not correct worktree base — aborting to prevent data loss"
+         exit 1
+       fi
        ```
+
+       `reset --hard` is safe here because this is a fresh worktree with no user changes. It
+       resets both the HEAD pointer AND the working tree to the correct base commit (#2015).
 
        If `ACTUAL_BASE` == `{EXPECTED_BASE}`: the branch base is correct, proceed immediately.
 
-       This check fixes a known issue on Windows where `EnterWorktree` creates branches from
-       `main` instead of the current feature branch HEAD.
+       This check fixes a known issue where `EnterWorktree` creates branches from
+       `main` instead of the current feature branch HEAD (affects all platforms).
        </worktree_branch_check>
 
        <parallel_execution>
-       You are running as a PARALLEL executor agent. Use --no-verify on all git
-       commits to avoid pre-commit hook contention with other agents. The
-       orchestrator validates hooks once after all agents complete.
+       You are running as a PARALLEL executor agent in a git worktree.
+       Use --no-verify on all git commits to avoid pre-commit hook contention
+       with other agents. The orchestrator validates hooks once after all agents complete.
        For gsd-tools commits: add --no-verify flag.
        For direct git commits: use git commit --no-verify -m "..."
+
+       IMPORTANT: Do NOT modify STATE.md or ROADMAP.md. execute-plan.md
+       auto-detects worktree mode (`.git` is a file, not a directory) and skips
+       shared file updates automatically. The orchestrator updates them centrally
+       after merge.
+
+       REQUIRED: SUMMARY.md MUST be committed before you return. In worktree mode the
+       git_commit_metadata step in execute-plan.md commits SUMMARY.md and REQUIREMENTS.md
+       only (STATE.md and ROADMAP.md are excluded automatically). Do NOT skip or defer
+       this commit — the orchestrator force-removes the worktree after you return, and
+       any uncommitted SUMMARY.md will be permanently lost (#2070).
        </parallel_execution>
 
        <execution_context>
@@ -378,6 +483,7 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/templates/summary.md
        @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/checkpoints.md
        @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/tdd.md
+       ${CONTEXT_WINDOW < 200000 ? '' : '@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/executor-examples.md'}
        </execution_context>
 
        <files_to_read>
@@ -408,6 +514,7 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        - [ ] All tasks executed
        - [ ] Each task committed individually
        - [ ] SUMMARY.md created in plan directory
+       - [ ] No modifications to shared orchestrator artifacts (the orchestrator handles all post-wave shared-file writes)
        </success_criteria>
      "
    )
@@ -492,11 +599,20 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        # and ROADMAP.md are stale. Main always wins for these files.
        STATE_BACKUP=$(mktemp)
        ROADMAP_BACKUP=$(mktemp)
-       git show HEAD:.planning/STATE.md > "$STATE_BACKUP" 2>/dev/null || true
-       git show HEAD:.planning/ROADMAP.md > "$ROADMAP_BACKUP" 2>/dev/null || true
+       [ -f .planning/STATE.md ] && cp .planning/STATE.md "$STATE_BACKUP" || true
+       [ -f .planning/ROADMAP.md ] && cp .planning/ROADMAP.md "$ROADMAP_BACKUP" || true
 
        # Snapshot list of files on main BEFORE merge to detect resurrections
        PRE_MERGE_FILES=$(git ls-files .planning/)
+
+       # Pre-merge deletion check: warn if the worktree branch deletes tracked files
+       DELETIONS=$(git diff --diff-filter=D --name-only HEAD..."$WT_BRANCH" 2>/dev/null || true)
+       if [ -n "$DELETIONS" ]; then
+         echo "BLOCKED: Worktree branch $WT_BRANCH contains file deletions: $DELETIONS"
+         echo "Review these deletions before merging. If intentional, remove this guard and re-run."
+         rm -f "$STATE_BACKUP" "$ROADMAP_BACKUP"
+         continue
+       fi
 
        # Merge the worktree branch into the current branch
        git merge "$WT_BRANCH" --no-edit -m "chore: merge executor worktree ($WT_BRANCH)" 2>&1 || {
@@ -535,6 +651,17 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
          fi
        fi
 
+       # Safety net: commit any uncommitted SUMMARY.md before force-removing the worktree.
+       # This guards against executors that skipped the git_commit_metadata step (#2070).
+       UNCOMMITTED_SUMMARY=$(git -C "$WT" ls-files --modified --others --exclude-standard -- "*SUMMARY.md" 2>/dev/null || true)
+       if [ -n "$UNCOMMITTED_SUMMARY" ]; then
+         echo "⚠ SUMMARY.md was not committed by executor — committing now to prevent data loss"
+         git -C "$WT" add -- "*SUMMARY.md" 2>/dev/null || true
+         git -C "$WT" commit --no-verify -m "docs(recovery): rescue uncommitted SUMMARY.md before worktree removal (#2070)" 2>/dev/null || true
+         # Re-merge the recovery commit
+         git merge "$WT_BRANCH" --no-edit -m "chore: merge rescued SUMMARY.md from executor worktree ($WT_BRANCH)" 2>/dev/null || true
+       fi
+
        # Remove the worktree
        git worktree remove "$WT" --force 2>/dev/null || true
 
@@ -548,21 +675,112 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
 
    **If no worktrees found:** Skip silently — agents may have been spawned without worktree isolation.
 
-5.6. **Post-wave shared artifact update (worktree mode only):**
+5.6. **Post-merge test gate (parallel mode only):**
 
-   When executor agents ran with `isolation="worktree"`, they skipped STATE.md and ROADMAP.md updates to avoid last-merge-wins overwrites. The orchestrator is the single writer for these files. After worktrees are merged back, update shared artifacts once:
+   After merging all worktrees in a wave, run the project's test suite to catch
+   cross-plan integration issues that individual worktree self-checks cannot detect
+   (e.g., conflicting type definitions, removed exports, import changes).
+
+   This addresses the Generator self-evaluation blind spot identified in Anthropic's
+   harness engineering research: agents reliably report Self-Check: PASSED even when
+   merging their work creates failures.
 
    ```bash
-   # Update ROADMAP.md for each completed plan in this wave
-   for PLAN_ID in ${WAVE_PLAN_IDS}; do
-     node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap update-plan-progress "${PHASE_NUMBER}" "${PLAN_ID}" completed
-   done
+   # Detect test runner and run quick smoke test (timeout: 5 minutes)
+   TEST_EXIT=0
+   timeout 300 bash -c '
+   if [ -f "package.json" ]; then
+     npm test 2>&1
+   elif [ -f "Cargo.toml" ]; then
+     cargo test 2>&1
+   elif [ -f "go.mod" ]; then
+     go test ./... 2>&1
+   elif [ -f "pyproject.toml" ] || [ -f "requirements.txt" ]; then
+     python -m pytest -x -q --tb=short 2>&1 || uv run python -m pytest -x -q --tb=short 2>&1
+   else
+     echo "⚠ No test runner detected — skipping post-merge test gate"
+     exit 0
+   fi
+   '
+   TEST_EXIT=$?
+   if [ "${TEST_EXIT}" -eq 0 ]; then
+     echo "✓ Post-merge test gate passed — no cross-plan conflicts"
+   elif [ "${TEST_EXIT}" -eq 124 ]; then
+     echo "⚠ Post-merge test gate timed out after 5 minutes"
+   else
+     echo "✗ Post-merge test gate failed (exit code ${TEST_EXIT})"
+     WAVE_FAILURE_COUNT=$((WAVE_FAILURE_COUNT + 1))
+   fi
+   ```
 
+   **If `TEST_EXIT` is 0 (pass):** `✓ Post-merge test gate: {N} tests passed — no cross-plan conflicts` → continue to orchestrator tracking update.
+
+   **If `TEST_EXIT` is 124 (timeout):** Log warning, treat as non-blocking, continue. Tests may need a longer budget or manual run.
+
+   **If `TEST_EXIT` is non-zero (test failure):** Increment `WAVE_FAILURE_COUNT` to track
+   cumulative failures across waves. Subsequent waves should report:
+   `⚠ Note: ${WAVE_FAILURE_COUNT} prior wave(s) had test failures`
+
+5.7. **Post-wave shared artifact update (worktree mode only, skip if tests failed):**
+
+   When executor agents ran with `isolation="worktree"`, they skipped STATE.md and ROADMAP.md updates to avoid last-merge-wins overwrites. The orchestrator is the single writer for these files. After worktrees are merged back, update shared artifacts once.
+
+   **Only update tracking when tests passed (TEST_EXIT=0).**
+   If tests failed or timed out, skip the tracking update — plans should
+   not be marked as complete when integration tests are failing or inconclusive.
+
+   ```bash
+   # Guard: only update tracking if post-merge tests passed
+   # Timeout (124) is treated as inconclusive — do NOT mark plans complete
+   if [ "${TEST_EXIT}" -eq 0 ]; then
+     # Update ROADMAP plan progress for each completed plan in this wave
+     for plan_id in {completed_plan_ids}; do
+       node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap update-plan-progress "${PHASE_NUMBER}" "${plan_id}" "complete"
+     done
+
+     # Only commit tracking files if they actually changed
+     if ! git diff --quiet .planning/ROADMAP.md .planning/STATE.md 2>/dev/null; then
+       node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(phase-${PHASE_NUMBER}): update tracking after wave ${N}" --files .planning/ROADMAP.md .planning/STATE.md
+     fi
+   elif [ "${TEST_EXIT}" -eq 124 ]; then
+     echo "⚠ Skipping tracking update — test suite timed out. Plans remain in-progress. Run tests manually to confirm."
+   else
+     echo "⚠ Skipping tracking update — post-merge tests failed (exit ${TEST_EXIT}). Plans remain in-progress until tests pass."
+   fi
    ```
 
    Where `WAVE_PLAN_IDS` is the space-separated list of plan IDs that completed in this wave.
 
    **If `workflow.use_worktrees` is `false`:** Sequential agents already updated STATE.md and ROADMAP.md themselves — skip this step.
+
+5.8. **Handle test gate failures (when `WAVE_FAILURE_COUNT > 0`):**
+
+   ```
+   ## ⚠ Post-Merge Test Failure (cumulative failures: ${WAVE_FAILURE_COUNT})
+
+   Wave {N} worktrees merged successfully, but {M} tests fail after merge.
+   This typically indicates conflicting changes across parallel plans
+   (e.g., type definitions, shared imports, API contracts).
+
+   Failed tests:
+   {first 10 lines of failure output}
+
+   Options:
+   1. Fix now (recommended) — resolve conflicts before next wave
+   2. Continue — failures may compound in subsequent waves
+   ```
+
+   Note: If `WAVE_FAILURE_COUNT > 1`, strongly recommend "Fix now" — compounding
+   failures across multiple waves become exponentially harder to diagnose.
+
+   If "Fix now": diagnose failures (typically import conflicts, missing types,
+   or changed function signatures from parallel plans modifying the same module).
+   Fix, commit as `fix: resolve post-merge conflicts from wave {N}`, re-run tests.
+
+   **Why this matters:** Worktree isolation means each agent's Self-Check passes
+   in isolation. But when merged, add/add conflicts in shared files (models, registries,
+   CLI entry points) can silently drop code. The post-merge gate catches this before
+   the next wave builds on a broken foundation.
 
 6. **Report completion — spot-check claims first:**
 
@@ -710,6 +928,50 @@ If `SECURITY_CFG` is `true` AND SECURITY.md exists: check frontmatter `threats_o
 ```
 </step>
 
+<step name="tdd_review_checkpoint">
+**Optional step — TDD collaborative review.**
+
+```bash
+TDD_MODE=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.tdd_mode --default false 2>/dev/null)
+```
+
+**Skip if `TDD_MODE` is `false`.**
+
+When `TDD_MODE` is `true`, check whether any completed plans in this phase have `type: tdd` in their frontmatter:
+
+```bash
+TDD_PLANS=$(grep -rl "^type: tdd" "${PHASE_DIR}"/*-PLAN.md 2>/dev/null | wc -l | tr -d ' ')
+```
+
+**If `TDD_PLANS` > 0:** Insert end-of-phase collaborative review checkpoint.
+
+1. Collect all SUMMARY.md files for TDD plans
+2. For each TDD plan summary, verify the RED/GREEN/REFACTOR gate sequence:
+   - RED gate: A failing test commit exists (`test(...)` commit with MUST-fail evidence)
+   - GREEN gate: An implementation commit exists (`feat(...)` commit making tests pass)
+   - REFACTOR gate: Optional cleanup commit (`refactor(...)` commit, tests still pass)
+3. If any TDD plan is missing the RED or GREEN gate commits, flag it:
+   ```
+   ⚠ TDD gate violation: Plan {plan_id} missing {RED|GREEN} phase commit.
+     Expected commit pattern: test({phase}-{plan}): ... → feat({phase}-{plan}): ...
+   ```
+4. Present collaborative review summary:
+   ```
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    TDD REVIEW — Phase {X}
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   TDD Plans: {TDD_PLANS} | Gate violations: {count}
+
+   | Plan | RED | GREEN | REFACTOR | Status |
+   |------|-----|-------|----------|--------|
+   | {id} |  ✓  |   ✓   |    ✓     | Pass   |
+   | {id} |  ✓  |   ✗   |    —     | FAIL   |
+   ```
+
+**Gate violations are advisory** — they do not block execution but are surfaced to the user for review. The verifier agent (step `verify_phase_goal`) will also check TDD discipline as part of its quality assessment.
+</step>
+
 <step name="handle_partial_wave_execution">
 If `WAVE_FILTER` was used, re-run plan discovery after execution:
 
@@ -849,10 +1111,11 @@ Collect all unique test file paths into `REGRESSION_FILES`.
 ```bash
 # Detect test runner and run prior phase tests
 if [ -f "package.json" ]; then
-  # Node.js — use project's test runner
-  npx jest ${REGRESSION_FILES} --passWithNoTests --no-coverage -q 2>&1 || npx vitest run ${REGRESSION_FILES} 2>&1
+  npm test 2>&1
 elif [ -f "Cargo.toml" ]; then
   cargo test 2>&1
+elif [ -f "go.mod" ]; then
+  go test ./... 2>&1
 elif [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
   python -m pytest ${REGRESSION_FILES} -q --tb=short 2>&1
 fi
@@ -1214,13 +1477,32 @@ Read and follow `/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflo
 
 **IMPORTANT: There is NO `/gsd-transition` command. Never suggest it. The transition workflow is internal only.**
 
+Check whether CONTEXT.md already exists for the next phase:
+
+```bash
+ls .planning/phases/*{next}*/{next}-CONTEXT.md 2>/dev/null || echo "no-context"
+```
+
+If CONTEXT.md does **not** exist for the next phase, present:
+
 ```
 ## ✓ Phase {X}: {Name} Complete
 
 /gsd-progress ${GSD_WS} — see updated roadmap
-/gsd-discuss-phase {next} ${GSD_WS} — discuss next phase before planning
-/gsd-plan-phase {next} ${GSD_WS} — plan next phase
-/gsd-execute-phase {next} ${GSD_WS} — execute next phase
+/gsd-discuss-phase {next} ${GSD_WS} — start here: discuss next phase before planning  ← recommended
+/gsd-plan-phase {next} ${GSD_WS} — plan next phase (skip discuss)
+/gsd-execute-phase {next} ${GSD_WS} — execute next phase (skip discuss and plan)
+```
+
+If CONTEXT.md **exists** for the next phase, present:
+
+```
+## ✓ Phase {X}: {Name} Complete
+
+/gsd-progress ${GSD_WS} — see updated roadmap
+/gsd-plan-phase {next} ${GSD_WS} — start here: plan next phase (CONTEXT.md already present)  ← recommended
+/gsd-discuss-phase {next} ${GSD_WS} — re-discuss next phase
+/gsd-execute-phase {next} ${GSD_WS} — execute next phase (skip planning)
 ```
 
 Only suggest the commands listed above. Do not invent or hallucinate command names.

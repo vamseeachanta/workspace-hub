@@ -149,26 +149,6 @@ Present complete project status to user:
 
 [If alignment is not ✓:]
 ⚠️  Brief alignment: [status] - [assessment]
-
-[If data intelligence available for current phase domain:]
-📊 Data Intelligence ({domain}): {N} standards, {M} worked examples, {K} test vectors
-   Run: data-intelligence-context.sh --domain {domain} for details
-```
-
-**Data intelligence lookup (optional, non-blocking):**
-```bash
-# Attempt to resolve domain from current phase name for data intelligence enrichment
-PHASE_NAME_LOWER=$(echo "${current_phase_name}" | tr '[:upper:]' '[:lower:]')
-for kw in marine pipeline structural materials cathodic-protection installation drilling process cad regulatory; do
-  if echo "${PHASE_NAME_LOWER}" | grep -q "$kw"; then
-    INTEL=$(uv run --no-project python "/mnt/local-analysis/workspace-hub/scripts/session/data-intelligence-context.py" --domain "$kw" 2>/dev/null || true)
-    if [[ -n "$INTEL" ]]; then
-      echo ""
-      echo "$INTEL"
-    fi
-    break
-  fi
-done
 ```
 
 </step>

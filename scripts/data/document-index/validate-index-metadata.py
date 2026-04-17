@@ -33,6 +33,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--content-type-max-missing", type=float, default=0.10)
     p.add_argument("--content-type-min-non-other", type=float, default=0.90)
     p.add_argument("--summary-done-min", type=float, default=0.55)
+    p.add_argument("--summary-file-exists-min", type=float, default=0.70)  # #2309
     return p.parse_args(argv)
 
 
@@ -42,6 +43,7 @@ def validate(
     max_missing: float,
     min_non_other: float,
     min_summary_done: float,
+    min_summary_file_exists: float = 0.70,  # #2309
 ) -> tuple[int, list[str]]:
     """Return (exit_code, messages)."""
     records: list[dict] = []
@@ -60,10 +62,12 @@ def validate(
         1 for r in records if r.get("content_type") not in (None, "other")
     )
     summary_done_true = sum(1 for r in records if r.get("summary_done") is True)
+    summary_file_exists_true = sum(1 for r in records if r.get("summary_file_exists") is True)
 
     missing_rate = missing_ct / total
     non_other_rate = non_other_ct / total
     summary_done_rate = summary_done_true / total
+    sfe_rate = summary_file_exists_true / total
 
     if missing_rate > max_missing:
         msgs.append(
@@ -80,12 +84,19 @@ def validate(
             f"FAIL: only {summary_done_true}/{total} records have summary_done=True "
             f"({100*summary_done_rate:.1f}% < {100*min_summary_done:.1f}%)"
         )
+    if sfe_rate < min_summary_file_exists:
+        msgs.append(
+            f"FAIL: only {summary_file_exists_true}/{total} records have summary_file_exists=True "
+            f"({100*sfe_rate:.1f}% < {100*min_summary_file_exists:.1f}%)"
+        )
 
     if msgs:
         return 1, msgs
     return 0, [
         f"PASS: {total} records; content_type missing={100*missing_rate:.1f}%, "
-        f"non-other={100*non_other_rate:.1f}%, summary_done={100*summary_done_rate:.1f}%"
+        f"non-other={100*non_other_rate:.1f}%, "
+        f"summary_done={100*summary_done_rate:.1f}%, "
+        f"summary_file_exists={100*sfe_rate:.1f}%"
     ]
 
 
@@ -96,6 +107,7 @@ def main(argv: list[str] | None = None) -> int:
         max_missing=args.content_type_max_missing,
         min_non_other=args.content_type_min_non_other,
         min_summary_done=args.summary_done_min,
+        min_summary_file_exists=args.summary_file_exists_min,
     )
     for m in msgs:
         print(m, file=sys.stdout if code == 0 else sys.stderr)

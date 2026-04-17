@@ -182,3 +182,69 @@ def test_carryover_end_to_end(tmp_path):
     assert by_path["/a.pdf"]["domain"] == "marine"
     assert by_path["/b.pdf"]["summary_done"] is False
     assert "content_type" not in by_path["/c.pdf"]
+
+
+# ═══════════════════ #2309: summary_file_exists carryover ═══════════════════
+
+def test_carryover_preserves_summary_file_exists(tmp_path):
+    """CARRYOVER_FIELDS must include summary_file_exists so Phase A/C/E preserve it."""
+    from _carryover_metadata import (
+        CARRYOVER_FIELDS,
+        apply_carryover,
+        atomic_write_index,
+        extract_enriched_fields,
+    )
+
+    assert "summary_file_exists" in CARRYOVER_FIELDS
+
+    idx = tmp_path / "index.jsonl"
+    _write_index(
+        idx,
+        [
+            {
+                "path": "/a.pdf",
+                "content_type": "document",
+                "summary_done": False,
+                "summary_file_exists": True,  # file exists, content empty
+            }
+        ],
+    )
+
+    side = extract_enriched_fields(idx)
+    assert side["/a.pdf"]["summary_file_exists"] is True
+
+    new = [{"path": "/a.pdf", "ext": "pdf", "domain": "marine"}]
+    merged = apply_carryover(new, side)
+    atomic_write_index(idx, merged, today="2026-04-17")
+
+    out = _read_index(idx)
+    assert out[0]["summary_file_exists"] is True
+    assert out[0]["summary_done"] is False
+    assert out[0]["content_type"] == "document"
+
+
+import pytest
+
+
+@pytest.mark.xfail(
+    reason="#2309/Codex F3: stale-carryover is a known property. Full re-enrichment is the "
+    "mitigation, not carryover-only. Test documents the behavior so a future 'fix' surfaces."
+)
+def test_stale_carryover_does_not_mask_removed_summary_file(tmp_path):
+    """If a summary file is removed after prior enrichment, carryover still re-applies
+    summary_done=True. This is the stale-state property Codex flagged. Expected to fail:
+    carryover preserves the old True value; only full re-enrichment would fix it."""
+    from _carryover_metadata import apply_carryover
+
+    # Side-dict says /a.pdf was enriched with summary_done=True previously
+    side = {"/a.pdf": {"content_type": "document", "summary_done": True, "summary_file_exists": True}}
+    # New record from a Phase A rebuild (no enriched fields)
+    new = [{"path": "/a.pdf", "ext": "pdf"}]
+    merged = apply_carryover(new, side)
+    # If the summary file had been deleted on disk between runs, the TRUE answer is False.
+    # But carryover blindly re-applies the cached True. Test asserts the FIX (not stale),
+    # which WILL NOT pass until carryover learns to re-check disk state.
+    assert merged[0]["summary_done"] is False, (
+        "Carryover re-applies stale summary_done=True. "
+        "Full re-enrichment (not carryover) is the mitigation in the #2309 ops flow."
+    )

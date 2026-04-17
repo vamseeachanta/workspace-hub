@@ -58,6 +58,16 @@ function cmdInitExecutePhase(cwd, phase, raw, options = {}) {
 
   const roadmapPhase = getRoadmapPhaseInternal(cwd, phase);
 
+  // If findPhaseInternal matched an archived phase from a prior milestone, but
+  // the phase exists in the current milestone's ROADMAP.md, ignore the archive
+  // match — we are initializing a new phase in the current milestone that
+  // happens to share a number with an archived one. Without this, phase_dir,
+  // phase_slug and related fields would point at artifacts from a previous
+  // milestone.
+  if (phaseInfo?.archived && roadmapPhase?.found) {
+    phaseInfo = null;
+  }
+
   // Fallback to ROADMAP.md if no phase directory exists yet
   if (!phaseInfo && roadmapPhase?.found) {
     const phaseName = roadmapPhase.phase_name;
@@ -88,6 +98,7 @@ function cmdInitExecutePhase(cwd, phase, raw, options = {}) {
     verifier_model: resolveModelInternal(cwd, 'gsd-verifier'),
 
     // Config flags
+    tdd_mode: options.tdd || config.tdd_mode || false,
     commit_docs: config.commit_docs,
     sub_repos: config.sub_repos,
     parallelization: config.parallelization,
@@ -180,6 +191,16 @@ function cmdInitPlanPhase(cwd, phase, raw, options = {}) {
 
   const roadmapPhase = getRoadmapPhaseInternal(cwd, phase);
 
+  // If findPhaseInternal matched an archived phase from a prior milestone, but
+  // the phase exists in the current milestone's ROADMAP.md, ignore the archive
+  // match — we are planning a new phase in the current milestone that happens
+  // to share a number with an archived one. Without this, phase_dir,
+  // phase_slug, has_context and has_research would point at artifacts from a
+  // previous milestone.
+  if (phaseInfo?.archived && roadmapPhase?.found) {
+    phaseInfo = null;
+  }
+
   // Fallback to ROADMAP.md if no phase directory exists yet
   if (!phaseInfo && roadmapPhase?.found) {
     const phaseName = roadmapPhase.phase_name;
@@ -211,6 +232,7 @@ function cmdInitPlanPhase(cwd, phase, raw, options = {}) {
     checker_model: resolveModelInternal(cwd, 'gsd-plan-checker'),
 
     // Workflow flags
+    tdd_mode: options.tdd || config.tdd_mode || false,
     research_enabled: config.research,
     plan_checker_enabled: config.plan_checker,
     nyquist_validation_enabled: config.nyquist_validation,
@@ -241,6 +263,9 @@ function cmdInitPlanPhase(cwd, phase, raw, options = {}) {
     state_path: toPosixPath(path.relative(cwd, path.join(planningDir(cwd), 'STATE.md'))),
     roadmap_path: toPosixPath(path.relative(cwd, path.join(planningDir(cwd), 'ROADMAP.md'))),
     requirements_path: toPosixPath(path.relative(cwd, path.join(planningDir(cwd), 'REQUIREMENTS.md'))),
+
+    // Pattern mapper output (null until PATTERNS.md exists in phase dir)
+    patterns_path: null,
   };
 
   if (phaseInfo?.directory) {
@@ -267,6 +292,10 @@ function cmdInitPlanPhase(cwd, phase, raw, options = {}) {
       const reviewsFile = files.find(f => f.endsWith('-REVIEWS.md') || f === 'REVIEWS.md');
       if (reviewsFile) {
         result.reviews_path = toPosixPath(path.join(phaseInfo.directory, reviewsFile));
+      }
+      const patternsFile = files.find(f => f.endsWith('-PATTERNS.md') || f === 'PATTERNS.md');
+      if (patternsFile) {
+        result.patterns_path = toPosixPath(path.join(phaseInfo.directory, patternsFile));
       }
     } catch { /* intentionally empty */ }
   }
@@ -542,6 +571,16 @@ function cmdInitVerifyWork(cwd, phase, raw) {
 
   const config = loadConfig(cwd);
   let phaseInfo = findPhaseInternal(cwd, phase);
+
+  // If findPhaseInternal matched an archived phase from a prior milestone, but
+  // the phase exists in the current milestone's ROADMAP.md, ignore the archive
+  // match — same pattern as cmdInitPhaseOp.
+  if (phaseInfo?.archived) {
+    const roadmapPhase = getRoadmapPhaseInternal(cwd, phase);
+    if (roadmapPhase?.found) {
+      phaseInfo = null;
+    }
+  }
 
   // Fallback to ROADMAP.md if no phase directory exists yet
   if (!phaseInfo) {
@@ -870,6 +909,23 @@ function cmdInitManager(cwd, raw) {
   const phasesDir = paths.phases;
   const isDirInMilestone = getMilestonePhaseFilter(cwd);
 
+  // Pre-compute directory listing once (avoids O(N) readdirSync per phase)
+  const _phaseDirEntries = (() => {
+    try {
+      return fs.readdirSync(phasesDir, { withFileTypes: true })
+        .filter(e => e.isDirectory())
+        .map(e => e.name);
+    } catch { return []; }
+  })();
+
+  // Pre-extract all checkbox states in a single pass (avoids O(N) regex per phase)
+  const _checkboxStates = new Map();
+  const _cbPattern = /-\s*\[(x| )\]\s*.*Phase\s+(\d+[A-Z]?(?:\.\d+)*)[:\s]/gi;
+  let _cbMatch;
+  while ((_cbMatch = _cbPattern.exec(content)) !== null) {
+    _checkboxStates.set(_cbMatch[2], _cbMatch[1].toLowerCase() === 'x');
+  }
+
   const phasePattern = /#{2,4}\s*Phase\s+(\d+[A-Z]?(?:\.\d+)*)\s*:\s*([^\n]+)/gi;
   const phases = [];
   let match;
@@ -900,8 +956,7 @@ function cmdInitManager(cwd, raw) {
     let isActive = false;
 
     try {
-      const entries = fs.readdirSync(phasesDir, { withFileTypes: true });
-      const dirs = entries.filter(e => e.isDirectory()).map(e => e.name).filter(isDirInMilestone);
+      const dirs = _phaseDirEntries.filter(isDirInMilestone);
       const dirMatch = dirs.find(d => phaseTokenMatches(d, normalized));
 
       if (dirMatch) {
@@ -935,10 +990,8 @@ function cmdInitManager(cwd, raw) {
       }
     } catch { /* intentionally empty */ }
 
-    // Check ROADMAP checkbox status
-    const checkboxPattern = new RegExp(`-\\s*\\[(x| )\\]\\s*.*Phase\\s+${phaseNum.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[:\\s]`, 'i');
-    const checkboxMatch = content.match(checkboxPattern);
-    const roadmapComplete = checkboxMatch ? checkboxMatch[1] === 'x' : false;
+    // Check ROADMAP checkbox status (pre-extracted above the loop)
+    const roadmapComplete = _checkboxStates.get(phaseNum) || false;
     if (roadmapComplete && diskStatus !== 'complete') {
       diskStatus = 'complete';
     }
@@ -1081,7 +1134,9 @@ function cmdInitManager(cwd, raw) {
     return true;
   });
 
-  const completedCount = phases.filter(p => p.disk_status === 'complete').length;
+  // Exclude backlog phases (999.x) from completion accounting (#2129)
+  const nonBacklogPhases = phases.filter(p => !/^999(?:\.|$)/.test(p.number));
+  const completedCount = nonBacklogPhases.filter(p => p.disk_status === 'complete').length;
 
   // Read manager flags from config (passthrough flags for each step)
   // Validate: flags must be CLI-safe (only --flags, alphanumeric, hyphens, spaces)
@@ -1112,7 +1167,7 @@ function cmdInitManager(cwd, raw) {
     in_progress_count: phases.filter(p => ['partial', 'planned', 'discussed', 'researched'].includes(p.disk_status)).length,
     recommended_actions: filteredActions,
     waiting_signal: waitingSignal,
-    all_complete: completedCount === phases.length && phases.length > 0,
+    all_complete: completedCount === nonBacklogPhases.length && nonBacklogPhases.length > 0,
     project_exists: pathExistsInternal(cwd, '.planning/PROJECT.md'),
     roadmap_exists: true,
     state_exists: true,
@@ -1442,6 +1497,8 @@ function cmdInitRemoveWorkspace(cwd, name, raw) {
  */
 function buildAgentSkillsBlock(config, agentType, projectRoot) {
   const { validatePath } = require('./security.cjs');
+  const os = require('os');
+  const globalSkillsBase = path.join(os.homedir(), '.claude', 'skills');
 
   if (!config || !config.agent_skills || !agentType) return '';
 
@@ -1455,6 +1512,37 @@ function buildAgentSkillsBlock(config, agentType, projectRoot) {
   const validPaths = [];
   for (const skillPath of skillPaths) {
     if (typeof skillPath !== 'string') continue;
+
+    // Support global: prefix for skills installed at ~/.claude/skills/ (#1992)
+    if (skillPath.startsWith('global:')) {
+      const skillName = skillPath.slice(7);
+      // Explicit empty-name guard before regex for clearer error message
+      if (!skillName) {
+        process.stderr.write(`[agent-skills] WARNING: "global:" prefix with empty skill name — skipping\n`);
+        continue;
+      }
+      // Sanitize: skill name must be alphanumeric, hyphens, or underscores only
+      if (!/^[a-zA-Z0-9_-]+$/.test(skillName)) {
+        process.stderr.write(`[agent-skills] WARNING: Invalid global skill name "${skillName}" — skipping\n`);
+        continue;
+      }
+      const globalSkillDir = path.join(globalSkillsBase, skillName);
+      const globalSkillMd = path.join(globalSkillDir, 'SKILL.md');
+      if (!fs.existsSync(globalSkillMd)) {
+        process.stderr.write(`[agent-skills] WARNING: Global skill not found at "~/.claude/skills/${skillName}/SKILL.md" — skipping\n`);
+        continue;
+      }
+      // Symlink escape guard: validatePath resolves symlinks and enforces
+      // containment within globalSkillsBase. Prevents a skill directory
+      // symlinked to an arbitrary location from being injected (#1992).
+      const pathCheck = validatePath(globalSkillMd, globalSkillsBase, { allowAbsolute: true });
+      if (!pathCheck.safe) {
+        process.stderr.write(`[agent-skills] WARNING: Global skill "${skillName}" failed path check (symlink escape?) — skipping\n`);
+        continue;
+      }
+      validPaths.push({ ref: `${globalSkillDir}/SKILL.md`, display: `~/.claude/skills/${skillName}` });
+      continue;
+    }
 
     // Validate path safety — must resolve within project root
     const pathCheck = validatePath(skillPath, projectRoot);
@@ -1470,12 +1558,12 @@ function buildAgentSkillsBlock(config, agentType, projectRoot) {
       continue;
     }
 
-    validPaths.push(skillPath);
+    validPaths.push({ ref: `${skillPath}/SKILL.md`, display: skillPath });
   }
 
   if (validPaths.length === 0) return '';
 
-  const lines = validPaths.map(p => `- @${p}/SKILL.md`).join('\n');
+  const lines = validPaths.map(p => `- @${p.ref}`).join('\n');
   return `<agent_skills>\nRead these user-configured skills:\n${lines}\n</agent_skills>`;
 }
 
@@ -1499,6 +1587,105 @@ function cmdAgentSkills(cwd, agentType, raw) {
   process.exit(0);
 }
 
+/**
+ * Generate a skill manifest from a skills directory.
+ *
+ * Scans the given skills directory for subdirectories containing SKILL.md,
+ * extracts frontmatter (name, description) and trigger conditions from the
+ * body text, and returns an array of skill descriptors.
+ *
+ * @param {string} skillsDir - Absolute path to the skills directory
+ * @returns {Array<{name: string, description: string, triggers: string[], path: string}>}
+ */
+function buildSkillManifest(skillsDir) {
+  const { extractFrontmatter } = require('./frontmatter.cjs');
+
+  if (!fs.existsSync(skillsDir)) return [];
+
+  let entries;
+  try {
+    entries = fs.readdirSync(skillsDir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
+  const manifest = [];
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+
+    const skillMdPath = path.join(skillsDir, entry.name, 'SKILL.md');
+    if (!fs.existsSync(skillMdPath)) continue;
+
+    let content;
+    try {
+      content = fs.readFileSync(skillMdPath, 'utf-8');
+    } catch {
+      continue;
+    }
+
+    const frontmatter = extractFrontmatter(content);
+    const name = frontmatter.name || entry.name;
+    const description = frontmatter.description || '';
+
+    // Extract trigger lines from body text (after frontmatter)
+    const triggers = [];
+    const bodyMatch = content.match(/^---[\s\S]*?---\s*\n([\s\S]*)$/);
+    if (bodyMatch) {
+      const body = bodyMatch[1];
+      const triggerLines = body.match(/^TRIGGER\s+when:\s*(.+)$/gmi);
+      if (triggerLines) {
+        for (const line of triggerLines) {
+          const m = line.match(/^TRIGGER\s+when:\s*(.+)$/i);
+          if (m) triggers.push(m[1].trim());
+        }
+      }
+    }
+
+    manifest.push({
+      name,
+      description,
+      triggers,
+      path: entry.name,
+    });
+  }
+
+  // Sort by name for deterministic output
+  manifest.sort((a, b) => a.name.localeCompare(b.name));
+  return manifest;
+}
+
+/**
+ * Command: generate skill manifest JSON.
+ *
+ * Options:
+ *   --skills-dir <path>  Path to skills directory (required)
+ *   --write              Also write to .planning/skill-manifest.json
+ */
+function cmdSkillManifest(cwd, args, raw) {
+  const skillsDirIdx = args.indexOf('--skills-dir');
+  const skillsDir = skillsDirIdx >= 0 && args[skillsDirIdx + 1]
+    ? args[skillsDirIdx + 1]
+    : null;
+
+  if (!skillsDir) {
+    output([], raw);
+    return;
+  }
+
+  const manifest = buildSkillManifest(skillsDir);
+
+  // Optionally write to .planning/skill-manifest.json
+  if (args.includes('--write')) {
+    const planningDir = path.join(cwd, '.planning');
+    if (fs.existsSync(planningDir)) {
+      const manifestPath = path.join(planningDir, 'skill-manifest.json');
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
+    }
+  }
+
+  output(manifest, raw);
+}
+
 module.exports = {
   cmdInitExecutePhase,
   cmdInitPlanPhase,
@@ -1519,4 +1706,6 @@ module.exports = {
   detectChildRepos,
   buildAgentSkillsBlock,
   cmdAgentSkills,
+  buildSkillManifest,
+  cmdSkillManifest,
 };

@@ -102,6 +102,7 @@ def test_enrichment_resume_skips_already_enriched_records(scratch):
         "content_hash": None,
         "content_type": "MARKED",  # sentinel — should NOT be overwritten under --resume
         "summary_done": True,
+        "summary_file_exists": True,  # #2309: resume now requires all 3 fields present
     }
     fresh = {"path": "/b.pdf", "ext": "pdf", "content_hash": None}
     _write_index(scratch["index"], [already, fresh])
@@ -186,3 +187,81 @@ def test_dry_run_does_not_write_or_backup(scratch):
     assert stats["total"] == 1
     assert stats["content_type_non_other"] == 1
     assert stats["summary_done_true"] == 0
+    # #2309: stats dict now includes summary_file_exists counter
+    assert stats["summary_file_exists_true"] == 0
+
+
+# ═══════════════════════ #2309 resume + stats coverage ═══════════════════════
+
+def test_enrich_index_stats_includes_summary_file_exists_true(scratch):
+    """Dry-run stats dict exposes summary_file_exists_true counter (#2309 test 6)."""
+    mod = _load()
+    import hashlib
+
+    # Record A: summary file exists with non-empty content
+    path_a = "/a.pdf"
+    key_a = hashlib.sha256(path_a.encode()).hexdigest()[:16]
+    (scratch["summaries"] / f"{key_a}.json").write_text(
+        json.dumps({"summary": "real"}), encoding="utf-8"
+    )
+    # Record B: summary file exists but empty content
+    path_b = "/b.pdf"
+    key_b = hashlib.sha256(path_b.encode()).hexdigest()[:16]
+    (scratch["summaries"] / f"{key_b}.json").write_text(
+        json.dumps({"summary": ""}), encoding="utf-8"
+    )
+    # Record C: no summary file
+    path_c = "/c.pdf"
+
+    _write_index(
+        scratch["index"],
+        [
+            {"path": path_a, "ext": "pdf", "content_hash": None},
+            {"path": path_b, "ext": "pdf", "content_hash": None},
+            {"path": path_c, "ext": "pdf", "content_hash": None},
+        ],
+    )
+
+    stats = mod.enrich_index(
+        index_path=scratch["index"],
+        summaries_dir=scratch["summaries"],
+        workers=1,
+        resume=False,
+        dry_run=True,
+        today="2026-04-17",
+    )
+    assert stats["total"] == 3
+    assert stats["summary_file_exists_true"] == 2  # A + B
+    assert stats["summary_done_true"] == 1  # only A has non-empty content
+
+
+def test_resume_re_enriches_pre_split_records(scratch):
+    """--resume MUST NOT skip pre-#2309 records that have content_type + summary_done
+    but lack summary_file_exists. Otherwise the split never applies. (Claude F1, Codex F1)"""
+    mod = _load()
+
+    # Pre-split record: has the two #1878 fields but not summary_file_exists
+    pre_split = {
+        "path": "/pre.pdf",
+        "ext": "pdf",
+        "content_hash": None,
+        "content_type": "document",
+        "summary_done": False,
+        # summary_file_exists intentionally absent
+    }
+    _write_index(scratch["index"], [pre_split])
+
+    mod.enrich_index(
+        index_path=scratch["index"],
+        summaries_dir=scratch["summaries"],
+        workers=1,
+        resume=True,
+        dry_run=False,
+        today="2026-04-17",
+    )
+
+    out = _read_index(scratch["index"])
+    assert len(out) == 1
+    # summary_file_exists MUST now be present (record was NOT skipped)
+    assert "summary_file_exists" in out[0]
+    assert out[0]["summary_file_exists"] is False  # no file on disk

@@ -78,9 +78,15 @@ def summary_done_from_file(path: Path) -> bool:
 
 
 def enrich_one(record: dict, summaries_dir: Path) -> dict:
-    """Add content_type + summary_done to a record, preserving all other fields."""
+    """Add content_type, summary_file_exists, summary_done — preserves all other fields.
+
+    #2309: the two summary signals are decoupled.
+      - summary_file_exists: True iff find_summary() resolved to a file on disk
+      - summary_done:        True iff the file exists AND its `summary` text is non-empty
+    """
     record["content_type"] = content_type_for_ext(record.get("ext"))
     summary_path = find_summary(record, summaries_dir)
+    record["summary_file_exists"] = summary_path is not None
     record["summary_done"] = (
         False if summary_path is None else summary_done_from_file(summary_path)
     )
@@ -96,7 +102,12 @@ def _enrich_worker(payload: tuple[str, str]) -> str:
 
 
 def _is_already_enriched(record: dict) -> bool:
-    return "content_type" in record and "summary_done" in record
+    # #2309: must include summary_file_exists — otherwise --resume skips pre-split records
+    return (
+        "content_type" in record
+        and "summary_done" in record
+        and "summary_file_exists" in record
+    )
 
 
 def enrich_index(
@@ -121,7 +132,12 @@ def enrich_index(
             if line.strip():
                 records.append(json.loads(line))
 
-    stats = {"total": len(records), "content_type_non_other": 0, "summary_done_true": 0}
+    stats = {
+        "total": len(records),
+        "content_type_non_other": 0,
+        "summary_done_true": 0,
+        "summary_file_exists_true": 0,  # #2309
+    }
     out_records: list[dict] = []
 
     if workers <= 1:
@@ -156,6 +172,8 @@ def enrich_index(
             stats["content_type_non_other"] += 1
         if r.get("summary_done") is True:
             stats["summary_done_true"] += 1
+        if r.get("summary_file_exists") is True:
+            stats["summary_file_exists_true"] += 1
 
     if dry_run:
         return stats

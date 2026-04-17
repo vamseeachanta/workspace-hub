@@ -159,7 +159,72 @@ Report: "PR #{number} created: {url}"
 </step>
 
 <step name="optional_review">
+
+**External code review command (automated sub-step):**
+
+Before prompting the user, check if an external review command is configured:
+
+```bash
+REVIEW_CMD=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.code_review_command --default "" 2>/dev/null)
+```
+
+If `REVIEW_CMD` is non-empty and not `"null"`, run the external review:
+
+1. **Generate diff and stats:**
+   ```bash
+   DIFF=$(git diff ${BASE_BRANCH}...HEAD)
+   DIFF_STATS=$(git diff --stat ${BASE_BRANCH}...HEAD)
+   ```
+
+2. **Load phase context from STATE.md:**
+   ```bash
+   STATE_STATUS=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load 2>/dev/null | head -20)
+   ```
+
+3. **Build review prompt and pipe to command via stdin:**
+   Construct a review prompt containing the diff, diff stats, and phase context, then pipe it to the configured command:
+   ```bash
+   REVIEW_PROMPT="You are reviewing a pull request.\n\nDiff stats:\n${DIFF_STATS}\n\nPhase context:\n${STATE_STATUS}\n\nFull diff:\n${DIFF}\n\nRespond with JSON: { \"verdict\": \"APPROVED\" or \"REVISE\", \"confidence\": 0-100, \"summary\": \"...\", \"issues\": [{\"severity\": \"...\", \"file\": \"...\", \"line_range\": \"...\", \"description\": \"...\", \"suggestion\": \"...\"}] }"
+   REVIEW_OUTPUT=$(echo "${REVIEW_PROMPT}" | timeout 120 ${REVIEW_CMD} 2>/tmp/gsd-review-stderr.log)
+   REVIEW_EXIT=$?
+   ```
+
+4. **Handle timeout (120s) and failure:**
+   If `REVIEW_EXIT` is non-zero or the command times out:
+   ```bash
+   if [ $REVIEW_EXIT -ne 0 ]; then
+     REVIEW_STDERR=$(cat /tmp/gsd-review-stderr.log 2>/dev/null)
+     echo "WARNING: External review command failed (exit ${REVIEW_EXIT}). stderr: ${REVIEW_STDERR}"
+     echo "Continuing with manual review flow..."
+   fi
+   ```
+   On failure, warn with stderr output and fall through to the manual review flow below.
+
+5. **Parse JSON result:**
+   If the command succeeded, parse the JSON output and report the verdict:
+   ```bash
+   # Parse verdict and summary from REVIEW_OUTPUT JSON
+   VERDICT=$(echo "${REVIEW_OUTPUT}" | node -e "
+     let d=''; process.stdin.on('data',c=>d+=c); process.stdin.on('end',()=>{
+       try { const r=JSON.parse(d); console.log(r.verdict); }
+       catch(e) { console.log('INVALID_JSON'); }
+     });
+   ")
+   ```
+   - If `verdict` is `"APPROVED"`: report approval with confidence and summary.
+   - If `verdict` is `"REVISE"`: report issues found, list each issue with severity, file, line_range, description, and suggestion.
+   - If JSON is invalid (`INVALID_JSON`): warn "External review returned invalid JSON" with stderr and continue.
+
+   Regardless of the external review result, fall through to the manual review options below.
+
+---
+
+**Manual review options:**
+
 Ask if user wants to trigger a code review:
+
+
+**Text mode (`workflow.text_mode: true` in config or `--text` flag):** Set `TEXT_MODE=true` if `--text` is present in `$ARGUMENTS` OR `text_mode` from init JSON is `true`. When TEXT_MODE is active, replace every `AskUserQuestion` call with a plain-text numbered list and ask the user to type their choice number. This is required for non-Claude runtimes (OpenAI Codex, Gemini CLI, etc.) where `AskUserQuestion` is not available.
 
 ```
 AskUserQuestion:

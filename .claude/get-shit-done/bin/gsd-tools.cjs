@@ -70,6 +70,9 @@
  *   audit-uat                           Scan all phases for unresolved UAT/verification items
  *   uat render-checkpoint --file <path> Render the current UAT checkpoint block
  *
+ * Open Artifact Audit:
+ *   audit-open [--json]                 Scan all .planning/ artifact types for unresolved items
+ *
  * Intel:
  *   intel query <term>             Query intel files for a term
  *   intel status                   Show intel file freshness
@@ -154,6 +157,10 @@
  *   learnings copy                       Copy from current project's LEARNINGS.md
  *   learnings prune --older-than <dur>   Remove entries older than duration (e.g. 90d)
  *   learnings delete <id>                Delete a learning by ID
+ *
+ * GSD-2 Migration:
+ *   from-gsd2 [--path <dir>] [--force] [--dry-run]
+ *             Import a GSD-2 (.gsd/) project back to GSD v1 (.planning/) format
  */
 
 const fs = require('fs');
@@ -294,6 +301,17 @@ async function main() {
     args.splice(pickIdx, 2);
   }
 
+  // --default <value>: for config-get, return this value instead of erroring
+  // when the key is absent. Allows workflows to express optional config reads
+  // without defensive `2>/dev/null || true` boilerplate (#1893).
+  const defaultIdx = args.indexOf('--default');
+  let defaultValue = undefined;
+  if (defaultIdx !== -1) {
+    defaultValue = args[defaultIdx + 1];
+    if (defaultValue === undefined) defaultValue = '';
+    args.splice(defaultIdx, 2);
+  }
+
   const command = args[0];
 
   if (!command) {
@@ -346,7 +364,7 @@ async function main() {
       }
     };
     try {
-      await runCommand(command, args, cwd, raw);
+      await runCommand(command, args, cwd, raw, defaultValue);
       cleanup();
     } catch (e) {
       fs.writeSync = origWriteSync;
@@ -355,7 +373,27 @@ async function main() {
     return;
   }
 
-  await runCommand(command, args, cwd, raw);
+  // Intercept stdout to transparently resolve @file: references (#1891).
+  // core.cjs output() writes @file:<path> when JSON > 50KB. The --pick path
+  // already resolves this, but the normal path wrote @file: to stdout, forcing
+  // every workflow to have a bash-specific `if [[ "$INIT" == @file:* ]]` check
+  // that breaks on PowerShell and other non-bash shells.
+  const origWriteSync2 = fs.writeSync;
+  const outChunks = [];
+  fs.writeSync = function (fd, data, ...rest) {
+    if (fd === 1) { outChunks.push(String(data)); return; }
+    return origWriteSync2.call(fs, fd, data, ...rest);
+  };
+  try {
+    await runCommand(command, args, cwd, raw, defaultValue);
+  } finally {
+    fs.writeSync = origWriteSync2;
+  }
+  let captured = outChunks.join('');
+  if (captured.startsWith('@file:')) {
+    captured = fs.readFileSync(captured.slice(6), 'utf-8');
+  }
+  origWriteSync2.call(fs, 1, captured);
 }
 
 /**
@@ -381,7 +419,7 @@ function extractField(obj, fieldPath) {
   return current;
 }
 
-async function runCommand(command, args, cwd, raw) {
+async function runCommand(command, args, cwd, raw, defaultValue) {
   switch (command) {
     case 'state': {
       const subcommand = args[1];
@@ -435,6 +473,9 @@ async function runCommand(command, args, cwd, raw) {
       } else if (subcommand === 'sync') {
         const { verify } = parseNamedArgs(args, [], ['verify']);
         state.cmdStateSync(cwd, { verify }, raw);
+      } else if (subcommand === 'prune') {
+        const { 'keep-recent': keepRecent, 'dry-run': dryRun } = parseNamedArgs(args, ['keep-recent'], ['dry-run']);
+        state.cmdStatePrune(cwd, { keepRecent: keepRecent || '3', dryRun: !!dryRun }, raw);
       } else {
         state.cmdStateLoad(cwd, raw);
       }
@@ -589,7 +630,7 @@ async function runCommand(command, args, cwd, raw) {
     }
 
     case 'config-get': {
-      config.cmdConfigGet(cwd, args[1], raw);
+      config.cmdConfigGet(cwd, args[1], raw, defaultValue);
       break;
     }
 
@@ -600,6 +641,11 @@ async function runCommand(command, args, cwd, raw) {
 
     case 'agent-skills': {
       init.cmdAgentSkills(cwd, args[1], raw);
+      break;
+    }
+
+    case 'skill-manifest': {
+      init.cmdSkillManifest(cwd, args, raw);
       break;
     }
 
@@ -668,6 +714,16 @@ async function runCommand(command, args, cwd, raw) {
           }
         }
         phase.cmdPhaseAdd(cwd, descArgs.join(' '), raw, customId);
+      } else if (subcommand === 'add-batch') {
+        // Accepts JSON array of descriptions via --descriptions '[...]' or positional args
+        const descFlagIdx = args.indexOf('--descriptions');
+        let descriptions;
+        if (descFlagIdx !== -1 && args[descFlagIdx + 1]) {
+          try { descriptions = JSON.parse(args[descFlagIdx + 1]); } catch (e) { error('--descriptions must be a JSON array'); }
+        } else {
+          descriptions = args.slice(2).filter(a => a !== '--raw');
+        }
+        phase.cmdPhaseAddBatch(cwd, descriptions, raw);
       } else if (subcommand === 'insert') {
         phase.cmdPhaseInsert(cwd, args[2], args.slice(3).join(' '), raw);
       } else if (subcommand === 'remove') {
@@ -676,7 +732,7 @@ async function runCommand(command, args, cwd, raw) {
       } else if (subcommand === 'complete') {
         phase.cmdPhaseComplete(cwd, args[2], raw);
       } else {
-        error('Unknown phase subcommand. Available: next-decimal, add, insert, remove, complete');
+        error('Unknown phase subcommand. Available: next-decimal, add, add-batch, insert, remove, complete');
       }
       break;
     }
@@ -717,6 +773,18 @@ async function runCommand(command, args, cwd, raw) {
     case 'audit-uat': {
       const uat = require('./lib/uat.cjs');
       uat.cmdAuditUat(cwd, raw);
+      break;
+    }
+
+    case 'audit-open': {
+      const { auditOpenArtifacts, formatAuditReport } = require('./lib/audit.cjs');
+      const includeRaw = args.includes('--json');
+      const result = auditOpenArtifacts(cwd);
+      if (includeRaw) {
+        output(JSON.stringify(result, null, 2), raw);
+      } else {
+        output(formatAuditReport(result), raw);
+      }
       break;
     }
 
@@ -764,13 +832,13 @@ async function runCommand(command, args, cwd, raw) {
       const workflow = args[1];
       switch (workflow) {
         case 'execute-phase': {
-          const { validate: epValidate } = parseNamedArgs(args, [], ['validate']);
-          init.cmdInitExecutePhase(cwd, args[2], raw, { validate: epValidate });
+          const { validate: epValidate, tdd: epTdd } = parseNamedArgs(args, [], ['validate', 'tdd']);
+          init.cmdInitExecutePhase(cwd, args[2], raw, { validate: epValidate, tdd: epTdd });
           break;
         }
         case 'plan-phase': {
-          const { validate: ppValidate } = parseNamedArgs(args, [], ['validate']);
-          init.cmdInitPlanPhase(cwd, args[2], raw, { validate: ppValidate });
+          const { validate: ppValidate, tdd: ppTdd } = parseNamedArgs(args, [], ['validate', 'tdd']);
+          init.cmdInitPlanPhase(cwd, args[2], raw, { validate: ppValidate, tdd: ppTdd });
           break;
         }
         case 'new-project':
@@ -977,7 +1045,15 @@ async function runCommand(command, args, cwd, raw) {
         core.output(intel.intelQuery(term, planningDir), raw);
       } else if (subcommand === 'status') {
         const planningDir = path.join(cwd, '.planning');
-        core.output(intel.intelStatus(planningDir), raw);
+        const status = intel.intelStatus(planningDir);
+        if (!raw && status.files) {
+          for (const file of Object.values(status.files)) {
+            if (file.updated_at) {
+              file.updated_at = core.timeAgo(new Date(file.updated_at));
+            }
+          }
+        }
+        core.output(status, raw);
       } else if (subcommand === 'diff') {
         const planningDir = path.join(cwd, '.planning');
         core.output(intel.intelDiff(planningDir), raw);
@@ -1000,6 +1076,33 @@ async function runCommand(command, args, cwd, raw) {
         core.output(intel.intelUpdate(planningDir), raw);
       } else {
         error('Unknown intel subcommand. Available: query, status, update, diff, snapshot, patch-meta, validate, extract-exports');
+      }
+      break;
+    }
+
+    // ─── Graphify ──────────────────────────────────────────────────────────
+
+    case 'graphify': {
+      const graphify = require('./lib/graphify.cjs');
+      const subcommand = args[1];
+      if (subcommand === 'query') {
+        const term = args[2];
+        if (!term) error('Usage: gsd-tools graphify query <term>');
+        const budgetIdx = args.indexOf('--budget');
+        const budget = budgetIdx !== -1 ? parseInt(args[budgetIdx + 1], 10) : null;
+        core.output(graphify.graphifyQuery(cwd, term, { budget }), raw);
+      } else if (subcommand === 'status') {
+        core.output(graphify.graphifyStatus(cwd), raw);
+      } else if (subcommand === 'diff') {
+        core.output(graphify.graphifyDiff(cwd), raw);
+      } else if (subcommand === 'build') {
+        if (args[2] === 'snapshot') {
+          core.output(graphify.writeSnapshot(cwd), raw);
+        } else {
+          core.output(graphify.graphifyBuild(cwd), raw);
+        }
+      } else {
+        error('Unknown graphify subcommand. Available: build, query, status, diff');
       }
       break;
     }
@@ -1036,6 +1139,14 @@ async function runCommand(command, args, cwd, raw) {
       } else {
         error('Unknown learnings subcommand. Available: list, query, copy, prune, delete');
       }
+      break;
+    }
+
+    // ─── GSD-2 Reverse Migration ───────────────────────────────────────────
+
+    case 'from-gsd2': {
+      const gsd2Import = require('./lib/gsd2-import.cjs');
+      gsd2Import.cmdFromGsd2(args.slice(1), cwd, raw);
       break;
     }
 

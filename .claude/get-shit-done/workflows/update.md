@@ -289,7 +289,16 @@ Exit.
 **Installed:** X.Y.Z
 **Latest:** A.B.C
 
-You're ahead of the latest release (development version?).
+You're ahead of the latest release — this looks like a dev install.
+
+If you see a "⚠ dev install — re-run installer to sync hooks" warning in
+your statusline, your hook files are older than your VERSION file. Fix it
+by re-running the local installer from your dev branch:
+
+    node bin/install.js --global --claude
+
+Running /gsd-update would install the npm release (A.B.C) and downgrade
+your dev version — do NOT use it to resolve this warning.
 ```
 
 Exit.
@@ -341,6 +350,8 @@ Your custom files in other locations are preserved:
 If you've modified any GSD files directly, they'll be automatically backed up to `gsd-local-patches/` and can be reapplied with `/gsd-reapply-patches` after the update.
 ```
 
+
+**Text mode (`workflow.text_mode: true` in config or `--text` flag):** Set `TEXT_MODE=true` if `--text` is present in `$ARGUMENTS` OR `text_mode` from init JSON is `true`. When TEXT_MODE is active, replace every `AskUserQuestion` call with a plain-text numbered list and ask the user to type their choice number. This is required for non-Claude runtimes (OpenAI Codex, Gemini CLI, etc.) where `AskUserQuestion` is not available.
 Use AskUserQuestion:
 - Question: "Proceed with update?"
 - Options:

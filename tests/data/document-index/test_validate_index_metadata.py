@@ -94,9 +94,11 @@ def test_validator_rejects_low_summary_done(tmp_path):
 
 # ─────────────────────── Test 23 ───────────────────────
 def test_validator_passes_healthy_index(tmp_path):
-    """95% non-other + 80% summary_done + 0% missing → exit 0."""
+    """95% non-other + 80% summary_done + 90% summary_file_exists → exit 0."""
     index = tmp_path / "index.jsonl"
-    _write_index(index, _mix(n_non_other=95, n_other=5, n_missing=0, n_summary_true=80, n_summary_false=0))
+    # #2309: use the file_exists-aware fixture so the new threshold is also met
+    _write_index(index, _mix_with_file_exists(
+        n_non_other=95, n_other=5, n_summary_true=80, n_file_exists_true=90))
     r = _run(index)
     assert r.returncode == 0, f"stdout={r.stdout!r} stderr={r.stderr!r}"
 
@@ -105,11 +107,12 @@ def test_validator_passes_healthy_index(tmp_path):
 def test_validator_thresholds_overridable_via_cli(tmp_path):
     """--summary-done-min 0.40 relaxes the default 0.55 threshold."""
     index = tmp_path / "index.jsonl"
-    # 100 records, 95 non-other, 50 summary_done True = 50%
-    _write_index(index, _mix(n_non_other=95, n_other=5, n_missing=0, n_summary_true=50, n_summary_false=0))
+    # #2309: 100 records, 95 non-other, 50 summary_done True, 80 summary_file_exists True
+    _write_index(index, _mix_with_file_exists(
+        n_non_other=95, n_other=5, n_summary_true=50, n_file_exists_true=80))
     # Default 0.55 threshold → FAIL
     assert _run(index).returncode == 1
-    # Relaxed to 0.40 → PASS
+    # Relaxed to 0.40 → PASS (summary_file_exists at 80% also passes 70% default)
     assert _run(index, "--summary-done-min", "0.40").returncode == 0
 
 
@@ -118,3 +121,67 @@ def test_validator_empty_index_exits_1(tmp_path):
     index = tmp_path / "index.jsonl"
     index.write_text("")
     assert _run(index).returncode == 1
+
+
+# ═══════════════ #2309 summary_file_exists threshold tests ═══════════════
+
+def _mix_with_file_exists(n_non_other, n_other, n_summary_true, n_file_exists_true):
+    """Like _mix but also sets summary_file_exists on the first n records."""
+    records = []
+    for _ in range(n_non_other):
+        records.append({"path": f"/x{len(records)}.pdf", "content_type": "document",
+                        "summary_done": False, "summary_file_exists": False})
+    for _ in range(n_other):
+        records.append({"path": f"/x{len(records)}.xyz", "content_type": "other",
+                        "summary_done": False, "summary_file_exists": False})
+    # Flip summary_done True on first N records
+    to_flip_done = n_summary_true
+    for r in records:
+        if to_flip_done <= 0:
+            break
+        r["summary_done"] = True
+        r["summary_file_exists"] = True  # summary_done implies file_exists
+        to_flip_done -= 1
+    # Flip summary_file_exists=True on additional records (above the summary_done set)
+    to_flip_fe = n_file_exists_true - n_summary_true  # already flipped some
+    for r in records:
+        if to_flip_fe <= 0:
+            break
+        if r["summary_file_exists"] is False:
+            r["summary_file_exists"] = True
+            to_flip_fe -= 1
+    return records
+
+
+def test_validator_rejects_low_summary_file_exists(tmp_path):
+    """<70% summary_file_exists=True → exit 1 (new threshold, default 0.70)."""
+    index = tmp_path / "index.jsonl"
+    # 100 records; 95 non-other; 20 summary_done=True; 60 summary_file_exists=True (60% < 70%)
+    _write_index(index, _mix_with_file_exists(
+        n_non_other=95, n_other=5, n_summary_true=20, n_file_exists_true=60))
+    r = _run(index)
+    assert r.returncode == 1
+    assert "summary_file_exists" in (r.stdout + r.stderr).lower()
+
+
+def test_validator_summary_file_exists_min_cli_override(tmp_path):
+    """--summary-file-exists-min 0.50 relaxes the default 0.70."""
+    index = tmp_path / "index.jsonl"
+    # 100 records; 95 non-other; 60 summary_done; 60 summary_file_exists=True
+    # We use 60 summary_done (above 55% default) so only summary_file_exists threshold is tested.
+    _write_index(index, _mix_with_file_exists(
+        n_non_other=95, n_other=5, n_summary_true=60, n_file_exists_true=60))
+    # Default 0.70 → FAIL (60% < 70%)
+    assert _run(index).returncode == 1
+    # Relaxed to 0.50 → PASS
+    assert _run(index, "--summary-file-exists-min", "0.50").returncode == 0
+
+
+def test_validator_passes_when_all_three_thresholds_met(tmp_path):
+    """Healthy index with all 3 thresholds met → exit 0."""
+    index = tmp_path / "index.jsonl"
+    # 100 records; 95 non-other; 70 summary_done; 90 summary_file_exists
+    _write_index(index, _mix_with_file_exists(
+        n_non_other=95, n_other=5, n_summary_true=70, n_file_exists_true=90))
+    r = _run(index)
+    assert r.returncode == 0, f"stdout={r.stdout!r} stderr={r.stderr!r}"

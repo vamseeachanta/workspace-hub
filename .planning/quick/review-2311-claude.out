@@ -1,0 +1,71 @@
+`★ Insight ─────────────────────────────────────`
+- The plan's taxonomy is "live instructional / legacy-reference / historical-report" — but a repo grep surfaces at least two other buckets (active test files, tool source code) that need explicit handling or the confinement test will have to bend around them.
+- The issue body demands *repointing* live surfaces to canonical targets, but the plan's Files-to-Change table schedules zero concrete doc rewrites — every patch is hedged with "if needed". A plan that may produce no edits cannot satisfy acceptance.
+- Confinement-style regression tests have a well-known failure mode: they freeze current state into an allowlist rather than drive cleanup. Mitigation is a negative test that proves the rule actually catches re-introduction.
+`─────────────────────────────────────────────────`
+
+## Verdict: **MAJOR**
+
+## Strengths
+- Resource Intelligence Summary is concrete and traceable (6 sources, correct read counts per issue #2311 body).
+- Correctly identifies that `tests/helpers/stale_reference_docs.py` already contains the right regex for the cluster — no new pattern needed, just new scope.
+- Complexity rating (T2) is honest: multi-file governance/test work, not architecture redesign.
+- Distinguishes the two existing tests (strict list vs. legacy allowlist) and sees the real gap: a *cluster-specific* confinement test that separates intentional history from live instruction.
+- Open Questions section transparently flags the classifier design is undecided — better than pretending it is.
+
+## Gaps
+1. **Plan did not enumerate actual live hits.** A 5-second grep finds references outside the allowlist in at least 5 non-trivial places the plan does not mention:
+   - `.claude/skills/development/docs-stale-reference-guardrails/SKILL.md` (active skill)
+   - `.claude/skills/workspace-hub/session-corpus-audit/SKILL.md` (active skill)
+   - `tests/work-queue/test_engine_integration.sh` (active test, *invokes* `exit_stage.py`)
+   - `tests/session-analysis/test_stage_exit_signal.bats` (active test, sources `EXIT_STAGE=…/exit_stage.py`)
+   - `scripts/analysis/provider_session_ecosystem_audit.py` (audit generator — the tool that *produces* the evidence, hard-codes the names as remediation targets)
+
+   These don't fit cleanly into "live instructional", "legacy-reference", or "historical-report". The plan's three-bucket taxonomy is incomplete before it starts.
+
+2. **Classifier is unspecified.** The plan says "classify each hit as live, legacy, or generated-history" but Open Questions explicitly defer whether this is allowlist-based or directory-typed. That decision is load-bearing for the regression test and must be made at plan time, not execution time.
+
+3. **No concrete rewrite set.** Issue #2311 acceptance criterion #1 is "All live instructional/prompt surfaces identified in scope stop referencing the removed stage-transition scripts." The plan's Files-to-Change table only lists test infrastructure + the legacy map + the plan index. Every rewrite is hedged ("if needed", "if newly cleaned"). That is an escape hatch, not an implementation commitment.
+
+4. **Skill files aren't in any test's scan set.** Neither `test_banned_stale_references.py` nor `test_legacy_reference_allowlist.py` scans `.claude/skills/**`. The new test inherits that blind spot unless explicitly called out — and the plan does not call it out.
+
+5. **No existence check on canonical redirect targets.** Plan assumes `docs/governance/SESSION-GOVERNANCE.md`, `scripts/workflow/governance-checkpoints.yaml`, `.claude/hooks/plan-approval-gate.sh`, `.claude/hooks/session-governor-check.sh`, and `scripts/review/cross-review.sh` exist. A redirect pointing at a missing target is strictly worse than the original stale reference.
+
+6. **Interaction with #2213/#2214 undefined.** Named as "existing follow-ups" without describing which rules this plan implements vs. defers — risk of building a confinement rule that #2213 will immediately need to rewrite.
+
+## Risks
+- **Scope under-specification → silent no-op.** If the author interprets "live instructional" narrowly (e.g., only top-level `*.md` at repo root), the new test passes trivially, the audit refresh shows no measurable delta, and the issue closes without moving the needle on the 318-read cluster.
+- **Active-test breakage.** If `scripts/work-queue/exit_stage.py` is truly deleted, `tests/session-analysis/test_stage_exit_signal.bats` is already red or skipped. The plan doesn't decide whether to delete, skip, or port those tests — deferring that creates a future cleanup issue.
+- **Allowlist drift.** Adding historical reports to the allowlist by path locks those paths in; any future move/rename requires touching the regression test. The plan raises this in Open Questions but resolves it as "Open".
+- **Audit-generator false positive.** Any byte-level confinement scan will trip on `scripts/analysis/provider_session_ecosystem_audit.py` since it hard-codes the script names as scan targets. Without explicit handling, the new test either fails on day one or gets weakened until it stops catching real rot.
+
+## Missing tests
+1. **Negative test (mutation test).** Inject the banned string into a fixture "live" file and assert the confinement rule fails. Proves the classifier is load-bearing, not decorative.
+2. **Redirect-target existence test.** Assert each of the 7 canonical redirect targets listed in `docs/ops/legacy-claude-reference-map.md` exists on disk. Fails loudly if a governance doc/hook gets renamed.
+3. **Skill-scope coverage test.** Extend scan to `.claude/skills/**` (at least the two currently matching ones) and classify each occurrence explicitly.
+4. **Active-test-file disposition test** (or explicit decision note). If the two stage-transition tests are obsolete, delete them; if they're meant to be re-enabled when scripts return, mark them `skip` with a clear reason. Silence is the worst option.
+5. **Quantitative audit delta check.** Plan says "refresh the provider-session audit after cleanup" — add a numeric floor (e.g., cluster read count must drop by ≥X, or appear only in files classified as history) so "refresh" is not satisfied by a cosmetic re-run.
+
+## Scope creep concerns
+- The plan touches legacy-map wording ("clarify intentional legacy-only status if ambiguous") — this is subjective editorial work that can expand without bound. Either concretely list the lines to change or drop this item.
+- `test_banned_stale_references.py` updates are conditional ("optionally expand strict coverage"). Conditional test updates tend to get skipped. Either commit to a specific additions list or remove from scope.
+
+## Weakest assumption and what breaks if false
+**Assumption:** Every remaining reference to the deleted stage-transition scripts can be cleanly classified as either "live instructional" or "legacy/historical" by path heuristic alone.
+**If false:** The two active skill files and two active test files fall in a gray zone ("instructional intent + live path but mentioning the cluster for legitimate reasons"). The regression test either excludes them by allowlist (baking current state into test scaffolding, no cleanup pressure) or includes them and the test fails immediately, forcing an unplanned rewrite of skill/test content that is out of the T2 estimate.
+
+## Most likely implementation failure mode
+The executor builds `test_stage_transition_reference_confinement.py` by starting from "what matches today", allowlisting whatever is found (including the audit generator, the two skills, the two bats/shell tests, the plan file itself, and several `docs/reports/*` files), and then claiming acceptance on "test green + audit refreshed". No doc rewrites occur, the 318-read signal is unchanged on the next audit, and the issue closes as "guardrails only" per Open Question #2 — which the plan *explicitly invites as an option*. This is the strongest concrete risk.
+
+## Most likely test gap
+No negative/mutation test. With only positive assertions against the current repo, the confinement rule's *sensitivity* is never exercised. A future edit that accidentally introduces `scripts/work-queue/start_stage.py` into a newly-added doc will only be caught if that doc happens to be in the hard-coded scan list — which today excludes `.claude/skills/**`, `.claude/hooks/**`, `.planning/templates/**` partially, and any future doc added without updating the test.
+
+## Future issues suggested
+1. **Active stage-transition test cleanup** — decide the fate of `tests/work-queue/test_engine_integration.sh` and `tests/session-analysis/test_stage_exit_signal.bats`: delete, skip with TODO, or port to the governance hook path.
+2. **Redirect-target existence enforcement** — standing test that every path named in `docs/ops/legacy-claude-reference-map.md` exists. Protects the redirect surface itself from rot.
+3. **Skill-scope stale-reference scan** — extend `test_legacy_reference_allowlist.py` (or a sibling) to cover `.claude/skills/**` systematically; relates to #2213.
+4. **Audit-generator exception classification** — explicit allowlist mechanism for "tooling that names the banned patterns as scan targets" so future pattern-scanning tools don't trip confinement tests.
+5. **Quantitative audit regression metric** — add a CI-run audit that asserts cluster read counts stay below a threshold after this cleanup, converting the current one-shot refresh into a durable guardrail.
+
+## Review confidence
+**High.** I verified the claimed cluster against the issue body, read all three existing test files, confirmed the current regex already covers the target names, and ran a repo-wide grep that surfaced concrete counter-examples (5 specific files) the plan does not address. The gaps are structural, not stylistic: the taxonomy is incomplete, the rewrite set is unscheduled, and the classifier is undecided — any one of which is sufficient to block approval; together they are MAJOR.

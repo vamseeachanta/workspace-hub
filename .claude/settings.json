@@ -232,6 +232,15 @@
       }
     ]
   },
+  "worktree": {
+    "symlinkDirectories": [
+      "node_modules",
+      ".cache",
+      ".venv",
+      "__pycache__"
+    ],
+    "sparsePaths": []
+  },
   "statusLine": {
     "type": "command",
     "command": "node .claude/hooks/gsd-statusline.js"
@@ -246,7 +255,8 @@
     "claude-md-management@claude-plugins-official": true,
     "hookify@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "github@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "claude-plugins-official": {
@@ -256,19 +266,7 @@
       }
     }
   },
-  "plansDirectory": ".planning",
-  "showThinkingSummaries": true,
   "outputStyle": "Explanatory",
-  "effortLevel": "high",
-  "worktree": {
-    "symlinkDirectories": [
-      "node_modules",
-      ".cache",
-      ".venv",
-      "__pycache__"
-    ],
-    "sparsePaths": []
-  },
   "spinnerVerbs": {
     "mode": "append",
     "verbs": [
@@ -280,6 +278,7 @@
     ]
   },
   "spinnerTipsOverride": {
+    "excludeDefault": false,
     "tips": [
       "Run /context to check your budget — /compact at 50%",
       "Run /simplify after changes to catch duplication",
@@ -289,9 +288,11 @@
       "Use /branch before a risky approach — explore freely",
       "Try /security-review before pushing a PR",
       "uv run scripts/productivity/daily-learning.py for today's tips"
-    ],
-    "excludeDefault": false
+    ]
   },
+  "effortLevel": "high",
+  "plansDirectory": ".planning",
+  "showThinkingSummaries": true,
   "deny": [
     "Bash(rm -rf /)",
     "Bash(rm -rf ~:*)",

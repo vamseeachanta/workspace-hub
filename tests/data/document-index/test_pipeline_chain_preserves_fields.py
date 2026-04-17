@@ -205,3 +205,72 @@ def test_pipeline_chain_A_enrich_C_E_preserves_fields(tmp_path):
     assert final[path_a]["summary_done"] is True
     assert final[path_b]["content_type"] == "document"
     assert final[path_b]["summary_done"] is False
+    # #2309: summary_file_exists also survives the full chain
+    assert final[path_a]["summary_file_exists"] is True   # summary exists with content
+    assert final[path_b]["summary_file_exists"] is False  # no summary file
+
+
+# ═════════════ #2309 tests 15, 16: mixed-schema Phase C/E ═════════════
+
+def test_phase_c_writeback_preserves_both_summary_fields(tmp_path):
+    """Phase C bounded writeback on a record with both summary fields keeps both."""
+    phase_c = importlib.import_module("phase-c-classify")
+
+    idx = tmp_path / "index.jsonl"
+    _write_index(
+        idx,
+        [
+            {
+                "path": "/t.pdf",
+                "ext": "pdf",
+                "content_hash": "sha256:aaaa",
+                "domain": "other",
+                "status": "gap",
+                "target_repos": [],
+                "content_type": "document",
+                "summary_done": False,
+                "summary_file_exists": True,  # file exists, content empty — #2309 case
+            }
+        ],
+    )
+
+    phase_c.apply_bounded_writeback(
+        index_path=idx,
+        target_hashes={"sha256:aaaa"},
+        repo_domain_map={"marine": ["digitalmodel"]},
+    )
+    out = _read_index(idx)[0]
+    assert out["content_type"] == "document"
+    assert out["summary_done"] is False
+    assert out["summary_file_exists"] is True  # survived writeback
+
+
+def test_phase_e_backpopulate_preserves_both_summary_fields(tmp_path):
+    """Phase E backpopulate on a record with both summary fields keeps both."""
+    phase_e = importlib.import_module("phase-e-backpopulate")
+
+    idx = tmp_path / "index.jsonl"
+    _write_index(
+        idx,
+        [
+            {
+                "path": "/e.pdf",
+                "ext": "pdf",
+                "domain": None,  # triggers classification
+                "content_type": "document",
+                "summary_done": False,
+                "summary_file_exists": True,  # file exists, content empty
+            }
+        ],
+    )
+
+    phase_e.backpopulate_index(
+        index_path=idx,
+        repo_domain_map={"marine": ["digitalmodel"]},
+        classify_fn=lambda _rec: ("marine", "gap"),
+    )
+    out = _read_index(idx)[0]
+    assert out["content_type"] == "document"
+    assert out["summary_done"] is False
+    assert out["summary_file_exists"] is True  # survived backpop
+    assert out["domain"] == "marine"  # Phase E classification applied

@@ -1,0 +1,328 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d9ae6-94f6-7fe0-adf7-3698233667be
+--------
+user
+# Adversarial Plan Review Request: Issue #2312
+
+You are an independent adversarial reviewer. Be skeptical and concrete. Do NOT rubber-stamp.
+
+Review this local draft implementation plan for correctness, completeness, feasibility, TDD adequacy, scope discipline, risk handling, future-issue separation, and verification readiness.
+
+Required output schema:
+- Verdict: APPROVE | MINOR | MAJOR
+- Strengths
+- Gaps
+- Risks
+- Missing tests
+- Scope creep concerns
+- Weakest assumption and what breaks if it is false
+- Most likely implementation failure mode
+- Most likely test gap
+- Future issues suggested
+- Review confidence
+
+Important review questions:
+1. Does the plan use adequate repo evidence and correctly separate current live surfaces from intentional historical/legacy artifacts?
+2. Are the proposed file changes and tests sufficient and correctly scoped?
+3. Are there missing current files/tests/docs that should be in scope?
+4. Is the acceptance criteria measurable and enough to block false success?
+5. Is any part of the plan too broad, too vague, or mis-bounded?
+
+Artifact under review:
+Path: docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md
+
+Plan text follows:
+
+# Plan for #2312: Lifecycle-script authority cleanup
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-17
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2312
+> **Review artifacts:** scripts/review/results/2026-04-17-plan-2312-claude.md | scripts/review/results/2026-04-17-plan-2312-codex.md | scripts/review/results/2026-04-17-plan-2312-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `.planning/templates/stage-evidence-template.yaml` — still contains deleted lifecycle-script evidence targets for the final stages: `scripts/work-queue/close-item.sh` and `scripts/work-queue/archive-item.sh`.
+- Found: `docs/work-queue-workflow.md` — already states the canonical flow is GitHub issue -> `.planning/` -> implementation -> cross-review -> close issue, and explicitly says not to invoke legacy local closure helpers as live workflow steps.
+- Found: `notes/agent-work-queue.md` — current queue summary is generated from GitHub labels and explicitly states GitHub issues are the source of truth, refreshed via `scripts/refresh-agent-work-queue.py` / `.sh`.
+- Found: `tests/helpers/stale_reference_docs.py` — already bans deleted lifecycle-script references (`close-item.sh`, `whats-next.sh`, `archive-item.sh`, `claim-item.sh`) in strict stale-reference scans.
+- Gap: there is no targeted regression test for lifecycle-script references in current templates/routing docs that are not yet eligible for the full strict stale-reference suite because they still contain other legacy compatibility paths.
+- Gap: the stage-evidence template still encodes a deleted-script worldview for close/archive evidence, so current workflow guidance is internally inconsistent even though top-level docs already describe the GitHub/.planning model correctly.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Not applicable | n/a | Documentation / workflow-governance issue; no engineering standard governs the cleanup |
+
+### LLM Wiki pages consulted
+- No relevant wiki pages — issue scope is repo workflow governance, not domain knowledge.
+
+### Documents consulted
+- Issue #2312 — defines the target stale-read cluster (216 mapped Claude reads) and identifies the desired authority surfaces.
+- `docs/reports/provider-session-ecosystem-audit.md` — latest audit confirms the lifecycle cluster as `close-item.sh` (94), `archive-item.sh` (62), and `claim-item.sh` (60), with redirect guidance already pointing to `scripts/refresh-agent-work-queue.py`, `scripts/refresh-agent-work-queue.sh`, `notes/agent-work-queue.md`, `.planning/`, and GitHub issues.
+- `docs/ops/legacy-claude-reference-map.md` — canonical redirect map for deleted lifecycle scripts and the current queue-authority surfaces.
+- Issue #1717 — broader policy/docs contradiction issue for GitHub issues vs legacy work-queue guidance.
+- Issue #2213 — broader stale-reference test expansion issue for live docs.
+- Issue #2214 — broader architecture/legacy redirect split issue.
+
+### Gaps identified
+- No canonical replacement evidence paths have been defined yet for the final close/archive stages in `.planning/templates/stage-evidence-template.yaml`.
+- No targeted test currently protects current templates/routing docs from reintroducing deleted lifecycle-script references while still allowing intentional historical surfaces to exist.
+- The issue needs a bounded rule for how legacy analytical tests/fixtures that intentionally mention deleted lifecycle scripts should be treated relative to current user-facing templates and docs.
+
+<!-- Verification: count distinct sources above (across all sub-sections).
+     Minimum 3 required (issue body + 2 others). Current count: 7 -->
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md` |
+| Current workflow doc | `docs/work-queue-workflow.md` |
+| Queue authority note | `notes/agent-work-queue.md` |
+| Legacy redirect map | `docs/ops/legacy-claude-reference-map.md` |
+| Template to patch | `.planning/templates/stage-evidence-template.yaml` |
+| Targeted lifecycle-reference regression test | `tests/docs/test_lifecycle_script_reference_cleanup.py` |
+| Shared stale-reference helper updates (if needed) | `tests/helpers/stale_reference_docs.py` |
+| Review artifact — Claude | `scripts/review/results/2026-04-17-plan-2312-claude.md` |
+| Review artifact — Codex | `scripts/review/results/2026-04-17-plan-2312-codex.md` |
+| Review artifact — Gemini | `scripts/review/results/2026-04-17-plan-2312-gemini.md` |
+
+---
+
+## Deliverable
+
+A consistent current-workflow documentation/template contract in which lifecycle completion stages point to GitHub issue + `.planning` + queue-refresh authority surfaces instead of deleted local lifecycle scripts, backed by targeted regression tests.
+
+---
+
+## Pseudocode
+
+```text
+identify current templates/docs that still mention close-item/archive-item/claim-item scripts
+for each current workflow surface:
+    decide whether the reference is current guidance, historical evidence, or analytical fixture
+for current guidance files:
+    replace deleted lifecycle-script refs with canonical GitHub/.planning/refresh-agent-work-queue evidence targets
+create a targeted regression test that scans current workflow templates/docs for lifecycle-script refs
+exclude intentional historical maps and analytical fixture files from the targeted current-surface rule
+run targeted docs tests
+refresh provider-session audit after cleanup and link the result back to the issue
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Modify | `.planning/templates/stage-evidence-template.yaml` | replace deleted close/archive lifecycle-script evidence refs with current canonical evidence targets |
+| Modify | `docs/work-queue-workflow.md` | tighten wording if needed so current completion/closure evidence paths match the template changes |
+| Modify | `notes/agent-work-queue.md` | document/anchor queue-refresh authority if the template needs a stable evidence target reference |
+| Create | `tests/docs/test_lifecycle_script_reference_cleanup.py` | targeted regression test for deleted lifecycle-script refs in current docs/templates |
+| Modify | `tests/helpers/stale_reference_docs.py` | expose reusable lifecycle-script-specific helper/patterns if needed |
+| Update | `docs/plans/README.md` | add this plan to index |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_stage_evidence_template_no_longer_uses_deleted_close_archive_scripts` | the canonical stage-evidence template no longer encodes `close-item.sh` or `archive-item.sh` as live evidence targets | `.planning/templates/stage-evidence-template.yaml` | zero deleted lifecycle-script matches |
+| `test_current_workflow_docs_use_github_planning_refresh_authority_not_deleted_lifecycle_scripts` | current workflow docs/templates point to GitHub/.planning/refresh helpers instead of deleted lifecycle scripts | curated current-file list | zero deleted lifecycle-script matches and required replacement anchors present |
+| `test_legacy_reference_map_retains_redirects_for_lifecycle_scripts` | intentional legacy map still preserves the discoverable redirects for historical references | `docs/ops/legacy-claude-reference-map.md` | redirect block present |
+| `test_analytical_fixture_files_are_not_treated_as_current_workflow_docs` | legacy analytical test fixtures can remain historical data without weakening current-doc protection | selected fixture file list | targeted test ignores or separately classifies them |
+
+---
+
+## Acceptance Criteria
+
+- [ ] `.planning/templates/stage-evidence-template.yaml` stops referencing deleted lifecycle scripts as current close/archive evidence
+- [ ] Current workflow docs/templates describe GitHub issues + `.planning` + refresh helpers as the authoritative completion flow
+- [ ] A targeted regression test fails if deleted lifecycle scripts (`close-item.sh`, `archive-item.sh`, `claim-item.sh`) reappear in protected current docs/templates
+- [ ] Intentional historical/reference surfaces remain discoverable without being mistaken for current workflow guidance
+- [ ] Targeted docs test suite passes via `uv run pytest tests/docs/test_lifecycle_script_reference_cleanup.py tests/docs/test_banned_stale_references.py tests/docs/test_legacy_reference_allowlist.py -q`
+- [ ] Post-implementation audit refresh is run and linked from the issue
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | Not yet reviewed |
+| Codex | PENDING | Not yet reviewed |
+| Gemini | PENDING | Not yet reviewed |
+
+**Overall result:** PENDING
+
+Revisions made based on review:
+- None yet
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** The stage-evidence template still contains broader legacy work-queue paths beyond the lifecycle scripts, so the new regression test must stay tightly scoped or it will fail for unrelated historical-compatibility reasons.
+- **Risk:** Choosing replacement evidence targets for Close/Archive may require a small contract decision rather than a simple path substitution.
+- **Open:** What should the canonical issue-specific evidence path be for the final close/archive stages — GitHub issue URL/comment reference, a `.planning/verified/` artifact, or a queue-refresh artifact reference?
+- **Open:** Should `claim-item.sh` be handled in the same bounded issue if no current live template/doc hit is found, or should the issue only patch the surfaces actually present today and leave `claim-item.sh` covered by the regression test?
+
+---
+
+## Complexity: T2
+
+**T2** — bounded multi-file documentation/template/testing cleanup with one unresolved evidence-contract decision for the close/archive stages, but no architecture-scale implementation or domain-standard dependency.
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the draft plan against the actual repo surfaces first. I’m checking the cited files, current stale-reference tests, and whether the proposed file/test scope matches what exists now.
+2026-04-17T10:05:09.050581Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "pwd && rg -n \"close-item\\.sh|archive-item\\.sh|claim-item\\.sh|whats-next\\.sh\" .planning/templates/stage-evidence-template.yaml docs/work-queue-workflow.md notes/agent-work-queue.md docs/ops/legacy-claude-reference-map.md tests/helpers/stale_reference_docs.py tests/docs -S"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-17T10:05:09.052535Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-17T10:05:09.072853Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg --files tests/docs tests/helpers .planning/templates docs | rg "(banned_stale_references|legacy_reference_allowlist|work-queue-workflow|agent-work-queue|stage-evidence-template|legacy-claude-reference-map|plans/README)"'`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell sandbox is rejecting even read-only commands, so I’m switching to lower-friction reads to verify whether the plan’s cited surfaces and tests actually exist before issuing a verdict.
+2026-04-17T10:05:17.395408Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c "rg -n \"close-item\\.sh|archive-item\\.sh|claim-item\\.sh|whats-next\\.sh\" .planning/templates/stage-evidence-template.yaml docs/work-queue-workflow.md notes/agent-work-queue.md docs/ops/legacy-claude-reference-map.md tests/helpers/stale_reference_docs.py tests/docs -S"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-17T10:05:17.413294Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c "sed -n '1,240p' docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-17T10:05:17.430143Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c 'rg --files tests/docs tests/helpers .planning/templates docs'`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+I can’t inspect the workspace through the shell in this session, so I’m verifying against the repository contents via GitHub instead. That’s enough to pressure-test whether the plan’s file map and proposed tests line up with the current codebase.
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (failed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (failed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+codex
+**Verdict:** MAJOR
+
+**Strengths**
+- The plan correctly identifies the real contradiction: [.planning/templates/stage-evidence-template.yaml](/mnt/local-analysis/workspace-hub/.planning/templates/stage-evidence-template.yaml) still points `Close`/`Archive` at deleted lifecycle scripts, while [docs/work-queue-workflow.md](/mnt/local-analysis/workspace-hub/docs/work-queue-workflow.md) already says those helpers are not part of the live workflow.
+- It mostly separates live current surfaces from intentional legacy/reference surfaces, especially by preserving [docs/ops/legacy-claude-reference-map.md](/mnt/local-analysis/workspace-hub/docs/ops/legacy-claude-reference-map.md).
+- The issue is bounded enough to stay out of the larger wrapper/allowlist redesign tracked by #2213 and #2214.
+
+**Gaps**
+- The plan leaves the central contract unresolved: what exact `evidence:` value should replace `scripts/work-queue/close-item.sh` and `scripts/work-queue/archive-item.sh` in the stage template? Without that, the implementation and tests are underspecified.
+- The proposed file list is not evidence-tight. [docs/work-queue-workflow.md](/mnt/local-analysis/workspace-hub/docs/work-queue-workflow.md) already states the correct current model and is already covered by [tests/docs/test_banned_stale_references.py](/mnt/local-analysis/workspace-hub/tests/docs/test_banned_stale_references.py). The plan does not show an actual stale lifecycle-script hit there that requires editing.
+- Same problem for [notes/agent-work-queue.md](/mnt/local-analysis/workspace-hub/notes/agent-work-queue.md): it already declares GitHub labels as source of truth and refresh helpers as the regeneration path. The plan treats it as “modify if needed” instead of proving a needed change.
+- `docs/plans/README.md` is already indexed for issue `2312` on `main`, so “add this plan to index” is stale plan metadata, not current evidence.
+- The acceptance criterion for the refreshed provider-session audit is not measurable. A refresh alone is not success. The plan never states what audit outcome would validate the cleanup, especially if historical/allowlisted references still produce reads.
+
+**Risks**
+- The implementation may invent a new close/archive evidence contract ad hoc, then write tests around that invention rather than around an existing authoritative workflow contract.
+- A bespoke targeted test may duplicate existing stale-reference coverage instead of extending it cleanly, increasing maintenance and masking whether strict coverage should be promoted later.
+- The audit-refresh step may create noise: intentional historical surfaces can still be read, so counts may not materially drop even if live guidance is fixed.
+
+**Missing tests**
+- A deterministic test for the exact replacement authority in `.planning/templates/stage-evidence-template.yaml` once chosen, not just “no deleted strings found.”
+- A test that the replacement `Close`/`Archive` evidence entries are non-placeholder and match an explicitly approved authority contract.
+- A test proving only the intended current surfaces are protected by the new targeted scan, so this issue does not quietly absorb broader #2213 strict-coverage expansion.
+
+**Scope creep concerns**
+- Editing [docs/work-queue-workflow.md](/mnt/local-analysis/workspace-hub/docs/work-queue-workflow.md) and [notes/agent-work-queue.md](/mnt/local-analysis/workspace-hub/notes/agent-work-queue.md) without evidence they still contain stale lifecycle-script guidance.
+- Touching [tests/helpers/stale_reference_docs.py](/mnt/local-analysis/workspace-hub/tests/helpers/stale_reference_docs.py) when current patterns already include lifecycle scripts; helper changes may broaden policy rather than solve this issue.
+- Letting “refresh provider-session audit” turn into a broader audit-methodology or legacy-surface cleanup issue.
+
+**Weakest assumption and what breaks if it is false**
+- Weakest assumption: there is already an agreed canonical replacement for final-stage `evidence:` fields in the stage template.
+- If false, the issue is not a cleanup task anymore; it becomes a contract-definition task, and the proposed tests become arbitrary.
+
+**Most likely implementation failure mode**
+- The author patches only `.planning/templates/stage-evidence-template.yaml`, adds a narrow regex test, and optionally tweaks nearby docs, but never resolves what the authoritative close/archive evidence should actually be. The repo goes green while the workflow contract stays ambiguous.
+
+**Most likely test gap**
+- The new test only bans old script names and checks for vague anchor presence, so meaningless replacements like a generic `.planning/` string or another unstable artifact path still pass.
+
+**Future issues suggested**
+- Define the canonical close/archive evidence contract for stage templates if the team cannot name exact replacement anchors during planning.
+- Promote newly cleaned current files into the existing strict stale-reference suite under #2213 instead of leaving long-term bespoke tests.
+- If audit counts remain noisy after cleanup, create a follow-on to distinguish intentional legacy-reference reads from live-guidance reads in the provider-session audit.
+
+**Review confidence**
+- Medium. I verified the current repo surfaces via GitHub-backed file reads and the issue text, but I could not read the local workspace directly because shell access was blocked in this session.
+tokens used
+142,332
+**Verdict:** MAJOR
+
+**Strengths**
+- The plan correctly identifies the real contradiction: [.planning/templates/stage-evidence-template.yaml](/mnt/local-analysis/workspace-hub/.planning/templates/stage-evidence-template.yaml) still points `Close`/`Archive` at deleted lifecycle scripts, while [docs/work-queue-workflow.md](/mnt/local-analysis/workspace-hub/docs/work-queue-workflow.md) already says those helpers are not part of the live workflow.
+- It mostly separates live current surfaces from intentional legacy/reference surfaces, especially by preserving [docs/ops/legacy-claude-reference-map.md](/mnt/local-analysis/workspace-hub/docs/ops/legacy-claude-reference-map.md).
+- The issue is bounded enough to stay out of the larger wrapper/allowlist redesign tracked by #2213 and #2214.
+
+**Gaps**
+- The plan leaves the central contract unresolved: what exact `evidence:` value should replace `scripts/work-queue/close-item.sh` and `scripts/work-queue/archive-item.sh` in the stage template? Without that, the implementation and tests are underspecified.
+- The proposed file list is not evidence-tight. [docs/work-queue-workflow.md](/mnt/local-analysis/workspace-hub/docs/work-queue-workflow.md) already states the correct current model and is already covered by [tests/docs/test_banned_stale_references.py](/mnt/local-analysis/workspace-hub/tests/docs/test_banned_stale_references.py). The plan does not show an actual stale lifecycle-script hit there that requires editing.
+- Same problem for [notes/agent-work-queue.md](/mnt/local-analysis/workspace-hub/notes/agent-work-queue.md): it already declares GitHub labels as source of truth and refresh helpers as the regeneration path. The plan treats it as “modify if needed” instead of proving a needed change.
+- `docs/plans/README.md` is already indexed for issue `2312` on `main`, so “add this plan to index” is stale plan metadata, not current evidence.
+- The acceptance criterion for the refreshed provider-session audit is not measurable. A refresh alone is not success. The plan never states what audit outcome would validate the cleanup, especially if historical/allowlisted references still produce reads.
+
+**Risks**
+- The implementation may invent a new close/archive evidence contract ad hoc, then write tests around that invention rather than around an existing authoritative workflow contract.
+- A bespoke targeted test may duplicate existing stale-reference coverage instead of extending it cleanly, increasing maintenance and masking whether strict coverage should be promoted later.
+- The audit-refresh step may create noise: intentional historical surfaces can still be read, so counts may not materially drop even if live guidance is fixed.
+
+**Missing tests**
+- A deterministic test for the exact replacement authority in `.planning/templates/stage-evidence-template.yaml` once chosen, not just “no deleted strings found.”
+- A test that the replacement `Close`/`Archive` evidence entries are non-placeholder and match an explicitly approved authority contract.
+- A test proving only the intended current surfaces are protected by the new targeted scan, so this issue does not quietly absorb broader #2213 strict-coverage expansion.
+
+**Scope creep concerns**
+- Editing [docs/work-queue-workflow.md](/mnt/local-analysis/workspace-hub/docs/work-queue-workflow.md) and [notes/agent-work-queue.md](/mnt/local-analysis/workspace-hub/notes/agent-work-queue.md) without evidence they still contain stale lifecycle-script guidance.
+- Touching [tests/helpers/stale_reference_docs.py](/mnt/local-analysis/workspace-hub/tests/helpers/stale_reference_docs.py) when current patterns already include lifecycle scripts; helper changes may broaden policy rather than solve this issue.
+- Letting “refresh provider-session audit” turn into a broader audit-methodology or legacy-surface cleanup issue.
+
+**Weakest assumption and what breaks if it is false**
+- Weakest assumption: there is already an agreed canonical replacement for final-stage `evidence:` fields in the stage template.
+- If false, the issue is not a cleanup task anymore; it becomes a contract-definition task, and the proposed tests become arbitrary.
+
+**Most likely implementation failure mode**
+- The author patches only `.planning/templates/stage-evidence-template.yaml`, adds a narrow regex test, and optionally tweaks nearby docs, but never resolves what the authoritative close/archive evidence should actually be. The repo goes green while the workflow contract stays ambiguous.
+
+**Most likely test gap**
+- The new test only bans old script names and checks for vague anchor presence, so meaningless replacements like a generic `.planning/` string or another unstable artifact path still pass.
+
+**Future issues suggested**
+- Define the canonical close/archive evidence contract for stage templates if the team cannot name exact replacement anchors during planning.
+- Promote newly cleaned current files into the existing strict stale-reference suite under #2213 instead of leaving long-term bespoke tests.
+- If audit counts remain noisy after cleanup, create a follow-on to distinguish intentional legacy-reference reads from live-guidance reads in the provider-session audit.
+
+**Review confidence**
+- Medium. I verified the current repo surfaces via GitHub-backed file reads and the issue text, but I could not read the local workspace directly because shell access was blocked in this session.

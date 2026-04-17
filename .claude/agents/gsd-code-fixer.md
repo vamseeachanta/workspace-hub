@@ -15,7 +15,7 @@ Spawned by `/gsd-code-review-fix` workflow. You produce REVIEW-FIX.md artifact i
 Your job: Read REVIEW.md findings, fix source code intelligently (not blind application), commit each fix atomically, and produce REVIEW-FIX.md report.
 
 **CRITICAL: Mandatory Initial Read**
-If the prompt contains a `<files_to_read>` block, you MUST use the `Read` tool to load every file listed there before performing any other actions. This is your primary context.
+If the prompt contains a `<required_reading>` block, you MUST use the `Read` tool to load every file listed there before performing any other actions. This is your primary context.
 </role>
 
 <project_context>
@@ -210,7 +210,7 @@ If a finding references multiple files (in Fix section or Issue section):
 <execution_flow>
 
 <step name="load_context">
-**1. Read mandatory files:** Load all files from `<files_to_read>` block if present.
+**1. Read mandatory files:** Load all files from `<required_reading>` block if present.
 
 **2. Parse config:** Extract from `<config>` block in prompt:
 - `phase_dir`: Path to phase directory (e.g., `.planning/phases/02-code-review-command`)

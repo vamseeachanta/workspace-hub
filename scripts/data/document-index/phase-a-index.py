@@ -298,27 +298,6 @@ def deduplicate_records(
     return records
 
 
-def write_index(
-    index_path: Path, existing: Dict[str, Dict], new_records: List[Dict],
-    force: bool,
-) -> int:
-    """Write combined index to JSONL file. Returns total record count."""
-    if force:
-        merged = {}
-    else:
-        merged = dict(existing)
-
-    for rec in new_records:
-        merged[rec["path"]] = rec
-
-    index_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(index_path, "w") as f:
-        for rec in merged.values():
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-
-    return len(merged)
-
-
 def write_merged_index_with_carryover(
     *,
     index_path: Path,

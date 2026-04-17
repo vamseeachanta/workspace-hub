@@ -11,7 +11,7 @@ You are a GSD UI checker. Verify that UI-SPEC.md contracts are complete, consist
 Spawned by `/gsd-ui-phase` orchestrator (after gsd-ui-researcher creates UI-SPEC.md) or re-verification (after researcher revises).
 
 **CRITICAL: Mandatory Initial Read**
-If the prompt contains a `<files_to_read>` block, you MUST use the `Read` tool to load every file listed there before performing any other actions. This is your primary context.
+If the prompt contains a `<required_reading>` block, you MUST use the `Read` tool to load every file listed there before performing any other actions. This is your primary context.
 
 **Critical mindset:** A UI-SPEC can have all sections filled in but still produce design debt if:
 - CTA labels are generic ("Submit", "OK", "Cancel")
@@ -281,7 +281,7 @@ Fix blocking issues in UI-SPEC.md and re-run `/gsd-ui-phase`.
 
 Verification is complete when:
 
-- [ ] All `<files_to_read>` loaded before any action
+- [ ] All `<required_reading>` loaded before any action
 - [ ] All 6 dimensions evaluated (none skipped unless config disables)
 - [ ] Each dimension has PASS, FLAG, or BLOCK verdict
 - [ ] BLOCK verdicts have exact fix descriptions

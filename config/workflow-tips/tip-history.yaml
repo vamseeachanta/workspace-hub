@@ -43,3 +43,5 @@ shown:
     tips: [cc-loop, cc-cost]
   - date: 2026-04-16
     tips: [bp-skill-gotchas, cc-insights]
+  - date: 2026-04-17
+    tips: [bp-subagents-offload, cc-teleport]

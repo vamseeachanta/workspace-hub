@@ -148,3 +148,88 @@ def test_enrich_one_preserves_all_prior_fields(summaries_dir: Path):
     # Nothing lost
     for k in ("domain", "org", "status", "readability"):
         assert out[k] == record[k]
+
+
+# ═══════════════════ #2309 field split: summary_file_exists ═══════════════════
+# The single summary_done field in #1878 conflated file-existence with content-quality.
+# #2309 splits the signal: summary_file_exists is True iff find_summary returns non-None.
+
+def test_summary_file_exists_true_when_file_present(summaries_dir):
+    """Non-empty summary file present → summary_file_exists=True AND summary_done=True."""
+    mod = _load_enrich()
+    import hashlib
+
+    path = "/p.pdf"
+    key = hashlib.sha256(path.encode()).hexdigest()[:16]
+    _write(summaries_dir, f"{key}.json", {"summary": "real text"})
+    out = mod.enrich_one({"path": path, "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert out["summary_file_exists"] is True
+    assert out["summary_done"] is True
+
+
+def test_summary_file_exists_true_when_file_empty_content(summaries_dir):
+    """File present with empty summary → summary_file_exists=True, summary_done=False. DIVERGENCE."""
+    mod = _load_enrich()
+    import hashlib
+
+    path = "/empty.pdf"
+    key = hashlib.sha256(path.encode()).hexdigest()[:16]
+    _write(summaries_dir, f"{key}.json", {"summary": ""})
+    out = mod.enrich_one({"path": path, "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert out["summary_file_exists"] is True
+    assert out["summary_done"] is False
+
+
+def test_summary_file_exists_true_when_file_has_no_summary_key(summaries_dir):
+    """File present with no `summary` key → summary_file_exists=True, summary_done=False. DIVERGENCE."""
+    mod = _load_enrich()
+    import hashlib
+
+    path = "/nokey.pdf"
+    key = hashlib.sha256(path.encode()).hexdigest()[:16]
+    _write(summaries_dir, f"{key}.json", {"title": "t", "word_count": 0})
+    out = mod.enrich_one({"path": path, "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert out["summary_file_exists"] is True
+    assert out["summary_done"] is False
+
+
+def test_summary_file_exists_false_when_file_missing(summaries_dir):
+    """No file on disk → both fields False."""
+    mod = _load_enrich()
+    out = mod.enrich_one({"path": "/missing.pdf", "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert out["summary_file_exists"] is False
+    assert out["summary_done"] is False
+
+
+def test_enrich_one_populates_both_summary_fields(summaries_dir):
+    """Every enriched record gets both keys present (never missing)."""
+    mod = _load_enrich()
+    out = mod.enrich_one({"path": "/x.pdf", "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert "summary_file_exists" in out
+    assert "summary_done" in out
+
+
+def test_summary_file_exists_true_summary_done_false_on_corrupt_json(summaries_dir):
+    """File present but malformed JSON → summary_file_exists=True, summary_done=False. DIVERGENCE (Claude F2)."""
+    mod = _load_enrich()
+    import hashlib
+
+    path = "/corrupt.pdf"
+    key = hashlib.sha256(path.encode()).hexdigest()[:16]
+    (summaries_dir / f"{key}.json").write_text("{not valid json", encoding="utf-8")
+    out = mod.enrich_one({"path": path, "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert out["summary_file_exists"] is True
+    assert out["summary_done"] is False
+
+
+def test_summary_file_exists_true_summary_done_false_on_unicode_decode(summaries_dir):
+    """File present but non-UTF-8 bytes → summary_file_exists=True, summary_done=False. DIVERGENCE (Claude F2)."""
+    mod = _load_enrich()
+    import hashlib
+
+    path = "/unicode.pdf"
+    key = hashlib.sha256(path.encode()).hexdigest()[:16]
+    (summaries_dir / f"{key}.json").write_bytes(b"\xff\xfe\x00\x01 not utf-8")
+    out = mod.enrich_one({"path": path, "ext": "pdf", "content_hash": None}, summaries_dir)
+    assert out["summary_file_exists"] is True
+    assert out["summary_done"] is False

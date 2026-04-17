@@ -26,7 +26,7 @@ import shutil
 from pathlib import Path
 from typing import Iterable
 
-CARRYOVER_FIELDS: tuple[str, ...] = ("content_type", "summary_done")
+CARRYOVER_FIELDS: tuple[str, ...] = ("content_type", "summary_done", "summary_file_exists")
 
 
 def extract_enriched_fields(index_path: Path) -> dict[str, dict]:
