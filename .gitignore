@@ -45,6 +45,7 @@ eggs/
 lib/
 !scripts/agents/lib/
 !scripts/coordination/routing/lib/
+!scripts/cron/lib/
 !scripts/improve/lib/
 !scripts/lib/
 !scripts/work-queue/lib/
