@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Mock claude CLI — captures argv + pwd + stdin to PLAN_REVIEW_CAPTURE_DIR/claude.capture,
+# emits a canned review on stdout.
+set -u
+capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/claude.capture"
+{
+  printf 'ARGV:'
+  for a in "$@"; do printf ' %s' "$a"; done
+  printf '\n'
+  echo "PWD: $PWD"
+  echo "STDIN:"
+  if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
+} > "$capture"
+cat <<'EOF'
+## Verdict
+MAJOR
+
+## Retrieval
+- Read the plan at the path provided.
+
+## Findings
+1. Mock finding from claude — invocation was path-reference style.
+
+## Blockers
+1. Mock blocker.
+EOF

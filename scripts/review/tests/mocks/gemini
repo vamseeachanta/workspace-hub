@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Mock gemini CLI — captures argv + pwd + stdin, emits canned review.
+# Extra: supports ${MOCK_GEMINI_FAIL:-0}=1 to simulate quota/outage (exit 1, no stdout).
+set -u
+capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/gemini.capture"
+{
+  printf 'ARGV:'
+  for a in "$@"; do printf ' %s' "$a"; done
+  printf '\n'
+  echo "PWD: $PWD"
+  echo "STDIN:"
+  if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
+} > "$capture"
+if [[ "${MOCK_GEMINI_FAIL:-0}" == "1" ]]; then
+  echo "gemini: 429 No capacity" >&2
+  exit 1
+fi
+cat <<'EOF'
+## Verdict
+MINOR
+
+## Retrieval
+- Read inline plan body.
+
+## Findings
+1. Mock finding from gemini — a tiny nit only gemini noticed.
+
+## Blockers
+(none)
+EOF
