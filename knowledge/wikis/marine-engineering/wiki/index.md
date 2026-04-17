@@ -1,8 +1,8 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-16
-page_count: 19180
+last_updated: 2026-04-17
+page_count: 19181
 source_count: 19159
 ---
 
@@ -16,6 +16,7 @@ source_count: 19159
 |------|---------|-------------|
 | [[AI in DWOP]](entities/ai-dwop.md) | GenAI for automated well planning — DWOP process automation | 2026-04-09 |
 | [[Anode]](entities/anode.md) | Sacrificial anodes — Al-Zn-In alloys for offshore CP design | 2026-04-07 |
+| [[CadQuery]](entities/cadquery.md) | Python B-rep parametric CAD — parametric mooring/riser/subsea hardware families, STEP → solver pipeline | 2026-04-17 |
 | [[CFD for Offshore]](entities/cfd-offshore.md) | CFD — scour, wave loading, Morison, hydrodynamics | 2026-04-09 |
 | [[Compressor]](entities/compressor.md) | Gas compression — centrifugal, reciprocating, screw types | 2026-04-07 |
 | [[Energy Economics]](entities/energy-economics.md) | Field development economics — NPV, Arps decline, fiscal regimes | 2026-04-09 |

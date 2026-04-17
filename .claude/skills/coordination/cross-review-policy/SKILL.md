@@ -35,6 +35,21 @@ All plan-stage and code/artifact-stage work gets reviewed by ALL three agents un
 2. Two other agents review independently
 3. Claude synthesizes the combined review result
 
+## Reviewer Stance (mandatory)
+
+Routing is not enough. A reviewer who agrees charitably produces false positives that cost more to fix later than the cold review saved. Every review prompt (plan, code, artifact) MUST:
+
+1. Frame the reviewer as adversarial: "Assume the work has defects until proven otherwise."
+2. Forbid praise and restatement — findings only.
+3. Bias toward non-approval: APPROVE requires affirmative verification of each correctness-critical claim.
+4. Require evidence: each finding cites a file path, plan section, or quoted claim.
+5. Treat the work's own cited sources as claims to verify, not facts to trust.
+6. Treat empty reviews as failures: if nothing is found, the prompt must make the reviewer list what was checked.
+
+A review that returns APPROVE without a check-list is suspect — rerun with a stronger prompt.
+
+Rationale: user feedback 2026-04-17 on #2323 — "Make all the reviews adversarial in nature. Helps maximize productivity."
+
 ## Allowed Reductions
 
 A narrower review is allowed ONLY when:

@@ -159,11 +159,15 @@ exit 0
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MINOR | `.bats` test style not repo-native (use `test_*.sh`); allowlist design for abs-path check is vague; queue schema unverified; pre-commit vs pre-push timing |
-| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2322-codex.md — correctness + scope issues) |
-| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2322-gemini.md — correctness + scope issues) |
+**Wave v2 (2026-04-17, stance-contract applied):**
 
-**Overall result:** FAIL — MAJOR from Codex+Gemini. Plan requires revision before user approval.
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | `.bats` tests violate repo precedent (confirmed: existing tests are `test_*.sh`); `check-no-abs-paths.sh` allowlist as described requires AST parsing not expressible in shell; `.claude/work-queue/` has no top-level yamls so schema assumption is invented; no bypass env var documented; no Python TDD fixtures |
+| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2322-codex.md) |
+| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2322-gemini.md) |
+
+**Overall result:** FAIL — MAJOR from all three. Plan requires revision before user approval.
 
 **Blockers to resolve before approval:** see per-provider review artifacts under `scripts/review/results/2026-04-17-plan-2322-*.md`.
 

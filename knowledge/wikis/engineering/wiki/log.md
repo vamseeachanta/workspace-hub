@@ -3,6 +3,14 @@
 > Chronological record of all wiki operations.
 > Format: ## [YYYY-MM-DD] operation | Title
 
+## [2026-04-17] ingest | HN CadQuery Discussion (Python parametric CAD)
+- Processed: https://news.ycombinator.com/item?id=47772725 (180 points, 47 comments, submitted by gregsadetsky)
+- Pages created: sources/2026-04-17-hn-cadquery.md, entities/cadquery.md
+- Pages updated: index.md (entity + source row, counts: 75→77 pages, 12→13 sources)
+- Cross-wiki: created mirror entity at marine-engineering/wiki/entities/cadquery.md
+- Notes: CadQuery = Python on OpenCASCADE B-rep kernel. Relevance: digitalmodel/, CAD-DEVELOPMENTS/, parametric offshore hardware families.
+- Follow-up issues: #2327 (digitalmodel spike), #2328 (build123d/ReplicAD/FluidCAD compare), #2329 (code-first vs GUI CAD methodology).
+
 ## [2026-04-08] init | Wiki scaffolded
 - Created by: `uv run scripts/knowledge/llm_wiki.py init engineering`
 - Directories: raw/, wiki/entities, wiki/concepts, wiki/sources, wiki/comparisons, wiki/visualizations

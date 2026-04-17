@@ -129,9 +129,13 @@ Note: the memory dir is under `~/.claude/`, not the workspace-hub repo. It may n
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Memory-system conflation — target `~/.claude/projects/.../memory/` is NOT git-tracked; the repo `.claude/memory/` is a different system. Plan premise and acceptance criteria mismatched. |
-| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2324-codex.md — correctness + scope issues) |
-| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2324-gemini.md — correctness + scope issues) |
+**Wave v2 (2026-04-17, stance-contract applied):**
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | Memory-system conflation confirmed (target dir is NOT git-tracked; plan proposes `git mv` on a non-git dir); open question unresolved in plan body despite answer available; cross-machine-sync claim is a false premise inherited from wrong memory system; CI-checkable acceptance criteria target paths outside the repo |
+| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2324-codex.md) |
+| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2324-gemini.md) |
 
 **Overall result:** FAIL — MAJOR from all three providers. Plan requires re-scope before user approval.
 

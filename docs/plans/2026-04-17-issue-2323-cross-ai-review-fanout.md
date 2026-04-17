@@ -64,6 +64,22 @@
 
 ---
 
+## Reviewer-stance contract (per user feedback on #2323, 2026-04-17)
+
+The shared prompt at `scripts/review/plan-review-prompt.md` MUST force an adversarial reviewer stance across all providers. "Adversarial" here means **actively hunt for defects; default to assuming the plan is wrong and prove otherwise** — never charitable reading, never summary praise.
+
+Required prompt clauses:
+1. **Opening framing:** "You are an adversarial reviewer. Your job is to find what is wrong, missing, false, or risky. Assume the plan has defects until you have evidence otherwise."
+2. **Anti-flatter rule:** "Do not restate the plan. Do not praise. Do not note what the plan does well. Focus exclusively on what is wrong, missing, or risky."
+3. **Default-to-non-approve:** "Return APPROVE only if you have affirmatively verified each correctness-critical claim AND can find no gap. When in doubt, return MINOR or MAJOR — being wrong about MINOR is cheap; missing a MAJOR is expensive."
+4. **Evidence over opinion:** "Each finding must cite a specific file path, plan section, or quoted claim. Statements without citations are not findings."
+5. **Retrieval skepticism:** "Treat the plan's cited sources as assertions to verify, not facts. If a file path is named, assume it may not exist until checked. If a claim about behavior is made, assume it may be outdated."
+6. **Silence is failure:** "If you have no concrete finding, explicitly say the plan was reviewed against [list checks] and none found — do not return an empty review."
+
+Rationale: user feedback 2026-04-17 — "Make all the reviews adversarial in nature. Helps maximize productivity." Charitable reviews that endorse without hunting produce downstream rework that is much more expensive than a cold review.
+
+---
+
 ## Pseudocode
 
 ```
@@ -133,6 +149,8 @@ summarize_disagreement(artifact_glob):
 - [ ] Single-provider failure (simulated via mock) does not abort the other two; failing provider's artifact contains `UNAVAILABLE` verdict.
 - [ ] `docs/plans/README.md` documents the command as the canonical way to run adversarial review.
 - [ ] At least 5 tests pass.
+- [ ] `scripts/review/plan-review-prompt.md` contains all 6 clauses from the "Reviewer-stance contract" section above; a regression test asserts their presence verbatim.
+- [ ] Provider outputs for the wrapper's own self-test must include at least one non-APPROVE verdict against a deliberately-weak fixture plan, proving the stance contract produces adversarial behavior in practice.
 
 ---
 
@@ -140,11 +158,15 @@ summarize_disagreement(artifact_glob):
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MINOR | Gemini #1326 may make 2+ provider rule unsatisfied; mock CLI approach unspecified; cost control is comment not guard; retry-artifact overwrite behavior unspecified |
-| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2323-codex.md — correctness + scope issues) |
-| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2323-gemini.md — correctness + scope issues) |
+**Wave v2 (2026-04-17, stance-contract applied, post-stance-section-added):**
 
-**Overall result:** FAIL — MAJOR from Codex+Gemini. Plan requires revision before user approval.
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | Pseudocode's provider invocations are empirically broken (Codex/Gemini both need INLINE content, not path references — verified in this session's review waves); self-test AC is circular (weak fixture + stance → non-APPROVE regardless); cost guard is comment not code; no offline/mock test path; disagreement-report schema unspecified; Gemini #1326 reduces quorum without auto-emitted documentation |
+| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2323-codex.md) |
+| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2323-gemini.md) |
+
+**Overall result:** FAIL — MAJOR from all three even after stance-contract section was added. Plan requires revision before user approval.
 
 **Blockers to resolve before approval:** see per-provider review artifacts under `scripts/review/results/2026-04-17-plan-2323-*.md`.
 

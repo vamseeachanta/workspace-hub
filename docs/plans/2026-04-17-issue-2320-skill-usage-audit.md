@@ -145,11 +145,15 @@ Integration with `skill-usage-report.py`: add a "data source 5" step that reads 
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MINOR | 30s perf target unmeasured; 90d vs 15d retention unresolved; tier-demotion rule conflicts with HOT criterion; PII not addressed |
-| Codex | MAJOR | 90d promised but only 15d retained (underspecified/false); provider-schema not validated; tier rule doesn't distinguish COLD vs DEAD; no dashboard integration test |
-| Gemini | MAJOR | 90d vs 15d causes false-positive demotions; flat event-schema assumption oversimplifies; skill discovery path hardcoded; output dir rotation not addressed |
+**Wave v2 (2026-04-17, stance-contract applied):**
 
-**Overall result:** FAIL — MAJOR from Codex+Gemini. Plan requires revision before user approval.
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | Pseudocode uses flat `event.tool_name` that doesn't match real Claude Code nested-content schema; 90d promise impossible against 15d retention; tier-demotion merge rule unspecified; zero-invocation acceptance not satisfied by pseudocode; PII not addressed; MCP tools vs Skill tools conflated |
+| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2320-codex.md) |
+| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2320-gemini.md) |
+
+**Overall result:** FAIL — MAJOR from all three. Plan requires revision before user approval.
 
 **Blockers to resolve before approval:**
 - Reconcile 90-day signal with 15-day log retention (either narrow to 15d, add archive ingestion, or label as best-available with explicit semantics).

@@ -59,6 +59,19 @@ If any MAJOR: revise and re-review.
 
 Post artifacts to `scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`.
 
+**Reviewer-stance contract (mandatory framing for every review prompt):**
+Every prompt sent to a reviewer MUST force an adversarial stance. "Adversarial" here means actively hunting for defects, not charitable reading. Required clauses in the prompt:
+1. State explicitly: "You are an adversarial reviewer. Assume the plan has defects until proven otherwise."
+2. Forbid praise and restatement: "Do not praise. Do not restate the plan. Focus only on what is wrong, missing, or risky."
+3. Bias toward non-approval: "Return APPROVE only after affirmatively verifying each correctness-critical claim. When in doubt, return MINOR or MAJOR."
+4. Require evidence: "Each finding must cite a specific file path, plan section, or quoted claim."
+5. Treat cited sources as assertions to verify, not facts to trust.
+6. Empty reviews are failures — if nothing is found, explicitly list what was checked.
+
+A review that returns APPROVE without at least one verified check-list item is suspect and should be rerun with a stronger prompt.
+
+Rationale: user feedback 2026-04-17 on #2323 — "Make all the reviews adversarial in nature. Helps maximize productivity." Rubber-stamp reviews produce downstream rework that is more expensive than a cold review would be.
+
 ### Step 4: Post and Label
 
 1. Post the plan as a GitHub issue comment

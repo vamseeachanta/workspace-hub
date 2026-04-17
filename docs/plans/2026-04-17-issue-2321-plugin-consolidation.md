@@ -137,11 +137,15 @@ for each decision (canonical, [siblings]):
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MINOR | Plugin config location TBD; no rollback plan; "≥5 decisions" gameable; archive may depend on #2320 data |
-| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2321-codex.md — correctness + scope issues) |
-| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2321-gemini.md — correctness + scope issues) |
+**Wave v2 (2026-04-17, stance-contract applied):**
 
-**Overall result:** FAIL — MAJOR from Codex+Gemini. Plan requires revision before user approval.
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | Mechanism may not apply to plugin-owned skills (`gsd:*`, `sparc:*`, `workflows:*`, `agents:*` likely plugin-installed, not repo-tree — `git mv` would fail or break plugin); plugin config location "TBD"; "≥5 decisions" gameable; no rollback plan; `regression_plugin_health` requires manual human step |
+| Codex | MAJOR | (see scripts/review/results/2026-04-17-plan-2321-codex.md) |
+| Gemini | MAJOR | (see scripts/review/results/2026-04-17-plan-2321-gemini.md) |
+
+**Overall result:** FAIL — MAJOR from all three providers. Plan requires revision before user approval.
 
 **Blockers to resolve before approval:** see per-provider review artifacts under `scripts/review/results/2026-04-17-plan-2321-*.md`.
 

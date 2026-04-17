@@ -1,9 +1,9 @@
 ---
 domain: engineering
 created: 2026-04-08 16:07 UTC
-last_updated: 2026-04-09
-page_count: 75
-source_count: 12
+last_updated: 2026-04-17
+page_count: 77
+source_count: 13
 ---
 
 # Knowledge Index: Engineering
@@ -56,6 +56,7 @@ source_count: 12
 |------|---------|-------------|
 | [AQWA Solver](entities/aqwa-solver.md) | ANSYS AQWA hydrodynamic diffraction solver — DAT/LIS format | 2026-04-08 |
 | [BEMRosetta Tool](entities/bemrosetta-tool.md) | CLI mesh conversion tool wrapping Nemoh | 2026-04-08 |
+| [CadQuery](entities/cadquery.md) | Python B-rep parametric CAD (OpenCASCADE, STEP) — candidate for digitalmodel / CAD-DEVELOPMENTS | 2026-04-17 |
 | [Claude Code](entities/claude-code.md) | Anthropic CLI — default orchestrator for all workspace-hub work | 2026-04-08 |
 | [Codex CLI](entities/codex-cli.md) | OpenAI CLI — default adversarial reviewer | 2026-04-08 |
 | [Compliance Dashboard](entities/compliance-dashboard.md) | Automated review compliance tracking from commit history | 2026-04-08 |
@@ -77,7 +78,7 @@ source_count: 12
 | [Skills System](entities/skills-system.md) | Primary knowledge carrier — 691+ git-tracked skill definitions | 2026-04-08 |
 | [Solver Queue](entities/solver-queue.md) | Git-based async job dispatch for OrcaFlex/OrcaWave on licensed machines | 2026-04-08 |
 
-## Sources (12 pages)
+## Sources (13 pages)
 
 | Page | Description | Type | Ingested |
 |------|-------------|------|----------|
@@ -93,6 +94,7 @@ source_count: 12
 | [Mooring Failures LNG Terminals Seed](sources/mooring-failures-seed.md) | 40 entries — incidents, investigations, standards at LNG terminals | knowledge-seed | 2026-04-09 |
 | [Closed Engineering Issues](sources/closed-engineering-issues.md) | Key decisions from 5 closed cat:engineering GitHub issues | closed-issues | 2026-04-09 |
 | [Nightly Research Outputs](sources/research-outputs.md) | Standards tracking from nightly researcher system | research-outputs | 2026-04-09 |
+| [HN CadQuery Discussion](sources/2026-04-17-hn-cadquery.md) | 180-point HN thread — CadQuery Python parametric CAD, B-rep vs mesh, LLM codegen signals | hn-discussion | 2026-04-17 |
 
 ## Standards (7 pages)
 

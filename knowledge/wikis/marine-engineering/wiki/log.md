@@ -5,6 +5,13 @@
 
 ---
 
+## [2026-04-17] ingest | CadQuery entity (cross-wiki from engineering)
+- Source: https://news.ycombinator.com/item?id=47772725 + https://cadquery.github.io/
+- Pages created: entities/cadquery.md
+- Pages updated: index.md (entity row, count 19180→19181)
+- Cross-wiki: mirrors engineering/wiki/entities/cadquery.md and engineering/wiki/sources/2026-04-17-hn-cadquery.md
+- Notes: Parametric Python CAD on OpenCASCADE B-rep. Offshore relevance: mooring/riser/subsea parametric hardware families, STEP → gmsh/Salome → AQWA/OrcaFlex/OpenFOAM pipeline. Open questions tracked as GH issues.
+
 ## [2026-04-07 02:25 UTC] ingest | DNV-RP-B401: Cathodic Protection Design
 - File: Dnv-Rp-b401-Cathodic Protection Design.pdf (2.1 MB)
 - Source type: DNV Recommended Practice

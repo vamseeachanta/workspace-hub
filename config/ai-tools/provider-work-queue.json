@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-17T09:20:06.805366Z",
+  "generated_at": "2026-04-17T13:20:08.384485Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-17T09:20:04.727118Z",
+  "scorecard_generated_at": "2026-04-17T13:20:06.697722Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,36 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 2,
-      "total_candidates": 137,
+      "execution_ready_count": 3,
+      "total_candidates": 142,
       "top_issues": [
-        {
-          "number": 2055,
-          "title": "feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2055",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "wip:ace-linux-1",
-            "dark-intelligence",
-            "agent:claude",
-            "status:plan-approved",
-            "status:needs-data",
-            "scope:v1"
-          ],
-          "updatedAt": "2026-04-13T10:48:47Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2152,
           "title": "test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage",
@@ -66,14 +39,57 @@
           ]
         },
         {
+          "number": 2309,
+          "title": "Add summary_file_exists field (decouple existence from content-quality, follow-up to #1878)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2309",
+          "labels": [
+            "priority:low",
+            "cat:document-intelligence",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-17T13:11:41Z",
+          "execution_ready": true,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2070,
+          "title": "Guard Claude state sync against oversized session-signal files",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2070",
+          "labels": [
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-17T10:44:14Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2251,
           "title": "Compliance alert: W16 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2251",
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-04-16T11:45:08Z",
+          "updatedAt": "2026-04-17T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -176,29 +192,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2254,
-          "title": "fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2254",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-13T13:22:19Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
@@ -206,30 +199,8 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 57,
+      "total_candidates": 55,
       "top_issues": [
-        {
-          "number": 2038,
-          "title": "feat(gtm): manim installation sequence / operability envelope animation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2038",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:business",
-            "domain:gtm"
-          ],
-          "updatedAt": "2026-04-08T17:40:14Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2149,
           "title": "feat(knowledge): generate seeded intelligence accessibility registry from existing inventories",
@@ -383,6 +354,28 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2167,
+          "title": "test(knowledge): build session-read coherence golden fixture suite for alias, symbolic, and missing-path cases",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2167",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-10T22:38:29Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ]
     },
@@ -390,7 +383,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 6,
+      "total_candidates": 3,
       "top_issues": [
         {
           "number": 2295,
@@ -405,65 +398,6 @@
           "updatedAt": "2026-04-16T02:54:39Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research"
-          ]
-        },
-        {
-          "number": 2039,
-          "title": "feat: engineering wiki \u2014 ingest remaining high-value sources (skills metadata, closed issues)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2039",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-04-14T23:14:43Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research"
-          ]
-        },
-        {
-          "number": 2041,
-          "title": "chore: add LaTeX to manim-env for MathTex rendering",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2041",
-          "labels": [
-            "enhancement",
-            "priority:low"
-          ],
-          "updatedAt": "2026-04-08T17:40:21Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research"
-          ]
-        },
-        {
-          "number": 2042,
-          "title": "feat: engineering wiki \u2014 ingest skill metadata as wiki pages",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2042",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-04-14T23:14:52Z",
-          "execution_ready": false,
-          "priority_rank": 4,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",
