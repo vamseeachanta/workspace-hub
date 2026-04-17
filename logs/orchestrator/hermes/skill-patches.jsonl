@@ -35,3 +35,4 @@
 {"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub-learned/skill-dedup-collision-reconciliation-with-content-security-scan/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
 {"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/interactive-claude-to-file-based-fallback/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
 {"ts":"2026-04-16T06:40:56Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub/mixed-ops-vs-repo-fix-plan-boundary/SKILL.md","commit":"45c361ce185ed44717c9633c4a477fb6d0989c2c"}
+{"ts":"2026-04-17T06:45:18Z","agent":"unknown","action":"create","skill_path":".claude/skills/workspace-hub-learned/repair-legacy-llm-wiki-frontmatter-dates/SKILL.md","commit":"d2a3c43f3f8a5fe515e997897953b7661abd15ed"}

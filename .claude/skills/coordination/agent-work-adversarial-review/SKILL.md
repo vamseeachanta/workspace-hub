@@ -77,6 +77,22 @@ Good pattern for governance/runtime work:
 uv run pytest <focused test subset> -q
 ```
 
+Also exercise both human-facing and machine-facing entrypoints when a tool claims automation support:
+- run the normal CLI mode
+- run `--json` / structured-output mode separately
+- verify exit codes as well as stdout shape
+
+Adversarial check for governance/checker work:
+- compare the checker's enforced contract against the canonical schema/constants used by the main implementation
+- do not trust comments or issue summaries alone
+- if docs and implementation require fields A/B/C/D but the new checker only validates A/B/C, classify that as a real enforcement gap and fix it
+
+Adversarial check for scheduled governance/cron wrappers:
+- inspect the exact JSON/status values emitted by the underlying tool and verify wrapper scripts compare against the real casing/spelling (`fail` vs `FAIL`, etc.)
+- verify any labels used for auto-created GitHub issues actually exist in the repo; do not assume descriptive labels like `conformance` or `registry-health` are defined
+- when labels do not exist, prefer existing repo taxonomy plus dedupe by issue-title search rather than by nonexistent labels
+- add a small regression test that reads the shell script text and asserts the expected status token and label strings are present
+
 If one file fails in a combined run but passes alone, record it as a possible invocation-context/import-path problem rather than claiming a stable failure.
 
 ### 5. Use adversarial subreviews when scope is broad

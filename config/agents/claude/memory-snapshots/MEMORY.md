@@ -8,6 +8,7 @@
 - [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
 - [Comment on issues](feedback_gh_issue_comment.md) — post summary on every issue
 - [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
+- [Worktree gitlink pollution](feedback_worktree_gitlink_pollution.md) — add .claude/worktrees/ to .gitignore before parallel-agent runs
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -25,6 +26,7 @@
 - [Tier-1 refactor](project_tier1_refactor.md) — Ph1 DONE; Ph2A/2B ready
 - [Field-dev econ](project_field_dev_economics.md) — DONE; follow-ups #2076,#2079,#2081
 - [Field-dev arch](project_field_dev_arch_patterns.md) — DONE; follow-ups #2082,#2084,#2086
+- [assethold specs](project_assethold_spec_location.md) — design docs go in docs/reports/ (specs/ gitignored)
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing

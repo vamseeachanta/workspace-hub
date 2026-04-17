@@ -45,6 +45,28 @@ If multiple sub-actions happen quickly, combine them into one structured update.
 
 During planning, if you discover adjacent work that should not be silently absorbed into the current issue, capture it as a future GitHub issue.
 
+### Post-batch future-issue extraction routine
+
+After a planning-only batch or overnight plan-review wave, do not leave deferred scope buried inside plan files or review artifacts.
+
+Use this routine:
+1. Read the batch results report and the newly created/refreshed plan files.
+2. Search specifically for explicit deferred-scope markers such as:
+   - `Open:`
+   - `follow-up issue`
+   - `future issue`
+   - `out of scope`
+   - `can be added incrementally`
+3. Filter to items that are genuinely separate from the current bounded issue, not just implementation notes.
+4. Search GitHub for duplicates before creating anything.
+5. Create concrete follow-up issues immediately for the strongest deferred items, with bodies that explain:
+   - why the work was intentionally kept out of the current issue
+   - which issue/plan surfaced it
+   - what dependency or sequencing relationship exists
+6. Record the created issue numbers in the session handoff / results summary so the next execution wave does not silently absorb the deferred work.
+
+This is especially useful after overnight Claude planning runs, where multiple plans may each leave one or two explicit "Open" decisions. Converting the strongest ones into real GitHub issues preserves scope discipline and gives tomorrow's execution wave a cleaner boundary.
+
 ## Claude agent-team prompt packaging rule
 
 When the work is large enough to benefit from multiple agents or multiple terminals, use Claude to package the work into self-contained prompts for agent team(s).
