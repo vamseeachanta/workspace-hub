@@ -12,6 +12,7 @@ Primary cost field: cost_usd (recorded at session time — do not recalculate un
 """
 import argparse
 import csv
+import gzip
 import io
 import json
 import sys
@@ -21,21 +22,35 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 DEFAULT_DATA_FILE = REPO_ROOT / ".claude/state/session-signals/cost-tracking.jsonl"
 
 
+def _iter_sources(path: Path):
+    """Yield (path, opener) for the live file plus any sibling rotated archives
+    under `<dir>/archive/<stem>-*.jsonl.gz`. Issue #2070 — supports rotation."""
+    if path.exists():
+        yield path, open
+    archive_dir = path.parent / "archive"
+    if archive_dir.is_dir():
+        for arc in sorted(archive_dir.glob(f"{path.stem}-*.jsonl.gz")):
+            yield arc, gzip.open
+
+
 def load_records(path: Path) -> tuple[list[dict], int]:
-    """Load valid JSONL records, streaming line by line. Returns (records, skipped_count)."""
+    """Load JSONL records from `path` plus sibling rotated `.jsonl.gz` archives in
+    `<dir>/archive/`. Streaming line-by-line. Returns (records, skipped_count)."""
     records: list[dict] = []
     skipped = 0
-    if not path.exists():
-        return [], 0
-    with path.open(encoding="utf-8") as fh:
-        for line in fh:
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                records.append(json.loads(line))
-            except json.JSONDecodeError:
-                skipped += 1
+    for src, opener in _iter_sources(path):
+        try:
+            with opener(src, "rt", encoding="utf-8") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        records.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        skipped += 1
+        except OSError:
+            continue
     return records, skipped
 
 
