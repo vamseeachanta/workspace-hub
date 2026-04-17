@@ -122,6 +122,7 @@ This workspace includes automated code review workflows:
   - Report: [docs/reports/provider-session-ecosystem-audit.md](docs/reports/provider-session-ecosystem-audit.md)
   - Run: `uv run --no-project python scripts/analysis/provider_session_ecosystem_audit.py --stdout`
   - Wrapper: `bash scripts/cron/provider-session-ecosystem-audit.sh`
+  - Recommended order: run provider exports first (`bash scripts/cron/hermes-session-export.sh`, `bash scripts/cron/codex-session-export.sh`, `bash scripts/cron/gemini-session-export.sh`), then refresh the audit wrapper.
 
 ## Setup & Maintenance
 

@@ -13,6 +13,7 @@ MD_OUT="${REPO_ROOT}/docs/reports/provider-session-ecosystem-audit.md"
 mkdir -p "${LOG_DIR}"
 cd "${REPO_ROOT}"
 
+export PYTHONPATH="${REPO_ROOT}/src${PYTHONPATH:+:${PYTHONPATH}}"
 uv run --no-project python scripts/analysis/provider_session_ecosystem_audit.py "$@" \
   >> "${LOG_FILE}" 2>&1
 

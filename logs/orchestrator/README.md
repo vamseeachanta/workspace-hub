@@ -10,23 +10,25 @@ logs/orchestrator/
 ├── claude/
 │   └── session_YYYYMMDD.jsonl             ← real-time, per tool-call (hook)
 ├── codex/
-│   └── WRK-NNN-YYYYMMDDTHHMMSSZ.log      ← per invocation (submit-to-codex.sh)
+│   ├── session_YYYYMMDD.jsonl             ← exported native Codex tool calls
+│   └── .export-state.json                 ← per-tool-call dedupe state
 ├── hermes/
 │   ├── session_YYYYMMDD.jsonl             ← exported from native Hermes sessions
 │   ├── corrections/session_YYYYMMDD.jsonl ← Hermes self-correction sessions
 │   └── skill-patches.jsonl                ← Hermes skill patch log (unique to Hermes)
 └── gemini/
-    └── WRK-NNN-YYYYMMDDTHHMMSSZ.log      ← per invocation (submit-to-gemini.sh)
+    ├── session_YYYYMMDD.jsonl             ← exported native Gemini tool calls
+    └── .export-state.json                 ← per-tool-call dedupe state
 ```
 
 ## Write Method
 
 | Agent  | Written by            | Frequency      | Format |
 |--------|-----------------------|----------------|--------|
-| Claude | `session-logger.sh`   | Per tool call  | JSONL  |
-| Codex  | `submit-to-codex.sh`  | Per invocation | text   |
-| Hermes | export script (below) | Per export run | JSONL  |
-| Gemini | `submit-to-gemini.sh` | Per invocation | text   |
+| Claude | `session-logger.sh`   | Per tool call  | JSONL |
+| Codex  | native export script  | Per export run | JSONL |
+| Hermes | export script (below) | Per export run | JSONL |
+| Gemini | native export script  | Per export run | JSONL |
 
 ## Native Session Stores (per-agent, outside repo)
 
@@ -39,8 +41,9 @@ for all AI activity (not just cross-reviews):
 | Codex  | `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`           | JSONL  | All Codex CLI invocations |
 | Gemini | `~/.gemini/tmp/<project>/chats/session-*.json`           | JSON   | All Gemini CLI sessions for this project |
 
-`logs/orchestrator/codex/` and `logs/orchestrator/gemini/` only contain cross-review
-invocations (written by `submit-to-codex.sh` / `submit-to-gemini.sh`).
+`logs/orchestrator/codex/` and `logs/orchestrator/gemini/` now hold exported `session_*.jsonl`
+artifacts for parity analysis. Cross-review wrapper logs remain auxiliary evidence, but the
+provider audit reads the exported JSONL streams as the canonical per-tool-call source.
 
 ## Notes
 

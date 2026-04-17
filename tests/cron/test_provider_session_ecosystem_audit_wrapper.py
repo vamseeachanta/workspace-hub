@@ -12,6 +12,7 @@ SCHEDULE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 def test_wrapper_exists_and_uses_uv_no_project_python() -> None:
     text = SCRIPT.read_text(encoding="utf-8")
 
+    assert "PYTHONPATH=\"${REPO_ROOT}/src" in text
     assert "uv run --no-project python scripts/analysis/provider_session_ecosystem_audit.py" in text
     assert "analysis/provider-session-ecosystem-audit.json" in text
     assert "docs/reports/provider-session-ecosystem-audit.md" in text

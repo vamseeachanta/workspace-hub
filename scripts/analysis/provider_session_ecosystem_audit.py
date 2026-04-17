@@ -11,6 +11,9 @@ from pathlib import Path
 from typing import Iterable
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+SRC_ROOT = REPO_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -215,8 +218,9 @@ def classify_read_target(raw_path: str | None, repo_root: Path, record: dict | N
             return text, "symbolic", False
 
     if SYMBOLIC_SLASH_NAME_RE.fullmatch(text):
+        first_component = text.split("/", 1)[0]
         candidate = repo_root / text
-        if not safe_exists(candidate):
+        if not text.startswith(".") and not safe_exists(repo_root / first_component) and not safe_exists(candidate):
             return text, "symbolic", False
 
     path = Path(text)

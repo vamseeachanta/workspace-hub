@@ -11,6 +11,13 @@ assert spec.loader is not None
 spec.loader.exec_module(module)
 
 
+def test_script_bootstraps_src_package_imports() -> None:
+    text = MODULE_PATH.read_text(encoding="utf-8")
+
+    assert 'REPO_ROOT / "src"' in text
+    assert 'sys.path.insert(0, str(SRC_ROOT))' in text
+
+
 def test_classify_read_target_for_symbolic_skill_name(tmp_path: Path) -> None:
     normalized, scope, exists = module.classify_read_target("github-issues", tmp_path)
 
@@ -46,6 +53,26 @@ def test_classify_read_target_for_slash_symbolic_skill_name(tmp_path: Path) -> N
 
     assert normalized == "coordination/workspace/repo-capability-map"
     assert scope == "symbolic"
+    assert exists is False
+
+
+def test_classify_read_target_treats_missing_repo_path_under_existing_top_level_dir_as_repo(tmp_path: Path) -> None:
+    (tmp_path / "scripts").mkdir()
+
+    normalized, scope, exists = module.classify_read_target("scripts/hooks/post-merge", tmp_path)
+
+    assert normalized == "scripts/hooks/post-merge"
+    assert scope == "repo"
+    assert exists is False
+
+
+def test_classify_read_target_treats_hidden_repo_paths_as_repo_not_symbolic(tmp_path: Path) -> None:
+    (tmp_path / ".claude").mkdir()
+
+    normalized, scope, exists = module.classify_read_target(".claude/work-queue/WRK-149.md", tmp_path)
+
+    assert normalized == ".claude/work-queue/WRK-149.md"
+    assert scope == "repo"
     assert exists is False
 
 

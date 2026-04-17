@@ -222,7 +222,8 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2270 | blender-headless-baseline-workflow-and-smoke-render-validation | `docs/plans/2026-04-16-issue-2270-blender-headless-baseline-workflow-and-smoke-render-validation.md` | 2026-04-16 | draft | T2 | Blender headless baseline workflow, smoke render, and validation contract for dev-secondary |
 | 2271 | harden-shared-skill-propagation-for-engineering-portability | `docs/plans/2026-04-16-issue-2271-harden-shared-skill-propagation-for-engineering-portability.md` | 2026-04-16 | draft | T2 | Harden shared-skill propagation with dry-run safety and regression tests |
 | 2272 | repeatable-openfoam-and-blender-smoke-verification | `docs/plans/2026-04-16-issue-2272-repeatable-openfoam-and-blender-smoke-verification.md` | 2026-04-16 | draft | T2 | Unified smoke verification for OpenFOAM and Blender baselines; depends on #2269 and #2270 |
-| 1878 | restore-index-metadata | `docs/plans/2026-04-16-issue-1878-restore-index-metadata.md` | 2026-04-16 | adversarial-reviewed | T2 | Rev-2 after Claude:MAJOR / Codex:MAJOR / Gemini:MINOR; added multi-pattern hash lookup, Phase A/C/E carryover, integration test, scope-split 4 follow-ups |
+| 1878 | restore-index-metadata | `docs/plans/2026-04-16-issue-1878-restore-index-metadata.md` | 2026-04-16 | completed | T2 | Closed via ops run 2026-04-16; 100% content_type, 16.1% summary_done; follow-ups #2305-#2309 |
+| 2308 | gotcha-refresh | `docs/plans/2026-04-16-issue-2308-gotcha-refresh.md` | 2026-04-16 | adversarial-reviewed | T1 | Rev-2 after Claude MINOR; 5 prose blocks across 3 skill/doc files refreshed to post-#1878 reality |
 ## Entry Format
 
 Add one row per plan:
