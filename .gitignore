@@ -48,6 +48,7 @@ lib/
 !scripts/cron/lib/
 !scripts/improve/lib/
 !scripts/lib/
+!scripts/review/lib/
 !scripts/work-queue/lib/
 # GSD bin/lib — runtime libraries needed across machines
 !.claude/get-shit-done/bin/lib/
