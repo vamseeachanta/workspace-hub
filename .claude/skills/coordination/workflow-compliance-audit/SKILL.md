@@ -57,7 +57,7 @@ python3 -c "import json; d=json.loads(open('data/document-index/index.jsonl').re
 ```
 - Total records count
 - Sample a few records - check if `summary_done` and `content_type` fields are populated
-- **GOTCHA if all records show `content_type: "unknown"` and `summary_done: false`**: The index metadata has been wiped/regenerated. The summary data lives elsewhere. Use `online-resource-registry.yaml` and `standards-transfer-ledger.yaml` as reliable sources instead.
+- **Verify index metadata coverage** (post #1878): `content_type` should be populated for 100% of records; `summary_done=True` for ~16% (the rest are mostly CAD files). If either coverage has regressed, run `scripts/data/document-index/validate-index-metadata.py` — exit 1 indicates a regression. `online-resource-registry.yaml` and `standards-transfer-ledger.yaml` remain useful for curated engineering lookups.
 - Conference papers indexed? Check `conference-index-batch.jsonl`
 
 ### 4. Resource Intelligence Status

@@ -82,7 +82,7 @@ f) **Prior plans and related issues** — what has been tried before?
    - Check `docs/plans/` for related plans
    - Check recent open/closed issues for overlap or conflict
 
-**CRITICAL GOTCHA:** The index.jsonl (647K records) has all records showing `content_type: "unknown"` and `summary_done: false`. The metadata was wiped or regenerated. Use `online-resource-registry.yaml` (247 entries, current) and `standards-transfer-ledger.yaml` (425 standards, 61.9% coverage) for lookups. These are reliable. The index.jsonl metadata is BROKEN.
+**Index metadata usage (post #1878):** `index.jsonl` now carries `content_type` (100% populated, derived from extension) and `summary_done` (True for ~16% of records; 84% False is mostly CAD files with no extractable text). Read the fields directly from the index. `online-resource-registry.yaml` (247 entries) and `standards-transfer-ledger.yaml` (425 standards) remain useful for curated engineering lookups. See #1878 and #2309 for provenance and planned field split.
 
 **Evidence requirements (per #2208 retrieval contract):**
 - ≥3 distinct sources must be consulted and recorded in the plan's Resource Intelligence Summary
@@ -221,11 +221,11 @@ Issues WITHOUT engineering-critical labels:
 
 **How to handle:** When touching `digitalmodel/` files, `cd digitalmodel/` before running `git add/commit/push`.
 
-### The Document Index Metadata Is Broken
+### Index metadata reference (post #1878)
 
-**What happened:** Agent searches index.jsonl for document metadata — gets `content_type: unknown` for all 647K records, `summary_done: false`. Agent assumes no data is available.
+**Current state:** `index.jsonl` carries `content_type` (100% populated) and `summary_done` (True for ~16% of records; the 84% False is dominated by CAD files without extractable text).
 
-**How to handle:** Use `online-resource-registry.yaml` (247 entries, current) and `standards-transfer-ledger.yaml` (425 standards, 61.9% coverage) for lookups. These are reliable. The index.jsonl metadata was wiped/regenerated.
+**How to query:** Read records directly from `data/document-index/index.jsonl` — fields are present on every record. Validator at `scripts/data/document-index/validate-index-metadata.py` enforces coverage thresholds. For curated engineering lookups (small, domain-specific), `online-resource-registry.yaml` and `standards-transfer-ledger.yaml` remain the reliable complementary sources.
 
 ### Bypass Environment Variables
 
