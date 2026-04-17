@@ -13,8 +13,12 @@
 # durability enum: durable, transient, recurring-operational
 # discoverability enum: discoverable, partially-discoverable, hard-to-discover
 
+# schema_version history:
+#   1.0.0 (2026-04-11) — initial registry
+#   1.1.0 (2026-04-17) — additive: per-asset `fields:` sub-block for structural field declarations (#2307)
+
 generated: '2026-04-11'
-schema_version: '1.0.0'
+schema_version: '1.1.0'
 
 assets:
 
@@ -154,10 +158,33 @@ assets:
     durability: durable
     freshness_source: "git log -1 --format=%ci data/document-index/index.jsonl"
     freshness_cadence: monthly
-    record_count: 1033933
+    record_count: 1033933  # Combined scope: index.jsonl (649,564) + conference-index-batch.jsonl
     discoverability: partially-discoverable
-    gaps: null
+    gaps: "Conference-batch corpus not yet field-enriched (#2305)."
+    validator: "scripts/data/document-index/validate-index-metadata.py"
     owner_issue: null
+    # Fields populated by #1878 enrichment; reachability contract for agent queries.
+    fields:
+      - name: content_type
+        type: string
+        enum: [document, spreadsheet, presentation, cad, simulation-input, script, text, web, image, archive, other]
+        enum_source_of_truth: "scripts/data/document-index/content_type_map.yaml"
+        derivation: "scripts/data/document-index/enrich-summary-metadata.py (ext → content_type via content_type_map.yaml — canonical source for enum values)"
+        query_example: 'jq -r "select(.content_type == \"cad\") | .path" data/document-index/index.jsonl'
+        coverage_source: "data/document-index/resource-intelligence-maturity.yaml::status.index_jsonl_only.content_type_non_other_percent"
+        provenance: "#1878; current coverage 99.9988% (see #2306 maturity YAML for live figure)"
+      - name: summary_done
+        type: boolean
+        derivation: "scripts/data/document-index/enrich-summary-metadata.py (summary_done_from_file: True iff non-empty summary text on ace drive)"
+        query_example: 'jq "select(.summary_done == true)" data/document-index/index.jsonl'
+        coverage_source: "data/document-index/resource-intelligence-maturity.yaml::status.index_jsonl_only.summary_done_percent"
+        provenance: "#1878; current coverage 16.1% (see #2306). NOTE: #2309 will split this into `summary_done` (content-quality) and `summary_file_exists` (existence, ~87.8%)."
+        known_consumers:
+          - scripts/data/document-index/build-capability-map.py
+          - scripts/data/document-index/assess-deep-extraction-yield.py
+          - scripts/data/document-index/generate-coverage-report.py
+          - scripts/data/document-index/ghost-audit.py
+          - scripts/data/document-index/dde-migration-report.py
 
   - asset_key: registry-stats
     title: Registry Statistics Summary
