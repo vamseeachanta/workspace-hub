@@ -138,6 +138,28 @@ else
   log "SKIP: pre-push hook not found"
 fi
 
+# ── Step 3.5: Wire state-file size guard into pre-commit (#2070) ───────
+# Blocks commits that stage oversized files under .claude/state/session-signals/
+# (mitigates the 103 MB cost-tracking.jsonl push failure class).
+if [[ -f "$PRE_COMMIT" ]]; then
+  if grep -q "check-state-file-size-precommit.sh" "$PRE_COMMIT" 2>/dev/null; then
+    log "OK: state-file size guard already wired into pre-commit"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire state-file size guard into pre-commit"
+    else
+      cat >> "$PRE_COMMIT" <<'EOF'
+
+# ── State-file size guard (#2070) ──────────────────────────────────────
+if [[ -f "${REPO_ROOT}/.claude/hooks/check-state-file-size-precommit.sh" ]]; then
+  bash "${REPO_ROOT}/.claude/hooks/check-state-file-size-precommit.sh" || exit 1
+fi
+EOF
+      log "OK: Wired state-file size guard into pre-commit"
+    fi
+  fi
+fi
+
 # ── Step 4: Wire learning pipeline into post-commit ─────────────────────
 POST_COMMIT="${REPO_ROOT}/.git/hooks/post-commit"
 
