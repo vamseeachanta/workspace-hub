@@ -1,6 +1,6 @@
 # Plan for #2323: Single-command cross-AI plan-review fan-out (Claude + Codex + Gemini)
 
-> **Status:** draft
+> **Status:** implemented (branch `issue-2323-cross-ai-review-fanout`)
 > **Complexity:** T2
 > **Date:** 2026-04-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2323
