@@ -155,6 +155,28 @@ EOF
     fi
   fi
 
+  # 3e: Wire cadence-common.sh vendored-copy sync check (wed#309)
+  if grep -q "sync-cadence-helper.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: cadence-helper sync check already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire cadence-helper sync check into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
+
+# ── Cadence-helper sync check (wed#309) ──────────────────────────────────
+# Verifies worldenergydata/scripts/cron/lib/cadence-common.sh is byte-identical
+# to workspace-hub/scripts/cron/lib/cadence-common.sh. Exits 1 on drift.
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+CADENCE_SYNC="${REPO_ROOT}/scripts/sync/sync-cadence-helper.sh"
+if [[ -f "$CADENCE_SYNC" ]]; then
+  bash "$CADENCE_SYNC" || exit $?
+fi
+EOF
+      log "OK: Wired cadence-helper sync check into pre-push"
+    fi
+  fi
+
   chmod +x "$PRE_PUSH"
 else
   log "SKIP: pre-push hook not found"
