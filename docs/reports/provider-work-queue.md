@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-16T21:20:08.616063Z
+Generated: 2026-04-17T01:20:05.892544Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 2
-- Total routed candidates: 136
+- Total routed candidates: 137
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,11 +27,10 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 58
+- Total routed candidates: 57
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2037 feat(gtm): manim mooring layout / force explainer animation | no | implementation/test/fix language | enhancement, priority:medium, cat:business, domain:gtm |
 | #2038 feat(gtm): manim installation sequence / operability envelope animation | no | implementation/test/fix language | enhancement, priority:medium, cat:business, domain:gtm |
 | #2149 feat(knowledge): generate seeded intelligence accessibility registry from existing inventories | no | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:harness |
 | #2157 feat(operations): implement native PowerShell probe collector for Windows readiness bundles | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
@@ -39,6 +38,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2161 feat(knowledge): ingest provider-session ecosystem audit reads into seeded accessibility registry | no | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:harness |
 | #2162 feat(schema): define machine/path alias schema for seeded accessibility registry entries | no | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:harness |
 | #2163 feat(operations): add Windows Task Scheduler invocation harness for readiness evidence runs | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
+| #2164 test(operations): build cygpath/native-path fixture suite for Windows launcher bridge | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
 
 ## gemini
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-16T21:20:08.616063Z",
+  "generated_at": "2026-04-17T01:20:05.892544Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-16T21:20:06.780969Z",
+  "scorecard_generated_at": "2026-04-17T01:20:04.166627Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 2,
-      "total_candidates": 136,
+      "total_candidates": 137,
       "top_issues": [
         {
           "number": 2055,
@@ -206,30 +206,8 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 58,
+      "total_candidates": 57,
       "top_issues": [
-        {
-          "number": 2037,
-          "title": "feat(gtm): manim mooring layout / force explainer animation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2037",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:business",
-            "domain:gtm"
-          ],
-          "updatedAt": "2026-04-08T17:40:07Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2038,
           "title": "feat(gtm): manim installation sequence / operability envelope animation",
@@ -373,6 +351,28 @@
             "cat:harness"
           ],
           "updatedAt": "2026-04-10T22:38:18Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2164,
+          "title": "test(operations): build cygpath/native-path fixture suite for Windows launcher bridge",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2164",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-10T22:38:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",

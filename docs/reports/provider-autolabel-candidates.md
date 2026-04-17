@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-16T21:20:08.793276Z
+Generated: 2026-04-17T01:20:06.091285Z
 Apply mode: False
 Threshold: 0.9
 
@@ -8,7 +8,6 @@ Threshold: 0.9
 |---|---|---:|---|---|
 | #2152 test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
-| #2037 feat(gtm): manim mooring layout / force explainer animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2038 feat(gtm): manim installation sequence / operability envelope animation | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2039 feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues) | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2149 feat(knowledge): generate seeded intelligence accessibility registry from existing inventories | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
@@ -17,6 +16,7 @@ Threshold: 0.9
 | #2161 feat(knowledge): ingest provider-session ecosystem audit reads into seeded accessibility registry | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2162 feat(schema): define machine/path alias schema for seeded accessibility registry entries | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2163 feat(operations): add Windows Task Scheduler invocation harness for readiness evidence runs | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2164 test(operations): build cygpath/native-path fixture suite for Windows launcher bridge | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2251 Compliance alert: W16 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2254 fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |

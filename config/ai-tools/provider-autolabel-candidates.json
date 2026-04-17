@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-16T21:20:08.793276Z",
+  "generated_at": "2026-04-17T01:20:06.091285Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 1,
@@ -63,36 +63,6 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2037,
-      "title": "feat(gtm): manim mooring layout / force explainer animation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2037",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:business",
-        "domain:gtm"
-      ],
-      "updatedAt": "2026-04-08T17:40:07Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
@@ -316,6 +286,36 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-10T22:38:18Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2164,
+      "title": "test(operations): build cygpath/native-path fixture suite for Windows launcher bridge",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2164",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-10T22:38:21Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
