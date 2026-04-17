@@ -470,6 +470,7 @@ knowledge-base/*.jsonl
 knowledge-base/*.lock
 knowledge-base/*.tmp
 .worktrees/
+.claude/worktrees/
 
 # Standards search index (built locally, not committed)
 data/standards-index/chunks.jsonl
