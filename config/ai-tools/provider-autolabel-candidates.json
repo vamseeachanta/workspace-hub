@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-18T09:20:10.802924Z",
+  "generated_at": "2026-04-18T13:20:06.314976Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -506,11 +506,12 @@
       "title": "Compliance alert: W16 \u2014 0% (critical)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2251",
       "labels": [
+        "priority:high",
         "priority:medium",
         "priority:critical",
         "compliance-alert"
       ],
-      "updatedAt": "2026-04-17T11:45:07Z",
+      "updatedAt": "2026-04-18T11:45:07Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

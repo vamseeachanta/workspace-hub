@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-18T09:20:10.547178Z
+Generated: 2026-04-18T13:20:06.106816Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 
@@ -21,7 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2323 feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:ai-orchestration, domain:ai-orchestration, status:plan-approved |
 | #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | yes | strategy/workflow/architecture language | priority:medium, cat:maintenance, domain:memory, status:plan-approved |
 | #2327 digitalmodel: CadQuery spike for parametric offshore geometry generation | yes | strategy/workflow/architecture language | priority:low, cat:engineering, cat:research, status:plan-approved |
-| #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:medium, priority:critical, compliance-alert |
+| #2251 Compliance alert: W16 — 0% (critical) | no | strategy/workflow/architecture language | priority:high, priority:medium, priority:critical, compliance-alert |
 
 ## codex
 
