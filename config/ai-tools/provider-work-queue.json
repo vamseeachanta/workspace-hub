@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-17T17:20:07.881429Z",
+  "generated_at": "2026-04-17T21:20:09.121994Z",
   "current_week": "2026-W16",
-  "scorecard_generated_at": "2026-04-17T17:20:06.131285Z",
+  "scorecard_generated_at": "2026-04-17T21:20:06.387065Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 7,
-      "total_candidates": 140,
+      "total_candidates": 144,
       "top_issues": [
         {
           "number": 2152,
@@ -121,7 +121,7 @@
             "domain:ai-orchestration",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-17T14:30:24Z",
+          "updatedAt": "2026-04-17T20:30:01Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -207,7 +207,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 57,
+      "total_candidates": 53,
       "top_issues": [
         {
           "number": 2149,
