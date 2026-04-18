@@ -45,3 +45,5 @@ shown:
     tips: [bp-skill-gotchas, cc-insights]
   - date: 2026-04-17
     tips: [bp-subagents-offload, cc-teleport]
+  - date: 2026-04-18
+    tips: [cc-diff, cc-compact-focus]

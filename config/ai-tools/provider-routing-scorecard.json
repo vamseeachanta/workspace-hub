@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-18T05:20:04.516370Z",
+  "generated_at": "2026-04-18T09:20:08.790735Z",
   "current_week": "2026-W16",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-18T05:20:04.326679Z",
+    "utilization_generated_at": "2026-04-18T09:20:08.526842Z",
     "audit_generated_at": "2026-04-16T23:34:23Z"
   },
   "recommended_provider_order": [
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 1.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 43,
-      "post_records_current_week": 759,
+      "sessions_current_week": 63,
+      "post_records_current_week": 1353,
       "audit_post_records": 32096,
       "missing_repo_reads": 0,
       "python3_per_1k_records": 9.94,
@@ -84,23 +84,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 440
+          "count": 563
+        },
+        {
+          "tool": "_fetch_file",
+          "count": 222
         },
         {
           "tool": "mcp__codex_apps__github_fetch_file",
           "count": 165
         },
         {
-          "tool": "mcp__codex_apps__github_fetch_issue",
-          "count": 35
-        },
-        {
-          "tool": "mcp__codex_apps__github_search",
-          "count": 32
+          "tool": "_search",
+          "count": 142
         },
         {
           "tool": "list_mcp_resources",
-          "count": 24
+          "count": 41
         }
       ],
       "preferred_work": [
@@ -122,11 +122,11 @@
       "provider": "gemini",
       "status": "needs_cleanup",
       "priority": "highest",
-      "reported_utilization_pct": 5.3,
+      "reported_utilization_pct": 5.8,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 23,
-      "post_records_current_week": 165,
+      "sessions_current_week": 30,
+      "post_records_current_week": 179,
       "audit_post_records": 6064,
       "missing_repo_reads": 665,
       "python3_per_1k_records": 47.99,
@@ -135,19 +135,19 @@
       "top_tools": [
         {
           "tool": "Read",
-          "count": 92
+          "count": 100
         },
         {
           "tool": "Grep",
-          "count": 55
+          "count": 58
         },
         {
           "tool": "Bash",
-          "count": 13
+          "count": 14
         },
         {
           "tool": "Browser",
-          "count": 3
+          "count": 5
         },
         {
           "tool": "generalist",
