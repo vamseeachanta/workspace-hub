@@ -49,7 +49,7 @@
 
 ## Skill Registration
 
-- Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`) *stale: 2026-03-11*
+- Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`) *verified: 2026-04-18*
 - `.claude/skills/` holds the detailed SKILL.md implementation *verified: 2026-03-15*
 - Command file references SKILL.md via `@.claude/skills/<path>/SKILL.md` *stale: 2026-04-17*
 - Command file needs YAML frontmatter: `name`, `description`, `category`

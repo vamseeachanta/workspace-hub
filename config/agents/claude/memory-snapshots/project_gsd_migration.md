@@ -1,9 +1,9 @@
 ---
 name: GSD migration complete
-description: Old 20-stage WRK pipeline removed 2026-03-25, GSD is sole workflow — now at v1.34.1, Node.js 24+ required
+description: Old 20-stage WRK pipeline removed 2026-03-25, GSD is sole workflow — now at v1.36.0, Node.js 24+ required
 type: project
+originSessionId: 57335aaf-c168-418e-9e12-dafe06cf553a
 ---
-
 On 2026-03-25, the old 20-stage WRK pipeline was fully removed and replaced by GSD.
 
 **Why:** 4% completion rate, 3100+ unused skill files, 35 hooks blocking work, 86 scripts overhead. GSD offloads workflow maintenance to a community-maintained framework.
@@ -26,7 +26,8 @@ On 2026-03-25, the old 20-stage WRK pipeline was fully removed and replaced by G
 **Version history:**
 - v1.30.0 — installed as of 2026-03-25
 - v1.34.1 — updated 2026-04-07 (session 3ea978b9). 124 locally modified files backed up to `gsd-local-patches/`, mostly Windows→Linux path diffs from cross-machine sync. Patches reapplied; most were mechanical (path normalization, `/gsd:xxx` → `/gsd-xxx` format migration).
+- v1.36.0 — confirmed installed as of 2026-04-17 via `/gsd:update` (no-op, already on latest). LOCAL scope under `./.claude/`.
 
-**Node.js requirement:** GSD v1.34.1 requires Node.js 24+. Currently on v22.22.2 — may cause issues with newer features. Upgrade pending.
+**Node.js requirement:** GSD v1.36.0 requires Node.js 24+. Currently on v22.22.2 — may cause issues with newer features. Upgrade pending.
 
 **How to apply:** No more WRK-NNN references. Tasks tracked as GitHub issues. Use `/gsd:*` commands for workflow. After updates, run `/gsd:reapply-patches` to restore local customizations.

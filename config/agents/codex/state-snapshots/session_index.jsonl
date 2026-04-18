@@ -4,3 +4,11 @@
 {"id":"019d756d-ace0-7911-9b19-86c8a23825a4","thread_name":"Codex Companion Task: <task>Review the test file at digitalmodel/tests/nava...","updated_at":"2026-04-10T03:26:55.223015545Z"}
 {"id":"019d7573-5eda-78d0-859e-d495b7db587f","thread_name":"Codex Companion Task: <task>Review the following two changed files for corr...","updated_at":"2026-04-10T03:33:08.471362992Z"}
 {"id":"019d9769-751f-71e0-a787-cbb3e4097469","thread_name":"Codex Companion Task: <task> Adversarial plan review for issue #1878 in rep...","updated_at":"2026-04-16T17:49:24.405105303Z"}
+{"id":"019d9b06-a581-79a2-8b4f-f305946054dc","thread_name":"Codex Companion Task: Adversarial plan review for T2 (code change with test...","updated_at":"2026-04-17T10:39:57.631352946Z"}
+{"id":"019d9bf5-9b11-7582-b51e-d7538b21a161","thread_name":"Codex Companion Task: <task> Adversarial review of plan /mnt/local-analysis...","updated_at":"2026-04-17T15:00:57.927037997Z"}
+{"id":"019d9c04-1897-7291-b4eb-e4dbd0bb77b5","thread_name":"Codex Companion Task: <task> Rev-2 adversarial re-review of issue #2334 pla...","updated_at":"2026-04-17T15:16:47.513045405Z"}
+{"id":"019d9c14-e326-79d2-9218-d78cc7627ae3","thread_name":"Codex Companion Task: You are an adversarial reviewer. Assume the plan has ...","updated_at":"2026-04-17T15:35:08.16726791Z"}
+{"id":"019d9d1c-cb63-7821-b31a-76a0dbe24216","thread_name":"Codex Companion Task: <task> Act as the Codex cross-provider adversarial re...","updated_at":"2026-04-17T20:23:23.465242788Z"}
+{"id":"019d9d8d-6543-7860-bccf-911f7fd848f5","thread_name":"Codex Companion Task: You are dispatched as the Codex provider for cross-pr...","updated_at":"2026-04-17T22:26:22.808111631Z"}
+{"id":"019d9d92-7bef-7f12-8bcf-d4f473f97282","thread_name":"Codex Companion Task: <task> You are the Codex cross-provider adversarial r...","updated_at":"2026-04-17T22:31:56.467291777Z"}
+{"id":"019d9e52-a103-7433-9ecd-4506a2d76273","thread_name":"Codex Companion Task: You are an adversarial plan reviewer. Assume the plan...","updated_at":"2026-04-18T02:01:48.737420662Z"}
