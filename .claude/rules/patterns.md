@@ -12,3 +12,5 @@ Rules exist on a maturity spectrum. Move rules toward stronger enforcement over 
 | 3 — Hook | pre-commit / stop-hook | Strongest — fires automatically | Must-never-miss enforcement |
 
 Migration path: when a prose rule can be expressed as exit 0/1, write a script. When it must fire on every commit, promote to a hook.
+
+Level-2 examples (#2322): `scripts/enforcement/check-no-abs-paths.sh`, `scripts/enforcement/check-harness-file-size.sh`.

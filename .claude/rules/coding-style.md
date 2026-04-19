@@ -6,8 +6,8 @@
 - Multi-file refactors: edit one file at a time, run tests between files
 
 ## Path Handling
-- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` — never hardcode absolute paths
+- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` — never hardcode absolute paths (enforced: `scripts/enforcement/check-no-abs-paths.sh`)
 - Absolute paths permitted only when a tool call explicitly requires them (e.g., `file_path` parameter)
 
 ## Agent Harness Files
-CLAUDE.md, MEMORY.md, AGENTS.md, GEMINI.md must not exceed 20 lines. Migrate excess to a skill or doc.
+CLAUDE.md, MEMORY.md, AGENTS.md, GEMINI.md must not exceed 20 lines. Migrate excess to a skill or doc. (enforced: `scripts/enforcement/check-harness-file-size.sh`)

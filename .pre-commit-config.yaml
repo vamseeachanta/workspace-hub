@@ -16,6 +16,13 @@ repos:
         entry: bash scripts/work-queue/validate-queue-state.sh
         language: system
         files: '^\.claude/work-queue/.*|^scripts/work-queue/.*|^docs/work-queue-workflow\.md$'
+      - id: check-harness-file-size
+        name: agent harness files ≤20 lines (#2322)
+        entry: bash scripts/enforcement/check-harness-file-size.sh
+        language: system
+        # Fire on any staged harness file (excluded dirs handled inside the script).
+        files: '(^|/)(CLAUDE|MEMORY|AGENTS|GEMINI)\.md$'
+        pass_filenames: false
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2
