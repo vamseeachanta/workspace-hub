@@ -1,46 +1,64 @@
 # Plan for #2342 + #2343: Publish Demo Detail Pages 1-4 and Wire Gallery CTAs
 
-> **Status:** draft
+> **Status:** draft (revised after 2026-04-17 adversarial review — MAJOR verdict)
+> **Revision history:**
+> - 2026-04-17 v1 — initial draft
+> - 2026-04-19 v2 — rewritten after Claude MAJOR + Codex MAJOR: corrected Vercel deploy model, committed to `head-common` include, resolved title contradiction, added sitemap.xml updates, wired link-check to Jest, added rollback + SRI/vendoring, restructured TDD
 > **Complexity:** T2
-> **Date:** 2026-04-17
 > **Issues:**
 > - https://github.com/vamseeachanta/workspace-hub/issues/2342 (publish 4 detail pages)
 > - https://github.com/vamseeachanta/workspace-hub/issues/2343 (wire gallery CTAs)
-> **Combined rationale:** Both ship through the same `aceengineer-website` repo and deploy; splitting would double review and deploy overhead without reducing risk.
-> **Review artifacts:** scripts/review/results/2026-04-17-plan-2342-claude.md | ...-codex.md | ...-gemini.md
+> **Combined rationale:** Both ship through the same `aceengineer-website` repo and the same Vercel build on push. Splitting doubles review and deploy overhead without reducing blast radius — the gallery edit is a single-line add per card, too small to warrant its own PR.
+> **Review artifacts:**
+> - v1: `scripts/review/results/2026-04-17-plan-2342-claude.md` (MAJOR), codex review blocked by sandbox (no artifact)
+> - v2: pending — will be written to `scripts/review/results/2026-04-19-plan-2342-claude.md` and `-codex.md`
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `aceengineer-website/content/demos/jumper-installation.html` (91 lines) — reference pattern for a detail page. Uses YAML frontmatter `rootPath: "../"`, self-contained inline `<style>`, no partial includes.
-- Found: `aceengineer-website/content/demos/index.html` (468 lines) — gallery with 5 `.demo-card` blocks at lines 290/310/330/350/370. Only Demo 5 (line 383) has the `View detailed report` CTA. Demo 2 has a `Try free calculator` CTA at line 323. Demos 1/3/4 have no detail-level CTA.
-- Found: `aceengineer-website/build.js` — posthtml pipeline that processes `content/` → `dist/`, skips files under `partials/`, parses YAML frontmatter for `rootPath`, applies `posthtml-include` for partials and `posthtml-expressions` for templating.
-- Found: `digitalmodel/examples/demos/gtm/output/demo_0{1..5}_*_report.html` — full Plotly-embedded HTML reports. Sizes 66 KB–118 KB. Each has `<!DOCTYPE html><html lang="en"><head>` with `<title>`; they are standalone documents with no include directives, so the build step will pass them through unchanged.
-- Gap: four of the five detail pages (`freespan.html`, `wall-thickness.html`, `mudmat.html`, `pipelay.html`) do not exist under `content/demos/` or `dist/demos/`.
-- Gap: gallery cards for Demos 1, 3, 4 have no `View detailed report` CTA; Demo 2 has a calculator CTA instead of a detail CTA.
+- Found: `aceengineer-website/content/demos/jumper-installation.html` (91 lines) — existing detail page. Uses YAML frontmatter `rootPath: "../"`, inline `<style>`, **does NOT include `partials/head-common.html`** — this is a pre-existing defect on the already-live page (no GA, no nav) that this plan will also fix as an in-scope side-effect.
+- Found: `aceengineer-website/content/demos/index.html` (468 lines) — gallery with 5 `.demo-card` blocks at lines 290, 310, 330, 350, 370. Only Demo 5 (line 383) has a `View detailed report` CTA. Demo 2 has a `Try free calculator` CTA at line 323. Demos 1, 3, 4 have no detail-level CTA. Gallery DOES include `partials/head-common.html` at line 26 — so the reference partial-include pattern is already established on the site.
+- Found: `aceengineer-website/content/partials/head-common.html` — supplies favicon, site CSS (`styles.min.css`), deferred `navbar-toggle.js`, and Google Analytics (`G-K31E51DQ47`) with `requestIdleCallback` deferral. Every branded page must include it.
+- Found: `aceengineer-website/build.js` — posthtml pipeline: `content/` → `dist/`, skips `partials/`, parses YAML frontmatter for `rootPath`, applies `posthtml-include` for partials and `posthtml-expressions` for `{{ rootPath }}` templating.
+- Found: `aceengineer-website/vercel.json` — **Vercel deploy**, `buildCommand: npm run build`, `outputDirectory: dist`. Host redirect `aceengineer.com` → `www.aceengineer.com`. Cache-control headers only for `/assets/(.*)` (immutable 1yr). Security headers `X-Content-Type-Options`, `X-Frame-Options: DENY`, `X-XSS-Protection`. **No `Content-Security-Policy` header** — confirmed via direct read — so Plotly CDN is not CSP-blocked.
+- Found: `aceengineer-website/.gitignore` line 2 = `dist/` → **`dist/` is NOT committed**. Vercel rebuilds from `content/` on every push.
+- Found: `aceengineer-website/sitemap.xml` — hand-maintained XML; uses `aceengineer.com` host (the redirect source). **Zero `/demos/` entries** currently, including the already-live `jumper-installation.html` (pre-existing gap).
+- Found: `aceengineer-website/robots.txt` — `Allow: /`; no disallow for `/demos/*`. Crawling is unblocked.
+- Found: `aceengineer-website/package.json` — `scripts.test = jest`, multi-project Jest config. Existing JS tests under `tests/js/`. Link-check can be added as a Jest project to inherit CI.
+- Found: `aceengineer-website/.github/workflows/` — directory exists but is empty. No CI runs today. Vercel integration watches pushes; Jest must be run locally or added as a workflow.
+- Found: `digitalmodel/examples/demos/gtm/output/demo_0{1..5}_*_report.html` — full Plotly-embedded HTML reports. Sizes **68 KB-116 KB** (measured with `du -sh`; v1 plan's "66-118 KB" was estimated, not measured). Each source `<title>` reads "`<Demo Title>` — digitalmodel" — conflicts with site branding; plan rewrites titles on copy. Source reports reference `https://cdn.plot.ly/plotly-2.32.0.min.js` (version-pinned but no SRI).
 
 ### Standards
-Not applicable — this is a website-publishing issue, not an engineering standard implementation.
+Not applicable — website-publishing issue.
 
 ### LLM Wiki pages consulted
-No relevant wiki pages — content is GTM collateral, not engineering knowledge.
+No relevant wiki pages.
 
 ### Documents consulted
-- `docs/gtm/gtm-plan-30day.md` lines 97-108 — Week 3 "Email Campaign — Tier 1" sends Template A with `[Link to relevant demo GIF]` and detailed follow-up (Template B) attaches `[relevant demo PDF]`. Cold emails will link to these detail pages. If pages 404, open rate and response rate collapse.
-- `docs/reports/2026-04-15-gtm-exit-summary.md` lines 17-27 — exit summary claims "detailed Demo 5 page now live" and methodology pages published; silent on Demos 1-4.
-- `docs/reports/2026-04-15-gtm-cross-review-readiness.md` lines 40-47 — records that `jumper-installation.html` was added to both source and dist; no mention of the other four demos.
-- Issue #2116 (closed 2026-04-15) — acceptance required embedding GIFs in all 5 cards with "Run this on your data" CTA. "View detailed report" was added only for Demo 5.
-- Issue #1800 (closed 2026-04-10) — umbrella for all 5 demo HTML reports. Confirms reports were generated and committed under `digitalmodel/examples/demos/gtm/output/`.
-- Parent deploy mechanism: `aceengineer-website/CNAME` = `aceengineer.com`. No `.github/workflows/` dir. Deploy is GitHub Pages on push to main with `dist/` served. Verified 2026-04-17 by live 200 on `www.aceengineer.com/methodology/*`.
+- `docs/gtm/gtm-plan-30day.md` lines 97-108 — Week 3 cold-email Templates A/B/C link to demo GIFs and demo reports. Without live detail pages, CTAs 404.
+- `docs/reports/2026-04-15-gtm-exit-summary.md` lines 17-27 — claims Demo 5 detail page went live; silent on Demos 1-4.
+- `docs/reports/2026-04-15-gtm-cross-review-readiness.md` lines 40-47 — records jumper-installation.html publish; doesn't address Demos 1-4.
+- Issue #2116 (closed 2026-04-15) — gallery acceptance required GIFs + "Run this on your data" CTAs; detail CTAs shipped only for Demo 5.
+- Issue #1800 (closed 2026-04-10) — confirms all 5 source reports are generated and committed under `digitalmodel/`.
+- `scripts/review/results/2026-04-17-plan-2342-claude.md` — v1 MAJOR verdict; 10 defects, 3 of them blocker/major. All 4 correctness-critical claims verified by file inspection in this revision.
+- Codex verbal review of v1 (sandbox-blocked artifact) — MAJOR verdict: rollback missing, SRI unaddressed, TDD mixes pre/post, split vs combine question. All folded into v2.
+- Memory: `feedback_codex_needs_pushed_artifact.md` (2026-04-17) — Codex sandbox cannot read local files; plan must be pushed to GitHub before re-dispatching Codex review.
 
 ### Gaps identified
-- 4 detail page HTML files to author in `content/demos/` and mirror to `dist/demos/`
-- Gallery index must gain 3 new `View detailed report` buttons (Demos 1, 3, 4) and 1 additional button alongside the existing calculator CTA for Demo 2
-- No regression test exists that verifies gallery-link targets return 200 — should be added to avoid recurrence
+- 4 new detail-page files in `content/demos/` (no `dist/` — gitignored).
+- Gallery edit adds 3 new detail-report buttons (Demos 1, 3, 4) and 1 alongside Demo 2's calculator CTA.
+- `jumper-installation.html` retrofit: add `<include src="partials/head-common.html"></include>` — fixes pre-existing analytics/nav gap in scope.
+- 5 new `sitemap.xml` entries (4 new detail pages + 1 backfill for `jumper-installation.html`).
+- `vercel.json`: add cache-control header for `/demos/*.html`.
+- Vendor `plotly-2.32.0.min.js` locally under `assets/js/` to eliminate CDN supply-chain risk + obviate SRI; update all 5 detail pages (4 new + jumper retrofit) to reference local copy.
+- Link-check script wired into `package.json` as a Jest project so `npm test` fires it.
+- TDD split into pre-deploy local checks vs post-deploy live checks.
+- Rollback runbook: single-commit revert triggers Vercel rebuild to known-good state.
 
-Source count: 8 distinct sources (issue body × 2 + 6 others) ✓
+### Source count
+Distinct sources consulted: 12 (repo code + 4 repo-file reads + 2 issue bodies + 2 exit/review reports + 2 parent issues + memory feedback). Exceeds minimum 3 required.
 
 ---
 
@@ -49,58 +67,102 @@ Source count: 8 distinct sources (issue body × 2 + 6 others) ✓
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-17-issue-2342-2343-demo-detail-pages.md` |
-| New content | `aceengineer-website/content/demos/freespan.html` |
-| New content | `aceengineer-website/content/demos/wall-thickness.html` |
-| New content | `aceengineer-website/content/demos/mudmat.html` |
-| New content | `aceengineer-website/content/demos/pipelay.html` |
-| Built output | `aceengineer-website/dist/demos/{freespan,wall-thickness,mudmat,pipelay}.html` |
+| New content: Demo 1 detail | `aceengineer-website/content/demos/freespan.html` |
+| New content: Demo 2 detail | `aceengineer-website/content/demos/wall-thickness.html` |
+| New content: Demo 3 detail | `aceengineer-website/content/demos/mudmat.html` |
+| New content: Demo 4 detail | `aceengineer-website/content/demos/pipelay.html` |
+| Retrofit | `aceengineer-website/content/demos/jumper-installation.html` (add head-common include; point Plotly at local vendor) |
 | Gallery edit | `aceengineer-website/content/demos/index.html` |
-| Gallery built | `aceengineer-website/dist/demos/index.html` |
-| Link-check script | `aceengineer-website/scripts/check-demo-links.sh` |
+| Sitemap | `aceengineer-website/sitemap.xml` (add 5 entries) |
+| Vercel config | `aceengineer-website/vercel.json` (add `/demos/(.*).html` cache header) |
+| Vendored Plotly | `aceengineer-website/assets/js/plotly-2.32.0.min.js` |
+| Link-check | `aceengineer-website/tests/js/demo-links.test.js` (Jest project) |
 | Plan index row | `docs/plans/README.md` |
-| Plan review — Claude | `scripts/review/results/2026-04-17-plan-2342-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-04-17-plan-2342-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-17-plan-2342-gemini.md` |
+| Plan review v2 — Claude | `scripts/review/results/2026-04-19-plan-2342-claude.md` |
+| Plan review v2 — Codex | `scripts/review/results/2026-04-19-plan-2342-codex.md` |
+
+**`dist/*` is deliberately absent from this map** — `.gitignore` excludes it; Vercel rebuilds from `content/` on push. Local `npm run build` is for verification only.
 
 ---
 
 ## Deliverable
 
-Four demo detail pages (`freespan.html`, `wall-thickness.html`, `mudmat.html`, `pipelay.html`) live on `www.aceengineer.com/demos/`, each linked from its gallery card's "View detailed report" button, verified by an automated link-check that will run on future PRs.
+Four demo detail pages (`freespan.html`, `wall-thickness.html`, `mudmat.html`, `pipelay.html`) live on `www.aceengineer.com/demos/`, each served with site nav + GA, linked from its gallery card's "View detailed report" button, indexed in `sitemap.xml`, rendered with vendored Plotly (no CDN dependency), and guarded by a Jest link-check that fails CI if any gallery anchor 404s.
 
 ---
 
 ## Pseudocode
 
-Two workstreams:
-
-**A. Publish 4 detail pages**
+**A. Author 4 detail pages (content/demos/)**
 ```
-for demo in [freespan, wall_thickness, mudmat, pipelay]:
-    source   = digitalmodel/examples/demos/gtm/output/demo_<N>_<demo>_report.html
-    target   = aceengineer-website/content/demos/<slug>.html
-    prepend YAML frontmatter: 'rootPath: "../"'
-    copy remainder of source verbatim
-    ensure <title> tag reads "A&CE — <Demo Title>" for brand consistency
-run `node build.js` to regenerate dist/
-verify dist/demos/<slug>.html exists and matches content version semantically
+for demo in [(freespan, "Freespan / VIV Screening"),
+             (wall_thickness, "Pipeline Wall Thickness"),
+             (mudmat, "Deepwater Mudmat Installation"),
+             (pipelay, "Shallow Water Pipelay")]:
+    source = digitalmodel/examples/demos/gtm/output/demo_<N>_<slug>_report.html
+    target = content/demos/<slug>.html
+    extract body content from <body>...</body>
+    rewrite <head> to:
+        ---
+        rootPath: "../"
+        ---
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>A&CE — <Demo Title></title>
+            <include src="partials/head-common.html"></include>
+            <!-- original inline styles preserved -->
+            <style>...source styles...</style>
+            <!-- vendored Plotly -->
+            <script src="{{ rootPath }}assets/js/plotly-2.32.0.min.js"></script>
+        </head>
+        <body>...source body...</body>
 ```
 
-**B. Wire gallery CTAs**
+**B. Retrofit jumper-installation.html**
+Same head rewrite + Plotly vendor point, single atomic commit. Closes the pre-existing analytics gap.
+
+**C. Gallery CTA wiring**
 ```
 in content/demos/index.html, for each demo_card lacking "View detailed report":
     add <a class="btn btn-info" href="{{ rootPath }}demos/<slug>.html">View detailed report</a>
-    for Demo 2: keep existing "Try free calculator" CTA; add the detail button alongside
-run `node build.js`
-verify 5 detail-report anchors exist in dist/demos/index.html
+    Demo 2 card: keep existing "Try free calculator" CTA AND add detail button alongside (flex-column on mobile)
 ```
 
-**C. Link-check script (new)**
+**D. Sitemap update**
 ```
-for each anchor in dist/demos/index.html matching href="demos/...":
-    curl -s -o /dev/null -w "%{http_code}\n" $anchor
-    assert 200
-exit non-zero if any fail
+in sitemap.xml, append 5 <url> entries:
+    https://aceengineer.com/demos/freespan.html
+    https://aceengineer.com/demos/wall-thickness.html
+    https://aceengineer.com/demos/mudmat.html
+    https://aceengineer.com/demos/pipelay.html
+    https://aceengineer.com/demos/jumper-installation.html  (backfill)
+with lastmod=2026-04-19, changefreq=monthly, priority=0.8
+```
+
+**E. Vercel cache header**
+```
+in vercel.json "headers" array, add:
+    { source: "/demos/(.*).html",
+      headers: [{key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400"}] }
+```
+
+**F. Vendor Plotly**
+```
+curl -o assets/js/plotly-2.32.0.min.js https://cdn.plot.ly/plotly-2.32.0.min.js
+verify checksum against upstream release
+commit as binary asset
+```
+
+**G. Link-check Jest test**
+```
+tests/js/demo-links.test.js:
+    parse dist/demos/index.html (after local npm run build)
+    extract every href matching "demos/.*\.html"
+    for each, assert file exists under dist/demos/
+    expected anchor count >= 5 ("View detailed report" × 5 + calculator)
 ```
 
 ---
@@ -113,75 +175,116 @@ exit non-zero if any fail
 | Create | `aceengineer-website/content/demos/wall-thickness.html` | Detail page for Demo 2 |
 | Create | `aceengineer-website/content/demos/mudmat.html` | Detail page for Demo 3 |
 | Create | `aceengineer-website/content/demos/pipelay.html` | Detail page for Demo 4 |
-| Modify | `aceengineer-website/content/demos/index.html` | Add 3 detail CTAs (Demos 1, 3, 4); add 1 additional CTA alongside Demo 2's calculator |
-| Build | `aceengineer-website/dist/demos/*` | Regenerate via `node build.js` |
-| Create | `aceengineer-website/scripts/check-demo-links.sh` | Link-check regression guard |
-| Update | `docs/plans/README.md` | Register this plan in index table |
-| Commit | `aceengineer-website/` | Push to main triggers GitHub Pages deploy |
+| Modify | `aceengineer-website/content/demos/jumper-installation.html` | Add head-common include; swap CDN Plotly → local vendor |
+| Modify | `aceengineer-website/content/demos/index.html` | Add 3 detail CTAs (Demos 1, 3, 4); add 1 alongside Demo 2 calculator |
+| Modify | `aceengineer-website/sitemap.xml` | Add 5 `<url>` entries (4 new + jumper backfill) |
+| Modify | `aceengineer-website/vercel.json` | Add `/demos/(.*).html` cache-control header |
+| Create | `aceengineer-website/assets/js/plotly-2.32.0.min.js` | Vendored Plotly — eliminates CDN + SRI concerns |
+| Create | `aceengineer-website/tests/js/demo-links.test.js` | Jest link-check, picked up by existing `jest` test command |
+| Update | `docs/plans/README.md` | Register v2 status |
+
+**No `dist/*` entries** — gitignored; Vercel rebuilds from `content/`.
 
 ---
 
 ## TDD Test List
 
-This issue class is website publishing, not a pytest module. Tests here are HTTP + DOM assertions.
+**Pre-deploy (local, run before commit):**
 
-| Test | Tool | What it verifies | Pass criterion |
+| Test | Tool | Claim | Pass criterion |
 |---|---|---|---|
-| local_build_produces_4_files | bash | `node build.js` creates `dist/demos/{freespan,wall-thickness,mudmat,pipelay}.html` | All 4 files exist, non-empty |
-| local_dist_titles_match_source | grep | Each dist page `<title>` matches "A&CE — `<Demo Title>`" | 4/4 titles correct |
-| local_gallery_has_5_detail_anchors | grep | `dist/demos/index.html` contains 5 `demos/*.html` anchors | Count ≥ 5 |
-| local_demo2_has_both_ctas | grep | Demo 2 card contains BOTH calculator and detail-report anchors | Both present |
-| prod_4_pages_200 | curl | `https://www.aceengineer.com/demos/{freespan,wall-thickness,mudmat,pipelay}.html` | All return HTTP 200 after deploy |
-| prod_gallery_links_resolve | `scripts/check-demo-links.sh` | Every `demos/*.html` anchor in live gallery returns 200 | Script exits 0 |
-| browser_manual_mobile | manual | Page renders on mobile viewport, Plotly charts interactive | Visual pass |
+| frontmatter_rootPath_correct | grep / Jest | Each of 4 new pages starts with `---\nrootPath: "../"\n---` | 4/4 match |
+| head_common_included | grep / Jest | Each of 4 new pages + retrofitted jumper contains `<include src="partials/head-common.html">` | 5/5 match |
+| title_is_branded | grep / Jest | Each of 4 new pages has `<title>A&CE — ...</title>`; source "— digitalmodel" removed | 4/4 match |
+| plotly_is_vendored | grep / Jest | Each of 5 detail pages references `{{ rootPath }}assets/js/plotly-2.32.0.min.js` and NOT `cdn.plot.ly` | 5/5 match |
+| build_produces_5_files | bash + `npm run build` | `dist/demos/{freespan,wall-thickness,mudmat,pipelay,jumper-installation}.html` exist, non-empty | 5/5 files |
+| gallery_has_5_detail_ctas | Jest (new `demo-links.test.js`) | `dist/demos/index.html` contains 5 anchors matching `demos/*.html` | count === 5 |
+| demo2_has_both_ctas | Jest | Demo 2 card contains BOTH `/calculators/wall-thickness.html` and `/demos/wall-thickness.html` anchors | both present |
+| sitemap_has_5_demo_entries | Jest | `sitemap.xml` contains 5 `<loc>` entries for `/demos/*.html` | 5/5 match |
+| vercel_has_demos_cache_header | Jest | `vercel.json` `headers` array contains entry for `/demos/(.*).html` | present |
 
-Write tests before implementation in this order: local_build_produces_4_files, local_gallery_has_5_detail_anchors, prod_4_pages_200, prod_gallery_links_resolve.
+**Post-deploy (live, run after Vercel finishes):**
+
+| Test | Tool | Claim | Pass criterion |
+|---|---|---|---|
+| prod_5_pages_200 | bash + curl | `https://www.aceengineer.com/demos/{freespan,wall-thickness,mudmat,pipelay,jumper-installation}.html` | all 200 |
+| prod_pages_serve_analytics | curl + grep | Each returns HTML containing `G-K31E51DQ47` | 5/5 match |
+| prod_plotly_loads_locally | curl | Each page body contains `/assets/js/plotly-2.32.0.min.js`, not `cdn.plot.ly` | 5/5 match |
+| prod_gallery_links_resolve | bash | Every `demos/*.html` anchor in live gallery returns 200 | 0 failures |
+| prod_cache_header_on_demos | curl -I | `Cache-Control` present on `/demos/*.html` response headers | present |
+
+**Manual (explicitly out-of-scope for automation):**
+
+- Desktop + mobile browser visual check. Flagged as manual QA, not an automated test.
+
+Test-writing order: pre-deploy tests first (frontmatter, head-common, title, plotly, build, gallery). Post-deploy tests run after deploy lands.
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `content/demos/{freespan,wall-thickness,mudmat,pipelay}.html` exist with correct frontmatter and `<title>`
-- [ ] `dist/demos/{freespan,wall-thickness,mudmat,pipelay}.html` regenerated via `node build.js`
-- [ ] Gallery `content/demos/index.html` has 5 `View detailed report` buttons total (one per card)
-- [ ] Demo 2 card retains its `Try free calculator` CTA alongside the new detail button
-- [ ] After deploy: all 4 URLs return HTTP 200 on `https://www.aceengineer.com`
-- [ ] `scripts/check-demo-links.sh` committed and exits 0 locally against the built `dist/`
-- [ ] Browser validation: desktop + mobile, Plotly charts interactive
-- [ ] #2342 and #2343 closed with links to live pages
-- [ ] Review artifacts posted to `scripts/review/results/`
+- [ ] `content/demos/{freespan,wall-thickness,mudmat,pipelay}.html` exist with correct frontmatter and branded `<title>`
+- [ ] All 5 detail pages (4 new + retrofitted jumper) include `<include src="partials/head-common.html">` → GA + nav present
+- [ ] All 5 detail pages reference vendored `/assets/js/plotly-2.32.0.min.js`, not `cdn.plot.ly`
+- [ ] `content/demos/index.html` has 5 "View detailed report" CTAs; Demo 2 retains calculator CTA alongside
+- [ ] `sitemap.xml` has 5 new `<url>` entries (4 new + jumper backfill)
+- [ ] `vercel.json` has cache-control header for `/demos/(.*).html`
+- [ ] `assets/js/plotly-2.32.0.min.js` committed with checksum-verified content
+- [ ] `tests/js/demo-links.test.js` Jest project passes locally via `npm test`
+- [ ] `npm run build` completes without error; `dist/demos/*.html` render correctly in local `npm run serve`
+- [ ] After Vercel deploy: all 9 post-deploy tests pass
+- [ ] GA pageview beacon fires on each detail page (verified in browser devtools Network tab for one page, spot-check)
+- [ ] #2342 and #2343 closed with links to live pages and the PR
+- [ ] Review artifacts v2 posted to `scripts/review/results/`
+
+---
+
+## Rollback Plan
+
+Vercel rebuilds from git state on every push. Rollback = `git revert <merge-commit>` → push → Vercel redeploys prior state automatically (~2-5 min). No database, no migrations, no external state.
+
+Known-good commit to revert to: last green commit on `aceengineer-website` main before this plan's merge (captured at PR time).
+
+Failure modes and responses:
+- **Charts broken on one page:** revert the single `content/demos/<slug>.html` change; leave other 3 live.
+- **GA not firing:** `head-common` include syntax issue; revert the include line, investigate locally.
+- **Gallery card broken:** single-line revert on `content/demos/index.html`.
+- **Vercel cache poisoning:** purge via Vercel dashboard or push an empty commit.
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled after Step 3. Do not post to GitHub until this section is populated. -->
+### v1 (2026-04-17)
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | Deploy model wrong (Vercel, not Pages); head-common absent; title contradiction; sitemap omission; link-check write-only; perf/CSP/Plotly unaddressed |
+| Codex | MAJOR (artifact blocked) | Deployment assumption unproven; TDD mixes pre/post; no rollback; no SRI; combined vs split question |
 
+**Revisions applied in v2:** deploy model corrected (Vercel + `dist/` gitignored); head-common include now mandatory (closes v1 open question Q3); title explicitly rewritten to `A&CE — X` (contradiction resolved); sitemap.xml added to Files to Change; link-check converted to Jest project; Plotly vendored locally (removes CDN/SRI/CSP exposure); TDD split into pre-deploy and post-deploy sections; rollback plan added; source sizes corrected to 68-116 KB.
+
+### v2 (pending)
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | pending | — |
 | Codex | pending | — |
-| Gemini | pending | — |
 
-**Overall result:** pending
-
-Revisions made based on review:
-- (none yet)
+**Overall result (v2):** pending
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk: detail pages are large and may be slow on mobile.** Demo 1's source HTML is 118 KB with Plotly CDN. Options: (a) publish verbatim and accept size, (b) defer Plotly to lazy-load, (c) produce a stripped summary page like `jumper-installation.html` (91 lines) linking to a downloadable full report. **Recommendation:** ship verbatim first (fast path), open a follow-up issue for size optimization if analytics show bounce.
-- **Risk: source HTML reports reference remote CDN `cdn.plot.ly` — offline or CSP policy on aceengineer.com may break charts.** Verify CSP headers before deploy; if blocked, vendor Plotly locally under `assets/js/`.
-- **Risk: GitHub Pages deploy latency after push to main (typically 2-10 min).** Add an explicit deploy-verify step in the runbook; do not mark issues closed until `curl` returns 200.
-- **Open: should the 4 new pages include the same nav/header as `jumper-installation.html` (which is stripped) or the full gallery header?** `jumper-installation.html` is bare; methodology pages use the full partials header. Pick one and apply consistently.
-- **Open: Demo 2 has a "Try free calculator" CTA pointing to `/calculators/wall-thickness.html`. Confirm that calculator page exists and still works, since a detail page added alongside a broken calculator looks incoherent.**
-- **Open: is there a CSP or analytics snippet that every published page must carry?** `build.js` uses `posthtml-include` for `partials/head-common.html` — the 4 new pages should include it for SEO/analytics parity.
-- **Dependency to flag:** this plan depends on N3 (capability-summary PDF, #2344) only indirectly. If PDF link is added to detail pages, sequence N3 first; otherwise parallel.
+- **Risk: Vercel build may fail on 4 new files if posthtml can't resolve the include inside source reports' `<style>` context.** Mitigation: run `npm run build` locally before commit; fix any include resolution errors by ensuring `<include>` appears before `<style>` in `<head>`.
+- **Risk: Plotly vendor at 3+ MB bloats repo size.** Mitigation: accept as cost-of-trust. Vendoring a version-pinned script once is cheaper than chasing CDN breakage across 5 pages.
+- **Risk: GA `requestIdleCallback` deferral may race with Plotly chart init on slow networks.** Mitigation: head-common uses deferred GA load; Plotly script is non-async. Order by priority in `<head>`: head-common first, Plotly after. Verify in DevTools.
+- **Risk: first cold-email recipient hits a still-propagating Vercel edge cache.** Mitigation: deploy at least 30 min before first send; spot-check from 2+ geographic regions.
+- **Risk: Jest link-check false-positive on a transient symlink or build artifact.** Mitigation: assert against `dist/` contents only after a clean build; include a `beforeAll` that runs `npm run build`.
+- **Accepted risk: inline Plotly JSON in 118 KB detail pages means no lazy-load above the fold.** Optimization tracked as a follow-up issue (ticket TBD) — not a v1 blocker. GTM campaign launches with full-weight pages; follow-up adds `<img>` above-fold fallback + deferred Plotly init.
+- **Open (for user): should this ship as one PR or split into (a) "publish 4 detail pages + retrofit jumper + vendor Plotly" and (b) "gallery CTAs + sitemap + vercel cache"?** Recommended: ship as one PR — the two halves are mutually dependent for a coherent user flow (gallery link + live target), and split-PR review overhead exceeds the blast-radius benefit. But splittable cleanly if the reviewer disagrees.
 
 ---
 
 ## Complexity: T2
 
-Standard multi-file website publish, combined with gallery edit. No new Python/engineering code. Two workstreams (detail pages + gallery CTAs) that share deploy and test infrastructure, hence the combined plan.
+Multi-file website publish + config + Jest integration + vendored asset. No new Python/engineering code. Scope intentionally widened in v2 to cover the pre-existing `jumper-installation.html` analytics gap — doing it in the same commit is cheaper than a separate issue, and catches the latent sitemap defect.
