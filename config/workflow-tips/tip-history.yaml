@@ -47,3 +47,5 @@ shown:
     tips: [bp-subagents-offload, cc-teleport]
   - date: 2026-04-18
     tips: [cc-diff, cc-compact-focus]
+  - date: 2026-04-19
+    tips: [bp-compact-50pct, cc-stats]

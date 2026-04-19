@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-19T05:20:04.502561Z",
+  "generated_at": "2026-04-19T09:20:08.110730Z",
   "current_week": "2026-W16",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-19T05:20:04.325781Z",
+    "utilization_generated_at": "2026-04-19T09:20:07.799749Z",
     "audit_generated_at": "2026-04-16T23:34:23Z"
   },
   "recommended_provider_order": [
@@ -125,8 +125,8 @@
       "reported_utilization_pct": 5.8,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 30,
-      "post_records_current_week": 179,
+      "sessions_current_week": 31,
+      "post_records_current_week": 181,
       "audit_post_records": 6064,
       "missing_repo_reads": 665,
       "python3_per_1k_records": 47.99,
@@ -147,7 +147,7 @@
         },
         {
           "tool": "Browser",
-          "count": 5
+          "count": 7
         },
         {
           "tool": "generalist",
