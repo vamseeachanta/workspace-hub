@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-19T09:20:10.660946Z",
+  "generated_at": "2026-04-19T13:20:08.505919Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -511,7 +511,7 @@
         "priority:critical",
         "compliance-alert"
       ],
-      "updatedAt": "2026-04-18T11:45:07Z",
+      "updatedAt": "2026-04-19T11:45:06Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",
