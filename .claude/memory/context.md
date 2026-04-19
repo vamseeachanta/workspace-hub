@@ -21,9 +21,9 @@
 - `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently *stale: 2026-04-17*
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
 - `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
-  - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
+- Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root *verified: 2026-04-19*
 - `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *verified: 2026-04-17*
-- `worldenergydata/` — energy data sub-repo
+- `worldenergydata/` — energy data sub-repo *verified: 2026-04-19*
 
 ## Windows Path Conventions
 
