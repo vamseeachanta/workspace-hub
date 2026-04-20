@@ -1,10 +1,24 @@
-# Plan for #2405: Cross-review sandbox repo access — pre-verification attestation (v2)
+# Plan for #2405: Cross-review sandbox repo access — pre-verification attestation (v3)
 
-> **Status:** plan-review (iteration 2 of 3)
+> **Status:** plan-review (iteration 3 of 3 — final)
 > **Complexity:** T2
-> **Date:** 2026-04-20 (v2)
+> **Date:** 2026-04-20 (v3)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2405
-> **v1 reference:** commit `d067a4d51` + reviews at `scripts/review/results/2026-04-20-plan-2405-{codex,gemini}.md`
+> **Prior reviews:** v1 at `d067a4d51` (Codex+Gemini MAJOR); v2 at `5c9923acf` (Gemini MAJOR + Codex timeout — ironic infrastructure confirmation of this issue's premise)
+
+## v3 fixes (iter-2 Gemini findings)
+
+**P1 — Budget-exhaustion logic defect fixed:** v2 pseudocode capped `ISSUE_NUMBERS` with `head -20` then checked `head -21 | tail -1` which was always empty. v3 preserves full list before capping and counts against original length.
+
+**P1 — Deliverable/pseudocode mismatch fixed:** v2 Deliverable said "runs `ls -la`" but pseudocode used bash builtins (`[[ -e ]]`, `readlink`). v3 pseudocode explicitly runs `ls -la -- "$f"` and parses output; Deliverable wording aligned.
+
+**P1 — Allowlist regex inconsistency fixed:** v2 Revision History accidentally said `.*` while Threat Model + pseudocode used `[^/]+`. v3 uses `^docs/plans/[^/]+\.md$` everywhere (single definition). Subdirectory support is explicitly out of scope.
+
+**P1 — `readlink` security fix:** v2 pseudocode used `readlink "$f"` which treats hyphen-leading paths as flags. v3 uses `readlink -- "$f"` and `ls -la -- "$f"` to prevent flag injection.
+
+**P2 carry-over:** Class B "unverified claims" remains self-circular — this plan's job is to fix it; post-implementation, embedded attestations will be verifiable.
+
+**Codex infrastructure observation:** v2 Codex review timed out at both 300s AND 600s with "Reading additional input from stdin..." — the dispatch script has a real bug that's an additional argument for this issue's priority. Captured as follow-on candidate `#2405-B codex-dispatch-stdin-fix`.
 
 ---
 
@@ -174,7 +188,7 @@ An `attest-plan-claims.sh` script that reads a plan file under `docs/plans/` and
 
 ---
 
-## Pseudocode (v2 — fixes regex/allowlist/SHA semantics)
+## Pseudocode (v3 — fixes Gemini iter-2 findings)
 
 ```bash
 #!/usr/bin/env bash
@@ -182,15 +196,21 @@ An `attest-plan-claims.sh` script that reads a plan file under `docs/plans/` and
 set -euo pipefail
 PLAN_FILE="$1"
 
-# Single allowlist definition
+# Single allowlist definition — used by Deliverable text, Threat Model, and this script
 ALLOWLIST_REGEX='^docs/plans/[^/]+\.md$'
 [[ "$PLAN_FILE" =~ $ALLOWLIST_REGEX ]] || { echo "ERROR: plan path outside allowlist" >&2; exit 1; }
 [[ -f "$PLAN_FILE" ]] || { echo "ERROR: plan not found" >&2; exit 1; }
 
-# Extract citations (v2 — backticked-with-extension only; plain-path extraction out of scope)
-ISSUE_NUMBERS=$(grep -oE '#[0-9]{3,5}' "$PLAN_FILE" | sort -u | head -20)
-FILE_PATHS=$(grep -oE '`[a-zA-Z0-9._/\-]+\.(py|md|yaml|yml|sh|json|toml)`' "$PLAN_FILE" \
-  | sed 's/`//g' | sort -u | head -40)
+# Extract citations — preserve FULL lists so budget-exhaustion check works (v3 Gemini fix)
+ALL_ISSUES=$(grep -oE '#[0-9]{3,5}' "$PLAN_FILE" | sort -u)
+ALL_PATHS=$(grep -oE '`[a-zA-Z0-9._/\-]+\.(py|md|yaml|yml|sh|json|toml)`' "$PLAN_FILE" \
+  | sed 's/`//g' | sort -u)
+
+ISSUE_COUNT_FULL=$(printf '%s\n' "$ALL_ISSUES" | grep -c .)
+PATH_COUNT_FULL=$(printf '%s\n' "$ALL_PATHS" | grep -c .)
+
+ISSUE_NUMBERS=$(printf '%s\n' "$ALL_ISSUES" | head -20)
+FILE_PATHS=$(printf '%s\n' "$ALL_PATHS" | head -40)
 
 TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 COMMIT=$(git rev-parse HEAD)
@@ -205,17 +225,21 @@ $(for n in $ISSUE_NUMBERS; do
     gh issue view "$num" --json number,state,title --jq '"- #\(.number) \(.state) \(.title)"' 2>/dev/null \
       || echo "- $n (gh-lookup-failed or private)"
   done)
-$([ -n "$(echo "$ISSUE_NUMBERS" | head -21 | tail -1)" ] && echo "_(more citations in plan skipped: budget exhausted at 20)_" || true)
+$([ "$ISSUE_COUNT_FULL" -gt 20 ] && echo "_(${ISSUE_COUNT_FULL} citations in plan; first 20 shown; remainder skipped: budget exhausted)_" || true)
 
-**File existence** (via \`ls -la\`):
+**File existence** (via \`ls -la -- "\$f"\` with flag-injection guard):
 $(for f in $FILE_PATHS; do
     if [[ -L "$f" ]]; then
-      target=$(readlink "$f")
-      echo "- SYMLINK: $f -> $target"
-    elif [[ -e "$f" ]]; then echo "- EXISTS: $f"
+      target=$(readlink -- "$f")
+      ls_out=$(ls -la -- "$f" 2>&1 | head -1)
+      echo "- SYMLINK: $f -> $target  ($ls_out)"
+    elif [[ -e "$f" ]]; then
+      ls_out=$(ls -la -- "$f" 2>&1 | head -1)
+      echo "- EXISTS: $f  ($ls_out)"
     else echo "- MISSING: $f"
     fi
   done)
+$([ "$PATH_COUNT_FULL" -gt 40 ] && echo "_(${PATH_COUNT_FULL} paths in plan; first 40 shown; remainder skipped: budget exhausted)_" || true)
 EOF
 )
 

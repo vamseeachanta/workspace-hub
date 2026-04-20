@@ -1,10 +1,17 @@
-# Plan for #2403: Embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large
+# Plan for #2403: Embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large (v2)
 
-> **Status:** plan-review
+> **Status:** plan-review (iteration 2 of 3)
 > **Complexity:** T2
-> **Date:** 2026-04-20
+> **Date:** 2026-04-20 (v2)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2403
-> **Review artifacts:** populated after cross-review dispatch
+> **Prior reviews:** v1 at `5c9923acf` (Gemini MAJOR + Codex timeout)
+
+## v2 fixes (iter-1 Gemini findings)
+
+- **P1 — sha256 namespace enforcement:** eval-set curation asserts every `target_doc_key` matches `^(sha256|md5):[0-9a-f]+$`. Spike runner rejects corpus with non-conforming keys. New §Identity Contract with 5 tests.
+- **P2 — Commit SHA test promoted:** `test_decision_doc_references_commit_sha` was in AC map without real test; v2 implements via regex check on generated markdown.
+- **P2 — Rubric numbers test:** v1 reviewer-task "Decision justified by numbers" promoted to automated `test_decision_doc_contains_rubric_numbers_per_model`.
+- **Class B (unverified claims):** circular; resolves when #2405 implementation lands.
 
 ---
 
@@ -58,6 +65,25 @@ MISSING (new): docs/document-intelligence/embeddings-model-selection.md
 ```
 
 Distinct sources: **9**.
+
+---
+
+## Identity Contract (§3 — v2 fix per Gemini iter-1 finding)
+
+All `doc_key` values appearing in the eval set and produced by the spike MUST conform to operating-model §3:
+- Canonical: `sha256:<64-hex>`.
+- Legacy `md5:<32-hex>` accepted for reads only (compatibility with `og_standards` legacy entries per `scripts/data/document-index/phase-a-index.py:135-137`).
+- Bare-hex (no prefix) → rejected during eval-set curation with clear error.
+- Path-only identity → forbidden.
+
+Eval-set curation asserts every `target_doc_key` passes `^(sha256|md5):[0-9a-f]+$` before the set is committed.
+
+Tests:
+- `test_eval_set_doc_keys_all_sha256_or_md5`
+- `test_eval_set_rejects_bare_hex`
+- `test_spike_runner_rejects_corpus_with_non_conforming_doc_keys`
+- `test_decision_doc_references_commit_sha` (was in AC map but not in test list — v2 promotes it to real test via regex check on generated doc)
+- `test_decision_doc_contains_rubric_numbers_per_model` (replaces v1 reviewer-task — automated check for numeric fields)
 
 ---
 
