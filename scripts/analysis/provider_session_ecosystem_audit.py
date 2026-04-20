@@ -653,6 +653,77 @@ def summarize_urgency_rank_movement(
     return (direction, rank_delta, score_delta, movement)
 
 
+def determine_activity_window_profile(last_24h_post_records: int, last_7d_post_records: int) -> str:
+    if last_24h_post_records <= 0 and last_7d_post_records <= 0:
+        return "dormant"
+    if last_24h_post_records > 0 and last_7d_post_records <= last_24h_post_records * 2:
+        return "burst_active"
+    if last_7d_post_records >= max(200, 4 * max(last_24h_post_records, 1)):
+        return "sustained_background"
+    return "light_recent"
+
+
+def summarize_health_status(
+    *,
+    urgency_tier: str,
+    debt_status: str,
+    debt_trend: str,
+    drift_trend: str,
+    python_hygiene_status: str,
+    corpus_status: str,
+    activity_status: str,
+    activity_window_profile: str,
+) -> tuple[str, list[str], str]:
+    reasons: list[str] = []
+    if urgency_tier == "urgent_now":
+        reasons.append("urgent action tier")
+    if debt_status == "high_debt":
+        reasons.append("high migration debt")
+    elif debt_status == "moderate_debt":
+        reasons.append("moderate migration debt")
+    elif debt_status == "drift_only":
+        reasons.append("unmapped path drift remains")
+    if debt_trend == "worsening":
+        reasons.append("migration debt worsening")
+    if drift_trend == "worsening":
+        reasons.append("path drift worsening")
+    if python_hygiene_status == "python3_heavy":
+        reasons.append("python3-heavy command hygiene")
+    if corpus_status in {"corpus_pruned_or_rebuilt", "positive_corpus_growth_beyond_recent_activity"}:
+        reasons.append("corpus anomaly needs interpretation")
+    if activity_window_profile == "burst_active":
+        reasons.append("24h burst activity")
+    elif activity_window_profile == "sustained_background":
+        reasons.append("7d sustained activity")
+    if activity_status == "active":
+        reasons.append("currently active")
+
+    if urgency_tier == "urgent_now" or (
+        urgency_tier == "next_up"
+        and (
+            debt_status == "high_debt"
+            or corpus_status in {"corpus_pruned_or_rebuilt", "positive_corpus_growth_beyond_recent_activity"}
+            or activity_window_profile in {"burst_active", "sustained_background"}
+            or activity_status == "active"
+        )
+    ):
+        health_status = "red"
+    elif (
+        urgency_tier in {"next_up", "investigate"}
+        or debt_status in {"high_debt", "moderate_debt", "drift_only"}
+        or drift_trend == "worsening"
+        or python_hygiene_status == "python3_heavy"
+    ):
+        health_status = "yellow"
+    else:
+        health_status = "green"
+
+    if not reasons:
+        reasons.append("no acute anomaly")
+    summary = f"{health_status}: " + "; ".join(reasons[:4])
+    return health_status, reasons, summary
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -907,6 +978,7 @@ def build_provider_interpretation_summary(
     recent_activity: dict,
     corpus_change: dict,
     previous_audit: dict | None,
+    rolling_windows: dict | None,
 ) -> dict:
     debt_by_provider = {
         row.get("provider"): row
@@ -946,6 +1018,17 @@ def build_provider_interpretation_summary(
         for row in previous_interpretation_rows
         if isinstance(row, dict) and row.get("provider")
     }
+    window_map = rolling_windows.get("windows", {}) if isinstance(rolling_windows, dict) else {}
+    last_24h_by_provider = (
+        window_map.get("last_24h", {}).get("providers", {})
+        if isinstance(window_map.get("last_24h", {}), dict)
+        else {}
+    )
+    last_7d_by_provider = (
+        window_map.get("last_7d", {}).get("providers", {})
+        if isinstance(window_map.get("last_7d", {}), dict)
+        else {}
+    )
 
     rows: list[dict] = []
     for provider in PROVIDERS:
@@ -1027,6 +1110,13 @@ def build_provider_interpretation_summary(
             "uv_preferred": 0.0,
             "no_python_usage": 0.0,
         }[python_hygiene_status]
+        last_24h = last_24h_by_provider.get(provider, {}) if isinstance(last_24h_by_provider, dict) else {}
+        last_7d = last_7d_by_provider.get(provider, {}) if isinstance(last_7d_by_provider, dict) else {}
+        last_24h_post_records = int(last_24h.get("post_records", 0) or 0)
+        last_24h_sessions = int(last_24h.get("sessions", 0) or 0)
+        last_7d_post_records = int(last_7d.get("post_records", 0) or 0)
+        last_7d_sessions = int(last_7d.get("sessions", 0) or 0)
+        activity_window_profile = determine_activity_window_profile(last_24h_post_records, last_7d_post_records)
         urgency_score = (
             min(40.0, 3.0 * debt_density)
             + min(20.0, known_debt_reads / 50.0)
@@ -1060,6 +1150,17 @@ def build_provider_interpretation_summary(
             primary_issue = "no acute anomaly"
             recommended_action = "no immediate intervention; monitor next audit"
 
+        health_status, health_reasons, health_summary = summarize_health_status(
+            urgency_tier=urgency_tier,
+            debt_status=debt_status,
+            debt_trend=debt_trend,
+            drift_trend=drift_trend,
+            python_hygiene_status=python_hygiene_status,
+            corpus_status=corpus_status,
+            activity_status=activity_status,
+            activity_window_profile=activity_window_profile,
+        )
+
         rows.append(
             {
                 "provider": provider,
@@ -1073,6 +1174,14 @@ def build_provider_interpretation_summary(
                 "python_hygiene_status": python_hygiene_status,
                 "python_hygiene_trend": python_hygiene_trend,
                 "drift_trend": drift_trend,
+                "last_24h_post_records": last_24h_post_records,
+                "last_24h_sessions": last_24h_sessions,
+                "last_7d_post_records": last_7d_post_records,
+                "last_7d_sessions": last_7d_sessions,
+                "activity_window_profile": activity_window_profile,
+                "health_status": health_status,
+                "health_reasons": health_reasons,
+                "health_summary": health_summary,
                 "recent_post_records": recent_post,
                 "recent_sessions": recent_sessions,
                 "known_migration_debt_reads": known_debt_reads,
@@ -1116,6 +1225,14 @@ def build_provider_interpretation_summary(
     focus_this_week = None
     recommended_actions: list[dict] = []
     rank_movements: list[dict] = []
+    health_overview = [
+        {
+            "provider": row["provider"],
+            "health_status": row.get("health_status"),
+            "health_summary": row.get("health_summary"),
+        }
+        for row in rows
+    ]
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -1145,6 +1262,8 @@ def build_provider_interpretation_summary(
                     "urgency_rank_delta": row.get("urgency_rank_delta"),
                     "urgency_score_delta": row.get("urgency_score_delta"),
                     "urgency_movement_summary": row.get("urgency_movement_summary"),
+                    "health_status": row.get("health_status"),
+                    "health_summary": row.get("health_summary"),
                     "primary_issue": row["primary_issue"],
                     "recommended_action": row["recommended_action"],
                 }
@@ -1169,6 +1288,7 @@ def build_provider_interpretation_summary(
         "focus_this_week": focus_this_week,
         "recommended_actions": recommended_actions,
         "rank_movements": rank_movements,
+        "health_overview": health_overview,
     }
 
 
@@ -1211,13 +1331,14 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
     migration_debt = build_migration_debt_summary(provider_summaries)
     provider_interpretation = build_provider_interpretation_summary(
-        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit, rolling_windows
     )
 
     executive_actions = {
         "focus_this_week": provider_interpretation.get("focus_this_week"),
         "recommended_actions": provider_interpretation.get("recommended_actions", []),
         "rank_movements": provider_interpretation.get("rank_movements", []),
+        "health_overview": provider_interpretation.get("health_overview", []),
     }
 
     return {
@@ -1294,7 +1415,14 @@ def render_markdown(audit: dict) -> str:
             lines.append("- Recommended actions:")
             for action in recommended_actions:
                 lines.append(
-                    f"  - `{action['provider']}` [{action.get('urgency_tier')}] — {action.get('recommended_action')} (urgency {action.get('urgency_score')}, issue: {action.get('primary_issue')}; movement: {action.get('urgency_movement_summary')})"
+                    f"  - `{action['provider']}` [{action.get('urgency_tier')}] — {action.get('recommended_action')} (urgency {action.get('urgency_score')}, issue: {action.get('primary_issue')}; health={action.get('health_status')}; movement: {action.get('urgency_movement_summary')})"
+                )
+        health_overview = interpretation_summary.get("health_overview", [])
+        if health_overview:
+            lines.append("- Health overview:")
+            for health in health_overview:
+                lines.append(
+                    f"  - `{health['provider']}` [{health.get('health_status')}] — {health.get('health_summary')}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:
@@ -1303,7 +1431,7 @@ def render_markdown(audit: dict) -> str:
                 lines.append(f"  - `{movement['provider']}` — {movement.get('summary')}")
         for row in interpretation_rows:
             lines.append(
-                f"- `{row['provider']}` — rank={row.get('urgency_rank')} (prev={row.get('previous_urgency_rank')}, move={row.get('urgency_rank_direction')}) | urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} ({row.get('activity_trend')}) | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} ({row.get('debt_trend')}) | drift={row.get('drift_trend')} | python={row.get('python_hygiene_status')} ({row.get('python_hygiene_trend')}) | movement: {row.get('urgency_movement_summary')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
+                f"- `{row['provider']}` — rank={row.get('urgency_rank')} (prev={row.get('previous_urgency_rank')}, move={row.get('urgency_rank_direction')}) | health={row.get('health_status')} | profile={row.get('activity_window_profile')} | 24h={row.get('last_24h_post_records')} posts/{row.get('last_24h_sessions')} sessions | 7d={row.get('last_7d_post_records')} posts/{row.get('last_7d_sessions')} sessions | urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} ({row.get('activity_trend')}) | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} ({row.get('debt_trend')}) | drift={row.get('drift_trend')} | python={row.get('python_hygiene_status')} ({row.get('python_hygiene_trend')}) | health summary: {row.get('health_summary')} | movement: {row.get('urgency_movement_summary')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
             )
         lines.append("")
 

@@ -399,8 +399,16 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
         },
     }
 
+    rolling_windows = {
+        "status": "ok",
+        "windows": {
+            "last_24h": {"providers": {"claude": {"post_records": 120, "sessions": 4}, "codex": {"post_records": 0, "sessions": 0}}},
+            "last_7d": {"providers": {"claude": {"post_records": 240, "sessions": 8}, "codex": {"post_records": 5, "sessions": 1}}},
+        },
+    }
+
     summary = module.build_provider_interpretation_summary(
-        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit=None
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit=None, rolling_windows=rolling_windows
     )
 
     rows = {row["provider"]: row for row in summary["providers"]}
@@ -410,6 +418,10 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert rows["claude"]["python_hygiene_status"] == "uv_preferred"
     assert rows["claude"]["primary_issue"] == "legacy_work_queue_transition"
     assert rows["claude"]["urgency_tier"] == "next_up"
+    assert rows["claude"]["health_status"] == "red"
+    assert rows["claude"]["activity_window_profile"] == "burst_active"
+    assert rows["claude"]["last_24h_post_records"] == 120
+    assert rows["claude"]["last_7d_post_records"] == 240
     assert rows["claude"]["urgency_rank"] == 1
     assert rows["claude"]["previous_urgency_rank"] is None
     assert rows["claude"]["urgency_rank_direction"] == "new"
@@ -423,11 +435,15 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert rows["codex"]["corpus_status"] == "corpus_pruned_or_rebuilt"
     assert rows["codex"]["debt_status"] == "none"
     assert rows["codex"]["urgency_tier"] == "investigate"
+    assert rows["codex"]["health_status"] == "yellow"
+    assert rows["codex"]["activity_window_profile"] == "light_recent"
     assert rows["codex"]["python_hygiene_status"] == "python3_heavy"
     assert summary["focus_this_week"].startswith("Focus this week: prioritize legacy-path redirect cleanup")
     assert summary["recommended_actions"][0]["provider"] == "claude"
     assert summary["recommended_actions"][0]["urgency_tier"] == "next_up"
+    assert summary["recommended_actions"][0]["health_status"] == "red"
     assert summary["rank_movements"][0]["provider"] == "claude"
+    assert summary["health_overview"][0]["provider"] == "claude"
 
 
 
@@ -462,9 +478,11 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "focus_this_week" in executive_actions
     assert "recommended_actions" in executive_actions
     assert "rank_movements" in executive_actions
+    assert "health_overview" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
     assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
+    assert executive_actions["health_overview"] == audit["executive_summary"]["provider_interpretation_summary"]["health_overview"]
 
 
 
@@ -519,9 +537,16 @@ def test_build_provider_interpretation_summary_derives_trend_directions_from_pre
             },
         },
     }
+    rolling_windows = {
+        "status": "ok",
+        "windows": {
+            "last_24h": {"providers": {"claude": {"post_records": 120, "sessions": 3}}},
+            "last_7d": {"providers": {"claude": {"post_records": 700, "sessions": 9}}},
+        },
+    }
 
     summary = module.build_provider_interpretation_summary(
-        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit, rolling_windows
     )
 
     row = summary["providers"][0]
@@ -529,6 +554,8 @@ def test_build_provider_interpretation_summary_derives_trend_directions_from_pre
     assert row["drift_trend"] == "improving"
     assert row["python_hygiene_trend"] == "improving"
     assert row["activity_trend"] == "increasing"
+    assert row["health_status"] == "red"
+    assert row["activity_window_profile"] == "sustained_background"
 
 
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
@@ -687,8 +714,17 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "urgency_rank_delta": 1,
                         "urgency_score_delta": 7.8,
                         "urgency_movement_summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
+                        "health_status": "red",
+                        "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
                         "primary_issue": "legacy_work_queue_transition",
                         "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ],
+                "health_overview": [
+                    {
+                        "provider": "claude",
+                        "health_status": "red",
+                        "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
                     }
                 ],
                 "rank_movements": [
@@ -722,6 +758,14 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "python_hygiene_status": "uv_preferred",
                         "python_hygiene_trend": "improving",
                         "drift_trend": "stable",
+                        "last_24h_post_records": 2,
+                        "last_24h_sessions": 1,
+                        "last_7d_post_records": 5,
+                        "last_7d_sessions": 2,
+                        "activity_window_profile": "burst_active",
+                        "health_status": "red",
+                        "health_reasons": ["urgent action tier", "high migration debt", "24h burst activity", "currently active"],
+                        "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
                         "primary_issue": "legacy_work_queue_transition",
                         "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
                     }
@@ -777,10 +821,13 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude." in markdown
     assert "Recommended actions:" in markdown
     assert "`claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
+    assert "health=red" in markdown
+    assert "Health overview:" in markdown
+    assert "`claude` [red] — red: urgent action tier; high migration debt; 24h burst activity; currently active" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
-    assert "`claude` — rank=1 (prev=2, move=up) | urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving) | movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "`claude` — rank=1 (prev=2, move=up) | health=red | profile=burst_active | 24h=2 posts/1 sessions | 7d=5 posts/2 sessions | urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving) | health summary: red: urgent action tier; high migration debt; 24h burst activity; currently active | movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "## Rolling activity windows" in markdown
     assert "`last_24h` — `2026-04-09T00:00:00Z` → `2026-04-10T00:00:00Z`" in markdown
     assert "Activity leaders: `claude` 2 post records / 1 sessions." in markdown
