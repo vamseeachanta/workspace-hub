@@ -3,7 +3,7 @@
 Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
 ## Executive summary
-- `claude` — source=raw_logs | sessions=33 | post_records=80323 | python3/1k=9.06 | uv-python/1k=74.26
+- `claude` — source=raw_logs | sessions=33 | post_records=80350 | python3/1k=9.07 | uv-python/1k=74.24
 - `codex` — source=raw_logs | sessions=50 | post_records=17317 | python3/1k=19.46 | uv-python/1k=24.31
 - `hermes` — source=raw_logs | sessions=19 | post_records=102042 | python3/1k=17.02 | uv-python/1k=19.87
 - `gemini` — source=raw_logs | sessions=45 | post_records=6082 | python3/1k=47.85 | uv-python/1k=6.41
@@ -15,51 +15,51 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - Scope note: Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.
 
 ## Provider interpretation summary
-- Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.74, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).
+- Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 81.54, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).
 - Recommended actions:
-  - `claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 83.74, issue: legacy_work_queue_transition)
+  - `claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 81.54, issue: legacy_work_queue_transition)
   - `gemini` [next_up] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 47.68, issue: legacy_local_work_queue_items)
   - `codex` [investigate] — sample top missing repo reads to separate remap work from benign variance (urgency 10.13, issue: unmapped path drift)
-- `claude` — urgency=83.74 | tier=urgent_now | activity=active | corpus=positive_corpus_growth_beyond_recent_activity | debt=high_debt | python=uv_preferred | primary issue: legacy_work_queue_transition | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+- `claude` — urgency=81.54 | tier=urgent_now | activity=active | corpus=corpus_pruned_or_rebuilt | debt=high_debt | python=uv_preferred | primary issue: legacy_work_queue_transition | action: prioritize legacy-path redirect cleanup and prompt/doc updates
 - `gemini` — urgency=47.68 | tier=next_up | activity=idle | corpus=aligned | debt=high_debt | python=python3_heavy | primary issue: legacy_local_work_queue_items | action: prioritize legacy-path redirect cleanup and prompt/doc updates
 - `codex` — urgency=10.13 | tier=investigate | activity=idle | corpus=aligned | debt=drift_only | python=mixed | primary issue: unmapped path drift | action: sample top missing repo reads to separate remap work from benign variance
 - `hermes` — urgency=4.33 | tier=monitor | activity=idle | corpus=aligned | debt=drift_only | python=mixed | primary issue: unmapped path drift | action: sample top missing repo reads to separate remap work from benign variance
 
 ## Recent activity since previous audit
-- Previous audit timestamp: `2026-04-20T14:50:31Z`
-- Recent post-audit activity: `claude` 92 post records / 3 sessions, `codex` 0 post records / 0 sessions, `gemini` 0 post records / 0 sessions, `hermes` 0 post records / 0 sessions.
+- Previous audit timestamp: `2026-04-20T15:02:38Z`
+- Recent post-audit activity: `claude` 28 post records / 3 sessions, `codex` 0 post records / 0 sessions, `gemini` 0 post records / 0 sessions, `hermes` 0 post records / 0 sessions.
 - Scope note: This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.
 
 ## Corpus change since previous audit
-- Previous audit timestamp: `2026-04-20T14:50:31Z`
+- Previous audit timestamp: `2026-04-20T15:02:38Z`
 - Scope note: Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.
-- Largest negative reconciliation gap: `codex`
-- Largest positive reconciliation gap: `claude`
+- Largest negative reconciliation gap: `claude`
+- Largest positive reconciliation gap: `codex`
 
 ## claude
 - Source: raw_logs
 - Sessions: 33
-- Post-hook records: 80323
+- Post-hook records: 80350
 - Correction sessions: 0
 - Unique runtime sessions: 135
-- Prompt-like reads: 94
+- Prompt-like reads: 95
 - Blank read targets: 0
 - Missing repo reads: 7599
-- Bare python3 bash calls: 728
+- Bare python3 bash calls: 729
 - `uv run ... python` bash calls: 5965
 
 ### claude top tools
-- `Bash` — 43617
-- `Read` — 15547
+- `Bash` — 43635
+- `Read` — 15555
 - `Edit` — 7330
 - `Write` — 6809
 - `Grep` — 2020
-- `Agent` — 854
+- `Agent` — 855
 - `ToolSearch` — 681
 - `TaskUpdate` — 541
 
 ### claude top repos
-- `workspace-hub` — 76545
+- `workspace-hub` — 76568
 - `digitalmodel` — 1900
 - `assetutilities` — 535
 - `worldenergydata` — 201
@@ -84,47 +84,45 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - none
 
 ### claude top Bash command families
-- `ls` — 6399
-- `uv run` — 5697
-- `grep` — 5412
-- `cat` — 4475
+- `ls` — 6401
+- `uv run` — 5698
+- `grep` — 5414
+- `cat` — 4476
 - `find` — 3368
 - `bash` — 2890
-- `sed` — 1338
-- `gh` — 1243
+- `sed` — 1341
+- `gh` — 1247
 
 ### claude recent activity since previous audit
-- Post-hook records since prior audit: 92
+- Post-hook records since prior audit: 28
 - Runtime sessions since prior audit: 3
 
 ### claude recent top tools
-- `Bash` — 55
-- `Read` — 18
-- `Edit` — 7
-- `Agent` — 6
-- `Write` — 5
+- `Bash` — 19
+- `Read` — 8
+- `Agent` — 1
 
 ### claude recent top Bash command families
-- `ls` — 11
-- `grep` — 9
-- `git log` — 8
-- `uv run` — 7
-- `gh` — 3
-- `git push` — 2
-- `git` — 2
-- `git add` — 2
+- `gh` — 4
+- `sed` — 3
+- `for` — 2
+- `ls` — 2
+- `grep` — 2
+- `cat` — 1
+- `wc` — 1
+- `git log` — 1
 
 ### claude recent top missing repo reads
 - none
 
 ### claude corpus change since previous audit
-- Post-hook records: current 80323 vs previous 80228 (delta 95)
+- Post-hook records: current 80350 vs previous 80323 (delta 27)
 - Sessions: current 33 vs previous 33 (delta 0)
 - Missing repo reads: current 7599 vs previous 7599 (delta 0)
-- Event-time post records since prior audit: 92
-- Reconciliation gap vs event-time delta: 3
-- Status: positive_corpus_growth_beyond_recent_activity
-- Interpretation: Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage.
+- Event-time post records since prior audit: 28
+- Reconciliation gap vs event-time delta: -1
+- Status: corpus_pruned_or_rebuilt
+- Interpretation: Snapshot shrank relative to recent event-time activity, suggesting pruning, rebuild, or reclassification.
 
 ### claude top missing repo reads
 - `scripts/work-queue/generate-html-review.py` — 249

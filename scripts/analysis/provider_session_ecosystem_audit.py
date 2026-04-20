@@ -899,6 +899,11 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         provider_summaries, migration_debt, recent_activity, corpus_change
     )
 
+    executive_actions = {
+        "focus_this_week": provider_interpretation.get("focus_this_week"),
+        "recommended_actions": provider_interpretation.get("recommended_actions", []),
+    }
+
     return {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repo_root": str(repo_root),
@@ -907,6 +912,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "executive_summary": {
             "migration_debt": migration_debt,
             "provider_interpretation_summary": provider_interpretation,
+            "executive_actions": executive_actions,
             "recent_activity_since_previous_audit": recent_activity,
             "corpus_change_since_previous_audit": corpus_change,
         },

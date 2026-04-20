@@ -366,6 +366,41 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["recommended_actions"][0]["urgency_tier"] == "next_up"
 
 
+
+def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "cmd": "uv run --no-project python tool.py",
+            "repo": "workspace-hub",
+            "session_id": "claude-1",
+            "ts": "2026-04-10T01:00:00Z",
+        }
+    ]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+    )
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {"claude": {"post_records": 0, "sessions": 0, "missing_repo_reads": 0, "source": "raw_logs"}}}),
+        encoding="utf-8",
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    executive_actions = audit["executive_summary"]["executive_actions"]
+    assert "focus_this_week" in executive_actions
+    assert "recommended_actions" in executive_actions
+    assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
+    assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
+
+
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     logs_root = repo_root / "logs" / "orchestrator"
