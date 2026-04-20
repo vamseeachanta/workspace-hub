@@ -1,7 +1,7 @@
 # Plan for #2344: Complete #2090 — Render Branded 1-Page Capability-Summary PDF Leave-Behind
 
-> **Status:** draft v2 (revised after 2026-04-19 adversarial review)
-> **Complexity:** T2 (reclassified from T1 — v2 adds a committed render script + version-pinning + sidecar metadata + post-render assertions)
+> **Status:** draft v2 (revised after 2026-04-19 adversarial review; prescribes — not yet implemented — render script, font vendoring, sidecar metadata, and post-render assertions)
+> **Complexity:** T2 (reclassified from T1 — v2 prescribes a committed render script + version-pinning + sidecar metadata + post-render assertions to be created during implementation)
 > **Date:** 2026-04-19
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2344
 > **Parent (closed, unfinished):** #2090 — shipped markdown + HTML but omitted the PDF deliverable
@@ -10,7 +10,8 @@
 ## Revision history
 
 - **v1 (2026-04-19, commit `e348e76b1`):** initial draft. T1. Single inline Chrome headless command in commit body, no render script, Google Fonts fetched live, no font-embedding assertion, no Chrome-version pin, no cache-bust strategy. Scope explicitly deferred CTA wiring.
-- **v2 (2026-04-19, this revision):** absorbs round-1 adversarial review. Reclassified T1→T2. Adds committed render script (`scripts/gtm/render-capability-summary-pdf.sh`) with pinned Chrome flags, version assert, fail-fast 1-page gate, `pdffonts` Inter-embedded assertion, `sha256sum` check, and sidecar `assets/capability-summary.pdf.meta` recording the renderer version. Vendors Inter WOFF2 locally under `aceengineer-website/assets/fonts/inter/` and rewrites the HTML `<link>` to a relative path to eliminate the Google Fonts network race and satisfy portability. Versioned public filename `capability-summary-v1.pdf` to work with Vercel's `/assets/(.*)` immutable 1-year cache (no vercel.json change needed). Rollback section corrected — removes the incorrect "browsers sniff" claim; vercel.json sets `X-Content-Type-Options: nosniff`. Scope reconcile: CTA wiring remains deferred but is now explicitly tracked as a filed follow-up referenced in this plan; see Scope Deviations From Issue Body.
+- **v2 (2026-04-19, this revision):** absorbs round-1 adversarial review. Reclassified T1→T2. Prescribes a render script (`scripts/gtm/render-capability-summary-pdf.sh`, to be created during implementation) with pinned Chrome flags, version assert, fail-fast 1-page gate, `pdffonts` Inter-embedded assertion, `sha256sum` check, and a sidecar `assets/capability-summary.pdf.meta` recording the renderer version. Requires vendoring Inter WOFF2 locally under `aceengineer-website/assets/fonts/inter/` and rewriting the HTML `<link>` to a relative path (work to be done at implementation time) to eliminate the Google Fonts network race and satisfy portability. Specifies a versioned public filename `capability-summary-v1.pdf` to work with Vercel's `/assets/(.*)` immutable 1-year cache (no vercel.json change needed). Rollback section corrected — removes the incorrect "browsers sniff" claim; vercel.json sets `X-Content-Type-Options: nosniff`. Scope reconcile: CTA wiring remains deferred and is tracked as filed follow-up #2367 (`feat(gtm): wire capability-summary-v1.pdf download link from gallery CTA + 4 methodology pages`); see Scope Deviations From Issue Body.
+- **v2 addenda (2026-04-20, Codex round-2 MAJOR 2/3/4):** plan extended with (2) font vendoring provenance contract — per-file SHA256 sidecar requirement per vendored WOFF2; (3) sidecar metadata schema extended to include `git_sha` (commit hash at render time) and `source_html_sha256` (hash of `capability-summary.html` input); (4) version-bump policy — owner of CTA cross-updates when `-v1.pdf` → `-v2.pdf` and disposition of the prior `-v1.pdf`.
 
 ---
 
@@ -41,15 +42,15 @@ No relevant wiki pages — GTM content, not domain knowledge.
 
 ### Gaps identified
 - No PDF artifact exists at `docs/gtm/capability-summary.pdf` (internal canonical copy) or `aceengineer-website/assets/capability-summary-v1.pdf` (public asset copy — versioned filename per v2 revision; see Rollback Plan).
-- **v1 gap addressed in v2:** Rendering was a throw-away inline command. v2 adds a committed `scripts/gtm/render-capability-summary-pdf.sh` that enforces reproducibility: asserts Chrome version, writes sidecar metadata, runs `pdfinfo`/`pdffonts`/`sha256sum` post-render gates, fail-fasts on !=1 page, fail-fasts if Inter is not embedded.
-- **v1 gap addressed in v2:** Google Fonts network race. v2 vendors Inter WOFF2 locally under `aceengineer-website/assets/fonts/inter/` and rewrites the HTML `<link>` to relative paths so the render is offline-safe AND no longer silently falls back to system sans-serif. Additionally, the render script passes `--virtual-time-budget=5000` as a belt-and-braces mitigation for any remaining async stylesheet load.
-- **v1 gap addressed in v2:** Chrome version drift. v2 asserts `google-chrome --version` major == `147` (documented approved) and hard-fails otherwise. Exact patch version is recorded in the sidecar `capability-summary.pdf.meta` file so a future regeneration can diff-check.
+- **v1 gap addressed by v2 prescription:** Rendering was a throw-away inline command. v2 prescribes a new committed `scripts/gtm/render-capability-summary-pdf.sh` (to be created during implementation) that enforces reproducibility: asserts Chrome version, writes sidecar metadata, runs `pdfinfo`/`pdffonts`/`sha256sum` post-render gates, fail-fasts on !=1 page, fail-fasts if Inter is not embedded.
+- **v1 gap addressed by v2 prescription:** Google Fonts network race. v2 prescribes vendoring Inter WOFF2 locally under `aceengineer-website/assets/fonts/inter/` and rewriting the HTML `<link>` to relative paths (both edits to be performed during implementation) so the render is offline-safe AND no longer silently falls back to system sans-serif. Additionally, the render script (when created) will pass `--virtual-time-budget=5000` as a belt-and-braces mitigation for any remaining async stylesheet load.
+- **v1 gap addressed by v2 prescription:** Chrome version drift. v2 specifies the render script must assert `google-chrome --version` major == `147` (documented approved) and hard-fail otherwise. Exact patch version will be recorded in the sidecar `capability-summary.pdf.meta` file so a future regeneration can diff-check.
 
 ### Scope deviations from issue body
 
 Issue #2344 body scope section lists four items. This plan explicitly:
 - **Delivers 3 of 4:** render PDF, 1-page constraint gate, dual-placement commit.
-- **Defers 1 of 4:** "Wire download link from gallery CTA and 4 methodology pages." Deferred because (a) the gallery CTA target HTML is being actively modified in in-flight #2342/#2343, (b) the four methodology pages do not all exist yet in `aceengineer-website/content/`, and (c) wiring requires its own 1-page PDF URL which cannot exist until this plan lands first. **v2 scope reconcile:** this deferral is tracked by filing issue `#2344-followup-cta-wiring` at PR time; the follow-up issue number is recorded in the commit body of this PR and referenced in `docs/plans/README.md` for this plan's row. No wiring happens in this PR.
+- **Defers 1 of 4:** "Wire download link from gallery CTA and 4 methodology pages." Deferred because (a) the gallery CTA target HTML is being actively modified in in-flight #2342/#2343, (b) the four methodology pages do not all exist yet in `aceengineer-website/content/`, and (c) wiring requires its own 1-page PDF URL which cannot exist until this plan lands first. **v2 scope reconcile:** this deferral is tracked as filed follow-up issue **#2367** (`feat(gtm): wire capability-summary-v1.pdf download link from gallery CTA + 4 methodology pages`). The follow-up number is referenced in the PR commit body and in `docs/plans/README.md` for this plan's row. No wiring happens in this PR.
 
 ### Source count
 Distinct sources consulted: 6 (issue body + closed #2090 body + `capability-summary.md` + `capability-summary.html` + md-to-pdf SKILL.md + related demo-detail-pages plan). Exceeds minimum 3 required.
@@ -58,17 +59,20 @@ Distinct sources consulted: 6 (issue body + closed #2090 body + `capability-summ
 
 ## Artifact Map
 
-| Artifact | Path |
-|---|---|
-| This plan | `docs/plans/2026-04-19-issue-2344-capability-summary-pdf.md` |
-| Render script (new, committed) | `scripts/gtm/render-capability-summary-pdf.sh` |
-| PDF — internal canonical copy | `docs/gtm/capability-summary.pdf` |
-| PDF — public asset (Vercel-served, versioned filename) | `aceengineer-website/assets/capability-summary-v1.pdf` |
-| Sidecar metadata (renderer version, sha256) | `aceengineer-website/assets/capability-summary.pdf.meta` |
-| Vendored fonts (new) | `aceengineer-website/assets/fonts/inter/Inter-Regular.woff2`, `Inter-SemiBold.woff2`, `Inter-Bold.woff2` (subset — exact family files picked during implementation to match HTML weight usage) |
-| HTML source (edited — vendor-font `<link>` rewrite only) | `docs/gtm/website-pages/capability-summary.html` |
-| Markdown source (existing, unchanged) | `docs/gtm/capability-summary.md` |
-| Plan index row | `docs/plans/README.md` |
+Artifacts below are **prescribed by this plan** (to be created during implementation) unless marked EXISTING (already in git).
+
+| Artifact | Path | Status |
+|---|---|---|
+| This plan | `docs/plans/2026-04-19-issue-2344-capability-summary-pdf.md` | EXISTING (committed) |
+| Render script (new) | `scripts/gtm/render-capability-summary-pdf.sh` | PRESCRIBED |
+| PDF — internal canonical copy | `docs/gtm/capability-summary.pdf` | PRESCRIBED |
+| PDF — public asset (Vercel-served, versioned filename) | `aceengineer-website/assets/capability-summary-v1.pdf` | PRESCRIBED |
+| Sidecar metadata (renderer version, sha256, git_sha, source_html_sha256) | `aceengineer-website/assets/capability-summary.pdf.meta` | PRESCRIBED |
+| Vendored fonts (new) | `aceengineer-website/assets/fonts/inter/Inter-Regular.woff2`, `Inter-SemiBold.woff2`, `Inter-Bold.woff2` (subset — exact family files picked during implementation to match HTML weight usage) | PRESCRIBED |
+| Per-font SHA256 sidecars (Codex MAJOR 2) | `aceengineer-website/assets/fonts/inter/Inter-Regular.woff2.sha256`, `Inter-SemiBold.woff2.sha256`, `Inter-Bold.woff2.sha256` | PRESCRIBED |
+| HTML source (to be edited — vendor-font `<link>` rewrite only) | `docs/gtm/website-pages/capability-summary.html` | EXISTING (edit prescribed) |
+| Markdown source (existing, unchanged) | `docs/gtm/capability-summary.md` | EXISTING |
+| Plan index row | `docs/plans/README.md` | EXISTING (row update prescribed) |
 | Plan review — Claude (round 1, MINOR) | `scripts/review/results/2026-04-19-plan-2344-claude.md` |
 | Plan review — Codex (round 1, REQUEST-CHANGES) | recorded in Adversarial Review Summary below (review artifact not written to `scripts/review/results/` — findings reproduced inline in this plan) |
 | Plan review — Gemini | not dispatched |
@@ -79,7 +83,7 @@ Distinct sources consulted: 6 (issue body + closed #2090 body + `capability-summ
 
 ## Deliverable
 
-A committed 1-page Letter-size PDF at `docs/gtm/capability-summary.pdf` (internal) and `aceengineer-website/assets/capability-summary-v1.pdf` (public, versioned filename), rendered via Chrome headless `--print-to-pdf` from the existing `docs/gtm/website-pages/capability-summary.html` (with vendored-Inter `<link>` rewrite), preserving the hand-crafted navy/orange branded layout, the 1,292-cases proof point, the 3-tier pricing table, and the exact credentials line "Licensed P.E. — Houston, TX" (em-dash U+2014) in the footer. Render is produced by a committed, reproducible script (`scripts/gtm/render-capability-summary-pdf.sh`) that asserts Chrome version, verifies 1-page output, verifies Inter is embedded via `pdffonts`, and writes sidecar `capability-summary.pdf.meta` (renderer version + sha256). Public URL `https://www.aceengineer.com/assets/capability-summary-v1.pdf` returns HTTP 200 after Vercel deploy; versioned filename works correctly with Vercel's existing immutable 1-year cache rule on `/assets/(.*)`.
+At the end of implementation: a committed 1-page Letter-size PDF at `docs/gtm/capability-summary.pdf` (internal) and `aceengineer-website/assets/capability-summary-v1.pdf` (public, versioned filename), rendered via Chrome headless `--print-to-pdf` from `docs/gtm/website-pages/capability-summary.html` (after the prescribed vendored-Inter `<link>` rewrite), preserving the hand-crafted navy/orange branded layout, the 1,292-cases proof point, the 3-tier pricing table, and the exact credentials line "Licensed P.E. — Houston, TX" (em-dash U+2014) in the footer. Render will be produced by a committed, reproducible script (`scripts/gtm/render-capability-summary-pdf.sh`) that asserts Chrome version, verifies 1-page output, verifies Inter is embedded via `pdffonts`, and writes sidecar `capability-summary.pdf.meta` (renderer version + sha256 + git_sha + source_html_sha256). Public URL `https://www.aceengineer.com/assets/capability-summary-v1.pdf` returns HTTP 200 after Vercel deploy; versioned filename works correctly with Vercel's existing immutable 1-year cache rule on `/assets/(.*)`.
 
 ---
 
@@ -179,12 +183,16 @@ cp "$PDF_INTERNAL" "$PDF_PUBLIC"
 
 # --- 5. Write sidecar metadata --------------------------------------------
 SHA="$(sha256sum "$PDF_INTERNAL" | awk '{print $1}')"
+GIT_SHA="$(git rev-parse HEAD)"
+SOURCE_HTML_SHA="$(sha256sum "$HTML_SRC" | awk '{print $1}')"
 cat > "$SIDECAR" <<EOF
 # capability-summary.pdf sidecar metadata
 # Written by scripts/gtm/render-capability-summary-pdf.sh
 renderer: google-chrome
 renderer_version: $CHROME_VERSION
 html_source: $HTML_SRC
+source_html_sha256: $SOURCE_HTML_SHA
+git_sha: $GIT_SHA
 rendered_at_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 sha256_internal: $SHA
 internal_path: $PDF_INTERNAL
@@ -211,16 +219,22 @@ echo "Next: git add the three new/updated files, review diff, commit (DO NOT pus
 
 ## Files to Change
 
+All rows below are prescribed work — the implementation PR will create/edit these; none exist in git as of plan v2 commit.
+
 | Action | Path | Reason |
 |---|---|---|
-| Create | `scripts/gtm/render-capability-summary-pdf.sh` | Committed, reproducible render script (T2 reclassification). Pinned Chrome flags + version assert + post-render gates. |
+| Create | `scripts/gtm/render-capability-summary-pdf.sh` | Reproducible render script (T2 reclassification). Pinned Chrome flags + version assert + post-render gates. Implementation will commit. |
 | Create | `aceengineer-website/assets/fonts/inter/Inter-Regular.woff2` | Vendor Inter locally to remove Google Fonts network race; matches weights used in HTML (regular / semi-bold / bold — exact file set picked in implementation). |
 | Create | `aceengineer-website/assets/fonts/inter/Inter-SemiBold.woff2` | Same — matches existing HTML weight usage. |
 | Create | `aceengineer-website/assets/fonts/inter/Inter-Bold.woff2` | Same — matches existing HTML weight usage. |
+| Create | `aceengineer-website/assets/fonts/inter/Inter-Regular.woff2.sha256` | **Codex MAJOR 2 — provenance contract.** Per-file SHA256 sidecar recording exact bytes vendored, enabling supply-chain audit. Generated via `sha256sum Inter-Regular.woff2 > Inter-Regular.woff2.sha256`. |
+| Create | `aceengineer-website/assets/fonts/inter/Inter-SemiBold.woff2.sha256` | Same — provenance SHA256 for vendored font. |
+| Create | `aceengineer-website/assets/fonts/inter/Inter-Bold.woff2.sha256` | Same — provenance SHA256 for vendored font. |
+| Create | `aceengineer-website/assets/fonts/inter/LICENSE` | OFL-1.1 attribution for upstream rsms/inter. Required by OFL terms when vendoring font files. |
 | Edit | `docs/gtm/website-pages/capability-summary.html` | Rewrite Google Fonts `<link>` (lines 7–9) to local `@font-face` block pointing at vendored woff2 under `../../aceengineer-website/assets/fonts/inter/…` (relative-path from HTML location). No other changes. |
 | Create | `docs/gtm/capability-summary.pdf` | Internal canonical 1-page PDF rendered from HTML source by the new script. |
 | Create | `aceengineer-website/assets/capability-summary-v1.pdf` | Public-facing asset copy (versioned filename — future updates land as `-v2.pdf`, `-v3.pdf` etc., sidestepping Vercel's `/assets/(.*)` immutable 1-year cache). |
-| Create | `aceengineer-website/assets/capability-summary.pdf.meta` | Sidecar metadata: renderer version, sha256, render timestamp. Replaces the v1-plan's "record version in commit body" approach — commit bodies are not machine-readable from the deployed site. |
+| Create | `aceengineer-website/assets/capability-summary.pdf.meta` | Sidecar metadata: renderer version, sha256, `git_sha` (Codex MAJOR 3 — commit hash at render time), `source_html_sha256` (Codex MAJOR 3 — hash of HTML input), render timestamp. Replaces the v1-plan's "record version in commit body" approach — commit bodies are not machine-readable from the deployed site. |
 | Update | `docs/plans/README.md` | Update plan index row: status `draft (v2)`, T2. |
 
 **No edits to:**
@@ -253,7 +267,10 @@ T2 — most gates are enforced **inside** `scripts/gtm/render-capability-summary
 | pdf_created_internal | bash | `docs/gtm/capability-summary.pdf` exists, non-empty | `test -s docs/gtm/capability-summary.pdf` → exit 0 |
 | pdf_created_public | bash | `aceengineer-website/assets/capability-summary-v1.pdf` exists, non-empty | `test -s aceengineer-website/assets/capability-summary-v1.pdf` → exit 0 |
 | dual_copies_identical | bash | Internal and public copies are bit-identical | `diff -q docs/gtm/capability-summary.pdf aceengineer-website/assets/capability-summary-v1.pdf` → no output |
-| sidecar_written | bash | Sidecar has renderer version + sha256 | `grep -E '^renderer_version:' aceengineer-website/assets/capability-summary.pdf.meta` AND `grep -E '^sha256_internal:' …` → both exit 0 |
+| sidecar_written | bash | Sidecar has renderer version + sha256 + git_sha + source_html_sha256 | `grep -E '^renderer_version:' … && grep -E '^sha256_internal:' … && grep -E '^git_sha:' … && grep -E '^source_html_sha256:' aceengineer-website/assets/capability-summary.pdf.meta` → all exit 0 |
+| sidecar_git_sha_matches_head | bash | Sidecar `git_sha` matches current HEAD (Codex MAJOR 3) | `grep '^git_sha:' aceengineer-website/assets/capability-summary.pdf.meta \| awk '{print $2}'` == `git rev-parse HEAD` |
+| sidecar_source_html_sha_matches | bash | Sidecar `source_html_sha256` matches HTML input (Codex MAJOR 3) | `grep '^source_html_sha256:' aceengineer-website/assets/capability-summary.pdf.meta \| awk '{print $2}'` == `sha256sum docs/gtm/website-pages/capability-summary.html \| awk '{print $1}'` |
+| font_sha256_sidecar_matches_font | bash | Each `.woff2.sha256` matches the `sha256sum` of the neighbouring WOFF2 (Codex MAJOR 2) | `for f in aceengineer-website/assets/fonts/inter/*.woff2; do diff <(sha256sum "$f" \| awk '{print $1}') <(cat "$f".sha256 \| awk '{print $1}'); done` → no output |
 | pdf_has_tier_table | pdftotext | PDF contains "Screening", "Detailed", "Operations" (3 tier rows) | all 3 grep matches |
 | script_is_executable | bash | Render script has +x bit | `test -x scripts/gtm/render-capability-summary-pdf.sh` → exit 0 |
 
@@ -267,11 +284,14 @@ T2 — most gates are enforced **inside** `scripts/gtm/render-capability-summary
 
 ## Acceptance Criteria
 
+Prescribed state at end of implementation (none of these are satisfied in the plan-only commit):
+
 - [ ] `scripts/gtm/render-capability-summary-pdf.sh` committed, executable, runs green end-to-end on this host
 - [ ] `aceengineer-website/assets/fonts/inter/*.woff2` committed; `capability-summary.html` `<link>` rewritten to local paths
+- [ ] **Codex MAJOR 2 — font provenance contract:** each committed WOFF2 has a sibling `*.woff2.sha256` file whose contents match `sha256sum <file>` exactly; `aceengineer-website/assets/fonts/inter/LICENSE` (OFL-1.1 attribution) committed
 - [ ] `docs/gtm/capability-summary.pdf` committed, non-empty
 - [ ] `aceengineer-website/assets/capability-summary-v1.pdf` committed, byte-identical to internal copy
-- [ ] `aceengineer-website/assets/capability-summary.pdf.meta` committed; contains renderer version + sha256
+- [ ] `aceengineer-website/assets/capability-summary.pdf.meta` committed; contains renderer version + sha256 + **`git_sha` (commit hash at render time, Codex MAJOR 3) + `source_html_sha256` (hash of HTML input at render time, Codex MAJOR 3)**
 - [ ] `pdfinfo` reports exactly 1 page (Letter, 612 × 792 pts) — gate enforced in script
 - [ ] `pdffonts` shows Inter embedded — gate enforced in script
 - [ ] `pdftotext` extraction contains: "Licensed P.E. — Houston" (U+2014 em-dash exact), "1,292", "Screening", "Detailed", "Operations"
@@ -280,7 +300,7 @@ T2 — most gates are enforced **inside** `scripts/gtm/render-capability-summary
 - [ ] Visual QA: navy/orange color palette preserved (no greyscale fallback)
 - [ ] Plan registered in `docs/plans/README.md` with status `draft (v2)`, complexity `T2`
 - [ ] **Post-deploy (user, after push):** `curl -sI https://www.aceengineer.com/assets/capability-summary-v1.pdf` returns 200 + `application/pdf`
-- [ ] **Follow-up filed at PR time:** "Wire capability-summary-v1.pdf download CTA from aceengineer-website gallery and 4 methodology pages" (deferred from #2344 scope; tracked per Scope Deviations From Issue Body)
+- [ ] Follow-up tracked as filed issue **#2367** (Wire capability-summary-v1.pdf download CTA from aceengineer-website gallery and 4 methodology pages — deferred from #2344 scope per Scope Deviations From Issue Body)
 
 ---
 
@@ -301,7 +321,14 @@ T2 — most gates are enforced **inside** `scripts/gtm/render-capability-summary
 **Failure modes and responses:**
 - **In-script gate fails (1-page, Inter-embedded, credentials line, Chrome version):** script exits non-zero before any file is staged. Operator fixes the root cause (CSS tweak, missing font file, Chrome update) and re-runs. There is no "commit anyway" bypass in the script — by design.
 - **PDF is live but needs a content update (post-deploy):** rendered output = `capability-summary-v2.pdf`. Update the versioned filename in the render script constant + the sidecar + any cold-email template references (at that time). Old `-v1.pdf` URL continues to serve — no 404 for any in-flight email already sent. **Cache-bust runbook:** none needed — the new URL is cache-miss by construction. If, in an emergency, an old versioned URL must be invalidated, use the Vercel dashboard "Purge Cache" action (manual, out-of-repo).
-- **Rollback wanted after CTA wiring has landed (future):** at that future point a `git revert` must revert **both** this PR's commit **and** the CTA-wiring commit, else the wired links 404. The CTA-wiring follow-up issue is expected to document this in its own rollback section.
+- **Rollback wanted after CTA wiring has landed (future):** at that future point a `git revert` must revert **both** this PR's commit **and** the CTA-wiring commit (#2367), else the wired links 404. The #2367 follow-up issue will document this in its own rollback section.
+
+### Version-bump policy (Codex MAJOR 4)
+
+Prescribes the governance for future `-v1.pdf` → `-v2.pdf` transitions:
+
+- **Who updates CTAs across aceengineer-website when `-v1.pdf` → `-v2.pdf` happens?** The engineer who authors the content-refresh PR is responsible for updating every CTA/download-link reference in `aceengineer-website/content/` and `docs/gtm/gtm-plan-30day.md` in the same PR as the new PDF, verified by a pre-merge `grep -rn 'capability-summary-v[0-9]' aceengineer-website/ docs/gtm/` diff check that shows no stale `-v1` references remain after the bump.
+- **What happens to `-v1.pdf` (kept? deleted? redirected?)** Kept in place (not deleted, not redirected). Rationale: Vercel's immutable 1-year cache means third-party references (past cold emails, LinkedIn posts, shared links) still resolve to the `-v1.pdf` URL; deleting or redirecting would 404 those already-in-flight references. The old `-v1.pdf` remains a frozen snapshot at its URL until its 1-year cache naturally expires and the asset is pruned in a follow-up housekeeping PR (no earlier than 1 year from `-v2` publication).
 
 ---
 
@@ -319,9 +346,9 @@ T2 — most gates are enforced **inside** `scripts/gtm/render-capability-summary
 
 | Finding | Resolution |
 |---|---|
-| Codex MAJOR 1 (reproducibility) | Added `scripts/gtm/render-capability-summary-pdf.sh` — committed, pinned flags, post-render gates. Reclassified plan T1 → T2. |
-| Codex MAJOR 2 (Chrome version drift) | Script asserts `google-chrome --version` major equals `APPROVED_CHROME_MAJOR=147` and hard-fails otherwise. Exact version recorded in sidecar `capability-summary.pdf.meta` (not just commit body — commit bodies are not machine-readable from the site). |
-| Codex MAJOR 3 (font portability) | **Both mitigations applied:** (a) vendor Inter WOFF2 locally under `aceengineer-website/assets/fonts/inter/` and rewrite the HTML `<link>` to relative paths (removes Google Fonts network dependency entirely); (b) post-render `pdffonts` assertion that Inter is embedded — gate in render script. Chose vendoring (not pure-assert) because it also satisfies Claude F1 async-race risk. |
+| Codex MAJOR 1 (reproducibility) | Prescribed `scripts/gtm/render-capability-summary-pdf.sh` (to be created during implementation) — pinned flags, post-render gates. Reclassified plan T1 → T2. |
+| Codex MAJOR 2 (Chrome version drift) | Script will assert `google-chrome --version` major equals `APPROVED_CHROME_MAJOR=147` and hard-fail otherwise. Exact version to be recorded in sidecar `capability-summary.pdf.meta` (not just commit body — commit bodies are not machine-readable from the site). |
+| Codex MAJOR 3 (font portability) | **Both mitigations prescribed:** (a) vendor Inter WOFF2 locally under `aceengineer-website/assets/fonts/inter/` and rewrite the HTML `<link>` to relative paths (removes Google Fonts network dependency entirely); (b) post-render `pdffonts` assertion that Inter is embedded — gate in render script. Chose vendoring (not pure-assert) because it also satisfies Claude F1 async-race risk. |
 | Codex MAJOR 4 (rollback/vercel cache) | Rollback section rewritten. Strategy: **versioned public filename** `capability-summary-v1.pdf` (future refresh → `-v2.pdf`). vercel.json immutable-cache rule is preserved and correctly respected. Removed the incorrect "browsers sniff" claim — `X-Content-Type-Options: nosniff` means browsers must trust Vercel's declared Content-Type; Vercel correctly sets `application/pdf` from the extension; `vercel.json` is NOT edited. |
 | Codex MINOR (scope reconcile) | Added "Scope deviations from issue body" subsection in Resource Intelligence. Deferral of CTA wiring is explicit, justified (in-flight #2342/#2343 collision + not-yet-existing methodology pages + chicken-and-egg on PDF URL), and tracked as a filed follow-up issue (issue number recorded at PR time). |
 | Claude F1 (Google Fonts async race) | Primary: vendor Inter locally (see MAJOR 3). Secondary: `--virtual-time-budget=5000` added to Chrome flags as belt-and-braces. |
