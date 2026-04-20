@@ -1,17 +1,19 @@
 # Plan for #2342 + #2343: Publish Demo Detail Pages 1-4 and Wire Gallery CTAs
 
-> **Status:** draft (revised after 2026-04-17 adversarial review — MAJOR verdict)
+> **Status:** draft v3 (revised after 2026-04-19 adversarial review — MAJOR verdict)
 > **Revision history:**
 > - 2026-04-17 v1 — initial draft
 > - 2026-04-19 v2 — rewritten after Claude MAJOR + Codex MAJOR: corrected Vercel deploy model, committed to `head-common` include, resolved title contradiction, added sitemap.xml updates, wired link-check to Jest, added rollback + SRI/vendoring, restructured TDD
+> - 2026-04-19 v3 — tightened after Claude MAJOR + Codex MAJOR on v2: fixed sitemap host (apex → www), added `package.json` to Files to Change with explicit jest.projects entry (link-check now actually runs), split jumper retrofit into a preceding commit for clean rollback (also removes unnecessary Plotly tag from chart-less page), added "Known minor debt" section for D/F/G/H
 > **Complexity:** T2
 > **Issues:**
 > - https://github.com/vamseeachanta/workspace-hub/issues/2342 (publish 4 detail pages)
 > - https://github.com/vamseeachanta/workspace-hub/issues/2343 (wire gallery CTAs)
-> **Combined rationale:** Both ship through the same `aceengineer-website` repo and the same Vercel build on push. Splitting doubles review and deploy overhead without reducing blast radius — the gallery edit is a single-line add per card, too small to warrant its own PR.
+> **Combined rationale:** Both ship through the same `aceengineer-website` repo and the same Vercel build on push. Splitting the two issues doubles review overhead without reducing blast radius. The jumper retrofit is a separate preceding commit (see Rollback Plan) so its independent revert is clean.
 > **Review artifacts:**
-> - v1: `scripts/review/results/2026-04-17-plan-2342-claude.md` (MAJOR), codex review blocked by sandbox (no artifact)
-> - v2: pending — will be written to `scripts/review/results/2026-04-19-plan-2342-claude.md` and `-codex.md`
+> - v1: `scripts/review/results/2026-04-17-plan-2342-claude.md` (MAJOR); Codex review blocked by sandbox (no artifact).
+> - v2: `scripts/review/results/2026-04-19-plan-2342-claude.md` (MAJOR); `scripts/review/results/2026-04-19-plan-2342-codex.md` (MAJOR — artifact manually transcribed because Codex sandbox blocked the write).
+> - v3: pending — will be written to `scripts/review/results/2026-04-19-v3-plan-2342-claude.md` and `-codex.md`.
 
 ---
 
@@ -121,8 +123,18 @@ for demo in [(freespan, "Freespan / VIV Screening"),
         <body>...source body...</body>
 ```
 
-**B. Retrofit jumper-installation.html**
-Same head rewrite + Plotly vendor point, single atomic commit. Closes the pre-existing analytics gap.
+**B. Retrofit jumper-installation.html (v3: head-common include ONLY; NO Plotly)**
+
+The live jumper page has zero Plotly charts — it is a static HTML table-based report. Adding a 3.5 MB Plotly `<script>` tag to it would degrade performance for no functional gain.
+
+```
+in content/demos/jumper-installation.html:
+    insert <include src="partials/head-common.html"></include> as the first child of <head>
+    do NOT add the vendored Plotly script tag
+    leave existing inline <style>, <title>, and <body> unchanged
+```
+
+This lands as **Commit 1** (see Files to Change). Commit 1 is independently revertable — if the GA include somehow breaks the already-live page, revert restores the pre-v3 state without touching Commit 2 content.
 
 **C. Gallery CTA wiring**
 ```
@@ -131,16 +143,17 @@ in content/demos/index.html, for each demo_card lacking "View detailed report":
     Demo 2 card: keep existing "Try free calculator" CTA AND add detail button alongside (flex-column on mobile)
 ```
 
-**D. Sitemap update**
+**D. Sitemap update (v3: use `www.` — the redirect target, not the apex)**
 ```
-in sitemap.xml, append 5 <url> entries:
-    https://aceengineer.com/demos/freespan.html
-    https://aceengineer.com/demos/wall-thickness.html
-    https://aceengineer.com/demos/mudmat.html
-    https://aceengineer.com/demos/pipelay.html
-    https://aceengineer.com/demos/jumper-installation.html  (backfill)
+in sitemap.xml, append 5 <url> entries using the canonical (non-redirected) host:
+    https://www.aceengineer.com/demos/freespan.html
+    https://www.aceengineer.com/demos/wall-thickness.html
+    https://www.aceengineer.com/demos/mudmat.html
+    https://www.aceengineer.com/demos/pipelay.html
+    https://www.aceengineer.com/demos/jumper-installation.html  (backfill)
 with lastmod=2026-04-19, changefreq=monthly, priority=0.8
 ```
+Rationale: `vercel.json` permanently 301-redirects `aceengineer.com` → `www.aceengineer.com`. New sitemap entries at the apex would be canonically poisoned on every Googlebot fetch. Existing 20+ apex entries remain as pre-existing debt (tracked as follow-up, not this PR's scope).
 
 **E. Vercel cache header**
 ```
@@ -156,18 +169,43 @@ verify checksum against upstream release
 commit as binary asset
 ```
 
-**G. Link-check Jest test**
+**G. Link-check Jest test (v3: must also register in `package.json`)**
+
+Create the test file:
 ```
 tests/js/demo-links.test.js:
     parse dist/demos/index.html (after local npm run build)
     extract every href matching "demos/.*\.html"
     for each, assert file exists under dist/demos/
     expected anchor count >= 5 ("View detailed report" × 5 + calculator)
+    assert sitemap.xml contains a <loc> for each demos/*.html page
+    assert no href uses cdn.plot.ly (Plotly must be vendored)
 ```
+
+**This file alone will NOT run under `npm test`.** `package.json` uses an explicit `jest.projects` allowlist (6 projects, one per test file). A new test file outside the registered list is silently skipped. v2 missed this — v3 fixes it by editing `package.json`:
+```
+jest.projects: append
+    {
+      "displayName": "demo-links",
+      "testEnvironment": "node",
+      "testMatch": ["<rootDir>/tests/js/demo-links.test.js"]
+    }
+```
+Verification: `cd aceengineer-website && npm test 2>&1 | grep 'demo-links'` must show the project in Jest output. Test `link_check_project_registered_in_npm_test` (see TDD) enforces this.
 
 ---
 
 ## Files to Change
+
+v3 groups changes into **two commits** so rollback is clean (see Rollback Plan):
+
+**Commit 1 of 2 — jumper retrofit (lands first, independently revertable)**
+
+| Action | Path | Reason |
+|---|---|---|
+| Modify | `aceengineer-website/content/demos/jumper-installation.html` | Add `<include src="partials/head-common.html">` — fixes pre-existing GA/nav gap. **Do NOT add Plotly** — page has no charts. |
+
+**Commit 2 of 2 — Demos 1-4 + infrastructure (lands after Commit 1 verified live)**
 
 | Action | Path | Reason |
 |---|---|---|
@@ -175,15 +213,17 @@ tests/js/demo-links.test.js:
 | Create | `aceengineer-website/content/demos/wall-thickness.html` | Detail page for Demo 2 |
 | Create | `aceengineer-website/content/demos/mudmat.html` | Detail page for Demo 3 |
 | Create | `aceengineer-website/content/demos/pipelay.html` | Detail page for Demo 4 |
-| Modify | `aceengineer-website/content/demos/jumper-installation.html` | Add head-common include; swap CDN Plotly → local vendor |
 | Modify | `aceengineer-website/content/demos/index.html` | Add 3 detail CTAs (Demos 1, 3, 4); add 1 alongside Demo 2 calculator |
-| Modify | `aceengineer-website/sitemap.xml` | Add 5 `<url>` entries (4 new + jumper backfill) |
+| Modify | `aceengineer-website/sitemap.xml` | Add 5 `<url>` entries at the www host (4 new + jumper backfill) |
 | Modify | `aceengineer-website/vercel.json` | Add `/demos/(.*).html` cache-control header |
-| Create | `aceengineer-website/assets/js/plotly-2.32.0.min.js` | Vendored Plotly — eliminates CDN + SRI concerns |
-| Create | `aceengineer-website/tests/js/demo-links.test.js` | Jest link-check, picked up by existing `jest` test command |
-| Update | `docs/plans/README.md` | Register v2 status |
+| Create | `aceengineer-website/assets/js/plotly-2.32.0.min.js` | Vendored Plotly — used ONLY by the 4 new pages (not jumper) |
+| Create | `aceengineer-website/tests/js/demo-links.test.js` | Jest link-check implementation |
+| Modify | **`aceengineer-website/package.json`** | **Register `demo-links` Jest project so `npm test` actually runs the link-check (v3 fix for v2 Defect B)** |
+| Update | `docs/plans/README.md` | Register v3 status |
 
 **No `dist/*` entries** — gitignored; Vercel rebuilds from `content/`.
+
+Rationale for two commits: if Commit 2 breaks a Plotly-heavy page, `git revert Commit2` leaves the jumper retrofit (Commit 1) intact. v2's single-PR-11-file structure couldn't do this.
 
 ---
 
@@ -196,12 +236,15 @@ tests/js/demo-links.test.js:
 | frontmatter_rootPath_correct | grep / Jest | Each of 4 new pages starts with `---\nrootPath: "../"\n---` | 4/4 match |
 | head_common_included | grep / Jest | Each of 4 new pages + retrofitted jumper contains `<include src="partials/head-common.html">` | 5/5 match |
 | title_is_branded | grep / Jest | Each of 4 new pages has `<title>A&CE — ...</title>`; source "— digitalmodel" removed | 4/4 match |
-| plotly_is_vendored | grep / Jest | Each of 5 detail pages references `{{ rootPath }}assets/js/plotly-2.32.0.min.js` and NOT `cdn.plot.ly` | 5/5 match |
+| plotly_is_vendored | grep / Jest | Each of 4 **new** chart-bearing pages references `{{ rootPath }}assets/js/plotly-2.32.0.min.js` and NOT `cdn.plot.ly` (jumper excluded — no charts) | 4/4 match |
+| jumper_has_no_plotly_tag | grep / Jest | `content/demos/jumper-installation.html` contains no `plotly-` or `cdn.plot.ly` reference (v3 Defect E fix) | 0 hits |
 | build_produces_5_files | bash + `npm run build` | `dist/demos/{freespan,wall-thickness,mudmat,pipelay,jumper-installation}.html` exist, non-empty | 5/5 files |
 | gallery_has_5_detail_ctas | Jest (new `demo-links.test.js`) | `dist/demos/index.html` contains 5 anchors matching `demos/*.html` | count === 5 |
 | demo2_has_both_ctas | Jest | Demo 2 card contains BOTH `/calculators/wall-thickness.html` and `/demos/wall-thickness.html` anchors | both present |
 | sitemap_has_5_demo_entries | Jest | `sitemap.xml` contains 5 `<loc>` entries for `/demos/*.html` | 5/5 match |
+| sitemap_uses_www_host | Jest | All 5 new entries use `https://www.aceengineer.com/` (not apex) (v3 Defect A fix) | 5/5 match |
 | vercel_has_demos_cache_header | Jest | `vercel.json` `headers` array contains entry for `/demos/(.*).html` | present |
+| link_check_project_registered_in_npm_test | bash | `npm test 2>&1` output contains the line `RUNS demo-links` or equivalent Jest project marker (v3 Defect B fix) | present |
 
 **Post-deploy (live, run after Vercel finishes):**
 
@@ -223,33 +266,51 @@ Test-writing order: pre-deploy tests first (frontmatter, head-common, title, plo
 
 ## Acceptance Criteria
 
-- [ ] `content/demos/{freespan,wall-thickness,mudmat,pipelay}.html` exist with correct frontmatter and branded `<title>`
-- [ ] All 5 detail pages (4 new + retrofitted jumper) include `<include src="partials/head-common.html">` → GA + nav present
-- [ ] All 5 detail pages reference vendored `/assets/js/plotly-2.32.0.min.js`, not `cdn.plot.ly`
+- [ ] **Commit 1 lands first:** `content/demos/jumper-installation.html` retrofit — head-common include added; NO Plotly script tag added
+- [ ] Commit 1 verified in production: live `/demos/jumper-installation.html` serves GA beacon (check DevTools Network for `gtag/js?id=G-K31E51DQ47`); page still renders static report identically
+- [ ] **Commit 2 lands after Commit 1 verified:**
+- [ ] `content/demos/{freespan,wall-thickness,mudmat,pipelay}.html` exist with `rootPath: "../"` frontmatter and branded `<title>A&CE — ...</title>` (source's "— digitalmodel" removed)
+- [ ] All 5 detail pages include `<include src="partials/head-common.html">` → GA + nav present
+- [ ] **4 new chart-bearing pages** reference vendored `/assets/js/plotly-2.32.0.min.js`, not `cdn.plot.ly`. Jumper page has NO Plotly reference (v3 Defect E)
 - [ ] `content/demos/index.html` has 5 "View detailed report" CTAs; Demo 2 retains calculator CTA alongside
-- [ ] `sitemap.xml` has 5 new `<url>` entries (4 new + jumper backfill)
+- [ ] `sitemap.xml` has 5 new `<url>` entries at `https://www.aceengineer.com/` host (not apex — v3 Defect A)
 - [ ] `vercel.json` has cache-control header for `/demos/(.*).html`
-- [ ] `assets/js/plotly-2.32.0.min.js` committed with checksum-verified content
-- [ ] `tests/js/demo-links.test.js` Jest project passes locally via `npm test`
+- [ ] `assets/js/plotly-2.32.0.min.js` committed with a concrete SHA256 recorded in commit message (v3: obtained via `npm view plotly.js-dist-min@2.32.0 dist.shasum`)
+- [ ] `tests/js/demo-links.test.js` created AND `package.json` updated with new `jest.projects` entry for `demo-links` — verified by `npm test 2>&1 | grep demo-links` showing the project actively running (v3 Defect B)
 - [ ] `npm run build` completes without error; `dist/demos/*.html` render correctly in local `npm run serve`
-- [ ] After Vercel deploy: all 9 post-deploy tests pass
-- [ ] GA pageview beacon fires on each detail page (verified in browser devtools Network tab for one page, spot-check)
+- [ ] After Vercel deploy: all post-deploy tests pass (prod_5_pages_200, prod_pages_serve_analytics, prod_plotly_loads_locally for 4 new pages, prod_gallery_links_resolve, prod_cache_header_on_demos)
+- [ ] GA pageview beacon fires on each of 5 detail pages (verified in browser devtools Network tab, spot-check)
 - [ ] #2342 and #2343 closed with links to live pages and the PR
-- [ ] Review artifacts v2 posted to `scripts/review/results/`
+- [ ] Review artifacts v3 posted to `scripts/review/results/`
 
 ---
 
 ## Rollback Plan
 
-Vercel rebuilds from git state on every push. Rollback = `git revert <merge-commit>` → push → Vercel redeploys prior state automatically (~2-5 min). No database, no migrations, no external state.
+v3 splits the work into **two independently revertable commits** because repo policy is direct commits to `main` (no merge-commit umbrella) and the 11-file v2 blast radius mixed the already-live jumper page with new work. The two-commit structure means each piece can roll back without dragging the other.
 
-Known-good commit to revert to: last green commit on `aceengineer-website` main before this plan's merge (captured at PR time).
+**Commit 1 — jumper retrofit**  
+Single file modified: `content/demos/jumper-installation.html` (add head-common include only).
+- Rollback: `git revert <commit1-sha>` → push → Vercel redeploys ≤5 min.
+- Blast radius: 1 file; failure can only affect the already-live `/demos/jumper-installation.html` page. If GA breaks it, revert restores pre-v3 state of that single page without touching the Commit 2 demos.
+
+**Commit 2 — Demos 1-4 + infrastructure**  
+Lands only after Commit 1's production render is verified.
+- Rollback: `git revert <commit2-sha>` → push → Vercel redeploys. Removes all 4 new detail pages, gallery CTAs, sitemap entries, cache header, vendored Plotly, Jest test + project registration — **Commit 1 (jumper retrofit) stays live**.
+- Blast radius: 10 files, but all net-new except gallery `index.html`, `sitemap.xml`, `vercel.json`, `package.json`. Those three modifications are additive (new entries / new keys), so revert cleanly removes only the additions.
+
+Known-good commit to revert to:
+- For Commit 1 rollback: the last commit on `aceengineer-website` `main` before Commit 1.
+- For Commit 2 rollback: Commit 1.
+Both SHAs captured at PR time in the PR description.
 
 Failure modes and responses:
-- **Charts broken on one page:** revert the single `content/demos/<slug>.html` change; leave other 3 live.
-- **GA not firing:** `head-common` include syntax issue; revert the include line, investigate locally.
-- **Gallery card broken:** single-line revert on `content/demos/index.html`.
-- **Vercel cache poisoning:** purge via Vercel dashboard or push an empty commit.
+- **Commit 1 breaks jumper GA or renders:** `git revert <commit1-sha>`; do NOT land Commit 2.
+- **Commit 2 breaks one of Demos 1-4 charts:** revert the single `content/demos/<slug>.html` change in a follow-up commit (leave other 3 live). `dist/demos/<slug>.html` regenerates from the reverted source on next Vercel build.
+- **Commit 2 breaks gallery or site-wide nav:** `git revert <commit2-sha>` — demos 1-4 disappear from site but jumper retrofit remains live.
+- **Jest link-check fails after Commit 2:** do NOT revert — fix forward in a follow-up commit. CI failure is louder than silently-skipped tests from v2.
+- **Vercel cache poisoning on any page:** purge via Vercel dashboard or push an empty commit to trigger rebuild.
+- **Vendored Plotly path 404:** verify `assets/js/plotly-2.32.0.min.js` was committed (not gitignored accidentally) and Vercel build picked it up; if not, revert Commit 2 and re-commit with the asset included.
 
 ---
 
@@ -263,13 +324,26 @@ Failure modes and responses:
 
 **Revisions applied in v2:** deploy model corrected (Vercel + `dist/` gitignored); head-common include now mandatory (closes v1 open question Q3); title explicitly rewritten to `A&CE — X` (contradiction resolved); sitemap.xml added to Files to Change; link-check converted to Jest project; Plotly vendored locally (removes CDN/SRI/CSP exposure); TDD split into pre-deploy and post-deploy sections; rollback plan added; source sizes corrected to 68-116 KB.
 
-### v2 (pending)
+### v2 (2026-04-19)
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | 8/10 v1 fixed. New defects: A sitemap host apex vs www, B Jest unwired (package.json missing from Files to Change), C rollback vs 11-file reality, D Plotly checksum unexecutable, E jumper Plotly unneeded, F Google Fonts ambiguous |
+| Codex | MAJOR (artifact manually transcribed) | Agrees with A, B, C. Adds: Node/Vercel runtime not pinned (G), vendored Plotly provenance/license (H) |
+
+**Revisions applied in v3 (this document):**
+- Defect A (major): sitemap entries rewritten to `https://www.aceengineer.com/demos/*` (the redirect target); TDD gains `sitemap_uses_www_host` test.
+- Defect B (major): `aceengineer-website/package.json` added to Files to Change with explicit new `jest.projects` entry; TDD gains `link_check_project_registered_in_npm_test` test that greps `npm test` output.
+- Defect C (minor): split into two commits — Commit 1 = jumper retrofit (1 file), Commit 2 = Demos 1-4 + infrastructure. Each independently revertable.
+- Defect E (minor): Pseudocode B now says "head-common ONLY, no Plotly" for jumper. New TDD `jumper_has_no_plotly_tag` asserts this.
+- Defects D, F, G, H: accepted as known minor debt with inline mitigations — see "Known Minor Debt" section.
+
+### v3 (pending)
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | pending | — |
 | Codex | pending | — |
 
-**Overall result (v2):** pending
+**Overall result (v3):** pending
 
 ---
 
@@ -280,11 +354,37 @@ Failure modes and responses:
 - **Risk: GA `requestIdleCallback` deferral may race with Plotly chart init on slow networks.** Mitigation: head-common uses deferred GA load; Plotly script is non-async. Order by priority in `<head>`: head-common first, Plotly after. Verify in DevTools.
 - **Risk: first cold-email recipient hits a still-propagating Vercel edge cache.** Mitigation: deploy at least 30 min before first send; spot-check from 2+ geographic regions.
 - **Risk: Jest link-check false-positive on a transient symlink or build artifact.** Mitigation: assert against `dist/` contents only after a clean build; include a `beforeAll` that runs `npm run build`.
-- **Accepted risk: inline Plotly JSON in 118 KB detail pages means no lazy-load above the fold.** Optimization tracked as a follow-up issue (ticket TBD) — not a v1 blocker. GTM campaign launches with full-weight pages; follow-up adds `<img>` above-fold fallback + deferred Plotly init.
-- **Open (for user): should this ship as one PR or split into (a) "publish 4 detail pages + retrofit jumper + vendor Plotly" and (b) "gallery CTAs + sitemap + vercel cache"?** Recommended: ship as one PR — the two halves are mutually dependent for a coherent user flow (gallery link + live target), and split-PR review overhead exceeds the blast-radius benefit. But splittable cleanly if the reviewer disagrees.
+- **Accepted risk: inline Plotly JSON in 118 KB detail pages means no lazy-load above the fold.** Optimization tracked as follow-up — not a blocker for Week-3 GTM launch. Follow-up adds `<img>` above-fold fallback + deferred Plotly init.
+
+**Resolved in v3:**
+- ~~Open: one PR or split?~~ → resolved. Two commits in one PR (see Rollback Plan).
+
+---
+
+## Known Minor Debt (accepted in v3)
+
+These were raised in v2 adversarial review as minor-severity defects. v3 accepts them as documented debt because each either (a) has a mitigation that makes it non-blocking or (b) costs less to fix post-launch than pre-launch. Each gets a follow-up GitHub issue filed at PR time, linked from the PR description.
+
+| Ref | Defect | Why accepted | Mitigation in v3 | Follow-up |
+|---|---|---|---|---|
+| D | Plotly SHA256 not concrete in plan; 3.5 MB binary committed without `.gitattributes` or LICENSE file | Checksum IS obtainable — acceptance criterion now says "SHA256 obtained via `npm view plotly.js-dist-min@2.32.0 dist.shasum` and recorded in commit message". LICENSE concern is real but doesn't block first deploy. | Acceptance requires concrete SHA256 at commit time. LICENSE handling deferred. | New issue: "add LICENSE + `.gitattributes` for vendored Plotly bundle" |
+| F | Google Fonts `<link>` in source `<head>` — plan ambiguous about preservation | Defect hunter may strip it silently. Inter font is visible branding. | Pseudocode A enumerates preserved elements explicitly: preserve `<meta charset/viewport>`, preserve Google Fonts preconnect+stylesheet, rewrite `<title>`, inject head-common, preserve inline `<style>`. See updated Pseudocode A. | No separate issue — resolved in Pseudocode. |
+| G | No `engines` field in `package.json`; no Node runtime in `vercel.json` | Vercel defaults are stable and Node drift risk is low over campaign timeframe. | Accept. | New issue: "pin Node engine in aceengineer-website/package.json and vercel.json" |
+| H | Vendored Plotly license / provenance handling not documented | BSD-3-Clause license on Plotly.js is well-known; copy alongside the vendored bundle resolves this. | Accept pending the D follow-up (same new issue covers LICENSE). | Folded into D follow-up. |
+
+Pseudocode A update for F — preservation list (applies to all 4 new pages):
+```
+preserve: <meta charset/viewport>, Google Fonts preconnect + stylesheet link, inline <style> block
+rewrite:  <title> → "A&CE — <Demo Title>"
+inject:   <include src="partials/head-common.html"></include> (after <title>, before <style>)
+replace:  <script src="https://cdn.plot.ly/..."> → <script src="{{ rootPath }}assets/js/plotly-2.32.0.min.js">
+append:   rest of <body> unchanged
+```
+
+Follow-up issue filing is part of the PR description — not a v3 acceptance checkbox — to avoid blocking the merge on issue creation.
 
 ---
 
 ## Complexity: T2
 
-Multi-file website publish + config + Jest integration + vendored asset. No new Python/engineering code. Scope intentionally widened in v2 to cover the pre-existing `jumper-installation.html` analytics gap — doing it in the same commit is cheaper than a separate issue, and catches the latent sitemap defect.
+Multi-file website publish + config + Jest integration + vendored asset + two-commit structure. No new Python/engineering code. v3 narrowed scope by splitting jumper retrofit into its own preceding commit (now revertable independently) and closed v2 Defects A/B/C/E inline.
