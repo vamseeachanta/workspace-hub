@@ -1,0 +1,57 @@
+# Prospect Demo Intake — Template
+# -------------------------------------------------------------------------
+# Drop a filled copy of this file into docs/gtm/intake/received/ and run:
+#     uv run python -m scripts.gtm.prospect_adapter <path-to-filled-yaml>
+# The adapter validates against docs/gtm/intake/prospect-schema.json, maps
+# the fields onto the target demo's input shape, runs the demo, and emits
+# a branded HTML + PDF report delivered via email attachment AND a gated
+# private URL on aceengineer-website.
+#
+# Required vs optional is enforced by prospect-schema.json. Comments below
+# restate the contract; the schema is the source of truth.
+# -------------------------------------------------------------------------
+
+prospect:
+  company: "Acme Marine Contractors"        # required, string, min length 1
+  contact: "jane.doe@acme.example"          # required, must be valid email
+  nda_in_place: true                        # required bool — gates report distribution
+  target_demo: "demo_05"                    # required enum: demo_01..demo_05
+  delivery_deadline_utc: "2026-04-21T17:00Z"  # required ISO8601 UTC
+
+# vessel: CONDITIONAL-REQUIRED (Q6)
+#   - REQUIRED when target_demo is demo_03, demo_04, or demo_05.
+#   - FORBIDDEN when target_demo is demo_01 or demo_02 (schema rejects).
+#   - shape: csv_hlv for demos 3/5 (mudmat/jumper), pipelay for demo 4.
+#   - source: prospect_provided => body required inline.
+#             canonical_ref     => canonical_ref string required; adapter
+#                                  substitutes from docs/gtm/intake/canonical-vessels/.
+vessel:
+  shape: "csv_hlv"                          # required enum: csv_hlv | pipelay
+  source: "canonical_ref"                   # required enum: prospect_provided | canonical_ref
+  canonical_ref: "seven-borealis"           # required if source == canonical_ref
+  # body: { ... }                           # required if source == prospect_provided
+  #   Must match csv_hlv_vessel_schema or pipelay_vessel_schema depending on shape.
+
+structure:
+  kind: "rigid_jumper"                      # required enum matching demo
+  # Body shape selected by kind; validated by downstream demo input loader.
+  body:
+    # Example for rigid_jumper (demo_05); replace with real prospect data.
+    outer_diameter_m: 0.3239
+    wall_thickness_m: 0.0254
+    length_m: 45.0
+    material: "X65"
+
+environment:                                # all fields optional
+  # If absent, demo uses its module-level default sweep (WATER_DEPTHS etc).
+  water_depths_m: [1500, 2000, 2500]        # 0 <= each <= 4000
+  hs_values_m: [1.5, 2.0, 2.5]              # 0 <= each <= 8
+  current_velocity_ms: 0.5                  # 0 <= value <= 5
+
+output:
+  brand_header: "Prepared for Acme Marine"  # required
+  brand_footer: "Confidential - NDA"        # required
+  logo_inline_svg: null                     # optional inline SVG or null
+  publish_private_url: true                 # optional, default true
+  gating: "hash"                            # optional enum: hash | basic-auth | signed
+  purge_after_utc: "2026-05-20T00:00Z"      # required if publish_private_url == true

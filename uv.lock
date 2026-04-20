@@ -3184,6 +3184,7 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
+    { name = "jsonschema" },
     { name = "pytest" },
     { name = "pytest-cov" },
 ]
@@ -3201,6 +3202,7 @@ requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.14.3" },
     { name = "bleach", marker = "extra == 'workqueue'", specifier = ">=6.0" },
     { name = "docling", marker = "extra == 'docling'", specifier = ">=2.82" },
+    { name = "jsonschema", marker = "extra == 'dev'", specifier = ">=4.21" },
     { name = "markdown", marker = "extra == 'workqueue'", specifier = ">=3.6" },
     { name = "pdf2image", specifier = ">=1.17.0" },
     { name = "pdfplumber", specifier = ">=0.11.9" },

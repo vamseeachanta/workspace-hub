@@ -1,0 +1,68 @@
+# ============================================================================
+# Canonical vessel — Heavy-Lift Construction Support Vessel (CSV), DP3 class
+# Representative name: Seven Borealis (Subsea7 fleet)
+# ----------------------------------------------------------------------------
+# DISCLAIMER:
+#   - Class-typical values, not vessel-specific. Do not represent any
+#     particular commercial asset.
+#   - Intended as an intake fallback when a prospect's own vessel data is
+#     incomplete; the branded report will surface this disclaimer on the
+#     cover page when this canonical reference is used.
+#   - Last reviewed: 2026-04-20.
+#
+# CITATIONS (2-per-vessel rule, plan v3 canonical source pins):
+#   [1] Subsea7 public fleet page, "Seven Borealis" general particulars —
+#       https://www.subsea7.com/en/our-fleet (LOA, beam, DP3, main-crane SWL).
+#       Cross-referenced with OTC-24523 (2013) "Installation of Subsea
+#       Structures Using Heavy-Lift CSVs" for installation-class envelopes.
+#   [2] Bai & Bai, "Subsea Engineering Handbook" (2nd ed., 2018,
+#       ISBN 978-0-12-812622-6), Chapter 21 "Installation Vessel
+#       Characterization" — class-typical heave/roll/pitch RAOs and
+#       natural periods for DP3 heavy-lift CSVs.
+#
+# Reviewer reproducibility: LOA, beam, DP class, max water depth, and the
+# main-crane SWL below MUST be reproducible from citation [1]. Motion RAOs
+# and natural periods MUST be reproducible from citation [2].
+# ============================================================================
+
+id: "seven-borealis"
+name: "Seven Borealis (class-typical)"
+representative_class: "heavy_lift_csv_dp3"
+
+general:
+  loa_m: 182.0                   # LOA, citation [1]
+  beam_m: 46.2                   # beam, citation [1]
+  displacement_te: 68000         # approximate full-load displacement, citation [1]
+  dp_class: "DP3"                # citation [1]
+  max_water_depth_m: 3000        # class-typical deepwater rating, citation [1]
+  transit_speed_kt: 13.0         # class-typical transit speed, citation [1]
+  deck_area_m2: 4200             # aft working deck area, citation [1]
+  accommodation_pob: 399         # persons on board, citation [1]
+
+crane_main:
+  type: "mast_crane_heave_compensated"
+  swl_max_te: 5000                # main hook SWL, citation [1]
+  swl_max_radius_m: 32.0          # radius at max SWL, citation [1]
+  # Capacity curve: SWL vs. outreach radius. Class-typical envelope; linear
+  # falloff past the max-SWL radius consistent with citation [1] marketing curve.
+  crane_capacity_curve:
+    - { radius_m: 32.0, swl_te: 5000 }
+    - { radius_m: 40.0, swl_te: 4200 }
+    - { radius_m: 50.0, swl_te: 3400 }
+    - { radius_m: 60.0, swl_te: 2800 }
+    - { radius_m: 70.0, swl_te: 2300 }
+    - { radius_m: 80.0, swl_te: 1900 }
+  hoist_speed_m_per_min: 30.0     # class-typical, citation [2]
+  main_wire_mbl_te: 7500          # minimum breaking load, citation [2]
+  main_wire_diameter_mm: 165      # class-typical, citation [2]
+
+motion_characteristics:
+  # Class-typical DP3 CSV RAOs at the crane tip, head-seas, Tp = 10 s.
+  # All values per citation [2].
+  heave_rao: 0.35                 # m / m
+  roll_rao: 0.6                   # deg / m
+  pitch_rao: 0.4                  # deg / m
+  natural_periods:
+    heave_s: 10.5
+    roll_s: 14.0
+    pitch_s: 8.5
