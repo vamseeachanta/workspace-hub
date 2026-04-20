@@ -1,6 +1,6 @@
 # Plan for #2321: Fix or remove failing semantic-scholar-mcp + consolidate gsd/sparc/workflows overlap
 
-> **Status:** draft
+> **Status:** superseded 2026-04-17 — issue closed; split into children #2358 (docs + repo-tree overlap) and #2359 (semantic-scholar-mcp acute fix). Empirical discovery confirmed the plan's central mechanism (`git mv` on plugin-owned skills) was impossible — the target skills live under `~/.claude/plugins/cache/` and are not repo-tracked.
 > **Complexity:** T2
 > **Date:** 2026-04-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2321
