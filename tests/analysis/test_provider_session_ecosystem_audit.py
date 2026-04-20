@@ -309,6 +309,56 @@ def test_build_corpus_change_summary_separates_snapshot_and_event_time_deltas() 
     assert summary["largest_negative_reconciliation_gap_provider"] == "codex"
 
 
+def test_build_provider_interpretation_summary_derives_statuses() -> None:
+    provider_summaries = {
+        "claude": {"missing_repo_reads": 5, "python3_per_1k_records": 2.0, "uv_python_per_1k_records": 8.0},
+        "codex": {"missing_repo_reads": 0, "python3_per_1k_records": 10.0, "uv_python_per_1k_records": 1.0},
+    }
+    migration_debt = {
+        "ranked_providers": [
+            {
+                "provider": "claude",
+                "known_migration_debt_reads": 50,
+                "known_migration_debt_per_1k_records": 12.5,
+                "top_migration_rule_id": "legacy_work_queue_transition",
+            },
+            {
+                "provider": "codex",
+                "known_migration_debt_reads": 0,
+                "known_migration_debt_per_1k_records": 0.0,
+            },
+        ]
+    }
+    recent_activity = {
+        "status": "ok",
+        "providers": {
+            "claude": {"post_records": 150, "sessions": 4},
+            "codex": {"post_records": 0, "sessions": 0},
+        },
+    }
+    corpus_change = {
+        "status": "ok",
+        "providers": {
+            "claude": {"status": "aligned"},
+            "codex": {"status": "corpus_pruned_or_rebuilt"},
+        },
+    }
+
+    summary = module.build_provider_interpretation_summary(
+        provider_summaries, migration_debt, recent_activity, corpus_change
+    )
+
+    rows = {row["provider"]: row for row in summary["providers"]}
+    assert rows["claude"]["activity_status"] == "active"
+    assert rows["claude"]["debt_status"] == "high_debt"
+    assert rows["claude"]["python_hygiene_status"] == "uv_preferred"
+    assert rows["claude"]["primary_issue"] == "legacy_work_queue_transition"
+    assert rows["codex"]["activity_status"] == "idle"
+    assert rows["codex"]["corpus_status"] == "corpus_pruned_or_rebuilt"
+    assert rows["codex"]["debt_status"] == "none"
+    assert rows["codex"]["python_hygiene_status"] == "python3_heavy"
+
+
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     logs_root = repo_root / "logs" / "orchestrator"
@@ -444,10 +494,56 @@ def test_render_markdown_mentions_recent_activity_section() -> None:
     assert "### claude recent activity since previous audit" in markdown
     assert "Previous audit timestamp: `2026-04-09T00:00:00Z`" in markdown
     assert "Event-time scope note." in markdown
+
+
+def test_render_markdown_mentions_provider_interpretation_summary() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
+            "provider_interpretation_summary": {
+                "providers": [
+                    {
+                        "provider": "claude",
+                        "activity_status": "active",
+                        "corpus_status": "aligned",
+                        "debt_status": "high_debt",
+                        "python_hygiene_status": "uv_preferred",
+                        "primary_issue": "legacy_work_queue_transition",
+                        "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ]
+            },
+            "recent_activity_since_previous_audit": {"status": "no_prior_audit", "providers": {}},
+            "corpus_change_since_previous_audit": {"status": "no_prior_audit", "providers": {}},
+        },
+        "providers": {
+            "claude": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 2,
+                "python3_bash_calls": 0,
+                "uv_python_bash_calls": 1,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [],
+                "top_bash_command_families": [],
+                "top_missing_repo_reads": [],
+                "missing_repo_read_remediation_hints": [],
+                "top_missing_external_reads": [],
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "## Provider interpretation summary" in markdown
+    assert "`claude` — activity=active | corpus=aligned | debt=high_debt | python=uv_preferred" in markdown
+    assert "primary issue: legacy_work_queue_transition" in markdown
     assert "## Corpus change since previous audit" in markdown
-    assert "Snapshot scope note." in markdown
-    assert "Largest negative reconciliation gap: `codex`" in markdown
-    assert "### claude corpus change since previous audit" in markdown
+    assert "snapshot-to-snapshot corpus comparison is not yet available" in markdown
 
 
 def test_build_missing_read_remediation_hints_groups_known_legacy_paths() -> None:

@@ -3,52 +3,58 @@
 Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
 ## Executive summary
-- `claude` — source=raw_logs | sessions=33 | post_records=79799 | python3/1k=9.1 | uv-python/1k=74.71
+- `claude` — source=raw_logs | sessions=33 | post_records=79981 | python3/1k=9.08 | uv-python/1k=74.54
 - `codex` — source=raw_logs | sessions=50 | post_records=17317 | python3/1k=19.46 | uv-python/1k=24.31
 - `hermes` — source=raw_logs | sessions=19 | post_records=102042 | python3/1k=17.02 | uv-python/1k=19.87
 - `gemini` — source=raw_logs | sessions=45 | post_records=6082 | python3/1k=47.85 | uv-python/1k=6.41
 
-- Migration debt density (known stale reads with redirect hints per 1k records): `gemini` 13.81, `claude` 12.18, `codex` 0.0, `hermes` 0.0.
+- Migration debt density (known stale reads with redirect hints per 1k records): `gemini` 13.81, `claude` 12.15, `codex` 0.0, `hermes` 0.0.
 - Highest-volume known migration debt: `claude` with 972 mapped stale reads across 4 rule clusters; top hotspot: `legacy_work_queue_transition` (318).
 - Highest-density known migration debt: `gemini` with 84 mapped stale reads; top hotspot: `legacy_local_work_queue_items` (37, 44.05% of known debt).
 - Unmapped missing repo reads remain for: `codex`, `hermes`; this looks more like general path drift than known migration debt.
 - Scope note: Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.
 
+## Provider interpretation summary
+- `claude` — activity=active | corpus=aligned | debt=high_debt | python=uv_preferred | primary issue: legacy_work_queue_transition | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+- `codex` — activity=idle | corpus=aligned | debt=drift_only | python=mixed | primary issue: unmapped path drift | action: sample top missing repo reads to separate remap work from benign variance
+- `hermes` — activity=idle | corpus=aligned | debt=drift_only | python=mixed | primary issue: unmapped path drift | action: sample top missing repo reads to separate remap work from benign variance
+- `gemini` — activity=idle | corpus=aligned | debt=high_debt | python=python3_heavy | primary issue: legacy_local_work_queue_items | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+
 ## Recent activity since previous audit
-- Previous audit timestamp: `2026-04-20T03:42:49Z`
-- Recent post-audit activity: `hermes` 251 post records / 6 sessions, `claude` 125 post records / 3 sessions, `codex` 33 post records / 1 sessions, `gemini` 0 post records / 0 sessions.
+- Previous audit timestamp: `2026-04-20T07:12:47Z`
+- Recent post-audit activity: `claude` 182 post records / 3 sessions, `codex` 0 post records / 0 sessions, `gemini` 0 post records / 0 sessions, `hermes` 0 post records / 0 sessions.
 - Scope note: This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.
 
 ## Corpus change since previous audit
-- Previous audit timestamp: `2026-04-20T03:42:49Z`
+- Previous audit timestamp: `2026-04-20T07:12:47Z`
 - Scope note: Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.
 - Largest negative reconciliation gap: `claude`
-- Largest positive reconciliation gap: `hermes`
+- Largest positive reconciliation gap: `claude`
 
 ## claude
 - Source: raw_logs
 - Sessions: 33
-- Post-hook records: 79799
+- Post-hook records: 79981
 - Correction sessions: 0
 - Unique runtime sessions: 134
-- Prompt-like reads: 91
+- Prompt-like reads: 92
 - Blank read targets: 0
 - Missing repo reads: 7599
 - Bare python3 bash calls: 726
 - `uv run ... python` bash calls: 5962
 
 ### claude top tools
-- `Bash` — 43298
-- `Read` — 15445
-- `Edit` — 7281
-- `Write` — 6783
-- `Grep` — 2017
-- `Agent` — 829
+- `Bash` — 43414
+- `Read` — 15476
+- `Edit` — 7304
+- `Write` — 6791
+- `Grep` — 2018
+- `Agent` — 832
 - `ToolSearch` — 681
 - `TaskUpdate` — 541
 
 ### claude top repos
-- `workspace-hub` — 76057
+- `workspace-hub` — 76239
 - `digitalmodel` — 1900
 - `assetutilities` — 535
 - `worldenergydata` — 201
@@ -66,51 +72,51 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` — 123
 - `scripts/work-queue/close-item.sh` — 94
 - `scripts/work-queue/whats-next.sh` — 70
+- `docs/plans/README.md` — 67
 - `.claude/skills/coordination/workspace/work-queue/SKILL.md` — 66
-- `docs/plans/README.md` — 66
 
 ### claude top symbolic reads
 - none
 
 ### claude top Bash command families
-- `ls` — 6348
-- `uv run` — 5672
-- `grep` — 5385
-- `cat` — 4466
+- `ls` — 6363
+- `uv run` — 5674
+- `grep` — 5389
+- `cat` — 4471
 - `find` — 3364
 - `bash` — 2888
 - `sed` — 1336
-- `gh` — 1228
+- `gh` — 1232
 
 ### claude recent activity since previous audit
-- Post-hook records since prior audit: 125
+- Post-hook records since prior audit: 182
 - Runtime sessions since prior audit: 3
 
 ### claude recent top tools
-- `Bash` — 65
-- `Read` — 23
-- `Edit` — 22
-- `Agent` — 8
-- `Write` — 6
+- `Bash` — 117
+- `Read` — 30
+- `Edit` — 23
+- `Write` — 8
+- `Agent` — 3
 
 ### claude recent top Bash command families
-- `grep` — 9
-- `ls` — 9
-- `git` — 4
-- `head` — 4
-- `git log` — 3
-- `gh` — 3
-- `git status` — 3
-- `cat` — 3
+- `wc` — 40
+- `ls` — 14
+- `until` — 8
+- `git` — 6
+- `echo` — 5
+- `cat` — 5
+- `gh` — 4
+- `grep` — 4
 
 ### claude recent top missing repo reads
 - none
 
 ### claude corpus change since previous audit
-- Post-hook records: current 79799 vs previous 79674 (delta 125)
-- Sessions: current 33 vs previous 32 (delta 1)
-- Missing repo reads: current 7599 vs previous 7597 (delta 2)
-- Event-time post records since prior audit: 125
+- Post-hook records: current 79981 vs previous 79799 (delta 182)
+- Sessions: current 33 vs previous 33 (delta 0)
+- Missing repo reads: current 7599 vs previous 7599 (delta 0)
+- Event-time post records since prior audit: 182
 - Reconciliation gap vs event-time delta: 0
 - Status: aligned
 - Interpretation: Snapshot post-record change aligns with recent event-time activity.
@@ -208,33 +214,23 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `git status` — 311
 
 ### codex recent activity since previous audit
-- Post-hook records since prior audit: 33
-- Runtime sessions since prior audit: 1
+- Post-hook records since prior audit: 0
+- Runtime sessions since prior audit: 0
 
 ### codex recent top tools
-- `Read` — 14
-- `Grep` — 13
-- `Bash` — 3
-- `list_mcp_resources` — 1
-- `_fetch_commit` — 1
+- none
 
 ### codex recent top Bash command families
-- `git status` — 1
-- `git rev-parse` — 1
-- `rg` — 1
+- none
 
 ### codex recent top missing repo reads
-- `scripts/gtm/render-capability-summary-pdf.sh` — 2
-- `aceengineer-website/assets/fonts/inter/LICENSE` — 1
-- `aceengineer-website/assets/capability-summary-v1.pdf` — 1
-- `aceengineer-website/assets/capability-summary.pdf.meta` — 1
-- `docs/gtm/capability-summary.pdf` — 1
+- none
 
 ### codex corpus change since previous audit
-- Post-hook records: current 17317 vs previous 17284 (delta 33)
-- Sessions: current 50 vs previous 49 (delta 1)
-- Missing repo reads: current 247 vs previous 119 (delta 128)
-- Event-time post records since prior audit: 33
+- Post-hook records: current 17317 vs previous 17317 (delta 0)
+- Sessions: current 50 vs previous 50 (delta 0)
+- Missing repo reads: current 247 vs previous 247 (delta 0)
+- Event-time post records since prior audit: 0
 - Reconciliation gap vs event-time delta: 0
 - Status: aligned
 - Interpretation: Snapshot post-record change aligns with recent event-time activity.
@@ -317,37 +313,26 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `git log` — 1085
 
 ### hermes recent activity since previous audit
-- Post-hook records since prior audit: 251
-- Runtime sessions since prior audit: 6
+- Post-hook records since prior audit: 0
+- Runtime sessions since prior audit: 0
 
 ### hermes recent top tools
-- `Read` — 85
-- `Grep` — 69
-- `Bash` — 45
-- `Edit` — 45
-- `Write` — 5
+- none
 
 ### hermes recent top Bash command families
-- `uv run` — 7
-- `python` — 7
-- `python3` — 6
-- `bash` — 5
-- `git status` — 5
-- `gh` — 4
-- `for` — 2
-- `pwd` — 1
+- none
 
 ### hermes recent top missing repo reads
 - none
 
 ### hermes corpus change since previous audit
-- Post-hook records: current 102042 vs previous 101282 (delta 760)
-- Sessions: current 19 vs previous 17 (delta 2)
-- Missing repo reads: current 270 vs previous 268 (delta 2)
-- Event-time post records since prior audit: 251
-- Reconciliation gap vs event-time delta: 509
-- Status: positive_corpus_growth_beyond_recent_activity
-- Interpretation: Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage.
+- Post-hook records: current 102042 vs previous 102042 (delta 0)
+- Sessions: current 19 vs previous 19 (delta 0)
+- Missing repo reads: current 270 vs previous 270 (delta 0)
+- Event-time post records since prior audit: 0
+- Reconciliation gap vs event-time delta: 0
+- Status: aligned
+- Interpretation: Snapshot post-record change aligns with recent event-time activity.
 
 ### hermes top missing repo reads
 - `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py` — 24
@@ -449,13 +434,13 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - none
 
 ### gemini corpus change since previous audit
-- Post-hook records: current 6082 vs previous 6081 (delta 1)
-- Sessions: current 45 vs previous 44 (delta 1)
+- Post-hook records: current 6082 vs previous 6082 (delta 0)
+- Sessions: current 45 vs previous 45 (delta 0)
 - Missing repo reads: current 665 vs previous 665 (delta 0)
 - Event-time post records since prior audit: 0
-- Reconciliation gap vs event-time delta: 1
-- Status: positive_corpus_growth_beyond_recent_activity
-- Interpretation: Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage.
+- Reconciliation gap vs event-time delta: 0
+- Status: aligned
+- Interpretation: Snapshot post-record change aligns with recent event-time activity.
 
 ### gemini top missing repo reads
 - `.claude/work-queue/WRK-149.md` — 17

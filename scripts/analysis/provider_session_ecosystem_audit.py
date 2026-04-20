@@ -691,6 +691,98 @@ def build_corpus_change_summary(
     }
 
 
+def build_provider_interpretation_summary(
+    provider_summaries: dict[str, dict],
+    migration_debt: dict,
+    recent_activity: dict,
+    corpus_change: dict,
+) -> dict:
+    debt_by_provider = {
+        row.get("provider"): row
+        for row in migration_debt.get("ranked_providers", [])
+        if isinstance(row, dict) and row.get("provider")
+    }
+    recent_by_provider = recent_activity.get("providers", {}) if isinstance(recent_activity, dict) else {}
+    corpus_by_provider = corpus_change.get("providers", {}) if isinstance(corpus_change, dict) else {}
+
+    rows: list[dict] = []
+    for provider in PROVIDERS:
+        summary = provider_summaries.get(provider, {})
+        debt = debt_by_provider.get(provider, {})
+        recent = recent_by_provider.get(provider, {}) if isinstance(recent_by_provider, dict) else {}
+        corpus = corpus_by_provider.get(provider, {}) if isinstance(corpus_by_provider, dict) else {}
+
+        recent_post = int(recent.get("post_records", 0) or 0)
+        recent_sessions = int(recent.get("sessions", 0) or 0)
+        if recent_post >= 100 or recent_sessions >= 3:
+            activity_status = "active"
+        elif recent_post > 0 or recent_sessions > 0:
+            activity_status = "quiet"
+        elif recent_activity.get("status") == "ok":
+            activity_status = "idle"
+        else:
+            activity_status = "unavailable"
+
+        corpus_status = corpus.get("status", "unavailable") if corpus_change.get("status") == "ok" else "unavailable"
+
+        known_debt_reads = int(debt.get("known_migration_debt_reads", 0) or 0)
+        debt_density = float(debt.get("known_migration_debt_per_1k_records", 0) or 0)
+        missing_repo_reads = int(summary.get("missing_repo_reads", 0) or 0)
+        if known_debt_reads == 0 and missing_repo_reads == 0:
+            debt_status = "none"
+        elif known_debt_reads == 0 and missing_repo_reads > 0:
+            debt_status = "drift_only"
+        elif debt_density >= 10:
+            debt_status = "high_debt"
+        else:
+            debt_status = "moderate_debt"
+
+        python3_rate = float(summary.get("python3_per_1k_records", 0) or 0)
+        uv_rate = float(summary.get("uv_python_per_1k_records", 0) or 0)
+        if python3_rate == 0 and uv_rate == 0:
+            python_hygiene_status = "no_python_usage"
+        elif uv_rate >= 2 * python3_rate:
+            python_hygiene_status = "uv_preferred"
+        elif uv_rate < 0.5 * python3_rate:
+            python_hygiene_status = "python3_heavy"
+        else:
+            python_hygiene_status = "mixed"
+
+        if known_debt_reads > 0:
+            primary_issue = debt.get("top_migration_rule_id") or "mapped migration debt"
+            recommended_action = "prioritize legacy-path redirect cleanup and prompt/doc updates"
+        elif missing_repo_reads > 0:
+            primary_issue = "unmapped path drift"
+            recommended_action = "sample top missing repo reads to separate remap work from benign variance"
+        elif corpus_status == "positive_corpus_growth_beyond_recent_activity":
+            primary_issue = "backfill/export growth beyond event-time activity"
+            recommended_action = "verify exporter/backfill behavior before using trend deltas for decisions"
+        elif corpus_status == "corpus_pruned_or_rebuilt":
+            primary_issue = "corpus prune/rebuild drift"
+            recommended_action = "check export resets/pruning before drawing provider usage conclusions"
+        else:
+            primary_issue = "no acute anomaly"
+            recommended_action = "no immediate intervention; monitor next audit"
+
+        rows.append(
+            {
+                "provider": provider,
+                "activity_status": activity_status,
+                "corpus_status": corpus_status,
+                "debt_status": debt_status,
+                "python_hygiene_status": python_hygiene_status,
+                "recent_post_records": recent_post,
+                "recent_sessions": recent_sessions,
+                "known_migration_debt_reads": known_debt_reads,
+                "known_migration_debt_per_1k_records": debt_density,
+                "primary_issue": primary_issue,
+                "recommended_action": recommended_action,
+            }
+        )
+
+    return {"providers": rows}
+
+
 def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROOT) -> dict:
     provider_summaries: dict[str, dict] = {}
     previous_audit_path = repo_root / "analysis" / "provider-session-ecosystem-audit.json"
@@ -726,6 +818,10 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
 
     recent_activity = build_recent_activity_summary(provider_summaries, logs_root, repo_root, previous_generated_at)
     corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    migration_debt = build_migration_debt_summary(provider_summaries)
+    provider_interpretation = build_provider_interpretation_summary(
+        provider_summaries, migration_debt, recent_activity, corpus_change
+    )
 
     return {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -733,7 +829,8 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "logs_root": str(logs_root),
         "providers": provider_summaries,
         "executive_summary": {
-            "migration_debt": build_migration_debt_summary(provider_summaries),
+            "migration_debt": migration_debt,
+            "provider_interpretation_summary": provider_interpretation,
             "recent_activity_since_previous_audit": recent_activity,
             "corpus_change_since_previous_audit": corpus_change,
         },
@@ -784,6 +881,16 @@ def render_markdown(audit: dict) -> str:
                 f"- Unmapped missing repo reads remain for: {', '.join(f'`{provider}`' for provider in unmapped)}; this looks more like general path drift than known migration debt."
             )
         lines.append(f"- Scope note: {migration_debt.get('scope_note', '')}")
+        lines.append("")
+
+    interpretation_summary = audit.get("executive_summary", {}).get("provider_interpretation_summary", {})
+    interpretation_rows = interpretation_summary.get("providers", []) if isinstance(interpretation_summary, dict) else []
+    if interpretation_rows:
+        lines.append("## Provider interpretation summary")
+        for row in interpretation_rows:
+            lines.append(
+                f"- `{row['provider']}` — activity={row.get('activity_status')} | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} | python={row.get('python_hygiene_status')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
+            )
         lines.append("")
 
     recent_activity = audit.get("executive_summary", {}).get("recent_activity_since_previous_audit", {})
