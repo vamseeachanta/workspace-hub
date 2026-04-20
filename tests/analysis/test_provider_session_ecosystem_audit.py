@@ -799,6 +799,9 @@ def test_build_followup_issue_drafts_skips_monitor_and_assigns_draft_state() -> 
     assert "Inspect paths:" in drafts[0]["body"]
     assert drafts[0]["draft_key"]
     assert drafts[0]["dedupe_scope"] == "claude:legacy_work_queue_transition:governance-docs"
+    assert drafts[0]["linkage_key"] == "claude:legacy_work_queue_transition:high:governance-docs"
+    assert drafts[0]["title"] in drafts[0]["linkage_aliases"]
+    assert "claude: remediate legacy_work_queue_transition" in drafts[0]["linkage_aliases"]
     assert drafts[0]["duplicate_of_previous_draft_key"] is None
     assert drafts[0]["draft_state"] == "changed"
     assert drafts[0]["previous_title"] == "old title"
@@ -855,6 +858,9 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
     assert readiness[0]["should_open_issue"] is False
     assert readiness[0]["linked_issue_number"] == 42
     assert readiness[0]["linked_issue_state"] == "OPEN"
+    assert readiness[0]["linkage_key"] == "claude:legacy_work_queue_transition:critical:monitoring"
+    assert readiness[0]["matched_on"] == "exact_title"
+    assert readiness[0]["linked_issue_match_reason"] == "matched current title exactly"
     assert readiness[0]["linkage_confidence"] == "exact_title"
     assert readiness[0]["should_open_issue_final"] is False
     assert readiness[0]["final_posting_status"] == "blocked"
@@ -872,32 +878,52 @@ def test_build_issue_posting_readiness_allows_unchanged_unlinked_and_closed_link
         {
             "provider": "gemini",
             "title": "[high] gemini: remediate legacy_local_work_queue_items",
+            "previous_title": "[high] gemini: remediate legacy_local_work_queue_items (legacy)",
             "severity": "high",
+            "preferred_fix_lane": "planning-workflow",
             "draft_state": "unchanged",
             "minimum_evidence_present": True,
             "should_open_issue": False,
             "issue_open_reason": None,
             "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
             "evidence_gaps": [],
+            "linkage_key": "gemini:legacy_local_work_queue_items:high:planning-workflow",
+            "linkage_aliases": [
+                "[high] gemini: remediate legacy_local_work_queue_items",
+                "gemini: remediate legacy_local_work_queue_items",
+                "[high] gemini: remediate legacy_local_work_queue_items (legacy)",
+            ],
         },
         {
             "provider": "hermes",
             "title": "[medium] hermes: remediate unmapped path drift",
             "severity": "medium",
+            "preferred_fix_lane": "drift-triage",
             "draft_state": "unchanged",
             "minimum_evidence_present": True,
             "should_open_issue": False,
             "issue_open_reason": None,
             "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
             "evidence_gaps": [],
+            "linkage_key": "hermes:unmapped_path_drift:medium:drift-triage",
+            "linkage_aliases": [
+                "[medium] hermes: remediate unmapped path drift",
+                "hermes: remediate unmapped path drift",
+            ],
         },
     ]
     github_issues = [
         {
             "number": 77,
-            "title": "[high] gemini: remediate legacy_local_work_queue_items",
+            "title": "[high] gemini: remediate legacy_local_work_queue_items (legacy)",
             "state": "CLOSED",
             "url": "https://github.com/example/repo/issues/77",
+        },
+        {
+            "number": 88,
+            "title": "hermes: remediate unmapped path drift",
+            "state": "CLOSED",
+            "url": "https://github.com/example/repo/issues/88",
         }
     ]
 
@@ -906,13 +932,17 @@ def test_build_issue_posting_readiness_allows_unchanged_unlinked_and_closed_link
     by_provider = {item["provider"]: item for item in readiness}
     assert by_provider["gemini"]["linked_issue_number"] == 77
     assert by_provider["gemini"]["linked_issue_state"] == "CLOSED"
+    assert by_provider["gemini"]["matched_on"] == "previous_title"
+    assert by_provider["gemini"]["linked_issue_match_reason"] == "matched previous title exactly"
     assert by_provider["gemini"]["should_open_issue_final"] is True
     assert by_provider["gemini"]["final_posting_status"] == "ready"
     assert by_provider["gemini"]["final_open_reason"] == "linked issue #77 is closed; safe to open a fresh follow-up"
-    assert by_provider["hermes"]["linked_issue_number"] is None
+    assert by_provider["hermes"]["linked_issue_number"] == 88
+    assert by_provider["hermes"]["matched_on"] == "alias"
+    assert by_provider["hermes"]["linked_issue_match_reason"] == "matched linkage alias exactly"
     assert by_provider["hermes"]["should_open_issue_final"] is True
     assert by_provider["hermes"]["final_posting_status"] == "ready"
-    assert by_provider["hermes"]["final_open_reason"] == "unchanged draft has no linked issue; safe to open once"
+    assert by_provider["hermes"]["final_open_reason"] == "linked issue #88 is closed; safe to open a fresh follow-up"
 
 
 

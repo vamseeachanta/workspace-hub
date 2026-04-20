@@ -54,7 +54,7 @@
 | Upgrade playbook | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md |
 | Contract/anchor tests | tests/docs/test_workspace_hub_model_release_readiness.py |
 | Canonical anchors to update | AGENTS.md; docs/standards/CONTROL_PLANE_CONTRACT.md |
-| Entry surfaces to audit for consistency | CLAUDE.md; .claude/CLAUDE.md; GEMINI.md; .gemini/GEMINI.md; `.codex/` surfaces |
+| Provider entry surfaces audited only | CLAUDE.md; .claude/CLAUDE.md; GEMINI.md; .gemini/GEMINI.md; `.codex/` surfaces |
 | Plan review — Claude | scripts/review/results/2026-04-20-plan-2408-claude.md |
 | Plan review — Codex | scripts/review/results/2026-04-20-plan-2408-codex.md |
 | Plan review — Gemini | scripts/review/results/2026-04-20-plan-2408-gemini.md |
@@ -73,12 +73,12 @@ A workspace-hub-only readiness contract and upgrade playbook, anchored from cano
 ```
 inventory workspace_hub control-plane surfaces only: AGENTS.md, root provider entry surfaces, provider adapter directories, config/agents, .claude/rules, sync-agent-configs, review-routing policy
 extract the readiness dimensions this child must cover: context-budget/truncation safety, machine-readable-vs-prose guidance, prompt-pack portability, discoverability, upgrade procedure
-choose one consistent anchor strategy: update AGENTS.md and CONTROL_PLANE_CONTRACT.md as the canonical discoverability anchors; treat provider entry surfaces as audit targets for consistency, not as mandatory write targets in this issue
+choose one strict canonical-doc strategy: update only AGENTS.md and CONTROL_PLANE_CONTRACT.md as canonical discoverability anchors; treat provider entry surfaces as audit-only evidence and make no provider-entrypoint normalization changes in this issue
 write one cohesive workspace-hub package summarizing current surfaces, gaps, contract boundaries, and explicit out-of-scope tier-1 work
 write a standing contract in docs/standards that references but does not supersede CONTROL_PLANE_CONTRACT.md
 write a separate upgrade playbook focused on workspace-hub-only release adoption steps
-add explicit test file `tests/docs/test_workspace_hub_model_release_readiness.py` with concrete assertions for required dimensions, gap-summary section presence, anchor presence, line-count compliance, and no redefinition of adapter topology
-stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory and provider-adapter-shape normalization to sibling/follow-up issues
+add explicit test file `tests/docs/test_workspace_hub_model_release_readiness.py` with concrete assertions for required dimensions, gap-summary section presence, canonical anchors, non-contradiction, and line-count compliance of audited thin adapters
+stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory and all provider-entrypoint-shape normalization to sibling/follow-up issues
 ```
 
 ---
@@ -92,8 +92,6 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 | Create | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md | explicit workspace-hub upgrade playbook |
 | Create | tests/docs/test_workspace_hub_model_release_readiness.py | executable checks for dimensions, gap-summary sections, canonical anchors, non-contradiction, and line limits |
 | Update | AGENTS.md | add canonical discoverability pointer |
-| Update | CLAUDE.md | align live root Claude entry surface with canonical anchor policy |
-| Update | GEMINI.md | align live root Gemini entry surface with canonical anchor policy |
 | Update | docs/standards/CONTROL_PLANE_CONTRACT.md | anchor readiness contract from canonical control-plane standard |
 | Update | docs/plans/README.md | add this plan to index |
 
