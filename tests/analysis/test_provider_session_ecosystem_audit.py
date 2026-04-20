@@ -875,6 +875,16 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "preferred_fix_lane": "governance-docs",
                     }
                 ],
+                "followup_issue_drafts": [
+                    {
+                        "provider": "claude",
+                        "title": "[critical] claude: remediate legacy_work_queue_transition",
+                        "severity": "critical",
+                        "owner_team": "governance-maintainers",
+                        "preferred_fix_lane": "governance-docs",
+                        "body": "Summary: Provider `claude` is currently at trigger level `page` with health `red` and urgency tier `urgent_now`."
+                    }
+                ],
                 "rank_movements": [
                     {
                         "provider": "claude",
@@ -979,6 +989,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Remediation playbooks:" in markdown
     assert "lane=governance-docs | owner=governance-maintainers | owner_surface=docs/governance/SESSION-GOVERNANCE.md" in markdown
     assert "`claude` [page] — issue=legacy_work_queue_transition" in markdown
+    assert "Follow-up issue drafts:" in markdown
+    assert "`claude` [critical] — [critical] claude: remediate legacy_work_queue_transition | owner=governance-maintainers | lane=governance-docs" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown

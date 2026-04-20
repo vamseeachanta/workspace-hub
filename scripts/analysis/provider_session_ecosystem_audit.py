@@ -951,6 +951,12 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
         "corpus prune/rebuild drift": ("scripts/cron/provider-session-ecosystem-audit.sh", "exporter-maintainers", "exporter-schema"),
         "no acute anomaly": ("docs/reports/provider-session-ecosystem-audit.md", "audit-operators", "monitoring"),
     }
+    severity_by_trigger = {
+        "page": "critical",
+        "act_this_week": "high",
+        "investigate": "medium",
+        "monitor": "low",
+    }
 
     for row in rows:
         provider = str(row.get("provider", ""))
@@ -997,11 +1003,13 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
                 fallback.get("preferred_fix_lane", "monitoring"),
             ),
         )
+        trigger_level = trigger.get("trigger_level", "monitor")
         playbooks.append(
             {
                 "provider": provider,
                 "primary_issue": primary_issue,
-                "trigger_level": trigger.get("trigger_level", "monitor"),
+                "trigger_level": trigger_level,
+                "severity": severity_by_trigger.get(str(trigger_level), "low"),
                 "inspect_paths": inspect_paths,
                 "canonical_targets": canonical_targets,
                 "first_steps": first_steps,
@@ -1014,6 +1022,77 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
         )
 
     return playbooks
+
+
+def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remediation_playbooks: list[dict]) -> list[dict]:
+    watchlist_by_provider = {
+        item.get("provider"): item
+        for item in watchlist
+        if isinstance(item, dict) and item.get("provider")
+    }
+    playbook_by_provider = {
+        item.get("provider"): item
+        for item in remediation_playbooks
+        if isinstance(item, dict) and item.get("provider")
+    }
+
+    drafts: list[dict] = []
+    for row in rows:
+        provider = str(row.get("provider", ""))
+        if not provider:
+            continue
+        watch = watchlist_by_provider.get(provider, {})
+        playbook = playbook_by_provider.get(provider, {})
+        trigger_level = str(watch.get("trigger_level", "monitor"))
+        if trigger_level == "monitor":
+            continue
+
+        primary_issue = str(row.get("primary_issue", "no acute anomaly"))
+        severity = str(playbook.get("severity", "low"))
+        owner_team = str(playbook.get("owner_team", "audit-operators"))
+        preferred_fix_lane = str(playbook.get("preferred_fix_lane", "monitoring"))
+        owner_surface = str(playbook.get("owner_surface", "docs/reports/provider-session-ecosystem-audit.md"))
+        inspect_paths = list(playbook.get("inspect_paths", []))
+        canonical_targets = list(playbook.get("canonical_targets", []))
+        first_steps = list(playbook.get("first_steps", []))
+
+        title = f"[{severity}] {provider}: remediate {primary_issue}"
+        summary = (
+            f"Provider `{provider}` is currently at trigger level `{trigger_level}` with health `{row.get('health_status')}` "
+            f"and urgency tier `{row.get('urgency_tier')}`."
+        )
+        body_lines = [
+            f"Summary: {summary}",
+            f"Primary issue: {primary_issue}",
+            f"Owner team: {owner_team}",
+            f"Preferred fix lane: {preferred_fix_lane}",
+            f"Owner surface: {owner_surface}",
+            f"Watchlist trigger: {watch.get('trigger_reason')}",
+            f"Suggested follow-up: {watch.get('suggested_followup')}",
+            f"Guidance: {playbook.get('guidance')}",
+            f"Reference doc: {playbook.get('reference_doc')}",
+            "Inspect paths:",
+        ]
+        body_lines.extend(f"- {path}" for path in inspect_paths)
+        body_lines.append("Canonical targets:")
+        body_lines.extend(f"- {path}" for path in canonical_targets)
+        body_lines.append("First steps:")
+        body_lines.extend(f"- {step}" for step in first_steps)
+
+        drafts.append(
+            {
+                "provider": provider,
+                "title": title,
+                "severity": severity,
+                "owner_team": owner_team,
+                "preferred_fix_lane": preferred_fix_lane,
+                "body": "\n".join(body_lines),
+            }
+        )
+
+    severity_rank = {"critical": 3, "high": 2, "medium": 1, "low": 0}
+    drafts.sort(key=lambda item: (-severity_rank.get(str(item.get("severity", "low")), 0), str(item.get("provider", ""))))
+    return drafts
 
 
 def build_recent_activity_summary(
@@ -1528,6 +1607,7 @@ def build_provider_interpretation_summary(
     watchlist = build_watchlist(rows)
     change_alerts = build_change_alerts(rows, watchlist, previous_audit)
     remediation_playbooks = build_remediation_playbooks(provider_summaries, rows, watchlist)
+    followup_issue_drafts = build_followup_issue_drafts(rows, watchlist, remediation_playbooks)
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -1587,6 +1667,7 @@ def build_provider_interpretation_summary(
         "watchlist": watchlist,
         "change_alerts": change_alerts,
         "remediation_playbooks": remediation_playbooks,
+        "followup_issue_drafts": followup_issue_drafts,
     }
 
 
@@ -1640,6 +1721,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "watchlist": provider_interpretation.get("watchlist", []),
         "change_alerts": provider_interpretation.get("change_alerts", []),
         "remediation_playbooks": provider_interpretation.get("remediation_playbooks", []),
+        "followup_issue_drafts": provider_interpretation.get("followup_issue_drafts", []),
     }
 
     return {
@@ -1747,6 +1829,13 @@ def render_markdown(audit: dict) -> str:
                 step_summary = " | ".join(str(step) for step in steps[:2]) if steps else "no immediate steps recorded"
                 lines.append(
                     f"  - `{playbook['provider']}` [{playbook.get('trigger_level')}] — issue={playbook.get('primary_issue')} | lane={playbook.get('preferred_fix_lane')} | owner={playbook.get('owner_team')} | owner_surface={playbook.get('owner_surface')} | inspect={', '.join(playbook.get('inspect_paths', [])[:3])} | targets={', '.join(playbook.get('canonical_targets', [])[:3])} | steps: {step_summary}"
+                )
+        followup_issue_drafts = interpretation_summary.get("followup_issue_drafts", [])
+        if followup_issue_drafts:
+            lines.append("- Follow-up issue drafts:")
+            for draft in followup_issue_drafts:
+                lines.append(
+                    f"  - `{draft['provider']}` [{draft.get('severity')}] — {draft.get('title')} | owner={draft.get('owner_team')} | lane={draft.get('preferred_fix_lane')}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:
