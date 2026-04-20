@@ -13,10 +13,11 @@
 ### Existing repo code
 - Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` — defines canonical workspace-hub entrypoints (`AGENTS.md`, `.claude/`, `.codex/`, `.gemini/`) and adapter roles.
 - Found: `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — defines cross-provider review expectations that the readiness contract must preserve during model-release changes.
+- Found: root `CLAUDE.md` and root `GEMINI.md` — live human/provider-facing workspace entry surfaces that must stay consistent with the control-plane contract.
 - Found: `config/agents/codex/config.toml`, `config/agents/claude/settings.json`, `config/agents/gemini/settings.json` — concrete provider-config surfaces already managed in workspace-hub.
 - Found: `scripts/_core/sync-agent-configs.sh` — concrete config-parity/sync surface relevant to provider/model-release readiness.
-- Found: `.claude/rules/README.md`, `.claude/rules/patterns.md`, `.claude/rules/coding-style.md` — live machine-readable/prose governance surfaces the contract must classify explicitly.
-- Gap: no workspace-hub-only readiness contract currently defines context-budget handling, truncation-safe artifact design, prompt-pack portability, machine-readable-vs-prose guidance, or provider-upgrade procedure in one canonical place.
+- Found: `.claude/CLAUDE.md`, `.claude/rules/README.md`, `.claude/rules/patterns.md`, and `.claude/rules/coding-style.md` — live adapter/rule surfaces the contract must classify explicitly and keep non-contradictory.
+- Gap: no workspace-hub-only readiness contract currently defines context-budget handling, truncation-safe artifact design, prompt-pack portability, machine-readable-vs-prose guidance, provider-upgrade procedure, and canonical discoverability-anchor policy in one place.
 
 ### Standards
 | Standard | Status | Source |
@@ -38,7 +39,7 @@
 ### Gaps identified
 - No single workspace-hub-only contract for model-release readiness.
 - No explicit workspace-hub upgrade playbook for new provider/model versions.
-- No canonical discoverability anchors from existing workspace-hub entrypoints to readiness guidance.
+- No canonical, cross-file discoverability-anchor policy that reconciles live root entry surfaces with the control-plane contract.
 - No explicit contract language for context-budget/truncation-safe design and machine-readable-rules-vs-prose guidance.
 
 ---
@@ -52,7 +53,8 @@
 | Standing contract | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md |
 | Upgrade playbook | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md |
 | Contract/anchor tests | tests/docs/test_workspace_hub_model_release_readiness.py |
-| Discoverability anchors | AGENTS.md; docs/standards/CONTROL_PLANE_CONTRACT.md; provider adapters remain thin and are referenced, not expanded |
+| Canonical anchors to update | AGENTS.md; docs/standards/CONTROL_PLANE_CONTRACT.md |
+| Entry surfaces to audit for consistency | CLAUDE.md; .claude/CLAUDE.md; GEMINI.md; .gemini/GEMINI.md; `.codex/` surfaces |
 | Plan review — Claude | scripts/review/results/2026-04-20-plan-2408-claude.md |
 | Plan review — Codex | scripts/review/results/2026-04-20-plan-2408-codex.md |
 | Plan review — Gemini | scripts/review/results/2026-04-20-plan-2408-gemini.md |
@@ -69,14 +71,14 @@ A workspace-hub-only readiness contract and upgrade playbook, anchored from cano
 ## Pseudocode
 
 ```
-inventory workspace_hub control-plane surfaces only: AGENTS.md, provider adapter directories, config/agents, .claude/rules, sync-agent-configs, review-routing policy
+inventory workspace_hub control-plane surfaces only: AGENTS.md, root provider entry surfaces, provider adapter directories, config/agents, .claude/rules, sync-agent-configs, review-routing policy
 extract the readiness dimensions this child must cover: context-budget/truncation safety, machine-readable-vs-prose guidance, prompt-pack portability, discoverability, upgrade procedure
-choose one consistent anchor strategy: add discoverability to AGENTS.md and CONTROL_PLANE_CONTRACT.md while keeping provider adapters thin and unchanged except where they already act as canonical pointers
+choose one consistent anchor strategy: update AGENTS.md and CONTROL_PLANE_CONTRACT.md as the canonical discoverability anchors; treat provider entry surfaces as audit targets for consistency, not as mandatory write targets in this issue
 write one cohesive workspace-hub package summarizing current surfaces, gaps, contract boundaries, and explicit out-of-scope tier-1 work
 write a standing contract in docs/standards that references but does not supersede CONTROL_PLANE_CONTRACT.md
 write a separate upgrade playbook focused on workspace-hub-only release adoption steps
-add explicit test file `tests/docs/test_workspace_hub_model_release_readiness.py` covering required dimensions, scope boundary, anchor presence, non-contradiction with CONTROL_PLANE_CONTRACT, and line-count compliance for thin adapters
-stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory and Codex adapter-shape changes to sibling/follow-up issues
+add explicit test file `tests/docs/test_workspace_hub_model_release_readiness.py` with concrete assertions for required dimensions, gap-summary section presence, anchor presence, line-count compliance, and no redefinition of adapter topology
+stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory and provider-adapter-shape normalization to sibling/follow-up issues
 ```
 
 ---
@@ -85,28 +87,28 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md | cohesive summary of workspace-hub surfaces, gaps, and recommendations |
+| Create | docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md | cohesive summary of workspace-hub surfaces, gaps, required sections, and recommendations |
 | Create | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md | standing workspace-hub readiness contract |
 | Create | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md | explicit workspace-hub upgrade playbook |
-| Create | tests/docs/test_workspace_hub_model_release_readiness.py | executable checks for dimensions, anchors, scope boundary, non-contradiction, and line limits |
+| Create | tests/docs/test_workspace_hub_model_release_readiness.py | executable checks for dimensions, gap-summary sections, canonical anchors, non-contradiction, and line limits |
 | Update | AGENTS.md | add discoverability pointer |
 | Update | docs/standards/CONTROL_PLANE_CONTRACT.md | anchor readiness contract from canonical control-plane standard |
 | Update | docs/plans/README.md | add this plan to index |
-
 ---
 
 ## TDD Test List
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
+| test_package_contains_workspace_hub_gap_summary_section | required gap summary exists | package text | named workspace-hub gap summary section present |
 | test_contract_covers_context_budget_and_truncation_safety | required dimension is explicit | contract text | named section/requirements present |
 | test_contract_covers_machine_readable_vs_prose_guidance | rules-vs-prose dimension is explicit | contract text | named section/requirements present |
 | test_contract_covers_prompt_pack_portability | portability dimension is explicit | contract/playbook text | provider/machine portability section present |
 | test_upgrade_playbook_separates_provider_vs_repo_drift | playbook handles ownership correctly | playbook text | provider-owned vs repo-owned branches present |
-| test_anchor_strategy_matches_control_plane_contract | chosen anchors are consistent with adapter topology | AGENTS + CONTROL_PLANE_CONTRACT | explicit consistent references only |
+| test_anchor_strategy_matches_control_plane_contract | chosen anchors are consistent with adapter topology | AGENTS + CONTROL_PLANE_CONTRACT + root entry surfaces | explicit consistent references only |
 | test_line_count_compliance_for_thin_adapters | thin-adapter limit is preserved | AGENTS.md, CLAUDE.md, GEMINI.md | files remain within policy limit |
-| test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory and Codex adapter-shape changes |
-| test_non_contradiction_with_control_plane_contract | new docs do not contradict current control-plane contract | contract + playbook + control-plane contract | no contradiction markers |
+| test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory and provider-adapter-shape normalization |
+| test_non_contradiction_with_control_plane_contract_uses_concrete_assertions | new docs do not redefine adapter topology | contract + playbook + control-plane contract | exact string assertions on canonical adapter paths pass |
 
 ---
 
@@ -114,14 +116,15 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 
 - [ ] `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md` exists
 - [ ] `docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md` exists
-- [ ] `docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md` exists
+- [ ] `docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md` exists and contains a named workspace-hub-only gap summary section
 - [ ] `tests/docs/test_workspace_hub_model_release_readiness.py` exists
 - [ ] contract explicitly covers context-budget/truncation-safe artifact design
 - [ ] contract explicitly covers machine-readable rules/skills vs prose-only guidance
 - [ ] contract explicitly covers prompt-pack portability for workspace-hub workflows
 - [ ] discoverability anchors exist in the chosen canonical workspace-hub entrypoints without requiring provider-adapter expansion
-- [ ] package/contract explicitly state that tier-1 ecosystem inventory and Codex adapter-shape changes are out of scope for this issue
+- [ ] package/contract explicitly state that tier-1 ecosystem inventory and provider-adapter-shape normalization are out of scope for this issue
 - [ ] line-count compliance for thin adapters is explicitly tested
+- [ ] non-contradiction with `CONTROL_PLANE_CONTRACT.md` is checked using concrete assertions, not vague contradiction language
 - [ ] review artifacts are posted to `scripts/review/results/`
 
 ---

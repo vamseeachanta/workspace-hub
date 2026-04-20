@@ -159,24 +159,66 @@ ${CONTENT_TEXT}"
 }
 EOF
 
+  # #2406 fix: pipe prompt via stdin using `-` positional per codex CLI contract
+  # ("If not provided as an argument (or if `-` is used), instructions are read
+  # from stdin"). Root cause of the stdin-hang bug was passing the prompt as
+  # argv while stdin was an unconsumed inherited pipe that codex blocked on.
+  #
+  # Script-scope cache for the version-probe result. Set on first call to
+  # run_codex_exec and reused on the compact-retry call to guarantee the two
+  # dispatches never diverge and the probe runs exactly once per invocation.
+  _CODEX_STDIN_SUPPORTED=""
+
+  _probe_codex_stdin_support() {
+    # Returns 0 if the installed codex CLI documents `-` / stdin in `exec --help`,
+    # 1 otherwise. Caches the answer in $_CODEX_STDIN_SUPPORTED.
+    if [[ -n "$_CODEX_STDIN_SUPPORTED" ]]; then
+      [[ "$_CODEX_STDIN_SUPPORTED" == "yes" ]]
+      return
+    fi
+    local help_text
+    help_text="$("$CODEX_BIN" exec --help 2>&1)"
+    if grep -q "read from stdin" <<<"$help_text"; then
+      _CODEX_STDIN_SUPPORTED="yes"
+      return 0
+    fi
+    _CODEX_STDIN_SUPPORTED="no"
+    return 1
+  }
+
   run_codex_exec() {
     local prompt_text="$1"
+
+    # One-time version probe. On older codex CLIs without documented stdin
+    # support, hard-fail rather than falling back to the known-buggy argv path.
+    if ! _probe_codex_stdin_support; then
+      echo "# Codex CLI version unsupported — no documented stdin (`-`) support in 'exec --help'" >&2
+      echo "# Action: upgrade codex CLI (npm install -g @openai/codex) and retry." >&2
+      echo "# exit 7 (CLI version unsupported)" >&2
+      exit 7
+    fi
+
+    # Pipeline: printf → [timeout] → codex exec - ...
+    # Use ${PIPESTATUS[1]} to propagate codex's exit under set -euo pipefail —
+    # avoids masking codex's real exit code if printf hits SIGPIPE or similar.
     if command -v timeout >/dev/null 2>&1; then
-      timeout "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec "$prompt_text" \
+      printf '%s' "$prompt_text" | timeout "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec - \
         --skip-git-repo-check \
         --output-schema "$schema_file" \
         --output-last-message "$raw_file" >/dev/null 2>"$err_file"
     elif command -v perl >/dev/null 2>&1; then
-      perl -e 'alarm shift; exec @ARGV' "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec "$prompt_text" \
+      printf '%s' "$prompt_text" | perl -e 'alarm shift; exec @ARGV' \
+        "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec - \
         --skip-git-repo-check \
         --output-schema "$schema_file" \
         --output-last-message "$raw_file" >/dev/null 2>"$err_file"
     else
-      "$CODEX_BIN" exec "$prompt_text" \
+      printf '%s' "$prompt_text" | "$CODEX_BIN" exec - \
         --skip-git-repo-check \
         --output-schema "$schema_file" \
         --output-last-message "$raw_file" >/dev/null 2>"$err_file"
     fi
+    return "${PIPESTATUS[1]}"
   }
 
   check_uv_readiness() {
