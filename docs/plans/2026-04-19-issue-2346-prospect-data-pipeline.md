@@ -1,17 +1,18 @@
 # Plan for #2346: Prospect-Data Customized-Demo Pipeline — 48hr Turnaround + Pre-Staged Vessel Templates
 
-> **Status:** draft v2 (revised 2026-04-20 after user design-Q answers)
+> **Status:** draft v3 (revised 2026-04-20 after round-1 reviews)
 > **Complexity:** T2
-> **Date:** 2026-04-19 (v1), 2026-04-20 (v2)
+> **Date:** 2026-04-19 (v1), 2026-04-20 (v2, v3)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2346
-> **Review artifacts (pending):** `scripts/review/results/2026-04-19-plan-2346-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-04-20-plan-2346-claude.md` (v2, CHANGES-REQUESTED) | `scripts/review/results/2026-04-20-plan-2346-codex.md` (v2, MAJOR) | gemini (pending round-2)
 
 ## Revision History
 
 | Version | Date | Author | Change |
 |---|---|---|---|
 | v1 | 2026-04-19 | planner | Initial draft; 5 open design questions (Q4-Q8) flagged for user |
-| v2 | 2026-04-20 | planner | Integrated user answers to Q4-Q8: (Q4) dual delivery = email + gated URL; (Q5) canonical vessels derived from public-class references (OTC papers, broker listings, class-society DBs) not synthetic; (Q6) `vessel:` block conditional-required (required for demos 3/4/5, optional/absent for demos 1/2); (Q7) refuse-vs-fix expanded to 4 authorized fallbacks (closest-canonical, canonical-class-default, one-clarification-email, reduced-scope-with-caveats); (Q8) E2E runs all 5 demos every PR with <10 min runtime budget leveraging `--from-cache`. |
+| v2 | 2026-04-20 | planner | Integrated user answers to Q4-Q8: (Q4) dual delivery = email + gated URL; (Q5) canonical vessels derived from public-class references (OTC papers, broker listings, class-society DBs) not synthetic; (Q6) `vessel:` block conditional-required (required for demos 3/4/5, optional/absent for demos 1/2); (Q7) refuse-vs-fix expanded to **5 authorized fallbacks F1-F5** (refuse, closest-canonical, canonical-class-default, one-clarification-email, reduced-scope-with-caveats); (Q8) E2E runs all 5 demos every PR with <10 min runtime budget leveraging `--from-cache`. |
+| v3 | 2026-04-20 | planner | Round-1 reviewer integration. Addressed 7 Codex MAJORs + 3 Claude MAJORs + 4 Claude MINORs: (a) Q5 Canonical Vessel Source Pins subsection prescribes 2-citation-per-vessel rule with concrete OTC/broker/ISBN examples (Codex M1/M2, Claude m1); (b) JSON-Schema section rewritten as executable draft-07 with `$schema`, quoted keys, nested `required`, `if/then/else`, and `properties.vessel: false` defense-in-depth for demos 1/2 (Codex M3, Claude M2); (c) Dual Delivery State Machine subsection will define sequencing, partial-failure semantics, retry + compensating actions, delivery log schema (Codex M4); (d) Fallback sidecar path moved to `private-log/fallback-applied.json` with gitignore + test-asserted never-ships guarantee (Codex M5); (e) Canonical-fixture leakage contained via `tests/fixtures/prospect-outputs/` test-only sink with gitignore + CI-path-assertion test (Codex M6); (f) Gated URL mechanism grounded: `aceengineer-website/robots.txt` + `vercel.json` modifications added to Files to Change, unique-hash URL path scheme `/private/<hash>/<slug>.html` (Claude M1); (g) Upstream Dependencies Risks subsection prescribes merge-order vs inline-template fallback relative to #2342/#2343 (Claude M3); (h) Revision History reconciled to "5 authorized fallbacks F1-F5" (Codex M7); (i) gitignore coverage extended to `logos/` and prospect `output/` paths (Claude m4). Implementation not started; all new language in future/imperative tense. |
 
 ---
 
@@ -38,18 +39,27 @@
 
 Not applicable — this is a GTM infrastructure / pipeline issue, not new engineering calculation code. (The underlying engineering codes are already cited inside each demo: DNV-RP-H103, DNV-ST-F101, API 5L, etc.)
 
-### Public-class vessel data sources (v2, per user answer to Q5)
+### Public-class vessel data sources (v3, per user answer to Q5 + Codex M1/M2 + Claude m1)
 
-Per user direction, the 3 pre-staged canonical vessels are NOT synthetic — they are derived from **class-typical** values published in open literature. Sources to consult during implementation (cite specific document IDs in each canonical YAML's header comment):
+Per user direction, the 3 pre-staged canonical vessels will NOT be synthetic — they will be derived from **class-typical** values published in open literature. v3 upgrades the sourcing contract from "broad categories" to **pinned citations per vessel** so a reviewer can independently recompute each canonical vessel's parameters from the cited sources.
 
-- **OTC papers** (Offshore Technology Conference archive, onepetro.org) — class-representative pipelay and heavy-lift installation case studies. Search terms: "pipelay barge operability", "HLV crane curve", "PLSV deepwater installation" — papers typically published in the OTC-XXXXX series usually include vessel operability envelopes, crane curves, and motion RAOs representative of the class.
-- **Vessel broker listings** (public marketing pages from Heerema, Saipem, Subsea 7, Allseas, McDermott, TechnipFMC) — general particulars (LOA, beam, DP class, max water depth, crane SWL) are routinely disclosed for marketing. These are the load-bearing scalar specs.
-- **Class-society databases** (DNV Veracity vessel registry, ABS Record, Lloyd's Register CLASSDirect) — open-web pages disclose class notations, DP class, max operating water depth, and keel-laying date; sufficient to justify a "class-typical" motion envelope.
-- **Industry reference texts** — Bai & Bai *Subsea Engineering Handbook* (2nd ed.), Palmer & King *Subsea Pipeline Engineering* (3rd ed.), API 17B/17J — class-typical values where vendor disclosure is incomplete.
+#### Canonical Vessel Source Pins (plan-time contract, NOT deferred)
 
-**Disclaimer contract:** every canonical vessel YAML file MUST include a top-of-file comment block stating: (a) "Class-typical values, not vessel-specific"; (b) "Do not represent any particular commercial asset"; (c) source citations with document IDs / URLs / ISBNs; (d) last-reviewed date. The adapter must surface this disclaimer on the report cover page when a canonical vessel is used.
+Each canonical YAML will be committed with at least **two complementary citations** in its header comment — at minimum one vendor-disclosure source (marketing spec sheet, class-society registry, or OTC paper with general particulars) AND one class-typical methodology source (industry textbook or API/DNV recommended practice section). The pairing requirement exists because no single open source typically discloses full RAOs + full crane curve + full pipelay-system details for any one asset.
 
-**Populate-during-implementation flag:** specific document IDs for each of the 3 canonical YAMLs are to be populated during implementation by the engineer running the adapter build (not in this plan) — they will be committed alongside the YAMLs so the adversarial review can verify the disclaimer is present and cited.
+The plan prescribes the following pins as the v3 baseline; implementation MAY substitute an equivalent public source of equal or better auditability, but MUST commit the exact IDs used alongside the YAML in the same PR, and MUST NOT leave any citation as a placeholder at merge time.
+
+| Canonical YAML | Vessel class | Primary citation (general particulars, crane/pipelay specs) | Complementary citation (motion/RAO methodology, class-typical envelopes) |
+|---|---|---|---|
+| `pipelay-barge.yaml` | S-lay pipelay barge (shallow/mid-water) | Allseas *Lorelay* public spec sheet (allseas.com/equipment/pipelay-vessels/lorelay) — LOA, beam, DP2, max lay depth, tensioner capacity, stinger radius. | Palmer & King, *Subsea Pipeline Engineering* (3rd ed., 2023, ISBN 978-1-5939-2378-7), chapter on S-lay barges — class-typical tensioner/stinger envelopes and barge RAO ranges. |
+| `heavy-lift-csv.yaml` | Heavy-lift Construction Support Vessel (DP3, deepwater crane) | Subsea 7 *Seven Borealis* public spec sheet (subsea7.com/en/our-fleet) + OTC paper OTC-24523 (2013) "Installation of Subsea Structures Using Heavy-Lift CSVs" — LOA, beam, DP3, 5000 t main crane SWL curve. | Bai & Bai, *Subsea Engineering Handbook* (2nd ed., 2018, ISBN 978-0-12-812622-6), §21 installation vessel characterization — class-typical heave/roll/pitch RAOs for DP3 CSVs, natural periods. |
+| `plsv.yaml` | Pipe-Lay Support Vessel (flex-lay / reel-lay, deepwater) | TechnipFMC *Deep Energy* public spec sheet (technipfmc.com/en/what-we-do/subsea/vessels) + OTC paper OTC-25303 (2014) "Deepwater Reel-Lay PLSV Installation Experience" — LOA, beam, DP3, reel/tensioner capacity, max lay depth. | DNV-RP-H103 *Modelling and Analysis of Marine Operations* (Oct 2021 ed.) §4 lay-vessel motion criteria + API 17B/17J — class-typical operability envelopes for PLSV installation. |
+
+**Reviewer-reproducibility test:** for each YAML, the adversarial reviewer MUST be able to open each cited document (public URL or widely-available ISBN) and recompute at least the LOA, beam, DP class, max water depth, and one representative crane/tensioner capacity. If a reviewer cannot reproduce the numbers from the cited pair, the canonical YAML FAILS plan-acceptance criterion and MUST be revised before merge.
+
+**Disclaimer contract:** every canonical vessel YAML file MUST include a top-of-file comment block stating: (a) "Class-typical values, not vessel-specific"; (b) "Do not represent any particular commercial asset"; (c) the two citations per the pins above, with URLs/DOIs/ISBNs; (d) last-reviewed date. The adapter will surface this disclaimer on the report cover page when a canonical vessel is used.
+
+**Residual sourcing risk:** vendor spec sheets are subject to URL-rot. Mitigation: each YAML will snapshot the citation as ISO-8601 `accessed` date, and when a URL dies the class-society registry entry or textbook page will be the durable fallback. This is enforced by a `sources[].accessed_utc` field being REQUIRED in each YAML's header block.
 
 ### LLM Wiki pages consulted
 
@@ -96,7 +106,8 @@ All rows below are **prescribed by this plan** (to be created during implementat
 | SOP runbook | `docs/gtm/prospect-demo-sop.md` | PRESCRIBED |
 | Shared input adapter (module) | `digitalmodel/examples/demos/gtm/prospect_adapter.py` | PRESCRIBED |
 | Branded-report wrapper | `digitalmodel/examples/demos/gtm/branded_report.py` | PRESCRIBED |
-| Fallback-audit sidecar (written at pipeline runtime, schema-tested) | `digitalmodel/examples/demos/gtm/output/fallback-applied.json` | PRESCRIBED (runtime output; schema defined in adapter) |
+| Fallback-audit sidecar (private-log, gitignored, never shipped) | `digitalmodel/examples/demos/gtm/private-log/fallback-applied.json` | PRESCRIBED (runtime output; gitignored; schema in section G) |
+| Test-only dual-delivery output sink (E2E canonical fixtures) | `digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/` | PRESCRIBED (gitignored; never published) |
 | Deliveries log | `docs/gtm/deliveries-log.md` | PRESCRIBED |
 | Golden regression test | `digitalmodel/examples/demos/gtm/tests/test_prospect_adapter.py` | PRESCRIBED |
 | Dry-run end-to-end test | `digitalmodel/examples/demos/gtm/tests/test_prospect_pipeline_e2e.py` | PRESCRIBED |
@@ -130,6 +141,20 @@ Every prospect report is delivered on **two channels simultaneously**:
 3. **Coexistence rule:** email is ALWAYS sent. The URL is an optional additional channel the prospect can ignore; its publication is controlled by a top-level `output.publish_private_url: bool` flag (default `true`). If the prospect opts out (sets it `false` or an engineer overrides under sensitivity considerations), only email is delivered.
 
 4. **Purge contract:** any gated URL publication must have a matching entry in `docs/gtm/deliveries-log.md` with `purge_after_utc` timestamp; an enforcement cron (filed as a follow-up issue — not in this plan's scope) verifies nothing stays published past the purge date.
+
+### Dual Delivery State Machine (v3, per Codex M4)
+
+The plan prescribes the following sequencing + partial-failure semantics. Implementation will encode this as a small state machine in `prospect_adapter.py::deliver()`; TDD tests will cover each transition.
+
+1. **Sequencing (serial, email-first).** Email is sent FIRST. Only after email is confirmed delivered (SMTP 250 + queued-log entry) does the pipeline publish to the gated URL. Rationale: email is the authoritative, contractually-safe channel; if email fails, no URL is published, so the prospect never sees a URL without the accompanying email context.
+2. **Email-success + URL-success** → write full delivery-log entry (email_sent_utc, url_published_utc, hash, purge_after_utc); state = `DELIVERED`.
+3. **Email-failure** → abort. Do NOT publish URL. Log failure with SMTP/transport error; state = `FAILED_EMAIL`. Engineer is alerted via SOP Hour-44-48 checkpoint. Retry policy: 3 attempts with exponential backoff (30s, 2min, 10min) BEFORE declaring `FAILED_EMAIL`.
+4. **Email-success + URL-publish-failure** → the prospect already has the email+attachment (authoritative deliverable satisfied). Retry URL publish 3× (30s, 2min, 10min). On persistent failure, state = `DELIVERED_EMAIL_ONLY`; delivery-log records `url_publish_error` and `url_retry_count=3`. No compensating action (email is not withdrawn) because the contract at line 129 declares email sufficient.
+5. **Late URL publish** (URL succeeds on a retry after initial email but prospect has already opened email without URL) → allowed; deliveries-log records `url_published_utc` with the eventual timestamp. No follow-up email is auto-sent (avoids spam); SOP allows an engineer to manually send a "URL now available" email if the prospect requests.
+6. **Compensating action for successful email + decision to un-publish** (e.g., NDA violation discovered post-publish) → `unpublish_url(hash)` will delete the gated file and record `unpublished_utc` + `unpublish_reason` in deliveries-log. Email is NOT recalled (not technically possible). This is a manually-triggered SOP action, not an automatic state transition.
+7. **Delivery log schema** (each row, appended never mutated): `prospect_id`, `demo`, `email_attempt_count`, `email_sent_utc` (nullable), `url_publish_attempt_count`, `url_published_utc` (nullable), `gated_url_hash` (nullable), `purge_after_utc` (nullable), `state` (enum: `DELIVERED` | `DELIVERED_EMAIL_ONLY` | `FAILED_EMAIL` | `UNPUBLISHED`), `fallback_applied` (F1-F5 code or null), `notes`.
+
+TDD coverage: `test_delivery_email_first_then_url`, `test_delivery_email_fail_aborts_url`, `test_delivery_url_fail_records_email_only_state`, `test_delivery_retry_backoff_bounds`, `test_delivery_unpublish_records_state`.
 
 ---
 
@@ -178,32 +203,109 @@ output:
   purge_after_utc: "2026-05-20T00:00Z"      # required-if publish_private_url==true
 ```
 
-### B. JSON-Schema validator (`prospect-schema.json`)
+### B. JSON-Schema validator (`prospect-schema.json`) — v3 executable draft-07
 
+v3 rewrites this section as a real JSON-Schema document (quoted keys, nested `required` arrays, `$schema` declaration, explicit `if/then/else`). The schema below will be committed verbatim as `docs/gtm/intake/prospect-schema.json` and will pass `jsonschema`'s `Draft7Validator.check_schema()`. The Q6 "vessel FORBIDDEN for demos 1/2" contract will be expressed via BOTH `"not": { "required": ["vessel"] }` AND `"properties": { "vessel": false }` for defense-in-depth (Claude M2): the `false` subschema forbids the property, and the `not/required` gives a redundant rejection path that surfaces a clearer error message.
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aceengineer.com/schemas/prospect-intake-v3.json",
+  "title": "Prospect Demo Intake",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["prospect", "structure", "output"],
+  "properties": {
+    "prospect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["company", "contact", "nda_in_place", "target_demo", "delivery_deadline_utc"],
+      "properties": {
+        "company": { "type": "string", "minLength": 1 },
+        "contact": { "type": "string", "format": "email" },
+        "nda_in_place": { "type": "boolean" },
+        "target_demo": { "type": "string", "enum": ["demo_01", "demo_02", "demo_03", "demo_04", "demo_05"] },
+        "delivery_deadline_utc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "vessel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shape", "source"],
+      "properties": {
+        "shape": { "type": "string", "enum": ["csv_hlv", "pipelay"] },
+        "source": { "type": "string", "enum": ["prospect_provided", "canonical_ref"] },
+        "canonical_ref": { "type": ["string", "null"] },
+        "body": { "type": "object" }
+      },
+      "allOf": [
+        {
+          "if":   { "properties": { "source": { "const": "prospect_provided" } } },
+          "then": { "required": ["body"] }
+        },
+        {
+          "if":   { "properties": { "source": { "const": "canonical_ref" } } },
+          "then": { "required": ["canonical_ref"], "properties": { "canonical_ref": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "body"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["pipeline", "rigid_jumper", "mudmat", "freespan", "jumper_and_freespan"] },
+        "body": { "type": "object" }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "water_depths_m": { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 4000 } },
+        "hs_values_m":    { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 8 } },
+        "current_velocity_ms": { "type": "number", "minimum": 0, "maximum": 5 }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brand_header", "brand_footer"],
+      "properties": {
+        "brand_header": { "type": "string", "minLength": 1 },
+        "brand_footer": { "type": "string", "minLength": 1 },
+        "logo_inline_svg": { "type": ["string", "null"] },
+        "publish_private_url": { "type": "boolean", "default": true },
+        "gating": { "type": "string", "enum": ["hash", "basic-auth", "signed"], "default": "hash" },
+        "purge_after_utc": { "type": "string", "format": "date-time" }
+      },
+      "allOf": [
+        {
+          "if":   { "properties": { "publish_private_url": { "const": true } } },
+          "then": { "required": ["purge_after_utc"] }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "description": "Q6: demos 3/4/5 REQUIRE a vessel block.",
+      "if":   { "properties": { "prospect": { "properties": { "target_demo": { "enum": ["demo_03", "demo_04", "demo_05"] } } } } },
+      "then": { "required": ["vessel"] }
+    },
+    {
+      "description": "Q6: demos 1/2 FORBID a vessel block (defense-in-depth: both properties.vessel=false AND not/required).",
+      "if":   { "properties": { "prospect": { "properties": { "target_demo": { "enum": ["demo_01", "demo_02"] } } } } },
+      "then": {
+        "properties": { "vessel": false },
+        "not": { "required": ["vessel"] }
+      }
+    }
+  ]
+}
 ```
-JSON-Schema draft-07 describing:
-  - required top-level blocks: prospect, structure, output
-    (v2/Q6: "vessel" is NOT unconditionally required — see conditional below)
-  - enum constraints on target_demo, vessel.shape, vessel.source, structure.kind
-  - conditional "required": if source==prospect_provided then body required;
-    if source==canonical_ref then canonical_ref required
-  - v2/Q6 CONDITIONAL-REQUIRED vessel block, expressed as JSON-Schema allOf:
-      allOf:
-        - if:   { properties: { prospect: { properties: { target_demo: { enum: ["demo_03","demo_04","demo_05"] } } } } }
-          then: { required: ["vessel"] }
-        - if:   { properties: { prospect: { properties: { target_demo: { enum: ["demo_01","demo_02"] } } } } }
-          then: { not: { required: ["vessel"] } }  # vessel MUST be absent for demos 1/2
-    Rationale: demos 1 and 2 are pure pipe/freespan/wall-thickness — including
-    vessel data there is a structural-coherence bug (the demo has no consumer
-    for it, and a reviewer would have to guess why the prospect supplied it).
-    Fail fast at schema time, not 45 min into compute.
-  - v2/Q4 conditional: if output.publish_private_url == true, purge_after_utc required
-  - numeric bounds: water_depth >=0 && <=4000 m, hs_m >=0 && <=8 m
-  - format: date-time on delivery_deadline_utc, purge_after_utc
-  - additionalProperties: false on every object to refuse unknown keys
-    (guards against silent typos like "target_dmo" — the 48hr SLA will not
-     allow a 30-min post-mortem on a misspelling)
-```
+
+Rationale: `"properties": { "vessel": false }` in draft-07 means "if the `vessel` key is present, validation fails" — this is the real forbidding mechanism Claude M2 called for. The accompanying `"not": { "required": ["vessel"] }` is redundant but surfaces the error on a different path, so whichever validator message the engineer sees first is intelligible. `additionalProperties: false` on every inner object guards against silent typos (the 48hr SLA will not allow a 30-min post-mortem on `target_dmo`).
 
 ### C. Shared input adapter (`prospect_adapter.py`)
 
@@ -354,7 +456,29 @@ The SOP allows four authorized fallbacks in addition to "refuse and email". Thes
 | Canonical-ref file not found | DEFAULT | — | — | — | — |
 | Demo 1/2 with stray vessel block | — | — | — | DEFAULT | — |
 
-Every fallback application must be logged in `docs/gtm/deliveries-log.md` (prescribed file — created during implementation) with the fallback code (F2/F3/F5), and the adapter (to be created) must emit a structured JSON record to a fallback-audit sidecar at `digitalmodel/examples/demos/gtm/output/fallback-applied.json` so the pattern is auditable across prospects. The sidecar's schema is specified in `prospect_adapter.py` at implementation time and validated by `test_e2e_fallback_matrix_F2_closest_canonical` / `..._F5_reduced_scope`.
+Every fallback application must be logged in `docs/gtm/deliveries-log.md` (prescribed file — created during implementation) with the fallback code (F2/F3/F5), and the adapter (to be created) must emit a structured JSON record to a **private-log** fallback-audit sidecar so the pattern is auditable across prospects without ever reaching the prospect.
+
+**v3 sidecar boundary (per Codex M5):** the sidecar path will be `digitalmodel/examples/demos/gtm/private-log/fallback-applied.json` — NOT in the `output/` tree. Rationale: `output/` holds prospect-facing HTML + JSON result files; a sidecar in that tree risks being accidentally emailed, zipped into a deliverable, or published to the gated URL. The `private-log/` directory will be a sibling of `output/`, committed to `.gitignore`, and explicitly excluded by name in the deliver() packaging function. The plan prescribes: (a) Pseudocode section C will rename `output/fallback-applied.json` references to `private-log/fallback-applied.json`; (b) Files to Change will add a `.gitignore` rule for `digitalmodel/examples/demos/gtm/private-log/`; (c) the deliver() packaging step will hard-exclude `private-log/**` from both the email-attachment bundle and the gated-URL publish set; (d) TDD tests `test_fallback_sidecar_never_in_email_attachment` and `test_fallback_sidecar_never_in_url_publish_set` will assert the sidecar path appears in NEITHER delivery channel's file list.
+
+**v3 sidecar schema** (specified at plan time, per Claude m3):
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["prospect_id", "timestamp_utc", "fallback_code", "failure_mode"],
+  "properties": {
+    "prospect_id":        { "type": "string" },
+    "timestamp_utc":      { "type": "string", "format": "date-time" },
+    "fallback_code":      { "type": "string", "enum": ["F1", "F2", "F3", "F5"] },
+    "failure_mode":       { "type": "string" },
+    "field_substituted":  { "type": ["string", "null"] },
+    "canonical_source":   { "type": ["string", "null"] },
+    "pre_authorization":  { "type": "string", "enum": ["explicit", "implicit_allowlist", "none"] },
+    "engineer":           { "type": "string" }
+  }
+}
+```
+The E2E tests `test_e2e_fallback_matrix_F2_closest_canonical` / `..._F5_reduced_scope` will validate the sidecar content against this schema.
 
 ---
 
@@ -383,9 +507,14 @@ Every fallback application must be logged in `docs/gtm/deliveries-log.md` (presc
 | Modify | `digitalmodel/examples/demos/gtm/demo_04_shallow_water_pipelay.py` | Same minimal flag set |
 | Modify | `digitalmodel/examples/demos/gtm/demo_05_deepwater_rigid_jumper_installation.py` | Same minimal flag set |
 | Modify | `digitalmodel/examples/demos/gtm/README.md` | Add "Prospect-customized runs" section with flag docs |
-| Modify | `docs/plans/README.md` | Register this plan (status: draft) |
+| Modify | `docs/plans/README.md` | Register this plan (status: draft v3) |
+| Modify | `aceengineer-website/robots.txt` | Add `Disallow: /private/` so crawlers will skip gated prospect URLs (Claude M1) |
+| Modify | `aceengineer-website/vercel.json` | Add `headers` entry with `source: /private/(.*)` setting `X-Robots-Tag: noindex, nofollow` (Claude M1) |
+| Modify | `.gitignore` | Add `docs/gtm/intake/received/`, `docs/gtm/intake/logos/`, `digitalmodel/examples/demos/gtm/private-log/`, `digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/`, and prospect `output/` artifacts (Claude m4, Codex M5/M6) |
 
-**Note on `.gitignore`:** `docs/gtm/intake/received/` should be created but be in `.gitignore` — prospect data is potentially NDA-covered and must NEVER be committed to the public repo. The SOP will explicitly instruct that. (See Risks below for the PII/NDA treatment.)
+**Note on gated URL path scheme (v3):** the unique-hash URL scheme will be `/private/<sha256-hash(prospect-id + salt + date)>/<slug>.html`. `/private/` (not `/prospects/`) is chosen so the `Disallow` rule in `robots.txt` matches a single top-level path. If basic-auth is selected instead (opt-in, per intake field `output.gating: basic-auth`), Vercel Password Protection (Pro-tier feature, ~$20/mo add-on per project) will be used — the plan acknowledges this cost and documents it as a gating-upgrade decision in the SOP.
+
+**Note on `.gitignore`:** four new patterns will be added (see row above). Rationale: (a) `intake/received/` holds NDA-covered prospect YAMLs; (b) `intake/logos/` holds potentially copyrighted prospect brand assets; (c) `private-log/` holds fallback-audit records that must never leave the engineer's machine; (d) `tests/fixtures/prospect-outputs/` holds CI-generated HTML from canonical vessels that must never be mistaken for prospect-facing content. Each pattern will be verified by a `git check-ignore` acceptance test.
 
 ---
 
@@ -441,9 +570,22 @@ Per user answer to Q8, the E2E suite runs all 5 demos on every PR using canonica
 | test_e2e_gated_url_hash_deterministic | Same prospect id + salt + date → same hash URL (repeatability) | n/a |
 | test_e2e_golden_regression_demo_05 | Canonical "heavy-lift-csv" vessel + fixture structure → charts' underlying JSON payload matches committed golden file byte-for-byte (modulo timestamps) | n/a — regression guard |
 | test_e2e_refuse_on_malformed_yaml | Invalid YAML → pipeline exits non-zero before any compute | < 5 s — must fail fast |
-| test_e2e_fallback_matrix_F2_closest_canonical | Demo 5 intake with missing vessel + pre-auth → F2 applied, cover disclosure present, fallback-applied.json sidecar written | `--from-cache` enabled — target <90 s |
+| test_e2e_fallback_matrix_F2_closest_canonical | Demo 5 intake with missing vessel + pre-auth → F2 applied, cover disclosure present, `private-log/fallback-applied.json` sidecar written and validates against section-G schema | `--from-cache` enabled — target <90 s |
 | test_e2e_fallback_matrix_F5_reduced_scope | Depth exceeds vessel rating + pre-auth → F5 applied, scope-reduced banner present, sweep capped | `--from-cache` enabled — target <90 s |
-| test_e2e_demo_01_with_stray_vessel_rejected | Demo 1 intake that wrongly includes `vessel:` → pipeline refuses at schema time | < 5 s |
+| test_e2e_demo_01_with_stray_vessel_rejected | Demo 1 intake that wrongly includes `vessel:` → pipeline refuses at schema time (v3: both `properties.vessel: false` AND `not/required` paths surface an error) | < 5 s |
+| test_fallback_sidecar_never_in_email_attachment | Simulated deliver() with an F2 fallback: email-attachment file list MUST NOT include `private-log/fallback-applied.json` | < 5 s |
+| test_fallback_sidecar_never_in_url_publish_set | Simulated deliver() with an F2 fallback: URL-publish file list MUST NOT include `private-log/fallback-applied.json` | < 5 s |
+| test_canonical_fixture_output_path_isolation | E2E output for canonical-vessel runs lands under `tests/fixtures/prospect-outputs/` only; asserted-absent from `aceengineer-website/` and `docs/gtm/website-pages/` | < 5 s |
+| test_delivery_email_first_then_url | State machine: email sent before URL publish attempted | mocked — < 2 s |
+| test_delivery_email_fail_aborts_url | State machine: email failure → URL NOT published, state=FAILED_EMAIL | mocked — < 2 s |
+| test_delivery_url_fail_records_email_only_state | State machine: email OK + URL publish fails 3× → state=DELIVERED_EMAIL_ONLY | mocked — < 2 s |
+| test_delivery_retry_backoff_bounds | Retry schedule 30s/2min/10min respected within ±10% tolerance | mocked — < 3 s |
+| test_delivery_unpublish_records_state | unpublish_url() deletes gated file and records state=UNPUBLISHED with reason | mocked — < 2 s |
+| test_robots_txt_disallows_private | `aceengineer-website/robots.txt` contains `Disallow: /private/` | < 1 s |
+| test_vercel_json_noindex_header_on_private | `aceengineer-website/vercel.json` `headers` block sets `X-Robots-Tag: noindex, nofollow` on `source: /private/(.*)` | < 1 s |
+| test_gitignore_covers_private_log | `git check-ignore digitalmodel/examples/demos/gtm/private-log/x.json` exits 0 | < 1 s |
+| test_gitignore_covers_logos | `git check-ignore docs/gtm/intake/logos/sample.svg` exits 0 | < 1 s |
+| test_gitignore_covers_test_fixture_outputs | `git check-ignore digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/x.html` exits 0 | < 1 s |
 
 **Budget-concern flag:** the 5-demo suite will approach the 10-min budget on cold CI. Mitigations (in priority order): (a) `--from-cache` is mandatory in CI; (b) CI job warms the cache once per workflow; (c) if budget is breached, split into `pr-smoke` (3 demos: 02/05/refuse-cases, <4 min) and `nightly-full` (all 5 + golden regressions). This split is a filed follow-up decision, not a v2 plan commitment — the plan commits to the 5-demo target and flags the risk.
 
@@ -474,7 +616,15 @@ Per user answer to Q8, the E2E suite runs all 5 demos on every PR using canonica
 - [ ] `uv run pytest digitalmodel/examples/demos/gtm/tests/ -v` passes — all schema, materialization, e2e, golden, SOP tests green
 - [ ] v2/Q8: E2E suite covers all 5 demos on every PR; total runtime < 10 min with `--from-cache` warm
 - [ ] `test_e2e_refuse_on_malformed_yaml` completes in < 5 s (fail-fast verified)
-- [ ] Fallback-audit sidecar `output/fallback-applied.json` is written whenever F2/F3/F5 triggers and matches tested schema
+- [ ] Fallback-audit sidecar `private-log/fallback-applied.json` (v3) is written whenever F2/F3/F5 triggers and matches the schema specified in section G
+- [ ] Fallback-audit sidecar never appears in the email-attachment bundle (asserted by `test_fallback_sidecar_never_in_email_attachment`)
+- [ ] Fallback-audit sidecar never appears in the gated-URL publish set (asserted by `test_fallback_sidecar_never_in_url_publish_set`)
+- [ ] `aceengineer-website/robots.txt` contains `Disallow: /private/` (verified by `curl https://aceengineer.com/robots.txt`)
+- [ ] `aceengineer-website/vercel.json` sets `X-Robots-Tag: noindex, nofollow` on `/private/(.*)` (verified by `curl -I https://aceengineer.com/private/<hash>/index.html`)
+- [ ] `.gitignore` covers `docs/gtm/intake/logos/`, `digitalmodel/examples/demos/gtm/private-log/`, and `digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/` — each verified via `git check-ignore` in tests
+- [ ] Canonical-fixture E2E HTML files will land only under `tests/fixtures/prospect-outputs/`; test asserts no CI-generated files appear under `aceengineer-website/` or `docs/gtm/website-pages/`
+- [ ] Dual delivery state machine tests (`test_delivery_email_first_then_url`, `..._email_fail_aborts_url`, `..._url_fail_records_email_only_state`, `..._retry_backoff_bounds`, `..._unpublish_records_state`) all pass
+- [ ] Each canonical YAML header block includes ≥2 citations per v3 Source Pins table, with URLs/DOIs/ISBNs and `accessed_utc` field populated
 - [ ] Golden regression test committed with a canonical golden JSON output file
 - [ ] `docs/plans/README.md` has a new row for #2346 in the index (v2 status)
 - [ ] No regression in existing demos: `uv run python digitalmodel/examples/demos/gtm/demo_05_deepwater_rigid_jumper_installation.py --from-cache` still produces identical HTML when no prospect flags are passed
@@ -512,6 +662,13 @@ Per user answer to Q8, the E2E suite runs all 5 demos on every PR using canonica
 - **Risk (v2/Q4): gated URL complexity and leakage.** Dual-channel delivery doubles the attack surface. Mitigations: (a) default gating mechanism is unique-hash (simplest; no server-side auth state to leak); (b) `robots.txt` + `X-Robots-Tag: noindex, nofollow` blocks crawlers; (c) `purge_after_utc` enforcement (cron follow-up issue); (d) deliveries-log.md records every hash → traceability if leak discovered. **Residual risk:** prospect forwarding the hash URL to an unauthorized third party — not mitigable at plan level; SOP must make the NDA boundary explicit in the email body.
 - **Risk (v2/Q8): 10-min CI budget under pressure.** Running all 5 demos in CI on every PR is the user's mandate but the sum-of-durations approaches the budget. Mitigations: (a) `--from-cache` enforced in CI; (b) cache warmed by CI setup step; (c) filed follow-up to split `pr-smoke` vs `nightly-full` if breached. **Residual risk:** cache-drift causing phantom passes — golden regression test catches this on the cache-warming job itself, not on each PR.
 - **Risk (v2/Q7): fallback matrix over-reach.** Five authorized fallbacks (F1-F5) widen the refuse-vs-fix decision surface. A tired engineer might silently apply F3 (class-default-field) to a field outside the allowlist. Mitigations: (a) allowlist enforced in code, not in the SOP prose; (b) fallback-audit sidecar JSON written every time a fallback triggers — auditable post-hoc; (c) acceptance test verifies non-allowlist field substitution raises `ProspectIntakeError`.
+
+### Upstream Dependencies (v3, per Claude M3)
+
+- **Risk: cross-plan sequencing with #2342/#2343.** `branded_report.py` (this plan) will optionally overlay client branding onto the #2342/#2343 detail-page template (`partials/head-common.html`, `nav.html`, `footer.html`, vendored Plotly). If #2342/#2343 merges BEFORE #2346, those templates will exist and `branded_report.py` will layer on top. If #2346 ships FIRST, the templates will not exist yet and `branded_report.py` would fail at import-time. **Mitigation (two-path):**
+  1. **Preferred path:** implement #2346 AFTER #2342/#2343 Commit 2 merges. This is the lower-complexity path and will be the default.
+  2. **Fallback path:** if scheduling forces #2346 to ship first, `branded_report.py` will include a minimal inline HTML template (self-contained `<head>` + brand header/footer div + inline CSS, no external partials, no vendored Plotly — charts will fall back to static PNG via matplotlib) that can later be SUPERSEDED by the #2342/#2343 template when available. The inline template will be marked `# DEPRECATED-ON-#2342-MERGE` in-source and a follow-up issue will be filed to strip it.
+  Decision gate: merge order will be resolved at the first implementation kickoff; both paths are pre-authorized so implementation will not block on a re-planning cycle. Acceptance criterion will assert that the chosen path is documented in `branded_report.py` module docstring with the relevant commit SHA of #2342/#2343 OR the DEPRECATED marker.
 
 ### Open questions for user (remaining after v2 integration)
 
