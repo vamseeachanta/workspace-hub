@@ -258,6 +258,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2397 | canonical-folder-structure-and-refactor-contract | `docs/plans/2026-04-20-issue-2397-canonical-folder-structure-and-refactor-contract.md` | 2026-04-20 | draft | T2 | Canonical tier-1 repo anatomy contract, drift inventory, migration matrix, and future guardrail design |
 | 2398 | llm-wiki-spinout-vs-embedded-architecture | `docs/plans/2026-04-20-issue-2398-llm-wiki-spinout-vs-embedded-architecture.md` | 2026-04-20 | draft | T2 | Strategy plan comparing embedded vs standalone vs hybrid llm-wiki boundaries for the repo ecosystem |
 | 2399 | next-model-release-readiness-contract | `docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md` | 2026-04-20 | draft | T2 | Control-plane readiness contract, smoke/eval battery, and upgrade playbook for future model/provider releases |
+| 2406 | codex-stdin-hang-fix | `docs/plans/2026-04-20-issue-2406-codex-stdin-hang-fix.md` | 2026-04-20 | draft | T2 | Infra bug. `scripts/review/submit-to-codex.sh` hangs on "Reading additional input from stdin..." for substantial plan files (exit 124 at 300s/600s). Root cause: positional-argv prompt delivery while `codex exec` can fall back to stdin reads when stdin is a non-tty unconsumed pipe from caller. Fix: pipe prompt via stdin, use `-` positional per CLI help contract. Adds T26/T27/T28 argv-vs-stdin regression tests + 24 000-char fixture. Unblocks reliable cross-provider review for every downstream plan. |
 ## Entry Format
 
 Add one row per plan:
