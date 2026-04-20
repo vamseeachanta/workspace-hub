@@ -1,5 +1,6 @@
 """Signal detectors. Pure for signals 1-3; detect_showcase uses gh CLI."""
 from __future__ import annotations
+import hashlib
 import re
 import subprocess
 from datetime import datetime, timedelta, timezone
@@ -135,5 +136,65 @@ def detect_new_case_study(
             ),
             dedupe_key=f"case-study:{repo_name}:{rel_path}",
             payload={"path": rel_path},
+        ))
+    return signals
+
+
+def _extract_section(markdown: str, heading: str) -> str:
+    """Return body of `## <heading>` section, up to next `## ` or EOF."""
+    lines = markdown.splitlines()
+    start = None
+    for i, line in enumerate(lines):
+        if line.strip() == f"## {heading}":
+            start = i + 1
+            break
+    if start is None:
+        return ""
+    end = len(lines)
+    for j in range(start, len(lines)):
+        if lines[j].startswith("## "):
+            end = j
+            break
+    return "\n".join(lines[start:end]).strip()
+
+
+def _hash_section(body: str) -> str:
+    normalized = "\n".join(line.rstrip() for line in body.splitlines() if line.strip())
+    return "sha256:" + hashlib.sha256(normalized.encode("utf-8")).hexdigest()
+
+
+def detect_readme_capability_diff(
+    repo_name: str, repo_path: Path, state: RepoState, sections: list[str],
+) -> list[Signal]:
+    """Signal 3: README section hash drift."""
+    readme_path = repo_path / "README.md"
+    if not readme_path.exists():
+        return []
+    try:
+        md = readme_path.read_text()
+    except (UnicodeDecodeError, OSError):
+        return []
+    signals: list[Signal] = []
+    for heading in sections:
+        body = _extract_section(md, heading)
+        if not body:
+            continue  # silent skip per spec
+        current_hash = _hash_section(body)
+        prev_hash = state.last_readme_hash.get(heading)
+        if prev_hash == current_hash:
+            continue
+        hash_prefix = current_hash.split(":")[1][:8]
+        signals.append(Signal(
+            repo=repo_name,
+            kind="readme-diff",
+            title=f"[sync] {repo_name} README \"{heading}\" section changed",
+            body=(
+                f"README section `## {heading}` changed in `{repo_name}`.\n\n"
+                f"## Current section content\n\n```\n{body}\n```\n\n"
+                f"## Proposed website update\n\n"
+                f"Reflect capability change in engineering.html / about.html."
+            ),
+            dedupe_key=f"readme-diff:{repo_name}:{heading}:{hash_prefix}",
+            payload={"heading": heading, "hash": current_hash},
         ))
     return signals
