@@ -1,343 +1,302 @@
-# Plan for #2348: Scanner ToS / Rate-Limit / Dedup / Retention Triage
+# Plan for #2348: Scanner ToS / Robots / Unpause Governance
 
-> **Status:** draft (2026-04-17) — plan-drafting only; no implementation; no adversarial review dispatched yet
+> **Status:** draft v2 (2026-04-17) — revised after round-1 adversarial review; not yet re-dispatched; awaiting round-2 review
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2348
-> **Triaged issues:** #1707 (fix, partial — robots.txt + ToS audit still open), #1708 (verify-and-close), #1709 (verify-and-close)
-> **Complexity:** T2 — one real code change (robots.txt + ToS audit gate in the scanner) + two "verify and close" triage decisions
-> **Author:** Claude Code (plan-drafting agent for agent team task #14)
+> **In-scope issue:** #1707 (OPEN — robots.txt + documented ToS review + unpause governance)
+> **Out of scope (already closed 2026-04-20):** #1708 (closed, `70c3975b2`), #1709 (closed, `d0840bd42`)
+> **Complexity:** T2 — one code change (robots.txt in `safe_request()`) + compliance docs + explicit unpause checklist gated on non-engineer sign-off
+> **Author:** Claude Code
+
+---
+
+## Revision History
+
+| Version | Date | Change |
+|---|---|---|
+| v1 | 2026-04-17 | Initial draft — 3-issue triage (#1707 fix + #1708/#1709 close-with-comment) + cron-pause flag |
+| v2 | 2026-04-17 | Post-review refresh: (a) remove #1708/#1709 close actions — they closed during round-1 review cycle; (b) reconcile sources to live reality (`linkedin/indeed/career_page` only — Google and Rigzone NOT in live run); (c) add non-engineer approver to sign-off chain; (d) replace unpause "recommendation" with explicit checklist; (e) flip robots-unreachable default ALLOW → DENY (fail-closed); (f) mark cease-and-desist runbook as requiring counsel input or explicit deferral with owner sign-off; (g) add README + operator-doc updates as Commit-2 hard requirement; (h) rewrite rollback as explicit state machine given cron is already paused; (i) drop the spurious memory-correction item (the "Mon-Fri" memory entry is about GSD nightly researchers, not the GTM scanner — no conflict once re-read) |
+
+---
+
+## Adversarial Review Summary (Round 1, 2026-04-17)
+
+| Reviewer | Verdict | BLOCKER/HIGH findings | Addressed in v2 |
+|---|---|---|---|
+| Claude (Opus 4.7) | REQUEST-CHANGES | F1 stale #1708/#1709 close actions; F2 LinkedIn elevated-risk deferred; F3 robots-unreachable default wrong; F4 C&D runbook beyond agent authority; F5 rollback state machine ambiguous; F6 memory correction deferred | F1 removed; F3 flipped to DENY; F4 reframed as counsel-dependent or deferred-with-sign-off; F5 rewritten as state machine; F6 re-examined — determined not applicable (memory was about a different job). F2 LinkedIn remains deferred to the non-engineer approver's decision at sign-off (documented explicitly) |
+| Codex (GPT-5.4) | MAJOR-REVISION | M1 engineer-authored legal compliance; M2 resume gate too soft; M3 plan stale post-close; m1 review scope mismatch vs live sources; m2 README/operator docs not mandatory before unpause | M1 non-engineer approver added to sign-off chain; M2 resume gate replaced with concrete checklist; M3 de-scoped #1708/#1709; m1 live-source table rewritten against dashboard reality; m2 README/ops doc update now Commit-2 hard requirement |
+
+Round 2 dispatch: after user sign-off on the v2 revision. Do NOT advance to `status:plan-approved` until the live-source scope call and the non-engineer approver identity are confirmed by the user.
 
 ---
 
 ## Resource Intelligence Summary
 
 ### What the parent issue shipped
-- `#1671` (closed 2026-04-05) — shipped the GTM job-market scanner at `scripts/gtm/job-market-scanner.py` (1360 lines).
-- Actual cron schedule (verified by file read, not memory):
-  - `config/scheduled-tasks/schedule-tasks.yaml` line 411 — `id: gtm-job-market-scan`, schedule `0 5 * * 1` (Monday 5AM UTC, **weekly**, not daily Mon-Fri).
-  - Wrapper: `scripts/gtm/weekly-scan-refresh.sh` (100 lines) — `git pull`, run scanner, auto-commit, auto-push to `main`.
-  - Last successful run: `dashboard.md` header shows `Auto-generated: 2026-04-13`. Most recent weekly scan is on cadence.
-- **Correction to memory:** `project_nightly_researchers.md` says "LIVE, rotating Mon-Fri" — incorrect for this specific job. GTM scanner is **Monday-only weekly**. Flag for memory correction at close time.
+- `#1671` (closed 2026-04-05) — shipped GTM job-market scanner at `scripts/gtm/job-market-scanner.py` (~1360 lines).
+- Cron schedule: `config/scheduled-tasks/schedule-tasks.yaml` line 411 region — `id: gtm-job-market-scan`, schedule `0 5 * * 1` (Monday 5AM UTC, weekly).
+- Wrapper: `scripts/gtm/weekly-scan-refresh.sh` — `git pull`, run scanner, auto-commit, auto-push to `main` (public repo).
+- **Current state (verified 2026-04-17):** cron is PAUSED via commit `a9a2a922b` (`chore(cron): PAUSE gtm-job-market-scan — #2348 legal exposure`). `schedule-tasks.yaml` region for `gtm-job-market-scan` is fully commented out.
 
-### What the three follow-up issues actually asked for
-Source: `scripts/review/results/2026-04-02T132222Z-retroactive-review-codex.md` — Codex retroactive review of the #1671 deliverable identified six defects (G1-G6); three were promoted into issues:
+### Live sources (ground truth — NOT plan v1's assumption)
+**Plan v1 reasoned about Google, Indeed, LinkedIn, Rigzone.** The most recent actual scan output (`docs/strategy/gtm/job-market-scan/dashboard.md`, auto-generated 2026-04-13) shows:
 
-| Issue | Severity | Codex defect | Acceptance criteria (verbatim from issue body) |
-|---|---|---|---|
-| #1707 | HIGH (G1) | No credible rate-limit or ToS compliance | (1) per-site rate limit config, (2) robots.txt check before scraping new domains, (3) Retry-After respected, (4) exponential backoff on 429/503, (5) source allowlist with documented ToS compliance, (6) consider official APIs where available |
-| #1708 | HIGH (G2) | Deduplication too weak | (1) dedup key includes source URL or requisition ID, (2) posting date included, (3) source board included, (4) tests cover dedup edge cases |
-| #1709 | MEDIUM (G4) | Unbounded `cumulative-index.json` growth | (1) keep raw results 12 weeks max, (2) archive entries older than N months, (3) move historical results to gitignored archive, (4) document retention policy |
-
-### What actually got committed after the issues were filed
-Git log on `scripts/gtm/` and `docs/strategy/gtm/job-market-scan/`:
-
-| Commit | Scope | Issues tagged |
+| Source | Live? | Count last scan |
 |---|---|---|
-| `70c3975b2` (2026-04-02 21:01) | `fix(gtm): harden dedup keys and request compliance` | #1708, #1707 |
-| `d0840bd42` (2026-04-02 21:15) | `feat(config): add shared user profile and GTM retention policy` | #1709 |
-| `7664453e8` (later) | `feat(gtm): full scan restored (708 jobs/460 companies) + email templates` | #1671, #1669 |
-| `009f44947` (most recent) | `chore(gtm): weekly job market scan refresh 2026-04-13` | — |
+| `linkedin` | YES | 584 |
+| `indeed` | YES | 112 |
+| `career_page` (company career pages) | YES | 42 |
+| `google` | NO | 0 — not in dashboard output |
+| `google_direct` | NO | 0 — not in dashboard output |
+| `rigzone` | NO | 0 — not in dashboard output |
 
-**All three follow-up issues have landed code fixes but none of the three issues were ever closed.** They remained stuck in `review-backlog`. That is what #2348 is flagging.
+The scanner code (`SOURCE_ALLOWLIST` at line 154) still allowlists all six (`google`, `google_direct`, `indeed`, `linkedin`, `rigzone`, `career_page`, `example-board`), but in the real weekly run Google and Rigzone are returning zero results (likely anti-bot block against the forged UA). **The live legal exposure is LinkedIn, Indeed, and individual company career pages.** Google and Rigzone are allowlisted-but-dead; they can be either (a) removed from `SOURCE_ALLOWLIST` to match reality, or (b) kept as dead code with a note. Decision goes to the non-engineer approver.
 
-### Evidence of what's actually in the scanner right now (file-verified)
+### #1707 acceptance criteria status (file-verified)
 
-| Acceptance criterion | File + lines | Implemented? |
+| Criterion | File + lines | Status |
 |---|---|---|
-| #1708 — dedup key includes `source`, `url`, `posted_date` | `scripts/gtm/job-market-scanner.py` lines 225-242 (`job_id()`) | **YES** — `raw = title|company|location|source|url|posted_date` |
-| #1708 — legacy key migration | lines 219-222 (`legacy_job_id()`) + lines 1042-1047 (migration in `update_cumulative_index`) | **YES** |
-| #1708 — tests cover dedup edge cases | `tests/gtm/test_job_market_scanner.py` (186 lines added in `70c3975b2`) | **YES** |
-| #1707 — per-site rate limit config | lines 143-153 (`SOURCE_RATE_LIMITS`) — google 3s, indeed 4s, linkedin 4s, rigzone 4s | **YES** |
-| #1707 — Retry-After respected | lines 197-206 (parses `Retry-After` header, takes `max(backoff, retry_after)`) | **YES** |
-| #1707 — exponential backoff on 429/503 | lines 198-207 (`delay * (2 ** attempt)`) | **YES** |
-| #1707 — source allowlist | lines 154-163 (`SOURCE_ALLOWLIST`, `SOURCE_ALLOWED_DOMAINS`) + line 180 guard | **YES** |
-| #1707 — **robots.txt check before scraping new domains** | `grep -n "robots\.txt\|robotparser" scripts/gtm/job-market-scanner.py` → **zero matches** | **NO — GAP** |
-| #1707 — documented ToS compliance | `SOURCE_ALLOWLIST` exists but **no accompanying doc** lists the ToS review for google.com, indeed.com, linkedin.com, rigzone.com | **NO — GAP** |
-| #1707 — consider official APIs where available | No comment or ADR in repo discussing Indeed Publisher API, LinkedIn Talent Solutions API, or Rigzone data access | **NO — GAP** |
-| #1709 — 12-week raw retention | lines 55 (`RAW_RETENTION_WEEKS = 12`), 971-989 (`enforce_retention_policy()` archives older) | **YES** |
-| #1709 — 6-month history retention | lines 56 + 991-1004 (prunes `scan_history` and `company_history` older than 180 days) | **YES** |
-| #1709 — gitignored archive dir | `.gitignore` line 169 — `/docs/strategy/gtm/job-market-scan/archive/` | **YES** |
-| #1709 — policy documented | `docs/strategy/gtm/job-market-scan/RETENTION_POLICY.md` (24 lines, references #1709 explicitly) | **YES** |
-| #1709 — tests | `tests/gtm/test_job_market_retention.py` (62 lines) | **YES** |
+| Per-site rate limit config | `job-market-scanner.py:145-153` (`SOURCE_RATE_LIMITS`) | DONE |
+| Retry-After respected | `job-market-scanner.py:197-206` | DONE |
+| Exponential backoff on 429/503 | `job-market-scanner.py:198-207` | DONE |
+| Source allowlist | `job-market-scanner.py:154-163` (`SOURCE_ALLOWLIST`, `SOURCE_ALLOWED_DOMAINS`) | DONE |
+| robots.txt check before scraping | grep `robotparser` on scanner → 0 matches | **GAP** |
+| Documented ToS compliance per source | No `TOS_REVIEW.md`; no ADR | **GAP** |
+| Consider official APIs | No comment/ADR in repo | **GAP** (covered in `TOS_REVIEW.md` body) |
 
 ### The legal/ToS dimension
-The four scraped sources are Google Search, Indeed, LinkedIn, and Rigzone. All four have terms of service that explicitly prohibit automated scraping (LinkedIn in particular — LinkedIn v. hiQ Labs went to the Supreme Court; the post-remand ruling (2022) narrowed hiQ's win and LinkedIn continues to pursue scrapers under CFAA and ToS). Indeed and Google have similar ToS. Rigzone's ToS is less well-publicized but also prohibits scraping.
-
-The current scanner:
-- Uses a forged browser User-Agent (line 132-135) to evade automation detection
+The actually-live sources (LinkedIn, Indeed, career pages) all have terms of service that address automated access. LinkedIn in particular has a known enforcement posture (hiQ remand 2022, active CFAA theories against scrapers). The current scanner:
+- Uses a forged Chrome desktop User-Agent (line 132-135)
 - Has no robots.txt check
-- Has no affirmative record of ToS review
-- Auto-commits scraped data to a **public** GitHub repo (`vamseeachanta/workspace-hub`) via `weekly-scan-refresh.sh` line 95 (`git push origin main`)
+- Has no affirmative ToS review on record
+- Auto-commits scraped output to a **public** repo — `vamseeachanta/workspace-hub` (visibility PUBLIC, confirmed)
 
-The combination of (a) forged UA, (b) no robots.txt, (c) auto-publish of scraped output to a public repo is the legal exposure #2348 is asking us to address. This is not a code style defect — it is a compliance gap.
+**This is a compliance gap, not a code-style defect.** It is also — critically — not an engineer's call to close unilaterally. See §Legal Authority below.
 
 ### Parallel work / worktrees
-- `git worktree list` shows **no worktree for #2348, #1707, #1708, or #1709**. Safe to proceed.
-- No existing plan for any of these four issues in `docs/plans/`.
+- `git worktree list` — no worktree for #1707 or #2348. Safe to proceed.
+- No existing plan for #1707 in `docs/plans/`.
 
 ### Sources consulted
-12 distinct sources: issue bodies (#2348, #1671, #1707, #1708, #1709), scanner source (`scripts/gtm/job-market-scanner.py`), cron wrapper (`scripts/gtm/weekly-scan-refresh.sh`), cron config (`config/scheduled-tasks/schedule-tasks.yaml`), retention doc (`RETENTION_POLICY.md`), `.gitignore`, review artifact (`scripts/review/results/2026-04-02T132222Z-retroactive-review-codex.md`), git log on `scripts/gtm/`, `docs/plans/` index, memory (`project_nightly_researchers.md`), worktree list. Exceeds minimum 3.
+Issue bodies (#2348, #1707), scanner source, cron wrapper, cron config, dashboard.md (2026-04-13), README.md, `.gitignore`, round-1 Claude review (`scripts/review/results/2026-04-19-plan-2348-claude.md`), Codex round-1 review (per task prompt — artifact path absent on disk; relying on prompt-conveyed findings), git log on `config/scheduled-tasks/schedule-tasks.yaml`, `gh issue view 1707 1708 1709` (state verification), `docs/plans/README.md` index. ≥12 sources.
 
 ---
 
-## Triage Decisions
+## Legal Authority (NEW in v2 — addresses Codex MAJOR 1)
 
-### #1707 — Rate limiting and ToS compliance
-**Decision: FIX (partial — scope narrowed to remaining gaps)**
+Per Codex round-1 finding: an engineer-authored plan cannot be the source of legal safety for a scraping program. The following roles/approvals are required for any "keep scraping source X" decision:
 
-Four of the six acceptance criteria are already met. Remaining work:
-1. Add `urllib.robotparser.RobotFileParser` check in `safe_request()` before first fetch per domain; cache per-domain allow/deny; skip fetch (with `[WARN] robots.txt disallows <path>`) on disallow.
-2. Add `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md` documenting the explicit ToS status of google.com, indeed.com, linkedin.com, rigzone.com + a decision per source: keep / replace-with-api / remove. Reference the `SOURCE_ALLOWLIST` from this doc so allowlist changes stay in sync.
-3. ADR (section in `TOS_REVIEW.md`): explicit statement of whether to pursue official APIs (Indeed Publisher Program was deprecated 2023; LinkedIn Talent Solutions is paid enterprise only; Google doesn't offer a jobs API post-Google Jobs deprecation 2023). Expected outcome: document that official APIs are NOT viable at current scale and record the residual risk.
+| Role | Responsibility | This plan's treatment |
+|---|---|---|
+| Engineer (this plan's author) | Observe, document, implement mitigations | Drafts `TOS_REVIEW.md` as *observations*, not legal conclusions |
+| Non-engineer approver | Decide keep/remove per source; sign off `TOS_REVIEW.md`; decide C&D response posture | Explicitly named in v2 sign-off chain |
+| External counsel (optional, owner-directed) | Review `TOS_REVIEW.md` and C&D runbook | Optional but must be invited OR explicitly deferred by approver |
 
-**Remove `review-backlog`; add `priority:high`, `status:plan-review` → eventually `status:plan-approved` → `status:in-progress`; owner `vamseeachanta`.**
+**Non-engineer approver (this repo's context):** the user (`vamseeachanta`) is the sole business owner. For this plan, "non-engineer approver" resolves to the user acting in business-owner capacity — not in engineer capacity. This plan's acceptance criteria require the user to sign off on `TOS_REVIEW.md` **as owner**, separate from approving the plan as technical reviewer. If the user chooses to engage external counsel, the plan accommodates that (criterion allows "approver signs off on deferral-to-counsel" as a valid path).
 
-### #1708 — Deduplication key improvement
-**Decision: CLOSE AS COMPLETE**
-
-All four acceptance criteria met in `70c3975b2`:
-- Dedup key now includes `source`, `url`, `posted_date` (lines 232-241)
-- Legacy key migration path (lines 219-222, 1042-1047)
-- Tests at `tests/gtm/test_job_market_scanner.py` (186 lines)
-- Cumulative index uses new key
-
-Action: post closure comment citing `70c3975b2`, remove `review-backlog`, close with `status:done`. No implementation required.
-
-### #1709 — Data retention policy
-**Decision: CLOSE AS COMPLETE**
-
-All four acceptance criteria met in `d0840bd42`:
-- 12-week raw retention enforced (lines 55, 974, 981-989)
-- 6-month history retention enforced (lines 56, 975, 991-1004)
-- Archive directory gitignored (`.gitignore` line 169)
-- Policy documented (`RETENTION_POLICY.md` explicitly references #1709)
-- Tests at `tests/gtm/test_job_market_retention.py` (62 lines)
-
-Action: post closure comment citing `d0840bd42`, remove `review-backlog`, close with `status:done`. No implementation required.
+Rationale: the legal-safety artifact must come from an authority role, not from the engineering delivery role. This separation is what makes `TOS_REVIEW.md` a real compliance record rather than an author-defending-their-own-code document.
 
 ---
 
-## Should the Cron Be Paused While This Plan Awaits Approval?
+## Unpause Checklist (NEW in v2 — replaces v1's soft "recommendation")
 
-**Recommendation: YES — pause the cron while #1707 remainder is being fixed.**
+The cron is already paused (`a9a2a922b`). Unpause requires **all** of the following, in order:
 
-Rationale:
-- The **legal** exposure (scraping LinkedIn/Indeed/Google without robots.txt respect + auto-publishing the results) is ongoing every Monday at 5AM UTC.
-- The cron auto-commits scraped output to a **public** repo. Public output of possibly-ToS-violating scrapes is materially worse than local-only scraping — it is durable and discoverable.
-- Pausing for 1-2 weeks (plan approval + implementation + review) costs one skipped scan. That is acceptable against the legal tail risk.
-- Pausing is cheap to implement: comment out the `gtm-job-market-scan` entry in `config/scheduled-tasks/schedule-tasks.yaml` and add a note — reversible in one commit.
+- [ ] **U1 — robots.txt parser wired into `safe_request()`:** `urllib.robotparser.RobotFileParser` call lives between allowlist check and rate-limit sleep. Unit tests prove skip-on-disallow and fail-closed on unreachable. Each live source (`linkedin`, `indeed`, plus every URL in `COMPANY_CAREER_URLS`) either passes the check OR is removed from the allowlist/career-page dict by Commit 2.
+- [ ] **U2 — `TOS_REVIEW.md` committed and signed off by non-engineer approver.** Each live source has a row: ToS URL, observed robots.txt disposition, keep/remove decision, signed by approver (commit trailer `Signed-off-by: Vamsee Achanta <...>` acting as owner, OR approver-named comment on PR).
+- [ ] **U3 — `docs/strategy/gtm/job-market-scan/README.md` updated** to reflect: robots.txt enforcement is active; any sources removed; pointer to `TOS_REVIEW.md`; statement that `auto-commits results to main` remains true but "only for sources whose ToS review signed off on public publication".
+- [ ] **U4 — Cease-and-desist runbook committed.** EITHER authored with counsel input (approver confirms) OR explicitly deferred to external legal response (approver-signed note in `TOS_REVIEW.md` — "on receipt of any legal notice, this plan's operational action is: remove the source from the allowlist within 24h via PR; legal response is routed to counsel, not to this repo").
+- [ ] **U5 — Dry-run cycle succeeds on manual trigger** (`python scripts/gtm/job-market-scanner.py --limit 2 --skip-career-pages` then a full run) without policy violations — no disallowed fetches, no zero-result full-block. If dry-run is degenerate (e.g., every source blocks), unpause is deferred pending re-scoping.
 
-**This is ultimately a user risk call.** The plan surfaces it; the user decides. If the user chooses not to pause, the plan still proceeds, but the #1707 fix should then be prioritized to land within one week.
-
-**Pause action (if user approves):** add a preceding Commit 0 to this plan's implementation — comment out the `gtm-job-market-scan` entry in `schedule-tasks.yaml` and commit as `chore(gtm): pause job-market-scan cron pending #1707 ToS review`. Reverse as final Commit 3 after all other work lands.
+All five are required. If any fails, the resting state is **paused**. Unpause is a separate commit after all five are green.
 
 ---
 
-## Pseudocode (#1707 implementation scope only)
+## Triage Decision — #1707 only
 
-### A. robots.txt respect in `safe_request()`
+**Decision: FIX (robots.txt + documented ToS review + unpause governance)**
+
+#1708 and #1709 are out of scope — both closed `2026-04-20T03:17Z` during this session's review cycle.
+
+Remaining work on #1707:
+1. `urllib.robotparser.RobotFileParser` in `safe_request()`; cache per-domain; skip on disallow; **fail-closed on fetch error** (v2 change from v1's fail-open).
+2. `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md` — per-source facts + observed robots disposition + keep/remove *proposal* by engineer + signed decision by non-engineer approver + C&D runbook with counsel-or-deferral note.
+3. README.md + dashboard-header updates — operator docs must reflect new state before cron resumes.
+
+**Labels:** `review-backlog` replaced with `priority:high` + `status:plan-review` → (after user approves v2 + round-2 review) `status:plan-approved` → `status:in-progress`. Owner: `vamseeachanta`.
+
+---
+
+## Pseudocode
+
+### A. robots.txt respect in `safe_request()` — fail-closed on unreachable
+
 ```python
 # module-level cache
-_ROBOTS_CACHE: dict[str, urllib.robotparser.RobotFileParser] = {}
+_ROBOTS_CACHE: dict[str, urllib.robotparser.RobotFileParser | None] = {}
 
-def _get_robots_parser(netloc: str) -> urllib.robotparser.RobotFileParser:
+def _get_robots_parser(netloc: str) -> urllib.robotparser.RobotFileParser | None:
+    """Return cached RobotFileParser, or None if unreachable (caller treats as DENY)."""
     if netloc in _ROBOTS_CACHE:
         return _ROBOTS_CACHE[netloc]
     rp = urllib.robotparser.RobotFileParser()
     rp.set_url(f"https://{netloc}/robots.txt")
     try:
-        rp.read()  # network fetch; tolerate failure
+        rp.read()
     except Exception as e:
-        print(f"  [WARN] robots.txt unreachable for {netloc}: {e}; defaulting to ALLOW")
+        print(f"  [WARN] robots.txt unreachable for {netloc}: {e}; DENYING (fail-closed)")
+        _ROBOTS_CACHE[netloc] = None
+        return None
     _ROBOTS_CACHE[netloc] = rp
     return rp
 
 # inside safe_request(), AFTER allowlist check, BEFORE time.sleep(delay):
 rp = _get_robots_parser(parsed.netloc)
+if rp is None:
+    print(f"  [WARN] robots.txt unreachable; skipping {url} (fail-closed)")
+    return None
 if not rp.can_fetch(USER_AGENT, url):
     print(f"  [WARN] robots.txt disallows {url}; skipping")
     return None
 ```
 
-### B. TOS_REVIEW.md structure (new file, ~80 lines)
-```
-# ToS Review for GTM Job Market Scanner Sources
+Rationale for fail-closed: the scanner uses a forged Chrome UA. Sites that detect the bot and deny robots.txt specifically are the exact case where fail-open breaks compliance posture. Fail-closed turns "cannot verify permission" into "do not fetch" — matches the compliance-first posture that drove the cron pause in the first place.
 
-## Summary
-Four sources allowlisted. This document records the ToS position for each,
-the compliance mechanisms in place, and the residual risk.
+### B. `TOS_REVIEW.md` structure (new file)
 
-## Per-source review
-
-### google.com (Google Search / Google Jobs)
-- ToS: https://policies.google.com/terms — prohibits "access, use, or interfere
-  with automated means"
-- Current treatment: rate-limited 3s, forged UA, robots.txt honored (post-#1707 fix)
-- Official API: Google Jobs API was deprecated 2023; no replacement
-- Decision: KEEP with documented residual risk; revisit if Google enforces
-
-### indeed.com
-- ToS: https://www.indeed.com/legal — prohibits scraping
-- Current treatment: rate-limited 4s, robots.txt honored
-- Official API: Indeed Publisher Program deprecated 2023
-- Decision: KEEP with documented residual risk
-
-### linkedin.com
-- ToS: https://www.linkedin.com/legal/user-agreement — prohibits scraping;
-  history of enforcement (hiQ remand 2022)
-- Current treatment: rate-limited 4s, robots.txt honored
-- Official API: LinkedIn Talent Solutions (paid enterprise only)
-- Decision: ELEVATED RISK. Consider removing or replacing with a lawful
-  alternative (e.g., LinkedIn job-alert email subscriptions with manual export)
-
-### rigzone.com
-- ToS: https://www.rigzone.com/info/terms.asp — prohibits automated access
-- Current treatment: rate-limited 4s, robots.txt honored
-- Official API: none public
-- Decision: KEEP with documented residual risk
-
-## Mitigations in force
-- Per-source rate limits (SOURCE_RATE_LIMITS)
-- Source allowlist (SOURCE_ALLOWLIST)
-- robots.txt enforcement (post-#1707)
-- Retry-After honored, exponential backoff
-- Output auto-committed to public repo — flagged as RISK MULTIPLIER
-
-## Residual risk acknowledgement
-Scraping + public auto-publish remains technically out-of-policy for all
-four sources. This is accepted as a cost of the current GTM approach. Any
-cease-and-desist email from any listed source terminates use of that source
-immediately and triggers an allowlist removal PR within 24 hours.
-```
-
-### C. (Optional, deferred) Remove LinkedIn from allowlist
-Not in this plan's scope — flagged as a follow-up issue "evaluate removing LinkedIn source from GTM scanner given elevated enforcement risk." Current plan is a documentation + robots.txt fix; source removal is a policy call separate from defect closure.
+- Header: what this doc is; who signed off; date.
+- Per-source section for each currently-live source (at time of writing: `linkedin`, `indeed`, `career_page`; others as approver decides).
+- Each section: ToS URL, observed robots.txt disposition, engineer-proposed decision (keep / remove / restrict), **approver's signed decision**, residual risk acknowledgement.
+- Mitigations in force (rate limits, allowlist, robots.txt enforcement, retry/backoff).
+- C&D runbook: operational step only ("remove source from `SOURCE_ALLOWLIST` within 24h via PR") separated from legal response ("route to counsel; this runbook does not author legal responses"). Approver signs off on runbook or on deferral.
 
 ---
 
 ## Files to Change
 
-| Action | Path | Reason |
-|---|---|---|
-| Modify (optional preceding Commit 0) | `config/scheduled-tasks/schedule-tasks.yaml` | Comment out `gtm-job-market-scan` task with note; only if user accepts cron pause |
-| Modify | `scripts/gtm/job-market-scanner.py` | Add `urllib.robotparser` import; add `_ROBOTS_CACHE` + `_get_robots_parser`; insert `rp.can_fetch()` check in `safe_request()` between allowlist check and rate-limit sleep |
-| Create | `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md` | Per-source ToS review + residual-risk acknowledgement + cease-and-desist runbook |
-| Modify | `docs/strategy/gtm/job-market-scan/README.md` | Link from overview to `TOS_REVIEW.md` |
-| Create | `tests/gtm/test_robots_respect.py` | Test `_get_robots_parser` caching + `can_fetch` denial path |
-| Modify (final Commit 3, if Commit 0 was taken) | `config/scheduled-tasks/schedule-tasks.yaml` | Un-comment `gtm-job-market-scan`; cron resumes |
-| Update | `docs/plans/README.md` | Register this plan |
+| Action | Path | Reason | Commit |
+|---|---|---|---|
+| Modify | `scripts/gtm/job-market-scanner.py` | Add `urllib.robotparser` import; `_ROBOTS_CACHE`; `_get_robots_parser`; fail-closed check inside `safe_request()` between allowlist and rate-limit sleep | 2 |
+| Create | `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md` | Per-source review + approver sign-off + C&D runbook (operational; legal deferred) | 1 |
+| Modify | `docs/strategy/gtm/job-market-scan/README.md` | Reflect new state: robots.txt enforcement, removed sources (if any), pointer to TOS_REVIEW.md; revise "auto-commits results to main" line to note the review gate | 2 |
+| Modify | `docs/strategy/gtm/job-market-scan/dashboard.md` (header only, on next scan) | Will regenerate automatically on unpause scan; not edited by hand | auto (Commit 3 side-effect) |
+| Create | `tests/gtm/test_robots_respect.py` | Test `_get_robots_parser` caching + disallow → None + unreachable → DENY | 2 |
+| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Un-comment `gtm-job-market-scan` — ONLY after U1-U5 green | 3 |
+| Update | `docs/plans/README.md` | Plan index row updated to v2 | this commit |
 
-**Not modified:**
-- `cumulative-index.json`, `dashboard.md`, etc. — scanner outputs; untouched.
-- `weekly-scan-refresh.sh` — unchanged; pause/unpause happens at the cron config, not the wrapper.
+**Not modified:** `cumulative-index.json`, scanner outputs (regenerated on next scan), `weekly-scan-refresh.sh` (unchanged — the gate is at cron config and inside `safe_request`).
 
 ---
 
 ## TDD Test List
 
-All tests new; no existing tests break.
+| Test | Claim | Pass criterion |
+|---|---|---|
+| `test_robots_parser_cached` | `_get_robots_parser("www.linkedin.com")` called twice reads robots.txt once | mock network call count == 1 |
+| `test_robots_disallow_blocks_fetch` | If `can_fetch` returns False, `safe_request` returns None; `requests.get` never called | requests.get not called |
+| `test_robots_unreachable_fails_closed` | If `rp.read()` raises, `_get_robots_parser` returns None; `safe_request` returns None; `requests.get` never called | requests.get not called |
+| `test_tos_review_doc_exists_and_covers_live_sources` | `TOS_REVIEW.md` exists; has a section for every source present in the most recent dashboard | set(dashboard sources) ⊆ set(doc sections) |
+| `test_readme_references_tos_review` | README.md contains a relative link to `TOS_REVIEW.md` | link present |
+| (verification) retention tests still pass | `tests/gtm/test_job_market_retention.py` unchanged | all pass |
+| (verification) dedup tests still pass | `tests/gtm/test_job_market_scanner.py` unchanged | all pass |
 
-| Test | Tool | Claim | Pass criterion |
-|---|---|---|---|
-| test_robots_parser_cached | pytest + mock | `_get_robots_parser("www.indeed.com")` called twice reads `/robots.txt` once | network mock called == 1 |
-| test_robots_disallow_blocks_fetch | pytest + mock | If `RobotFileParser.can_fetch` returns False, `safe_request` returns None and never calls `requests.get` | `requests.get` not called |
-| test_robots_unreachable_defaults_allow | pytest + mock | If `rp.read()` raises, `can_fetch` defaults True, fetch proceeds | `requests.get` called once |
-| test_tos_review_doc_exists | pytest | `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md` exists and mentions all four allowlisted sources | all 4 substrings present |
-| test_readme_links_to_tos_review | pytest | `README.md` contains a relative link to `TOS_REVIEW.md` | link present |
-| test_allowlist_matches_tos_review | pytest | Every source in `SOURCE_ALLOWLIST` has a section heading in `TOS_REVIEW.md` | set equality |
-| (verification) retention policy tests still pass | pytest | `tests/gtm/test_job_market_retention.py` unchanged, still green | 62 lines, all pass |
-| (verification) dedup tests still pass | pytest | `tests/gtm/test_job_market_scanner.py` unchanged, still green | all pass |
-
-Test-writing order: robots tests first (drive the code change), then doc/allowlist sync tests, then verification of untouched tests.
+Test-writing order: robots tests first (TDD drives the code), then doc/link tests, then verification of untouched tests.
 
 ---
 
 ## Acceptance Criteria
 
 ### For this plan (#2348)
-- [ ] `#1708` closed with comment citing commit `70c3975b2`; `review-backlog` removed
-- [ ] `#1709` closed with comment citing commit `d0840bd42`; `review-backlog` removed
-- [ ] `#1707` retains `review-backlog` label replaced with `priority:high` + `status:in-progress`; owner `vamseeachanta`
-- [ ] (if user approves) Cron paused via Commit 0; un-paused via Commit 3 after Commit 2 lands
-- [ ] Plan file committed at `docs/plans/2026-04-19-issue-2348-scanner-tos-triage.md`
-- [ ] Index row added to `docs/plans/README.md`
-- [ ] Memory correction filed: `project_nightly_researchers.md` says "Mon-Fri" but GTM scanner is weekly Monday — log as a follow-up
+- [ ] Plan v2 committed at `docs/plans/2026-04-19-issue-2348-scanner-tos-triage.md`
+- [ ] Index row in `docs/plans/README.md` updated to `draft (v2)` with revised notes
+- [ ] Round-2 adversarial review dispatched (Claude + Codex) and resolved before `status:plan-approved`
+- [ ] User (as owner) sign-off recorded on the v2 scope, specifically: (a) live-source list for `TOS_REVIEW.md`, (b) engineer vs owner vs counsel responsibility split, (c) unpause checklist U1-U5
 
-### For #1707 residual fix (the real code work in this plan)
+### For #1707 residual fix (the real code work)
 - [ ] `_get_robots_parser` + per-domain cache implemented in `job-market-scanner.py`
-- [ ] `safe_request()` calls `rp.can_fetch()` and skips disallowed URLs with a `[WARN]` log
-- [ ] robots.txt fetch failures default to ALLOW with `[WARN]` (don't hard-fail the scan)
-- [ ] `TOS_REVIEW.md` created, listing all four sources with ToS URL + decision + residual risk + C&D runbook
-- [ ] `README.md` links to `TOS_REVIEW.md`
+- [ ] `safe_request()` calls robots check; skips on disallow; **fails-closed on unreachable**
 - [ ] New tests `tests/gtm/test_robots_respect.py` pass
 - [ ] Existing tests `tests/gtm/test_job_market_scanner.py` + `tests/gtm/test_job_market_retention.py` still pass
-- [ ] After merge: one scan cycle runs successfully with robots.txt enforcement active; dashboard generated; no empty-scrape failures
-- [ ] #1707 closed with comment citing new commit + `TOS_REVIEW.md`
+- [ ] `TOS_REVIEW.md` created with per-source review + owner sign-off + C&D runbook (operational-only; legal deferred)
+- [ ] `README.md` at `docs/strategy/gtm/job-market-scan/` updated to reflect robots.txt enforcement and new state
+- [ ] #1707 closed with comment citing implementing commit + `TOS_REVIEW.md` path
+
+### For unpause (Commit 3, separate decision)
+- [ ] All five unpause-checklist items (U1-U5) green
+- [ ] Dry-run scan completes cleanly
+- [ ] Commit 3 lands: un-comment cron task
 
 ---
 
-## Rollback Plan
+## Rollback / State Machine (v2 rewrite — addresses Claude F5)
 
-Three-commit structure (Commit 0 is conditional on user approval):
+Cron is currently **paused**. The four states below are the only legal resting states; two others are explicitly unsafe.
 
-**Commit 0 (optional) — pause cron**
-- Scope: `config/scheduled-tasks/schedule-tasks.yaml` only. Comment out the `gtm-job-market-scan` task with a note referencing this plan and #1707.
-- Rollback: `git revert <commit0-sha>` restores the weekly Monday schedule.
+### Resting states
 
-**Commit 1 — `TOS_REVIEW.md` + README link (docs only)**
-- Scope: `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md` (new), `README.md` (link added).
-- Rollback: `git revert <commit1-sha>`. Zero runtime impact — docs only.
-- Blast radius: none; purely additive.
+| State | paused? | docs (TOS_REVIEW, README)? | robots.txt code? | OK as resting state? |
+|---|---|---|---|---|
+| S0 (current) | YES | no | no | **YES** — safe baseline; the work begins here |
+| S1 (after Commit 1) | YES | yes | no | **YES** — docs alone introduce no runtime change |
+| S2 (after Commit 2) | YES | yes | yes + tests green | **YES** — code is in place but cron still paused; U5 dry-run can run from here |
+| S3 (after Commit 3) | no | yes | yes + tests green | **YES** — full unpause, the target state |
 
-**Commit 2 — robots.txt respect + tests (code change)**
-- Scope: `scripts/gtm/job-market-scanner.py` + `tests/gtm/test_robots_respect.py`.
-- Rollback: `git revert <commit2-sha>`. Scanner reverts to pre-#1707-final behavior (rate-limited but no robots.txt check).
-- Blast radius: scanner-only. No change to dashboards, cumulative index, or retention.
+### Unsafe / forbidden resting states
 
-**Commit 3 (conditional, required if Commit 0 was taken) — resume cron**
-- Scope: `schedule-tasks.yaml`, un-comment the task.
-- Rollback: `git revert <commit3-sha>` re-pauses.
+| State | Why forbidden |
+|---|---|
+| unpaused + docs + no robots.txt code | Runtime resumes scraping without robots.txt — violates the reason for the pause |
+| unpaused + docs + partial-robots (tests red) | Code exists but is not verified — false sense of compliance |
+| paused + robots.txt code + no TOS_REVIEW.md | Technical control without the governance artifact — incomplete per #1707 acceptance |
 
-Failure modes:
-- **Scanner crashes on `rp.read()` for a new domain:** already handled — `try/except` defaults to ALLOW with `[WARN]`.
-- **robots.txt is too permissive (explicit ALLOW) and scan still violates ToS in spirit:** `TOS_REVIEW.md` is the compensating control; residual risk is explicitly accepted. If cease-and-desist received, remove that source from `SOURCE_ALLOWLIST` within 24h per the runbook.
-- **Weekly scan produces zero results because robots.txt denies everything:** flag as a separate triage issue; do NOT silently accept zero-result scans. The scanner's existing empty-result path (`git diff --staged --quiet` → "No changes to commit") is safe; just visibly weird. Follow-up: add a minimum-result alarm.
+### Rule
+- Never commit Commit 3 (unpause) unless Commits 1 and 2 are both green and U1-U5 all check.
+- If Commit 2 test run fails, the correct action is **stop, fix, re-commit — not revert Commit 1**. Commit 1 is additive and safe to leave.
+- If the #1707 code change lands but later reveals a defect in production (e.g., robots.txt check blocks everything on a bad fetch), the resting state rolls back to **S2** (paused + docs + code-reverted) pending fix, NOT S3. Reverting the robots check while cron is active would silently restore pre-#1707 behavior; that's the dangerous path.
+
+### Failure modes
+- **Scanner crashes on `rp.read()` for a new domain:** handled — `try/except` in `_get_robots_parser` returns None; caller fails-closed.
+- **robots.txt denies everything for a source:** correct signal — that source moves to the "remove from allowlist" column in `TOS_REVIEW.md`; approver decides; no silent scan-through.
+- **Zero-result scan after unpause because all sources block robots.txt:** file as a separate issue; do NOT silently accept. Add a minimum-result alarm as follow-up (not in this plan's scope).
 
 ---
 
 ## Risks and Open Questions
 
-### Open questions for user
-- **Q1 (load-bearing): Pause the cron while #1707 lands?** Recommendation: YES. User decides at plan-approval time. This plan is written to work either way.
-- **Q2: Should LinkedIn be removed from `SOURCE_ALLOWLIST` given elevated enforcement risk?** Out of scope for this plan; filed as a follow-up if the user wants to take the conservative path.
-- **Q3: Is anyone actually reading the weekly scan output?** If the business value is low, the cheapest ToS fix is to turn the scanner off. Not this plan's call, but worth raising.
+### Open questions for user (required before round-2 review)
+- **Q1 (load-bearing): Confirm live-source scope for `TOS_REVIEW.md`.** Plan v2 lists `linkedin`, `indeed`, `career_page` based on dashboard.md. User decides: (a) remove dead sources (`google`, `google_direct`, `rigzone`) from `SOURCE_ALLOWLIST` now; or (b) keep as dead code with a note; or (c) treat the dead sources as "block-detected" and remove on that basis.
+- **Q2 (load-bearing): Confirm owner-as-non-engineer-approver path, or direct to counsel.** Plan v2 assumes the user signs off as owner. If the user wants external counsel, the acceptance criteria accommodate that — approve the deferral path.
+- **Q3: LinkedIn specifically — keep, restrict, or remove?** Plan v1 flagged as ELEVATED RISK. v2 routes the decision to the approver sign-off on `TOS_REVIEW.md`. No pre-emptive removal in this plan; removal remains available at approver's discretion.
 
 ### Known risks
-- **Risk: robots.txt check adds ~N network calls per scan (one per new domain).** Mitigation: per-domain caching; ~4 domains total.
-- **Risk: ToS review is inherently a legal-judgment call; the agent is not a lawyer.** Mitigation: `TOS_REVIEW.md` records facts + decisions, not legal opinions. User/counsel can revise post-hoc.
-- **Risk: residual-risk acknowledgement is not a legal shield.** Noted. The compensating control is speed-of-response (24h removal on C&D), not pre-emptive immunity.
-- **Risk: cron pause forgotten if Commit 3 skipped.** Mitigation: Commit 3 is a required acceptance criterion IF Commit 0 was taken. Tracked as an explicit acceptance item.
+- **Risk: robots.txt check adds ~N network calls per scan (one per new domain).** Mitigation: per-domain caching.
+- **Risk: `TOS_REVIEW.md` is a compliance record, not a legal opinion.** Mitigation: explicit split between operational step (remove from allowlist) and legal response (route to counsel); approver signs off on the split.
+- **Risk: fail-closed on robots-unreachable may produce near-empty scans if sites block.** Mitigation: dry-run in U5 surfaces this before unpause; a degenerate dry-run blocks Commit 3 until the scope is re-approved.
+- **Risk: C&D never arrives but scraping continues.** Mitigation: residual risk explicitly acknowledged in `TOS_REVIEW.md`; approver accepts in writing. Not a hidden assumption.
 
 ### Decided (not open)
-- **Dedup (#1708) and retention (#1709) are already done.** Plan does not reopen these decisions.
-- **Scanner will not be rewritten around official APIs.** Indeed/Google deprecated their APIs; LinkedIn's is paywalled. Plan does not pursue this path.
+- #1708 and #1709 are CLOSED. Not reopened.
+- Scanner will not be rewritten around official APIs (Indeed Publisher deprecated 2023; LinkedIn Talent Solutions paywalled; Google Jobs API deprecated 2023). Documented in `TOS_REVIEW.md`; not re-litigated in-plan.
+- robots-unreachable defaults to **DENY** (fail-closed). Flipped from v1's ALLOW.
+
+### Not applicable (removed from v1)
+- The v1 "memory correction for Mon-Fri cadence" item was a misread. `project_nightly_researchers.md` is about the GSD nightly researchers (Mon-Fri rotation), not the GTM scanner (weekly-Monday). No memory edit needed.
 
 ---
 
-## Adversarial Review Plan
+## Adversarial Review Plan (Round 2)
 
-Dispatch **after** user provides initial comment on this draft (per `feedback_cross_provider_review_payoff.md`):
-- Claude (self-review via `/code-review` skill)
-- Codex (push plan to GitHub, then dispatch — Codex sandbox cannot read local-only files per `feedback_codex_needs_pushed_artifact.md`)
-- Gemini (via `superpowers:requesting-code-review`)
+Dispatch after user confirms Q1-Q3 above:
+- Claude (self-review via `/code-review` skill) — focus on whether fail-closed default is correctly wired and whether the state machine holds.
+- Codex (push plan to GitHub, then dispatch) — focus on the approver-sign-off path and whether `TOS_REVIEW.md` structure meets the governance bar Codex raised in round 1.
+- (Optional) Gemini — cross-provider redundancy on the approver-authority question.
 
-Expected defect classes to stress-test:
-- Does robots.txt caching survive a multi-process scan run? (currently only single-process)
-- Is "default ALLOW on robots unreachable" the right choice, or should it be "default DENY"?
-- Is `TOS_REVIEW.md` the right place for a cease-and-desist runbook, or should that live in `docs/legal/`?
-- Does the cron-pause recommendation inadvertently leak scraping activity (via the commit message) to anyone watching the public repo?
+Specific stress-test questions for round 2:
+- Is fail-closed on robots-unreachable now correctly defended, or does the plan's own "if all sources block, dry-run fails" clause reveal a scope problem?
+- Does the `TOS_REVIEW.md` approver sign-off actually bind, given it's a git commit trailer rather than a separate legal document?
+- Is the "remove source within 24h on C&D" still too specific? Should the SLA be "within reasonable time as directed by counsel"?
 
 ---
 
 ## Complexity: T2
 
-Single code file modified, two new tests, one new doc. No architecture change, no new dependency (`urllib.robotparser` is stdlib). The triage-vs-fix split across three issues is what makes this T2 instead of T1 — the plan is doing three things at once, only one of which is code.
+Single code file modified (`job-market-scanner.py`), one new test file, one new doc, one README update, one cron-config toggle (Commit 3). No new dependency (`urllib.robotparser` is stdlib). Sign-off governance and the explicit state machine are what make this T2 rather than T1.
