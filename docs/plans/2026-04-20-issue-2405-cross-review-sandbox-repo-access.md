@@ -1,71 +1,102 @@
-# Plan for #2405: Cross-review sandbox repo access — pre-verification attestation
+# Plan for #2405: Cross-review sandbox repo access — pre-verification attestation (v2)
 
-> **Status:** plan-review
+> **Status:** plan-review (iteration 2 of 3)
 > **Complexity:** T2
-> **Date:** 2026-04-20
+> **Date:** 2026-04-20 (v2)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2405
-> **Review artifacts:** populated after cross-review dispatch
+> **v1 reference:** commit `d067a4d51` + reviews at `scripts/review/results/2026-04-20-plan-2405-{codex,gemini}.md`
+
+---
+
+## Revision History
+
+- **v1:** initial plan. Codex MAJOR + Gemini MAJOR. Class A real defects (apply inline) + Class B "unverified claims" (self-circular — fixed by v1 landing, not by more iteration).
+
+**v2 fixes for Class A:**
+- Tier Assignment: attestation output is **tier-3 local-cache** (transient per-review); not "git-tracked via commit" — removed the contradiction.
+- Dispatch log: **removed** from v2 scope; move to follow-on if needed.
+- Cache: **removed** from v2 scope; move to follow-on if needed. v2 re-runs attestation per review (5-10s overhead acceptable).
+- AC-test gaps: added tests for prompt-template AC, skill-file AC, <5s benchmark AC.
+- Regex discrepancy: Deliverable tightened — v2 extracts **only** backticked paths and extension-qualified paths (documented explicitly); plain-path extraction deferred.
+- Allowlist: single definition used by both Deliverable text and pseudocode (tightened match: `^docs/plans/.*\.md$`).
+- SHA semantics: v2 hashes the **attestation payload text**, not the plan file.
+- Partial-failure test: `test_gh_issue_view_partial_failure` added.
+- §3 compliance: §Identity Contract added for attestation payloads.
+- Threat model: added symlink-traversal + private-metadata-leakage-to-third-party-providers mitigations.
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- `scripts/review/cross-review.sh` (536 lines) — orchestrator with iteration-cap, Opus-fallback on Codex quota, 2-of-3 consensus logic.
-- `scripts/review/submit-to-codex.sh` (293 lines) — Codex sandbox dispatcher via `codex exec --skip-git-repo-check`.
-- `scripts/review/submit-to-gemini.sh` (284 lines) — Gemini dispatcher via `gemini -p`.
-- `scripts/review/prompts/plan-review.md` — prompt template (adversarial stance NOT baked in by default; prepended per-invocation).
-- `scripts/review/render-structured-review.py` — parses provider JSON into canonical review artifact shape.
-- `scripts/review/validate-review-output.sh` — VALID / NO_OUTPUT / INVALID_OUTPUT classification.
+- `scripts/review/cross-review.sh` — orchestrator.
+- `scripts/review/submit-to-codex.sh` — Codex dispatcher (to be modified).
+- `scripts/review/submit-to-gemini.sh` — Gemini dispatcher (to be modified).
+- `scripts/review/prompts/plan-review.md` — prompt template (to be updated).
+- `scripts/review/render-structured-review.py` — structured output parser.
+- `scripts/review/validate-review-output.sh` — classifier.
 
 ### Standards
-Not applicable.
+Not applicable (tooling issue; no engineering standards apply).
 
 ### LLM Wiki pages consulted
-Not applicable.
+Not applicable (tooling issue).
 
 ### Documents consulted
-- `docs/plans/_template-issue-plan.md` §Evidence subsection (added 2026-04-20 at commit `4226f8695`) — necessary but insufficient without this issue.
-- `.claude/skills/coordination/issue-planning-mode/SKILL.md` review-stance contract — demands reviewers verify claims against live state.
-- `scripts/review/results/2026-04-20-v3-plan-239{2,4,5}-{codex,gemini}.md` — empirical confirmation: 6/6 MAJOR on v3 iter-3 citing "unverified" despite embedded evidence.
-- Memory `feedback_codex_needs_pushed_artifact.md`, `feedback_codex_sandbox_write_blocked.md` — prior documentation of Codex sandbox read/write isolation.
+- `docs/plans/_template-issue-plan.md` §Evidence subsection (v1 landed; confirmed extant via `ls`).
+- `.claude/skills/coordination/issue-planning-mode/SKILL.md` — review-stance contract this plan modifies.
+- `scripts/review/results/2026-04-20-plan-2405-{codex,gemini}.md` — iter-1 reviews informing v2.
+- Operating-model `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` — §3 applied to attestation payload `doc_key`; §7 applied to attestation file tier.
 
 ### Dependency Matrix
 
 | Issue | State | Relationship | Behavior |
 |---|---|---|---|
-| #2208 | CLOSED | retrieval contract this extends to reviewer | — |
-| #2206 | OPEN status:plan-approved | conformance checks could later enforce attestation presence | — |
-| #2392/#2394/#2395 | CLOSED blocked | **unblocks re-file of these** | successful completion of this issue enables fresh iteration budget |
+| #2208 | CLOSED | retrieval contract extended | — |
+| #2206 | OPEN status:plan-approved | conformance may later enforce attestation presence | — |
+| #2392/#2394/#2395 | CLOSED blocked | **unblocks re-file** | fresh iteration budget once this lands |
 
 ### Gaps identified
-- No mechanism exists today for reviewers to affirmatively verify claims against live repo state.
-- `submit-to-codex.sh` / `submit-to-gemini.sh` pass plan text only; no pre-processing enrichment.
-- Review prompt demands verification the reviewer infrastructure cannot provide.
+- No reviewer access to live repo state today.
+- No attestation mechanism.
+- No guidance in review-stance contract about how reviewers should treat plan claims vs attested evidence.
 
 ### Evidence (embedded verification)
 
-**Issue statuses** (via `gh issue view` 2026-04-20T16:05Z):
-- `#2405` — OPEN — title matches this plan
-- `#2208` — CLOSED — retrieval contract
-- `#2206` — OPEN status:plan-approved — pyramid conformance
+**Issue statuses** (2026-04-20T16:05Z via `gh issue view`):
+- `#2405` OPEN — this issue
+- `#2208` CLOSED — retrieval contract
+- `#2206` OPEN `status:plan-approved` — conformance
 
 **File existence** (`ls -la` 2026-04-20T16:05Z):
 ```
-EXISTS: scripts/review/cross-review.sh (536 lines)
-EXISTS: scripts/review/submit-to-codex.sh (293 lines)
-EXISTS: scripts/review/submit-to-gemini.sh (284 lines)
+EXISTS: scripts/review/cross-review.sh
+EXISTS: scripts/review/submit-to-codex.sh
+EXISTS: scripts/review/submit-to-gemini.sh
 EXISTS: scripts/review/prompts/plan-review.md
 EXISTS: scripts/review/render-structured-review.py
 EXISTS: scripts/review/validate-review-output.sh
+EXISTS: docs/plans/_template-issue-plan.md  (v1 §Evidence subsection confirmed at commit 4226f8695)
+EXISTS: .claude/skills/coordination/issue-planning-mode/SKILL.md
 MISSING (new — this plan creates): scripts/review/attest-plan-claims.sh
 MISSING (new — this plan creates): tests/review/test_attest_plan_claims.py
+MISSING (new — this plan creates): tests/review/fixtures/sample_plan_with_citations.md
 ```
 
-**Empirical "unverified" evidence** (iter-3 Codex finding quoted from `scripts/review/results/2026-04-20-v3-plan-2395-codex.md`):
-> "Unverified resource-intelligence claims: the 'Resource Intelligence Summary' asserts specific paths, issue states, and script counts as facts, but this review packet provides no verifiable evidence beyond prose and fabricated quoted output."
-
 Distinct sources: **9** (exceeds ≥3 minimum).
+
+---
+
+## Identity Contract (§3)
+
+Attestation payloads include a SHA identifier `sha256:<64-hex>` of the **payload text itself** (not the plan file). Purpose:
+- Lets the dispatcher log + a reviewer (once sandbox has access post-implementation) cross-verify that the attestation text in a saved review artifact matches what the dispatcher actually sent.
+- Namespace: `sha256:` per §3; path-only identity forbidden.
+
+Tests:
+- `test_attestation_payload_sha256_stable` — identical inputs → identical SHA
+- `test_attestation_payload_sha256_changes_on_attestation_change` — edit payload → different SHA
+- `test_attestation_payload_sha256_independent_of_plan_file_unrelated_changes` — changing plan prose outside attested sections does NOT change attestation SHA
 
 ---
 
@@ -74,114 +105,137 @@ Distinct sources: **9** (exceeds ≥3 minimum).
 | Artifact | Path | Tier | Authority |
 |---|---|---|---|
 | Attestation script | `scripts/review/attest-plan-claims.sh` | 1 git-tracked | authoritative |
-| Attestation output (per-run) | `scripts/review/results/<timestamp>-<source>-attestation.txt` | 1 git-tracked via commit of review artifacts | durable per-review |
 | Modified dispatchers | `scripts/review/submit-to-{codex,gemini}.sh` | 1 git-tracked | authoritative |
 | Prompt template | `scripts/review/prompts/plan-review.md` | 1 git-tracked | authoritative |
+| Skill contract | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | 1 git-tracked | authoritative |
 | Tests | `tests/review/test_attest_plan_claims.py` | 1 git-tracked | authoritative |
+| **Attestation payload (per-run, transient)** | stdout from script; passed via stdin to provider | **3 local-cache** | **transient; not persisted** |
 
-Attestation is produced by a local process (has repo access) and then embedded in the prompt shipped to the sandboxed provider. Provider sees signed evidence rather than plan-asserted claims.
+Attestation is ephemeral per-review — generated at dispatch time, embedded in prompt, not written to disk. If a persisted copy is needed later, it can be captured via `tee` by the caller; that path is out of v2 scope.
 
 ---
 
 ## Threat Model
 
-**Input surfaces:** the plan file itself (parsed by attestation script).
+**Input surfaces:** plan file path (CLI arg), plan content (read by script).
 **Trust boundaries:**
-- Local environment is trusted to run `gh` / `ls` / `sed` faithfully — attestation is only as trustworthy as the machine running it. Acceptable because plan-review is a developer-local operation.
-- Attestation SHA is included in the dispatch log so if a reviewer later contests a finding, the attestation can be re-run against the pinned commit and compared.
+- Plan content is **trusted** (git-tracked, reviewed).
+- Local `gh auth` token is trusted (ecosystem-standard auth).
+- **External provider is untrusted** for purposes of what data we ship them.
 
 **Mitigations:**
-- Attestation runs `gh`/`ls`/`sed` with hardcoded flags — no shell interpolation from plan content.
-- Plan file paths are allowlist-restricted to `docs/plans/*.md`.
-- Commands executed are pinned (no arbitrary command execution from plan content).
-- Rate-limit: max 20 `gh issue view` calls per attestation run (hard cap; prevents runaway plans from hitting API limits).
+- **Allowlist (single definition):** regex `^docs/plans/[^/]+\.md$` — both Deliverable text and `attest-plan-claims.sh` use this exact regex. Test: `test_allowlist_regex_consistent_across_deliverable_and_script`.
+- **No shell interpolation:** extracted issue numbers/paths pass through fixed-argument `gh` / `ls` invocations (no string concat into shell).
+- **Symlink traversal defense:** `ls -la` (not `ls -L`); results show symlink targets, not follow them. If a path resolves via symlink, attestation records `SYMLINK: <path> -> <target>` and the reviewer sees both.
+- **Private-metadata leakage defense (NEW — v2 addition):** `gh issue view --json number,state,title` only — **no body, no labels with sensitive content, no reviewer names**. State + title are the minimum needed for verification; body content stays out of third-party provider prompts.
+- **`gh` rate cap:** 20 issues per attestation; out-of-budget citations listed as `(skipped: budget exhausted)`.
+- **Attestation SHA** in payload lets reviewer (post-sandbox-access follow-on) cross-check payload integrity.
 
 **Threat tests:**
-- `test_attestation_rejects_plan_outside_allowlist`
-- `test_attestation_rejects_shell_metacharacters_in_extracted_paths`
-- `test_attestation_caps_gh_calls_at_20`
-- `test_attestation_commands_are_pinned_not_derived`
+- `test_allowlist_regex_consistent_across_deliverable_and_script`
+- `test_rejects_plan_path_outside_allowlist`
+- `test_no_shell_interpolation_from_plan_content`
+- `test_symlink_recorded_not_followed`
+- `test_gh_view_limits_to_state_title_only` (private-metadata defense)
+- `test_caps_gh_calls_at_20_with_skipped_note`
+- `test_attestation_sha_included_in_payload`
 
 ---
 
-## AC ↔ Test Map
+## AC ↔ Test Map (v2 — every AC mapped)
 
 | AC | Test(s) |
 |---|---|
-| Attestation script runs against any plan file | `test_attestation_runs_on_sample_plan` |
-| Extracts issue numbers from plan | `test_extract_issue_numbers` |
-| Extracts file paths from plan | `test_extract_file_paths` |
-| Runs `gh issue view` for each extracted issue | `test_gh_issue_view_invoked_per_issue` |
-| Runs `ls -la` for each extracted file path | `test_ls_invoked_per_path` |
-| Produces deterministic output for identical inputs | `test_attestation_deterministic` |
-| Output embedded into prompt as `## Attested Evidence` section | `test_dispatcher_includes_attestation_in_prompt` |
-| Dispatch still works when attestation fails (fail-soft) | `test_dispatcher_fails_soft_on_attestation_failure` |
-| Attestation SHA logged for reproducibility | `test_attestation_sha_logged` |
-| Rate limit honored | `test_attestation_caps_gh_calls_at_20` |
-| Path allowlist enforced | `test_attestation_rejects_plan_outside_allowlist` |
-| End-to-end regression: v3 #2392 plan with attestation → Codex produces non-"unverified" verdict | `test_e2e_iter3_plan_no_longer_unverified` (integration, may be skipped if Codex unavailable) |
+| Script runs against sample plan | `test_attestation_runs_on_sample_plan` |
+| Extracts issue numbers | `test_extract_issue_numbers` |
+| Extracts backticked file paths with known extensions | `test_extract_file_paths_backticked_with_extensions` |
+| Skips plain-path citations (documented limitation) | `test_extract_skips_plain_paths_v2_documented` |
+| `gh issue view` invoked per extracted issue | `test_gh_issue_view_invoked_per_issue` |
+| Handles `gh` partial failure gracefully | `test_gh_issue_view_partial_failure` (NEW — iter-1 Gemini finding) |
+| `ls -la` invoked per extracted file path | `test_ls_invoked_per_path` |
+| Deterministic output | `test_attestation_deterministic_for_identical_input` |
+| Output embedded as `## Attested Evidence` in prompt | `test_dispatcher_includes_attestation_block` |
+| Fail-soft on attestation failure | `test_dispatcher_fails_soft_on_attestation_failure` |
+| Attestation SHA hashes payload (not plan) | `test_attestation_sha_hashes_payload_not_plan_file` |
+| Rate limit honored | `test_caps_gh_calls_at_20_with_skipped_note` |
+| Allowlist enforced | `test_rejects_plan_path_outside_allowlist` + `test_allowlist_regex_consistent_across_deliverable_and_script` |
+| `<5s` benchmark | `test_attestation_runtime_under_5s_for_20_issues_40_paths` (NEW — benchmark test) |
+| **Updated prompt template landed** | `test_prompt_template_documents_attestation_block` (NEW — static file check) |
+| **Updated SKILL.md landed** | `test_skill_file_documents_attestation_preference` (NEW — static file check) |
+| §3 identity tests | listed under Identity Contract |
+| Threat tests | listed under Threat Model |
+| E2E regression: re-run v3 #2392 plan → no "unverified" finding | reviewer-task (integration; skipped if provider unavailable) |
 
 ---
 
 ## Deliverable
 
-An `attest-plan-claims.sh` script that:
-1. Parses a plan file at `docs/plans/<slug>.md`.
-2. Extracts claimed issue numbers (regex: `#\d{3,5}`).
-3. Extracts claimed file paths (regex matching backticked paths or plain paths in Evidence block).
-4. Runs `gh issue view <n> --json number,state,title` for each issue (capped at 20, rate-limited).
-5. Runs `ls -la <path>` for each file path claim.
-6. Emits a structured `## Attested Evidence (verified YYYY-MM-DDTHH:MM:SSZ)` block with the captured output.
-7. Returns the attestation as stdout for dispatcher consumption.
-
-Then `submit-to-codex.sh` and `submit-to-gemini.sh` are modified to run `attest-plan-claims.sh` on the input plan file, prepend the attestation block to the prompt, and include a pointer in the prompt instructing the reviewer that the attestation is independent verification.
+An `attest-plan-claims.sh` script that reads a plan file under `docs/plans/` and emits a `## Attested Evidence` block containing independently-verified `gh issue view` results and `ls -la` checks for each claim in the plan. The block is prepended to the prompt sent to Codex and Gemini, giving reviewers evidence they can rely on rather than plan-asserted claims.
 
 ---
 
-## Pseudocode
+## Pseudocode (v2 — fixes regex/allowlist/SHA semantics)
 
 ```bash
-# scripts/review/attest-plan-claims.sh
 #!/usr/bin/env bash
+# scripts/review/attest-plan-claims.sh
 set -euo pipefail
 PLAN_FILE="$1"
-[[ "$PLAN_FILE" =~ ^docs/plans/.*\.md$ ]] || die "plan path outside allowlist"
 
-# Extract citations
+# Single allowlist definition
+ALLOWLIST_REGEX='^docs/plans/[^/]+\.md$'
+[[ "$PLAN_FILE" =~ $ALLOWLIST_REGEX ]] || { echo "ERROR: plan path outside allowlist" >&2; exit 1; }
+[[ -f "$PLAN_FILE" ]] || { echo "ERROR: plan not found" >&2; exit 1; }
+
+# Extract citations (v2 — backticked-with-extension only; plain-path extraction out of scope)
 ISSUE_NUMBERS=$(grep -oE '#[0-9]{3,5}' "$PLAN_FILE" | sort -u | head -20)
-FILE_PATHS=$(grep -oE '`[a-zA-Z0-9._/\-]+\.(py|md|yaml|sh|json|toml)`' "$PLAN_FILE" \
+FILE_PATHS=$(grep -oE '`[a-zA-Z0-9._/\-]+\.(py|md|yaml|yml|sh|json|toml)`' "$PLAN_FILE" \
   | sed 's/`//g' | sort -u | head -40)
 
-echo "## Attested Evidence (verified $(date -u +%Y-%m-%dT%H:%M:%SZ) at commit $(git rev-parse HEAD))"
-echo ""
-echo "**Issue states** (independently verified via \`gh issue view\`, not plan-asserted):"
-for n in $ISSUE_NUMBERS; do
-  num="${n#\#}"
-  gh issue view "$num" --json number,state,title --jq '"- #\(.number) \(.state) \(.title)"' \
-    2>/dev/null || echo "- #$num (gh-lookup-failed)"
-done
+TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+COMMIT=$(git rev-parse HEAD)
 
-echo ""
-echo "**File existence** (independently verified via \`ls -la\`):"
-for f in $FILE_PATHS; do
-  if [[ -e "$f" ]]; then echo "- EXISTS: $f"
-  else echo "- MISSING: $f"; fi
-done
+# Build payload text (v2 — SHA hashes payload, not plan file)
+PAYLOAD=$(cat <<EOF
+## Attested Evidence (verified ${TS} at repo commit ${COMMIT})
 
+**Issue states** (via \`gh issue view --json number,state,title\` — title+state only, no body):
+$(for n in $ISSUE_NUMBERS; do
+    num="${n#\#}"
+    gh issue view "$num" --json number,state,title --jq '"- #\(.number) \(.state) \(.title)"' 2>/dev/null \
+      || echo "- $n (gh-lookup-failed or private)"
+  done)
+$([ -n "$(echo "$ISSUE_NUMBERS" | head -21 | tail -1)" ] && echo "_(more citations in plan skipped: budget exhausted at 20)_" || true)
+
+**File existence** (via \`ls -la\`):
+$(for f in $FILE_PATHS; do
+    if [[ -L "$f" ]]; then
+      target=$(readlink "$f")
+      echo "- SYMLINK: $f -> $target"
+    elif [[ -e "$f" ]]; then echo "- EXISTS: $f"
+    else echo "- MISSING: $f"
+    fi
+  done)
+EOF
+)
+
+PAYLOAD_SHA=$(printf '%s' "$PAYLOAD" | sha256sum | awk '{print $1}')
+echo "$PAYLOAD"
 echo ""
-echo "_Attestation SHA: $(sha256sum "$PLAN_FILE" | cut -c1-16)_"
+echo "_Attestation payload sha256: $PAYLOAD_SHA_"
 ```
 
-Dispatcher modification (conceptually):
+Dispatcher modification (both submit-to-codex.sh + submit-to-gemini.sh):
 ```bash
-# in submit-to-codex.sh and submit-to-gemini.sh, before constructing FULL_PROMPT:
-if [[ -f "$CONTENT_FILE" ]] && [[ "$CONTENT_FILE" == *docs/plans/* ]]; then
+# Before FULL_PROMPT construction:
+ATTESTATION=""
+if [[ -f "$CONTENT_FILE" && "$CONTENT_FILE" =~ docs/plans/[^/]+\.md$ ]]; then
   ATTESTATION="$(bash "${SCRIPT_DIR}/attest-plan-claims.sh" "$CONTENT_FILE" 2>/dev/null || echo "")"
+  [[ -z "$ATTESTATION" ]] && echo "[WARN] attestation failed — proceeding with plan-asserted evidence only" >&2
 fi
 
 FULL_PROMPT="${SCOPE_PREFIX}${PROMPT}
 
----
 ${ATTESTATION}
 
 ---
@@ -197,27 +251,28 @@ ${CONTENT_TEXT}"
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `scripts/review/attest-plan-claims.sh` | main attestation script |
-| Create | `tests/review/test_attest_plan_claims.py` | TDD suite |
-| Create | `tests/review/fixtures/sample_plan_with_citations.md` | test fixture |
-| Modify | `scripts/review/submit-to-codex.sh` | call attestation; embed output in prompt |
+| Create | `scripts/review/attest-plan-claims.sh` | attestation script |
+| Create | `tests/review/test_attest_plan_claims.py` | tests |
+| Create | `tests/review/fixtures/sample_plan_with_citations.md` | fixture |
+| Modify | `scripts/review/submit-to-codex.sh` | embed attestation in prompt |
 | Modify | `scripts/review/submit-to-gemini.sh` | same |
-| Modify | `scripts/review/prompts/plan-review.md` | document that `## Attested Evidence` block is independent verification; reviewer MUST prefer attestation over plan text when conflicts arise |
-| Modify | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | update review-stance contract: "independently verify against live state" → "prefer `## Attested Evidence` over plan text; treat plan as assertion, attestation as verification" |
-| Update | `docs/plans/README.md` | add this plan row |
+| Modify | `scripts/review/prompts/plan-review.md` | document `## Attested Evidence` block precedence |
+| Modify | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | update stance contract to "prefer attested evidence over plan text; plan text is assertion, attestation is verification" |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All tests pass: `uv run pytest tests/review/test_attest_plan_claims.py -v`
-- [ ] No regression: existing `cross-review.sh` behavior unchanged when attestation fails
-- [ ] Attestation runs in <5 seconds for a typical plan (20 issues + 40 paths)
-- [ ] Rate-limit (20 `gh` calls) enforced + tested
-- [ ] Path allowlist enforced + tested
-- [ ] Integration smoke: re-run one of the v3 plans (#2392 v3) through updated dispatcher → Codex produces a review that cites attested evidence rather than flagging "unverified" (the specific verdict may still be MAJOR on content grounds, but the "unverified" convergent finding should not appear)
-- [ ] Updated prompt template + skill file landed
-- [ ] Review artifacts posted
+- [ ] All tests pass
+- [ ] `attest-plan-claims.sh` runs in <5s for 20 issues + 40 paths (tested)
+- [ ] Dispatchers call attestation pre-prompt; fail-soft on error
+- [ ] `gh` limited to state+title only (no body, no sensitive metadata)
+- [ ] Allowlist regex identical in deliverable text and script
+- [ ] Attestation SHA hashes payload (not plan file)
+- [ ] Symlinks recorded, not followed
+- [ ] 20-cap enforced with skipped-note
+- [ ] Prompt template + skill file updated (static checks)
+- [ ] E2E smoke: re-run v3 #2392 plan through updated dispatcher; Codex review does not cite "unverified claims" (content verdict may still be MAJOR on other grounds — that's fine; the Class B convergent finding must be gone)
 
 ---
 
@@ -225,22 +280,22 @@ ${CONTENT_TEXT}"
 
 | Provider | Verdict | Artifact |
 |---|---|---|
-| Claude self | PENDING | will run pre-dispatch |
-| Codex | PENDING | — |
-| Gemini | PENDING | — |
+| Codex v1 | MAJOR | `2026-04-20-plan-2405-codex.md` |
+| Gemini v1 | MAJOR | `2026-04-20-plan-2405-gemini.md` |
+| Codex v2 | PENDING | — |
+| Gemini v2 | PENDING | — |
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** `gh` rate limit on attestation runs (5000 req/hr personal, but plans with many issue citations + rapid iteration could hit it). Mitigation: 20-cap per run; attestation cached for 5 min per plan-SHA.
-- **Risk:** Attestation could fail silently in CI. Mitigation: fail-soft (review proceeds without attestation, logs warning); dispatcher prints `[WARN] attestation failed — review will fall back to plan-asserted evidence only` so the reviewer's findings are still interpretable.
-- **Risk:** Attestation could become a DoS vector if a plan cites 1000s of issues. Mitigation: hard cap at 20; out-of-budget citations listed as `(skipped: budget exhausted)` so the plan author sees the limit.
-- **Open:** Should `sed -n` line excerpts also be attested? Plan default: no for v1 (out of scope — line-accuracy is less frequent defect class than existence/status); can add in follow-on.
-- **Open:** Cache attestations by plan-SHA? Plan default: yes, 5-minute TTL, local file cache only.
+- **Risk:** Class B "unverified claims" finding will persist until this plan actually IMPLEMENTS. Iter-2/iter-3 reviewers will still flag it for v2 itself. Mitigation: **accept Class B as circular for v2**; v2's goal is to remove Class A findings; Class B resolves at implementation time.
+- **Risk:** `gh` state+title only reduces privacy risk but doesn't eliminate it (titles can still leak context). Mitigation: users can configure `ATTEST_SKIP_PRIVATE_ISSUES=1` env var to have attestation list issue numbers without calling `gh` for them (follow-on enhancement if deemed necessary).
+- **Open:** Plain-path extraction — deliberately deferred. Plans adopting v3 extensions should use backticked `` `path/to/file.py` `` syntax for attestation.
+- **Open:** Persistent attestation archive (commit to `scripts/review/results/` alongside review artifacts)? Deferred to follow-on.
 
 ---
 
 ## Complexity: T2
 
-Single new script + 2 dispatcher modifications + tests + skill/prompt documentation. Well-bounded.
+Bounded. Single new script + 2 dispatcher modifications + prompt/skill documentation + tests.
