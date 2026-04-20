@@ -175,6 +175,12 @@ def safe_exists(path: Path) -> bool:
 def normalize_cmd(provider: str, raw_cmd: str | None) -> str:
     text = str(raw_cmd or "")
     if provider == "codex":
+        stripped = text.strip()
+        tokens = [token for token in stripped.split(" ") if token]
+        single_char_tokens = sum(1 for token in tokens if len(token) == 1)
+        looks_spaced_encoded = bool(tokens) and single_char_tokens / len(tokens) >= 0.6
+        if not looks_spaced_encoded:
+            return stripped
         decoded_parts: list[str] = []
         space_run = 0
         for ch in text:
@@ -247,8 +253,68 @@ def iter_post_records(logs_dir: Path) -> Iterable[dict]:
                 yield record
 
 
+def parse_record_timestamp(record: dict) -> float | None:
+    epoch = record.get("epoch")
+    if epoch is not None:
+        try:
+            return float(epoch)
+        except (TypeError, ValueError):
+            return None
+
+    raw_ts = str(record.get("ts", "") or "")
+    if not raw_ts:
+        return None
+    try:
+        return datetime.fromisoformat(raw_ts.replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return None
+
+
 def top_items(counter: Counter, limit: int, key_name: str) -> list[dict]:
     return [{key_name: key, "count": value} for key, value in counter.most_common(limit)]
+
+
+def compute_recent_activity_since(provider: str, logs_dir: Path, repo_root: Path, cutoff_ts: float) -> dict:
+    post_records = 0
+    session_ids: Counter[str] = Counter()
+    tool_counts: Counter[str] = Counter()
+    missing_repo_reads: Counter[str] = Counter()
+    bash_family_counts: Counter[str] = Counter()
+
+    for record in iter_post_records(logs_dir):
+        record_ts = parse_record_timestamp(record)
+        if record_ts is None or record_ts <= cutoff_ts:
+            continue
+
+        post_records += 1
+        session_id = str(record.get("session_id", "") or "")
+        if session_id:
+            session_ids[session_id] += 1
+
+        tool = str(record.get("tool", "unknown"))
+        tool_counts[tool] += 1
+
+        if tool == "Bash":
+            cmd = normalize_cmd(provider, record.get("cmd"))
+            prefix = normalize_command_to_prefix(cmd, cleanup=True)
+            if prefix:
+                bash_family_counts[prefix] += 1
+
+        if tool == "Read":
+            normalized, scope, exists = classify_read_target(record.get("file"), repo_root, record)
+            if scope == "repo" and not exists:
+                missing_repo_reads[normalized] += 1
+
+    return {
+        "post_records": post_records,
+        "sessions": len(session_ids),
+        "top_tools": top_items(tool_counts, 5, "tool"),
+        "top_missing_repo_reads": top_items(missing_repo_reads, 5, "path"),
+        "top_bash_command_families": [
+            {"prefix": prefix, "count": count}
+            for prefix, count in bash_family_counts.most_common(8)
+        ],
+    }
 
 
 def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> dict:
@@ -439,9 +505,86 @@ def build_migration_debt_summary(provider_summaries: dict[str, dict]) -> dict:
     }
 
 
+def load_previous_generated_at(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    generated_at = payload.get("generated_at")
+    return str(generated_at) if generated_at else None
+
+
+def build_recent_activity_summary(
+    provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
+) -> dict:
+    if not previous_generated_at:
+        return {
+            "previous_generated_at": None,
+            "status": "no_prior_audit",
+            "providers": {},
+        }
+
+    try:
+        cutoff_ts = datetime.fromisoformat(previous_generated_at.replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return {
+            "previous_generated_at": previous_generated_at,
+            "status": "invalid_prior_audit_timestamp",
+            "providers": {},
+        }
+
+    recent_by_provider: dict[str, dict] = {}
+    for provider in PROVIDERS:
+        logs_dir = logs_root / provider
+        summary = provider_summaries.get(provider, {})
+        if not logs_dir.exists() or summary.get("source") not in {"raw_logs", "precomputed_report"}:
+            recent_by_provider[provider] = {
+                "post_records": 0,
+                "sessions": 0,
+                "top_tools": [],
+                "top_missing_repo_reads": [],
+                "top_bash_command_families": [],
+            }
+            continue
+        if summary.get("source") == "precomputed_report":
+            recent_by_provider[provider] = {
+                "post_records": 0,
+                "sessions": 0,
+                "top_tools": [],
+                "top_missing_repo_reads": [],
+                "top_bash_command_families": [],
+                "limitations": [
+                    "Recent event-time activity since the prior audit timestamp cannot be reconstructed from the precomputed fallback artifact alone."
+                ],
+            }
+            continue
+        recent_by_provider[provider] = compute_recent_activity_since(provider, logs_dir, repo_root, cutoff_ts)
+
+    ranked = sorted(
+        (
+            {
+                "provider": provider,
+                "post_records": data.get("post_records", 0),
+                "sessions": data.get("sessions", 0),
+            }
+            for provider, data in recent_by_provider.items()
+        ),
+        key=lambda item: (-item["post_records"], -item["sessions"], item["provider"]),
+    )
+    return {
+        "previous_generated_at": previous_generated_at,
+        "status": "ok",
+        "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
+        "providers": recent_by_provider,
+        "ranked_providers": ranked,
+    }
+
 
 def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROOT) -> dict:
     provider_summaries: dict[str, dict] = {}
+    previous_generated_at = load_previous_generated_at(repo_root / "analysis" / "provider-session-ecosystem-audit.json")
 
     for provider in PROVIDERS:
         logs_dir = logs_root / provider
@@ -475,7 +618,12 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "repo_root": str(repo_root),
         "logs_root": str(logs_root),
         "providers": provider_summaries,
-        "executive_summary": {"migration_debt": build_migration_debt_summary(provider_summaries)},
+        "executive_summary": {
+            "migration_debt": build_migration_debt_summary(provider_summaries),
+            "recent_activity_since_previous_audit": build_recent_activity_summary(
+                provider_summaries, logs_root, repo_root, previous_generated_at
+            ),
+        },
     }
 
 
@@ -523,6 +671,35 @@ def render_markdown(audit: dict) -> str:
                 f"- Unmapped missing repo reads remain for: {', '.join(f'`{provider}`' for provider in unmapped)}; this looks more like general path drift than known migration debt."
             )
         lines.append(f"- Scope note: {migration_debt.get('scope_note', '')}")
+        lines.append("")
+
+    recent_activity = audit.get("executive_summary", {}).get("recent_activity_since_previous_audit", {})
+    recent_status = recent_activity.get("status")
+    if recent_status == "ok":
+        previous_generated_at = recent_activity.get("previous_generated_at")
+        if previous_generated_at:
+            lines.append("## Recent activity since previous audit")
+            lines.append(f"- Previous audit timestamp: `{previous_generated_at}`")
+            ranked_recent = recent_activity.get("ranked_providers", [])
+            if ranked_recent:
+                coverage_summary = ", ".join(
+                    f"`{item['provider']}` {item['post_records']} post records / {item['sessions']} sessions"
+                    for item in ranked_recent
+                )
+                lines.append(f"- Recent post-audit activity: {coverage_summary}.")
+            scope_note = recent_activity.get("scope_note")
+            if scope_note:
+                lines.append(f"- Scope note: {scope_note}")
+            lines.append("")
+    elif recent_status == "no_prior_audit":
+        lines.append("## Recent activity since previous audit")
+        lines.append("- No prior tracked provider audit artifact was available, so recent delta analysis is not yet available.")
+        lines.append("")
+    elif recent_status == "invalid_prior_audit_timestamp":
+        lines.append("## Recent activity since previous audit")
+        lines.append(
+            f"- Prior audit timestamp `{recent_activity.get('previous_generated_at')}` was invalid, so recent delta analysis was skipped."
+        )
         lines.append("")
 
     def emit_rows(title: str, rows: list[dict], key: str) -> None:
@@ -578,6 +755,26 @@ def render_markdown(audit: dict) -> str:
         emit_rows(f"{provider} top reads", summary.get("top_reads", []), "path")
         emit_rows(f"{provider} top symbolic reads", summary.get("top_symbolic_reads", []), "name")
         emit_rows(f"{provider} top Bash command families", summary.get("top_bash_command_families", []), "prefix")
+        recent_provider = recent_activity.get("providers", {}).get(provider, {}) if recent_status == "ok" else {}
+        if recent_provider:
+            lines.append(f"### {provider} recent activity since previous audit")
+            lines.append(f"- Post-hook records since prior audit: {recent_provider.get('post_records', 0)}")
+            lines.append(f"- Runtime sessions since prior audit: {recent_provider.get('sessions', 0)}")
+            limitations = recent_provider.get("limitations", [])
+            for limitation in limitations:
+                lines.append(f"- Limitation: {limitation}")
+            lines.append("")
+            emit_rows(f"{provider} recent top tools", recent_provider.get("top_tools", []), "tool")
+            emit_rows(
+                f"{provider} recent top Bash command families",
+                recent_provider.get("top_bash_command_families", []),
+                "prefix",
+            )
+            emit_rows(
+                f"{provider} recent top missing repo reads",
+                recent_provider.get("top_missing_repo_reads", []),
+                "path",
+            )
         emit_rows(f"{provider} top missing repo reads", summary.get("top_missing_repo_reads", []), "path")
         emit_remediation_hints(
             f"{provider} remediation hints for stale repo reads",
@@ -587,11 +784,11 @@ def render_markdown(audit: dict) -> str:
 
     lines += [
         "## Ecosystem strengthening recommendations",
-        "1. Record every provider into `logs/orchestrator/<provider>/session_*.jsonl`; Gemini currently has no corpus, which blocks parity analysis.",
+        "1. Keep exporting every provider into `logs/orchestrator/<provider>/session_*.jsonl` before the audit so the recent-delta section stays trustworthy.",
         "2. Treat symbolic skill/tool reads separately from filesystem reads. Hermes emits many skill names in `file`, and counting them as missing files creates noisy false positives.",
-        "3. Normalize Codex command logging before analysis. Its spaced command encoding hides policy violations unless commands are de-spaced first.",
-        "4. Add a recurring provider audit run that refreshes both JSON and markdown artifacts so refactors can prove drift is shrinking.",
-        "5. Keep pushing `uv run ... python` migration. Hermes and Codex still show meaningful bare `python3` usage density.",
+        "3. Preserve Codex command-shape fidelity in both export and audit layers. Recent native sessions use a mix of spaced-encoded commands and ordinary shell strings.",
+        "4. Use the recent-activity section to prioritize follow-up review on providers with actual post-audit event-time work instead of re-reading the full historical corpus every time.",
+        "5. Keep pushing `uv run ... python` migration. Hermes, Gemini, and Codex still show meaningful bare `python3` usage density.",
         "",
     ]
     return "\n".join(lines)

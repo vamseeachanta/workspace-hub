@@ -64,6 +64,8 @@ TOOL_MAP = {
     "list_directory": "Read",
     "search_files": "Grep",
     "browser": "Browser",
+    "_fetch_file": "Read",
+    "_search": "Grep",
 }
 
 
@@ -99,9 +101,13 @@ def normalize_arguments(raw_args):
 
 def command_from_args(args: dict) -> str:
     command = str(args.get("command", "") or "")
-    cmd_parts = args.get("cmd", [])
-    if isinstance(cmd_parts, list):
-        suffix = " ".join(part for part in cmd_parts if isinstance(part, str)).strip()
+    raw_cmd = args.get("cmd", [])
+    if isinstance(raw_cmd, str):
+        suffix = raw_cmd.strip()
+        if suffix:
+            command = f"{command} {suffix}".strip() if command else suffix
+    elif isinstance(raw_cmd, list):
+        suffix = " ".join(part for part in raw_cmd if isinstance(part, str)).strip()
         if suffix:
             command = f"{command} {suffix}".strip() if command else suffix
     return command[:1000]
@@ -205,11 +211,11 @@ for session_file in sorted(codex_sessions.glob("**/rollout-*.jsonl")):
         }
         if name in {"exec_command", "write_stdin"}:
             entry["cmd"] = command_from_args(args)
-        elif name in {"read_file", "write_file", "apply_diff", "list_directory"}:
+        elif name in {"read_file", "write_file", "apply_diff", "list_directory", "_fetch_file"}:
             entry["file"] = str(args.get("path", args.get("file_path", args.get("dir_path", ""))) or "")[:1000]
-        elif name == "search_files":
+        elif name in {"search_files", "_search"}:
             entry["query"] = str(args.get("pattern", args.get("query", "")) or "")[:1000]
-            root = str(args.get("path", args.get("dir_path", "")) or "")
+            root = str(args.get("path", args.get("dir_path", args.get("repository_name", args.get("repository_full_name", "")))) or "")
             if root:
                 entry["search_root"] = root[:1000]
 

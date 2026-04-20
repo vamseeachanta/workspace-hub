@@ -1,43 +1,48 @@
-# Provider session ecosystem audit — 2026-04-16
+# Provider session ecosystem audit — 2026-04-20
 
 Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
 ## Executive summary
-- `claude` — source=raw_logs | sessions=30 | post_records=77417 | python3/1k=9.02 | uv-python/1k=76.69
-- `codex` — source=raw_logs | sessions=46 | post_records=32096 | python3/1k=9.94 | uv-python/1k=12.31
-- `hermes` — source=raw_logs | sessions=15 | post_records=99793 | python3/1k=17.09 | uv-python/1k=19.9
-- `gemini` — source=raw_logs | sessions=41 | post_records=6064 | python3/1k=47.99 | uv-python/1k=6.43
+- `claude` — source=raw_logs | sessions=32 | post_records=79674 | python3/1k=9.11 | uv-python/1k=74.83
+- `codex` — source=raw_logs | sessions=49 | post_records=17284 | python3/1k=19.5 | uv-python/1k=24.36
+- `hermes` — source=raw_logs | sessions=17 | post_records=101282 | python3/1k=17.09 | uv-python/1k=20.02
+- `gemini` — source=raw_logs | sessions=44 | post_records=6081 | python3/1k=47.85 | uv-python/1k=6.41
 
-- Migration debt density (known stale reads with redirect hints per 1k records): `gemini` 13.85, `claude` 12.56, `codex` 0.0, `hermes` 0.0.
+- Migration debt density (known stale reads with redirect hints per 1k records): `gemini` 13.81, `claude` 12.2, `codex` 0.0, `hermes` 0.0.
 - Highest-volume known migration debt: `claude` with 972 mapped stale reads across 4 rule clusters; top hotspot: `legacy_work_queue_transition` (318).
 - Highest-density known migration debt: `gemini` with 84 mapped stale reads; top hotspot: `legacy_local_work_queue_items` (37, 44.05% of known debt).
-- Unmapped missing repo reads remain for: `hermes`; this looks more like general path drift than known migration debt.
+- Unmapped missing repo reads remain for: `codex`, `hermes`; this looks more like general path drift than known migration debt.
 - Scope note: Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.
+
+## Recent activity since previous audit
+- Previous audit timestamp: `2026-04-16T23:34:23Z`
+- Recent post-audit activity: `claude` 2258 post records / 26 sessions, `codex` 774 post records / 26 sessions, `hermes` 594 post records / 6 sessions, `gemini` 16 post records / 8 sessions.
+- Scope note: This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.
 
 ## claude
 - Source: raw_logs
-- Sessions: 30
-- Post-hook records: 77417
+- Sessions: 32
+- Post-hook records: 79674
 - Correction sessions: 0
-- Unique runtime sessions: 111
-- Prompt-like reads: 87
+- Unique runtime sessions: 134
+- Prompt-like reads: 91
 - Blank read targets: 0
-- Missing repo reads: 7563
-- Bare python3 bash calls: 698
-- `uv run ... python` bash calls: 5937
+- Missing repo reads: 7597
+- Bare python3 bash calls: 726
+- `uv run ... python` bash calls: 5962
 
 ### claude top tools
-- `Bash` — 41897
-- `Read` — 15063
-- `Edit` — 6957
-- `Write` — 6604
-- `Grep` — 1973
-- `Agent` — 780
+- `Bash` — 43234
+- `Read` — 15422
+- `Edit` — 7259
+- `Write` — 6777
+- `Grep` — 2016
+- `Agent` — 820
 - `ToolSearch` — 681
 - `TaskUpdate` — 541
 
 ### claude top repos
-- `workspace-hub` — 73752
+- `workspace-hub` — 75932
 - `digitalmodel` — 1900
 - `assetutilities` — 535
 - `worldenergydata` — 201
@@ -51,8 +56,8 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `scripts/work-queue/generate-html-review.py` — 249
 - `scripts/work-queue/start_stage.py` — 138
 - `scripts/work-queue/exit_stage.py` — 137
+- `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` — 126
 - `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` — 123
-- `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` — 116
 - `scripts/work-queue/close-item.sh` — 94
 - `scripts/work-queue/whats-next.sh` — 70
 - `.claude/skills/coordination/workspace/work-queue/SKILL.md` — 66
@@ -62,14 +67,42 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - none
 
 ### claude top Bash command families
-- `ls` — 6164
-- `grep` — 5276
-- `uv run` — 5193
-- `cat` — 4326
-- `find` — 3343
-- `bash` — 2792
-- `sed` — 1319
-- `git add` — 1019
+- `ls` — 6340
+- `uv run` — 5672
+- `grep` — 5376
+- `cat` — 4463
+- `find` — 3362
+- `bash` — 2888
+- `sed` — 1336
+- `gh` — 1225
+
+### claude recent activity since previous audit
+- Post-hook records since prior audit: 2258
+- Runtime sessions since prior audit: 26
+
+### claude recent top tools
+- `Bash` — 1337
+- `Read` — 359
+- `Edit` — 302
+- `Write` — 173
+- `Grep` — 43
+
+### claude recent top Bash command families
+- `gh` — 231
+- `ls` — 175
+- `grep` — 94
+- `node` — 81
+- `cat` — 70
+- `git add` — 57
+- `cd` — 52
+- `ps` — 46
+
+### claude recent top missing repo reads
+- `.claude/worktrees/agent-a34203b3/docs/document-intelligence/pyramid-conformance-checks.md` — 2
+- `.claude/worktrees/agent-a1397be7/docs/plans/2026-04-19-revision-dispatch-prompt-2207-provenance-reuse-contract.md` — 1
+- `.claude/worktrees/agent-a1397be7/docs/document-intelligence/standards-codes-provenance-reuse-contract.md` — 1
+- `.claude/worktrees/agent-a1397be7/docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` — 1
+- `.claude/worktrees/agent-a1397be7/scripts/review/results/2026-04-17-plan-2207-claude-adversarial.md` — 1
 
 ### claude top missing repo reads
 - `scripts/work-queue/generate-html-review.py` — 249
@@ -115,47 +148,93 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## codex
 - Source: raw_logs
-- Sessions: 46
-- Post-hook records: 32096
+- Sessions: 49
+- Post-hook records: 17284
 - Correction sessions: 0
-- Unique runtime sessions: 448
+- Unique runtime sessions: 476
 - Prompt-like reads: 0
 - Blank read targets: 0
-- Missing repo reads: 0
-- Bare python3 bash calls: 319
-- `uv run ... python` bash calls: 395
+- Missing repo reads: 119
+- Bare python3 bash calls: 337
+- `uv run ... python` bash calls: 421
 
 ### codex top tools
-- `Bash` — 30943
-- `update_plan` — 752
+- `Bash` — 15883
+- `update_plan` — 384
+- `Read` — 308
 - `mcp__codex_apps__github_fetch_file` — 192
-- `list_mcp_resources` — 54
+- `Grep` — 179
+- `list_mcp_resources` — 60
 - `mcp__codex_apps__github_search` — 41
 - `mcp__codex_apps__github_fetch_issue` — 39
-- `list_mcp_resource_templates` — 19
-- `request_user_input` — 10
 
 ### codex top repos
-- `workspace-hub` — 32096
+- `workspace-hub` — 17284
 
 ### codex top reads
-- none
+- `docs/plans/README.md` — 11
+- `content/demos/index.html` — 7
+- `docs/plans/2026-04-17-issue-2342-2343-demo-detail-pages.md` — 6
+- `package.json` — 6
+- `docs/standards/HARD-STOP-POLICY.md` — 5
+- `build.js` — 5
+- `content/demos/jumper-installation.html` — 5
+- `content/partials/head-common.html` — 5
+- `docs/plans/_template-issue-plan.md` — 4
+- `docs/reports/2026-04-17-issue-39-market-hours-signals-consumers-plan.md` — 4
 
 ### codex top symbolic reads
-- none
+- `CNAME` — 2
 
 ### codex top Bash command families
-- `sed` — 3868
-- `rg` — 1739
-- `nl` — 1308
-- `ls` — 508
-- `bash` — 446
-- `find` — 423
-- `for` — 306
-- `git status` — 285
+- `sed` — 4207
+- `rg` — 1781
+- `nl` — 1330
+- `ls` — 518
+- `bash` — 473
+- `uv run` — 453
+- `find` — 436
+- `git status` — 310
+
+### codex recent activity since previous audit
+- Post-hook records since prior audit: 774
+- Runtime sessions since prior audit: 26
+
+### codex recent top tools
+- `Read` — 302
+- `Grep` — 173
+- `Bash` — 141
+- `_fetch` — 33
+- `_fetch_issue` — 20
+
+### codex recent top Bash command families
+- `sed` — 84
+- `pwd` — 11
+- `nl` — 11
+- `rg` — 8
+- `mkdir` — 3
+- `git show` — 3
+- `git status` — 2
+- `git` — 2
+
+### codex recent top missing repo reads
+- `content/demos/index.html` — 7
+- `package.json` — 6
+- `build.js` — 5
+- `content/demos/jumper-installation.html` — 5
+- `content/partials/head-common.html` — 5
 
 ### codex top missing repo reads
-- none
+- `content/demos/index.html` — 7
+- `package.json` — 6
+- `build.js` — 5
+- `content/demos/jumper-installation.html` — 5
+- `content/partials/head-common.html` — 5
+- `docs/reports/2026-04-17-issue-39-market-hours-signals-consumers-plan.md` — 4
+- `examples/demos/gtm/output/demo_02_wall_thickness_report.html` — 4
+- `examples/demos/gtm/output/demo_03_mudmat_installation_report.html` — 4
+- `vercel.json` — 4
+- `examples/demos/gtm/output/demo_01_freespan_report.html` — 3
 
 ### codex remediation hints for stale repo reads
 - none
@@ -165,62 +244,86 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## hermes
 - Source: raw_logs
-- Sessions: 15
-- Post-hook records: 99793
-- Correction sessions: 15
-- Unique runtime sessions: 1316
-- Prompt-like reads: 853
+- Sessions: 17
+- Post-hook records: 101282
+- Correction sessions: 17
+- Unique runtime sessions: 1331
+- Prompt-like reads: 862
 - Blank read targets: 26
 - Missing repo reads: 268
-- Bare python3 bash calls: 1705
-- `uv run ... python` bash calls: 1986
+- Bare python3 bash calls: 1731
+- `uv run ... python` bash calls: 2028
 
 ### hermes top tools
-- `Bash` — 45037
-- `Read` — 17589
-- `Grep` — 15888
-- `Write` — 12394
-- `Edit` — 6401
+- `Bash` — 45590
+- `Read` — 17976
+- `Grep` — 16129
+- `Write` — 12578
+- `Edit` — 6525
 - `Task` — 1344
 - `Browser` — 512
 - `ToolSearch` — 221
 
 ### hermes top repos
-- `workspace-hub` — 99793
+- `workspace-hub` — 101282
 
 ### hermes top reads
-- `config/scheduled-tasks/schedule-tasks.yaml` — 231
-- `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` — 230
-- `docs/plans/README.md` — 186
-- `docs/reports/provider-session-ecosystem-audit.md` — 175
-- `analysis/provider-session-ecosystem-audit.json` — 115
+- `config/scheduled-tasks/schedule-tasks.yaml` — 238
+- `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md` — 233
+- `docs/reports/provider-session-ecosystem-audit.md` — 199
+- `docs/plans/README.md` — 189
+- `analysis/provider-session-ecosystem-audit.json` — 128
 - `scripts/_core/sync-agent-configs.sh` — 90
 - `scripts/cron/harness-update.sh` — 88
-- `docs/plans/_template-issue-plan.md` — 79
-- `scripts/analysis/provider_session_ecosystem_audit.py` — 76
-- `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — 73
+- `scripts/analysis/provider_session_ecosystem_audit.py` — 86
+- `docs/plans/_template-issue-plan.md` — 82
+- `tests/analysis/test_provider_session_ecosystem_audit.py` — 76
 
 ### hermes top symbolic reads
-- `github/github-issues` — 202
+- `github/github-issues` — 219
 - `github-issues` — 145
-- `coordination/issue-planning-mode` — 132
-- `autonomous-ai-agents/claude-code` — 122
+- `coordination/issue-planning-mode` — 139
+- `autonomous-ai-agents/claude-code` — 124
 - `gh-work-planning` — 85
 - `overnight-parallel-agent-prompts` — 81
+- `coordination/cross-review-policy` — 72
 - `issue-planning-mode` — 70
-- `coordination/cross-review-policy` — 70
 - `claude-code` — 65
-- `gh-work-execution` — 64
+- `coordination/session-start-routine` — 65
 
 ### hermes top Bash command families
-- `gh` — 8912
-- `uv run` — 3216
-- `git add` — 1778
-- `git status` — 1608
+- `gh` — 9082
+- `uv run` — 3467
+- `git add` — 1789
+- `git status` — 1630
 - `find` — 1421
 - `ls` — 1360
 - `cat` — 1243
-- `git log` — 1077
+- `git log` — 1084
+
+### hermes recent activity since previous audit
+- Post-hook records since prior audit: 594
+- Runtime sessions since prior audit: 6
+
+### hermes recent top tools
+- `Bash` — 217
+- `Read` — 157
+- `Grep` — 102
+- `Write` — 79
+- `Edit` — 39
+
+### hermes recent top Bash command families
+- `gh` — 98
+- `uv run` — 21
+- `git status` — 10
+- `bash` — 9
+- `pwd` — 6
+- `date` — 4
+- `claude` — 4
+- `env` — 3
+
+### hermes recent top missing repo reads
+- none
 
 ### hermes top missing repo reads
 - `client_projects/engineering_workbooks/ballymore/jumper_manifold_to_plet/jumper_lift.py` — 24
@@ -251,10 +354,10 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 
 ## gemini
 - Source: raw_logs
-- Sessions: 41
-- Post-hook records: 6064
+- Sessions: 44
+- Post-hook records: 6081
 - Correction sessions: 0
-- Unique runtime sessions: 308
+- Unique runtime sessions: 317
 - Prompt-like reads: 18
 - Blank read targets: 0
 - Missing repo reads: 665
@@ -262,17 +365,17 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `uv run ... python` bash calls: 39
 
 ### gemini top tools
-- `Bash` — 2280
-- `Read` — 2127
-- `Grep` — 618
+- `Bash` — 2281
+- `Read` — 2135
+- `Grep` — 621
 - `Write` — 535
 - `Edit` — 394
-- `Browser` — 98
+- `Browser` — 103
 - `ToolSearch` — 9
 - `ask_user` — 1
 
 ### gemini top repos
-- `workspace-hub` — 6064
+- `workspace-hub` — 6081
 
 ### gemini top reads
 - `.claude/work-queue/` — 29
@@ -301,12 +404,28 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 ### gemini top Bash command families
 - `ls` — 467
 - `find` — 274
-- `cat` — 190
+- `cat` — 191
 - `python3` — 173
 - `grep` — 149
 - `git` — 120
 - `mkdir` — 78
 - `git status` — 72
+
+### gemini recent activity since previous audit
+- Post-hook records since prior audit: 16
+- Runtime sessions since prior audit: 8
+
+### gemini recent top tools
+- `Read` — 8
+- `Browser` — 4
+- `Grep` — 3
+- `Bash` — 1
+
+### gemini recent top Bash command families
+- `cat` — 1
+
+### gemini recent top missing repo reads
+- none
 
 ### gemini top missing repo reads
 - `.claude/work-queue/WRK-149.md` — 17
@@ -339,9 +458,9 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `/tmp/test-output.md` — 1
 
 ## Ecosystem strengthening recommendations
-1. Record every provider into `logs/orchestrator/<provider>/session_*.jsonl`; Gemini currently has no corpus, which blocks parity analysis.
+1. Keep exporting every provider into `logs/orchestrator/<provider>/session_*.jsonl` before the audit so the recent-delta section stays trustworthy.
 2. Treat symbolic skill/tool reads separately from filesystem reads. Hermes emits many skill names in `file`, and counting them as missing files creates noisy false positives.
-3. Normalize Codex command logging before analysis. Its spaced command encoding hides policy violations unless commands are de-spaced first.
-4. Add a recurring provider audit run that refreshes both JSON and markdown artifacts so refactors can prove drift is shrinking.
-5. Keep pushing `uv run ... python` migration. Hermes and Codex still show meaningful bare `python3` usage density.
+3. Preserve Codex command-shape fidelity in both export and audit layers. Recent native sessions use a mix of spaced-encoded commands and ordinary shell strings.
+4. Use the recent-activity section to prioritize follow-up review on providers with actual post-audit event-time work instead of re-reading the full historical corpus every time.
+5. Keep pushing `uv run ... python` migration. Hermes, Gemini, and Codex still show meaningful bare `python3` usage density.
 

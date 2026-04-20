@@ -130,6 +130,12 @@ def test_normalize_cmd_preserves_shell_separators_for_codex() -> None:
     assert module.normalize_cmd("codex", raw) == "git status && pwd | sed -n '1p' 2>/dev/null"
 
 
+def test_normalize_cmd_leaves_regular_codex_command_unchanged() -> None:
+    raw = "git status --short"
+
+    assert module.normalize_cmd("codex", raw) == "git status --short"
+
+
 def test_cleanup_bash_command_drops_comments_and_cd_wrapper() -> None:
     raw = "# comment\ncd /tmp/repo && uv run --no-project python tool.py\n"
 
@@ -140,6 +146,12 @@ def test_normalize_command_to_prefix_uses_multiword_prefix() -> None:
     assert module.normalize_command_to_prefix(
         "cd /tmp/repo && uv run --no-project python tool.py", cleanup=True
     ) == "uv run"
+
+
+def test_cleanup_bash_command_strips_env_prefixed_command() -> None:
+    raw = "cd /tmp/repo && GIT_PAGER=cat git status --short\n"
+
+    assert module.cleanup_bash_command(raw) == "git status --short"
 
 
 def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> None:
@@ -220,6 +232,51 @@ def test_build_provider_audit_prefers_raw_claude_logs_when_present(tmp_path: Pat
 
     assert audit["providers"]["claude"]["source"] == "raw_logs"
     assert audit["providers"]["claude"]["post_records"] == 1
+    assert audit["executive_summary"]["recent_activity_since_previous_audit"]["status"] == "no_prior_audit"
+
+
+def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z"}),
+        encoding="utf-8",
+    )
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "cmd": "git status --short",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T01:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "docs/missing.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:00:00Z",
+            "session_id": "claude-1",
+        },
+    ]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    recent = audit["executive_summary"]["recent_activity_since_previous_audit"]
+    assert recent["status"] == "ok"
+    assert recent["previous_generated_at"] == "2026-04-10T00:00:00Z"
+    assert recent["providers"]["claude"]["post_records"] == 2
+    assert recent["providers"]["claude"]["sessions"] == 1
+    assert recent["providers"]["claude"]["top_bash_command_families"][0]["prefix"] == "git status"
+    assert recent["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
 
 
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
@@ -284,6 +341,55 @@ def test_build_provider_audit_consumes_gemini_export_jsonl(tmp_path: Path) -> No
     assert audit["providers"]["gemini"]["unique_runtime_sessions"] == 1
     assert audit["providers"]["gemini"]["top_reads"][0]["path"] == "docs/keep.md"
     assert audit["providers"]["gemini"]["top_bash_command_families"][0]["prefix"] == "python3"
+
+
+def test_render_markdown_mentions_recent_activity_section() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
+            "recent_activity_since_previous_audit": {
+                "status": "ok",
+                "previous_generated_at": "2026-04-09T00:00:00Z",
+                "scope_note": "Event-time scope note.",
+                "ranked_providers": [{"provider": "claude", "post_records": 2, "sessions": 1}],
+                "providers": {
+                    "claude": {
+                        "post_records": 2,
+                        "sessions": 1,
+                        "top_tools": [{"tool": "Bash", "count": 1}],
+                        "top_bash_command_families": [{"prefix": "git status", "count": 1}],
+                        "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 1}],
+                    }
+                },
+            },
+        },
+        "providers": {
+            "claude": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 2,
+                "python3_bash_calls": 0,
+                "uv_python_bash_calls": 1,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [],
+                "top_bash_command_families": [],
+                "top_missing_repo_reads": [],
+                "missing_repo_read_remediation_hints": [],
+                "top_missing_external_reads": [],
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "## Recent activity since previous audit" in markdown
+    assert "### claude recent activity since previous audit" in markdown
+    assert "Previous audit timestamp: `2026-04-09T00:00:00Z`" in markdown
+    assert "Event-time scope note." in markdown
 
 
 def test_build_missing_read_remediation_hints_groups_known_legacy_paths() -> None:

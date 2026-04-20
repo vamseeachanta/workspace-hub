@@ -17,3 +17,16 @@ def test_normalize_command_to_prefix_with_cleanup_uses_multiword_prefix() -> Non
     assert normalize_command_to_prefix(
         "cd /tmp/repo && uv run --no-project python tool.py", cleanup=True
     ) == "uv run"
+
+
+def test_cleanup_bash_command_strips_inline_env_assignments() -> None:
+    raw = "cd /tmp/repo && GIT_PAGER=cat git status --short"
+
+    assert cleanup_bash_command(raw) == "git status --short"
+
+
+def test_normalize_command_to_prefix_with_cleanup_ignores_env_prefixed_command() -> None:
+    assert normalize_command_to_prefix(
+        "GIT_OPTIONAL_LOCKS=0 git status --short",
+        cleanup=True,
+    ) == "git status"

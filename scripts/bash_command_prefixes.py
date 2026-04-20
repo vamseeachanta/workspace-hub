@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 BASH_MULTI_WORD_PREFIXES: tuple[tuple[str, ...], ...] = (
     ("git", "diff"),
     ("git", "log"),
@@ -33,6 +35,8 @@ BASH_MULTI_WORD_PREFIXES: tuple[tuple[str, ...], ...] = (
     ("python3", "-m"),
 )
 
+INLINE_ENV_ASSIGNMENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=.*$")
+
 
 def cleanup_bash_command(command: str) -> str:
     text = command.strip()
@@ -43,8 +47,12 @@ def cleanup_bash_command(command: str) -> str:
     if text.startswith("cd ") and "&&" in text:
         before, after = text.split("&&", 1)
         if before.strip().startswith("cd "):
-            return after.strip()
-    return text
+            text = after.strip()
+
+    tokens = text.split()
+    while tokens and INLINE_ENV_ASSIGNMENT_RE.fullmatch(tokens[0]):
+        tokens.pop(0)
+    return " ".join(tokens).strip()
 
 
 def normalize_command_to_prefix(command: str, *, cleanup: bool = False) -> str:
