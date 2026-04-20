@@ -263,6 +263,22 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
             "ts": "2026-04-10T02:00:00Z",
             "session_id": "claude-1",
         },
+        {
+            "hook": "post",
+            "tool": "Write",
+            "file": "docs/new.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:30:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Edit",
+            "file": "tests/test_new.py",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:45:00Z",
+            "session_id": "claude-1",
+        },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
         "\n".join(json.dumps(r) for r in records), encoding="utf-8"
@@ -273,9 +289,12 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
     recent = audit["executive_summary"]["recent_activity_since_previous_audit"]
     assert recent["status"] == "ok"
     assert recent["previous_generated_at"] == "2026-04-10T00:00:00Z"
-    assert recent["providers"]["claude"]["post_records"] == 2
+    assert recent["providers"]["claude"]["post_records"] == 4
     assert recent["providers"]["claude"]["sessions"] == 1
     assert recent["providers"]["claude"]["top_bash_command_families"][0]["prefix"] == "git status"
+    assert recent["providers"]["claude"]["top_reads"][0]["path"] == "docs/missing.md"
+    assert recent["providers"]["claude"]["top_writes"][0]["path"] == "docs/new.md"
+    assert recent["providers"]["claude"]["top_edits"][0]["path"] == "tests/test_new.py"
     assert recent["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
 
     windows = audit["executive_summary"]["recent_activity_windows"]
@@ -305,6 +324,22 @@ def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: P
             "file": "docs/missing.md",
             "repo": "workspace-hub",
             "ts": "2026-04-08T12:00:00Z",
+            "session_id": "claude-2",
+        },
+        {
+            "hook": "post",
+            "tool": "Write",
+            "file": "docs/generated.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-09T06:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Edit",
+            "file": "tests/test_generated.py",
+            "repo": "workspace-hub",
+            "ts": "2026-04-08T18:00:00Z",
             "session_id": "claude-2",
         },
     ]

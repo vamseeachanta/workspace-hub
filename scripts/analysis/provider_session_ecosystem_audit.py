@@ -287,6 +287,9 @@ def compute_activity_window(
     session_ids: Counter[str] = Counter()
     tool_counts: Counter[str] = Counter()
     missing_repo_reads: Counter[str] = Counter()
+    recent_reads: Counter[str] = Counter()
+    recent_writes: Counter[str] = Counter()
+    recent_edits: Counter[str] = Counter()
     bash_family_counts: Counter[str] = Counter()
 
     for record in iter_post_records(logs_dir):
@@ -310,16 +313,26 @@ def compute_activity_window(
             if prefix:
                 bash_family_counts[prefix] += 1
 
+        file_target = record.get("file")
         if tool == "Read":
-            normalized, scope, exists = classify_read_target(record.get("file"), repo_root, record)
+            normalized, scope, exists = classify_read_target(file_target, repo_root, record)
+            if normalized:
+                recent_reads[normalized] += 1
             if scope == "repo" and not exists:
                 missing_repo_reads[normalized] += 1
+        elif tool == "Write" and file_target:
+            recent_writes[str(file_target)] += 1
+        elif tool == "Edit" and file_target:
+            recent_edits[str(file_target)] += 1
 
     return {
         "post_records": post_records,
         "sessions": len(session_ids),
         "top_tools": top_items(tool_counts, 5, "tool"),
         "top_missing_repo_reads": top_items(missing_repo_reads, 5, "path"),
+        "top_reads": top_items(recent_reads, 5, "path"),
+        "top_writes": top_items(recent_writes, 5, "path"),
+        "top_edits": top_items(recent_edits, 5, "path"),
         "top_bash_command_families": [
             {"prefix": prefix, "count": count}
             for prefix, count in bash_family_counts.most_common(8)
@@ -1266,6 +1279,9 @@ def build_recent_activity_summary(
                 "sessions": 0,
                 "top_tools": [],
                 "top_missing_repo_reads": [],
+                "top_reads": [],
+                "top_writes": [],
+                "top_edits": [],
                 "top_bash_command_families": [],
             }
             continue
@@ -1332,6 +1348,9 @@ def build_activity_window_summary(
                     "sessions": 0,
                     "top_tools": [],
                     "top_missing_repo_reads": [],
+                    "top_reads": [],
+                    "top_writes": [],
+                    "top_edits": [],
                     "top_bash_command_families": [],
                 }
                 continue
@@ -1341,6 +1360,9 @@ def build_activity_window_summary(
                     "sessions": 0,
                     "top_tools": [],
                     "top_missing_repo_reads": [],
+                    "top_reads": [],
+                    "top_writes": [],
+                    "top_edits": [],
                     "top_bash_command_families": [],
                     "limitations": [
                         "Rolling event-time windows cannot be reconstructed from the precomputed fallback artifact alone."
@@ -2154,6 +2176,9 @@ def render_markdown(audit: dict) -> str:
                 lines.append(f"- Limitation: {limitation}")
             lines.append("")
             emit_rows(f"{provider} recent top tools", recent_provider.get("top_tools", []), "tool")
+            emit_rows(f"{provider} recent top reads", recent_provider.get("top_reads", []), "path")
+            emit_rows(f"{provider} recent top writes", recent_provider.get("top_writes", []), "path")
+            emit_rows(f"{provider} recent top edits", recent_provider.get("top_edits", []), "path")
             emit_rows(
                 f"{provider} recent top Bash command families",
                 recent_provider.get("top_bash_command_families", []),
@@ -2197,7 +2222,7 @@ def render_markdown(audit: dict) -> str:
         "1. Keep exporting every provider into `logs/orchestrator/<provider>/session_*.jsonl` before the audit so the recent-delta section stays trustworthy.",
         "2. Treat symbolic skill/tool reads separately from filesystem reads. Hermes emits many skill names in `file`, and counting them as missing files creates noisy false positives.",
         "3. Preserve Codex command-shape fidelity in both export and audit layers. Recent native sessions use a mix of spaced-encoded commands and ordinary shell strings.",
-        "4. Use the recent-activity section to prioritize follow-up review on providers with actual post-audit event-time work instead of re-reading the full historical corpus every time.",
+        "4. Use the recent-activity section to prioritize follow-up review on providers with actual post-audit event-time work instead of re-reading the full historical corpus every time. Recent read/write/edit hotspots should drive the next docs/tests hardening pass.",
         "5. Keep pushing `uv run ... python` migration. Hermes, Gemini, and Codex still show meaningful bare `python3` usage density.",
         "",
     ]
