@@ -13,8 +13,8 @@ set -euo pipefail
 
 REPO="vamseeachanta/workspace-hub"
 MAIN_CHECKOUT="/mnt/local-analysis/workspace-hub"
-# Existing repo labels verified on 2026-04-20: bug, tests, priority:medium, cat:harness.
-# area:ecosystem-sync / parsing / releases were not present during audit.
+# Existing repo labels verified on 2026-04-20 for these commands: bug, priority:medium, cat:harness.
+# tests / area:ecosystem-sync / parsing / releases were not present during audit.
 TMPDIR="${TMPDIR:-/tmp}/ecosystem-sync-gh-issues"
 mkdir -p "$TMPDIR"
 
@@ -159,7 +159,6 @@ cat <<STEP2
 gh issue create --repo "$REPO" \
   --title "test(ecosystem-sync): autobuild or skip missing local git fixtures" \
   --label bug \
-  --label tests \
   --label priority:medium \
   --label cat:harness \
   --body-file "$TMPDIR/issue-1.md"
