@@ -1066,6 +1066,10 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
         inspect_paths = list(playbook.get("inspect_paths", []))
         canonical_targets = list(playbook.get("canonical_targets", []))
         first_steps = list(playbook.get("first_steps", []))
+        trigger_reason = str(watch.get("trigger_reason", ""))
+        suggested_followup = str(watch.get("suggested_followup", ""))
+        guidance = str(playbook.get("guidance", ""))
+        reference_doc = str(playbook.get("reference_doc", ""))
 
         title = f"[{severity}] {provider}: remediate {primary_issue}"
         summary = (
@@ -1078,10 +1082,10 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
             f"Owner team: {owner_team}",
             f"Preferred fix lane: {preferred_fix_lane}",
             f"Owner surface: {owner_surface}",
-            f"Watchlist trigger: {watch.get('trigger_reason')}",
-            f"Suggested follow-up: {watch.get('suggested_followup')}",
-            f"Guidance: {playbook.get('guidance')}",
-            f"Reference doc: {playbook.get('reference_doc')}",
+            f"Watchlist trigger: {trigger_reason}",
+            f"Suggested follow-up: {suggested_followup}",
+            f"Guidance: {guidance}",
+            f"Reference doc: {reference_doc}",
             "Inspect paths:",
         ]
         body_lines.extend(f"- {path}" for path in inspect_paths)
@@ -1110,6 +1114,40 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
         else:
             draft_state = "changed"
 
+        evidence_gaps: list[str] = []
+        if not inspect_paths:
+            evidence_gaps.append("inspect_paths")
+        if not canonical_targets:
+            evidence_gaps.append("canonical_targets")
+        if not first_steps:
+            evidence_gaps.append("first_steps")
+        if not reference_doc:
+            evidence_gaps.append("reference_doc")
+        if not guidance:
+            evidence_gaps.append("guidance")
+        if not trigger_reason:
+            evidence_gaps.append("trigger_reason")
+        if not suggested_followup:
+            evidence_gaps.append("suggested_followup")
+        if not owner_team:
+            evidence_gaps.append("owner_team")
+        if not preferred_fix_lane:
+            evidence_gaps.append("preferred_fix_lane")
+        minimum_evidence_present = not evidence_gaps
+
+        if not minimum_evidence_present:
+            should_open_issue = False
+            issue_open_reason = None
+            blocker_reason = f"missing minimum evidence: {', '.join(evidence_gaps)}"
+        elif draft_state == "unchanged":
+            should_open_issue = False
+            issue_open_reason = None
+            blocker_reason = "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known"
+        else:
+            should_open_issue = True
+            issue_open_reason = f"{draft_state} actionable draft with minimum evidence present"
+            blocker_reason = None
+
         drafts.append(
             {
                 "provider": provider,
@@ -1125,6 +1163,11 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
                 "previous_title": previous_draft.get("title") if previous_draft else None,
                 "previous_severity": previous_draft.get("severity") if previous_draft else None,
                 "previous_owner_team": previous_draft.get("owner_team") if previous_draft else None,
+                "minimum_evidence_present": minimum_evidence_present,
+                "should_open_issue": should_open_issue,
+                "issue_open_reason": issue_open_reason,
+                "blocker_reason": blocker_reason,
+                "evidence_gaps": evidence_gaps,
             }
         )
 
@@ -1165,6 +1208,33 @@ def build_cleared_followup_issue_drafts(followup_issue_drafts: list[dict], previ
         )
     cleared.sort(key=lambda item: str(item.get("provider", "")))
     return cleared
+
+
+def build_issue_posting_readiness(followup_issue_drafts: list[dict]) -> list[dict]:
+    severity_rank = {"critical": 3, "high": 2, "medium": 1, "low": 0}
+    readiness = [
+        {
+            "provider": str(draft.get("provider", "")),
+            "severity": str(draft.get("severity", "low")),
+            "draft_state": str(draft.get("draft_state", "new")),
+            "posting_status": "ready" if bool(draft.get("should_open_issue")) else "blocked",
+            "minimum_evidence_present": bool(draft.get("minimum_evidence_present")),
+            "should_open_issue": bool(draft.get("should_open_issue")),
+            "issue_open_reason": draft.get("issue_open_reason"),
+            "blocker_reason": draft.get("blocker_reason"),
+            "evidence_gaps": list(draft.get("evidence_gaps", [])),
+        }
+        for draft in followup_issue_drafts
+        if isinstance(draft, dict) and draft.get("provider")
+    ]
+    readiness.sort(
+        key=lambda item: (
+            0 if item.get("should_open_issue") else 1,
+            -severity_rank.get(str(item.get("severity", "low")), 0),
+            str(item.get("provider", "")),
+        )
+    )
+    return readiness
 
 
 def build_recent_activity_summary(
@@ -1680,6 +1750,7 @@ def build_provider_interpretation_summary(
     change_alerts = build_change_alerts(rows, watchlist, previous_audit)
     remediation_playbooks = build_remediation_playbooks(provider_summaries, rows, watchlist)
     followup_issue_drafts = build_followup_issue_drafts(rows, watchlist, remediation_playbooks, previous_audit)
+    issue_posting_readiness = build_issue_posting_readiness(followup_issue_drafts)
     cleared_followup_issue_drafts = build_cleared_followup_issue_drafts(followup_issue_drafts, previous_audit)
     if rows:
         primary = rows[0]
@@ -1741,6 +1812,7 @@ def build_provider_interpretation_summary(
         "change_alerts": change_alerts,
         "remediation_playbooks": remediation_playbooks,
         "followup_issue_drafts": followup_issue_drafts,
+        "issue_posting_readiness": issue_posting_readiness,
         "cleared_followup_issue_drafts": cleared_followup_issue_drafts,
     }
 
@@ -1796,6 +1868,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "change_alerts": provider_interpretation.get("change_alerts", []),
         "remediation_playbooks": provider_interpretation.get("remediation_playbooks", []),
         "followup_issue_drafts": provider_interpretation.get("followup_issue_drafts", []),
+        "issue_posting_readiness": provider_interpretation.get("issue_posting_readiness", []),
         "cleared_followup_issue_drafts": provider_interpretation.get("cleared_followup_issue_drafts", []),
     }
 
@@ -1911,6 +1984,16 @@ def render_markdown(audit: dict) -> str:
             for draft in followup_issue_drafts:
                 lines.append(
                     f"  - `{draft['provider']}` [{draft.get('severity')}] — {draft.get('title')} | state={draft.get('draft_state')} | owner={draft.get('owner_team')} | lane={draft.get('preferred_fix_lane')}"
+                )
+        issue_posting_readiness = interpretation_summary.get("issue_posting_readiness", [])
+        if issue_posting_readiness:
+            lines.append("- Issue posting readiness:")
+            for item in issue_posting_readiness:
+                evidence_status = "complete" if item.get("minimum_evidence_present") else "gapped"
+                reason = item.get("issue_open_reason") if item.get("should_open_issue") else item.get("blocker_reason")
+                reason_label = "reason" if item.get("should_open_issue") else "blocker"
+                lines.append(
+                    f"  - `{item['provider']}` [{item.get('posting_status')}] — should_open_issue={'yes' if item.get('should_open_issue') else 'no'} | evidence={evidence_status} | {reason_label}={reason}"
                 )
         cleared_followup_issue_drafts = interpretation_summary.get("cleared_followup_issue_drafts", [])
         if cleared_followup_issue_drafts:

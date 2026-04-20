@@ -457,6 +457,12 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["followup_issue_drafts"][0]["draft_key"]
     assert summary["followup_issue_drafts"][0]["dedupe_scope"] == "claude:legacy_work_queue_transition:governance-docs"
     assert summary["followup_issue_drafts"][0]["draft_state"] == "new"
+    assert summary["followup_issue_drafts"][0]["minimum_evidence_present"] is True
+    assert summary["followup_issue_drafts"][0]["should_open_issue"] is True
+    assert summary["followup_issue_drafts"][0]["issue_open_reason"] == "new actionable draft with minimum evidence present"
+    assert summary["followup_issue_drafts"][0]["blocker_reason"] is None
+    assert summary["issue_posting_readiness"][0]["provider"] == "claude"
+    assert summary["issue_posting_readiness"][0]["should_open_issue"] is True
     assert summary["cleared_followup_issue_drafts"] == []
 
 
@@ -497,6 +503,7 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "change_alerts" in executive_actions
     assert "remediation_playbooks" in executive_actions
     assert "followup_issue_drafts" in executive_actions
+    assert "issue_posting_readiness" in executive_actions
     assert "cleared_followup_issue_drafts" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
@@ -506,6 +513,7 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert executive_actions["change_alerts"] == audit["executive_summary"]["provider_interpretation_summary"]["change_alerts"]
     assert executive_actions["remediation_playbooks"] == audit["executive_summary"]["provider_interpretation_summary"]["remediation_playbooks"]
     assert executive_actions["followup_issue_drafts"] == audit["executive_summary"]["provider_interpretation_summary"]["followup_issue_drafts"]
+    assert executive_actions["issue_posting_readiness"] == audit["executive_summary"]["provider_interpretation_summary"]["issue_posting_readiness"]
     assert executive_actions["cleared_followup_issue_drafts"] == audit["executive_summary"]["provider_interpretation_summary"]["cleared_followup_issue_drafts"]
 
 
@@ -754,9 +762,49 @@ def test_build_followup_issue_drafts_skips_monitor_and_assigns_draft_state() -> 
     assert drafts[0]["previous_title"] == "old title"
     assert drafts[0]["previous_severity"] == "medium"
     assert drafts[0]["previous_owner_team"] == "old-team"
+    assert drafts[0]["minimum_evidence_present"] is True
+    assert drafts[0]["should_open_issue"] is True
+    assert drafts[0]["issue_open_reason"] == "changed actionable draft with minimum evidence present"
+    assert drafts[0]["blocker_reason"] is None
     assert len(cleared) == 1
     assert cleared[0]["provider"] == "gemini"
     assert cleared[0]["draft_state"] == "cleared"
+
+
+
+def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_drafts() -> None:
+    drafts = [
+        {
+            "provider": "claude",
+            "severity": "critical",
+            "draft_state": "unchanged",
+            "minimum_evidence_present": True,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+            "evidence_gaps": [],
+        },
+        {
+            "provider": "codex",
+            "severity": "medium",
+            "draft_state": "new",
+            "minimum_evidence_present": False,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "missing minimum evidence: inspect_paths, canonical_targets, first_steps, reference_doc",
+            "evidence_gaps": ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"],
+        },
+    ]
+
+    readiness = module.build_issue_posting_readiness(drafts)
+
+    assert readiness[0]["provider"] == "claude"
+    assert readiness[0]["posting_status"] == "blocked"
+    assert readiness[0]["should_open_issue"] is False
+    assert readiness[0]["blocker_reason"] == "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known"
+    assert readiness[1]["provider"] == "codex"
+    assert readiness[1]["minimum_evidence_present"] is False
+    assert readiness[1]["evidence_gaps"] == ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"]
 
 
 
@@ -986,7 +1034,25 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "draft_state": "new",
                         "previous_title": None,
                         "previous_severity": None,
-                        "previous_owner_team": None
+                        "previous_owner_team": None,
+                        "minimum_evidence_present": True,
+                        "should_open_issue": True,
+                        "issue_open_reason": "new actionable draft with minimum evidence present",
+                        "blocker_reason": None,
+                        "evidence_gaps": []
+                    }
+                ],
+                "issue_posting_readiness": [
+                    {
+                        "provider": "claude",
+                        "severity": "critical",
+                        "draft_state": "new",
+                        "posting_status": "ready",
+                        "minimum_evidence_present": True,
+                        "should_open_issue": True,
+                        "issue_open_reason": "new actionable draft with minimum evidence present",
+                        "blocker_reason": None,
+                        "evidence_gaps": []
                     }
                 ],
                 "cleared_followup_issue_drafts": [
@@ -1105,6 +1171,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "`claude` [page] — issue=legacy_work_queue_transition" in markdown
     assert "Follow-up issue drafts:" in markdown
     assert "`claude` [critical] — [critical] claude: remediate legacy_work_queue_transition | state=new | owner=governance-maintainers | lane=governance-docs" in markdown
+    assert "Issue posting readiness:" in markdown
+    assert "`claude` [ready] — should_open_issue=yes | evidence=complete | reason=new actionable draft with minimum evidence present" in markdown
     assert "Cleared follow-up issue drafts:" in markdown
     assert "`gemini` [cleared] — previous_title=[high] gemini: remediate legacy_local_work_queue_items | previous_severity=high | previous_owner=planning-ops" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
