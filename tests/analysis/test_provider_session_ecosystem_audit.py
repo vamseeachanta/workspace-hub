@@ -444,6 +444,8 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["recommended_actions"][0]["health_status"] == "red"
     assert summary["rank_movements"][0]["provider"] == "claude"
     assert summary["health_overview"][0]["provider"] == "claude"
+    assert summary["watchlist"][0]["provider"] == "claude"
+    assert summary["watchlist"][0]["trigger_level"] == "act_this_week"
 
 
 
@@ -479,10 +481,12 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "recommended_actions" in executive_actions
     assert "rank_movements" in executive_actions
     assert "health_overview" in executive_actions
+    assert "watchlist" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
     assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
     assert executive_actions["health_overview"] == audit["executive_summary"]["provider_interpretation_summary"]["health_overview"]
+    assert executive_actions["watchlist"] == audit["executive_summary"]["provider_interpretation_summary"]["watchlist"]
 
 
 
@@ -727,6 +731,17 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
                     }
                 ],
+                "watchlist": [
+                    {
+                        "provider": "claude",
+                        "trigger_level": "page",
+                        "trigger_reason": "urgent-now provider with legacy_work_queue_transition",
+                        "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
+                        "health_status": "red",
+                        "urgency_tier": "urgent_now",
+                        "primary_issue": "legacy_work_queue_transition",
+                    }
+                ],
                 "rank_movements": [
                     {
                         "provider": "claude",
@@ -824,6 +839,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "health=red" in markdown
     assert "Health overview:" in markdown
     assert "`claude` [red] — red: urgent action tier; high migration debt; 24h burst activity; currently active" in markdown
+    assert "Watchlist triggers:" in markdown
+    assert "`claude` [page] — urgent-now provider with legacy_work_queue_transition | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown

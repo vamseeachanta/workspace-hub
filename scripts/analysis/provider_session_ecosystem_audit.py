@@ -724,6 +724,62 @@ def summarize_health_status(
     return health_status, reasons, summary
 
 
+def build_watchlist(rows: list[dict]) -> list[dict]:
+    watchlist: list[dict] = []
+    for row in rows:
+        provider = str(row.get("provider", ""))
+        health_status = str(row.get("health_status", "green"))
+        urgency_tier = str(row.get("urgency_tier", "monitor"))
+        activity_window_profile = str(row.get("activity_window_profile", "dormant"))
+        corpus_status = str(row.get("corpus_status", "aligned"))
+        python_hygiene_status = str(row.get("python_hygiene_status", "no_python_usage"))
+        primary_issue = str(row.get("primary_issue", "no acute anomaly"))
+        recommended_action = str(row.get("recommended_action", "no immediate intervention; monitor next audit"))
+        health_summary = str(row.get("health_summary", ""))
+
+        if health_status == "red" and urgency_tier == "urgent_now":
+            trigger_level = "page"
+            trigger_reason = f"urgent-now provider with {primary_issue}"
+            suggested_followup = f"Escalate immediately on {provider}: {recommended_action}"
+        elif health_status == "red":
+            trigger_level = "act_this_week"
+            trigger_reason = f"red health due to {primary_issue}"
+            suggested_followup = f"Prioritize this week on {provider}: {recommended_action}"
+        elif health_status == "yellow" and activity_window_profile == "sustained_background":
+            trigger_level = "investigate"
+            trigger_reason = f"yellow health with sustained 7d activity and {primary_issue}"
+            suggested_followup = f"Sample current traces on {provider} and verify whether {primary_issue} needs remap or docs cleanup"
+        elif health_status == "yellow" and python_hygiene_status == "python3_heavy":
+            trigger_level = "investigate"
+            trigger_reason = "yellow health driven by python hygiene"
+            suggested_followup = f"Audit command hygiene on {provider} and convert python3-heavy paths to uv-oriented usage"
+        else:
+            trigger_level = "monitor"
+            trigger_reason = health_summary or "no acute anomaly"
+            suggested_followup = f"Monitor {provider} in the next audit cycle"
+
+        if corpus_status in {"corpus_pruned_or_rebuilt", "positive_corpus_growth_beyond_recent_activity"} and trigger_level != "page":
+            trigger_reason += "; corpus anomaly present"
+
+        watchlist.append(
+            {
+                "provider": provider,
+                "trigger_level": trigger_level,
+                "trigger_reason": trigger_reason,
+                "suggested_followup": suggested_followup,
+                "health_status": health_status,
+                "urgency_tier": urgency_tier,
+                "primary_issue": primary_issue,
+            }
+        )
+
+    trigger_rank = {"page": 3, "act_this_week": 2, "investigate": 1, "monitor": 0}
+    watchlist.sort(
+        key=lambda item: (-trigger_rank.get(str(item.get("trigger_level", "monitor")), 0), str(item.get("provider", "")))
+    )
+    return watchlist
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -1233,6 +1289,7 @@ def build_provider_interpretation_summary(
         }
         for row in rows
     ]
+    watchlist = build_watchlist(rows)
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -1289,6 +1346,7 @@ def build_provider_interpretation_summary(
         "recommended_actions": recommended_actions,
         "rank_movements": rank_movements,
         "health_overview": health_overview,
+        "watchlist": watchlist,
     }
 
 
@@ -1339,6 +1397,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "recommended_actions": provider_interpretation.get("recommended_actions", []),
         "rank_movements": provider_interpretation.get("rank_movements", []),
         "health_overview": provider_interpretation.get("health_overview", []),
+        "watchlist": provider_interpretation.get("watchlist", []),
     }
 
     return {
@@ -1423,6 +1482,13 @@ def render_markdown(audit: dict) -> str:
             for health in health_overview:
                 lines.append(
                     f"  - `{health['provider']}` [{health.get('health_status')}] — {health.get('health_summary')}"
+                )
+        watchlist = interpretation_summary.get("watchlist", [])
+        if watchlist:
+            lines.append("- Watchlist triggers:")
+            for item in watchlist:
+                lines.append(
+                    f"  - `{item['provider']}` [{item.get('trigger_level')}] — {item.get('trigger_reason')} | follow-up: {item.get('suggested_followup')}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:
