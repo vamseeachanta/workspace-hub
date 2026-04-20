@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-20T09:20:07.356154Z
+Generated: 2026-04-20T13:20:06.957787Z
 Apply mode: False
 Threshold: 0.9
 
@@ -23,4 +23,3 @@ Threshold: 0.9
 | #2162 feat(schema): define machine/path alias schema for seeded accessibility registry entries | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2163 feat(operations): add Windows Task Scheduler invocation harness for readiness evidence runs | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2164 test(operations): build cygpath/native-path fixture suite for Windows launcher bridge | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2125 feat(llm-wiki): auto-refresh ingestion on new Orcina releases | agent:gemini | 0.45 | no | strong-gemini-language-match, provider-highest-priority |

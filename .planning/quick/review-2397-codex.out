@@ -1,0 +1,360 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dab8f-fecf-7461-bb7d-7729dc526c89
+--------
+user
+# Adversarial Plan Review Request: Issue #2397
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, underspecified, or likely to cause rework.
+Return APPROVE only if you can affirmatively verify there are no blocking defects.
+Each finding must cite a specific plan section, file path, issue reference, or quoted claim.
+If nothing is wrong, explicitly state what you checked.
+
+## Issue context
+Title: epic(repo-organization): canonical folder structure and refactor contract across tier-1 repos
+URL: https://github.com/vamseeachanta/workspace-hub/issues/2397
+
+Issue body:
+## Summary
+Create a dedicated follow-up issue for repo-wide structural refactors that are broader than code cleanup alone. The current tier-1 refactor umbrella (#1962) identifies architectural debt and duplicate patterns, but it does not yet break out a canonical folder-structure and repository-layout workstream.
+
+## Why
+Refactors keep stalling at the module/file level when the underlying repo shape is still inconsistent. The next pass should explicitly normalize repository anatomy so agents, humans, tests, CI, and future automation can navigate repos the same way.
+
+This is especially important across tier-1 repos where differences in `src/` layout, test placement, docs organization, examples, fixtures, generated outputs, and archive boundaries create avoidable friction during implementation and review.
+
+## Scope
+Define and execute a repo-organization refactor contract across tier-1 repos, including:
+- canonical top-level directory layout
+- source/package placement (`src/` vs flat-package decision per repo, with migration guidance)
+- test directory mirroring and fixture placement
+- docs/knowledge/reference placement and archival boundaries
+- scripts/tools/generated-artifact separation
+- examples/demo/notebook/data-sample placement
+- deprecation of legacy/duplicate folders
+- import-surface and public-API stability rules during moves
+- migration/redirect strategy for moved files and paths
+
+## Deliverables
+1. A scored inventory of current folder-structure drift across tier-1 repos.
+2. A canonical repo-layout contract with allowed variations and anti-patterns.
+3. A per-repo migration matrix showing:
+   - current layout
+   - target layout
+   - breaking-risk level
+   - path moves / redirects needed
+4. Child execution issues for repos where structural migration should happen separately.
+5. Validation checks to prevent regressions (for example path-policy checks, stale-path detection, docs reference checks, smoke tests).
+
+## Acceptance Criteria
+- [ ] tier-1 repos have a documented target folder-structure contract
+- [ ] current drift is inventoried by repo with concrete path-level findings
+- [ ] structural work is separated into follow-up implementation issues instead of being buried in umbrella comments
+- [ ] validation/guardrail checks are defined so future repo drift is detected automatically
+- [ ] issue explicitly states which changes are safe renames vs breaking-path migrations
+
+## Related
+- #1962 Tier-1 Repo Ecosystem Refactoring
+- #1567 Continuous Repo Architecture Intelligence
+- #1603 Multi-repo architecture scan
+- #84 aceengineer-admin repo restructure — canonical document taxonomy
+- #1404 Organize /mnt/ace/docs/ subfolders and deduplicate engineering references
+
+## Notes
+This issue is intentionally about repository anatomy and navigation, not about individual feature implementations inside any one repo.
+
+
+## Draft plan under review
+# Plan for #2397: Canonical folder structure and refactor contract across tier-1 repos
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-20
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2397
+> **Review artifacts:** scripts/review/results/2026-04-20-plan-2397-claude.md | scripts/review/results/2026-04-20-plan-2397-codex.md | scripts/review/results/2026-04-20-plan-2397-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `docs/standards/FILE_STRUCTURE_TAXONOMY.md` — defines workspace-hub directory classes, starter-repo taxonomy expectations, and migration recommendations for legacy surfaces.
+- Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` — defines required repo entry points (`AGENTS.md`, `.claude/`, `.codex/`, `.gemini/`) and rollout expectations across starter/tier-1 repos.
+- Gap: no canonical cross-tier-1 migration matrix exists for folder structure, test mirroring, docs placement, generated-output boundaries, or path-governance checks.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Control-plane repo entrypoint contract | done | `docs/standards/CONTROL_PLANE_CONTRACT.md` |
+| Workspace file-structure taxonomy | done | `docs/standards/FILE_STRUCTURE_TAXONOMY.md` |
+| AI review routing policy for structural work | done | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
+
+### LLM Wiki pages consulted
+- No relevant wiki pages; this is repo-governance and structure work anchored in docs/standards and issue state.
+
+### Documents consulted
+- `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` — identifies #2397 as a focused structural-design child that should feed #1962.
+- Related issue #1962 — broad umbrella for tier-1 refactoring; currently lacks a dedicated folder-structure workstream.
+- Related issue #1567 — architecture-intelligence umbrella that can provide evidence inputs but does not itself define the path-governance contract.
+- Related issue #1603 — multi-repo architecture scan; useful evidence feeder for repo layout inventory.
+- Related issue #1661 — dependency cycle/layering scanner extension; useful for detecting structural risk during normalization.
+
+### Gaps identified
+- No scored inventory of folder-structure drift across tier-1 repos.
+- No canonical target layout contract that distinguishes required vs allowed variations.
+- No migration matrix that classifies safe moves vs breaking-path migrations.
+- No regression checks that detect re-introduction of path/layout drift.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | docs/plans/2026-04-20-issue-2397-canonical-folder-structure-and-refactor-contract.md |
+| Shared dependency map | docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md |
+| Main report | docs/reports/2026-04-20-issue-2397-tier1-repo-structure-contract.md |
+| Plan review — Claude | scripts/review/results/2026-04-20-plan-2397-claude.md |
+| Plan review — Codex | scripts/review/results/2026-04-20-plan-2397-codex.md |
+| Plan review — Gemini | scripts/review/results/2026-04-20-plan-2397-gemini.md |
+| Docs updates | docs/plans/README.md |
+
+---
+
+## Deliverable
+
+A canonical tier-1 repo-structure contract and migration matrix that normalizes folder anatomy, identifies drift by repo, and defines guardrails for future path/layout changes.
+
+---
+
+## Pseudocode
+
+```
+collect tier_1_repo_list from canonical repo inventory and umbrella issue references
+for each repo:
+    inspect top-level directories, source layout, tests, docs, scripts, generated artifacts, legacy paths
+    score observed layout against control-plane contract and file-structure taxonomy
+    classify each drift item as required fix, allowed variation, or legacy exception
+assemble target layout contract with required paths, optional paths, and forbidden anti-patterns
+build migration matrix with per-repo target state, risk level, and likely move strategy
+define validation checks that can detect future drift automatically
+write report and recommend follow-up execution issues where migration is non-trivial
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | docs/reports/2026-04-20-issue-2397-tier1-repo-structure-contract.md | canonical structural contract + migration matrix |
+| Update | docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md | reference final approved sequencing where needed |
+| Update | docs/plans/README.md | add this plan to index |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_report_lists_all_tier1_repos | every tier-1 repo is covered | canonical repo list | one row per tier-1 repo |
+| test_contract_distinguishes_required_vs_optional_paths | contract is enforceable rather than vague | proposed path rules | required/optional/forbidden categories |
+| test_migration_matrix_marks_breaking_moves | risky changes are surfaced | per-repo path moves | explicit risk classification |
+| test_guardrails_section_names_validation_surfaces | future drift checks are actionable | final report | named checks or scripts to build |
+
+---
+
+## Acceptance Criteria
+
+- [ ] A report exists at `docs/reports/2026-04-20-issue-2397-tier1-repo-structure-contract.md`
+- [ ] The report inventories current structural drift across all tier-1 repos
+- [ ] The report defines a canonical target layout with allowed variations and anti-patterns
+- [ ] The report includes a per-repo migration matrix with risk levels and likely move strategies
+- [ ] The report defines validation/guardrail surfaces for future drift detection
+- [ ] Review artifacts are posted to `scripts/review/results/`
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | Awaiting review |
+| Codex | PENDING | Awaiting review |
+| Gemini | PENDING | Awaiting review |
+
+**Overall result:** PENDING
+
+Revisions made based on review:
+- none yet
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** tier-1 repo membership/rank ordering in older issues may disagree with current canonical terminology; final report must use canonical names from the ecosystem terminology reference.
+- **Risk:** some repos may intentionally differ due to non-Python or mixed-purpose structure; the contract must distinguish justified exceptions from drift.
+- **Open:** should the output include a proposed script/check implementation backlog, or stop at architecture/report scope only?
+
+---
+
+## Complexity: T2
+
+**T2** — multi-source structural-analysis plan producing a bounded contract/report artifact without immediate code migration.
+
+
+## Review dimensions
+1. Correctness: does the plan actually answer the issue?
+2. Completeness: are deliverable, artifact map, files, and follow-up boundaries sufficient?
+3. Feasibility: is the proposed work bounded and realistically executable?
+4. TDD / verification adequacy: are tests or validation steps meaningful and sufficient?
+5. Scope discipline: does the plan avoid silently absorbing adjacent work?
+6. Dependency handling: are prerequisites and sequencing handled correctly?
+7. Approval readiness: is this safe to surface to the user for approval now?
+8. Retrieval adequacy: is the resource-intelligence evidence concrete and sufficient?
+
+## Required output format
+Verdict: APPROVE | MINOR | MAJOR
+Retrieval adequacy: adequate | insufficient
+Findings:
+- [severity] <finding>
+Missing tests:
+- ...
+Scope creep concerns:
+- ...
+Weakest assumption:
+- ...
+Most likely implementation failure mode:
+- ...
+Most likely test gap:
+- ...
+Future issues suggested:
+- ...
+Review confidence: low | medium | high
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+I’m reviewing the draft against the repo’s existing standards and plan gates first, then I’ll call out only concrete defects with file-backed citations.
+2026-04-20T15:44:09.362223Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' docs/standards/FILE_STRUCTURE_TAXONOMY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:44:09.368147Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' docs/standards/HARD-STOP-POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:44:09.372094Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' docs/plans/README.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:44:09.372165Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/standards/CONTROL_PLANE_CONTRACT.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell sandbox is blocking normal reads in this session. I’m switching to lower-friction file reads so I can still verify the cited repo standards before issuing the review.
+2026-04-20T15:44:21.457059Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c "sed -n '1,220p' docs/standards/FILE_STRUCTURE_TAXONOMY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:44:21.471276Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c "sed -n '1,240p' docs/standards/CONTROL_PLANE_CONTRACT.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:44:21.483077Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c "sed -n '1,220p' docs/plans/README.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:44:21.496323Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/sh -c "sed -n '1,220p' docs/standards/HARD-STOP-POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+I still need direct file evidence for the review, so I’m using the Node REPL to read the referenced standards from disk instead of the blocked shell path.
+exec
+js_repl in /mnt/local-analysis/workspace-hub
+2026-04-20T15:44:35.851622Z ERROR codex_core::tools::router: error=js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":3312911,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+ exited 1 in 58ms:
+js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":3312911,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+codex
+Verdict: MAJOR  
+Retrieval adequacy: insufficient
+
+Findings:
+- [major] The plan claims a concrete evidence base in `Resource Intelligence Summary`, but it never identifies the actual tier-1 repo set it will score. The pseudocode says “collect tier_1_repo_list from canonical repo inventory and umbrella issue references,” yet no inventory source or file path is named. That makes the core deliverable “A scored inventory of current folder-structure drift across tier-1 repos” non-reproducible and likely inconsistent across runs.
+- [major] The plan does not define the scoring model for “A scored inventory of current folder-structure drift across tier-1 repos.” This is a blocking omission because the issue explicitly asks for a “scored inventory,” but neither `Deliverable`, `Pseudocode`, `Files to Change`, nor `TDD Test List` specifies scoring dimensions, weighting, or thresholds.
+- [major] The issue requires “Child execution issues for repos where structural migration should happen separately,” but `Files to Change` includes only report/plan docs and no issue-creation artifact, issue map, or per-repo issue list. “write report and recommend follow-up execution issues where migration is non-trivial” in `Pseudocode` is weaker than the issue deliverable and acceptance criterion.
+- [major] The plan does not produce the acceptance criterion “issue explicitly states which changes are safe renames vs breaking-path migrations.” Its acceptance list downgrades this to “the report includes a per-repo migration matrix with risk levels and likely move strategies,” which is not the same thing. Risk levels and move strategies do not guarantee explicit safe-rename vs breaking-migration classification.
+- [major] `TDD Test List` is not real TDD for this work. All four listed tests validate the presence/shape of the final report, not the correctness of the underlying repo analysis or migration decisions. For example, `test_report_lists_all_tier1_repos` only checks “one row per tier-1 repo,” but there is no test that the repo set is correct, that repo layouts were actually inspected, or that drift classifications match evidence.
+- [major] The plan’s validation story is underspecified for the issue’s required deliverable “Validation checks to prevent regressions.” `test_guardrails_section_names_validation_surfaces` only verifies “named checks or scripts to build,” which means the plan can pass without defining executable check behavior, ownership, scope, or enforcement surface.
+- [major] Scope/boundary handling is contradictory. The issue asks to “Define and execute a repo-organization refactor contract across tier-1 repos,” while the plan positions itself as “producing a bounded contract/report artifact without immediate code migration” under `Complexity: T2`. If this issue is intentionally planning-only, the plan needs to explicitly resolve that mismatch and state that execution is deferred into child issues; right now it sits between planning and execution.
+- [major] Dependency handling is too weak for a multi-repo contract. `Documents consulted` mentions related issues `#1567`, `#1603`, and `#1661` as “useful evidence feeder[s]”, but the plan does not state whether those outputs are required inputs, optional references, or stale/non-authoritative. That creates a high risk of inventing a new contract divorced from existing architecture scans and guardrail work.
+- [major] The plan updates `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` “where needed,” but never explains the dependency or acceptance condition for modifying that report. This is an unbounded side effect in `Files to Change` and looks like opportunistic collateral editing rather than necessary work for #2397.
+- [major] The acceptance section omits any artifact or mechanism for “migration/redirect strategy for moved files and paths” from the issue scope. “likely move strategies” in the report is too vague; redirect/stub/import-compatibility guidance is specifically called out in the issue and is not concretized anywhere in the plan.
+- [major] `Risks and Open Questions` leaves a core scoping decision unresolved: “should the output include a proposed script/check implementation backlog, or stop at architecture/report scope only?” That question must be answered before approval because it directly affects deliverables 4 and 5, the TDD strategy, and whether the plan actually satisfies the issue.
+- [major] The plan never defines how exceptions are approved and recorded. `Risks and Open Questions` acknowledges “some repos may intentionally differ,” but there is no artifact section for exception handling, no schema for justified deviations, and no rule for when variation is “allowed” vs “legacy exception.” That makes the proposed contract unenforceable and invites rework.
+
+Missing tests:
+- Test that the tier-1 repo source of truth is explicit and matches the repo set used in the inventory.
+- Test that each repo row in the migration matrix is backed by concrete path-level evidence, not summary prose.
+- Test that each drift item is classified into at least `required`, `allowed variation`, or `approved exception`, with rationale.
+- Test that safe renames vs breaking-path migrations are explicitly labeled per affected path, not inferred from a repo-level risk score.
+- Test that child issue generation criteria are defined and that every repo above a threshold produces a follow-up issue stub or issue record.
+- Test that proposed regression checks map to concrete enforcement surfaces such as pre-commit, CI, docs lint, or repo scan jobs.
+
+Scope creep concerns:
+- Updating `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` is not justified as necessary for #2397 and could expand the task into umbrella-maintenance work.
+- Mentioning `#1661` scanner extension without defining whether new scanning/check implementation is in or out of scope risks silently absorbing guardrail-engineering work.
+- “write report and recommend follow-up execution issues” can drift into issue creation, sequencing, and cross-issue dependency management without explicit boundaries.
+
+Weakest assumption:
+- That a canonical tier-1 repo list can be derived later from “canonical repo inventory and umbrella issue references” without naming a single authoritative source now.
+
+Most likely implementation failure mode:
+- The author produces a polished contract report that is internally consistent but based on an incomplete or inconsistent repo set, forcing a second pass once missing tier-1 repos and exception cases are discovered.
+
+Most likely test gap:
+- The report passes all listed tests while still misclassifying breaking moves, because the tests validate document structure rather than path-level migration correctness.
+
+Future issues suggested:
+- Issue to define and publish the authoritative tier-1 repo registry/source of truth if one does not already exist as a single canonical artifact.
+- Issue to implement actual path-governance checks once the contract is approved, with explicit CI/pre-commit ownership.
+- Issue to define an exception registry/process for intentional repo-layout deviations.
+
+Review confidence: medium
+tokens used
+119,378
+Verdict: MAJOR  
+Retrieval adequacy: insufficient
+
+Findings:
+- [major] The plan claims a concrete evidence base in `Resource Intelligence Summary`, but it never identifies the actual tier-1 repo set it will score. The pseudocode says “collect tier_1_repo_list from canonical repo inventory and umbrella issue references,” yet no inventory source or file path is named. That makes the core deliverable “A scored inventory of current folder-structure drift across tier-1 repos” non-reproducible and likely inconsistent across runs.
+- [major] The plan does not define the scoring model for “A scored inventory of current folder-structure drift across tier-1 repos.” This is a blocking omission because the issue explicitly asks for a “scored inventory,” but neither `Deliverable`, `Pseudocode`, `Files to Change`, nor `TDD Test List` specifies scoring dimensions, weighting, or thresholds.
+- [major] The issue requires “Child execution issues for repos where structural migration should happen separately,” but `Files to Change` includes only report/plan docs and no issue-creation artifact, issue map, or per-repo issue list. “write report and recommend follow-up execution issues where migration is non-trivial” in `Pseudocode` is weaker than the issue deliverable and acceptance criterion.
+- [major] The plan does not produce the acceptance criterion “issue explicitly states which changes are safe renames vs breaking-path migrations.” Its acceptance list downgrades this to “the report includes a per-repo migration matrix with risk levels and likely move strategies,” which is not the same thing. Risk levels and move strategies do not guarantee explicit safe-rename vs breaking-migration classification.
+- [major] `TDD Test List` is not real TDD for this work. All four listed tests validate the presence/shape of the final report, not the correctness of the underlying repo analysis or migration decisions. For example, `test_report_lists_all_tier1_repos` only checks “one row per tier-1 repo,” but there is no test that the repo set is correct, that repo layouts were actually inspected, or that drift classifications match evidence.
+- [major] The plan’s validation story is underspecified for the issue’s required deliverable “Validation checks to prevent regressions.” `test_guardrails_section_names_validation_surfaces` only verifies “named checks or scripts to build,” which means the plan can pass without defining executable check behavior, ownership, scope, or enforcement surface.
+- [major] Scope/boundary handling is contradictory. The issue asks to “Define and execute a repo-organization refactor contract across tier-1 repos,” while the plan positions itself as “producing a bounded contract/report artifact without immediate code migration” under `Complexity: T2`. If this issue is intentionally planning-only, the plan needs to explicitly resolve that mismatch and state that execution is deferred into child issues; right now it sits between planning and execution.
+- [major] Dependency handling is too weak for a multi-repo contract. `Documents consulted` mentions related issues `#1567`, `#1603`, and `#1661` as “useful evidence feeder[s]”, but the plan does not state whether those outputs are required inputs, optional references, or stale/non-authoritative. That creates a high risk of inventing a new contract divorced from existing architecture scans and guardrail work.
+- [major] The plan updates `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` “where needed,” but never explains the dependency or acceptance condition for modifying that report. This is an unbounded side effect in `Files to Change` and looks like opportunistic collateral editing rather than necessary work for #2397.
+- [major] The acceptance section omits any artifact or mechanism for “migration/redirect strategy for moved files and paths” from the issue scope. “likely move strategies” in the report is too vague; redirect/stub/import-compatibility guidance is specifically called out in the issue and is not concretized anywhere in the plan.
+- [major] `Risks and Open Questions` leaves a core scoping decision unresolved: “should the output include a proposed script/check implementation backlog, or stop at architecture/report scope only?” That question must be answered before approval because it directly affects deliverables 4 and 5, the TDD strategy, and whether the plan actually satisfies the issue.
+- [major] The plan never defines how exceptions are approved and recorded. `Risks and Open Questions` acknowledges “some repos may intentionally differ,” but there is no artifact section for exception handling, no schema for justified deviations, and no rule for when variation is “allowed” vs “legacy exception.” That makes the proposed contract unenforceable and invites rework.
+
+Missing tests:
+- Test that the tier-1 repo source of truth is explicit and matches the repo set used in the inventory.
+- Test that each repo row in the migration matrix is backed by concrete path-level evidence, not summary prose.
+- Test that each drift item is classified into at least `required`, `allowed variation`, or `approved exception`, with rationale.
+- Test that safe renames vs breaking-path migrations are explicitly labeled per affected path, not inferred from a repo-level risk score.
+- Test that child issue generation criteria are defined and that every repo above a threshold produces a follow-up issue stub or issue record.
+- Test that proposed regression checks map to concrete enforcement surfaces such as pre-commit, CI, docs lint, or repo scan jobs.
+
+Scope creep concerns:
+- Updating `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` is not justified as necessary for #2397 and could expand the task into umbrella-maintenance work.
+- Mentioning `#1661` scanner extension without defining whether new scanning/check implementation is in or out of scope risks silently absorbing guardrail-engineering work.
+- “write report and recommend follow-up execution issues” can drift into issue creation, sequencing, and cross-issue dependency management without explicit boundaries.
+
+Weakest assumption:
+- That a canonical tier-1 repo list can be derived later from “canonical repo inventory and umbrella issue references” without naming a single authoritative source now.
+
+Most likely implementation failure mode:
+- The author produces a polished contract report that is internally consistent but based on an incomplete or inconsistent repo set, forcing a second pass once missing tier-1 repos and exception cases are discovered.
+
+Most likely test gap:
+- The report passes all listed tests while still misclassifying breaking moves, because the tests validate document structure rather than path-level migration correctness.
+
+Future issues suggested:
+- Issue to define and publish the authoritative tier-1 repo registry/source of truth if one does not already exist as a single canonical artifact.
+- Issue to implement actual path-governance checks once the contract is approved, with explicit CI/pre-commit ownership.
+- Issue to define an exception registry/process for intentional repo-layout deviations.
+
+Review confidence: medium
