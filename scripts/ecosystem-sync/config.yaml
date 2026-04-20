@@ -1,0 +1,23 @@
+repos:
+  - name: digitalmodel
+    path: /mnt/local-analysis/workspace-hub/digitalmodel
+    readme_sections: ["Capabilities", "Features"]
+  - name: assethold
+    path: /mnt/local-analysis/workspace-hub/assethold
+    readme_sections: ["What it does", "Capabilities"]
+  - name: assetutilities
+    path: /mnt/local-analysis/workspace-hub/assetutilities
+    readme_sections: ["Capabilities", "Features"]
+  - name: CAD-DEVELOPMENTS
+    path: /mnt/local-analysis/workspace-hub/CAD-DEVELOPMENTS
+    readme_sections: ["Capabilities", "Features"]
+  - name: doris
+    path: /mnt/local-analysis/workspace-hub/doris
+    readme_sections: ["Capabilities", "Features"]
+  - name: frontierdeepwater
+    path: /mnt/local-analysis/workspace-hub/frontierdeepwater
+    readme_sections: ["Capabilities", "Features"]
+issue_repo: vamseeachanta/aceengineer-website
+digest_dir: docs/sync-reports
+state_file: .claude/state/ecosystem-sync/last-sync.yaml
+max_issues_per_run: 20
