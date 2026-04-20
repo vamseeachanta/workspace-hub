@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-20T19:56:36Z",
+  "generated_at": "2026-04-20T20:14:02Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -8,28 +8,28 @@
       "sessions": 33,
       "correction_sessions": 0,
       "unique_runtime_sessions": 137,
-      "post_records": 80790,
+      "post_records": 80966,
       "prompt_reads": 97,
       "blank_reads": 0,
-      "missing_repo_reads": 7599,
+      "missing_repo_reads": 7598,
       "python3_bash_calls": 731,
       "uv_python_bash_calls": 5966,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 43898
+          "count": 44002
         },
         {
           "tool": "Read",
-          "count": 15628
+          "count": 15643
         },
         {
           "tool": "Edit",
-          "count": 7374
+          "count": 7418
         },
         {
           "tool": "Write",
-          "count": 6855
+          "count": 6862
         },
         {
           "tool": "Grep",
@@ -37,7 +37,7 @@
         },
         {
           "tool": "Agent",
-          "count": 868
+          "count": 874
         },
         {
           "tool": "ToolSearch",
@@ -51,7 +51,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 77004
+          "count": 77180
         },
         {
           "repo": "digitalmodel",
@@ -113,7 +113,7 @@
         },
         {
           "path": "docs/plans/README.md",
-          "count": 82
+          "count": 88
         },
         {
           "path": "scripts/work-queue/whats-next.sh",
@@ -308,56 +308,56 @@
       "top_bash_command_families": [
         {
           "prefix": "ls",
-          "count": 6436,
-          "share_of_bash_calls": 14.66,
+          "count": 6445,
+          "share_of_bash_calls": 14.65,
           "example_command": "ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ | grep 686"
         },
         {
           "prefix": "uv run",
           "count": 5699,
-          "share_of_bash_calls": 12.98,
+          "share_of_bash_calls": 12.95,
           "example_command": "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-683 2>&1 | tail -20"
         },
         {
           "prefix": "grep",
-          "count": 5434,
-          "share_of_bash_calls": 12.38,
+          "count": 5441,
+          "share_of_bash_calls": 12.37,
           "example_command": "# Check if submit-to-gemini.sh and submit-to-codex.sh exist and where they write logs\ngrep -n \"orchestrator\\|gemini\\|codex\" /mnt/local-analysis/worksp"
         },
         {
           "prefix": "cat",
-          "count": 4499,
-          "share_of_bash_calls": 10.25,
+          "count": 4508,
+          "share_of_bash_calls": 10.24,
           "example_command": "cat .claude/work-queue/pending/WRK-683.md | head -20"
         },
         {
           "prefix": "find",
           "count": 3368,
-          "share_of_bash_calls": 7.67,
+          "share_of_bash_calls": 7.65,
           "example_command": "find .claude/work-queue -name \"WRK-683*\" 2>/dev/null && git diff --stat HEAD 2>/dev/null | head -20"
         },
         {
           "prefix": "bash",
-          "count": 2891,
-          "share_of_bash_calls": 6.59,
+          "count": 2896,
+          "share_of_bash_calls": 6.58,
           "example_command": "bash tests/test_wrk687_lifecycle.sh 2>&1"
         },
         {
           "prefix": "sed",
           "count": 1346,
-          "share_of_bash_calls": 3.07,
+          "share_of_bash_calls": 3.06,
           "example_command": "sed -n '32p' logs/orchestrator/claude/session_20260302.jsonl | cat -v | head -c 300"
         },
         {
           "prefix": "gh",
-          "count": 1286,
-          "share_of_bash_calls": 2.93,
+          "count": 1297,
+          "share_of_bash_calls": 2.95,
           "example_command": "gh repo view vamseeachanta/aceengineer-strategy --json visibility -q '.visibility' 2>/dev/null"
         }
       ],
       "special_counts": {},
-      "python3_per_1k_records": 9.05,
-      "uv_python_per_1k_records": 73.85
+      "python3_per_1k_records": 9.03,
+      "uv_python_per_1k_records": 73.69
     },
     "codex": {
       "source": "raw_logs",
@@ -896,7 +896,7 @@
       "post_records": 6082,
       "prompt_reads": 18,
       "blank_reads": 0,
-      "missing_repo_reads": 665,
+      "missing_repo_reads": 667,
       "python3_bash_calls": 291,
       "uv_python_bash_calls": 39,
       "top_tools": [
@@ -1225,7 +1225,7 @@
         {
           "provider": "claude",
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 12.03,
+          "known_migration_debt_per_1k_records": 12.01,
           "known_migration_debt_rule_count": 4,
           "top_migration_rule_id": "legacy_work_queue_transition",
           "top_migration_rule_reads": 318,
@@ -1267,20 +1267,20 @@
       "providers": [
         {
           "provider": "claude",
-          "urgency_score": 83.53,
+          "urgency_score": 83.47,
           "urgency_tier": "urgent_now",
           "activity_status": "active",
           "activity_trend": "stable",
           "corpus_status": "corpus_pruned_or_rebuilt",
           "debt_status": "high_debt",
-          "debt_trend": "stable",
+          "debt_trend": "improving",
           "python_hygiene_status": "uv_preferred",
           "python_hygiene_trend": "stable",
           "drift_trend": "improving",
-          "last_24h_post_records": 2095,
+          "last_24h_post_records": 2271,
           "last_24h_sessions": 10,
-          "last_7d_post_records": 6010,
-          "last_7d_sessions": 96,
+          "last_7d_post_records": 6162,
+          "last_7d_sessions": 95,
           "activity_window_profile": "light_recent",
           "health_status": "red",
           "health_reasons": [
@@ -1290,19 +1290,19 @@
             "currently active"
           ],
           "health_summary": "red: urgent action tier; high migration debt; corpus anomaly needs interpretation; currently active",
-          "recent_post_records": 78,
+          "recent_post_records": 179,
           "recent_sessions": 3,
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 12.03,
-          "missing_repo_reads_per_1k_records": 94.06,
+          "known_migration_debt_per_1k_records": 12.01,
+          "missing_repo_reads_per_1k_records": 93.84,
           "primary_issue": "legacy_work_queue_transition",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
           "urgency_rank": 1,
           "previous_urgency_rank": 1,
           "urgency_rank_delta": 0,
           "urgency_rank_direction": "stable",
-          "urgency_score_delta": -0.03,
-          "urgency_movement_summary": "rank unchanged at #1; urgency 83.53 (-0.03 vs previous audit); path drift improved; corpus was pruned or rebuilt"
+          "urgency_score_delta": -0.06,
+          "urgency_movement_summary": "rank unchanged at #1; urgency 83.47 (-0.06 vs previous audit); migration debt improved; path drift improved; corpus was pruned or rebuilt"
         },
         {
           "provider": "gemini",
@@ -1315,7 +1315,7 @@
           "debt_trend": "stable",
           "python_hygiene_status": "python3_heavy",
           "python_hygiene_trend": "stable",
-          "drift_trend": "stable",
+          "drift_trend": "worsening",
           "last_24h_post_records": 0,
           "last_24h_sessions": 0,
           "last_7d_post_records": 181,
@@ -1324,14 +1324,15 @@
           "health_status": "red",
           "health_reasons": [
             "high migration debt",
+            "path drift worsening",
             "python3-heavy command hygiene"
           ],
-          "health_summary": "red: high migration debt; python3-heavy command hygiene",
+          "health_summary": "red: high migration debt; path drift worsening; python3-heavy command hygiene",
           "recent_post_records": 0,
           "recent_sessions": 0,
           "known_migration_debt_reads": 84,
           "known_migration_debt_per_1k_records": 13.81,
-          "missing_repo_reads_per_1k_records": 109.34,
+          "missing_repo_reads_per_1k_records": 109.67,
           "primary_issue": "legacy_local_work_queue_items",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
           "urgency_rank": 2,
@@ -1339,7 +1340,7 @@
           "urgency_rank_delta": 0,
           "urgency_rank_direction": "stable",
           "urgency_score_delta": 0.0,
-          "urgency_movement_summary": "rank unchanged at #2; urgency 47.68 (+0.00 vs previous audit)"
+          "urgency_movement_summary": "rank unchanged at #2; urgency 47.68 (+0.00 vs previous audit); path drift worsened"
         },
         {
           "provider": "codex",
@@ -1392,8 +1393,8 @@
           "drift_trend": "stable",
           "last_24h_post_records": 760,
           "last_24h_sessions": 13,
-          "last_7d_post_records": 22794,
-          "last_7d_sessions": 199,
+          "last_7d_post_records": 22399,
+          "last_7d_sessions": 196,
           "activity_window_profile": "sustained_background",
           "health_status": "yellow",
           "health_reasons": [
@@ -1416,18 +1417,18 @@
           "urgency_movement_summary": "rank unchanged at #4; urgency 4.33 (+0.00 vs previous audit)"
         }
       ],
-      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.53, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).",
+      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.47, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).",
       "recommended_actions": [
         {
           "provider": "claude",
           "urgency_tier": "urgent_now",
-          "urgency_score": 83.53,
+          "urgency_score": 83.47,
           "urgency_rank": 1,
           "previous_urgency_rank": 1,
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
-          "urgency_score_delta": -0.03,
-          "urgency_movement_summary": "rank unchanged at #1; urgency 83.53 (-0.03 vs previous audit); path drift improved; corpus was pruned or rebuilt",
+          "urgency_score_delta": -0.06,
+          "urgency_movement_summary": "rank unchanged at #1; urgency 83.47 (-0.06 vs previous audit); migration debt improved; path drift improved; corpus was pruned or rebuilt",
           "health_status": "red",
           "health_summary": "red: urgent action tier; high migration debt; corpus anomaly needs interpretation; currently active",
           "primary_issue": "legacy_work_queue_transition",
@@ -1442,9 +1443,9 @@
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
           "urgency_score_delta": 0.0,
-          "urgency_movement_summary": "rank unchanged at #2; urgency 47.68 (+0.00 vs previous audit)",
+          "urgency_movement_summary": "rank unchanged at #2; urgency 47.68 (+0.00 vs previous audit); path drift worsened",
           "health_status": "red",
-          "health_summary": "red: high migration debt; python3-heavy command hygiene",
+          "health_summary": "red: high migration debt; path drift worsening; python3-heavy command hygiene",
           "primary_issue": "legacy_local_work_queue_items",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
@@ -1474,7 +1475,7 @@
         {
           "provider": "gemini",
           "health_status": "red",
-          "health_summary": "red: high migration debt; python3-heavy command hygiene"
+          "health_summary": "red: high migration debt; path drift worsening; python3-heavy command hygiene"
         },
         {
           "provider": "codex",
@@ -1642,7 +1643,11 @@
           "body": "Summary: Provider `claude` is currently at trigger level `page` with health `red` and urgency tier `urgent_now`.\nPrimary issue: legacy_work_queue_transition\nOwner team: governance-maintainers\nPreferred fix lane: governance-docs\nOwner surface: docs/governance/SESSION-GOVERNANCE.md\nWatchlist trigger: urgent-now provider with legacy_work_queue_transition\nSuggested follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- scripts/work-queue/start_stage.py\n- scripts/work-queue/exit_stage.py\n- scripts/work-queue/verify_checklist.py\nCanonical targets:\n- docs/governance/SESSION-GOVERNANCE.md\n- docs/governance/TRUST-ARCHITECTURE.md\n- scripts/workflow/governance-checkpoints.yaml\n- .claude/hooks/plan-approval-gate.sh\n- .claude/hooks/session-governor-check.sh\n- scripts/review/cross-review.sh\nFirst steps:\n- Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
           "draft_key": "994837d89d1977de",
           "dedupe_scope": "claude:legacy_work_queue_transition:governance-docs",
-          "duplicate_of_previous_draft_key": "994837d89d1977de"
+          "duplicate_of_previous_draft_key": "994837d89d1977de",
+          "draft_state": "unchanged",
+          "previous_title": "[critical] claude: remediate legacy_work_queue_transition",
+          "previous_severity": "critical",
+          "previous_owner_team": "governance-maintainers"
         },
         {
           "provider": "gemini",
@@ -1653,7 +1658,11 @@
           "body": "Summary: Provider `gemini` is currently at trigger level `act_this_week` with health `red` and urgency tier `next_up`.\nPrimary issue: legacy_local_work_queue_items\nOwner team: planning-ops\nPreferred fix lane: planning-workflow\nOwner surface: notes/agent-work-queue.md\nWatchlist trigger: red health due to legacy_local_work_queue_items\nSuggested follow-up: Prioritize this week on gemini: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Local queue item files are compatibility surfaces, not canonical work tracking; prefer the GitHub issue and .planning artifact instead.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- .claude/work-queue/WRK-149.md\n- .claude/work-queue/working\n- .claude/work-queue/working/\nCanonical targets:\n- GitHub issues\n- .planning/\n- notes/agent-work-queue.md\n- docs/work-queue-workflow.md\nFirst steps:\n- Inspect the top matched stale paths for legacy_local_work_queue_items and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: GitHub issues, .planning/, notes/agent-work-queue.md.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
           "draft_key": "44f0d2d9243d957f",
           "dedupe_scope": "gemini:legacy_local_work_queue_items:planning-workflow",
-          "duplicate_of_previous_draft_key": "44f0d2d9243d957f"
+          "duplicate_of_previous_draft_key": "44f0d2d9243d957f",
+          "draft_state": "unchanged",
+          "previous_title": "[high] gemini: remediate legacy_local_work_queue_items",
+          "previous_severity": "high",
+          "previous_owner_team": "planning-ops"
         },
         {
           "provider": "codex",
@@ -1664,7 +1673,11 @@
           "body": "Summary: Provider `codex` is currently at trigger level `investigate` with health `yellow` and urgency tier `investigate`.\nPrimary issue: unmapped path drift\nOwner team: drift-triage\nPreferred fix lane: drift-triage\nOwner surface: docs/ops/legacy-claude-reference-map.md\nWatchlist trigger: yellow health with sustained 7d activity and unmapped path drift\nSuggested follow-up: Sample current traces on codex and verify whether unmapped path drift needs remap or docs cleanup\nGuidance: Separate benign drift from actionable stale-path debt before opening remediation work.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- analysis/provider-session-ecosystem-audit.json\n- docs/reports/provider-session-ecosystem-audit.md\nCanonical targets:\n- docs/ops/legacy-claude-reference-map.md\n- docs/work-queue-workflow.md\nFirst steps:\n- Sample the provider's top missing repo reads from the audit JSON and group them by path family.\n- Decide whether each path family is a legitimate missing file, a deleted legacy path, or a symbolic/non-file surface that needs remapping.\n- Update redirect docs/exporter mappings before treating the drift as active repo debt.",
           "draft_key": "c6bf0005045e9ace",
           "dedupe_scope": "codex:unmapped path drift:drift-triage",
-          "duplicate_of_previous_draft_key": "c6bf0005045e9ace"
+          "duplicate_of_previous_draft_key": "c6bf0005045e9ace",
+          "draft_state": "unchanged",
+          "previous_title": "[medium] codex: remediate unmapped path drift",
+          "previous_severity": "medium",
+          "previous_owner_team": "drift-triage"
         },
         {
           "provider": "hermes",
@@ -1675,23 +1688,28 @@
           "body": "Summary: Provider `hermes` is currently at trigger level `investigate` with health `yellow` and urgency tier `monitor`.\nPrimary issue: unmapped path drift\nOwner team: drift-triage\nPreferred fix lane: drift-triage\nOwner surface: docs/ops/legacy-claude-reference-map.md\nWatchlist trigger: yellow health with sustained 7d activity and unmapped path drift\nSuggested follow-up: Sample current traces on hermes and verify whether unmapped path drift needs remap or docs cleanup\nGuidance: Separate benign drift from actionable stale-path debt before opening remediation work.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- analysis/provider-session-ecosystem-audit.json\n- docs/reports/provider-session-ecosystem-audit.md\nCanonical targets:\n- docs/ops/legacy-claude-reference-map.md\n- docs/work-queue-workflow.md\nFirst steps:\n- Sample the provider's top missing repo reads from the audit JSON and group them by path family.\n- Decide whether each path family is a legitimate missing file, a deleted legacy path, or a symbolic/non-file surface that needs remapping.\n- Update redirect docs/exporter mappings before treating the drift as active repo debt.",
           "draft_key": "310a9ae1e61a7eb4",
           "dedupe_scope": "hermes:unmapped path drift:drift-triage",
-          "duplicate_of_previous_draft_key": "310a9ae1e61a7eb4"
+          "duplicate_of_previous_draft_key": "310a9ae1e61a7eb4",
+          "draft_state": "unchanged",
+          "previous_title": "[medium] hermes: remediate unmapped path drift",
+          "previous_severity": "medium",
+          "previous_owner_team": "drift-triage"
         }
-      ]
+      ],
+      "cleared_followup_issue_drafts": []
     },
     "executive_actions": {
-      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.53, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).",
+      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.47, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).",
       "recommended_actions": [
         {
           "provider": "claude",
           "urgency_tier": "urgent_now",
-          "urgency_score": 83.53,
+          "urgency_score": 83.47,
           "urgency_rank": 1,
           "previous_urgency_rank": 1,
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
-          "urgency_score_delta": -0.03,
-          "urgency_movement_summary": "rank unchanged at #1; urgency 83.53 (-0.03 vs previous audit); path drift improved; corpus was pruned or rebuilt",
+          "urgency_score_delta": -0.06,
+          "urgency_movement_summary": "rank unchanged at #1; urgency 83.47 (-0.06 vs previous audit); migration debt improved; path drift improved; corpus was pruned or rebuilt",
           "health_status": "red",
           "health_summary": "red: urgent action tier; high migration debt; corpus anomaly needs interpretation; currently active",
           "primary_issue": "legacy_work_queue_transition",
@@ -1706,9 +1724,9 @@
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
           "urgency_score_delta": 0.0,
-          "urgency_movement_summary": "rank unchanged at #2; urgency 47.68 (+0.00 vs previous audit)",
+          "urgency_movement_summary": "rank unchanged at #2; urgency 47.68 (+0.00 vs previous audit); path drift worsened",
           "health_status": "red",
-          "health_summary": "red: high migration debt; python3-heavy command hygiene",
+          "health_summary": "red: high migration debt; path drift worsening; python3-heavy command hygiene",
           "primary_issue": "legacy_local_work_queue_items",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
@@ -1738,7 +1756,7 @@
         {
           "provider": "gemini",
           "health_status": "red",
-          "health_summary": "red: high migration debt; python3-heavy command hygiene"
+          "health_summary": "red: high migration debt; path drift worsening; python3-heavy command hygiene"
         },
         {
           "provider": "codex",
@@ -1906,7 +1924,11 @@
           "body": "Summary: Provider `claude` is currently at trigger level `page` with health `red` and urgency tier `urgent_now`.\nPrimary issue: legacy_work_queue_transition\nOwner team: governance-maintainers\nPreferred fix lane: governance-docs\nOwner surface: docs/governance/SESSION-GOVERNANCE.md\nWatchlist trigger: urgent-now provider with legacy_work_queue_transition\nSuggested follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- scripts/work-queue/start_stage.py\n- scripts/work-queue/exit_stage.py\n- scripts/work-queue/verify_checklist.py\nCanonical targets:\n- docs/governance/SESSION-GOVERNANCE.md\n- docs/governance/TRUST-ARCHITECTURE.md\n- scripts/workflow/governance-checkpoints.yaml\n- .claude/hooks/plan-approval-gate.sh\n- .claude/hooks/session-governor-check.sh\n- scripts/review/cross-review.sh\nFirst steps:\n- Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
           "draft_key": "994837d89d1977de",
           "dedupe_scope": "claude:legacy_work_queue_transition:governance-docs",
-          "duplicate_of_previous_draft_key": "994837d89d1977de"
+          "duplicate_of_previous_draft_key": "994837d89d1977de",
+          "draft_state": "unchanged",
+          "previous_title": "[critical] claude: remediate legacy_work_queue_transition",
+          "previous_severity": "critical",
+          "previous_owner_team": "governance-maintainers"
         },
         {
           "provider": "gemini",
@@ -1917,7 +1939,11 @@
           "body": "Summary: Provider `gemini` is currently at trigger level `act_this_week` with health `red` and urgency tier `next_up`.\nPrimary issue: legacy_local_work_queue_items\nOwner team: planning-ops\nPreferred fix lane: planning-workflow\nOwner surface: notes/agent-work-queue.md\nWatchlist trigger: red health due to legacy_local_work_queue_items\nSuggested follow-up: Prioritize this week on gemini: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Local queue item files are compatibility surfaces, not canonical work tracking; prefer the GitHub issue and .planning artifact instead.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- .claude/work-queue/WRK-149.md\n- .claude/work-queue/working\n- .claude/work-queue/working/\nCanonical targets:\n- GitHub issues\n- .planning/\n- notes/agent-work-queue.md\n- docs/work-queue-workflow.md\nFirst steps:\n- Inspect the top matched stale paths for legacy_local_work_queue_items and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: GitHub issues, .planning/, notes/agent-work-queue.md.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
           "draft_key": "44f0d2d9243d957f",
           "dedupe_scope": "gemini:legacy_local_work_queue_items:planning-workflow",
-          "duplicate_of_previous_draft_key": "44f0d2d9243d957f"
+          "duplicate_of_previous_draft_key": "44f0d2d9243d957f",
+          "draft_state": "unchanged",
+          "previous_title": "[high] gemini: remediate legacy_local_work_queue_items",
+          "previous_severity": "high",
+          "previous_owner_team": "planning-ops"
         },
         {
           "provider": "codex",
@@ -1928,7 +1954,11 @@
           "body": "Summary: Provider `codex` is currently at trigger level `investigate` with health `yellow` and urgency tier `investigate`.\nPrimary issue: unmapped path drift\nOwner team: drift-triage\nPreferred fix lane: drift-triage\nOwner surface: docs/ops/legacy-claude-reference-map.md\nWatchlist trigger: yellow health with sustained 7d activity and unmapped path drift\nSuggested follow-up: Sample current traces on codex and verify whether unmapped path drift needs remap or docs cleanup\nGuidance: Separate benign drift from actionable stale-path debt before opening remediation work.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- analysis/provider-session-ecosystem-audit.json\n- docs/reports/provider-session-ecosystem-audit.md\nCanonical targets:\n- docs/ops/legacy-claude-reference-map.md\n- docs/work-queue-workflow.md\nFirst steps:\n- Sample the provider's top missing repo reads from the audit JSON and group them by path family.\n- Decide whether each path family is a legitimate missing file, a deleted legacy path, or a symbolic/non-file surface that needs remapping.\n- Update redirect docs/exporter mappings before treating the drift as active repo debt.",
           "draft_key": "c6bf0005045e9ace",
           "dedupe_scope": "codex:unmapped path drift:drift-triage",
-          "duplicate_of_previous_draft_key": "c6bf0005045e9ace"
+          "duplicate_of_previous_draft_key": "c6bf0005045e9ace",
+          "draft_state": "unchanged",
+          "previous_title": "[medium] codex: remediate unmapped path drift",
+          "previous_severity": "medium",
+          "previous_owner_team": "drift-triage"
         },
         {
           "provider": "hermes",
@@ -1939,38 +1969,43 @@
           "body": "Summary: Provider `hermes` is currently at trigger level `investigate` with health `yellow` and urgency tier `monitor`.\nPrimary issue: unmapped path drift\nOwner team: drift-triage\nPreferred fix lane: drift-triage\nOwner surface: docs/ops/legacy-claude-reference-map.md\nWatchlist trigger: yellow health with sustained 7d activity and unmapped path drift\nSuggested follow-up: Sample current traces on hermes and verify whether unmapped path drift needs remap or docs cleanup\nGuidance: Separate benign drift from actionable stale-path debt before opening remediation work.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- analysis/provider-session-ecosystem-audit.json\n- docs/reports/provider-session-ecosystem-audit.md\nCanonical targets:\n- docs/ops/legacy-claude-reference-map.md\n- docs/work-queue-workflow.md\nFirst steps:\n- Sample the provider's top missing repo reads from the audit JSON and group them by path family.\n- Decide whether each path family is a legitimate missing file, a deleted legacy path, or a symbolic/non-file surface that needs remapping.\n- Update redirect docs/exporter mappings before treating the drift as active repo debt.",
           "draft_key": "310a9ae1e61a7eb4",
           "dedupe_scope": "hermes:unmapped path drift:drift-triage",
-          "duplicate_of_previous_draft_key": "310a9ae1e61a7eb4"
+          "duplicate_of_previous_draft_key": "310a9ae1e61a7eb4",
+          "draft_state": "unchanged",
+          "previous_title": "[medium] hermes: remediate unmapped path drift",
+          "previous_severity": "medium",
+          "previous_owner_team": "drift-triage"
         }
-      ]
+      ],
+      "cleared_followup_issue_drafts": []
     },
     "recent_activity_since_previous_audit": {
-      "previous_generated_at": "2026-04-20T19:52:42Z",
+      "previous_generated_at": "2026-04-20T19:56:36Z",
       "status": "ok",
       "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
       "providers": {
         "claude": {
-          "post_records": 78,
+          "post_records": 179,
           "sessions": 3,
           "top_tools": [
             {
               "tool": "Bash",
-              "count": 55
+              "count": 105
+            },
+            {
+              "tool": "Edit",
+              "count": 45
             },
             {
               "tool": "Read",
-              "count": 10
+              "count": 15
+            },
+            {
+              "tool": "Write",
+              "count": 8
             },
             {
               "tool": "Agent",
               "count": 6
-            },
-            {
-              "tool": "Edit",
-              "count": 5
-            },
-            {
-              "tool": "Write",
-              "count": 2
             }
           ],
           "top_missing_repo_reads": [],
@@ -1980,32 +2015,32 @@
               "count": 11
             },
             {
-              "prefix": "grep",
-              "count": 9
+              "prefix": "cat",
+              "count": 10
             },
             {
               "prefix": "ls",
               "count": 9
             },
             {
-              "prefix": "git log",
+              "prefix": "git add",
               "count": 8
             },
             {
-              "prefix": "cat",
-              "count": 3
+              "prefix": "git log",
+              "count": 7
             },
             {
-              "prefix": "sed",
-              "count": 3
+              "prefix": "grep",
+              "count": 7
             },
             {
-              "prefix": "head",
-              "count": 3
+              "prefix": "git diff",
+              "count": 7
             },
             {
-              "prefix": "git branch",
-              "count": 2
+              "prefix": "git show",
+              "count": 6
             }
           ]
         },
@@ -2034,44 +2069,44 @@
       "ranked_providers": [
         {
           "provider": "claude",
-          "post_records": 78,
+          "post_records": 179,
           "sessions": 3
         }
       ]
     },
     "recent_activity_windows": {
-      "generated_at": "2026-04-20T19:56:36Z",
+      "generated_at": "2026-04-20T20:14:02Z",
       "status": "ok",
       "windows": {
         "last_24h": {
-          "window_start": "2026-04-19T19:56:36Z",
-          "window_end": "2026-04-20T19:56:36Z",
+          "window_start": "2026-04-19T20:14:02Z",
+          "window_end": "2026-04-20T20:14:02Z",
           "status": "ok",
           "scope_note": "Last 24 hours of event-time activity ending at this audit timestamp.",
           "providers": {
             "claude": {
-              "post_records": 2095,
+              "post_records": 2271,
               "sessions": 10,
               "top_tools": [
                 {
                   "tool": "Bash",
-                  "count": 1276
+                  "count": 1378
                 },
                 {
                   "tool": "Read",
-                  "count": 378
+                  "count": 393
                 },
                 {
                   "tool": "Edit",
-                  "count": 237
+                  "count": 282
                 },
                 {
                   "tool": "Write",
-                  "count": 122
+                  "count": 130
                 },
                 {
                   "tool": "Agent",
-                  "count": 68
+                  "count": 74
                 }
               ],
               "top_missing_repo_reads": [
@@ -2099,35 +2134,35 @@
               "top_bash_command_families": [
                 {
                   "prefix": "ls",
-                  "count": 178
+                  "count": 187
                 },
                 {
                   "prefix": "gh",
-                  "count": 111
+                  "count": 122
                 },
                 {
                   "prefix": "grep",
-                  "count": 111
+                  "count": 118
                 },
                 {
                   "prefix": "node",
-                  "count": 86
+                  "count": 88
                 },
                 {
                   "prefix": "cat",
-                  "count": 74
+                  "count": 82
                 },
                 {
                   "prefix": "git log",
-                  "count": 66
+                  "count": 73
                 },
                 {
                   "prefix": "git add",
-                  "count": 59
+                  "count": 67
                 },
                 {
                   "prefix": "wc",
-                  "count": 56
+                  "count": 59
                 }
               ]
             },
@@ -2290,7 +2325,7 @@
           "ranked_providers": [
             {
               "provider": "claude",
-              "post_records": 2095,
+              "post_records": 2271,
               "sessions": 10
             },
             {
@@ -2306,34 +2341,34 @@
           ]
         },
         "last_7d": {
-          "window_start": "2026-04-13T19:56:36Z",
-          "window_end": "2026-04-20T19:56:36Z",
+          "window_start": "2026-04-13T20:14:02Z",
+          "window_end": "2026-04-20T20:14:02Z",
           "status": "ok",
           "scope_note": "Last 7 days of event-time activity ending at this audit timestamp.",
           "providers": {
             "claude": {
-              "post_records": 6010,
-              "sessions": 96,
+              "post_records": 6162,
+              "sessions": 95,
               "top_tools": [
                 {
                   "tool": "Bash",
-                  "count": 3313
+                  "count": 3410
                 },
                 {
                   "tool": "Read",
-                  "count": 1398
+                  "count": 1411
                 },
                 {
                   "tool": "Edit",
-                  "count": 561
+                  "count": 603
                 },
                 {
                   "tool": "Write",
-                  "count": 370
+                  "count": 374
                 },
                 {
                   "tool": "Grep",
-                  "count": 184
+                  "count": 174
                 }
               ],
               "top_missing_repo_reads": [
@@ -2361,31 +2396,31 @@
               "top_bash_command_families": [
                 {
                   "prefix": "ls",
-                  "count": 558
+                  "count": 567
                 },
                 {
                   "prefix": "gh",
-                  "count": 483
+                  "count": 492
+                },
+                {
+                  "prefix": "grep",
+                  "count": 228
                 },
                 {
                   "prefix": "find",
                   "count": 223
                 },
                 {
-                  "prefix": "grep",
-                  "count": 221
-                },
-                {
                   "prefix": "cat",
-                  "count": 126
+                  "count": 134
                 },
                 {
                   "prefix": "git add",
-                  "count": 124
+                  "count": 130
                 },
                 {
                   "prefix": "git log",
-                  "count": 118
+                  "count": 125
                 },
                 {
                   "prefix": "uv run",
@@ -2476,28 +2511,28 @@
               ]
             },
             "hermes": {
-              "post_records": 22794,
-              "sessions": 199,
+              "post_records": 22399,
+              "sessions": 196,
               "top_tools": [
                 {
                   "tool": "Bash",
-                  "count": 9112
+                  "count": 8935
                 },
                 {
                   "tool": "Read",
-                  "count": 4800
+                  "count": 4726
                 },
                 {
                   "tool": "Grep",
-                  "count": 3274
+                  "count": 3213
                 },
                 {
                   "tool": "Write",
-                  "count": 2973
+                  "count": 2918
                 },
                 {
                   "tool": "Edit",
-                  "count": 2166
+                  "count": 2158
                 }
               ],
               "top_missing_repo_reads": [
@@ -2525,27 +2560,27 @@
               "top_bash_command_families": [
                 {
                   "prefix": "gh",
-                  "count": 2343
+                  "count": 2319
                 },
                 {
                   "prefix": "sleep",
-                  "count": 779
+                  "count": 752
                 },
                 {
                   "prefix": "tmux",
-                  "count": 544
+                  "count": 520
                 },
                 {
                   "prefix": "python",
-                  "count": 470
+                  "count": 457
                 },
                 {
                   "prefix": "git status",
-                  "count": 436
+                  "count": 432
                 },
                 {
                   "prefix": "uv run",
-                  "count": 381
+                  "count": 375
                 },
                 {
                   "prefix": "codex",
@@ -2553,7 +2588,7 @@
                 },
                 {
                   "prefix": "git",
-                  "count": 220
+                  "count": 219
                 }
               ]
             },
@@ -2607,13 +2642,13 @@
           "ranked_providers": [
             {
               "provider": "hermes",
-              "post_records": 22794,
-              "sessions": 199
+              "post_records": 22399,
+              "sessions": 196
             },
             {
               "provider": "claude",
-              "post_records": 6010,
-              "sessions": 96
+              "post_records": 6162,
+              "sessions": 95
             },
             {
               "provider": "codex",
@@ -2630,7 +2665,7 @@
       }
     },
     "corpus_change_since_previous_audit": {
-      "previous_generated_at": "2026-04-20T19:52:42Z",
+      "previous_generated_at": "2026-04-20T19:56:36Z",
       "status": "ok",
       "scope_note": "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.",
       "providers": {
@@ -2638,18 +2673,18 @@
           "status": "corpus_pruned_or_rebuilt",
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
-          "previous_post_records": 80722,
-          "current_post_records": 80790,
-          "post_record_delta": 68,
+          "previous_post_records": 80790,
+          "current_post_records": 80966,
+          "post_record_delta": 176,
           "previous_sessions": 33,
           "current_sessions": 33,
           "session_delta": 0,
           "previous_missing_repo_reads": 7599,
-          "current_missing_repo_reads": 7599,
-          "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 78,
+          "current_missing_repo_reads": 7598,
+          "missing_repo_read_delta": -1,
+          "event_time_post_records_since_previous_audit": 179,
           "event_time_sessions_since_previous_audit": 3,
-          "reconciliation_gap_post_records": -10,
+          "reconciliation_gap_post_records": -3,
           "interpretation": "Snapshot shrank relative to recent event-time activity, suggesting pruning, rebuild, or reclassification."
         },
         "codex": {
@@ -2699,8 +2734,8 @@
           "current_sessions": 45,
           "session_delta": 0,
           "previous_missing_repo_reads": 665,
-          "current_missing_repo_reads": 665,
-          "missing_repo_read_delta": 0,
+          "current_missing_repo_reads": 667,
+          "missing_repo_read_delta": 2,
           "event_time_post_records_since_previous_audit": 0,
           "event_time_sessions_since_previous_audit": 0,
           "reconciliation_gap_post_records": 0,
@@ -2710,9 +2745,9 @@
       "ranked_providers": [
         {
           "provider": "claude",
-          "post_record_delta": 68,
-          "event_time_post_records_since_previous_audit": 78,
-          "reconciliation_gap_post_records": -10,
+          "post_record_delta": 176,
+          "event_time_post_records_since_previous_audit": 179,
+          "reconciliation_gap_post_records": -3,
           "status": "corpus_pruned_or_rebuilt"
         },
         {

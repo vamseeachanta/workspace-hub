@@ -1041,8 +1041,8 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
         if isinstance(previous_audit, dict)
         else []
     )
-    previous_key_map = {
-        item.get("provider"): item.get("draft_key")
+    previous_draft_map = {
+        item.get("provider"): item
         for item in previous_drafts
         if isinstance(item, dict) and item.get("provider")
     }
@@ -1101,7 +1101,14 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
             "trigger_level": trigger_level,
         }
         draft_key = hashlib.sha256(json.dumps(fingerprint_source, sort_keys=True).encode("utf-8")).hexdigest()[:16]
-        previous_draft_key = previous_key_map.get(provider)
+        previous_draft = previous_draft_map.get(provider, {}) if isinstance(previous_draft_map, dict) else {}
+        previous_draft_key = previous_draft.get("draft_key") if previous_draft else None
+        if not previous_draft:
+            draft_state = "new"
+        elif previous_draft_key == draft_key:
+            draft_state = "unchanged"
+        else:
+            draft_state = "changed"
 
         drafts.append(
             {
@@ -1114,12 +1121,50 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
                 "draft_key": draft_key,
                 "dedupe_scope": dedupe_scope,
                 "duplicate_of_previous_draft_key": previous_draft_key if previous_draft_key == draft_key else None,
+                "draft_state": draft_state,
+                "previous_title": previous_draft.get("title") if previous_draft else None,
+                "previous_severity": previous_draft.get("severity") if previous_draft else None,
+                "previous_owner_team": previous_draft.get("owner_team") if previous_draft else None,
             }
         )
 
     severity_rank = {"critical": 3, "high": 2, "medium": 1, "low": 0}
     drafts.sort(key=lambda item: (-severity_rank.get(str(item.get("severity", "low")), 0), str(item.get("provider", ""))))
     return drafts
+
+
+def build_cleared_followup_issue_drafts(followup_issue_drafts: list[dict], previous_audit: dict | None) -> list[dict]:
+    if not previous_audit:
+        return []
+    previous_drafts = (
+        previous_audit.get("executive_summary", {}).get("provider_interpretation_summary", {}).get("followup_issue_drafts", [])
+        if isinstance(previous_audit, dict)
+        else []
+    )
+    active_providers = {
+        item.get("provider")
+        for item in followup_issue_drafts
+        if isinstance(item, dict) and item.get("provider")
+    }
+    cleared: list[dict] = []
+    for item in previous_drafts:
+        if not isinstance(item, dict):
+            continue
+        provider = item.get("provider")
+        if not provider or provider in active_providers:
+            continue
+        cleared.append(
+            {
+                "provider": provider,
+                "draft_state": "cleared",
+                "previous_title": item.get("title"),
+                "previous_severity": item.get("severity"),
+                "previous_owner_team": item.get("owner_team"),
+                "previous_draft_key": item.get("draft_key"),
+            }
+        )
+    cleared.sort(key=lambda item: str(item.get("provider", "")))
+    return cleared
 
 
 def build_recent_activity_summary(
@@ -1635,6 +1680,7 @@ def build_provider_interpretation_summary(
     change_alerts = build_change_alerts(rows, watchlist, previous_audit)
     remediation_playbooks = build_remediation_playbooks(provider_summaries, rows, watchlist)
     followup_issue_drafts = build_followup_issue_drafts(rows, watchlist, remediation_playbooks, previous_audit)
+    cleared_followup_issue_drafts = build_cleared_followup_issue_drafts(followup_issue_drafts, previous_audit)
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -1695,6 +1741,7 @@ def build_provider_interpretation_summary(
         "change_alerts": change_alerts,
         "remediation_playbooks": remediation_playbooks,
         "followup_issue_drafts": followup_issue_drafts,
+        "cleared_followup_issue_drafts": cleared_followup_issue_drafts,
     }
 
 
@@ -1749,6 +1796,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "change_alerts": provider_interpretation.get("change_alerts", []),
         "remediation_playbooks": provider_interpretation.get("remediation_playbooks", []),
         "followup_issue_drafts": provider_interpretation.get("followup_issue_drafts", []),
+        "cleared_followup_issue_drafts": provider_interpretation.get("cleared_followup_issue_drafts", []),
     }
 
     return {
@@ -1862,7 +1910,14 @@ def render_markdown(audit: dict) -> str:
             lines.append("- Follow-up issue drafts:")
             for draft in followup_issue_drafts:
                 lines.append(
-                    f"  - `{draft['provider']}` [{draft.get('severity')}] — {draft.get('title')} | owner={draft.get('owner_team')} | lane={draft.get('preferred_fix_lane')}"
+                    f"  - `{draft['provider']}` [{draft.get('severity')}] — {draft.get('title')} | state={draft.get('draft_state')} | owner={draft.get('owner_team')} | lane={draft.get('preferred_fix_lane')}"
+                )
+        cleared_followup_issue_drafts = interpretation_summary.get("cleared_followup_issue_drafts", [])
+        if cleared_followup_issue_drafts:
+            lines.append("- Cleared follow-up issue drafts:")
+            for draft in cleared_followup_issue_drafts:
+                lines.append(
+                    f"  - `{draft['provider']}` [cleared] — previous_title={draft.get('previous_title')} | previous_severity={draft.get('previous_severity')} | previous_owner={draft.get('previous_owner_team')}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:

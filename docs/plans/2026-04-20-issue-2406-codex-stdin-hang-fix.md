@@ -185,7 +185,7 @@ Notes on design choices:
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `scripts/review/submit-to-codex.sh` | rewrite `run_codex_exec` (lines 162–180) to pipe prompt via stdin with `-` positional; add one-time codex-version probe and argv-path fallback; add `PIPESTATUS[1]` capture for SIGPIPE robustness. No change to error-classification, exit-code map, or compact-retry trigger logic. |
+| Modify | `scripts/review/submit-to-codex.sh` | rewrite `run_codex_exec` (lines 162–180) to pipe prompt via stdin with `-` positional; add one-time codex-version probe that **hard-fails with new exit code 7** on older CLIs (no argv fallback — matches the Deliverable's reliability guarantee); add `${PIPESTATUS[1]}` capture to preserve codex exit codes across the new pipe under `set -euo pipefail`. No change to the error-classification table, the existing exit-code map for codes 1/2/3/5/6, or the compact-retry trigger logic. New exit code 7 added exclusively for the version-probe hard-fail path. |
 | Create | `tests/review/fixtures/codex-large-prompt.txt` | deterministic large-prompt fixture (24 000 chars = 400 × 60-char lines), reproducible via one-liner |
 | Modify | `tests/review/test-submit-scripts.sh` | add T26 (argv must not contain full prompt), T27 (stdin delivers the prompt byte-for-byte), T28 (compact-retry path also uses stdin), T29 (pipefail+SIGPIPE + exit-3 fidelity), T30 (version-probe hard-fail with new exit 7), T31 (probe-cache single-invocation), T32 (exit-5 NO_OUTPUT preserved), T33 (exit-6 renderer-fail preserved) |
 | ~~Update~~ (already done in planning commits) | `docs/plans/README.md` | Index row for #2406 already landed in commit `a73ec66f6` as part of the standard skill Step 2 plan-draft routine. Not a pending implementation change — recorded here only for traceability, **not counted in v3's to-do work**. |
@@ -232,8 +232,7 @@ Every acceptance criterion maps to at least one automated test or an explicit ma
 | Existing exit-code semantics preserved (exit 3 quota) | T29 (new — exercises quota path via mock exit 3) | automated |
 | Existing exit-code semantics preserved (exit 5 NO_OUTPUT) | dedicated new micro-test added inline: invoke with mock that writes empty `raw_file` and exits 0 twice; assert exit 5 (previously implicitly relied on by compact-retry path; made explicit in v3 per iter-2 Codex P1) | automated (T32 below) |
 | Existing exit-code semantics preserved (exit 6 renderer fail) | dedicated new micro-test: mock `uv run python …` (or equivalent renderer stub) fails; assert exit 6 (made explicit in v3) | automated (T33 below) |
-| Three review artifacts posted to `scripts/review/results/` | `ls scripts/review/results/2026-04-20-plan-2406-*.md \| wc -l` ≥ 3 in closeout | shell-check (closeout) |
-| **Live repro**: fix completes within `CODEX_TIMEOUT_SECONDS` with the real codex CLI against any large plan (≥20 000 chars) | live execution outside automated suite | manual only (live API) |
+(README row presence, artifact count, and live-repro are **release-gate checks**, not test-backed acceptance criteria — see the "Release-gate checks" section under Acceptance Criteria above. They are intentionally not in this automated-test matrix per iter-3 Codex P1.)
 
 Additional new tests covering exit-code ACs that were previously only manual (iter-2 Codex P1 fix):
 
@@ -255,10 +254,10 @@ Automated (pass/fail via `bash tests/review/test-submit-scripts.sh`):
 - [ ] T30 passes: older codex without stdin-help support causes the script to hard-fail with new exit code 7 and a stderr upgrade-instruction message. No argv-path dispatch attempted.
 - [ ] T31 passes: version probe is invoked exactly once per `submit-to-codex.sh` invocation, cached, and reused on compact-retry.
 
-Manual / shell-check (documented in closeout comment):
-- [ ] `docs/plans/README.md` contains a row starting with `| 2406 |`.
-- [ ] `ls scripts/review/results/2026-04-20-plan-2406-*.md` shows ≥ 3 artifacts.
-- [ ] Live repro: re-running the failing dispatch from the issue body on the fixed branch completes within `CODEX_TIMEOUT_SECONDS`. The repro uses any large plan file present in `docs/plans/` (≥20 000 chars); `#2405`'s plan file is the example cited in the issue body but is not required — any eligible plan file satisfies the AC (e.g., `docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md` or this plan itself at ~28 KB). This decouples the fix's closeout from any other issue's state.
+**Release-gate checks (NOT acceptance criteria — these are operational confirmations, not test obligations).** Per iter-3 Codex P1 finding, these are explicitly separated from test-backed AC to avoid overstating AC↔test coverage:
+- Release-check 1: `docs/plans/README.md` contains a row starting with `| 2406 |` (verified existing at commit `a73ec66f6` — this is a preceding plan-authoring step under the skill's Step 2, NOT a behavior change introduced by this fix).
+- Release-check 2: `ls scripts/review/results/2026-04-20-plan-2406-*.md | wc -l` ≥ 3 at closeout (confirms all three provider review artifacts committed — operational audit, not correctness test).
+- Release-check 3: **live repro against the real codex CLI**. Re-running the failing dispatch from the issue body on the fixed branch completes within `CODEX_TIMEOUT_SECONDS`. Uses any large plan file in `docs/plans/` (≥20 000 chars); `#2405`'s plan file is the example in the issue body but not required. Documented in the closeout comment with exit code + elapsed time. **This is the only real-codex-CLI check and must be done before merging.**
 
 Exit-code map (v3 introduces new code 7):
 - 1 = user error, 2 = CLI not installed, 3 = quota, 5 = NO_OUTPUT, 6 = renderer fail, **7 = CLI version unsupported (new in this fix)**.
@@ -320,7 +319,7 @@ Class B findings (self-circular / reviewer-cannot-verify-live-state) acknowledge
 
 - **Risk:** the hang could have a second root cause we haven't identified (e.g. codex checking for a TTY on fd 1 or 2). Mitigation: T26/T27/T28 mock-tests verify argv/stdin shape deterministically; manual live verification in AC list confirms real-world behavior. If hang persists after fix, re-open with trace data (`strace -f -o strace.log`) attached.
 - **Risk:** the fix changes the prompt delivery path; it's possible codex's `<stdin>` block framing is subtly different from argv (e.g. extra wrapping). Mitigation: T27 compares the mock's stdin byte-for-byte with the expected prompt. If codex wraps differently, T27 will catch it before it hits production.
-- **Risk:** the `-` positional arg is undocumented edge behavior in some codex versions. Mitigation: runtime version probe + argv-path fallback (T30). Pinned by CLI-help evidence for the current installed version.
+- **Risk:** the `-` positional arg is undocumented edge behavior in some codex versions. Mitigation: runtime version probe that **hard-fails with exit 7** (no argv-path fallback — that would reintroduce the bug). T30 asserts the hard-fail. User-facing stderr tells them to upgrade the CLI. Pinned by CLI-help evidence for the current installed version.
 - **Risk:** `CODEX_MAX_PROMPT_CHARS` guard behavior is unchanged by this fix — the pre-truncation logic still runs before `run_codex_exec`. Noted explicitly to prevent confusion during review.
 - **Risk:** bash `printf '%s' "$prompt_text"` may hit a buffer limit on very long prompts. Mitigation: bash uses heap for variable storage; 5 MB max (already enforced at line 131 by `head -c 5000000`). Pipe writes in chunks from bash builtin's perspective; no documented failure mode below `ARG_MAX`.
 
