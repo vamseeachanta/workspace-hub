@@ -48,7 +48,8 @@ has_plan_approval() {
   local repo_root="$1"
   
   # Check 1: .planning/plan-approved/ directory has recent marker
-  if find "${repo_root}/.planning/plan-approved/" -name "*.md" -newer "${repo_root}/.planning/STATE.md" 2>/dev/null | grep -q .; then
+  # Use -print -quit to avoid pipefail/SIGPIPE false negatives when many markers exist.
+  if find "${repo_root}/.planning/plan-approved/" -name "*.md" -newer "${repo_root}/.planning/STATE.md" -print -quit 2>/dev/null | grep -q .; then
     return 0
   fi
   
