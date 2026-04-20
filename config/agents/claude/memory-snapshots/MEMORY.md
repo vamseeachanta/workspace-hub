@@ -13,11 +13,18 @@
 - [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex's GitHub-connector evidence locally
 - [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if issue already CLOSED, --comment is silently lost; reopen-comment-close to recover
 - [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GitHub BEFORE dispatching `codex exec` review; sandbox can't read local files
+- [Codex sandbox write blocked](feedback_codex_sandbox_write_blocked.md) — Codex sandbox blocks filesystem writes even for pushed artifacts; capture findings inline and write the review file yourself
+- [Merge-race silent revert](feedback_merge_race_silent_revert.md) — auto-sync race during `git merge --no-ff` + `git commit --no-edit` can drop second-parent tree; always verify merged content matches branch tip
+- [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when tool output is machine-consumed
+- [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills live under `~/.claude/plugins/cache/`; `git mv` cannot operate on them
+- [Retry-loop reset hazard](feedback_retry_loop_reset_hazard.md) — `git reset HEAD -- .` in a retry loop under auto-sync contention can strip staged edits and land mislabeled commits
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
 > project_cfd_openfoam_storage.md
-- [GSD](project_gsd_migration.md) — sole workflow, v1.36.0, Node 24+
+- [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209 children; 2026-04-19 amendments landed; follow-ons #2360/#2361/#2362
+- [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+
 - [Cross-review](project_cross_review_policy.md) — gate scripts + pre-push hook + audit cron
 - [Mooring knowledge](project_mooring_failures_knowledge.md) — 40 entries at knowledge/seeds/
 - [Nightly researchers](project_nightly_researchers.md) — LIVE, rotating Mon-Fri

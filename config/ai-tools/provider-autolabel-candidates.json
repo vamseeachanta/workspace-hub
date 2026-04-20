@@ -1,10 +1,72 @@
 {
-  "generated_at": "2026-04-19T21:20:05.879515Z",
+  "generated_at": "2026-04-20T05:20:05.985874Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 6,
+  "eligible_count": 9,
   "applied": [],
   "candidates": [
+    {
+      "number": 2343,
+      "title": "fix(gtm): demo gallery links only to Demo 5 \u2014 wire remaining 4 detail-page links",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2343",
+      "labels": [
+        "priority:high",
+        "domain:gtm",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T02:03:28Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2342,
+      "title": "fix(gtm): publish detail pages for Demos 1-4 to aceengineer.com (currently 404)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2342",
+      "labels": [
+        "priority:high",
+        "cat:business",
+        "domain:gtm",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T02:03:26Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
     {
       "number": 2152,
       "title": "test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage",
@@ -22,7 +84,106 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2206,
+      "title": "feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2206",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:harness",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T02:15:52Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2207,
+      "title": "feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2207",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:data-pipeline",
+        "cat:documentation",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T02:09:01Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2209,
+      "title": "chore(knowledge): define durable-vs-transient knowledge boundary across wikis, issues, registries, and session artifacts",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2209",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:harness",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T02:12:17Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -49,46 +210,13 @@
         "domain:skills",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-17T14:30:20Z",
+      "updatedAt": "2026-04-20T00:51:36Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2321,
-      "title": "chore(plugins): fix or remove failing semantic-scholar-mcp + consolidate gsd/sparc/workflows overlap",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2321",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness/skills",
-        "domain:skills",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-17T14:30:22Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -115,13 +243,13 @@
         "domain:agent-discipline",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-17T14:30:23Z",
+      "updatedAt": "2026-04-19T21:36:24Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -154,7 +282,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "implementation",
         "strategy"
@@ -168,69 +296,6 @@
         "provider-high-priority"
       ],
       "eligible": true
-    },
-    {
-      "number": 2324,
-      "title": "chore(memory): curate MEMORY.md index before 200-line truncation \u2014 consolidate stale project_* and feedback_*",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2324",
-      "labels": [
-        "priority:medium",
-        "cat:maintenance",
-        "domain:memory",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-17T14:30:25Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2327,
-      "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
-      "labels": [
-        "priority:low",
-        "cat:engineering",
-        "cat:research",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-17T14:55:48Z",
-      "execution_ready": true,
-      "priority_rank": 3,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
     },
     {
       "number": 2295,
@@ -248,7 +313,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research"
       ],
@@ -472,67 +537,6 @@
       "eligible": false
     },
     {
-      "number": 2167,
-      "title": "test(knowledge): build session-read coherence golden fixture suite for alias, symbolic, and missing-path cases",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2167",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-10T22:38:29Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2251,
-      "title": "Compliance alert: W16 \u2014 0% (critical)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2251",
-      "labels": [
-        "priority:high",
-        "priority:medium",
-        "priority:critical",
-        "compliance-alert"
-      ],
-      "updatedAt": "2026-04-19T11:45:06Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2123,
       "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123",
@@ -543,7 +547,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research"
       ],
@@ -566,7 +570,7 @@
       "suggested_provider": "gemini",
       "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research"
       ],

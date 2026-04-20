@@ -1,6 +1,6 @@
 ---
 name: GSD migration complete
-description: Old 20-stage WRK pipeline removed 2026-03-25, GSD is sole workflow — now at v1.36.0, Node.js 24+ required
+description: Old 20-stage WRK pipeline removed 2026-03-25, GSD is sole workflow — now at v1.38.1, Node.js 24+ required
 type: project
 originSessionId: 57335aaf-c168-418e-9e12-dafe06cf553a
 ---
@@ -27,7 +27,8 @@ On 2026-03-25, the old 20-stage WRK pipeline was fully removed and replaced by G
 - v1.30.0 — installed as of 2026-03-25
 - v1.34.1 — updated 2026-04-07 (session 3ea978b9). 124 locally modified files backed up to `gsd-local-patches/`, mostly Windows→Linux path diffs from cross-machine sync. Patches reapplied; most were mechanical (path normalization, `/gsd:xxx` → `/gsd-xxx` format migration).
 - v1.36.0 — confirmed installed as of 2026-04-17 via `/gsd:update` (no-op, already on latest). LOCAL scope under `./.claude/`.
+- v1.38.1 — installed 2026-04-19 via `/gsd:update` (1.36.0 → 1.38.1, npm tagged patch newer than 1.38.0). LOCAL scope. 9 files from v1.34.1 era backed up to `gsd-local-patches/`; run `/gsd-reapply-patches` to merge.
 
-**Node.js requirement:** GSD v1.36.0 requires Node.js 24+. Currently on v22.22.2 — may cause issues with newer features. Upgrade pending.
+**Node.js requirement:** GSD v1.38.1 requires Node.js 24+. On this machine: `/usr/bin/node` is v24.14.1 as of 2026-04-19, installed from NodeSource apt repo (`/etc/apt/sources.list.d/nodesource.sources`, tracks node_24.x). Upgrade path: `sudo apt update && sudo apt upgrade nodejs`. No version manager in use (no nvm/fnm/n/volta).
 
 **How to apply:** No more WRK-NNN references. Tasks tracked as GitHub issues. Use `/gsd:*` commands for workflow. After updates, run `/gsd:reapply-patches` to restore local customizations.

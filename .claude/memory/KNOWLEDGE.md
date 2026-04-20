@@ -7,7 +7,7 @@
 
 - Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
 - All development must be compatible with Linux, Windows, and macOS
-- Shell scripts: `#!/usr/bin/env bash`, LF line endings, test on all 3 platforms
+- Shell scripts: `#!/usr/bin/env bash`, LF line endings, test on all 3 platforms *stale: 2026-04-20*
 - Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
 - Symlinks: use `ln -s` on Linux/macOS, `cmd //c mklink /J` on Windows (no elevation) *stale: 2026-04-15*
 - MINGW root path: `while [ "$(pwd)" != / ]` loops never terminate — use `WORKSPACE_HUB` env var *stale: 2026-03-11*
