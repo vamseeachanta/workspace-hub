@@ -447,6 +447,9 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["watchlist"][0]["provider"] == "claude"
     assert summary["watchlist"][0]["trigger_level"] == "act_this_week"
     assert summary["change_alerts"] == []
+    assert summary["remediation_playbooks"][0]["provider"] == "claude"
+    assert summary["remediation_playbooks"][0]["primary_issue"] == "legacy_work_queue_transition"
+    assert "docs/governance/SESSION-GOVERNANCE.md" in summary["remediation_playbooks"][0]["canonical_targets"]
 
 
 
@@ -484,12 +487,14 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "health_overview" in executive_actions
     assert "watchlist" in executive_actions
     assert "change_alerts" in executive_actions
+    assert "remediation_playbooks" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
     assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
     assert executive_actions["health_overview"] == audit["executive_summary"]["provider_interpretation_summary"]["health_overview"]
     assert executive_actions["watchlist"] == audit["executive_summary"]["provider_interpretation_summary"]["watchlist"]
     assert executive_actions["change_alerts"] == audit["executive_summary"]["provider_interpretation_summary"]["change_alerts"]
+    assert executive_actions["remediation_playbooks"] == audit["executive_summary"]["provider_interpretation_summary"]["remediation_playbooks"]
 
 
 
@@ -615,6 +620,41 @@ def test_build_change_alerts_detects_escalations_and_clears() -> None:
     assert alerts[0]["change_type"] == "trigger_escalated"
     assert alerts[1]["provider"] == "codex"
     assert alerts[1]["change_type"] == "cleared_watchlist"
+
+
+
+def test_build_remediation_playbooks_uses_rule_hints_and_generic_fallbacks() -> None:
+    provider_summaries = {
+        "claude": {
+            "missing_repo_read_remediation_hints": [
+                {
+                    "rule_id": "legacy_work_queue_transition",
+                    "matched_paths": [{"path": "scripts/work-queue/start_stage.py", "count": 4}],
+                    "canonical_targets": ["docs/governance/SESSION-GOVERNANCE.md"],
+                    "guidance": "Redirect callers to governance docs/hooks.",
+                    "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+                }
+            ]
+        },
+        "codex": {"missing_repo_read_remediation_hints": []},
+    }
+    rows = [
+        {"provider": "claude", "primary_issue": "legacy_work_queue_transition"},
+        {"provider": "codex", "primary_issue": "unmapped path drift"},
+    ]
+    watchlist = [
+        {"provider": "claude", "trigger_level": "act_this_week"},
+        {"provider": "codex", "trigger_level": "investigate"},
+    ]
+
+    playbooks = module.build_remediation_playbooks(provider_summaries, rows, watchlist)
+    by_provider = {item["provider"]: item for item in playbooks}
+
+    assert by_provider["claude"]["inspect_paths"] == ["scripts/work-queue/start_stage.py"]
+    assert by_provider["claude"]["canonical_targets"] == ["docs/governance/SESSION-GOVERNANCE.md"]
+    assert by_provider["claude"]["first_steps"][0].startswith("Inspect the top matched stale paths for legacy_work_queue_transition")
+    assert by_provider["codex"]["inspect_paths"][0] == "analysis/provider-session-ecosystem-audit.json"
+    assert by_provider["codex"]["trigger_level"] == "investigate"
 
 
 
@@ -812,6 +852,21 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
                     }
                 ],
+                "remediation_playbooks": [
+                    {
+                        "provider": "claude",
+                        "primary_issue": "legacy_work_queue_transition",
+                        "trigger_level": "page",
+                        "inspect_paths": ["scripts/work-queue/start_stage.py"],
+                        "canonical_targets": ["docs/governance/SESSION-GOVERNANCE.md", "docs/governance/TRUST-ARCHITECTURE.md"],
+                        "first_steps": [
+                            "Review the stale stage-transition path family and confirm callers should move to governance docs/hooks.",
+                            "Patch prompts/docs or exporter remaps so deleted work-queue scripts are no longer suggested.",
+                        ],
+                        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+                        "guidance": "Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.",
+                    }
+                ],
                 "rank_movements": [
                     {
                         "provider": "claude",
@@ -913,6 +968,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "`claude` [page] — urgent-now provider with legacy_work_queue_transition | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
     assert "Change alerts:" in markdown
     assert "`claude` [trigger_escalated] — claude trigger escalated from investigate to page | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
+    assert "Remediation playbooks:" in markdown
+    assert "`claude` [page] — issue=legacy_work_queue_transition | inspect=scripts/work-queue/start_stage.py | targets=docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown

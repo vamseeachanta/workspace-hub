@@ -871,6 +871,115 @@ def build_change_alerts(rows: list[dict], watchlist: list[dict], previous_audit:
     return alerts
 
 
+def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[dict], watchlist: list[dict]) -> list[dict]:
+    rule_by_id = {rule["rule_id"]: rule for rule in LEGACY_REMEDIATION_RULES}
+    playbooks: list[dict] = []
+    watchlist_by_provider = {
+        item.get("provider"): item
+        for item in watchlist
+        if isinstance(item, dict) and item.get("provider")
+    }
+
+    generic_playbooks = {
+        "unmapped path drift": {
+            "inspect_paths": ["analysis/provider-session-ecosystem-audit.json", "docs/reports/provider-session-ecosystem-audit.md"],
+            "canonical_targets": ["docs/ops/legacy-claude-reference-map.md", "docs/work-queue-workflow.md"],
+            "first_steps": [
+                "Sample the provider's top missing repo reads from the audit JSON and group them by path family.",
+                "Decide whether each path family is a legitimate missing file, a deleted legacy path, or a symbolic/non-file surface that needs remapping.",
+                "Update redirect docs/exporter mappings before treating the drift as active repo debt.",
+            ],
+            "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+            "guidance": "Separate benign drift from actionable stale-path debt before opening remediation work.",
+        },
+        "backfill/export growth beyond event-time activity": {
+            "inspect_paths": ["analysis/provider-session-ecosystem-audit.json", "scripts/cron/provider-session-ecosystem-audit.sh"],
+            "canonical_targets": ["analysis/provider-session-ecosystem-audit.json", "docs/reports/provider-session-ecosystem-audit.md"],
+            "first_steps": [
+                "Compare recent event-time activity with corpus delta for the affected provider.",
+                "Check whether exporter rebuilds, backfills, or state resets explain the gap.",
+                "Avoid using trend deltas for operational decisions until the corpus anomaly is explained.",
+            ],
+            "reference_doc": "docs/reports/provider-session-ecosystem-audit.md",
+            "guidance": "Corpus growth beyond event-time activity usually means backfill or export-behavior drift, not new live work.",
+        },
+        "corpus prune/rebuild drift": {
+            "inspect_paths": ["analysis/provider-session-ecosystem-audit.json", "scripts/cron/provider-session-ecosystem-audit.sh"],
+            "canonical_targets": ["analysis/provider-session-ecosystem-audit.json", "docs/reports/provider-session-ecosystem-audit.md"],
+            "first_steps": [
+                "Check whether export state, pruning, or corpus rebuild logic changed since the previous audit.",
+                "Confirm the event-time recent activity still matches the raw logs before escalating provider behavior changes.",
+                "Only treat the provider as operationally quieter after ruling out export resets or pruning.",
+            ],
+            "reference_doc": "docs/reports/provider-session-ecosystem-audit.md",
+            "guidance": "Pruned/rebuilt corpus snapshots can make provider urgency appear to move without real workflow changes.",
+        },
+        "no acute anomaly": {
+            "inspect_paths": ["docs/reports/provider-session-ecosystem-audit.md"],
+            "canonical_targets": ["analysis/provider-session-ecosystem-audit.json"],
+            "first_steps": [
+                "No immediate remediation needed.",
+                "Recheck the provider on the next audit run.",
+                "Escalate only if health, watchlist trigger, or change alerts worsen.",
+            ],
+            "reference_doc": "docs/reports/provider-session-ecosystem-audit.md",
+            "guidance": "Use monitoring rather than intervention when no acute anomaly is present.",
+        },
+    }
+
+    for row in rows:
+        provider = str(row.get("provider", ""))
+        if not provider:
+            continue
+        primary_issue = str(row.get("primary_issue", "no acute anomaly"))
+        source_summary = provider_summaries.get(provider, {}) if isinstance(provider_summaries, dict) else {}
+        hints = source_summary.get("missing_repo_read_remediation_hints", []) if isinstance(source_summary, dict) else []
+        matched_hint = None
+        for hint in hints:
+            if isinstance(hint, dict) and hint.get("rule_id") == primary_issue:
+                matched_hint = hint
+                break
+        if matched_hint is None and primary_issue in rule_by_id:
+            rule = rule_by_id[primary_issue]
+            matched_hint = {
+                "canonical_targets": rule.get("canonical_targets", []),
+                "guidance": rule.get("guidance"),
+                "reference_doc": rule.get("reference_doc"),
+                "matched_paths": [{"path": path, "count": 0} for path in rule.get("patterns", [])[:3]],
+            }
+
+        fallback = generic_playbooks.get(primary_issue, generic_playbooks["no acute anomaly"])
+        inspect_paths = [item.get("path") for item in matched_hint.get("matched_paths", [])[:3] if isinstance(item, dict) and item.get("path")] if matched_hint else []
+        canonical_targets = list(matched_hint.get("canonical_targets", [])) if matched_hint else list(fallback.get("canonical_targets", []))
+        if not inspect_paths:
+            inspect_paths = list(fallback.get("inspect_paths", []))
+        guidance = matched_hint.get("guidance") if matched_hint and matched_hint.get("guidance") else fallback.get("guidance")
+        reference_doc = matched_hint.get("reference_doc") if matched_hint and matched_hint.get("reference_doc") else fallback.get("reference_doc")
+        trigger = watchlist_by_provider.get(provider, {})
+
+        first_steps = list(fallback.get("first_steps", []))
+        if matched_hint and primary_issue in rule_by_id:
+            first_steps = [
+                f"Inspect the top matched stale paths for {primary_issue} and confirm they should redirect rather than be recreated.",
+                f"Open the canonical targets and migrate prompts/docs/tooling toward: {', '.join(canonical_targets[:3]) or 'documented canonical surfaces' }.",
+                "Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
+            ]
+        playbooks.append(
+            {
+                "provider": provider,
+                "primary_issue": primary_issue,
+                "trigger_level": trigger.get("trigger_level", "monitor"),
+                "inspect_paths": inspect_paths,
+                "canonical_targets": canonical_targets,
+                "first_steps": first_steps,
+                "reference_doc": reference_doc,
+                "guidance": guidance,
+            }
+        )
+
+    return playbooks
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -1382,6 +1491,7 @@ def build_provider_interpretation_summary(
     ]
     watchlist = build_watchlist(rows)
     change_alerts = build_change_alerts(rows, watchlist, previous_audit)
+    remediation_playbooks = build_remediation_playbooks(provider_summaries, rows, watchlist)
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -1440,6 +1550,7 @@ def build_provider_interpretation_summary(
         "health_overview": health_overview,
         "watchlist": watchlist,
         "change_alerts": change_alerts,
+        "remediation_playbooks": remediation_playbooks,
     }
 
 
@@ -1492,6 +1603,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "health_overview": provider_interpretation.get("health_overview", []),
         "watchlist": provider_interpretation.get("watchlist", []),
         "change_alerts": provider_interpretation.get("change_alerts", []),
+        "remediation_playbooks": provider_interpretation.get("remediation_playbooks", []),
     }
 
     return {
@@ -1590,6 +1702,15 @@ def render_markdown(audit: dict) -> str:
             for alert in change_alerts:
                 lines.append(
                     f"  - `{alert['provider']}` [{alert.get('change_type')}] — {alert.get('summary')} | follow-up: {alert.get('suggested_followup')}"
+                )
+        remediation_playbooks = interpretation_summary.get("remediation_playbooks", [])
+        if remediation_playbooks:
+            lines.append("- Remediation playbooks:")
+            for playbook in remediation_playbooks:
+                steps = playbook.get("first_steps", [])
+                step_summary = " | ".join(str(step) for step in steps[:2]) if steps else "no immediate steps recorded"
+                lines.append(
+                    f"  - `{playbook['provider']}` [{playbook.get('trigger_level')}] — issue={playbook.get('primary_issue')} | inspect={', '.join(playbook.get('inspect_paths', [])[:3])} | targets={', '.join(playbook.get('canonical_targets', [])[:3])} | steps: {step_summary}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:
