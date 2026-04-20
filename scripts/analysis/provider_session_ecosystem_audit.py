@@ -569,6 +569,77 @@ def compare_activity_direction(current_status: str, previous_status: str) -> str
     return "increasing" if delta > 0 else "decreasing"
 
 
+def summarize_urgency_rank_movement(
+    row: dict,
+    previous_rank: int | None,
+    previous_score: float | None,
+) -> tuple[str, int | None, float | None, str]:
+    current_rank = int(row.get("urgency_rank", 0) or 0)
+    current_score = float(row.get("urgency_score", 0) or 0)
+    score_delta = round(current_score - previous_score, 2) if previous_score is not None else None
+
+    if previous_rank is None:
+        return ("new", None, score_delta, "new to ranked urgency summary since the previous audit")
+
+    rank_delta = previous_rank - current_rank
+    if rank_delta > 0:
+        direction = "up"
+    elif rank_delta < 0:
+        direction = "down"
+    else:
+        direction = "stable"
+
+    reason_bits: list[str] = []
+    activity_trend = str(row.get("activity_trend", ""))
+    if activity_trend == "increasing":
+        reason_bits.append("recent activity increased")
+    elif activity_trend == "decreasing":
+        reason_bits.append("recent activity cooled")
+
+    debt_trend = str(row.get("debt_trend", ""))
+    if debt_trend == "worsening":
+        reason_bits.append("migration debt worsened")
+    elif debt_trend == "improving":
+        reason_bits.append("migration debt improved")
+
+    drift_trend = str(row.get("drift_trend", ""))
+    if drift_trend == "worsening":
+        reason_bits.append("path drift worsened")
+    elif drift_trend == "improving":
+        reason_bits.append("path drift improved")
+
+    python_trend = str(row.get("python_hygiene_trend", ""))
+    if python_trend == "worsening":
+        reason_bits.append("python hygiene worsened")
+    elif python_trend == "improving":
+        reason_bits.append("python hygiene improved")
+
+    corpus_status = str(row.get("corpus_status", ""))
+    if corpus_status == "corpus_pruned_or_rebuilt":
+        reason_bits.append("corpus was pruned or rebuilt")
+    elif corpus_status == "positive_corpus_growth_beyond_recent_activity":
+        reason_bits.append("corpus grew faster than event-time activity")
+
+    score_clause = (
+        f"urgency {current_score:.2f} ({score_delta:+.2f} vs previous audit)"
+        if score_delta is not None
+        else f"urgency {current_score:.2f}"
+    )
+
+    if direction == "stable":
+        if not reason_bits:
+            return (direction, rank_delta, score_delta, f"rank unchanged at #{current_rank}; {score_clause}")
+        return (direction, rank_delta, score_delta, f"rank unchanged at #{current_rank}; {score_clause}; {'; '.join(reason_bits)}")
+
+    movement = f"moved {direction} {abs(rank_delta)} slot"
+    if abs(rank_delta) != 1:
+        movement += "s"
+    movement += f" to #{current_rank}; {score_clause}"
+    if reason_bits:
+        movement += f"; {'; '.join(reason_bits)}"
+    return (direction, rank_delta, score_delta, movement)
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -764,6 +835,21 @@ def build_provider_interpretation_summary(
         if isinstance(previous_audit, dict)
         else {}
     )
+    previous_interpretation_rows = (
+        previous_audit.get("executive_summary", {}).get("provider_interpretation_summary", {}).get("providers", [])
+        if isinstance(previous_audit, dict)
+        else []
+    )
+    previous_rank_by_provider = {
+        row.get("provider"): index + 1
+        for index, row in enumerate(previous_interpretation_rows)
+        if isinstance(row, dict) and row.get("provider")
+    }
+    previous_interpretation_by_provider = {
+        row.get("provider"): row
+        for row in previous_interpretation_rows
+        if isinstance(row, dict) and row.get("provider")
+    }
 
     rows: list[dict] = []
     for provider in PROVIDERS:
@@ -915,8 +1001,25 @@ def build_provider_interpretation_summary(
         )
     )
 
+    for index, row in enumerate(rows, start=1):
+        row["urgency_rank"] = index
+        previous_rank = previous_rank_by_provider.get(row["provider"])
+        previous_interpretation = previous_interpretation_by_provider.get(row["provider"], {})
+        previous_score = float(previous_interpretation.get("urgency_score", 0) or 0) if previous_interpretation else None
+        direction, rank_delta, score_delta, summary = summarize_urgency_rank_movement(
+            row,
+            previous_rank,
+            previous_score,
+        )
+        row["previous_urgency_rank"] = previous_rank
+        row["urgency_rank_delta"] = rank_delta
+        row["urgency_rank_direction"] = direction
+        row["urgency_score_delta"] = score_delta
+        row["urgency_movement_summary"] = summary
+
     focus_this_week = None
     recommended_actions: list[dict] = []
+    rank_movements: list[dict] = []
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -940,15 +1043,36 @@ def build_provider_interpretation_summary(
                     "provider": row["provider"],
                     "urgency_tier": row["urgency_tier"],
                     "urgency_score": row["urgency_score"],
+                    "urgency_rank": row["urgency_rank"],
+                    "previous_urgency_rank": row.get("previous_urgency_rank"),
+                    "urgency_rank_direction": row.get("urgency_rank_direction"),
+                    "urgency_rank_delta": row.get("urgency_rank_delta"),
+                    "urgency_score_delta": row.get("urgency_score_delta"),
+                    "urgency_movement_summary": row.get("urgency_movement_summary"),
                     "primary_issue": row["primary_issue"],
                     "recommended_action": row["recommended_action"],
                 }
             )
+        rank_movements = [
+            {
+                "provider": row["provider"],
+                "urgency_rank": row["urgency_rank"],
+                "previous_urgency_rank": row.get("previous_urgency_rank"),
+                "urgency_rank_direction": row.get("urgency_rank_direction"),
+                "urgency_rank_delta": row.get("urgency_rank_delta"),
+                "urgency_score": row.get("urgency_score"),
+                "urgency_score_delta": row.get("urgency_score_delta"),
+                "summary": row.get("urgency_movement_summary"),
+            }
+            for row in rows
+            if row.get("urgency_rank_direction") in {"up", "down", "new"}
+        ]
 
     return {
         "providers": rows,
         "focus_this_week": focus_this_week,
         "recommended_actions": recommended_actions,
+        "rank_movements": rank_movements,
     }
 
 
@@ -995,6 +1119,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     executive_actions = {
         "focus_this_week": provider_interpretation.get("focus_this_week"),
         "recommended_actions": provider_interpretation.get("recommended_actions", []),
+        "rank_movements": provider_interpretation.get("rank_movements", []),
     }
 
     return {
@@ -1070,11 +1195,16 @@ def render_markdown(audit: dict) -> str:
             lines.append("- Recommended actions:")
             for action in recommended_actions:
                 lines.append(
-                    f"  - `{action['provider']}` [{action.get('urgency_tier')}] — {action.get('recommended_action')} (urgency {action.get('urgency_score')}, issue: {action.get('primary_issue')})"
+                    f"  - `{action['provider']}` [{action.get('urgency_tier')}] — {action.get('recommended_action')} (urgency {action.get('urgency_score')}, issue: {action.get('primary_issue')}; movement: {action.get('urgency_movement_summary')})"
                 )
+        rank_movements = interpretation_summary.get("rank_movements", [])
+        if rank_movements:
+            lines.append("- Rank movements since previous audit:")
+            for movement in rank_movements:
+                lines.append(f"  - `{movement['provider']}` — {movement.get('summary')}")
         for row in interpretation_rows:
             lines.append(
-                f"- `{row['provider']}` — urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} ({row.get('activity_trend')}) | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} ({row.get('debt_trend')}) | drift={row.get('drift_trend')} | python={row.get('python_hygiene_status')} ({row.get('python_hygiene_trend')}) | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
+                f"- `{row['provider']}` — rank={row.get('urgency_rank')} (prev={row.get('previous_urgency_rank')}, move={row.get('urgency_rank_direction')}) | urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} ({row.get('activity_trend')}) | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} ({row.get('debt_trend')}) | drift={row.get('drift_trend')} | python={row.get('python_hygiene_status')} ({row.get('python_hygiene_trend')}) | movement: {row.get('urgency_movement_summary')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
             )
         lines.append("")
 

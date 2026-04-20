@@ -355,6 +355,10 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert rows["claude"]["python_hygiene_status"] == "uv_preferred"
     assert rows["claude"]["primary_issue"] == "legacy_work_queue_transition"
     assert rows["claude"]["urgency_tier"] == "next_up"
+    assert rows["claude"]["urgency_rank"] == 1
+    assert rows["claude"]["previous_urgency_rank"] is None
+    assert rows["claude"]["urgency_rank_direction"] == "new"
+    assert rows["claude"]["urgency_movement_summary"] == "new to ranked urgency summary since the previous audit"
     assert rows["claude"]["debt_trend"] == "unavailable"
     assert rows["claude"]["drift_trend"] == "unavailable"
     assert rows["claude"]["python_hygiene_trend"] == "unavailable"
@@ -368,6 +372,7 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["focus_this_week"].startswith("Focus this week: prioritize legacy-path redirect cleanup")
     assert summary["recommended_actions"][0]["provider"] == "claude"
     assert summary["recommended_actions"][0]["urgency_tier"] == "next_up"
+    assert summary["rank_movements"][0]["provider"] == "claude"
 
 
 
@@ -401,8 +406,10 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     executive_actions = audit["executive_summary"]["executive_actions"]
     assert "focus_this_week" in executive_actions
     assert "recommended_actions" in executive_actions
+    assert "rank_movements" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
+    assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
 
 
 
@@ -619,8 +626,26 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "provider": "claude",
                         "urgency_tier": "urgent_now",
                         "urgency_score": 83.8,
+                        "urgency_rank": 1,
+                        "previous_urgency_rank": 2,
+                        "urgency_rank_direction": "up",
+                        "urgency_rank_delta": 1,
+                        "urgency_score_delta": 7.8,
+                        "urgency_movement_summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
                         "primary_issue": "legacy_work_queue_transition",
                         "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ],
+                "rank_movements": [
+                    {
+                        "provider": "claude",
+                        "urgency_rank": 1,
+                        "previous_urgency_rank": 2,
+                        "urgency_rank_direction": "up",
+                        "urgency_rank_delta": 1,
+                        "urgency_score": 83.8,
+                        "urgency_score_delta": 7.8,
+                        "summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
                     }
                 ],
                 "providers": [
@@ -628,6 +653,12 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "provider": "claude",
                         "urgency_score": 83.8,
                         "urgency_tier": "urgent_now",
+                        "urgency_rank": 1,
+                        "previous_urgency_rank": 2,
+                        "urgency_rank_direction": "up",
+                        "urgency_rank_delta": 1,
+                        "urgency_score_delta": 7.8,
+                        "urgency_movement_summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
                         "activity_status": "active",
                         "activity_trend": "increasing",
                         "corpus_status": "aligned",
@@ -669,7 +700,10 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude." in markdown
     assert "Recommended actions:" in markdown
     assert "`claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
-    assert "`claude` — urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving)" in markdown
+    assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "Rank movements since previous audit:" in markdown
+    assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "`claude` — rank=1 (prev=2, move=up) | urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving) | movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "primary issue: legacy_work_queue_transition" in markdown
     assert "## Corpus change since previous audit" in markdown
     assert "snapshot-to-snapshot corpus comparison is not yet available" in markdown
