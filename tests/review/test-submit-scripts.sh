@@ -315,42 +315,30 @@ PROVIDERS
 }
 
 # ══════════════════════════════════════════════════════════════════════════════
-# T26–T33: #2406 Codex dispatch — argv-vs-stdin transport fidelity
+# T26–T33: #2406 Codex dispatch — stdin-inheritance hang fix
 # ══════════════════════════════════════════════════════════════════════════════
+# Root cause: submit-to-codex.sh inherited the caller's stdin when invoking
+# `codex exec`. When the inherited stdin was an unconsumed non-tty pipe (e.g.
+# from an orchestrator), codex blocked reading it forever → 240s timeout.
+# Fix: `</dev/null` on each dispatch branch — codex sees immediate EOF.
+# Implementation discovery: the plan originally proposed stdin+`-` delivery,
+# but codex v0.121.0 has a separate bug where `exec -` + --output-schema
+# hangs. `</dev/null` + argv (the minimal change) is what actually works
+# against the real CLI. Verified live 2026-04-20.
 
-# Helper: create a configurable mock `codex` binary.
-# Vars the mock honors:
-#   CODEX_MOCK_ARGV_LOG    — file to write its argv (one arg per line)
-#   CODEX_MOCK_STDIN_LOG   — file to write its stdin content
-#   CODEX_MOCK_CALLCOUNT   — file holding an integer call-count (auto-incremented)
-#   CODEX_MOCK_HELP_CALLCOUNT — file holding the help-probe call count
-#   CODEX_MOCK_HELP_TEXT   — string printed for `codex exec --help` probe
-#   CODEX_MOCK_EMPTY_FIRST_CALL — "1" makes call-1 write an empty raw_file (triggers compact-retry)
-#   CODEX_MOCK_EXIT        — exit code for regular dispatch (default 0)
-#   CODEX_MOCK_ERR_PATTERN — optional stderr text (for classify_codex_failure exercises)
+# Helper: create a mock `codex` that records stdin bytes + counts calls.
 make_mock_codex() {
   local mock_path="$1"
   cat > "$mock_path" <<'MOCK_EOF'
 #!/usr/bin/env bash
-# Minimal `codex` mock used by tests/review/test-submit-scripts.sh T26-T33
-# Invocation shape under test: codex exec [PROMPT_OR_DASH] --skip-git-repo-check \
-#   --output-schema <F> --output-last-message <F>
-# Also supports: codex exec --help  (for T30 version probe)
+# codex mock for #2406 tests. Records its stdin and call count.
+#   CODEX_MOCK_STDIN_LOG       — base path; per-call suffix .call<N> written
+#   CODEX_MOCK_CALLCOUNT       — integer counter file
+#   CODEX_MOCK_EXIT            — exit code (default 0)
+#   CODEX_MOCK_ERR_PATTERN     — stderr text for classify_codex_failure
+#   CODEX_MOCK_EMPTY_FIRST_CALL — "1" → call-1 writes empty raw_file (forces retry)
+#   CODEX_MOCK_RAW             — content for raw_file (default: valid JSON)
 
-# Help probe -------------------------------------------------------------------
-if [[ "$1" == "exec" && "$2" == "--help" ]]; then
-  if [[ -n "${CODEX_MOCK_HELP_CALLCOUNT:-}" ]]; then
-    local_count=$(( $(cat "$CODEX_MOCK_HELP_CALLCOUNT" 2>/dev/null || echo 0) + 1 ))
-    echo "$local_count" > "$CODEX_MOCK_HELP_CALLCOUNT"
-  fi
-  printf '%s\n' "${CODEX_MOCK_HELP_TEXT:-Usage: codex exec [PROMPT]
-  [PROMPT]
-      Initial instructions for the agent. If not provided as an argument (or if \`-\` is used),
-      instructions are read from stdin.}"
-  exit 0
-fi
-
-# Track regular-dispatch call count -------------------------------------------
 if [[ -n "${CODEX_MOCK_CALLCOUNT:-}" ]]; then
   call_n=$(( $(cat "$CODEX_MOCK_CALLCOUNT" 2>/dev/null || echo 0) + 1 ))
   echo "$call_n" > "$CODEX_MOCK_CALLCOUNT"
@@ -358,28 +346,15 @@ else
   call_n=1
 fi
 
-# Parse --output-last-message target ------------------------------------------
 OUTPUT_LAST_MESSAGE=""
-SEEN=()
-arg="$1"; shift || true
-SEEN+=("$arg")
 while [[ $# -gt 0 ]]; do
-  SEEN+=("$1")
   case "$1" in
-    --output-last-message)
-      [[ $# -ge 2 ]] && { OUTPUT_LAST_MESSAGE="$2"; SEEN+=("$2"); shift 2; } || shift
-      ;;
+    --output-last-message) OUTPUT_LAST_MESSAGE="$2"; shift 2 ;;
     *) shift ;;
   esac
 done
 
-# Record argv and stdin --------------------------------------------------------
-if [[ -n "${CODEX_MOCK_ARGV_LOG:-}" ]]; then
-  : > "$CODEX_MOCK_ARGV_LOG"  # truncate on each call (use callcount suffix for multi-call capture)
-  for a in "${SEEN[@]}"; do printf '%s\n' "$a"; done > "${CODEX_MOCK_ARGV_LOG}.call${call_n}"
-  # Keep the latest call readable under the base path too
-  cp -f "${CODEX_MOCK_ARGV_LOG}.call${call_n}" "$CODEX_MOCK_ARGV_LOG"
-fi
+# Record the actual stdin bytes (this is the core assertion target for T26–T28)
 if [[ -n "${CODEX_MOCK_STDIN_LOG:-}" ]]; then
   cat > "${CODEX_MOCK_STDIN_LOG}.call${call_n}"
   cp -f "${CODEX_MOCK_STDIN_LOG}.call${call_n}" "$CODEX_MOCK_STDIN_LOG"
@@ -387,20 +362,13 @@ else
   cat > /dev/null
 fi
 
-# Optional stderr pattern for classify_codex_failure exercises ----------------
-if [[ -n "${CODEX_MOCK_ERR_PATTERN:-}" ]]; then
-  printf '%s\n' "$CODEX_MOCK_ERR_PATTERN" >&2
-fi
+[[ -n "${CODEX_MOCK_ERR_PATTERN:-}" ]] && printf '%s\n' "$CODEX_MOCK_ERR_PATTERN" >&2
 
-# raw_file write behavior ------------------------------------------------------
 if [[ "${CODEX_MOCK_EMPTY_FIRST_CALL:-0}" == "1" && "$call_n" == "1" ]]; then
-  # leave OUTPUT_LAST_MESSAGE empty (triggers compact-retry)
   : > "$OUTPUT_LAST_MESSAGE" 2>/dev/null || true
-else
-  if [[ -n "$OUTPUT_LAST_MESSAGE" ]]; then
-    printf '%s' '{"verdict":"APPROVE","summary":"mocked","issues_found":[],"suggestions":[],"questions_for_author":[]}' \
-      > "$OUTPUT_LAST_MESSAGE"
-  fi
+elif [[ -n "$OUTPUT_LAST_MESSAGE" ]]; then
+  printf '%s' "${CODEX_MOCK_RAW:-{\"verdict\":\"APPROVE\",\"summary\":\"mocked\",\"issues_found\":[],\"suggestions\":[],\"questions_for_author\":[]\}}" \
+    > "$OUTPUT_LAST_MESSAGE"
 fi
 
 exit "${CODEX_MOCK_EXIT:-0}"
@@ -408,189 +376,103 @@ MOCK_EOF
   chmod +x "$mock_path"
 }
 
-# ── T26: codex dispatch — argv does NOT contain fixture body ─────────────────
+# ── T26: caller's unconsumed stdin pipe is NOT inherited by codex ────────────
+# The core functional test. Caller pipes a sentinel into submit-to-codex.sh.
+# If the fix works, codex's stdin is /dev/null (empty), NOT the sentinel.
 {
   mock_codex="${MOCK_DIR}/codex_T26"
-  argv_log="$(mktemp)"
   stdin_log="$(mktemp)"
   make_mock_codex "$mock_codex"
 
+  # Pipe a sentinel into submit-to-codex.sh. Pre-fix, this would be what codex
+  # reads; post-fix, codex's stdin is closed via </dev/null.
+  sentinel="CALLER_STDIN_SENTINEL_DO_NOT_FORWARD_abc123"
   ec=0
-  out=$(CODEX_BIN="$mock_codex" \
-        CODEX_MOCK_ARGV_LOG="$argv_log" \
-        CODEX_MOCK_STDIN_LOG="$stdin_log" \
-        bash "$SCRIPTS/submit-to-codex.sh" \
-        --file "$FIXTURES/codex-large-prompt.txt" \
-        --prompt "adversarial-short-prompt" 2>&1) || ec=$?
+  printf '%s\n' "$sentinel" | \
+    CODEX_BIN="$mock_codex" \
+    CODEX_MOCK_STDIN_LOG="$stdin_log" \
+    bash "$SCRIPTS/submit-to-codex.sh" \
+      --file "$FIXTURES/codex-large-prompt.txt" \
+      --prompt "adversarial-short-prompt" >/dev/null 2>&1 || ec=$?
 
-  # Against the fixed code, argv must NOT contain a substring of the fixture body.
-  # Sample 40 chars from the middle of the fixture as a marker.
-  marker="$(head -c 40 "$FIXTURES/codex-large-prompt.txt")"
-  if grep -q "$marker" "$argv_log" 2>/dev/null; then
-    fail "T26: argv must not contain fixture body" "marker found in argv log"
+  stdin_bytes="$(wc -c < "$stdin_log" 2>/dev/null || echo 0)"
+  if [[ "$stdin_bytes" == "0" ]]; then
+    pass "T26: caller stdin not inherited (codex sees 0 bytes)"
   else
-    pass "T26: argv must not contain fixture body"
+    fail "T26: caller stdin not inherited" "codex saw $stdin_bytes bytes"
   fi
-  rm -f "$argv_log" "$argv_log.call1" "$argv_log.call2" \
-        "$stdin_log" "$stdin_log.call1" "$stdin_log.call2" "$mock_codex"
+  if ! grep -q "$sentinel" "$stdin_log" 2>/dev/null; then
+    pass "T26: caller sentinel not forwarded to codex stdin"
+  else
+    fail "T26: caller sentinel not forwarded" "sentinel found in codex's stdin"
+  fi
+  rm -f "$stdin_log" "$stdin_log".call* "$mock_codex"
 }
 
-# ── T27: codex dispatch — stdin DELIVERS the prompt byte-for-byte ────────────
+# ── T27: dispatch still completes normally under an unconsumed caller pipe ───
+# Regression guard: the fix must not break the happy path. With a dangling
+# caller stdin pipe, submit-to-codex.sh should still reach exit 0 (valid JSON
+# rendered).
 {
   mock_codex="${MOCK_DIR}/codex_T27"
-  argv_log="$(mktemp)"
-  stdin_log="$(mktemp)"
   make_mock_codex "$mock_codex"
 
-  CODEX_BIN="$mock_codex" \
-  CODEX_MOCK_ARGV_LOG="$argv_log" \
-  CODEX_MOCK_STDIN_LOG="$stdin_log" \
-  bash "$SCRIPTS/submit-to-codex.sh" \
-    --file "$FIXTURES/codex-large-prompt.txt" \
-    --prompt "adversarial-short-prompt" >/dev/null 2>&1 || true
+  ec=0
+  printf 'unconsumed caller pipe\n' | \
+    CODEX_BIN="$mock_codex" \
+    bash "$SCRIPTS/submit-to-codex.sh" \
+      --file "$FIXTURES/codex-large-prompt.txt" \
+      --prompt "adversarial-short-prompt" >/dev/null 2>&1 || ec=$?
 
-  # stdin must contain the full fixture body (no argv delivery).
-  fixture_bytes="$(wc -c < "$FIXTURES/codex-large-prompt.txt")"
-  stdin_bytes="$(wc -c < "$stdin_log" 2>/dev/null || echo 0)"
-  # The full prompt = SCOPE_PREFIX + PROMPT + "CONTENT TO REVIEW" wrapper + fixture body.
-  # So stdin size should be ≥ fixture_bytes (wrapper adds a small prefix).
-  if [[ "$stdin_bytes" -ge "$fixture_bytes" ]]; then
-    pass "T27: stdin delivers prompt (bytes=$stdin_bytes ≥ fixture=$fixture_bytes)"
-  else
-    fail "T27: stdin delivers prompt" "stdin=$stdin_bytes < fixture=$fixture_bytes"
-  fi
-  # Also assert the fixture body is present in stdin.
-  marker="$(head -c 40 "$FIXTURES/codex-large-prompt.txt")"
-  if grep -q "$marker" "$stdin_log" 2>/dev/null; then
-    pass "T27: stdin contains fixture body marker"
-  else
-    fail "T27: stdin contains fixture body marker" "marker not found in stdin log"
-  fi
-  rm -f "$argv_log" "$argv_log".call* "$stdin_log" "$stdin_log".call* "$mock_codex"
+  assert_exit "T27: dispatch completes exit 0 despite caller-pipe stdin" 0 "$ec"
+  rm -f "$mock_codex"
 }
 
-# ── T28: compact-retry path — both calls use stdin, not argv ─────────────────
+# ── T28: compact-retry path — both calls also isolate stdin from caller ──────
 {
   mock_codex="${MOCK_DIR}/codex_T28"
-  argv_log="$(mktemp)"
   stdin_log="$(mktemp)"
-  callcount="$(mktemp)"
-  : > "$callcount"
+  callcount="$(mktemp)"; : > "$callcount"
   make_mock_codex "$mock_codex"
 
-  CODEX_BIN="$mock_codex" \
-  CODEX_MOCK_ARGV_LOG="$argv_log" \
-  CODEX_MOCK_STDIN_LOG="$stdin_log" \
-  CODEX_MOCK_CALLCOUNT="$callcount" \
-  CODEX_MOCK_EMPTY_FIRST_CALL=1 \
-  bash "$SCRIPTS/submit-to-codex.sh" \
-    --file "$FIXTURES/codex-large-prompt.txt" \
-    --prompt "adversarial-short-prompt" >/dev/null 2>&1 || true
+  sentinel="T28_CALLER_PIPE_LEAK_CHECK_xyz789"
+  printf '%s\n' "$sentinel" | \
+    CODEX_BIN="$mock_codex" \
+    CODEX_MOCK_STDIN_LOG="$stdin_log" \
+    CODEX_MOCK_CALLCOUNT="$callcount" \
+    CODEX_MOCK_EMPTY_FIRST_CALL=1 \
+    bash "$SCRIPTS/submit-to-codex.sh" \
+      --file "$FIXTURES/codex-large-prompt.txt" \
+      --prompt "adversarial-short-prompt" >/dev/null 2>&1 || true
 
   n_calls="$(cat "$callcount" 2>/dev/null || echo 0)"
-  if [[ "$n_calls" == "2" ]]; then
-    pass "T28: compact-retry triggered two dispatches"
-  else
-    fail "T28: compact-retry triggered two dispatches" "got $n_calls calls, expected 2"
-  fi
+  assert_eq "T28: compact-retry fires two dispatches" "2" "$n_calls"
 
-  marker="$(head -c 40 "$FIXTURES/codex-large-prompt.txt")"
-  # call-1 argv must not contain the body
-  if [[ -f "${argv_log}.call1" ]] && ! grep -q "$marker" "${argv_log}.call1" 2>/dev/null; then
-    pass "T28: call-1 argv free of fixture body"
-  else
-    fail "T28: call-1 argv free of fixture body" "marker found or log missing"
-  fi
-  # call-2 argv must not contain the (truncated) body either
-  if [[ -f "${argv_log}.call2" ]] && ! grep -q "$marker" "${argv_log}.call2" 2>/dev/null; then
-    pass "T28: call-2 argv free of fixture body"
-  else
-    fail "T28: call-2 argv free of fixture body" "marker found or log missing"
-  fi
-  rm -f "$argv_log" "$argv_log".call* "$stdin_log" "$stdin_log".call* "$callcount" "$mock_codex"
+  for c in 1 2; do
+    if [[ -f "${stdin_log}.call${c}" ]] && ! grep -q "$sentinel" "${stdin_log}.call${c}" 2>/dev/null; then
+      pass "T28: call-${c} stdin free of caller sentinel"
+    else
+      fail "T28: call-${c} stdin free of caller sentinel" "sentinel found or log missing"
+    fi
+  done
+  rm -f "$stdin_log" "$stdin_log".call* "$callcount" "$mock_codex"
 }
 
-# ── T29: pipefail + codex exit 3 (quota) propagates unmasked → script exits 3 ─
+# ── T29: codex exit 3 (quota) still propagates correctly ─────────────────────
 {
   mock_codex="${MOCK_DIR}/codex_T29"
-  argv_log="$(mktemp)"
-  stdin_log="$(mktemp)"
   make_mock_codex "$mock_codex"
 
-  # Mock exits 3 and emits quota stderr pattern so classify_codex_failure triggers QUOTA branch
   ec=0
   CODEX_BIN="$mock_codex" \
-  CODEX_MOCK_ARGV_LOG="$argv_log" \
-  CODEX_MOCK_STDIN_LOG="$stdin_log" \
   CODEX_MOCK_EXIT=1 \
   CODEX_MOCK_ERR_PATTERN="insufficient_quota" \
   bash "$SCRIPTS/submit-to-codex.sh" \
     --file "$FIXTURES/codex-large-prompt.txt" \
     --prompt "adversarial-short-prompt" >/dev/null 2>&1 || ec=$?
 
-  # Quota path returns reserved exit 3 from submit-to-codex.sh
-  assert_exit "T29: quota failure propagates as exit 3 (pipefail must not mask)" 3 "$ec"
-  rm -f "$argv_log" "$argv_log".call* "$stdin_log" "$stdin_log".call* "$mock_codex"
-}
-
-# ── T30: older codex without stdin support → hard-fail exit 7 ────────────────
-{
-  mock_codex="${MOCK_DIR}/codex_T30"
-  argv_log="$(mktemp)"
-  stdin_log="$(mktemp)"
-  make_mock_codex "$mock_codex"
-
-  ec=0
-  out=$(CODEX_BIN="$mock_codex" \
-        CODEX_MOCK_ARGV_LOG="$argv_log" \
-        CODEX_MOCK_STDIN_LOG="$stdin_log" \
-        CODEX_MOCK_HELP_TEXT="Usage: codex exec PROMPT
-      [PROMPT]
-          Initial instructions only.  Older CLI version does not support dash sentinel." \
-        bash "$SCRIPTS/submit-to-codex.sh" \
-        --file "$FIXTURES/codex-large-prompt.txt" \
-        --prompt "adversarial-short-prompt" 2>&1) || ec=$?
-
-  assert_exit "T30: older codex → exit 7" 7 "$ec"
-  assert_contains "T30: older codex → upgrade stderr" "upgrade" "$out"
-  # Argv log should be empty or should NOT contain the fixture body (no dispatch happened)
-  marker="$(head -c 40 "$FIXTURES/codex-large-prompt.txt")"
-  if ! grep -q "$marker" "$argv_log" 2>/dev/null; then
-    pass "T30: no argv dispatch attempted on older CLI"
-  else
-    fail "T30: no argv dispatch attempted on older CLI" "fixture body found in argv log"
-  fi
-  rm -f "$argv_log" "$argv_log".call* "$stdin_log" "$stdin_log".call* "$mock_codex"
-}
-
-# ── T31: version probe is invoked exactly once per script invocation ─────────
-{
-  mock_codex="${MOCK_DIR}/codex_T31"
-  argv_log="$(mktemp)"
-  stdin_log="$(mktemp)"
-  callcount="$(mktemp)"; : > "$callcount"
-  help_callcount="$(mktemp)"; : > "$help_callcount"
-  make_mock_codex "$mock_codex"
-
-  CODEX_BIN="$mock_codex" \
-  CODEX_MOCK_ARGV_LOG="$argv_log" \
-  CODEX_MOCK_STDIN_LOG="$stdin_log" \
-  CODEX_MOCK_CALLCOUNT="$callcount" \
-  CODEX_MOCK_HELP_CALLCOUNT="$help_callcount" \
-  CODEX_MOCK_EMPTY_FIRST_CALL=1 \
-  bash "$SCRIPTS/submit-to-codex.sh" \
-    --file "$FIXTURES/codex-large-prompt.txt" \
-    --prompt "adversarial-short-prompt" >/dev/null 2>&1 || true
-
-  help_n="$(cat "$help_callcount" 2>/dev/null || echo 0)"
-  disp_n="$(cat "$callcount" 2>/dev/null || echo 0)"
-  if [[ "$help_n" == "1" && "$disp_n" == "2" ]]; then
-    pass "T31: probe=1 dispatches=2 — single-probe cache confirmed"
-  else
-    fail "T31: probe=1 dispatches=2" "got probe=$help_n dispatches=$disp_n"
-  fi
-  rm -f "$argv_log" "$argv_log".call* "$stdin_log" "$stdin_log".call* \
-        "$callcount" "$help_callcount" "$mock_codex"
+  assert_exit "T29: quota failure propagates as exit 3" 3 "$ec"
+  rm -f "$mock_codex"
 }
 
 # ── T32: exit-5 (NO_OUTPUT) preserved when mock writes empty raw_file twice ──

@@ -1,10 +1,50 @@
 # Plan for #2406: fix(review) — submit-to-codex.sh hangs on "Reading additional input from stdin" for substantial plan files
 
-> **Status:** adversarial-reviewed (v3-final — iter-3 consumed; iter-2 Codex Class A MAJOR + iter-3 Codex internal-consistency contradictions addressed; Class B deferred to #2405)
+> **Status:** implemented-with-deviation (2026-04-20; user approved Option 1 mid-session after live-repro discovery)
 > **Complexity:** T2
 > **Date:** 2026-04-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2406
-> **Review artifacts:** scripts/review/results/2026-04-20-plan-2406-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** scripts/review/results/2026-04-20{,-v2,-v3}-plan-2406-{claude,codex,gemini}.md
+
+---
+
+## Post-implementation deviation (2026-04-20)
+
+**The implementation deviates from the approved v3-final Pseudocode.** The deviation was user-approved mid-implementation after the approved approach failed live testing. All pseudocode, test descriptions, and risk analysis below are preserved as **historical record** of the approved plan; the **actually-landed fix** is simpler.
+
+**What the approved plan said to do:** pipe the prompt via stdin using `codex exec - …` with the `-` sentinel per the CLI's `--help` contract; add a runtime version probe that hard-fails with exit 7 on older codex CLIs; cover both paths with T26–T33.
+
+**What went wrong:** against real codex v0.121.0, `codex exec - --output-schema <file> --output-last-message <file>` hangs even with small stdin input. The `-` positional combined with the structured-output flags is a separate bug in codex itself. Mock-based tests passed because the mock was permissive; the live repro exposed the issue.
+
+**What actually landed** (verified live repro against the #2405 v3 plan: exit 0, 6870 bytes of valid structured-JSON review content, 2m15s elapsed vs. the original 240s+ timeout loop):
+- `codex exec "$PROMPT" … </dev/null` — keep argv delivery, add explicit `</dev/null` on each dispatch branch so codex sees an immediate EOF on stdin instead of blocking on the caller's inherited pipe.
+- **Root cause refined:** the hang was about *stdin inheritance from the orchestrator caller*, not argv size or absent stdin support. Redirecting stdin to `/dev/null` closes the hole without changing transport.
+- **Version probe + exit 7: removed.** No longer needed — the fix does not depend on the `-` sentinel, so older codex CLIs remain supported.
+- **`${PIPESTATUS[1]}` capture: removed.** No pipeline; the simple-command form returns codex's exit directly.
+- Privacy note (argv exposure via `ps`): unchanged from baseline. This was a speculative side-benefit of the stdin approach and is no longer claimed.
+
+**Timeout observation** (informational, not a config change): full adversarial review of a 28K-char plan takes ~135s of real codex compute time. The existing 300s default for `CODEX_TIMEOUT_SECONDS` is adequate with margin; no change needed. Users dispatching against plans above ~50K may want to raise it via env var, but the 300s default is kept.
+
+**Tests landed** (8 cases, T26–T29 + T32 + T33 — T30/T31 for version probe are dropped as no-ops):
+- T26: caller's unconsumed stdin pipe is not inherited by codex (codex sees 0 bytes; caller sentinel is not forwarded).
+- T27: dispatch completes exit 0 even when the caller provides a dangling stdin pipe (the original hang scenario).
+- T28: compact-retry path also isolates stdin from caller on both call-1 and call-2.
+- T29: codex quota (exit 1 + "insufficient_quota" stderr) propagates as script exit 3 (unchanged behavior).
+- T32: NO_OUTPUT path → script exit 5 (unchanged).
+- T33: renderer-fail path → script exit 6 (unchanged).
+
+**Total test count after this fix:** 55 assertions (22 existing + 33 new across 6 test blocks). Full suite green.
+
+**AC impact:**
+- ✅ Automated ACs: T26/T27/T28 satisfy the "fix prevents stdin-inheritance hang" criterion. T29/T32/T33 satisfy the exit-code preservation criteria.
+- ❌ T30/T31 automated ACs (version probe + hard-fail exit 7) are **dropped**. Not applicable to the landed fix.
+- ✅ Release-gate 1 (README row): unchanged — already at commit `a73ec66f6`.
+- ✅ Release-gate 2 (3 review artifacts × 3 iterations = 9 files): satisfied.
+- ✅ Release-gate 3 (live repro): completed successfully post-deviation.
+
+**User approval trail for the deviation:** session conversation 2026-04-20, message "1" selecting Option 1 (revise to `</dev/null` fix) from three options presented after live repro failure of the approved approach.
+
+---
 
 ---
 

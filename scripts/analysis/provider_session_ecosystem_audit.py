@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -551,6 +552,42 @@ def load_previous_audit(path: Path) -> dict | None:
     except (OSError, json.JSONDecodeError):
         return None
     return payload if isinstance(payload, dict) else None
+
+
+def load_github_issue_index(repo_root: Path, limit: int = 500) -> list[dict]:
+    command = ["gh", "issue", "list", "--state", "all", "--limit", str(limit), "--json", "number,title,state,url"]
+    try:
+        result = subprocess.run(
+            command,
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return []
+    if result.returncode != 0:
+        return []
+    try:
+        payload = json.loads(result.stdout or "[]")
+    except json.JSONDecodeError:
+        return []
+    issues: list[dict] = []
+    for item in payload:
+        if not isinstance(item, dict):
+            continue
+        title = str(item.get("title", "")).strip()
+        if not title:
+            continue
+        issues.append(
+            {
+                "number": item.get("number"),
+                "title": title,
+                "state": str(item.get("state", "")).upper() or None,
+                "url": item.get("url"),
+            }
+        )
+    return issues
 
 
 def compute_activity_status(recent_post: int, recent_sessions: int, recent_status: str) -> str:
@@ -1223,26 +1260,86 @@ def build_cleared_followup_issue_drafts(followup_issue_drafts: list[dict], previ
     return cleared
 
 
-def build_issue_posting_readiness(followup_issue_drafts: list[dict]) -> list[dict]:
+def build_issue_posting_readiness(followup_issue_drafts: list[dict], github_issues: list[dict] | None = None) -> list[dict]:
     severity_rank = {"critical": 3, "high": 2, "medium": 1, "low": 0}
-    readiness = [
-        {
-            "provider": str(draft.get("provider", "")),
-            "severity": str(draft.get("severity", "low")),
-            "draft_state": str(draft.get("draft_state", "new")),
-            "posting_status": "ready" if bool(draft.get("should_open_issue")) else "blocked",
-            "minimum_evidence_present": bool(draft.get("minimum_evidence_present")),
-            "should_open_issue": bool(draft.get("should_open_issue")),
-            "issue_open_reason": draft.get("issue_open_reason"),
-            "blocker_reason": draft.get("blocker_reason"),
-            "evidence_gaps": list(draft.get("evidence_gaps", [])),
-        }
-        for draft in followup_issue_drafts
-        if isinstance(draft, dict) and draft.get("provider")
-    ]
+    github_issues = github_issues or []
+
+    def find_linked_issue(draft: dict) -> tuple[dict | None, str]:
+        current_title = str(draft.get("title", "")).strip()
+        previous_title = str(draft.get("previous_title", "")).strip()
+        for issue in github_issues:
+            if not isinstance(issue, dict):
+                continue
+            issue_title = str(issue.get("title", "")).strip()
+            if current_title and issue_title == current_title:
+                return issue, "exact_title"
+        for issue in github_issues:
+            if not isinstance(issue, dict):
+                continue
+            issue_title = str(issue.get("title", "")).strip()
+            if previous_title and issue_title == previous_title:
+                return issue, "previous_title"
+        return None, "none"
+
+    readiness: list[dict] = []
+    for draft in followup_issue_drafts:
+        if not isinstance(draft, dict) or not draft.get("provider"):
+            continue
+        linked_issue, linkage_confidence = find_linked_issue(draft)
+        linked_issue_number = linked_issue.get("number") if linked_issue else None
+        linked_issue_url = linked_issue.get("url") if linked_issue else None
+        linked_issue_state = str(linked_issue.get("state", "")).upper() if linked_issue else None
+        minimum_evidence_present = bool(draft.get("minimum_evidence_present"))
+        should_open_issue = bool(draft.get("should_open_issue"))
+        issue_open_reason = draft.get("issue_open_reason")
+        blocker_reason = draft.get("blocker_reason")
+        draft_state = str(draft.get("draft_state", "new"))
+
+        final_open_reason: str | None = None
+        final_blocker_reason: str | None = None
+        if not minimum_evidence_present:
+            should_open_issue_final = False
+            final_blocker_reason = str(blocker_reason) if blocker_reason else "missing minimum evidence"
+        elif linked_issue_state == "OPEN" and linked_issue_number is not None:
+            should_open_issue_final = False
+            final_blocker_reason = f"linked open issue already exists: #{linked_issue_number}"
+        elif linked_issue_state == "CLOSED" and linked_issue_number is not None:
+            should_open_issue_final = True
+            final_open_reason = f"linked issue #{linked_issue_number} is closed; safe to open a fresh follow-up"
+        elif should_open_issue:
+            should_open_issue_final = True
+            final_open_reason = f"{draft_state} actionable draft with no linked issue found"
+        elif draft_state == "unchanged":
+            should_open_issue_final = True
+            final_open_reason = "unchanged draft has no linked issue; safe to open once"
+        else:
+            should_open_issue_final = False
+            final_blocker_reason = str(blocker_reason) if blocker_reason else "posting remains blocked"
+
+        readiness.append(
+            {
+                "provider": str(draft.get("provider", "")),
+                "severity": str(draft.get("severity", "low")),
+                "draft_state": draft_state,
+                "posting_status": "ready" if should_open_issue else "blocked",
+                "minimum_evidence_present": minimum_evidence_present,
+                "should_open_issue": should_open_issue,
+                "issue_open_reason": issue_open_reason,
+                "blocker_reason": blocker_reason,
+                "evidence_gaps": list(draft.get("evidence_gaps", [])),
+                "linked_issue_number": linked_issue_number,
+                "linked_issue_url": linked_issue_url,
+                "linked_issue_state": linked_issue_state,
+                "linkage_confidence": linkage_confidence,
+                "should_open_issue_final": should_open_issue_final,
+                "final_posting_status": "ready" if should_open_issue_final else "blocked",
+                "final_open_reason": final_open_reason,
+                "final_blocker_reason": final_blocker_reason,
+            }
+        )
     readiness.sort(
         key=lambda item: (
-            0 if item.get("should_open_issue") else 1,
+            0 if item.get("should_open_issue_final") else 1,
             -severity_rank.get(str(item.get("severity", "low")), 0),
             str(item.get("provider", "")),
         )
@@ -1514,6 +1611,7 @@ def build_provider_interpretation_summary(
     corpus_change: dict,
     previous_audit: dict | None,
     rolling_windows: dict | None,
+    github_issues: list[dict] | None = None,
 ) -> dict:
     debt_by_provider = {
         row.get("provider"): row
@@ -1772,7 +1870,7 @@ def build_provider_interpretation_summary(
     change_alerts = build_change_alerts(rows, watchlist, previous_audit)
     remediation_playbooks = build_remediation_playbooks(provider_summaries, rows, watchlist)
     followup_issue_drafts = build_followup_issue_drafts(rows, watchlist, remediation_playbooks, previous_audit)
-    issue_posting_readiness = build_issue_posting_readiness(followup_issue_drafts)
+    issue_posting_readiness = build_issue_posting_readiness(followup_issue_drafts, github_issues)
     cleared_followup_issue_drafts = build_cleared_followup_issue_drafts(followup_issue_drafts, previous_audit)
     if rows:
         primary = rows[0]
@@ -1844,6 +1942,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     previous_audit_path = repo_root / "analysis" / "provider-session-ecosystem-audit.json"
     previous_generated_at = load_previous_generated_at(previous_audit_path)
     previous_audit = load_previous_audit(previous_audit_path)
+    github_issues = load_github_issue_index(repo_root)
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     for provider in PROVIDERS:
@@ -1878,7 +1977,13 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
     migration_debt = build_migration_debt_summary(provider_summaries)
     provider_interpretation = build_provider_interpretation_summary(
-        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit, rolling_windows
+        provider_summaries,
+        migration_debt,
+        recent_activity,
+        corpus_change,
+        previous_audit,
+        rolling_windows,
+        github_issues,
     )
 
     executive_actions = {
@@ -2012,10 +2117,15 @@ def render_markdown(audit: dict) -> str:
             lines.append("- Issue posting readiness:")
             for item in issue_posting_readiness:
                 evidence_status = "complete" if item.get("minimum_evidence_present") else "gapped"
-                reason = item.get("issue_open_reason") if item.get("should_open_issue") else item.get("blocker_reason")
-                reason_label = "reason" if item.get("should_open_issue") else "blocker"
+                linked_issue = (
+                    f"#{item.get('linked_issue_number')} ({item.get('linked_issue_state')})"
+                    if item.get("linked_issue_number")
+                    else "none"
+                )
+                reason = item.get("final_open_reason") if item.get("should_open_issue_final") else item.get("final_blocker_reason")
+                reason_label = "reason" if item.get("should_open_issue_final") else "blocker"
                 lines.append(
-                    f"  - `{item['provider']}` [{item.get('posting_status')}] — should_open_issue={'yes' if item.get('should_open_issue') else 'no'} | evidence={evidence_status} | {reason_label}={reason}"
+                    f"  - `{item['provider']}` [{item.get('final_posting_status')}] — should_open_issue={'yes' if item.get('should_open_issue') else 'no'} | final_should_open={'yes' if item.get('should_open_issue_final') else 'no'} | evidence={evidence_status} | linked_issue={linked_issue} | {reason_label}={reason}"
                 )
         cleared_followup_issue_drafts = interpretation_summary.get("cleared_followup_issue_drafts", [])
         if cleared_followup_issue_drafts:

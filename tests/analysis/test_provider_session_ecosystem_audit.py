@@ -362,10 +362,12 @@ def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: P
     )
 
     assert windows["status"] == "ok"
-    assert windows["windows"]["last_24h"]["providers"]["claude"]["post_records"] == 1
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["post_records"] == 2
     assert windows["windows"]["last_24h"]["providers"]["claude"]["sessions"] == 1
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["top_writes"][0]["path"] == "docs/generated.md"
     assert windows["windows"]["last_24h"]["ranked_providers"][0]["provider"] == "claude"
-    assert windows["windows"]["last_7d"]["providers"]["claude"]["post_records"] == 2
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["post_records"] == 4
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["top_edits"][0]["path"] == "tests/test_generated.py"
     assert windows["windows"]["last_7d"]["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
 
 
@@ -497,7 +499,12 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["followup_issue_drafts"][0]["issue_open_reason"] == "new actionable draft with minimum evidence present"
     assert summary["followup_issue_drafts"][0]["blocker_reason"] is None
     assert summary["issue_posting_readiness"][0]["provider"] == "claude"
+    assert summary["issue_posting_readiness"][0]["linked_issue_number"] is None
+    assert summary["issue_posting_readiness"][0]["linked_issue_state"] is None
+    assert summary["issue_posting_readiness"][0]["linkage_confidence"] == "none"
     assert summary["issue_posting_readiness"][0]["should_open_issue"] is True
+    assert summary["issue_posting_readiness"][0]["should_open_issue_final"] is True
+    assert summary["issue_posting_readiness"][0]["final_posting_status"] == "ready"
     assert summary["cleared_followup_issue_drafts"] == []
 
 
@@ -811,6 +818,7 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
     drafts = [
         {
             "provider": "claude",
+            "title": "[critical] claude: remediate legacy_work_queue_transition",
             "severity": "critical",
             "draft_state": "unchanged",
             "minimum_evidence_present": True,
@@ -821,6 +829,7 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
         },
         {
             "provider": "codex",
+            "title": "[medium] codex: remediate unmapped path drift",
             "severity": "medium",
             "draft_state": "new",
             "minimum_evidence_present": False,
@@ -830,16 +839,80 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
             "evidence_gaps": ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"],
         },
     ]
+    github_issues = [
+        {
+            "number": 42,
+            "title": "[critical] claude: remediate legacy_work_queue_transition",
+            "state": "OPEN",
+            "url": "https://github.com/example/repo/issues/42",
+        }
+    ]
 
-    readiness = module.build_issue_posting_readiness(drafts)
+    readiness = module.build_issue_posting_readiness(drafts, github_issues)
 
     assert readiness[0]["provider"] == "claude"
     assert readiness[0]["posting_status"] == "blocked"
     assert readiness[0]["should_open_issue"] is False
-    assert readiness[0]["blocker_reason"] == "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known"
+    assert readiness[0]["linked_issue_number"] == 42
+    assert readiness[0]["linked_issue_state"] == "OPEN"
+    assert readiness[0]["linkage_confidence"] == "exact_title"
+    assert readiness[0]["should_open_issue_final"] is False
+    assert readiness[0]["final_posting_status"] == "blocked"
+    assert readiness[0]["final_blocker_reason"] == "linked open issue already exists: #42"
     assert readiness[1]["provider"] == "codex"
     assert readiness[1]["minimum_evidence_present"] is False
     assert readiness[1]["evidence_gaps"] == ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"]
+    assert readiness[1]["linked_issue_number"] is None
+    assert readiness[1]["should_open_issue_final"] is False
+
+
+
+def test_build_issue_posting_readiness_allows_unchanged_unlinked_and_closed_linked_drafts() -> None:
+    drafts = [
+        {
+            "provider": "gemini",
+            "title": "[high] gemini: remediate legacy_local_work_queue_items",
+            "severity": "high",
+            "draft_state": "unchanged",
+            "minimum_evidence_present": True,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+            "evidence_gaps": [],
+        },
+        {
+            "provider": "hermes",
+            "title": "[medium] hermes: remediate unmapped path drift",
+            "severity": "medium",
+            "draft_state": "unchanged",
+            "minimum_evidence_present": True,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+            "evidence_gaps": [],
+        },
+    ]
+    github_issues = [
+        {
+            "number": 77,
+            "title": "[high] gemini: remediate legacy_local_work_queue_items",
+            "state": "CLOSED",
+            "url": "https://github.com/example/repo/issues/77",
+        }
+    ]
+
+    readiness = module.build_issue_posting_readiness(drafts, github_issues)
+
+    by_provider = {item["provider"]: item for item in readiness}
+    assert by_provider["gemini"]["linked_issue_number"] == 77
+    assert by_provider["gemini"]["linked_issue_state"] == "CLOSED"
+    assert by_provider["gemini"]["should_open_issue_final"] is True
+    assert by_provider["gemini"]["final_posting_status"] == "ready"
+    assert by_provider["gemini"]["final_open_reason"] == "linked issue #77 is closed; safe to open a fresh follow-up"
+    assert by_provider["hermes"]["linked_issue_number"] is None
+    assert by_provider["hermes"]["should_open_issue_final"] is True
+    assert by_provider["hermes"]["final_posting_status"] == "ready"
+    assert by_provider["hermes"]["final_open_reason"] == "unchanged draft has no linked issue; safe to open once"
 
 
 
@@ -1087,7 +1160,15 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "should_open_issue": True,
                         "issue_open_reason": "new actionable draft with minimum evidence present",
                         "blocker_reason": None,
-                        "evidence_gaps": []
+                        "evidence_gaps": [],
+                        "linked_issue_number": None,
+                        "linked_issue_url": None,
+                        "linked_issue_state": None,
+                        "linkage_confidence": "none",
+                        "should_open_issue_final": True,
+                        "final_posting_status": "ready",
+                        "final_open_reason": "new actionable draft with no linked issue found",
+                        "final_blocker_reason": None
                     }
                 ],
                 "cleared_followup_issue_drafts": [
@@ -1207,7 +1288,7 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Follow-up issue drafts:" in markdown
     assert "`claude` [critical] — [critical] claude: remediate legacy_work_queue_transition | state=new | owner=governance-maintainers | lane=governance-docs" in markdown
     assert "Issue posting readiness:" in markdown
-    assert "`claude` [ready] — should_open_issue=yes | evidence=complete | reason=new actionable draft with minimum evidence present" in markdown
+    assert "`claude` [ready] — should_open_issue=yes | final_should_open=yes | evidence=complete | linked_issue=none | reason=new actionable draft with no linked issue found" in markdown
     assert "Cleared follow-up issue drafts:" in markdown
     assert "`gemini` [cleared] — previous_title=[high] gemini: remediate legacy_local_work_queue_items | previous_severity=high | previous_owner=planning-ops" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
