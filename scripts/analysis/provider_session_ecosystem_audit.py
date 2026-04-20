@@ -32,7 +32,14 @@ PROMPT_RE = re.compile(r"prompt", re.IGNORECASE)
 SYMBOLIC_NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
 SYMBOLIC_SLASH_NAME_RE = re.compile(r"^[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)+$")
 TILDE_PATH_RE = re.compile(r"^(~|~/)")
+GITHUB_URI_RE = re.compile(r"^github://", re.IGNORECASE)
 WORKSTATION_RESOLVER = WorkstationPathResolver.for_repo(REPO_ROOT)
+KNOWN_REPO_NAMES = {
+    str(repo_name)
+    for machine in WORKSTATION_RESOLVER._machines.values()
+    for repo_name in (machine.raw.get("repos", []) or [])
+    if str(repo_name).strip()
+}
 
 LEGACY_REMEDIATION_RULES = [
     {
@@ -203,6 +210,14 @@ def normalize_repo_alias(text: str, repo_root: Path) -> str:
     return WORKSTATION_RESOLVER.rewrite_workspace_path(text, current_repo_root=repo_root)
 
 
+def classify_repo_relative_target(text: str, repo_root: Path) -> tuple[str, str, bool]:
+    candidate = repo_root / text
+    first_component = text.split("/", 1)[0]
+    if first_component in KNOWN_REPO_NAMES and first_component != repo_root.name and not safe_exists(candidate):
+        return text, "sibling_repo", False
+    return text, "repo", safe_exists(candidate)
+
+
 def classify_read_target(raw_path: str | None, repo_root: Path, record: dict | None = None) -> tuple[str, str, bool]:
     if raw_path is None:
         return "", "blank", False
@@ -216,6 +231,9 @@ def classify_read_target(raw_path: str | None, repo_root: Path, record: dict | N
         return text, "symbolic", False
 
     text = normalize_repo_alias(text, repo_root)
+
+    if GITHUB_URI_RE.match(text):
+        return text, "symbolic", False
 
     if TILDE_PATH_RE.match(text):
         expanded = Path(text).expanduser()
@@ -239,8 +257,7 @@ def classify_read_target(raw_path: str | None, repo_root: Path, record: dict | N
         except ValueError:
             return text, "external", safe_exists(path)
 
-    candidate = repo_root / text
-    return text, "repo", safe_exists(candidate)
+    return classify_repo_relative_target(text, repo_root)
 
 
 def iter_post_records(logs_dir: Path) -> Iterable[dict]:
@@ -288,6 +305,7 @@ def compute_activity_window(
     session_ids: Counter[str] = Counter()
     tool_counts: Counter[str] = Counter()
     missing_repo_reads: Counter[str] = Counter()
+    sibling_repo_reads: Counter[str] = Counter()
     recent_reads: Counter[str] = Counter()
     recent_writes: Counter[str] = Counter()
     recent_edits: Counter[str] = Counter()
@@ -321,6 +339,8 @@ def compute_activity_window(
                 recent_reads[normalized] += 1
             if scope == "repo" and not exists:
                 missing_repo_reads[normalized] += 1
+            elif scope == "sibling_repo":
+                sibling_repo_reads[normalized] += 1
         elif tool == "Write" and file_target:
             recent_writes[str(file_target)] += 1
         elif tool == "Edit" and file_target:
@@ -331,6 +351,7 @@ def compute_activity_window(
         "sessions": len(session_ids),
         "top_tools": top_items(tool_counts, 5, "tool"),
         "top_missing_repo_reads": top_items(missing_repo_reads, 5, "path"),
+        "top_sibling_repo_reads": top_items(sibling_repo_reads, 5, "path"),
         "top_reads": top_items(recent_reads, 5, "path"),
         "top_writes": top_items(recent_writes, 5, "path"),
         "top_edits": top_items(recent_edits, 5, "path"),
@@ -355,6 +376,7 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
     repo_counts: Counter[str] = Counter()
     read_counts: Counter[str] = Counter()
     missing_repo_reads: Counter[str] = Counter()
+    sibling_repo_reads: Counter[str] = Counter()
     missing_external_reads: Counter[str] = Counter()
     symbolic_reads: Counter[str] = Counter()
     blank_reads = 0
@@ -417,6 +439,8 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
             continue
         if scope == "repo":
             missing_repo_reads[normalized] += 1
+        elif scope == "sibling_repo":
+            sibling_repo_reads[normalized] += 1
         elif scope == "external":
             missing_external_reads[normalized] += 1
 
@@ -436,6 +460,8 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         "top_repos": top_items(repo_counts, 8, "repo"),
         "top_reads": top_items(read_counts, 10, "path"),
         "top_missing_repo_reads": top_missing_repo_reads,
+        "top_sibling_repo_reads": top_items(sibling_repo_reads, 10, "path"),
+        "sibling_repo_read_total": sum(sibling_repo_reads.values()),
         "missing_repo_read_remediation_hints": build_missing_read_remediation_hints(top_missing_repo_reads),
         "top_missing_external_reads": top_items(missing_external_reads, 10, "path"),
         "top_symbolic_reads": top_items(symbolic_reads, 10, "name"),
@@ -1146,6 +1172,17 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
         body = "\n".join(body_lines)
 
         dedupe_scope = f"{provider}:{primary_issue}:{preferred_fix_lane}"
+        linkage_key = f"{provider}:{primary_issue}:{severity}:{preferred_fix_lane}"
+        stripped_title = re.sub(r"^\[[^\]]+\]\s*", "", title).strip()
+        previous_draft = previous_draft_map.get(provider, {}) if isinstance(previous_draft_map, dict) else {}
+        previous_title = str(previous_draft.get("title")) if previous_draft and previous_draft.get("title") else None
+        linkage_aliases = [title, stripped_title, linkage_key, dedupe_scope]
+        if previous_title:
+            linkage_aliases.append(previous_title)
+            stripped_previous_title = re.sub(r"^\[[^\]]+\]\s*", "", previous_title).strip()
+            if stripped_previous_title:
+                linkage_aliases.append(stripped_previous_title)
+        linkage_aliases = list(dict.fromkeys(alias for alias in linkage_aliases if alias))
         fingerprint_source = {
             "provider": provider,
             "primary_issue": primary_issue,
@@ -1155,7 +1192,6 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
             "trigger_level": trigger_level,
         }
         draft_key = hashlib.sha256(json.dumps(fingerprint_source, sort_keys=True).encode("utf-8")).hexdigest()[:16]
-        previous_draft = previous_draft_map.get(provider, {}) if isinstance(previous_draft_map, dict) else {}
         previous_draft_key = previous_draft.get("draft_key") if previous_draft else None
         if not previous_draft:
             draft_state = "new"
@@ -1208,6 +1244,8 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
                 "body": body,
                 "draft_key": draft_key,
                 "dedupe_scope": dedupe_scope,
+                "linkage_key": linkage_key,
+                "linkage_aliases": linkage_aliases,
                 "duplicate_of_previous_draft_key": previous_draft_key if previous_draft_key == draft_key else None,
                 "draft_state": draft_state,
                 "previous_title": previous_draft.get("title") if previous_draft else None,
@@ -1264,28 +1302,60 @@ def build_issue_posting_readiness(followup_issue_drafts: list[dict], github_issu
     severity_rank = {"critical": 3, "high": 2, "medium": 1, "low": 0}
     github_issues = github_issues or []
 
-    def find_linked_issue(draft: dict) -> tuple[dict | None, str]:
+    def find_linked_issue(draft: dict) -> tuple[dict | None, str, str]:
         current_title = str(draft.get("title", "")).strip()
         previous_title = str(draft.get("previous_title", "")).strip()
+        linkage_aliases = [str(alias).strip() for alias in draft.get("linkage_aliases", []) if str(alias).strip()]
         for issue in github_issues:
             if not isinstance(issue, dict):
                 continue
             issue_title = str(issue.get("title", "")).strip()
             if current_title and issue_title == current_title:
-                return issue, "exact_title"
+                return issue, "exact_title", "matched current title exactly"
         for issue in github_issues:
             if not isinstance(issue, dict):
                 continue
             issue_title = str(issue.get("title", "")).strip()
             if previous_title and issue_title == previous_title:
-                return issue, "previous_title"
-        return None, "none"
+                return issue, "previous_title", "matched previous title exactly"
+        for issue in github_issues:
+            if not isinstance(issue, dict):
+                continue
+            issue_title = str(issue.get("title", "")).strip()
+            if issue_title and issue_title in linkage_aliases:
+                return issue, "alias", "matched linkage alias exactly"
+        return None, "none", "no linked issue match found"
 
     readiness: list[dict] = []
     for draft in followup_issue_drafts:
         if not isinstance(draft, dict) or not draft.get("provider"):
             continue
-        linked_issue, linkage_confidence = find_linked_issue(draft)
+        provider = str(draft.get("provider", ""))
+        severity = str(draft.get("severity", "low"))
+        current_title = str(draft.get("title", "")).strip()
+        previous_title = str(draft.get("previous_title", "")).strip()
+        stripped_title = re.sub(r"^\[[^\]]+\]\s*", "", current_title).strip()
+        preferred_fix_lane = str(draft.get("preferred_fix_lane", "monitoring") or "monitoring")
+        issue_slug = "unknown_issue"
+        if ": remediate " in stripped_title:
+            issue_slug = stripped_title.split(": remediate ", 1)[1].strip().replace(" ", "_")
+        linkage_key = draft.get("linkage_key") or f"{provider}:{issue_slug}:{severity}:{preferred_fix_lane}"
+        linkage_aliases = list(draft.get("linkage_aliases", []))
+        if not linkage_aliases:
+            linkage_aliases = [current_title, stripped_title, linkage_key]
+            if previous_title:
+                linkage_aliases.append(previous_title)
+                stripped_previous_title = re.sub(r"^\[[^\]]+\]\s*", "", previous_title).strip()
+                if stripped_previous_title:
+                    linkage_aliases.append(stripped_previous_title)
+            linkage_aliases = list(dict.fromkeys(alias for alias in linkage_aliases if alias))
+        linked_issue, linkage_confidence, linked_issue_match_reason = find_linked_issue(
+            {
+                **draft,
+                "linkage_key": linkage_key,
+                "linkage_aliases": linkage_aliases,
+            }
+        )
         linked_issue_number = linked_issue.get("number") if linked_issue else None
         linked_issue_url = linked_issue.get("url") if linked_issue else None
         linked_issue_state = str(linked_issue.get("state", "")).upper() if linked_issue else None
@@ -1327,9 +1397,13 @@ def build_issue_posting_readiness(followup_issue_drafts: list[dict], github_issu
                 "issue_open_reason": issue_open_reason,
                 "blocker_reason": blocker_reason,
                 "evidence_gaps": list(draft.get("evidence_gaps", [])),
+                "linkage_key": linkage_key,
+                "linkage_aliases": linkage_aliases,
                 "linked_issue_number": linked_issue_number,
                 "linked_issue_url": linked_issue_url,
                 "linked_issue_state": linked_issue_state,
+                "matched_on": linkage_confidence,
+                "linked_issue_match_reason": linked_issue_match_reason,
                 "linkage_confidence": linkage_confidence,
                 "should_open_issue_final": should_open_issue_final,
                 "final_posting_status": "ready" if should_open_issue_final else "blocked",
@@ -2125,7 +2199,7 @@ def render_markdown(audit: dict) -> str:
                 reason = item.get("final_open_reason") if item.get("should_open_issue_final") else item.get("final_blocker_reason")
                 reason_label = "reason" if item.get("should_open_issue_final") else "blocker"
                 lines.append(
-                    f"  - `{item['provider']}` [{item.get('final_posting_status')}] — should_open_issue={'yes' if item.get('should_open_issue') else 'no'} | final_should_open={'yes' if item.get('should_open_issue_final') else 'no'} | evidence={evidence_status} | linked_issue={linked_issue} | {reason_label}={reason}"
+                    f"  - `{item['provider']}` [{item.get('final_posting_status')}] — should_open_issue={'yes' if item.get('should_open_issue') else 'no'} | final_should_open={'yes' if item.get('should_open_issue_final') else 'no'} | evidence={evidence_status} | linked_issue={linked_issue} | matched_on={item.get('matched_on')} | {reason_label}={reason}"
                 )
         cleared_followup_issue_drafts = interpretation_summary.get("cleared_followup_issue_drafts", [])
         if cleared_followup_issue_drafts:

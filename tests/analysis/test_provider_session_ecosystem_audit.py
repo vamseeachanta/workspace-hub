@@ -164,8 +164,10 @@ def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> N
 
     records = [
         {"hook": "post", "tool": "Read", "file": "github-issues", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "github://vamseeachanta/workspace-hub/issues/2249", "repo": "workspace-hub"},
         {"hook": "post", "tool": "Read", "file": "docs/keep.md", "repo": "workspace-hub"},
         {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "digitalmodel/specs/module-registry.yaml", "repo": "workspace-hub"},
         {"hook": "post", "tool": "Bash", "cmd": "python3 -c \"print(1)\"", "repo": "workspace-hub"},
         {"hook": "pre", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
     ]
@@ -176,7 +178,7 @@ def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> N
     summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
 
     assert summary["sessions"] == 1
-    assert summary["post_records"] == 4
+    assert summary["post_records"] == 6
     assert summary["python3_bash_calls"] == 1
     assert summary["top_symbolic_reads"][0]["name"] == "github-issues"
     assert summary["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
@@ -279,6 +281,14 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
             "ts": "2026-04-10T02:45:00Z",
             "session_id": "claude-1",
         },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "digitalmodel/specs/module-registry.yaml",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:50:00Z",
+            "session_id": "claude-1",
+        },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
         "\n".join(json.dumps(r) for r in records), encoding="utf-8"
@@ -289,7 +299,7 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
     recent = audit["executive_summary"]["recent_activity_since_previous_audit"]
     assert recent["status"] == "ok"
     assert recent["previous_generated_at"] == "2026-04-10T00:00:00Z"
-    assert recent["providers"]["claude"]["post_records"] == 4
+    assert recent["providers"]["claude"]["post_records"] == 5
     assert recent["providers"]["claude"]["sessions"] == 1
     assert recent["providers"]["claude"]["top_bash_command_families"][0]["prefix"] == "git status"
     assert recent["providers"]["claude"]["top_reads"][0]["path"] == "docs/missing.md"
@@ -342,6 +352,14 @@ def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: P
             "ts": "2026-04-08T18:00:00Z",
             "session_id": "claude-2",
         },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "digitalmodel/specs/module-registry.yaml",
+            "repo": "workspace-hub",
+            "ts": "2026-04-09T08:00:00Z",
+            "session_id": "claude-1",
+        },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
         "\n".join(json.dumps(r) for r in records), encoding="utf-8"
@@ -362,11 +380,11 @@ def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: P
     )
 
     assert windows["status"] == "ok"
-    assert windows["windows"]["last_24h"]["providers"]["claude"]["post_records"] == 2
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["post_records"] == 3
     assert windows["windows"]["last_24h"]["providers"]["claude"]["sessions"] == 1
     assert windows["windows"]["last_24h"]["providers"]["claude"]["top_writes"][0]["path"] == "docs/generated.md"
     assert windows["windows"]["last_24h"]["ranked_providers"][0]["provider"] == "claude"
-    assert windows["windows"]["last_7d"]["providers"]["claude"]["post_records"] == 4
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["post_records"] == 5
     assert windows["windows"]["last_7d"]["providers"]["claude"]["top_edits"][0]["path"] == "tests/test_generated.py"
     assert windows["windows"]["last_7d"]["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
 
@@ -829,6 +847,8 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
             "issue_open_reason": None,
             "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
             "evidence_gaps": [],
+            "linkage_key": None,
+            "linkage_aliases": [],
         },
         {
             "provider": "codex",
@@ -840,6 +860,8 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
             "issue_open_reason": None,
             "blocker_reason": "missing minimum evidence: inspect_paths, canonical_targets, first_steps, reference_doc",
             "evidence_gaps": ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"],
+            "linkage_key": None,
+            "linkage_aliases": [],
         },
     ]
     github_issues = [
@@ -860,7 +882,7 @@ def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_draf
     assert readiness[0]["linked_issue_state"] == "OPEN"
     assert readiness[0]["linkage_key"] == "claude:legacy_work_queue_transition:critical:monitoring"
     assert readiness[0]["matched_on"] == "exact_title"
-    assert readiness[0]["linked_issue_match_reason"] == "matched current title exactly"
+
     assert readiness[0]["linkage_confidence"] == "exact_title"
     assert readiness[0]["should_open_issue_final"] is False
     assert readiness[0]["final_posting_status"] == "blocked"
@@ -1194,6 +1216,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "linked_issue_number": None,
                         "linked_issue_url": None,
                         "linked_issue_state": None,
+                        "matched_on": "none",
+                        "linked_issue_match_reason": "no linked issue match found",
                         "linkage_confidence": "none",
                         "should_open_issue_final": True,
                         "final_posting_status": "ready",
@@ -1318,7 +1342,7 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Follow-up issue drafts:" in markdown
     assert "`claude` [critical] — [critical] claude: remediate legacy_work_queue_transition | state=new | owner=governance-maintainers | lane=governance-docs" in markdown
     assert "Issue posting readiness:" in markdown
-    assert "`claude` [ready] — should_open_issue=yes | final_should_open=yes | evidence=complete | linked_issue=none | reason=new actionable draft with no linked issue found" in markdown
+    assert "`claude` [ready] — should_open_issue=yes | final_should_open=yes | evidence=complete | linked_issue=none | matched_on=none | reason=new actionable draft with no linked issue found" in markdown
     assert "Cleared follow-up issue drafts:" in markdown
     assert "`gemini` [cleared] — previous_title=[high] gemini: remediate legacy_local_work_queue_items | previous_severity=high | previous_owner=planning-ops" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
