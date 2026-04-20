@@ -408,24 +408,29 @@ tasks:
 
   # ── GTM / Business Development ──────────────────────────────────────────
 
-  - id: gtm-job-market-scan
-    label: Weekly GTM job market scan refresh
-    schedule: "0 5 * * 1"
-    machines: [dev-primary, ace-linux-1]
-    requires: [python3, git]
-    prefer: dev-primary
-    command: >-
-      PATH=$HOME/.local/bin:$HOME/miniforge3/bin:$PATH;
-      cd $WORKSPACE_HUB &&
-      bash scripts/gtm/weekly-scan-refresh.sh
-      >> $WORKSPACE_HUB/logs/gtm/scan-$(date +\%Y\%m\%d).log 2>&1
-    log: logs/gtm/scan-*.log
-    is_claude_task: false
-    description: >-
-      Weekly Monday 5AM UTC — scans LinkedIn, Indeed, Rigzone + 30 company
-      career pages for 22 engineering keywords. Tracks new vs returning
-      postings, generates dashboard, priority targets, trend report.
-      Commits results to main. Related: #1671, #1670, #1669.
+  # PAUSED 2026-04-19 pending #2348 approval — adversarial review of #2348 plan
+  # surfaced live ToS/legal exposure: scanner scrapes Google/Indeed/LinkedIn/Rigzone
+  # with forged User-Agent and no robots.txt check, then auto-commits to a public
+  # repo. Restore this block after #2348 implementation lands (robots.txt respect,
+  # per-source TOS_REVIEW.md, documented cease-and-desist runbook).
+  # - id: gtm-job-market-scan
+  #   label: Weekly GTM job market scan refresh
+  #   schedule: "0 5 * * 1"
+  #   machines: [dev-primary, ace-linux-1]
+  #   requires: [python3, git]
+  #   prefer: dev-primary
+  #   command: >-
+  #     PATH=$HOME/.local/bin:$HOME/miniforge3/bin:$PATH;
+  #     cd $WORKSPACE_HUB &&
+  #     bash scripts/gtm/weekly-scan-refresh.sh
+  #     >> $WORKSPACE_HUB/logs/gtm/scan-$(date +\%Y\%m\%d).log 2>&1
+  #   log: logs/gtm/scan-*.log
+  #   is_claude_task: false
+  #   description: >-
+  #     Weekly Monday 5AM UTC — scans LinkedIn, Indeed, Rigzone + 30 company
+  #     career pages for 22 engineering keywords. Tracks new vs returning
+  #     postings, generates dashboard, priority targets, trend report.
+  #     Commits results to main. Related: #1671, #1670, #1669.
 
   # ── Windows machines ───────────────────────────────────────────────────
 
