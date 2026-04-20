@@ -748,6 +748,23 @@ def build_provider_interpretation_summary(
         else:
             python_hygiene_status = "mixed"
 
+        post_records = int(summary.get("post_records", 0) or 0)
+        missing_repo_reads_per_1k_records = round(missing_repo_reads * 1000 / post_records, 2) if post_records else 0.0
+        python_hygiene_points = {
+            "python3_heavy": 6.0,
+            "mixed": 3.0,
+            "uv_preferred": 0.0,
+            "no_python_usage": 0.0,
+        }[python_hygiene_status]
+        urgency_score = (
+            min(40.0, 3.0 * debt_density)
+            + min(20.0, known_debt_reads / 50.0)
+            + min(20.0, recent_post / 10.0 + 5.0 * recent_sessions)
+            + (8.0 if corpus_status not in {"aligned", "unavailable"} else 0.0)
+            + (min(10.0, missing_repo_reads_per_1k_records / 2.0) if known_debt_reads == 0 else 0.0)
+            + python_hygiene_points
+        )
+
         if known_debt_reads > 0:
             primary_issue = debt.get("top_migration_rule_id") or "mapped migration debt"
             recommended_action = "prioritize legacy-path redirect cleanup and prompt/doc updates"
@@ -767,6 +784,7 @@ def build_provider_interpretation_summary(
         rows.append(
             {
                 "provider": provider,
+                "urgency_score": round(urgency_score, 2),
                 "activity_status": activity_status,
                 "corpus_status": corpus_status,
                 "debt_status": debt_status,
@@ -775,12 +793,43 @@ def build_provider_interpretation_summary(
                 "recent_sessions": recent_sessions,
                 "known_migration_debt_reads": known_debt_reads,
                 "known_migration_debt_per_1k_records": debt_density,
+                "missing_repo_reads_per_1k_records": missing_repo_reads_per_1k_records,
                 "primary_issue": primary_issue,
                 "recommended_action": recommended_action,
             }
         )
 
-    return {"providers": rows}
+    debt_rank = {"high_debt": 3, "moderate_debt": 2, "drift_only": 1, "none": 0}
+    python_rank = {"python3_heavy": 3, "mixed": 2, "uv_preferred": 1, "no_python_usage": 0}
+    rows.sort(
+        key=lambda row: (
+            -float(row.get("urgency_score", 0) or 0),
+            -debt_rank.get(str(row.get("debt_status", "none")), 0),
+            -int(row.get("recent_post_records", 0) or 0),
+            -int(row.get("known_migration_debt_reads", 0) or 0),
+            -float(row.get("missing_repo_reads_per_1k_records", 0) or 0),
+            -python_rank.get(str(row.get("python_hygiene_status", "no_python_usage")), 0),
+            str(row.get("provider", "")),
+        )
+    )
+
+    focus_this_week = None
+    if rows:
+        primary = rows[0]
+        focus_this_week = (
+            f"Focus this week: {primary['recommended_action']} on {primary['provider']} "
+            f"(urgency {primary['urgency_score']}, issue: {primary['primary_issue']})"
+        )
+        if len(rows) > 1 and float(rows[1].get("urgency_score", 0) or 0) >= 10:
+            secondary = rows[1]
+            focus_this_week += (
+                f", then address {secondary['provider']} "
+                f"(urgency {secondary['urgency_score']}, issue: {secondary['primary_issue']})."
+            )
+        else:
+            focus_this_week += "."
+
+    return {"providers": rows, "focus_this_week": focus_this_week}
 
 
 def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROOT) -> dict:
@@ -887,9 +936,12 @@ def render_markdown(audit: dict) -> str:
     interpretation_rows = interpretation_summary.get("providers", []) if isinstance(interpretation_summary, dict) else []
     if interpretation_rows:
         lines.append("## Provider interpretation summary")
+        focus_this_week = interpretation_summary.get("focus_this_week")
+        if focus_this_week:
+            lines.append(f"- {focus_this_week}")
         for row in interpretation_rows:
             lines.append(
-                f"- `{row['provider']}` — activity={row.get('activity_status')} | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} | python={row.get('python_hygiene_status')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
+                f"- `{row['provider']}` — urgency={row.get('urgency_score')} | activity={row.get('activity_status')} | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} | python={row.get('python_hygiene_status')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
             )
         lines.append("")
 

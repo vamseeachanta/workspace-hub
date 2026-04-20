@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-20T09:15:28Z",
+  "generated_at": "2026-04-20T14:50:31Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -8,7 +8,7 @@
       "sessions": 33,
       "correction_sessions": 0,
       "unique_runtime_sessions": 134,
-      "post_records": 80119,
+      "post_records": 80228,
       "prompt_reads": 94,
       "blank_reads": 0,
       "missing_repo_reads": 7599,
@@ -17,19 +17,19 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 43499
+          "count": 43559
         },
         {
           "tool": "Read",
-          "count": 15508
+          "count": 15529
         },
         {
           "tool": "Edit",
-          "count": 7304
+          "count": 7323
         },
         {
           "tool": "Write",
-          "count": 6799
+          "count": 6804
         },
         {
           "tool": "Grep",
@@ -37,7 +37,7 @@
         },
         {
           "tool": "Agent",
-          "count": 844
+          "count": 848
         },
         {
           "tool": "ToolSearch",
@@ -51,7 +51,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 76377
+          "count": 76484
         },
         {
           "repo": "digitalmodel",
@@ -117,7 +117,7 @@
         },
         {
           "path": "docs/plans/README.md",
-          "count": 67
+          "count": 69
         },
         {
           "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
@@ -308,38 +308,38 @@
       "top_bash_command_families": [
         {
           "prefix": "ls",
-          "count": 6378,
-          "share_of_bash_calls": 14.66,
+          "count": 6388,
+          "share_of_bash_calls": 14.67,
           "example_command": "ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ | grep 686"
         },
         {
           "prefix": "uv run",
-          "count": 5686,
-          "share_of_bash_calls": 13.07,
+          "count": 5690,
+          "share_of_bash_calls": 13.06,
           "example_command": "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-683 2>&1 | tail -20"
         },
         {
           "prefix": "grep",
-          "count": 5395,
+          "count": 5403,
           "share_of_bash_calls": 12.4,
           "example_command": "# Check if submit-to-gemini.sh and submit-to-codex.sh exist and where they write logs\ngrep -n \"orchestrator\\|gemini\\|codex\" /mnt/local-analysis/worksp"
         },
         {
           "prefix": "cat",
-          "count": 4473,
-          "share_of_bash_calls": 10.28,
+          "count": 4474,
+          "share_of_bash_calls": 10.27,
           "example_command": "cat .claude/work-queue/pending/WRK-683.md | head -20"
         },
         {
           "prefix": "find",
-          "count": 3366,
-          "share_of_bash_calls": 7.74,
+          "count": 3368,
+          "share_of_bash_calls": 7.73,
           "example_command": "find .claude/work-queue -name \"WRK-683*\" 2>/dev/null && git diff --stat HEAD 2>/dev/null | head -20"
         },
         {
           "prefix": "bash",
-          "count": 2888,
-          "share_of_bash_calls": 6.64,
+          "count": 2890,
+          "share_of_bash_calls": 6.63,
           "example_command": "bash tests/test_wrk687_lifecycle.sh 2>&1"
         },
         {
@@ -350,14 +350,14 @@
         },
         {
           "prefix": "gh",
-          "count": 1232,
-          "share_of_bash_calls": 2.83,
+          "count": 1240,
+          "share_of_bash_calls": 2.85,
           "example_command": "gh repo view vamseeachanta/aceengineer-strategy --json visibility -q '.visibility' 2>/dev/null"
         }
       ],
       "special_counts": {},
-      "python3_per_1k_records": 9.06,
-      "uv_python_per_1k_records": 74.44
+      "python3_per_1k_records": 9.05,
+      "uv_python_per_1k_records": 74.34
     },
     "codex": {
       "source": "raw_logs",
@@ -1225,7 +1225,7 @@
         {
           "provider": "claude",
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 12.13,
+          "known_migration_debt_per_1k_records": 12.12,
           "known_migration_debt_rule_count": 4,
           "top_migration_rule_id": "legacy_work_queue_transition",
           "top_migration_rule_reads": 318,
@@ -1267,45 +1267,22 @@
       "providers": [
         {
           "provider": "claude",
+          "urgency_score": 83.8,
           "activity_status": "active",
-          "corpus_status": "positive_corpus_growth_beyond_recent_activity",
+          "corpus_status": "corpus_pruned_or_rebuilt",
           "debt_status": "high_debt",
           "python_hygiene_status": "uv_preferred",
-          "recent_post_records": 135,
-          "recent_sessions": 2,
+          "recent_post_records": 112,
+          "recent_sessions": 3,
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 12.13,
+          "known_migration_debt_per_1k_records": 12.12,
+          "missing_repo_reads_per_1k_records": 94.72,
           "primary_issue": "legacy_work_queue_transition",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
         {
-          "provider": "codex",
-          "activity_status": "idle",
-          "corpus_status": "aligned",
-          "debt_status": "drift_only",
-          "python_hygiene_status": "mixed",
-          "recent_post_records": 0,
-          "recent_sessions": 0,
-          "known_migration_debt_reads": 0,
-          "known_migration_debt_per_1k_records": 0.0,
-          "primary_issue": "unmapped path drift",
-          "recommended_action": "sample top missing repo reads to separate remap work from benign variance"
-        },
-        {
-          "provider": "hermes",
-          "activity_status": "idle",
-          "corpus_status": "aligned",
-          "debt_status": "drift_only",
-          "python_hygiene_status": "mixed",
-          "recent_post_records": 0,
-          "recent_sessions": 0,
-          "known_migration_debt_reads": 0,
-          "known_migration_debt_per_1k_records": 0.0,
-          "primary_issue": "unmapped path drift",
-          "recommended_action": "sample top missing repo reads to separate remap work from benign variance"
-        },
-        {
           "provider": "gemini",
+          "urgency_score": 47.68,
           "activity_status": "idle",
           "corpus_status": "aligned",
           "debt_status": "high_debt",
@@ -1314,74 +1291,106 @@
           "recent_sessions": 0,
           "known_migration_debt_reads": 84,
           "known_migration_debt_per_1k_records": 13.81,
+          "missing_repo_reads_per_1k_records": 109.34,
           "primary_issue": "legacy_local_work_queue_items",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
+        },
+        {
+          "provider": "codex",
+          "urgency_score": 10.13,
+          "activity_status": "idle",
+          "corpus_status": "aligned",
+          "debt_status": "drift_only",
+          "python_hygiene_status": "mixed",
+          "recent_post_records": 0,
+          "recent_sessions": 0,
+          "known_migration_debt_reads": 0,
+          "known_migration_debt_per_1k_records": 0.0,
+          "missing_repo_reads_per_1k_records": 14.26,
+          "primary_issue": "unmapped path drift",
+          "recommended_action": "sample top missing repo reads to separate remap work from benign variance"
+        },
+        {
+          "provider": "hermes",
+          "urgency_score": 4.33,
+          "activity_status": "idle",
+          "corpus_status": "aligned",
+          "debt_status": "drift_only",
+          "python_hygiene_status": "mixed",
+          "recent_post_records": 0,
+          "recent_sessions": 0,
+          "known_migration_debt_reads": 0,
+          "known_migration_debt_per_1k_records": 0.0,
+          "missing_repo_reads_per_1k_records": 2.65,
+          "primary_issue": "unmapped path drift",
+          "recommended_action": "sample top missing repo reads to separate remap work from benign variance"
         }
-      ]
+      ],
+      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.8, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items)."
     },
     "recent_activity_since_previous_audit": {
-      "previous_generated_at": "2026-04-20T07:31:31Z",
+      "previous_generated_at": "2026-04-20T09:15:28Z",
       "status": "ok",
       "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
       "providers": {
         "claude": {
-          "post_records": 135,
-          "sessions": 2,
+          "post_records": 112,
+          "sessions": 3,
           "top_tools": [
             {
               "tool": "Bash",
-              "count": 82
+              "count": 63
             },
             {
               "tool": "Read",
-              "count": 32
+              "count": 21
             },
             {
-              "tool": "Agent",
-              "count": 12
+              "tool": "Edit",
+              "count": 19
             },
             {
               "tool": "Write",
-              "count": 8
+              "count": 5
             },
             {
-              "tool": "Grep",
-              "count": 1
+              "tool": "Agent",
+              "count": 4
             }
           ],
           "top_missing_repo_reads": [],
           "top_bash_command_families": [
             {
               "prefix": "ls",
-              "count": 15
-            },
-            {
-              "prefix": "uv run",
-              "count": 12
-            },
-            {
-              "prefix": "git log",
               "count": 10
             },
             {
-              "prefix": "git show",
-              "count": 7
+              "prefix": "grep",
+              "count": 8
+            },
+            {
+              "prefix": "gh",
+              "count": 8
             },
             {
               "prefix": "git status",
-              "count": 6
+              "count": 7
             },
             {
-              "prefix": "git",
-              "count": 6
+              "prefix": "git add",
+              "count": 5
             },
             {
-              "prefix": "grep",
-              "count": 6
+              "prefix": "uv run",
+              "count": 4
+            },
+            {
+              "prefix": "git log",
+              "count": 3
             },
             {
               "prefix": "tail",
-              "count": 4
+              "count": 2
             }
           ]
         },
@@ -1410,8 +1419,8 @@
       "ranked_providers": [
         {
           "provider": "claude",
-          "post_records": 135,
-          "sessions": 2
+          "post_records": 112,
+          "sessions": 3
         },
         {
           "provider": "codex",
@@ -1431,27 +1440,27 @@
       ]
     },
     "corpus_change_since_previous_audit": {
-      "previous_generated_at": "2026-04-20T07:31:31Z",
+      "previous_generated_at": "2026-04-20T09:15:28Z",
       "status": "ok",
       "scope_note": "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.",
       "providers": {
         "claude": {
-          "status": "positive_corpus_growth_beyond_recent_activity",
+          "status": "corpus_pruned_or_rebuilt",
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
-          "previous_post_records": 79981,
-          "current_post_records": 80119,
-          "post_record_delta": 138,
+          "previous_post_records": 80119,
+          "current_post_records": 80228,
+          "post_record_delta": 109,
           "previous_sessions": 33,
           "current_sessions": 33,
           "session_delta": 0,
           "previous_missing_repo_reads": 7599,
           "current_missing_repo_reads": 7599,
           "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 135,
-          "event_time_sessions_since_previous_audit": 2,
-          "reconciliation_gap_post_records": 3,
-          "interpretation": "Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage."
+          "event_time_post_records_since_previous_audit": 112,
+          "event_time_sessions_since_previous_audit": 3,
+          "reconciliation_gap_post_records": -3,
+          "interpretation": "Snapshot shrank relative to recent event-time activity, suggesting pruning, rebuild, or reclassification."
         },
         "codex": {
           "status": "aligned",
@@ -1511,10 +1520,10 @@
       "ranked_providers": [
         {
           "provider": "claude",
-          "post_record_delta": 138,
-          "event_time_post_records_since_previous_audit": 135,
-          "reconciliation_gap_post_records": 3,
-          "status": "positive_corpus_growth_beyond_recent_activity"
+          "post_record_delta": 109,
+          "event_time_post_records_since_previous_audit": 112,
+          "reconciliation_gap_post_records": -3,
+          "status": "corpus_pruned_or_rebuilt"
         },
         {
           "provider": "codex",
@@ -1538,8 +1547,8 @@
           "status": "aligned"
         }
       ],
-      "largest_positive_reconciliation_gap_provider": "claude",
-      "largest_negative_reconciliation_gap_provider": "codex"
+      "largest_positive_reconciliation_gap_provider": "codex",
+      "largest_negative_reconciliation_gap_provider": "claude"
     }
   }
 }

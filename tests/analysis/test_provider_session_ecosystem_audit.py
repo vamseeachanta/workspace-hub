@@ -311,8 +311,8 @@ def test_build_corpus_change_summary_separates_snapshot_and_event_time_deltas() 
 
 def test_build_provider_interpretation_summary_derives_statuses() -> None:
     provider_summaries = {
-        "claude": {"missing_repo_reads": 5, "python3_per_1k_records": 2.0, "uv_python_per_1k_records": 8.0},
-        "codex": {"missing_repo_reads": 0, "python3_per_1k_records": 10.0, "uv_python_per_1k_records": 1.0},
+        "claude": {"missing_repo_reads": 5, "python3_per_1k_records": 2.0, "uv_python_per_1k_records": 8.0, "post_records": 100},
+        "codex": {"missing_repo_reads": 0, "python3_per_1k_records": 10.0, "uv_python_per_1k_records": 1.0, "post_records": 100},
     }
     migration_debt = {
         "ranked_providers": [
@@ -349,14 +349,17 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     )
 
     rows = {row["provider"]: row for row in summary["providers"]}
+    assert summary["providers"][0]["provider"] == "claude"
     assert rows["claude"]["activity_status"] == "active"
     assert rows["claude"]["debt_status"] == "high_debt"
     assert rows["claude"]["python_hygiene_status"] == "uv_preferred"
     assert rows["claude"]["primary_issue"] == "legacy_work_queue_transition"
+    assert rows["claude"]["urgency_score"] > rows["codex"]["urgency_score"]
     assert rows["codex"]["activity_status"] == "idle"
     assert rows["codex"]["corpus_status"] == "corpus_pruned_or_rebuilt"
     assert rows["codex"]["debt_status"] == "none"
     assert rows["codex"]["python_hygiene_status"] == "python3_heavy"
+    assert summary["focus_this_week"].startswith("Focus this week: prioritize legacy-path redirect cleanup")
 
 
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
@@ -503,9 +506,11 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
         "executive_summary": {
             "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
             "provider_interpretation_summary": {
+                "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude.",
                 "providers": [
                     {
                         "provider": "claude",
+                        "urgency_score": 83.8,
                         "activity_status": "active",
                         "corpus_status": "aligned",
                         "debt_status": "high_debt",
@@ -540,7 +545,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     markdown = module.render_markdown(audit)
 
     assert "## Provider interpretation summary" in markdown
-    assert "`claude` — activity=active | corpus=aligned | debt=high_debt | python=uv_preferred" in markdown
+    assert "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude." in markdown
+    assert "`claude` — urgency=83.8 | activity=active | corpus=aligned | debt=high_debt | python=uv_preferred" in markdown
     assert "primary issue: legacy_work_queue_transition" in markdown
     assert "## Corpus change since previous audit" in markdown
     assert "snapshot-to-snapshot corpus comparison is not yet available" in markdown
