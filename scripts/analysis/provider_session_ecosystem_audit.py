@@ -780,6 +780,97 @@ def build_watchlist(rows: list[dict]) -> list[dict]:
     return watchlist
 
 
+def build_change_alerts(rows: list[dict], watchlist: list[dict], previous_audit: dict | None) -> list[dict]:
+    if not previous_audit:
+        return []
+
+    previous_interpretation = previous_audit.get("executive_summary", {}).get("provider_interpretation_summary", {})
+    previous_rows = previous_interpretation.get("providers", []) if isinstance(previous_interpretation, dict) else []
+    previous_by_provider = {
+        row.get("provider"): row
+        for row in previous_rows
+        if isinstance(row, dict) and row.get("provider")
+    }
+    previous_watchlist = previous_interpretation.get("watchlist", []) if isinstance(previous_interpretation, dict) else []
+    previous_watchlist_by_provider = {
+        item.get("provider"): item
+        for item in previous_watchlist
+        if isinstance(item, dict) and item.get("provider")
+    }
+
+    current_watchlist_by_provider = {
+        item.get("provider"): item
+        for item in watchlist
+        if isinstance(item, dict) and item.get("provider")
+    }
+
+    alerts: list[dict] = []
+    trigger_rank = {"page": 3, "act_this_week": 2, "investigate": 1, "monitor": 0}
+    health_rank = {"red": 2, "yellow": 1, "green": 0}
+
+    for row in rows:
+        provider = str(row.get("provider", ""))
+        if not provider:
+            continue
+        previous_row = previous_by_provider.get(provider, {})
+        previous_watch = previous_watchlist_by_provider.get(provider, {})
+        current_watch = current_watchlist_by_provider.get(provider, {})
+
+        previous_trigger = str(previous_watch.get("trigger_level", "monitor")) if previous_watch else "monitor"
+        current_trigger = str(current_watch.get("trigger_level", "monitor")) if current_watch else "monitor"
+        previous_health = str(previous_row.get("health_status", "green")) if previous_row else "green"
+        current_health = str(row.get("health_status", "green"))
+        previous_rank_value = int(previous_row.get("urgency_rank", 0) or 0) if previous_row else None
+        current_rank_value = int(row.get("urgency_rank", 0) or 0)
+
+        change_type = None
+        summary = None
+
+        if not previous_watch and current_trigger != "monitor":
+            change_type = "new_watchlist_entry"
+            summary = f"{provider} entered watchlist at {current_trigger}"
+        elif previous_watch and current_trigger == "monitor":
+            change_type = "cleared_watchlist"
+            summary = f"{provider} cleared watchlist from {previous_trigger}"
+        elif trigger_rank.get(current_trigger, 0) > trigger_rank.get(previous_trigger, 0):
+            change_type = "trigger_escalated"
+            summary = f"{provider} trigger escalated from {previous_trigger} to {current_trigger}"
+        elif health_rank.get(current_health, 0) > health_rank.get(previous_health, 0):
+            change_type = "health_worsened"
+            summary = f"{provider} health worsened from {previous_health} to {current_health}"
+        elif previous_rank_value and current_rank_value and current_rank_value < previous_rank_value:
+            change_type = "urgency_rank_improved_priority"
+            summary = f"{provider} moved up from rank #{previous_rank_value} to #{current_rank_value}"
+
+        if not change_type:
+            continue
+
+        alerts.append(
+            {
+                "provider": provider,
+                "change_type": change_type,
+                "previous_trigger_level": previous_trigger,
+                "current_trigger_level": current_trigger,
+                "previous_health_status": previous_health,
+                "current_health_status": current_health,
+                "previous_urgency_rank": previous_rank_value,
+                "current_urgency_rank": current_rank_value,
+                "summary": summary,
+                "suggested_followup": current_watch.get("suggested_followup") or row.get("recommended_action"),
+            }
+        )
+
+    change_rank = {
+        "trigger_escalated": 4,
+        "health_worsened": 3,
+        "new_watchlist_entry": 2,
+        "urgency_rank_improved_priority": 1,
+        "cleared_watchlist": 0,
+    }
+    alerts.sort(key=lambda item: (-change_rank.get(str(item.get("change_type", "")), 0), str(item.get("provider", ""))))
+    return alerts
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -1290,6 +1381,7 @@ def build_provider_interpretation_summary(
         for row in rows
     ]
     watchlist = build_watchlist(rows)
+    change_alerts = build_change_alerts(rows, watchlist, previous_audit)
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -1347,6 +1439,7 @@ def build_provider_interpretation_summary(
         "rank_movements": rank_movements,
         "health_overview": health_overview,
         "watchlist": watchlist,
+        "change_alerts": change_alerts,
     }
 
 
@@ -1398,6 +1491,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "rank_movements": provider_interpretation.get("rank_movements", []),
         "health_overview": provider_interpretation.get("health_overview", []),
         "watchlist": provider_interpretation.get("watchlist", []),
+        "change_alerts": provider_interpretation.get("change_alerts", []),
     }
 
     return {
@@ -1489,6 +1583,13 @@ def render_markdown(audit: dict) -> str:
             for item in watchlist:
                 lines.append(
                     f"  - `{item['provider']}` [{item.get('trigger_level')}] — {item.get('trigger_reason')} | follow-up: {item.get('suggested_followup')}"
+                )
+        change_alerts = interpretation_summary.get("change_alerts", [])
+        if change_alerts:
+            lines.append("- Change alerts:")
+            for alert in change_alerts:
+                lines.append(
+                    f"  - `{alert['provider']}` [{alert.get('change_type')}] — {alert.get('summary')} | follow-up: {alert.get('suggested_followup')}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:

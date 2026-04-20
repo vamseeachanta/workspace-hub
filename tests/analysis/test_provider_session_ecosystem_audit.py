@@ -446,6 +446,7 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["health_overview"][0]["provider"] == "claude"
     assert summary["watchlist"][0]["provider"] == "claude"
     assert summary["watchlist"][0]["trigger_level"] == "act_this_week"
+    assert summary["change_alerts"] == []
 
 
 
@@ -482,11 +483,13 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "rank_movements" in executive_actions
     assert "health_overview" in executive_actions
     assert "watchlist" in executive_actions
+    assert "change_alerts" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
     assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
     assert executive_actions["health_overview"] == audit["executive_summary"]["provider_interpretation_summary"]["health_overview"]
     assert executive_actions["watchlist"] == audit["executive_summary"]["provider_interpretation_summary"]["watchlist"]
+    assert executive_actions["change_alerts"] == audit["executive_summary"]["provider_interpretation_summary"]["change_alerts"]
 
 
 
@@ -560,6 +563,59 @@ def test_build_provider_interpretation_summary_derives_trend_directions_from_pre
     assert row["activity_trend"] == "increasing"
     assert row["health_status"] == "red"
     assert row["activity_window_profile"] == "sustained_background"
+
+
+def test_build_change_alerts_detects_escalations_and_clears() -> None:
+    rows = [
+        {
+            "provider": "claude",
+            "health_status": "red",
+            "urgency_tier": "urgent_now",
+            "urgency_rank": 1,
+            "recommended_action": "fix claude",
+        },
+        {
+            "provider": "codex",
+            "health_status": "green",
+            "urgency_tier": "monitor",
+            "urgency_rank": 3,
+            "recommended_action": "monitor codex",
+        },
+    ]
+    watchlist = [
+        {
+            "provider": "claude",
+            "trigger_level": "page",
+            "suggested_followup": "Escalate immediately on claude",
+        },
+        {
+            "provider": "codex",
+            "trigger_level": "monitor",
+            "suggested_followup": "Monitor codex",
+        },
+    ]
+    previous_audit = {
+        "executive_summary": {
+            "provider_interpretation_summary": {
+                "providers": [
+                    {"provider": "claude", "health_status": "yellow", "urgency_rank": 2},
+                    {"provider": "codex", "health_status": "yellow", "urgency_rank": 3},
+                ],
+                "watchlist": [
+                    {"provider": "claude", "trigger_level": "investigate"},
+                    {"provider": "codex", "trigger_level": "investigate"},
+                ],
+            }
+        }
+    }
+
+    alerts = module.build_change_alerts(rows, watchlist, previous_audit)
+
+    assert alerts[0]["provider"] == "claude"
+    assert alerts[0]["change_type"] == "trigger_escalated"
+    assert alerts[1]["provider"] == "codex"
+    assert alerts[1]["change_type"] == "cleared_watchlist"
+
 
 
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
@@ -742,6 +798,20 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "primary_issue": "legacy_work_queue_transition",
                     }
                 ],
+                "change_alerts": [
+                    {
+                        "provider": "claude",
+                        "change_type": "trigger_escalated",
+                        "previous_trigger_level": "investigate",
+                        "current_trigger_level": "page",
+                        "previous_health_status": "yellow",
+                        "current_health_status": "red",
+                        "previous_urgency_rank": 2,
+                        "current_urgency_rank": 1,
+                        "summary": "claude trigger escalated from investigate to page",
+                        "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ],
                 "rank_movements": [
                     {
                         "provider": "claude",
@@ -841,6 +911,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "`claude` [red] — red: urgent action tier; high migration debt; 24h burst activity; currently active" in markdown
     assert "Watchlist triggers:" in markdown
     assert "`claude` [page] — urgent-now provider with legacy_work_queue_transition | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
+    assert "Change alerts:" in markdown
+    assert "`claude` [trigger_escalated] — claude trigger escalated from investigate to page | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
