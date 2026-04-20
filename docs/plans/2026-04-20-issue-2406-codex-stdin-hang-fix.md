@@ -1,6 +1,6 @@
 # Plan for #2406: fix(review) — submit-to-codex.sh hangs on "Reading additional input from stdin" for substantial plan files
 
-> **Status:** adversarial-reviewed (v2 — iter-1 Codex+Gemini MAJOR addressed)
+> **Status:** adversarial-reviewed (v3 — iter-2 Codex Class A MAJOR addressed; Class B deferred to #2405)
 > **Complexity:** T2
 > **Date:** 2026-04-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2406
@@ -16,7 +16,7 @@
 - Found: `scripts/review/submit-to-codex.sh:215-227` — initial size guard: if `payload_chars > CODEX_MAX_PROMPT_CHARS` (default 120 000), **pre-truncate** `CONTENT_TEXT` to `CODEX_COMPACT_RETRY_CHARS` (default 24 000) and rebuild `prompt_for_run`. This is truncation, **not rejection**; dispatch proceeds with the truncated prompt.
 - Found: `scripts/review/submit-to-codex.sh:229-247` — compact-retry fallback: after `run_codex_exec "$prompt_for_run"`, if `exec_exit != 0` **OR** `raw_file` is empty, retry once with a prompt truncated to `CODEX_COMPACT_RETRY_CHARS`. The retry is triggered by **any first-dispatch failure including timeout** — so today's observed hang-exit-124 case triggers the retry, and the retry also dispatches via the same buggy argv path. Both calls (line 230 and line 246) share `run_codex_exec`, so fixing that function fixes both.
 - Found: `scripts/review/submit-to-gemini.sh` — Gemini dispatch uses a different CLI, not affected. Confirmed via Gemini reviewing 4 prompts this session without hang.
-- Found: `tests/review/test-submit-scripts.sh` (320 lines) — existing mock-based test harness using `make_mock` to replace CLI binaries on PATH. Existing test-case count: 22 (per `grep -cE "^# ── T[0-9]+:"` on 2026-04-20). T07/T24/T25 already cover `submit-to-codex.sh`. Pattern is reusable for a new argv-size regression test.
+- Found: `tests/review/test-submit-scripts.sh` (320 lines) — existing mock-based test harness using `make_mock` to replace CLI binaries on PATH. Existing test IDs present (per `grep -oE "^# ── T[0-9]+:"`): T01–T13 and T17–T25 (22 tests with gaps at T14/T15/T16). Highest-numbered existing test is T25; new tests will use T26–T31 (first unused IDs above T25), no renumbering required. T07/T24/T25 already cover `submit-to-codex.sh`. Pattern is reusable for a new argv-size regression test.
 - Gap: no existing test covers the argv-vs-stdin dispatch path; no test with a large prompt fixture.
 
 ### Standards
@@ -25,15 +25,17 @@ Not applicable — infrastructure script bug fix, no engineering standards invol
 
 ### Operating-model compliance (explicit N/A rationale)
 
-Per reviewer request in iter-1 (Codex): each operating-model section is explicitly evaluated below, not silently skipped.
+Per reviewer request in iter-1 + iter-2 (Codex): each operating-model section is explicitly evaluated below with citation to the canonical source, not silently skipped.
 
-| Section | Applies? | Rationale |
+**Canonical source:** `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` (verified existing 2026-04-20; referenced by `.planning/handoffs/2026-04-20-doc-intel-planning-handoff.md` as "the authority for everything" under doc-intel).
+
+| Section (cited from the operating-model doc) | Applies? | Rationale |
 |---|---|---|
-| §2 ownership (L<n> classification) | **No** | This plan modifies `scripts/review/` and `tests/review/` — harness infrastructure, not the document-intelligence corpus. Operating-model layer classes (L0–L5) govern knowledge/intelligence artifacts, not bash scripts. No ownership invention. |
-| §3 identity / `doc_key` / `sha256:` namespace | **No** | `doc_key` identity applies to documents in the doc-intelligence corpus (`knowledge/`, `docs/document-intelligence/`, and ingested standards). This plan is a harness bug fix; new artifacts are a bash script patch and a pytest-style fixture. No `doc_key` required. |
-| §4 flow rules | **No** | No durable-store flows modified. Plan file itself lives at `docs/plans/` which is the governance-plan tier (per skill "Safe paths"), not a doc-intelligence flow endpoint. |
-| §7 cross-machine tier rules | **Yes (partial)** | Test fixture `tests/review/fixtures/codex-large-prompt.txt` is git-tracked → tier-1 durable metadata. Mock-generated stdin/argv logs in tests are tier-5 transient temp files under `$(mktemp -d)` → correctly scoped. No cross-machine mount dependency. ✓ |
-| §8.1 frontmatter authority | **No** | No wiki or knowledge-domain content created. |
+| §2 ownership (L<n> classification — how a doc is owned by exactly one layer) | **No** | Layer classes (L0–L5) govern the document-intelligence corpus (wiki/knowledge/standards). This plan modifies `scripts/review/` (harness infra) and `tests/review/` (test code). Bash scripts are not doc-intelligence corpus items; no layer assignment applies. No new between-layer or L<n>-adjacent classification is invented. |
+| §3 identity / `doc_key` / `sha256:` namespace (how corpus docs are referenced) | **No** | `doc_key` identity applies to corpus documents where content-addressable references are needed across layer boundaries. A bash script patch and a pytest-style fixture are not corpus references; they are implementation artifacts. Conventional repo-relative paths suffice (and match the template's `Artifact Map` convention). |
+| §4 flow rules (durable ↔ transient flow direction) | **No** | No durable→transient or transient→durable doc-corpus flows are introduced. The plan file itself lives at `docs/plans/` which is planning/governance, not a doc-intelligence flow endpoint per §4. |
+| §7 cross-machine tier rules (git-tracked metadata vs shared-mount vs local-cache) | **Yes (partial)** | The new test fixture `tests/review/fixtures/codex-large-prompt.txt` is git-tracked ⇒ tier-1 durable metadata. Mock stdin/argv log files in tests live under `$(mktemp -d)` ⇒ tier-5 transient temp files. No cross-machine mount dependency introduced. Fixture content is deterministic (generated via documented one-liner), so multi-machine portability is preserved. ✓ |
+| §8.1 frontmatter authority (wiki-domain baseline fields) | **No** | No wiki or knowledge-domain content is created or modified. Plan does not create any file under `knowledge/wikis/` or `docs/document-intelligence/`. |
 
 ### LLM Wiki pages consulted
 
@@ -175,7 +177,7 @@ Notes on design choices:
   { printf '%s' "$prompt_text" | timeout … "$CODEX_BIN" exec - … >/dev/null 2>"$err_file"; } ; rc=${PIPESTATUS[1]}
   ```
   The `||` exit-capture idiom then becomes `run_codex_exec "$p"; exec_exit=$?` (always 0 from the wrapping function body unless we propagate `$rc`). Final implementation detail lives in code; tested by T27/T28 behavior.
-- **Runtime codex-version compatibility probe:** before first dispatch, the fix adds a one-shot probe — `"$CODEX_BIN" exec --help 2>&1 | grep -q 'read from stdin'` — cached in a module-scope flag. If the probe fails (older codex without documented stdin support), fall back to the old argv path and log a one-time WARN to stderr recommending CLI upgrade. This preserves correctness on older installs.
+- **Runtime codex-version compatibility probe:** before first dispatch, the fix adds a one-shot probe — `"$CODEX_BIN" exec --help 2>&1 | grep -q 'read from stdin'` — cached at script scope in a variable set at the first invocation of `run_codex_exec`. The cached result governs both the initial dispatch and the compact-retry dispatch so the two paths never diverge. **If the probe fails (older codex CLI without documented stdin support), the script hard-fails with a new exit code (7 = CLI version unsupported) and an explicit stderr message instructing the user to upgrade codex.** No silent fallback to the old argv path — that path is the bug we are fixing, and restoring it under any condition would violate the Deliverable's reliability guarantee. (Rationale per iter-2 Codex P1.)
 
 ---
 
@@ -185,8 +187,8 @@ Notes on design choices:
 |---|---|---|
 | Modify | `scripts/review/submit-to-codex.sh` | rewrite `run_codex_exec` (lines 162–180) to pipe prompt via stdin with `-` positional; add one-time codex-version probe and argv-path fallback; add `PIPESTATUS[1]` capture for SIGPIPE robustness. No change to error-classification, exit-code map, or compact-retry trigger logic. |
 | Create | `tests/review/fixtures/codex-large-prompt.txt` | deterministic large-prompt fixture (24 000 chars = 400 × 60-char lines), reproducible via one-liner |
-| Modify | `tests/review/test-submit-scripts.sh` | add T26 (argv must not contain full prompt), T27 (stdin delivers the prompt), T28 (compact-retry path also uses stdin), T29 (pipefail+SIGPIPE fidelity), T30 (version-probe fallback) |
-| Update | `docs/plans/README.md` | add index row for #2406 (already landed in v1 commit a73ec66f6) |
+| Modify | `tests/review/test-submit-scripts.sh` | add T26 (argv must not contain full prompt), T27 (stdin delivers the prompt byte-for-byte), T28 (compact-retry path also uses stdin), T29 (pipefail+SIGPIPE + exit-3 fidelity), T30 (version-probe hard-fail with new exit 7), T31 (probe-cache single-invocation), T32 (exit-5 NO_OUTPUT preserved), T33 (exit-6 renderer-fail preserved) |
+| ~~Update~~ (already done in planning commits) | `docs/plans/README.md` | Index row for #2406 already landed in commit `a73ec66f6` as part of the standard skill Step 2 plan-draft routine. Not a pending implementation change — recorded here only for traceability, **not counted in v3's to-do work**. |
 
 ---
 
@@ -197,10 +199,11 @@ Tests live in `tests/review/test-submit-scripts.sh` and use the existing `make_m
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | T26: codex dispatch — argv does NOT contain full prompt | `run_codex_exec` does not inflate argv with large prompts | large-prompt fixture via `--file`, short prompt via `--prompt` | mock's recorded argv contains `exec` and `-` (or no positional) but NOT any substring of the fixture body |
-| T27: codex dispatch — stdin DELIVERS the prompt | mock's stdin equals the constructed FULL_PROMPT exactly | same as T26 | `diff <(mock_stdin) <(expected_full_prompt)` is empty (ignoring trailing newline) |
+| T27: codex dispatch — stdin DELIVERS the prompt | mock's stdin equals the constructed FULL_PROMPT **byte-for-byte**, including absence of any trailing newline (`printf '%s'` is explicitly non-newline-terminating) | same as T26 | `cmp -s <(mock_stdin) <(expected_full_prompt)` returns 0 AND `wc -c` matches exactly — no "ignoring trailing newline" tolerance |
 | T28: compact-retry path uses stdin on BOTH calls | when first dispatch returns empty `raw_file`, retry still pipes via stdin | mock that returns empty `raw_file` on call 1, success on call 2; prompt length forces retry via `:0:CODEX_COMPACT_RETRY_CHARS` truncation path | call-1 and call-2 recorded invocations both show argv without body substring and stdin containing prompt content (call-2 with truncated content) |
 | T29: pipefail + SIGPIPE exit-code fidelity | when codex exits 3 (quota) while printf still has unread buffer, exec_exit captured is 3, not 141 | mock codex: write minimal error to err_file, `exit 3` | `submit-to-codex.sh` exits 3 (QUOTA path), not 141 (SIGPIPE masked as pipeline exit) |
-| T30: codex-version-probe fallback | on older codex without stdin support in help text, dispatch falls back to argv path and emits a one-time WARN | mock codex whose `exec --help` does NOT contain "read from stdin" | script uses argv path; stderr contains WARN about CLI upgrade; exit code matches argv-path behavior |
+| T30: codex-version-probe hard-fail | on older codex CLI without stdin support in help text, dispatch does NOT fall back to argv — instead hard-fails with a new exit code (7 = CLI version unsupported) and an explicit stderr message instructing the user to upgrade | mock codex whose `exec --help` does NOT contain "read from stdin" | script exits 7 (not 0, 1, 2, 3, 5, or 6); stderr contains "upgrade codex CLI"; no attempt at argv dispatch is recorded (mock's argv log for `exec` subcommand is empty) |
+| T31: probe result is cached across calls | probe runs exactly once per `submit-to-codex.sh` invocation regardless of whether the compact-retry fires | mock codex counts `--help` invocations; prompt designed to force compact-retry (first dispatch returns empty `raw_file`) | probe-invocation count is 1 (not 2); both dispatches use stdin |
 
 Test-writing order (Red → Green):
 1. Write T26/T27/T28/T29/T30 first against the **current** buggy code. T26/T27/T28 fail (argv used); T29 may already pass (existing semantics); T30 fails (no fallback yet).
@@ -221,33 +224,44 @@ Every acceptance criterion maps to at least one automated test or an explicit ma
 |---|---|---|
 | Fix makes `codex exec` receive prompt on stdin | T26, T27 | automated |
 | Compact-retry path also uses stdin | T28 | automated |
-| Pipefail+SIGPIPE does not mask codex exit code | T29 | automated |
-| Older codex CLI falls back to argv path with WARN | T30 | automated |
-| No change to exit-code semantics (existing 1/2 paths) | T01, T02, T03, T07, T24, T25 (existing) | automated |
-| Exit-code semantics for 3/5/6 paths preserved (no new tests, but also not changed by fix) | none new — change is localized to dispatch shape | manual spot-check (closeout) |
-| `docs/plans/README.md` index row exists | `grep -q '^| 2406 |' docs/plans/README.md` in closeout script | manual/shell |
-| Three review artifacts posted to `scripts/review/results/` | `ls scripts/review/results/2026-04-20-plan-2406-*.md \| wc -l` ≥ 3 in closeout | manual/shell |
-| **Live repro**: with the real codex CLI against the #2405 v3 plan, the fix completes within `CODEX_TIMEOUT_SECONDS` | live execution outside automated suite | manual only (live API) |
+| Pipefail + SIGPIPE does not mask codex exit code | T29 | automated |
+| Older codex CLI hard-fails with exit 7 (no silent fallback) | T30 | automated |
+| Version probe is invoked at most once per script invocation | T31 | automated |
+| Existing exit-code semantics preserved (exit 1 user error) | T01, T02, T03, T24 (existing) | automated |
+| Existing exit-code semantics preserved (exit 2 CLI missing) | T07, T25 (existing) | automated |
+| Existing exit-code semantics preserved (exit 3 quota) | T29 (new — exercises quota path via mock exit 3) | automated |
+| Existing exit-code semantics preserved (exit 5 NO_OUTPUT) | dedicated new micro-test added inline: invoke with mock that writes empty `raw_file` and exits 0 twice; assert exit 5 (previously implicitly relied on by compact-retry path; made explicit in v3 per iter-2 Codex P1) | automated (T32 below) |
+| Existing exit-code semantics preserved (exit 6 renderer fail) | dedicated new micro-test: mock `uv run python …` (or equivalent renderer stub) fails; assert exit 6 (made explicit in v3) | automated (T33 below) |
+| Three review artifacts posted to `scripts/review/results/` | `ls scripts/review/results/2026-04-20-plan-2406-*.md \| wc -l` ≥ 3 in closeout | shell-check (closeout) |
+| **Live repro**: fix completes within `CODEX_TIMEOUT_SECONDS` with the real codex CLI against any large plan (≥20 000 chars) | live execution outside automated suite | manual only (live API) |
+
+Additional new tests covering exit-code ACs that were previously only manual (iter-2 Codex P1 fix):
+
+| Test | Purpose |
+|---|---|
+| T32: exit-code 5 (NO_OUTPUT) preserved | mock returns empty `raw_file` on both first and retry; assert script exit code 5 |
+| T33: exit-code 6 (renderer fail) preserved | mock writes `raw_file` successfully but renderer invocation fails; assert exit 6 |
 
 ---
 
 ## Acceptance Criteria
 
 Automated (pass/fail via `bash tests/review/test-submit-scripts.sh`):
-- [ ] All **22 existing** test cases still pass (regression check).
+- [ ] All **22 existing** test cases (T01–T13, T17–T25) still pass (regression check).
 - [ ] T26 passes: mock's recorded argv does not contain the fixture body.
-- [ ] T27 passes: mock's recorded stdin equals the constructed FULL_PROMPT byte-for-byte (minus optional trailing newline).
+- [ ] T27 passes: mock's recorded stdin equals the constructed FULL_PROMPT byte-for-byte (`cmp -s` returns 0).
 - [ ] T28 passes: compact-retry path uses stdin on both call-1 and call-2.
-- [ ] T29 passes: codex exit 3 propagates through the pipeline unmasked.
-- [ ] T30 passes: older codex without stdin-help support falls back to argv path with WARN.
+- [ ] T29 passes: codex exit 3 (quota) propagates through the pipeline unmasked; script exits 3.
+- [ ] T30 passes: older codex without stdin-help support causes the script to hard-fail with new exit code 7 and a stderr upgrade-instruction message. No argv-path dispatch attempted.
+- [ ] T31 passes: version probe is invoked exactly once per `submit-to-codex.sh` invocation, cached, and reused on compact-retry.
 
 Manual / shell-check (documented in closeout comment):
 - [ ] `docs/plans/README.md` contains a row starting with `| 2406 |`.
 - [ ] `ls scripts/review/results/2026-04-20-plan-2406-*.md` shows ≥ 3 artifacts.
-- [ ] Live repro: re-running the failing command from the issue body against `docs/plans/2026-04-20-issue-2405-cross-review-sandbox-repo-access.md` on the fixed branch completes within `CODEX_TIMEOUT_SECONDS` (returns structured review content or a classified failure, not a hang).
+- [ ] Live repro: re-running the failing dispatch from the issue body on the fixed branch completes within `CODEX_TIMEOUT_SECONDS`. The repro uses any large plan file present in `docs/plans/` (≥20 000 chars); `#2405`'s plan file is the example cited in the issue body but is not required — any eligible plan file satisfies the AC (e.g., `docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md` or this plan itself at ~28 KB). This decouples the fix's closeout from any other issue's state.
 
-Exit-code map preserved (not newly tested; localized dispatch-shape change should not touch these paths):
-- 1 = user error, 2 = CLI missing, 3 = quota, 5 = NO_OUTPUT, 6 = renderer fail.
+Exit-code map (v3 introduces new code 7):
+- 1 = user error, 2 = CLI not installed, 3 = quota, 5 = NO_OUTPUT, 6 = renderer fail, **7 = CLI version unsupported (new in this fix)**.
 
 ---
 
@@ -261,7 +275,30 @@ Exit-code map preserved (not newly tested; localized dispatch-shape change shoul
 
 **Overall result (iter-1):** REVISE — addressed in v2.
 
-Revisions made based on iter-1 review (v1 → v2):
+| Provider | Verdict (iter-2, v2) | Key findings |
+|---|---|---|
+| Claude (self) | MINOR | T29 timing-sensitivity; T30 probe-cache not explicitly tested; minimum codex version un-pinned; Class B follow-up not flagged |
+| Codex | MAJOR — new Class A | Version-probe fallback reintroduces the buggy argv path (breaks Deliverable); README-to-change ambiguity (already landed); operating-model N/A assertions lack source-file citations; exit-codes 3/5/6 preserved-behavior ACs lack automated tests; T27 newline weakening; threat model inconsistent with argv-fallback branch; probe-cache state between first call and retry unspecified. Plus continued Class B "unverified live state". |
+| Gemini | MAJOR — pure Class B | Entirely "unverified live state" findings (#2406/#2405/#2403/#2402 statuses, file contents, CLI contract). No Class A. Expected per handoff — resolves at #2405 implementation. |
+
+**Overall result (iter-2):** REVISE — Codex Class A addressed in v3; Gemini Class B accepted as self-circular.
+
+Revisions made based on iter-2 review (v2 → v3):
+- **Removed argv-path fallback on older codex** — replaced with hard-fail (new exit code 7 + stderr upgrade instruction). Preserves the Deliverable's reliability guarantee unconditionally. (Codex iter-2 P1)
+- **Marked README index update as already-done** in Files-to-Change, with citation to commit `a73ec66f6`. No longer counted as pending work. (Codex iter-2 P1)
+- **Added citation to the operating-model source file** (`docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md`) at the top of the compliance sub-table, and elaborated each section's rationale to reference the actual policy text. (Codex iter-2 P1)
+- **Tightened T27** to require exact byte-for-byte equality via `cmp -s` — removed the "ignoring trailing newline" tolerance. `printf '%s'` is explicitly non-newline-terminating; the acceptance condition now matches. (Codex iter-2 P2)
+- **Decoupled live-repro AC from #2405** — any large plan file (≥20 000 chars) in `docs/plans/` satisfies the AC; #2405's plan is an example, not a dependency. (Codex iter-2 P2)
+- **Added T31** — asserts probe is invoked exactly once per script invocation (cache fidelity between initial dispatch and compact-retry). (Codex iter-2 P2)
+- **Added T32 + T33** — explicit automated coverage for exit codes 5 (NO_OUTPUT) and 6 (renderer fail); no longer manual-only. (Codex iter-2 P1)
+- **Clarified test numbering** — existing IDs are T01–T13 + T17–T25 with gaps at T14/T15/T16; new tests use T26–T33 (first unused above T25). No renumbering required. (Claude iter-2)
+- **Updated threat model** — removed conditional-improvement wording; argv exposure reduced unconditionally because older-codex path hard-fails pre-dispatch. (Codex iter-2 P2)
+- **Updated exit-code map** — added code 7 (CLI version unsupported).
+
+Class B findings (self-circular) acknowledged and NOT addressed in plan text:
+- Codex iter-1/2, Gemini iter-1/2: "unverified GitHub issue states, file existence, CLI contract". This is the #2405-meta class. Resolution path: when #2405 lands the pre-verification attestation script, iter-3 would drop these findings. v3 acknowledges them as out-of-plan-scope.
+
+**Overall result (v3 final):** approval-ready pending user review. Iter-3 re-dispatch planned to confirm Class A is drained; if Class B only remains, plan is final.
 - Fixed the compact-retry triggering logic description — retry fires on **any** first-dispatch failure, not only when the 120 000-char guard is defeated (Codex P1).
 - Corrected "25 existing cases" → "22" (Claude P2).
 - Added Operating-model compliance sub-table with explicit N/A rationale for §2/§3/§4/§7/§8.1 (Codex P1).
@@ -293,7 +330,7 @@ Class B findings (self-circular / reviewer-cannot-verify-live-state) acknowledge
 |---|---|---|---|
 | PATH trust for `CODEX_BIN` | script trusts `command -v codex`; falls through to `${HOME}/.npm-global/bin/codex` | unchanged | none |
 | Prompt content source | `$PROMPT` from `--prompt` argv, `$CONTENT_TEXT` from `--file` via `head -c 5M \| tr -d '\000'` | unchanged — same `$FULL_PROMPT` string, just delivered via a different channel (stdin vs argv) | none — same bytes, same sink |
-| Argv exposure (ps/strings visibility) | full prompt visible in process-table `ps -ef` — any user on the host can read current-user prompts for the lifetime of the codex invocation | prompt removed from argv; only flags + `-` visible in `ps`. **Improvement.** | **reduced** — sensitive plan content no longer leaks via process table |
+| Argv exposure (ps/strings visibility) | full prompt visible in process-table `ps -ef` — any user on the host can read current-user prompts for the lifetime of the codex invocation | prompt removed from argv in all success paths; only flags + `-` visible in `ps`. On older codex without stdin support the script hard-fails BEFORE dispatch (exit 7) — the old argv path is NEVER taken as a fallback, so the privacy improvement is unconditional once the fix lands. **Improvement, not conditional.** | **reduced unconditionally** — sensitive plan content no longer leaks via process table under any supported-version branch (iter-2 Codex P1 fix: the hard-fail replaces the original argv-fallback plan) |
 | stdin pipe content | unconsumed inherited stdin could block codex (the bug) | explicit `printf | codex exec -` — codex receives prompt then EOF | **eliminated** — hang path closed |
 | `$raw_file` / `$err_file` temp files | `mktemp` under `/tmp`, cleaned on EXIT via trap (line 145) | unchanged | none |
 | Renderer invocation | `uv run --no-project python "$RENDERER"` on raw file | unchanged | none |
