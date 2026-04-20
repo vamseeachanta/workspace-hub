@@ -1,6 +1,7 @@
 """Signal detectors. Pure for signals 1-3; detect_showcase uses gh CLI."""
 from __future__ import annotations
 import hashlib
+import json
 import re
 import subprocess
 from datetime import datetime, timedelta, timezone
@@ -197,4 +198,57 @@ def detect_readme_capability_diff(
             dedupe_key=f"readme-diff:{repo_name}:{heading}:{hash_prefix}",
             payload={"heading": heading, "hash": current_hash},
         ))
+    return signals
+
+
+SHOWCASE_LABELS = ("showcase", "website")
+SKIP_LABELS = ("not-planned", "duplicate")
+
+
+def detect_showcase_labeled_closed_issues(
+    repo_name: str, state: RepoState, since: str,
+) -> list[Signal]:
+    """Signal 5: issues closed with showcase or website label since last sync."""
+    known = set(state.last_closed_showcase_issues)
+    signals: list[Signal] = []
+    seen_nums: set[int] = set()
+
+    for label in SHOWCASE_LABELS:
+        try:
+            result = subprocess.run(
+                ["gh", "issue", "list",
+                 "--repo", f"vamseeachanta/{repo_name}",
+                 "--label", label, "--state", "closed",
+                 "--search", f"closed:>={since}",
+                 "--json", "number,title,body,labels,closedAt",
+                 "--limit", "100"],
+                capture_output=True, text=True, check=True, timeout=60,
+            )
+            issues = json.loads(result.stdout or "[]")
+        except (subprocess.CalledProcessError, json.JSONDecodeError, subprocess.TimeoutExpired):
+            continue
+
+        for issue in issues:
+            num = issue["number"]
+            if num in known or num in seen_nums:
+                continue
+            labels = {l["name"] for l in issue.get("labels", [])}
+            if labels & set(SKIP_LABELS):
+                continue
+            seen_nums.add(num)
+            body = issue.get("body", "") or ""
+            truncated = " ".join(body.split()[:500])
+            signals.append(Signal(
+                repo=repo_name,
+                kind="showcase",
+                title=f"[sync] {repo_name} #{num}: {issue['title']}",
+                body=(
+                    f"Upstream issue closed with `{label}` label.\n\n"
+                    f"Link: https://github.com/vamseeachanta/{repo_name}/issues/{num}\n\n"
+                    f"## Upstream body (truncated)\n\n{truncated}\n\n"
+                    f"## Proposed website update\n\nBlog post / case study draft."
+                ),
+                dedupe_key=f"showcase:{repo_name}:{num}",
+                payload={"issue_number": num, "label": label},
+            ))
     return signals
