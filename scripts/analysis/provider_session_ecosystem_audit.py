@@ -764,6 +764,14 @@ def build_provider_interpretation_summary(
             + (min(10.0, missing_repo_reads_per_1k_records / 2.0) if known_debt_reads == 0 else 0.0)
             + python_hygiene_points
         )
+        if urgency_score >= 70:
+            urgency_tier = "urgent_now"
+        elif urgency_score >= 35:
+            urgency_tier = "next_up"
+        elif urgency_score >= 10:
+            urgency_tier = "investigate"
+        else:
+            urgency_tier = "monitor"
 
         if known_debt_reads > 0:
             primary_issue = debt.get("top_migration_rule_id") or "mapped migration debt"
@@ -785,6 +793,7 @@ def build_provider_interpretation_summary(
             {
                 "provider": provider,
                 "urgency_score": round(urgency_score, 2),
+                "urgency_tier": urgency_tier,
                 "activity_status": activity_status,
                 "corpus_status": corpus_status,
                 "debt_status": debt_status,
@@ -814,6 +823,7 @@ def build_provider_interpretation_summary(
     )
 
     focus_this_week = None
+    recommended_actions: list[dict] = []
     if rows:
         primary = rows[0]
         focus_this_week = (
@@ -829,7 +839,24 @@ def build_provider_interpretation_summary(
         else:
             focus_this_week += "."
 
-    return {"providers": rows, "focus_this_week": focus_this_week}
+        for row in rows:
+            if row["urgency_tier"] == "monitor":
+                continue
+            recommended_actions.append(
+                {
+                    "provider": row["provider"],
+                    "urgency_tier": row["urgency_tier"],
+                    "urgency_score": row["urgency_score"],
+                    "primary_issue": row["primary_issue"],
+                    "recommended_action": row["recommended_action"],
+                }
+            )
+
+    return {
+        "providers": rows,
+        "focus_this_week": focus_this_week,
+        "recommended_actions": recommended_actions,
+    }
 
 
 def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROOT) -> dict:
@@ -939,9 +966,16 @@ def render_markdown(audit: dict) -> str:
         focus_this_week = interpretation_summary.get("focus_this_week")
         if focus_this_week:
             lines.append(f"- {focus_this_week}")
+        recommended_actions = interpretation_summary.get("recommended_actions", [])
+        if recommended_actions:
+            lines.append("- Recommended actions:")
+            for action in recommended_actions:
+                lines.append(
+                    f"  - `{action['provider']}` [{action.get('urgency_tier')}] — {action.get('recommended_action')} (urgency {action.get('urgency_score')}, issue: {action.get('primary_issue')})"
+                )
         for row in interpretation_rows:
             lines.append(
-                f"- `{row['provider']}` — urgency={row.get('urgency_score')} | activity={row.get('activity_status')} | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} | python={row.get('python_hygiene_status')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
+                f"- `{row['provider']}` — urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} | python={row.get('python_hygiene_status')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
             )
         lines.append("")
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-20T14:50:31Z",
+  "generated_at": "2026-04-20T15:02:38Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
@@ -7,37 +7,37 @@
       "source": "raw_logs",
       "sessions": 33,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 134,
-      "post_records": 80228,
+      "unique_runtime_sessions": 135,
+      "post_records": 80323,
       "prompt_reads": 94,
       "blank_reads": 0,
       "missing_repo_reads": 7599,
-      "python3_bash_calls": 726,
-      "uv_python_bash_calls": 5964,
+      "python3_bash_calls": 728,
+      "uv_python_bash_calls": 5965,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 43559
+          "count": 43617
         },
         {
           "tool": "Read",
-          "count": 15529
+          "count": 15547
         },
         {
           "tool": "Edit",
-          "count": 7323
+          "count": 7330
         },
         {
           "tool": "Write",
-          "count": 6804
+          "count": 6809
         },
         {
           "tool": "Grep",
-          "count": 2019
+          "count": 2020
         },
         {
           "tool": "Agent",
-          "count": 848
+          "count": 854
         },
         {
           "tool": "ToolSearch",
@@ -51,7 +51,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 76484
+          "count": 76545
         },
         {
           "repo": "digitalmodel",
@@ -117,7 +117,7 @@
         },
         {
           "path": "docs/plans/README.md",
-          "count": 69
+          "count": 70
         },
         {
           "path": ".claude/skills/coordination/workspace/work-queue/SKILL.md",
@@ -308,32 +308,32 @@
       "top_bash_command_families": [
         {
           "prefix": "ls",
-          "count": 6388,
+          "count": 6399,
           "share_of_bash_calls": 14.67,
           "example_command": "ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ | grep 686"
         },
         {
           "prefix": "uv run",
-          "count": 5690,
+          "count": 5697,
           "share_of_bash_calls": 13.06,
           "example_command": "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-683 2>&1 | tail -20"
         },
         {
           "prefix": "grep",
-          "count": 5403,
-          "share_of_bash_calls": 12.4,
+          "count": 5412,
+          "share_of_bash_calls": 12.41,
           "example_command": "# Check if submit-to-gemini.sh and submit-to-codex.sh exist and where they write logs\ngrep -n \"orchestrator\\|gemini\\|codex\" /mnt/local-analysis/worksp"
         },
         {
           "prefix": "cat",
-          "count": 4474,
-          "share_of_bash_calls": 10.27,
+          "count": 4475,
+          "share_of_bash_calls": 10.26,
           "example_command": "cat .claude/work-queue/pending/WRK-683.md | head -20"
         },
         {
           "prefix": "find",
           "count": 3368,
-          "share_of_bash_calls": 7.73,
+          "share_of_bash_calls": 7.72,
           "example_command": "find .claude/work-queue -name \"WRK-683*\" 2>/dev/null && git diff --stat HEAD 2>/dev/null | head -20"
         },
         {
@@ -344,20 +344,20 @@
         },
         {
           "prefix": "sed",
-          "count": 1337,
+          "count": 1338,
           "share_of_bash_calls": 3.07,
           "example_command": "sed -n '32p' logs/orchestrator/claude/session_20260302.jsonl | cat -v | head -c 300"
         },
         {
           "prefix": "gh",
-          "count": 1240,
+          "count": 1243,
           "share_of_bash_calls": 2.85,
           "example_command": "gh repo view vamseeachanta/aceengineer-strategy --json visibility -q '.visibility' 2>/dev/null"
         }
       ],
       "special_counts": {},
-      "python3_per_1k_records": 9.05,
-      "uv_python_per_1k_records": 74.34
+      "python3_per_1k_records": 9.06,
+      "uv_python_per_1k_records": 74.26
     },
     "codex": {
       "source": "raw_logs",
@@ -1225,7 +1225,7 @@
         {
           "provider": "claude",
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 12.12,
+          "known_migration_debt_per_1k_records": 12.1,
           "known_migration_debt_rule_count": 4,
           "top_migration_rule_id": "legacy_work_queue_transition",
           "top_migration_rule_reads": 318,
@@ -1267,22 +1267,24 @@
       "providers": [
         {
           "provider": "claude",
-          "urgency_score": 83.8,
+          "urgency_score": 83.74,
+          "urgency_tier": "urgent_now",
           "activity_status": "active",
-          "corpus_status": "corpus_pruned_or_rebuilt",
+          "corpus_status": "positive_corpus_growth_beyond_recent_activity",
           "debt_status": "high_debt",
           "python_hygiene_status": "uv_preferred",
-          "recent_post_records": 112,
+          "recent_post_records": 92,
           "recent_sessions": 3,
           "known_migration_debt_reads": 972,
-          "known_migration_debt_per_1k_records": 12.12,
-          "missing_repo_reads_per_1k_records": 94.72,
+          "known_migration_debt_per_1k_records": 12.1,
+          "missing_repo_reads_per_1k_records": 94.61,
           "primary_issue": "legacy_work_queue_transition",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
         {
           "provider": "gemini",
           "urgency_score": 47.68,
+          "urgency_tier": "next_up",
           "activity_status": "idle",
           "corpus_status": "aligned",
           "debt_status": "high_debt",
@@ -1298,6 +1300,7 @@
         {
           "provider": "codex",
           "urgency_score": 10.13,
+          "urgency_tier": "investigate",
           "activity_status": "idle",
           "corpus_status": "aligned",
           "debt_status": "drift_only",
@@ -1313,6 +1316,7 @@
         {
           "provider": "hermes",
           "urgency_score": 4.33,
+          "urgency_tier": "monitor",
           "activity_status": "idle",
           "corpus_status": "aligned",
           "debt_status": "drift_only",
@@ -1326,70 +1330,93 @@
           "recommended_action": "sample top missing repo reads to separate remap work from benign variance"
         }
       ],
-      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.8, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items)."
+      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 83.74, issue: legacy_work_queue_transition), then address gemini (urgency 47.68, issue: legacy_local_work_queue_items).",
+      "recommended_actions": [
+        {
+          "provider": "claude",
+          "urgency_tier": "urgent_now",
+          "urgency_score": 83.74,
+          "primary_issue": "legacy_work_queue_transition",
+          "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
+        },
+        {
+          "provider": "gemini",
+          "urgency_tier": "next_up",
+          "urgency_score": 47.68,
+          "primary_issue": "legacy_local_work_queue_items",
+          "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
+        },
+        {
+          "provider": "codex",
+          "urgency_tier": "investigate",
+          "urgency_score": 10.13,
+          "primary_issue": "unmapped path drift",
+          "recommended_action": "sample top missing repo reads to separate remap work from benign variance"
+        }
+      ]
     },
     "recent_activity_since_previous_audit": {
-      "previous_generated_at": "2026-04-20T09:15:28Z",
+      "previous_generated_at": "2026-04-20T14:50:31Z",
       "status": "ok",
       "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
       "providers": {
         "claude": {
-          "post_records": 112,
+          "post_records": 92,
           "sessions": 3,
           "top_tools": [
             {
               "tool": "Bash",
-              "count": 63
+              "count": 55
             },
             {
               "tool": "Read",
-              "count": 21
+              "count": 18
             },
             {
               "tool": "Edit",
-              "count": 19
+              "count": 7
+            },
+            {
+              "tool": "Agent",
+              "count": 6
             },
             {
               "tool": "Write",
               "count": 5
-            },
-            {
-              "tool": "Agent",
-              "count": 4
             }
           ],
           "top_missing_repo_reads": [],
           "top_bash_command_families": [
             {
               "prefix": "ls",
-              "count": 10
+              "count": 11
             },
             {
               "prefix": "grep",
-              "count": 8
-            },
-            {
-              "prefix": "gh",
-              "count": 8
-            },
-            {
-              "prefix": "git status",
-              "count": 7
-            },
-            {
-              "prefix": "git add",
-              "count": 5
-            },
-            {
-              "prefix": "uv run",
-              "count": 4
+              "count": 9
             },
             {
               "prefix": "git log",
+              "count": 8
+            },
+            {
+              "prefix": "uv run",
+              "count": 7
+            },
+            {
+              "prefix": "gh",
               "count": 3
             },
             {
-              "prefix": "tail",
+              "prefix": "git push",
+              "count": 2
+            },
+            {
+              "prefix": "git",
+              "count": 2
+            },
+            {
+              "prefix": "git add",
               "count": 2
             }
           ]
@@ -1419,7 +1446,7 @@
       "ranked_providers": [
         {
           "provider": "claude",
-          "post_records": 112,
+          "post_records": 92,
           "sessions": 3
         },
         {
@@ -1440,27 +1467,27 @@
       ]
     },
     "corpus_change_since_previous_audit": {
-      "previous_generated_at": "2026-04-20T09:15:28Z",
+      "previous_generated_at": "2026-04-20T14:50:31Z",
       "status": "ok",
       "scope_note": "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.",
       "providers": {
         "claude": {
-          "status": "corpus_pruned_or_rebuilt",
+          "status": "positive_corpus_growth_beyond_recent_activity",
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
-          "previous_post_records": 80119,
-          "current_post_records": 80228,
-          "post_record_delta": 109,
+          "previous_post_records": 80228,
+          "current_post_records": 80323,
+          "post_record_delta": 95,
           "previous_sessions": 33,
           "current_sessions": 33,
           "session_delta": 0,
           "previous_missing_repo_reads": 7599,
           "current_missing_repo_reads": 7599,
           "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 112,
+          "event_time_post_records_since_previous_audit": 92,
           "event_time_sessions_since_previous_audit": 3,
-          "reconciliation_gap_post_records": -3,
-          "interpretation": "Snapshot shrank relative to recent event-time activity, suggesting pruning, rebuild, or reclassification."
+          "reconciliation_gap_post_records": 3,
+          "interpretation": "Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage."
         },
         "codex": {
           "status": "aligned",
@@ -1520,10 +1547,10 @@
       "ranked_providers": [
         {
           "provider": "claude",
-          "post_record_delta": 109,
-          "event_time_post_records_since_previous_audit": 112,
-          "reconciliation_gap_post_records": -3,
-          "status": "corpus_pruned_or_rebuilt"
+          "post_record_delta": 95,
+          "event_time_post_records_since_previous_audit": 92,
+          "reconciliation_gap_post_records": 3,
+          "status": "positive_corpus_growth_beyond_recent_activity"
         },
         {
           "provider": "codex",
@@ -1547,8 +1574,8 @@
           "status": "aligned"
         }
       ],
-      "largest_positive_reconciliation_gap_provider": "codex",
-      "largest_negative_reconciliation_gap_provider": "claude"
+      "largest_positive_reconciliation_gap_provider": "claude",
+      "largest_negative_reconciliation_gap_provider": "codex"
     }
   }
 }
