@@ -26,10 +26,11 @@
 |---|---|---|---|
 | 1 | MINOR | MAJOR (Class A) | MAJOR (Class A) |
 | 2 | MINOR | MAJOR (Class A — new) | MAJOR (Class B only) |
-| 3 | APPROVE (self) | __PLACEHOLDER_CODEX_ITER3__ | MAJOR (Class B only — self-circular, resolves at #2405) |
+| 3 | APPROVE (self) | MAJOR (Class A: 2 internal-consistency contradictions + Class B) | MAJOR (Class B only — self-circular, resolves at #2405) |
 
 v1→v2 fixed iter-1 Class A (compact-retry logic, operating-model checks, #2405 dep wording, threat model, AC↔test matrix).
 v2→v3 fixed iter-2 Class A (removed argv fallback, marked README as already-done, cited operating-model source, tightened T27, added T31–T33 for exit-code coverage).
+**v3→v3-final (post-iter-3, inline cleanup — not a new design iteration):** fixed 2 P1 internal-consistency contradictions Codex iter-3 caught — Files-to-Change row + Risks section had stale "argv-path fallback" language carried over from v2 while v3 Pseudocode said "hard-fail exit 7". All now consistently say hard-fail. Also cleanly split AC into automated-test-backed criteria vs release-gate operational checks (per iter-3 Codex P1).
 
 Class B "unverified live state" findings are the #2405 meta-class — reviewer sandbox cannot check live repo state; resolves when #2405 attestation lands. Acknowledged and deferred.
 
@@ -47,3 +48,9 @@ Plan artifacts on `origin/main`:
 - v1: commit `a73ec66f6`
 - v2: commit `e5446f6d6`
 - v3: commit `5d7552c4d`
+- v3-final cleanup (swept into auto-sync): commits `c47f57a20`, `94950ba88`
+
+Review artifacts at `scripts/review/results/`:
+- iter-1: `2026-04-20-plan-2406-{claude,codex,gemini}.md`
+- iter-2: `2026-04-20-v2-plan-2406-{claude,codex,gemini}.md`
+- iter-3: `2026-04-20-v3-plan-2406-{claude,codex,gemini}.md`

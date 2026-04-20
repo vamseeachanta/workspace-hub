@@ -41,7 +41,7 @@ Adversarial review on #2399 converged that the monolithic repo-ecosystem scope i
 - #2399
 
 
-## Draft plan under review
+## Revised draft plan under review
 # Plan for #2408: Workspace-hub-only model-release readiness contract and upgrade playbook
 
 > **Status:** draft
@@ -77,6 +77,7 @@ Adversarial review on #2399 converged that the monolithic repo-ecosystem scope i
 - Related issue #2089 — weekly Hermes + AI provider settings review; useful operational context.
 - Related issue #1583 — Hermes config parity via repo ecosystem templates; useful for Hermes-facing surfaces.
 - `docs/plans/README.md` — for harness issues, required retrieval sources include `config/agents/` and `.claude/rules/`.
+- `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` — documentation-boundary reference for keeping this child scoped to durable guidance rather than transient execution artifacts.
 
 ### Gaps identified
 - No single workspace-hub-only contract for model-release readiness.
@@ -94,7 +95,8 @@ Adversarial review on #2399 converged that the monolithic repo-ecosystem scope i
 | Main deliverable package | docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md |
 | Standing contract | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md |
 | Upgrade playbook | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md |
-| Discoverability anchors | AGENTS.md; CLAUDE.md; GEMINI.md; docs/standards/CONTROL_PLANE_CONTRACT.md |
+| Contract/anchor tests | tests/docs/test_workspace_hub_model_release_readiness.py |
+| Discoverability anchors | AGENTS.md; docs/standards/CONTROL_PLANE_CONTRACT.md; provider adapters remain thin and are referenced, not expanded |
 | Plan review — Claude | scripts/review/results/2026-04-20-plan-2408-claude.md |
 | Plan review — Codex | scripts/review/results/2026-04-20-plan-2408-codex.md |
 | Plan review — Gemini | scripts/review/results/2026-04-20-plan-2408-gemini.md |
@@ -111,13 +113,14 @@ A workspace-hub-only readiness contract and upgrade playbook, anchored from cano
 ## Pseudocode
 
 ```
-inventory workspace_hub control-plane surfaces only: AGENTS.md, provider adapters, config/agents, .claude/rules, sync-agent-configs, review-routing policy
+inventory workspace_hub control-plane surfaces only: AGENTS.md, provider adapter directories, config/agents, .claude/rules, sync-agent-configs, review-routing policy
 extract the readiness dimensions this child must cover: context-budget/truncation safety, machine-readable-vs-prose guidance, prompt-pack portability, discoverability, upgrade procedure
-write one cohesive workspace-hub package summarizing current surfaces, gaps, and contract boundaries
+choose one consistent anchor strategy: add discoverability to AGENTS.md and CONTROL_PLANE_CONTRACT.md while keeping provider adapters thin and unchanged except where they already act as canonical pointers
+write one cohesive workspace-hub package summarizing current surfaces, gaps, contract boundaries, and explicit out-of-scope tier-1 work
 write a standing contract in docs/standards that references but does not supersede CONTROL_PLANE_CONTRACT.md
 write a separate upgrade playbook focused on workspace-hub-only release adoption steps
-update chosen canonical entrypoints with discoverability anchors to the new readiness docs
-stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory to sibling issues
+add explicit test file `tests/docs/test_workspace_hub_model_release_readiness.py` covering required dimensions, scope boundary, anchor presence, non-contradiction with CONTROL_PLANE_CONTRACT, and line-count compliance for thin adapters
+stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory and Codex adapter-shape changes to sibling/follow-up issues
 ```
 
 ---
@@ -129,9 +132,8 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 | Create | docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md | cohesive summary of workspace-hub surfaces, gaps, and recommendations |
 | Create | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md | standing workspace-hub readiness contract |
 | Create | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md | explicit workspace-hub upgrade playbook |
+| Create | tests/docs/test_workspace_hub_model_release_readiness.py | executable checks for dimensions, anchors, scope boundary, non-contradiction, and line limits |
 | Update | AGENTS.md | add discoverability pointer |
-| Update | CLAUDE.md | add discoverability pointer |
-| Update | GEMINI.md | add discoverability pointer |
 | Update | docs/standards/CONTROL_PLANE_CONTRACT.md | anchor readiness contract from canonical control-plane standard |
 | Update | docs/plans/README.md | add this plan to index |
 
@@ -145,8 +147,10 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 | test_contract_covers_machine_readable_vs_prose_guidance | rules-vs-prose dimension is explicit | contract text | named section/requirements present |
 | test_contract_covers_prompt_pack_portability | portability dimension is explicit | contract/playbook text | provider/machine portability section present |
 | test_upgrade_playbook_separates_provider_vs_repo_drift | playbook handles ownership correctly | playbook text | provider-owned vs repo-owned branches present |
-| test_discoverability_anchors_exist_in_workspace_entrypoints | readiness docs are reachable | AGENTS/CLAUDE/GEMINI/control-plane docs | explicit links/references present |
-| test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory |
+| test_anchor_strategy_matches_control_plane_contract | chosen anchors are consistent with adapter topology | AGENTS + CONTROL_PLANE_CONTRACT | explicit consistent references only |
+| test_line_count_compliance_for_thin_adapters | thin-adapter limit is preserved | AGENTS.md, CLAUDE.md, GEMINI.md | files remain within policy limit |
+| test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory and Codex adapter-shape changes |
+| test_non_contradiction_with_control_plane_contract | new docs do not contradict current control-plane contract | contract + playbook + control-plane contract | no contradiction markers |
 
 ---
 
@@ -155,11 +159,13 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 - [ ] `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md` exists
 - [ ] `docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md` exists
 - [ ] `docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md` exists
+- [ ] `tests/docs/test_workspace_hub_model_release_readiness.py` exists
 - [ ] contract explicitly covers context-budget/truncation-safe artifact design
 - [ ] contract explicitly covers machine-readable rules/skills vs prose-only guidance
 - [ ] contract explicitly covers prompt-pack portability for workspace-hub workflows
-- [ ] discoverability anchors exist in the chosen canonical workspace-hub entrypoints
-- [ ] package/contract explicitly state that tier-1 ecosystem inventory is out of scope for this issue
+- [ ] discoverability anchors exist in the chosen canonical workspace-hub entrypoints without requiring provider-adapter expansion
+- [ ] package/contract explicitly state that tier-1 ecosystem inventory and Codex adapter-shape changes are out of scope for this issue
+- [ ] line-count compliance for thin adapters is explicitly tested
 - [ ] review artifacts are posted to `scripts/review/results/`
 
 ---
@@ -181,9 +187,9 @@ Revisions made based on review:
 
 ## Risks and Open Questions
 
-- **Risk:** root-vs-hidden provider adapter conventions may still contain ambiguity; the contract must describe current workspace-hub reality without inventing a new convention.
-- **Risk:** adding too many anchors could violate thin-adapter expectations; the updates should stay minimal and discoverability-focused.
-- **Open:** should `CODEX.md` also be introduced as a root thin adapter in workspace-hub, or should this child strictly document current state and defer Codex adapter shape to later work?
+- **Risk:** root-vs-hidden provider adapter conventions may still contain ambiguity; this child resolves that by documenting current workspace-hub state and anchoring only from `AGENTS.md` + `CONTROL_PLANE_CONTRACT.md`, not by inventing new provider-adapter shapes.
+- **Risk:** adding too many anchors could violate thin-adapter expectations; provider adapters remain thin and are referenced rather than expanded in this child.
+- **Open:** none — any Codex root-adapter normalization is explicitly deferred to later work if still desired.
 
 ---
 
