@@ -20,6 +20,17 @@ Do not just read the existing provider audit and summarize it. First refresh the
 
 ## Workflow
 
+### 0. Prefer the tracked delta section when available
+If the refreshed audit already includes a `recent_activity_since_previous_audit` executive-summary section, use it as the first-pass filter for which providers actually need deeper inspection.
+
+Treat this as the canonical answer to:
+- which providers had post-audit work
+- how many post-hook records they produced
+- how many runtime sessions they opened
+- which recent Bash families / missing repo reads matter first
+
+This avoids re-deriving the same cutoff analysis ad hoc each time.
+
 ### 1. Load existing provider audit artifacts
 Read:
 - `analysis/provider-session-ecosystem-audit.json`
