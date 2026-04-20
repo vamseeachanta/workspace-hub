@@ -2,8 +2,9 @@
 
 > **Issue:** [#2205](https://github.com/vamseeachanta/workspace-hub/issues/2205)
 > **Status:** Normative — approved parent architecture for the intelligence ecosystem
-> **Date:** 2026-04-11
+> **Date:** 2026-04-11 (amended 2026-04-19)
 > **Scope:** Architecture and contracts only. Implementation delegated to child issues.
+> **Amendment 2026-04-19:** Resolves three child-level patterns surfaced by the 2026-04-17 cross-provider review of #2206/#2207/#2209. Affects Section 2 (most-durable-owner worked examples), Section 3 (identity namespace, status vocabulary, `merged_at` rename), and adds Section 8.1 (L3 frontmatter schema authority).
 
 ---
 
@@ -55,18 +56,76 @@ The intelligence ecosystem is organized into six layers. Each layer has exactly 
 
 Every artifact in the intelligence ecosystem belongs to exactly one layer. If an artifact appears to serve two layers, it must be split or assigned to the layer that owns its primary concern. Ambiguous cases are resolved by the **most-durable-owner rule**: assign to the lowest-numbered layer whose ownership definition covers the artifact's primary purpose.
 
+### Worked examples for the most-durable-owner rule
+
+The 2026-04-17 cross-provider review found two children inventing layers ("between L5 and L6" recurring-operational; "L3-adjacent" for normative architecture docs). The six-layer model already accommodates these artifacts — children misclassified them. The following worked examples are now normative; child issues must use them rather than invent new layers or hybrids.
+
+| Artifact class | Layer | Rationale |
+|---|---|---|
+| **Normative architecture documents** (this operating model, child contracts under `docs/document-intelligence/`, conformance designs, control-plane contracts) | **L3** | They are durable knowledge *about how the system operates*. They distill design decisions for reuse, which is the L3 ownership concern. They are not execution state and not transient. |
+| **Recurring operational outputs** (weekly ecosystem reviews, nightly batch summaries, daily readiness reports) | **L5** individually; synthesized findings flow to **L3** via the standard L5→L3 promotion path | Each individual run is execution-state evidence (what happened in this period). Patterns and findings extracted across runs become durable knowledge through the existing promotion flow. No new layer required. |
+| **Session handoff documents** (`.planning/`, scratchpads, agent context dumps) | **L6** | Transient by definition. May be promoted to L3 via L6→L3 if findings warrant. |
+| **Plan documents** (`docs/plans/*.md`) | **L5** | Scope, ownership, acceptance criteria — all execution-state ownership. Even when a plan contains durable architectural decisions, those decisions belong on L3 (this doc and its siblings) and the plan references them. |
+| **Review artifacts** (`scripts/review/results/*.md`) | **L5** | Per-issue review evidence is execution-state. A pattern surfaced by repeated reviews may be promoted to L3, but the per-issue artifact stays at L5. |
+
+### Forbidden inventions
+
+The following patterns are explicit violations of the ownership invariant. Conformance check GUARD-1 (#2206) detects them:
+
+- **"Between L<n> and L<m>" classifications.** No artifact is between layers. Pick one.
+- **"L<n>-adjacent" classifications.** No artifact is adjacent to a layer. It is in a layer or it is not.
+- **"Hybrid layer" classifications.** No artifact owns multiple layers. If it appears to, split it or apply the most-durable-owner rule.
+
+If a child genuinely cannot place an artifact using the worked examples or the most-durable-owner rule, escalate per Section 10 conflict resolution. Do not invent.
+
 ---
 
 ## 3. Canonical Document Identity
 
 ### The doc_key rule
 
-The canonical identity of any source document is **content-based**: a `doc_key` derived from the document's content hash (SHA-256 or equivalent).
+The canonical identity of any source document is **content-based**: a `doc_key` formed as `<algorithm>:<hex>`, where `<algorithm>` declares the hash function and `<hex>` is the hex-encoded digest.
 
 - **File paths are aliases.** The same document may appear at multiple paths across machines, mounts, and cache locations. These paths are metadata about the document, not its identity.
 - **Path never outranks content identity.** When two paths resolve to the same `doc_key`, they are the same document regardless of location.
 - **Registries must refer to `doc_key`.** All registry entries, manifests, summaries, promoted artifacts, and wiki-ready records must reference the canonical `doc_key` rather than inventing separate identities from paths alone.
 - **Path is retained for provenance and reachability.** Every known path for a document is recorded as an alias with availability metadata (machine, mount, last-verified timestamp).
+
+### Identity namespace (amendment 2026-04-19)
+
+The namespace prefix is normative. Live writers in `scripts/data/document-index/` already emit namespaced keys (verified 2026-04-19); this section formalizes that behavior and constrains future writes.
+
+| Algorithm prefix | Status | Permitted writers | Notes |
+|---|---|---|---|
+| `sha256:` | **Canonical** | All new writers | Required for any new `doc_key` written after 2026-04-19. |
+| `md5:` | **Legacy, read-only** | `og_standards` legacy index entries only (`scripts/data/document-index/phase-a-index.py:135-137`) | Permitted indefinitely for reads. New `og_standards` writes must upgrade to `sha256:` when a record is touched for any other reason. No hard sunset; opportunistic upgrade only. |
+
+Bare-hex (no prefix) is a violation. If discovered, treat as `sha256:` for compatibility but emit a conformance warning (#2206).
+
+### Status vocabulary (amendment 2026-04-19)
+
+The `status` field on registry entries uses a parent-defined enum. The 2026-04-17 review found live data emitting `gap` — a value not in any child contract's enum. The full superset is now normative:
+
+| Value | Meaning |
+|---|---|
+| `gap` | Inventory entry with no extracted content yet (initial state for indexed-but-unprocessed sources) |
+| `indexed` | Document discovered and content-hashed; metadata captured |
+| `summarized` | Summary content produced and persisted |
+| `extracted` | Structured extraction (entities, fields) produced |
+| `promoted` | Content has been promoted to L3 durable knowledge |
+| `superseded` | Replaced by a newer `doc_key` for the same logical document |
+| `unreachable` | Source path or mount no longer accessible from any known machine |
+
+Children may select subsets of this enum but **may not redefine values or invent new ones**. New states require a parent amendment.
+
+### `merged_at` field (amendment 2026-04-19, replaces `discovered`)
+
+`scripts/data/document-index/provenance.py:82` stamps a timestamp at provenance-merge time, not at first-index time. The field was previously named `discovered`, which contradicted its semantic. **Rename: `discovered` → `merged_at`.**
+
+- **Definition:** ISO-8601 UTC timestamp recorded when a provenance record is first appended to a document's `provenance[]` array.
+- **Mutability:** Immutable per individual provenance record. New provenance records get new `merged_at` values.
+- **First-index semantic:** If a use case requires a true "first time this document was indexed anywhere" timestamp, add a new field `first_indexed_at` rather than retrofitting `merged_at`. None is required at this time.
+- **Rename plan:** New writes use `merged_at`. Reads must accept both `merged_at` and the legacy `discovered` field; readers should prefer `merged_at` when both are present. Implementation rename is delegated to #2207 (provenance contract).
 
 ### Identity across machines
 
@@ -172,6 +231,56 @@ This is an architectural requirement: one conceptual registry that unifies curre
 - The query interface
 
 These details are delegated to #2207 (provenance contract) and #2136 (accessibility registry). This document requires only that child implementations converge on a single `doc_key`-based lookup model rather than inventing incompatible identity systems.
+
+---
+
+## 8.1 L3 Frontmatter Schema Authority (amendment 2026-04-19)
+
+The 2026-04-17 cross-provider review found a 4-way disagreement on the required-field set for L3 wiki page frontmatter (#2207, #2209, #2206, and the live `knowledge/wikis/engineering/CLAUDE.md` each prescribed different shapes). This section establishes a single authority while preserving domain-specific flexibility.
+
+### Authority delegation
+
+The **per-wiki `CLAUDE.md` file is the schema authority for that wiki's L3 frontmatter** (e.g., `knowledge/wikis/engineering/CLAUDE.md` governs the engineering wiki, `knowledge/wikis/maritime-law/CLAUDE.md` governs the maritime-law wiki, etc.).
+
+This bless live behavior — domain wikis already maintain different shapes (`knowledge/wikis/engineering/CLAUDE.md` declares `{title, tags, added, last_updated}` required; `knowledge/wikis/maritime-law/wiki/index.md` and `naval-architecture/wiki/index.md` use `{domain, created, last_updated, page_count}`). Forcing centralized convergence would impose costly migration with no operational driver.
+
+### Parent-mandated baseline floor
+
+To enable conformance checks (#2206) to assert anything universally, every wiki `CLAUDE.md` must declare these fields as required for L3 page frontmatter:
+
+| Field | Type | Purpose |
+|---|---|---|
+| `title` | string | Human-readable page identity |
+| `last_updated` | ISO-8601 date | Freshness signal for L3 promotion-decay tracking |
+| `doc_key` | `<algorithm>:<hex>` per Section 3 | Canonical identity link to L1/L2 source(s); enables cross-layer reference |
+
+A wiki `CLAUDE.md` that omits any baseline-floor field is a violation of this operating model and fails conformance check FRONT-1 (#2206).
+
+### What children may add
+
+Children may layer additional required fields on top of the baseline floor for the wiki domains they govern:
+
+- **#2207** may require `source_ref`, `domain`, `promoted_from` for standards-promoted pages.
+- **#2209** may require `tags`, `sources`, `added` for durable-knowledge pages.
+- **#2206** may require additional fields for conformance-relevant page classes.
+
+Children **may not contradict the baseline floor or weaken it**. If a child's required-set conflicts with another child's required-set, both children must update the relevant wiki `CLAUDE.md` to reconcile, since the wiki `CLAUDE.md` is the binding authority.
+
+### What children may not do
+
+- Children may not declare a frontmatter schema for L3 pages without writing it into the relevant wiki `CLAUDE.md`. Schema declarations in `docs/document-intelligence/*.md` are *recommendations*; only the wiki `CLAUDE.md` binds.
+- Children may not invent a centralized `knowledge/wikis/SCHEMA.md`. The authority is per-wiki by deliberate choice.
+- Children may not assume that fields they require exist on pages outside their governance scope.
+
+### Migration path for existing children
+
+The three existing child contracts (#2207, #2209, #2206) currently declare conflicting required-sets. Each must be revised to:
+
+1. Reference this section as the authority.
+2. Reframe their required-set as "additional fields on top of baseline floor" rather than "required-set."
+3. Where their required-set contradicts another child's, propose a wiki `CLAUDE.md` update on the relevant wiki.
+
+This migration is part of the per-child revision dispatch following the 2026-04-17 cross-provider review.
 
 ---
 

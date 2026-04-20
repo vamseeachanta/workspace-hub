@@ -114,34 +114,77 @@ Write to a temp file: `/tmp/gsd-review-prompt-{phase}.md`
 </step>
 
 <step name="invoke_reviewers">
-For each selected CLI, invoke in sequence (not parallel — avoid rate limits):
+Determine review mode based on route tier. Read cross_modes from routing-config.yaml:
 
-**Gemini:**
 ```bash
+# Determine if parallel review is enabled for this tier
+# Default to STANDARD if tier not specified
+REVIEW_TIER="${REVIEW_TIER:-STANDARD}"
+PARALLEL_REVIEW=$(python3 -c "
+import yaml
+with open('config/agents/routing-config.yaml') as f:
+    cfg = yaml.safe_load(f)
+print(cfg.get('cross_modes', {}).get('cross_review', {}).get('$REVIEW_TIER', 'true'))
+" 2>/dev/null || echo "true")
+```
+
+**If parallel review is enabled (Route B/C/REASONING — default):**
+
+Invoke all selected CLIs in parallel using bash `&` + `wait`. Per D-06, rate limits are independent across providers (Anthropic, OpenAI, Google APIs). Each process writes to its own temp file.
+
+```bash
+# Parallel invocation — providers write to independent temp files
+# Rate limits are independent per provider (D-06)
+REVIEW_TMPDIR=$(mktemp -d "/tmp/gsd-review-parallel-XXXXXX")
+trap 'rm -rf "$REVIEW_TMPDIR"' EXIT ERR INT TERM
+
+declare -A REVIEW_PIDS
+
+# Gemini
+gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > "$REVIEW_TMPDIR/gemini.md" &
+REVIEW_PIDS[gemini]=$!
+
+# Claude (separate session)
+claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" --no-input 2>/dev/null > "$REVIEW_TMPDIR/claude.md" &
+REVIEW_PIDS[claude]=$!
+
+# Codex
+codex exec --skip-git-repo-check "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > "$REVIEW_TMPDIR/codex.md" &
+REVIEW_PIDS[codex]=$!
+
+# Wait for all — capture individual exit codes
+for provider in "${!REVIEW_PIDS[@]}"; do
+  if wait "${REVIEW_PIDS[$provider]}" 2>/dev/null; then
+    cp "$REVIEW_TMPDIR/${provider}.md" "/tmp/gsd-review-${provider}-{phase}.md"
+    echo -e "  ${GREEN}${provider} review completed${NC}"
+  else
+    echo -e "  ${YELLOW}${provider} review failed (exit $?)${NC}"
+  fi
+done
+```
+
+**If parallel review is disabled (Route A — SIMPLE):**
+
+Fall back to single-provider sequential invocation (existing behavior, cheapest provider only):
+
+```bash
+# Sequential invocation — single provider for Route A
 gemini -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-gemini-{phase}.md
 ```
 
-**Claude (separate session):**
-```bash
-claude -p "$(cat /tmp/gsd-review-prompt-{phase}.md)" --no-input 2>/dev/null > /tmp/gsd-review-claude-{phase}.md
-```
-
-**Codex:**
-```bash
-codex exec --skip-git-repo-check "$(cat /tmp/gsd-review-prompt-{phase}.md)" 2>/dev/null > /tmp/gsd-review-codex-{phase}.md
-```
-
-If a CLI fails, log the error and continue with remaining CLIs.
-
-Display progress:
+Display progress for both modes:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  GSD ► CROSS-AI REVIEW — Phase {N}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-◆ Reviewing with {CLI}... done ✓
-◆ Reviewing with {CLI}... done ✓
+Mode: {parallel|sequential} (tier: {REVIEW_TIER})
+
+◆ Reviewing with {CLI}... done
+◆ Reviewing with {CLI}... done
 ```
+
+If a CLI fails in parallel mode, log the error and continue — same as current sequential behavior. The write_reviews step already handles missing provider outputs.
 </step>
 
 <step name="write_reviews">

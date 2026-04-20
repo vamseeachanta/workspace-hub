@@ -67,9 +67,9 @@ If `--wave` is absent, preserve the current behavior of executing all incomplete
 Load all context in one call:
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init execute-phase "${PHASE_ARG}")
+INIT=$(gsd-sdk query init.execute-phase "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-executor 2>/dev/null)
+AGENT_SKILLS=$(gsd-sdk query agent-skills gsd-executor 2>/dev/null)
 ```
 
 Parse JSON for: `executor_model`, `verifier_model`, `commit_docs`, `parallelization`, `branching_strategy`, `branch_name`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `plans`, `incomplete_plans`, `plan_count`, `incomplete_count`, `state_exists`, `roadmap_exists`, `phase_req_ids`, `response_language`.
@@ -79,7 +79,7 @@ Parse JSON for: `executor_model`, `verifier_model`, `commit_docs`, `parallelizat
 Read worktree config:
 
 ```bash
-USE_WORKTREES=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.use_worktrees 2>/dev/null || echo "true")
+USE_WORKTREES=$(gsd-sdk query config-get workflow.use_worktrees 2>/dev/null || echo "true")
 ```
 
 If the project uses git submodules, worktree isolation is skipped regardless of the `workflow.use_worktrees` config — the executor commit protocol cannot correctly handle submodule commits inside isolated worktrees. Sequential execution handles submodules transparently.
@@ -96,7 +96,7 @@ When `USE_WORKTREES` is `false`, all executor agents run without `isolation="wor
 Read context window size for adaptive prompt enrichment:
 
 ```bash
-CONTEXT_WINDOW=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get context_window 2>/dev/null || echo "200000")
+CONTEXT_WINDOW=$(gsd-sdk query config-get context_window 2>/dev/null || echo "200000")
 ```
 
 When `CONTEXT_WINDOW >= 500000` (1M-class models), subagent prompts include richer context:
@@ -128,7 +128,7 @@ inline path for each plan.
 ```bash
 # REQUIRED: prevents stale auto-chain from previous --auto runs
 if [[ ! "$ARGUMENTS" =~ --auto ]]; then
-  node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false 2>/dev/null
+  gsd-sdk query config-set workflow._auto_chain_active false 2>/dev/null
 fi
 ```
 </step>
@@ -225,7 +225,7 @@ Report: "Found {plan_count} plans in {phase_dir} ({incomplete_count} incomplete)
 
 **Update STATE.md for phase start:**
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state begin-phase --phase "${PHASE_NUMBER}" --name "${PHASE_NAME}" --plans "${PLAN_COUNT}"
+gsd-sdk query state.begin-phase --phase "${PHASE_NUMBER}" --name "${PHASE_NAME}" --plans "${PLAN_COUNT}"
 ```
 This updates Status, Last Activity, Current focus, Current Position, and plan counts in STATE.md so frontmatter and body text reflect the active phase immediately.
 </step>
@@ -234,7 +234,7 @@ This updates Status, Last Activity, Current focus, Current Position, and plan co
 Load plan inventory with wave grouping in one call:
 
 ```bash
-PLAN_INDEX=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase-plan-index "${PHASE_NUMBER}")
+PLAN_INDEX=$(gsd-sdk query phase-plan-index "${PHASE_NUMBER}")
 ```
 
 Parse JSON for: `phase`, `plans[]` (each with `id`, `wave`, `autonomous`, `objective`, `files_modified`, `task_count`, `has_summary`), `waves` (map of wave number → plan IDs), `incomplete`, `has_checkpoints`.
@@ -276,15 +276,15 @@ executor skips them.
    `workflow.cross_ai_execution` is `true`. Plans matching both conditions are marked for cross-AI.
 
 ```bash
-CROSS_AI_ENABLED=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.cross_ai_execution --default false 2>/dev/null)
-CROSS_AI_CMD=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.cross_ai_command --default "" 2>/dev/null)
-CROSS_AI_TIMEOUT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.cross_ai_timeout --default 300 2>/dev/null)
+CROSS_AI_ENABLED=$(gsd-sdk query config-get workflow.cross_ai_execution 2>/dev/null || echo "false")
+CROSS_AI_CMD=$(gsd-sdk query config-get workflow.cross_ai_command 2>/dev/null || echo "")
+CROSS_AI_TIMEOUT=$(gsd-sdk query config-get workflow.cross_ai_timeout 2>/dev/null || echo "300")
 ```
 
 **If no plans are marked for cross-AI:** Skip to execute_waves.
 
 **If plans are marked but `cross_ai_command` is empty:** Error — tell user to set
-`workflow.cross_ai_command` via `gsd-tools.cjs config-set workflow.cross_ai_command "<command>"`.
+`workflow.cross_ai_command` via `gsd-sdk query config-set workflow.cross_ai_command "<command>"`.
 
 **For each cross-AI plan (sequentially):**
 
@@ -463,7 +463,7 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        You are running as a PARALLEL executor agent in a git worktree.
        Use --no-verify on all git commits to avoid pre-commit hook contention
        with other agents. The orchestrator validates hooks once after all agents complete.
-       For gsd-tools commits: add --no-verify flag.
+       For `gsd-sdk query commit` (or legacy `gsd-tools.cjs` commit): add --no-verify flag when needed.
        For direct git commits: use git commit --no-verify -m "..."
 
        IMPORTANT: Do NOT modify STATE.md or ROADMAP.md. execute-plan.md
@@ -614,11 +614,13 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
          continue
        fi
 
-       # Merge the worktree branch into the current branch
-       git merge "$WT_BRANCH" --no-edit -m "chore: merge executor worktree ($WT_BRANCH)" 2>&1 || {
+       # Merge the worktree branch into the current branch (--no-ff ensures a merge commit so HEAD~1 is reliable)
+       git merge "$WT_BRANCH" --no-ff --no-edit -m "chore: merge executor worktree ($WT_BRANCH)" 2>&1 || {
          echo "⚠ Merge conflict from worktree $WT_BRANCH — resolve manually"
-         rm -f "$STATE_BACKUP" "$ROADMAP_BACKUP"
-         continue
+         echo "  STATE.md backup:   $STATE_BACKUP"
+         echo "  ROADMAP.md backup: $ROADMAP_BACKUP"
+         echo "  Restore with: cp \$STATE_BACKUP .planning/STATE.md && cp \$ROADMAP_BACKUP .planning/ROADMAP.md"
+         break
        }
 
        # Restore orchestrator-owned files (main always wins)
@@ -644,7 +646,7 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
        if ! git diff --quiet .planning/STATE.md .planning/ROADMAP.md 2>/dev/null || \
           [ -n "$DELETED_FILES" ]; then
          # Only amend the commit with .planning/ files if commit_docs is enabled (#1783)
-         COMMIT_DOCS=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get commit_docs 2>/dev/null || echo "true")
+         COMMIT_DOCS=$(gsd-sdk query config-get commit_docs 2>/dev/null || echo "true")
          if [ "$COMMIT_DOCS" != "false" ]; then
            git add .planning/STATE.md .planning/ROADMAP.md 2>/dev/null || true
            git commit --amend --no-edit 2>/dev/null || true
@@ -735,12 +737,12 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
    if [ "${TEST_EXIT}" -eq 0 ]; then
      # Update ROADMAP plan progress for each completed plan in this wave
      for plan_id in {completed_plan_ids}; do
-       node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap update-plan-progress "${PHASE_NUMBER}" "${plan_id}" "complete"
+       gsd-sdk query roadmap.update-plan-progress "${PHASE_NUMBER}" "${plan_id}" "complete"
      done
 
      # Only commit tracking files if they actually changed
      if ! git diff --quiet .planning/ROADMAP.md .planning/STATE.md 2>/dev/null; then
-       node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(phase-${PHASE_NUMBER}): update tracking after wave ${N}" --files .planning/ROADMAP.md .planning/STATE.md
+       gsd-sdk query commit "docs(phase-${PHASE_NUMBER}): update tracking after wave ${N}" .planning/ROADMAP.md .planning/STATE.md
      fi
    elif [ "${TEST_EXIT}" -eq 124 ]; then
      echo "⚠ Skipping tracking update — test suite timed out. Plans remain in-progress. Run tests manually to confirm."
@@ -817,7 +819,7 @@ Execute each selected wave in sequence. Within a wave: parallel if `PARALLELIZAT
 
     Before spawning wave N+1, for each plan in the upcoming wave:
     ```bash
-    node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" verify key-links {phase_dir}/{plan}-PLAN.md
+    gsd-sdk query verify.key-links {phase_dir}/{plan}-PLAN.md
     ```
 
     If any key-link from a PRIOR wave's artifact fails verification:
@@ -846,8 +848,8 @@ Plans with `autonomous: false` require user interaction.
 
 Read auto-advance config (chain flag + user preference):
 ```bash
-AUTO_CHAIN=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
-AUTO_CFG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
+AUTO_CHAIN=$(gsd-sdk query config-get workflow._auto_chain_active 2>/dev/null || echo "false")
+AUTO_CFG=$(gsd-sdk query config-get workflow.auto_advance 2>/dev/null || echo "false")
 ```
 
 When executor returns a checkpoint AND (`AUTO_CHAIN` is `"true"` OR `AUTO_CFG` is `"true"`):
@@ -908,7 +910,7 @@ After all waves:
 
 **Security gate check:**
 ```bash
-SECURITY_CFG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.security_enforcement --raw 2>/dev/null || echo "true")
+SECURITY_CFG=$(gsd-sdk query config-get workflow.security_enforcement --raw 2>/dev/null || echo "true")
 SECURITY_FILE=$(ls "${PHASE_DIR}"/*-SECURITY.md 2>/dev/null | head -1)
 ```
 
@@ -932,7 +934,7 @@ If `SECURITY_CFG` is `true` AND SECURITY.md exists: check frontmatter `threats_o
 **Optional step — TDD collaborative review.**
 
 ```bash
-TDD_MODE=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.tdd_mode --default false 2>/dev/null)
+TDD_MODE=$(gsd-sdk query config-get workflow.tdd_mode 2>/dev/null || echo "false")
 ```
 
 **Skip if `TDD_MODE` is `false`.**
@@ -976,7 +978,7 @@ TDD_PLANS=$(grep -rl "^type: tdd" "${PHASE_DIR}"/*-PLAN.md 2>/dev/null | wc -l |
 If `WAVE_FILTER` was used, re-run plan discovery after execution:
 
 ```bash
-POST_PLAN_INDEX=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase-plan-index "${PHASE_NUMBER}")
+POST_PLAN_INDEX=$(gsd-sdk query phase-plan-index "${PHASE_NUMBER}")
 ```
 
 Apply the same "incomplete" filtering rules as earlier:
@@ -1008,7 +1010,7 @@ Selected wave finished successfully. This phase still has incomplete plans, so p
 
 **Config gate:**
 ```bash
-CODE_REVIEW_ENABLED=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.code_review 2>/dev/null || echo "true")
+CODE_REVIEW_ENABLED=$(gsd-sdk query config-get workflow.code_review 2>/dev/null || echo "true")
 ```
 
 If `CODE_REVIEW_ENABLED` is `"false"`: display "Code review skipped (workflow.code_review=false)" and proceed to next step.
@@ -1051,7 +1053,7 @@ fi
 
 **2. Find parent UAT file:**
 ```bash
-PARENT_INFO=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" find-phase "${PARENT_PHASE}" --raw)
+PARENT_INFO=$(gsd-sdk query find-phase "${PARENT_PHASE}" --raw)
 # Extract directory from PARENT_INFO JSON, then find UAT file in that directory
 ```
 
@@ -1082,7 +1084,7 @@ mv .planning/debug/{slug}.md .planning/debug/resolved/
 
 **6. Commit updated artifacts:**
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(phase-${PARENT_PHASE}): resolve UAT gaps and debug sessions after ${PHASE_NUMBER} gap closure" --files .planning/phases/*${PARENT_PHASE}*/*-UAT.md .planning/debug/resolved/*.md
+gsd-sdk query commit "docs(phase-${PARENT_PHASE}): resolve UAT gaps and debug sessions after ${PHASE_NUMBER} gap closure" .planning/phases/*${PARENT_PHASE}*/*-UAT.md .planning/debug/resolved/*.md
 ```
 </step>
 
@@ -1155,7 +1157,7 @@ build/types pass because TypeScript types come from config, not the live databas
 **Run after execution completes but BEFORE verification marks success.**
 
 ```bash
-SCHEMA_DRIFT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" verify schema-drift "${PHASE_NUMBER}" 2>/dev/null)
+SCHEMA_DRIFT=$(gsd-sdk query verify.schema-drift "${PHASE_NUMBER}" 2>/dev/null)
 ```
 
 Parse JSON result for: `drift_detected`, `blocking`, `schema_files`, `orms`, `unpushed_orms`, `message`.
@@ -1218,7 +1220,7 @@ If `TEXT_MODE` is true, present as a plain-text numbered list. Otherwise use Ask
 Verify phase achieved its GOAL, not just completed tasks.
 
 ```bash
-VERIFIER_SKILLS=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-verifier 2>/dev/null)
+VERIFIER_SKILLS=$(gsd-sdk query agent-skills gsd-verifier 2>/dev/null)
 ```
 
 ```
@@ -1301,7 +1303,7 @@ blocked: 0
 
 Commit the file:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "test({phase_num}): persist human verification items as UAT" --files "{phase_dir}/{phase_num}-HUMAN-UAT.md"
+gsd-sdk query commit "test({phase_num}): persist human verification items as UAT" "{phase_dir}/{phase_num}-HUMAN-UAT.md"
 ```
 
 **Step B: Present to user:**
@@ -1333,7 +1335,7 @@ Items saved to `{phase_num}-HUMAN-UAT.md` — they will appear in `/gsd-progress
 {Gap summaries from VERIFICATION.md}
 
 ---
-## ▶ Next Up
+## ▶ Next Up — [${PROJECT_CODE}] ${PROJECT_TITLE}
 
 `/clear` then:
 
@@ -1350,7 +1352,7 @@ Gap closure cycle: `/gsd-plan-phase {X} --gaps ${GSD_WS}` reads VERIFICATION.md 
 **Mark phase complete and update all tracking files:**
 
 ```bash
-COMPLETION=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phase complete "${PHASE_NUMBER}")
+COMPLETION=$(gsd-sdk query phase.complete "${PHASE_NUMBER}")
 ```
 
 The CLI handles:
@@ -1373,7 +1375,7 @@ These items are tracked and will appear in `/gsd-progress` and `/gsd-audit-uat`.
 ```
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(phase-{X}): complete phase execution" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md {phase_dir}/*-VERIFICATION.md
+gsd-sdk query commit "docs(phase-{X}): complete phase execution" .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md {phase_dir}/*-VERIFICATION.md
 ```
 </step>
 
@@ -1385,7 +1387,7 @@ entries from the completed phase to the global learnings store at `~/.gsd/knowle
 
 **Check config gate:**
 ```bash
-GL_ENABLED=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get features.global_learnings --raw 2>/dev/null || echo "false")
+GL_ENABLED=$(gsd-sdk query config-get features.global_learnings --raw 2>/dev/null || echo "false")
 ```
 
 **If `GL_ENABLED` is not `true`:** Skip this step entirely (feature disabled by default).
@@ -1395,7 +1397,7 @@ GL_ENABLED=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/g
 1. Check if LEARNINGS.md exists in the phase directory (use the `phase_dir` value from init context)
 2. If found, copy to global store:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" learnings copy 2>/dev/null || echo "⚠ Learnings copy failed — continuing"
+gsd-sdk query learnings.copy 2>/dev/null || echo "⚠ Learnings copy failed — continuing"
 ```
 Copy failure must NOT block phase completion.
 </step>
@@ -1416,7 +1418,7 @@ PROJECT.md falls behind silently over multiple phases.
 5. Commit the change:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(phase-{X}): evolve PROJECT.md after phase completion" --files .planning/PROJECT.md
+gsd-sdk query commit "docs(phase-{X}): evolve PROJECT.md after phase completion" .planning/PROJECT.md
 ```
 
 **Skip this step if** `.planning/PROJECT.md` does not exist.
@@ -1454,8 +1456,8 @@ STOP. Do not proceed to auto-advance or transition.
 1. Parse `--auto` flag from $ARGUMENTS
 2. Read both the chain flag and user preference (chain flag already synced in init step):
    ```bash
-   AUTO_CHAIN=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
-   AUTO_CFG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
+   AUTO_CHAIN=$(gsd-sdk query config-get workflow._auto_chain_active 2>/dev/null || echo "false")
+   AUTO_CFG=$(gsd-sdk query config-get workflow.auto_advance 2>/dev/null || echo "false")
    ```
 
 **If `--auto` flag present OR `AUTO_CHAIN` is true OR `AUTO_CFG` is true (AND verification passed with no gaps):**

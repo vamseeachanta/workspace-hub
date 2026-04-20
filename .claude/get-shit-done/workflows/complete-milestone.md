@@ -38,7 +38,9 @@ When a milestone completes:
 <process>
 
 <step name="pre_close_artifact_audit">
-Before proceeding with milestone close, run the comprehensive open artifact audit:
+Before proceeding with milestone close, run the comprehensive open artifact audit.
+
+`audit-open` is not registered on `gsd-sdk query` yet; use the installed CJS CLI:
 
 ```bash
 node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" audit-open 2>/dev/null
@@ -76,7 +78,7 @@ If user chooses [A] (Acknowledge):
 
 If output shows all clear (no open items): print `All artifact types clear.` and proceed.
 
-SECURITY: Audit JSON output is structured data from gsd-tools.cjs — validated and sanitized at source. When writing to STATE.md, item slugs and descriptions are sanitized via `sanitizeForDisplay()` before inclusion. Never inject raw user-supplied content into STATE.md without sanitization.
+SECURITY: Audit JSON output is structured data from `audit-open` (gsd-tools.cjs) — validated and sanitized at source. When writing to STATE.md, item slugs and descriptions are sanitized via `sanitizeForDisplay()` before inclusion. Never inject raw user-supplied content into STATE.md without sanitization.
 </step>
 
 <step name="verify_readiness">
@@ -84,7 +86,7 @@ SECURITY: Audit JSON output is structured data from gsd-tools.cjs — validated 
 **Use `roadmap analyze` for comprehensive readiness check:**
 
 ```bash
-ROADMAP=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" roadmap analyze)
+ROADMAP=$(gsd-sdk query roadmap.analyze)
 ```
 
 This returns all phases with plan/summary counts and disk status. Use this to verify:
@@ -199,7 +201,7 @@ Extract one-liners from SUMMARY.md files using summary-extract:
 # For each phase in milestone, extract one-liner
 for summary in .planning/phases/*-*/*-SUMMARY.md; do
   [ -e "$summary" ] || continue
-  node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" summary-extract "$summary" --fields one_liner --pick one_liner
+  gsd-sdk query summary-extract "$summary" --fields one_liner --pick one_liner
 done
 ```
 
@@ -218,7 +220,7 @@ Key accomplishments for this milestone:
 
 <step name="create_milestone_entry">
 
-**Note:** MILESTONES.md entry is now created automatically by `gsd-tools milestone complete` in the archive_milestone step. The entry includes version, date, phase/plan/task counts, and accomplishments extracted from SUMMARY.md files.
+**Note:** MILESTONES.md entry is now created automatically by `gsd-sdk query milestone.complete` in the archive_milestone step. The entry includes version, date, phase/plan/task counts, and accomplishments extracted from SUMMARY.md files.
 
 If additional details are needed (e.g., user-provided "Delivered" summary, git range, LOC stats), add them manually after the CLI creates the base entry.
 
@@ -409,10 +411,10 @@ Update `.planning/ROADMAP.md` — group completed milestone phases:
 
 <step name="archive_milestone">
 
-**Delegate archival to gsd-tools:**
+**Delegate archival to `gsd-sdk query milestone.complete`:**
 
 ```bash
-ARCHIVE=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" milestone complete "v[X.Y]" --name "[Milestone Name]")
+ARCHIVE=$(gsd-sdk query milestone.complete "v[X.Y]" --name "[Milestone Name]")
 ```
 
 The CLI handles:
@@ -494,7 +496,7 @@ Append the extracted Backlog content verbatim to the end of the newly written RO
 **Safety commit — commit archive files BEFORE deleting any originals:**
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "chore: archive v[X.Y] milestone files" --files .planning/milestones/v[X.Y]-ROADMAP.md .planning/milestones/v[X.Y]-REQUIREMENTS.md .planning/milestones/v[X.Y]-MILESTONE-AUDIT.md .planning/MILESTONES.md .planning/PROJECT.md .planning/STATE.md .planning/ROADMAP.md
+gsd-sdk query commit "chore: archive v[X.Y] milestone files" .planning/milestones/v[X.Y]-ROADMAP.md .planning/milestones/v[X.Y]-REQUIREMENTS.md .planning/milestones/v[X.Y]-MILESTONE-AUDIT.md .planning/MILESTONES.md .planning/PROJECT.md .planning/STATE.md .planning/ROADMAP.md
 ```
 
 This creates a durable checkpoint in git history. If anything fails after this point, the working tree can be reconstructed from git.
@@ -563,7 +565,7 @@ If the "## Cross-Milestone Trends" section exists, update the tables with new da
 
 **Commit:**
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: update retrospective for v${VERSION}" --files .planning/RETROSPECTIVE.md
+gsd-sdk query commit "docs: update retrospective for v${VERSION}" .planning/RETROSPECTIVE.md
 ```
 
 </step>
@@ -597,7 +599,7 @@ Check branching strategy and offer merge options.
 Use `init milestone-op` for context, or load config directly:
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init execute-phase "1")
+INIT=$(gsd-sdk query init.execute-phase "1")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -605,7 +607,7 @@ Extract `branching_strategy`, `phase_branch_template`, `milestone_branch_templat
 
 Detect base branch:
 ```bash
-BASE_BRANCH=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get git.base_branch 2>/dev/null || echo "")
+BASE_BRANCH=$(gsd-sdk query config-get git.base_branch 2>/dev/null || echo "")
 if [ -z "$BASE_BRANCH" ] || [ "$BASE_BRANCH" = "null" ]; then
   BASE_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|^refs/remotes/origin/||')
   BASE_BRANCH="${BASE_BRANCH:-main}"
@@ -780,7 +782,7 @@ Tag: v[X.Y]
 
 ---
 
-## ▶ Next Up
+## ▶ Next Up — [${PROJECT_CODE}] ${PROJECT_TITLE}
 
 **Start Next Milestone** — questioning → research → requirements → roadmap
 

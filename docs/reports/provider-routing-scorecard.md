@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-04-19T17:20:04.430009Z
+Generated: 2026-04-19T21:20:04.038318Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 

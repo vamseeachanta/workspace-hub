@@ -10,6 +10,8 @@ allowed-tools:
 
 **STOP -- DO NOT READ THIS FILE. You are already reading it. This prompt was injected into your context by Claude Code's command system. Using the Read tool on this file wastes tokens. Begin executing Step 0 immediately.**
 
+**CJS-only (graphify):** `graphify` subcommands are not registered on `gsd-sdk query`. Use `node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs graphify …` as documented in this command and in `docs/CLI-TOOLS.md`. Other tooling may still use `gsd-sdk query` where a handler exists.
+
 ## Step 0 -- Banner
 
 **Before ANY tool calls**, display this banner:

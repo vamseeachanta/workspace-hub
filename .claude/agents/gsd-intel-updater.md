@@ -37,7 +37,7 @@ Write machine-parseable, evidence-based intelligence. Every claim references act
 - **Always include file paths.** Every claim must reference the actual code location.
 - **Write current state only.** No temporal language ("recently added", "will be changed").
 - **Evidence-based.** Read the actual files. Do not guess from file names or directory structures.
-- **Cross-platform.** Use Glob, Read, and Grep tools -- not Bash `ls`, `find`, or `cat`. Bash file commands fail on Windows. Only use Bash for `node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel` CLI calls.
+- **Cross-platform.** Use Glob, Read, and Grep tools -- not Bash `ls`, `find`, or `cat`. Bash file commands fail on Windows. Only use Bash for `gsd-sdk query intel` CLI calls.
 - **ALWAYS use the Write tool to create files** — never use `Bash(cat << 'EOF')` or heredoc commands for file creation.
 </role>
 
@@ -57,14 +57,23 @@ The /gsd-intel command has already confirmed that intel.enabled is true before s
 
 ## Project Scope
 
-When analyzing this project, use ONLY canonical source locations:
+**Runtime layout detection (do this first):** Check which runtime root exists by running:
+```bash
+ls -d .kilo 2>/dev/null && echo "kilo" || (ls -d .claude/get-shit-done 2>/dev/null && echo "claude") || echo "unknown"
+```
 
-- `agents/*.md` -- Agent instruction files
-- `commands/gsd/*.md` -- Command files
-- `get-shit-done/bin/` -- CLI tooling
-- `get-shit-done/workflows/` -- Workflow files
-- `get-shit-done/references/` -- Reference docs
-- `hooks/*.js` -- Git hooks
+Use the detected root to resolve all canonical paths below:
+
+| Source type | Standard `.claude` layout | `.kilo` layout |
+|-------------|--------------------------|----------------|
+| Agent files | `agents/*.md` | `.kilo/agents/*.md` |
+| Command files | `commands/gsd/*.md` | `.kilo/command/*.md` |
+| CLI tooling | `get-shit-done/bin/` | `.kilo/get-shit-done/bin/` |
+| Workflow files | `get-shit-done/workflows/` | `.kilo/get-shit-done/workflows/` |
+| Reference docs | `get-shit-done/references/` | `.kilo/get-shit-done/references/` |
+| Hook files | `hooks/*.js` | `.kilo/hooks/*.js` |
+
+When analyzing this project, use ONLY the canonical source locations matching the detected layout. Do not fall back to the standard layout paths if the `.kilo` root is detected — those paths will be empty and produce semantically empty intel.
 
 EXCLUDE from counts and analysis:
 
@@ -72,8 +81,8 @@ EXCLUDE from counts and analysis:
 - `node_modules/`, `dist/`, `build/`, `.git/`
 
 **Count accuracy:** When reporting component counts in stack.json or arch.md, always derive
-counts by running Glob on canonical locations above, not from memory or CLAUDE.md.
-Example: `Glob("agents/*.md")` for agent count.
+counts by running Glob on the layout-resolved canonical locations above, not from memory or CLAUDE.md.
+Example (standard layout): `Glob("agents/*.md")`. Example (kilo): `Glob(".kilo/agents/*.md")`.
 
 ## Forbidden Files
 
@@ -106,7 +115,7 @@ All JSON files include a `_meta` object with `updated_at` (ISO timestamp) and `v
 }
 ```
 
-**exports constraint:** Array of ACTUAL exported symbol names extracted from `module.exports` or `export` statements. MUST be real identifiers (e.g., `"configLoad"`, `"stateUpdate"`), NOT descriptions (e.g., `"config operations"`). If an export string contains a space, it is wrong -- extract the actual symbol name instead. Use `node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel extract-exports <file>` to get accurate exports.
+**exports constraint:** Array of ACTUAL exported symbol names extracted from `module.exports` or `export` statements. MUST be real identifiers (e.g., `"configLoad"`, `"stateUpdate"`), NOT descriptions (e.g., `"config operations"`). If an export string contains a space, it is wrong -- extract the actual symbol name instead. Use `gsd-sdk query intel.extract-exports <file>` to get accurate exports.
 
 Types: `entry-point`, `module`, `config`, `test`, `script`, `type-def`, `style`, `template`, `data`.
 
@@ -202,7 +211,7 @@ Glob for project structure indicators:
 
 Read package.json, configs, and build files. Write `stack.json`. Then patch its timestamp:
 ```bash
-node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel patch-meta .planning/intel/stack.json --cwd <project_root>
+gsd-sdk query intel.patch-meta .planning/intel/stack.json --cwd <project_root>
 ```
 
 ### Step 3: File Graph
@@ -211,7 +220,7 @@ Glob source files (`**/*.ts`, `**/*.js`, `**/*.py`, etc., excluding node_modules
 Read key files (entry points, configs, core modules) for imports/exports.
 Write `files.json`. Then patch its timestamp:
 ```bash
-node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel patch-meta .planning/intel/files.json --cwd <project_root>
+gsd-sdk query intel.patch-meta .planning/intel/files.json --cwd <project_root>
 ```
 
 Focus on files that matter -- entry points, core modules, configs. Skip test files and generated code unless they reveal architecture.
@@ -222,7 +231,7 @@ Grep for route definitions, endpoint declarations, CLI command registrations.
 Patterns to search: `app.get(`, `router.post(`, `@GetMapping`, `def route`, express route patterns.
 Write `apis.json`. If no API endpoints found, write an empty entries object. Then patch its timestamp:
 ```bash
-node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel patch-meta .planning/intel/apis.json --cwd <project_root>
+gsd-sdk query intel.patch-meta .planning/intel/apis.json --cwd <project_root>
 ```
 
 ### Step 5: Dependencies
@@ -231,7 +240,7 @@ Read package.json (dependencies, devDependencies), requirements.txt, go.mod, Car
 Cross-reference with actual imports to populate `used_by`.
 Write `deps.json`. Then patch its timestamp:
 ```bash
-node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel patch-meta .planning/intel/deps.json --cwd <project_root>
+gsd-sdk query intel.patch-meta .planning/intel/deps.json --cwd <project_root>
 ```
 
 ### Step 6: Architecture
@@ -241,7 +250,7 @@ Write `arch.md`.
 
 ### Step 6.5: Self-Check
 
-Run: `node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel validate --cwd <project_root>`
+Run: `gsd-sdk query intel.validate --cwd <project_root>`
 
 Review the output:
 
@@ -253,7 +262,7 @@ This step is MANDATORY -- do not skip it.
 
 ### Step 7: Snapshot
 
-Run: `node /mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs intel snapshot --cwd <project_root>`
+Run: `gsd-sdk query intel.snapshot --cwd <project_root>`
 
 This writes `.last-refresh.json` with accurate timestamps and hashes. Do NOT write `.last-refresh.json` manually.
 </execution_flow>

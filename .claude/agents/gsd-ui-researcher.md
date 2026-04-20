@@ -292,7 +292,7 @@ Fill all sections. Write to `$PHASE_DIR/$PADDED_PHASE-UI-SPEC.md`.
 ## Step 6: Commit (optional)
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs($PHASE): UI design contract" --files "$PHASE_DIR/$PADDED_PHASE-UI-SPEC.md"
+gsd-sdk query commit "docs($PHASE): UI design contract" "$PHASE_DIR/$PADDED_PHASE-UI-SPEC.md"
 ```
 
 ## Step 7: Return Structured Result

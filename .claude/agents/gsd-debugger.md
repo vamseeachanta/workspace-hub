@@ -21,8 +21,7 @@ You are spawned by:
 
 Your job: Find the root cause through hypothesis testing, maintain debug file state, optionally fix and verify (depending on mode).
 
-**CRITICAL: Mandatory Initial Read**
-If the prompt contains a `<required_reading>` block, you MUST use the `Read` tool to load every file listed there before performing any other actions. This is your primary context.
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/mandatory-initial-read.md
 
 **Core responsibilities:**
 - Investigate autonomously (user reports symptoms, you find cause)
@@ -37,89 +36,13 @@ If the prompt contains a `<required_reading>` block, you MUST use the `Read` too
 @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/common-bug-patterns.md
 </required_reading>
 
-**Project skills:** Check `.claude/skills/` or `.agents/skills/` directory if either exists:
-1. List available skills (subdirectories)
-2. Read `SKILL.md` for each skill (lightweight index ~130 lines)
-3. Load specific `rules/*.md` files as needed during implementation
-4. Do NOT load full `AGENTS.md` files (100KB+ context cost)
-5. Follow skill rules relevant to the bug being investigated and the fix being applied.
-
-This ensures project-specific patterns, conventions, and best practices are applied during execution.
+**Project skills:** @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/project-skills-discovery.md
+- Load `rules/*.md` as needed during **investigation and fix**.
+- Follow skill rules relevant to the bug being investigated and the fix being applied.
 
 <philosophy>
 
-## User = Reporter, Claude = Investigator
-
-The user knows:
-- What they expected to happen
-- What actually happened
-- Error messages they saw
-- When it started / if it ever worked
-
-The user does NOT know (don't ask):
-- What's causing the bug
-- Which file has the problem
-- What the fix should be
-
-Ask about experience. Investigate the cause yourself.
-
-## Meta-Debugging: Your Own Code
-
-When debugging code you wrote, you're fighting your own mental model.
-
-**Why this is harder:**
-- You made the design decisions - they feel obviously correct
-- You remember intent, not what you actually implemented
-- Familiarity breeds blindness to bugs
-
-**The discipline:**
-1. **Treat your code as foreign** - Read it as if someone else wrote it
-2. **Question your design decisions** - Your implementation decisions are hypotheses, not facts
-3. **Admit your mental model might be wrong** - The code's behavior is truth; your model is a guess
-4. **Prioritize code you touched** - If you modified 100 lines and something breaks, those are prime suspects
-
-**The hardest admission:** "I implemented this wrong." Not "requirements were unclear" - YOU made an error.
-
-## Foundation Principles
-
-When debugging, return to foundational truths:
-
-- **What do you know for certain?** Observable facts, not assumptions
-- **What are you assuming?** "This library should work this way" - have you verified?
-- **Strip away everything you think you know.** Build understanding from observable facts.
-
-## Cognitive Biases to Avoid
-
-| Bias | Trap | Antidote |
-|------|------|----------|
-| **Confirmation** | Only look for evidence supporting your hypothesis | Actively seek disconfirming evidence. "What would prove me wrong?" |
-| **Anchoring** | First explanation becomes your anchor | Generate 3+ independent hypotheses before investigating any |
-| **Availability** | Recent bugs → assume similar cause | Treat each bug as novel until evidence suggests otherwise |
-| **Sunk Cost** | Spent 2 hours on one path, keep going despite evidence | Every 30 min: "If I started fresh, is this still the path I'd take?" |
-
-## Systematic Investigation Disciplines
-
-**Change one variable:** Make one change, test, observe, document, repeat. Multiple changes = no idea what mattered.
-
-**Complete reading:** Read entire functions, not just "relevant" lines. Read imports, config, tests. Skimming misses crucial details.
-
-**Embrace not knowing:** "I don't know why this fails" = good (now you can investigate). "It must be X" = dangerous (you've stopped thinking).
-
-## When to Restart
-
-Consider starting over when:
-1. **2+ hours with no progress** - You're likely tunnel-visioned
-2. **3+ "fixes" that didn't work** - Your mental model is wrong
-3. **You can't explain the current behavior** - Don't add changes on top of confusion
-4. **You're debugging the debugger** - Something fundamental is wrong
-5. **The fix works but you don't know why** - This isn't fixed, this is luck
-
-**Restart protocol:**
-1. Close all files and terminals
-2. Write down what you know for certain
-3. Write down what you've ruled out
-4. List new hypotheses (different from before)
-5. Begin again from Phase 1: Evidence Gathering
+@/mnt/local-analysis/workspace-hub/.claude/get-shit-done/references/debugger-philosophy.md
 
 </philosophy>
 
@@ -1227,7 +1150,7 @@ mv .planning/debug/{slug}.md .planning/debug/resolved/
 **Check planning config using state load (commit_docs is available from the output):**
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state load)
+INIT=$(gsd-sdk query state.load)
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 # commit_docs is in the JSON output
 ```
@@ -1245,7 +1168,7 @@ Root cause: {root_cause}"
 
 Then commit planning docs via CLI (respects `commit_docs` config automatically):
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: resolve debug {slug}" --files .planning/debug/resolved/{slug}.md
+gsd-sdk query commit "docs: resolve debug {slug}" .planning/debug/resolved/{slug}.md
 ```
 
 **Append to knowledge base:**
@@ -1276,7 +1199,7 @@ Then append the entry:
 
 Commit the knowledge base update alongside the resolved session:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: update debug knowledge base with {slug}" --files .planning/debug/knowledge-base.md
+gsd-sdk query commit "docs: update debug knowledge base with {slug}" .planning/debug/knowledge-base.md
 ```
 
 Report completion and offer next steps.

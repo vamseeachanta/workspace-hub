@@ -16,7 +16,7 @@ Analyze completed phase artifacts (PLAN.md, SUMMARY.md, VERIFICATION.md, UAT.md,
 Parse arguments and load project state:
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE_ARG}")
+INIT=$(gsd-sdk query init.phase-op "${PHASE_ARG}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
 ```
 
@@ -179,7 +179,7 @@ The body follows this structure:
 Update STATE.md to reflect the learning extraction:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state update "Last Activity" "$(date +%Y-%m-%d)"
+gsd-sdk query state.update "Last Activity" "$(date +%Y-%m-%d)"
 ```
 </step>
 

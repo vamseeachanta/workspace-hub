@@ -191,21 +191,21 @@ Delete MILESTONE-CONTEXT.md if exists (consumed).
 Clear leftover phase directories from the previous milestone:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" phases clear --confirm
+gsd-sdk query phases.clear --confirm
 ```
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: start milestone v[X.Y] [Name]" --files .planning/PROJECT.md .planning/STATE.md
+gsd-sdk query commit "docs: start milestone v[X.Y] [Name]" .planning/PROJECT.md .planning/STATE.md
 ```
 
 ## 7. Load Context and Resolve Models
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init new-milestone)
+INIT=$(gsd-sdk query init.new-milestone)
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_RESEARCHER=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-project-researcher 2>/dev/null)
-AGENT_SKILLS_SYNTHESIZER=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-synthesizer 2>/dev/null)
-AGENT_SKILLS_ROADMAPPER=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-roadmapper 2>/dev/null)
+AGENT_SKILLS_RESEARCHER=$(gsd-sdk query agent-skills gsd-project-researcher 2>/dev/null)
+AGENT_SKILLS_SYNTHESIZER=$(gsd-sdk query agent-skills gsd-synthesizer 2>/dev/null)
+AGENT_SKILLS_ROADMAPPER=$(gsd-sdk query agent-skills gsd-roadmapper 2>/dev/null)
 ```
 
 Extract from init JSON: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `commit_docs`, `research_enabled`, `current_milestone`, `project_exists`, `roadmap_exists`, `latest_completed_milestone`, `phase_dir_count`, `phase_archive_path`.
@@ -409,7 +409,7 @@ If "adjust": Return to scoping.
 
 **Commit requirements:**
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: define milestone v[X.Y] requirements" --files .planning/REQUIREMENTS.md
+gsd-sdk query commit "docs: define milestone v[X.Y] requirements" .planning/REQUIREMENTS.md
 ```
 
 ## 10. Create Roadmap
@@ -493,7 +493,7 @@ Success criteria:
 
 **Commit roadmap** (after approval):
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: create milestone v[X.Y] roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
+gsd-sdk query commit "docs: create milestone v[X.Y] roadmap ([N] phases)" .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
 ```
 
 ## 11. Done
@@ -514,7 +514,7 @@ node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs"
 
 **[N] phases** | **[X] requirements** | Ready to build ✓
 
-## ▶ Next Up
+## ▶ Next Up — [${PROJECT_CODE}] ${PROJECT_TITLE}
 
 **Phase [N]: [Phase Name]** — [Goal]
 

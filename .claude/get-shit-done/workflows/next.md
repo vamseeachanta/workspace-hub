@@ -14,7 +14,7 @@ Read project state to determine current position:
 
 ```bash
 # Get state snapshot
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state json 2>/dev/null || echo "{}"
+gsd-sdk query state.json 2>/dev/null || echo "{}"
 ```
 
 Also read:
@@ -83,7 +83,7 @@ Use `--force` to bypass this check.
 Exit.
 
 **Prior-phase completeness scan:**
-After passing all three hard-stop gates, scan all phases that precede the current phase in ROADMAP.md order for incomplete work. Use the existing `gsd-tools.cjs phase json <N>` output to inspect each prior phase.
+After passing all three hard-stop gates, scan all phases that precede the current phase in ROADMAP.md order for incomplete work. For each prior phase number `N`, use `gsd-sdk query find-phase <N>` JSON (plans, summaries, incomplete_plans, etc.) to inspect that phase.
 
 Detect three categories of incomplete work:
 1. **Plans without summaries** — a PLAN.md exists in a prior phase directory but no matching SUMMARY.md exists (execution started but not completed).
@@ -127,11 +127,34 @@ Choice [S]:
 ```
 2. Commit the deferral record:
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs: defer incomplete Phase {src} items to backlog"
+gsd-sdk query commit "docs: defer incomplete Phase {src} items to backlog"
 ```
 3. Continue routing to `determine_next_action` immediately — no second prompt.
 
 **If the user chooses "Force" (F):** Continue to `determine_next_action` without recording deferral.
+</step>
+
+<step name="spike_sketch_notice">
+Check for pending spike/sketch work and surface a notice (does not change routing):
+
+```bash
+# Check for pending spikes (verdict: PENDING in any README)
+PENDING_SPIKES=$(grep -rl 'verdict: PENDING' .planning/spikes/*/README.md 2>/dev/null | wc -l | tr -d ' ')
+
+# Check for pending sketches (winner: null in any README)
+PENDING_SKETCHES=$(grep -rl 'winner: null' .planning/sketches/*/README.md 2>/dev/null | wc -l | tr -d ' ')
+```
+
+If either count is > 0, display before routing:
+```
+⚠ Pending exploratory work:
+  {PENDING_SPIKES} spike(s) with unresolved verdicts in .planning/spikes/
+  {PENDING_SKETCHES} sketch(es) without a winning variant in .planning/sketches/
+
+  Resume with `/gsd-spike` or `/gsd-sketch`, or continue with phase work below.
+```
+
+Only show lines for non-zero counts. If both are 0, skip this notice entirely.
 </step>
 
 <step name="determine_next_action">

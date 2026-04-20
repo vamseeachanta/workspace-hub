@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-19T17:20:06.108354Z
+Generated: 2026-04-19T21:20:05.688850Z
 Current week: 2026-W16
 Recommended provider order: codex, gemini, claude
 

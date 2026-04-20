@@ -134,7 +134,7 @@ cannot forward TUI menu selections back to the host.
 
 Enable text mode:
 - Per-session: pass `--text` flag to any command (e.g., `/gsd-discuss-phase --text`)
-- Per-project: `gsd-tools config-set workflow.text_mode true`
+- Per-project: `gsd-sdk query config-set workflow.text_mode true`
 
 Text mode applies to ALL workflows in the session, not just discuss-phase.
 </answer_validation>
@@ -147,9 +147,9 @@ Text mode applies to ALL workflows in the session, not just discuss-phase.
 Phase number from argument (required).
 
 ```bash
-INIT=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" init phase-op "${PHASE}")
+INIT=$(gsd-sdk query init.phase-op "${PHASE}")
 if [[ "$INIT" == @file:* ]]; then INIT=$(cat "${INIT#@file:}"); fi
-AGENT_SKILLS_ADVISOR=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" agent-skills gsd-advisor 2>/dev/null)
+AGENT_SKILLS_ADVISOR=$(gsd-sdk query agent-skills gsd-advisor 2>/dev/null)
 ```
 
 Parse JSON for: `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_plans`, `has_verification`, `plan_count`, `roadmap_exists`, `planning_exists`, `response_language`.
@@ -170,6 +170,13 @@ Exit workflow.
 - Skip interactive questioning entirely
 - Read and execute @/mnt/local-analysis/workspace-hub/.claude/get-shit-done/workflows/discuss-phase-power.md end-to-end
 - Do not continue with the steps below
+
+**All mode** — If `--all` is present in ARGUMENTS:
+- In `present_gray_areas`: auto-select ALL gray areas without asking the user (skips the AskUserQuestion selection step)
+- Discussion for each area proceeds fully interactively (user drives the conversation for every area)
+- Does NOT auto-advance to plan-phase afterward — use `--chain` or `--auto` if you want auto-advance
+- Log: `[--all] Auto-selected all gray areas: [list area names].`
+- This is the "discuss everything" shortcut: skip the selection friction, keep full interactive control
 
 **Auto mode** — If `--auto` is present in ARGUMENTS:
 - In `check_existing`: auto-select "Skip" (if context exists) or continue without prompting (if no context/plans)
@@ -205,7 +212,30 @@ This step cannot be skipped. Before proceeding to `check_existing` or any other 
 
 Write these answers inline before continuing. If a blocking anti-pattern cannot be answered from the context in `.continue-here.md`, stop and ask the user for clarification.
 
-**If no `.continue-here.md` exists, or no `blocking` rows are found:** Proceed directly to `check_existing`.
+**If no `.continue-here.md` exists, or no `blocking` rows are found:** Proceed directly to `check_spec`.
+</step>
+
+<step name="check_spec">
+Check if a SPEC.md (from `/gsd-spec-phase`) exists for this phase. SPEC.md locks requirements before implementation decisions — if present, this discussion focuses on HOW to implement, not WHAT to build.
+
+```bash
+ls ${phase_dir}/*-SPEC.md 2>/dev/null | grep -v AI-SPEC | head -1 || true
+```
+
+**If SPEC.md is found:**
+1. Read the SPEC.md file.
+2. Count the number of requirements (numbered items in the `## Requirements` section).
+3. Display:
+   ```
+   Found SPEC.md — {N} requirements locked. Focusing on implementation decisions.
+   ```
+4. Set internal flag `spec_loaded = true`.
+5. Store the requirements, boundaries, and acceptance criteria from SPEC.md as `<locked_requirements>` — these flow directly into CONTEXT.md without re-asking.
+6. Continue to `check_existing`.
+
+**If no SPEC.md is found:** Continue to `check_existing` with `spec_loaded = false` (default behavior unchanged).
+
+**Note:** SPEC.md files named `AI-SPEC.md` (from `/gsd-ai-integration-phase`) are excluded — those serve a different purpose.
 </step>
 
 <step name="check_existing">
@@ -318,9 +348,40 @@ Structure the extracted information:
 </prior_decisions>
 ```
 
+**Step 4: Load spike/sketch findings (if they exist)**
+```bash
+# Check for spike/sketch findings skills (project-local)
+SPIKE_FINDINGS=$(ls ./.claude/skills/spike-findings-*/SKILL.md 2>/dev/null | head -1)
+SKETCH_FINDINGS=$(ls ./.claude/skills/sketch-findings-*/SKILL.md 2>/dev/null | head -1)
+
+# Also check for raw spikes/sketches not yet wrapped up
+RAW_SPIKES=$(ls .planning/spikes/MANIFEST.md 2>/dev/null)
+RAW_SKETCHES=$(ls .planning/sketches/MANIFEST.md 2>/dev/null)
+```
+
+If spike/sketch findings skills exist, read their SKILL.md and reference files. Extract:
+- **Validated patterns** — what was proven to work (use these, don't re-explore)
+- **Landmines** — what was proven NOT to work (avoid these)
+- **Constraints** — hard limits discovered (rate limits, API gaps, library limitations)
+- **Design decisions** — winning visual directions, CSS patterns, layout choices
+
+Add to `<prior_decisions>`:
+```
+## From Spike Experiments
+- [Validated pattern or constraint from spike findings]
+
+## From Design Sketches
+- [Design decision or visual direction from sketch findings]
+```
+
+If raw spikes/sketches exist but no findings skill, note in output:
+```
+⚠ Unpackaged spikes/sketches detected — run `/gsd-spike-wrap-up` or `/gsd-sketch-wrap-up` to make findings available to planning agents.
+```
+
 **Usage in subsequent steps:**
-- `analyze_phase`: Skip gray areas already decided in prior phases
-- `present_gray_areas`: Annotate options with prior decisions ("You chose X in Phase 5")
+- `analyze_phase`: Skip gray areas already decided in prior phases or validated by spikes/sketches
+- `present_gray_areas`: Annotate options with prior decisions ("You chose X in Phase 5") and spike/sketch findings ("Spike 002 validated this approach")
 - `discuss_areas`: Pre-fill answers or flag conflicts ("This contradicts Phase 3 — same here or different?")
 
 **If no prior context exists:** Continue without — this is expected for early phases.
@@ -331,7 +392,7 @@ Check if any pending todos are relevant to this phase's scope. Surfaces backlog 
 
 **Load and match todos:**
 ```bash
-TODO_MATCHES=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" todo match-phase "${PHASE_NUMBER}")
+TODO_MATCHES=$(gsd-sdk query todo.match-phase "${PHASE_NUMBER}")
 ```
 
 Parse JSON for: `todo_count`, `matches[]` (each with `file`, `title`, `area`, `score`, `reasons`).
@@ -430,6 +491,12 @@ Analyze the phase to identify gray areas worth discussing. **Use both `prior_dec
    - These are **pre-answered** — don't re-ask unless this phase has conflicting needs
    - Note applicable prior decisions for use in presentation
 
+2b. **SPEC.md awareness** — If `spec_loaded = true` (SPEC.md was found in `check_spec`):
+   - The `<locked_requirements>` from SPEC.md are pre-answered: Goal, Boundaries, Constraints, Acceptance Criteria.
+   - Do NOT generate gray areas about WHAT to build or WHY — those are locked.
+   - Only generate gray areas about HOW to implement: technical approach, library choices, UX/UI patterns, interaction details, error handling style.
+   - When presenting gray areas, include a note: "Requirements are locked by SPEC.md — discussing implementation decisions only."
+
 3. **Gray areas by category** — For each relevant category (UI, UX, Behavior, Empty States, Content), identify 1-2 specific ambiguities that would change implementation. **Annotate with code context where relevant** (e.g., "You already have a Card component" or "No existing pattern for this").
 
 4. **Skip assessment** — If no meaningful gray areas exist (pure infrastructure, clear-cut implementation, or all already decided in prior phases), the phase may not need discussion.
@@ -456,7 +523,7 @@ Check if advisor mode should activate:
 
 3. Resolve model for advisor agents:
    ```bash
-   ADVISOR_MODEL=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" resolve-model gsd-advisor-researcher --raw)
+   ADVISOR_MODEL=$(gsd-sdk query resolve-model gsd-advisor-researcher --raw)
    ```
 
 If ADVISOR_MODE is false, skip all advisor-specific steps — workflow proceeds with existing conversational flow unchanged.
@@ -522,7 +589,7 @@ We'll clarify HOW to implement this.
 - [Decision from Phase M that applies here]
 ```
 
-**If `--auto`:** Auto-select ALL gray areas. Log: `[auto] Selected all gray areas: [list area names].` Skip the AskUserQuestion below and continue directly to discuss_areas with all areas selected.
+**If `--auto` or `--all`:** Auto-select ALL gray areas. Log: `[--auto/--all] Selected all gray areas: [list area names].` Skip the AskUserQuestion below and continue directly to discuss_areas with all areas selected.
 
 **Otherwise, use AskUserQuestion (multiSelect: true):**
 - header: "Discuss"
@@ -759,7 +826,7 @@ In `--auto` mode, the discuss step MUST complete in a **single pass**. After wri
 
 Check the pass cap from config:
 ```bash
-MAX_PASSES=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.max_discuss_passes 2>/dev/null || echo "3")
+MAX_PASSES=$(gsd-sdk query config-get workflow.max_discuss_passes 2>/dev/null || echo "3")
 ```
 
 If you have already written and committed CONTEXT.md, the discuss step is complete. Move on.
@@ -908,6 +975,12 @@ mkdir -p ".planning/phases/${padded_phase}-${phase_slug}"
 
 **File location:** `${phase_dir}/${padded_phase}-CONTEXT.md`
 
+**SPEC.md integration** — If `spec_loaded = true`:
+- Add a `<spec_lock>` section immediately after `<domain>` (see template below).
+- Add the SPEC.md file to `<canonical_refs>` with note "Locked requirements — MUST read before planning".
+- Do NOT duplicate requirements text from SPEC.md into `<decisions>` — agents read SPEC.md directly.
+- The `<decisions>` section contains only implementation decisions from this discussion.
+
 **Structure the content by what was discussed:**
 
 ```markdown
@@ -922,6 +995,19 @@ mkdir -p ".planning/phases/${padded_phase}-${phase_slug}"
 [Clear statement of what this phase delivers — the scope anchor]
 
 </domain>
+
+[If spec_loaded = true, insert this section:]
+<spec_lock>
+## Requirements (locked via SPEC.md)
+
+**{N} requirements are locked.** See `{padded_phase}-SPEC.md` for full requirements, boundaries, and acceptance criteria.
+
+Downstream agents MUST read `{padded_phase}-SPEC.md` before planning or implementing. Requirements are not duplicated here.
+
+**In scope (from SPEC.md):** [copy the "In scope" bullet list from SPEC.md Boundaries]
+**Out of scope (from SPEC.md):** [copy the "Out of scope" bullet list from SPEC.md Boundaries]
+
+</spec_lock>
 
 <decisions>
 ## Implementation Decisions
@@ -1031,7 +1117,7 @@ Created: .planning/phases/${PADDED_PHASE}-${SLUG}/${PADDED_PHASE}-CONTEXT.md
 
 ---
 
-## ▶ Next Up
+## ▶ Next Up — [${PROJECT_CODE}] ${PROJECT_TITLE}
 
 **Phase ${PHASE}: [Name]** — [Goal from ROADMAP.md]
 
@@ -1105,7 +1191,7 @@ rm -f "${phase_dir}/${padded_phase}-DISCUSS-CHECKPOINT.json"
 Commit phase context and discussion log:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(${padded_phase}): capture phase context" --files "${phase_dir}/${padded_phase}-CONTEXT.md" "${phase_dir}/${padded_phase}-DISCUSSION-LOG.md"
+gsd-sdk query commit "docs(${padded_phase}): capture phase context" "${phase_dir}/${padded_phase}-CONTEXT.md" "${phase_dir}/${padded_phase}-DISCUSSION-LOG.md"
 ```
 
 Confirm: "Committed: docs(${padded_phase}): capture phase context"
@@ -1115,7 +1201,7 @@ Confirm: "Committed: docs(${padded_phase}): capture phase context"
 Update STATE.md with session info:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" state record-session \
+gsd-sdk query state.record-session \
   --stopped-at "Phase ${PHASE} context gathered" \
   --resume-file "${phase_dir}/${padded_phase}-CONTEXT.md"
 ```
@@ -1123,29 +1209,29 @@ node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs"
 Commit STATE.md:
 
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" commit "docs(state): record phase ${PHASE} context session" --files .planning/STATE.md
+gsd-sdk query commit "docs(state): record phase ${PHASE} context session" .planning/STATE.md
 ```
 </step>
 
 <step name="auto_advance">
 Check for auto-advance trigger:
 
-1. Parse `--auto` and `--chain` flags from $ARGUMENTS
+1. Parse `--auto` and `--chain` flags from $ARGUMENTS. Note: --all is NOT an auto-advance trigger — it only affects area selection. A session with `--all` but without `--auto` or `--chain` returns to manual next-steps after discussion completes.
 2. **Sync chain flag with intent** — if user invoked manually (no `--auto` and no `--chain`), clear the ephemeral chain flag from any previous interrupted `--auto` chain. This does NOT touch `workflow.auto_advance` (the user's persistent settings preference):
    ```bash
    if [[ ! "$ARGUMENTS" =~ --auto ]] && [[ ! "$ARGUMENTS" =~ --chain ]]; then
-     node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active false 2>/dev/null
+     gsd-sdk query config-set workflow._auto_chain_active false 2>/dev/null
    fi
    ```
 3. Read both the chain flag and user preference:
    ```bash
-   AUTO_CHAIN=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow._auto_chain_active 2>/dev/null || echo "false")
-   AUTO_CFG=$(node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-get workflow.auto_advance 2>/dev/null || echo "false")
+   AUTO_CHAIN=$(gsd-sdk query config-get workflow._auto_chain_active 2>/dev/null || echo "false")
+   AUTO_CFG=$(gsd-sdk query config-get workflow.auto_advance 2>/dev/null || echo "false")
    ```
 
 **If `--auto` or `--chain` flag present AND `AUTO_CHAIN` is not true:** Persist chain flag to config (handles direct usage without new-project):
 ```bash
-node "/mnt/local-analysis/workspace-hub/.claude/get-shit-done/bin/gsd-tools.cjs" config-set workflow._auto_chain_active true
+gsd-sdk query config-set workflow._auto_chain_active true
 ```
 
 **If `--auto` flag present OR `--chain` flag present OR `AUTO_CHAIN` is true OR `AUTO_CFG` is true:**
