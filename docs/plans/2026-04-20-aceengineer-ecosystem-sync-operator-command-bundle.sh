@@ -13,6 +13,8 @@ set -euo pipefail
 
 REPO="vamseeachanta/workspace-hub"
 MAIN_CHECKOUT="/mnt/local-analysis/workspace-hub"
+# Existing repo labels verified on 2026-04-20: bug, tests, priority:medium, cat:harness.
+# area:ecosystem-sync / parsing / releases were not present during audit.
 TMPDIR="${TMPDIR:-/tmp}/ecosystem-sync-gh-issues"
 mkdir -p "$TMPDIR"
 
@@ -159,7 +161,7 @@ gh issue create --repo "$REPO" \
   --label bug \
   --label tests \
   --label priority:medium \
-  --label area:ecosystem-sync \
+  --label cat:harness \
   --body-file "$TMPDIR/issue-1.md"
 
 # 2) Fenced-code-aware README extraction
@@ -167,8 +169,7 @@ gh issue create --repo "$REPO" \
   --title "fix(ecosystem-sync): ignore fenced code blocks when extracting README sections" \
   --label bug \
   --label priority:medium \
-  --label area:ecosystem-sync \
-  --label parsing \
+  --label cat:harness \
   --body-file "$TMPDIR/issue-2.md"
 
 # 3) Annotated tagger-date release freshness
@@ -176,8 +177,7 @@ gh issue create --repo "$REPO" \
   --title "fix(ecosystem-sync): use annotated tagger date for release freshness cutoff" \
   --label bug \
   --label priority:medium \
-  --label area:ecosystem-sync \
-  --label releases \
+  --label cat:harness \
   --body-file "$TMPDIR/issue-3.md"
 STEP2
 

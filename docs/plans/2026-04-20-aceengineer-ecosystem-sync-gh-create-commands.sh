@@ -6,6 +6,8 @@ set -euo pipefail
 # By default this targets workspace-hub; change REPO if these belong elsewhere.
 
 REPO="vamseeachanta/workspace-hub"
+# Existing repo labels verified on 2026-04-20: bug, tests, priority:medium, cat:operations, cat:harness.
+# area:ecosystem-sync / parsing / releases were NOT present during audit, so commands below use existing labels only.
 TMPDIR="${TMPDIR:-/tmp}/ecosystem-sync-gh-issues"
 mkdir -p "$TMPDIR"
 
@@ -160,12 +162,12 @@ echo "Review issue packets ready under: $TMPDIR"
 echo
 
 echo "1) Fixture autobuild / graceful skip"
-echo "gh issue create --repo \"$REPO\" --title \"test(ecosystem-sync): autobuild or skip missing local git fixtures\" --label bug --label tests --label priority:medium --label area:ecosystem-sync --body-file \"$TMPDIR/issue-1.md\""
+echo "gh issue create --repo \"$REPO\" --title \"test(ecosystem-sync): autobuild or skip missing local git fixtures\" --label bug --label tests --label priority:medium --label cat:harness --body-file \"$TMPDIR/issue-1.md\""
 echo
 
 echo "2) Fenced-code-aware README extraction"
-echo "gh issue create --repo \"$REPO\" --title \"fix(ecosystem-sync): ignore fenced code blocks when extracting README sections\" --label bug --label priority:medium --label area:ecosystem-sync --label parsing --body-file \"$TMPDIR/issue-2.md\""
+echo "gh issue create --repo \"$REPO\" --title \"fix(ecosystem-sync): ignore fenced code blocks when extracting README sections\" --label bug --label priority:medium --label cat:harness --body-file \"$TMPDIR/issue-2.md\""
 echo
 
 echo "3) Annotated tagger-date release freshness"
-echo "gh issue create --repo \"$REPO\" --title \"fix(ecosystem-sync): use annotated tagger date for release freshness cutoff\" --label bug --label priority:medium --label area:ecosystem-sync --label releases --body-file \"$TMPDIR/issue-3.md\""
+echo "gh issue create --repo \"$REPO\" --title \"fix(ecosystem-sync): use annotated tagger date for release freshness cutoff\" --label bug --label priority:medium --label cat:harness --body-file \"$TMPDIR/issue-3.md\""
