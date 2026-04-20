@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-19T21:20:03.860645Z",
-  "current_week": "2026-W16",
-  "report_weeks": 8,
+  "generated_at": "2026-04-20T04:00:05.824359Z",
+  "current_week": "2026-W17",
+  "report_weeks": 5,
   "subscriptions": {
     "claude": {
       "cost_monthly": 200.0,
@@ -22,448 +22,6 @@
   },
   "total_monthly_spend": 260.0,
   "weekly_data": {
-    "2026-W09": {
-      "claude": {
-        "provider": "claude",
-        "week": "2026-W09",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": 100.0,
-        "reported_utilization_pct": 100.0,
-        "utilization_basis": "quota",
-        "quota_basis": "quota",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-02-27T22:42:56Z",
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
-        "note": "week_messages/weekly_limit from unavailable"
-      },
-      "codex": {
-        "provider": "codex",
-        "week": "2026-W09",
-        "sessions": 37,
-        "post_records": 6678,
-        "activity_utilization_pct": 73.9,
-        "quota_utilization_pct": 7.7,
-        "reported_utilization_pct": 7.7,
-        "utilization_basis": "quota",
-        "quota_basis": "quota",
-        "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-02-27T22:42:56Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 6492
-          },
-          {
-            "tool": "update_plan",
-            "count": 186
-          }
-        ],
-        "first_ts": "2026-02-23T19:46:54.195000Z",
-        "last_ts": "2026-03-01T23:07:35.540000Z",
-        "note": "week_messages/weekly_limit from history.jsonl"
-      },
-      "gemini": {
-        "provider": "gemini",
-        "week": "2026-W09",
-        "sessions": 122,
-        "post_records": 1276,
-        "activity_utilization_pct": 41.2,
-        "quota_utilization_pct": 0.0,
-        "reported_utilization_pct": 41.2,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "estimated_daily_quota",
-        "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-02-27T22:42:56Z",
-        "top_tools": [
-          {
-            "tool": "Read",
-            "count": 533
-          },
-          {
-            "tool": "Bash",
-            "count": 406
-          },
-          {
-            "tool": "Grep",
-            "count": 146
-          },
-          {
-            "tool": "Browser",
-            "count": 81
-          },
-          {
-            "tool": "Edit",
-            "count": 59
-          }
-        ],
-        "first_ts": "2026-02-23T19:48:34.790000Z",
-        "last_ts": "2026-02-27T19:23:15.611000Z",
-        "note": "today_messages/daily_limit from estimated; using activity fallback"
-      },
-      "hermes": {
-        "provider": "hermes",
-        "week": "2026-W09",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": null,
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
-        "note": "no quota snapshot; using activity fallback"
-      }
-    },
-    "2026-W10": {
-      "claude": {
-        "provider": "claude",
-        "week": "2026-W10",
-        "sessions": 7,
-        "post_records": 8360,
-        "activity_utilization_pct": 20.5,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 20.5,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-03-07T12:05:29Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 4137
-          },
-          {
-            "tool": "Read",
-            "count": 1677
-          },
-          {
-            "tool": "Edit",
-            "count": 1202
-          },
-          {
-            "tool": "Write",
-            "count": 640
-          },
-          {
-            "tool": "ToolSearch",
-            "count": 217
-          }
-        ],
-        "first_ts": "2026-03-02T15:49:35Z",
-        "last_ts": "2026-03-08T22:29:44Z",
-        "note": "quota unavailable from unavailable; using activity fallback"
-      },
-      "codex": {
-        "provider": "codex",
-        "week": "2026-W10",
-        "sessions": 69,
-        "post_records": 9040,
-        "activity_utilization_pct": 100.0,
-        "quota_utilization_pct": 46.9,
-        "reported_utilization_pct": 46.9,
-        "utilization_basis": "quota",
-        "quota_basis": "quota",
-        "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-03-07T12:05:29Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 8912
-          },
-          {
-            "tool": "update_plan",
-            "count": 128
-          }
-        ],
-        "first_ts": "2026-03-02T01:09:31.589000Z",
-        "last_ts": "2026-03-08T20:21:44.723000Z",
-        "note": "week_messages/weekly_limit from history.jsonl"
-      },
-      "gemini": {
-        "provider": "gemini",
-        "week": "2026-W10",
-        "sessions": 17,
-        "post_records": 911,
-        "activity_utilization_pct": 29.4,
-        "quota_utilization_pct": 0.0,
-        "reported_utilization_pct": 29.4,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "estimated_daily_quota",
-        "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-03-07T12:05:29Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 337
-          },
-          {
-            "tool": "Read",
-            "count": 235
-          },
-          {
-            "tool": "Write",
-            "count": 140
-          },
-          {
-            "tool": "Edit",
-            "count": 120
-          },
-          {
-            "tool": "Grep",
-            "count": 76
-          }
-        ],
-        "first_ts": "2026-03-02T03:25:41.120000Z",
-        "last_ts": "2026-03-08T11:30:32.895000Z",
-        "note": "today_messages/daily_limit from estimated; using activity fallback"
-      },
-      "hermes": {
-        "provider": "hermes",
-        "week": "2026-W10",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": null,
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
-        "note": "no quota snapshot; using activity fallback"
-      }
-    },
-    "2026-W11": {
-      "claude": {
-        "provider": "claude",
-        "week": "2026-W11",
-        "sessions": 8,
-        "post_records": 40684,
-        "activity_utilization_pct": 100.0,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 100.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-03-12T17:53:16Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 23214
-          },
-          {
-            "tool": "Read",
-            "count": 6962
-          },
-          {
-            "tool": "Write",
-            "count": 3802
-          },
-          {
-            "tool": "Edit",
-            "count": 3691
-          },
-          {
-            "tool": "Grep",
-            "count": 857
-          }
-        ],
-        "first_ts": "2026-03-09T00:43:36Z",
-        "last_ts": "2026-03-15T23:16:24Z",
-        "note": "quota unavailable from unavailable; using activity fallback"
-      },
-      "codex": {
-        "provider": "codex",
-        "week": "2026-W11",
-        "sessions": 198,
-        "post_records": 6656,
-        "activity_utilization_pct": 73.6,
-        "quota_utilization_pct": 34.5,
-        "reported_utilization_pct": 34.5,
-        "utilization_basis": "quota",
-        "quota_basis": "quota",
-        "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-03-12T17:53:16Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 6282
-          },
-          {
-            "tool": "update_plan",
-            "count": 372
-          },
-          {
-            "tool": "request_user_input",
-            "count": 2
-          }
-        ],
-        "first_ts": "2026-03-09T03:37:23.964000Z",
-        "last_ts": "2026-03-14T20:43:27.685000Z",
-        "note": "week_messages/weekly_limit from history.jsonl"
-      },
-      "gemini": {
-        "provider": "gemini",
-        "week": "2026-W11",
-        "sessions": 30,
-        "post_records": 241,
-        "activity_utilization_pct": 7.8,
-        "quota_utilization_pct": 0.0,
-        "reported_utilization_pct": 7.8,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "estimated_daily_quota",
-        "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-03-12T17:53:16Z",
-        "top_tools": [
-          {
-            "tool": "Read",
-            "count": 86
-          },
-          {
-            "tool": "Bash",
-            "count": 82
-          },
-          {
-            "tool": "Grep",
-            "count": 68
-          },
-          {
-            "tool": "Edit",
-            "count": 5
-          }
-        ],
-        "first_ts": "2026-03-09T04:34:00.075000Z",
-        "last_ts": "2026-03-13T08:38:58.865000Z",
-        "note": "today_messages/daily_limit from estimated; using activity fallback"
-      },
-      "hermes": {
-        "provider": "hermes",
-        "week": "2026-W11",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": null,
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
-        "note": "no quota snapshot; using activity fallback"
-      }
-    },
-    "2026-W12": {
-      "claude": {
-        "provider": "claude",
-        "week": "2026-W12",
-        "sessions": 8,
-        "post_records": 17070,
-        "activity_utilization_pct": 42.0,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 42.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-03-20T22:18:57Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 8704
-          },
-          {
-            "tool": "Read",
-            "count": 3754
-          },
-          {
-            "tool": "Write",
-            "count": 1334
-          },
-          {
-            "tool": "Edit",
-            "count": 1297
-          },
-          {
-            "tool": "Grep",
-            "count": 505
-          }
-        ],
-        "first_ts": "2026-03-16T00:01:27Z",
-        "last_ts": "2026-03-22T23:03:37Z",
-        "note": "quota unavailable from unavailable; using activity fallback"
-      },
-      "codex": {
-        "provider": "codex",
-        "week": "2026-W12",
-        "sessions": 14,
-        "post_records": 886,
-        "activity_utilization_pct": 9.8,
-        "quota_utilization_pct": 0.5,
-        "reported_utilization_pct": 0.5,
-        "utilization_basis": "quota",
-        "quota_basis": "quota",
-        "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-03-20T22:18:57Z",
-        "top_tools": [
-          {
-            "tool": "Bash",
-            "count": 874
-          },
-          {
-            "tool": "update_plan",
-            "count": 12
-          }
-        ],
-        "first_ts": "2026-03-16T03:32:46.700000Z",
-        "last_ts": "2026-03-22T10:05:59.631000Z",
-        "note": "week_messages/weekly_limit from history.jsonl"
-      },
-      "gemini": {
-        "provider": "gemini",
-        "week": "2026-W12",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": 0.0,
-        "reported_utilization_pct": 0.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "estimated_daily_quota",
-        "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-03-20T22:18:57Z",
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
-        "note": "today_messages/daily_limit from estimated; using activity fallback"
-      },
-      "hermes": {
-        "provider": "hermes",
-        "week": "2026-W12",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.0,
-        "utilization_basis": "activity_vs_recent_peak",
-        "quota_basis": "unavailable",
-        "quota_source": "unavailable",
-        "quota_snapshot_ts": null,
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
-        "note": "no quota snapshot; using activity fallback"
-      }
-    },
     "2026-W13": {
       "claude": {
         "provider": "claude",
@@ -507,7 +65,7 @@
         "provider": "codex",
         "week": "2026-W13",
         "sessions": 13,
-        "post_records": 2244,
+        "post_records": 1122,
         "activity_utilization_pct": 24.8,
         "quota_utilization_pct": 5.6,
         "reported_utilization_pct": 5.6,
@@ -518,11 +76,11 @@
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 2226
+            "count": 1113
           },
           {
             "tool": "update_plan",
-            "count": 18
+            "count": 9
           }
         ],
         "first_ts": "2026-03-23T04:03:47.275000Z",
@@ -607,7 +165,7 @@
         "provider": "codex",
         "week": "2026-W14",
         "sessions": 29,
-        "post_records": 1108,
+        "post_records": 554,
         "activity_utilization_pct": 12.3,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 12.3,
@@ -618,23 +176,23 @@
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 1044
+            "count": 522
           },
           {
             "tool": "update_plan",
-            "count": 28
+            "count": 14
           },
           {
             "tool": "list_mcp_resources",
-            "count": 16
+            "count": 8
           },
           {
             "tool": "list_mcp_resource_templates",
-            "count": 10
+            "count": 5
           },
           {
             "tool": "spawn_agent",
-            "count": 4
+            "count": 2
           }
         ],
         "first_ts": "2026-03-30T17:55:59.181000Z",
@@ -761,10 +319,10 @@
         "provider": "codex",
         "week": "2026-W15",
         "sessions": 17,
-        "post_records": 367,
-        "activity_utilization_pct": 4.1,
+        "post_records": 228,
+        "activity_utilization_pct": 5.0,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 4.1,
+        "reported_utilization_pct": 5.0,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -772,7 +330,7 @@
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 306
+            "count": 176
           },
           {
             "tool": "mcp__codex_apps__github_fetch_file",
@@ -780,15 +338,15 @@
           },
           {
             "tool": "list_mcp_resources",
-            "count": 15
+            "count": 9
           },
           {
             "tool": "mcp__codex_apps__github_search",
             "count": 9
           },
           {
-            "tool": "list_mcp_resource_templates",
-            "count": 6
+            "tool": "mcp__codex_apps__github_fetch_issue",
+            "count": 4
           }
         ],
         "first_ts": "2026-04-08T11:17:22.377000Z",
@@ -872,11 +430,11 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W16",
-        "sessions": 94,
-        "post_records": 4036,
-        "activity_utilization_pct": 9.9,
+        "sessions": 97,
+        "post_records": 4095,
+        "activity_utilization_pct": 10.1,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 9.9,
+        "reported_utilization_pct": 10.1,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -884,19 +442,19 @@
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 2119
+            "count": 2154
           },
           {
             "tool": "Read",
-            "count": 1048
+            "count": 1060
           },
           {
             "tool": "Edit",
-            "count": 326
+            "count": 332
           },
           {
             "tool": "Write",
-            "count": 256
+            "count": 260
           },
           {
             "tool": "Grep",
@@ -904,15 +462,15 @@
           }
         ],
         "first_ts": "2026-04-13T14:42:39Z",
-        "last_ts": "2026-04-18T02:14:43Z",
+        "last_ts": "2026-04-19T21:50:20Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
         "provider": "codex",
         "week": "2026-W16",
-        "sessions": 63,
-        "post_records": 1353,
-        "activity_utilization_pct": 15.0,
+        "sessions": 64,
+        "post_records": 1404,
+        "activity_utilization_pct": 31.1,
         "quota_utilization_pct": 1.0,
         "reported_utilization_pct": 1.0,
         "utilization_basis": "quota",
@@ -922,19 +480,19 @@
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 563
+            "count": 569
           },
           {
-            "tool": "_fetch_file",
-            "count": 222
+            "tool": "Read",
+            "count": 247
           },
           {
             "tool": "mcp__codex_apps__github_fetch_file",
             "count": 165
           },
           {
-            "tool": "_search",
-            "count": 142
+            "tool": "Grep",
+            "count": 151
           },
           {
             "tool": "list_mcp_resources",
@@ -942,7 +500,7 @@
           }
         ],
         "first_ts": "2026-04-14T22:23:31.296000Z",
-        "last_ts": "2026-04-18T02:11:29.404000Z",
+        "last_ts": "2026-04-19T21:45:01.285000Z",
         "note": "week_messages/weekly_limit from history.jsonl"
       },
       "gemini": {
@@ -1021,26 +579,138 @@
         "last_ts": "2026-04-17T09:44:18.494820Z",
         "note": "no quota snapshot; using activity fallback"
       }
+    },
+    "2026-W17": {
+      "claude": {
+        "provider": "claude",
+        "week": "2026-W17",
+        "sessions": 7,
+        "post_records": 924,
+        "activity_utilization_pct": 2.3,
+        "quota_utilization_pct": null,
+        "reported_utilization_pct": 2.3,
+        "utilization_basis": "activity_vs_recent_peak",
+        "quota_basis": "unavailable",
+        "quota_source": "unavailable",
+        "quota_snapshot_ts": "2026-04-20T01:20:01Z",
+        "top_tools": [
+          {
+            "tool": "Bash",
+            "count": 578
+          },
+          {
+            "tool": "Read",
+            "count": 160
+          },
+          {
+            "tool": "Edit",
+            "count": 117
+          },
+          {
+            "tool": "Write",
+            "count": 41
+          },
+          {
+            "tool": "Agent",
+            "count": 19
+          }
+        ],
+        "first_ts": "2026-04-20T00:07:20Z",
+        "last_ts": "2026-04-20T03:43:12Z",
+        "note": "quota unavailable from unavailable; using activity fallback"
+      },
+      "codex": {
+        "provider": "codex",
+        "week": "2026-W17",
+        "sessions": 5,
+        "post_records": 129,
+        "activity_utilization_pct": 2.9,
+        "quota_utilization_pct": 0.1,
+        "reported_utilization_pct": 0.1,
+        "utilization_basis": "quota",
+        "quota_basis": "quota",
+        "quota_source": "history.jsonl",
+        "quota_snapshot_ts": "2026-04-20T01:20:01Z",
+        "top_tools": [
+          {
+            "tool": "Read",
+            "count": 61
+          },
+          {
+            "tool": "Grep",
+            "count": 28
+          },
+          {
+            "tool": "Bash",
+            "count": 12
+          },
+          {
+            "tool": "_search_repositories",
+            "count": 7
+          },
+          {
+            "tool": "_fetch_issue",
+            "count": 7
+          }
+        ],
+        "first_ts": "2026-04-20T00:39:22.087000Z",
+        "last_ts": "2026-04-20T03:23:32.961000Z",
+        "note": "week_messages/weekly_limit from history.jsonl"
+      },
+      "gemini": {
+        "provider": "gemini",
+        "week": "2026-W17",
+        "sessions": 0,
+        "post_records": 0,
+        "activity_utilization_pct": 0.0,
+        "quota_utilization_pct": 0.0,
+        "reported_utilization_pct": 0.0,
+        "utilization_basis": "activity_vs_recent_peak",
+        "quota_basis": "estimated_daily_quota",
+        "quota_source": "estimated",
+        "quota_snapshot_ts": "2026-04-20T01:20:01Z",
+        "top_tools": [],
+        "first_ts": null,
+        "last_ts": null,
+        "note": "today_messages/daily_limit from estimated; using activity fallback"
+      },
+      "hermes": {
+        "provider": "hermes",
+        "week": "2026-W17",
+        "sessions": 0,
+        "post_records": 0,
+        "activity_utilization_pct": 0.0,
+        "quota_utilization_pct": null,
+        "reported_utilization_pct": 0.0,
+        "utilization_basis": "activity_vs_recent_peak",
+        "quota_basis": "unavailable",
+        "quota_source": "unavailable",
+        "quota_snapshot_ts": null,
+        "top_tools": [],
+        "first_ts": null,
+        "last_ts": null,
+        "note": "no quota snapshot; using activity fallback"
+      }
     }
   },
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 9.9,
+      "reported_utilization_pct": 2.3,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 9.9% (activity_vs_recent_peak)"
+      "message": "claude at 2.3% (activity_vs_recent_peak)"
     },
     {
       "provider": "codex",
-      "reported_utilization_pct": 1.0,
+      "reported_utilization_pct": 0.1,
       "basis": "quota",
-      "message": "codex at 1.0% (quota)"
+      "message": "codex at 0.1% (quota)"
     },
     {
       "provider": "gemini",
-      "reported_utilization_pct": 5.8,
+      "reported_utilization_pct": 0.0,
       "basis": "activity_vs_recent_peak",
-      "message": "gemini at 5.8% (activity_vs_recent_peak)"
+      "message": "gemini at 0.0% (activity_vs_recent_peak)"
     }
   ],
   "paths": {
