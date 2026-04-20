@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-20T05:20:05.783549Z",
+  "generated_at": "2026-04-20T09:20:07.154906Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-20T05:20:04.083503Z",
+  "scorecard_generated_at": "2026-04-20T09:20:04.024100Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 10,
-      "total_candidates": 146,
+      "total_candidates": 150,
       "top_issues": [
         {
           "number": 2342,
@@ -210,7 +210,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 51,
+      "total_candidates": 48,
       "top_issues": [
         {
           "number": 2343,
@@ -393,7 +393,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 3,
+      "total_candidates": 2,
       "top_issues": [
         {
           "number": 2295,
@@ -408,22 +408,6 @@
           "updatedAt": "2026-04-16T02:54:39Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
-          ]
-        },
-        {
-          "number": 2123,
-          "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123",
-          "labels": [],
-          "updatedAt": "2026-04-10T16:00:58Z",
-          "execution_ready": false,
-          "priority_rank": 4,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",

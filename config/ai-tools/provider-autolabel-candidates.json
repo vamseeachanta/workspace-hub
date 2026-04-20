@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-20T05:20:05.985874Z",
+  "generated_at": "2026-04-20T09:20:07.356154Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 9,
@@ -532,29 +532,6 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2123,
-      "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123",
-      "labels": [],
-      "updatedAt": "2026-04-10T16:00:58Z",
-      "execution_ready": false,
-      "priority_rank": 4,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.45,
-      "confidence_reasons": [
-        "strong-gemini-language-match",
         "provider-highest-priority"
       ],
       "eligible": false

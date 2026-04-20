@@ -49,3 +49,5 @@ shown:
     tips: [cc-diff, cc-compact-focus]
   - date: 2026-04-19
     tips: [bp-compact-50pct, cc-stats]
+  - date: 2026-04-20
+    tips: [cc-bare, cc-branch-fork]

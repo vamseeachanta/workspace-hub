@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-20T05:20:05.783549Z
+Generated: 2026-04-20T09:20:07.154906Z
 Current week: 2026-W17
 Recommended provider order: gemini, codex, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 10
-- Total routed candidates: 146
+- Total routed candidates: 150
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 1
-- Total routed candidates: 51
+- Total routed candidates: 48
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -44,11 +44,10 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 3
+- Total routed candidates: 2
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | no | research/triage/audit language | enhancement, priority:high, cat:personal-finance, domain:tax-preparation |
-| #2123 feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation | no | research/triage/audit language |  |
 | #2125 feat(llm-wiki): auto-refresh ingestion on new Orcina releases | no | research/triage/audit language |  |
 
