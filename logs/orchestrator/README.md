@@ -101,6 +101,7 @@ Scheduled refresh:
 This report surfaces:
 - provider-by-provider session volume and tool mix
 - hottest missing repo-local reads and symbolic skill/tool reads
+- recent read/write/edit hotspots since the previous audit and across rolling 24h/7d windows
 - bare `python3` usage inside Bash calls vs `uv run ... python`
 - cross-provider observability gaps (for example, missing `session_*.jsonl` inputs)
 

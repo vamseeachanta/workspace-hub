@@ -91,9 +91,12 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 | Create | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md | standing workspace-hub readiness contract |
 | Create | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md | explicit workspace-hub upgrade playbook |
 | Create | tests/docs/test_workspace_hub_model_release_readiness.py | executable checks for dimensions, gap-summary sections, canonical anchors, non-contradiction, and line limits |
-| Update | AGENTS.md | add discoverability pointer |
+| Update | AGENTS.md | add canonical discoverability pointer |
+| Update | CLAUDE.md | align live root Claude entry surface with canonical anchor policy |
+| Update | GEMINI.md | align live root Gemini entry surface with canonical anchor policy |
 | Update | docs/standards/CONTROL_PLANE_CONTRACT.md | anchor readiness contract from canonical control-plane standard |
 | Update | docs/plans/README.md | add this plan to index |
+
 ---
 
 ## TDD Test List
@@ -106,6 +109,7 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 | test_contract_covers_prompt_pack_portability | portability dimension is explicit | contract/playbook text | provider/machine portability section present |
 | test_upgrade_playbook_separates_provider_vs_repo_drift | playbook handles ownership correctly | playbook text | provider-owned vs repo-owned branches present |
 | test_anchor_strategy_matches_control_plane_contract | chosen anchors are consistent with adapter topology | AGENTS + CONTROL_PLANE_CONTRACT + root entry surfaces | explicit consistent references only |
+| test_root_entry_surfaces_align_with_canonical_workflow_contract | live root entry surfaces do not drift from canonical anchor model | CLAUDE.md + GEMINI.md + AGENTS.md + control-plane contract | consistent workflow-anchor references present |
 | test_line_count_compliance_for_thin_adapters | thin-adapter limit is preserved | AGENTS.md, CLAUDE.md, GEMINI.md | files remain within policy limit |
 | test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory and provider-adapter-shape normalization |
 | test_non_contradiction_with_control_plane_contract_uses_concrete_assertions | new docs do not redefine adapter topology | contract + playbook + control-plane contract | exact string assertions on canonical adapter paths pass |
@@ -121,7 +125,8 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 - [ ] contract explicitly covers context-budget/truncation-safe artifact design
 - [ ] contract explicitly covers machine-readable rules/skills vs prose-only guidance
 - [ ] contract explicitly covers prompt-pack portability for workspace-hub workflows
-- [ ] discoverability anchors exist in the chosen canonical workspace-hub entrypoints without requiring provider-adapter expansion
+- [ ] canonical discoverability anchors exist in `AGENTS.md` and `docs/standards/CONTROL_PLANE_CONTRACT.md`
+- [ ] live root provider entry surfaces (`CLAUDE.md`, `GEMINI.md`) are updated for consistency with the canonical workflow-anchor model
 - [ ] package/contract explicitly state that tier-1 ecosystem inventory and provider-adapter-shape normalization are out of scope for this issue
 - [ ] line-count compliance for thin adapters is explicitly tested
 - [ ] non-contradiction with `CONTROL_PLANE_CONTRACT.md` is checked using concrete assertions, not vague contradiction language

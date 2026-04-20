@@ -1,6 +1,6 @@
 # Plan for #2367: Wire capability-summary-v1.pdf Download Link from Gallery CTA + 4 Methodology Pages (#2344 Follow-up)
 
-> **Status:** draft v2 (revised 2026-04-20 after round-1 Claude MINOR)
+> **Status:** draft v3 (revised 2026-04-20 after Codex round-2 REQUEST-CHANGES)
 > **Complexity:** T1
 > **Date:** 2026-04-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2367
@@ -9,7 +9,7 @@
 > - #2344 implementation — will publish `aceengineer-website/assets/capability-summary-v1.pdf`. Until that asset is on disk and deployed, wiring a link here would produce a broken download. **Not yet cleared** at v2 draft time (`ls aceengineer-website/assets/ | grep -i capability` returns 0 matches).
 > - #2342+#2343 Commit 2 — edits `aceengineer-website/content/demos/index.html` (gallery CTA set). **Cleared 2026-04-20** as `aceengineer-website` main commit `1b4adf1`; this plan will proceed against current `main` with no predecessor conflict on the gallery file.
 > **Cross-repo note:** All edits below will land inside the nested `aceengineer-website/` git repo. Verified via `cd aceengineer-website && git remote -v` at v2 draft: `origin  https://github.com/vamseeachanta/aceengineer-website.git (push)`. Commits and `git push` will target that repo's remote, **not** `workspace-hub`. This plan file and its index row are the only artifacts that live in `workspace-hub`.
-> **Review artifacts:** `scripts/review/results/2026-04-20-plan-2367-claude.md` (round 1, MINOR verdict, 8 findings — this v2 addresses them) | Codex round-1 silent-dropped (no artifact) | Gemini TBD
+> **Review artifacts:** `scripts/review/results/2026-04-20-plan-2367-claude.md` (round 1, MINOR, 8 findings — addressed in v2) | `scripts/review/results/2026-04-20-v2-plan-2367-claude.md` (round 2, APPROVE — all 8 v1 fixes verified) | Codex round-1 silent-dropped (no artifact) | `scripts/review/results/2026-04-20-v2-plan-2367-codex.md` (round 2, REQUEST-CHANGES, 2 findings — this v3 addresses them: F1 independent 1-page gate; F2 structural placement tests) | Gemini TBD
 
 ---
 
@@ -129,7 +129,11 @@ All rows are prescribed work performed during implementation (not by this plan-d
 | methodology_uses_relative | grep | each methodology-page anchor uses raw `../../assets/…` (body-style consistent with the 0-rootPath-in-body convention) | `grep -E '\.\./\.\./assets/capability-summary-v1\.pdf' <each methodology file>` returns 1 match each |
 | download_attribute_present | grep | each anchor carries the `download` attribute | `grep 'capability-summary-v1.pdf.*download' <each file>` returns 1 match each |
 | pdf_asset_exists_at_target | bash | `aceengineer-website/assets/capability-summary-v1.pdf` exists and is a non-trivial PDF before commit (sequencing gate for #2344 predecessor) | `test -s aceengineer-website/assets/capability-summary-v1.pdf && file aceengineer-website/assets/capability-summary-v1.pdf \| grep -q 'PDF document' && [ $(stat -c %s aceengineer-website/assets/capability-summary-v1.pdf) -gt 10000 ]` → exit 0. Upgraded from plain `-s` (v1) to size>10KB + magic-bytes check (Finding 2: `-s` passes on a 1-byte file). |
+| pdf_is_one_page | bash + `pdfinfo` | CTAs hardcode the copy `"(PDF, 1 page)"` in all 5 anchors — the asset must actually be 1 page or every CTA mislabels (Codex v2 F1: independent re-verification of #2344's 1-page render claim, so drift in #2344 cannot silently produce a 2-page PDF that passes this plan's other gates) | `pdfinfo aceengineer-website/assets/capability-summary-v1.pdf \| awk '/^Pages:/{print $2}'` will equal `1` exactly. Exit non-zero on any other value. Runs BEFORE the CTA-wiring Edits are accepted as a pre-commit gate; if the asset is not 1 page, implementation will either (a) swap the copy to "(PDF, N pages)" and open a corrective issue against #2344, or (b) abort the commit and escalate. |
 | npm_build_succeeds | bash + `npm run build` | posthtml-expressions renders all 5 pages without error | exit 0; `dist/demos/index.html` contains `../assets/capability-summary-v1.pdf` (rootPath=`../`); `dist/methodology/<slug>/index.html` each contain `../../assets/capability-summary-v1.pdf` anchor |
+| cta_in_gallery_hero | bash + regex-scoped grep | gallery CTA anchor will sit inside the `.demo-hero` block, not in the footer `.demo-cta-section` (Codex v2 F2: placement-defaults are structurally tested, not just counted) | Extract the span between `<section class="demo-hero">` and its matching `</section>` from `content/demos/index.html` (via `awk '/<section class="demo-hero">/,/<\/section>/'` or equivalent). The extracted block will contain exactly 1 match for `capability-summary-v1\.pdf`. |
+| cta_in_methodology_method_cta | bash + regex-scoped grep | for each of 4 methodology pages, the CTA anchor will sit inside the `.method-cta` block, not in `.method-toc` or any other container (Codex v2 F2: parameterized per-page structural gate) | For each `<slug>` in {compound-engineering, enforcement, orchestrator-worker, multi-agent-parity}: extract the span from `<div class="method-cta text-center">` up to (and including) its matching closing `</div>` on the minified body line, then `grep -c 'capability-summary-v1\.pdf'` on that extracted span. Pass: 1 per page. |
+| cta_NOT_in_gallery_footer | bash + regex-scoped grep | negative assertion: no Download-PDF anchor will appear in the gallery footer `.demo-cta-section` block (Codex v2 F2: prevents accidental dual-placement if the implementation agent mis-edits both hero and footer) | Extract the span between `<section class="demo-cta-section">` and its matching `</section>` from `content/demos/index.html`. The extracted block will contain exactly 0 matches for `capability-summary-v1\.pdf`. |
 
 **Post-deploy (live, after Vercel finishes building from `aceengineer-website` main push):**
 
@@ -149,6 +153,8 @@ Manual visual QA (explicitly out-of-automation): confirm the two buttons inside 
 - [ ] `aceengineer-website/content/demos/index.html` will gain one anchor to `{{ rootPath }}assets/capability-summary-v1.pdf` inside the `.demo-hero` block (after `.hero-kpis`)
 - [ ] Each of the 4 methodology pages (`compound-engineering`, `enforcement`, `orchestrator-worker`, `multi-agent-parity`) will gain one anchor to `../../assets/capability-summary-v1.pdf` (raw relative path, body-style consistent) inside its `.method-cta` block
 - [ ] All 5 anchors will carry the `download` attribute, class `btn-info btn-lg`, copy `"Download Capability Summary (PDF, 1 page)"`, and link to the versioned basename `capability-summary-v1.pdf`
+- [ ] **Pre-commit independent 1-page gate (v3 F1):** `pdfinfo aceengineer-website/assets/capability-summary-v1.pdf \| awk '/^Pages:/{print $2}'` will equal `1` exactly before CTA wiring is accepted; this plan independently re-verifies the 1-page claim rather than relying solely on #2344's render-side gate
+- [ ] **Structural placement (v3 F2):** gallery CTA anchor will appear inside the `.demo-hero` section block and NOT inside the footer `.demo-cta-section` (regex-scoped grep both ways); each of 4 methodology-page CTA anchors will appear inside its `.method-cta` block (regex-scoped grep, one assertion per page)
 - [ ] `npm run build` in `aceengineer-website/` will complete; `dist/demos/index.html` will contain `../assets/capability-summary-v1.pdf`; `dist/methodology/<slug>/index.html` will each contain `../../assets/capability-summary-v1.pdf`
 - [ ] Post-deploy: all 5 pages will return HTTP 200; all 5 pages' rendered HTML will contain the basename `capability-summary-v1.pdf`; the absolute PDF URL `https://www.aceengineer.com/assets/capability-summary-v1.pdf` will return 200 with `Content-Type: application/pdf`
 - [ ] Spot-check: clicking the CTA on one methodology page will download the PDF (or open it in the browser's PDF viewer — both in-spec per issue acceptance)
@@ -172,10 +178,12 @@ Single-commit change in the `aceengineer-website` repo. If any post-deploy check
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude (round 1) | MINOR | 8 findings: templating inconsistency (body-level `{{ rootPath }}` use); line-number drift; `/assets/...` literal-grep test would fail vs. relative rendered URLs; hero-vs-footer placement silently chosen; 3 open questions pushed to user without defaults; `btn-default` subordination logic likely backwards on dark gradient; `-s` pre-commit gate passes on 1-byte file; iOS Safari `download` claim too strong. All 8 addressed in v2. |
-| Codex (round 1) | silent-dropped | No artifact produced (ops context, not a plan issue — per `feedback_codex_sandbox_no_execution.md`). Will retry in round 2 if dispatched. |
+| Claude (round 2, v2) | APPROVE | All 8 v1 fixes verified against HEAD file-state; no new blocking findings. LOW observation A ("(PDF, 1 page)" copy couples to #2344's 1-page gate) was hardening-only; v3 F1 promotes it to an independent plan-level gate. |
+| Codex (round 1) | silent-dropped | No artifact produced (ops context, not a plan issue — per `feedback_codex_sandbox_no_execution.md`). Retried at round-2 on v2 text. |
+| Codex (round 2, v2) | REQUEST-CHANGES | 2 findings: (F1) CTAs hardcode `"1 page"` but v2 TDD only checks asset existence/type/size — drift in #2344 would mislabel CTAs undetected; (F2) placement tests grep only basename/counts, so an implementation that placed the CTA in `.method-toc` or gallery footer would still pass. Both addressed in v3: F1 → new TDD row `pdf_is_one_page` + matching acceptance; F2 → new TDD rows `cta_in_gallery_hero`, `cta_in_methodology_method_cta`, `cta_NOT_in_gallery_footer` + matching acceptance. |
 | Gemini | TBD | pending |
 
-**Overall result:** v2 addresses all 8 Claude round-1 MINOR findings; round-2 review not dispatched by this revision turn.
+**Overall result:** v2 addressed all 8 Claude round-1 findings (Claude round 2: APPROVE). v3 addresses both Codex round-2 REQUEST-CHANGES findings; round-3 review not dispatched by this revision turn.
 
 ---
 
@@ -228,3 +236,8 @@ Per Finding 7 of Claude round 1, v2 promotes each open question from "please dec
   8. Resource Intelligence updated: Commit 2 cleared as `1b4adf1`; sequencing text acknowledges merged predecessor.
 
   Also: git-remote quoted (Finding audit); iOS-Safari download-attribute claim softened per Finding 6.
+- **v3 (2026-04-20, this revision):** addresses Codex round-2 REQUEST-CHANGES (2 findings) after Claude round-2 APPROVE of v2 (`scripts/review/results/2026-04-20-v2-plan-2367-codex.md`, `...-v2-plan-2367-claude.md`):
+  1. **F1 — independent 1-page PDF gate.** v2 hardcoded `"Download Capability Summary (PDF, 1 page)"` in all 5 CTAs but only checked asset existence/type/size. If #2344 drifted to a 2-page render, every CTA would mislabel undetected. v3 adds a new pre-commit TDD row `pdf_is_one_page` that runs `pdfinfo | awk '/^Pages:/{print $2}'` and hard-fails unless exactly `1`. This plan now independently re-verifies #2344's 1-page render claim. Acceptance gains a matching criterion. Rationale: cross-plan gates are independent of each other's drift; cheap insurance.
+  2. **F2 — structural placement tests.** v2 tests greped basename/counts only; an implementation that placed the gallery CTA in the footer `.demo-cta-section` or the methodology CTA in `.method-toc` would still pass. v3 adds three new TDD rows — `cta_in_gallery_hero` (regex-scoped grep inside the `.demo-hero` span, positive), `cta_in_methodology_method_cta` (regex-scoped per-slug grep inside the `.method-cta` span, 4 positive assertions), and `cta_NOT_in_gallery_footer` (regex-scoped grep inside the `.demo-cta-section` span, negative — prevents accidental dual-placement). Acceptance gains a matching criterion summarising both directions.
+
+  Also: Adversarial Review Summary table updated with Claude round-2 APPROVE and Codex round-2 REQUEST-CHANGES rows.
