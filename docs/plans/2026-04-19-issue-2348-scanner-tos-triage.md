@@ -15,7 +15,8 @@
 |---|---|---|
 | v1 | 2026-04-17 | Initial draft — 3-issue triage (#1707 fix + #1708/#1709 close-with-comment) + cron-pause flag |
 | v2 | 2026-04-17 | Post-review refresh: (a) remove #1708/#1709 close actions — they closed during round-1 review cycle; (b) reconcile sources to live reality (`linkedin/indeed/career_page` only — Google and Rigzone NOT in live run); (c) add non-engineer approver to sign-off chain; (d) replace unpause "recommendation" with explicit checklist; (e) flip robots-unreachable default ALLOW → DENY (fail-closed); (f) mark cease-and-desist runbook as requiring counsel input or explicit deferral with owner sign-off; (g) add README + operator-doc updates as Commit-2 hard requirement; (h) rewrite rollback as explicit state machine given cron is already paused; (i) drop the spurious memory-correction item |
-| v3 | 2026-04-20 | Integrate user answers to Q9/Q10/Q11. **Q9 (dead sources: REMOVE):** `google`, `google_direct`, `rigzone` removed from `SOURCE_RATE_LIMITS` + `SOURCE_ALLOWED_DOMAINS` (scanner.py:146-163); dead-code scrape functions (`scrape_google_jobs`, `scrape_google_direct`, `scrape_rigzone`) deleted along with dispatcher calls (scanner.py:644/663/669); `TOS_REVIEW.md` lists them as "REMOVED — zero results, not revisited without owner sign-off"; README updated to 3-source reality. **Q10 (approver: owner-only):** dual-path "counsel OR owner" framing collapsed to owner-only; owner = user (Vamsee Achanta) acting as business owner of ACE Engineer; sign-off recorded as datestamped "Owner approved: <YYYY-MM-DD>" line per source in committed `TOS_REVIEW.md`. **Q11 (LinkedIn: KEEP):** explicit keep-decision documented with risk acknowledgment; robots.txt integration will likely DENY LinkedIn; plan adds a documented owner-override mechanism (owner signs an explicit "scraping override despite robots.txt" block in `TOS_REVIEW.md`), OR switches to LinkedIn official API/RSS as a deferred alternate. Unpause checklist rewritten for 3-source reality. New TDD tests for allowlist composition and per-source owner-signoff. New risk entry on robots-vs-owner-directive conflict. |
+| v3 | 2026-04-20 | Integrate user answers to Q9/Q10/Q11. **Q9 (dead sources: REMOVE) — prescribed, not yet implemented:** implementation will remove `google`, `google_direct`, `rigzone` from `SOURCE_RATE_LIMITS` + `SOURCE_ALLOWED_DOMAINS` (scanner.py:146-163), delete the dead-code scrape functions (`scrape_google_jobs`, `scrape_google_direct`, `scrape_rigzone`) along with their dispatcher calls (scanner.py:644/663/669), and update `TOS_REVIEW.md` (file itself prescribed — see §Files to Change) to list them as "REMOVED — zero results, not revisited without owner sign-off"; README to be updated to the 3-source reality. **Q10 (approver: owner-only):** dual-path "counsel OR owner" framing collapsed to owner-only; owner = user (Vamsee Achanta) acting as business owner of ACE Engineer; sign-off prescribed as a datestamped "Owner approved: <YYYY-MM-DD>" line per source in `TOS_REVIEW.md` at implementation time. **Q11 (LinkedIn: KEEP):** explicit keep-decision documented with risk acknowledgment; robots.txt integration will likely DENY LinkedIn; plan prescribes a documented owner-override mechanism (owner to sign an explicit "scraping override despite robots.txt" block in `TOS_REVIEW.md`), OR a switch to LinkedIn official API/RSS as a deferred alternate. Unpause checklist rewritten for 3-source reality. New TDD tests specified for allowlist composition and per-source owner-signoff (test files also prescribed). New risk entry on robots-vs-owner-directive conflict. |
+| v3-addendum | 2026-04-20 | Tense-audit per `feedback_plan_past_tense_artifact_claims.md`: scanner.py still carries all 6 sources at plan-commit time (verified via `grep 'scrape_google\|scrape_rigzone' scripts/gtm/job-market-scanner.py` → 3 matches at lines 302/392/474; `SOURCE_RATE_LIMITS` at 145-153 still lists all 6). `TOS_REVIEW.md` is absent from git. `_OWNER_OVERRIDE_SOURCES` + `urllib.robotparser` integration absent. Revision-history language in v3 rewritten above to describe this work as **prescribed**, not as **done**. |
 
 ---
 
@@ -65,18 +66,18 @@ The constants live in `scripts/gtm/job-market-scanner.py` (verified 2026-04-20 v
 | `scrape_indeed()` | 350-390 | Retain; verify no residual `site:rigzone.com` in query (line 308 area) after Google scraper removal |
 | Main scan loop dispatcher | 644, 663, 669 | Delete calls to `scrape_google_jobs`, `scrape_rigzone`, `scrape_google_direct` + any accumulator updates |
 
-**Post-removal `SOURCE_ALLOWLIST` composition:** `{"indeed", "linkedin", "career_page", "example-board"}` (3 live scraped + 1 test fixture). The three scraped live sources are `linkedin`, `indeed`, `career_page`.
+**Post-removal `SOURCE_ALLOWLIST` composition (target state after implementation; current git state still has all 6):** `{"indeed", "linkedin", "career_page", "example-board"}` (3 live scraped + 1 test fixture). The three scraped live sources will be `linkedin`, `indeed`, `career_page`. Today at plan-commit time, `SOURCE_ALLOWLIST = set(SOURCE_RATE_LIMITS)` in scanner.py:154 still evaluates to the 7-entry set; verify the shrink landed via `test_allowlist_contains_exactly_3_live_sources` before declaring #1707 complete.
 
 ### #1707 acceptance criteria status (file-verified)
 
 | Criterion | File + lines | Status |
 |---|---|---|
-| Per-site rate limit config | `job-market-scanner.py:145-153` | DONE (shrinks in v3) |
-| Retry-After respected | `job-market-scanner.py:197-206` | DONE |
-| Exponential backoff on 429/503 | `job-market-scanner.py:198-207` | DONE |
-| Source allowlist | `job-market-scanner.py:154-163` | DONE (shrinks to 3 live in v3) |
-| robots.txt check before scraping | grep `robotparser` → 0 matches | **GAP** |
-| Documented ToS compliance per source | No `TOS_REVIEW.md` | **GAP** |
+| Per-site rate limit config | `job-market-scanner.py:145-153` | DONE (present in git; will be pruned to 4 entries by v3 implementation) |
+| Retry-After respected | `job-market-scanner.py:197-206` | DONE (present in git) |
+| Exponential backoff on 429/503 | `job-market-scanner.py:198-207` | DONE (present in git) |
+| Source allowlist | `job-market-scanner.py:154-163` | DONE structurally (derived constant exists) — **v3 prescribes shrinking from 7 entries to 4** |
+| robots.txt check before scraping | grep `robotparser` → 0 matches | **GAP** (v3 prescribed) |
+| Documented ToS compliance per source | No `TOS_REVIEW.md` in git | **GAP** (v3 prescribed) |
 | Consider official APIs | No ADR | **GAP** (LinkedIn API as deferred alternate per Q11) |
 
 ### The legal/ToS dimension
@@ -321,10 +322,10 @@ Cron is currently **paused**. Four legal resting states:
 
 ## Risks and Open Questions
 
-### Resolved in v3
-- **Q9 (dead sources):** REMOVE. Implemented in §Files to Change.
-- **Q10 (approver):** owner-only. Dual-path language removed.
-- **Q11 (LinkedIn):** KEEP + robots-conflict reconciled via owner-override mechanism with API/RSS as deferred.
+### Resolved in v3 (design-decisions; implementation prescribed in §Files to Change)
+- **Q9 (dead sources):** decision REMOVE. Implementation prescribed in §Files to Change (scanner.py still carries all 6 sources at plan-commit time; no removals yet landed).
+- **Q10 (approver):** owner-only. Dual-path language removed from this plan.
+- **Q11 (LinkedIn):** KEEP + robots-conflict reconciled via owner-override mechanism with API/RSS as deferred. The override mechanism itself (`_OWNER_OVERRIDE_SOURCES`, `_parse_owner_overrides_from_tos_review()`, `TOS_REVIEW.md` block parser) is **prescribed** — none of it exists in scanner.py today.
 
 ### Residual open questions
 - **R1 (LinkedIn override wording):** owner may adjust the legal-acceptance language. Decided at U2.
