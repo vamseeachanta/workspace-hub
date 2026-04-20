@@ -67,13 +67,15 @@ No relevant wiki pages — this is a sales/ops pipeline, not a domain-knowledge 
 
 ### Gaps identified
 
-1. No YAML intake schema exists at `docs/gtm/intake/` — the directory itself doesn't exist today.
-2. No pre-staged "canonical" vessel profiles exist at a stable path — `data/csv_hlv_vessels.json` has two vessels, but they're demo fixtures, not prospect-intake defaults.
-3. No shared input-adapter module — each demo ships its own bespoke `load_*()` functions against hard-coded JSON paths.
-4. No branded-output wrapper on `GTMReportBuilder` — today all reports say "digitalmodel" in the footer.
-5. No SOP document — the 48hr runbook does not exist in any form.
-6. No schema-validation + refuse-vs-fix decision tree for malformed prospect input.
-7. No test coverage for the end-to-end intake→demo→report path.
+Verified against git state at plan-commit time (none of these artifacts exist in git; all will be created during implementation):
+
+1. No YAML intake schema exists at `docs/gtm/intake/` — the directory itself does not exist in git; implementation will create it.
+2. No pre-staged "canonical" vessel profiles exist at a stable path — `data/csv_hlv_vessels.json` has two vessels, but they are demo fixtures, not prospect-intake defaults. Three canonical vessel YAMLs will be created.
+3. No shared input-adapter module — each demo ships its own bespoke `load_*()` functions against hard-coded JSON paths. `prospect_adapter.py` will be created.
+4. No branded-output wrapper on `GTMReportBuilder` — today all reports say "digitalmodel" in the footer. `branded_report.py` will be created.
+5. No SOP document — the 48hr runbook does not exist in any form. `docs/gtm/prospect-demo-sop.md` will be created.
+6. No schema-validation + refuse-vs-fix decision tree for malformed prospect input. Both will be introduced by the adapter + SOP.
+7. No test coverage for the end-to-end intake→demo→report path. Two new pytest modules will be created.
 
 Distinct sources consulted: 11 (issue body + 30-day plan + 5 demo scripts + README + report_template.py + 4 data files + #2016 body + #2342/#2343 plan + 2 memory feedback entries). Exceeds minimum 3.
 
@@ -81,29 +83,33 @@ Distinct sources consulted: 11 (issue body + 30-day plan + 5 demo scripts + READ
 
 ## Artifact Map
 
-| Artifact | Path |
-|---|---|
-| This plan | `docs/plans/2026-04-19-issue-2346-prospect-data-pipeline.md` |
-| YAML intake schema (template) | `docs/gtm/intake/prospect-template.yaml` |
-| YAML intake schema (JSON-Schema validator) | `docs/gtm/intake/prospect-schema.json` |
-| Pre-staged canonical vessel — pipelay barge | `docs/gtm/intake/canonical-vessels/pipelay-barge.yaml` |
-| Pre-staged canonical vessel — heavy-lift CSV | `docs/gtm/intake/canonical-vessels/heavy-lift-csv.yaml` |
-| Pre-staged canonical vessel — PLSV | `docs/gtm/intake/canonical-vessels/plsv.yaml` |
-| SOP runbook | `docs/gtm/prospect-demo-sop.md` |
-| Shared input adapter (module) | `digitalmodel/examples/demos/gtm/prospect_adapter.py` |
-| Branded-report wrapper | `digitalmodel/examples/demos/gtm/branded_report.py` |
-| Golden regression test | `digitalmodel/examples/demos/gtm/tests/test_prospect_adapter.py` |
-| Dry-run end-to-end test | `digitalmodel/examples/demos/gtm/tests/test_prospect_pipeline_e2e.py` |
-| Plan index row | `docs/plans/README.md` (one new row) |
-| Plan review — Claude | `scripts/review/results/2026-04-19-plan-2346-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-04-19-plan-2346-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-19-plan-2346-gemini.md` |
+All rows below are **prescribed by this plan** (to be created during implementation) unless marked EXISTING (already in git at plan-commit time). Plan v2 is the only file in git for this issue; every other path below is a future-work artifact.
+
+| Artifact | Path | Status |
+|---|---|---|
+| This plan | `docs/plans/2026-04-19-issue-2346-prospect-data-pipeline.md` | EXISTING (committed) |
+| YAML intake schema (template) | `docs/gtm/intake/prospect-template.yaml` | PRESCRIBED |
+| YAML intake schema (JSON-Schema validator) | `docs/gtm/intake/prospect-schema.json` | PRESCRIBED |
+| Pre-staged canonical vessel — pipelay barge | `docs/gtm/intake/canonical-vessels/pipelay-barge.yaml` | PRESCRIBED |
+| Pre-staged canonical vessel — heavy-lift CSV | `docs/gtm/intake/canonical-vessels/heavy-lift-csv.yaml` | PRESCRIBED |
+| Pre-staged canonical vessel — PLSV | `docs/gtm/intake/canonical-vessels/plsv.yaml` | PRESCRIBED |
+| SOP runbook | `docs/gtm/prospect-demo-sop.md` | PRESCRIBED |
+| Shared input adapter (module) | `digitalmodel/examples/demos/gtm/prospect_adapter.py` | PRESCRIBED |
+| Branded-report wrapper | `digitalmodel/examples/demos/gtm/branded_report.py` | PRESCRIBED |
+| Fallback-audit sidecar (written at pipeline runtime, schema-tested) | `digitalmodel/examples/demos/gtm/output/fallback-applied.json` | PRESCRIBED (runtime output; schema defined in adapter) |
+| Deliveries log | `docs/gtm/deliveries-log.md` | PRESCRIBED |
+| Golden regression test | `digitalmodel/examples/demos/gtm/tests/test_prospect_adapter.py` | PRESCRIBED |
+| Dry-run end-to-end test | `digitalmodel/examples/demos/gtm/tests/test_prospect_pipeline_e2e.py` | PRESCRIBED |
+| Plan index row | `docs/plans/README.md` (one new row) | EXISTING (row update prescribed) |
+| Plan review — Claude | `scripts/review/results/2026-04-19-plan-2346-claude.md` | PRESCRIBED (adversarial review not yet dispatched) |
+| Plan review — Codex | `scripts/review/results/2026-04-19-plan-2346-codex.md` | PRESCRIBED |
+| Plan review — Gemini | `scripts/review/results/2026-04-19-plan-2346-gemini.md` | PRESCRIBED |
 
 ---
 
 ## Deliverable
 
-A repeatable pipeline that ingests one prospect YAML file (vessel specs + target structure + project conditions), validates it against a JSON-Schema, maps it through a shared `prospect_adapter` to any of the 5 existing GTM demos, runs the demo in under the existing wall-clock budget, and emits a client-branded HTML report — delivered **via both email attachment AND a gated private URL on `aceengineer-website`** — all driven by a single SOP runbook that guarantees ≤48 hr end-to-end delivery, with three pre-staged canonical vessel templates (pipelay barge class, heavy-lift CSV class, PLSV class) derived from public-class references for scenarios where prospect data is incomplete.
+At the end of implementation: a repeatable pipeline that ingests one prospect YAML file (vessel specs + target structure + project conditions), validates it against a JSON-Schema, maps it through a shared `prospect_adapter` (to be created) to any of the 5 existing GTM demos, runs the demo in under the existing wall-clock budget, and emits a client-branded HTML report — delivered **via both email attachment AND a gated private URL on `aceengineer-website`** — all driven by a single SOP runbook that guarantees ≤48 hr end-to-end delivery, with three pre-staged canonical vessel templates (pipelay barge class, heavy-lift CSV class, PLSV class) derived from public-class references for scenarios where prospect data is incomplete. None of the pipeline artifacts exist in git at plan-commit time; this section describes the prescribed end-state.
 
 ### Dual delivery (v2, per user answer to Q4)
 
@@ -348,7 +354,7 @@ The SOP allows four authorized fallbacks in addition to "refuse and email". Thes
 | Canonical-ref file not found | DEFAULT | — | — | — | — |
 | Demo 1/2 with stray vessel block | — | — | — | DEFAULT | — |
 
-Every fallback application must be logged in `docs/gtm/deliveries-log.md` with the fallback code (F2/F3/F5), and the adapter must emit a structured JSON record to a fallback-audit sidecar (`output/fallback-applied.json`) so the pattern is auditable across prospects.
+Every fallback application must be logged in `docs/gtm/deliveries-log.md` (prescribed file — created during implementation) with the fallback code (F2/F3/F5), and the adapter (to be created) must emit a structured JSON record to a fallback-audit sidecar at `digitalmodel/examples/demos/gtm/output/fallback-applied.json` so the pattern is auditable across prospects. The sidecar's schema is specified in `prospect_adapter.py` at implementation time and validated by `test_e2e_fallback_matrix_F2_closest_canonical` / `..._F5_reduced_scope`.
 
 ---
 
