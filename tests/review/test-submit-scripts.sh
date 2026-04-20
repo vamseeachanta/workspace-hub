@@ -475,6 +475,42 @@ MOCK_EOF
   rm -f "$mock_codex"
 }
 
+# ── T30: timeout classification keeps exit code and emits timeout guidance ───
+{
+  mock_codex="${MOCK_DIR}/codex_T30"
+  make_mock_codex "$mock_codex"
+
+  ec=0
+  out=$(CODEX_BIN="$mock_codex" \
+        CODEX_MOCK_EXIT=124 \
+        CODEX_MOCK_ERR_PATTERN="timed out waiting for provider" \
+        bash "$SCRIPTS/submit-to-codex.sh" \
+          --file "$FIXTURES/codex-large-prompt.txt" \
+          --prompt "adversarial-short-prompt" 2>&1) || ec=$?
+
+  assert_exit "T30: timeout keeps exit 124" 124 "$ec"
+  assert_contains "T30: timeout emits guidance" "timed out" "$out"
+  rm -f "$mock_codex"
+}
+
+# ── T31: transport classification keeps exit code and emits transport guidance ─
+{
+  mock_codex="${MOCK_DIR}/codex_T31"
+  make_mock_codex "$mock_codex"
+
+  ec=0
+  out=$(CODEX_BIN="$mock_codex" \
+        CODEX_MOCK_EXIT=1 \
+        CODEX_MOCK_ERR_PATTERN="failed to connect to provider stream" \
+        bash "$SCRIPTS/submit-to-codex.sh" \
+          --file "$FIXTURES/codex-large-prompt.txt" \
+          --prompt "adversarial-short-prompt" 2>&1) || ec=$?
+
+  assert_exit "T31: transport keeps exit 1" 1 "$ec"
+  assert_contains "T31: transport emits guidance" "transport/network failure" "$out"
+  rm -f "$mock_codex"
+}
+
 # ── T32: exit-5 (NO_OUTPUT) preserved when mock writes empty raw_file twice ──
 {
   mock_codex="${MOCK_DIR}/codex_T32"
