@@ -526,6 +526,49 @@ def load_previous_audit(path: Path) -> dict | None:
     return payload if isinstance(payload, dict) else None
 
 
+def compute_activity_status(recent_post: int, recent_sessions: int, recent_status: str) -> str:
+    if recent_post >= 100 or recent_sessions >= 3:
+        return "active"
+    if recent_post > 0 or recent_sessions > 0:
+        return "quiet"
+    if recent_status == "ok":
+        return "idle"
+    return "unavailable"
+
+
+def compute_python_hygiene_status(python3_rate: float, uv_rate: float) -> str:
+    if python3_rate == 0 and uv_rate == 0:
+        return "no_python_usage"
+    if uv_rate >= 2 * python3_rate:
+        return "uv_preferred"
+    if uv_rate < 0.5 * python3_rate:
+        return "python3_heavy"
+    return "mixed"
+
+
+def compare_direction(current: float | None, previous: float | None, *, better_when_lower: bool, tolerance: float = 0.01) -> str:
+    if current is None or previous is None:
+        return "unavailable"
+    delta = current - previous
+    if abs(delta) <= tolerance:
+        return "stable"
+    if better_when_lower:
+        return "improving" if delta < 0 else "worsening"
+    return "improving" if delta > 0 else "worsening"
+
+
+def compare_activity_direction(current_status: str, previous_status: str) -> str:
+    rank = {"unavailable": -1, "idle": 0, "quiet": 1, "active": 2}
+    if current_status not in rank or previous_status not in rank:
+        return "unavailable"
+    if current_status == "unavailable" or previous_status == "unavailable":
+        return "unavailable"
+    delta = rank[current_status] - rank[previous_status]
+    if delta == 0:
+        return "stable"
+    return "increasing" if delta > 0 else "decreasing"
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -696,6 +739,7 @@ def build_provider_interpretation_summary(
     migration_debt: dict,
     recent_activity: dict,
     corpus_change: dict,
+    previous_audit: dict | None,
 ) -> dict:
     debt_by_provider = {
         row.get("provider"): row
@@ -704,6 +748,22 @@ def build_provider_interpretation_summary(
     }
     recent_by_provider = recent_activity.get("providers", {}) if isinstance(recent_activity, dict) else {}
     corpus_by_provider = corpus_change.get("providers", {}) if isinstance(corpus_change, dict) else {}
+    previous_providers = previous_audit.get("providers", {}) if isinstance(previous_audit, dict) else {}
+    previous_migration_rows = (
+        previous_audit.get("executive_summary", {}).get("migration_debt", {}).get("ranked_providers", [])
+        if isinstance(previous_audit, dict)
+        else []
+    )
+    previous_migration_by_provider = {
+        row.get("provider"): row
+        for row in previous_migration_rows
+        if isinstance(row, dict) and row.get("provider")
+    }
+    previous_recent_by_provider = (
+        previous_audit.get("executive_summary", {}).get("recent_activity_since_previous_audit", {}).get("providers", {})
+        if isinstance(previous_audit, dict)
+        else {}
+    )
 
     rows: list[dict] = []
     for provider in PROVIDERS:
@@ -714,14 +774,7 @@ def build_provider_interpretation_summary(
 
         recent_post = int(recent.get("post_records", 0) or 0)
         recent_sessions = int(recent.get("sessions", 0) or 0)
-        if recent_post >= 100 or recent_sessions >= 3:
-            activity_status = "active"
-        elif recent_post > 0 or recent_sessions > 0:
-            activity_status = "quiet"
-        elif recent_activity.get("status") == "ok":
-            activity_status = "idle"
-        else:
-            activity_status = "unavailable"
+        activity_status = compute_activity_status(recent_post, recent_sessions, str(recent_activity.get("status", "")))
 
         corpus_status = corpus.get("status", "unavailable") if corpus_change.get("status") == "ok" else "unavailable"
 
@@ -739,17 +792,53 @@ def build_provider_interpretation_summary(
 
         python3_rate = float(summary.get("python3_per_1k_records", 0) or 0)
         uv_rate = float(summary.get("uv_python_per_1k_records", 0) or 0)
-        if python3_rate == 0 and uv_rate == 0:
-            python_hygiene_status = "no_python_usage"
-        elif uv_rate >= 2 * python3_rate:
-            python_hygiene_status = "uv_preferred"
-        elif uv_rate < 0.5 * python3_rate:
-            python_hygiene_status = "python3_heavy"
-        else:
-            python_hygiene_status = "mixed"
+        python_hygiene_status = compute_python_hygiene_status(python3_rate, uv_rate)
 
         post_records = int(summary.get("post_records", 0) or 0)
         missing_repo_reads_per_1k_records = round(missing_repo_reads * 1000 / post_records, 2) if post_records else 0.0
+        previous_provider = previous_providers.get(provider, {}) if isinstance(previous_providers, dict) else {}
+        previous_post_records = int(previous_provider.get("post_records", 0) or 0)
+        previous_missing_repo_reads = int(previous_provider.get("missing_repo_reads", 0) or 0)
+        previous_missing_repo_reads_per_1k_records = (
+            round(previous_missing_repo_reads * 1000 / previous_post_records, 2) if previous_post_records else None
+        )
+        previous_debt = previous_migration_by_provider.get(provider, {})
+        previous_debt_density = (
+            float(previous_debt.get("known_migration_debt_per_1k_records", 0) or 0)
+            if previous_debt
+            else None
+        )
+        previous_recent = previous_recent_by_provider.get(provider, {}) if isinstance(previous_recent_by_provider, dict) else {}
+        previous_activity_status = compute_activity_status(
+            int(previous_recent.get("post_records", 0) or 0),
+            int(previous_recent.get("sessions", 0) or 0),
+            str(previous_audit.get("executive_summary", {}).get("recent_activity_since_previous_audit", {}).get("status", ""))
+            if isinstance(previous_audit, dict)
+            else "",
+        )
+        previous_python_hygiene_status = (
+            compute_python_hygiene_status(
+                float(previous_provider.get("python3_per_1k_records", 0) or 0),
+                float(previous_provider.get("uv_python_per_1k_records", 0) or 0),
+            )
+            if previous_provider
+            else "unavailable"
+        )
+
+        debt_trend = compare_direction(debt_density, previous_debt_density, better_when_lower=True)
+        drift_trend = compare_direction(
+            missing_repo_reads_per_1k_records,
+            previous_missing_repo_reads_per_1k_records,
+            better_when_lower=True,
+        )
+        activity_trend = compare_activity_direction(activity_status, previous_activity_status)
+        python_rank_map = {"unavailable": None, "no_python_usage": 0.0, "uv_preferred": 1.0, "mixed": 2.0, "python3_heavy": 3.0}
+        python_hygiene_trend = compare_direction(
+            python_rank_map.get(python_hygiene_status),
+            python_rank_map.get(previous_python_hygiene_status),
+            better_when_lower=True,
+        )
+
         python_hygiene_points = {
             "python3_heavy": 6.0,
             "mixed": 3.0,
@@ -795,9 +884,13 @@ def build_provider_interpretation_summary(
                 "urgency_score": round(urgency_score, 2),
                 "urgency_tier": urgency_tier,
                 "activity_status": activity_status,
+                "activity_trend": activity_trend,
                 "corpus_status": corpus_status,
                 "debt_status": debt_status,
+                "debt_trend": debt_trend,
                 "python_hygiene_status": python_hygiene_status,
+                "python_hygiene_trend": python_hygiene_trend,
+                "drift_trend": drift_trend,
                 "recent_post_records": recent_post,
                 "recent_sessions": recent_sessions,
                 "known_migration_debt_reads": known_debt_reads,
@@ -896,7 +989,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
     migration_debt = build_migration_debt_summary(provider_summaries)
     provider_interpretation = build_provider_interpretation_summary(
-        provider_summaries, migration_debt, recent_activity, corpus_change
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit
     )
 
     executive_actions = {
@@ -981,7 +1074,7 @@ def render_markdown(audit: dict) -> str:
                 )
         for row in interpretation_rows:
             lines.append(
-                f"- `{row['provider']}` — urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} | python={row.get('python_hygiene_status')} | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
+                f"- `{row['provider']}` — urgency={row.get('urgency_score')} | tier={row.get('urgency_tier')} | activity={row.get('activity_status')} ({row.get('activity_trend')}) | corpus={row.get('corpus_status')} | debt={row.get('debt_status')} ({row.get('debt_trend')}) | drift={row.get('drift_trend')} | python={row.get('python_hygiene_status')} ({row.get('python_hygiene_trend')}) | primary issue: {row.get('primary_issue')} | action: {row.get('recommended_action')}"
             )
         lines.append("")
 

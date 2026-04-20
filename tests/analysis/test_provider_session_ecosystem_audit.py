@@ -345,7 +345,7 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     }
 
     summary = module.build_provider_interpretation_summary(
-        provider_summaries, migration_debt, recent_activity, corpus_change
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit=None
     )
 
     rows = {row["provider"]: row for row in summary["providers"]}
@@ -355,6 +355,10 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert rows["claude"]["python_hygiene_status"] == "uv_preferred"
     assert rows["claude"]["primary_issue"] == "legacy_work_queue_transition"
     assert rows["claude"]["urgency_tier"] == "next_up"
+    assert rows["claude"]["debt_trend"] == "unavailable"
+    assert rows["claude"]["drift_trend"] == "unavailable"
+    assert rows["claude"]["python_hygiene_trend"] == "unavailable"
+    assert rows["claude"]["activity_trend"] == "unavailable"
     assert rows["claude"]["urgency_score"] > rows["codex"]["urgency_score"]
     assert rows["codex"]["activity_status"] == "idle"
     assert rows["codex"]["corpus_status"] == "corpus_pruned_or_rebuilt"
@@ -399,6 +403,70 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "recommended_actions" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
+
+
+
+def test_build_provider_interpretation_summary_derives_trend_directions_from_previous_audit() -> None:
+    provider_summaries = {
+        "claude": {
+            "missing_repo_reads": 4,
+            "python3_per_1k_records": 2.0,
+            "uv_python_per_1k_records": 8.0,
+            "post_records": 100,
+        }
+    }
+    migration_debt = {
+        "ranked_providers": [
+            {
+                "provider": "claude",
+                "known_migration_debt_reads": 30,
+                "known_migration_debt_per_1k_records": 8.0,
+                "top_migration_rule_id": "legacy_work_queue_transition",
+            }
+        ]
+    }
+    recent_activity = {
+        "status": "ok",
+        "providers": {"claude": {"post_records": 120, "sessions": 3}},
+    }
+    corpus_change = {
+        "status": "ok",
+        "providers": {"claude": {"status": "aligned"}},
+    }
+    previous_audit = {
+        "providers": {
+            "claude": {
+                "post_records": 100,
+                "missing_repo_reads": 6,
+                "python3_per_1k_records": 6.0,
+                "uv_python_per_1k_records": 6.0,
+            }
+        },
+        "executive_summary": {
+            "migration_debt": {
+                "ranked_providers": [
+                    {
+                        "provider": "claude",
+                        "known_migration_debt_per_1k_records": 12.0,
+                    }
+                ]
+            },
+            "recent_activity_since_previous_audit": {
+                "status": "ok",
+                "providers": {"claude": {"post_records": 20, "sessions": 1}},
+            },
+        },
+    }
+
+    summary = module.build_provider_interpretation_summary(
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit
+    )
+
+    row = summary["providers"][0]
+    assert row["debt_trend"] == "improving"
+    assert row["drift_trend"] == "improving"
+    assert row["python_hygiene_trend"] == "improving"
+    assert row["activity_trend"] == "increasing"
 
 
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
@@ -561,9 +629,13 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         "urgency_score": 83.8,
                         "urgency_tier": "urgent_now",
                         "activity_status": "active",
+                        "activity_trend": "increasing",
                         "corpus_status": "aligned",
                         "debt_status": "high_debt",
+                        "debt_trend": "worsening",
                         "python_hygiene_status": "uv_preferred",
+                        "python_hygiene_trend": "improving",
+                        "drift_trend": "stable",
                         "primary_issue": "legacy_work_queue_transition",
                         "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
                     }
@@ -597,7 +669,7 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude." in markdown
     assert "Recommended actions:" in markdown
     assert "`claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
-    assert "`claude` — urgency=83.8 | tier=urgent_now | activity=active | corpus=aligned | debt=high_debt | python=uv_preferred" in markdown
+    assert "`claude` — urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving)" in markdown
     assert "primary issue: legacy_work_queue_transition" in markdown
     assert "## Corpus change since previous audit" in markdown
     assert "snapshot-to-snapshot corpus comparison is not yet available" in markdown
