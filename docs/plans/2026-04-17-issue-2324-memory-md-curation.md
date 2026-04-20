@@ -1,6 +1,6 @@
 # Plan for #2324: Curate MEMORY.md index — consolidate stale project_* and feedback_*
 
-> **Status:** draft
+> **Status:** implemented 2026-04-17 (direct on main — T1 editorial; see `docs/reports/memory-curation-2026-04.md`)
 > **Complexity:** T1
 > **Date:** 2026-04-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2324
