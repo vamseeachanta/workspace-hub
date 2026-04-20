@@ -1,65 +1,120 @@
-# Plan for #2392: Wiki coverage-gap detector — v2 (post-iteration-1 cross-review)
+# Plan for #2392: Wiki coverage-gap detector — v3 (post-iter-2 fixes + embedded evidence)
 
-> **Status:** plan-review (iteration 2 of 3)
+> **Status:** plan-review (iteration 3 of 3 — final)
 > **Complexity:** T2
-> **Date:** 2026-04-20 (v2)
+> **Date:** 2026-04-20 (v3)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2392
-> **v1 reference:** commit `5b4c347cd` + findings at `scripts/review/results/2026-04-20-plan-2392-{claude,codex,gemini}.md`
-> **Review artifacts:** populated after iteration-2 review dispatch
+> **Prior reviews:** v1 at commit `5b4c347cd` (Claude MINOR + Codex/Gemini MAJOR); v2 at commit `27821dafa` (Codex/Gemini MAJOR).
 
 ---
 
 ## Revision History
 
-**v1 (2026-04-20, commit 5b4c347cd):** Claude self-review MINOR. Cross-review Codex MAJOR + Gemini MAJOR.
-**Convergent v1 P1 findings now fixed in v2:**
-- D1 `sha256:` namespace not enforced → **§Identity Contract** + tests (below)
-- D3 AC-vs-test coverage gap → **§AC ↔ Test Map** + expanded TDD list
-- D5 dependency statuses unverified → **§Dependency Matrix** with live-verified statuses
-- D4 threat model missing → **§Threat Model** (below)
-- D6 review metadata contradiction → header no longer cites speculative review paths; they are added only when artifacts exist
-- Codex-specific: "cross-provider-optional" prose removed; repo policy restored
-- Codex-specific: tier-3 local-cache exclusion now explicitly tested
-- Codex-specific: scope creep removed — `docs/plans/README.md` update moved to the committing agent's side work, not part of deliverable
+- **v1:** initial draft; convergent P1s: sha256 unenforced, AC-test gaps, unverified deps, threat model, scope.
+- **v2:** added §Identity Contract / §Tier Assignment / §Threat Model / §AC↔Test Map. Still MAJOR on (a) `_summary.md` inconsistency, (b) §8.1 tolerance, (c) wiki doc_key extraction mechanism undefined, (d) "unverified claims" policy finding.
+- **v3 (this revision):**
+  - **M1 fix:** `_summary.md` added to Files-to-Change + Artifact Map.
+  - **M1 fix:** wiki doc_key extraction mechanism defined explicitly.
+  - **M1 fix:** engineering wiki §8.1 non-compliance now emitted as warning, not tolerated.
+  - **M2 fix (Option α):** §Evidence block embeds actual `gh`/`ls`/`sed` output per updated template.
+  - **Correction:** `code-registry.yaml` path is `data/design-codes/code-registry.yaml` (not `data/document-index/` — v2 had wrong path).
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- `scripts/data/document-index/provenance.py:82` — `merged_at` field (confirmed via Read 2026-04-20); baseline join surface.
-- `scripts/data/document-index/phase-a-index.py:135-137` — legacy md5 prefix for `og_standards` (confirmed); coverage tool must tolerate.
-- `scripts/knowledge/llm_wiki.py` — ingest surface (does not produce gap lists).
-- Gap confirmed: `Glob "**/detect*gap*"` = 0 results.
+- `scripts/data/document-index/provenance.py` — provenance-record writer (see line-excerpt evidence below); baseline join surface.
+- `scripts/data/document-index/phase-a-index.py` — legacy md5 prefix handling for `og_standards` (see excerpt).
+- `scripts/knowledge/llm_wiki.py` — wiki ingest surface; does not produce gap lists.
+- Gap: no existing `detect_wiki_gaps.py` or similar (see evidence).
 
 ### Standards
 Not applicable.
 
 ### LLM Wiki pages consulted
-- `knowledge/wikis/engineering/wiki/index.md` — sampled; engineering CLAUDE.md declares `{title, tags, added, last_updated}` required (operating-model §8.1).
-- `knowledge/wikis/marine-engineering/wiki/index.md` — uses `{domain, created, last_updated, page_count}`; different shape is blessed by §8.1.
+- `knowledge/wikis/engineering/CLAUDE.md` — declares `{title, tags, added, last_updated}` required (see excerpt). **This set omits `doc_key`**, which violates operating-model §8.1 baseline-floor. v3 emits a warning per affected page, rather than tolerating it.
 
 ### Documents consulted
-- `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` §2/§3/§4/§7/§8.1 (all invoked by this plan).
-- `docs/plans/2026-04-11-issue-2205-multi-machine-llm-wiki-resource-doc-intelligence-operating-model.md` — parent plan.
-- `data/document-index/registry.yaml`, `mounted-source-registry.yaml`, `code-registry.yaml`, `online-resource-registry.yaml`, `dde-standards-inventory.yaml` — L2 inventory sources.
+- `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` §2/§3/§4/§7/§8.1.
+- `data/document-index/registry.yaml`, `mounted-source-registry.yaml`, `online-resource-registry.yaml`, `dde-standards-inventory.yaml`, `standards-transfer-ledger.yaml`.
+- `data/design-codes/code-registry.yaml` **(corrected path — not under `data/document-index/`)**.
 
-### Dependency Matrix (live-verified 2026-04-20)
+### Dependency Matrix
 
-| Issue | State | Relationship | Behavior if unshipped |
-|---|---|---|---|
-| #2205 | CLOSED (operating model) | authority | — always available |
-| #2360 | OPEN status:plan-review | soft | tool tolerates missing `doc_key` via `status: identity-unresolved` classification |
-| #2389 | OPEN status:plan-review | soft | tool tolerates missing `source_doc_key` by falling back to registry `doc_key` |
-| #2365 | OPEN status:plan-review | overlap (design-code registry) | scope separation: #2392 emits gap list; #2365 promotes; no overlap |
-| #2366 | OPEN status:plan-review | downstream consumer | no blocking |
+| Issue | Relationship | Behavior if unshipped |
+|---|---|---|
+| #2205 | authority (CLOSED) | — always available |
+| #2360 | soft | tolerate missing `doc_key` via `status: identity-unresolved` |
+| #2389 | soft | tolerate missing `source_doc_key` via fallback |
+| #2365 | scope-separated (OPEN) | no overlap |
+| #2366 | downstream consumer (OPEN) | no blocking |
 
 ### Gaps identified
-- No existing tooling produces per-domain gap YAML.
-- No standard for gap-entry shape (this plan defines it).
-- `doc_key` coverage in wikis is partial (blocked by #2360); tool tolerates.
+- No per-domain gap detector.
+- No gap-entry shape standard.
+- Wiki doc_key coverage partial (blocked by #2360).
 
-Distinct sources: **11** (exceeds ≥3 minimum).
+### Evidence (embedded verification)
+
+**Issue statuses** (via `gh issue view <n> --json number,state,title` at 2026-04-20T15:50Z):
+- `#2205` — **CLOSED** — feat(knowledge): define multi-machine llm-wiki + resource/document intelligence operating model
+- `#2360` — **OPEN** — feat(knowledge): update wiki CLAUDE.md files to declare doc_key in L3 frontmatter required-set
+- `#2389` — **OPEN** — feat(doc-intel): thread source_doc_key through promotion pipeline and promoted artifacts
+- `#2365` — **OPEN** — feat(knowledge): promote design-code registry into standards overviews and repo-target backlinks
+- `#2366` — **OPEN** — feat(knowledge): add llm-wiki strengthening scorecard and prioritized action queue
+
+**File existence** (`ls -la` at 2026-04-20T15:51Z):
+```
+EXISTS: scripts/data/document-index/provenance.py
+EXISTS: scripts/data/document-index/phase-a-index.py
+EXISTS: scripts/knowledge/llm_wiki.py
+EXISTS: data/document-index/registry.yaml
+EXISTS: data/document-index/mounted-source-registry.yaml
+EXISTS: data/document-index/online-resource-registry.yaml
+EXISTS: data/document-index/dde-standards-inventory.yaml
+EXISTS: data/document-index/standards-transfer-ledger.yaml
+EXISTS: data/design-codes/code-registry.yaml
+EXISTS: knowledge/wikis/engineering/CLAUDE.md
+MISSING: data/document-index/code-registry.yaml  (v2 cited this path incorrectly; v3 uses data/design-codes/)
+```
+
+**Line excerpts:**
+
+`sed -n '80,85p' scripts/data/document-index/provenance.py`:
+```
+"path": record.get("path", ""),
+"host": record.get("host", "unknown"),
+"discovered": discovered or _now_iso(),
+}
+# Preserve og_db_id when the source is og_standards
+if record.get("og_db_id") is not None:
+```
+
+`sed -n '133,140p' scripts/data/document-index/phase-a-index.py`:
+```
+size_bytes = row["file_size"] or 0
+content_hash = row["content_hash"]
+if content_hash and not content_hash.startswith(("sha256:", "md5:")):
+    if len(content_hash) == 32:
+        content_hash = f"md5:{content_hash}"    # legacy MD5 from og_standards
+    else:
+        content_hash = f"sha256:{content_hash}"
+```
+
+`head -25 knowledge/wikis/engineering/CLAUDE.md` — Frontmatter Schema table shows required fields:
+```
+| `title` | **required** | string | Page title |
+| `tags` | **required** | list | Classification tags, e.g. `[cfd, openfoam]` |
+| `added` | **required** | date | ISO date when page was created |
+| `last_updated` | **required** | date | ISO date of last modification |
+```
+→ **`doc_key` is NOT in required set**, violating §8.1 baseline-floor. Detector emits a warning per page lacking `doc_key`.
+
+**Gap proofs:**
+- `ls scripts/knowledge/*gap*` → "No such file or directory" (2026-04-20T15:51Z) → confirms no existing detector.
+- `ls scripts/knowledge/detect*` → "No such file or directory" → confirms no `detect_*` module.
+- `grep -c "CFR" data/document-index/standards-transfer-ledger.yaml` → 0 (not relevant to this plan, but referenced elsewhere).
 
 ---
 
@@ -67,59 +122,75 @@ Distinct sources: **11** (exceeds ≥3 minimum).
 
 All `doc_key` values read or emitted MUST conform to operating-model §3:
 - Canonical: `sha256:<64-hex>`.
-- Legacy `md5:<hex>` accepted for reads only (per §3 table); never written.
-- Bare-hex (no prefix) rejected with clear error.
-- Path-only identity forbidden — tool never synthesizes `doc_key` from path alone.
+- Legacy `md5:<hex>` accepted for reads only (per §3 table, per `phase-a-index.py:135-137` excerpt above).
+- Bare-hex rejected with clear error.
+- Path-only identity forbidden.
 
-For sources lacking a known `doc_key`, tool emits `status: identity-unresolved` rather than fabricating one.
+For sources lacking any `doc_key`, tool emits `status: identity-unresolved` rather than fabricating one.
+
+**Wiki doc_key extraction mechanism** (resolved from v2 ambiguity):
+1. For each `knowledge/wikis/*/wiki/**/*.md`, parse YAML frontmatter (PyYAML, safe_load).
+2. Look for top-level `doc_key` field.
+3. If present and matches `^(sha256|md5):[0-9a-f]+$` → valid; add to wiki_doc_keys set.
+4. If present but non-conforming → emit warning, mark page as `identity-non-conforming`, do NOT add to set.
+5. If absent → emit §8.1 warning (baseline-floor violation), mark page as `identity-missing`, do NOT add to set.
+
+Tests:
+- `test_sha256_doc_key_accepted`
+- `test_md5_doc_key_accepted_read_only`
+- `test_bare_hex_doc_key_rejected`
+- `test_path_only_identity_forbidden`
+- `test_missing_doc_key_emits_section_8_1_warning`
+- `test_nonconforming_doc_key_emits_warning_not_added_to_set`
 
 ---
 
-## Cross-Machine Tier Assignment (§7 compliance)
+## Cross-Machine Tier Assignment (§7)
 
-| Artifact | Path | Tier | Authority | Sync direction |
-|---|---|---|---|---|
-| L2 registries | `data/document-index/*.yaml` | 1 git-tracked | authoritative | — |
-| L3 wiki pages | `knowledge/wikis/**/*.md` | 1 git-tracked | authoritative | — |
-| Analysis reports (input) | `docs/reports/*.md` | 1 git-tracked | authoritative | — |
-| Mounted sources (input paths only — not read by detector) | `/mnt/ace/**` via registry | 2 shared-mount | referenced | — |
-| Gap YAML output | `docs/reports/wiki-coverage-gaps/*.yaml` | 1 git-tracked | authoritative | — |
-| Summary output | `docs/reports/wiki-coverage-gaps/_summary.md` | 1 git-tracked | authoritative | — |
+| Artifact | Path | Tier | Authority |
+|---|---|---|---|
+| L2 registries | `data/document-index/*.yaml` | 1 git-tracked | authoritative |
+| L2 design-code registry | `data/design-codes/code-registry.yaml` | 1 git-tracked | authoritative |
+| L3 wiki pages | `knowledge/wikis/**/*.md` | 1 git-tracked | authoritative |
+| Analysis reports | `docs/reports/*.md` | 1 git-tracked | authoritative |
+| Mounted sources (path metadata only) | `/mnt/ace/**` via registry | 2 shared-mount | referenced not read |
+| Gap YAML outputs | `docs/reports/wiki-coverage-gaps/*.yaml` | 1 git-tracked | authoritative |
+| **Summary output** | **`docs/reports/wiki-coverage-gaps/_summary.md`** | **1 git-tracked** | **authoritative** |
 
-**Detector does not read `/mnt/ace/` directly** — it reads registry entries that describe mounted sources. Tier-3 local-cache is explicitly out of scope (detector never writes nor consults a local cache). Tier-3 exclusion has a test (`test_tier3_local_cache_excluded`).
+Detector does not read `/mnt/ace/` directly. Tier-3 local-cache explicitly out of scope (tested).
 
 ---
 
 ## Threat Model
 
-**Input surfaces:** YAML registries, markdown wiki/report files.
-**Trust boundaries:** all inputs are git-tracked → committed content trusted; malformed frontmatter possible from human error.
-**Mitigations:**
-- Frontmatter parse errors → skip + log + emit gap entry with `status: frontmatter-parse-error`.
-- YAML schema-mismatch in registry → abort with clear error (fail-closed).
-- No filesystem writes outside `docs/reports/wiki-coverage-gaps/` (path allowlist check).
-- Mount paths read as metadata strings only — no filesystem traversal of `/mnt/ace/`.
+**Input surfaces:** YAML registries, markdown files.
+**Trust boundaries:** all inputs git-tracked. Shared-mount metadata (paths from registry) treated as opaque strings; never dereferenced by detector.
+**Mitigations:** frontmatter parse errors → skip + log; schema mismatch → fail-closed; output path allowlist.
+**Mount-metadata validation:** detector validates that strings claiming to be paths match `^[/A-Za-z0-9._\-]+$` before recording them in output; non-conforming mount paths flagged with `status: mount-path-invalid`.
 
-**Threat tests:**
+**Tests:**
 - `test_malformed_frontmatter_does_not_crash`
 - `test_schema_mismatch_fails_closed`
 - `test_output_path_allowlist_enforced`
+- `test_mount_metadata_validation` (new — addresses v2 Codex finding on trust boundary)
 
 ---
 
 ## AC ↔ Test Map
 
-| Acceptance Criterion | Covering test(s) |
+| AC | Test(s) |
 |---|---|
-| All new tests pass | `pytest tests/knowledge/test_detect_wiki_gaps.py -v` (all below) |
-| No regression | `pytest` at repo root (handled by CI) |
-| E2E <5 min on current corpus | `test_runtime_budget_under_five_min` (fixture corpus ≥ real scale) |
-| ≥1 gap YAML per domain on first run | `test_first_run_emits_per_domain_yaml` (fixture with 3 domains) |
-| Weekly cron entry | `test_cron_config_parses_and_schedules_weekly` |
-| Review artifacts posted | validated by reviewer's Retrieval Adequacy check; not a test but explicit reviewer-task |
-| `sha256:` namespace enforced | `test_sha256_required`, `test_bare_hex_rejected`, `test_md5_read_only` |
+| All tests pass | `pytest tests/knowledge/test_detect_wiki_gaps.py` |
+| No regression | CI |
+| <5 min runtime | `test_runtime_budget_under_five_min` |
+| ≥1 gap YAML per domain on first run | `test_first_run_emits_per_domain_yaml` (fixture covers ≥3 domains); real-corpus smoke test during reviewer approval (not automated) |
+| Weekly cron | `test_cron_config_parses_and_schedules_weekly` |
+| `_summary.md` written | `test_summary_md_written_with_per_domain_counts` |
+| §3 identity | `test_sha256_*`, `test_md5_*`, `test_bare_hex_*`, `test_path_only_*` |
+| §8.1 warnings | `test_missing_doc_key_emits_section_8_1_warning` |
 | Tier-3 exclusion | `test_tier3_local_cache_excluded` |
-| Threat model tests pass | listed under Threat Model |
+| Threat tests | listed in Threat Model |
+| Review artifacts posted | reviewer-task (not automated) |
 
 ---
 
@@ -131,16 +202,15 @@ For sources lacking a known `doc_key`, tool emits `status: identity-unresolved` 
 | Tests | `tests/knowledge/test_detect_wiki_gaps.py` |
 | Implementation | `scripts/knowledge/detect_wiki_gaps.py` |
 | Config | `config/ai-tools/wiki-gap-detection.yaml` |
-| Output | `docs/reports/wiki-coverage-gaps/*.yaml` + `_summary.md` |
-| Cron wiring | `config/scheduled-tasks/schedule-tasks.yaml` (modify) |
-
-Review artifact paths are intentionally omitted from header until artifacts exist.
+| Per-domain outputs | `docs/reports/wiki-coverage-gaps/<domain>.yaml` |
+| **Summary output** | `docs/reports/wiki-coverage-gaps/_summary.md` |
+| Output README | `docs/reports/wiki-coverage-gaps/README.md` |
 
 ---
 
 ## Deliverable
 
-A `detect_wiki_gaps.py` CLI emitting per-domain gap YAML (+ summary) under `docs/reports/wiki-coverage-gaps/`, with strict `sha256:` identity handling, tier classification per operating-model §7, and fail-closed error semantics.
+A `detect_wiki_gaps.py` CLI emitting per-domain gap YAML + `_summary.md` under `docs/reports/wiki-coverage-gaps/`, with strict `sha256:` identity handling, §8.1 violation warnings, §7 tier classification, and fail-closed error semantics.
 
 ---
 
@@ -148,26 +218,43 @@ A `detect_wiki_gaps.py` CLI emitting per-domain gap YAML (+ summary) under `docs
 
 ```
 function detect_gaps(config):
-    # Load inputs (tier-1 git-tracked only for detector consumption)
-    l2_sources = load_and_validate_schema("data/document-index/registry.yaml")
-               ∪ ... (other L2 yamls)
+    l2_sources = union of load_and_validate(registry) for registry in [
+        "data/document-index/registry.yaml",
+        "data/document-index/mounted-source-registry.yaml",
+        "data/document-index/online-resource-registry.yaml",
+        "data/document-index/dde-standards-inventory.yaml",
+        "data/document-index/standards-transfer-ledger.yaml",
+        "data/design-codes/code-registry.yaml"   # corrected path
+    ]
     analysis_reports = scan("docs/reports/*.md") filtered by L3-eligibility heuristic
-    wiki_doc_keys = scan("knowledge/wikis/*/wiki/**/*.md") → set of sha256: doc_keys
 
-    for each source:
+    wiki_doc_keys = set()
+    section_8_1_warnings = []
+    for page in glob("knowledge/wikis/*/wiki/**/*.md"):
+        fm = parse_frontmatter_safe(page)  # YAML safe_load
+        key = fm.get("doc_key")
+        if key is None:
+            section_8_1_warnings.append({page, reason="missing doc_key (§8.1 baseline-floor)"})
+            continue
+        if re.match(r"^(sha256|md5):[0-9a-f]+$", key):
+            wiki_doc_keys.add(key)
+        else:
+            section_8_1_warnings.append({page, reason=f"non-conforming doc_key: {key}"})
+
+    gaps_by_domain = defaultdict(list)
+    for source in l2_sources ∪ analysis_reports:
+        validate_mount_metadata_string(source.path)  # threat-model check
         key = source.doc_key
-        if key is null → identity_status = "identity-unresolved"
-        elif key starts with "sha256:" → identity_status = "ok"
-        elif key starts with "md5:" → identity_status = "legacy-read-only" (allowed)
-        else → emit conformance warning; identity_status = "non-conforming"
+        identity_status = classify_identity(key)  # ok | legacy-read-only | identity-unresolved | non-conforming
+        if key not in wiki_doc_keys:
+            gaps_by_domain[classify_discipline(source)].append(
+                gap_entry(source, identity_status, tier=classify_tier(source))
+            )
 
-        if key not in wiki_doc_keys and key is not tier-3 local-cache only:
-            discipline = classify_discipline(source)
-            tier = classify_tier(source)  # §7
-            emit gap_entry with identity_status, tier, discipline
-
-    write outputs atomically under path allowlist check
-    write _summary.md
+    for domain, entries in gaps_by_domain.items():
+        atomic_write_yaml(f"docs/reports/wiki-coverage-gaps/{domain}.yaml", entries)
+    atomic_write_markdown("docs/reports/wiki-coverage-gaps/_summary.md",
+        render_summary(gaps_by_domain, section_8_1_warnings))
 ```
 
 ---
@@ -176,75 +263,55 @@ function detect_gaps(config):
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `scripts/knowledge/detect_wiki_gaps.py` | Main implementation |
-| Create | `tests/knowledge/test_detect_wiki_gaps.py` | TDD suite |
-| Create | `config/ai-tools/wiki-gap-detection.yaml` | Discipline→wiki-domain mapping |
-| Create | `docs/reports/wiki-coverage-gaps/README.md` | Output format reference |
-| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Weekly schedule |
+| Create | `scripts/knowledge/detect_wiki_gaps.py` | main |
+| Create | `tests/knowledge/test_detect_wiki_gaps.py` | tests |
+| Create | `config/ai-tools/wiki-gap-detection.yaml` | config |
+| Create | `docs/reports/wiki-coverage-gaps/README.md` | output format |
+| **Create** | **`docs/reports/wiki-coverage-gaps/_summary.md`** (first run by CLI, committed in subsequent runs) | **summary output (iter-2 M1 fix)** |
+| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | weekly schedule |
 
 ---
 
 ## TDD Test List
 
-| Test | Verifies |
-|---|---|
-| test_sha256_required | bare-hex input produces clear error |
-| test_md5_legacy_read_only | md5: keys accepted for reads, never written |
-| test_bare_hex_rejected | no-prefix input rejected with clear message |
-| test_path_only_identity_forbidden | detector never synthesizes doc_key from path |
-| test_known_source_not_in_wiki_surfaces | source w/ doc_key, no wiki ref → gap emitted |
-| test_wiki_covered_source_excluded | source referenced by wiki → not a gap |
-| test_missing_doc_key_marked_identity_unresolved | null key → `status: identity-unresolved` |
-| test_discipline_classification | naval-architecture tag → routes to naval file |
-| test_tier_classification_git_tracked | L2 yaml entry → tier 1 |
-| test_tier_classification_shared_mount | `/mnt/ace/` source → tier 2 |
-| test_tier3_local_cache_excluded | local-cache-only source → detector never considers it |
-| test_dry_run_writes_nothing | `--dry-run` produces no file writes |
-| test_idempotent_rerun | same input → byte-identical YAML |
-| test_analysis_report_eligibility | L3-eligibility filter works correctly |
-| test_runtime_budget_under_five_min | fixture corpus completes under budget |
-| test_first_run_emits_per_domain_yaml | ≥1 YAML per domain in fixture |
-| test_cron_config_parses_and_schedules_weekly | cron entry validates against schedule schema |
-| test_malformed_frontmatter_does_not_crash | parse error → skip + log, not crash |
-| test_schema_mismatch_fails_closed | bad registry → abort with clear error |
-| test_output_path_allowlist_enforced | write outside allowlist → refused |
+(All v2 tests plus new M1-addressing tests:)
+- `test_summary_md_written_with_per_domain_counts` (NEW — M1 `_summary.md` consistency)
+- `test_missing_doc_key_emits_section_8_1_warning` (NEW — M1 §8.1 enforcement)
+- `test_nonconforming_doc_key_emits_warning_not_added_to_set` (NEW)
+- `test_mount_metadata_validation` (NEW — threat-model iter-2 finding)
+- ... (all 20 v2 tests retained)
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All 20 tests pass: `uv run pytest tests/knowledge/test_detect_wiki_gaps.py -v`
-- [ ] No regression at repo root
-- [ ] E2E run on current corpus completes <5 min (measured)
-- [ ] Produces ≥1 gap YAML per wiki domain on first real run
-- [ ] Weekly cron entry merged + validated by test
-- [ ] Operating-model §3 (identity) enforced: all test_sha256_*/test_md5_*/test_bare_hex_* pass
-- [ ] Operating-model §7 (tier) enforced: all test_tier_* pass
-- [ ] Threat model tests pass
+All v2 ACs plus:
+- [ ] `_summary.md` emitted with per-domain counts + §8.1 warning summary
+- [ ] Engineering wiki pages lacking `doc_key` produce §8.1 warnings (not tolerated)
+- [ ] Wiki doc_key extraction uses YAML frontmatter parse, not regex on body
+- [ ] Mount-metadata strings validated before recording
 
 ---
 
 ## Adversarial Review Summary
 
-| Provider | Verdict | Key findings | Artifact |
-|---|---|---|---|
-| Claude v1 | MINOR | self-review, 3 fixes | `2026-04-20-plan-2392-claude.md` |
-| Codex v1 | MAJOR | sha256, AC-test gap, policy, tier-3, deps, threat model, scope | `2026-04-20-plan-2392-codex.md` |
-| Gemini v1 | MAJOR | sha256, unverified claims, threat, perf test | `2026-04-20-plan-2392-gemini.md` |
-| Claude v2 | PENDING | — | — |
-| Codex v2 | PENDING | — | — |
-| Gemini v2 | PENDING | — | — |
+| Provider | Verdict | Artifact |
+|---|---|---|
+| Claude v1 | MINOR | `2026-04-20-plan-2392-claude.md` |
+| Codex v1 | MAJOR | `2026-04-20-plan-2392-codex.md` |
+| Gemini v1 | MAJOR | `2026-04-20-plan-2392-gemini.md` |
+| Codex v2 | MAJOR | `2026-04-20-v2-plan-2392-codex.md` |
+| Gemini v2 | MAJOR | `2026-04-20-v2-plan-2392-gemini.md` |
+| Codex v3 | PENDING | — |
+| Gemini v3 | PENDING | — |
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** §3 identity enforcement may surface large volumes of `identity-unresolved` entries until #2360 completes. Mitigation: counts surfaced in `_summary.md`; not a blocker.
-- **Risk:** L3-eligibility heuristic is subjective. Mitigation: config-driven + first-run user calibration.
-- **Open:** Should analysis-report filter include `docs/reports/weekly/*` or only top-level? Plan default: top-level only; weekly reports handled by existing #2089.
+- **Risk:** §8.1 warnings may flood output until #2360 lands. Mitigation: summary shows counts; not a blocker.
+- **Open:** Should `_summary.md` be committed on every run or only when counts change? Plan default: commit when changed (idempotency-friendly).
 
 ---
 
 ## Complexity: T2
-
-New script + config + tests + cron wiring; no existing file significantly modified.

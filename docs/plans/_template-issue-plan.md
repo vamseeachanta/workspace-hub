@@ -59,6 +59,36 @@
 - No existing implementation of X
 - Standard Y is in the gap list — no coverage
 
+### Evidence (embedded verification)
+<!-- ADDED 2026-04-20 per iter-2 cross-review convergent finding: reviewers require
+     inline evidence for correctness-critical claims rather than prose "confirmed".
+     Embed the actual tool output below; keep compact but verifiable.
+
+     Required for:
+     - Every cited issue number (show state + title)
+     - Every cited file path (show exists/missing)
+     - Every "no existing X" claim (show the command that returned empty)
+     - Every quoted line citation (show the source command + excerpt)
+
+     Not required for: external docs with stable URLs, well-known conventions. -->
+
+**Issue statuses** (verified YYYY-MM-DDTHH:MM:SSZ via `gh issue view`):
+- `#NNNN` — STATE — title
+- ...
+
+**File existence** (`ls -la` YYYY-MM-DDTHH:MM:SSZ):
+- EXISTS: path/to/file.py
+- MISSING (new — this plan creates): path/to/new.py
+- ...
+
+**Line excerpts** (`sed -n N,Mp path/to/file`):
+```
+<paste excerpt here — reviewers verify line numbers match>
+```
+
+**Gap proofs** (`ls path-not-existing 2>&1 | head -3` or `grep -c X path`):
+- `ls scripts/knowledge/*gap*` → "No such file or directory" → confirms tool does not exist.
+
 <!-- Verification: count distinct sources above (across all sub-sections).
      Minimum 3 required (issue body + 2 others). Current count: ___ -->
 
