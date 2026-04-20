@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -1024,7 +1025,7 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
     return playbooks
 
 
-def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remediation_playbooks: list[dict]) -> list[dict]:
+def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remediation_playbooks: list[dict], previous_audit: dict | None) -> list[dict]:
     watchlist_by_provider = {
         item.get("provider"): item
         for item in watchlist
@@ -1033,6 +1034,16 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
     playbook_by_provider = {
         item.get("provider"): item
         for item in remediation_playbooks
+        if isinstance(item, dict) and item.get("provider")
+    }
+    previous_drafts = (
+        previous_audit.get("executive_summary", {}).get("provider_interpretation_summary", {}).get("followup_issue_drafts", [])
+        if isinstance(previous_audit, dict)
+        else []
+    )
+    previous_key_map = {
+        item.get("provider"): item.get("draft_key")
+        for item in previous_drafts
         if isinstance(item, dict) and item.get("provider")
     }
 
@@ -1078,6 +1089,19 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
         body_lines.extend(f"- {path}" for path in canonical_targets)
         body_lines.append("First steps:")
         body_lines.extend(f"- {step}" for step in first_steps)
+        body = "\n".join(body_lines)
+
+        dedupe_scope = f"{provider}:{primary_issue}:{preferred_fix_lane}"
+        fingerprint_source = {
+            "provider": provider,
+            "primary_issue": primary_issue,
+            "preferred_fix_lane": preferred_fix_lane,
+            "owner_team": owner_team,
+            "severity": severity,
+            "trigger_level": trigger_level,
+        }
+        draft_key = hashlib.sha256(json.dumps(fingerprint_source, sort_keys=True).encode("utf-8")).hexdigest()[:16]
+        previous_draft_key = previous_key_map.get(provider)
 
         drafts.append(
             {
@@ -1086,7 +1110,10 @@ def build_followup_issue_drafts(rows: list[dict], watchlist: list[dict], remedia
                 "severity": severity,
                 "owner_team": owner_team,
                 "preferred_fix_lane": preferred_fix_lane,
-                "body": "\n".join(body_lines),
+                "body": body,
+                "draft_key": draft_key,
+                "dedupe_scope": dedupe_scope,
+                "duplicate_of_previous_draft_key": previous_draft_key if previous_draft_key == draft_key else None,
             }
         )
 
@@ -1607,7 +1634,7 @@ def build_provider_interpretation_summary(
     watchlist = build_watchlist(rows)
     change_alerts = build_change_alerts(rows, watchlist, previous_audit)
     remediation_playbooks = build_remediation_playbooks(provider_summaries, rows, watchlist)
-    followup_issue_drafts = build_followup_issue_drafts(rows, watchlist, remediation_playbooks)
+    followup_issue_drafts = build_followup_issue_drafts(rows, watchlist, remediation_playbooks, previous_audit)
     if rows:
         primary = rows[0]
         focus_this_week = (

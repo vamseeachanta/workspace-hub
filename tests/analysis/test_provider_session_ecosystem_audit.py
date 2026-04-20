@@ -452,6 +452,10 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert "docs/governance/SESSION-GOVERNANCE.md" in summary["remediation_playbooks"][0]["canonical_targets"]
     assert summary["remediation_playbooks"][0]["owner_team"] == "governance-maintainers"
     assert summary["remediation_playbooks"][0]["preferred_fix_lane"] == "governance-docs"
+    assert summary["followup_issue_drafts"][0]["provider"] == "claude"
+    assert summary["followup_issue_drafts"][0]["severity"] == "high"
+    assert summary["followup_issue_drafts"][0]["draft_key"]
+    assert summary["followup_issue_drafts"][0]["dedupe_scope"] == "claude:legacy_work_queue_transition:governance-docs"
 
 
 
@@ -490,6 +494,7 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert "watchlist" in executive_actions
     assert "change_alerts" in executive_actions
     assert "remediation_playbooks" in executive_actions
+    assert "followup_issue_drafts" in executive_actions
     assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
     assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
     assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
@@ -497,6 +502,7 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
     assert executive_actions["watchlist"] == audit["executive_summary"]["provider_interpretation_summary"]["watchlist"]
     assert executive_actions["change_alerts"] == audit["executive_summary"]["provider_interpretation_summary"]["change_alerts"]
     assert executive_actions["remediation_playbooks"] == audit["executive_summary"]["provider_interpretation_summary"]["remediation_playbooks"]
+    assert executive_actions["followup_issue_drafts"] == audit["executive_summary"]["provider_interpretation_summary"]["followup_issue_drafts"]
 
 
 
