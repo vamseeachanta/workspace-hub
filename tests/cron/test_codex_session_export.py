@@ -280,3 +280,117 @@ def test_codex_export_maps_github_fetch_and_search_tools(tmp_path: Path) -> None
     assert search_record["query"] == "provider session audit"
     assert search_record["search_root"] == "vamseeachanta/workspace-hub"
     assert uv_log.read_text(encoding="utf-8").splitlines()[:4] == ["run", "--no-project", "python", "-"]
+
+
+def test_codex_export_maps_mcp_prefixed_github_tools_and_issue_resources(tmp_path: Path) -> None:
+    repo = tmp_path / "repo-under-test"
+    (repo / "scripts" / "cron").mkdir(parents=True)
+    shutil.copy2(SCRIPT, repo / "scripts" / "cron" / "codex-session-export.sh")
+
+    home = tmp_path / "home"
+    codex_dir = home / ".codex" / "sessions" / "2026" / "04" / "20"
+    codex_dir.mkdir(parents=True)
+    fake_bin, uv_log = _write_fake_uv(tmp_path)
+
+    session_file = codex_dir / "rollout-mcp-github.jsonl"
+    session_file.write_text(
+        "\n".join(
+            [
+                json.dumps(
+                    {
+                        "timestamp": "2026-04-20T01:00:00Z",
+                        "type": "session_meta",
+                        "payload": {"id": "sess-mcp", "cwd": "/mnt/local-analysis/workspace-hub", "model_provider": "openai"},
+                    }
+                ),
+                json.dumps(
+                    {
+                        "timestamp": "2026-04-20T01:01:00Z",
+                        "type": "response_item",
+                        "payload": {
+                            "type": "function_call",
+                            "id": "call-mcp-1",
+                            "name": "mcp__codex_apps__github_fetch_file",
+                            "arguments": json.dumps(
+                                {
+                                    "repository_full_name": "vamseeachanta/workspace-hub",
+                                    "path": "docs/plans/mcp-example.md",
+                                    "ref": "main",
+                                }
+                            ),
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "timestamp": "2026-04-20T01:02:00Z",
+                        "type": "response_item",
+                        "payload": {
+                            "type": "function_call",
+                            "id": "call-mcp-2",
+                            "name": "mcp__codex_apps__github_search",
+                            "arguments": json.dumps(
+                                {
+                                    "repository_name": "vamseeachanta/workspace-hub",
+                                    "query": "status:plan-review",
+                                    "topn": 10,
+                                }
+                            ),
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "timestamp": "2026-04-20T01:03:00Z",
+                        "type": "response_item",
+                        "payload": {
+                            "type": "function_call",
+                            "id": "call-mcp-3",
+                            "name": "mcp__codex_apps__github_fetch_issue",
+                            "arguments": json.dumps(
+                                {
+                                    "repo": "vamseeachanta/workspace-hub",
+                                    "issue_number": 43,
+                                }
+                            ),
+                        },
+                    }
+                ),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    env = os.environ.copy()
+    env["HOME"] = str(home)
+    env["PATH"] = f"{fake_bin}{os.pathsep}{env['PATH']}"
+    env["UV_ARGS_FILE"] = str(uv_log)
+
+    script_path = repo / "scripts" / "cron" / "codex-session-export.sh"
+    result = subprocess.run(
+        ["bash", str(script_path)],
+        cwd=repo,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, f"stdout: {result.stdout}\nstderr: {result.stderr}"
+    output_file = repo / "logs" / "orchestrator" / "codex" / "session_20260420.jsonl"
+    records = [json.loads(line) for line in output_file.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+    fetch_record = next(r for r in records if r["codex_tool"] == "mcp__codex_apps__github_fetch_file")
+    assert fetch_record["tool"] == "Read"
+    assert fetch_record["file"] == "docs/plans/mcp-example.md"
+
+    search_record = next(r for r in records if r["codex_tool"] == "mcp__codex_apps__github_search")
+    assert search_record["tool"] == "Grep"
+    assert search_record["query"] == "status:plan-review"
+    assert search_record["search_root"] == "vamseeachanta/workspace-hub"
+
+    issue_record = next(r for r in records if r["codex_tool"] == "mcp__codex_apps__github_fetch_issue")
+    assert issue_record["tool"] == "Read"
+    assert issue_record["file"] == "github://vamseeachanta/workspace-hub/issues/43"
+    assert uv_log.read_text(encoding="utf-8").splitlines()[:4] == ["run", "--no-project", "python", "-"]

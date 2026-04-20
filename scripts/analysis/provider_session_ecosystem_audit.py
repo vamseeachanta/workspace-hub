@@ -516,6 +516,16 @@ def load_previous_generated_at(path: Path) -> str | None:
     return str(generated_at) if generated_at else None
 
 
+def load_previous_audit(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
 def build_recent_activity_summary(
     provider_summaries: dict[str, dict], logs_root: Path, repo_root: Path, previous_generated_at: str | None
 ) -> dict:
@@ -582,9 +592,110 @@ def build_recent_activity_summary(
     }
 
 
+def build_corpus_change_summary(
+    provider_summaries: dict[str, dict], previous_audit: dict | None, recent_activity: dict
+) -> dict:
+    if not previous_audit:
+        return {
+            "previous_generated_at": None,
+            "status": "no_prior_audit",
+            "providers": {},
+        }
+
+    previous_generated_at = str(previous_audit.get("generated_at", "") or "") or None
+    previous_providers = previous_audit.get("providers", {}) if isinstance(previous_audit, dict) else {}
+    recent_providers = recent_activity.get("providers", {}) if isinstance(recent_activity, dict) else {}
+
+    by_provider: dict[str, dict] = {}
+    ranked: list[dict] = []
+    for provider in PROVIDERS:
+        current = provider_summaries.get(provider, {})
+        previous = previous_providers.get(provider, {}) if isinstance(previous_providers, dict) else {}
+        if not previous:
+            by_provider[provider] = {
+                "status": "unavailable",
+                "previous_source": None,
+                "current_source": current.get("source"),
+                "interpretation": "No previous provider snapshot available for comparison.",
+            }
+            continue
+
+        current_post = int(current.get("post_records", 0) or 0)
+        previous_post = int(previous.get("post_records", 0) or 0)
+        current_sessions = int(current.get("sessions", 0) or 0)
+        previous_sessions = int(previous.get("sessions", 0) or 0)
+        current_missing = int(current.get("missing_repo_reads", 0) or 0)
+        previous_missing = int(previous.get("missing_repo_reads", 0) or 0)
+        recent_post = int(recent_providers.get(provider, {}).get("post_records", 0) or 0)
+        recent_sessions = int(recent_providers.get(provider, {}).get("sessions", 0) or 0)
+
+        post_delta = current_post - previous_post
+        session_delta = current_sessions - previous_sessions
+        missing_delta = current_missing - previous_missing
+        reconciliation_gap = post_delta - recent_post
+        source_changed = current.get("source") != previous.get("source")
+
+        if source_changed:
+            status = "source_changed"
+            interpretation = "Provider source changed between audits, so snapshot deltas should be treated cautiously."
+        elif reconciliation_gap == 0:
+            status = "aligned"
+            interpretation = "Snapshot post-record change aligns with recent event-time activity."
+        elif reconciliation_gap > 0:
+            status = "positive_corpus_growth_beyond_recent_activity"
+            interpretation = "Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage."
+        else:
+            status = "corpus_pruned_or_rebuilt"
+            interpretation = "Snapshot shrank relative to recent event-time activity, suggesting pruning, rebuild, or reclassification."
+
+        row = {
+            "status": status,
+            "previous_source": previous.get("source"),
+            "current_source": current.get("source"),
+            "previous_post_records": previous_post,
+            "current_post_records": current_post,
+            "post_record_delta": post_delta,
+            "previous_sessions": previous_sessions,
+            "current_sessions": current_sessions,
+            "session_delta": session_delta,
+            "previous_missing_repo_reads": previous_missing,
+            "current_missing_repo_reads": current_missing,
+            "missing_repo_read_delta": missing_delta,
+            "event_time_post_records_since_previous_audit": recent_post,
+            "event_time_sessions_since_previous_audit": recent_sessions,
+            "reconciliation_gap_post_records": reconciliation_gap,
+            "interpretation": interpretation,
+        }
+        by_provider[provider] = row
+        ranked.append(
+            {
+                "provider": provider,
+                "post_record_delta": post_delta,
+                "event_time_post_records_since_previous_audit": recent_post,
+                "reconciliation_gap_post_records": reconciliation_gap,
+                "status": status,
+            }
+        )
+
+    ranked.sort(key=lambda item: (-abs(item.get("reconciliation_gap_post_records", 0)), item["provider"]))
+    largest_positive = max(ranked, key=lambda item: item.get("reconciliation_gap_post_records", float("-inf")), default=None)
+    largest_negative = min(ranked, key=lambda item: item.get("reconciliation_gap_post_records", float("inf")), default=None)
+    return {
+        "previous_generated_at": previous_generated_at,
+        "status": "ok",
+        "scope_note": "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.",
+        "providers": by_provider,
+        "ranked_providers": ranked,
+        "largest_positive_reconciliation_gap_provider": largest_positive["provider"] if largest_positive else None,
+        "largest_negative_reconciliation_gap_provider": largest_negative["provider"] if largest_negative else None,
+    }
+
+
 def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROOT) -> dict:
     provider_summaries: dict[str, dict] = {}
-    previous_generated_at = load_previous_generated_at(repo_root / "analysis" / "provider-session-ecosystem-audit.json")
+    previous_audit_path = repo_root / "analysis" / "provider-session-ecosystem-audit.json"
+    previous_generated_at = load_previous_generated_at(previous_audit_path)
+    previous_audit = load_previous_audit(previous_audit_path)
 
     for provider in PROVIDERS:
         logs_dir = logs_root / provider
@@ -613,6 +724,9 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
 
         provider_summaries[provider] = summarize_raw_provider(provider, logs_dir, repo_root)
 
+    recent_activity = build_recent_activity_summary(provider_summaries, logs_root, repo_root, previous_generated_at)
+    corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+
     return {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "repo_root": str(repo_root),
@@ -620,9 +734,8 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         "providers": provider_summaries,
         "executive_summary": {
             "migration_debt": build_migration_debt_summary(provider_summaries),
-            "recent_activity_since_previous_audit": build_recent_activity_summary(
-                provider_summaries, logs_root, repo_root, previous_generated_at
-            ),
+            "recent_activity_since_previous_audit": recent_activity,
+            "corpus_change_since_previous_audit": corpus_change,
         },
     }
 
@@ -702,6 +815,30 @@ def render_markdown(audit: dict) -> str:
         )
         lines.append("")
 
+    corpus_change = audit.get("executive_summary", {}).get("corpus_change_since_previous_audit", {})
+    corpus_status = corpus_change.get("status")
+    if corpus_status == "ok":
+        lines.append("## Corpus change since previous audit")
+        previous_generated_at = corpus_change.get("previous_generated_at")
+        if previous_generated_at:
+            lines.append(f"- Previous audit timestamp: `{previous_generated_at}`")
+        scope_note = corpus_change.get("scope_note")
+        if scope_note:
+            lines.append(f"- Scope note: {scope_note}")
+        if corpus_change.get("largest_negative_reconciliation_gap_provider"):
+            lines.append(
+                f"- Largest negative reconciliation gap: `{corpus_change.get('largest_negative_reconciliation_gap_provider')}`"
+            )
+        if corpus_change.get("largest_positive_reconciliation_gap_provider"):
+            lines.append(
+                f"- Largest positive reconciliation gap: `{corpus_change.get('largest_positive_reconciliation_gap_provider')}`"
+            )
+        lines.append("")
+    elif corpus_status == "no_prior_audit":
+        lines.append("## Corpus change since previous audit")
+        lines.append("- No prior tracked provider audit artifact was available, so snapshot-to-snapshot corpus comparison is not yet available.")
+        lines.append("")
+
     def emit_rows(title: str, rows: list[dict], key: str) -> None:
         lines.append(f"### {title}")
         if not rows:
@@ -775,6 +912,27 @@ def render_markdown(audit: dict) -> str:
                 recent_provider.get("top_missing_repo_reads", []),
                 "path",
             )
+        corpus_provider = corpus_change.get("providers", {}).get(provider, {}) if corpus_status == "ok" else {}
+        if corpus_provider:
+            lines.append(f"### {provider} corpus change since previous audit")
+            lines.append(
+                f"- Post-hook records: current {corpus_provider.get('current_post_records', 0)} vs previous {corpus_provider.get('previous_post_records', 0)} (delta {corpus_provider.get('post_record_delta', 0)})"
+            )
+            lines.append(
+                f"- Sessions: current {corpus_provider.get('current_sessions', 0)} vs previous {corpus_provider.get('previous_sessions', 0)} (delta {corpus_provider.get('session_delta', 0)})"
+            )
+            lines.append(
+                f"- Missing repo reads: current {corpus_provider.get('current_missing_repo_reads', 0)} vs previous {corpus_provider.get('previous_missing_repo_reads', 0)} (delta {corpus_provider.get('missing_repo_read_delta', 0)})"
+            )
+            lines.append(
+                f"- Event-time post records since prior audit: {corpus_provider.get('event_time_post_records_since_previous_audit', 0)}"
+            )
+            lines.append(
+                f"- Reconciliation gap vs event-time delta: {corpus_provider.get('reconciliation_gap_post_records', 0)}"
+            )
+            lines.append(f"- Status: {corpus_provider.get('status', 'unknown')}")
+            lines.append(f"- Interpretation: {corpus_provider.get('interpretation', '')}")
+            lines.append("")
         emit_rows(f"{provider} top missing repo reads", summary.get("top_missing_repo_reads", []), "path")
         emit_remediation_hints(
             f"{provider} remediation hints for stale repo reads",

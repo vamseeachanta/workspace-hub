@@ -65,7 +65,29 @@ TOOL_MAP = {
     "search_files": "Grep",
     "browser": "Browser",
     "_fetch_file": "Read",
+    "mcp__codex_apps__github_fetch_file": "Read",
+    "_fetch": "Read",
+    "mcp__codex_apps__github_fetch": "Read",
+    "_fetch_issue": "Read",
+    "mcp__codex_apps__github_fetch_issue": "Read",
+    "_fetch_issue_comments": "Read",
+    "mcp__codex_apps__github_fetch_issue_comments": "Read",
     "_search": "Grep",
+    "mcp__codex_apps__github_search": "Grep",
+    "_search_repositories": "Grep",
+    "mcp__codex_apps__github_search_repositories": "Grep",
+    "_search_commits": "Grep",
+    "mcp__codex_apps__github_search_commits": "Grep",
+    "_search_installed_repositories_v2": "Grep",
+    "mcp__codex_apps__github_search_installed_repositories_v2": "Grep",
+    "_search_branches": "Grep",
+    "mcp__codex_apps__github_search_branches": "Grep",
+    "_search_issues": "Grep",
+    "mcp__codex_apps__github_search_issues": "Grep",
+    "_search_prs": "Grep",
+    "mcp__codex_apps__github_search_prs": "Grep",
+    "_list_repositories": "Grep",
+    "mcp__codex_apps__github_list_repositories": "Grep",
 }
 
 
@@ -111,6 +133,18 @@ def command_from_args(args: dict) -> str:
         if suffix:
             command = f"{command} {suffix}".strip() if command else suffix
     return command[:1000]
+
+
+def github_issue_resource(args: dict, *, comments: bool = False) -> str:
+    repo = str(
+        args.get("repository_full_name", args.get("repo_full_name", args.get("repo", args.get("repository_name", ""))))
+        or ""
+    ).strip()
+    issue_number = str(args.get("issue_number", args.get("number", "")) or "").strip()
+    if not repo or not issue_number:
+        return ""
+    suffix = "/comments" if comments else ""
+    return f"github://{repo}/issues/{issue_number}{suffix}"[:1000]
 
 
 state = load_state()
@@ -211,11 +245,51 @@ for session_file in sorted(codex_sessions.glob("**/rollout-*.jsonl")):
         }
         if name in {"exec_command", "write_stdin"}:
             entry["cmd"] = command_from_args(args)
-        elif name in {"read_file", "write_file", "apply_diff", "list_directory", "_fetch_file"}:
+        elif name in {
+            "read_file",
+            "write_file",
+            "apply_diff",
+            "list_directory",
+            "_fetch_file",
+            "mcp__codex_apps__github_fetch_file",
+        }:
             entry["file"] = str(args.get("path", args.get("file_path", args.get("dir_path", ""))) or "")[:1000]
-        elif name in {"search_files", "_search"}:
+        elif name in {"_fetch", "mcp__codex_apps__github_fetch"}:
+            entry["file"] = str(args.get("url", args.get("path", "")) or "")[:1000]
+        elif name in {"_fetch_issue", "mcp__codex_apps__github_fetch_issue"}:
+            entry["file"] = github_issue_resource(args)
+        elif name in {"_fetch_issue_comments", "mcp__codex_apps__github_fetch_issue_comments"}:
+            entry["file"] = github_issue_resource(args, comments=True)
+        elif name in {
+            "search_files",
+            "_search",
+            "mcp__codex_apps__github_search",
+            "_search_repositories",
+            "mcp__codex_apps__github_search_repositories",
+            "_search_commits",
+            "mcp__codex_apps__github_search_commits",
+            "_search_installed_repositories_v2",
+            "mcp__codex_apps__github_search_installed_repositories_v2",
+            "_search_branches",
+            "mcp__codex_apps__github_search_branches",
+            "_search_issues",
+            "mcp__codex_apps__github_search_issues",
+            "_search_prs",
+            "mcp__codex_apps__github_search_prs",
+            "_list_repositories",
+            "mcp__codex_apps__github_list_repositories",
+        }:
             entry["query"] = str(args.get("pattern", args.get("query", "")) or "")[:1000]
-            root = str(args.get("path", args.get("dir_path", args.get("repository_name", args.get("repository_full_name", "")))) or "")
+            root = str(
+                args.get(
+                    "path",
+                    args.get(
+                        "dir_path",
+                        args.get("repository_name", args.get("repository_full_name", args.get("repo", ""))),
+                    ),
+                )
+                or ""
+            )
             if root:
                 entry["search_root"] = root[:1000]
 

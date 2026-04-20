@@ -279,6 +279,36 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
     assert recent["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
 
 
+
+def test_build_corpus_change_summary_separates_snapshot_and_event_time_deltas() -> None:
+    provider_summaries = {
+        "codex": {"source": "raw_logs", "post_records": 80, "sessions": 5, "missing_repo_reads": 1},
+        "claude": {"source": "raw_logs", "post_records": 110, "sessions": 3, "missing_repo_reads": 2},
+    }
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {
+            "codex": {"source": "raw_logs", "post_records": 100, "sessions": 7, "missing_repo_reads": 4},
+            "claude": {"source": "raw_logs", "post_records": 100, "sessions": 2, "missing_repo_reads": 1},
+        },
+    }
+    recent_activity = {
+        "providers": {
+            "codex": {"post_records": 6, "sessions": 1},
+            "claude": {"post_records": 10, "sessions": 1},
+        }
+    }
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+
+    assert summary["status"] == "ok"
+    assert summary["providers"]["codex"]["reconciliation_gap_post_records"] == -26
+    assert summary["providers"]["codex"]["status"] == "corpus_pruned_or_rebuilt"
+    assert summary["providers"]["claude"]["reconciliation_gap_post_records"] == 0
+    assert summary["providers"]["claude"]["status"] == "aligned"
+    assert summary["largest_negative_reconciliation_gap_provider"] == "codex"
+
+
 def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     logs_root = repo_root / "logs" / "orchestrator"
@@ -364,6 +394,30 @@ def test_render_markdown_mentions_recent_activity_section() -> None:
                     }
                 },
             },
+            "corpus_change_since_previous_audit": {
+                "status": "ok",
+                "previous_generated_at": "2026-04-09T00:00:00Z",
+                "scope_note": "Snapshot scope note.",
+                "largest_negative_reconciliation_gap_provider": "codex",
+                "largest_positive_reconciliation_gap_provider": "hermes",
+                "providers": {
+                    "claude": {
+                        "current_post_records": 2,
+                        "previous_post_records": 1,
+                        "post_record_delta": 1,
+                        "current_sessions": 1,
+                        "previous_sessions": 1,
+                        "session_delta": 0,
+                        "current_missing_repo_reads": 1,
+                        "previous_missing_repo_reads": 0,
+                        "missing_repo_read_delta": 1,
+                        "event_time_post_records_since_previous_audit": 2,
+                        "reconciliation_gap_post_records": -1,
+                        "status": "corpus_pruned_or_rebuilt",
+                        "interpretation": "Snapshot changed differently than event-time activity.",
+                    }
+                },
+            },
         },
         "providers": {
             "claude": {
@@ -390,6 +444,10 @@ def test_render_markdown_mentions_recent_activity_section() -> None:
     assert "### claude recent activity since previous audit" in markdown
     assert "Previous audit timestamp: `2026-04-09T00:00:00Z`" in markdown
     assert "Event-time scope note." in markdown
+    assert "## Corpus change since previous audit" in markdown
+    assert "Snapshot scope note." in markdown
+    assert "Largest negative reconciliation gap: `codex`" in markdown
+    assert "### claude corpus change since previous audit" in markdown
 
 
 def test_build_missing_read_remediation_hints_groups_known_legacy_paths() -> None:
