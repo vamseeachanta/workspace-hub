@@ -278,6 +278,61 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
     assert recent["providers"]["claude"]["top_bash_command_families"][0]["prefix"] == "git status"
     assert recent["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
 
+    windows = audit["executive_summary"]["recent_activity_windows"]
+    assert windows["status"] == "ok"
+    assert windows["generated_at"] == audit["generated_at"]
+    assert "last_24h" in windows["windows"]
+    assert "last_7d" in windows["windows"]
+
+
+def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "cmd": "git status --short",
+            "repo": "workspace-hub",
+            "ts": "2026-04-09T12:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "docs/missing.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-08T12:00:00Z",
+            "session_id": "claude-2",
+        },
+    ]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+    )
+
+    provider_summaries = {
+        "claude": {"source": "raw_logs"},
+        "codex": {"source": "missing_log_directory"},
+        "hermes": {"source": "missing_log_directory"},
+        "gemini": {"source": "missing_log_directory"},
+    }
+
+    windows = module.build_activity_window_summary(
+        provider_summaries,
+        logs_root,
+        repo_root,
+        generated_at="2026-04-10T00:00:00Z",
+    )
+
+    assert windows["status"] == "ok"
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["post_records"] == 1
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["sessions"] == 1
+    assert windows["windows"]["last_24h"]["ranked_providers"][0]["provider"] == "claude"
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["post_records"] == 2
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
+
 
 
 def test_build_corpus_change_summary_separates_snapshot_and_event_time_deltas() -> None:
@@ -673,6 +728,28 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                 ]
             },
             "recent_activity_since_previous_audit": {"status": "no_prior_audit", "providers": {}},
+            "recent_activity_windows": {
+                "status": "ok",
+                "generated_at": "2026-04-10T00:00:00Z",
+                "windows": {
+                    "last_24h": {
+                        "window_start": "2026-04-09T00:00:00Z",
+                        "window_end": "2026-04-10T00:00:00Z",
+                        "status": "ok",
+                        "scope_note": "Last 24 hours of event-time activity ending at this audit timestamp.",
+                        "ranked_providers": [{"provider": "claude", "post_records": 2, "sessions": 1}],
+                        "providers": {"claude": {"post_records": 2, "sessions": 1}},
+                    },
+                    "last_7d": {
+                        "window_start": "2026-04-03T00:00:00Z",
+                        "window_end": "2026-04-10T00:00:00Z",
+                        "status": "ok",
+                        "scope_note": "Last 7 days of event-time activity ending at this audit timestamp.",
+                        "ranked_providers": [{"provider": "claude", "post_records": 5, "sessions": 2}],
+                        "providers": {"claude": {"post_records": 5, "sessions": 2}},
+                    },
+                },
+            },
             "corpus_change_since_previous_audit": {"status": "no_prior_audit", "providers": {}},
         },
         "providers": {
@@ -704,6 +781,10 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "`claude` — rank=1 (prev=2, move=up) | urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving) | movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "## Rolling activity windows" in markdown
+    assert "`last_24h` — `2026-04-09T00:00:00Z` → `2026-04-10T00:00:00Z`" in markdown
+    assert "Activity leaders: `claude` 2 post records / 1 sessions." in markdown
+    assert "`last_7d` — `2026-04-03T00:00:00Z` → `2026-04-10T00:00:00Z`" in markdown
     assert "primary issue: legacy_work_queue_transition" in markdown
     assert "## Corpus change since previous audit" in markdown
     assert "snapshot-to-snapshot corpus comparison is not yet available" in markdown

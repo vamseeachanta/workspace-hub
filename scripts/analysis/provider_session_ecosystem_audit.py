@@ -274,7 +274,14 @@ def top_items(counter: Counter, limit: int, key_name: str) -> list[dict]:
     return [{key_name: key, "count": value} for key, value in counter.most_common(limit)]
 
 
-def compute_recent_activity_since(provider: str, logs_dir: Path, repo_root: Path, cutoff_ts: float) -> dict:
+def compute_activity_window(
+    provider: str,
+    logs_dir: Path,
+    repo_root: Path,
+    *,
+    start_ts: float,
+    end_ts: float | None = None,
+) -> dict:
     post_records = 0
     session_ids: Counter[str] = Counter()
     tool_counts: Counter[str] = Counter()
@@ -283,7 +290,9 @@ def compute_recent_activity_since(provider: str, logs_dir: Path, repo_root: Path
 
     for record in iter_post_records(logs_dir):
         record_ts = parse_record_timestamp(record)
-        if record_ts is None or record_ts <= cutoff_ts:
+        if record_ts is None or record_ts <= start_ts:
+            continue
+        if end_ts is not None and record_ts > end_ts:
             continue
 
         post_records += 1
@@ -315,6 +324,10 @@ def compute_recent_activity_since(provider: str, logs_dir: Path, repo_root: Path
             for prefix, count in bash_family_counts.most_common(8)
         ],
     }
+
+
+def compute_recent_activity_since(provider: str, logs_dir: Path, repo_root: Path, cutoff_ts: float) -> dict:
+    return compute_activity_window(provider, logs_dir, repo_root, start_ts=cutoff_ts)
 
 
 def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> dict:
@@ -688,21 +701,104 @@ def build_recent_activity_summary(
 
     ranked = sorted(
         (
-            {
-                "provider": provider,
-                "post_records": data.get("post_records", 0),
-                "sessions": data.get("sessions", 0),
-            }
-            for provider, data in recent_by_provider.items()
+            {"provider": provider, **stats}
+            for provider, stats in recent_by_provider.items()
+            if stats.get("post_records", 0) or stats.get("sessions", 0)
         ),
-        key=lambda item: (-item["post_records"], -item["sessions"], item["provider"]),
+        key=lambda item: (-int(item.get("post_records", 0)), -int(item.get("sessions", 0)), item["provider"]),
     )
     return {
         "previous_generated_at": previous_generated_at,
         "status": "ok",
         "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
         "providers": recent_by_provider,
-        "ranked_providers": ranked,
+        "ranked_providers": [
+            {
+                "provider": item["provider"],
+                "post_records": item.get("post_records", 0),
+                "sessions": item.get("sessions", 0),
+            }
+            for item in ranked
+        ],
+    }
+
+
+def build_activity_window_summary(
+    provider_summaries: dict[str, dict],
+    logs_root: Path,
+    repo_root: Path,
+    generated_at: str,
+) -> dict:
+    generated_ts = datetime.fromisoformat(generated_at.replace("Z", "+00:00")).timestamp()
+    windows = [
+        ("last_24h", 24 * 60 * 60, "Last 24 hours of event-time activity ending at this audit timestamp."),
+        ("last_7d", 7 * 24 * 60 * 60, "Last 7 days of event-time activity ending at this audit timestamp."),
+    ]
+    summary: dict[str, dict] = {}
+
+    for window_name, duration_seconds, scope_note in windows:
+        start_ts = generated_ts - duration_seconds
+        window_by_provider: dict[str, dict] = {}
+        for provider in PROVIDERS:
+            logs_dir = logs_root / provider
+            provider_summary = provider_summaries.get(provider, {})
+            if not logs_dir.exists() or provider_summary.get("source") not in {"raw_logs", "precomputed_report"}:
+                window_by_provider[provider] = {
+                    "post_records": 0,
+                    "sessions": 0,
+                    "top_tools": [],
+                    "top_missing_repo_reads": [],
+                    "top_bash_command_families": [],
+                }
+                continue
+            if provider_summary.get("source") == "precomputed_report":
+                window_by_provider[provider] = {
+                    "post_records": 0,
+                    "sessions": 0,
+                    "top_tools": [],
+                    "top_missing_repo_reads": [],
+                    "top_bash_command_families": [],
+                    "limitations": [
+                        "Rolling event-time windows cannot be reconstructed from the precomputed fallback artifact alone."
+                    ],
+                }
+                continue
+            window_by_provider[provider] = compute_activity_window(
+                provider,
+                logs_dir,
+                repo_root,
+                start_ts=start_ts,
+                end_ts=generated_ts,
+            )
+
+        ranked = sorted(
+            (
+                {"provider": provider, **stats}
+                for provider, stats in window_by_provider.items()
+                if stats.get("post_records", 0) or stats.get("sessions", 0)
+            ),
+            key=lambda item: (-int(item.get("post_records", 0)), -int(item.get("sessions", 0)), item["provider"]),
+        )
+        summary[window_name] = {
+            "window_start": datetime.fromtimestamp(start_ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "window_end": generated_at,
+            "status": "ok",
+            "scope_note": scope_note,
+            "providers": window_by_provider,
+            "ranked_providers": [
+                {
+                    "provider": item["provider"],
+                    "post_records": item.get("post_records", 0),
+                    "sessions": item.get("sessions", 0),
+                }
+                for item in ranked
+            ],
+        }
+
+    return {
+        "generated_at": generated_at,
+        "status": "ok",
+        "windows": summary,
     }
 
 
@@ -1081,6 +1177,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     previous_audit_path = repo_root / "analysis" / "provider-session-ecosystem-audit.json"
     previous_generated_at = load_previous_generated_at(previous_audit_path)
     previous_audit = load_previous_audit(previous_audit_path)
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     for provider in PROVIDERS:
         logs_dir = logs_root / provider
@@ -1110,6 +1207,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
         provider_summaries[provider] = summarize_raw_provider(provider, logs_dir, repo_root)
 
     recent_activity = build_recent_activity_summary(provider_summaries, logs_root, repo_root, previous_generated_at)
+    rolling_windows = build_activity_window_summary(provider_summaries, logs_root, repo_root, generated_at)
     corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
     migration_debt = build_migration_debt_summary(provider_summaries)
     provider_interpretation = build_provider_interpretation_summary(
@@ -1123,7 +1221,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     }
 
     return {
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_at": generated_at,
         "repo_root": str(repo_root),
         "logs_root": str(logs_root),
         "providers": provider_summaries,
@@ -1132,6 +1230,7 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
             "provider_interpretation_summary": provider_interpretation,
             "executive_actions": executive_actions,
             "recent_activity_since_previous_audit": recent_activity,
+            "recent_activity_windows": rolling_windows,
             "corpus_change_since_previous_audit": corpus_change,
         },
     }
@@ -1236,6 +1335,31 @@ def render_markdown(audit: dict) -> str:
             f"- Prior audit timestamp `{recent_activity.get('previous_generated_at')}` was invalid, so recent delta analysis was skipped."
         )
         lines.append("")
+
+    recent_windows = audit.get("executive_summary", {}).get("recent_activity_windows", {})
+    if recent_windows.get("status") == "ok":
+        window_map = recent_windows.get("windows", {}) if isinstance(recent_windows, dict) else {}
+        if window_map:
+            lines.append("## Rolling activity windows")
+            for window_name in ("last_24h", "last_7d"):
+                window = window_map.get(window_name, {}) if isinstance(window_map, dict) else {}
+                if not window:
+                    continue
+                lines.append(
+                    f"- `{window_name}` — `{window.get('window_start')}` → `{window.get('window_end')}`"
+                )
+                if window.get("scope_note"):
+                    lines.append(f"  - Scope note: {window.get('scope_note')}")
+                ranked_window = window.get("ranked_providers", [])
+                if ranked_window:
+                    coverage_summary = ", ".join(
+                        f"`{item['provider']}` {item['post_records']} post records / {item['sessions']} sessions"
+                        for item in ranked_window
+                    )
+                    lines.append(f"  - Activity leaders: {coverage_summary}.")
+                else:
+                    lines.append("  - Activity leaders: no provider activity captured in this window.")
+            lines.append("")
 
     corpus_change = audit.get("executive_summary", {}).get("corpus_change_since_previous_audit", {})
     corpus_status = corpus_change.get("status")
