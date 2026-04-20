@@ -1,10 +1,11 @@
 # Plan for #2342 + #2343: Publish Demo Detail Pages 1-4 and Wire Gallery CTAs
 
-> **Status:** draft v3 (revised after 2026-04-19 adversarial review — MAJOR verdict)
+> **Status:** plan-approved (self-approved 2026-04-19 after v4-lite inline fixes — user chose V4-lite path: apply MAJORs inline, accept MEDIUMs/MINORs as documented debt, no round-4 review dispatch)
 > **Revision history:**
 > - 2026-04-17 v1 — initial draft
 > - 2026-04-19 v2 — rewritten after Claude MAJOR + Codex MAJOR: corrected Vercel deploy model, committed to `head-common` include, resolved title contradiction, added sitemap.xml updates, wired link-check to Jest, added rollback + SRI/vendoring, restructured TDD
 > - 2026-04-19 v3 — tightened after Claude MAJOR + Codex MAJOR on v2: fixed sitemap host (apex → www), added `package.json` to Files to Change with explicit jest.projects entry (link-check now actually runs), split jumper retrofit into a preceding commit for clean rollback (also removes unnecessary Plotly tag from chart-less page), added "Known minor debt" section for D/F/G/H
+> - 2026-04-19 v4-lite — fixed all 3 Codex MAJORs on v3 inline: (1) added `partials/nav.html` + `partials/footer.html` includes to 4 new pages AND jumper retrofit — head-common alone does NOT provide nav; (2) removed "fails CI" overclaim — no GH Actions workflow in this repo, Jest runs locally via `npm test` (CI workflow filed as follow-up); (3) Plotly integrity: `sha256sum assets/js/plotly-2.32.0.min.js` sidecar file + vendored BSD-3 LICENSE — replaces v3's SHA1/tarball error. Also: jsdom env, `--selectProjects` verification, 4/4 Plotly post-deploy, scoped sitemap test, moved jumper sitemap entry to Commit 1
 > **Complexity:** T2
 > **Issues:**
 > - https://github.com/vamseeachanta/workspace-hub/issues/2342 (publish 4 detail pages)
@@ -89,13 +90,13 @@ Distinct sources consulted: 12 (repo code + 4 repo-file reads + 2 issue bodies +
 
 ## Deliverable
 
-Four demo detail pages (`freespan.html`, `wall-thickness.html`, `mudmat.html`, `pipelay.html`) live on `www.aceengineer.com/demos/`, each served with site nav + GA, linked from its gallery card's "View detailed report" button, indexed in `sitemap.xml`, rendered with vendored Plotly (no CDN dependency), and guarded by a Jest link-check that fails CI if any gallery anchor 404s.
+Four demo detail pages (`freespan.html`, `wall-thickness.html`, `mudmat.html`, `pipelay.html`) live on `www.aceengineer.com/demos/`, each served with full site chrome (GA + `partials/nav.html` + `partials/footer.html`), linked from its gallery card's "View detailed report" button, indexed in `sitemap.xml`, rendered with vendored Plotly (no CDN dependency), and guarded by a Jest link-check that fails `npm test` locally if any gallery anchor 404s. (No CI workflow exists in this repo today — v4-lite Codex finding; adding a GH Actions workflow is filed as a separate follow-up.)
 
 ---
 
 ## Pseudocode
 
-**A. Author 4 detail pages (content/demos/)**
+**A. Author 4 detail pages (content/demos/) — v4-lite: adds nav + footer includes**
 ```
 for demo in [(freespan, "Freespan / VIV Screening"),
              (wall_thickness, "Pipeline Wall Thickness"),
@@ -115,13 +116,21 @@ for demo in [(freespan, "Freespan / VIV Screening"),
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>A&CE — <Demo Title></title>
             <include src="partials/head-common.html"></include>
+            <!-- Google Fonts preserved verbatim from source -->
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
             <!-- original inline styles preserved -->
             <style>...source styles...</style>
-            <!-- vendored Plotly -->
+            <!-- vendored Plotly (Demo pages only — jumper retrofit skips this) -->
             <script src="{{ rootPath }}assets/js/plotly-2.32.0.min.js"></script>
         </head>
-        <body>...source body...</body>
+        <body>
+            <include src="partials/nav.html"></include>
+            ...source body content...
+            <include src="partials/footer.html"></include>
+        </body>
 ```
+**v4-lite correction (Codex MAJOR 1):** `head-common.html` supplies favicon/CSS/navbar-toggle JS/GA only — it does NOT contain nav markup. Site nav lives in `partials/nav.html` (verified: gallery includes BOTH at lines 26 and 249). Without `partials/nav.html`, the 4 new detail pages render as orphaned pages with no way back to the site — a direct GTM regression. Same applies to `partials/footer.html` for brand consistency.
 
 **B. Retrofit jumper-installation.html (v3: head-common include ONLY; NO Plotly)**
 
@@ -129,12 +138,16 @@ The live jumper page has zero Plotly charts — it is a static HTML table-based 
 
 ```
 in content/demos/jumper-installation.html:
-    insert <include src="partials/head-common.html"></include> as the first child of <head>
+    insert <include src="partials/head-common.html"></include> immediately after the opening <head> tag (before existing <style>)
+    insert <include src="partials/nav.html"></include> as the first child of <body>
+    insert <include src="partials/footer.html"></include> as the last child of <body>
     do NOT add the vendored Plotly script tag
-    leave existing inline <style>, <title>, and <body> unchanged
+    leave existing inline <style>, <title>, and body table content unchanged
 ```
 
-This lands as **Commit 1** (see Files to Change). Commit 1 is independently revertable — if the GA include somehow breaks the already-live page, revert restores the pre-v3 state without touching Commit 2 content.
+**v4-lite correction (Codex MAJOR 1):** The jumper retrofit must ALSO add `partials/nav.html` + `partials/footer.html`, not just `head-common`. Otherwise the retrofit fixes GA but still leaves the already-live page nav-less. Commit 1 now spans three includes on one file.
+
+This lands as **Commit 1** (see Files to Change). Commit 1 is independently revertable — if any include somehow breaks the already-live page, revert restores the pre-v3 state without touching Commit 2 content.
 
 **C. Gallery CTA wiring**
 ```
@@ -162,12 +175,15 @@ in vercel.json "headers" array, add:
       headers: [{key: "Cache-Control", value: "public, max-age=3600, s-maxage=86400"}] }
 ```
 
-**F. Vendor Plotly**
+**F. Vendor Plotly (v4-lite: SHA256 of the committed file, not the npm tarball)**
 ```
-curl -o assets/js/plotly-2.32.0.min.js https://cdn.plot.ly/plotly-2.32.0.min.js
-verify checksum against upstream release
-commit as binary asset
+curl -fSLo assets/js/plotly-2.32.0.min.js https://cdn.plot.ly/plotly-2.32.0.min.js
+sha256sum assets/js/plotly-2.32.0.min.js > assets/js/plotly-2.32.0.min.js.sha256
+# record the resulting SHA256 in the commit message body for provenance
+curl -fSLo assets/js/plotly-LICENSE.txt https://raw.githubusercontent.com/plotly/plotly.js/v2.32.0/LICENSE
+# commit both the .min.js, its .sha256 sidecar, and the LICENSE file
 ```
+**v4-lite correction (Codex MAJOR 3):** v3 used `npm view plotly.js-dist-min@2.32.0 dist.shasum` — that returns the **SHA1 of the npm tarball**, not the SHA256 of the browser asset we're actually committing. The integrity check must hash the committed file itself (`sha256sum assets/js/plotly-2.32.0.min.js`). The upstream BSD-3 LICENSE is vendored alongside the bundle, closing v2 Defect H as well.
 
 **G. Link-check Jest test (v3: must also register in `package.json`)**
 
@@ -182,16 +198,18 @@ tests/js/demo-links.test.js:
     assert no href uses cdn.plot.ly (Plotly must be vendored)
 ```
 
-**This file alone will NOT run under `npm test`.** `package.json` uses an explicit `jest.projects` allowlist (6 projects, one per test file). A new test file outside the registered list is silently skipped. v2 missed this — v3 fixes it by editing `package.json`:
+**This file alone will NOT run under `npm test`.** `package.json` uses an explicit `jest.projects` allowlist (6 projects, one per test file). A new test file outside the registered list is silently skipped. v3 added the `package.json` entry; v4-lite fixes the environment choice and the verification command:
 ```
 jest.projects: append
     {
       "displayName": "demo-links",
-      "testEnvironment": "node",
+      "testEnvironment": "jsdom",
       "testMatch": ["<rootDir>/tests/js/demo-links.test.js"]
     }
 ```
-Verification: `cd aceengineer-website && npm test 2>&1 | grep 'demo-links'` must show the project in Jest output. Test `link_check_project_registered_in_npm_test` (see TDD) enforces this.
+**v4-lite correction (Codex MEDIUM 6):** `testEnvironment: jsdom` is safe for DOM parsing of `dist/demos/index.html`. v3's `node` would break if the test uses `document.querySelectorAll`.
+
+**Verification command (v4-lite correction — Codex MEDIUM 4):** use `npx jest --selectProjects demo-links --listTests` which exits 0 iff the project is registered and points at an existing file. v3's `grep 'RUNS demo-links'` string does not match real Jest output (which uses `PASS` / `FAIL`). Acceptance criterion and TDD test `link_check_project_registered_in_npm_test` updated accordingly.
 
 ---
 
@@ -203,7 +221,8 @@ v3 groups changes into **two commits** so rollback is clean (see Rollback Plan):
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `aceengineer-website/content/demos/jumper-installation.html` | Add `<include src="partials/head-common.html">` — fixes pre-existing GA/nav gap. **Do NOT add Plotly** — page has no charts. |
+| Modify | `aceengineer-website/content/demos/jumper-installation.html` | Add 3 partial includes: `head-common.html` (first child of `<head>`, before `<style>`), `nav.html` (first child of `<body>`), `footer.html` (last child of `<body>`). Fixes pre-existing GA + nav + footer gap. **Do NOT add Plotly** — page has no charts. |
+| Modify | `aceengineer-website/sitemap.xml` | Add the single `<url>` entry for `https://www.aceengineer.com/demos/jumper-installation.html` (v4-lite Claude MINOR 9 — co-locate the sitemap entry with the page it describes so Commit 2 revert doesn't orphan it). |
 
 **Commit 2 of 2 — Demos 1-4 + infrastructure (lands after Commit 1 verified live)**
 
@@ -214,9 +233,11 @@ v3 groups changes into **two commits** so rollback is clean (see Rollback Plan):
 | Create | `aceengineer-website/content/demos/mudmat.html` | Detail page for Demo 3 |
 | Create | `aceengineer-website/content/demos/pipelay.html` | Detail page for Demo 4 |
 | Modify | `aceengineer-website/content/demos/index.html` | Add 3 detail CTAs (Demos 1, 3, 4); add 1 alongside Demo 2 calculator |
-| Modify | `aceengineer-website/sitemap.xml` | Add 5 `<url>` entries at the www host (4 new + jumper backfill) |
+| Modify | `aceengineer-website/sitemap.xml` | Add 4 `<url>` entries at the www host (jumper backfill moved to Commit 1) |
 | Modify | `aceengineer-website/vercel.json` | Add `/demos/(.*).html` cache-control header |
 | Create | `aceengineer-website/assets/js/plotly-2.32.0.min.js` | Vendored Plotly — used ONLY by the 4 new pages (not jumper) |
+| Create | `aceengineer-website/assets/js/plotly-2.32.0.min.js.sha256` | Sidecar file with the committed asset's SHA256 (v4-lite fix of Codex MAJOR 3 — integrity measured on the browser asset, not the npm tarball) |
+| Create | `aceengineer-website/assets/js/plotly-LICENSE.txt` | BSD-3-Clause license text vendored alongside the bundle (closes v2 Defect H / Codex round-2 provenance finding) |
 | Create | `aceengineer-website/tests/js/demo-links.test.js` | Jest link-check implementation |
 | Modify | **`aceengineer-website/package.json`** | **Register `demo-links` Jest project so `npm test` actually runs the link-check (v3 fix for v2 Defect B)** |
 | Update | `docs/plans/README.md` | Register v3 status |
@@ -235,6 +256,9 @@ Rationale for two commits: if Commit 2 breaks a Plotly-heavy page, `git revert C
 |---|---|---|---|
 | frontmatter_rootPath_correct | grep / Jest | Each of 4 new pages starts with `---\nrootPath: "../"\n---` | 4/4 match |
 | head_common_included | grep / Jest | Each of 4 new pages + retrofitted jumper contains `<include src="partials/head-common.html">` | 5/5 match |
+| nav_and_footer_included | grep / Jest | Each of 4 new pages + retrofitted jumper contains `<include src="partials/nav.html">` AND `<include src="partials/footer.html">` (v4-lite Codex MAJOR 1 fix) | 5/5 pairs present |
+| plotly_license_committed | bash | `assets/js/plotly-LICENSE.txt` exists and starts with "The MIT License" or "BSD 3-Clause" (Plotly.js is BSD-3) | 1/1 present |
+| plotly_sha256_sidecar_matches | bash | `sha256sum -c assets/js/plotly-2.32.0.min.js.sha256` returns OK (v4-lite Codex MAJOR 3 fix — integrity of the committed file, not tarball) | exit 0 |
 | title_is_branded | grep / Jest | Each of 4 new pages has `<title>A&CE — ...</title>`; source "— digitalmodel" removed | 4/4 match |
 | plotly_is_vendored | grep / Jest | Each of 4 **new** chart-bearing pages references `{{ rootPath }}assets/js/plotly-2.32.0.min.js` and NOT `cdn.plot.ly` (jumper excluded — no charts) | 4/4 match |
 | jumper_has_no_plotly_tag | grep / Jest | `content/demos/jumper-installation.html` contains no `plotly-` or `cdn.plot.ly` reference (v3 Defect E fix) | 0 hits |
@@ -242,17 +266,18 @@ Rationale for two commits: if Commit 2 breaks a Plotly-heavy page, `git revert C
 | gallery_has_5_detail_ctas | Jest (new `demo-links.test.js`) | `dist/demos/index.html` contains 5 anchors matching `demos/*.html` | count === 5 |
 | demo2_has_both_ctas | Jest | Demo 2 card contains BOTH `/calculators/wall-thickness.html` and `/demos/wall-thickness.html` anchors | both present |
 | sitemap_has_5_demo_entries | Jest | `sitemap.xml` contains 5 `<loc>` entries for `/demos/*.html` | 5/5 match |
-| sitemap_uses_www_host | Jest | All 5 new entries use `https://www.aceengineer.com/` (not apex) (v3 Defect A fix) | 5/5 match |
+| sitemap_uses_www_host | Jest | All entries whose `<loc>` matches `/demos/*.html` use `https://www.aceengineer.com/` host (existing apex entries at other paths are out of scope for this PR — v4-lite Claude MINOR 7 scoping fix) | all `/demos/*` entries www-hosted |
 | vercel_has_demos_cache_header | Jest | `vercel.json` `headers` array contains entry for `/demos/(.*).html` | present |
-| link_check_project_registered_in_npm_test | bash | `npm test 2>&1` output contains the line `RUNS demo-links` or equivalent Jest project marker (v3 Defect B fix) | present |
+| link_check_project_registered_in_npm_test | bash | `cd aceengineer-website && npx jest --selectProjects demo-links --listTests` exits 0 and prints at least one test file (v4-lite Codex MEDIUM 4 — replaces v3's unreliable `grep 'RUNS demo-links'`) | exit 0 + ≥1 test file |
 
 **Post-deploy (live, run after Vercel finishes):**
 
 | Test | Tool | Claim | Pass criterion |
 |---|---|---|---|
 | prod_5_pages_200 | bash + curl | `https://www.aceengineer.com/demos/{freespan,wall-thickness,mudmat,pipelay,jumper-installation}.html` | all 200 |
-| prod_pages_serve_analytics | curl + grep | Each returns HTML containing `G-K31E51DQ47` | 5/5 match |
-| prod_plotly_loads_locally | curl | Each page body contains `/assets/js/plotly-2.32.0.min.js`, not `cdn.plot.ly` | 5/5 match |
+| prod_pages_serve_analytics | curl + grep | Each of 5 pages returns HTML containing `G-K31E51DQ47` (all 5 include head-common) | 5/5 match |
+| prod_pages_have_nav_and_footer | curl + grep | Each of 5 pages' HTML body contains nav + footer markers from the partials (v4-lite addition) | 5/5 match |
+| prod_plotly_on_chart_pages_only | curl | The 4 chart pages reference `/assets/js/plotly-2.32.0.min.js` and NOT `cdn.plot.ly`; jumper page references neither (v4-lite Codex MEDIUM 5 fix — removes the v3 5/5 vs 4/4 contradiction) | 4/4 chart pages + 0/1 on jumper |
 | prod_gallery_links_resolve | bash | Every `demos/*.html` anchor in live gallery returns 200 | 0 failures |
 | prod_cache_header_on_demos | curl -I | `Cache-Control` present on `/demos/*.html` response headers | present |
 
@@ -267,21 +292,25 @@ Test-writing order: pre-deploy tests first (frontmatter, head-common, title, plo
 ## Acceptance Criteria
 
 - [ ] **Commit 1 lands first:** `content/demos/jumper-installation.html` retrofit — head-common include added; NO Plotly script tag added
-- [ ] Commit 1 verified in production: live `/demos/jumper-installation.html` serves GA beacon (check DevTools Network for `gtag/js?id=G-K31E51DQ47`); page still renders static report identically
+- [ ] Commit 1 verified in production: live `/demos/jumper-installation.html` serves GA beacon (check DevTools Network for `gtag/js?id=G-K31E51DQ47`); nav bar + footer visible; page still renders static report identically
+- [ ] Commit 1 also appended the jumper `<url>` entry to `sitemap.xml` (co-location fix, v4-lite Claude MINOR 9)
 - [ ] **Commit 2 lands after Commit 1 verified:**
 - [ ] `content/demos/{freespan,wall-thickness,mudmat,pipelay}.html` exist with `rootPath: "../"` frontmatter and branded `<title>A&CE — ...</title>` (source's "— digitalmodel" removed)
-- [ ] All 5 detail pages include `<include src="partials/head-common.html">` → GA + nav present
+- [ ] All 5 detail pages include THREE partial includes: `head-common.html` (GA + CSS + favicon + navbar-toggle JS), `nav.html` (site nav bar), `footer.html` (site footer) — v4-lite Codex MAJOR 1 fix
+- [ ] All 5 detail pages preserve the source's Google Fonts `<link rel="preconnect">` + Inter stylesheet (v4-lite Pseudocode A)
 - [ ] **4 new chart-bearing pages** reference vendored `/assets/js/plotly-2.32.0.min.js`, not `cdn.plot.ly`. Jumper page has NO Plotly reference (v3 Defect E)
 - [ ] `content/demos/index.html` has 5 "View detailed report" CTAs; Demo 2 retains calculator CTA alongside
-- [ ] `sitemap.xml` has 5 new `<url>` entries at `https://www.aceengineer.com/` host (not apex — v3 Defect A)
+- [ ] `sitemap.xml` has 4 new Demo-1-to-4 `<url>` entries at `https://www.aceengineer.com/` host (Commit 1 added the 5th, jumper, entry)
 - [ ] `vercel.json` has cache-control header for `/demos/(.*).html`
-- [ ] `assets/js/plotly-2.32.0.min.js` committed with a concrete SHA256 recorded in commit message (v3: obtained via `npm view plotly.js-dist-min@2.32.0 dist.shasum`)
-- [ ] `tests/js/demo-links.test.js` created AND `package.json` updated with new `jest.projects` entry for `demo-links` — verified by `npm test 2>&1 | grep demo-links` showing the project actively running (v3 Defect B)
+- [ ] `assets/js/plotly-2.32.0.min.js` committed PLUS `plotly-2.32.0.min.js.sha256` sidecar matches via `sha256sum -c`; PLUS `plotly-LICENSE.txt` (BSD-3) vendored (v4-lite Codex MAJOR 3 fix — was SHA1/tarball in v3)
+- [ ] `tests/js/demo-links.test.js` created AND `package.json` updated with new `jest.projects` entry for `demo-links` (v4-lite: `testEnvironment: jsdom`) — verified by `npx jest --selectProjects demo-links --listTests` exiting 0 (v4-lite Codex MEDIUM 4 — was `grep 'RUNS demo-links'` in v3)
 - [ ] `npm run build` completes without error; `dist/demos/*.html` render correctly in local `npm run serve`
-- [ ] After Vercel deploy: all post-deploy tests pass (prod_5_pages_200, prod_pages_serve_analytics, prod_plotly_loads_locally for 4 new pages, prod_gallery_links_resolve, prod_cache_header_on_demos)
+- [ ] Local `npm test` passes (note: there is no GitHub Actions workflow in this repo today — v4-lite Codex MAJOR 2 clarification; CI addition is filed as a separate follow-up)
+- [ ] After Vercel deploy: all post-deploy tests pass (prod_5_pages_200, prod_pages_serve_analytics 5/5, prod_pages_have_nav_and_footer 5/5, prod_plotly_on_chart_pages_only 4/4 + 0/1, prod_gallery_links_resolve, prod_cache_header_on_demos)
 - [ ] GA pageview beacon fires on each of 5 detail pages (verified in browser devtools Network tab, spot-check)
 - [ ] #2342 and #2343 closed with links to live pages and the PR
-- [ ] Review artifacts v3 posted to `scripts/review/results/`
+- [ ] Review artifacts v3 + v4-lite posted to `scripts/review/results/`
+- [ ] Follow-up issues filed at PR time: (a) add GH Actions workflow for `npm test`; (b) pin Node `engines` in `package.json` + `vercel.json`; (c) backfill 20+ pre-existing sitemap apex entries to `www.` host
 
 ---
 
@@ -337,13 +366,29 @@ Failure modes and responses:
 - Defect E (minor): Pseudocode B now says "head-common ONLY, no Plotly" for jumper. New TDD `jumper_has_no_plotly_tag` asserts this.
 - Defects D, F, G, H: accepted as known minor debt with inline mitigations — see "Known Minor Debt" section.
 
-### v3 (pending)
+### v3 (2026-04-19)
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | — |
-| Codex | pending | — |
+| Claude | **MINOR** | v3 fixes all 3 v2 majors (A sitemap www, B jest-projects wired, C rollback split). 5 new minor defects: SHA1 vs SHA256 mislabel, Jest `RUNS` grep string wrong, sitemap test scoping, head-include injection point ambiguous, commit 2 revert orphans jumper sitemap entry. Artifact: `scripts/review/results/2026-04-19-v3-plan-2342-claude.md` |
+| Codex | **MAJOR** | Caught overclaim that v1/v2/v3 all missed: `head-common` does NOT include nav — nav is a separate `partials/nav.html`. Also: "fails CI" overclaim (no GH Actions workflow exists); Plotly SHA1/tarball mismatch with SHA256/browser-asset promise; post-deploy 5/5 vs 4/4 contradiction; `testEnvironment: node` unsafe for DOM parsing. Artifact: `scripts/review/results/2026-04-19-v3-plan-2342-codex.md` (manually transcribed) |
 
-**Overall result (v3):** pending
+**Divergence note:** Claude MINOR vs Codex MAJOR — real divergence, not stylistic. Codex forced a fresh file-read of `partials/head-common.html` and found the nav overclaim that anchored against v2 language in Claude's review missed. Reinforces `feedback_cross_provider_review_payoff.md`.
+
+### v4-lite (2026-04-19) — self-approved
+| Fix | Provider finding | Applied inline in this document |
+|---|---|---|
+| Add `partials/nav.html` + `partials/footer.html` includes to 4 new pages + jumper retrofit | Codex MAJOR 1 | Pseudocode A, Pseudocode B, TDD `nav_and_footer_included`, Acceptance |
+| Correct "fails CI" → "fails `npm test` locally"; file GH Actions follow-up | Codex MAJOR 2 | Deliverable, Acceptance |
+| `sha256sum` of committed Plotly file + sidecar + LICENSE | Codex MAJOR 3 | Pseudocode F, Files to Change (Commit 2), TDD `plotly_sha256_sidecar_matches` + `plotly_license_committed` |
+| `testEnvironment: jsdom` not `node` | Codex MEDIUM 6 | Pseudocode G |
+| `npx jest --selectProjects demo-links --listTests` not `grep RUNS` | Codex MEDIUM 4 | Pseudocode G, TDD `link_check_project_registered_in_npm_test`, Acceptance |
+| Post-deploy Plotly 4/4 chart pages + 0/1 jumper (resolves 5/5 vs 4/4 contradiction) | Codex MEDIUM 5 | TDD `prod_plotly_on_chart_pages_only` |
+| `sitemap_uses_www_host` scoped to `/demos/*` only | Claude MINOR 7 | TDD row updated |
+| Jumper sitemap entry moved to Commit 1 (co-located with page it describes) | Claude MINOR 9 | Files to Change Commit 1, Acceptance |
+| Explicit injection point for jumper retrofit includes | Claude MINOR 8 | Pseudocode B (head-common before `<style>`; nav first child of body; footer last child) |
+| Preserve Google Fonts `<link>` verbatim from source | Codex round 2 finding F | Pseudocode A (explicit) |
+
+**Overall result (v4-lite):** self-approved. No round-4 review dispatched. User's call per conversation. Risk accepted: plan may still contain defects neither reviewer caught — mitigated by keeping changes behind the two-commit structure and the explicit rollback runbook.
 
 ---
 
@@ -361,30 +406,23 @@ Failure modes and responses:
 
 ---
 
-## Known Minor Debt (accepted in v3)
+## Known Minor Debt (status after v4-lite)
 
-These were raised in v2 adversarial review as minor-severity defects. v3 accepts them as documented debt because each either (a) has a mitigation that makes it non-blocking or (b) costs less to fix post-launch than pre-launch. Each gets a follow-up GitHub issue filed at PR time, linked from the PR description.
+| Ref | Defect | v4-lite status | Follow-up |
+|---|---|---|---|
+| D | Plotly SHA256 concrete | **FIXED in v4-lite:** `sha256sum assets/js/plotly-2.32.0.min.js > ...sha256` sidecar committed; TDD test `plotly_sha256_sidecar_matches` enforces integrity via `sha256sum -c`. No longer deferred. | — |
+| F | Google Fonts preservation | FIXED in v3/v4-lite Pseudocode A (explicit `<link rel="preconnect">` + Inter stylesheet preservation) | — |
+| G | No `engines` field in `package.json`; no Node runtime in `vercel.json` | **STILL DEFERRED** — Vercel defaults are stable and Node drift risk is low over campaign timeframe. | New follow-up issue at PR time: "pin Node engine in aceengineer-website/package.json and vercel.json" |
+| H | Vendored Plotly LICENSE | **FIXED in v4-lite:** `plotly-LICENSE.txt` vendored alongside the bundle (BSD-3-Clause from Plotly 2.32.0 upstream) | — |
+| CI-1 | No GH Actions workflow to run `npm test` | **STILL DEFERRED** — Codex MAJOR 2 from v3 flagged the "fails CI" overclaim; v4-lite removes the wording, but a real CI workflow would add defensive depth. | New follow-up issue at PR time: "add GH Actions workflow to run npm test on aceengineer-website PRs" |
+| SITE-1 | 20+ pre-existing sitemap apex entries | **STILL DEFERRED** — v4-lite only corrects NEW entries to `www.`; backfilling existing entries is a separate scope. | New follow-up issue at PR time: "backfill existing sitemap.xml apex entries to www host" |
 
-| Ref | Defect | Why accepted | Mitigation in v3 | Follow-up |
-|---|---|---|---|---|
-| D | Plotly SHA256 not concrete in plan; 3.5 MB binary committed without `.gitattributes` or LICENSE file | Checksum IS obtainable — acceptance criterion now says "SHA256 obtained via `npm view plotly.js-dist-min@2.32.0 dist.shasum` and recorded in commit message". LICENSE concern is real but doesn't block first deploy. | Acceptance requires concrete SHA256 at commit time. LICENSE handling deferred. | New issue: "add LICENSE + `.gitattributes` for vendored Plotly bundle" |
-| F | Google Fonts `<link>` in source `<head>` — plan ambiguous about preservation | Defect hunter may strip it silently. Inter font is visible branding. | Pseudocode A enumerates preserved elements explicitly: preserve `<meta charset/viewport>`, preserve Google Fonts preconnect+stylesheet, rewrite `<title>`, inject head-common, preserve inline `<style>`. See updated Pseudocode A. | No separate issue — resolved in Pseudocode. |
-| G | No `engines` field in `package.json`; no Node runtime in `vercel.json` | Vercel defaults are stable and Node drift risk is low over campaign timeframe. | Accept. | New issue: "pin Node engine in aceengineer-website/package.json and vercel.json" |
-| H | Vendored Plotly license / provenance handling not documented | BSD-3-Clause license on Plotly.js is well-known; copy alongside the vendored bundle resolves this. | Accept pending the D follow-up (same new issue covers LICENSE). | Folded into D follow-up. |
+**Total accepted debt at self-approval:** 3 items (G, CI-1, SITE-1). All documented as follow-up issues to be filed at PR time. No single accepted item blocks a GTM prospect from landing on a live, fully-nav'd, GA-tracked page.
 
-Pseudocode A update for F — preservation list (applies to all 4 new pages):
-```
-preserve: <meta charset/viewport>, Google Fonts preconnect + stylesheet link, inline <style> block
-rewrite:  <title> → "A&CE — <Demo Title>"
-inject:   <include src="partials/head-common.html"></include> (after <title>, before <style>)
-replace:  <script src="https://cdn.plot.ly/..."> → <script src="{{ rootPath }}assets/js/plotly-2.32.0.min.js">
-append:   rest of <body> unchanged
-```
-
-Follow-up issue filing is part of the PR description — not a v3 acceptance checkbox — to avoid blocking the merge on issue creation.
+Follow-up issue filing is part of the PR description — not a v4-lite acceptance checkbox — to avoid blocking the merge on issue creation.
 
 ---
 
 ## Complexity: T2
 
-Multi-file website publish + config + Jest integration + vendored asset + two-commit structure. No new Python/engineering code. v3 narrowed scope by splitting jumper retrofit into its own preceding commit (now revertable independently) and closed v2 Defects A/B/C/E inline.
+Multi-file website publish + config + Jest integration + vendored asset + two-commit structure. No new Python/engineering code. v3 narrowed scope by splitting jumper retrofit into its own preceding commit; v4-lite corrected the Codex-caught nav/CI/SHA256 overclaims inline. Self-approved after three review rounds.
