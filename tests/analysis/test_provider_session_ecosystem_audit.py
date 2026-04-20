@@ -450,6 +450,8 @@ def test_build_provider_interpretation_summary_derives_statuses() -> None:
     assert summary["remediation_playbooks"][0]["provider"] == "claude"
     assert summary["remediation_playbooks"][0]["primary_issue"] == "legacy_work_queue_transition"
     assert "docs/governance/SESSION-GOVERNANCE.md" in summary["remediation_playbooks"][0]["canonical_targets"]
+    assert summary["remediation_playbooks"][0]["owner_team"] == "governance-maintainers"
+    assert summary["remediation_playbooks"][0]["preferred_fix_lane"] == "governance-docs"
 
 
 
@@ -653,8 +655,11 @@ def test_build_remediation_playbooks_uses_rule_hints_and_generic_fallbacks() -> 
     assert by_provider["claude"]["inspect_paths"] == ["scripts/work-queue/start_stage.py"]
     assert by_provider["claude"]["canonical_targets"] == ["docs/governance/SESSION-GOVERNANCE.md"]
     assert by_provider["claude"]["first_steps"][0].startswith("Inspect the top matched stale paths for legacy_work_queue_transition")
+    assert by_provider["claude"]["owner_team"] == "governance-maintainers"
+    assert by_provider["claude"]["preferred_fix_lane"] == "governance-docs"
     assert by_provider["codex"]["inspect_paths"][0] == "analysis/provider-session-ecosystem-audit.json"
     assert by_provider["codex"]["trigger_level"] == "investigate"
+    assert by_provider["codex"]["owner_team"] == "drift-triage"
 
 
 
@@ -865,6 +870,9 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
                         ],
                         "reference_doc": "docs/ops/legacy-claude-reference-map.md",
                         "guidance": "Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.",
+                        "owner_surface": "docs/governance/SESSION-GOVERNANCE.md",
+                        "owner_team": "governance-maintainers",
+                        "preferred_fix_lane": "governance-docs",
                     }
                 ],
                 "rank_movements": [
@@ -969,7 +977,8 @@ def test_render_markdown_mentions_provider_interpretation_summary() -> None:
     assert "Change alerts:" in markdown
     assert "`claude` [trigger_escalated] — claude trigger escalated from investigate to page | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
     assert "Remediation playbooks:" in markdown
-    assert "`claude` [page] — issue=legacy_work_queue_transition | inspect=scripts/work-queue/start_stage.py | targets=docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md" in markdown
+    assert "lane=governance-docs | owner=governance-maintainers | owner_surface=docs/governance/SESSION-GOVERNANCE.md" in markdown
+    assert "`claude` [page] — issue=legacy_work_queue_transition" in markdown
     assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
     assert "Rank movements since previous audit:" in markdown
     assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown

@@ -891,6 +891,9 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
             ],
             "reference_doc": "docs/ops/legacy-claude-reference-map.md",
             "guidance": "Separate benign drift from actionable stale-path debt before opening remediation work.",
+            "owner_surface": "docs/ops/legacy-claude-reference-map.md",
+            "owner_team": "drift-triage",
+            "preferred_fix_lane": "drift-triage",
         },
         "backfill/export growth beyond event-time activity": {
             "inspect_paths": ["analysis/provider-session-ecosystem-audit.json", "scripts/cron/provider-session-ecosystem-audit.sh"],
@@ -902,6 +905,9 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
             ],
             "reference_doc": "docs/reports/provider-session-ecosystem-audit.md",
             "guidance": "Corpus growth beyond event-time activity usually means backfill or export-behavior drift, not new live work.",
+            "owner_surface": "scripts/cron/provider-session-ecosystem-audit.sh",
+            "owner_team": "exporter-maintainers",
+            "preferred_fix_lane": "exporter-schema",
         },
         "corpus prune/rebuild drift": {
             "inspect_paths": ["analysis/provider-session-ecosystem-audit.json", "scripts/cron/provider-session-ecosystem-audit.sh"],
@@ -913,6 +919,9 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
             ],
             "reference_doc": "docs/reports/provider-session-ecosystem-audit.md",
             "guidance": "Pruned/rebuilt corpus snapshots can make provider urgency appear to move without real workflow changes.",
+            "owner_surface": "scripts/cron/provider-session-ecosystem-audit.sh",
+            "owner_team": "exporter-maintainers",
+            "preferred_fix_lane": "exporter-schema",
         },
         "no acute anomaly": {
             "inspect_paths": ["docs/reports/provider-session-ecosystem-audit.md"],
@@ -924,7 +933,23 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
             ],
             "reference_doc": "docs/reports/provider-session-ecosystem-audit.md",
             "guidance": "Use monitoring rather than intervention when no acute anomaly is present.",
+            "owner_surface": "docs/reports/provider-session-ecosystem-audit.md",
+            "owner_team": "audit-operators",
+            "preferred_fix_lane": "monitoring",
         },
+    }
+
+    lane_by_issue = {
+        "legacy_work_queue_transition": ("docs/governance/SESSION-GOVERNANCE.md", "governance-maintainers", "governance-docs"),
+        "legacy_work_queue_html_review": ("scripts/review/cross-review.sh", "review-workflow-maintainers", "review-workflow"),
+        "legacy_work_queue_lifecycle": ("notes/agent-work-queue.md", "planning-ops", "planning-workflow"),
+        "legacy_work_queue_skills": ("docs/work-queue-workflow.md", "prompt-maintainers", "prompt-adapter"),
+        "legacy_agent_wrapper_tree": ("AGENTS.md", "prompt-maintainers", "prompt-adapter"),
+        "legacy_local_work_queue_items": ("notes/agent-work-queue.md", "planning-ops", "planning-workflow"),
+        "unmapped path drift": ("docs/ops/legacy-claude-reference-map.md", "drift-triage", "drift-triage"),
+        "backfill/export growth beyond event-time activity": ("scripts/cron/provider-session-ecosystem-audit.sh", "exporter-maintainers", "exporter-schema"),
+        "corpus prune/rebuild drift": ("scripts/cron/provider-session-ecosystem-audit.sh", "exporter-maintainers", "exporter-schema"),
+        "no acute anomaly": ("docs/reports/provider-session-ecosystem-audit.md", "audit-operators", "monitoring"),
     }
 
     for row in rows:
@@ -961,9 +986,17 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
         if matched_hint and primary_issue in rule_by_id:
             first_steps = [
                 f"Inspect the top matched stale paths for {primary_issue} and confirm they should redirect rather than be recreated.",
-                f"Open the canonical targets and migrate prompts/docs/tooling toward: {', '.join(canonical_targets[:3]) or 'documented canonical surfaces' }.",
+                f"Open the canonical targets and migrate prompts/docs/tooling toward: {', '.join(canonical_targets[:3]) or 'documented canonical surfaces'}.",
                 "Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
             ]
+        owner_surface, owner_team, preferred_fix_lane = lane_by_issue.get(
+            primary_issue,
+            (
+                fallback.get("owner_surface", "docs/reports/provider-session-ecosystem-audit.md"),
+                fallback.get("owner_team", "audit-operators"),
+                fallback.get("preferred_fix_lane", "monitoring"),
+            ),
+        )
         playbooks.append(
             {
                 "provider": provider,
@@ -974,6 +1007,9 @@ def build_remediation_playbooks(provider_summaries: dict[str, dict], rows: list[
                 "first_steps": first_steps,
                 "reference_doc": reference_doc,
                 "guidance": guidance,
+                "owner_surface": owner_surface,
+                "owner_team": owner_team,
+                "preferred_fix_lane": preferred_fix_lane,
             }
         )
 
@@ -1710,7 +1746,7 @@ def render_markdown(audit: dict) -> str:
                 steps = playbook.get("first_steps", [])
                 step_summary = " | ".join(str(step) for step in steps[:2]) if steps else "no immediate steps recorded"
                 lines.append(
-                    f"  - `{playbook['provider']}` [{playbook.get('trigger_level')}] — issue={playbook.get('primary_issue')} | inspect={', '.join(playbook.get('inspect_paths', [])[:3])} | targets={', '.join(playbook.get('canonical_targets', [])[:3])} | steps: {step_summary}"
+                    f"  - `{playbook['provider']}` [{playbook.get('trigger_level')}] — issue={playbook.get('primary_issue')} | lane={playbook.get('preferred_fix_lane')} | owner={playbook.get('owner_team')} | owner_surface={playbook.get('owner_surface')} | inspect={', '.join(playbook.get('inspect_paths', [])[:3])} | targets={', '.join(playbook.get('canonical_targets', [])[:3])} | steps: {step_summary}"
                 )
         rank_movements = interpretation_summary.get("rank_movements", [])
         if rank_movements:
