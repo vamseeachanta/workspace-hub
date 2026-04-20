@@ -12,6 +12,10 @@ from scripts.ecosystem_sync.state import RepoState
 SEMVER_RE = re.compile(r"^v?\d+\.\d+(\.\d+)?$")
 NOISE_PREFIXES = ("nightly-", "snapshot-", "pre-")
 
+CASE_STUDY_DIRS = ("case-studies", "examples", "demos", "docs/case-studies")
+CASE_STUDY_SKIP_NAMES = {"README.md", "CASE_STUDY_TEMPLATE.md"}
+CASE_STUDY_SKIP_PATH_SUBSTRINGS = ("/_draft/", "/wip/", "/archive/")
+
 
 def _git(repo: Path, *args: str) -> str:
     result = subprocess.run(
@@ -84,3 +88,52 @@ def _previous_semver(all_tags: Iterable[str], current: str) -> str | None:
 def _semver_key(tag: str) -> tuple[int, ...]:
     parts = tag.lstrip("v").split(".")
     return tuple(int(p) for p in parts)
+
+
+def detect_new_case_study(
+    repo_name: str, repo_path: Path, state: RepoState,
+) -> list[Signal]:
+    """Signal 2: files added under case-studies/ / examples/ / demos/ / docs/case-studies/."""
+    if not state.last_commit_sha:
+        return []
+    try:
+        diff_out = _git(
+            repo_path, "diff", "--name-status",
+            f"{state.last_commit_sha}..HEAD", "--",
+            *CASE_STUDY_DIRS,
+        )
+    except subprocess.CalledProcessError:
+        return []
+
+    signals: list[Signal] = []
+    for line in diff_out.splitlines():
+        parts = line.split(maxsplit=1)
+        if len(parts) != 2 or parts[0] != "A":
+            continue
+        rel_path = parts[1]
+        name = Path(rel_path).name
+        if name.endswith(".template.md") or name in CASE_STUDY_SKIP_NAMES:
+            continue
+        if any(sub in f"/{rel_path}" for sub in CASE_STUDY_SKIP_PATH_SUBSTRINGS):
+            continue
+        abs_path = repo_path / rel_path
+        preview = ""
+        if abs_path.exists():
+            try:
+                preview = "\n".join(abs_path.read_text().splitlines()[:40])
+            except (UnicodeDecodeError, OSError):
+                preview = "(binary or unreadable)"
+        signals.append(Signal(
+            repo=repo_name,
+            kind="case-study",
+            title=f"[sync] {repo_name} added {name}",
+            body=(
+                f"New case study / example detected in `{repo_name}`: `{rel_path}`\n\n"
+                f"## First 40 lines\n\n```\n{preview}\n```\n\n"
+                f"## Proposed website update\n\n"
+                f"Lift into `aceengineer-website/case-studies/`, link from index.html."
+            ),
+            dedupe_key=f"case-study:{repo_name}:{rel_path}",
+            payload={"path": rel_path},
+        ))
+    return signals
