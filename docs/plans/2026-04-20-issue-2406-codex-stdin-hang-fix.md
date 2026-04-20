@@ -1,6 +1,6 @@
 # Plan for #2406: fix(review) — submit-to-codex.sh hangs on "Reading additional input from stdin" for substantial plan files
 
-> **Status:** adversarial-reviewed (v3 — iter-2 Codex Class A MAJOR addressed; Class B deferred to #2405)
+> **Status:** adversarial-reviewed (v3-final — iter-3 consumed; iter-2 Codex Class A MAJOR + iter-3 Codex internal-consistency contradictions addressed; Class B deferred to #2405)
 > **Complexity:** T2
 > **Date:** 2026-04-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2406
@@ -297,7 +297,28 @@ Revisions made based on iter-2 review (v2 → v3):
 Class B findings (self-circular) acknowledged and NOT addressed in plan text:
 - Codex iter-1/2, Gemini iter-1/2: "unverified GitHub issue states, file existence, CLI contract". This is the #2405-meta class. Resolution path: when #2405 lands the pre-verification attestation script, iter-3 would drop these findings. v3 acknowledges them as out-of-plan-scope.
 
-**Overall result (v3 final):** approval-ready pending user review. Iter-3 re-dispatch planned to confirm Class A is drained; if Class B only remains, plan is final.
+**Overall result (v3 mid-review):** approval-ready pending iter-3 confirmation.
+
+| Provider | Verdict (iter-3, v3) | Key findings |
+|---|---|---|
+| Claude (self) | APPROVE | v3 addresses all iter-2 Class A; internal consistency verified; AC↔test matrix closed; only P3 documentation nits remain (wording + future test-file split) |
+| Codex | MAJOR | Two **real P1 internal contradictions** caught: Files-to-Change said "argv-path fallback" while Pseudocode said "hard-fail exit 7" (stale text from v2 not propagated); Risks section had same contradiction. Also: AC↔test mixing test-backed criteria with release-gate manual checks overstated coverage. **These are not new design issues — they are internal-consistency defects that slipped through the v3 edit.** Other findings: Class B self-circular (expected), P2 threat-model coverage (PATH/CODEX_BIN trust), P2 PIPESTATUS[1] underspecification. |
+| Gemini | MAJOR (pure Class B) | Every finding is "cannot verify live state" (files, issues, CLI contract, commits). Zero Class A. Expected per handoff — resolves at #2405. |
+
+**Overall result (iter-3 final, iter-cap reached):** Codex's two P1 findings were real internal-consistency defects (contradictions between Pseudocode + Files-to-Change + Risks) carried over from v2 → v3 incomplete text propagation. These were fixed inline as **v3-final cleanup edits** (not a new design iteration; not requiring cross-review iter-4):
+
+v3 mid-review → v3-final cleanup edits (post-iter-3):
+- Files-to-Change row for `submit-to-codex.sh` now says "hard-fails with new exit code 7" (removed the stale "argv-path fallback" phrase).
+- Risks section's version-skew mitigation now says "hard-fails with exit 7 (no argv fallback — that would reintroduce the bug)" (removed contradictory "argv-path fallback" phrase).
+- Acceptance Criteria section now cleanly separates **automated test-backed ACs** from **release-gate operational checks** (README row presence, artifact count, live repro) — so the AC↔test matrix only lists items backed by automated tests.
+- AC↔test traceability matrix footer explicitly points to the Release-gate section for non-automated checks.
+
+Codex's other findings (Class B unverified live state, P2 threat-model additions, P2 PIPESTATUS[1] formalization) are **deferred as post-implementation follow-ups**:
+- Class B unverified-live-state: resolves at #2405 (the meta-issue that exists exactly for this).
+- P2 threat-model additions (malicious `CODEX_BIN`, help-output spoofing, PATH trust): could be added but cross-reviewing that analysis would exceed iter-cap; documenting here for a potential follow-up issue.
+- P2 `PIPESTATUS[1]` exact shell structure: specification lives in Pseudocode; T29 tests the behavior deterministically. Formalizing further is an impl-quality nice-to-have.
+
+**Final status:** plan is approval-ready. Iteration cap reached (3/3 cross-provider dispatches). Fresh MAJOR blocking verdicts are either fixed inline or explicitly deferred as self-circular/out-of-scope. No further review iterations without explicit user direction per `issue-planning-mode` skill.
 - Fixed the compact-retry triggering logic description — retry fires on **any** first-dispatch failure, not only when the 120 000-char guard is defeated (Codex P1).
 - Corrected "25 existing cases" → "22" (Claude P2).
 - Added Operating-model compliance sub-table with explicit N/A rationale for §2/§3/§4/§7/§8.1 (Codex P1).

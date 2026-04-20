@@ -33,6 +33,7 @@
 - Related issue #2089 — weekly Hermes + AI provider settings review; useful operational context.
 - Related issue #1583 — Hermes config parity via repo ecosystem templates; useful for Hermes-facing surfaces.
 - `docs/plans/README.md` — for harness issues, required retrieval sources include `config/agents/` and `.claude/rules/`.
+- `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` — documentation-boundary reference for keeping this child scoped to durable guidance rather than transient execution artifacts.
 
 ### Gaps identified
 - No single workspace-hub-only contract for model-release readiness.
@@ -50,7 +51,8 @@
 | Main deliverable package | docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md |
 | Standing contract | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md |
 | Upgrade playbook | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md |
-| Discoverability anchors | AGENTS.md; CLAUDE.md; GEMINI.md; docs/standards/CONTROL_PLANE_CONTRACT.md |
+| Contract/anchor tests | tests/docs/test_workspace_hub_model_release_readiness.py |
+| Discoverability anchors | AGENTS.md; docs/standards/CONTROL_PLANE_CONTRACT.md; provider adapters remain thin and are referenced, not expanded |
 | Plan review — Claude | scripts/review/results/2026-04-20-plan-2408-claude.md |
 | Plan review — Codex | scripts/review/results/2026-04-20-plan-2408-codex.md |
 | Plan review — Gemini | scripts/review/results/2026-04-20-plan-2408-gemini.md |
@@ -67,13 +69,14 @@ A workspace-hub-only readiness contract and upgrade playbook, anchored from cano
 ## Pseudocode
 
 ```
-inventory workspace_hub control-plane surfaces only: AGENTS.md, provider adapters, config/agents, .claude/rules, sync-agent-configs, review-routing policy
+inventory workspace_hub control-plane surfaces only: AGENTS.md, provider adapter directories, config/agents, .claude/rules, sync-agent-configs, review-routing policy
 extract the readiness dimensions this child must cover: context-budget/truncation safety, machine-readable-vs-prose guidance, prompt-pack portability, discoverability, upgrade procedure
-write one cohesive workspace-hub package summarizing current surfaces, gaps, and contract boundaries
+choose one consistent anchor strategy: add discoverability to AGENTS.md and CONTROL_PLANE_CONTRACT.md while keeping provider adapters thin and unchanged except where they already act as canonical pointers
+write one cohesive workspace-hub package summarizing current surfaces, gaps, contract boundaries, and explicit out-of-scope tier-1 work
 write a standing contract in docs/standards that references but does not supersede CONTROL_PLANE_CONTRACT.md
 write a separate upgrade playbook focused on workspace-hub-only release adoption steps
-update chosen canonical entrypoints with discoverability anchors to the new readiness docs
-stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory to sibling issues
+add explicit test file `tests/docs/test_workspace_hub_model_release_readiness.py` covering required dimensions, scope boundary, anchor presence, non-contradiction with CONTROL_PLANE_CONTRACT, and line-count compliance for thin adapters
+stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory and Codex adapter-shape changes to sibling/follow-up issues
 ```
 
 ---
