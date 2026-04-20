@@ -28,7 +28,7 @@ if ! git pull --ff-only origin main >> "$LOG" 2>&1; then
 fi
 
 START=$(date +%s)
-if uv run scripts/ecosystem-sync/run.py "${EXTRA_ARGS[@]}" >> "$LOG" 2>&1; then
+if uv run python -m scripts.ecosystem_sync.run "${EXTRA_ARGS[@]}" >> "$LOG" 2>&1; then
   RC=0
 else
   RC=$?

@@ -87,7 +87,7 @@ Decision rule:
 
 #### Task 15 — doctor validation
 Run both:
-- `uv run scripts/ecosystem-sync/run.py --doctor`
+- `uv run python -m scripts.ecosystem_sync.run --doctor`
 - `bash .claude/cron/ecosystem-sync.sh --doctor`
 
 Decision rule:

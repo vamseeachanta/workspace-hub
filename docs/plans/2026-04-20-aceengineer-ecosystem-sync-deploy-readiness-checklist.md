@@ -35,7 +35,7 @@ Purpose: validate production topology before Stage 2 Tasks 15–17
 - [ ] Initial state backfill is completed before judging dry-run noise level.
 
 ## 4. Local runtime health
-- [ ] `uv run scripts/ecosystem-sync/run.py --doctor` returns exit code 0 from the main checkout.
+- [ ] `uv run python -m scripts.ecosystem_sync.run --doctor` returns exit code 0 from the main checkout.
 - [ ] `bash .claude/cron/ecosystem-sync.sh --doctor` returns exit code 0 from the main checkout.
 - [ ] `gh auth status` is healthy for the runtime user.
 - [ ] The runtime user has write access to:

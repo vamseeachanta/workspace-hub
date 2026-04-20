@@ -151,7 +151,7 @@ T+1s    flock grabs /tmp/ecosystem-sync.lock
 T+2s    cd workspace-hub
         git pull --ff-only origin main
           → on fail: exit non-zero (alert fires)
-T+3s    uv run scripts/ecosystem-sync/run.py
+T+3s    uv run python -m scripts.ecosystem_sync.run
 
           run.py:
           ├─ load config.yaml
@@ -268,7 +268,7 @@ Three artifacts:
 
 **Alerting**: piggyback the existing `daily_readiness_cron` alert channel. Non-zero exit → alert.
 
-**Health check**: `uv run scripts/ecosystem-sync/run.py --doctor` — validates config, repo paths, `gh auth status`, state file parseable, digest dir writable. Exits 0 if healthy.
+**Health check**: `uv run python -m scripts.ecosystem_sync.run --doctor` — validates config, repo paths, `gh auth status`, state file parseable, digest dir writable. Exits 0 if healthy.
 
 ## Preparatory work (one-time, before enabling cron)
 

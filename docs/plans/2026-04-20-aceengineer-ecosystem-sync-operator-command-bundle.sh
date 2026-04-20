@@ -197,7 +197,7 @@ git pull --ff-only origin main
 # - ensure initial .claude/state/ecosystem-sync/last-sync.yaml backfill exists
 
 # Task 15 doctor checks
-uv run scripts/ecosystem-sync/run.py --doctor
+uv run python -m scripts.ecosystem_sync.run --doctor
 bash .claude/cron/ecosystem-sync.sh --doctor
 
 # Task 16 dry-run burn-in

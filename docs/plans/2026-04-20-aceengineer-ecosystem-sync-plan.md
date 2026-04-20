@@ -1797,7 +1797,7 @@ if ! git pull --ff-only origin main >> "$LOG" 2>&1; then
 fi
 
 START=$(date +%s)
-if uv run scripts/ecosystem-sync/run.py "${EXTRA_ARGS[@]}" >> "$LOG" 2>&1; then
+if uv run python -m scripts.ecosystem_sync.run "${EXTRA_ARGS[@]}" >> "$LOG" 2>&1; then
   RC=0
 else
   RC=$?
@@ -1982,7 +1982,7 @@ git commit -m "chore(ecosystem-sync): create showcase/website labels in 6 source
 - [ ] **Step 1: Run the orchestrator once with --dry-run to discover current state**
 
 ```bash
-uv run scripts/ecosystem-sync/run.py --dry-run > /tmp/first-dryrun.md 2>&1 || true
+uv run python -m scripts.ecosystem_sync.run --dry-run > /tmp/first-dryrun.md 2>&1 || true
 cat /tmp/first-dryrun.md | head -80
 ```
 
@@ -2081,7 +2081,7 @@ Expected: YAML file with one entry per repo containing tags, commit sha, readme 
 - [ ] **Step 4: Verify next dry-run is clean**
 
 ```bash
-uv run scripts/ecosystem-sync/run.py --dry-run | tail -30
+uv run python -m scripts.ecosystem_sync.run --dry-run | tail -30
 ```
 
 Expected: digest shows `_No signals detected._` or only signals from `closed:>=today` queries (which should be empty on a fresh day).
@@ -2102,7 +2102,7 @@ git commit -m "chore(ecosystem-sync): backfill initial state from current repo r
 - [ ] **Step 1: Run doctor**
 
 ```bash
-uv run scripts/ecosystem-sync/run.py --doctor
+uv run python -m scripts.ecosystem_sync.run --doctor
 echo "rc=$?"
 ```
 

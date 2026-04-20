@@ -62,3 +62,12 @@ def test_dry_run_writes_no_issues(tmp_path):
         rc = main(["--dry-run"])
     assert rc == 0
     assert mock_open.call_count == 0
+
+
+def test_wrapper_uses_module_invocation():
+    repo_root = Path(__file__).resolve().parents[2]
+    wrapper = repo_root / ".claude" / "cron" / "ecosystem-sync.sh"
+    wrapper_text = wrapper.read_text()
+
+    assert 'uv run python -m scripts.ecosystem_sync.run' in wrapper_text
+    assert 'uv run scripts/ecosystem-sync/run.py' not in wrapper_text
