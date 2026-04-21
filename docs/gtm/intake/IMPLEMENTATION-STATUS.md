@@ -20,26 +20,31 @@ Tracks progress against the approved plan at
   page + OTC-24523 (2013) for particulars and Bai & Bai *Subsea Engineering
   Handbook* 2nd ed. for class-typical RAOs. Disclaimer block stating
   "class-typical, not vessel-specific" included.
+- `docs/gtm/intake/canonical-vessels/pipelay-barge.yaml` — second canonical
+  vessel (S-lay pipelay barge / Lorelay class-typical reference). Source-
+  pinned to the Allseas Lorelay public vessel page + Palmer & King *Subsea
+  Pipeline Engineering* for class-typical lay-system / motion envelopes.
+  Disclaimer block stating "class-typical, not vessel-specific" included.
 - `scripts/gtm/prospect_adapter.py` — interface + two validation gates:
   `load_and_validate()` (schema + cross-field checks) plus stubbed
   `materialize_demo_inputs()` and `run_demo()` raising NotImplementedError
   with descriptive messages. Argparse CLI with `--demo` and `--dry-run`.
   Type hints throughout; no `Any`.
-- `scripts/gtm/tests/test_prospect_adapter.py` — 6 tests: happy path (demo_05
-  + canonical Seven Borealis), malformed YAML rejection, Q6 demo_01 + vessel
-  rejection, Q6 demo_03 missing vessel rejection, stub NotImplementedError
-  wiring for both deferred functions.
+- `scripts/gtm/tests/test_prospect_adapter.py` — 7 tests: happy paths
+  (demo_05 + canonical Seven Borealis, demo_04 + canonical pipelay barge),
+  malformed YAML rejection, Q6 demo_01 + vessel rejection, Q6 demo_03
+  missing vessel rejection, stub NotImplementedError wiring for both
+  deferred functions.
 - `jsonschema>=4.26` added to workspace-hub `[project.optional-dependencies].dev`.
 
 ## Not done (follow-up work)
 
 Future work on #2346 will need to land, in roughly this order:
 
-- **Canonical vessels — remaining 2**: add `pipelay-barge.yaml` (S-lay
-  barge class, Allseas *Lorelay* + Palmer & King *Subsea Pipeline
-  Engineering* ch. on S-lay) and `plsv.yaml` (PLSV class, TechnipFMC
-  *Deep Energy* + OTC-25303 + DNV-RP-H103). Follow the 2-citation-per-vessel
-  rule from plan section "Canonical Vessel Source Pins".
+- **Canonical vessels — remaining 1**: add `plsv.yaml` (PLSV class,
+  TechnipFMC *Deep Energy* + OTC-25303 + DNV-RP-H103). Follow the
+  2-citation-per-vessel rule from plan section "Canonical Vessel Source
+  Pins".
 - **`materialize_demo_inputs` per-demo logic**: fill in the stub. Write
   `csv_hlv_vessels.json` for demos 3/5, `pipelay_vessels.json` for demo 4,
   `<structure-kind>.json` for the structure body, and optional

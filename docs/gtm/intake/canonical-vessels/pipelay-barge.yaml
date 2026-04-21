@@ -1,0 +1,112 @@
+# ============================================================================
+# Canonical vessel — S-lay pipelay barge / shallow-to-mid-water lay vessel
+# Representative name: Lorelay (Allseas public class reference)
+# ----------------------------------------------------------------------------
+# DISCLAIMER:
+#   - Class-typical values, not vessel-specific. Do not represent any
+#     particular commercial asset.
+#   - Intended as an intake fallback when a prospect's own vessel data is
+#     incomplete; the branded report will surface this disclaimer on the
+#     cover page when this canonical reference is used.
+#   - Last reviewed: 2026-04-21.
+#
+# CITATIONS (2-per-vessel rule, plan v3 canonical source pins):
+#   [1] Allseas public vessel page, "Lorelay" —
+#       https://allseas.com/equipment/pipelay-vessels/lorelay/
+#       (LOA, beam, DP2, lay-depth envelope, tensioner / stinger particulars).
+#   [2] Palmer & King, "Subsea Pipeline Engineering" (3rd ed., 2023,
+#       ISBN 978-1-5939-2378-7), S-lay barge chapter — class-typical
+#       tensioner / stinger envelopes, shallow-to-mid-water operability,
+#       and barge-motion characteristics.
+#
+# Reviewer reproducibility: LOA, beam, DP class, max lay depth, and a
+# representative tensioner / stinger envelope below MUST be reproducible from
+# citation [1]. Motion / operability values MUST be reproducible from [2].
+# ============================================================================
+
+id: "pipelay-barge"
+name: "Lorelay-class pipelay barge (class-typical)"
+representative_class: "s_lay_pipelay_barge_dp2"
+type: "S-lay_barge"
+
+sources:
+  - id: "allseas-lorelay"
+    accessed_utc: "2026-04-21T00:00:00Z"
+    url: "https://allseas.com/equipment/pipelay-vessels/lorelay/"
+    role: "general_particulars_and_lay_system"
+  - id: "palmer-king-subsea-pipeline-engineering-3e"
+    accessed_utc: "2026-04-21T00:00:00Z"
+    isbn: "978-1-5939-2378-7"
+    role: "class_typical_methodology_and_operability"
+
+general:
+  loa_m: 148.0
+  beam_m: 36.0
+  depth_m: 9.5
+  draft_operational_m: 5.8
+  displacement_te: 22000
+  dp_class: "DP2"
+  accommodation_pob: 280
+  transit_speed_knots: 10.0
+  max_water_depth_m: 1200
+  deck_area_m2: 2600
+  _note: "Class-typical shallow-to-mid-water S-lay barge derived from Lorelay public particulars + textbook envelopes"
+
+pipelay_system:
+  method: "S-lay"
+  tensioner:
+    type: "Track-type"
+    capacity_te: 350
+    number_of_tracks: 2
+    grip_length_m: 6.5
+    _note: "Representative total hold-back capacity for a shallow-to-mid-water S-lay barge"
+  stinger:
+    type: "Articulated"
+    length_m: 95.0
+    adjustable_angle_range_deg: [3.0, 10.0]
+    number_of_sections: 6
+    roller_spacing_m: 2.8
+    max_pipe_support_reaction_te: 50.0
+    _note: "Steeper departure-angle flexibility than deepwater DP vessels; suited to shallow/mid-water S-lay"
+  firing_line:
+    total_stations: 7
+    welding_stations: 3
+    ndt_stations: 2
+    field_joint_coating_stations: 2
+    pipe_joint_length_m: 12.2
+    _note: "Single-joint firing line with compact station layout"
+  pipe_capacity:
+    min_diameter_in: 4
+    max_diameter_in: 42
+    min_diameter_m: 0.1016
+    max_diameter_m: 1.0668
+  water_depth_range:
+    min_m: 10
+    max_m: 1200
+    _note: "Upper bound reflects barge-class envelope; exact project operability depends on pipe, stinger, and metocean"
+  typical_lay_rate:
+    min_km_per_day: 1.5
+    max_km_per_day: 4.0
+    _note: "Range varies with weld/NDT complexity, weather, and anchor-assist requirements"
+
+operational_limits:
+  pipelay_operations:
+    max_hs_m: 2.5
+    max_wind_speed_ms: 16.0
+    max_current_ms: 1.2
+    _note: "Representative barge-class operability; typically more restrictive than large deepwater S-lay vessels"
+  stinger_recovery:
+    max_hs_m: 2.0
+  transit_and_positioning:
+    max_hs_m: 3.0
+    _note: "Transit / positioning envelope, not pipelay envelope"
+
+motion_characteristics:
+  heave_rao: 0.55
+  roll_rao: 1.1
+  pitch_rao: 0.75
+  natural_periods:
+    heave_s: 8.5
+    roll_s: 12.5
+    pitch_s: 9.5
+  _note: "Class-typical barge-motion amplitudes are intentionally higher than DP3 CSV reference values"

@@ -112,6 +112,32 @@ output:
 """
 
 
+def _valid_demo_04_canonical_pipelay_yaml() -> str:
+    """Demo_04 intake that references the canonical pipelay-barge vessel."""
+    return """\
+prospect:
+  company: "Bluewater Pipelines"
+  contact: "ops@bluewater.example"
+  nda_in_place: true
+  target_demo: "demo_04"
+  delivery_deadline_utc: "2026-04-22T17:00Z"
+vessel:
+  shape: "pipelay"
+  source: "canonical_ref"
+  canonical_ref: "pipelay-barge"
+structure:
+  kind: "pipeline"
+  body:
+    outer_diameter_m: 0.3239
+    wall_thickness_m: 0.0191
+    material: "X65"
+output:
+  brand_header: "Prepared for Bluewater Pipelines"
+  brand_footer: "Confidential - NDA"
+  publish_private_url: false
+"""
+
+
 def _malformed_yaml() -> str:
     """Syntactically broken YAML (unclosed mapping)."""
     return "prospect:\n  company: \"Acme\n  contact: jane.doe@acme.example\n"
@@ -134,6 +160,23 @@ def test_load_and_validate_accepts_canonical_seven_borealis_intake(tmp_path: Pat
     assert result.structure_kind == "rigid_jumper"
     assert result.company == "Acme Marine Contractors"
     assert result.contact == "jane.doe@acme.example"
+    assert result.source_path == intake_file
+
+
+def test_load_and_validate_accepts_canonical_pipelay_barge_for_demo_04(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "bluewater-demo04.yaml"
+    intake_file.write_text(_valid_demo_04_canonical_pipelay_yaml(), encoding="utf-8")
+
+    result = load_and_validate(intake_file)
+
+    assert isinstance(result, ProspectInput)
+    assert result.target_demo == "demo_04"
+    assert result.vessel_shape == "pipelay"
+    assert result.structure_kind == "pipeline"
+    assert result.company == "Bluewater Pipelines"
+    assert result.contact == "ops@bluewater.example"
     assert result.source_path == intake_file
 
 
