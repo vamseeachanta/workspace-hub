@@ -2,13 +2,14 @@
 
 Covers:
   1. Load + validate a well-formed intake that uses canonical_ref=seven-borealis.
-  2. Load + validate a well-formed demo_04 intake that uses canonical_ref=pipelay-barge.
-  3. Reject a demo_04 intake that points at a wrong-shape canonical YAML.
-  4. Malformed YAML raises ProspectIntakeError.
-  5. Q6 rejection: demo_01 + vessel block is rejected.
-  6. Q6 rejection: demo_03 without vessel block is rejected.
-  7. Demo_04 materialization writes the expected data files and optional env override.
-  8. Non-demo_04 materialization paths + run_demo remain explicit stubs.
+  2. Load + validate a well-formed demo_05 intake that uses canonical_ref=plsv.
+  3. Load + validate a well-formed demo_04 intake that uses canonical_ref=pipelay-barge.
+  4. Reject a demo_04 intake that points at a wrong-shape canonical YAML.
+  5. Malformed YAML raises ProspectIntakeError.
+  6. Q6 rejection: demo_01 + vessel block is rejected.
+  7. Q6 rejection: demo_03 without vessel block is rejected.
+  8. Demo_04 materialization writes the expected data files and optional env override.
+  9. Non-demo_04 materialization paths + run_demo remain explicit stubs.
 """
 from __future__ import annotations
 
