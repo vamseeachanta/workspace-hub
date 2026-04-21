@@ -157,16 +157,13 @@ for each occurrence at lines 74, 222, 269:
 # they install assethold with assetutilities already satisfied from above.
 
 # P2 fix 2: resolve assetutilities sibling-dep on hosted runner
-# Chosen mechanism: M1 — add actions/checkout for sibling repo into ../assetutilities
-# (matches the path declared in pyproject.toml [tool.uv.sources];
-#  preserves local dev layout; no pyproject rewrite needed)
-# Insert BEFORE the main repo checkout in each of the 3 dep-installing jobs
+# Chosen mechanism: M1-revised — git clone (NOT actions/checkout, which
+# requires path UNDER $GITHUB_WORKSPACE; ../assetutilities is rejected).
+# git clone works because assetutilities is PUBLIC (verified Wave 3).
+# Insert AFTER the main repo checkout in each of the 3 dep-installing jobs
 # (test, integration-tests, financial-data-tests):
-    - uses: actions/checkout@v4
-      with:
-        repository: vamseeachanta/assetutilities
-        path: ../assetutilities
-        ref: main
+    - name: Clone assetutilities sibling dependency
+      run: git clone --depth 1 https://github.com/vamseeachanta/assetutilities.git ../assetutilities
 
 # PHASE GATE ENFORCEMENT (addresses Claude Wave-1 MAJOR — unenforceable gate):
 # Phase 1 and Phase 2 MUST be separate commits pushed to main sequentially.
@@ -213,7 +210,7 @@ harden python-tests matrix:
 | Action | Path | Reason |
 |---|---|---|
 | Modify (P1) | `assethold/.github/workflows/python-tests.yml` | Quote DATABASE_URL at lines 122, 138 (×2); bump `actions/upload-artifact@v3 → v4` at lines 153, 166, 345 (×3); bump `github/codeql-action/upload-sarif@v2 → v3` at line 339 (×1); bump `codecov/codecov-action@v3 → v4` at line 144 (×1). Total P1 sites: **7**. |
-| Modify (P2) | `assethold/.github/workflows/python-tests.yml` | Replace `uv pip install --system -r requirements.txt` with `uv pip install --system -e ../assetutilities` at lines 74, 222, 269 (×3). Add `actions/checkout@v4` step for `vamseeachanta/assetutilities` into `../assetutilities` before the main checkout in each of the 3 dep-installing jobs (test / integration-tests / financial-data-tests). Existing `uv pip install --system -e .` steps (lines 79, 224, 271) unchanged. Total P2 sites: **3 install edits + 3 new checkout steps = 6**. |
+| Modify (P2) | `assethold/.github/workflows/python-tests.yml` | Replace `uv pip install --system -r requirements.txt` with `uv pip install --system -e ../assetutilities` at lines 74, 222, 269 (x3). Add `git clone --depth 1` step for `vamseeachanta/assetutilities` into `../assetutilities` AFTER the main checkout in each of the 3 dep-installing jobs (test / integration-tests / financial-data-tests). NOTE: uses `git clone` not `actions/checkout` because checkout@v4 requires path under $GITHUB_WORKSPACE; ../assetutilities is outside it. Existing `uv pip install --system -e .` steps (lines 79, 224, 271) unchanged. Total P2 sites: **3 install edits + 3 new clone steps = 6**. |
 | Verify (P2) | `assethold/pyproject.toml` | Confirm `assetutilities` is in `[project.dependencies]` and `[tool.uv.sources]` points to `{ path = "../assetutilities" }` — the P2 sibling-checkout step places the repo at that exact path so both `uv pip install --system -e ../assetutilities` and the existing `-e .` step resolve correctly. |
 | Possibly modify (P3) | `assethold/.github/workflows/docs.yml` | Adjust `--strict` / path-filter / docs/api skeleton after workflow_dispatch log capture. |
 
@@ -261,7 +258,7 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 - [ ] Sibling-repo checkout step (`actions/checkout@v4` for `vamseeachanta/assetutilities` into `../assetutilities`) present before the main checkout in every dep-installing job (test, integration-tests, financial-data-tests)
 - [ ] Phase 1 and Phase 2 are separate commits pushed directly to main with CI verification between them (P1 push to main -> wait for CI -> verify jobs register -> P2 push to main -> wait for CI -> verify smoke green). Direct-to-main per assethold repo convention.
 - [ ] At least one matrix cell (py3.11 / ubuntu-latest) completes smoke with `conclusion=success` (phase-2 gate — the "first non-zero-jobs, first smoke-green in 7 months" milestone)
-- [ ] Full `quality-gate` job completes `success` on a push to main (phase-3 gate — requires `test` + `integration-tests` + `financial-data-tests` all green per the workflow's `needs:` chain)
+- [ ] (FOLLOW-ON, not required to close #2442) Full `quality-gate` job completes `success` on a push to main (phase-3 — requires `test` + `integration-tests` + `financial-data-tests` all green; file as separate issue if latent test debt blocks this)
 - [ ] Local smoke test passes: `cd assethold && uv run pytest tests/test_smoke.py -v`
 - [ ] Review artifacts posted to `scripts/review/results/2026-04-21-plan-2442-{claude,codex,gemini}.md`
 - [ ] No changes pushed to `assethold/` in the planning session — fixes land only after user re-confirms `status:plan-approved` in-thread after reading this revised plan (label-artifact alignment was reset to `status:plan-review` by orchestrator per governance comment 4290738146; re-approval required)
