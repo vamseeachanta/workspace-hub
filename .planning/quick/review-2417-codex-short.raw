@@ -1,3 +1,18 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dacd5-0d46-75e3-b42f-aa96177e020c
+--------
+user
+You are an adversarial reviewer. Assume defects until proven otherwise. Do not praise or restate. Focus only on blocking or near-blocking issues. Return ONLY minified JSON under 1800 characters with keys verdict,summary,issues_found,suggestions,questions_for_author. Use at most 4 issues_found, 4 suggestions, 3 questions. Mark MAJOR if evaluator contract, schema migration, or workflow-config bounds are under-specified.
+
+PLAN TO REVIEW:
 # Plan for #2417: Generalize skill-autoresearch into repo-ecosystem autoresearch runner
 
 > **Status:** draft
@@ -161,17 +176,11 @@ function main():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Evaluator contract undefined; results-schema migration unresolved; workflow-config allowlist absent; wrapper/core architecture ambiguous |
-| Codex | MAJOR | Deterministic improvement predicate unspecified; migration/backward-compat rollout missing; workflow-config too broad; wrapper/core ownership unresolved |
-| Gemini | MAJOR | `results.tsv` migration still open; evaluator registration unspecified; workflow-config allowlist missing; downstream consumers not modeled |
+| Claude | PENDING | not run yet |
+| Codex | PENDING | not run yet |
+| Gemini | PENDING | not run yet |
 
-**Overall result:** FAIL — not approval-ready. All three reviewers converged on the same blocking defect class: the plan still leaves core contracts undecided at the point where implementation and TDD would need them.
-
-Revisions required before another review wave:
-- choose an additive/compatibility-safe results artifact strategy instead of leaving schema migration open
-- define a concrete evaluator interface + registry + improvement predicate
-- enumerate the exact v1 `workflow-config` allowlist (or defer that target type)
-- pick one wrapper/core integration architecture and align tests/files/ACs to it
+**Overall result:** PENDING — review not yet run.
 
 ---
 
@@ -188,3 +197,10 @@ Revisions required before another review wave:
 ## Complexity: T2
 
 **T2** — one new reusable runner, one existing wrapper adaptation, new tests/fixtures, and a bounded documentation contract. No cross-machine coordination or implementation fan-out is required for v1.
+
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+{"verdict":"MAJOR","summary":"Blocking under-specification around evaluator contract, artifact/schema migration, and workflow-config targeting makes the plan unsafe to implement without likely regressions or uncontrolled scope.","issues_found":[{"severity":"MAJOR","title":"Evaluator contract is not defined tightly enough","detail":"`evaluate_target` returns `{warnings, criticals, findings, score?}` but accept/reject logic depends on improvement ordering, regression thresholds, and comparability across target types. The plan does not define mandatory fields, normalization, tie-breaks, exit semantics, or how evaluators prove a change is safe rather than merely lower-warning."},{"severity":"MAJOR","title":"Results schema migration is under-specified","detail":"Plan says replace skill-only naming with `target_type`/`target_path` while acknowledging downstream tooling may assume `skill`. It does not inventory consumers, define backward-compat behavior, version the artifact, or choose additive vs breaking migration. This is a contract change with no rollout plan."},{"severity":"MAJOR","title":"`workflow-config` bounds remain too loose","detail":"The plan says 'whitelisted config/planning surfaces' but never enumerates the allowlist, file patterns, or excluded directories. For an autorewriter, vague targeting is dangerous; config/planning files have heterogeneous semantics and failure modes unlike skills."},{"severity":"MAJOR","title":"Wrapper/core ownership is ambiguous","detail":"The shell wrapper may 'delegate existing skill flow into generic runner or share its core logic'. Those are materially different architectures with different TDD seams, rollback paths, and branch/result handling. Leaving this open makes preservation of current behavior unverifiable."}],"suggestions":["Define a strict evaluator interface: required fields, score domain, regression rules, non-comparable target handling, and a deterministic keep/revert decision table.","Make schema migration additive in v1: keep existing `skill` field or emit dual artifacts, document consumers, and add explicit versioning plus compatibility tests.","Replace `workflow-config` with an explicit v1 allowlist of concrete paths/files and defer any broad config class until separate evaluators exist.","Choose one integration design now: generic runner as source of truth with wrapper passthrough, or shared library invoked by wrapper; then align tests and rollback semantics to that choice."],"questions_for_author":["Which exact files are in v1 `workflow-config`, and which are explicitly out of scope?","What is the canonical improvement predicate when one evaluator has no numeric score or when target types are not directly comparable?","Which existing scripts/tests consume `results.tsv`, and must they remain unchanged in v1?"]}
+tokens used
+115,611
+{"verdict":"MAJOR","summary":"Blocking under-specification around evaluator contract, artifact/schema migration, and workflow-config targeting makes the plan unsafe to implement without likely regressions or uncontrolled scope.","issues_found":[{"severity":"MAJOR","title":"Evaluator contract is not defined tightly enough","detail":"`evaluate_target` returns `{warnings, criticals, findings, score?}` but accept/reject logic depends on improvement ordering, regression thresholds, and comparability across target types. The plan does not define mandatory fields, normalization, tie-breaks, exit semantics, or how evaluators prove a change is safe rather than merely lower-warning."},{"severity":"MAJOR","title":"Results schema migration is under-specified","detail":"Plan says replace skill-only naming with `target_type`/`target_path` while acknowledging downstream tooling may assume `skill`. It does not inventory consumers, define backward-compat behavior, version the artifact, or choose additive vs breaking migration. This is a contract change with no rollout plan."},{"severity":"MAJOR","title":"`workflow-config` bounds remain too loose","detail":"The plan says 'whitelisted config/planning surfaces' but never enumerates the allowlist, file patterns, or excluded directories. For an autorewriter, vague targeting is dangerous; config/planning files have heterogeneous semantics and failure modes unlike skills."},{"severity":"MAJOR","title":"Wrapper/core ownership is ambiguous","detail":"The shell wrapper may 'delegate existing skill flow into generic runner or share its core logic'. Those are materially different architectures with different TDD seams, rollback paths, and branch/result handling. Leaving this open makes preservation of current behavior unverifiable."}],"suggestions":["Define a strict evaluator interface: required fields, score domain, regression rules, non-comparable target handling, and a deterministic keep/revert decision table.","Make schema migration additive in v1: keep existing `skill` field or emit dual artifacts, document consumers, and add explicit versioning plus compatibility tests.","Replace `workflow-config` with an explicit v1 allowlist of concrete paths/files and defer any broad config class until separate evaluators exist.","Choose one integration design now: generic runner as source of truth with wrapper passthrough, or shared library invoked by wrapper; then align tests and rollback semantics to that choice."],"questions_for_author":["Which exact files are in v1 `workflow-config`, and which are explicitly out of scope?","What is the canonical improvement predicate when one evaluator has no numeric score or when target types are not directly comparable?","Which existing scripts/tests consume `results.tsv`, and must they remain unchanged in v1?"]}

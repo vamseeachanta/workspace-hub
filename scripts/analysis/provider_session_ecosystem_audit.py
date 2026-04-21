@@ -2349,6 +2349,7 @@ def render_markdown(audit: dict) -> str:
         emit_rows(f"{provider} top repos", summary.get("top_repos", []), "repo")
         emit_rows(f"{provider} top reads", summary.get("top_reads", []), "path")
         emit_rows(f"{provider} top symbolic reads", summary.get("top_symbolic_reads", []), "name")
+        emit_rows(f"{provider} top sibling-repo reads", summary.get("top_sibling_repo_reads", []), "path")
         emit_rows(f"{provider} top Bash command families", summary.get("top_bash_command_families", []), "prefix")
         recent_provider = recent_activity.get("providers", {}).get(provider, {}) if recent_status == "ok" else {}
         if recent_provider:
@@ -2373,6 +2374,11 @@ def render_markdown(audit: dict) -> str:
                 recent_provider.get("top_missing_repo_reads", []),
                 "path",
             )
+            emit_rows(
+                f"{provider} recent top sibling-repo reads",
+                recent_provider.get("top_sibling_repo_reads", []),
+                "path",
+            )
         corpus_provider = corpus_change.get("providers", {}).get(provider, {}) if corpus_status == "ok" else {}
         if corpus_provider:
             lines.append(f"### {provider} corpus change since previous audit")
@@ -2395,6 +2401,7 @@ def render_markdown(audit: dict) -> str:
             lines.append(f"- Interpretation: {corpus_provider.get('interpretation', '')}")
             lines.append("")
         emit_rows(f"{provider} top missing repo reads", summary.get("top_missing_repo_reads", []), "path")
+        emit_rows(f"{provider} top sibling-repo reads", summary.get("top_sibling_repo_reads", []), "path")
         emit_remediation_hints(
             f"{provider} remediation hints for stale repo reads",
             summary.get("missing_repo_read_remediation_hints", []),

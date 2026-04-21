@@ -1,3 +1,6 @@
+You are an adversarial reviewer. Assume defects until proven otherwise. Do not praise or restate. Focus only on blocking or near-blocking issues. Return ONLY minified JSON under 1800 characters with keys verdict,summary,issues_found,suggestions,questions_for_author. Use at most 4 issues_found, 4 suggestions, 3 questions. Mark MAJOR if evaluator contract, schema migration, or workflow-config bounds are under-specified.
+
+PLAN TO REVIEW:
 # Plan for #2417: Generalize skill-autoresearch into repo-ecosystem autoresearch runner
 
 > **Status:** draft
@@ -161,17 +164,11 @@ function main():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Evaluator contract undefined; results-schema migration unresolved; workflow-config allowlist absent; wrapper/core architecture ambiguous |
-| Codex | MAJOR | Deterministic improvement predicate unspecified; migration/backward-compat rollout missing; workflow-config too broad; wrapper/core ownership unresolved |
-| Gemini | MAJOR | `results.tsv` migration still open; evaluator registration unspecified; workflow-config allowlist missing; downstream consumers not modeled |
+| Claude | PENDING | not run yet |
+| Codex | PENDING | not run yet |
+| Gemini | PENDING | not run yet |
 
-**Overall result:** FAIL — not approval-ready. All three reviewers converged on the same blocking defect class: the plan still leaves core contracts undecided at the point where implementation and TDD would need them.
-
-Revisions required before another review wave:
-- choose an additive/compatibility-safe results artifact strategy instead of leaving schema migration open
-- define a concrete evaluator interface + registry + improvement predicate
-- enumerate the exact v1 `workflow-config` allowlist (or defer that target type)
-- pick one wrapper/core integration architecture and align tests/files/ACs to it
+**Overall result:** PENDING — review not yet run.
 
 ---
 

@@ -106,11 +106,12 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 | test_contract_covers_machine_readable_vs_prose_guidance | rules-vs-prose dimension is explicit | contract text | named section/requirements present |
 | test_contract_covers_prompt_pack_portability | portability dimension is explicit | contract/playbook text | provider/machine portability section present |
 | test_upgrade_playbook_separates_provider_vs_repo_drift | playbook handles ownership correctly | playbook text | provider-owned vs repo-owned branches present |
-| test_anchor_strategy_matches_control_plane_contract | chosen anchors are consistent with adapter topology | AGENTS + CONTROL_PLANE_CONTRACT + root entry surfaces | explicit consistent references only |
-| test_root_entry_surfaces_align_with_canonical_workflow_contract | live root entry surfaces do not drift from canonical anchor model | CLAUDE.md + GEMINI.md + AGENTS.md + control-plane contract | consistent workflow-anchor references present |
-| test_line_count_compliance_for_thin_adapters | thin-adapter limit is preserved | AGENTS.md, CLAUDE.md, GEMINI.md | files remain within policy limit |
-| test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory and provider-adapter-shape normalization |
+| test_upgrade_playbook_references_required_operational_paths | playbook is operationally actionable | playbook text | references `scripts/_core/sync-agent-configs.sh` and `config/agents/` surfaces |
+| test_canonical_anchor_strategy_matches_control_plane_contract | chosen canonical anchors are consistent with adapter topology using concrete path assertions | AGENTS + CONTROL_PLANE_CONTRACT | explicit matching path references only |
+| test_audited_thin_adapters_remain_within_line_limits | existing thin adapters remain compliant after audit using the policy limit defined in `.claude/rules/coding-style.md` | CLAUDE.md, GEMINI.md | files remain within the sourced policy limit |
+| test_scope_is_workspace_hub_only | issue stays narrowly scoped | package + contract | explicit out-of-scope note for tier-1 ecosystem inventory and provider-entrypoint normalization |
 | test_non_contradiction_with_control_plane_contract_uses_concrete_assertions | new docs do not redefine adapter topology | contract + playbook + control-plane contract | exact string assertions on canonical adapter paths pass |
+
 
 ---
 

@@ -1,3 +1,18 @@
+You are an adversarial reviewer. Assume this plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, contradictory, or risky.
+Return APPROVE only if no blocking defects remain.
+
+Required checks:
+- Is the evaluator contract concrete enough to implement?
+- Is the results-schema migration/backward compatibility sufficiently specified?
+- Is `workflow-config` safely bounded for v1?
+- Do files/tests/acceptance criteria stay internally consistent?
+- Are multi-iteration concerns properly deferred to #2418?
+
+Return only JSON:
+{"verdict":"APPROVE|MINOR|MAJOR|REJECT","summary":"...","issues_found":["..."],"suggestions":["..."],"questions_for_author":["..."]}
+
+PLAN TO REVIEW:
 # Plan for #2417: Generalize skill-autoresearch into repo-ecosystem autoresearch runner
 
 > **Status:** draft
@@ -161,17 +176,11 @@ function main():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Evaluator contract undefined; results-schema migration unresolved; workflow-config allowlist absent; wrapper/core architecture ambiguous |
-| Codex | MAJOR | Deterministic improvement predicate unspecified; migration/backward-compat rollout missing; workflow-config too broad; wrapper/core ownership unresolved |
-| Gemini | MAJOR | `results.tsv` migration still open; evaluator registration unspecified; workflow-config allowlist missing; downstream consumers not modeled |
+| Claude | PENDING | not run yet |
+| Codex | PENDING | not run yet |
+| Gemini | PENDING | not run yet |
 
-**Overall result:** FAIL — not approval-ready. All three reviewers converged on the same blocking defect class: the plan still leaves core contracts undecided at the point where implementation and TDD would need them.
-
-Revisions required before another review wave:
-- choose an additive/compatibility-safe results artifact strategy instead of leaving schema migration open
-- define a concrete evaluator interface + registry + improvement predicate
-- enumerate the exact v1 `workflow-config` allowlist (or defer that target type)
-- pick one wrapper/core integration architecture and align tests/files/ACs to it
+**Overall result:** PENDING — review not yet run.
 
 ---
 
