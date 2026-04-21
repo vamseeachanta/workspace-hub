@@ -118,3 +118,18 @@ New potential gaps to surface after generation:
 | #2440 | digitalmodel visual-DNA decision | Informs #2435 palette |
 
 All carry the `claude:design` label and are linked from the #2434 aceengineer-website umbrella.
+
+## Upstream enhancement asks added during this trial
+
+Started the trial with 7 asks in #2428. Added an **8th** during the review phase:
+
+- **Ask #8 — Bulk card-approval from chat** — Claude Design admitted it can't mark cards as approved from its side because the action lives in the review UI. It attempted a workaround via `register_assets` with `status: "approved"` which **did succeed** server-side (27 pending → 10 pending), but the chat-exposed tool surface should include an explicit approval action for agent-driven workflows.
+
+## Fast-path review outcome
+
+User-selected fast path: auto-approve Type/Spacing/Components/UI Kit cards, review Colors + Brand individually.
+- Manual click approvals: 2 (Type · display, Type · body — the latter because it was in "being reviewed" state when batch ran and got skipped)
+- Chat-driven batch approvals: 17 cards via Claude's `register_assets` workaround
+- Remaining pending for user review: 10 cards
+  - **Colors (6)**: Primary color `#c85a2a`, Ink scale, Surfaces, Semantic colors, Palette B (demoted to "explored alternative"), one other color card
+  - **Brand (4)**: Brand marks (on-paper / on-dark / on-primary-wash), Voice & tone specimen, Iconography (Lucide substitution note), Imagery placeholders

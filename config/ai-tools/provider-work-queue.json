@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-21T13:20:07.681040Z",
+  "generated_at": "2026-04-21T17:20:07.339638Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-21T13:20:05.683273Z",
+  "scorecard_generated_at": "2026-04-21T17:20:05.206120Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,9 +11,34 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 9,
-      "total_candidates": 160,
+      "execution_ready_count": 15,
+      "total_candidates": 166,
       "top_issues": [
+        {
+          "number": 2269,
+          "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "machine:dev-secondary",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-21T16:59:28Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
         {
           "number": 2348,
           "title": "triage: promote #1707/#1708/#1709 from review-backlog \u2014 live scanner has ToS/rate-limit exposure",
@@ -50,6 +75,28 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-20T22:44:32Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2442,
+          "title": "chore(ci-health): assethold CI \u2014 python-tests.yml never green since 2025-09-28 (7 months); YAML parse + deprecated actions",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2442",
+          "labels": [
+            "priority:high",
+            "cat:infrastructure",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-21T17:01:41Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -155,188 +202,31 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2403,
-          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:research",
-            "domain:document-intelligence",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-20T21:30:48Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2327,
-          "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
-          "labels": [
-            "priority:low",
-            "cat:engineering",
-            "cat:research",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-17T14:55:48Z",
-          "execution_ready": true,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 0,
-      "total_candidates": 38,
+      "execution_ready_count": 1,
+      "total_candidates": 32,
       "top_issues": [
         {
-          "number": 2167,
-          "title": "test(knowledge): build session-read coherence golden fixture suite for alias, symbolic, and missing-path cases",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2167",
+          "number": 2227,
+          "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:documentation",
-            "cat:harness"
+            "agent:codex",
+            "status:plan-approved"
           ],
-          "updatedAt": "2026-04-10T22:38:29Z",
-          "execution_ready": false,
+          "updatedAt": "2026-04-21T15:49:07Z",
+          "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2169,
-          "title": "feat(operations): define Windows licensed-tool probe adapter contract for readiness bundles",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2169",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-10T22:58:44Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2171,
-          "title": "test(reporting): add end-to-end weekly publication smoke scenarios for latest/history bundle assembly",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2171",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-10T22:58:50Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2173,
-          "title": "feat(knowledge): wire provider-session ecosystem audit into weekly registry build manifest and publication bundle",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2173",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-10T22:58:55Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2175,
-          "title": "test(operations): add fixture-backed OrcaFlex Windows probe smoke matrix across readiness states",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2175",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T04:16:25Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2176,
-          "title": "test(operations): add OrcaWave diffraction smoke fixtures and AQWA install-vs-usable classification tests",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2176",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T04:16:28Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
@@ -387,6 +277,116 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2181,
+          "title": "test(operations): add AQWA zero-exit runtime-failure fixture suite and precedence assertions",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2181",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:25:59Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2182,
+          "title": "test(operations): add OrcaWave L02 OC4 semi-sub manifest assertions and parity regression coverage",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2182",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:26:02Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2183,
+          "title": "feat(reporting): add publication rollback journal and recover-promotion command",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2183",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:26:05Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2188,
+          "title": "test(reporting): add mixed-state golden fixture bundles for licensed-win probe reporting",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2188",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:38:09Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2189,
+          "title": "test(reporting): lock deterministic shared-asset canonical placement across latest/history/staged bundles",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2189",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:38:12Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ]
     },
@@ -406,7 +406,7 @@
             "domain:gtm",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T09:58:52Z",
+          "updatedAt": "2026-04-21T17:13:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

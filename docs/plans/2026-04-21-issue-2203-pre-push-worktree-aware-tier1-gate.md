@@ -4,7 +4,7 @@
 > **Complexity:** T2
 > **Date:** 2026-04-21
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2203
-> **Review artifacts:** none yet
+> **Review artifacts:** `scripts/review/results/2026-04-21-plan-2203-{claude,codex,hermes}.md` and `scripts/review/results/2026-04-21-plan-2203-{claude,codex,hermes}-r2.md`
 
 ---
 
@@ -77,7 +77,7 @@ FFFFFF.FFF
 ```bash
 - linked worktrees exist under /mnt/local-analysis/worktrees/
 - in linked worktrees, `.git` may be a file and the effective hook target must be resolved by git
-- `core.hooksPath` is configured in this repo, so install logic must honor the effective hook path contract rather than assume `git-common-dir/hooks`
+- `core.hooksPath` resolves in this repo to `/mnt/local-analysis/workspace-hub/.git/hooks`, so install logic must honor the effective hook path contract rather than assume `git-common-dir/hooks`.
 ```
 
 **Line excerpts**:
@@ -141,7 +141,9 @@ Distinct sources consulted: 8.
 | Plan review — Claude | `scripts/review/results/2026-04-21-plan-2203-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-21-plan-2203-codex.md` |
 | Plan review — Hermes | `scripts/review/results/2026-04-21-plan-2203-hermes.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-21-plan-2203-gemini.md` |
+| Plan review — Claude (r2) | `scripts/review/results/2026-04-21-plan-2203-claude-r2.md` |
+| Plan review — Codex (r2) | `scripts/review/results/2026-04-21-plan-2203-codex-r2.md` |
+| Plan review — Hermes (r2) | `scripts/review/results/2026-04-21-plan-2203-hermes-r2.md` |
 
 ---
 
@@ -155,35 +157,43 @@ A tracked, canonical pre-push hook implementation plus tests that correctly clas
 
 ```bash
 function resolve_hook_targets():
-    common_git_dir = git rev-parse --git-common-dir
-    install_target = common_git_dir + "/hooks/pre-push"
-    return install_target
+    hook_target = git rev-parse --git-path hooks/pre-push
+    enforcement_env_target = git rev-parse --git-path hooks/enforcement-env
+    return hook_target, enforcement_env_target
 
 function classify_push_scope(push_lines, local_oid, remote_oid):
     if delete_branch(local_oid):
         return SKIP
     changed_files = derive_changed_files(push_lines, local_oid, remote_oid)
-    if changed_files include workspace-hub root/docs/scripts/tests only:
+    if touches_harness_sensitive_workspace_hub_paths(changed_files):
+        return CROSS_REPO_VALIDATION(all_or_mapped_repos)
+    if changed_files include only docs/plans/docs/reports/issue comments and other non-execution docs:
         return WORKSPACE_HUB_ONLY
-    if changed_files include repo-path signals that require downstream repo checks:
+    if changed_files include workspace-hub code/config paths that do not alter cross-repo fanout semantics:
+        return WORKSPACE_HUB_ONLY
+    if changed_files include explicit repo-path signals that require downstream repo checks:
         return CROSS_REPO_VALIDATION(required_repos)
     return WORKSPACE_HUB_ONLY
 
 function derive_changed_files(push_lines, local_oid, remote_oid):
     if remote_oid != ZERO:
         return git diff --name-only remote_oid..local_oid
-    merge_base = git merge-base origin/main local_oid
-    return git diff --name-only merge_base..local_oid
+    return commits_not_on_any_remote(local_oid) projected to changed file paths
 
 function determine_repo_checks(scope):
     if scope == CROSS_REPO_VALIDATION:
         run check-all/run-all-tests only for the mapped repos
     else if scope == WORKSPACE_HUB_ONLY:
-        skip sibling-repo fanout
-        still run review gate, secrets scan, coverage/config drift, and all preserved pre-push guards
+        skip sibling-repo fanout, including the current all-repo coverage fanout path
+        run only preserved non-fanout governance/security guards on this path
+
+function run_preserved_guards(push_lines):
+    buffer stdin push_lines once
+    replay required ref/range data to downstream guards that depend on push stdin
+    especially preserve correctness for state-size pre-push guard
 
 function install_pre_push_hook():
-    write canonical tracked hook content to the common hooks target
+    write canonical tracked hook content to the effective git hook target
     preserve the full existing gate chain explicitly
     verify no executable hook logic remains after final exit
 ```
@@ -195,7 +205,7 @@ function install_pre_push_hook():
 | Action | Path | Reason |
 |---|---|---|
 | Create | `scripts/hooks/pre-push.sh` | establish a tracked source-of-truth hook implementation instead of relying only on mutable `.git/hooks/pre-push` |
-| Modify | `scripts/enforcement/install-hooks.sh` | install/sync the canonical tracked pre-push hook into the real hooks target for normal repos and linked worktrees, rather than only appending fragments into `.git/hooks/pre-push` |
+| Modify | `scripts/enforcement/install-hooks.sh` | install/sync the canonical tracked pre-push hook into the effective git hook target for normal repos and linked worktrees (`git rev-parse --git-path hooks/...`), rather than only appending fragments into `.git/hooks/pre-push` |
 | Modify | `tests/hooks/test_pre_push.py` | first restore the currently-red suite to green against the tracked hook file, then add regression coverage for workspace-hub-only new-branch pushes, zero-remote first-push classification, multi-ref pushes, and repo-name translation |
 | Modify | `tests/enforcement/test_install_hooks_stage_prompt_drift.py` | preserve installer ordering/idempotency coverage and extend it for the new canonical hook sync behavior and full gate-chain preservation |
 | Update | `docs/standards/REVIEW_GATE_BYPASS_POLICY.md` and/or `docs/governance/SESSION-GOVERNANCE.md` | document the narrowed bypass/landing behavior and the preserved gate chain after the fix |
@@ -208,15 +218,18 @@ function install_pre_push_hook():
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | `test_hook_suite_baseline_restored` | existing hook suite is green against the tracked canonical hook source | `uv run --no-project python -m pytest tests/hooks/test_pre_push.py -q` | all currently-intended baseline tests pass |
-| `test_workspace_hub_only_new_branch_skips_tier1_repo_fanout` | new branch with only workspace-hub paths does not force all-repo checks | zero remote oid + changed files only under workspace-hub root/docs/scripts/tests with `PRE_PUSH_DRY_RUN=0` and fake downstream scripts | no sibling-repo calls recorded |
+| `test_workspace_hub_only_new_branch_skips_tier1_repo_fanout` | new branch with only non-execution workspace-hub paths does not force all-repo checks | zero remote oid + changed files only under docs/plans/docs/reports/non-execution docs with `PRE_PUSH_DRY_RUN=0` and fake downstream scripts | no sibling-repo calls recorded |
+| `test_harness_sensitive_workspace_hub_paths_force_cross_repo_validation` | changes to fanout-controlling harness files do not get misclassified as workspace-hub-only | changes under `scripts/testing/run-all-tests.sh`, `scripts/quality/check-all.sh`, `scripts/enforcement/install-hooks.sh`, or equivalent harness-sensitive paths | scope escalates to `CROSS_REPO_VALIDATION` |
 | `test_changed_tier1_repo_subset_still_runs_only_affected_repos` | existing changed-only behavior remains | changed files mapped to one downstream repo scope | only that repo’s checks invoked |
-| `test_zero_remote_first_push_uses_defined_merge_base_diff` | first-push classification has a deterministic comparison base | zero remote oid + local oid on feature branch | changed files derived from documented merge-base strategy |
-| `test_multi_ref_push_classification_is_safe` | multi-ref pushes do not misclassify based only on the first stdin line | multiple push lines on stdin | classification/routing honors a documented safe policy |
+| `test_zero_remote_first_push_uses_defined_remote-agnostic_diff_base` | first-push classification has a deterministic comparison base that does not rely on `origin/main` | zero remote oid + local oid on feature/integration branch | changed files derived from commits not yet on any remote |
+| `test_multi_ref_push_classification_uses_union_or_fail_closed_policy` | multi-ref pushes do not misclassify based only on the first stdin line | multiple push lines on stdin | routing follows the documented union-of-changes policy or explicit fail-closed cross-repo validation fallback |
 | `test_repo_name_translation_for_ogmanufacturing` | downstream repo-name translation is explicit and correct for both helper scripts | push affecting manufacturing scope | `check-all.sh` receives `ogmanufacturing`; `run-all-tests.sh` receives `OGManufacturing` (or equivalent documented adapter contract) |
 | `test_bypass_still_logs_jsonl_and_exits_zero` | audited bypass remains intact | `GIT_PRE_PUSH_SKIP=1` | exit 0 + JSONL record |
 | `test_hook_file_is_tracked_source_not_only_live_git_hook` | canonical hook exists in repo | repo root | `scripts/hooks/pre-push.sh` exists and is executable/text-valid |
-| `test_install_hooks_syncs_tracked_pre_push_hook_for_linked_worktrees` | installer writes/syncs the tracked hook into the real hook target for linked worktrees | temp repo + linked worktree setup | installed hook target matches documented canonical source/chain |
-| `test_install_hook_preserves_full_gate_chain_and_reachability` | installer preserves enforcement-env, review gate, stage-prompt drift, state-size, cadence-sync, and no executable logic remains after final exit | temp repo/worktree install | full ordered chain present and reachable |
+| `test_install_hooks_syncs_tracked_pre_push_hook_for_linked_worktrees` | installer writes/syncs the tracked hook into the effective git hook target for linked worktrees and hooksPath-aware repos | temp repo + linked worktree setup | installed hook target matches documented canonical source/chain |
+| `test_install_hook_preserves_full_gate_chain_and_reachability` | installer preserves enforcement-env, review gate, stage-prompt drift, state-size, cadence-sync, mypy/complexity opt-in gate stubs, and no executable logic remains after final exit | temp repo/worktree install | full ordered intended chain present and reachable |
+| `test_workspace_hub_only_path_still_runs_non_fanout_guards` | workspace-hub-only push skips sibling fanout but still executes preserved non-fanout guards | workspace-hub-only changed files + fake downstream guard scripts + buffered stdin | no sibling-repo fanout, but preserved guards are invoked with correct inputs |
+| `test_installer_fixture_sync_includes_canonical_hook_source` | installer tests stage the tracked canonical hook source so sync/install behavior is exercised realistically | temp repo fixture setup | `scripts/hooks/pre-push.sh` is present in the temp fixture before installer sync assertions run |
 
 ---
 
@@ -225,14 +238,16 @@ function install_pre_push_hook():
 - [ ] `scripts/hooks/pre-push.sh` exists as a tracked canonical hook implementation
 - [ ] `uv run --no-project python -m pytest tests/hooks/test_pre_push.py -v` passes (restored baseline + new cases)
 - [ ] `uv run --no-project python -m pytest tests/enforcement/test_install_hooks_stage_prompt_drift.py -v` passes after installer changes
-- [ ] the installed hook target for a linked worktree is correct and executable
+- [ ] the installed hook target for a linked worktree / hooksPath-aware repo is correct and executable
 - [ ] a workspace-hub-only integration/worktree push is not blocked by unrelated sibling-repo failures
-- [ ] first-push (`remote_oid == ZERO`) classification uses an explicit documented diff base
-- [ ] multi-ref push handling is covered by tests and does not rely unsafely on only the first stdin line
+- [ ] harness-sensitive workspace-hub changes that alter cross-repo validation behavior escalate to `CROSS_REPO_VALIDATION`
+- [ ] first-push (`remote_oid == ZERO`) classification uses an explicit remote-agnostic diff base
+- [ ] multi-ref push handling follows an explicit documented union-of-changes or fail-closed policy
 - [ ] downstream repo-name translation is explicit and correct for `OGManufacturing` / `ogmanufacturing`
-- [ ] the full current pre-push gate chain is preserved (review, enforcement-env, stage-prompt drift, state-size, cadence-sync, secrets, coverage/config drift as applicable)
+- [ ] the full intended pre-push gate chain is preserved, including opt-in mypy/complexity ratchet hooks and correct stdin replay for downstream guards that require push ref data
+- [ ] workspace-hub-only non-fanout paths still execute preserved governance/security guards
+- [ ] installer fixture/test setup includes the canonical tracked hook source when validating sync/install behavior
 - [ ] audited bypass behavior remains available and documented for true exceptions
-- [ ] docs/plans/README.md updated with this plan entry
 
 ---
 
@@ -240,23 +255,35 @@ function install_pre_push_hook():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Hermes | MAJOR | Draft assumed `.git/hooks/pre-push` install path was worktree-safe; under-specified preservation of existing gate chain; missing multi-ref and broken-test-baseline handling |
-| Claude | MAJOR | Dry-run new-branch test would not exercise real classification path; zero-remote compare-base undefined; existing red hook suite must be restored first |
-| Codex | MAJOR | Draft missed installer regression test surface, included non-deterministic acceptance wording, and did not fully ground the scope in current hook drift/reachability |
+| Hermes (round 1) | MAJOR | Draft assumed `.git/hooks/pre-push` install path was worktree-safe; under-specified preservation of existing gate chain; missing multi-ref and broken-test-baseline handling |
+| Claude (round 1) | MAJOR | Dry-run new-branch test would not exercise real classification path; zero-remote compare-base undefined; existing red hook suite must be restored first |
+| Codex (round 1) | MAJOR | Draft missed installer regression test surface, included non-deterministic acceptance wording, and did not fully ground the scope in current hook drift/reachability |
+| Hermes (round 2) | MAJOR | Revised draft still used `git-common-dir` rather than effective hooks path, omitted opt-in ratchet gates from explicit preservation, and had stale metadata |
+| Claude (round 2) | MAJOR | Revised draft still failed to anchor on hook-path resolution and lacked runtime proof that workspace-hub-only paths skip fanout while still running preserved guards |
+| Codex (round 2) | MAJOR | Revised draft still needed remote-agnostic first-push diff strategy, stdin replay requirements for downstream guards, and tighter grounding of intended-vs-live gate-chain preservation |
+| Hermes (round 3) | MAJOR | Workspace-hub-only path still needed explicit exclusion of the current all-repo coverage fanout path and clearer handling of obsolete tests |
+| Claude (round 3) | MAJOR | Harness-sensitive path escalation and concrete multi-ref policy still needed to be made explicit |
+| Codex (round 3) | MAJOR | Harness-sensitive classification and cadence-sync contract still needed to be settled explicitly |
 
-**Overall status:** MAJOR — revise before promotion to `plan-review`.
+**Overall status:** MAJOR after third review pass — the draft improved again, but it is still not ready for `plan-review` promotion.
 
-**Revision note (2026-04-21):** This draft was updated after adversarial review to (a) make worktree/common-hook-dir installation explicit, (b) preserve the full pre-push gate chain, (c) treat the currently-red `tests/hooks/test_pre_push.py` suite as a prerequisite, (d) add first-push and multi-ref classification coverage, and (e) replace non-deterministic acceptance wording with repo-verifiable criteria.
+**Revision notes (2026-04-21):**
+- Round 1 revisions added worktree-aware installation, full-gate-chain preservation, broken-test-baseline handling, first-push and multi-ref coverage, and deterministic acceptance language.
+- Round 2 revisions replaced naive `git-common-dir` targeting with effective hook-path resolution, switched first-push diffing to a remote-agnostic strategy, added stdin replay requirements for downstream guards, expanded explicit gate preservation to include opt-in ratchet hooks, and removed stale metadata/acceptance items.
+- Round 3 revisions narrowed workspace-hub-only classification so harness-sensitive workspace-hub paths escalate to cross-repo validation, defined multi-ref handling as union-of-changes or fail-closed, clarified that workspace-hub-only paths skip the current all-repo coverage fanout path, and settled cadence-sync as part of the intended installer-managed chain.
+
+**Next gate:** the plan should be refreshed once more and then re-reviewed before any `status:plan-review` promotion.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** narrowing new-branch behavior too aggressively could let real validation-relevant changes escape checks if change detection is wrong; mitigation is explicit first-push and multi-ref regression tests plus a documented merge-base strategy.
-- **Risk:** introducing a tracked canonical hook file may overlap with #2128 installer-chain behavior; plan must preserve the full current gate chain, not just review/secrets/coverage/config-drift.
-- **Risk:** linked-worktree hook installation is easy to get wrong because `.git` may be a file and hooks resolve through the common git dir; implementation must verify the actual install target in tests.
+- **Risk:** narrowing new-branch behavior too aggressively could let real validation-relevant changes escape checks if change detection is wrong; mitigation is explicit first-push and multi-ref regression tests plus a documented remote-agnostic diff strategy.
+- **Risk:** introducing a tracked canonical hook file may overlap with #2128 installer-chain behavior; plan must preserve the full intended gate chain, including opt-in ratchet hooks and correct stdin replay for downstream guards.
+- **Risk:** linked-worktree hook installation is easy to get wrong because `.git` may be a file and `core.hooksPath` can redirect hook resolution; implementation must verify the effective hook target in tests using git-resolved hook paths.
 - **Risk:** the existing `tests/hooks/test_pre_push.py` suite is already red; implementation must restore a runnable baseline before relying on it for incremental regression coverage.
 - **Open:** should workspace-hub-only pushes still run a lightweight workspace-hub-local pytest slice in pre-push, or only governance/security gates? Current recommendation: keep current non-tier1 gates, skip sibling-repo fanout.
+- **Open:** should cadence-sync be treated as part of the intended installer-managed chain even though it is not present in the current live hook snapshot? The implementation should choose one contract explicitly and test against that contract.
 - **Open:** should tier-1 repo mappings and translation logic be centralized into a shared config to avoid drift across hook/scripts/tests? Current plan keeps scope bounded and defers centralization unless implementation proves it is necessary.
 
 ---
