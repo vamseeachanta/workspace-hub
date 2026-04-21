@@ -1,8 +1,8 @@
 # Provider work queue
 
-Generated: 2026-04-21T05:20:05.890784Z
+Generated: 2026-04-21T09:20:08.280760Z
 Current week: 2026-W17
-Recommended provider order: gemini, codex, claude
+Recommended provider order: codex, gemini, claude
 
 Execution-ready means the issue already carries `status:plan-approved` or an explicit agent label.
 

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-21T05:20:05.890784Z",
+  "generated_at": "2026-04-21T09:20:08.280760Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-21T05:20:04.143219Z",
+  "scorecard_generated_at": "2026-04-21T09:20:06.377452Z",
   "recommended_provider_order": [
-    "gemini",
     "codex",
+    "gemini",
     "claude"
   ],
   "provider_queues": {
@@ -24,7 +24,7 @@
             "domain:gtm",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-20T14:45:00Z",
+          "updatedAt": "2026-04-21T09:18:38Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",

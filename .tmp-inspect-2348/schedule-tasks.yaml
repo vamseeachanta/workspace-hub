@@ -1,0 +1,615 @@
+# schedule-tasks.yaml — Single source of truth for all scheduled tasks.
+# Read by: scripts/cron/setup-cron.sh, scripts/cron/validate-schedule.py,
+#          scripts/operations/workstation-dispatch.sh
+# HARD RULE: all cron/task-scheduler entries must be declared here.
+# Do NOT add entries directly to crontab or Windows Task Scheduler.
+#
+# Fields:
+#   machines:  explicit machine list (used by cron to decide where to install)
+#   requires:  capability list (used by dispatcher to find best-fit machine)
+#   prefer:    optional machine hint for dispatcher when multiple match
+
+tasks:
+  # ── dev-primary: full variant ─────────────────────────────────────────────
+
+  - id: benchmark-regression
+    label: Performance benchmark regression check
+    schedule: "30 1 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/testing/run-benchmarks.sh
+      >> $WORKSPACE_HUB/logs/quality/benchmark-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/benchmark-*.log
+    is_claude_task: false
+    description: Nightly benchmark run; exits 1 on >20% regression vs committed baseline.
+
+  - id: gsd-researcher
+    label: Nightly GSD domain researcher
+    schedule: "35 1 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [claude, python3, uv]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/gsd-researcher-nightly.sh
+      >> $WORKSPACE_HUB/logs/research/$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/research/*.log
+    is_claude_task: true
+    description: Weekday domain research rotating standards/python-ecosystem/ai-tooling/competitor-market; Friday synthesis. Sat/Sun off.
+
+  - id: research-staleness
+    label: Research artifact staleness check
+    schedule: "0 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/research-staleness-check.sh
+      >> $WORKSPACE_HUB/logs/research/staleness-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/research/staleness-*.log
+    is_claude_task: false
+    description: Daily 06:00 UTC staleness check; alerts via notify.sh if no research artifact in 60h.
+
+  - id: dep-health
+    label: Dependency health check
+    schedule: "0 1 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/quality/dep-health.sh
+      >> $WORKSPACE_HUB/logs/quality/dep-health-cron.log 2>&1
+    log: logs/quality/dep-health-cron.log
+    is_claude_task: false
+    description: Nightly uv.lock freshness, outdated packages, CVE advisories across 5 repos.
+
+  - id: harness-update
+    label: AI harness tools daily update (staggered canary)
+    schedule_by_machine:
+      dev-primary: "15 1 * * *"      # 01:15 — canary
+      ace-linux-1: "15 1 * * *"
+      dev-secondary: "45 1 * * *"    # 01:45 — after canary
+      ace-linux-2: "45 1 * * *"
+      licensed-win-1: "15 2 * * *"   # 02:15 — after Linux
+      licensed-win-2: "15 2 * * *"
+    schedule: "15 1 * * *"           # fallback
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, licensed-win-1, licensed-win-2]
+    requires: [bash, git, npm]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/harness-update.sh
+      >> $WORKSPACE_HUB/logs/maintenance/harness-update-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/maintenance/harness-update-*.log
+    is_claude_task: false
+    description: >-
+      Daily AI harness lifecycle — all 7 tools. Staggered canary: dev-primary 01:15,
+      dev-secondary 01:45, Windows 02:15. Health checks, rollback, drift, alerting.
+      Issues: #1668, #1672-#1675.
+
+  - id: comprehensive-learning
+    label: Comprehensive learning pipeline
+    schedule: "0 2 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/comprehensive-learning-nightly.sh
+      >> $WORKSPACE_HUB/logs/quality/comprehensive-learning-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/comprehensive-learning-*.log
+    is_claude_task: false
+    description: Nightly 10-phase learning pipeline; runs at 02:00.
+
+  - id: doc-drift
+    label: Documentation drift baseline refresh
+    schedule: "30 2 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline
+      >> $WORKSPACE_HUB/logs/quality/doc-drift-$(date +\%Y\%m\%d).yaml 2>&1
+    log: logs/quality/doc-drift-*.yaml
+    is_claude_task: false
+    description: Detects symbol-to-doc drift across repos.
+
+  - id: agent-radar
+    label: Agent capability radar HTML
+    schedule: "30 2 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      uv run --script scripts/ai/generate-agent-radar.py
+      >> $WORKSPACE_HUB/logs/quality/agent-radar-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/agent-radar-*.log
+    is_claude_task: false
+    description: Daily capability radar HTML regeneration.
+
+  - id: ai-tools-status
+    label: AI CLI version check
+    schedule: "15 3 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [claude, gemini]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      timeout 60 bash scripts/maintenance/ai-tools-status.sh
+      >> $WORKSPACE_HUB/logs/maintenance/ai-tools-status-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/ai-tools-status-*.log
+    is_claude_task: false
+    description: Weekly env parity audit (Sunday 03:15); overwrites ai-tools-status.yaml.
+
+  - id: model-ids
+    label: Model ID refresh
+    schedule: "30 3 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/update-model-ids.sh
+      >> $WORKSPACE_HUB/logs/maintenance/model-ids-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/model-ids-*.log
+    is_claude_task: false
+    description: Weekly model-ID refresh (Sunday 03:30); updates model-registry.yaml.
+
+  - id: harness-lean-out
+    label: Harness file lean-out audit
+    schedule: "30 3 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/harness-lean-out.sh
+      >> $WORKSPACE_HUB/logs/quality/harness-lean-out.log 2>&1
+    log: logs/quality/harness-lean-out.log
+    is_claude_task: false
+    description: Weekly audit (Monday 03:30) of CLAUDE.md, AGENTS.md, memory, rules for bloat; flags line budget violations, stale memory, promotion candidates.
+
+  - id: skills-curation
+    label: Weekly skills audit
+    schedule: "0 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, bash]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/skills-curation.sh
+      >> $WORKSPACE_HUB/logs/maintenance/skills-curation-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/skills-curation-*.log
+    is_claude_task: false
+    description: >-
+      Weekly deterministic skills audit (Monday 04:00); scans .claude/skills/
+      for duplicate names, leaf collisions, wrapper pairs. Emits JSON + Markdown
+      artifacts to logs/maintenance/skills-curation/. Read-only in v1. Issue #2281.
+
+  - id: provider-session-ecosystem-audit
+    label: Provider session ecosystem audit refresh
+    schedule: "15 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/provider-session-ecosystem-audit.sh
+    log: logs/quality/provider-session-ecosystem-audit-*.log
+    is_claude_task: false
+    description: Weekly refresh of cross-provider session audit artifacts (JSON + Markdown) after session exports.
+
+  - id: provider-utilization-refresh
+    label: Provider quota snapshot + utilization refresh
+    schedule: "20 */4 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/provider-utilization-refresh.sh
+    log: logs/quality/provider-utilization-refresh-*.log
+    is_claude_task: false
+    description: Refreshes quota snapshots and regenerates weekly provider utilization artifacts every 4 hours.
+
+  - id: weekly-hermes-parity-review
+    label: Weekly Hermes cross-machine parity review
+    schedule: "30 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/weekly-hermes-parity-review.sh
+      >> $WORKSPACE_HUB/logs/weekly-parity/cron-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/weekly-parity/cron-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Monday 04:30 UTC — Hermes cross-machine parity review. Collects
+      evidence from all workstations (local probes, SSH, bridge artifacts),
+      classifies each as pass/drift/unreachable/blocked, writes dated artifact
+      to logs/weekly-parity/. Issues #2239, #2089, #1583.
+
+  - id: claude-plugin-audit
+    label: Claude plugin weekly audit
+    schedule: "45 3 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, claude]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      timeout 120 bash scripts/maintenance/claude-plugin-audit.sh
+      >> $WORKSPACE_HUB/logs/maintenance/claude-plugin-audit-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/claude-plugin-audit-*.log
+    is_claude_task: false
+    description: Weekly audit (Sunday 03:45) of installed Claude plugins — version currency, skill overlaps, deprecations.
+
+  - id: notification-purge
+    label: Notification log 7-day retention
+    schedule: "30 4 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
+    log: null
+    is_claude_task: false
+    description: Daily purge of notification JSONL files older than 7 days.
+
+  - id: session-analysis
+    label: Morning session signal analysis
+    schedule: "0 3 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, bash, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/analysis/session-analysis.sh
+      >> $WORKSPACE_HUB/.claude/state/session-analysis/cron.log 2>&1
+    log: .claude/state/session-analysis/cron.log
+    is_claude_task: false
+    description: Daily 3AM analysis of previous day's session signals; produces skill scores and gap reports.
+
+  - id: agent-memory-backup
+    label: All-agent memory backup to ace-linux-2
+    schedule: "0 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/memory-backup.sh
+      >> $WORKSPACE_HUB/logs/maintenance/claude-memory-backup-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/claude-memory-backup-*.log
+    is_claude_task: false
+    description: Daily backup of all agent state (Claude, Hermes, Codex, Gemini) to ace-linux-2. Covers project memory, sessions, rules, and state files.
+
+  - id: memory-health-check
+    label: Memory quality health check + drift alert
+    schedule: "50 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      uv run --no-project python scripts/memory/eval-memory-quality.py
+      --memory-root .claude/memory/ --format md
+      --check-paths
+      >> $WORKSPACE_HUB/logs/quality/memory-health-$(date +\%Y\%m\%d).md 2>&1
+    log: logs/quality/memory-health-*.md
+    is_claude_task: false
+    description: Daily memory quality scan — checks signal density, stale paths, dedup candidates, and headroom. Fails if quality drops below threshold. Complements agent-memory-backup with quality verification.
+
+
+  - id: cron-health
+    label: Cron health check
+    schedule: "45 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/monitoring/cron-health-check.sh
+      >> $WORKSPACE_HUB/logs/quality/cron-health-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/cron-health-*.log
+    is_claude_task: false
+    description: Daily 05:45 UTC health check of all cron jobs; reads schedule-tasks.yaml, flags stale/missing/erroring runs, writes JSON report to .claude/state/cron-health/.
+
+  - id: daily-today
+    label: Daily productivity summary
+    schedule: "0 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, bash, git]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/productivity/daily_today.sh
+      >> $WORKSPACE_HUB/logs/daily/cron.log 2>&1
+    log: logs/daily/cron.log
+    is_claude_task: false
+    description: Daily productivity review; generates logs/daily/YYYY-MM-DD.md at 6 AM.
+
+  - id: review-audit
+    label: Daily review compliance audit
+    schedule: "30 6 * * *"
+    machines: [ace-linux-1]
+    requires: [bash, git, gh]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/maintenance/review-audit.sh
+      >> $WORKSPACE_HUB/logs/maintenance/review-audit-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/maintenance/review-audit-*.log
+    is_claude_task: false
+    description: Daily audit (06:30) of commit review compliance; creates GitHub issue if below 80%.
+
+  # ── dev-primary + dev-secondary: shared ─────────────────────────────────────
+
+  - id: repository-sync
+    label: Repository sync
+    schedule: "0 */4 * * *"
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    requires: [bash, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron-repository-sync.sh
+      >> $LOG 2>&1
+    log: logs/repository-sync-*.log
+    is_claude_task: false
+    description: Pull from remotes, push derived state; every 4 hours.
+    # NOTE: $LOG is set by setup-cron.sh per machine variant
+
+  # ── Windows: contribute-minimal ──────────────────────────────────────────
+
+  - id: architecture-scan
+    label: Weekly architecture scanner
+    schedule: "0 2 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/architecture-scan-weekly.sh
+      >> $WORKSPACE_HUB/logs/quality/architecture-scan-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/architecture-scan-*.log
+    is_claude_task: false
+    description: Weekly architecture scan (Sunday 02:00 UTC); runs scanner, commits updated reports, pushes.
+
+  - id: staleness-scan
+    label: Weekly doc staleness scanner
+    schedule: "0 3 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/staleness-scan-weekly.sh
+      >> $WORKSPACE_HUB/logs/quality/staleness-scan-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/staleness-scan-*.log
+    is_claude_task: false
+    description: Weekly doc staleness scan (Sunday 03:00 UTC); runs scanner, commits freshness dashboard, pushes.
+
+  # ── Windows: contribute-minimal ──────────────────────────────────────────
+
+  - id: win-repository-sync
+    label: Repository sync (Windows)
+    schedule: "every 4 hours"
+    machines: [licensed-win-1, licensed-win-2]
+    requires: [bash, git]
+    scheduler: windows-task-scheduler
+    command: >-
+      bash.exe -c "cd /path/to/workspace-hub && bash scripts/cron-repository-sync.sh"
+    log: null
+    is_claude_task: false
+    description: Windows Task Scheduler — repo sync every 4 hours via Git Bash.
+
+  # ── GTM / Business Development ──────────────────────────────────────────
+
+  # PAUSED 2026-04-19 pending #2348 approval — adversarial review of #2348 plan
+  # surfaced live ToS/legal exposure: scanner scrapes Google/Indeed/LinkedIn/Rigzone
+  # with forged User-Agent and no robots.txt check, then auto-commits to a public
+  # repo. Restore this block after #2348 implementation lands (robots.txt respect,
+  # per-source TOS_REVIEW.md, documented cease-and-desist runbook).
+  # - id: gtm-job-market-scan
+  #   label: Weekly GTM job market scan refresh
+  #   schedule: "0 5 * * 1"
+  #   machines: [dev-primary, ace-linux-1]
+  #   requires: [python3, git]
+  #   prefer: dev-primary
+  #   command: >-
+  #     PATH=$HOME/.local/bin:$HOME/miniforge3/bin:$PATH;
+  #     cd $WORKSPACE_HUB &&
+  #     bash scripts/gtm/weekly-scan-refresh.sh
+  #     >> $WORKSPACE_HUB/logs/gtm/scan-$(date +\%Y\%m\%d).log 2>&1
+  #   log: logs/gtm/scan-*.log
+  #   is_claude_task: false
+  #   description: >-
+  #     Weekly Monday 5AM UTC — scans LinkedIn, Indeed, Rigzone + 30 company
+  #     career pages for 22 engineering keywords. Tracks new vs returning
+  #     postings, generates dashboard, priority targets, trend report.
+  #     Commits results to main. Related: #1671, #1670, #1669.
+
+  # ── Windows machines ───────────────────────────────────────────────────
+
+  # ── Solver Queue ────────────────────────────────────────────────────────
+
+  - id: solver-watch-results
+    label: Solver queue watch-results (every 4h)
+    schedule: "0 */4 * * *"
+    machines: [ace-linux-1]
+    requires: [bash, python3, git]
+    prefer: ace-linux-1
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/solver/watch-results.sh --once
+      >> $WORKSPACE_HUB/logs/solver/watch-results-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/solver/watch-results-*.log
+    is_claude_task: false
+    description: >-
+      Every 4 hours — poll queue/completed/ for new results, run post-process-hook.py,
+      append metrics to data/solver-results-log.jsonl. Issue #1648.
+
+  - id: solver-dashboard
+    label: Solver queue dashboard regeneration (daily 05:00)
+    schedule: "0 5 * * *"
+    machines: [ace-linux-1]
+    requires: [python3, uv, git]
+    prefer: ace-linux-1
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/solver-dashboard-daily.sh
+      >> $WORKSPACE_HUB/logs/solver/dashboard-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/solver/dashboard-*.log
+    is_claude_task: false
+    description: >-
+      Daily 05:00 UTC — regenerate docs/solver/queue-dashboard.md from
+      data/solver-results-log.jsonl. Auto-commits if changed. Issue #1648.
+
+  - id: win-session-state-commit
+    label: Session state commit (Windows)
+    schedule: "daily 03:00"
+    machines: [licensed-win-1, licensed-win-2]
+    requires: [bash, git]
+    scheduler: windows-task-scheduler
+    command: >-
+      bash.exe -c "cd /path/to/workspace-hub &&
+      bash scripts/cron/win-session-state-commit.sh"
+    log: null
+    is_claude_task: false
+    description: Windows Task Scheduler — daily commit of session-end state.
+
+  - id: gemini-nightly-batch
+    label: Gemini nightly batch processor
+    schedule: "0 23 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/gemini-nightly-batch.sh
+      >> $WORKSPACE_HUB/logs/gemini/$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/gemini/*.log
+    is_claude_task: false
+    description: >-
+      Nightly 23:00 UTC — queries open agent:gemini issues, classifies by
+      execution mode (local vs router), processes filesystem tasks directly,
+      queues web-research tasks for Gemini router. Posts triage comments,
+      writes batch reports to .claude/state/gemini-batch/. Issue #1961.
+
+  - id: ai-credit-utilization-weekly
+    label: Weekly AI credit utilization report
+    schedule: "0 23 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      uv run scripts/ai/credit-utilization-tracker.py --weeks 5
+      >> $WORKSPACE_HUB/logs/ai/credit-utilization-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/ai/credit-utilization-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Sunday 23:00 UTC — generate AI credit utilization report across
+      all providers (Claude, Codex, Gemini, Copilot). Alerts on underutilization.
+      Issue #1855.
+
+  - id: queue-refresh-weekly
+    label: Weekly agent work queue refresh
+    schedule: "30 22 * * 0"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, gh, git]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/queue-refresh-weekly.sh
+      >> $WORKSPACE_HUB/logs/queue-refresh/$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/queue-refresh/*.log
+    is_claude_task: false
+    description: >-
+      Weekly Sunday 22:30 UTC — regenerate notes/agent-work-queue.md from
+      live GitHub label queries. Auto-commits and pushes so Monday's overnight
+      batch has a fresh queue. Staggered 30 min before ai-credit-utilization
+      and gemini-nightly-batch to avoid contention. Issue #2049.
+
+  # ── Compliance Monitoring (#2031) ──────────────────────────────────────────
+
+  - id: compliance-daily
+    label: Daily compliance monitoring with alerts
+    schedule: "45 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    prefer: dev-primary
+    requires: [bash, git, gh]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/enforcement/compliance-cron.sh
+      >> $WORKSPACE_HUB/logs/compliance/daily-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/compliance/daily-*.log
+    is_claude_task: false
+    description: >-
+      Daily 06:45 UTC — runs compliance-dashboard.sh, parses compliance rate,
+      creates GitHub issues when below thresholds (50% high, 30% critical).
+      Deduplicates alerts per ISO week. Issue #2031.
+
+  - id: compliance-weekly-report
+    label: Weekly compliance summary report
+    schedule: "0 7 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    prefer: dev-primary
+    requires: [bash, git, gh]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/enforcement/compliance-weekly-report.sh
+      >> $WORKSPACE_HUB/logs/compliance/weekly-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/compliance/weekly-*.log
+    is_claude_task: false
+    description: >-
+      Monday 07:00 UTC — aggregates 7 days of daily compliance logs, calculates
+      week-over-week trend, lists top unreviewed commits, writes markdown report
+      to docs/reports/compliance-weekly-YYYYMMDD.md. Issue #2031.
+
+  # ── Knowledge / Wiki ──────────────────────────────────────────────────────
+
+  - id: wiki-ingest-nightly
+    label: Engineering wiki incremental ingest
+    schedule: "15 2 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, git, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/knowledge/wiki-ingest-cron.sh
+      >> $WORKSPACE_HUB/logs/wiki-ingest/ingest-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/wiki-ingest/ingest-*.log
+    is_claude_task: false
+    description: >-
+      Nightly 02:15 UTC — scans source class directories for new/modified files,
+      triggers incremental ingest via llm_wiki.py, runs lint, auto-commits changes.
+      Alerts via GitHub issue on page count drops or lint failures. Issue #2036.
+
+  - id: weekly-governance-check
+    label: Weekly pyramid conformance + registry freshness check
+    schedule: "45 4 * * 1"
+    machines: [dev-primary, ace-linux-1]
+    requires: [python3, uv, gh]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/knowledge/weekly-governance-check.sh
+      >> $WORKSPACE_HUB/logs/conformance/governance-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/conformance/governance-*.log
+    is_claude_task: false
+    description: >-
+      Weekly Monday 04:45 UTC — runs pyramid-conformance-check.py (5 Tier-1
+      checks: DT-1, ACC-1, OWN-3, ID-1, ACC-3) and registry-freshness-check.py
+      (248 URL validation). Creates GitHub issues on conformance failures
+      (label: conformance) or dead links (label: registry-health).
+      Issues #2206, #1614, #2105.

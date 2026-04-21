@@ -1,0 +1,13 @@
+docs/strategy/gtm/job-market-scan/README.md
+docs/strategy/gtm/job-market-scan/RETENTION_POLICY.md
+docs/strategy/gtm/job-market-scan/cumulative-index.json
+docs/strategy/gtm/job-market-scan/dashboard.md
+docs/strategy/gtm/job-market-scan/email-templates-by-vertical.md
+docs/strategy/gtm/job-market-scan/new-this-week.md
+docs/strategy/gtm/job-market-scan/priority-targets.md
+docs/strategy/gtm/job-market-scan/raw-results/2026-04-02.json
+docs/strategy/gtm/job-market-scan/raw-results/2026-04-13.json
+docs/strategy/gtm/job-market-scan/raw-results/2026-04-20.json
+docs/strategy/gtm/job-market-scan/trend-report.md
+tests/gtm/test_job_market_retention.py
+tests/gtm/test_job_market_scanner.py
