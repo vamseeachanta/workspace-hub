@@ -10,7 +10,6 @@
 rules:
   # ---- DELETE (spam/noise) ----
   "collide.io":                     DELETE
-  "skylineseven.ccsend.com":        DELETE
   "promote.weebly.com":             DELETE
   "e.swimoutlet.com":               DELETE
   "email.myflighthub.com":          DELETE
@@ -87,6 +86,7 @@ rules:
   # Do NOT unsubscribe or delete; data feeds assethold CRE market analysis
   "sandsig.com":                    "assethold/data/cre-listings"
   "marcusmillichap.com":            "assethold/data/cre-listings"
+  "skylineseven.ccsend.com":        "assethold/data/cre-listings"
   "partnersrealestate.com":         "assethold/data/cre-listings"
   "email.loopnet.com":              "assethold/data/cre-listings"
   "ten-x.ccsend.com":               "assethold/data/cre-listings"
