@@ -36,7 +36,7 @@ bash scripts/openfoam/verify-openfoam-baseline.sh --benchmark pitzDaily
   - resolves bootstrap path
   - verifies fork/version
   - invokes the delegated tutorial runner
-  - owns the final normalized YAML verdict using embedded `python3`
+  - owns the final normalized YAML verdict using embedded Python normalization (`uv run python` when available, `python3` fallback for portability)
   - filters `damBreak` out of the canonical baseline output
 - `scripts/openfoam/run-openfoam-tutorials.sh`
   - remains the execution engine
@@ -74,11 +74,19 @@ Only `generated_at` is volatile.
 
 ## Requirement traceability
 
-| Issue #2269 requirement | Deliverable | Test / proof |
-| --- | --- | --- |
-| declare target fork/version explicitly | this workflow doc + wrapper | `test_workflow_doc_covers_traceable_issue_requirements`, `test_verify_script_normalizes_final_yaml_contract` |
-| canonical runner command(s) documented | this workflow doc + manifest | `test_workflow_doc_covers_traceable_issue_requirements` |
-| minimal smoke case under reproducible repo-tracked path | manifest | `test_manifest_instructions_do_not_commit_case_data` |
-| validator produces pass/fail output with explicit checks | wrapper + pytest harness | `test_verify_script_fails_when_bashrc_missing`, `test_verify_script_surfaces_runner_failure`, `test_verify_script_normalizes_final_yaml_contract` |
-| common failure modes and version/fork mismatches documented | this workflow doc + research notes | workflow doc inspection + repo docs updates |
-| workflow executable on canonical engineering host with documented prerequisites | wrapper + host-marked pytest | `@pytest.mark.openfoam` host test |
+| Issue #2269 requirement | Deliverable | Test / proof | Acceptance criteria |
+| --- | --- | --- | --- |
+| declare target fork/version explicitly | this workflow doc + wrapper | `test_workflow_doc_covers_traceable_issue_requirements`, `test_verify_script_normalizes_final_yaml_contract` | workflow doc declares ESI/OpenFOAM.com v2312 and wrapper emits normalized version/fork fields |
+| canonical runner command(s) documented | this workflow doc + manifest | `test_workflow_doc_covers_traceable_issue_requirements` | operator commands documented for smoke and optional benchmark tiers |
+| minimal smoke case under reproducible repo-tracked path | manifest | `test_manifest_instructions_do_not_commit_case_data` | manifest exists as instruction-only path with no committed case data |
+| validator produces pass/fail output with explicit checks | wrapper + pytest harness | `test_verify_script_fails_when_bashrc_missing`, `test_verify_script_surfaces_runner_failure`, `test_verify_script_normalizes_final_yaml_contract`, `test_verify_script_rejects_version_mismatch` | wrapper emits normalized success YAML and explicit failure artifacts |
+| common failure modes and version/fork mismatches documented | this workflow doc + research notes | workflow doc inspection + repo docs updates | troubleshooting and mismatch behavior are documented consistently |
+| workflow executable on canonical engineering host with documented prerequisites | wrapper + host-marked pytest | `@pytest.mark.openfoam` host test | host-required validation remains machine-gated to a supported OpenFOAM host |
+
+## Acceptance criteria
+
+- wrapper declares and enforces the two-path bootstrap baseline
+- wrapper exports the resolved bashrc path to the delegated runner
+- wrapper normalizes final YAML to the canonical contract
+- manifest remains instruction-only and documents prerequisites / commands / expected outputs / failure modes
+- docs/README and engineering checklist link the canonical baseline workflow

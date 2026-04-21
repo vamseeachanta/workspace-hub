@@ -46,3 +46,6 @@ minversion = "8.0"
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+markers = [
+    "openfoam: tests that require an OpenFOAM runtime on the execution host",
+]

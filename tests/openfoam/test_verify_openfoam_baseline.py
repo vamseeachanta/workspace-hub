@@ -18,10 +18,11 @@ PYPROJECT = REPO_ROOT / "pyproject.toml"
 
 REQUIRED_MANIFEST_HEADINGS = [
     "# OpenFOAM cavity v2312 smoke manifest",
-    "## Purpose",
-    "## Copy commands",
-    "## Run commands",
-    "## Expected artifacts",
+    "## Overview",
+    "## Prerequisites",
+    "## Commands",
+    "## Expected Outputs",
+    "## Failure Modes",
 ]
 
 
@@ -56,8 +57,27 @@ def test_verify_script_fails_when_bashrc_missing(tmp_path: Path) -> None:
 
     verdict = yaml.safe_load(verdict_path.read_text())
     assert verdict["overall_verdict"] == "FAIL"
-    assert verdict["error_type"] == "missing-bashrc"
+    assert verdict["error_summary"] == "missing-bashrc"
     assert verdict["attempted_bashrc_paths"] == ["/missing/a", "/missing/b"]
+    assert verdict["tutorials"] == []
+
+
+def test_verify_script_writes_failure_verdict_without_uv(tmp_path: Path) -> None:
+    verdict_path = tmp_path / "no-uv.yaml"
+
+    result = _run_verify(
+        "--verdict",
+        str(verdict_path),
+        env_overrides={
+            "OPENFOAM_BASHRC_PATHS": "/missing/a:/missing/b",
+            "PATH": "/usr/bin:/bin",
+        },
+    )
+
+    assert result.returncode != 0
+    assert verdict_path.exists()
+    verdict = yaml.safe_load(verdict_path.read_text())
+    assert verdict["error_summary"] == "missing-bashrc"
 
 
 def test_verify_script_rejects_invalid_benchmark_value(tmp_path: Path) -> None:
@@ -77,11 +97,12 @@ def test_verify_script_rejects_invalid_benchmark_value(tmp_path: Path) -> None:
 
 def test_verify_script_surfaces_runner_failure(tmp_path: Path) -> None:
     fake_bashrc = tmp_path / "openfoam2312.sh"
-    fake_bashrc.write_text("export WM_PROJECT_DIR=/fake/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
+    fake_bashrc.write_text("export WM_PROJECT_DIR=/fake/openfoam2312/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
     fake_runner = tmp_path / "fake-runner.sh"
     fake_runner.write_text(
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
+        "test -n \"${OPENFOAM_BASHRC:-}\"\n"
         "echo 'runner exploded' >&2\n"
         "exit 7\n"
     )
@@ -103,18 +124,112 @@ def test_verify_script_surfaces_runner_failure(tmp_path: Path) -> None:
     assert "runner exploded" in result.stderr
     verdict = yaml.safe_load(verdict_path.read_text())
     assert verdict["overall_verdict"] == "FAIL"
-    assert verdict["error_type"] == "runner-failure"
+    assert verdict["error_summary"] == "runner-failure"
+    assert verdict["resolved_bashrc_path"] == str(fake_bashrc)
+    assert verdict["tutorials"] == []
     assert "runner exploded" in verdict["error_message"]
 
 
-def test_verify_script_normalizes_final_yaml_contract(tmp_path: Path) -> None:
-    fake_bashrc = tmp_path / "openfoam2312.sh"
-    fake_bashrc.write_text("export WM_PROJECT_DIR=/fake/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
-    raw_verdict = tmp_path / "raw.yaml"
+def test_verify_script_rejects_version_mismatch(tmp_path: Path) -> None:
+    fake_bashrc = tmp_path / "bad-openfoam.sh"
+    fake_bashrc.write_text("export WM_PROJECT_DIR=/fake/not-openfoam2312\nexport WM_PROJECT_VERSION=v9999\n")
+    raw_verdict = tmp_path / "raw-mismatch.yaml"
+    runner_marker = tmp_path / "runner-marker.txt"
     fake_runner = tmp_path / "fake-runner.sh"
     fake_runner.write_text(
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
+        f"echo ran > {runner_marker}\n"
+        "test -n \"${OPENFOAM_BASHRC:-}\"\n"
+        f"cat > {raw_verdict} <<'YAML'\n"
+        "generated_at: 2026-04-21T00:00:00Z\n"
+        "machine: dev-secondary\n"
+        "openfoam_version: v9999\n"
+        "overall_verdict: PASS\n"
+        "tutorials:\n"
+        "  - name: cavity\n"
+        "    status: PASS\n"
+        "    time_directories: 9\n"
+        "YAML\n"
+    )
+    fake_runner.chmod(0o755)
+    verdict_path = tmp_path / "version-mismatch.yaml"
+
+    result = _run_verify(
+        "--verdict",
+        str(verdict_path),
+        env_overrides={
+            "OPENFOAM_BASHRC_PATHS": str(fake_bashrc),
+            "OPENFOAM_TUTORIAL_RUNNER_PATH": str(fake_runner),
+            "OPENFOAM_VERSION_COMMAND": "printf 'OpenFOAM-v9999\\n'",
+            "OPENFOAM_HOSTNAME": "dev-secondary",
+            "OPENFOAM_RAW_VERDICT_PATH": str(raw_verdict),
+        },
+    )
+
+    assert result.returncode != 0
+    assert "version mismatch" in result.stderr.lower()
+    verdict = yaml.safe_load(verdict_path.read_text())
+    assert verdict["overall_verdict"] == "FAIL"
+    assert verdict["error_summary"] == "version-mismatch"
+    assert verdict["resolved_bashrc_path"] == str(fake_bashrc)
+    assert not raw_verdict.exists()
+    assert not runner_marker.exists()
+
+
+def test_verify_script_rejects_malformed_raw_verdict(tmp_path: Path) -> None:
+    fake_bashrc = tmp_path / "openfoam2312.sh"
+    fake_bashrc.write_text("export WM_PROJECT_DIR=/fake/openfoam2312/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
+    raw_verdict = tmp_path / "raw-invalid.yaml"
+    fake_runner = tmp_path / "fake-runner.sh"
+    fake_runner.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "test -n \"${OPENFOAM_BASHRC:-}\"\n"
+        f"cat > {raw_verdict} <<'YAML'\n"
+        "generated_at: 2026-04-21T00:00:00Z\n"
+        "machine: dev-secondary\n"
+        "openfoam_version: v2312\n"
+        "overall_verdict: PASS\n"
+        "tutorials:\n"
+        "  - name: cavity\n"
+        "    status: MAYBE\n"
+        "    time_directories: eleven\n"
+        "YAML\n"
+    )
+    fake_runner.chmod(0o755)
+    verdict_path = tmp_path / "invalid-raw.yaml"
+
+    result = _run_verify(
+        "--verdict",
+        str(verdict_path),
+        env_overrides={
+            "OPENFOAM_BASHRC_PATHS": str(fake_bashrc),
+            "OPENFOAM_TUTORIAL_RUNNER_PATH": str(fake_runner),
+            "OPENFOAM_VERSION_COMMAND": "printf 'OpenFOAM-v2312\\n'",
+            "OPENFOAM_HOSTNAME": "dev-secondary",
+            "OPENFOAM_RAW_VERDICT_PATH": str(raw_verdict),
+        },
+    )
+
+    assert result.returncode != 0
+    assert "schema invalid" in result.stderr.lower()
+    verdict = yaml.safe_load(verdict_path.read_text())
+    assert verdict["overall_verdict"] == "FAIL"
+    assert verdict["error_summary"] == "schema-invalid"
+    assert verdict["tutorials"] == []
+
+
+def test_verify_script_normalizes_final_yaml_contract(tmp_path: Path) -> None:
+    fake_bashrc = tmp_path / "openfoam2312.sh"
+    fake_bashrc.write_text("export WM_PROJECT_DIR=/fake/openfoam2312/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
+    raw_verdict = tmp_path / "raw.yaml"
+    fake_runner = tmp_path / "fake-runner.sh"
+    runner_marker = tmp_path / "runner-marker.txt"
+    fake_runner.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        f"echo ran > {runner_marker}\n"
         f"cat > {raw_verdict} <<'YAML'\n"
         "generated_at: 2026-04-21T00:00:00Z\n"
         "machine: dev-secondary\n"
@@ -156,9 +271,56 @@ def test_verify_script_normalizes_final_yaml_contract(tmp_path: Path) -> None:
     assert verdict["fork"] == "ESI/OpenFOAM.com"
     assert verdict["version"] == "v2312"
     assert verdict["overall_verdict"] == "PASS"
+    assert runner_marker.read_text().strip() == "ran"
+    assert verdict["verification_method"] == (
+        "WM_PROJECT_VERSION=v2312; foamVersion=v2312; WM_PROJECT_DIR=/fake/openfoam2312/tutorials"
+    )
     assert verdict["tutorials"] == [
         {"name": "cavity", "status": "PASS", "time_directories": 11}
     ]
+
+
+def test_verify_script_prefers_first_supported_bashrc_path(tmp_path: Path) -> None:
+    primary = tmp_path / "primary-openfoam2312.sh"
+    primary.write_text("export WM_PROJECT_DIR=/fake/openfoam2312/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
+    secondary = tmp_path / "secondary-openfoam2312.sh"
+    secondary.write_text("export WM_PROJECT_DIR=/fake/openfoam2312/tutorials\nexport WM_PROJECT_VERSION=v2312\n")
+    raw_verdict = tmp_path / "raw-dual.yaml"
+    chosen_path = tmp_path / "chosen.txt"
+    fake_runner = tmp_path / "fake-runner.sh"
+    fake_runner.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        f"printf '%s' \"$OPENFOAM_BASHRC\" > {chosen_path}\n"
+        f"cat > {raw_verdict} <<'YAML'\n"
+        "generated_at: 2026-04-21T00:00:00Z\n"
+        "machine: dev-secondary\n"
+        "openfoam_version: v2312\n"
+        "overall_verdict: PASS\n"
+        "tutorials:\n"
+        "  - name: cavity\n"
+        "    status: PASS\n"
+        "    time_directories: 11\n"
+        "YAML\n"
+    )
+    fake_runner.chmod(0o755)
+    verdict_path = tmp_path / "dual.yaml"
+
+    result = _run_verify(
+        "--verdict",
+        str(verdict_path),
+        env_overrides={
+            "OPENFOAM_BASHRC_PATHS": f"{primary}:{secondary}",
+            "OPENFOAM_TUTORIAL_RUNNER_PATH": str(fake_runner),
+            "OPENFOAM_VERSION_COMMAND": "printf 'OpenFOAM-v2312\\n'",
+            "OPENFOAM_HOSTNAME": "dev-secondary",
+            "OPENFOAM_RAW_VERDICT_PATH": str(raw_verdict),
+        },
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert chosen_path.read_text() == str(primary)
+    assert "secondary supported bashrc skipped" in result.stderr
 
 
 def test_manifest_instructions_do_not_commit_case_data() -> None:
@@ -181,6 +343,7 @@ def test_workflow_doc_covers_traceable_issue_requirements() -> None:
         "pitzDaily",
         "damBreak",
         "Requirement traceability",
+        "Acceptance criteria",
     ]:
         assert required in text
 

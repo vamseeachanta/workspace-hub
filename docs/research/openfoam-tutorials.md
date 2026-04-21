@@ -24,7 +24,8 @@ must be run when parallelism permits.
 | paraFoam/ParaView | 5.11.2 | Installed via apt; pvpython verified |
 | foamToVTK | bundled with v2312 | Available for headless post-processing |
 
-Source environment: `/opt/openfoam2312/etc/bashrc`
+Source environment (historical research note): `/opt/openfoam2312/etc/bashrc`
+Canonical baseline validator probe order for #2269: `/usr/lib/openfoam/openfoam2312/etc/bashrc`, then `/opt/openfoam2312/etc/bashrc`
 Tutorial root: `/opt/openfoam2312/tutorials/`
 
 ## Tutorial 1: pitzDaily (simpleFoam, k-epsilon turbulence)
@@ -39,7 +40,7 @@ Tutorial root: `/opt/openfoam2312/tutorials/`
 
 ### Commands
 ```bash
-source /opt/openfoam2312/etc/bashrc
+source /usr/lib/openfoam/openfoam2312/etc/bashrc || source /opt/openfoam2312/etc/bashrc
 cp -r /opt/openfoam2312/tutorials/incompressible/simpleFoam/pitzDaily ~/foam/run/
 cd ~/foam/run/pitzDaily
 blockMesh
@@ -91,7 +92,7 @@ pitzDaily/
 
 ### Planned commands
 ```bash
-source /opt/openfoam2312/etc/bashrc
+source /usr/lib/openfoam/openfoam2312/etc/bashrc || source /opt/openfoam2312/etc/bashrc
 cp -r /opt/openfoam2312/tutorials/incompressible/icoFoam/cavity/cavity ~/foam/run/
 cd ~/foam/run/cavity
 blockMesh
@@ -128,7 +129,7 @@ paraFoam &   # or foamToVTK for headless
 
 ### Planned commands
 ```bash
-source /opt/openfoam2312/etc/bashrc
+source /usr/lib/openfoam/openfoam2312/etc/bashrc || source /opt/openfoam2312/etc/bashrc
 cp -r /opt/openfoam2312/tutorials/multiphase/interFoam/laminar/damBreak ~/foam/run/
 cd ~/foam/run/damBreak
 blockMesh
@@ -171,7 +172,7 @@ foamToVTK         # For headless post-processing
 
 ### Planned commands
 ```bash
-source /opt/openfoam2312/etc/bashrc
+source /usr/lib/openfoam/openfoam2312/etc/bashrc || source /opt/openfoam2312/etc/bashrc
 cp -r /opt/openfoam2312/tutorials/incompressible/simpleFoam/motorBike ~/foam/run/
 cd ~/foam/run/motorBike
 ./Allrun   # uses: blockMesh → decomposePar → snappyHexMesh (parallel) → simpleFoam
