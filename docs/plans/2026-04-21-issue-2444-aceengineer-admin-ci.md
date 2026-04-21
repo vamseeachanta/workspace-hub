@@ -52,7 +52,12 @@ No relevant wiki pages — CI bootstrap.
 
 - No `.github/workflows/ci.yml` in aceengineer-admin (this plan creates it)
 - No path-ignore filter currently exists; PII-carrying document directories would otherwise trigger CI on every xlsx edit
-- Current single-batch test suite has never been executed in CI; first run may surface latent failures in the existing 12+ test files (particularly `tests/knowledge/` which depends on optional `sentence-transformers`/`numpy` extras — flagged as a risk, mitigated by installing only `[test]` extras and skipping semantic tests via pytest markers or `-k` filter on first run if needed)
+- Current single-batch test suite has never been executed in CI; first run may surface latent failures. Verified defects (2026-04-21):
+  - `tests/unit/automation/test_cli.py:6` imports `from aceengineer_automation.cli import main` — module was renamed to `aceengineer_admin.cli`; import will fail at collection.
+  - `tests/unit/automation/common/test_config.py:8` imports `from aceengineer_automation.common.config import Config` — same rename; import will fail at collection.
+  - `src/aceengineer_admin/automation/cli.py:6` imports `from aceengineer_automation import __version__` — same rename; affects runtime.
+  All three must be updated as part of this plan's implementation scope or first-run green is impossible.
+- `tests/knowledge/` suite: earlier draft flagged `sentence_transformers`/`numpy` as collection-time import risk. Re-verified via `grep -l "sentence_transformers\|numpy" tests/knowledge/*.py` — no top-level imports found; matches in `test_code_scanner.py` and `test_project_scanner.py` are string-literal fixture payloads. Risk downgraded to MEDIUM. However, `tests/knowledge/` has not been executed end-to-end in this environment, so this plan elects Option A2 (`--ignore=tests/knowledge`) for the first CI run and opens a follow-on issue to enable the suite with proper extras.
 
 ### Evidence (embedded verification)
 
@@ -102,13 +107,13 @@ python_functions = ["test_*"]
 
 ## Deliverable
 
-A single `aceengineer-admin/.github/workflows/ci.yml` that runs `uv sync --extra test --extra dev` → `ruff check src tests` → `black --check src tests` → `pytest` on Python 3.11 and 3.12 on ubuntu-latest, path-filtered to exclude PII-carrying directories and agent-harness scaffolding, producing a green first run that reports the existing test suite result.
+A single `aceengineer-admin/.github/workflows/ci.yml` that runs `uv sync --frozen --extra dev --extra test` → package-import smoke (`python -c "import aceengineer_admin"`) → `ruff check src tests` → `black --check src tests` → `pytest --ignore=tests/knowledge` on Python 3.11 and 3.12 on ubuntu-latest, triggered by positive `paths:` filter restricted to `src/**`, `tests/**`, `pyproject.toml`, and `.github/workflows/**`, producing a green first run that reports the existing test suite result (excluding the `tests/knowledge/` subtree, which is deferred to a follow-on issue). Plan implementation also updates three stale `aceengineer_automation.*` import sites so the suite can actually collect.
 
 ---
 
 ## Pseudocode
 
-T1 — trivial. See Files to Change. Workflow structure follows the digitalmodel `workflow-automation-tests.yml` template with these substitutions: `tests/workflows/workflow_automation/` → `src tests`; `workflow-automation list` CLI smoke → removed (aceengineer CLI `aceengineer` exists but not validated here — reserve for follow-up); codecov upload → removed (optional, not required for minimal viable).
+T1 — trivial. See Files to Change. Workflow structure follows the digitalmodel `workflow-automation-tests.yml` template with these substitutions (every deviation disclosed here): `tests/workflows/workflow_automation/` → `src tests`; `workflow-automation list` CLI smoke → removed (aceengineer CLI entrypoint exists but not validated here — reserved for follow-up); codecov upload → removed; template's `Verify package installation` step retained, rewritten as `uv run python -c "import aceengineer_admin"`; `uv pip install -e ".[dev]"` → `uv sync --frozen --extra dev --extra test` (repo has a committed `uv.lock`, so `uv sync --frozen` gives reproducible installs); manual `uv venv && echo "$PWD/.venv/bin" >> $GITHUB_PATH` step removed (redundant with `uv run`, per Gemini finding); step order `actions/setup-python@v5` → `astral-sh/setup-uv@v5` preserved exactly from template; pytest narrowed via `--ignore=tests/knowledge` for first run; windows-latest and py3.13 matrix cells dropped (see Risks). `workflow_dispatch` and `concurrency` added (zero template precedent, rationale in Risks).
 
 ---
 
@@ -116,7 +121,16 @@ T1 — trivial. See Files to Change. Workflow structure follows the digitalmodel
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `aceengineer-admin/.github/workflows/ci.yml` | sole deliverable — CI workflow |
+| Create | `aceengineer-admin/.github/workflows/ci.yml` | primary deliverable — CI workflow |
+| Modify | `aceengineer-admin/tests/unit/automation/test_cli.py` | line 6: `from aceengineer_automation.cli import main` → `from aceengineer_admin.automation.cli import main` — stale import blocks pytest collection |
+| Modify | `aceengineer-admin/tests/unit/automation/common/test_config.py` | line 8: `from aceengineer_automation.common.config import Config` → `from aceengineer_admin.common.config import Config` — stale import blocks pytest collection |
+| Modify | `aceengineer-admin/src/aceengineer_admin/automation/cli.py` | line 6: `from aceengineer_automation import __version__` → `from aceengineer_admin import __version__` — stale import affects package runtime |
+
+**Verification command (before implementation starts):**
+```
+cd aceengineer-admin && grep -rn "aceengineer_automation" tests/ src/ 2>&1
+```
+All three sites above must be updated; re-run the grep after the edit to confirm zero hits. If new hits appear after a rebase, add them to the edit list.
 
 **Note:** this plan does NOT modify `workspace-hub/docs/plans/README.md` (explicit hard constraint from planning task). The index row must be added by a later governance step.
 
@@ -142,13 +156,19 @@ CI infrastructure — no unit-test TDD. Acceptance is workflow-run green. Inform
 ## Acceptance Criteria
 
 - [ ] `aceengineer-admin/.github/workflows/ci.yml` is committed to aceengineer-admin `main` (after user `status:plan-approved` + marker)
-- [ ] First GitHub Actions run on aceengineer-admin after merge is GREEN on both py3.11 and py3.12 (ubuntu-latest)
-- [ ] Workflow skips xlsx/docx-only commits via `paths-ignore`
-- [ ] Workflow scopes lint and tests to `src/` + `tests/` — does NOT attempt to lint root-level one-shot scripts
+- [ ] Three stale-import fixes (see §Files to Change) committed in the same PR as the workflow
+- [ ] First GitHub Actions run on aceengineer-admin after merge is GREEN on both py3.11 and py3.12 (ubuntu-latest), scope: `tests/unit/` + `src/` (i.e., `pytest --ignore=tests/knowledge`)
+- [ ] Workflow triggers ONLY on changes to `src/**`, `tests/**`, `pyproject.toml`, or `.github/workflows/**` (positive `paths:` filter)
+- [ ] Workflow is manually triggerable via `workflow_dispatch`
+- [ ] Workflow concurrency group cancels superseded PR commits
+- [ ] Package import smoke (`python -c "import aceengineer_admin"`) runs and passes on both matrix cells
 - [ ] Lint step (ruff + black) completes within 2 minutes per matrix cell
 - [ ] Pytest step respects `pyproject.toml` `testpaths` (no `--rootdir` override)
-- [ ] Summary comment posted back to issue #2444 with the Actions run URL and the resulting status
 - [ ] Adversarial review artifacts (Claude + Codex + Gemini) posted under `scripts/review/results/` before user approval
+- [ ] Follow-on issue opened to re-enable `tests/knowledge/` with `[knowledge-semantic]` extra once ML-extras-on-runner footprint is scoped
+
+**Post-merge governance (tracked separately, NOT workflow steps):**
+- Human-authored summary comment posted to issue #2444 with the first Actions run URL and resulting status.
 
 ---
 
@@ -158,40 +178,25 @@ This section freezes the target file content so reviewers can verify correctness
 
 **File:** `aceengineer-admin/.github/workflows/ci.yml`
 
-**Triggers:**
+**Triggers (positive `paths:` filter, matching source template's scoping style):**
 - `push` on branches: `main`
 - `pull_request` (any branch into `main`)
-- `paths-ignore` applies to both trigger types:
-  - `invoices/**`
-  - `employees/**`
-  - `taxes/**`
-  - `Tax/**`
-  - `contracts/**`
-  - `reports/**`
-  - `data/**`
-  - `SA/**`
-  - `Sabitha/**`
-  - `preferred_vendor/**`
-  - `Experience/**`
-  - `00_office_opening/**`
-  - `admin/**`
-  - `Superseded/**`
-  - `**/*.xlsx`
-  - `**/*.docx`
-  - `**/*.pdf`
-  - `CLAUDE.md.backup*`
-  - `.agent-os/**`
-  - `.claude/**`
-  - `.codex/**`
-  - `.cursor/**`
-  - `.gemini/**`
-  - `.drcode/**`
-  - `.common/**`
-  - `.git-commands/**`
-  - `.slash-commands/**`
-  - `.hive-mind/**`
-  - `docs/**`
-  - `**/*.md`
+- `workflow_dispatch` (manual re-runs for debugging — zero cost, essential for first-run rollout)
+- `paths:` applies to both `push` and `pull_request`:
+  - `src/**`
+  - `tests/**`
+  - `pyproject.toml`
+  - `uv.lock`
+  - `.github/workflows/**`
+
+Positive `paths:` intrinsically excludes PII-carrying directories (`invoices/**`, `employees/**`, `taxes/**`, `Tax/**`, `contracts/**`, etc.) and agent-harness scaffolding (`.claude/**`, `.codex/**`, `.cursor/**`, etc.) because those paths are NOT listed. This is tighter and less error-prone than the earlier broad `paths-ignore` approach — any new private directory added to the repo is automatically excluded from CI triggers.
+
+**Concurrency:**
+```yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+```
 
 **Jobs (single job `ci`):**
 
@@ -203,48 +208,73 @@ strategy:
 runs-on: ubuntu-latest
 ```
 
-**Steps (ordered):**
+**Steps (ordered — preserves source template's `setup-python` → `setup-uv` order exactly):**
 1. `actions/checkout@v4`
-2. `astral-sh/setup-uv@v5` with `enable-cache: true`
-3. `actions/setup-python@v5` with `python-version: ${{ matrix.python-version }}`
-4. `uv venv && echo "$PWD/.venv/bin" >> $GITHUB_PATH`
-5. `uv pip install -e ".[dev,test]"` (installs black, ruff, pytest, pytest-cov, pytest-mock, pytest-asyncio)
+2. `actions/setup-python@v5` with `python-version: ${{ matrix.python-version }}`
+3. `astral-sh/setup-uv@v5` with `enable-cache: true`
+4. Install dependencies: `uv sync --frozen --extra dev --extra test` (reproducible install from committed `uv.lock`; installs black, ruff, pytest, pytest-cov, pytest-mock, pytest-asyncio). The redundant manual `uv venv && echo "$PWD/.venv/bin" >> $GITHUB_PATH` step is omitted — `uv run` resolves the project venv automatically (Gemini finding).
+5. Package import smoke: `uv run python -c "import aceengineer_admin"` (verifies installed package is importable — direct adaptation of template's `Verify package installation` step)
 6. Ruff: `uv run ruff check src tests`
 7. Black: `uv run black --check src tests`
-8. Pytest: `uv run pytest` (respects `pyproject.toml` testpaths)
-9. Smoke compile (optional, final step): `uv run python -m compileall -q src tests`
+8. Pytest: `uv run pytest --ignore=tests/knowledge` (first-run policy — `tests/knowledge/` deferred to follow-on issue pending verified footprint of `[knowledge-semantic]` extra on GitHub-hosted runners)
 
 **Not included (deferred to follow-ups):**
 - Codecov upload
-- Windows/macOS matrix rows
-- Python 3.13
+- Windows/macOS matrix rows — see Risks entry
+- Python 3.13 — see Risks entry
 - CLI smoke (`aceengineer --help`) — can be added once entrypoint is validated
 - mypy step — `dev` extra includes it but pyproject does not declare strict mode; adding it would likely fail first run
+- `tests/knowledge/` subtree — re-enable in follow-on issue with `[knowledge-semantic]` extra (`sentence-transformers`, `numpy`) after confirming install footprint on ubuntu-latest runners
+- `compileall` step (dropped; package-import smoke is a stronger check)
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk (HIGH):** `tests/knowledge/` suite may depend on the `knowledge-semantic` extra (`sentence-transformers`, `numpy`). If tests fail-import on first run, either (a) install `[knowledge-semantic]` extra as well, or (b) exclude `tests/knowledge/` via `pytest --ignore=tests/knowledge` on first run and open a follow-up issue. **Open for reviewer:** which mitigation is preferred?
-- **Risk (MEDIUM):** existing `tests/unit/automation/test_cli.py` and `tests/unit/automation/common/test_config.py` have never run in CI — first run may surface latent failures. Mitigation: if pytest fails on first CI run, capture the failure list in an issue comment, triage, and either fix or `pytest.skip` per-test before re-enabling the gate. Do NOT `fail_under` coverage on first run (already `0` in pyproject).
+- **Risk (MEDIUM, downgraded from HIGH):** `tests/knowledge/` suite. Re-verified via `grep -l "sentence_transformers\|numpy" tests/knowledge/*.py` — no top-level imports; matches are string-literal fixture payloads. Collection-time ImportError is unlikely but suite has not been executed end-to-end here. **Resolution (committed):** Option A2 — `pytest --ignore=tests/knowledge` on first CI run; follow-on issue re-enables the suite with verified `[knowledge-semantic]` extra footprint on GitHub-hosted runners.
+- **Risk (MEDIUM, now a hard implementation item):** stale imports in three files (see §Files to Change). Without the rename fixes, pytest collection fails on `tests/unit/automation/test_cli.py` and `tests/unit/automation/common/test_config.py`. Mitigation: fix the three sites in the same PR as the workflow; verify with `grep -rn "aceengineer_automation" tests/ src/` returning zero hits.
 - **Risk (MEDIUM):** ruff and black have never been enforced. First run may surface formatting issues across `src/`. Mitigation: run `uv run ruff check --fix src tests` + `uv run black src tests` locally during implementation (after `plan-approved`), commit the formatting fixes in the same PR as the workflow file.
-- **Risk (LOW):** path-ignore list is long; any missing path means CI burns minutes on doc-only commits. Tolerable — fix forward when noticed.
-- **Risk (LOW):** `invoice_config_2025-10.yaml` (client name + rate) sits at repo root and would be included in any CI-triggering commit diff (it is a `.yaml`, not covered by `paths-ignore`). Even though CI doesn't read its contents, the GitHub Actions event payload may log the filename. Acceptable (private repo); flagged for awareness.
-- **Open:** should `workflow_dispatch` be added for manual re-runs? Recommended yes (zero cost, aids debugging). Defer to reviewer.
-- **Open:** should `fail-fast: false` stay? Recommended yes so py3.11 and py3.12 failures surface independently on first run.
+- **Risk (LOW):** positive `paths:` filter may be too restrictive if future work adds a new top-level product directory. Tolerable — fix forward when noticed.
+- **Risk (LOW):** `invoice_config_2025-10.yaml` (client name + rate) sits at repo root. Not included in positive `paths:` filter, so it will not trigger CI; GitHub event payload may still log the filename on commits. Acceptable (private repo); flagged for awareness.
+- **Risk (LOW, tracked):** windows-latest and py3.13 intentionally out of scope; source template included `windows-latest`. aceengineer-admin is a Windows-first invoice/docx/xlsx toolchain in production, so Windows-specific regressions (path separators, openpyxl behaviors, locale) will not be caught. Revisit in follow-on issue if/when product code targets either; open that issue as part of the same PR's post-merge governance.
+- **Decided (was Open):** `workflow_dispatch` — YES, included in the spec above. Manual re-runs are essential for first-run debugging.
+- **Decided (was Open):** `fail-fast: false` — YES, retained. py3.11 and py3.12 failures surface independently on first run.
 - **Open:** parent meta-issue #2424 may prescribe a standard workflow template. Not yet audited. If #2424 surfaces a canonical template after this plan lands, this workflow will be migrated in a follow-up.
 
 ---
 
 ## Adversarial Review Summary
 
+### Wave 1
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | — |
-| Codex | PENDING | — |
-| Gemini | PENDING | — |
+| Claude | MAJOR | uv sync vs uv pip install contradiction; HIGH risk speculative and unmitigated; template step order silently swapped; package-import smoke dropped; `workflow_dispatch` omitted; issue-comment AC has no workflow step; no concurrency group; Windows drop untracked |
+| Codex | MAJOR | Deliverable claims src/+tests/ scope but spec uses `paths-ignore` only (not positive `paths:`); `knowledge-semantic` decision unresolved while AC demands GREEN; stale `aceengineer_automation.*` imports in `tests/unit/automation/*` (collection-time failure); Deliverable/Spec command contradiction |
+| Gemini | MINOR | `knowledge-semantic` decision punted to reviewer; `workflow_dispatch` omitted; redundant manual `$GITHUB_PATH` alongside `uv run` |
 
-**Overall result:** PENDING — review wave has not been dispatched yet.
+**Wave 1 overall:** MAJOR (two MAJOR, one MINOR; convergence on three issues — install-command contradiction, unresolved `knowledge-semantic` mitigation, missing `workflow_dispatch`).
+
+### Revisions made (Wave 2 response)
+
+- Resolved `uv sync` vs `uv pip install -e` contradiction — adopted `uv sync --frozen --extra dev --extra test` in both Deliverable and Detailed Spec (honors committed `uv.lock`).
+- Committed to Option A2 for `knowledge-semantic`: `pytest --ignore=tests/knowledge` on first CI run; follow-on issue for re-enablement; acceptance scoped to `tests/unit/` + `src/`.
+- Added `workflow_dispatch:` to the on-triggers block.
+- Added three stale-import fixes to §Files to Change (`tests/unit/automation/test_cli.py`, `tests/unit/automation/common/test_config.py`, `src/aceengineer_admin/automation/cli.py`) — Codex's unique implementation-blocking finding. Added verification grep command.
+- Converted workflow trigger from broad `paths-ignore` to positive `paths:` list (`src/**`, `tests/**`, `pyproject.toml`, `uv.lock`, `.github/workflows/**`) matching template's scoping style; updated Deliverable to match.
+- Re-verified `knowledge-semantic` evidence — grep confirmed matches are string-literal fixture payloads, not real imports. Risk downgraded from HIGH to MEDIUM; rationale documented.
+- Preserved source template's `setup-python` → `setup-uv` step order (reversed in earlier draft); disclosed in Pseudocode substitutions.
+- Re-added package-import smoke (`uv run python -c "import aceengineer_admin"`) replacing the dropped `compileall` step.
+- Removed the issue-comment acceptance criterion from the workflow scope; moved to a separate post-merge governance checklist.
+- Added explicit Risks entry noting windows-latest + py3.13 out of scope with follow-on issue commitment.
+- Added `concurrency: group: ${{ github.workflow }}-${{ github.ref }} cancel-in-progress: true` block.
+- Removed the redundant manual `uv venv && echo "$PWD/.venv/bin" >> $GITHUB_PATH` step (Gemini finding).
+
+### Revisions deferred
+
+- None material. All Wave 1 convergent blockers and singleton high-severity findings were addressed in Wave 2. Open item: parent meta-issue #2424 canonical-template audit — remains an Open question in Risks because it is external to this plan's scope and would be addressed as a follow-up migration if #2424 surfaces a template after landing.
+
+**Status:** revised — awaiting Wave 2 re-review.
 
 ---
 

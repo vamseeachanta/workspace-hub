@@ -19,7 +19,7 @@
   - `pyproject.toml` EXISTS (4133 bytes, declares `[project] name = "achantas-data"`, pytest + black + isort + mypy config).
   - `src/achantas_data/` EXISTS with `__init__.py` and `utils.py`.
   - `tests/` EXISTS with `conftest.py`, `test_smoke.py`, `unit/test_family_tree.py`, `unit/test_utils.py`.
-- However, the repo **content mix** is overwhelmingly docs: 495 tracked `.md` files vs. 13 tracked `.py` files (git-ls-files count). The active traffic (10+ open issues on personal-data topics in last week, recent commits to `_house/`, `_family/`, `_finance/`) confirms the repo now functions primarily as a markdown knowledge base with legacy Python scaffolding still tracked but idle.
+- However, the repo **content mix** is overwhelmingly docs: 495 tracked `.md` files vs. 12 tracked `.py` files (`git ls-files | grep -c '\.py$'` = 12, verified 2026-04-21). The active traffic (10+ open issues on personal-data topics in last week, recent commits to `_house/`, `_family/`, `_finance/`) confirms the repo now functions primarily as a markdown knowledge base with legacy Python scaffolding still tracked but idle.
 - Implication: the issue body's recommendation (markdown-lint + link-check, skip Python tests) is still correct, but the **justification must be stated truthfully** — "Python scaffolding is tracked but unused; active traffic is markdown; restoring Python-tests workflow would add noise without value". Not "there is no Python code".
 
 ### Standards
@@ -66,8 +66,14 @@ No relevant wiki pages — this is repo infrastructure, not domain knowledge.
 
 **Tracked-file mix** (`git ls-files | grep -c` on local checkout 2026-04-21):
 - 495 `.md` files tracked
-- 13 `.py` files tracked (most are `__init__.py`, `conftest.py`, test skeletons)
+- 12 `.py` files tracked (`create-module-agent.py`, `modules/reporting/templates/plotly_report_template.py`, `modules/reporting/utils/path_utils.py`, `src/achantas_data/__init__.py`, `src/achantas_data/utils.py`, `tests/__init__.py`, `tests/conftest.py`, `tests/integration/__init__.py`, `tests/test_smoke.py`, `tests/unit/__init__.py`, `tests/unit/test_family_tree.py`, `tests/unit/test_utils.py`) — six are `__init__.py`/`conftest.py` scaffolding; three are test skeletons; three are legacy utilities.
 - 3715 total tracked files (dominated by docs/PDFs)
+
+**Python-CI exclusion evidence** (verified 2026-04-21, supports the §OUT-of-scope decision not to restore `python-tests.yml`):
+- `git log -1 --format="%ai %s" -- tests/ src/ pyproject.toml` → `2026-03-25 19:16:48 -0500 chore(sync): auto-sync 2026-03-25` (last touch was an auto-sync commit, not active development).
+- `git log -1 --format="%ai %s" -- '*.md'` → `2026-04-20 21:33:22 -0500 docs(house): pause enrollment at Revolution Step 2 (#40)` (markdown touched 26 days later, in active PR flow).
+- `pyproject.toml` declares pytest/black/isort/mypy but the repo has not run any of them in CI since 2025-10; the test files reference modules (`achantas_data.utils`) that themselves have no behavioural exercise. The last 10 commits on `main` touch `_house/`, `_family/`, `_finance/` markdown exclusively — zero `.py` diffs.
+- Conclusion: restoring `python-tests.yml` would fire on every commit (or at minimum on `**/*.py` changes which do not occur), burn CI minutes, and almost certainly produce failing runs on first execution because the test code is stale relative to current content. The evidence supports deferring Python CI to a separate issue rather than bundling into this CI-restoration scope.
 
 **Gap proofs**:
 - `ls /mnt/local-analysis/workspace-hub/achantas-data/.github/` → "No such file or directory"
@@ -116,8 +122,8 @@ All changes land in the **external `achantas-data` repo** (`/mnt/local-analysis/
 |---|---|---|
 | Create | `.github/workflows/markdown-lint.yml` | PR gate on markdown changes, runs `DavidAnson/markdownlint-cli2-action` |
 | Create | `.github/workflows/link-check.yml` | Weekly + dispatch external-link rot scan via `lycheeverse/lychee-action@v2` |
-| Create | `.markdownlint.jsonc` | Lenient ruleset: disable `MD013` (line-length), `MD033` (inline HTML), `MD041` (first-line-h1), relax `MD025` (multiple-h1) — personal notes are not published prose |
-| Create | `lychee.toml` | Accept 200/206/429, retry once, ignore localhost + example.com + archive.org, max 5 concurrent, 20s timeout |
+| Create | `.markdownlint.jsonc` | Two-layer ruleset. **Non-negotiable floor (cannot be disabled during tuning)**: `MD001` (heading-increment), `MD011` (reversed-link-syntax), `MD018-MD020` (ATX heading spacing), `MD022` (blanks-around-headings), `MD023` (heading-start-left), `MD024` (duplicate-heading — keep enabled; catches concatenation bugs), `MD027` (multiple-spaces-after-blockquote), `MD030` (list-marker-space), `MD034` (no-bare-urls), `MD035` (hr-style), `MD037-MD040` (emphasis/fence hygiene), `MD042` (no-empty-links), `MD051` (link-fragments), `MD053` (link-image-reference-definitions) — **minimum 20 rules enabled**. Rationale source: [markdownlint rule catalogue](https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md) — the listed rules are the correctness-adjacent subset (broken syntax, broken links, structural defects) as opposed to the stylistic subset. **Convenience layer (disabled)**: `MD013` (line-length), `MD033` (inline HTML), `MD041` (first-line-h1) — stylistic, fight natural note-taking. **MD025 remains enabled** with `{ "level": 1 }` (single top-level H1 enforced per file — only override per-file via inline directive when structurally necessary, not globally). |
+| Create | `lychee.toml` | Accept 200/206/429, retry once, ignore localhost + example.com + archive.org, max 5 concurrent, 20s timeout. **Exclusion policy**: per-URL exclusions only, each with an inline comment explaining *why* excluded and a dated TODO for re-check. Whole-host / wildcard excludes are prohibited. Exclusion list capped at 25 entries per audit cycle; exceeding the cap requires a follow-up issue. |
 
 **Workspace-hub side** (this repo) — only this plan file is written in this drafting pass. Per explicit task constraint: no `docs/plans/README.md` edit, no `.planning/plan-approved/2443.md` marker, no label change.
 
@@ -135,6 +141,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: markdown-lint-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -150,65 +159,72 @@ jobs:
 ```yaml
 name: link-check
 on:
+  pull_request:
+    paths: ['**/*.md', 'lychee.toml', '.github/workflows/link-check.yml']
   schedule:
     - cron: '0 13 * * 1'   # Mondays 13:00 UTC = 08:00 CT
   workflow_dispatch:
 permissions:
-  contents: read
-  issues: write            # allow lychee to open summary issue on failure (optional)
+  contents: read           # no issues:write — lychee-action@v2 does not auto-open issues
+concurrency:
+  group: link-check-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10    # bound PR-trigger runtime; scheduled runs inherit same ceiling
     steps:
       - uses: actions/checkout@v4
       - name: lychee
         uses: lycheeverse/lychee-action@v2
         with:
           args: --config ./lychee.toml '**/*.md'
-          fail: true
+          # fail defaults to true on lychee-action@v2; no explicit override needed
 ```
 
 ### Tool choice rationale
 
 - **markdownlint-cli2 (via `DavidAnson/markdownlint-cli2-action`)** over `markdownlint-cli` v1 — cli2 is the maintained successor, faster, and has first-class action support. Over `pymarkdown` / `remark-lint` — markdownlint is the de facto standard in Actions-based repos, config is portable.
-- **lychee (via `lycheeverse/lychee-action@v2`)** over `gaurav-nelson/github-action-markdown-link-check` / `tcort/markdown-link-check` — lychee is Rust-based, 10-20× faster on 495-file repos, better retry/accept-code semantics, supports both markdown + HTML + plaintext. node-based link-check tools on 495 MD files routinely timeout.
-- **Lenient markdownlint config** rationale: this is a personal-data + issues knowledge base, not public-facing prose. MD013 (line-length) and MD041 (h1-first) fight natural note-taking. MD033 fires on embedded `<br>` / `<details>` which are legitimate. Cost of strict rules = false-positive noise that trains the user to ignore CI. Cost of lenient rules = a few stylistic inconsistencies — acceptable.
+- **lychee (via `lycheeverse/lychee-action@v2`)** over `gaurav-nelson/github-action-markdown-link-check` / `tcort/markdown-link-check` — lychee is the actively maintained Rust-based alternative with better retry/accept-code semantics, and it supports markdown + HTML + plaintext in one pass. node-based link-checkers are widely reported to struggle on large markdown corpora; no specific benchmark is cited here, pick the Rust implementation on maintenance grounds.
+- **Lenient markdownlint config (convenience layer only)** rationale: this is a personal-data + issues knowledge base, not public-facing prose. MD013 (line-length) and MD041 (h1-first) fight natural note-taking. MD033 fires on embedded `<br>` / `<details>` which are legitimate. The **non-negotiable floor** (MD001, MD011, MD018-MD020, MD022-MD025, MD027, MD030, MD034, MD035, MD037-MD040, MD042, MD051, MD053 — 20 rules) guards structural and link correctness and must stay enabled even if the first run surfaces violations (fix the content, don't disable the rule).
 
 ---
 
 ## TDD Test List
 
-T1 infrastructure — traditional unit tests do not apply. Functional verification criteria:
+Per `AGENTS.md` line 7 (`TDD mandatory — tests before implementation; no exceptions`), this plan defines a red → green sequence for the workflow/config artifacts. Infrastructure code is tested by (a) config-parse assertions executed locally before the workflow exists, and (b) an expected-failing state captured before the config is tuned.
 
-| Check | How verified | Expected result |
-|---|---|---|
-| markdown-lint workflow parses | `actionlint .github/workflows/markdown-lint.yml` (or GH push-time schema check) | no schema errors |
-| link-check workflow parses | `actionlint .github/workflows/link-check.yml` | no schema errors |
-| markdown-lint run green on first push | `gh run watch` after merge | conclusion: `success` |
-| link-check run green on manual dispatch | `gh workflow run link-check.yml && gh run watch` | conclusion: `success` |
-| No Actions-minutes burn on non-MD commits | push a `.py`-only commit, inspect `gh run list` | no `markdown-lint` run triggered |
-| Lenient config does not fail on existing content | run markdownlint locally before push | 0 violations (or known-intentional list documented) |
+**Red/green sequence (execute in order, commit only after each step verifies):**
 
-**Pre-commit local dry-run** (recommended before pushing to achantas-data):
-```bash
-cd achantas-data
-npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md'
-# Expect: exits 0 or lists only rules the config explicitly enables
-```
+| # | Step | Command | Red state (before) | Green state (after) |
+|---|---|---|---|---|
+| 1 | Baseline: no workflows exist | `gh api repos/vamseeachanta/achantas-data/actions/workflows` | `total_count: 0` | still 0 — proves starting point |
+| 2 | Author `.markdownlint.jsonc`, then assert it parses and enables ≥20 floor rules | `python3 -c "import json5, sys; cfg=json5.load(open('.markdownlint.jsonc')); floor={'MD001','MD011','MD018','MD019','MD020','MD022','MD023','MD024','MD025','MD027','MD030','MD034','MD035','MD037','MD038','MD039','MD040','MD042','MD051','MD053'}; disabled={k for k,v in cfg.items() if v is False}; missing=floor & disabled; sys.exit(1 if missing else 0)"` | exits 1 (file missing / floor rule disabled) | exits 0 — floor rules present and not disabled |
+| 3 | Author `.github/workflows/markdown-lint.yml`, validate schema | `actionlint .github/workflows/markdown-lint.yml` | schema errors (file missing or malformed) | no errors |
+| 4 | Author `.github/workflows/link-check.yml`, validate schema | `actionlint .github/workflows/link-check.yml` | schema errors | no errors |
+| 5 | Local dry-run of markdownlint against the corpus | `npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md'` | non-zero exit if real defects (fix content; do NOT disable floor rules) | exit 0 |
+| 6 | Local dry-run of lychee against the corpus | `lychee --config ./lychee.toml '**/*.md'` | non-zero exit (expected URL rot) — resolve via per-URL `lychee.toml` exclude (whole-host prohibited) or fix links | exit 0 |
+| 7 | Push; `markdown-lint` workflow runs on the push | `gh run watch` | (not yet run) | conclusion `success` |
+| 8 | Manual dispatch of `link-check` | `gh workflow run link-check.yml && gh run watch` | (not yet run) | conclusion `success` |
+| 9 | Push a `.py`-only commit; confirm `markdown-lint` skipped | `gh run list --workflow=markdown-lint.yml --limit 1` | n/a | no new run for the .py commit (path-filter proves scope) |
+
+**Config-parse smoke test** (step 2 above): the floor-rule assertion is the test-before-implementation artifact for the markdownlint config — it fails before the file exists and before the config is correctly authored, and only passes once the non-negotiable floor is present. This satisfies the repo's mandatory TDD rule for the config artifact.
+
+**Promotion path (per `.claude/rules/patterns.md` enforcement gradient)**: step 5 currently runs as a developer-machine ritual (Level 2 — script). Follow-up issue should promote the `markdownlint-cli2` local dry-run to a pre-commit hook (Level 3) so step 5 fires automatically on every commit. Filed as a deferred item, not blocking this plan.
 
 ---
 
 ## Acceptance Criteria
 
 - [ ] `.github/workflows/markdown-lint.yml` exists on `achantas-data` `origin/main` and validates via `actionlint`.
-- [ ] `.github/workflows/link-check.yml` exists on `achantas-data` `origin/main` and validates via `actionlint`.
-- [ ] `.markdownlint.jsonc` exists on `achantas-data` `origin/main` with documented lenient ruleset.
+- [ ] `.github/workflows/link-check.yml` exists on `achantas-data` `origin/main` (includes `pull_request` trigger), validates via `actionlint`.
+- [ ] `.markdownlint.jsonc` exists on `achantas-data` `origin/main`. **Floor check**: the non-negotiable rules (MD001, MD011, MD018-MD020, MD022-MD025, MD027, MD030, MD034, MD035, MD037-MD040, MD042, MD051, MD053 — ≥20 rules) are all enabled; none may be set to `false` to achieve a green run. The §TDD step-2 assertion script exits 0 against the final config.
 - [ ] `lychee.toml` exists on `achantas-data` `origin/main`.
-- [ ] First triggered `markdown-lint` run conclusion = `success` (no pre-existing violations OR lenient config tuned until 0 violations).
-- [ ] First triggered `link-check` run conclusion = `success` — if external-link rot is found on first run, either (a) fix the link in the same PR, or (b) add the rotted host to `lychee.toml` `exclude` with a dated TODO comment.
+- [ ] First triggered `markdown-lint` run conclusion = `success`, achieved by **fixing content** (not by disabling any floor rule).
+- [ ] First triggered `link-check` run conclusion = `success`. Remediation options for dead links: (a) fix the link, or (b) add a **per-URL** exclusion to `lychee.toml` with an inline comment stating why and a dated TODO for re-check. **Whole-host / wildcard exclusions are prohibited**. Exclusion list must resolve ≥95% of discovered links (i.e., total excludes ≤5% of unique URLs in the corpus), and must not exceed 25 entries per audit cycle — exceeding either threshold requires a follow-up issue rather than further suppression.
 - [ ] `gh api repos/vamseeachanta/achantas-data/actions/workflows` returns `total_count: 2`.
 - [ ] Review artifacts posted to `scripts/review/results/` (Claude + Codex + Gemini per cross-review policy).
-- [ ] Close-out comment on #2443 links both successful run URLs and confirms scope (no Python-tests restoration).
+- [ ] Close-out comment on #2443 links both successful run URLs and confirms scope (no Python-tests restoration — see §OUT of scope for evidence).
 
 ### Explicitly OUT of scope
 
@@ -223,15 +239,40 @@ npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md'
 
 ## Adversarial Review Summary
 
-<!-- To be filled after Step 3 completes. -->
+### Wave 1 (2026-04-21)
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | — |
-| Codex | PENDING | — |
-| Gemini | PENDING | — |
+| Claude | MAJOR | Rubber-stamp CI risk (no non-negotiable lint floor); dead `issues: write` permission; .py count drift (13 vs 12); floating action tags; redundant `fail: true`; uncited "10-20×" claim; no `concurrency:` group; MD025 over-relaxed. |
+| Codex | MAJOR | TDD hard-rule violation ("traditional unit tests do not apply"); Python-CI exclusion under-evidenced; link-check escape hatch permits whole-host exclusion. |
+| Gemini | MAJOR | `link-check.yml` missing `pull_request` trigger; `issues: write` granted without `GITHUB_TOKEN` env (and the action does not auto-open issues anyway); MD024 omitted from disabled/kept list; first-run failure burden on legacy links. |
 
-**Overall result:** PENDING (review wave not yet dispatched).
+**Wave 1 overall result:** MAJOR (convergent blockers across 2+ providers on lint-floor, permission-vs-behavior, and escape-hatch breadth).
+
+### Revisions made (Wave 1 → Wave 2)
+
+- **Removed `issues: write` permission** from `link-check.yml` (Claude + Gemini). lychee-action@v2 does not auto-open issues; permission is dead. No `GITHUB_TOKEN` env added since the permission itself is gone.
+- **Tightened link-check escape hatch** (Codex + Gemini). Acceptance criterion now prohibits whole-host / wildcard exclusions, requires per-URL excludes with inline why-comments and dated re-check TODOs, caps the exclusion list at 25 entries per audit cycle, and demands ≥95% link resolution.
+- **Added `pull_request` trigger** to `link-check.yml` (Gemini). Scoped to `**/*.md`, `lychee.toml`, and the workflow file itself. `timeout-minutes: 10` added to bound PR-trigger runtime.
+- **Removed "traditional unit tests do not apply"** language; replaced §TDD Test List with a 9-step red→green sequence including a config-parse assertion script that fails before the floor rules are present (satisfies `AGENTS.md` line 7 — "TDD mandatory — tests before implementation; no exceptions"). Also cites `.claude/rules/patterns.md` enforcement-gradient for the pre-commit-hook promotion path.
+- **Added non-negotiable lint floor** (Claude). 20-rule minimum listed (MD001, MD011, MD018-MD020, MD022-MD025, MD027, MD030, MD034, MD035, MD037-MD040, MD042, MD051, MD053), cited against the markdownlint rule catalogue. Floor rules cannot be disabled during tuning to achieve green.
+- **MD024 enabled** (Gemini). MD025 kept enabled with `{ "level": 1 }` (single top-level H1 per file), only per-file inline overrides allowed.
+- **Python-CI exclusion evidence strengthened** (Codex). Added git-log timestamps (Python last touched 2026-03-25 via auto-sync; markdown last touched 2026-04-20 in active PR flow), enumerated the 12 `.py` files, and stated the stale-test reasoning.
+- **Deleted uncited "10-20× faster" claim**; softened to maintenance-grounds justification.
+- **Added `concurrency:` group** with `cancel-in-progress: true` to both workflows.
+- **Reconciled .py file count** to 12 (was 13) in two places.
+- **Removed redundant `fail: true`** from the link-check YAML (default in lychee-action@v2), replaced with a comment noting the default.
+
+### Revisions deferred (with rationale)
+
+- **SHA-pinning third-party actions** (Claude MINOR): `DavidAnson/markdownlint-cli2-action@v16` and `lycheeverse/lychee-action@v2` remain on minor-float tags. Rationale: this is a personal docs repo, not a security-sensitive production workflow; SHA-pin maintenance cost exceeds the supply-chain risk for a doc-only CI. Flagged for a follow-up hardening issue if the template is later reused for production repos.
+- **`validate-workflows` CI job running `actionlint`** (Claude MINOR): adds a third workflow just to validate the first two. Current plan runs `actionlint` locally as part of the TDD step 3/4 sequence. Defer self-hosting the check until the ecosystem has >3 workflows per repo.
+- **Auto-issue creation for lychee failures** (carried forward from original Open Questions): out of scope since the permission was removed. Requires a `peter-evans/create-issue-from-file` step if re-introduced later.
+- **Workspace-hub `docs/plans/README.md` index row**: per session hard-constraints, no index update during this drafting pass.
+
+### Status
+
+**Revised, awaiting Wave 2 re-review.**
 
 ---
 
@@ -243,7 +284,7 @@ npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md'
 - **Risk — missed detection of workflow schema errors**: no local `actionlint` run before push = silent YAML-syntax failures at GitHub side. Mitigation: acceptance criterion explicitly requires `actionlint` to pass (add to local dev checklist; lightweight — `brew install actionlint` or `go install`).
 - **Risk — governance drift already present**: #2443 currently has `status:plan-approved` label without a canonical plan or marker (described in Evidence section). This plan produces the canonical artifact. The label reconciliation (swap to `status:plan-review` while cross-review runs, then back to `status:plan-approved` after user approves this plan) is **out of scope for this drafting pass per user's explicit hard constraints** — flag it to the user in the governance comment so they can decide next step.
 - **Open — which lychee version**: `@v2` is current stable (Apr 2026); pinning to `@v2` vs. `@v2.3.0` is user preference. Plan pins to `@v2` (minor-version float) to reduce maintenance; user may request exact pin during review.
-- **Open — should link-check issue-on-failure be enabled**: `permissions: issues: write` allows lychee to open a GitHub issue summarizing broken links. Creates noise but improves visibility. Default: enabled; user may disable during review.
+- **Resolved — link-check issue-on-failure**: originally proposed via `permissions: issues: write`, but `lycheeverse/lychee-action@v2` does not auto-open GitHub issues (confirmed against action source). Permission removed from the workflow. If visibility via auto-issue is desired later, it requires a follow-up step like `peter-evans/create-issue-from-file` consuming lychee's report — filed as a deferred item, not in scope here.
 - **Open — should this plan also update `docs/plans/README.md` index**: planning skill says yes; user's hard constraints for this session say no. Defer to next session / governance comment flag.
 
 ---
