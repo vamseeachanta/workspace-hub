@@ -33,20 +33,23 @@ Tracks progress against the approved plan at
   included.
 - `scripts/gtm/prospect_adapter.py` — interface + two validation gates:
   `load_and_validate()` (schema + cross-field checks) plus partial
-  `materialize_demo_inputs()` support for demo_04 (writes
+  `materialize_demo_inputs()` support for demos 4 and 5. Demo_04 writes
   `pipelay_vessels.json`, `pipelines.json`, and optional
-  `prospect_env.json` into `tmpdir/data/`). Canonical references are now
-  shape-checked (`pipelay` vs `csv_hlv`) before materialization so demo_04
-  cannot silently inline a CSV/HLV YAML. `run_demo()` remains stubbed and
-  other demos still raise NotImplementedError. Argparse CLI with `--demo`
-  and `--dry-run`. Type hints throughout; no `Any`.
-- `scripts/gtm/tests/test_prospect_adapter.py` — 11 tests: happy paths
+  `prospect_env.json`; demo_05 writes `csv_hlv_vessels.json`,
+  `rigid_jumpers.json`, and optional `prospect_env.json` into
+  `tmpdir/data/`. Canonical references are now shape-checked
+  (`pipelay` vs `csv_hlv`) before materialization so the wrong vessel family
+  cannot be silently inlined. `run_demo()` remains stubbed and other demos
+  still raise NotImplementedError. Argparse CLI with `--demo` and
+  `--dry-run`. Type hints throughout; no `Any`.
+- `scripts/gtm/tests/test_prospect_adapter.py` — 13 tests: happy paths
   (demo_05 + canonical Seven Borealis, demo_05 + canonical PLSV,
   demo_04 + canonical pipelay barge), negative validation for wrong-shape
   canonical refs, malformed YAML rejection, Q6 demo_01 + vessel rejection,
   Q6 demo_03 missing vessel rejection, demo_04 materialization of pipelay
-  vessel / pipeline / environment override files, stub NotImplementedError
-  wiring for unimplemented demos and `run_demo()`.
+  vessel / pipeline / environment override files, demo_05 materialization of
+  csv_hlv vessel / rigid-jumper files, and stub NotImplementedError wiring
+  for unimplemented demos and `run_demo()`.
 - `jsonschema>=4.26` added to workspace-hub `[project.optional-dependencies].dev`.
 
 ## Not done (follow-up work)
@@ -58,10 +61,10 @@ Future work on #2346 will need to land, in roughly this order:
   the required disclaimer + citation blocks. Remaining work shifts to
   materialization, demo dispatch, and delivery/reporting layers.
 - **`materialize_demo_inputs` per-demo logic**: fill in the remaining stub.
-  Demo_04 now materializes `pipelay_vessels.json`, `pipelines.json`, and
-  optional `prospect_env.json`; remaining work is to add equivalent support
-  for demos 3/5 (`csv_hlv_vessels.json`) and any additional structure-body
-  shaping needed beyond the current demo_04 pipeline path. Honor
+  Demos 4 and 5 now materialize their required files. Remaining work is to
+  add equivalent support for demo_03 (`csv_hlv_vessels.json` + mudmat
+  structure shaping) and any additional structure-body shaping needed beyond
+  the current demo_04 pipeline and demo_05 rigid-jumper paths. Honor
   `vessel.source == canonical_ref` by loading the referenced YAML and
   inlining its body.
 - **`run_demo` subprocess dispatch**: subprocess-launch

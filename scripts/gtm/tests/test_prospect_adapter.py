@@ -9,7 +9,8 @@ Covers:
   6. Q6 rejection: demo_01 + vessel block is rejected.
   7. Q6 rejection: demo_03 without vessel block is rejected.
   8. Demo_04 materialization writes the expected data files and optional env override.
-  9. Non-demo_04 materialization paths + run_demo remain explicit stubs.
+  9. Demo_05 materialization writes the expected csv_hlv / rigid-jumper files.
+  10. Non-demo_03 materialization gaps + run_demo remain explicit stubs.
 """
 from __future__ import annotations
 
@@ -334,9 +335,55 @@ def test_materialize_demo_04_writes_environment_override_when_present(
     assert env_payload["current_velocity_ms"] == pytest.approx(0.4)
 
 
-def test_materialize_demo_inputs_is_a_wired_stub_for_unimplemented_demo(tmp_path: Path) -> None:
+def test_materialize_demo_05_writes_csv_hlv_and_rigid_jumper_files(
+    tmp_path: Path,
+) -> None:
     intake_file = tmp_path / "acme-demo05.yaml"
     intake_file.write_text(_valid_demo_05_intake_yaml(), encoding="utf-8")
+    prospect = load_and_validate(intake_file)
+
+    bundle = materialize_demo_inputs(prospect, tmp_path)
+
+    assert isinstance(bundle, DemoInputBundle)
+    assert bundle.demo_id == "demo_05"
+    assert bundle.data_dir == tmp_path / "data"
+    assert bundle.vessel_file == bundle.data_dir / "csv_hlv_vessels.json"
+    assert bundle.structure_file == bundle.data_dir / "rigid_jumpers.json"
+    assert bundle.vessel_file.exists()
+    assert bundle.structure_file.exists()
+    vessel_payload = json.loads(bundle.vessel_file.read_text(encoding="utf-8"))
+    assert vessel_payload["vessels"][0]["id"] == "seven-borealis"
+    assert "crane_main" in vessel_payload["vessels"][0]
+    structure_payload = json.loads(bundle.structure_file.read_text(encoding="utf-8"))
+    assert structure_payload["jumpers"][0]["length_m"] == pytest.approx(45.0)
+    assert structure_payload["common_properties"]["grade"] == "X65"
+
+
+def test_materialize_demo_05_accepts_plsv_canonical_ref(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "acme-demo05-plsv.yaml"
+    intake_file.write_text(_valid_demo_05_plsv_yaml(), encoding="utf-8")
+    prospect = load_and_validate(intake_file)
+
+    bundle = materialize_demo_inputs(prospect, tmp_path)
+
+    vessel_payload = json.loads(bundle.vessel_file.read_text(encoding="utf-8"))
+    assert vessel_payload["vessels"][0]["id"] == "plsv"
+    assert vessel_payload["vessels"][0]["general"]["dp_class"] == "DP3"
+    assert "crane_main" in vessel_payload["vessels"][0]
+
+
+def test_materialize_demo_inputs_is_a_wired_stub_for_unimplemented_demo(tmp_path: Path) -> None:
+    intake_file = tmp_path / "bad-demo03.yaml"
+    intake_file.write_text(
+        _valid_demo_05_intake_yaml()
+        .replace('target_demo: "demo_05"', 'target_demo: "demo_03"')
+        .replace('kind: "rigid_jumper"', 'kind: "mudmat"')
+        .replace('length_m: 45.0\n', 'plan_area_m2: 120.0\n')
+        .replace('outer_diameter_m: 0.3239\n    wall_thickness_m: 0.0254\n    ', ''),
+        encoding="utf-8",
+    )
     prospect = load_and_validate(intake_file)
 
     with pytest.raises(NotImplementedError, match=r"materialize_demo_inputs"):

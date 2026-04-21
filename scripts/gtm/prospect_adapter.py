@@ -177,6 +177,55 @@ def _materialize_demo_04_inputs(prospect: ProspectInput, tmpdir: Path) -> DemoIn
     )
 
 
+def _materialize_demo_05_inputs(prospect: ProspectInput, tmpdir: Path) -> DemoInputBundle:
+    """Materialize demo_05 inputs into tmpdir/data/."""
+    data_dir = tmpdir / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    vessel_body = _resolved_vessel_body(prospect)
+    vessel_file = data_dir / "csv_hlv_vessels.json"
+    vessel_file.write_text(
+        json.dumps({"vessels": [vessel_body]}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    structure_body = deepcopy(prospect.raw["structure"]["body"])
+    structure_file = data_dir / "rigid_jumpers.json"
+    structure_file.write_text(
+        json.dumps(
+            {
+                "common_properties": {
+                    "grade": structure_body.get("material", "X65"),
+                    "outer_diameter_m": structure_body.get("outer_diameter_m"),
+                    "wall_thickness_m": structure_body.get("wall_thickness_m"),
+                },
+                "jumpers": [structure_body],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    env_override_path = None
+    environment = prospect.raw.get("environment")
+    if isinstance(environment, dict) and environment:
+        env_override_path = data_dir / "prospect_env.json"
+        env_override_path.write_text(
+            json.dumps(environment, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+    return DemoInputBundle(
+        demo_id=prospect.target_demo,
+        tmpdir=tmpdir,
+        data_dir=data_dir,
+        env_override_path=env_override_path,
+        vessel_file=vessel_file,
+        structure_file=structure_file,
+    )
+
+
 def _cross_field_checks(intake: dict, demo: DemoId) -> None:
     """Gate 2 — checks not expressible in draft-07 JSON Schema.
 
@@ -302,10 +351,13 @@ def materialize_demo_inputs(
     tmpdir = Path(tmpdir)
     if prospect.target_demo == "demo_04":
         return _materialize_demo_04_inputs(prospect, tmpdir)
+    if prospect.target_demo == "demo_05":
+        return _materialize_demo_05_inputs(prospect, tmpdir)
 
     raise NotImplementedError(
         "materialize_demo_inputs is partially implemented. "
-        "Demo_04 shaping (pipelay_vessels.json, pipelines.json, prospect_env.json) exists; "
+        "Demo_04 shaping (pipelay_vessels.json, pipelines.json, prospect_env.json) and "
+        "demo_05 shaping (csv_hlv_vessels.json, rigid_jumpers.json, prospect_env.json) exist; "
         "other demos remain follow-up work. "
         f"target_demo={prospect.target_demo!r}, tmpdir={tmpdir!s}"
     )
