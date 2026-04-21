@@ -81,7 +81,7 @@ We need a repeatable way to answer:
 - which records cannot be matched safely because identity is legacy/ambiguous
 - which disciplines have the highest uncovered source volume
 
-The detector compares source-side inventory with wiki-side coverage by canonical `doc_key`, then emits per-domain gap YAML plus a durable summary markdown.
+The detector compares source-side inventory with wiki-side coverage by canonical `doc_key`, deduplicates multi-surface source records down to one canonical candidate per `doc_key`, then emits per-domain gap YAML plus a durable summary markdown.
 
 ---
 
@@ -161,7 +161,9 @@ Implication: `_summary.md` can never self-ingest, and report markdown cannot cre
 A CLI at `scripts/knowledge/detect_wiki_gaps.py` that:
 - loads required and optional inputs
 - normalizes source candidates into a common record shape
+- deduplicates records by canonical `doc_key` before coverage accounting
 - parses wiki frontmatter and builds a canonical-coverage index by `sha256:` `doc_key`
+- applies explicit cross-domain coverage policy before classifying a record as covered
 - emits per-domain YAML only for domains with true canonical gaps
 - emits `_summary.md` with counts for gaps, covered records, unresolved identity, unresolved domain, source-identity warnings, skipped optional inputs, duplicate wiki keys, domain-slug collisions, and wiki-schema warnings
 - supports `--dry-run` to print the same summary without writing files
@@ -189,6 +191,23 @@ Allowed source statuses:
 - `covered`
 - `identity-unresolved`
 - `domain-unresolved`
+- `domain-mismatch`
+
+Deduplication contract:
+- one canonical `doc_key` yields at most one normalized source candidate in coverage accounting
+- merge precedence for duplicate source surfaces is:
+  1. `index-record`
+  2. `promotion-manifest`
+  3. `ledger`
+  4. `design-code`
+- higher-precedence records win for `source_path`, `title`, and `availability_tier`
+- `domain`/`discipline` merge conservatively: if conflicting non-empty values disagree after normalization, emit `domain-unresolved` and exclude the record from per-domain YAML
+- every collapsed duplicate set must be counted in `_summary.md` as a deduplication event
+
+Cross-domain coverage policy:
+- coverage is `doc_key + domain`, not `doc_key` alone
+- if a wiki page with matching canonical `doc_key` exists in the same normalized domain, classify `covered`
+- if a wiki page with matching canonical `doc_key` exists only in a different wiki domain, classify `domain-mismatch`, report it in `_summary.md`, and continue treating the source-domain record as not covered for per-domain gap accounting
 
 Mapping expectations:
 - `index-record`: read canonical identity/path from `index.jsonl`; derive `domain`/`discipline` from indexed metadata when present, otherwise from config mapping by source root/path prefix.
@@ -213,12 +232,17 @@ Gap YAML entry fields:
 - `status`
 - `notes`
 
+Exit-code contract:
+- `0` — clean success or degraded-but-reportable success in interactive/manual dry-run mode
+- `2` — degraded scheduled/publication run; reports written but not approval-ready
+- `1` — fail-closed error, including missing required inputs or normalization exceptions
+
 ---
 
 ## Pseudocode
 
 ```text
-function run(config_path, dry_run=False):
+function run(config_path, dry_run=False, publication_mode=False):
     config = load_detector_config(config_path)  # domain mapping, structural excludes, output dir
     required_inputs = [
         "data/document-index/index.jsonl",
@@ -245,11 +269,12 @@ function run(config_path, dry_run=False):
     if configured_supplemental_inputs_missing(config, missing_supplemental):
         run_status = "degraded"
 
-    source_records, source_identity_warnings, domain_slug_collisions = normalize_source_records(required_data, supplemental_matches, config)
+    source_records, source_identity_warnings, domain_slug_collisions, dedupe_events = normalize_and_dedupe_source_records(required_data, supplemental_matches, config)
     if domain_slug_collisions:
         run_status = "degraded"
 
     wiki_index = {}
+    wiki_domains_by_key = {}
     invalid_wiki_doc_keys = set()
     wiki_schema_warnings = []
     duplicate_wiki_doc_keys = {}
@@ -263,6 +288,7 @@ function run(config_path, dry_run=False):
         key = normalize_wiki_doc_key_for_coverage(fm.get("doc_key"))  # canonical sha256 only
         if not key:
             continue
+        page_domain = infer_wiki_domain(page, fm, config)
         if key in invalid_wiki_doc_keys:
             duplicate_wiki_doc_keys[key].append(page)
             run_status = "degraded"
@@ -270,10 +296,12 @@ function run(config_path, dry_run=False):
         if key in wiki_index:
             duplicate_wiki_doc_keys[key] = [wiki_index[key], page]
             del wiki_index[key]
+            del wiki_domains_by_key[key]
             invalid_wiki_doc_keys.add(key)
             run_status = "degraded"
             continue
         wiki_index[key] = page
+        wiki_domains_by_key[key] = page_domain
 
     gaps_by_domain = {}
     summary = counts(
@@ -283,6 +311,7 @@ function run(config_path, dry_run=False):
         duplicate_wiki_doc_keys,
         source_identity_warnings,
         domain_slug_collisions,
+        dedupe_events,
         run_status,
     )
     for record in source_records:
@@ -298,13 +327,20 @@ function run(config_path, dry_run=False):
             run_status = "degraded"
             continue
         if canonical_key in wiki_index:
-            add_covered(summary, record, wiki_index[canonical_key])
-            continue
+            if wiki_domains_by_key[canonical_key] == record.domain_slug:
+                add_covered(summary, record, wiki_index[canonical_key])
+                continue
+            add_domain_mismatch(summary, record, wiki_index[canonical_key], wiki_domains_by_key[canonical_key])
+            run_status = "degraded"
         add_gap(gaps_by_domain, summary, record, canonical_key)
 
     if dry_run:
         print(render_summary(summary, gaps_by_domain))
-        return exit_code_for_run_status(run_status, allow_degraded=True)
+        return 0 if run_status in ("clean", "degraded") else 1
+
+    if publication_mode:
+        require_clean_worktree()
+        acquire_lock("wiki-coverage-gap-detection")
 
     reconcile_output_directory(
         config.output_dir,
@@ -313,8 +349,11 @@ function run(config_path, dry_run=False):
         domain_file_suffix=".yaml",
     )
     write_gap_yaml_only_for_domains_with_entries(gaps_by_domain)
-    write_summary_md(summary, gaps_by_domain, missing_reporting, missing_supplemental, wiki_schema_warnings, duplicate_wiki_doc_keys, source_identity_warnings, domain_slug_collisions)
-    return exit_code_for_run_status(run_status, allow_degraded=True)
+    write_summary_md(summary, gaps_by_domain, missing_reporting, missing_supplemental, wiki_schema_warnings, duplicate_wiki_doc_keys, source_identity_warnings, domain_slug_collisions, dedupe_events)
+
+    if not publication_mode:
+        return 0 if run_status in ("clean", "degraded") else 1
+    return 0 if run_status == "clean" else 2
 ```
 
 ---
@@ -337,11 +376,13 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `machines`: `[dev-primary, ace-linux-1]`
 - `requires`: `[python3, uv, git]`
 - `prefer`: `dev-primary`
+- `single-run lock`: `flock -n $WORKSPACE_HUB/.locks/wiki-coverage-gap-detection.lock`
+- `clean-worktree precondition`: abort publication if `git status --porcelain` is non-empty before the detector stages report outputs
 - `command`:
-  `mkdir -p $WORKSPACE_HUB/logs/knowledge && cd $WORKSPACE_HUB && test -f data/document-index/index.jsonl && test -f data/design-codes/code-registry.yaml && uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml >> $WORKSPACE_HUB/logs/knowledge/wiki-coverage-gap-$(date +\%Y-\%m-\%d).log 2>&1 && git add docs/reports/wiki-coverage-gaps && if ! git diff --cached --quiet; then git commit -m "docs(reports): refresh wiki coverage gaps" && git push origin main; fi`
+  `mkdir -p $WORKSPACE_HUB/logs/knowledge $WORKSPACE_HUB/.locks && cd $WORKSPACE_HUB && test -f data/document-index/index.jsonl && test -f data/design-codes/code-registry.yaml && test -z "$(git status --porcelain)" && flock -n $WORKSPACE_HUB/.locks/wiki-coverage-gap-detection.lock uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml >> $WORKSPACE_HUB/logs/knowledge/wiki-coverage-gap-$(date +\%Y-\%m-\%d).log 2>&1 && git add docs/reports/wiki-coverage-gaps && if ! git diff --cached --quiet; then git commit -m "docs(reports): refresh wiki coverage gaps" && git push origin main; fi`
 - `log`: `logs/knowledge/wiki-coverage-gap-*.log`
 - `is_claude_task`: `false`
-- `description`: weekly source-vs-wiki gap detection; writes reports and publishes changes from the target checkout when the output changes
+- `description`: weekly source-vs-wiki gap detection; writes reports and publishes changes from a clean target checkout only when output changes
 
 ---
 
@@ -374,6 +415,7 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `test_optional_glob_patterns_expand_to_matching_files`
 - `test_only_allowlisted_inputs_are_loaded`
 - `test_docs_reports_markdown_is_not_scanned_as_source_inventory`
+- `test_source_surfaces_deduplicate_by_canonical_doc_key`
 
 ### Wiki/frontmatter behavior
 - `test_wiki_page_missing_doc_key_emits_schema_warning`
@@ -381,6 +423,7 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `test_nonconforming_wiki_doc_key_not_added_to_coverage_index`
 - `test_duplicate_wiki_doc_key_marks_run_degraded_and_reports_diagnostic`
 - `test_domain_slug_collision_marks_run_degraded_and_reports_diagnostic`
+- `test_matching_doc_key_in_wrong_wiki_domain_emits_domain_mismatch_and_keeps_source_gap`
 
 ### Output behavior
 - `test_dry_run_prints_summary_without_writing_files`
@@ -389,13 +432,17 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `test_summary_lists_missing_reporting_and_supplemental_inputs`
 - `test_summary_lists_source_identity_warnings`
 - `test_summary_lists_domain_slug_collisions`
+- `test_summary_lists_deduplication_events`
 - `test_gap_entry_contains_required_fields`
-- `test_summary_counts_gap_covered_identity_unresolved_and_domain_unresolved`
+- `test_summary_counts_gap_covered_identity_unresolved_domain_unresolved_and_domain_mismatch`
 - `test_domain_unresolved_records_do_not_create_invalid_output_files`
 
 ### Runtime and scheduling
 - `test_cron_config_parses_and_schedules_weekly`
 - `test_runtime_smoke_command_is_documented`
+- `test_publication_mode_requires_clean_worktree`
+- `test_publication_mode_uses_single_run_lock`
+- `test_exit_code_contract_clean_degraded_and_fail_closed`
 
 ### Manual verification before approval
 - On the chosen approval target checkout, run:
@@ -405,9 +452,9 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
   - `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run`
 - Approval gate interpretation:
   - required-input prechecks must pass on that target checkout
-  - dry-run must exit 0
-  - `run_status: degraded` is allowed only for pre-existing external data quality issues that are explicitly reported; new detector-logic regressions are not approval-ready
-  - summary must print counts for gaps / covered / identity-unresolved / domain-unresolved / skipped-inputs / duplicate-conflicts
+  - dry-run must exit `0`
+  - degraded findings may remain as reported data-quality diagnostics, but the detector contract itself must satisfy the explicit exit-code table and not introduce new unexplained mismatches
+  - summary must print counts for gaps / covered / identity-unresolved / domain-unresolved / domain-mismatch / skipped-inputs / duplicate-conflicts / dedupe-events
 
 ---
 
@@ -416,15 +463,18 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - [ ] `scripts/knowledge/detect_wiki_gaps.py` exists with unit tests
 - [ ] `uv run pytest tests/knowledge/test_detect_wiki_gaps.py -q` passes
 - [ ] detector emits `docs/reports/wiki-coverage-gaps/<domain>.yaml` only for domains with true canonical gaps
+- [ ] one canonical `doc_key` contributes at most one normalized source candidate after source-surface deduplication
 - [ ] each gap entry includes `doc_key`, `source_path`, `availability_tier`, `discipline`, `status`, and `suggested_page`
 - [ ] records with only legacy/ambiguous identity are surfaced as `identity-unresolved`, not false gaps
 - [ ] records whose domain cannot be resolved are surfaced as `domain-unresolved` and excluded from per-domain YAML output
+- [ ] same-`doc_key` wiki pages in the wrong domain emit `domain-mismatch` and do not suppress a source-domain gap
 - [ ] `--dry-run` prints summary counts and writes nothing
-- [ ] `_summary.md` reports missing reporting inputs, missing supplemental inputs, wiki-schema warnings, source-identity warnings, duplicate wiki `doc_key` diagnostics, and overall `run_status`
+- [ ] `_summary.md` reports missing reporting inputs, missing supplemental inputs, wiki-schema warnings, source-identity warnings, duplicate wiki `doc_key` diagnostics, deduplication events, and overall `run_status`
 - [ ] stale `<domain>.yaml` files are removed when a previously-gapped domain becomes covered
 - [ ] weekly schedule is wired in `config/scheduled-tasks/schedule-tasks.yaml` using task id `wiki-coverage-gap-detection`
+- [ ] publication mode requires a clean worktree and a single-run lock before staging/commit/push
 - [ ] on the chosen approval target checkout, required-input prechecks for `data/document-index/index.jsonl` and `data/design-codes/code-registry.yaml` pass before the smoke run
-- [ ] manual runtime smoke check `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run` exits 0 and reports no new detector-internal regressions on the approval target checkout
+- [ ] manual runtime smoke check `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run` exits `0` under the explicit exit-code contract and reports no new detector-internal regressions on the approval target checkout
 
 ---
 
@@ -449,13 +499,15 @@ Current re-file wave (this session):
 - Gemini v6: MAJOR — `scripts/review/results/2026-04-21-v6-plan-2392-gemini.md`
 - Codex v7: MAJOR — `scripts/review/results/2026-04-21-v7-plan-2392-codex.md`
 - Gemini v7: MAJOR — `scripts/review/results/2026-04-21-v7-plan-2392-gemini.md`
+- Codex v8: MAJOR — `scripts/review/results/2026-04-21-v8-plan-2392-codex.md`
+- Gemini v8: MAJOR — `scripts/review/results/2026-04-21-v8-plan-2392-gemini.md`
 
 Live blocker themes after the latest 2026-04-21 wave:
-- source deduplication across multiple inventory surfaces is still undefined
-- cross-domain coverage semantics (`doc_key` match in wrong wiki domain) need an explicit policy
-- exit-code contract for clean vs degraded vs fail-closed runs needs to be specified
-- scheduled publication needs clean-worktree / exclusivity safeguards
-- unneeded live-state claims should be removed unless they are attested and load-bearing
+- canonical status model still needs one authoritative enum/usage contract
+- publication-mode activation and degraded publication behavior still need one consistent path
+- wiki-domain derivation rule still needs a concrete normative contract
+- supplemental-source merge precedence / field derivation remains incomplete (`dde-standards-inventory`, `availability_tier`, `suggested_page`)
+- locking strategy should be single-layer; current shell+python locking intent is still ambiguous
 
 ---
 
