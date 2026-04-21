@@ -75,7 +75,7 @@ Confirms unquoted `sqlite:///:memory:` at line 122 is the first fatal parse erro
 222:        uv pip install --system -r requirements.txt
 269:        uv pip install --system -r requirements.txt
 ```
-All three install sites reference non-existent `requirements.txt`. `requirements-consolidated.txt` exists but self-declares "replaced by pyproject.toml ��� Kept for reference only" (verified 2026-04-21, file header lines 1-4). Correct remediation: replace with `uv pip install --system -e ../assetutilities` (preserves `--system` install pattern that bare pytest/mypy/flake8 commands depend on). The existing `uv pip install --system -e .` steps (lines 79, 224, 271) install assethold after assetutilities is satisfied.
+All three install sites reference non-existent `requirements.txt`. `requirements-consolidated.txt` exists but self-declares "replaced by pyproject.toml ->� Kept for reference only" (verified 2026-04-21, file header lines 1-4). Correct remediation: replace with `uv pip install --system -e ../assetutilities` (preserves `--system` install pattern that bare pytest/mypy/flake8 commands depend on). The existing `uv pip install --system -e .` steps (lines 79, 224, 271) install assethold after assetutilities is satisfied.
 
 **Gap proof** (`ls assethold/requirements.txt 2>&1`):
 - `ls: cannot access 'assethold/requirements.txt': No such file or directory` → confirms missing install-target.
@@ -167,14 +167,15 @@ for each occurrence at lines 74, 222, 269:
         ref: main
 
 # PHASE GATE ENFORCEMENT (addresses Claude Wave-1 MAJOR — unenforceable gate):
-# Phase 1 and Phase 2 MUST be separate commits on a feature branch.
+# Phase 1 and Phase 2 MUST be separate commits pushed to main sequentially.
+# (Direct-to-main per assethold repo convention — no branch/PR required.)
 # Executor sequence:
-#   1. Create branch: git checkout -b fix/assethold-ci-2442
-#   2. Commit P1 edits (7 sites: YAML quoting + deprecated actions)
-#   3. Push branch, wait for CI run, verify: jobs[] != [] (startup unblocked)
-#   4. Only after P1 CI verification: commit P2 edits (3 install + 3 checkout)
-#   5. Push branch, wait for CI run, verify: smoke cell green
-#   6. Open PR to main; merge after both phases verified green
+#   1. Commit P1 edits (7 sites: YAML quoting + deprecated actions)
+#   2. Push to main, wait for CI run, verify: jobs[] != [] (startup unblocked)
+#   3. Only after P1 CI verification: commit P2 edits (3 install + 3 checkout)
+#   4. Push to main, wait for CI run, verify: smoke cell green
+# If P1 CI fails unexpectedly: investigate before P2 commit (do not bundle).
+# If P2 CI fails: iterate on main with additional fix commits.
 
 # ACCEPTANCE-PHASE-2: at least one matrix cell (py3.11 ubuntu-latest)
 #   completes with smoke cell `conclusion=success`.
@@ -214,7 +215,7 @@ harden python-tests matrix:
 | Verify (P2) | `assethold/pyproject.toml` | Confirm `assetutilities` is in `[project.dependencies]` and `[tool.uv.sources]` points to `{ path = "../assetutilities" }` — the P2 sibling-checkout step places the repo at that exact path so both `uv pip install --system -e ../assetutilities` and the existing `-e .` step resolve correctly. |
 | Possibly modify (P3) | `assethold/.github/workflows/docs.yml` | Adjust `--strict` / path-filter / docs/api skeleton after workflow_dispatch log capture. |
 
-**Combined fix-site count: 13 (7 P1 + 6 P2)** (prior plan claimed 9 sites; recount driven by (a) adding codecov-action P1 bump, (b) replacing 3 requirements-file edits with 3 `uv sync --frozen` switches + 3 new sibling-checkout insertions, (c) correcting line 136 → 138).
+**Combined fix-site count: 13 (7 P1 + 6 P2)** (prior plan claimed 9 sites; recount driven by (a) adding codecov-action P1 bump, (b) replacing 3 requirements-file edits with 3 `uv pip install --system -e ../assetutilities` switches + 3 new sibling-checkout insertions, (c) correcting line 136 to 138).
 
 **Out-of-session (not edited in this planning session):** `docs/plans/README.md` already contains a row for plan 2442 (verified 2026-04-21 — Codex finding acknowledged); no update needed.
 
@@ -300,20 +301,31 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 - Documented that existing `uv pip install --system -e .` steps (lines 79, 224, 271) remain unchanged — they install the project itself after assetutilities is satisfied from the previous step.
 
 **Revisions deferred** (with rationale):
-- `actions/setup-python@v4 �� v5` and `astral-sh/setup-uv@v1 → v4` pin bumps (Claude MINOR): not on the deprecated-blocker critical path; these versions are still accepted by GitHub Actions. Deferred to a follow-on hygiene issue to keep this plan scoped to the never-green fix.
+- `actions/setup-python@v4 -> v5` and `astral-sh/setup-uv@v1 → v4` pin bumps (Claude MINOR): not on the deprecated-blocker critical path; these versions are still accepted by GitHub Actions. Deferred to a follow-on hygiene issue to keep this plan scoped to the never-green fix.
 - Matrix pruning (macos/windows) (Claude MINOR, original Open Question): deferred to P3 or a follow-on; not required to achieve the "first green in 7 months" milestone.
 - T2 vs T3 reclassification (Claude MINOR): keeping T2 after P3 scope became deterministic (full quality-gate chain is now a direct gate, not a diagnostic-first unknown); docs.yml phase-3 diagnosis retained as optional/follow-on.
 
-**Status:** Wave 2 revised, awaiting Wave 2 re-review.
+**Wave 3 revisions** (addressing Wave 2 Claude MAJOR + Codex MAJOR):
+- Fixed stale "uv sync --frozen" wording in fix-site recount (Claude P1) -- now reads `uv pip install --system -e ../assetutilities`
+- Added verified evidence for 3 preconditions: assetutilities is PUBLIC (no token issue), assetutilities has no cascading sibling deps, `test_smoke.py` exists (Claude P1, Codex P1)
+- Added `ref: main` coupling as explicit risk with accepted-for-now mitigation (Claude P2)
+- Reconciled complexity stanza site count to 13 (7 P1 + 6 P2) (Claude P3)
+- Fixed execution strategy: direct-to-main per assethold repo convention, not feature-branch (Codex P2 policy exception)
+- Made docs.yml explicitly out-of-scope for P1/P2 success criteria (Codex P2 scope ambiguity)
+- Added failure-path contingency to phase gate enforcement block (Codex P3)
+- Fixed Unicode encoding artifacts throughout
+
+**Status:** Wave 3 revised, awaiting Wave 3 re-review.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — sibling-dep resolution in CI (RESOLVED, moved to P2 fix list):** `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`; on a hosted runner `../assetutilities` does not exist. **Resolution:** P2 adds `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` in every job that installs deps. Verification gate is the sibling-less Docker container smoke test.
+- **Risk -- sibling-dep resolution in CI (RESOLVED, moved to P2 fix list):** `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`; on a hosted runner `../assetutilities` does not exist. **Resolution:** P2 adds `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` in every job that installs deps. Verification: feature-branch CI run on hosted runner. **Preconditions verified (Wave 3):** (a) `vamseeachanta/assetutilities` is PUBLIC (`gh repo view --json visibility` = PUBLIC, 2026-04-21) -- default GITHUB_TOKEN has read access; (b) `assetutilities/pyproject.toml` has empty `[tool.uv.sources]` -- no cascading sibling deps; (c) `assethold/tests/test_smoke.py` exists (confirmed via `gh api repos/vamseeachanta/assethold/contents/tests/test_smoke.py`).
+- **Risk -- `ref: main` coupling (NEW, Wave 3):** The proposed sibling checkout uses `ref: main` for assetutilities. Any breaking change on assetutilities main will flip assethold CI red. **Mitigation:** accepted for now -- assetutilities has low commit frequency and assethold's local dev already depends on assetutilities main via `[tool.uv.sources]`. If assetutilities becomes volatile, pin to a SHA in a follow-on issue.
 - **Risk — phase-2 reveals broad test-red state:** Since the workflow has never been green, real test failures may be latent. **Mitigation:** phase-2 target is explicitly "one matrix cell green via smoke test," not full matrix. Broader test remediation that blocks full quality-gate lands in phase-3; file follow-on issues for discovered test debt rather than expanding this plan's scope.
 - **Risk — label-drift governance (RESOLVED):** #2442 was labeled `status:plan-approved` at handoff creation before any plan existed. Orchestrator rolled the label back to `status:plan-review` this session (governance comment 4290738146). **Resolution:** this plan requires fresh in-thread user approval after reading the revised artifact; no action needed in the plan file beyond the acceptance criterion.
-- **Risk — `docs.yml` underlying cause unknown:** Phase-3 diagnosis is gated on workflow_dispatch log capture; actual failure mode is hypothesized (mkdocs strict vs missing `docs/api/`) but unverified. **Mitigation:** treat docs.yml work as diagnostic-first and optional within P3; if root cause is deeper, file a separate follow-on issue and do not block `python-tests.yml` green-signal on `docs.yml`.
+- **Risk -- `docs.yml` (EXPLICITLY OUT-OF-SCOPE for P1/P2):** docs.yml diagnosis is deferred to a follow-on issue. This plan's success criteria are satisfied when `python-tests.yml` achieves first green. docs.yml is mentioned in P3 as optional/diagnostic only. If P3 is attempted and docs.yml root cause is deeper than expected, file a separate issue.
 - **Open — matrix scope:** Should py3.9 + windows/macos cells be pruned to accelerate greenlight? Full 4×3=12 matrix on every push to main is expensive; phase-3 may need to narrow. **Flag for user decision.**
 - **Open — P3 test-red handling:** If P2 smoke cell surfaces systemic test failures that prevent the quality-gate chain from reaching success, does the P3 deliverable split into a separate issue (test-debt remediation) while this plan settles at P2-green? **Flag for user decision at P2→P3 transition.**
 
@@ -321,4 +333,4 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 
 ## Complexity: T2
 
-**T2** — multi-site targeted edits in a single workflow file (6 known fix sites + 3 install-path sites), phased execution with intermediate acceptance gates, cross-repo verification (workspace-hub plan governs edits in sibling repo `assethold/`). Not T3 because the remediation is mechanically deterministic (all fix sites already identified in issue body and verified against live state); no architectural decisions or new subsystems. Not T1 because it spans two phases with distinct acceptance gates and touches sibling-repo dep resolution.
+**T2** — multi-site targeted edits in a single workflow file (7 P1 fix sites + 6 P2 sites = 13 total), phased execution with intermediate acceptance gates, cross-repo verification (workspace-hub plan governs edits in sibling repo `assethold/`). Not T3 because the remediation is mechanically deterministic (all fix sites already identified in issue body and verified against live state); no architectural decisions or new subsystems. Not T1 because it spans two phases with distinct acceptance gates and touches sibling-repo dep resolution.
