@@ -71,6 +71,14 @@ output:
 """
 
 
+def _valid_demo_05_plsv_yaml() -> str:
+    """Demo_05 intake that references the canonical PLSV vessel."""
+    return _valid_demo_05_intake_yaml().replace(
+        'canonical_ref: "seven-borealis"',
+        'canonical_ref: "plsv"',
+    )
+
+
 def _demo_01_with_vessel_yaml() -> str:
     """Demo_01 intake that (incorrectly) includes a vessel block — Q6 violation."""
     return """\
@@ -190,6 +198,19 @@ def test_load_and_validate_accepts_canonical_seven_borealis_intake(tmp_path: Pat
     assert result.structure_kind == "rigid_jumper"
     assert result.company == "Acme Marine Contractors"
     assert result.contact == "jane.doe@acme.example"
+    assert result.source_path == intake_file
+
+
+def test_load_and_validate_accepts_canonical_plsv_for_demo_05(tmp_path: Path) -> None:
+    intake_file = tmp_path / "acme-demo05-plsv.yaml"
+    intake_file.write_text(_valid_demo_05_plsv_yaml(), encoding="utf-8")
+
+    result = load_and_validate(intake_file)
+
+    assert isinstance(result, ProspectInput)
+    assert result.target_demo == "demo_05"
+    assert result.vessel_shape == "csv_hlv"
+    assert result.structure_kind == "rigid_jumper"
     assert result.source_path == intake_file
 
 

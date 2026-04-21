@@ -1,6 +1,6 @@
 # Plan for #2269: standardize OpenFOAM v2312 baseline workflow and validation
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-04-15
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2269

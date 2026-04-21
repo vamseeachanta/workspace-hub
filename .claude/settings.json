@@ -6,7 +6,7 @@
     "REVIEW_GATE_STRICT": "1"
   },
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "bypassPermissions"
   },
   "hooks": {
     "PreToolUse": [

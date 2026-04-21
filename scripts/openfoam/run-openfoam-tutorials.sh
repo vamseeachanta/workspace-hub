@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 # run-openfoam-tutorials.sh — Headless OpenFOAM tutorial runner
-# Usage: bash scripts/openfoam/run-openfoam-tutorials.sh [--verdict /path/to/verdict.yaml]
+# Usage: bash scripts/openfoam/run-openfoam-tutorials.sh [--verdict /path/to/verdict.yaml] [--tutorials cavity,pitzDaily]
 #
-# Runs cavity + damBreak tutorials, checks convergence, writes YAML verdict.
+# Runs selected tutorials, checks convergence, writes YAML verdict.
 # No interactive session or GUI required.
 
 set -eo pipefail
 
-OPENFOAM_BASHRC="/usr/lib/openfoam/openfoam2312/etc/bashrc"
-VERDICT_FILE="${1:---verdict}"
-if [[ "$VERDICT_FILE" == "--verdict" ]]; then
-    VERDICT_FILE="${2:-/tmp/openfoam-tutorial-verdict.yaml}"
-fi
+OPENFOAM_BASHRC="${OPENFOAM_BASHRC:-/usr/lib/openfoam/openfoam2312/etc/bashrc}"
+VERDICT_FILE="/tmp/openfoam-tutorial-verdict.yaml"
+TUTORIALS="cavity,damBreak"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --verdict)
+            VERDICT_FILE="$2"
+            shift 2
+            ;;
+        --tutorials)
+            TUTORIALS="$2"
+            shift 2
+            ;;
+        *)
+            echo "ERROR: unknown argument: $1" >&2
+            exit 2
+            ;;
+    esac
+done
 
 # Source OpenFOAM (cannot use set -u — bashrc has unbound variables)
 if [[ ! -f "$OPENFOAM_BASHRC" ]]; then
@@ -37,7 +52,6 @@ run_tutorial() {
     cp -r "$src" "$dest"
     cd "$dest"
 
-    # 0.orig → 0 (standard OpenFOAM pattern)
     [[ -d "0.orig" && ! -d "0" ]] && cp -r 0.orig 0
 
     local status="PASS"
@@ -59,29 +73,56 @@ run_tutorial() {
     results+=("$name|$status|$tdirs")
 }
 
-# cavity — icoFoam (laminar transient, ~30s)
-CAVITY=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "cavity" -path "*/icoFoam/cavity/cavity" | head -1)
-[[ -z "$CAVITY" ]] && CAVITY=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "cavity" -path "*/icoFoam/*" | tail -1)
-if [[ -n "$CAVITY" ]]; then
-    run_tutorial "cavity" "$CAVITY" "blockMesh" "icoFoam"
-else
-    echo "WARNING: cavity tutorial not found"
-    results+=("cavity|NOT_FOUND|0")
-    overall="FAIL"
-fi
+run_selected_tutorials() {
+    local selected="$1"
+    IFS=',' read -r -a names <<< "$selected"
+    for tutorial in "${names[@]}"; do
+        case "$tutorial" in
+            cavity)
+                local cavity
+                cavity=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "cavity" -path "*/icoFoam/cavity/cavity" | head -1)
+                [[ -z "$cavity" ]] && cavity=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "cavity" -path "*/icoFoam/*" | tail -1)
+                if [[ -n "$cavity" ]]; then
+                    run_tutorial "cavity" "$cavity" "blockMesh" "icoFoam"
+                else
+                    echo "WARNING: cavity tutorial not found"
+                    results+=("cavity|NOT_FOUND|0")
+                    overall="FAIL"
+                fi
+                ;;
+            damBreak)
+                local dambreak
+                dambreak=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "damBreak" -path "*/interFoam/laminar/damBreak/damBreak" | head -1)
+                [[ -z "$dambreak" ]] && dambreak=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "damBreak" -path "*/interFoam/*" | tail -1)
+                if [[ -n "$dambreak" ]]; then
+                    run_tutorial "damBreak" "$dambreak" "blockMesh" "setFields" "interFoam"
+                else
+                    echo "WARNING: damBreak tutorial not found"
+                    results+=("damBreak|NOT_FOUND|0")
+                    overall="FAIL"
+                fi
+                ;;
+            pitzDaily)
+                local pitzdaily
+                pitzdaily=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "pitzDaily" -path "*/simpleFoam/pitzDaily" | head -1)
+                if [[ -n "$pitzdaily" ]]; then
+                    run_tutorial "pitzDaily" "$pitzdaily" "blockMesh" "simpleFoam"
+                else
+                    echo "WARNING: pitzDaily tutorial not found"
+                    results+=("pitzDaily|NOT_FOUND|0")
+                    overall="FAIL"
+                fi
+                ;;
+            *)
+                echo "ERROR: unsupported tutorial '$tutorial'" >&2
+                exit 2
+                ;;
+        esac
+    done
+}
 
-# damBreak — interFoam (VOF multiphase, ~5min)
-DAMBREAK=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "damBreak" -path "*/interFoam/laminar/damBreak/damBreak" | head -1)
-[[ -z "$DAMBREAK" ]] && DAMBREAK=$(find "$WM_PROJECT_DIR/tutorials" -type d -name "damBreak" -path "*/interFoam/*" | tail -1)
-if [[ -n "$DAMBREAK" ]]; then
-    run_tutorial "damBreak" "$DAMBREAK" "blockMesh" "setFields" "interFoam"
-else
-    echo "WARNING: damBreak tutorial not found"
-    results+=("damBreak|NOT_FOUND|0")
-    overall="FAIL"
-fi
+run_selected_tutorials "$TUTORIALS"
 
-# Write verdict
 cat > "$VERDICT_FILE" << YAML
 generated_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 machine: $(hostname)

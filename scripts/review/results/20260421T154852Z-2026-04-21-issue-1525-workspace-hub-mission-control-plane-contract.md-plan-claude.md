@@ -1,0 +1,31 @@
+### Verdict: MAJOR
+
+### Summary
+The plan is well-structured with explicit canonical terminology, clear file scope, and verifiable tests, but its own embedded Adversarial Review Summary reports "Overall result: FAIL — further revision is still required before this plan is approval-ready," and several validator semantics and AGENTS.md handling details remain underspecified. The Wave-1 scope and deferral of worldenergydata are sensible, but the plan should resolve its own open issues before being approved.
+
+### Issues Found
+- [P1] The plan's own Adversarial Review Summary explicitly states "Overall result: FAIL — further revision is still required before this plan is approval-ready." Submitting it for approval in this state contradicts its self-assessment; either a new adversarial review wave must be run against the revised draft or the remaining MAJOR findings must be explicitly mapped to concrete closures.
+- [P1] The validation script's matching semantics are not specified. Required/forbidden phrases include punctuation (e.g., "workspace-hub does not own engineering computations; digitalmodel owns that layer") and multi-word substrings, but the plan does not define case sensitivity, whitespace/newline tolerance, Unicode normalization, or whether matches are whole-line or substring. This makes the TDD tests non-deterministic.
+- [P1] Migration of existing language is not tested. docs/BUSINESS_BRAIN.md currently asserts "GSD is the control plane." The forbidden-phrase list does not include that exact string, and there is no test that the old phrase is removed — only that the new phrase is added. The file could legitimately pass validation while still containing contradictory legacy wording.
+- [P2] AGENTS.md handling is ambiguous. The plan says AGENTS is unchanged because it is at the 20-line cap, but the Canonical Terminology Contract describes a required mission-pointer phrase "only if AGENTS.md is edited in a separate follow-up issue" and an open question asks whether a pointer should be added. No concrete follow-up issue draft is created for AGENTS.md, unlike the CI validator follow-up.
+- [P2] test_plan_index_updated requires a row matching three fields (issue, slug, plan path) but the documented schema has seven columns (Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes). The test does not verify date, status, complexity, or notes columns are populated, so a malformed row could pass.
+- [P2] The semantic contradiction check ("any repo other than X as the <role>") is stated in prose but no predicate, regex template, or sample corpus is given. Implementing this deterministically is non-trivial because natural-language phrasings vary; the plan promises enforcement stronger than substring matching without specifying how it is achieved.
+- [P3] Two files with nearly identical names under docs/standards/ — CONTROL_PLANE_CONTRACT.md (entry-point standard) and the new WORKSPACE_HUB_MISSION_CONTRACT.md — are likely to confuse future readers. No cross-link requirement between the two files is specified.
+- [P3] The content/structure of the new canonical mission contract is only constrained by required phrases and non-goal bullets; the plan does not describe the document's section layout or the narrative around those phrases, so lexical compliance can be achieved while the document is otherwise poorly organized.
+- [P3] Two open questions (AGENTS.md pointer, CI follow-up filing timing) are left unresolved at plan time. Plans in this repo's workflow are expected to carry a default position to reduce downstream negotiation.
+
+### Suggestions
+- Re-run adversarial review (or a targeted delta review) against the revised draft after incorporating the listed "Revisions made based on review" items, so the plan does not self-report FAIL at submission.
+- Add a dedicated "Validator semantics" subsection defining case sensitivity, whitespace handling, multi-line matching, and how punctuation/semicolons in required phrases are normalized; include sample positive and negative fixtures.
+- Add an explicit test that verifies the legacy phrase "GSD is the control plane" has been replaced (not merely supplemented) in docs/BUSINESS_BRAIN.md, and add "GSD is the control plane" (standalone) to the forbidden-phrase list for that file to force migration.
+- Include a proposed skeletal outline (headings and section intents) for docs/standards/WORKSPACE_HUB_MISSION_CONTRACT.md so reviewers can evaluate content design, not just phrase inventory.
+- Strengthen test_plan_index_updated to assert all seven columns are present and non-empty for the new row, including Date, Status, Complexity, and Notes.
+- Document the relationship between CONTROL_PLANE_CONTRACT.md and WORKSPACE_HUB_MISSION_CONTRACT.md inside both files, and add a test that each file links to the other.
+- Pick a default position for the two open questions (e.g., "AGENTS.md stays workflow-only this packet; mission pointer deferred" and "CI follow-up filed immediately after approval") so the plan ships a decision, not a deferral.
+
+### Questions for Author
+- The plan's Adversarial Review Summary concludes "Overall result: FAIL — further revision is still required before this plan is approval-ready." Has a new review wave been run against the revised draft, and if not, on what basis is it being submitted for approval now?
+- How does the validator distinguish the legitimate existing phrase "GSD is the control plane" (to be retired) from the new required phrase "workspace-hub is the ecosystem control plane" given both share the substring "is the ... control plane"?
+- Is docs/standards/ the correct home for a workspace-hub-specific mission contract, or would docs/ root or docs/reports/ be more appropriate given that other standards in that directory are cross-repo generic?
+- For the semantic-role contradiction test, what is the reference implementation strategy — regex catalog, AST of headings, explicit allow-list of role strings — and how is it kept in sync with future role additions (e.g., when worldenergydata is defined in Wave-2)?
+- If the AGENTS.md 20-line cap prevents adding a mission pointer, what content in the existing 20 lines is considered the natural candidate for removal or consolidation in the eventual follow-up issue, so reviewers can see that path is feasible?

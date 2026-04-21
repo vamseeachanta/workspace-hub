@@ -109,12 +109,15 @@ For wiki pages:
 
 This avoids false positives during migration while still surfacing actionable backlog.
 
-### Source record statuses
-Each normalized source record must be exactly one of:
-- `gap` — canonical source key present, no wiki page with the same canonical `doc_key`
-- `covered` — canonical source key present and wiki page exists (summary counts only; not emitted into gap YAML)
+### Canonical source-record status enum
+Every normalized source candidate must end in exactly one authoritative status from this enum:
+- `gap` — canonical source key present, no same-domain wiki page with the same canonical `doc_key`
+- `covered` — canonical source key present and same-domain wiki page exists
 - `identity-unresolved` — source exists but lacks canonical joinable identity
-- `domain-unresolved` — source identity exists but the record cannot be assigned to a valid output domain
+- `domain-unresolved` — source identity exists but the record cannot be assigned to a valid output domain/domain_slug
+- `domain-mismatch` — canonical `doc_key` exists in wiki coverage, but only in a different normalized wiki domain
+
+This enum is authoritative for all later sections, pseudocode, tests, acceptance criteria, and report outputs.
 
 ### Wiki diagnostics
 Wiki-frontmatter problems are tracked separately from source-record status:
@@ -141,6 +144,11 @@ The detector uses three distinct surfaces:
 ### B. Coverage-providing wiki artifacts
 4. non-structural wiki markdown under `knowledge/wikis/*/wiki/**/*.md` is schema-validated for §8.1 compliance
 5. only wiki pages with canonical `sha256:` `doc_key` participate in coverage indexing
+6. wiki-domain derivation is authoritative in this order:
+   - first: explicit domain hint in frontmatter field `domain` when present and normalized by config
+   - second: repo path anchor `knowledge/wikis/<wiki-domain>/wiki/**` where `<wiki-domain>` becomes the normalized wiki domain slug
+   - third: config mapping for exceptional wiki roots if path and frontmatter disagree
+   - if derivation disagrees irreconcilably, treat the wiki page as diagnostic-only and emit `wiki-schema-warning`
 
 ### C. Reporting/context aids
 6. optional reporting aids that do not become source records in v5:
@@ -186,7 +194,7 @@ Normalized source record fields:
 - `notes`
 - `source_identity_warning` (optional)
 
-Allowed source statuses:
+Allowed source statuses (same authoritative enum as in Identity Join Contract):
 - `gap`
 - `covered`
 - `identity-unresolved`
@@ -217,10 +225,47 @@ Mapping expectations:
 - if no mapping resolves a valid domain/domain_slug pair, emit `domain-unresolved`, count it in `_summary.md`, and do not write it into any per-domain YAML file.
 
 Supplemental source field contracts:
-- `standards-transfer-ledger.yaml`: authoritative fields are `doc_key` (identity), title/name field (title), canonical source path or reference field (source_path), standard family/domain field (domain/discipline), and tier derived from operating-model §7 defaults.
-- `dde-standards-inventory.yaml`: authoritative fields are inventory doc-key/hash field (identity), display title field, source path/reference field, and DDE classification fields for domain/discipline.
-- `promotions/*.yaml`: authoritative fields are `doc_key`, `doc_path` or equivalent source reference, `title`, `domain`, and optional issue/source metadata.
-- if a supplemental source row lacks the authoritative identity/path fields above, it must be classified as `identity-unresolved` rather than silently normalized.
+- `standards-transfer-ledger.yaml`:
+  - `doc_key`: row field `doc_key`
+  - `title`: `title`, else `name`
+  - `source_path`: `doc_path`, else `path`, else `source_path`
+  - `domain`: `domain`, else `family`, else config domain map by standards org/category
+  - `discipline`: `discipline`, else normalized `domain`
+  - `availability_tier`: default `1` (git-tracked metadata per operating-model §7)
+  - `suggested_page`: `knowledge/wikis/<normalized-domain>/wiki/<slugified-title>.md`
+- `dde-standards-inventory.yaml`:
+  - `doc_key`: `doc_key`, else namespaced hash field if already canonicalized, else unresolved
+  - `title`: `title`, else `document_title`, else `name`
+  - `source_path`: `doc_path`, else `path`, else `source_path`
+  - `domain`: `domain`, else `category`, else config domain map by DDE section/type
+  - `discipline`: `discipline`, else normalized `domain`
+  - `availability_tier`: default `1`
+  - `suggested_page`: `knowledge/wikis/<normalized-domain>/wiki/<slugified-title>.md`
+- `promotions/*.yaml`:
+  - `doc_key`: `doc_key`
+  - `title`: `title`
+  - `source_path`: `doc_path`, else `source_path`
+  - `domain`: `domain`
+  - `discipline`: `discipline`, else normalized `domain`
+  - `availability_tier`: default `1`
+  - `suggested_page`: `knowledge/wikis/<normalized-domain>/wiki/<slugified-title>.md`
+- `index.jsonl` required corpus:
+  - `doc_key`: `doc_key`
+  - `title`: `title`, else basename from path
+  - `source_path`: `path`
+  - `domain`: explicit `domain`, else config `source_root_domain_map`
+  - `discipline`: `discipline`, else normalized `domain`
+  - `availability_tier`: default `1`
+  - `suggested_page`: `knowledge/wikis/<normalized-domain>/wiki/<slugified-title>.md`
+- `code-registry.yaml` required corpus:
+  - `doc_key`: canonical code/standard key field if present; otherwise unresolved until linked to a source document
+  - `title`: registry title/name field
+  - `source_path`: linked source reference if present; otherwise unresolved
+  - `domain`: config `design_code_domain_defaults`
+  - `discipline`: normalized `domain`
+  - `availability_tier`: default `1`
+  - `suggested_page`: `knowledge/wikis/<normalized-domain>/wiki/<slugified-title>.md`
+- if a source row lacks the authoritative identity/path fields above, it must be classified as `identity-unresolved` rather than silently normalized.
 
 Gap YAML entry fields:
 - `doc_key`
@@ -244,6 +289,7 @@ Exit-code contract:
 ```text
 function run(config_path, dry_run=False, publication_mode=False):
     config = load_detector_config(config_path)  # domain mapping, structural excludes, output dir
+    publication_mode = publication_mode or config.publication_mode
     required_inputs = [
         "data/document-index/index.jsonl",
         "data/design-codes/code-registry.yaml",
@@ -340,7 +386,6 @@ function run(config_path, dry_run=False, publication_mode=False):
 
     if publication_mode:
         require_clean_worktree()
-        acquire_lock("wiki-coverage-gap-detection")
 
     reconcile_output_directory(
         config.output_dir,
@@ -365,24 +410,25 @@ Planned detector config at `config/ai-tools/wiki-gap-detection.yaml`:
 - `structural_excludes`: basename/path patterns for `index.md`, `log.md`, and navigation-only wiki files
 - `source_root_domain_map`: path-prefix/domain mapping for `index.jsonl` records that lack explicit domain metadata
 - `design_code_domain_defaults`: default wiki-domain mapping for code-registry entries
+- `wiki_domain_rules`: frontmatter/path/config precedence rules for deriving normalized wiki domain slugs
 - `expected_supplemental_inputs`: optional join-bearing sources that must mark the run `degraded` when configured but missing
 - `required_input_prechecks`: shell/file checks for `data/document-index/index.jsonl` and `data/design-codes/code-registry.yaml` before scheduled execution
-- `publication_mode`: `git-commit` for scheduled publication of updated reports on the target checkout
+- `publication_mode`: config field consumed by the CLI to enable publication branch explicitly (`publication_mode: true|false`)
 
 Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `id`: `wiki-coverage-gap-detection`
 - `label`: `Wiki coverage-gap detector`
 - `schedule`: `15 4 * * 1`
 - `machines`: `[dev-primary, ace-linux-1]`
-- `requires`: `[python3, uv, git]`
+- `requires`: `[python3, uv, git, flock]`
 - `prefer`: `dev-primary`
-- `single-run lock`: `flock -n $WORKSPACE_HUB/.locks/wiki-coverage-gap-detection.lock`
+- `single-run lock`: shell-level only via `flock -n $WORKSPACE_HUB/.locks/wiki-coverage-gap-detection.lock`
 - `clean-worktree precondition`: abort publication if `git status --porcelain` is non-empty before the detector stages report outputs
 - `command`:
-  `mkdir -p $WORKSPACE_HUB/logs/knowledge $WORKSPACE_HUB/.locks && cd $WORKSPACE_HUB && test -f data/document-index/index.jsonl && test -f data/design-codes/code-registry.yaml && test -z "$(git status --porcelain)" && flock -n $WORKSPACE_HUB/.locks/wiki-coverage-gap-detection.lock uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml >> $WORKSPACE_HUB/logs/knowledge/wiki-coverage-gap-$(date +\%Y-\%m-\%d).log 2>&1 && git add docs/reports/wiki-coverage-gaps && if ! git diff --cached --quiet; then git commit -m "docs(reports): refresh wiki coverage gaps" && git push origin main; fi`
+  `mkdir -p $WORKSPACE_HUB/logs/knowledge $WORKSPACE_HUB/.locks && cd $WORKSPACE_HUB && test -f data/document-index/index.jsonl && test -f data/design-codes/code-registry.yaml && test -z "$(git status --porcelain)" && flock -n $WORKSPACE_HUB/.locks/wiki-coverage-gap-detection.lock uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --publication-mode >> $WORKSPACE_HUB/logs/knowledge/wiki-coverage-gap-$(date +\%Y-\%m-\%d).log 2>&1 ; rc=$?; git add docs/reports/wiki-coverage-gaps; if [ $rc -eq 0 ] || [ $rc -eq 2 ]; then if ! git diff --cached --quiet; then git commit -m "docs(reports): refresh wiki coverage gaps" && git push origin main; fi; fi; exit $rc`
 - `log`: `logs/knowledge/wiki-coverage-gap-*.log`
 - `is_claude_task`: `false`
-- `description`: weekly source-vs-wiki gap detection; writes reports and publishes changes from a clean target checkout only when output changes
+- `description`: weekly source-vs-wiki gap detection; writes reports and publishes clean/degraded report updates from a clean target checkout only when output changes
 
 ---
 
