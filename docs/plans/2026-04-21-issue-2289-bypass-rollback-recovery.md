@@ -1,16 +1,17 @@
 # Plan for #2289: bypass rollback / recovery — policy contract for enforcement-gate bypass handling
 
-> **Status:** draft (v4, scope-narrowed after v3 adversarial review)
+> **Status:** draft (v5, post-v4-adversarial-review revision)
 > **Complexity:** T1 (policy document only)
 > **Date:** 2026-04-21
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2289
 > **Parent:** #2018
-> **Follow-on (implementation):** TBD — to be filed at plan-approval time; covers advisor script, post-commit correlator, all-commits observer, TDD suite, and enforcement-script modifications.
+> **Follow-on (implementation):** #2445 — advisor script, post-commit correlator, all-commits observer, TDD suite, enforcement-script modifications. Filed 2026-04-21 concurrent with this plan's v5 revision.
 > **Review artifacts:**
-> - v1: `scripts/review/results/2026-04-21-plan-2289-{claude,gemini}.md` (both MAJOR). Codex v1 dispatch timed out; no artifact produced.
-> - v2: `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v2.md` (Claude MINOR, Codex MAJOR, Gemini MAJOR).
-> - v3: `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v3.md` (Claude MINOR, Codex MAJOR, Gemini MINOR).
-> - v4: pending re-dispatch.
+> - v1: `scripts/review/results/2026-04-21-plan-2289-{claude,gemini}.md` (MAJOR, MAJOR). Codex v1 timed out.
+> - v2: `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v2.md` (MINOR, MAJOR, MAJOR).
+> - v3: `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v3.md` (MINOR, MAJOR, MINOR).
+> - v4: `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v4.md` (MINOR, MAJOR, MINOR).
+> - v5: pending re-dispatch.
 
 ---
 
@@ -18,50 +19,41 @@
 
 | Rev | Date | Claude | Codex | Gemini | Disposition |
 |---|---|---|---|---|---|
-| v1 | 2026-04-21 | MAJOR | (timed out) | MAJOR | Revised to v2: hook split, dedup, dynamic pushed. |
-| v2 | 2026-04-21 | MINOR | MAJOR | MAJOR | Revised to v3: --no-verify observer, tri-state pushed, normative approval-intent, dual safe-list. |
-| v3 | 2026-04-21 | MINOR | MAJOR (3H+4M) | MINOR | **Scope-narrowed to v4 policy-only** (see v4 rationale). |
-| v4 | 2026-04-21 | (pending) | (pending) | (pending) | Re-dispatch on narrowed scope. |
+| v1 | 2026-04-21 | MAJOR | (timed out) | MAJOR | v2: hook split, dedup, dynamic pushed. |
+| v2 | 2026-04-21 | MINOR | MAJOR | MAJOR | v3: observer, tri-state, normative approval-intent, dual safe-list. |
+| v3 | 2026-04-21 | MINOR | MAJOR | MINOR | v4: scope-narrowed to policy-only. |
+| v4 | 2026-04-21 | MINOR | MAJOR (3H+3M+1L) | MINOR | v5: targeted fixes (see rationale). |
+| v5 | 2026-04-21 | (pending) | (pending) | (pending) | Re-dispatch after this commit. |
 
-### v4 revision rationale — scope narrow to policy-only
+### v5 revision rationale
 
-v3 achieved 2-of-3-provider MINOR verdicts, but Codex v3 surfaced three logic defects in the **advisor implementation details** (blocked-vs-bypassed event conflation in `synthesize_observer_events`; 3-way contradiction in `has_approval_intent` contract text; undefined detached-HEAD observer semantics). These defects are all in implementation scope, not policy scope. The policy parts of v3 — verdict taxonomy, dual safe-list, precedence vs TRUST-ARCHITECTURE.md, audit contract, trigger conditions — have been clean since v2.
+**Codex v4 (3 High + 3 Medium + 1 Low):**
+1. **Taxonomy not exclusive (H1).** v5 adds explicit §Verdict precedence cascade with strict evaluation order. Ties broken deterministically.
+2. **`docs/standards/` loophole (H2).** v5 removes `docs/standards/` from `ADVISOR_SAFE_PATHS` entirely. All files under `docs/standards/` are now rollback-eligible by default; governance-critical ones (`HARD-STOP-POLICY.md`, `AI_REVIEW_ROUTING_POLICY.md`) are explicitly listed in the never-safe-listed enforcement-surface set.
+3. **Follow-on issue TBD (H3).** v5 references concrete issue #2445 (filed 2026-04-21). AGENTS.md framing changed per Codex M3 below.
+4. **Synthesis wording leakage (M1).** v5 rephrases trigger conditions in evidence-only terms; removes "synthesized observer-vs-gate-events delta" mechanism-specific language.
+5. **Commit-already-gone audit (M2).** v5 adds §Audit for commit-already-removed case.
+6. **AGENTS.md framing (M3).** v5 changes AGENTS.md update to use "reserved — not yet implemented as a bypass path; see #2445" framing that cannot be mistaken for an active workflow command.
+7. **Branch context for mixed history (L).** v5 adds §Branch context definition covering cherry-picks, merges, branch deletion.
 
-Rather than cycle a v4 that patches implementation pseudocode while Codex iteratively finds narrower implementation defects (an anti-pattern documented in the #2045 24-rereview loop), v4 narrows #2289's scope to the **policy contract only**. Implementation moves to a distinct follow-on issue where it can get proper TDD-first treatment with a concrete test harness driving design.
+**Gemini v4 (2 MINOR):**
+1. **Verdict precedence** — addressed per Codex H1 above (unified fix).
+2. **Path syntax inconsistency** — v5 standardizes all path specifications to `**` glob form.
 
-**What v4 keeps:**
-- The 6-verdict taxonomy (with rationale for each)
-- The dual safe-list split (COMMIT_GATE_SAFE_PATHS vs ADVISOR_SAFE_PATHS)
-- The enforcement-surface protection (paths that are NEVER safe-listed for advisor purposes)
-- The advisor-not-auto-revert boundary decision
-- The audit contract (records outlive any rollback)
-- Precedence with TRUST-ARCHITECTURE.md §Rollback Rules
-- The AGENTS.md update for `FORCE_PLAN_GATE=1` logged-bypass documentation
-
-**What v4 removes:**
-- Advisor script pseudocode (implementation detail)
-- TDD test list (part of follow-on TDD-first implementation)
-- `synthesize_observer_events`, `has_approval_intent`, `resolve_pushed_state`, `has_been_reverted_via_revert_commit` helper-function contracts (these are what Codex repeatedly found defects in; move to follow-on)
-- `scripts/enforcement/bypass-rollback-advisor.sh`, `post-commit-bypass-logger.sh`, `all-commits-observer.sh` creation (follow-on)
-- `tests/enforcement/test_bypass_rollback_advisor.py` (follow-on)
-- Log schema detail for the new logs (follow-on specifies per its TDD)
-
-**What v4 defers explicitly to the follow-on issue:**
-- How `--no-verify` is detected (the implementation path — observer + synthesis vs alternatives)
-- How `pushed` state is resolved reliably (the tri-state implementation)
-- How approval-intent is determined (the normative rule's exact mechanics)
-- How revert-of-revert and other revert-detection edge cases are handled
-- Hook chaining mechanism in `install-hooks.sh`
+**Claude v4 (2 MINOR):**
+1. **Operator-interface requirements absent (N1)** — v5 adds §Operator interface requirements section defining default non-blocking exit and optional strict-mode contract.
+2. **Placeholder `#NNNN` (N2)** — addressed by filing #2445.
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `scripts/enforcement/require-review-on-push.sh` logs push-gate bypass events to `logs/hooks/review-gate-bypass.jsonl` when `SKIP_REVIEW_GATE=1` is set (lines 149–167).
-- Found: `scripts/enforcement/require-plan-approval.sh` is the pre-commit gate. Its line 105 help text `"To bypass: FORCE_PLAN_GATE=1 git commit"` is currently misleading — the script never reads `$FORCE_PLAN_GATE`. The follow-on implementation issue closes this gap.
-- Found: `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules (lines 216–248) defines agent-initiated auto-rollback for failing tests. Distinct from bypass-initiated rollback; v4 §Precedence covers the handoff.
-- Found: `needs_plan_approval()` in `require-plan-approval.sh` lines 26–44 classifies commits via path-based safe-list. v4 policy clarifies this commit-gate safe-list is NOT the same as the advisor's safe-list (which must be narrower).
+- Found: `scripts/enforcement/require-review-on-push.sh` logs push-gate bypass events (lines 149–167).
+- Found: `scripts/enforcement/require-plan-approval.sh` — line 105 help text claims `FORCE_PLAN_GATE=1` bypass but script never reads that var. Implementation in #2445.
+- Found: `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules (lines 216–248) — agent-initiated rollback; distinct scope.
+- Found: `needs_plan_approval()` classifier in `require-plan-approval.sh` lines 26–44. This is the `COMMIT_GATE_SAFE_PATHS` referenced below.
+- Found: `docs/standards/HARD-STOP-POLICY.md`, `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — governance-critical enforcement docs. v5 classifies these as never-safe-listed.
 
 ### Standards
 | Standard | Status | Source |
@@ -71,27 +63,29 @@ Rather than cycle a v4 that patches implementation pseudocode while Codex iterat
 | Review routing | established | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
 
 ### Documents consulted
-- GitHub issue #2289 body — parent=#2018; scope per issue: "trigger conditions, mechanism comparison, audit trail requirements, correctness tests." v4 addresses the first three; tests move to follow-on.
-- GitHub issue #2018 closure dependency: child must be in `status:plan-review` or later. v4 plan is the qualifying artifact.
-- `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules — distinct from this scope; §Precedence explicit.
-- Adversarial reviews v1/v2/v3 (9 artifacts under `scripts/review/results/`) — informed scope-narrow decision.
+- GitHub issues #2289, #2018, #2445.
+- `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules.
+- `docs/standards/HARD-STOP-POLICY.md`, `docs/standards/AI_REVIEW_ROUTING_POLICY.md` (governance-critical files).
+- `scripts/enforcement/require-{plan-approval,review-on-push}.sh`, `enforcement-env.sh`, `compliance-dashboard.sh`.
+- Adversarial reviews v1–v4 (11 artifacts under `scripts/review/results/`).
 
 ### Gaps identified
-- No written bypass-rollback policy exists today. v4 creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
-- `AGENTS.md` does not document the intended `FORCE_PLAN_GATE=1` logged-bypass env var. v4 adds the documentation.
-- Follow-on (separate issue): implementation of the advisor script, observer hook, correlator, tests, and enforcement-script modifications per this policy.
+- No written bypass-rollback policy exists. v5 creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+- `AGENTS.md` lacks documentation of the reserved `FORCE_PLAN_GATE=1` env var (intended for implementation in #2445).
+- Follow-on implementation: #2445.
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-04-21):
-- `#2289` OPEN — labels: priority:high, cat:harness, domain:workflow.
-- `#2018` OPEN — labels include `status:plan-review`.
+- `#2289` OPEN — priority:high, cat:harness, domain:workflow.
+- `#2018` OPEN — includes `status:plan-review`.
+- `#2445` OPEN — cat:harness, domain:workflow, priority:medium. Filed concurrent with v5.
 
-**File existence**:
-- EXISTS: `docs/governance/TRUST-ARCHITECTURE.md`, `AGENTS.md`, `scripts/enforcement/require-{plan-approval,review-on-push}.sh`.
-- MISSING (v4 creates): `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+**File existence:**
+- EXISTS: TRUST-ARCHITECTURE.md, AGENTS.md, require-{plan-approval,review-on-push}.sh, HARD-STOP-POLICY.md, AI_REVIEW_ROUTING_POLICY.md.
+- MISSING (v5 creates): `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
 
-**Source count:** 3 repo files + 2 GitHub issues + 9 review artifacts + 2 governance docs = 16 distinct sources.
+**Source count:** 5 repo files + 3 GitHub issues + 11 review artifacts + 3 governance/standards docs = 22 distinct sources.
 
 ---
 
@@ -101,122 +95,161 @@ Rather than cycle a v4 that patches implementation pseudocode while Codex iterat
 |---|---|
 | This plan | `docs/plans/2026-04-21-issue-2289-bypass-rollback-recovery.md` |
 | Policy doc (new) | `docs/governance/BYPASS-ROLLBACK-POLICY.md` |
-| AGENTS.md update | `AGENTS.md` — document `FORCE_PLAN_GATE=1` as intended logged-bypass env var (implementation in follow-on) |
-| TRUST-ARCHITECTURE cross-ref | `docs/governance/TRUST-ARCHITECTURE.md` — add cross-reference to BYPASS-ROLLBACK-POLICY.md §Precedence |
+| AGENTS.md update | `AGENTS.md` — document `FORCE_PLAN_GATE=1` as **reserved — not yet implemented; implementation tracked in #2445** |
+| TRUST-ARCHITECTURE cross-ref | `docs/governance/TRUST-ARCHITECTURE.md` — cross-reference to `BYPASS-ROLLBACK-POLICY.md` §Precedence |
 | README index | `docs/plans/README.md` |
-| v4 reviews (pending) | `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v4.md` |
+| v5 reviews (pending) | `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v5.md` |
 
 ---
 
 ## Deliverable
 
 A written policy document (`docs/governance/BYPASS-ROLLBACK-POLICY.md`) that codifies:
-1. **Trigger conditions** — when a logged bypass produces a `revert_recommended` verdict (and when it does not).
-2. **Verdict taxonomy** — six dispositions with rationale.
-3. **Dual safe-list semantics** — commit-gate vs advisor safe-list, and the governance consequence.
-4. **Precedence** — handoff between agent-initiated rollback (TRUST-ARCHITECTURE.md) and bypass-initiated rollback (this policy).
-5. **Audit contract** — records that must be written regardless of downstream action.
-6. **Advisory boundary** — the policy does not authorize automatic revert on pushed state; human or higher-scope tool executes.
+1. Trigger conditions (evidence-based, mechanism-agnostic)
+2. Verdict taxonomy with strict precedence cascade
+3. Dual safe-list semantics (standardized `**` glob syntax)
+4. Enforcement-surface protection (explicit list of NEVER-safe-listed files)
+5. Branch context definition (cherry-picks, merges, branch deletion)
+6. Precedence vs TRUST-ARCHITECTURE.md with commit-already-gone case
+7. Audit contract (including commit-disappeared handling)
+8. Advisory boundary (never auto-revert)
+9. Operator interface requirements (default exit; strict mode contract)
 
-Plus `AGENTS.md` updated to document `FORCE_PLAN_GATE=1` as the intended logged-bypass env var (parity with push-gate `SKIP_REVIEW_GATE=1`), and a cross-reference from `TRUST-ARCHITECTURE.md` §Rollback Rules to the new policy.
-
----
-
-## Policy: verdict taxonomy (to be codified in BYPASS-ROLLBACK-POLICY.md)
-
-When a logged bypass is evaluated against a commit SHA, exactly one of the following verdicts applies:
-
-| Verdict | When it applies | Operator action |
-|---|---|---|
-| `log_only_approved_later` | Explicit post-commit approval evidence exists (marker file or GitHub label transition) ordered after the bypass event. | None required — approval landed out-of-band. |
-| `log_only_safe_paths` | Commit touches only `ADVISOR_SAFE_PATHS` (narrower than commit-gate safe-list). | None required — path-based exemption. |
-| `log_only_remediated_later` | A later commit on the same branch carries review evidence (verdict, cross-review sign-off) for the bypassed change. | None required — remediation already landed. |
-| `log_only_reverted_later` | A later commit reverts the bypassed SHA via `git revert` or equivalent. | None required — reverted. |
-| `log_only_observability_gap` | Advisor cannot make a confident call due to environmental constraint (unresolved SHA, `gh` auth failure, shallow/no-remote clone). Has a `cause` sub-field (`unresolved_sha` / `auth_failed` / `pushed_unknown`). | Operator investigates cause; `--strict` exits non-zero. |
-| `revert_recommended` | Commit bypassed gates, touches non-safe paths, no post-hoc approval/remediation/revert, advisor can confidently determine pushed state. | Human review; may execute `git revert` for pushed or `git reset HEAD~1` for local. |
-
-**Rationale for a single `log_only_observability_gap` verdict (v4 consolidation):** v3 had three separate verdicts (`log_only_unresolved`, `log_only_auth_failed`, `log_only_pushed_unknown`). Claude v3 flagged this as a granularity overreach — operators look for "operator attention required" as a single semantic state. v4 collapses to one verdict with a `cause` field, resolving Claude v3 N2. The distinction is preserved in the audit record for debugging without cluttering the operator-facing verdict set.
+Plus `AGENTS.md` updated with **reserved-not-implemented** framing for `FORCE_PLAN_GATE=1`, explicitly pointing to #2445 for implementation status.
 
 ---
 
-## Policy: dual safe-list semantics (to be codified in BYPASS-ROLLBACK-POLICY.md)
+## Policy: verdict taxonomy with precedence cascade
 
-Two distinct path-based safe-lists govern different decisions:
+When a logged bypass is evaluated against a commit SHA, EXACTLY ONE verdict applies per the following strict precedence cascade. The first rule that matches determines the verdict; later rules are skipped:
 
-### COMMIT_GATE_SAFE_PATHS
-- **Defined in:** `scripts/enforcement/require-plan-approval.sh` (`needs_plan_approval()` exclusion logic, lines 26–44).
+1. **`log_only_approved_later`** — commit SHA has explicit post-commit approval evidence (marker file with approval phrase, OR GitHub label transition to `status:plan-approved` with timestamp after the bypass event). Wins over revert/remediation because explicit approval is the strongest post-hoc signal.
+2. **`log_only_reverted_later`** — commit SHA has been reverted via `git revert` (or equivalent mechanism defined in #2445). Wins over remediation because revert is a stronger corrective action.
+3. **`log_only_remediated_later`** — a later commit on the same branch (per §Branch context) carries review evidence for the bypassed change.
+4. **`log_only_safe_paths`** — commit touches only paths within `ADVISOR_SAFE_PATHS` (per §Dual safe-list), AND none of the touched paths match the never-safe-listed set.
+5. **`log_only_observability_gap`** — advisor cannot make a confident determination due to environmental constraint. Carries a `cause` sub-field: `unresolved_sha` | `auth_failed` | `pushed_unknown`.
+6. **`revert_recommended`** — default when no preceding verdict applies. Bypass is advisory for human action.
+
+**Rationale for precedence order:**
+- Approval beats everything: if approval landed post-hoc, the bypass is retroactively acceptable.
+- Revert beats remediation: a revert undoes the change; remediation merely reviews it.
+- Remediation beats safe-paths: if review evidence landed, the safe-paths exemption is moot.
+- Safe-paths beats observability-gap: path exemption is a policy decision; observability is a measurement limit.
+- Observability-gap beats revert-recommended: we do not recommend destructive action under uncertainty.
+
+---
+
+## Policy: dual safe-list semantics (standardized glob syntax)
+
+### `COMMIT_GATE_SAFE_PATHS` (existing)
+- **Defined in:** `scripts/enforcement/require-plan-approval.sh` lines 26–44.
 - **Governs:** whether a commit requires plan-approval evidence at pre-commit time.
-- **Paths:** `scripts//`, `.github/`, `docs/`, `config/`, `.claude/skills/`, `.claude/hooks/`, `tests/`, `specs/`.
-- **Rationale:** these are low-risk-to-functionality paths where plan approval adds friction without proportionate governance value.
+- **Paths (converted to glob form):** `scripts/**`, `.github/**`, `docs/**`, `config/**`, `.claude/skills/**`, `.claude/hooks/**`, `tests/**`, `specs/**`.
 
-### ADVISOR_SAFE_PATHS (new, narrower)
-- **Defined in:** `docs/governance/BYPASS-ROLLBACK-POLICY.md` (new policy doc).
-- **Governs:** whether a bypass of a commit in these paths is verdict `log_only_safe_paths` or gets full evaluation.
-- **Paths:** `docs/plans/`, `docs/reports/`, `docs/standards/`, `.planning/` ONLY.
-- **Rationale:** changes to these paths are definitionally non-executable; a bypassed commit touching only these cannot harm runtime behavior.
+### `ADVISOR_SAFE_PATHS` (new, narrower, v5-tightened)
+- **Defined in:** `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+- **Governs:** whether a bypass of a commit in these paths is verdict `log_only_safe_paths`.
+- **Paths:** `docs/plans/**`, `docs/reports/**`, `.planning/**`.
+- **Removed from v4's list:** `docs/standards/**` — v5 excludes this entire directory because it contains governance-critical enforcement documents.
+- **Rationale:** changes to these remaining paths are definitionally non-executable and non-governance; a bypassed commit touching only these cannot harm runtime behavior or weaken enforcement.
 
-### Enforcement-surface paths (NEVER safe-listed by advisor)
-- **Explicit list:** `.claude/hooks/**`, `scripts/enforcement/**`, `.github/workflows/enforcement-gate.yml`, `docs/governance/TRUST-ARCHITECTURE.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.codex/CODEX.md`.
-- **Governs:** commits modifying these paths are NEVER classified `log_only_safe_paths` regardless of other criteria — they receive the full advisor evaluation (remediation, revert, observability checks), and if unresolved, `revert_recommended` stands.
-- **Rationale:** these are the governance infrastructure. A bypass that modifies enforcement itself is the most dangerous class of bypass; path-based exemption would create a self-weakening loop.
+### Enforcement-surface paths (NEVER-SAFE-LISTED, v5-expanded)
+- **Explicit list:**
+  - `.claude/hooks/**`
+  - `scripts/enforcement/**`
+  - `.github/workflows/enforcement-gate.yml`
+  - `docs/governance/**`
+  - `docs/standards/HARD-STOP-POLICY.md`
+  - `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+  - `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md`
+  - `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.codex/CODEX.md`
+- **Expanded from v4:** added `docs/standards/HARD-STOP-POLICY.md`, `AI_REVIEW_ROUTING_POLICY.md`, `SUBAGENT_CONTEXT_ISOLATION.md`; expanded `docs/governance/TRUST-ARCHITECTURE.md` to `docs/governance/**`.
+- **Rationale:** these are the governance infrastructure. A bypass modifying enforcement itself is the most dangerous class.
 
 ### Paths outside all three lists
-- **Treatment:** full advisor evaluation, no path-based exemption. If bypassed and unresolved, `revert_recommended`.
-- **Rationale:** default position is rollback-eligible; safe-listing requires positive justification, not absence.
-
-This addresses Codex v3 Medium finding (dual safe-list policy edges undefined).
+- **Treatment:** full advisor evaluation (safe-paths exemption does not apply). If bypassed and unresolved by higher-precedence verdicts, `revert_recommended`.
+- **Rationale:** default position is rollback-eligible; safe-listing requires positive justification.
 
 ---
 
-## Policy: advisory boundary (to be codified in BYPASS-ROLLBACK-POLICY.md)
+## Policy: branch context (new v5 — addresses Codex v4 Low)
+
+"Same branch" in the `log_only_remediated_later` and `log_only_reverted_later` verdicts is determined by the following rules:
+
+1. **Primary branch:** if the bypass event's `branch` field identifies a branch currently active in the repo, "same branch" means commits reachable from that branch head.
+2. **Cherry-picks:** a cherry-pick commit on a different branch that carries the bypassed change does NOT count as remediation on the bypass's branch. Each branch tracks its own bypass state.
+3. **Merge commits:** if a merge commit on the bypass's branch brings in review evidence (either via the merge message or via any ancestor commit reachable only through the merge), it counts as remediation.
+4. **Branch deletion:** if the bypass's branch no longer exists (deleted or renamed), the advisor emits `log_only_observability_gap` with cause `branch_unreachable` rather than forcing a verdict. The bypass audit record stands.
+5. **Detached HEAD bypasses:** commits made in detached-HEAD state are evaluated against the branch ref that was checked out most recently and contains the bypass SHA; if none, verdict is `log_only_observability_gap` with cause `branch_unreachable`.
+
+---
+
+## Policy: advisory boundary
 
 1. The advisor emits recommendations; it does NOT execute reverts.
-2. Execution belongs to human operators or to a future higher-scope tool that extends this policy (tracked as a separate issue at the time such tool is built).
-3. Rationale: `git reset --hard` or `git revert` on main is high-blast-radius. Executing destructive rollback based on advisor logic risks compounding one error (bypass) with another (wrong revert). Explicit human-in-the-loop for execution is the governance choice.
-4. Future auto-revert (if ever built) must extend this policy by adding a new verdict class (e.g., `auto_reverted_by_tool`) with its own audit contract, not by mutating existing verdicts.
+2. Execution belongs to human operators or to a future higher-scope tool that extends this policy (tracked as a separate issue when built).
+3. Future auto-revert (if ever built) must extend this policy by adding a new verdict class with its own audit contract, not by mutating existing verdicts.
 
 ---
 
-## Policy: precedence vs TRUST-ARCHITECTURE.md §Rollback Rules (to be codified in BYPASS-ROLLBACK-POLICY.md)
+## Policy: precedence vs TRUST-ARCHITECTURE.md §Rollback Rules
 
-`TRUST-ARCHITECTURE.md` §Rollback Rules (lines 216–248) defines **agent-initiated** rollback: when an agent's own commit breaks tests, the agent auto-reverts (local, unpushed) or seeks human confirmation (pushed, or multi-agent change). This is fundamentally distinct from bypass-initiated rollback (this policy), which applies when *any actor's* commit bypassed the enforcement gates.
+`TRUST-ARCHITECTURE.md` §Rollback Rules defines agent-initiated rollback (agent's own commit breaks tests → auto-revert or human-confirmed). This is distinct from bypass-initiated rollback.
 
 Precedence when both apply:
-1. Agent-initiated rollback runs first when the commit is the agent's own and tests fail. The agent executes `git reset HEAD~1` (for local, pushed=false) or proposes revert options for pushed commits per TRUST-ARCHITECTURE.md.
-2. If agent-initiated rollback reverted the commit successfully (local), the commit no longer exists on the branch — this policy's advisor run would find nothing to evaluate for that SHA.
-3. If agent-initiated rollback reverted via `git revert` on a pushed commit, this policy's advisor detects it via revert-chain analysis (implementation detail in follow-on) → verdict `log_only_reverted_later`.
-4. If agent-initiated rollback was NOT invoked (agent not the author, or tests passed), this policy's advisor emits its verdict per the taxonomy.
+1. Agent-initiated rollback runs first when the commit is the agent's own and tests fail.
+2. **If agent-initiated rollback removes the local commit (`git reset HEAD~1`) before advisor evaluation:** the bypass event still exists in bypass logs, but the referenced commit SHA no longer resolves in the working tree. The advisor emits `log_only_observability_gap` with cause `commit_unresolvable_locally`, and the audit record notes "commit_removed_pre_evaluation: true, likely_cause: agent_initiated_rollback_per_TRUST-ARCHITECTURE" for traceability. The bypass audit trail is preserved even though the advisor cannot evaluate.
+3. If agent-initiated rollback reverted via `git revert` on a pushed commit, advisor's revert-detection (mechanism in #2445) finds it → verdict `log_only_reverted_later`.
+4. If agent-initiated rollback was NOT invoked, advisor emits its verdict per the taxonomy.
 
-In all cases, both policies write audit records. Neither policy deletes the other's audit trail.
-
----
-
-## Policy: audit contract (to be codified in BYPASS-ROLLBACK-POLICY.md)
-
-For every evaluated commit SHA, the advisor writes a record to `logs/hooks/bypass-rollback-proposals.jsonl` containing:
-- `timestamp` (ISO-8601 UTC)
-- `commit_sha` (resolved)
-- `verdict` (one of the six)
-- `verdict_cause` (for `log_only_observability_gap` only)
-- `pushed_state` (`true` / `false` / `unknown`)
-- `source_event_refs` (list of originating bypass-log entries by `{log_file, line}`)
-- `touched_paths` (output of `git diff-tree --no-commit-id --name-only -r <sha>`)
-- `evaluation_rule_applied` (which branch of the taxonomy fired)
-
-Audit records outlive any downstream action. They are the canonical evidence of policy application.
+In all cases, both policies write audit records. Neither deletes the other's audit trail.
 
 ---
 
-## Policy: trigger conditions (summary)
+## Policy: audit contract
+
+For every evaluated (or unevaluable) bypass event, the advisor writes a record to `logs/hooks/bypass-rollback-proposals.jsonl` containing:
+- `timestamp` — ISO-8601 UTC with millisecond precision
+- `source_event_refs` — list of originating bypass-log entries by `{log_file, line_offset}`
+- `commit_sha` — resolved SHA when available, otherwise `null`
+- `commit_resolvable` — `true` | `false` | `unknown`
+- `verdict` — one of the six
+- `verdict_cause` — populated for `log_only_observability_gap` only
+- `pushed_state` — `true` | `false` | `unknown`
+- `branch_context` — branch identifier (or `null` for detached-head / deleted-branch cases)
+- `touched_paths` — output of `git diff-tree --no-commit-id --name-only -r <sha>` when resolvable
+- `evaluation_rule_applied` — name of the precedence-cascade rule that fired
+- `commit_removed_pre_evaluation` (optional) — `true` when the commit existed at bypass-event time but not at advisor-run time
+- `likely_cause` (optional) — populated alongside `commit_removed_pre_evaluation` for traceability (e.g., `agent_initiated_rollback_per_TRUST-ARCHITECTURE`)
+
+Audit records outlive any downstream action.
+
+---
+
+## Policy: trigger conditions (evidence-based, mechanism-agnostic — v5)
 
 A commit SHA produces `revert_recommended` iff ALL of the following hold:
-1. At least one bypass event references the SHA (via `commit_sha` field, resolved `local_oid`, or synthesized observer-vs-gate-events delta).
-2. No post-commit approval evidence exists ordered after the bypass event.
-3. The commit does not touch ONLY `ADVISOR_SAFE_PATHS`.
-4. No later commit on the same branch carries review evidence or reverts the SHA.
-5. Pushed state is confidently determined (not `unknown`).
+
+1. **Bypass evidence exists** — at least one record in any of the bypass logs (`review-gate-bypass.jsonl`, `plan-gate-bypass.jsonl`, or future `runtime-write-bypass.jsonl`) resolves to this SHA.
+2. **No higher-precedence verdict applies** — none of `log_only_approved_later`, `log_only_reverted_later`, `log_only_remediated_later`, `log_only_safe_paths`, `log_only_observability_gap` fire first per the precedence cascade.
+3. **Commit is resolvable** — `commit_resolvable: true` (commit exists locally and SHA can be inspected).
+4. **Pushed state is confidently determined** — `pushed_state: true` or `pushed_state: false`.
 
 Any other combination produces one of the five `log_only_*` verdicts per the taxonomy.
+
+The HOW of bypass detection (which log, how events are synthesized, observer vs correlator mechanisms) is in #2445's implementation scope, not this policy.
+
+---
+
+## Policy: operator interface requirements (new v5 — addresses Claude v4 N1)
+
+The implementation (#2445) MUST provide:
+1. **Default non-blocking exit:** advisor defaults to exit 0 with structured output, suitable for nightly cron and dashboard surfaces.
+2. **Optional strict mode:** advisor MUST support a `--strict` flag (or equivalent) that causes non-zero exit when any verdict of `revert_recommended` is present.
+3. **Strict-mode offline exception:** `log_only_observability_gap` verdicts with cause `pushed_unknown` MUST NOT cause non-zero exit if the repo has no remote configured or the user is offline. This prevents breaking local-only workflows (Gemini v3 finding).
+4. **Structured output:** verdict records must be emittable in JSON form for downstream tooling.
+
+The policy does not constrain implementation choices (shell vs Python, single-invocation vs daemon); only the operator-facing contract.
 
 ---
 
@@ -224,36 +257,39 @@ Any other combination produces one of the five `log_only_*` verdicts per the tax
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `docs/governance/BYPASS-ROLLBACK-POLICY.md` | Codify all policy sections above with full prose, examples, and cross-references |
-| Modify | `AGENTS.md` | §Hard Gates or §Enforcement — document `FORCE_PLAN_GATE=1` as intended logged-bypass env var (parity with `SKIP_REVIEW_GATE=1`); implementation lands in follow-on |
-| Modify | `docs/governance/TRUST-ARCHITECTURE.md` | §Rollback Rules — add cross-reference to `BYPASS-ROLLBACK-POLICY.md` §Precedence |
-| Update | `docs/plans/README.md` | Add this plan row |
+| Create | `docs/governance/BYPASS-ROLLBACK-POLICY.md` | Codify all policy sections above |
+| Modify | `AGENTS.md` | Add §Enforcement subsection entry: `FORCE_PLAN_GATE=1` — **reserved, not yet implemented**; implementation tracked in #2445. Do NOT attempt to use as a bypass today. |
+| Modify | `docs/governance/TRUST-ARCHITECTURE.md` | Add cross-reference to `BYPASS-ROLLBACK-POLICY.md` §Precedence in §Rollback Rules. |
+| Update | `docs/plans/README.md` | Add this plan's row |
 
-No script creation, no test creation, no hook wiring — those are follow-on scope.
+No script creation, no test creation, no hook wiring — #2445 scope.
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `docs/governance/BYPASS-ROLLBACK-POLICY.md` exists and contains all seven policy sections (taxonomy, dual safe-list, enforcement-surface protection, advisory boundary, precedence, audit contract, trigger conditions).
-- [ ] `AGENTS.md` references `FORCE_PLAN_GATE=1` with note "implemented in follow-on issue [#NNNN]."
+- [ ] `docs/governance/BYPASS-ROLLBACK-POLICY.md` exists and contains all 9 policy sections (taxonomy with precedence, dual safe-list, enforcement-surface, branch context, advisory boundary, precedence vs TRUST-ARCHITECTURE, audit contract, trigger conditions, operator-interface requirements).
+- [ ] `AGENTS.md` references `FORCE_PLAN_GATE=1` with the exact text "**reserved — not yet implemented; implementation tracked in #2445**" (or equivalent no-false-affordance phrasing).
 - [ ] `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules includes a cross-reference to `BYPASS-ROLLBACK-POLICY.md` §Precedence.
-- [ ] Follow-on implementation issue filed (referencing this policy by number).
-- [ ] v4 adversarial review returns APPROVE or MINOR across Claude, Codex, and Gemini (no unresolved MAJOR).
+- [ ] Follow-on implementation issue #2445 exists and is reachable (verified 2026-04-21).
+- [ ] v5 adversarial review returns APPROVE or MINOR across all three providers.
 - [ ] `docs/plans/README.md` index row added.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** a policy-only plan produces a governance artifact without working enforcement. Mitigation: follow-on implementation issue is filed at plan-approval time; until follow-on lands, `FORCE_PLAN_GATE=1` remains documentation-only (no actual bypass path exists — commits using it today would still be blocked or passed by the existing gate logic unchanged).
-- **Risk:** `AGENTS.md` documenting `FORCE_PLAN_GATE=1` before the follow-on implements it could mislead readers. Mitigation: the AGENTS.md update must include the note "implemented in follow-on issue [#NNNN]" explicitly.
-- **Resolved v1/v2/v3:** scope of this plan is clarified as policy-only.
-- **Resolved:** implementation-detail defects from v1/v2/v3 (synthesize_observer_events, has_approval_intent, pushed tri-state, detached HEAD, etc.) are all moved to follow-on where TDD-first implementation will surface them against running tests.
-- **Open:** should the policy doc include concrete pseudocode for illustrative purposes, or stay purely prose? Current stance: illustrative pseudocode is acceptable but marked as non-normative; the follow-on's implementation is the normative contract.
+- **Resolved (v5):** `AGENTS.md` misleading framing — now explicit "reserved — not yet implemented" per Codex v4 M3.
+- **Resolved (v5):** verdict taxonomy exclusivity — precedence cascade added.
+- **Resolved (v5):** governance-doc loophole — `docs/standards/` removed from `ADVISOR_SAFE_PATHS`; governance-critical standards files explicitly never-safe-listed.
+- **Resolved (v5):** `#NNNN` placeholder — replaced by concrete `#2445`.
+- **Resolved (v5):** branch context undefined — new §Branch context section.
+- **Resolved (v5):** commit-already-gone audit — new §Audit contract fields (`commit_removed_pre_evaluation`, `likely_cause`).
+- **Open:** should the policy itself include concrete example pseudocode for illustrative purposes, or stay purely prose? Current stance: pure prose; the implementation (#2445) defines the normative pseudocode there.
+- **Open:** under what conditions should the compliance dashboard's `bypass_pending_review` count include `log_only_observability_gap` verdicts? Current stance: yes, include with cause label — operator attention required. Implementation choice in #2445.
 
 ---
 
 ## Complexity: T1
 
-**T1** — one new policy document, one modification to `AGENTS.md`, one modification to `docs/governance/TRUST-ARCHITECTURE.md`, one row in `docs/plans/README.md`. No scripts, no tests, no hooks. Total ~200 lines of policy prose in `BYPASS-ROLLBACK-POLICY.md` plus a few dozen lines of modifications elsewhere. Each section above is contestable but the policy decisions are well-scoped from three rounds of adversarial review.
+**T1** — one new policy document (`BYPASS-ROLLBACK-POLICY.md` ~250 lines), plus targeted modifications to `AGENTS.md`, `TRUST-ARCHITECTURE.md`, and `docs/plans/README.md`. No scripts, no tests, no hooks. Each policy section is contestable on its own terms; four rounds of adversarial review have settled the core design questions.
