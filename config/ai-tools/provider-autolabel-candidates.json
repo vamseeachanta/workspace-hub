@@ -1,57 +1,57 @@
 {
-  "generated_at": "2026-04-20T13:20:06.957787Z",
+  "generated_at": "2026-04-21T01:20:06.528296Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 9,
   "applied": [],
   "candidates": [
     {
-      "number": 2343,
-      "title": "fix(gtm): demo gallery links only to Demo 5 \u2014 wire remaining 4 detail-page links",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2343",
+      "number": 2346,
+      "title": "feat(gtm): prospect-data customized-demo pipeline \u2014 48hr turnaround + pre-staged vessel templates",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2346",
       "labels": [
         "priority:high",
+        "cat:engineering",
         "domain:gtm",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-20T02:03:28Z",
+      "updatedAt": "2026-04-20T19:53:24Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
       "provider_priority": "highest",
       "provider_status": "underused",
       "work_type": [
-        "research",
-        "implementation"
+        "research"
       ],
-      "target_label": "agent:codex",
+      "target_label": "agent:gemini",
       "confidence": 0.95,
       "confidence_reasons": [
         "execution-ready",
         "priority-labeled",
-        "strong-codex-language-match",
+        "strong-gemini-language-match",
         "provider-highest-priority"
       ],
       "eligible": true
     },
     {
-      "number": 2342,
-      "title": "fix(gtm): publish detail pages for Demos 1-4 to aceengineer.com (currently 404)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2342",
+      "number": 2348,
+      "title": "triage: promote #1707/#1708/#1709 from review-backlog \u2014 live scanner has ToS/rate-limit exposure",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2348",
       "labels": [
+        "bug",
         "priority:high",
-        "cat:business",
         "domain:gtm",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-20T02:03:26Z",
+      "updatedAt": "2026-04-20T14:45:00Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -68,23 +68,58 @@
       "eligible": true
     },
     {
-      "number": 2152,
-      "title": "test(reporting): add golden fixture corpus for weekly review run artifacts and validator coverage",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2152",
+      "number": 2402,
+      "title": "feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2402",
       "labels": [
         "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness",
+        "priority:high",
+        "cat:data-pipeline",
+        "domain:document-intelligence",
+        "status:plan-review",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-11T13:19:52Z",
+      "updatedAt": "2026-04-20T18:14:21Z",
       "execution_ready": true,
-      "priority_rank": 2,
+      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2408,
+      "title": "feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2408",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "domain:release-management",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T22:44:32Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -117,7 +152,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -150,7 +185,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -183,7 +218,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -210,13 +245,13 @@
         "domain:skills",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-20T00:51:36Z",
+      "updatedAt": "2026-04-20T20:55:25Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -249,41 +284,9 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2323,
-      "title": "feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2323",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:ai-orchestration",
-        "domain:ai-orchestration",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-17T20:30:01Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
         "implementation",
         "strategy"
       ],
@@ -322,96 +325,6 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2149,
-      "title": "feat(knowledge): generate seeded intelligence accessibility registry from existing inventories",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2149",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-10T17:03:48Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2157,
-      "title": "feat(operations): implement native PowerShell probe collector for Windows readiness bundles",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2157",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-14T23:16:23Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2158,
-      "title": "feat(operations): add Git Bash launcher and path-normalization bridge for Windows evidence writer",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2158",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-14T23:16:23Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
@@ -517,6 +430,126 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-10T22:38:21Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2167,
+      "title": "test(knowledge): build session-read coherence golden fixture suite for alias, symbolic, and missing-path cases",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2167",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-10T22:38:29Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2169,
+      "title": "feat(operations): define Windows licensed-tool probe adapter contract for readiness bundles",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2169",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-10T22:58:44Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2171,
+      "title": "test(reporting): add end-to-end weekly publication smoke scenarios for latest/history bundle assembly",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2171",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-10T22:58:50Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2173,
+      "title": "feat(knowledge): wire provider-session ecosystem audit into weekly registry build manifest and publication bundle",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2173",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-10T22:58:55Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
