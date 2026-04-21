@@ -26,6 +26,9 @@ rules:
   "deeplearning.ai":                DELETE
   "gamemail.com":                   DELETE
 
+  # Cross-noise senders (third parties using user's email by mistake; user has no account with them; standard unsubscribe fails because unsub page requires authenticating as account holder)
+  "info.tatacapital.co.in":         DELETE  # 2026-04-21: 50+ misdirected EMI-overdue reminders
+
   # ---- REVIEW (decide before deleting) ----
   "substack.com":                   REVIEW
   "info.marineinsight.com":         REVIEW
