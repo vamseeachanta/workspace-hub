@@ -6,7 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2442
 > **Parent meta-issue:** https://github.com/vamseeachanta/workspace-hub/issues/2424
 > **Review artifacts:** scripts/review/results/2026-04-21-plan-2442-claude.md | ...-codex.md | ...-gemini.md
-> **Note:** Issue #2442 already carries `status:plan-approved` label (pre-applied from handoff generation). This plan is the canonical artifact; adversarial review still required before execution.
+> **Note:** `status:plan-approved` was pre-applied at handoff generation before any plan existed; orchestrator rolled the label back to `status:plan-review` this session (governance comment 4290738146). This plan is the canonical artifact and is in Wave 2 re-review after Wave 1 (3× MAJOR) revisions; user re-approval in-thread is required before execution.
 
 ---
 
@@ -19,7 +19,7 @@
 - Found: `assethold/pyproject.toml` — setuptools-based (not pure uv), dependencies include sibling repo `assetutilities` (git-local dep implication for CI install).
 - Found: `assethold/tests/` — full pytest tree: `unit/`, `integration/`, `net_lease/`, `options/`, `portfolio/`, `contracts/`, plus 7 top-level `test_*.py` files. Tests exist; discovery path is intact.
 - Found: `assethold/uv.lock` — lockfile present.
-- Gap: workflow refers to non-existent `requirements.txt`; must switch to `requirements-consolidated.txt` or `uv sync`.
+- Gap: workflow refers to non-existent `requirements.txt`. `requirements-consolidated.txt` exists but self-declares "now replaced by pyproject.toml — Kept for reference only" (verified 2026-04-21, file header). Install path must resolve `assetutilities` sibling dep and install the project from `pyproject.toml` — but must use `uv pip install --system` (NOT `uv sync --frozen`) to preserve the existing `--system` install pattern that all downstream `pytest`/`mypy`/`flake8` commands depend on (they run without `uv run` prefix).
 
 ### Standards
 Not applicable — this is an infrastructure/CI-health remediation, not a domain engineering deliverable.
@@ -36,12 +36,12 @@ No relevant wiki pages — CI health is repo-hygiene work, not domain knowledge.
 ### Gaps identified
 - No existing CI-green evidence for `python-tests.yml` — this workflow has never been green on main since first run 2025-09-28.
 - No baseline pytest run recorded in CI — need phase-1 minimal-smoke workflow validation before attempting matrix-wide green.
-- `assetutilities` dependency resolution in CI unverified — sibling-repo dep may require additional CI install steps (e.g., `uv pip install -e ../assetutilities` pattern) not currently expressed in workflow.
+- `assetutilities` dependency resolution in CI — `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`, which does not exist on a hosted GitHub Actions runner. Resolved in Phase 2 fix list below (add `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` — Option M1 — to match local dev layout referenced by `pyproject.toml`).
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-04-21 via `gh issue view 2442 --json state,labels`):
-- `#2442` — OPEN — labels: `priority:high`, `cat:infrastructure`, `status:plan-approved` (drift: approval label pre-applied before plan artifact existed; noted in governance comment)
+- `#2442` — OPEN — labels: `priority:high`, `cat:infrastructure`, `status:plan-review` (approval label was pre-applied before any artifact existed; rolled back to `status:plan-review` by orchestrator this session per governance comment 4290738146)
 - `#2424` — parent meta-issue (referenced, not re-fetched this session)
 
 **File existence** (`ls` 2026-04-21):
@@ -51,15 +51,23 @@ No relevant wiki pages — CI health is repo-hygiene work, not domain knowledge.
 - MISSING: `/mnt/local-analysis/workspace-hub/assethold/requirements.txt` (referenced by workflow — this is the install-step break)
 - EXISTS: `/mnt/local-analysis/workspace-hub/assethold/pyproject.toml`, `uv.lock`, `tests/`
 
-**Line excerpts** (`sed -n N,Mp .github/workflows/python-tests.yml`):
+**Line excerpts** (`grep -n` against HEAD of `assethold/.github/workflows/python-tests.yml`, 2026-04-21):
 ```
 122:        DATABASE_URL: sqlite:///:memory:        # UNQUOTED — triggers YAML mapping error
-136:        DATABASE_URL: sqlite:///:memory:        # UNQUOTED — same defect, second occurrence
+138:        DATABASE_URL: sqlite:///:memory:        # UNQUOTED — same defect, second occurrence
+144:      uses: codecov/codecov-action@v3          # DEPRECATED — Node 16; folded into P1 sweep
 153:      uses: actions/upload-artifact@v3         # DEPRECATED — GitHub hard-rejects v3
 166:      uses: actions/upload-artifact@v3         # DEPRECATED — second site
 339:      uses: github/codeql-action/upload-sarif@v2   # DEPRECATED — v2 retired
 345:      uses: actions/upload-artifact@v3         # DEPRECATED — third site
 ```
+
+**YAML-parse root-cause proof** (`python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"`, 2026-04-21):
+```
+yaml.scanner.ScannerError: mapping values are not allowed here
+  in ".github/workflows/python-tests.yml", line 122, column 40
+```
+Confirms unquoted `sqlite:///:memory:` at line 122 is the first fatal parse error; GitHub Actions rejects the workflow at startup (0s / 0 jobs pattern) because of this.
 
 **Requirements reference evidence** (`rg -n requirements .github/workflows/python-tests.yml`):
 ```
@@ -67,7 +75,7 @@ No relevant wiki pages — CI health is repo-hygiene work, not domain knowledge.
 222:        uv pip install --system -r requirements.txt
 269:        uv pip install --system -r requirements.txt
 ```
-All three install sites reference non-existent `requirements.txt`. Correct file is `requirements-consolidated.txt`.
+All three install sites reference non-existent `requirements.txt`. `requirements-consolidated.txt` exists but self-declares "replaced by pyproject.toml ��� Kept for reference only" (verified 2026-04-21, file header lines 1-4). Correct remediation: replace with `uv pip install --system -e ../assetutilities` (preserves `--system` install pattern that bare pytest/mypy/flake8 commands depend on). The existing `uv pip install --system -e .` steps (lines 79, 224, 271) install assethold after assetutilities is satisfied.
 
 **Gap proof** (`ls assethold/requirements.txt 2>&1`):
 - `ls: cannot access 'assethold/requirements.txt': No such file or directory` → confirms missing install-target.
@@ -90,8 +98,8 @@ All three install sites reference non-existent `requirements.txt`. Correct file 
 | This plan | `docs/plans/2026-04-21-issue-2442-assethold-python-tests.md` |
 | Primary workflow to fix | `assethold/.github/workflows/python-tests.yml` |
 | Secondary workflow (phase-3) | `assethold/.github/workflows/docs.yml` |
-| Install target (CI + local) | `assethold/requirements-consolidated.txt` |
-| Dep manifest (verify) | `assethold/pyproject.toml`, `assethold/uv.lock` |
+| Install source of truth (CI + local) | `assethold/pyproject.toml` (via `uv pip install --system -e .`; sibling dep via `uv pip install --system -e ../assetutilities`) |
+| Obsolete (not used) | `assethold/requirements-consolidated.txt` (self-declared reference-only) |
 | Test roots (discovery) | `assethold/tests/` (unit/, integration/, etc.) |
 | Plan review — Claude | `scripts/review/results/2026-04-21-plan-2442-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-21-plan-2442-codex.md` |
@@ -109,7 +117,7 @@ A green `python-tests.yml` run on `vamseeachanta/assethold` main — the first g
 
 ```
 # PHASE 1 — startup unblock (deterministic; lifts "0s/0 jobs" symptom)
-for each occurrence at lines 122, 136:
+for each occurrence at lines 122, 138:
     wrap value in double quotes:
         DATABASE_URL: sqlite:///:memory:  ->  DATABASE_URL: "sqlite:///:memory:"
 
@@ -118,29 +126,68 @@ for each occurrence at lines 153, 166, 345:
 
 bump line 339:  github/codeql-action/upload-sarif@v2  ->  @v3
 
+bump line 144:  codecov/codecov-action@v3  ->  @v4
+    # folded into P1 sweep (per Gemini review) — Node 16 deprecation class;
+    # completes the "no deprecated actions remain" sweep
+
 # ACCEPTANCE-PHASE-1: workflow parses; jobs register; matrix executes;
 #   jobs may still fail on install step, but runs are no longer 0s-startup-reject.
+#   Verification: YAML parses via `python -c "import yaml; yaml.safe_load(...)"`
+#   with exit 0; `gh run view <run-id>` shows jobs[] != [].
 
-# PHASE 2 — install-step correctness (one matrix cell green)
+# PHASE 2 — install-step correctness (startup unblocked + smoke cell green)
+# Deliverable narrowed (per Codex + Claude convergent review): P2 targets
+# "first non-zero-jobs run + one smoke cell green". Full `quality-gate`
+# (which chains test + integration-tests + financial-data-tests) is P3.
+#
+# CRITICAL: must use `uv pip install --system` (NOT `uv sync --frozen`)
+# because all downstream pytest/mypy/flake8 commands run bare (no `uv run`
+# prefix). `uv sync` creates a .venv/ that bare commands cannot see.
+
+# P2 fix 1: replace non-existent requirements.txt with sibling-dep install
+# (requirements-consolidated.txt is self-declared "reference only" —
+#  pyproject.toml is authoritative; existing line 79/224/271 already does
+#  `uv pip install --system -e .` which installs the project itself)
 for each occurrence at lines 74, 222, 269:
     replace:  uv pip install --system -r requirements.txt
-    with:     uv pip install --system -r requirements-consolidated.txt
-    # (OR switch to `uv sync --frozen` if uv.lock is authoritative;
-    #  decide after verifying assetutilities sibling-dep resolution.)
+    with:     uv pip install --system -e ../assetutilities
+# The existing `-e .` steps (lines 79, 224, 271) remain unchanged —
+# they install assethold with assetutilities already satisfied from above.
 
-verify assetutilities dependency resolution path:
-    if sibling-repo dep needs editable install:
-        prepend install step:  uv pip install -e <path-or-git+url>
-    else:
-        trust pyproject.toml dep list
+# P2 fix 2: resolve assetutilities sibling-dep on hosted runner
+# Chosen mechanism: M1 — add actions/checkout for sibling repo into ../assetutilities
+# (matches the path declared in pyproject.toml [tool.uv.sources];
+#  preserves local dev layout; no pyproject rewrite needed)
+# Insert BEFORE the main repo checkout in each of the 3 dep-installing jobs
+# (test, integration-tests, financial-data-tests):
+    - uses: actions/checkout@v4
+      with:
+        repository: vamseeachanta/assetutilities
+        path: ../assetutilities
+        ref: main
 
-run locally:  cd assethold && uv run pytest tests/test_smoke.py -v
-    # must be green before pushing CI fix
+# PHASE GATE ENFORCEMENT (addresses Claude Wave-1 MAJOR — unenforceable gate):
+# Phase 1 and Phase 2 MUST be separate commits on a feature branch.
+# Executor sequence:
+#   1. Create branch: git checkout -b fix/assethold-ci-2442
+#   2. Commit P1 edits (7 sites: YAML quoting + deprecated actions)
+#   3. Push branch, wait for CI run, verify: jobs[] != [] (startup unblocked)
+#   4. Only after P1 CI verification: commit P2 edits (3 install + 3 checkout)
+#   5. Push branch, wait for CI run, verify: smoke cell green
+#   6. Open PR to main; merge after both phases verified green
 
 # ACCEPTANCE-PHASE-2: at least one matrix cell (py3.11 ubuntu-latest)
-#   completes to "jobs[] populated, conclusion=success or test-only failure"
+#   completes with smoke cell `conclusion=success`.
+#   Full quality-gate chain deferred to P3.
 
-# PHASE 3 — docs.yml diagnostic + matrix hardening (optional / follow-on)
+# PHASE 3 — full workflow green (test + integration + financial + quality-gate) + docs.yml
+# Full matrix + upstream jobs needed for quality-gate chain to reach conclusion=success.
+
+drive remaining matrix cells / jobs to green:
+    # address any test-red exposed in P2 smoke
+    # verify integration-tests and financial-data-tests jobs complete
+    # quality-gate depends on all three — must propagate success
+
 diagnose docs.yml zero-jobs:
     # workflow_dispatch already present — trigger manual run, capture logs
     # most-likely: mkdocs --strict failing against missing docs/api/
@@ -149,10 +196,11 @@ diagnose docs.yml zero-jobs:
 harden python-tests matrix:
     # narrow matrix if macos/windows are secondary (reduce noise)
     # add pip-cache / uv-cache for speed
-    # verify codecov@v3 -> v5 (optional; not in critical-path)
 
-# ACCEPTANCE-PHASE-3: green on main for push-trigger; coverage upload works;
-#   docs.yml produces interpretable logs (green OR documented-deferred)
+# ACCEPTANCE-PHASE-3: green on main for push-trigger; quality-gate=success
+#   (requires all of test, integration-tests, financial-data-tests green);
+#   coverage upload works; docs.yml produces interpretable logs
+#   (green OR documented-deferred)
 ```
 
 ---
@@ -161,15 +209,18 @@ harden python-tests matrix:
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `assethold/.github/workflows/python-tests.yml` | Quote DATABASE_URL (×2), bump upload-artifact v3→v4 (×3), bump upload-sarif v2→v3 (×1), fix requirements path (×3) |
-| Verify | `assethold/requirements-consolidated.txt` | Confirm deps resolve for all matrix Python versions; add missing entries if smoke test fails |
-| Possibly modify | `assethold/.github/workflows/python-tests.yml` (phase-2) | Add sibling-repo `assetutilities` install step if needed |
-| Possibly modify | `assethold/.github/workflows/docs.yml` (phase-3) | Adjust `--strict` / path-filter / docs/api skeleton |
-| Update | `docs/plans/README.md` | Add row for plan 2442 (deferred per constraint — NOT in this session) |
+| Modify (P1) | `assethold/.github/workflows/python-tests.yml` | Quote DATABASE_URL at lines 122, 138 (×2); bump `actions/upload-artifact@v3 → v4` at lines 153, 166, 345 (×3); bump `github/codeql-action/upload-sarif@v2 → v3` at line 339 (×1); bump `codecov/codecov-action@v3 → v4` at line 144 (×1). Total P1 sites: **7**. |
+| Modify (P2) | `assethold/.github/workflows/python-tests.yml` | Replace `uv pip install --system -r requirements.txt` with `uv pip install --system -e ../assetutilities` at lines 74, 222, 269 (×3). Add `actions/checkout@v4` step for `vamseeachanta/assetutilities` into `../assetutilities` before the main checkout in each of the 3 dep-installing jobs (test / integration-tests / financial-data-tests). Existing `uv pip install --system -e .` steps (lines 79, 224, 271) unchanged. Total P2 sites: **3 install edits + 3 new checkout steps = 6**. |
+| Verify (P2) | `assethold/pyproject.toml` | Confirm `assetutilities` is in `[project.dependencies]` and `[tool.uv.sources]` points to `{ path = "../assetutilities" }` — the P2 sibling-checkout step places the repo at that exact path so both `uv pip install --system -e ../assetutilities` and the existing `-e .` step resolve correctly. |
+| Possibly modify (P3) | `assethold/.github/workflows/docs.yml` | Adjust `--strict` / path-filter / docs/api skeleton after workflow_dispatch log capture. |
+
+**Combined fix-site count: 13 (7 P1 + 6 P2)** (prior plan claimed 9 sites; recount driven by (a) adding codecov-action P1 bump, (b) replacing 3 requirements-file edits with 3 `uv sync --frozen` switches + 3 new sibling-checkout insertions, (c) correcting line 136 → 138).
+
+**Out-of-session (not edited in this planning session):** `docs/plans/README.md` already contains a row for plan 2442 (verified 2026-04-21 — Codex finding acknowledged); no update needed.
 
 **Out-of-scope for this plan** (deferred to follow-on issues):
 - Broader test-failure remediation (if phase-2 exposes red tests unrelated to CI config)
-- codecov v3→v5 bump (non-blocking; optional quality improvement)
+- `actions/setup-python@v4 → v5` and `astral-sh/setup-uv@v1 → v4` pin upgrades (Claude minor finding) — not on the deprecated-blocker critical path; file follow-on hygiene issue
 - Matrix pruning (macos/windows) — defer unless phase-2 reveals per-OS breakage
 
 ---
@@ -180,58 +231,91 @@ Since this plan remediates CI config (not application code), the "tests" are **w
 
 | Test | What it verifies | Expected state after fix |
 |---|---|---|
-| phase-1: YAML parses | `gh run view <run-id>` shows `jobs` array non-empty | `jobs[] != []` |
+| phase-1: local YAML parses | `python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` exits 0 | exit 0, no ScannerError |
+| phase-1: CI YAML parses | `gh run view <run-id>` shows `jobs` array non-empty | `jobs[] != []` |
 | phase-1: startup time > 0s | workflow doesn't insta-reject | duration > 5s |
-| phase-1: upload-artifact step exists as v4 | `rg '@v4' .github/workflows/python-tests.yml` | 3+ hits |
-| phase-2: install step succeeds | `gh run view --log` shows `uv pip install` exit 0 for at least py3.11/ubuntu | `Successfully installed` line |
+| phase-1: upload-artifact is v4 exactly | `rg -c 'upload-artifact@v4' .github/workflows/python-tests.yml` | `== 3` |
+| phase-1: no deprecated actions remain | `rg -c 'upload-artifact@v3\|upload-sarif@v2\|codecov-action@v3' .github/workflows/python-tests.yml` | `== 0` |
+| phase-2: sibling checkout present | `rg -c 'repository: vamseeachanta/assetutilities' .github/workflows/python-tests.yml` | `>= 1` |
+| phase-2: install step succeeds | `gh run view --log` shows `uv pip install --system -e ../assetutilities` exit 0 for at least py3.11/ubuntu | `Successfully installed` line |
 | phase-2: at least one smoke test runs | `gh run view --log` shows `test_smoke.py::* PASSED` | >=1 PASSED |
-| phase-2: py3.11 ubuntu job green | job conclusion | `success` |
+| phase-2: py3.11 ubuntu smoke job green | job conclusion | `success` |
+| phase-3: full quality-gate green | `quality-gate` job conclusion (chains test + integration-tests + financial-data-tests) | `success` |
 | phase-3 (optional): docs.yml manual run captures logs | `gh run view` on workflow_dispatch | jobs[] populated |
 | parent-issue green-signal | overall workflow on main push | `conclusion=success` for python-tests on next push to main |
 
-Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must pass before pushing phase-2 fix.
+Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must pass before pushing phase-2 fix. **Feature-branch CI gate** (replaces container repro — the real verification is observing the CI run on a feature branch, which uses a hosted runner without `../assetutilities`): push P2 commit to feature branch, wait for CI, verify smoke cell green before merging to main.
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `python-tests.yml` YAML parses — next push to main produces a run with non-empty `jobs` array (phase-1 gate)
-- [ ] No `actions/upload-artifact@v3` or `github/codeql-action/upload-sarif@v2` remain in `python-tests.yml`
-- [ ] Install step references `requirements-consolidated.txt` (or `uv sync`) — zero references to non-existent `requirements.txt`
-- [ ] At least one matrix cell (py3.11 / ubuntu-latest) completes with `conclusion=success` (phase-2 gate — the "first green in 7 months" milestone)
+- [ ] Local YAML parse passes: `python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` exits 0 (phase-1 pre-push gate)
+- [ ] `python-tests.yml` YAML parses in CI — next push produces a run with non-empty `jobs` array (phase-1 CI gate)
+- [ ] No `actions/upload-artifact@v3`, `github/codeql-action/upload-sarif@v2`, or `codecov/codecov-action@v3` remain in `python-tests.yml` (P1 deprecated-action sweep complete)
+- [ ] Install step uses `uv pip install --system -e ../assetutilities` at all 3 sites (lines 74, 222, 269) — zero references to non-existent `requirements.txt` and zero references to the reference-only `requirements-consolidated.txt`
+- [ ] Existing `uv pip install --system -e .` steps preserved at lines 79, 224, 271 (these install the project itself after assetutilities is satisfied)
+- [ ] Sibling-repo checkout step (`actions/checkout@v4` for `vamseeachanta/assetutilities` into `../assetutilities`) present before the main checkout in every dep-installing job (test, integration-tests, financial-data-tests)
+- [ ] Phase 1 and Phase 2 are separate commits on a feature branch with CI verification between them (P1 push → verify jobs register → P2 push → verify smoke green → PR to main)
+- [ ] At least one matrix cell (py3.11 / ubuntu-latest) completes smoke with `conclusion=success` (phase-2 gate — the "first non-zero-jobs, first smoke-green in 7 months" milestone)
+- [ ] Full `quality-gate` job completes `success` on a push to main (phase-3 gate — requires `test` + `integration-tests` + `financial-data-tests` all green per the workflow's `needs:` chain)
 - [ ] Local smoke test passes: `cd assethold && uv run pytest tests/test_smoke.py -v`
-- [ ] Governance-cleanup note posted on #2442 explaining that the pre-applied `status:plan-approved` label is now backed by a real adversarial-reviewed plan artifact (label-artifact alignment)
 - [ ] Review artifacts posted to `scripts/review/results/2026-04-21-plan-2442-{claude,codex,gemini}.md`
-- [ ] No changes pushed to `assethold/` in the planning session — fixes land only after `status:plan-approved` is verified to be backed by this reviewed plan
+- [ ] No changes pushed to `assethold/` in the planning session — fixes land only after user re-confirms `status:plan-approved` in-thread after reading this revised plan (label-artifact alignment was reset to `status:plan-review` by orchestrator per governance comment 4290738146; re-approval required)
 - [ ] (Phase-3, optional) `docs.yml` either goes green OR a follow-on issue is filed with diagnostic logs captured via workflow_dispatch
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Populated after Step 3 (Adversarial Review). Pre-review: not approval-ready. -->
+<!-- Wave 1 adversarial review complete; this section records revisions and awaits Wave 2 re-review. -->
+
+**Wave 1 verdicts:**
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | (pending) | — |
-| Codex | (pending) | — |
-| Gemini | (pending) | — |
+| Claude | MAJOR | Line-number drift (DATABASE_URL at 138 not 136; codecov at 144 not 343); assetutilities sibling-dep belongs in fix list not risks footnote; YAML-parse root cause unproven; P1→P2 gate unenforceable; local smoke can't catch sibling-dep failure; label-drift governance violation. |
+| Codex | MAJOR | P2 acceptance ("one cell green") does not satisfy stated deliverable (quality-gate chains test + integration + financial-data); assetutilities resolution under-specified (pyproject declares `{ path = "../assetutilities" }` but workflow only checks out assethold); `requirements-consolidated.txt` is self-declared "reference only" — default remediation points at an obsolete file; README row already exists. |
+| Gemini | MAJOR | Sibling repos not cloned by default in GitHub Actions — local-path install needs explicit checkout step; `codecov/codecov-action@v3` should be in P1 sweep, not Open Questions; install strategy (uv sync vs requirements) left ambiguous. |
 
-**Overall result:** PENDING
+**Wave 1 overall result:** MAJOR (3× MAJOR, all convergent on sibling-dep blocker)
 
-Revisions made based on review: (none yet)
+**Revisions made based on review:**
+- Added `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` (Option M1) as a Phase-2 fix-list item — addresses Claude + Codex + Gemini convergent blocker. Rationale for M1 over M2 (git+https): `pyproject.toml` already declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`; M1 preserves local-dev parity and avoids a `pyproject.toml` rewrite.
+- Switched P2 install step from `requirements-consolidated.txt` to `uv pip install --system -e ../assetutilities` at 3 sites (Codex + Gemini) — the consolidated file self-declares "replaced by pyproject.toml — reference only". Uses `--system` install (NOT `uv sync --frozen`) because all downstream pytest/mypy/flake8 commands run bare without `uv run` prefix. The existing `uv pip install --system -e .` steps (lines 79, 224, 271) remain unchanged and install assethold after assetutilities is satisfied.
+- Narrowed P2 deliverable to "startup unblocked + smoke cell green"; pushed full `quality-gate` (test + integration-tests + financial-data-tests chain) to P3 (Claude + Codex). Updated Deliverable, Pseudocode, Acceptance Criteria, and TDD list accordingly.
+- Re-verified every cited line number via `grep -n` against HEAD (Claude): DATABASE_URL 122, **138** (was 136); codecov-action **144** (was 343); upload-artifact 153, 166, 345; upload-sarif 339; requirements 74, 222, 269. Plan now lists only verified line numbers.
+- Folded `codecov/codecov-action@v3 → v4` into P1 deprecated-action sweep (Gemini) — removed from Open Questions.
+- Added YAML-parse root-cause proof to §Evidence (Claude): `yaml.scanner.ScannerError: mapping values are not allowed here — line 122, column 40` from `python -c "import yaml; yaml.safe_load(...)"`.
+- Updated fix-site count from 9 to 13 (7 P1 + 6 P2). Fix-site table now explicitly enumerates P1 vs P2 sites and counts.
+- Added sibling-less Docker container pre-push gate (Claude) — later replaced by feature-branch CI gate (more reliable: hosted runner naturally lacks `../assetutilities`; no Docker setup needed).
+- Tightened TDD assertions: `rg -c 'upload-artifact@v4'` exact count 3 (was generic `@v4` 3+ hits); added `rg -c '<deprecated-patterns>'` == 0 check; added local YAML-parse pre-push assertion.
+- Removed stale "Update docs/plans/README.md" row from Files to Change (Codex) — README already has a 2442 row.
+- Acceptance criteria now require user re-confirmation in-thread after reading revised plan (orchestrator rolled `status:plan-approved` label back to `status:plan-review` earlier this session per governance comment 4290738146); plan no longer proceeds on the pre-applied label.
+
+**Wave 2 revisions** (addressing `uv sync --frozen` correctness gap discovered during live verification):
+- Replaced `uv sync --frozen` with `uv pip install --system -e ../assetutilities` at all 3 install sites. Rationale: `uv sync` creates a `.venv/` directory, but all downstream commands (`pytest`, `mypy`, `flake8`, `bandit`, `safety`) run bare without `uv run` prefix — they expect system-installed packages. Switching to `uv sync` would silently break all test/lint steps. The `--system` editable install preserves the existing behavior and is the minimum-change fix.
+- Added explicit phase gate enforcement to pseudocode: P1 and P2 must be separate commits on a feature branch, with CI verification between them. Executor must push P1, wait for CI, verify jobs register, then push P2, wait for CI, verify smoke green, then PR to main. Addresses Claude Wave-1 MAJOR "unenforceable gate."
+- Replaced Docker container pre-push gate with feature-branch CI gate (the real hosted runner IS the sibling-less environment; Docker repro adds complexity without value since the feature-branch CI run verifies the same thing).
+- Documented that existing `uv pip install --system -e .` steps (lines 79, 224, 271) remain unchanged — they install the project itself after assetutilities is satisfied from the previous step.
+
+**Revisions deferred** (with rationale):
+- `actions/setup-python@v4 �� v5` and `astral-sh/setup-uv@v1 → v4` pin bumps (Claude MINOR): not on the deprecated-blocker critical path; these versions are still accepted by GitHub Actions. Deferred to a follow-on hygiene issue to keep this plan scoped to the never-green fix.
+- Matrix pruning (macos/windows) (Claude MINOR, original Open Question): deferred to P3 or a follow-on; not required to achieve the "first green in 7 months" milestone.
+- T2 vs T3 reclassification (Claude MINOR): keeping T2 after P3 scope became deterministic (full quality-gate chain is now a direct gate, not a diagnostic-first unknown); docs.yml phase-3 diagnosis retained as optional/follow-on.
+
+**Status:** Wave 2 revised, awaiting Wave 2 re-review.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — sibling-dep resolution in CI:** `assetutilities` is listed in `pyproject.toml` dependencies without a specific index/git-url. In a clean GitHub Actions runner, `uv pip install -r requirements-consolidated.txt` may fail to resolve this sibling repo unless it's published to PyPI or the workflow explicitly installs it (`uv pip install -e ../assetutilities` or `git+https://…`). **Mitigation:** smoke-test the install step against the consolidated requirements locally on a fresh venv before pushing phase-2.
-- **Risk — phase-2 reveals broad test-red state:** Since the workflow has never been green, real test failures may be latent. **Mitigation:** phase-2 target is explicitly "one matrix cell green via smoke test," not full matrix. File follow-on issues for discovered test debt rather than expanding this plan's scope.
-- **Risk — label drift:** #2442 was labeled `status:plan-approved` at handoff-issue creation time, before any plan artifact existed. This violates the plan-approval gate semantics. **Mitigation:** post governance comment noting the drift; treat this plan as undergoing real adversarial review, and re-surface to user before execution even though label says approved.
-- **Risk — `docs.yml` underlying cause unknown:** Phase-3 diagnosis is gated on workflow_dispatch log capture; actual failure mode is hypothesized (mkdocs strict vs missing `docs/api/`) but unverified. **Mitigation:** treat phase-3 as diagnostic-first; if root cause is deeper, file a separate follow-on issue and do not block `python-tests.yml` green-signal on `docs.yml`.
-- **Open — uv-sync vs requirements file:** Should phase-2 switch the install strategy to `uv sync --frozen` (leveraging `uv.lock`) rather than renaming `requirements.txt → requirements-consolidated.txt`? The former is more idiomatic for uv-managed projects; the latter is the minimum change. **Flag for user decision at approval time.**
-- **Open — matrix scope:** Should the py3.9 + windows/macos cells be pruned to accelerate greenlight? Running full 4×3=12 matrix on every push to main is expensive; phase-2 may need to narrow before phase-3. **Flag for user decision.**
-- **Open — codecov action version:** `codecov/codecov-action@v3` at line 343 is not explicitly called out in the issue body; GitHub has deprecated older versions. Include in phase-1 or defer? **Flag for user decision.**
+- **Risk — sibling-dep resolution in CI (RESOLVED, moved to P2 fix list):** `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`; on a hosted runner `../assetutilities` does not exist. **Resolution:** P2 adds `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` in every job that installs deps. Verification gate is the sibling-less Docker container smoke test.
+- **Risk — phase-2 reveals broad test-red state:** Since the workflow has never been green, real test failures may be latent. **Mitigation:** phase-2 target is explicitly "one matrix cell green via smoke test," not full matrix. Broader test remediation that blocks full quality-gate lands in phase-3; file follow-on issues for discovered test debt rather than expanding this plan's scope.
+- **Risk — label-drift governance (RESOLVED):** #2442 was labeled `status:plan-approved` at handoff creation before any plan existed. Orchestrator rolled the label back to `status:plan-review` this session (governance comment 4290738146). **Resolution:** this plan requires fresh in-thread user approval after reading the revised artifact; no action needed in the plan file beyond the acceptance criterion.
+- **Risk — `docs.yml` underlying cause unknown:** Phase-3 diagnosis is gated on workflow_dispatch log capture; actual failure mode is hypothesized (mkdocs strict vs missing `docs/api/`) but unverified. **Mitigation:** treat docs.yml work as diagnostic-first and optional within P3; if root cause is deeper, file a separate follow-on issue and do not block `python-tests.yml` green-signal on `docs.yml`.
+- **Open — matrix scope:** Should py3.9 + windows/macos cells be pruned to accelerate greenlight? Full 4×3=12 matrix on every push to main is expensive; phase-3 may need to narrow. **Flag for user decision.**
+- **Open — P3 test-red handling:** If P2 smoke cell surfaces systemic test failures that prevent the quality-gate chain from reaching success, does the P3 deliverable split into a separate issue (test-debt remediation) while this plan settles at P2-green? **Flag for user decision at P2→P3 transition.**
 
 ---
 
