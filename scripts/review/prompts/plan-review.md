@@ -2,6 +2,16 @@
 
 You are reviewing a technical plan/specification for a software engineering project. Evaluate the following aspects:
 
+## Evidence Authority
+
+If this prompt contains a `## Attested Evidence` block, **prefer the attested evidence over any plan-text claims**. The attested block is produced by `scripts/review/attest-plan-claims.sh` at dispatch time and independently verifies cited issue states (`gh issue view`) and file existence (`ls -la`) in the live repo at the recorded commit SHA. Each attestation payload ends with a `sha256:<hex>` identifier for integrity.
+
+Rules when an attestation block is present:
+- Treat plan-asserted facts (e.g., "file X exists", "issue #NNNN is CLOSED", "commit SHA is Y") as **claims to verify** against the attestation, not as facts.
+- If the plan text contradicts the attested evidence, cite the contradiction as a finding and rely on the attestation.
+- **Do not return "unverified claims" findings for facts already covered by the attestation block** — they are verified by construction.
+- If no `## Attested Evidence` block is present, you may flag unverifiable claims normally.
+
 ## Review Criteria
 
 1. **Completeness**: Are all requirements addressed? Are there missing acceptance criteria?

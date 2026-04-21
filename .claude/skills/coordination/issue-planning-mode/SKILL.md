@@ -67,6 +67,7 @@ Every prompt sent to a reviewer MUST force an adversarial stance. "Adversarial" 
 4. Require evidence: "Each finding must cite a specific file path, plan section, or quoted claim."
 5. Treat cited sources as assertions to verify, not facts to trust.
 6. Empty reviews are failures — if nothing is found, explicitly list what was checked.
+7. **Prefer attested evidence over plan text (#2405).** If the review prompt carries a `## Attested Evidence` block produced by `scripts/review/attest-plan-claims.sh`, treat plan-asserted facts (issue states, file existence, commit SHAs) as **claims to verify against the attestation**, not as facts. Do not report "unverified claims" findings for facts already covered by the attestation block — they are verified by construction at the recorded commit SHA. If the plan contradicts the attestation, the contradiction is a finding; the attestation is authoritative. Cross-review dispatchers (`submit-to-codex.sh`, `submit-to-gemini.sh`) inject this block automatically for plan files under `docs/plans/`.
 
 A review that returns APPROVE without at least one verified check-list item is suspect and should be rerun with a stronger prompt.
 

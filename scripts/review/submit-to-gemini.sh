@@ -106,7 +106,28 @@ else
   CONTENT="$(head -c 5000000 "$CONTENT_FILE" | tr -d '\000')"
 fi
 
-PROMPT_TEXT="${PROMPT}
+# #2405: attestation injection. For plan files under docs/plans/, prepend an
+# independently verified "## Attested Evidence" block so reviewers can trust live
+# issue + file state rather than plan-asserted claims. Fail-soft: empty if the
+# content is not a plan or if the attestation script errors.
+ATTESTATION=""
+if [[ -n "${CONTENT_FILE:-}" && -n "$REPO_ROOT" ]]; then
+  _plan_abs="$(readlink -f -- "$CONTENT_FILE" 2>/dev/null || true)"
+  _repo_abs="$(readlink -f -- "$REPO_ROOT" 2>/dev/null || true)"
+  if [[ -n "$_plan_abs" && -n "$_repo_abs" && "$_plan_abs" == "$_repo_abs"/* ]]; then
+    _plan_rel="${_plan_abs#${_repo_abs}/}"
+    if [[ "$_plan_rel" =~ ^docs/plans/[^/]+\.md$ ]]; then
+      _att_out="$(cd "$_repo_abs" && bash "${SCRIPT_DIR}/attest-plan-claims.sh" "$_plan_rel" 2>/dev/null || echo "")"
+      if [[ -n "$_att_out" ]]; then
+        ATTESTATION=$'\n\n'"${_att_out}"
+      else
+        echo "[WARN] attestation failed for ${_plan_rel} — proceeding with plan-asserted evidence only" >&2
+      fi
+    fi
+  fi
+fi
+
+PROMPT_TEXT="${PROMPT}${ATTESTATION}
 
 Return only JSON with these keys:
 - verdict: APPROVE | MINOR | MAJOR | REJECT

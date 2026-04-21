@@ -1,10 +1,21 @@
 # Plan for #2405: Cross-review sandbox repo access — pre-verification attestation (v3)
 
-> **Status:** plan-review (iteration 3 of 3 — final)
+> **Status:** implemented (session-3, 2026-04-20)
 > **Complexity:** T2
 > **Date:** 2026-04-20 (v3)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2405
 > **Prior reviews:** v1 at `d067a4d51` (Codex+Gemini MAJOR); v2 at `5c9923acf` (Gemini MAJOR + Codex timeout — ironic infrastructure confirmation of this issue's premise)
+
+## Post-implementation deviations (2026-04-20 session-3)
+
+Two plan-pseudocode defects surfaced during TDD RED-GREEN and were fixed inline.
+Both are improvements, not scope changes; listed here for audit traceability.
+
+1. **Issue-number regex missed word boundary.** The v3 pseudocode `grep -oE '#[0-9]{3,5}'` mis-extracts `#9999999` as `#99999` because there is no word-boundary anchor after the 5-digit match. Implementation uses `grep -oE '#[0-9]{3,5}\b'` so only 3–5-digit whole numbers are extracted. Regression-locked by `tests/review/test_attest_plan_claims.py::test_extracts_issue_numbers_rejects_longer_digit_strings`.
+
+2. **SHA footer variable-name collision under `set -u`.** The v3 pseudocode footer line read `"_Attestation payload sha256: $PAYLOAD_SHA_"` which bash parses as `${PAYLOAD_SHA_}` (undefined under `set -u` → script aborts). Implementation uses explicit brace form `${PAYLOAD_SHA}_`. Regression-locked by `tests/review/test_attest_plan_claims.py::test_attestation_payload_has_sha256_footer`.
+
+Also added (not in plan, but necessary for testability): `SOURCE_DATE_EPOCH` env var is honored for the timestamp header so identical-input stability tests are deterministic. Production behavior unchanged (falls back to `date -u` when unset).
 
 ## v3 fixes (iter-2 Gemini findings)
 
