@@ -34,7 +34,6 @@
 
 ### Current-state evidence (2026-04-21 live verification)
 - `data/design-codes/code-registry.yaml` exists.
-- `.planning/quick/review-2408-*` artifacts still exist and are unrelated to this issue.
 
 ### Authoritative source inputs for this detector
 The detector reads only git-tracked metadata and wiki pages. It does not dereference `/mnt/ace/**` directly.
@@ -44,23 +43,31 @@ Required inputs:
 - `data/design-codes/code-registry.yaml` — structured standards/code inventory
 - `knowledge/wikis/*/wiki/**/*.md` — candidate coverage-bearing wiki pages
 
-Optional inputs (must degrade gracefully if absent):
+Optional inputs:
+
+Reporting-only optional:
 - `data/document-index/registry.yaml` — aggregate counts only; summary/reporting aid, not join corpus
-- `data/document-index/mounted-source-registry.yaml`
-- `data/document-index/online-resource-registry.yaml`
+- `data/document-index/intelligence-accessibility-registry.yaml`
+- `data/document-index/mounted-source-registry.yaml` — source-root metadata only; not normalized into gap records in v5
+- `data/document-index/online-resource-registry.yaml` — reporting/reference aid only until a per-record join schema is defined
+
+Supplemental coverage inputs (optional-by-presence, but coverage-affecting if configured/present):
 - `data/document-index/dde-standards-inventory.yaml`
 - `data/document-index/standards-transfer-ledger.yaml`
 - `data/document-index/promotions/*.yaml`
-- `data/document-index/intelligence-accessibility-registry.yaml`
 
 Input roles:
-- join corpus: `index.jsonl`, joinable per-record ledgers/manifests, design-code entries with canonical doc identity
+- required join corpus: `index.jsonl`, `code-registry.yaml`
+- supplemental join corpus: joinable per-record ledgers/manifests when present
 - reporting-only: `registry.yaml`, accessibility hints, and skipped-input diagnostics
 
-Optional means:
-- missing file != crash
-- detector records the skipped input in `_summary.md`
-- tests explicitly cover absent optional inputs
+Optional semantics:
+- reporting-only optional missing input != crash
+- supplemental coverage input missing on a repo that does not use that surface != crash, but must be recorded in `_summary.md`
+- if config explicitly expects a supplemental coverage input/pattern and it is missing, run status becomes `degraded`
+- zero matches for an unconfigured glob pattern count as normal empty expansion; zero matches for a config-required pattern count as missing/degraded
+- `degraded` runs may emit reports, but do not satisfy approval/acceptance gates for full coverage completeness
+- tests explicitly cover absent optional inputs and degraded-run semantics
 
 ### Scope boundary
 This issue is analysis-only. It emits candidate gap reports and identity/status diagnostics. It does not generate wiki pages and does not mutate registry truth.
@@ -83,15 +90,22 @@ The detector compares source-side inventory with wiki-side coverage by canonical
 ### Canonical rule
 - `sha256:<64hex>` is the only positive match key.
 - `md5:<hex>` is accepted for reads but is never treated as a positive match against a `sha256:` wiki key.
-- bare hex is a conformance violation; readers normalize it to `sha256:<hex>` for compatibility and emit a warning.
+- bare hex is a conformance violation everywhere and must always emit a warning.
 
-### Mixed-state behavior
+### Source-side compatibility reads
 For each source-side record:
 1. if a canonical `sha256:` key is present, use it as the join key
-2. else if a bare 64-hex value is present, normalize to `sha256:<hex>` and emit a warning
+2. else if a bare 64-hex value is present, emit a source-identity warning and classify the record as `identity-unresolved`
 3. else if only `md5:` is present, emit entry/status `identity-unresolved`
 4. else if no conforming key is present, emit entry/status `identity-unresolved`
 5. do not classify unresolved identity as a true wiki-coverage gap
+
+### Wiki-side coverage rule
+For wiki pages:
+1. schema validation applies to every non-structural wiki markdown file in scope
+2. only explicit canonical `sha256:<64hex>` `doc_key` values enter the coverage index
+3. bare-hex wiki `doc_key` values remain diagnostic-only (`wiki-schema-warning`) until the page is corrected
+4. nonconforming wiki keys never count as coverage in this detector
 
 This avoids false positives during migration while still surfacing actionable backlog.
 
@@ -100,10 +114,11 @@ Each normalized source record must be exactly one of:
 - `gap` — canonical source key present, no wiki page with the same canonical `doc_key`
 - `covered` — canonical source key present and wiki page exists (summary counts only; not emitted into gap YAML)
 - `identity-unresolved` — source exists but lacks canonical joinable identity
+- `domain-unresolved` — source identity exists but the record cannot be assigned to a valid output domain
 
 ### Wiki diagnostics
 Wiki-frontmatter problems are tracked separately from source-record status:
-- `wiki-schema-warning` — a coverage-bearing wiki page is missing `title`, `last_updated`, or a conforming `doc_key`
+- `wiki-schema-warning` — a non-structural wiki markdown file fails the §8.1/baseline validation needed for clean coverage accounting (for example missing `title`, `last_updated`, or canonical `doc_key`)
 
 `wiki-schema-warning` entries appear only in `_summary.md` diagnostics and test assertions; they are not gap records.
 
@@ -113,18 +128,26 @@ Wiki-frontmatter problems are tracked separately from source-record status:
 
 The previous plan's `docs/reports/*.md` heuristic was too loose. v4 replaces it with a concrete allowlist.
 
-The detector may treat only these artifacts as source-side candidates for wiki coverage:
-1. per-record index inventory from `data/document-index/index.jsonl`
-2. joinable L2 ledgers/manifests with per-record document identity:
+The detector uses three distinct surfaces:
+
+### A. Source-side gap candidates
+1. required join corpus from `data/document-index/index.jsonl`
+2. required structured design-code inventory from `data/design-codes/code-registry.yaml`
+3. supplemental join corpus with per-record document identity when present/configured:
    - `data/document-index/standards-transfer-ledger.yaml`
    - `data/document-index/dde-standards-inventory.yaml`
-   - `data/document-index/promotions/*.yaml`
-3. structured design-code entries from `data/design-codes/code-registry.yaml` when they carry or can map to canonical source identity
-4. wiki pages under `knowledge/wikis/*/wiki/**/*.md` for coverage comparison, but only for coverage-bearing page classes:
-   - include pages with a conforming `doc_key` in frontmatter
-   - exclude structural/navigation files by path or basename: `**/wiki/index.md`, `**/wiki/log.md`, and any markdown file whose frontmatter declares `page_count`/`source_count` navigation metadata instead of a `doc_key`
-5. optional wiki-domain hints from `data/document-index/intelligence-accessibility-registry.yaml`
-6. aggregate `data/document-index/registry.yaml` for reporting-only context; never normalize it into candidate source records
+   - expanded matches from `data/document-index/promotions/*.yaml`
+
+### B. Coverage-providing wiki artifacts
+4. non-structural wiki markdown under `knowledge/wikis/*/wiki/**/*.md` is schema-validated for §8.1 compliance
+5. only wiki pages with canonical `sha256:` `doc_key` participate in coverage indexing
+
+### C. Reporting/context aids
+6. optional reporting aids that do not become source records in v5:
+   - `data/document-index/intelligence-accessibility-registry.yaml`
+   - `data/document-index/registry.yaml`
+   - `data/document-index/mounted-source-registry.yaml`
+   - `data/document-index/online-resource-registry.yaml`
 
 The detector must NOT scan arbitrary `docs/reports/*.md` as source inventory.
 That content is L5 run output unless a separate promotion manifest has already elevated it into a durable source candidate.
@@ -140,7 +163,7 @@ A CLI at `scripts/knowledge/detect_wiki_gaps.py` that:
 - normalizes source candidates into a common record shape
 - parses wiki frontmatter and builds a canonical-coverage index by `sha256:` `doc_key`
 - emits per-domain YAML only for domains with true canonical gaps
-- emits `_summary.md` with counts for gaps, covered records, unresolved identity, skipped optional inputs, and wiki-schema warnings
+- emits `_summary.md` with counts for gaps, covered records, unresolved identity, unresolved domain, source-identity warnings, skipped optional inputs, duplicate wiki keys, domain-slug collisions, and wiki-schema warnings
 - supports `--dry-run` to print the same summary without writing files
 
 ---
@@ -150,19 +173,35 @@ A CLI at `scripts/knowledge/detect_wiki_gaps.py` that:
 Normalized source record fields:
 - `source_type` (`index-record`, `ledger`, `promotion-manifest`, `design-code`)
 - `domain`
+- `domain_slug` — canonical file-safe domain identifier used for `<domain>.yaml`
 - `title`
 - `source_path`
 - `doc_key`
 - `availability_tier` (per operating-model §7)
 - `discipline`
-- `suggested_slug`
+- `suggested_page`
 - `status`
 - `notes`
+- `source_identity_warning` (optional)
+
+Allowed source statuses:
+- `gap`
+- `covered`
+- `identity-unresolved`
+- `domain-unresolved`
 
 Mapping expectations:
 - `index-record`: read canonical identity/path from `index.jsonl`; derive `domain`/`discipline` from indexed metadata when present, otherwise from config mapping by source root/path prefix.
 - `design-code`: derive `domain`/`discipline` from registry fields and configured default wiki-domain mapping.
 - `ledger` / `promotion-manifest`: preserve source-provided domain when available; otherwise fall back to config mapping.
+- `domain_slug` is derived from the resolved domain using lowercase kebab-case `[a-z0-9-]+`; collisions must be returned from normalization, reported in `_summary.md`, and mark the run `degraded`.
+- if no mapping resolves a valid domain/domain_slug pair, emit `domain-unresolved`, count it in `_summary.md`, and do not write it into any per-domain YAML file.
+
+Supplemental source field contracts:
+- `standards-transfer-ledger.yaml`: authoritative fields are `doc_key` (identity), title/name field (title), canonical source path or reference field (source_path), standard family/domain field (domain/discipline), and tier derived from operating-model §7 defaults.
+- `dde-standards-inventory.yaml`: authoritative fields are inventory doc-key/hash field (identity), display title field, source path/reference field, and DDE classification fields for domain/discipline.
+- `promotions/*.yaml`: authoritative fields are `doc_key`, `doc_path` or equivalent source reference, `title`, `domain`, and optional issue/source metadata.
+- if a supplemental source row lacks the authoritative identity/path fields above, it must be classified as `identity-unresolved` rather than silently normalized.
 
 Gap YAML entry fields:
 - `doc_key`
@@ -185,23 +224,35 @@ function run(config_path, dry_run=False):
         "data/document-index/index.jsonl",
         "data/design-codes/code-registry.yaml",
     ]
-    optional_inputs = [
+    reporting_optional_inputs = [
         "data/document-index/registry.yaml",
+        "data/document-index/intelligence-accessibility-registry.yaml",
         "data/document-index/mounted-source-registry.yaml",
         "data/document-index/online-resource-registry.yaml",
+    ]
+    supplemental_input_patterns = [
         "data/document-index/dde-standards-inventory.yaml",
         "data/document-index/standards-transfer-ledger.yaml",
-        "data/document-index/intelligence-accessibility-registry.yaml",
         "data/document-index/promotions/*.yaml",
     ]
 
     required_data = load_required_inputs(required_inputs)
-    optional_data, skipped_inputs = load_optional_inputs(optional_inputs)
+    inspect_reporting_inputs(reporting_optional_inputs)  # existence/metadata only; payload is not normalized into source records
+    missing_reporting = find_missing_reporting_inputs(reporting_optional_inputs)
+    supplemental_matches, missing_supplemental = expand_and_load_optional_patterns(supplemental_input_patterns)
 
-    source_records = normalize_source_records(required_data, optional_data, config)
+    run_status = "clean"
+    if configured_supplemental_inputs_missing(config, missing_supplemental):
+        run_status = "degraded"
+
+    source_records, source_identity_warnings, domain_slug_collisions = normalize_source_records(required_data, supplemental_matches, config)
+    if domain_slug_collisions:
+        run_status = "degraded"
 
     wiki_index = {}
+    invalid_wiki_doc_keys = set()
     wiki_schema_warnings = []
+    duplicate_wiki_doc_keys = {}
     for page in glob("knowledge/wikis/*/wiki/**/*.md"):
         if is_structural_wiki_page(page, config):
             continue
@@ -209,16 +260,42 @@ function run(config_path, dry_run=False):
         warning = validate_l3_frontmatter_baseline(fm)  # title, last_updated, doc_key
         if warning:
             wiki_schema_warnings.append({"page": page, "warning": warning})
-        key = normalize_wiki_doc_key_for_coverage(fm.get("doc_key"))  # sha256 only; bare hex stays warning-only
-        if key:
-            wiki_index[key] = page
+        key = normalize_wiki_doc_key_for_coverage(fm.get("doc_key"))  # canonical sha256 only
+        if not key:
+            continue
+        if key in invalid_wiki_doc_keys:
+            duplicate_wiki_doc_keys[key].append(page)
+            run_status = "degraded"
+            continue
+        if key in wiki_index:
+            duplicate_wiki_doc_keys[key] = [wiki_index[key], page]
+            del wiki_index[key]
+            invalid_wiki_doc_keys.add(key)
+            run_status = "degraded"
+            continue
+        wiki_index[key] = page
 
     gaps_by_domain = {}
-    summary = counts(skipped_inputs, wiki_schema_warnings)
+    summary = counts(
+        missing_reporting,
+        missing_supplemental,
+        wiki_schema_warnings,
+        duplicate_wiki_doc_keys,
+        source_identity_warnings,
+        domain_slug_collisions,
+        run_status,
+    )
     for record in source_records:
+        if record.status == "domain-unresolved":
+            add_domain_unresolved(summary, record)
+            continue
         canonical_key = extract_canonical_join_key(record)
         if canonical_key is None:
             add_unresolved(summary, record)
+            continue
+        if canonical_key in invalid_wiki_doc_keys:
+            add_duplicate_conflict(summary, record, canonical_key)
+            run_status = "degraded"
             continue
         if canonical_key in wiki_index:
             add_covered(summary, record, wiki_index[canonical_key])
@@ -227,15 +304,17 @@ function run(config_path, dry_run=False):
 
     if dry_run:
         print(render_summary(summary, gaps_by_domain))
-        return
+        return exit_code_for_run_status(run_status, allow_degraded=True)
 
     reconcile_output_directory(
         config.output_dir,
-        keep_domains=gaps_by_domain.keys(),
+        keep_domains=[record.domain_slug for record in gap_records(gaps_by_domain)],
         preserve_files=["README.md", "_summary.md"],
+        domain_file_suffix=".yaml",
     )
     write_gap_yaml_only_for_domains_with_entries(gaps_by_domain)
-    write_summary_md(summary, gaps_by_domain, skipped_inputs, wiki_schema_warnings)
+    write_summary_md(summary, gaps_by_domain, missing_reporting, missing_supplemental, wiki_schema_warnings, duplicate_wiki_doc_keys, source_identity_warnings, domain_slug_collisions)
+    return exit_code_for_run_status(run_status, allow_degraded=True)
 ```
 
 ---
@@ -247,6 +326,9 @@ Planned detector config at `config/ai-tools/wiki-gap-detection.yaml`:
 - `structural_excludes`: basename/path patterns for `index.md`, `log.md`, and navigation-only wiki files
 - `source_root_domain_map`: path-prefix/domain mapping for `index.jsonl` records that lack explicit domain metadata
 - `design_code_domain_defaults`: default wiki-domain mapping for code-registry entries
+- `expected_supplemental_inputs`: optional join-bearing sources that must mark the run `degraded` when configured but missing
+- `required_input_prechecks`: shell/file checks for `data/document-index/index.jsonl` and `data/design-codes/code-registry.yaml` before scheduled execution
+- `publication_mode`: `git-commit` for scheduled publication of updated reports on the target checkout
 
 Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `id`: `wiki-coverage-gap-detection`
@@ -256,10 +338,10 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `requires`: `[python3, uv, git]`
 - `prefer`: `dev-primary`
 - `command`:
-  `mkdir -p $WORKSPACE_HUB/logs/knowledge && cd $WORKSPACE_HUB && uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml >> $WORKSPACE_HUB/logs/knowledge/wiki-coverage-gap-$(date +\%Y-\%m-\%d).log 2>&1`
+  `mkdir -p $WORKSPACE_HUB/logs/knowledge && cd $WORKSPACE_HUB && test -f data/document-index/index.jsonl && test -f data/design-codes/code-registry.yaml && uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml >> $WORKSPACE_HUB/logs/knowledge/wiki-coverage-gap-$(date +\%Y-\%m-\%d).log 2>&1 && git add docs/reports/wiki-coverage-gaps && if ! git diff --cached --quiet; then git commit -m "docs(reports): refresh wiki coverage gaps" && git push origin main; fi`
 - `log`: `logs/knowledge/wiki-coverage-gap-*.log`
 - `is_claude_task`: `false`
-- `description`: weekly source-vs-wiki gap detection; writes reports only, no issue creation
+- `description`: weekly source-vs-wiki gap detection; writes reports and publishes changes from the target checkout when the output changes
 
 ---
 
@@ -282,12 +364,14 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 ### Identity and matching
 - `test_sha256_source_key_matches_wiki_page`
 - `test_md5_only_source_becomes_identity_unresolved_not_gap`
-- `test_bare_hex_source_key_warns_and_normalizes_to_sha256`
+- `test_bare_hex_source_key_emits_source_identity_warning_and_does_not_become_true_gap_without_canonical_match`
 - `test_missing_doc_key_becomes_identity_unresolved`
 
 ### Input-boundary behavior
-- `test_missing_optional_inputs_are_reported_not_fatal`
+- `test_missing_reporting_optional_inputs_are_reported_not_fatal`
+- `test_missing_configured_supplemental_input_marks_run_degraded`
 - `test_missing_required_input_fails_closed`
+- `test_optional_glob_patterns_expand_to_matching_files`
 - `test_only_allowlisted_inputs_are_loaded`
 - `test_docs_reports_markdown_is_not_scanned_as_source_inventory`
 
@@ -295,25 +379,35 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - `test_wiki_page_missing_doc_key_emits_schema_warning`
 - `test_wiki_page_missing_title_or_last_updated_emits_schema_warning`
 - `test_nonconforming_wiki_doc_key_not_added_to_coverage_index`
+- `test_duplicate_wiki_doc_key_marks_run_degraded_and_reports_diagnostic`
+- `test_domain_slug_collision_marks_run_degraded_and_reports_diagnostic`
 
 ### Output behavior
 - `test_dry_run_prints_summary_without_writing_files`
 - `test_gap_yaml_written_only_for_domains_with_true_gaps`
 - `test_stale_domain_yaml_removed_when_domain_is_now_covered`
-- `test_summary_lists_skipped_optional_inputs`
+- `test_summary_lists_missing_reporting_and_supplemental_inputs`
+- `test_summary_lists_source_identity_warnings`
+- `test_summary_lists_domain_slug_collisions`
 - `test_gap_entry_contains_required_fields`
-- `test_summary_counts_gap_covered_and_identity_unresolved`
+- `test_summary_counts_gap_covered_identity_unresolved_and_domain_unresolved`
+- `test_domain_unresolved_records_do_not_create_invalid_output_files`
 
 ### Runtime and scheduling
 - `test_cron_config_parses_and_schedules_weekly`
 - `test_runtime_smoke_command_is_documented`
 
 ### Manual verification before approval
-- `test -f data/document-index/index.jsonl`
-- `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run`
-  - run only after the required-input precheck passes
-  - must exit 0 on the current corpus
-  - must print summary counts including gaps / covered / identity-unresolved / skipped-inputs
+- On the chosen approval target checkout, run:
+  - `test -f data/document-index/index.jsonl`
+  - `test -f data/design-codes/code-registry.yaml`
+- Then run:
+  - `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run`
+- Approval gate interpretation:
+  - required-input prechecks must pass on that target checkout
+  - dry-run must exit 0
+  - `run_status: degraded` is allowed only for pre-existing external data quality issues that are explicitly reported; new detector-logic regressions are not approval-ready
+  - summary must print counts for gaps / covered / identity-unresolved / domain-unresolved / skipped-inputs / duplicate-conflicts
 
 ---
 
@@ -324,12 +418,13 @@ Planned weekly scheduler entry in `config/scheduled-tasks/schedule-tasks.yaml`:
 - [ ] detector emits `docs/reports/wiki-coverage-gaps/<domain>.yaml` only for domains with true canonical gaps
 - [ ] each gap entry includes `doc_key`, `source_path`, `availability_tier`, `discipline`, `status`, and `suggested_page`
 - [ ] records with only legacy/ambiguous identity are surfaced as `identity-unresolved`, not false gaps
+- [ ] records whose domain cannot be resolved are surfaced as `domain-unresolved` and excluded from per-domain YAML output
 - [ ] `--dry-run` prints summary counts and writes nothing
-- [ ] `_summary.md` reports skipped optional inputs and wiki-schema warnings
+- [ ] `_summary.md` reports missing reporting inputs, missing supplemental inputs, wiki-schema warnings, source-identity warnings, duplicate wiki `doc_key` diagnostics, and overall `run_status`
 - [ ] stale `<domain>.yaml` files are removed when a previously-gapped domain becomes covered
 - [ ] weekly schedule is wired in `config/scheduled-tasks/schedule-tasks.yaml` using task id `wiki-coverage-gap-detection`
-- [ ] required-input precheck `test -f data/document-index/index.jsonl` passes on the target checkout before the smoke run
-- [ ] manual runtime smoke check `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run` exits 0 on the current corpus and prints summary counts
+- [ ] on the chosen approval target checkout, required-input prechecks for `data/document-index/index.jsonl` and `data/design-codes/code-registry.yaml` pass before the smoke run
+- [ ] manual runtime smoke check `timeout 300 uv run python scripts/knowledge/detect_wiki_gaps.py --config config/ai-tools/wiki-gap-detection.yaml --dry-run` exits 0 and reports no new detector-internal regressions on the approval target checkout
 
 ---
 
@@ -348,13 +443,19 @@ Historical preserved artifacts:
 Current re-file wave (this session):
 - Codex v4: MAJOR — `scripts/review/results/2026-04-21-v4-plan-2392-codex.md`
 - Gemini v4: MAJOR — `scripts/review/results/2026-04-21-v4-plan-2392-gemini.md`
+- Codex v5: MAJOR — `scripts/review/results/2026-04-21-v5-plan-2392-codex.md`
+- Gemini v5: MAJOR — `scripts/review/results/2026-04-21-v5-plan-2392-gemini.md`
+- Codex v6: MAJOR — `scripts/review/results/2026-04-21-v6-plan-2392-codex.md`
+- Gemini v6: MAJOR — `scripts/review/results/2026-04-21-v6-plan-2392-gemini.md`
+- Codex v7: MAJOR — `scripts/review/results/2026-04-21-v7-plan-2392-codex.md`
+- Gemini v7: MAJOR — `scripts/review/results/2026-04-21-v7-plan-2392-gemini.md`
 
-Live blocker themes after the 2026-04-21 wave:
-- source-vs-wiki normalization still needs a fully consistent migration contract
-- join-bearing optional inputs need explicit degraded/fail-closed semantics
-- page-class selection for schema validation vs coverage indexing needs one coherent rule
-- scheduled-task/report distribution semantics need to be explicit
-- duplicate wiki `doc_key` and unresolved-domain handling need first-class behavior
+Live blocker themes after the latest 2026-04-21 wave:
+- source deduplication across multiple inventory surfaces is still undefined
+- cross-domain coverage semantics (`doc_key` match in wrong wiki domain) need an explicit policy
+- exit-code contract for clean vs degraded vs fail-closed runs needs to be specified
+- scheduled publication needs clean-worktree / exclusivity safeguards
+- unneeded live-state claims should be removed unless they are attested and load-bearing
 
 ---
 
