@@ -8,6 +8,29 @@ Every senior engineering job posting is a consulting lead. Companies hiring for 
 FEA, cathodic protection, riser/mooring engineering etc. have **budget, need, and urgency**.
 A consulting engagement fills the gap faster than a 3-6 month hiring cycle.
 
+## Sources & Compliance (Q9 / Q10 / Q11 — #1707, #2348)
+
+Three live sources: **`linkedin`**, **`indeed`**, **`career_page`** (public company
+career landings listed in `COMPANY_CAREER_URLS`).
+
+Three **REMOVED** sources (Q9, 2026-04-21): `google`, `google_direct`, `rigzone` —
+zero production results; not revisited without owner sign-off. The deletion is
+recorded in the REMOVED appendix of [`TOS_REVIEW.md`](TOS_REVIEW.md).
+
+- **robots.txt enforcement:** `urllib.robotparser` is consulted per destination
+  netloc inside `safe_request()`. Unreachable robots.txt ⇒ **DENY** (fail-closed).
+- **Owner override:** a source whose robots.txt disallows us can be retained only
+  by a signed `Owner override:` block in [`TOS_REVIEW.md`](TOS_REVIEW.md) under
+  the corresponding `## Source: <name>` heading. The scanner re-parses that file
+  at each import; removing the block revokes the override on the next run.
+  LinkedIn currently carries an owner override (Q11 KEEP decision).
+- **Per-source owner sign-off (Q10):** every live source carries a datestamped
+  `Owner approved: YYYY-MM-DD` line in [`TOS_REVIEW.md`](TOS_REVIEW.md). Adding a
+  new source requires a new signed section before that source can scrape.
+- **Cease-and-desist runbook (U4):** see [`TOS_REVIEW.md`](TOS_REVIEW.md) §
+  *Cease-and-Desist Runbook* — 24h to takedown PR, 48h to incident record,
+  7d to tracking issue.
+
 ## Scanner
 
 ```bash
@@ -29,7 +52,12 @@ python scripts/gtm/job-market-scanner.py --keywords "OrcaFlex engineer,mooring e
 - **Schedule:** Every Monday 5AM UTC
 - **Cron task:** `gtm-job-market-scan` in `config/scheduled-tasks/schedule-tasks.yaml`
 - **Wrapper:** `scripts/gtm/weekly-scan-refresh.sh`
-- **Auto-commits** results to main after each scan
+- **Auto-commits** results to main after each scan, **only for sources whose ToS
+  review is signed off by owner** in [`TOS_REVIEW.md`](TOS_REVIEW.md). Sources
+  whose robots.txt denies us (without override) are silently skipped for that week.
+- **Paused state**: the cron remains paused until all U1-U5 unpause criteria in
+  the #2348 plan are green. See `config/scheduled-tasks/schedule-tasks.yaml`
+  for the current disposition.
 
 ### What the weekly refresh tracks:
 - **New postings** not seen in any previous scan

@@ -2,9 +2,11 @@
 """
 GTM Job Market Scanner — ACE Engineer
 ======================================
-Scans multiple job boards and Google for engineering roles matching
-ACE Engineer's capabilities. Produces structured JSON results and
-a markdown dashboard.
+Scans Indeed, LinkedIn, and public company career pages for engineering roles
+matching ACE Engineer's capabilities. Produces structured JSON results and a
+markdown dashboard. robots.txt is enforced per-domain (fail-closed), with
+owner-override for specific sources documented in
+`docs/strategy/gtm/job-market-scan/TOS_REVIEW.md`.
 
 Designed for weekly refresh — tracks history across runs, detects
 NEW postings since last scan, flags trending companies (hiring more
@@ -35,6 +37,7 @@ import re
 import sys
 import time
 import urllib.parse
+import urllib.robotparser
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -141,26 +144,91 @@ HEADERS = {
 }
 
 # Rate limiting and source policy
+# Q9 (#2348 plan v3): google / google_direct / rigzone removed — zero production
+# results and disproportionate ToS risk. Not revisited without owner sign-off in
+# `docs/strategy/gtm/job-market-scan/TOS_REVIEW.md`.
 REQUEST_DELAY = 2.0  # default seconds between requests
 SOURCE_RATE_LIMITS = {
-    "google": 3.0,
-    "google_direct": 3.0,
     "indeed": 4.0,
     "linkedin": 4.0,
-    "rigzone": 4.0,
     "career_page": 3.0,
     "example-board": 2.0,
 }
 SOURCE_ALLOWLIST = set(SOURCE_RATE_LIMITS)
 SOURCE_ALLOWED_DOMAINS = {
-    "google": {"www.google.com", "google.com"},
-    "google_direct": {"www.google.com", "google.com"},
     "indeed": {"www.indeed.com", "indeed.com"},
     "linkedin": {"www.linkedin.com", "linkedin.com"},
-    "rigzone": {"www.rigzone.com", "rigzone.com"},
     "career_page": None,
     "example-board": {"boards.example.com"},
 }
+
+# ---------------------------------------------------------------------------
+# robots.txt enforcement + doc-driven owner overrides (#1707 / #2348 plan v3)
+# ---------------------------------------------------------------------------
+
+_TOS_REVIEW_PATH = REPO_ROOT / "docs" / "strategy" / "gtm" / "job-market-scan" / "TOS_REVIEW.md"
+
+# Per-netloc cache of RobotFileParser (or None sentinel on fetch failure).
+_ROBOTS_CACHE: dict[str, urllib.robotparser.RobotFileParser | None] = {}
+
+
+def _parse_owner_overrides_from_tos_review() -> set[str]:
+    """Return the set of source names whose `## Source: <name>` section in
+    TOS_REVIEW.md contains an `Owner override:` block together with an
+    `Owner approved: YYYY-MM-DD` line. Removing the block from the doc
+    revokes the override on next import.
+
+    Returns an empty set when the doc is absent or malformed — callers then
+    fall back to fail-closed robots enforcement.
+    """
+    if not _TOS_REVIEW_PATH.exists():
+        return set()
+    try:
+        text = _TOS_REVIEW_PATH.read_text()
+    except OSError:
+        return set()
+
+    overrides: set[str] = set()
+    # A section ends at the NEXT level-2 heading of any kind (not only the next
+    # `## Source:`). Otherwise the final Source section would sweep the
+    # cease-and-desist runbook — which references `Owner override:` in
+    # operational steps — and produce false positives.
+    heading_re = re.compile(r"^##\s+(.+?)\s*$", re.MULTILINE)
+    approved_re = re.compile(r"Owner approved:\s+\d{4}-\d{2}-\d{2}")
+    override_re = re.compile(r"Owner override:", re.IGNORECASE)
+    headings = list(heading_re.finditer(text))
+    for i, h in enumerate(headings):
+        title = h.group(1).strip()
+        if not title.lower().startswith("source:"):
+            continue
+        name = title.split(":", 1)[1].strip()
+        start = h.end()
+        end = headings[i + 1].start() if i + 1 < len(headings) else len(text)
+        section = text[start:end]
+        if override_re.search(section) and approved_re.search(section):
+            overrides.add(name)
+    return overrides
+
+
+_OWNER_OVERRIDE_SOURCES: set[str] = _parse_owner_overrides_from_tos_review()
+
+
+def _get_robots_parser(netloc: str) -> urllib.robotparser.RobotFileParser | None:
+    """Return a cached RobotFileParser for ``netloc``, or ``None`` if the
+    robots.txt was unreachable (callers treat None as DENY).
+    """
+    if netloc in _ROBOTS_CACHE:
+        return _ROBOTS_CACHE[netloc]
+    rp = urllib.robotparser.RobotFileParser()
+    rp.set_url(f"https://{netloc}/robots.txt")
+    try:
+        rp.read()
+    except Exception as e:  # noqa: BLE001 — fail-closed on any read failure
+        print(f"  [WARN] robots.txt unreachable for {netloc}: {e}; DENYING (fail-closed)")
+        _ROBOTS_CACHE[netloc] = None
+        return None
+    _ROBOTS_CACHE[netloc] = rp
+    return rp
 
 
 # ---------------------------------------------------------------------------
@@ -185,6 +253,31 @@ def safe_request(
     if allowed_domains is not None and parsed.netloc.lower() not in allowed_domains:
         print(f"  [WARN] Skipping URL outside allowlist for {source_name}: {parsed.netloc}")
         return None
+
+    # robots.txt enforcement (#1707 / #2348 plan v3 §A). Fail-closed on unreachable.
+    # Per-source owner override honored iff the source appears in `_OWNER_OVERRIDE_SOURCES`,
+    # which is populated by parsing TOS_REVIEW.md at import time. Removing the override
+    # block from the doc revokes the override on next import.
+    netloc = parsed.netloc.lower()
+    if netloc:
+        rp = _get_robots_parser(netloc)
+        if rp is None:
+            if source_name in _OWNER_OVERRIDE_SOURCES:
+                print(
+                    f"  [WARN] robots.txt unreachable for {netloc}; "
+                    f"OWNER OVERRIDE in effect for {source_name}; proceeding"
+                )
+            else:
+                return None  # fail-closed
+        elif not rp.can_fetch(USER_AGENT, url):
+            if source_name in _OWNER_OVERRIDE_SOURCES:
+                print(
+                    f"  [WARN] robots.txt disallows {url}; "
+                    f"OWNER OVERRIDE per TOS_REVIEW.md for {source_name}; proceeding"
+                )
+            else:
+                print(f"  [WARN] robots.txt disallows {url} for {source_name}; skipping")
+                return None
 
     delay = SOURCE_RATE_LIMITS.get(source_name, REQUEST_DELAY)
     time.sleep(delay)
@@ -299,54 +392,6 @@ def score_job(job: dict) -> int:
 # Scrapers
 # ---------------------------------------------------------------------------
 
-def scrape_google_jobs(keyword: str, location: str = "United States") -> list[dict]:
-    """
-    Scrape Google search results for job postings.
-    Uses Google search with site-specific queries.
-    """
-    jobs = []
-    query = f'"{keyword}" job site:linkedin.com/jobs OR site:indeed.com OR site:rigzone.com'
-    url = "https://www.google.com/search"
-    params = {"q": query, "num": 20}
-
-    resp = safe_request(url, params, source="google")
-    if not resp:
-        return jobs
-
-    soup = BeautifulSoup(resp.text, "lxml")
-    for result in soup.select("div.g, div[data-sokoban-container]"):
-        title_el = result.select_one("h3")
-        link_el = result.select_one("a[href]")
-        snippet_el = result.select_one("div.VwiC3b, span.aCOpRe")
-
-        if not title_el or not link_el:
-            continue
-
-        title = title_el.get_text(strip=True)
-        link = link_el.get("href", "")
-        snippet = snippet_el.get_text(strip=True) if snippet_el else ""
-
-        # Try to extract company from title/snippet
-        company = ""
-        # LinkedIn pattern: "Title - Company | LinkedIn"
-        if "linkedin.com" in link:
-            parts = title.split(" - ")
-            if len(parts) >= 2:
-                company = parts[-1].replace("| LinkedIn", "").strip()
-                title = parts[0].strip()
-
-        jobs.append({
-            "title": title,
-            "company": company,
-            "location": location,
-            "url": link,
-            "snippet": snippet[:300],
-            "source": "google",
-        })
-
-    return jobs
-
-
 def scrape_indeed(keyword: str, location: str = "United States") -> list[dict]:
     """Scrape Indeed job listings."""
     jobs = []
@@ -384,45 +429,6 @@ def scrape_indeed(keyword: str, location: str = "United States") -> list[dict]:
             "url": href,
             "snippet": snippet[:300],
             "source": "indeed",
-        })
-
-    return jobs
-
-
-def scrape_rigzone(keyword: str) -> list[dict]:
-    """Scrape Rigzone job listings (oil & gas specific)."""
-    jobs = []
-    encoded_kw = urllib.parse.quote_plus(keyword)
-    url = f"https://www.rigzone.com/oil/jobs/search/?keyword={encoded_kw}&sort=date"
-
-    resp = safe_request(url, source="rigzone")
-    if not resp:
-        return jobs
-
-    soup = BeautifulSoup(resp.text, "lxml")
-
-    for row in soup.select("tr.job_listing, div.job-listing, div.search-result"):
-        title_el = row.select_one("a.title, a.job-title, td.title a")
-        company_el = row.select_one("span.company, td.company, a.company")
-        location_el = row.select_one("span.location, td.location")
-
-        if not title_el:
-            continue
-
-        title = title_el.get_text(strip=True)
-        company = company_el.get_text(strip=True) if company_el else ""
-        loc = location_el.get_text(strip=True) if location_el else ""
-        href = title_el.get("href", "")
-        if href and not href.startswith("http"):
-            href = f"https://www.rigzone.com{href}"
-
-        jobs.append({
-            "title": title,
-            "company": company,
-            "location": loc,
-            "url": href,
-            "snippet": "",
-            "source": "rigzone",
         })
 
     return jobs
@@ -466,52 +472,6 @@ def scrape_linkedin_search(keyword: str, location: str = "United States") -> lis
             "url": href,
             "snippet": "",
             "source": "linkedin",
-        })
-
-    return jobs
-
-
-def scrape_google_direct(keyword: str) -> list[dict]:
-    """
-    Use Google search to find job postings more broadly.
-    This catches company career pages, niche boards, etc.
-    """
-    jobs = []
-    query = f'"{keyword}" hiring OR "open position" OR "apply now" OR "job posting" engineer 2025 OR 2026'
-    url = "https://www.google.com/search"
-    params = {"q": query, "num": 15}
-
-    resp = safe_request(url, params, source="google_direct")
-    if not resp:
-        return jobs
-
-    soup = BeautifulSoup(resp.text, "lxml")
-
-    for result in soup.select("div.g"):
-        title_el = result.select_one("h3")
-        link_el = result.select_one("a[href]")
-        snippet_el = result.select_one("div.VwiC3b, span.aCOpRe")
-
-        if not title_el or not link_el:
-            continue
-
-        title = title_el.get_text(strip=True)
-        link = link_el.get("href", "")
-        snippet = snippet_el.get_text(strip=True) if snippet_el else ""
-
-        # Skip non-job results
-        title_lower = title.lower()
-        if not any(w in title_lower or w in snippet.lower() for w in
-                   ["job", "career", "hiring", "position", "apply", "engineer", "analyst"]):
-            continue
-
-        jobs.append({
-            "title": title,
-            "company": "",
-            "location": "USA",
-            "url": link,
-            "snippet": snippet[:300],
-            "source": "google_direct",
         })
 
     return jobs
@@ -629,7 +589,7 @@ def run_scan(keywords: list[str] | None = None, limit: int | None = None,
     print(f"\n{'='*60}")
     print(f"  GTM Job Market Scanner — ACE Engineer")
     print(f"  {timestamp}")
-    print(f"  Keywords: {len(keywords)} | Sources: Google, Indeed, LinkedIn, Rigzone")
+    print(f"  Keywords: {len(keywords)} | Sources: Indeed, LinkedIn, career_page")
     print(f"{'='*60}\n")
 
     # Phase 1: Keyword-based scraping across job boards
@@ -638,12 +598,6 @@ def run_scan(keywords: list[str] | None = None, limit: int | None = None,
         print(f"[{i+1}/{len(keywords)}] Scanning: \"{keyword}\" (Tier {tier})")
 
         keyword_jobs = []
-
-        # Google Jobs search
-        print(f"  → Google search...")
-        gj = scrape_google_jobs(keyword)
-        keyword_jobs.extend(gj)
-        print(f"    Found {len(gj)} results")
 
         # Indeed
         print(f"  → Indeed...")
@@ -656,19 +610,6 @@ def run_scan(keywords: list[str] | None = None, limit: int | None = None,
         lj = scrape_linkedin_search(keyword)
         keyword_jobs.extend(lj)
         print(f"    Found {len(lj)} results")
-
-        # Rigzone (only for oil & gas keywords)
-        if tier <= 3:
-            print(f"  → Rigzone...")
-            rj = scrape_rigzone(keyword)
-            keyword_jobs.extend(rj)
-            print(f"    Found {len(rj)} results")
-
-        # Google direct (broader search)
-        print(f"  → Google direct...")
-        gd = scrape_google_direct(keyword)
-        keyword_jobs.extend(gd)
-        print(f"    Found {len(gd)} results")
 
         # Enrich and deduplicate
         for job in keyword_jobs:

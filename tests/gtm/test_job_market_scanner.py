@@ -82,7 +82,20 @@ def test_job_id_changes_for_different_sources():
     assert indeed_id != linkedin_id
 
 
-def test_safe_request_respects_retry_after_header():
+def test_safe_request_respects_retry_after_header(monkeypatch):
+    # Bypass the robots.txt fetch so this test exercises only the Retry-After
+    # / 429 retry path. Post-#1707 #2348: a stub parser that always allows
+    # substitutes for the real network call to boards.example.com/robots.txt.
+    job_market_scanner._ROBOTS_CACHE.clear()
+    allow_parser = MagicMock()
+    allow_parser.can_fetch.return_value = True
+    allow_parser.read.return_value = None
+    monkeypatch.setattr(
+        job_market_scanner.urllib.robotparser,
+        "RobotFileParser",
+        MagicMock(return_value=allow_parser),
+    )
+
     first = MagicMock()
     first.raise_for_status.side_effect = job_market_scanner.requests.HTTPError("429")
     first.status_code = 429
