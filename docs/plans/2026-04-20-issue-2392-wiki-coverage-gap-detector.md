@@ -563,13 +563,17 @@ Current re-file wave (this session):
 - Gemini v7: MAJOR — `scripts/review/results/2026-04-21-v7-plan-2392-gemini.md`
 - Codex v8: MAJOR — `scripts/review/results/2026-04-21-v8-plan-2392-codex.md`
 - Gemini v8: MAJOR — `scripts/review/results/2026-04-21-v8-plan-2392-gemini.md`
+- Codex v9: MAJOR — `scripts/review/results/2026-04-21-v9-plan-2392-codex.md`
+- Gemini v9: MAJOR — `scripts/review/results/2026-04-21-v9-plan-2392-gemini.md`
+- Codex v10: MAJOR — `scripts/review/results/2026-04-21-v10-plan-2392-codex.md`
+- Codex v11: MAJOR — `scripts/review/results/2026-04-21-v11-plan-2392-codex.md`
 
 Live blocker themes after the latest 2026-04-21 wave:
-- canonical status model still needs one authoritative enum/usage contract
-- publication-mode activation and degraded publication behavior still need one consistent path
-- wiki-domain derivation rule still needs a concrete normative contract
-- supplemental-source merge precedence / field derivation remains incomplete (`dde-standards-inventory`, `availability_tier`, `suggested_page`)
-- locking strategy should be single-layer; current shell+python locking intent is still ambiguous
+- scheduler still is not truly single-publisher across the declared machine set
+- domain-mapping config schema/precedence still needs fully normative shape
+- dedupe contract still needs an explicit policy for sources that may legitimately map to multiple wiki domains
+- publication path still needs a repo-clean guarantee for logs/side effects beyond staged report files
+- approval gate still needs attested verification for `data/document-index/index.jsonl`
 
 ---
 
