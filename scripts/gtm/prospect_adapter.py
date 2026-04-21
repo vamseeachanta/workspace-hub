@@ -1,9 +1,13 @@
 """Prospect-intake adapter — validates YAML intake and routes to a GTM demo.
 
-Scaffold layer for issue #2346 (T2, part 1 of N). Implements the
-validation + interface surface; demo materialization and invocation are
-stubbed and raise NotImplementedError. See
-`docs/gtm/intake/IMPLEMENTATION-STATUS.md` for what is and is not done.
+Current state for issue #2346:
+- validation + interface surface are implemented
+- demo_04 materialization is implemented
+- other demo materialization paths are still explicit follow-up work
+- demo invocation remains stubbed
+
+See `docs/gtm/intake/IMPLEMENTATION-STATUS.md` for the authoritative
+what-is-done vs what-is-not-done ledger.
 
 Path convention: this module lives in `scripts/gtm/` (workspace-hub) rather
 than `digitalmodel/examples/demos/gtm/` (separate repo) so a single
@@ -14,6 +18,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal, Mapping
@@ -83,8 +88,9 @@ class ProspectInput:
 class DemoInputBundle:
     """Filesystem layout that `run_demo` will consume.
 
-    Scaffold stub — `materialize_demo_inputs` currently raises
-    NotImplementedError; this shape is the target interface.
+    Demo_04 materialization now returns this bundle concretely. Other demo
+    paths remain follow-up work and still raise NotImplementedError from
+    `materialize_demo_inputs`.
     """
 
     demo_id: DemoId
@@ -99,6 +105,76 @@ class DemoInputBundle:
 def _load_schema() -> dict:
     with SCHEMA_PATH.open("r", encoding="utf-8") as fh:
         return json.load(fh)
+
+
+def _resolved_vessel_body(prospect: ProspectInput) -> dict:
+    """Return the vessel body, inlining canonical YAML when needed."""
+    vessel = prospect.raw.get("vessel")
+    if vessel is None:
+        raise ProspectIntakeError("prospect does not include a vessel block")
+
+    if vessel.get("source") == "canonical_ref":
+        ref = vessel.get("canonical_ref")
+        canonical_path = CANONICAL_DIR / f"{ref}.yaml"
+        with canonical_path.open("r", encoding="utf-8") as fh:
+            body = yaml.safe_load(fh)
+        if not isinstance(body, dict):
+            raise ProspectIntakeError(
+                f"canonical vessel YAML must load to a mapping: {canonical_path}"
+            )
+        return deepcopy(body)
+
+    body = vessel.get("body")
+    if not isinstance(body, dict):
+        raise ProspectIntakeError("prospect vessel.body must be a mapping")
+    return deepcopy(body)
+
+
+def _canonical_shape_matches_expected(body: Mapping[str, object], expected_shape: str) -> bool:
+    """Return whether a canonical vessel body matches the expected demo shape."""
+    if expected_shape == "pipelay":
+        return "pipelay_system" in body and "crane_main" not in body
+    if expected_shape == "csv_hlv":
+        return "crane_main" in body and "pipelay_system" not in body
+    return False
+
+
+def _materialize_demo_04_inputs(prospect: ProspectInput, tmpdir: Path) -> DemoInputBundle:
+    """Materialize demo_04 inputs into tmpdir/data/."""
+    data_dir = tmpdir / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    vessel_body = _resolved_vessel_body(prospect)
+    vessel_file = data_dir / "pipelay_vessels.json"
+    vessel_file.write_text(
+        json.dumps({"vessels": [vessel_body]}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    structure_body = deepcopy(prospect.raw["structure"]["body"])
+    structure_file = data_dir / "pipelines.json"
+    structure_file.write_text(
+        json.dumps({"pipes": [structure_body]}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    env_override_path = None
+    environment = prospect.raw.get("environment")
+    if isinstance(environment, dict) and environment:
+        env_override_path = data_dir / "prospect_env.json"
+        env_override_path.write_text(
+            json.dumps(environment, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+    return DemoInputBundle(
+        demo_id=prospect.target_demo,
+        tmpdir=tmpdir,
+        data_dir=data_dir,
+        env_override_path=env_override_path,
+        vessel_file=vessel_file,
+        structure_file=structure_file,
+    )
 
 
 def _cross_field_checks(intake: dict, demo: DemoId) -> None:
@@ -154,6 +230,16 @@ def _cross_field_checks(intake: dict, demo: DemoId) -> None:
             raise ProspectIntakeError(
                 f"canonical vessel reference not found: {canonical_path}"
             )
+        with canonical_path.open("r", encoding="utf-8") as fh:
+            canonical_body = yaml.safe_load(fh)
+        if not isinstance(canonical_body, dict):
+            raise ProspectIntakeError(
+                f"canonical vessel YAML must load to a mapping: {canonical_path}"
+            )
+        if not _canonical_shape_matches_expected(canonical_body, expected_shape):
+            raise ProspectIntakeError(
+                f"canonical vessel reference {ref!r} does not match required {expected_shape!r} shape"
+            )
 
 
 def load_and_validate(intake_path: Path) -> ProspectInput:
@@ -208,15 +294,19 @@ def load_and_validate(intake_path: Path) -> ProspectInput:
 def materialize_demo_inputs(
     prospect: ProspectInput, tmpdir: Path
 ) -> DemoInputBundle:
-    """STUB — map prospect fields onto demo_01..demo_05 input shapes.
+    """Map prospect fields onto the JSON shapes expected by the GTM demos.
 
-    Scaffold for #2346 T2. The per-demo write logic is deferred; see
-    `docs/gtm/intake/IMPLEMENTATION-STATUS.md`.
+    Current implementation is intentionally narrow: demo_04 is materialized,
+    while the other demos remain explicit follow-up work.
     """
+    tmpdir = Path(tmpdir)
+    if prospect.target_demo == "demo_04":
+        return _materialize_demo_04_inputs(prospect, tmpdir)
+
     raise NotImplementedError(
-        "materialize_demo_inputs is scaffolded but not implemented. "
-        "Per-demo shaping (csv_hlv_vessels.json, pipelay_vessels.json, "
-        "structure files, prospect_env.json) will land in #2346 follow-up. "
+        "materialize_demo_inputs is partially implemented. "
+        "Demo_04 shaping (pipelay_vessels.json, pipelines.json, prospect_env.json) exists; "
+        "other demos remain follow-up work. "
         f"target_demo={prospect.target_demo!r}, tmpdir={tmpdir!s}"
     )
 

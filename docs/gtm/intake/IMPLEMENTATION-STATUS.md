@@ -26,15 +26,21 @@ Tracks progress against the approved plan at
   Pipeline Engineering* for class-typical lay-system / motion envelopes.
   Disclaimer block stating "class-typical, not vessel-specific" included.
 - `scripts/gtm/prospect_adapter.py` — interface + two validation gates:
-  `load_and_validate()` (schema + cross-field checks) plus stubbed
-  `materialize_demo_inputs()` and `run_demo()` raising NotImplementedError
-  with descriptive messages. Argparse CLI with `--demo` and `--dry-run`.
-  Type hints throughout; no `Any`.
-- `scripts/gtm/tests/test_prospect_adapter.py` — 7 tests: happy paths
+  `load_and_validate()` (schema + cross-field checks) plus partial
+  `materialize_demo_inputs()` support for demo_04 (writes
+  `pipelay_vessels.json`, `pipelines.json`, and optional
+  `prospect_env.json` into `tmpdir/data/`). Canonical references are now
+  shape-checked (`pipelay` vs `csv_hlv`) before materialization so demo_04
+  cannot silently inline a CSV/HLV YAML. `run_demo()` remains stubbed and
+  other demos still raise NotImplementedError. Argparse CLI with `--demo`
+  and `--dry-run`. Type hints throughout; no `Any`.
+- `scripts/gtm/tests/test_prospect_adapter.py` — 10 tests: happy paths
   (demo_05 + canonical Seven Borealis, demo_04 + canonical pipelay barge),
-  malformed YAML rejection, Q6 demo_01 + vessel rejection, Q6 demo_03
-  missing vessel rejection, stub NotImplementedError wiring for both
-  deferred functions.
+  negative validation for wrong-shape canonical refs, malformed YAML
+  rejection, Q6 demo_01 + vessel rejection, Q6 demo_03 missing vessel
+  rejection, demo_04 materialization of pipelay vessel / pipeline /
+  environment override files, stub NotImplementedError wiring for
+  unimplemented demos and `run_demo()`.
 - `jsonschema>=4.26` added to workspace-hub `[project.optional-dependencies].dev`.
 
 ## Not done (follow-up work)
@@ -45,10 +51,11 @@ Future work on #2346 will need to land, in roughly this order:
   TechnipFMC *Deep Energy* + OTC-25303 + DNV-RP-H103). Follow the
   2-citation-per-vessel rule from plan section "Canonical Vessel Source
   Pins".
-- **`materialize_demo_inputs` per-demo logic**: fill in the stub. Write
-  `csv_hlv_vessels.json` for demos 3/5, `pipelay_vessels.json` for demo 4,
-  `<structure-kind>.json` for the structure body, and optional
-  `prospect_env.json` for environment overrides. Honor
+- **`materialize_demo_inputs` per-demo logic**: fill in the remaining stub.
+  Demo_04 now materializes `pipelay_vessels.json`, `pipelines.json`, and
+  optional `prospect_env.json`; remaining work is to add equivalent support
+  for demos 3/5 (`csv_hlv_vessels.json`) and any additional structure-body
+  shaping needed beyond the current demo_04 pipeline path. Honor
   `vessel.source == canonical_ref` by loading the referenced YAML and
   inlining its body.
 - **`run_demo` subprocess dispatch**: subprocess-launch

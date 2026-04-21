@@ -2,13 +2,17 @@
 
 Covers:
   1. Load + validate a well-formed intake that uses canonical_ref=seven-borealis.
-  2. Malformed YAML raises ProspectIntakeError.
-  3. Q6 rejection: demo_01 + vessel block is rejected.
-  4. Q6 rejection: demo_03 without vessel block is rejected.
-  5. materialize_demo_inputs + run_demo raise NotImplementedError (interface wired).
+  2. Load + validate a well-formed demo_04 intake that uses canonical_ref=pipelay-barge.
+  3. Reject a demo_04 intake that points at a wrong-shape canonical YAML.
+  4. Malformed YAML raises ProspectIntakeError.
+  5. Q6 rejection: demo_01 + vessel block is rejected.
+  6. Q6 rejection: demo_03 without vessel block is rejected.
+  7. Demo_04 materialization writes the expected data files and optional env override.
+  8. Non-demo_04 materialization paths + run_demo remain explicit stubs.
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -138,6 +142,32 @@ output:
 """
 
 
+def _demo_04_with_wrong_canonical_yaml() -> str:
+    """Demo_04 intake that incorrectly points to a csv_hlv canonical vessel."""
+    return """\
+prospect:
+  company: "Bluewater Pipelines"
+  contact: "ops@bluewater.example"
+  nda_in_place: true
+  target_demo: "demo_04"
+  delivery_deadline_utc: "2026-04-22T17:00Z"
+vessel:
+  shape: "pipelay"
+  source: "canonical_ref"
+  canonical_ref: "seven-borealis"
+structure:
+  kind: "pipeline"
+  body:
+    outer_diameter_m: 0.3239
+    wall_thickness_m: 0.0191
+    material: "X65"
+output:
+  brand_header: "Prepared for Bluewater Pipelines"
+  brand_footer: "Confidential - NDA"
+  publish_private_url: false
+"""
+
+
 def _malformed_yaml() -> str:
     """Syntactically broken YAML (unclosed mapping)."""
     return "prospect:\n  company: \"Acme\n  contact: jane.doe@acme.example\n"
@@ -178,6 +208,16 @@ def test_load_and_validate_accepts_canonical_pipelay_barge_for_demo_04(
     assert result.company == "Bluewater Pipelines"
     assert result.contact == "ops@bluewater.example"
     assert result.source_path == intake_file
+
+
+def test_load_and_validate_rejects_demo_04_when_canonical_ref_has_wrong_shape(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "wrong-canonical-demo04.yaml"
+    intake_file.write_text(_demo_04_with_wrong_canonical_yaml(), encoding="utf-8")
+
+    with pytest.raises(ProspectIntakeError, match=r"canonical vessel.*pipelay"):
+        load_and_validate(intake_file)
 
 
 # ---------------------------------------------------------------------------
@@ -225,7 +265,54 @@ def test_load_and_validate_rejects_demo_03_without_vessel(tmp_path: Path) -> Non
 # ---------------------------------------------------------------------------
 
 
-def test_materialize_demo_inputs_is_a_wired_stub(tmp_path: Path) -> None:
+def test_materialize_demo_04_writes_pipelay_vessels_and_pipeline_files(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "bluewater-demo04.yaml"
+    intake_file.write_text(_valid_demo_04_canonical_pipelay_yaml(), encoding="utf-8")
+    prospect = load_and_validate(intake_file)
+
+    bundle = materialize_demo_inputs(prospect, tmp_path)
+
+    assert isinstance(bundle, DemoInputBundle)
+    assert bundle.demo_id == "demo_04"
+    assert bundle.data_dir == tmp_path / "data"
+    assert bundle.vessel_file == bundle.data_dir / "pipelay_vessels.json"
+    assert bundle.structure_file == bundle.data_dir / "pipelines.json"
+    assert bundle.vessel_file.exists()
+    assert bundle.structure_file.exists()
+    vessel_payload = json.loads(bundle.vessel_file.read_text(encoding="utf-8"))
+    assert vessel_payload["vessels"][0]["id"] == "pipelay-barge"
+    assert vessel_payload["vessels"][0]["pipelay_system"]["method"] == "S-lay"
+    structure_payload = json.loads(bundle.structure_file.read_text(encoding="utf-8"))
+    assert structure_payload["pipes"][0]["outer_diameter_m"] == pytest.approx(0.3239)
+    assert structure_payload["pipes"][0]["wall_thickness_m"] == pytest.approx(0.0191)
+
+
+def test_materialize_demo_04_writes_environment_override_when_present(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "bluewater-demo04-env.yaml"
+    intake_file.write_text(
+        _valid_demo_04_canonical_pipelay_yaml().replace(
+            'structure:\n',
+            'environment:\n  water_depths_m: [50, 75]\n  hs_values_m: [1.0, 1.5]\n  current_velocity_ms: 0.4\nstructure:\n',
+        ),
+        encoding="utf-8",
+    )
+    prospect = load_and_validate(intake_file)
+
+    bundle = materialize_demo_inputs(prospect, tmp_path)
+
+    assert bundle.env_override_path == bundle.data_dir / "prospect_env.json"
+    assert bundle.env_override_path.exists()
+    env_payload = json.loads(bundle.env_override_path.read_text(encoding="utf-8"))
+    assert env_payload["water_depths_m"] == [50, 75]
+    assert env_payload["hs_values_m"] == [1.0, 1.5]
+    assert env_payload["current_velocity_ms"] == pytest.approx(0.4)
+
+
+def test_materialize_demo_inputs_is_a_wired_stub_for_unimplemented_demo(tmp_path: Path) -> None:
     intake_file = tmp_path / "acme-demo05.yaml"
     intake_file.write_text(_valid_demo_05_intake_yaml(), encoding="utf-8")
     prospect = load_and_validate(intake_file)
