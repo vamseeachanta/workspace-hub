@@ -109,7 +109,9 @@ All three install sites reference non-existent `requirements.txt`. `requirements
 
 ## Deliverable
 
-A green `python-tests.yml` run on `vamseeachanta/assethold` main — the first green in 7 months — achieved via a **phased** remediation: (1) YAML-parse + deprecated-action fixes to make startup succeed, (2) install-step + smoke-test correctness so at least one matrix cell passes, (3) full matrix + docs.yml hardening.
+**Issue-close criterion:** `python-tests.yml` achieves its first green on `vamseeachanta/assethold` main (at least one smoke cell green = P2 complete). Full `quality-gate` chain (P3) and `docs.yml` are follow-on scope — not required to close #2442.
+
+Phased remediation: (1) YAML-parse + deprecated-action fixes to make startup succeed, (2) install-step + sibling-dep resolution so at least one matrix cell passes (issue-close gate), (3) full matrix green + docs.yml diagnosis (follow-on issues if needed).
 
 ---
 
@@ -245,7 +247,7 @@ Since this plan remediates CI config (not application code), the "tests" are **w
 | phase-3 (optional): docs.yml manual run captures logs | `gh run view` on workflow_dispatch | jobs[] populated |
 | parent-issue green-signal | overall workflow on main push | `conclusion=success` for python-tests on next push to main |
 
-Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must pass before pushing phase-2 fix. **Feature-branch CI gate** (replaces container repro — the real verification is observing the CI run on a feature branch, which uses a hosted runner without `../assetutilities`): push P2 commit to feature branch, wait for CI, verify smoke cell green before merging to main.
+Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must pass before pushing phase-2 fix. **CI gate on main** (the hosted runner naturally lacks `../assetutilities` before the sibling checkout step runs): push P2 commit to main, wait for CI run, verify smoke cell (py3.11/ubuntu-latest in `test` job) green.
 
 ---
 
@@ -257,7 +259,7 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 - [ ] Install step uses `uv pip install --system -e ../assetutilities` at all 3 sites (lines 74, 222, 269) — zero references to non-existent `requirements.txt` and zero references to the reference-only `requirements-consolidated.txt`
 - [ ] Existing `uv pip install --system -e .` steps preserved at lines 79, 224, 271 (these install the project itself after assetutilities is satisfied)
 - [ ] Sibling-repo checkout step (`actions/checkout@v4` for `vamseeachanta/assetutilities` into `../assetutilities`) present before the main checkout in every dep-installing job (test, integration-tests, financial-data-tests)
-- [ ] Phase 1 and Phase 2 are separate commits on a feature branch with CI verification between them (P1 push → verify jobs register → P2 push → verify smoke green → PR to main)
+- [ ] Phase 1 and Phase 2 are separate commits pushed directly to main with CI verification between them (P1 push to main -> wait for CI -> verify jobs register -> P2 push to main -> wait for CI -> verify smoke green). Direct-to-main per assethold repo convention.
 - [ ] At least one matrix cell (py3.11 / ubuntu-latest) completes smoke with `conclusion=success` (phase-2 gate — the "first non-zero-jobs, first smoke-green in 7 months" milestone)
 - [ ] Full `quality-gate` job completes `success` on a push to main (phase-3 gate — requires `test` + `integration-tests` + `financial-data-tests` all green per the workflow's `needs:` chain)
 - [ ] Local smoke test passes: `cd assethold && uv run pytest tests/test_smoke.py -v`
