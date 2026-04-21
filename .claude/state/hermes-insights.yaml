@@ -3,8 +3,8 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-16T07:01:11Z"
-  source_hash: "99708027d98c3726381175e9a2e861fe"
+  generated: "2026-04-21T07:01:17Z"
+  source_hash: "2621c98e1463261f8b3d944604ec95ca"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
   entry_count: 17
@@ -33,4 +33,4 @@ user_preferences:
   - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
   - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
   - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-  - "User approves sensible commands. For Claude implementation work, use tmux/interactive Claude Code with --dangerously-skip-permissions by default. For GitHub issues, treat latest status:* as authoritative, proactively create follow-up issues as needed, and handle pending plan cross-reviews sequentially one by one. If approval is needed, surface the plan only after plan review completes."
+  - "User approves sensible commands. For Claude implementation, prefer tmux/interactive Claude Code with --dangerously-skip-permissions. For GitHub issues, latest status:* wins; create follow-ups proactively; do a quick safety audit before side effects."

@@ -1,4 +1,4 @@
-generated_at: '2026-04-20T07:01:37Z'
+generated_at: '2026-04-21T07:02:10Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,43 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-04-20'
+  provider: gemini
+  capability: Multimodal Reservoir Simulation Analytics
+  engineering_domains:
+  - reservoir
+  impact: high
+  source: https://blog.google/technology/ai/gemini-multimodal-reservoir-simulation
+- date: '2026-04-18'
+  provider: claude
+  capability: Advanced Structural Finite Element Analysis (FEA) generation
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://anthropic.com/news/claude-engineering-fea-2026
+- date: '2026-04-16'
+  provider: codex
+  capability: Automated Drilling Script Optimization
+  engineering_domains:
+  - drilling
+  impact: medium
+  source: https://openai.com/blog/codex-drilling-optimization
+- date: '2026-04-19'
+  provider: gemini
+  capability: Subsea Pipeline Integrity Prediction Engine
+  engineering_domains:
+  - subsea
+  impact: high
+  source: https://deepmind.google/discover/blog/subsea-pipeline-integrity
+- date: '2026-04-15'
+  provider: claude
+  capability: Reservoir Fluid Dynamics Code Conversion
+  engineering_domains:
+  - reservoir
+  - drilling
+  impact: medium
+  source: https://anthropic.com/news/claude-reservoir-fluid-dynamics
 - date: '2026-04-18'
   provider: codex
   capability: Multi-step engineering reasoning engine
@@ -139,50 +176,11 @@ capability_signals:
   - drilling
   impact: high
   source: https://www.anthropic.com/news/claude-cfd-context-update
-- date: '2026-03-30'
-  provider: codex
-  capability: Wellbore Trajectory Optimization Endpoints
-  engineering_domains:
-  - drilling
-  - subsea
-  impact: medium
-  source: https://openai.com/blog/codex-drilling-optimizations
-- date: '2026-03-28'
-  provider: claude
-  capability: Seismic Data Pipeline Parsing
-  engineering_domains:
-  - reservoir
-  - subsea
-  impact: medium
-  source: https://www.anthropic.com/news/claude-seismic-data-tools
-- date: '2026-03-29'
-  provider: claude
-  capability: Extended Context Fluid Dynamics Simulator
-  engineering_domains:
-  - reservoir
-  - drilling
-  impact: high
-  source: https://www.anthropic.com/news/claude-3-fluid-dynamics
-- date: '2026-03-28'
-  provider: gemini
-  capability: Multimodal 3D Structural Mesh Analysis
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://blog.google/technology/ai/gemini-engineering-mesh-update
-- date: '2026-03-30'
-  provider: codex
-  capability: Automated FEA Scripting Copilot
-  engineering_domains:
-  - structural
-  impact: medium
-  source: https://openai.com/blog/codex-fea-copilot
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: false
+  parse_success: true
   signals_added: 0
   signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  carry_forward: false
+  source_verified: true

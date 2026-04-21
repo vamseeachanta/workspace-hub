@@ -80,6 +80,22 @@ Mitigation:
 - if the failure is clearly unrelated and the user has authorized aggressive execution, `--no-verify` may be acceptable for low-risk doc/report changes
 - document that choice in the issue comment
 
+### 3b) Plan-approved worktree still blocks late commits for ignored `.claude/*` runtime paths
+Observed in `feat/ecosystem-sync` execution:
+- `.planning/plan-approved/<issue>.md` existed locally and was committed
+- normal code/test commits passed
+- a later commit that added `.claude/cron/...` and `.claude/state/...` files required `git add -f` because those paths were ignored
+- the subsequent commit was blocked by the plan gate with `NO APPROVAL` despite the existing marker
+
+Mitigation:
+- before starting work that must land files under ignored/runtime directories (especially `.claude/cron/`, `.claude/state/`, other force-added paths), probe repo policy early rather than discovering it at the final commit
+- explicitly check both:
+  - whether `.gitignore` ignores the intended deliverable path
+  - whether the local enforcement hooks treat those paths as implementation requiring a different approval route
+- if the path requires `git add -f`, treat that as a risk signal and do a small preflight commit experiment or hook inspection before spending a full execution wave on dependent tasks
+- when the hook blocks, stop and escalate; do not use `FORCE_PLAN_GATE=1`, `--no-verify`, or similar bypasses unless the user explicitly authorizes that exact bypass
+- preserve the staged tree and report the exact blocked paths, hook message, and marker-file evidence so the user can resolve policy vs plan mismatch quickly
+
 ### 4) Agent run becomes unproductive
 Mitigation:
 - stop the session instead of letting it burn budget

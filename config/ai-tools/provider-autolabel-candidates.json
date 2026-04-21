@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T01:20:06.528296Z",
+  "generated_at": "2026-04-21T05:20:06.086578Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 9,
@@ -46,40 +46,6 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-04-20T14:45:00Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2402,
-      "title": "feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2402",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data-pipeline",
-        "domain:document-intelligence",
-        "status:plan-review",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-20T18:14:21Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -287,6 +253,38 @@
       "provider_status": "needs_cleanup",
       "work_type": [
         "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2323,
+      "title": "feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2323",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:ai-orchestration",
+        "domain:ai-orchestration",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-17T20:30:01Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
         "implementation",
         "strategy"
       ],

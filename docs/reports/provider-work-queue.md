@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-21T01:20:06.327103Z
+Generated: 2026-04-21T05:20:05.890784Z
 Current week: 2026-W17
 Recommended provider order: gemini, codex, claude
 
@@ -9,19 +9,19 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 15
+- Execution-ready candidates: 11
 - Total routed candidates: 158
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2348 triage: promote #1707/#1708/#1709 from review-backlog — live scanner has ToS/rate-limit exposure | yes | strategy/workflow/architecture language | bug, priority:high, domain:gtm, status:plan-approved |
-| #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:plan-review, status:plan-approved |
 | #2408 feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:release-management, status:plan-approved |
 | #2206 feat(knowledge): validate single-source-of-truth pyramid conformance across intelligence assets and execution workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
 | #2207 feat(doc-intel): define standards/codes provenance + reuse contract for llm-wiki promotion | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:documentation, status:plan-approved |
 | #2209 chore(knowledge): define durable-vs-transient knowledge boundary across wikis, issues, registries, and session artifacts | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, cat:harness, status:plan-approved |
 | #2320 chore(skills): mine session logs for dead-skill candidates — usage-signal input to #2280 weekly audit | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:skills, domain:skills, status:plan-approved |
 | #2322 chore(rules): promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:agent-discipline, status:plan-approved |
+| #2323 feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:ai-orchestration, domain:ai-orchestration, status:plan-approved |
 
 ## codex
 

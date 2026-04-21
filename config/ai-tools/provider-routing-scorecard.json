@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-21T01:20:04.582657Z",
+  "generated_at": "2026-04-21T05:20:04.143219Z",
   "current_week": "2026-W17",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-21T01:20:04.318442Z",
+    "utilization_generated_at": "2026-04-21T05:20:03.967039Z",
     "audit_generated_at": "2026-04-20T21:46:16Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 6.9,
+      "reported_utilization_pct": 7.2,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 19,
-      "post_records_current_week": 2820,
+      "sessions_current_week": 23,
+      "post_records_current_week": 2945,
       "audit_post_records": 81466,
       "missing_repo_reads": 7565,
       "python3_per_1k_records": 8.99,
@@ -30,19 +30,19 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 1763
+          "count": 1819
         },
         {
           "tool": "Read",
-          "count": 444
+          "count": 472
         },
         {
           "tool": "Edit",
-          "count": 350
+          "count": 383
         },
         {
           "tool": "Write",
-          "count": 160
+          "count": 168
         },
         {
           "tool": "Agent",

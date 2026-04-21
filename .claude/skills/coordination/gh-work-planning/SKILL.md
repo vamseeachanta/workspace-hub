@@ -448,6 +448,20 @@ Before sending the plan for adversarial review, confirm:
 
 If future issues were discovered, either create them now or mark them as issue candidates with exact proposed titles and rationale.
 
+## Strategy / architecture issue packaging rule
+
+For planning-only strategy, architecture, or governance issues, reviewers are highly sensitive to both underscoping and packaging drift.
+
+Operational rules learned from live review waves:
+- Do not use a vague single "report" artifact when the issue explicitly calls for multiple durable outputs (for example: standing contract, reusable battery/spec, gap analysis, follow-up issue drafts, consumer inventory). Name each required artifact explicitly in `Artifact Map`, `Files to Change`, and `Acceptance Criteria`.
+- Avoid adding auxiliary file edits that are not clearly required by the issue (for example updating unrelated dependency maps or indexes). Reviewers treat these as scope creep.
+- If an issue requires conditional follow-up issues, the plan must include a concrete artifact for them (draft pack, issue stubs, or explicit creation step). Saying "recommend follow-ups in the report" is usually judged insufficient.
+- If a plan claims something is reusable/standing, place it in a durable standards/config surface rather than only in a date-stamped report.
+- For repo-boundary or migration decisions, include a first-class consumer/backlink/path inventory artifact before recommending movement. Reviewers will reject high-level recommendations that are not grounded in concrete dependency evidence.
+- For checker/CI/enforcement artifacts, do not bundle rollout prematurely if exception rules or scope boundaries are still unresolved. Separate "define contract" from "enforce contract" unless the issue explicitly requires both.
+
+If repeated review rounds still return MAJOR after tightening, keep the issue in draft/review-only state and post a GitHub status comment summarizing the remaining blockers rather than prematurely moving it to `status:plan-review`.
+
 ## Planning pre-review checklist
 
 Before adversarial review, confirm all are true:
@@ -595,12 +609,111 @@ After 2-3 substantive tightening passes, explicitly choose one:
 - continue because the remaining blocker is shrinking and clearly actionable
 - park the issue in draft with a concise blocker summary
 - switch to planning a sibling/follow-up issue that may unblock faster
+- split the issue into a narrower parent/child decomposition when the blockers are really decomposition problems rather than wording problems
 
 Operational guidance:
 - treat repeated `MAJOR` findings with shrinking but persistent scope as a signal of diminishing returns
 - post a GitHub update summarizing the remaining blocker instead of silently grinding through more revisions
 - do not move the issue to `status:plan-review` just because the plan is "close"
 - if you switch away, record why and what exact blocker remains
+- if reviewers keep objecting that one issue mixes too many concerns, stop rewriting the same monolith and decompose it into child issues by artifact/responsibility type
+
+Practical decomposition heuristic for architecture/governance issues:
+- split **canonical contract / policy** work from **inventory / evidence gathering** work
+- split **fixture corpus / examples / baselines** from **runner / schema / interface design**
+- split **normalization of existing entry surfaces** from **new contract language**
+- split **follow-up issue creation / dedup automation** from the main policy issue if reviewers treat it as a separate risky subsystem
+- keep the original broad issue as a parent/umbrella after the split; do not keep trying to force the parent through approval as one approval unit once review has shown the scopes are separable
+
+Typical signs the split is overdue:
+- repeated `MAJOR` findings say the issue is "too broad", "too large for T2", or "mixes contract definition with normalization/automation"
+- reviewers accept the high-level direction but block on one or two attached subsystems (for example runner semantics, issue creation policy, or entrypoint normalization)
+- each rewrite fixes wording but not the structural objection
+
+### Decomposition trigger after repeated MAJOR reviews
+
+Use this pattern when the review waves keep converging on the same structural complaint, for example:
+- "scope too broad for one T2/T3 plan"
+- "this includes multiple risky subsystems"
+- "runner/schema/policy/inventory should be separate issues"
+- "parent umbrella should stay steering-only"
+
+Required response:
+1. stop trying to force the whole scope through one approval gate
+2. identify the independent workstreams causing the blocking findings
+3. create child issues for those workstreams immediately
+4. keep the original issue as a parent/umbrella unless the whole issue should be replaced
+5. comment on the parent issue with:
+   - why the decomposition happened
+   - the child issue links
+   - recommended execution / approval order
+6. narrow the parent issue's role to steering, sequencing, or final synthesis if appropriate
+
+Practical rule:
+- if repeated MAJOR findings are mostly about decomposition, boundaries, or "too much in one issue," do not spend another full revision cycle polishing prose inside the monolith. Split it.
+- once split, seek approval on the narrowest child issue first, especially the one that establishes the canonical contract or evidence base for the others.
+
+
+### Monolith-to-child-issue decomposition pattern
+
+Use this when repeated adversarial review converges on the same meta-problem: the issue is too broad, mixes multiple subsystems, or keeps failing because approval is being sought for one large plan instead of several narrower ones.
+
+Trigger signals:
+- 2+ review rounds still return `MAJOR`
+- multiple providers independently call out scope bloat, packaging sprawl, or unresolved architectural decomposition
+- one issue is trying to define policy + fixtures + runner semantics + inventory + automation behavior all at once
+- revisions improve wording but do not eliminate the same structural blocker
+
+Required response:
+1. Stop trying to force the original issue through approval as one monolith.
+2. Identify the natural child workstreams and write them as separate GitHub issues with bounded deliverables.
+3. Recast the original issue as a parent/umbrella that links the child issues and owns only steering/synthesis.
+4. Comment on the parent issue explaining why decomposition was necessary and in what order the child issues should be reviewed.
+5. Prefer approving the narrowest contract/evidence issues first, then the dependent execution/policy issues.
+
+Practical rule:
+- If the repeated blocker is decomposition itself, further prose-only tightening of the same parent plan is usually wasteful. Split the work instead of polishing the monolith.
+
+### Monolithic-parent decomposition trigger
+
+If cross-provider review repeatedly says the issue is too broad, mixes multiple subsystems, or bundles governance + inventory + automation + execution-policy concerns into one approval gate, stop rewriting the same parent plan.
+
+Instead:
+1. keep the parent issue as umbrella/steering only
+2. split the blocked scope into 3-5 narrower child issues, each with one clear approval surface
+3. create the child issues immediately so the decomposition is concrete, not just suggested
+4. comment on the parent with the decomposition, rationale, and recommended review/approval order
+5. move planning/review effort to the narrowest child issue first
+
+Typical split axes:
+- contract/policy
+- evidence inventory / reconnaissance
+- fixture corpus / test assets
+- runner/schema/interface design
+- follow-up issue creation / governance automation
+
+Use this when the blocker is structural decomposition, not missing wording. Repeatedly polishing a monolithic umbrella usually wastes review cycles and still returns `MAJOR`.
+
+### Monolith-plan split trigger (learned from repeated #2399-style review failures)
+
+If fresh Codex/Gemini/Claude reviews keep converging on findings like:
+- "issue is too large for a single T2 governance/planning issue"
+- "too many artifacts / documentation sprawl"
+- "runner contract / automation / issue-creation logic is scope creep"
+- "ecosystem claim is broader than the actual evidence base"
+- "this should be split into smaller child issues or rescope to workspace-hub-only"
+
+then stop trying to polish the monolith.
+
+Do this instead:
+1. classify the blocker as **decomposition failure**, not wording failure
+2. rewrite the parent as a narrower umbrella / steering issue
+3. create concrete child issues for the major concern clusters
+4. if ecosystem-wide evidence is too thin, rescope the parent to the smaller proven domain (for example workspace-hub-only) and move broader claims into follow-up inventory issues
+5. only resume plan-review on the narrower parent/children after the split is reflected in the issue structure
+
+Heuristic:
+- if the latest review wave is still `MAJOR` after multiple rewrites and the blocker list keeps naming *scope, packaging, automation, or missing ecosystem evidence* rather than a few specific missing sections, the correct fix is almost always to split/rescope, not to keep editing the same plan.
 
 ## No silent downgrade rule
 
@@ -733,6 +846,29 @@ A plan is batch-ready only when:
 - no unresolved blocker or approval ambiguity remains
 
 No issue in `status:plan-review` is eligible for execution.
+
+## Post-approval implementation-state audit
+
+When the user asks for the current blocker/status of an already-approved issue, do not stop at plan artifacts and labels.
+
+Audit all of these before summarizing status:
+1. live GitHub issue labels/state
+2. local plan row in `docs/plans/README.md`
+3. open PRs referencing the issue (`gh pr list/view`)
+4. whether the planned implementation files actually exist on `main`
+5. CI / check status on the implementation PR
+
+Operational rules:
+- `status:plan-approved` does not mean the work is implemented or merge-ready.
+- If the issue comment claims implementation shipped but the planned files are missing on `main`, classify the state as implemented off-main / pending PR resolution, not complete.
+- If the local README row still says `plan-review` but the live issue is `status:plan-approved` and work moved into a PR, update the README row to reflect the newer live state.
+- If the implementation exists only on a branch/PR and checks are failing, the blocker is PR/CI failure, not plan revision.
+- For honest status reporting, explicitly separate:
+  - plan state
+  - implementation branch/PR state
+  - merged-to-main state
+
+This prevents stale local planning metadata from masking the real current blocker on approved issues.
 
 ## Execution handoff package
 

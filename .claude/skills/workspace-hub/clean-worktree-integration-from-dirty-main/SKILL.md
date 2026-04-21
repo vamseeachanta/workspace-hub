@@ -64,6 +64,36 @@ A fresh integration worktree gives you a clean room for landing only the approve
 6. Pre-landing already-landed check (critical)
 Before you prepare push/closeout artifacts or cherry-pick into the integration worktree, explicitly verify the issue has not already landed elsewhere.
 
+### Topology-aware validation after cherry-picks (critical)
+
+After the integration worktree contains the intended commits, validate in layers instead of trusting the first failing command:
+
+1. Run the targeted test suite for the landed surface.
+2. If tests depend on generated/local fixture repos, explicitly bootstrap those fixtures before classifying failures as code defects.
+3. Separate code/import validation from topology validation:
+   - direct module invocation / package import health
+   - wrapper/cron behavior in the intended runtime topology
+4. Do not treat wrapper failures in a clean integration worktree as proof the feature code is broken if the wrapper begins with topology-sensitive commands like `git pull --ff-only origin main`.
+
+Observed reusable pattern:
+- In a clean integration worktree, ecosystem-sync tests initially failed because fixture repos under `tests/.../fixtures/repos/` had not been built yet.
+- After running the fixture builder, the full targeted suite passed, proving the failure was a fixture-bootstrap gap rather than a regression in the integrated code.
+- The cron wrapper still failed in the integration worktree because `git pull --ff-only origin main` is expected to fail in a diverged landing branch/worktree; that is a topology issue, not necessarily an implementation issue.
+- A direct `uv run path/to/script.py ...` invocation may fail with `ModuleNotFoundError` even when `uv run python -m package.module ...` works. When the landed script imports from the repo package root, verify both invocation styles before declaring the integration broken.
+
+Practical rule:
+- classify failures as one of:
+  - fixture/bootstrap gap
+  - import/invocation-path bug
+  - topology-specific wrapper failure
+  - real functional regression
+- only the last category should automatically block the landing set as broken code.
+
+Documentation-update guardrail learned in live use:
+- when adjusting operator/docs artifacts inside the integration worktree, do NOT reconstruct whole files from line-numbered `read_file` output and then `write_file` them back; that can accidentally persist the line-number prefixes into the file contents.
+- prefer targeted `patch` edits for command swaps or narrow wording fixes, especially in markdown/shell handoff artifacts.
+- after any scripted doc rewrite, immediately sanity-check the first few lines of the file before committing.
+
 Check all of:
 - `git fetch origin main --quiet`
 - `git log --oneline origin/main -5`
@@ -106,6 +136,31 @@ Create:
 - Pushing, posting GH comments, and closing issues are external side effects.
 - If user approval for execution existed but not explicit approval for external landing side effects, stop and ask for final go-ahead.
 
+## Multi-wave landing rule (important)
+
+If the isolated worktree contains more than one class of change, split the landing into waves instead of blindly cherry-picking everything at once.
+
+Recommended order:
+1. narrow repo-wide governance/enforcement fix first
+2. core feature/implementation commits in dependency order
+3. docs / handoff / operator artifacts last
+
+Why:
+- a small governance fix often has value beyond the feature branch that discovered it
+- validating the narrow fix first reduces blame surface if later feature integration fails
+- docs bundles should not be allowed to obscure whether code integration itself is healthy
+
+Example trigger:
+- a feature worktree contains both a verified enforcement-hook fix and a larger feature implementation
+- the main checkout is dirty, so you need a clean integration worktree anyway
+
+Validation rule by wave:
+- after wave 1, run the targeted regression for the governance fix before continuing
+- after wave 2, run the feature-targeted test suite before adding doc commits
+- after wave 3, do a final status + regression pass
+
+Also explicitly exclude planning-marker / approval-marker commits unless they are intentional repo-tracked deliverables.
+
 ## Recommended command pattern
 
 ```bash
@@ -117,7 +172,15 @@ git worktree add -b integration-2151-2155 \
   "$BASE"
 
 # in integration worktree
-git cherry-pick <issue1-commit-1> <issue1-commit-2> ... <issue2-commit-1>
+# wave 1: narrow governance fix
+# git cherry-pick <governance-fix-commit>
+# run targeted validation
+
+# wave 2: feature commits in dependency order
+# git cherry-pick <issue1-commit-1> <issue1-commit-2> ... <issue2-commit-1>
+
+# wave 3: docs / handoff commits
+# git cherry-pick <docs-commit-1> <docs-commit-2>
 
 uv run pytest \
   tests/analysis/test_readiness_bundle_schema.py \
@@ -147,6 +210,19 @@ Before declaring integration-ready, verify:
 - all issue-targeted tests pass
 - nearby regression tests pass
 - no unrelated files were introduced
+- if the landing set includes CLI/wrapper entrypoints, validate the real invocation mode, not just imported/unit-tested behavior
+
+Additional runtime-entrypoint check learned from ecosystem-sync integration:
+- distinguish three layers of validation:
+  1. unit/integration tests
+  2. direct runtime entrypoint invocation
+  3. wrapper/topology invocation
+- a clean integration worktree can reveal a real entrypoint bug even when tests are green. Example pattern:
+  - tests pass
+  - `python -m package.module --doctor` passes
+  - wrapper or documented `tool/path.py` invocation fails because imports assume module/package context
+- when this happens, record it as a real blocker, fix the invocation contract, and re-run tests before push
+- separately, do not misclassify expected topology failures (for example wrapper `git pull --ff-only origin main` failing in a non-main integration worktree) as code regressions. Isolate entrypoint correctness from topology-specific behavior.
 
 ## Output checklist
 
