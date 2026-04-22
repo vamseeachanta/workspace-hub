@@ -36,12 +36,12 @@ No relevant wiki pages — CI health is repo-hygiene work, not domain knowledge.
 ### Gaps identified
 - No existing CI-green evidence for `python-tests.yml` — this workflow has never been green on main since first run 2025-09-28.
 - No baseline pytest run recorded in CI — need phase-1 minimal-smoke workflow validation before attempting matrix-wide green.
-- `assetutilities` dependency resolution in CI — `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`, which does not exist on a hosted GitHub Actions runner. Resolved in Phase 2 fix list below (add `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` — Option M1 — to match local dev layout referenced by `pyproject.toml`).
+- `assetutilities` dependency resolution in CI — `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`, which does not exist on a hosted GitHub Actions runner. Resolved in Phase 2 fix list below (add `git clone --depth 1` step for `vamseeachanta/assetutilities` into `../assetutilities` — Option M1-revised — to match local dev layout referenced by `pyproject.toml`; uses `git clone` because `actions/checkout@v4` requires path under `$GITHUB_WORKSPACE`).
 
 ### Evidence (embedded verification)
 
-**Issue statuses** (verified 2026-04-21 via `gh issue view 2442 --json state,labels`):
-- `#2442` — OPEN — labels: `priority:high`, `cat:infrastructure`, `status:plan-review` (approval label was pre-applied before any artifact existed; rolled back to `status:plan-review` by orchestrator this session per governance comment 4290738146)
+**Issue statuses** (verified 2026-04-22 via `gh issue view 2442 --json state`):
+- `#2442` — OPEN — labels: `priority:high`, `cat:infrastructure`, `status:plan-review` (was erroneously CLOSED by a parallel session 2026-04-21; reopened 2026-04-22 with comment explaining CI still all-red)
 - `#2424` — parent meta-issue (referenced, not re-fetched this session)
 
 **File existence** (`ls` 2026-04-21):
@@ -236,7 +236,7 @@ Since this plan remediates CI config (not application code), the "tests" are **w
 | phase-1: startup time > 0s | workflow doesn't insta-reject | duration > 5s |
 | phase-1: upload-artifact is v4 exactly | `rg -c 'upload-artifact@v4' .github/workflows/python-tests.yml` | `== 3` |
 | phase-1: no deprecated actions remain | `rg -c 'upload-artifact@v3\|upload-sarif@v2\|codecov-action@v3' .github/workflows/python-tests.yml` | `== 0` |
-| phase-2: sibling checkout present | `rg -c 'repository: vamseeachanta/assetutilities' .github/workflows/python-tests.yml` | `>= 1` |
+| phase-2: sibling clone present | `rg -c 'https://github.com/vamseeachanta/assetutilities' .github/workflows/python-tests.yml` | `== 3` |
 | phase-2: install step succeeds | `gh run view --log` shows `uv pip install --system -e ../assetutilities` exit 0 for at least py3.11/ubuntu | `Successfully installed` line |
 | phase-2: at least one smoke test runs | `gh run view --log` shows `test_smoke.py::* PASSED` | >=1 PASSED |
 | phase-2: py3.11 ubuntu smoke job green | job conclusion | `success` |
@@ -255,7 +255,7 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 - [ ] No `actions/upload-artifact@v3`, `github/codeql-action/upload-sarif@v2`, or `codecov/codecov-action@v3` remain in `python-tests.yml` (P1 deprecated-action sweep complete)
 - [ ] Install step uses `uv pip install --system -e ../assetutilities` at all 3 sites (lines 74, 222, 269) — zero references to non-existent `requirements.txt` and zero references to the reference-only `requirements-consolidated.txt`
 - [ ] Existing `uv pip install --system -e .` steps preserved at lines 79, 224, 271 (these install the project itself after assetutilities is satisfied)
-- [ ] Sibling-repo checkout step (`actions/checkout@v4` for `vamseeachanta/assetutilities` into `../assetutilities`) present before the main checkout in every dep-installing job (test, integration-tests, financial-data-tests)
+- [ ] Sibling-repo clone step (`git clone --depth 1 https://github.com/vamseeachanta/assetutilities.git ../assetutilities`) present after the main checkout in every dep-installing job (test, integration-tests, financial-data-tests)
 - [ ] Phase 1 and Phase 2 are separate commits pushed directly to main with CI verification between them (P1 push to main -> wait for CI -> verify jobs register -> P2 push to main -> wait for CI -> verify smoke green). Direct-to-main per assethold repo convention.
 - [ ] At least one matrix cell (py3.11 / ubuntu-latest) completes smoke with `conclusion=success` (phase-2 gate — the "first non-zero-jobs, first smoke-green in 7 months" milestone)
 - [ ] (FOLLOW-ON, not required to close #2442) Full `quality-gate` job completes `success` on a push to main (phase-3 — requires `test` + `integration-tests` + `financial-data-tests` all green; file as separate issue if latent test debt blocks this)
@@ -314,13 +314,37 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 - Added failure-path contingency to phase gate enforcement block (Codex P3)
 - Fixed Unicode encoding artifacts throughout
 
-**Status:** Wave 3 revised, awaiting Wave 3 re-review.
+**Wave 4 revisions** (addressing Wave 3 Claude MAJOR + Codex MAJOR):
+- Changed acceptance criterion #6 from feature-branch to direct-to-main (Codex P2 — execution-strategy contradiction with pseudocode)
+- Changed TDD "feature-branch CI gate" to "CI gate on main" (Codex P2 consistency)
+- Updated Deliverable to explicit issue-close criterion: P2 smoke-green (Claude P1 deliverable ambiguity)
+
+**Wave 5 revisions** (addressing Wave 4 Claude MAJOR + Codex MAJOR):
+- Replaced `actions/checkout@v4 with path: ../assetutilities` with `git clone --depth 1` in pseudocode and Files to Change (Claude P1 + Codex P1 — `actions/checkout` rejects paths outside `$GITHUB_WORKSPACE`)
+- Annotated P3 quality-gate as "FOLLOW-ON, not required to close #2442" (Codex P2)
+
+**Wave 5 verdicts:**
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | APPROVE | Mature after 3 revision waves; remaining concerns are execution-time unknowns (codecov auth, clone count, ref:main drift) — none justify gating |
+| Codex | MAJOR | #2442 attested CLOSED contradicts plan's OPEN assumption; acceptance criteria still say `actions/checkout@v4` not `git clone`; execution model still mixes feature-branch and direct-to-main references; bare `python -c` vs `uv run` |
+| Gemini | MAJOR | #2442 attested CLOSED; acceptance criteria contradict pseudocode on checkout mechanism |
+
+**Wave 6 revisions** (addressing Wave 5 Codex MAJOR + Gemini MAJOR):
+- Reopened #2442 (closed by mistake in parallel session; CI still all-red) — both Codex and Gemini convergent finding
+- Fixed acceptance criteria: replaced `actions/checkout@v4` reference with `git clone --depth 1` — both Codex and Gemini convergent finding
+- Updated TDD sibling-checkout assertion to grep for clone URL (`== 3`) instead of `repository:` checkout syntax
+- Updated Gaps and Risks sections to consistently reference `git clone` instead of `actions/checkout`
+- Updated evidence section to reflect reopened issue state
+
+**Status:** Wave 6 revised, awaiting Wave 6 re-review.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk -- sibling-dep resolution in CI (RESOLVED, moved to P2 fix list):** `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`; on a hosted runner `../assetutilities` does not exist. **Resolution:** P2 adds `actions/checkout` step for `vamseeachanta/assetutilities` into `../assetutilities` in every job that installs deps. Verification: feature-branch CI run on hosted runner. **Preconditions verified (Wave 3):** (a) `vamseeachanta/assetutilities` is PUBLIC (`gh repo view --json visibility` = PUBLIC, 2026-04-21) -- default GITHUB_TOKEN has read access; (b) `assetutilities/pyproject.toml` has empty `[tool.uv.sources]` -- no cascading sibling deps; (c) `assethold/tests/test_smoke.py` exists (confirmed via `gh api repos/vamseeachanta/assethold/contents/tests/test_smoke.py`).
+- **Risk -- sibling-dep resolution in CI (RESOLVED, moved to P2 fix list):** `pyproject.toml` declares `[tool.uv.sources] assetutilities = { path = "../assetutilities" }`; on a hosted runner `../assetutilities` does not exist. **Resolution:** P2 adds `git clone --depth 1` step for `vamseeachanta/assetutilities` into `../assetutilities` in every job that installs deps (uses `git clone` because `actions/checkout@v4` requires path under `$GITHUB_WORKSPACE`). Verification: CI run on main after P2 push. **Preconditions verified (Wave 3):** (a) `vamseeachanta/assetutilities` is PUBLIC (`gh repo view --json visibility` = PUBLIC, 2026-04-21) -- default GITHUB_TOKEN has read access; (b) `assetutilities/pyproject.toml` has empty `[tool.uv.sources]` -- no cascading sibling deps; (c) `assethold/tests/test_smoke.py` exists (confirmed via `gh api repos/vamseeachanta/assethold/contents/tests/test_smoke.py`).
 - **Risk -- `ref: main` coupling (NEW, Wave 3):** The proposed sibling checkout uses `ref: main` for assetutilities. Any breaking change on assetutilities main will flip assethold CI red. **Mitigation:** accepted for now -- assetutilities has low commit frequency and assethold's local dev already depends on assetutilities main via `[tool.uv.sources]`. If assetutilities becomes volatile, pin to a SHA in a follow-on issue.
 - **Risk — phase-2 reveals broad test-red state:** Since the workflow has never been green, real test failures may be latent. **Mitigation:** phase-2 target is explicitly "one matrix cell green via smoke test," not full matrix. Broader test remediation that blocks full quality-gate lands in phase-3; file follow-on issues for discovered test debt rather than expanding this plan's scope.
 - **Risk — label-drift governance (RESOLVED):** #2442 was labeled `status:plan-approved` at handoff creation before any plan existed. Orchestrator rolled the label back to `status:plan-review` this session (governance comment 4290738146). **Resolution:** this plan requires fresh in-thread user approval after reading the revised artifact; no action needed in the plan file beyond the acceptance criterion.
