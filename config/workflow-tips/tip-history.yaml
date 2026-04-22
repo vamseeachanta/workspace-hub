@@ -53,3 +53,5 @@ shown:
     tips: [cc-bare, cc-branch-fork]
   - date: 2026-04-21
     tips: [cc-rename-resume, cc-rewind]
+  - date: 2026-04-22
+    tips: [bp-ascii-arch, eco-smart-agents]

@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-22T05:20:04.706274Z",
+  "generated_at": "2026-04-22T09:20:06.649487Z",
   "current_week": "2026-W17",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-22T05:20:04.534139Z",
+    "utilization_generated_at": "2026-04-22T09:20:06.462189Z",
     "audit_generated_at": "2026-04-22T00:19:59Z"
   },
   "recommended_provider_order": [
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 0.1,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 41,
-      "post_records_current_week": 688,
+      "sessions_current_week": 98,
+      "post_records_current_week": 1334,
       "audit_post_records": 17843,
       "missing_repo_reads": 225,
       "python3_per_1k_records": 18.89,
@@ -84,19 +84,19 @@
       "top_tools": [
         {
           "tool": "Read",
-          "count": 341
+          "count": 572
         },
         {
           "tool": "Bash",
-          "count": 150
+          "count": 413
         },
         {
           "tool": "Grep",
-          "count": 147
+          "count": 271
         },
         {
           "tool": "list_mcp_resources",
-          "count": 25
+          "count": 47
         },
         {
           "tool": "_fetch_commit",

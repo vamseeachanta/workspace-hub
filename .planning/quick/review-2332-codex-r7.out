@@ -1,0 +1,19 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. One canonical publication JSON is now named explicitly and `delta_status` is mostly defined, but the plan still carries review-process narration/stale review-artifact references and the launcher-preservation test remains too weak to verify behavior rather than token replacement.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` still includes review-process narration in the plan body. Concrete instances: the front-matter `Review artifacts` block, the acceptance criterion `After fresh external re-review, the plan can advance toward status:plan-review`, and the `Adversarial Review Summary` section. That is not implementation contract and violates the request to remove review-process narration sufficiently.
+- Artifact mismatch in the same plan metadata: it cites `scripts/review/results/2026-04-22-plan-2332-codex.md` as a review artifact, but the attested evidence says that file exists at 0 bytes. The plan currently references a non-substantive review artifact as if it were meaningful approval evidence.
+- The TDD row `test_first_wave_launcher_files_still_execute_with_uv_no_project_contract` is not strong enough to prove launcher behavior preservation. Its expected input/output allows `--help or equivalent non-destructive smoke path in fixture/mocked form`, which can pass without exercising the real launcher callsites or demonstrating parity with the pre-change behavior for the three named files. This leaves the core runtime-replacement risk unverified.
+- The plan defines `delta_status` values in `Provider budget contract for phase 1`, but the contract is still not fully closed over output semantics because it does not specify what `python3_compliance_reason` must contain for each `delta_status` branch. That leaves machine-checkable interpretation partly dependent on prose rather than a fully pinned schema/enum contract.
+
+### Suggestions
+- Delete review-history/process material from the plan body: remove the `Review artifacts` metadata line, the `Adversarial Review Summary` section, and the acceptance-criteria reference to future re-review/state transitions. Keep only implementation requirements.
+- Either remove the empty Codex review artifact reference or replace it with a real artifact before citing it anywhere in the plan.
+- Strengthen the launcher-preservation test so it verifies each concrete launcher path/callsite, not a generic `--help or equivalent` smoke path. The plan should name the exact non-destructive invocation per file and require matching exit semantics and key observable outputs before and after the runtime wrapper change.
+- Finish the schema contract by defining `python3_compliance_reason` deterministically for every allowed `delta_status` / compliance-state combination, or explicitly declare it non-canonical and out of schema scope.
+
+### Questions for Author
+- For each of the three launcher files, what exact non-destructive invocation is the approval test supposed to run to prove behavior preservation after switching to `uv run --no-project python`?

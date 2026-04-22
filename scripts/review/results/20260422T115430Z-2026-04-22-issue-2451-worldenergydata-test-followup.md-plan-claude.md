@@ -1,0 +1,25 @@
+### Verdict: APPROVE
+
+### Summary
+The plan is thorough, evidence-rich, and demonstrates strong discipline: six verified sources, explicit branch decision rules per failure cluster, and clear workflow/technical gate separation. Cluster-level conditional paths (A1a/A1b/A2, B1/B2, C-skip/C-repoint/C-delete) are well-scoped with guardrails preventing scope creep into the sibling lint/#2452 lane. The remaining gaps are precision notes rather than blockers.
+
+### Issues Found
+- [P3] Minor: The `importorskip` fallback (A2) uses `pytest.importorskip("pytest_benchmark")` at module top — this only skips if the package is absent, but the failure mode contemplated by A2 is an unavailable fixture despite an importable package. Clarify whether a `pytest.mark.skipif` checking the fixture registration is more appropriate, or explicitly narrow A2 to the 'package genuinely absent' sub-case.
+- [P3] Minor: The plan repeatedly references the 'financial module' by docstring but defers concrete path discovery to implementation (Step 0d). The risk of C-repoint drift could be reduced by spending one grep pass now to at least list candidate directories, rather than leaving implementation to decide between C-repoint and C-skip under time pressure.
+- [P3] Minor: Acceptance criterion requiring 'Python 3.10 / 3.12 lanes are also inspected' does not specify what commands or evidence capture is expected if no regression is found — a concrete no-regression attestation format (e.g., grep counts for the three signatures) would make the gate auditable.
+- [P3] Minor: The 'verify_legacy_npv_tracker_exists' test description permits skipping tracker creation if issue-write is unavailable, but does not enumerate what specifically the executor must check to conclude issue-write is unavailable vs. simply not attempted — risk of lax enforcement of the tracker requirement.
+- [P3] Minor: 'bounded exit rule' for A1b mentions 'at most one temporary diagnostic CI run' but doesn't define what happens if the first diagnostic is inconclusive — the branch between 'apply fix' and 'STOP and open follow-up' should specify what inconclusive evidence triggers the STOP path.
+
+### Suggestions
+- Pre-identify the 'financial module' path during the current planning pass with a quick grep (the Gap section already notes likely locations). Even listing candidates narrows Step 0d's search surface and reduces the chance that execution defaults to C-skip for discovery-cost reasons rather than technical ones.
+- Add a concrete signature-grep template for Step V3b no-regression capture on 3.10/3.12, e.g., `gh run view <id> --log-failed | grep -cE "fixture 'benchmark' not found|fixture 'config_with_economics' not found|perform_npv_calculation"` with expected count 0.
+- Clarify the A2 trigger condition in the Pseudocode comments: A2 is for 'package proven absent on runner and workflow edit unsupported/out-of-scope,' not for plugin-autoload suppression — the text states this but the `importorskip` pattern itself is consistent only with the absent-package case; consider adding an inline comment reinforcing that.
+- Consider adding one explicit verification that the worldenergydata execution branch does NOT reintroduce any of the 22 paths on the #2433 conftest skip list (beyond 'no collection errors'), since collection-silent reintroduction is possible if a skipped path is individually invoked.
+- Document in 'Workflow Gates' what evidence counts as proof that issue-write is unavailable in worldenergydata (e.g., a specific `gh issue create` failure signature) so the tracker-creation fallback is not invoked casually.
+
+### Questions for Author
+- For the A1b branch, if investigation of the four bounded surfaces (addopts, env vars, test-local filtering, duplicate declaration) yields no smoking gun, what is the precise stop condition — one CI diagnostic run, or a time-box (e.g., 2 hours)? The current text says 'at most one temporary diagnostic CI run' but doesn't define when investigative cycles are considered exhausted.
+- Has the user expressed a preference between C-skip (default) and C-repoint? The Open Questions section flags this for plan-review, but a pre-approval answer could collapse Cluster C's branch tree and simplify execution significantly.
+- If the runner's `uv` version does not support `--group benchmark` or `--all-groups`, is the intended fallback (a) pin uv to a newer version, (b) use `pip install pytest-benchmark` as a workflow step, or (c) drop to A2 immediately? The plan leaves this open.
+- The plan notes `pytest_benchmark` imports successfully locally after `--all-extras`, which shifts the probability toward A1b. Should A1b therefore be stated as the default starting branch (it currently is in one section, but the Files-to-Change table still leads with the A1a ci.yml edit as the first conditional modification)?
+- For the Python 3.10/3.12 no-regression inspection, is negative evidence ('the three signatures are absent') sufficient for closure, or does the author expect positive proof that the affected tests ran (not merely absent from failures) on those matrix lanes?

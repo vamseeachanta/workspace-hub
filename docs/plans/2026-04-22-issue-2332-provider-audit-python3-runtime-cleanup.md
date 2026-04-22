@@ -4,7 +4,6 @@
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2332
-> **Review artifacts:** `scripts/review/results/2026-04-22-plan-2332-codex.md`, `scripts/review/results/2026-04-22-plan-2332-gemini.md`
 
 ---
 
@@ -17,10 +16,14 @@
 - Found: `docs/reports/provider-session-ecosystem-audit.md` is a generated markdown companion but currently diverges from the JSON on Hermes totals and recent-family detail. Approval-stage planning should therefore treat the JSON plus generator code as the numeric source of truth and require regeneration of markdown/report artifacts through the script, not manual edits.
 - Found: `scripts/ai/provider-routing-scorecard.py`, `config/ai-tools/provider-routing-scorecard.json`, and `docs/reports/provider-routing-scorecard.md` already publish weekly provider telemetry, but the script currently targets only `claude`, `codex`, and `gemini` and does not publish explicit python-runtime budgets or deltas for Hermes.
 - Found repo-local actionable launcher hot spots with direct bare-`python3` subprocess usage in tracked code:
-  - `scripts/ai/generate-agent-radar.py` line 42
-  - `scripts/coordination/git/git_sync_all_enhanced.py` line 38
-  - `scripts/automation/sync_and_propagate_commands.py` line 148
-- Found an existing legitimate interpreter-discovery edge case in `src/ace/router.py` lines 86-99: it probes `.venv/bin/python` and `.venv/bin/python3` as file paths while resolving external repo interpreters. That is evidence for an explicit exception category distinct from repo-local shell/runtime invocation debt.
+  - `scripts/ai/generate-agent-radar.py`
+  - `scripts/coordination/git/git_sync_all_enhanced.py`
+  - `scripts/automation/sync_and_propagate_commands.py`
+- Found runtime-contract evidence for the chosen launcher form:
+  - `scripts/ai/generate-agent-radar.py` is a standalone `# /// script` with an inline dependency block and already documents `uv run --no-project python ...` in its usage header.
+  - `scripts/coordination/git/git_sync_all_enhanced.py` and `scripts/automation/sync_and_propagate_commands.py` use stdlib-only imports in the current file headers and launch external utility/setup scripts rather than project-package entry points.
+  - Therefore the bounded first-wave replacement is explicitly `uv run --no-project python ...` for all three named launcher files in this issue.
+- Found an existing legitimate interpreter-discovery edge case in `src/ace/router.py`: it probes `.venv/bin/python` and `.venv/bin/python3` as file paths while resolving external repo interpreters. That is evidence for an explicit exception category distinct from repo-local shell/runtime invocation debt.
 
 ### Standards
 | Standard | Status | Source |
@@ -57,11 +60,11 @@ Everything else is a violation for this issue, including:
 - provider-audit/accountability surfaces that count debt without publishing the allowlist rationale
 
 ### Gaps identified
-- The plan previously mixed unsupported markdown-report numbers with fresher JSON numbers; the numeric source-of-truth contract must be explicit.
-- No explicit runtime exception policy was written in-plan even though the issue and reviews require one.
-- No approval-ready first-wave file list previously bounded repo-local remediation.
-- Existing weekly scorecard publication excludes Hermes and does not publish python-runtime budgets/trend deltas.
-- Scope boundary versus Issue `#48` was not previously explicit enough to prevent duplicate repo-wide shell-sweep work.
+- The numeric source-of-truth contract must remain explicit so generated markdown cannot drift from the underlying audit JSON.
+- The runtime exception policy and provider budget schema must be machine-checkable in the canonical scorecard JSON artifact.
+- The first remediation wave must stay bounded to named repo-local launcher/orchestration files plus audit/scorecard publication surfaces.
+- Weekly scorecard publication must include Hermes and explicit python-runtime budget/trend fields.
+- Scope must remain non-overlapping with Issue `#48`.
 
 ---
 
@@ -110,30 +113,65 @@ Non-overlap rule for approval:
 ### Prior-audit delta contract
 
 Authoritative prior-audit source for this issue:
-- the previous checked-in `analysis/provider-session-ecosystem-audit.json` snapshot loaded by `scripts/analysis/provider_session_ecosystem_audit.py`
-- the scorecard consumes deltas from that regenerated audit output rather than inventing a second historical store
+- before writing any regenerated output, `scripts/analysis/provider_session_ecosystem_audit.py` must load the current checked-in `analysis/provider-session-ecosystem-audit.json` snapshot into memory as the `previous_audit_snapshot`
+- delta computation uses that in-memory snapshot; only after deltas are computed and the new payload is complete may the script overwrite `analysis/provider-session-ecosystem-audit.json`
+- if regeneration fails before the new payload is written successfully, the checked-in prior snapshot remains untouched and no partial overwrite is accepted
+- the scorecard consumes deltas from the regenerated audit output rather than inventing a second historical store
 
 No-history / first-run behavior:
-- if no previous audit snapshot exists for a provider, publish `delta_status: no_prior_audit`, set numeric delta fields to `null`, and render `baseline only` rather than fabricating a zero change.
+- if no previous audit snapshot exists for a provider, publish `delta_status: no_prior_audit`
+- when `delta_status = no_prior_audit`, set `python3_delta_count = null`, `python3_baseline_count = null`, and `python3_cap_count = null`
+- when `delta_status = no_prior_audit`, emit `python3_compliance_status = no_prior_audit` and `python3_compliance_reason = baseline unavailable on first run`
+- render `baseline only` wording in markdown/publication output rather than fabricating a zero change
 - tests for this issue must assert both the normal delta path and the no-prior-audit path.
 
 Canonical weekly publication surface for phase 1:
-- `scripts/ai/provider-routing-scorecard.py` plus its generated JSON/markdown outputs remain the canonical weekly runtime-budget artifact for this issue.
+- `config/ai-tools/provider-routing-scorecard.json` is the single canonical machine-checkable schema artifact for the runtime-budget contract in this issue.
+- `docs/reports/provider-routing-scorecard.md` is the human-readable rendering derived from that JSON.
+- `analysis/provider-session-ecosystem-audit.json` remains the numeric telemetry source of truth that feeds the scorecard, but it is not the approval-gated schema contract artifact for budget publication.
 - no separate runtime scorecard file is introduced in `#2332`.
 
 ## Provider budget contract for phase 1
 
-Source of truth: `analysis/provider-session-ecosystem-audit.json` for counts/rates, published via regenerated scorecard/report artifacts.
+Numeric source of truth: `analysis/provider-session-ecosystem-audit.json`.
+Canonical machine-checkable publication contract: `config/ai-tools/provider-routing-scorecard.json`.
+Human-readable publication surface: `docs/reports/provider-routing-scorecard.md`.
+
+Required per-provider compliance fields to emit in `config/ai-tools/provider-routing-scorecard.json`:
+- `python3_baseline_count`
+- `python3_current_count`
+- `python3_delta_count`
+- `delta_status` with allowed values:
+  - `baseline_available`
+  - `no_prior_audit`
+- `python3_cap_count`
+- `python3_compliance_status` with allowed values:
+  - `within_cap`
+  - `over_cap`
+  - `no_prior_audit`
+- `python3_compliance_reason`
+- Hermes-only additional fields for phase 1:
+  - `recent_since_previous_audit_python3_count`
+  - `recent_since_previous_audit_uv_run_count`
+  - `last_7d_python3_count`
+  - `last_7d_uv_run_count`
 
 | Provider | Current baseline | Phase-1 hard cap to publish | Extra phase-1 trend field |
 |---|---|---|---|
-| Claude | `744` bare `python3`; `8.88` per 1k | no regression above baseline until a named Claude-owned hotspot is in scope | week-over-week delta vs prior audit |
-| Codex | `337` bare `python3`; `18.89` per 1k | no regression above baseline until a named Codex-owned hotspot is in scope | week-over-week delta vs prior audit |
-| Hermes | `2059` bare `python3`; `17.93` per 1k | no regression above baseline; publish both overall and recent-window counts because Hermes is an active orchestration surface | `since_previous_audit` `python3` vs `uv run` and `last_7d` `python3` vs `uv run` |
-| Gemini | `291` bare `python3`; `47.34` per 1k | no regression above baseline; remains the worst density and should be flagged red until improved | week-over-week delta vs prior audit |
+| Claude | `744` bare `python3`; `8.88` per 1k | `python3_cap_count = 744` until a named Claude-owned hotspot is explicitly added to scope | week-over-week delta vs prior audit |
+| Codex | `337` bare `python3`; `18.89` per 1k | `python3_cap_count = 337` until a named Codex-owned hotspot is explicitly added to scope | week-over-week delta vs prior audit |
+| Hermes | `2059` bare `python3`; `17.93` per 1k | `python3_cap_count = 2059`; publish both overall and recent-window compliance because Hermes is an active orchestration surface | `since_previous_audit` `python3` vs `uv run` and `last_7d` `python3` vs `uv run` |
+| Gemini | `291` bare `python3`; `47.34` per 1k | `python3_cap_count = 291`; `python3_compliance_status` must remain `over_cap`/flagged red if current count rises above baseline | week-over-week delta vs prior audit |
+
+Policy rule for phase 1:
+- if a prior snapshot exists, emit `delta_status = baseline_available`
+- if no prior snapshot exists, emit `delta_status = no_prior_audit`
+- if `python3_current_count <= python3_cap_count` and `delta_status = baseline_available`, emit `python3_compliance_status = within_cap`
+- if `python3_current_count > python3_cap_count` and `delta_status = baseline_available`, emit `python3_compliance_status = over_cap`
+- if `delta_status = no_prior_audit`, emit `python3_compliance_status = no_prior_audit`
 
 Phase-1 meaning:
-- This issue’s first merge must make the budgets visible and testable.
+- This issue’s first merge must make the budgets machine-checkable and visible.
 - Only the named first-wave files are expected to reduce debt immediately.
 - Future tighter burn-down targets can be lowered in follow-on work once the scorecard is publishing stable deltas.
 
@@ -142,20 +180,23 @@ Phase-1 meaning:
 ## Pseudocode
 
 ```text
-load provider-session audit JSON as numeric source of truth
-extract per-provider overall python3 counts, uv-python counts, and recent-window slices
+load the current checked-in provider-session audit JSON into memory as previous_audit_snapshot before any overwrite
+extract per-provider overall python3 counts, uv-python counts, and recent-window slices from the regenerated payload
 apply explicit exception taxonomy:
     ignore text-only mentions and fixture/shebang cases
     ignore interpreter-path discovery for external environments
     flag repo-local shell/subprocess python3 invocations as actionable debt
 publish a runtime compliance section in the audit/scorecard output that includes:
-    baseline budget per provider
-    current count/rate per provider
-    delta versus previous audit
+    python3_baseline_count
+    python3_current_count
+    python3_delta_count
+    python3_cap_count
+    python3_compliance_status
+    python3_compliance_reason
     Hermes recent-window runtime counts
 patch only the named first-wave launcher/orchestration files to canonical uv forms
 regenerate markdown/json scorecard and audit artifacts through their owning scripts
-assert tests for exception handling, budget rendering, deterministic hotspot scope, and file-level no-regression on the named remediation set
+assert tests for exception handling, machine-checkable budget status, deterministic hotspot scope, and file-level no-regression on the named remediation set
 ```
 
 ---
@@ -206,8 +247,18 @@ Any broader sweep through setup, maintenance, hooks, or unrelated bash scripts i
 | `test_runtime_policy_recent_and_corpus_views_are_both_published_for_hermes` | Hermes output shows both overall debt and recent-window counts because recent orchestration activity matters | synthetic Hermes payload with overall counts plus `since_previous_audit` and `last_7d` bash families | runtime section contains overall baseline plus both recent-window fields |
 | `test_provider_routing_scorecard_includes_hermes_runtime_budget_row` | weekly scorecard covers all four providers and publishes python-runtime budgets/deltas | sample utilization JSON plus audit JSON including Hermes | generated JSON/markdown scorecard contains a Hermes entry with budget cap and delta fields |
 | `test_first_wave_launcher_files_have_no_direct_python3_subprocess_calls` | named phase-1 launcher files are clean after remediation | run the audit runtime-debt matcher against only `scripts/ai/generate-agent-radar.py`, `scripts/coordination/git/git_sync_all_enhanced.py`, and `scripts/automation/sync_and_propagate_commands.py` | the audit matcher reports zero actionable bare-`python3` findings for the three named files |
+| `test_first_wave_launcher_files_still_execute_with_uv_no_project_contract` | the chosen runtime replacement preserves launcher behavior for the bounded first wave | exact non-destructive command-path checks:
+  1. `uv run --no-project python scripts/ai/generate-agent-radar.py --output /tmp/agent-radar-test.html`
+  2. monkeypatch `subprocess.run` inside `EnhancedGitSyncAll.sync_slash_commands()` and assert the captured command becomes `['uv', 'run', '--no-project', 'python', str(sync_script)]`
+  3. monkeypatch `subprocess.run` inside `sync_and_propagate_repo()` and assert the captured command becomes `['uv', 'run', '--no-project', 'python', str(source_setup)]`
+| expected outputs:
+  1. exits 0 and writes the requested HTML file
+  2. captured launcher command exactly matches the `uv run --no-project python` contract without calling `run()` on the full syncer
+  3. captured launcher command exactly matches the `uv run --no-project python` contract without executing the full propagation workflow |
 | `test_regenerated_audit_markdown_matches_json_runtime_totals_and_recent_fields` | published markdown is regenerated from the same runtime totals and recent-window fields as the JSON source | regenerated audit JSON and markdown from the same test fixture/run | markdown provider totals plus Hermes runtime section agree with JSON counts and recent-window fields for all providers |
 | `test_runtime_budget_delta_fields_handle_no_prior_audit` | first-run/no-history behavior is explicit rather than silently fabricated | synthetic provider payload without previous audit snapshot | scorecard/audit publish `delta_status: no_prior_audit`, `null` delta fields, and `baseline only` wording |
+| `test_runtime_budget_flags_provider_over_cap_when_count_regresses_above_baseline` | published hard-cap policy is actually enforced, not just printed | prior snapshot baseline plus current snapshot above baseline for one provider | generated audit/scorecard marks that provider as over budget / non-compliant according to the phase-1 cap rules |
+| `test_runtime_budget_schema_fields_exist_for_every_provider` | machine-checkable compliance schema is complete for every provider row | regenerated audit/scorecard payload with Claude/Codex/Hermes/Gemini rows | every provider row emits `python3_baseline_count`, `python3_current_count`, `python3_delta_count`, `delta_status`, `python3_cap_count`, `python3_compliance_status`, and `python3_compliance_reason`, with allowed enum values |
 
 ---
 
@@ -218,29 +269,7 @@ Any broader sweep through setup, maintenance, hooks, or unrelated bash scripts i
 - [ ] The plan states a clear non-overlap boundary with Issue `#48`.
 - [ ] Provider runtime budgets are explicit for Claude, Codex, Hermes, and Gemini, with `analysis/provider-session-ecosystem-audit.json` identified as the numeric source of truth.
 - [ ] Weekly-review integration is concrete: the implementation updates `scripts/ai/provider-routing-scorecard.py`, regenerates its JSON/markdown outputs, and documents the check in `docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md`.
-- [ ] Tests are concrete and falsifiable, including named exception fixtures, Hermes recent-window publication, named first-wave file scans, JSON/markdown regeneration consistency, and no-prior-audit delta behavior.
-- [ ] After fresh external re-review, the plan can advance toward `status:plan-review`; remaining in `draft` is not itself a success criterion.
-
----
-
-## Adversarial Review Summary
-
-| Provider | Verdict | Key findings |
-|---|---|---|
-| Claude | PENDING | not yet re-run on the revised draft |
-| Codex | MAJOR | unsupported audit claims, unnamed remediation files, missing scope boundary with `#48`, missing budget/weekly-review contract, vague tests |
-| Gemini | MAJOR | first-wave files unnamed, allowlist policy missing from the plan itself, generated-report workflow unclear, tests not falsifiable |
-
-**Overall result:** REVISED DRAFT — major findings addressed in-plan; fresh review still required before approval.
-
-Revisions made based on review:
-- replaced unsupported runtime claims with current repo-evidenced JSON/report findings
-- wrote the allowlist/exception policy directly into the plan
-- named the first-wave launcher hotspots and bounded the remediation surface
-- added an explicit boundary versus Issue `#48`
-- added explicit provider budget publication requirements and tied them to existing scorecard artifacts
-- rewrote the TDD table so each test has a concrete fixture/scope/pass condition
-- removed speculative file targets like "AGENTS.md or adjacent doc" and "hotspots discovered later"
+- [ ] Tests are concrete and falsifiable, including named exception fixtures, Hermes recent-window publication, named first-wave file scans, runtime smoke preservation for the `uv run --no-project python` contract, JSON/markdown regeneration consistency, and no-prior-audit delta behavior.
 
 ---
 
@@ -249,7 +278,7 @@ Revisions made based on review:
 - **Risk:** `docs/reports/provider-session-ecosystem-audit.md` currently diverges from `analysis/provider-session-ecosystem-audit.json`; implementation must regenerate both from code in one pass or the review problem will recur.
 - **Risk:** Some historical bare-`python3` counts come from past sessions and external repos, so phase-1 budgets should be treated as publication/accountability gates first, not as proof that all ecosystem debt can be removed in one PR.
 - **Risk:** Touching launcher/orchestration files outside the named first wave would blur into Issue `#48` and should be avoided without explicit scope expansion.
-- **Open:** None blocking approval readiness. This redraft fixes the prior conditional file-target and weekly-artifact ambiguity by selecting the existing routing scorecard as the canonical phase-1 publication surface and by requiring a concise `AGENTS.md` pointer update.
+- **Open:** None blocking approval readiness. The canonical publication artifact, first-run schema behavior, and bounded launcher contract are fully specified in the plan above.
 
 ---
 

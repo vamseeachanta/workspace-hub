@@ -1,8 +1,8 @@
 # Plan for #2443: achantas-data — restore CI with markdown-lint + link-check (workflows deleted 2025-10)
 
-> **Status:** draft (v3 — Wave 2 MAJOR findings addressed, awaiting Wave 3 re-review)
+> **Status:** draft (v4 — post-queue-audit fixes, awaiting Wave 3 re-review)
 > **Complexity:** T1
-> **Date:** 2026-04-21 (v3 revision: 2026-04-22)
+> **Date:** 2026-04-21 (v4 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2443
 > **Parent meta-issue:** https://github.com/vamseeachanta/workspace-hub/issues/2424
 > **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — to be generated for this revision)
@@ -224,7 +224,7 @@ if [[ ! -f "$cfg" ]]; then
   echo "FAIL: $cfg missing" >&2
   exit 1
 fi
-python3 - "$cfg" <<'PY'
+uv run python - "$cfg" <<'PY'
 import json, re, sys
 path = sys.argv[1]
 raw = open(path).read()
@@ -365,7 +365,7 @@ rm -f "$tmp"
 
 ## Risks and Open Questions
 
-- **Risk — existing MD violations**: the lenient config is my best guess; on first local dry-run there may still be non-zero violations (e.g., trailing whitespace, inconsistent list markers) on legacy notes. Mitigation: run `markdownlint-cli2 --fix` locally once before first CI run, OR disable the violating rule if the content is intentional. Acceptance criterion states "tuned until 0 violations" so this is surfaced as a completion blocker, not hidden.
+- **Risk — existing MD violations**: the lenient config is my best guess; on first local dry-run there may still be non-zero violations (e.g., trailing whitespace, inconsistent list markers) on legacy notes. Mitigation: run `markdownlint-cli2 --fix` locally once before first CI run, or use narrow per-file inline directives where structurally necessary. Do **not** disable floor rules globally to force green. Acceptance criteria make this a completion blocker rather than a hidden compromise.
 - **Risk — external link rot**: the repo contains old utility / tax / house notes with URLs possibly years old. Lychee's first run may fail. Mitigation: per the acceptance criterion, rotted links are handled by **per-URL** entries added to `lychee.toml` with an inline comment stating why and a dated TODO for re-check. Host-level / wildcard exclusions remain **prohibited** (this supersedes any earlier draft wording about "adding a rotted host to the exclude list"). Link-check is weekly scheduled so recurrence cost is bounded.
 - **Risk — Actions minutes on free tier**: personal GitHub account, free tier minutes. markdown-lint is path-scoped to `.md` changes; link-check is weekly (≈4 runs/month × ~30s each). Total monthly budget: negligible.
 - **Risk — missed detection of workflow schema errors**: no local `actionlint` run before push = silent YAML-syntax failures at GitHub side. Mitigation: acceptance criterion explicitly requires `actionlint` to pass (add to local dev checklist; lightweight — `brew install actionlint` or `go install`).

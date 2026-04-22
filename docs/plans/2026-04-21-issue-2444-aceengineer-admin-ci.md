@@ -1,11 +1,11 @@
 # Plan for #2444: aceengineer-admin — add minimal viable CI (uv + ruff + black + pytest) scoped to src/ + tests/
 
-> **Status:** draft (v3 — Wave 2 MAJOR findings addressed, awaiting Wave 3 re-review)
+> **Status:** draft (v4 — queue-audit fixes applied; fresh external re-review still required)
 > **Complexity:** T1
-> **Date:** 2026-04-21 (v3 revision: 2026-04-22)
+> **Date:** 2026-04-21 (v4 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2444
 > **Parent meta-issue:** #2424 (ecosystem CI health — 6-of-7 repos red)
-> **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — to be generated for this revision)
+> **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — single-author interim review already posted; fresh external re-review still required)
 
 ---
 
@@ -53,7 +53,7 @@ No relevant wiki pages — CI bootstrap.
 - No `.github/workflows/ci.yml` in aceengineer-admin (this plan creates it)
 - No path-ignore filter currently exists; PII-carrying document directories would otherwise trigger CI on every xlsx edit
 - Current single-batch test suite has never been executed in CI; first run may surface latent failures. Verified defects (2026-04-21):
-  - `tests/unit/automation/test_cli.py:6` imports `from aceengineer_automation.cli import main` — module was renamed to `aceengineer_admin.cli`; import will fail at collection.
+  - `tests/unit/automation/test_cli.py:6` imports `from aceengineer_automation.cli import main` — module was renamed; because this test lives under `tests/unit/automation/`, the evidence-backed target is `aceengineer_admin.automation.cli`, not the top-level `aceengineer_admin.cli`.
   - `tests/unit/automation/common/test_config.py:8` imports `from aceengineer_automation.common.config import Config` — same rename; import will fail at collection.
   - `src/aceengineer_admin/automation/cli.py:6` imports `from aceengineer_automation import __version__` — same rename; affects runtime.
   All three must be updated as part of this plan's implementation scope or first-run green is impossible.
@@ -269,7 +269,7 @@ runs-on: ubuntu-latest
 
 ### Revisions made (Wave 2 response)
 
-- Resolved `uv sync` vs `uv pip install -e` contradiction — adopted `uv sync --frozen --extra dev --extra test` in both Deliverable and Detailed Spec (honors committed `uv.lock`).
+- Historical note: the Wave-2 response initially adopted `uv sync --frozen --extra dev --extra test`, but that assumption was invalidated by the follow-up finding that `uv.lock` was not actually tracked on remote. v3/v4 supersede that choice with `uv sync --extra dev --extra test` plus explicit `uv.lock` generation + commit as an implementation artifact.
 - Committed to Option A2 for `knowledge-semantic`: `pytest --ignore=tests/knowledge` on first CI run; follow-on issue for re-enablement; acceptance scoped to `tests/unit/` + `src/`.
 - Added `workflow_dispatch:` to the on-triggers block.
 - Added three stale-import fixes to §Files to Change (`tests/unit/automation/test_cli.py`, `tests/unit/automation/common/test_config.py`, `src/aceengineer_admin/automation/cli.py`) — Codex's unique implementation-blocking finding. Added verification grep command.
@@ -307,12 +307,12 @@ runs-on: ubuntu-latest
 - (Claude.3 → resolved) 2-minute lint acceptance criterion rewritten to "Lint step completes **successfully**"; runtime is tracked as an Open question in §Risks rather than an acceptance gate.
 - (Gemini.2 — false positive → documented) Gemini's attested evidence claimed `src/aceengineer_admin/cli.py` and `__init__.py` might be missing. Live verification 2026-04-22 (`git ls-files src/aceengineer_admin/cli.py src/aceengineer_admin/__init__.py`) confirms both EXIST. The v2 plan's §Evidence block now states this explicitly to prevent Wave-3 re-surfacing.
 
-### Status (v3)
+### Status (v4)
 
-**Revised, awaiting Wave 3 re-review.** Not approval-ready until Wave 3 returns no new MAJOR findings AND user explicitly labels `status:plan-approved`. This plan MUST NOT be self-approved by any agent.
+**Revised after queue audit; still NOT approval-ready.** Wave 3 artifacts exist, but the issue comments explicitly note they were single-author interim reviews rather than a fresh external cross-provider dispatch. The next required step is a real external re-review wave (Claude/Codex/Gemini or equivalent) against this v4 text. User approval remains load-bearing; this plan MUST NOT be self-approved by any agent.
 
 ---
 
 ## Complexity: T1
 
-**T1** — single new file in an external repo, no code changes, no tests to author, adapts a well-understood sibling template. No Pseudocode needed. No TDD in the strict sense (CI infrastructure). Risk is confined to first-run green/red outcome, which is reversible.
+**T1** — a narrowly scoped CI-bootstrap plan for one external repo: one new workflow file plus four small repo-hygiene edits (`uv.lock`, three stale-import fixes, one pyproject include cleanup). No product logic changes, but the plan still carries non-trivial governance detail because first-run-green depends on accurate repo-state evidence and hard-gate-compliant validation sequencing.

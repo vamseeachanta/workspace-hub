@@ -9,16 +9,15 @@ Review the CURRENT plan text only.
 
 Context:
 - Repo: workspace-hub
-- Stage: approval-stage rerun after another tightening pass
+- Stage: final approval-stage rerun for #2332
 - Artifact under review: `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`
 
 Address all of the following:
-1. Are any correctness-critical decisions still deferred to execution time?
-2. Are deliverable, files to change, tests, and acceptance criteria aligned?
-3. Is there any remaining approval-state contradiction (for example draft-vs-approval logic)?
-4. Are any cited review artifacts or evidence claims misleading or unsupported?
-5. Are tests concrete and falsifiable for the intended defect classes?
-6. Should this plan now advance toward approval, or is another rewrite required?
+1. Is the canonical schema artifact explicit and sufficient?
+2. Is first-run delta behavior fully defined?
+3. Has review-process narration been removed sufficiently?
+4. Are launcher behavior-preservation checks now exact enough?
+5. Is this plan now approval-ready?
 
 Output format requirements:
 - verdict: APPROVE, MINOR, or MAJOR
