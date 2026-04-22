@@ -1,0 +1,27 @@
+### Verdict: APPROVE
+
+### Summary
+Plan is mature after six revision waves with thorough evidence capture (YAML ScannerError at line 122:40, grep-verified fix sites, gh run list confirming 0s/0-jobs pattern, public-repo attestation for the sibling clone). Phased remediation is mechanically deterministic, acceptance gates are falsifiable, and the P1/P2/P3 scope narrowing correctly aligns the issue-close criterion with the stated deliverable. Remaining concerns are execution-time unknowns (codecov v4 auth behavior, ref:main drift) rather than plan defects, and no ## Attested Evidence block is present in the review input to cross-check the reopened-issue claim, which I flag as a dependency for the approver.
+
+### Issues Found
+- [P2] Important: No `## Attested Evidence` block is present in the review input, so the plan's 2026-04-22 claim that #2442 was reopened (after being erroneously closed) cannot be independently verified from the review artifact. Wave 5 Codex+Gemini both flagged attested-CLOSED; if current attestation still shows CLOSED, acceptance criterion #11 (re-approval in-thread) cannot execute and the label-drift 'RESOLVED' tag is premature.
+- [P2] Important: `codecov/codecov-action@v4` auth semantics are not analyzed in Risks or Open Questions. v4 introduced token handling changes; even on public repos it can surface tokenless-upload friction that could confuse P3 quality-gate evaluation. Either add a risk entry or explicitly mark codecov upload non-blocking for P2 smoke-green.
+- [P3] Minor: Local pre-push YAML parse gate uses bare `python -c "import yaml; yaml.safe_load(...)"` — on a uv-managed repo without a system PyYAML this can fail before parsing, producing a false-negative gate pass in a clean shell. Prefer `uv run python -c ...` for consistency with the repo's Python rule.
+- [P3] Minor: Phase-gate enforcement (P1 commit → CI verify → P2 commit) is prose-level discipline, not a script or hook. Given `.claude/rules/patterns.md` enforcement gradient, this is Level 0; a trivial shell precondition script the executor must run before pushing P2 (grepping the latest run-id for non-empty jobs[]) would promote it to Level 2.
+- [P3] Minor: `pyproject.toml.backup` and `poetry_latest_versions.txt` fork-transfer artifacts are noted but not cleaned. Not CI blockers, but leaving them risks future reviewers re-flagging them; a one-line Out-of-Scope mention would tighten the plan.
+- [P3] Minor: `tests/test_smoke.py` existence is attested via `gh api`, but the plan does not verify the file contains a fast-path test (it could be a stub). If the smoke file triggers the full dependency graph, P2 `conclusion=success` may implicitly require far more than a minimal install.
+
+### Suggestions
+- Add a short §Rollback stanza covering the direct-to-main execution model: state the invariant that P1 cannot be worse than 0s/0 jobs, and the concrete revert command (`git revert <P1-sha> && git push`) the executor is authorized to run without re-entering plan-review.
+- Verify that `upload-artifact@v4` behavior (merge requirements and concurrent-upload semantics changed from v3) does not break the integration-tests / financial-data-tests jobs' artifact consumption pattern. v3→v4 is not purely a version-string bump.
+- Consider pinning `assetutilities` to a known-good SHA in the `git clone` step rather than implicit default (main). The ref:main coupling is listed as accepted, but pinning costs one line and removes the silent-red failure mode for the initial green milestone.
+- Add a TDD assertion that the P1 commit is a strict subset of the P2 commit's diff on the workflow file (e.g., `git diff P1_SHA P2_SHA -- .github/workflows/python-tests.yml` contains only the 6 P2 edits), enforcing the phase-gate claim mechanically.
+- State explicitly in Acceptance Criteria whether a Codecov upload failure should fail the `test` job or be tolerated; today's wording leaves this ambiguous and the 'smoke cell green' gate can hinge on it.
+
+### Questions for Author
+- Can you attach the current `gh issue view 2442 --json state,labels` output (or the scripts/review/attest-plan-claims.sh attestation block) so the reopened-state claim is independently verifiable? Wave 5 attested CLOSED; the plan says reopened 2026-04-22 but the review input contains no attestation section.
+- What is the intended behavior if `uv pip install --system -e ../assetutilities` succeeds but `assetutilities` itself has a runtime import that fails during `pytest` collection? Is that considered a P2 failure (iterate on main) or does it split into a follow-on issue?
+- For the direct-to-main execution model, who is authorized to revert if P1 breaks main differently than predicted? Is the executor pre-authorized to `git revert && git push` without re-entering plan-review?
+- On codecov v4: has a test-upload been attempted from any sibling repo in this ecosystem to confirm tokenless upload works for public `vamseeachanta/assethold`, or is this the first v4 trial in the workspace-hub fleet?
+- Does `tests/test_smoke.py` import the full `assethold` package graph (forcing full dep install) or only a narrow subtree? If the former, the P2 'smoke cell green' gate is functionally equivalent to the full test job green, which changes the risk profile.
+- Is there any reason P1 (pure YAML/action-version edits) cannot be landed today as a zero-risk hotfix independent of this plan's approval cycle, given it cannot make the current 0s/0-jobs state any worse?
