@@ -9,6 +9,16 @@ Generated: 2026-04-10
 - Chatbot fundamentals document complete
 - Job market scanner running on cron
 
+## Engineering-First GTM Conversion Rule
+
+Before turning new GTM ideas into posts or website copy, convert them into an engineering artifact first.
+Reference: `docs/gtm/core-engineering-work-conversion.md`
+
+Current priority engineering conversions:
+- Installation analysis fidelity packet — based on existing Demo 3 and current GTM assets
+- FOWT screening starter packet — based on `docs/research/weis-floating-wind-eval.md`, `docs/resources/marine-resources.md`, and existing mooring capability
+- Marine load-path explainer — only with technically reviewed figures
+
 ---
 
 ## Week 1: Foundation (Days 1-7)

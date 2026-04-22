@@ -1,0 +1,41 @@
+`★ Insight ─────────────────────────────────────`
+- Adversarial review of a "contract" plan should compare required scope items in the parent issue against acceptance criteria and the TDD test list item-by-item — silence in either column is a defect, not an omission.
+- `DATA_PLACEMENT.md` is listed as a baseline but the plan's deliverable title collapses from "indexing and code-placement" to just "indexing" — scope drift detectable by comparing issue title to the created contract filename.
+- A negative assertion ("avoids legacy X pattern") is only testable when the exact pattern is specified; citing a precedent test file (`test_banned_stale_references.py`) does not transfer its regex to a new test.
+`─────────────────────────────────────────────────`
+
+Verdict: MAJOR
+
+Findings:
+
+- [MAJOR] Code-placement scope has been silently dropped from the deliverable — Issue #2460 title is "tier-1 indexing **and code-placement** contract" and its body asks two questions, the first being "1. where should code go?". The plan's "Deliverable" says only "A canonical tier-1 indexing contract and derived checklist…" (plan line 149), and the contract file is named `TIER1_INDEXING_CONTRACT.md` (plan lines 136, 183). No acceptance criterion and no TDD test requires the contract to encode or reference the repo-vs-`/mnt/ace/data/` decision rule in `docs/standards/DATA_PLACEMENT.md`, even though that file is explicitly listed as a baseline source (plan line 36). This plan, if executed as written, would satisfy its tests while still failing the parent issue's first scope question.
+
+- [MAJOR] Issue-required routing surfaces are not independently testable — The scorecard at `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` lines 184–218 and the issue body enumerate six distinct required surfaces (AGENTS.md, README.md, docs/README.md, `docs/maps/<repo>-operator-map.md`, machine-readable registry, hygiene rules) plus "code/tests/docs routing table requirements" and "explicit retirement of legacy product-doc conventions". The TDD test list (plan lines 194–201) has exactly one compound test — `test_tier1_contract_contains_required_sections` — that lumps "required routing surfaces, required-vs-optional section, freshness rule, and curated-vs-raw inventory rule" into a single assertion. This violates review criterion #2. A contract that mentions only 3 of 6 surfaces could pass a presence-of-required-sections test if that test is permissive, and there is no per-surface `test_contract_requires_operator_map` / `test_contract_requires_machine_readable_registry` / `test_contract_requires_docs_readme` etc.
+
+- [MAJOR] `test_tier1_contract_avoids_legacy_product_doc_reference_pattern` names no pattern — Plan line 198 says the test asserts "forbidden string absent" but nowhere in the plan is the forbidden string, regex, or pattern enumerated. The existing `tests/docs/test_banned_stale_references.py` delegates to `tests/helpers/stale_reference_docs.scan_stale_reference_hits` and does not generalize to a new "product-doc" concept. A test specified as "forbidden string absent" without the string is not implementable-as-written and the acceptance criterion (plan line 210, "contract explicitly separates required surfaces from optional repo-specific extensions" — note: even this is the wrong acceptance criterion; there is no AC for legacy retirement at all) cannot be verified.
+
+- [MAJOR] Retirement of legacy product-doc conventions is encoded only as a negative — The issue body scope item is "explicit retirement of legacy product-doc conventions in favor of current canonical routing surfaces". Retirement is a positive claim (the contract must *state* that legacy conventions are retired). The plan only asserts absence of a pattern (negative), so a contract that says nothing about legacy retirement at all will pass. This is a correctness-critical gap against check #4.
+
+- [MAJOR] "Daily freshness rule" acceptance criterion has no dedicated test — Acceptance criterion at plan line 209 requires "a daily freshness rule and points follow-through work to `#2465`". The TDD list only has the catch-all `test_tier1_contract_contains_required_sections` referencing "freshness rule" (no daily-cadence word check) and `test_tier1_contract_links_child_issues` for "#2461-#2465" (no specific `#2465`-is-freshness-follow-through check). A contract that mentions freshness monthly and lists all five child issues without tying #2465 to freshness would pass.
+
+- [MINOR] Contract-vs-checklist cross-linking is untested — Plan creates both `TIER1_INDEXING_CONTRACT.md` and `TIER1_INDEXING_CHECKLIST.md` but no test verifies the contract references the checklist or vice versa. Risk: orphan checklist that future workers won't find from the contract.
+
+- [MINOR] `docs/plans/README.md` update is not covered by acceptance criteria — Plan line 188 lists "Update `docs/plans/README.md`" as a file to change, but no acceptance-criterion bullet and no test enforces that the plan index entry is added. Consistent with earlier merge-race revert learnings in memory, this kind of silent omission is exactly what the index regresses on.
+
+- [MINOR] Source-hygiene rule from issue body has no test — Issue body requires "source-hygiene rules for excluding backup/cache/runtime noise from trusted retrieval surfaces". No TDD test verifies the contract encodes hygiene rules (e.g., "no `*.bak`/`*.orig` in source paths" per scorecard lines 148–152). Only present inside the catch-all section test.
+
+- [MINOR] Evidence block paraphrases but does not verify DATA_PLACEMENT content — Plan line 26 lists `DATA_PLACEMENT.md` as baseline, but the "Line excerpts" block (plan lines 69–119) quotes `CONTROL_PLANE_CONTRACT.md`, `FILE_STRUCTURE_TAXONOMY.md` (actually tagged as CONTROL_PLANE_CONTRACT quote), the scorecard, and `build_content_index.py`. `DATA_PLACEMENT.md` is named but never quoted, so the plan does not actually demonstrate what from that file will be incorporated into the contract — consistent with finding #1.
+
+- [MINOR] Contract doc filename understates scope — `TIER1_INDEXING_CONTRACT.md` vs. issue title "indexing and code-placement contract". Recommend `TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` or at minimum a top-of-file statement that the contract governs both indexing and code placement. A future worker searching for "code placement contract" will not discover this file by name.
+
+Checks performed:
+
+- Read the plan in full at `docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md`.
+- Pulled issue #2460 body via `gh issue view` and compared its eight "Scope" bullets and two "Why" questions to the plan's Deliverable, Acceptance Criteria, and TDD Test List.
+- Verified existence of all five baseline sources named on plan lines 22–37: `CONTROL_PLANE_CONTRACT.md`, `FILE_STRUCTURE_TAXONOMY.md`, `DATA_PLACEMENT.md`, `docs/reports/2026-04-22-tier-1-indexing-scorecard.md`, `docs/plans/README.md` (all exist).
+- Read `docs/standards/DATA_PLACEMENT.md` end-to-end to check whether the plan's tests or acceptance criteria cover its decision rule (10 MB / 1000 file threshold). They do not.
+- Read `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` end-to-end to cross-check that the plan covers "Recommended Target Contract" (6 surfaces) and portfolio-level gaps. Only some are covered, via a single compound test.
+- Verified child issues #2461 and #2465 are OPEN with titles matching the plan's claims (lines 52, 56).
+- Checked the existing `tests/docs/test_banned_stale_references.py` to see if the legacy-pattern regression has a reusable helper. It does, but the plan does not specify the new pattern.
+- Grepped the repo for `product-doc` / `product_doc` to confirm the plan references a legacy concept not defined anywhere in `tests/`. Only hits are in `_archive/` and `.planning/`, not a reusable helper.
+- Confirmed `docs/plans/README.md` is 49 KB (exists) but did not verify whether it currently contains a #2460 entry; plan line 188 promises to add one, and finding above notes this is untested.

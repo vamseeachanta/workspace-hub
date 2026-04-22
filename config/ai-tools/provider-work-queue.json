@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-22T09:20:08.520115Z",
+  "generated_at": "2026-04-22T17:20:07.819939Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-22T09:20:06.649487Z",
+  "scorecard_generated_at": "2026-04-22T17:20:05.833000Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 12,
-      "total_candidates": 170,
+      "execution_ready_count": 13,
+      "total_candidates": 168,
       "top_issues": [
         {
           "number": 2348,
@@ -71,7 +71,7 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-22T03:06:36Z",
+          "updatedAt": "2026-04-22T09:44:25Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -93,7 +93,7 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-22T02:48:06Z",
+          "updatedAt": "2026-04-22T14:27:19Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -205,21 +205,20 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 0,
-      "total_candidates": 28,
+      "execution_ready_count": 1,
+      "total_candidates": 30,
       "top_issues": [
         {
-          "number": 2188,
-          "title": "test(reporting): add mixed-state golden fixture bundles for licensed-win probe reporting",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2188",
+          "number": 2451,
+          "title": "follow-up(ci): worldenergydata test job still fails after #2433 collection fix \u2014 benchmark fixture + legacy NPV API regressions",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2451",
           "labels": [
-            "enhancement",
             "priority:medium",
-            "cat:operations",
-            "cat:harness"
+            "cat:infrastructure",
+            "status:plan-approved"
           ],
-          "updatedAt": "2026-04-11T09:38:09Z",
-          "execution_ready": false,
+          "updatedAt": "2026-04-22T13:25:45Z",
+          "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
@@ -231,18 +230,19 @@
           ]
         },
         {
-          "number": 2189,
-          "title": "test(reporting): lock deterministic shared-asset canonical placement across latest/history/staged bundles",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2189",
+          "number": 2455,
+          "title": "feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2455",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-11T09:38:12Z",
+          "updatedAt": "2026-04-22T14:09:32Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -253,18 +253,19 @@
           ]
         },
         {
-          "number": 2190,
-          "title": "feat(reporting): add manifest-indexed pruning for orphaned shared assets after successful publication",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2190",
+          "number": 2456,
+          "title": "feat(canonical-spec): extend OrcaFlex semantic proof to lazy/steep-wave riser variants",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2456",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-11T09:38:15Z",
+          "updatedAt": "2026-04-22T14:09:34Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

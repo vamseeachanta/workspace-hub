@@ -1,0 +1,19 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The plan makes the schema more explicit, but prior-snapshot handling and budget semantics are still internally contradictory, and one delta term is mislabeled in a way that will produce inconsistent implementations.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Prior-audit delta contract` and section `Provider budget contract for phase 1` conflict on non-baseline states. The plan introduces `delta_status = prior_snapshot_unreadable` and `provider_missing_from_prior_snapshot`, but the later policy rules only define compliance behavior for `baseline_available` and `no_prior_audit`. That leaves `python3_compliance_status` and cap enforcement undefined for two explicit branches.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `No-history / first-run behavior` nulls `python3_cap_count` and `python3_baseline_count` whenever no usable prior snapshot exists. That contradicts the plan’s own deliverable and `Provider budget contract for phase 1`, which require explicit published per-provider budgets and a machine-checkable scorecard contract. On a true first run, the artifact would not actually publish a budget.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Provider budget contract for phase 1`, provider table uses `week-over-week delta vs prior audit` for Claude/Codex/Gemini, but section `Prior-audit delta contract` defines deltas against the immediately previous checked-in snapshot, not necessarily a weekly interval. That is a schema/semantics mismatch for the same field.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Acceptance Criteria` only requires `no-prior-audit delta behavior`; it does not require the other two explicit malformed-history branches (`prior_snapshot_unreadable`, `provider_missing_from_prior_snapshot`) even though the plan claims they are part of the contract. The plan can pass its own acceptance criteria while still omitting two correctness-critical states.
+
+### Suggestions
+- Define the full state table in one place for all four `delta_status` values, including exact allowed `python3_compliance_status`, whether `python3_cap_count` is populated or null, and the required `python3_compliance_reason` text for each branch.
+- Resolve the first-run budget contradiction explicitly. Either seed `python3_baseline_count` and `python3_cap_count` from the current run on initial publication, or state that phase 1 intentionally publishes no enforceable cap on first run and update the deliverable/acceptance criteria to match.
+- Replace `week-over-week delta` wording with `delta vs previous checked-in audit snapshot` everywhere unless the plan also adds a verified weekly-history source and a separate weekly field name.
+- Add acceptance criteria and tests that require all malformed/missing prior-snapshot branches, not just `no_prior_audit`, to appear in both the JSON contract and markdown rendering.
+
+### Questions for Author
+- On a true first run with no prior snapshot, should the scorecard seed the baseline/cap from the current counts, or should it intentionally publish `null` caps and defer enforcement until the second run? The plan currently says both things.
