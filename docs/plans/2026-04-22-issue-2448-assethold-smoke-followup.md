@@ -5,7 +5,7 @@
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2448
 > **Parent / predecessor:** #2442 (P1 commit `457ea2d`, P2 commit `b8b5439` — landed on `vamseeachanta/assethold` main)
-> **Review artifacts:** scripts/review/results/2026-04-22-plan-2448-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** `scripts/review/results/20260422T095919Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Note:** This is a **follow-up plan**. Implementation is NOT authorized by this draft. User must review and set `status:plan-approved` in-thread after adversarial review converges. No `status:plan-approved` label is set by this plan.
 
 ---
@@ -119,9 +119,11 @@ All offenders are in `.agent-os/`, `modules/`, `scripts/` — **outside** `src/`
 
 ## Deliverable
 
-**Issue-close criterion (same gate shape as #2442):** `python-tests.yml` run on `vamseeachanta/assethold` main produces BOTH:
+**Issue-close criterion (same gate shape as #2442):** a single post-P2 `python-tests.yml` run on `vamseeachanta/assethold` main proves BOTH on the same final repository state:
 1. at least one matrix cell (py3.11 / ubuntu-latest, `test` job) reaches `Run smoke tests first` with smoke-step `conclusion=success`; AND
-2. every Windows cell reaches the `Install dependencies with uv` step (i.e., `actions/checkout@v4` no longer fails with `invalid path`).
+2. every Windows cell reaches `Install dependencies with uv` without any `invalid path` checkout failure.
+
+P1 remains an intermediate gate to prove the git-tree defect is removed, but the formal close criterion is evaluated only on the final post-P2 head commit, not by combining evidence from separate P1 and P2 runs.
 
 Flake8 repair (fixing the `.agent-os/` / `modules/` / `scripts/` offenders) and full `quality-gate` chain green are **out of scope** — file follow-on issues when the smoke baseline is established.
 
@@ -139,19 +141,25 @@ Two scoped commits: P1 (git-tree backslash purge) + P2 (workflow step reorder).
 # Fix is a single commit on assethold main that removes these 2 paths.
 
 on assethold main worktree:
-    for each of {'tests\modules\stocks\analysis\investment\results\Data\multiple_investment.csv',
-                  'tests\modules\stocks\analysis\investment\results\Data\single_investment.csv'}:
-        # Use single-quotes in shell to keep `\` literal.
-        # `git rm` removes both the tree entry and the filesystem file in one step.
-        git rm -- '<literal backslash path>'
+    for each of {'tests\\modules\\stocks\\analysis\\investment\\results\\Data\\multiple_investment.csv',
+                  'tests\\modules\\stocks\\analysis\\investment\\results\\Data\\single_investment.csv'}:
+        # Use single-quotes in shell to keep `\\` literal.
+        # Preferred: remove the tree entry and filesystem file together.
+        if test -f '<literal backslash path>' ; then
+            git rm -- '<literal backslash path>'
+        else
+            # Fallback if the pathological path is index-only in the local checkout.
+            git rm --cached -- '<literal backslash path>'
+        fi
     git commit -m "fix(ci): remove backslash-duplicate tree entries blocking Windows checkout (#2448)"
     git push origin main
 
 # ACCEPTANCE-PHASE-1:
 #   Local: `git ls-tree -r HEAD | awk '{print $4}' | grep -c '\\\\'` == 0
-#   CI (next push): Windows matrix cells advance past `Checkout code` (no more exit 128);
-#     next observable failure is `Install dependencies with uv` (or similar),
-#     i.e., Windows reaches parity with Linux/macOS in step progression.
+#   CI (next push): every Windows cell reaches `Install dependencies with uv`
+#     (not merely checkout success), and no run log contains `invalid path`.
+#     Intermediate steps `Clone assetutilities sibling dependency`, `Set up Python`,
+#     and `Install uv` must therefore also be passing.
 
 # PHASE 2 — Reorder smoke step to run before flake8 (Linux/macOS smoke unblock)
 
@@ -194,20 +202,23 @@ in assethold/.github/workflows/python-tests.yml:
 # Direct-to-main per assethold repo convention (same as #2442 execution).
 # Executor sequence:
 #   1. Commit P1 (tree purge). Push. Wait for CI.
-#   2. Verify: Windows cells advance past `Checkout code` on the P1 run
-#      (jobs register and Checkout step conclusion=success on windows-latest rows).
+#   2. Verify on the P1 run: every Windows cell reaches `Install dependencies with uv`
+#      and no run log contains `invalid path`.
 #   3. Only after P1 CI verification: commit P2 (step reorder). Push. Wait for CI.
-#   4. Verify: py3.11 / ubuntu-latest cell's `Run smoke tests first` step conclusion=success.
+#   4. Verify on the single post-P2 run for the final head commit:
+#      - every Windows cell still reaches `Install dependencies with uv`
+#      - py3.11 / ubuntu-latest `Run smoke tests first` has `conclusion=success`
 # If P1 CI fails unexpectedly (e.g., reveals a second backslash path we missed):
 #   investigate before P2 commit; extend P1 to cover the new entry.
 # If P2 CI fails on the smoke step itself (not lint): file a follow-on — that's product test-debt.
 
 # ACCEPTANCE-PHASE-2:
-#   CI: py3.11 / ubuntu-latest `Run smoke tests first` step conclusion=success.
+#   CI: py3.11 / ubuntu-latest `Run smoke tests first` step conclusion=success
+#   on the same final run that also proves the Windows path is fixed.
 #   Job may still be red downstream at `Lint with flake8` — that is expected
 #   and tracked as follow-on.
 
-# Combined close gate for #2448: P1 + P2 both verified on main CI.
+# Combined close gate for #2448: one post-P2 main-branch run proves both conditions together.
 ```
 
 ---
@@ -231,23 +242,24 @@ in assethold/.github/workflows/python-tests.yml:
 
 ## TDD Test List
 
-Since this plan remediates CI config + git-tree hygiene (not application code), "tests" are **tree + workflow-state assertions** run via `git ls-tree`, `yq`, and `gh run view`.
+Since this plan remediates CI config + git-tree hygiene (not application code), "tests" are **tree + workflow-state assertions** run via `git ls-tree`, `uv run ... python`, and `gh run view`.
 
 | Test | What it verifies | Expected state after fix |
 |---|---|---|
 | P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD -z \| tr '\0' '\n' \| awk -F'\t' '$2 ~ /\\\\/ {print $2}' \| wc -l` | `0` (zero backslash-containing tree entries) |
-| P1-local-fs-clean | `cd assethold && find . -path './.git' -prune -o -type f -name '*\\*' -print \| wc -l` | `0` (no files with `\` in name on disk) |
-| P1-ci-windows-checkout-success | `gh run view <p1-run-id> --repo vamseeachanta/assethold` — each Windows matrix cell's `Checkout code` step | `conclusion=success` on all windows-latest rows |
+| P1-local-index-sanity | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` after P1 staging/commit |
+| P1-local-on-disk-sanity | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` on tracked paths regardless of shell/find glob behavior |
+| P1-ci-windows-reaches-install-deps | `gh run view <p1-run-id> --repo vamseeachanta/assethold --json jobs` — each Windows matrix cell step list | every windows-latest row reaches `Install dependencies with uv` |
 | P1-ci-no-windows-invalid-path | `gh run view <p1-run-id> --log \| grep -c 'invalid path'` | `0` hits |
-| P2-local-step-order | `yq '.jobs.test.steps[] \| .name' .github/workflows/python-tests.yml` — position of `Run smoke tests first` vs `Lint with flake8` | smoke index < lint index |
+| P2-local-step-order | `uv run --no-project --with pyyaml python - <<'PY' ... PY` parses `.github/workflows/python-tests.yml` and asserts `Run smoke tests first` index < `Lint with flake8` index | smoke index < lint index |
 | P2-local-yaml-parses | `uv run --no-project --with pyyaml python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` | exit 0 |
 | P2-ci-smoke-step-green | `gh run view <p2-run-id>` — py3.11/ubuntu-latest `Run smoke tests first` step | `conclusion=success` |
-| P2-ci-smoke-ran-before-lint | same run — step timestamps | smoke `completed_at` < lint `started_at` |
-| combined-close-gate | Both P1 run (windows checkout success) and P2 run (ubuntu smoke success) visible on main | both true on same base |
+| P2-ci-log-order-proof | `gh run view <p2-run-id> --log \| awk '/Run smoke tests first/{smoke=NR} /Lint with flake8/{lint=NR} END {exit !(smoke>0 && lint>0 && smoke<lint)}'` | exit 0 |
+| combined-close-gate | The single post-P2 run on final `main` head shows both: Windows reaches `Install dependencies with uv` and py3.11/ubuntu-latest smoke succeeds | both true on same run |
 
 Pre-push local gates:
 - Before P1 commit: `git ls-tree -r HEAD | awk '{print $4}' | grep -c '\\\\'` returns `2` (the entries we're about to delete); after `git rm` + add, `git ls-files | grep -c '\\\\'` returns `0`.
-- Before P2 commit: local YAML parse exit 0, `yq` step-order check passes, `uv run pytest tests/test_smoke.py -v` still green (same baseline as #2442 P2).
+- Before P2 commit: local YAML parse exit 0, Python-based step-order check passes, `uv run pytest tests/test_smoke.py -v` still green (same baseline as #2442 P2).
 
 ---
 
@@ -256,33 +268,38 @@ Pre-push local gates:
 - [ ] Two pathological backslash-named tree entries removed from `vamseeachanta/assethold` main at `tests\modules\stocks\analysis\investment\results\Data\{multiple,single}_investment.csv` (P1 commit on main)
 - [ ] Zero backslash-containing paths remain in `git ls-tree -r HEAD` on assethold main after P1
 - [ ] Forward-slash equivalents (`tests/modules/stocks/analysis/investment/results/Data/{multiple,single}_investment.csv`) remain untouched — same blob SHAs as before (`ff919799`, `a5f160b2`)
-- [ ] P1 CI run: every `windows-latest` matrix cell's `Checkout code` step has `conclusion=success`; no `invalid path` string in the run log
+- [ ] P1 CI run: every `windows-latest` matrix cell reaches `Install dependencies with uv`; no `invalid path` string in the run log
 - [ ] `python-tests.yml` step order in the `test` job: `Install project in development mode` → `Run smoke tests first` → `Lint with flake8` (smoke before lint) (P2 commit on main)
 - [ ] P2 commit preserves all existing step arguments, env blocks, and downstream jobs — diff is scope-limited to moving one step block
-- [ ] P2 CI run: `Run smoke tests first` step on py3.11/ubuntu-latest has `conclusion=success`
+- [ ] Single post-P2 CI run on the final `main` head proves BOTH: all `windows-latest` cells reach `Install dependencies with uv` AND py3.11/ubuntu-latest `Run smoke tests first` has `conclusion=success`
 - [ ] P1 and P2 are **separate commits** pushed sequentially with CI verification between (not bundled)
 - [ ] Local smoke still green after P2: `cd assethold && uv run pytest tests/test_smoke.py -v` passes (same 17 baseline as #2442 P2)
-- [ ] Review artifacts posted to `scripts/review/results/2026-04-22-plan-2448-{claude,codex,gemini}.md`
+- [ ] Review artifacts posted to `scripts/review/results/20260422T095919Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
 - [ ] No changes pushed to `assethold/` during this planning session — fixes land only after user sets `status:plan-approved` on #2448 after reviewing this plan and adversarial review
-- [ ] Flake8 job may remain red in the P2 run (expected) — close criterion is the **smoke step** conclusion, not the whole lint step; follow-on issues filed for flake8 offender repair and `quality-gate` chain
-- [ ] Predecessor issue #2442 close criterion re-evaluated after P2 lands (if the smoke cell on main is green, does that satisfy #2442's gate too? flag for user decision during P2 attestation)
+- [ ] Flake8 job may remain red in the P2 run (expected) — close criterion is the **smoke step** plus Windows-progress proof on the final run, not full test-job greenness; follow-on issues filed for flake8 offender repair and `quality-gate` chain
+- [ ] #2442 is **not** auto-closed as a side effect of #2448. If the final run satisfies the historical #2442 gate too, that is surfaced back to the user as a separate closeout decision in #2442 for audit-trail clarity
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Wave 1 adversarial review completes. Plan remains in draft status until at least one review wave converges; no `status:plan-approved` label is set until user re-confirms in-thread. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | (pending) | |
-| Codex | (pending) | |
-| Gemini | (pending) | |
+| Claude | APPROVE | Tight scope and correct diagnosis; suggested safer `git rm --cached` fallback, log-order proof instead of step timestamps, and explicit non-auto-close wording for #2442. |
+| Codex | MAJOR | Required the final close gate to be proven on a single post-P2 run, not split across P1/P2; required Windows verification to reach `Install dependencies with uv`, not just checkout; flagged `yq` tooling assumption. |
+| Gemini | APPROVE | No blocking defects; suggested optional wider Windows-workflow audit and recurrence-source question. |
 
-**Wave 1 overall result:** (pending)
+**Wave 1 overall result:** MAJOR — Codex identified three correctness gaps in the verification contract. The draft has been revised to require (1) Windows reaching `Install dependencies with uv`, (2) a single final post-P2 run proving both Windows and ubuntu smoke conditions together, and (3) repo-standard Python-based workflow-order verification instead of `yq`.
 
 Revisions made based on review:
-- (to be populated after first review wave)
+- Reframed the deliverable and combined close gate so the formal proof is evaluated on one post-P2 run for the final head commit.
+- Tightened P1 acceptance from checkout success to `Install dependencies with uv` reachability on every Windows matrix cell.
+- Replaced the `yq`-based local step-order check with a `uv run --with pyyaml python` verification path.
+- Replaced timestamp-based CI ordering proof with a log-order assertion.
+- Added `git rm --cached --` fallback in case pathological paths are index-only locally.
+- Clarified that #2442 is not auto-closed as a side effect of #2448; that remains a separate user-visible closeout decision.
+
+The plan remains in `draft` until a rerun review confirms the revised verification contract is approval-ready.
 
 ---
 
