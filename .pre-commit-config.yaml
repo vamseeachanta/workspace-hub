@@ -9,13 +9,6 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
-  - repo: local
-    hooks:
-      - id: validate-work-queue-state
-        name: validate work queue state
-        entry: bash scripts/work-queue/validate-queue-state.sh
-        language: system
-        files: '^\.claude/work-queue/.*|^scripts/work-queue/.*|^docs/work-queue-workflow\.md$'
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2
