@@ -7,7 +7,7 @@
 > **Parent execution issue:** #2433 (collection-unblock, landed at worldenergydata `0f8ac026`)
 > **Parent meta issue:** #2424 (ecosystem CI health)
 > **Sibling follow-up:** #2452 (flake8 debt keeping `lint` job red)
-> **Review artifacts:** `scripts/review/results/20260422T110857Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T111358Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -140,9 +140,9 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-22-issue-2451-worldenergydata-test-followup.md` |
-| Plan review — Claude | `scripts/review/results/20260422T110857Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
-| Plan review — Codex | `scripts/review/results/20260422T110857Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
-| Plan review — Gemini | `scripts/review/results/20260422T110857Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
+| Plan review — Claude | `scripts/review/results/20260422T111358Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
+| Plan review — Codex | `scripts/review/results/20260422T111358Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
+| Plan review — Gemini | `scripts/review/results/20260422T111358Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
 | Implementation (cluster A) | `worldenergydata/.github/workflows/ci.yml` (`test` job install step only, and only if CI log proves plugin absence) **or** `worldenergydata/tests/benchmarks/test_eia_benchmarks.py` (fallback skip if workflow edit would be a no-op) |
 | Implementation (cluster B) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` (promote fixture verbatim from current class fixture) |
 | Implementation (cluster C) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py` (collection-safe module skip or repoint) + `test_cash_flow_components.py` (class-level skip on `TestProductionAPI12CashFlowMethods` only, or repoint) |
@@ -156,6 +156,12 @@ Primary acceptance lane for #2451 is the worldenergydata `Test Python 3.11` job,
 1. benchmark-fixture failure,
 2. `config_with_economics` fixture-scope failure,
 3. legacy NPV import / missing `perform_npv_calculation` failure.
+
+Delivery contract for implementation is explicit and mandatory, not advisory:
+- create a dedicated execution branch in `vamseeachanta/worldenergydata` named `nightly/2451-worldenergydata` unless push policy forces a fork branch with the same suffix
+- target the worldenergydata `main` branch for the PR
+- if direct push to `vamseeachanta/worldenergydata` is unavailable, push the execution branch to a fork and open the PR from that fork into upstream `main`
+- do not merge workspace-hub planning commits with worldenergydata implementation commits
 
 If the same three signatures are also observed on Python 3.10 or 3.12 during execution, those sibling matrix lanes are included in the fix/verification set for this issue as well. Unrelated residual failures may remain only if they are separately enumerated as out-of-scope follow-up work. Plan #2452 remains responsible for the `Lint` job flake8 debt independently.
 
@@ -190,14 +196,15 @@ If the same three signatures are also observed on Python 3.10 or 3.12 during exe
 # For Cluster A, the authoritative RED proof is the failing CI log plus local
 # provenance, not a mandatory stale-env local failure reproduction.
 cd worldenergydata/
-uv run pytest tests/benchmarks/test_eia_benchmarks.py --override-ini="addopts=" \
-    | grep -E "fixture 'benchmark' not found|ERROR tests/benchmarks" || true
+set -o pipefail
+uv run pytest tests/benchmarks/test_eia_benchmarks.py --override-ini="addopts=" 2>&1 \
+    | tee /tmp/2451-benchmark-red.log | grep -E "fixture 'benchmark' not found|ERROR tests/benchmarks"
 uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py \
-    --override-ini="addopts=" \
-    | grep -E "fixture 'config_with_economics' not found|ERROR"
+    --override-ini="addopts=" 2>&1 \
+    | tee /tmp/2451-cashflow-red.log | grep -E "fixture 'config_with_economics' not found|ERROR"
 uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py \
-    --override-ini="addopts=" --collect-only \
-    | grep -E "ModuleNotFoundError|ImportError"
+    --override-ini="addopts=" --collect-only 2>&1 \
+    | tee /tmp/2451-current-npv-red.log | grep -E "ModuleNotFoundError|ImportError"
 
 # Step 0b: confirm CI install-time reality — pull latest failing job log
 #   gh run view <run_id> --repo vamseeachanta/worldenergydata --log-failed \
@@ -214,10 +221,12 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #
 # Step 0d: locate the post-refactor NPV entry point before C-repoint is selectable.
 #   rg -n "def .*npv|perform_npv_calculation|perform_excel_aligned_npv_calculation" src/worldenergydata/
-# Record the concrete module path in execution notes. Time-box this discovery to the
-# bounded grep/read surface above; if no non-legacy replacement path is identified
-# within that bounded pass, C-repoint is blocked and C-skip remains the only
-# approval-safe default.
+#   rg -n "def .*npv|class .*NPV|cash.?flow|economics" \
+#      src/worldenergydata/bsee/analysis/financial/ src/worldenergydata/financial/ \
+#      src/worldenergydata/economics/ src/worldenergydata/cashflow/ 2>/dev/null || true
+# Record the concrete module path in execution notes. Time-box this discovery to this
+# exact grep/read surface only; if no non-legacy replacement path is identified here,
+# C-repoint is off the table for this plan and C-skip remains the only approval-safe default.
 
 # === Cluster A — benchmark fixture ===
 # This branch is CONDITIONAL. Do not edit ci.yml until the failing CI log proves
@@ -242,7 +251,7 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 # or, if needed and supported:
 #   run: uv sync --all-extras --all-groups
 #
-# Branch A1b (diagnose plugin-loading bug, preferred starting branch):
+# Branch A1b (diagnose plugin-loading bug, preferred starting branch after A0/A0b):
 # If CI already has pytest-benchmark installed, inspect these bounded surfaces in order:
 #   1. pytest configuration in `pytest.ini`, `pyproject.toml`, and `tests/conftest.py`
 #      for `addopts`, `pytest_plugins`, or plugin-disabling directives.
@@ -255,9 +264,10 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 # Allowed fixes under #2451 if A1b is confirmed:
 #   - remove/neutralize benchmark-plugin disablement in test-job scope
 #   - add explicit plugin loading only within the test job / target benchmark file
-#   - if no bounded plugin-loading fix is found within these 4 inspection surfaces,
-#     stop and choose A2 with an explicit tracking issue rather than continuing
-#     unbounded diagnosis
+#   - if no bounded plugin-loading fix is found after inspecting all 4 surfaces,
+#     confirming local `uv run --all-extras` provenance, and checking the failed CI log,
+#     STOP and return to planning with findings captured on #2451; do NOT silently
+#     expand diagnosis and do NOT fall through to A2 unless runner package absence was proven
 # `pyproject.toml` is out of scope for edit unless execution produces a concrete,
 # minimal repro proving package metadata interaction is the root cause of the missing
 # `benchmark` fixture on runner; absent that proof, treat A1b as configuration/plugin
@@ -269,7 +279,8 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #
 # Branch A2 (fallback, defer): skip benchmark tests only when the package is
 # genuinely absent on the runner and the workflow edit is either unsupported or
-# out of scope for this issue.
+# out of scope for this issue. A2 is NOT a fallback for unresolved plugin-autoload
+# suppression when the package is already present; that path returns to planning.
 # Add a module-top bare importorskip:
 #   pytest.importorskip("pytest_benchmark")
 # A2 is NOT valid when pytest_benchmark imports successfully but the fixture is
@@ -332,6 +343,8 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #     only to `TestProductionAPI12CashFlowMethods`, which is the legacy-API
 #     consumer that currently fails.
 #   - Every skip reason must reference #2451 explicitly.
+#   - Use this literal template for all skip-based Cluster C sites:
+#       "legacy NPV API removed/refactored; deferred by workspace-hub#2451 and worldenergydata#<TRACKER_ID> pending re-enable/delete decision"
 #
 # Sub-path C-delete (aggressive): remove the two files entirely.
 #   - Rejected as default because test-preservation is cheaper than
@@ -352,26 +365,36 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #     two legacy NPV targets targeted by Cluster C
 # Step V1a: prove Cluster B at runtime, not just collection:
 #   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestCashFlowComponents::test_opex_calculation_basic -v --override-ini="addopts="
+#   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestCashFlowComponents::test_net_cash_flow_calculation -v --override-ini="addopts="
 #   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestProductionAPI12CashFlowMethods::test_revenue_table_generation_structure -v --override-ini="addopts="
-# Expected: first test PASSES; second test is SKIPPED (C-skip) or PASSES (C-repoint), but does not error on missing fixture.
-# Step V2: run the full CI command locally:
+# Expected: primary non-legacy tests PASS; legacy-class test is SKIPPED (C-skip) or PASSES (C-repoint), but does not error on missing fixture.
+# Step V2: run the full CI command locally as an observational audit:
 #   uv run pytest tests/ -v --tb=short --cov=src
 # Expected: the three #2451 clusters are eliminated from the failure surface.
-# Other unrelated residual failures may remain, but they must be enumerated as
-# outside this issue's scope, not counted as satisfying the three-cluster fix.
-# Step V3: push the fix branch and confirm the matrix job on run <new_id>
+# Other unrelated residual failures may remain and do NOT fail #2451 by themselves,
+# but they must be enumerated explicitly as outside this issue's scope.
+# Step V3: create/push the dedicated execution branch and confirm the matrix job on run <new_id>
 # at worldenergydata SHA <new_sha>.
+#   - branch name: `nightly/2451-worldenergydata` on upstream if push is allowed,
+#     otherwise the same branch name on a fork with PR target `vamseeachanta/worldenergydata:main`
+#   - open a PR against worldenergydata `main`
 # Step V3a: `Test Python 3.11` is the mandatory close gate because that lane is
 # directly evidenced in run 24757842396.
 # Step V3b: inspect Python 3.10 / 3.12 lanes on the new run. Even if those lanes did
 # not previously provide the primary evidence, perform a targeted post-fix check that
 # the affected benchmark and NPV targets do not regress there after the shared test/
-# workflow edits. If any of the same three #2451 signatures appear on 3.10 / 3.12,
-# those lanes immediately join this issue's required verification set and must be
-# cleared before closure.
+# workflow edits by checking for the same three signatures:
+#   - `fixture 'benchmark' not found`
+#   - `fixture 'config_with_economics' not found`
+#   - `ModuleNotFoundError|ImportError|perform_npv_calculation`
+# If any of those signatures appear on 3.10 / 3.12, those lanes immediately join this
+# issue's required verification set and must be cleared before closure.
 # Step V3c: record a before/after failure-set comparison for the affected targets on
 # 3.11 and the inspected 3.10 / 3.12 lanes so branch selection and closure are auditably
 # tied to concrete signatures rather than judgment calls.
+# Step V3d: if Cluster A1a edits `.github/workflows/ci.yml`, assert post-edit diff scope:
+#   git diff -- .github/workflows/ci.yml
+# and verify only the `test` job install step changed; no `lint`-job lines changed.
 # Step V4: re-run `uv run pytest tests/ --collect-only --override-ini="addopts="`
 # to ensure no new collection failures were introduced by the fixture/skip edits.
 # Step V5: if rebasing the execution branch onto current worldenergydata `main`
@@ -404,7 +427,7 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | verify_benchmark_cluster_resolved | `uv run pytest tests/benchmarks/test_eia_benchmarks.py --override-ini="addopts="` no longer reports `fixture 'benchmark' not found` | worldenergydata with A1a (or A2) applied | Exit code 0 for A1a (tests pass) or SKIPPED line for A2 |
-| verify_benchmark_root_cause_confirmed | `gh run view 24757842396 --repo vamseeachanta/worldenergydata --log-failed | grep -c "fixture 'benchmark' not found"` plus install-log inspection | failing CI run | >0 only if Cluster A workflow change is justified; otherwise branch to A1b/A2 |
+| verify_benchmark_root_cause_confirmed | `gh run view 24757842396 --repo vamseeachanta/worldenergydata --log-failed | grep -c "fixture 'benchmark' not found"` plus install-log inspection | failing CI run | Confirms benchmark signature is present in CI; branch selection then depends on separate absent-on-runner vs plugin-autoload evidence |
 | verify_local_all_extras_provenance | `uv run --all-extras python -c "import pytest_benchmark; print(pytest_benchmark.__file__)"` | worldenergydata local env | Import succeeds or clearly fails with provenance recorded before choosing A1a vs A1b |
 | verify_cashflow_fixture_consumers | `rg -n "config_with_economics" tests/modules/bsee/analysis/npv-data-source-comparison/` | pre-fix tree | only the expected fixture definition + consumer references are present |
 | verify_cashflow_fixture_runtime_primary | `uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestCashFlowComponents::test_opex_calculation_basic -v --override-ini="addopts="` | worldenergydata with B1 applied | PASS |
@@ -412,7 +435,7 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 | verify_cashflow_no_duplicate_fixture | Grep for `def config_with_economics` in the test file after edit | post-edit file when B1 fixture promotion is applied | Exactly 0 hits in `test_cash_flow_components.py` (fixture only in conftest) |
 | verify_legacy_npv_tracker_exists | `gh issue view <worldenergydata_tracker_id> --repo vamseeachanta/worldenergydata` plus grep skip strings for both `#2451` and that tracker id | skip-based Cluster C path | Tracker issue exists before skip lands, and every skip string references both issues |
 | verify_current_npv_collection_safe | `uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py --collect-only --override-ini="addopts="` | worldenergydata with C-skip or C-repoint | No import-time collection error; file is either skipped or collects cleanly |
-| verify_ci_residual_failure_set | `uv run pytest tests/ -v --tb=short --cov=src` | full CI command | The three #2451 failure signatures are absent; any remaining failures are explicitly outside this issue's scope |
+| verify_ci_residual_failure_set | `uv run pytest tests/ -v --tb=short --cov=src` | full CI command | Used as observational audit only: the three #2451 failure signatures are absent, and any remaining failures are explicitly recorded as outside this issue's scope |
 | verify_ci_matrix_effect | New worldenergydata CI run on the fix SHA shows the three #2451 clusters gone from the `Test Python 3.11` job | `gh run view <id>` | No benchmark-fixture, `config_with_economics`, or legacy-NPV-import/method errors remain |
 | verify_ci_matrix_no_regression_310_312 | Inspect Python 3.10 / 3.12 lanes for the affected benchmark + NPV targets after the shared edits land | `gh run view <id>` on fix run | No new benchmark/fixture/legacy-NPV regression introduced on 3.10 / 3.12; if the same three signatures appear, they are fixed before closure |
 
@@ -420,22 +443,23 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 
 ## Acceptance Criteria
 
-- [ ] Exact CI command `uv run pytest tests/ -v --tb=short --cov=src` in the worldenergydata clone no longer reports the three failure signatures from the #2451 body: (1) benchmark fixture missing, (2) `config_with_economics` fixture missing, (3) legacy NPV import / missing `perform_npv_calculation` failures.
-- [ ] Cross-repo execution contract is explicit before implementation: the fix lands on a dedicated worldenergydata branch (recommended `nightly/2451-worldenergydata`) and merges independently of workspace-hub planning commits; any dependency on #2433 landed state is rebased onto current worldenergydata `main` before PR creation. If that rebase surfaces conflicts, they are resolved on the execution branch and the targeted RED/GREEN checks are re-run; if the conflict resolution changes the failure surface beyond the three #2451 clusters, execution stops and the issue returns to planning instead of silently broadening scope.
+- [ ] Signature-based close gate is satisfied: the three #2451 failure signatures from the issue body are absent from the targeted local runs and from the `Test Python 3.11` CI lane on the fix SHA: (1) benchmark fixture missing, (2) `config_with_economics` fixture missing, (3) legacy NPV import / missing `perform_npv_calculation` failures.
+- [ ] Full-suite command `uv run pytest tests/ -v --tb=short --cov=src` is treated as observational audit, not a hard pass/fail gate for #2451. Any remaining non-#2451 failures are explicitly enumerated as unrelated follow-up work rather than blocking issue closure.
+- [ ] Cross-repo execution contract is explicit before implementation: the fix lands on a dedicated worldenergydata branch named `nightly/2451-worldenergydata` on upstream when push is allowed, otherwise on a fork branch with the same suffix, and opens a PR into `vamseeachanta/worldenergydata:main`. Workspace-hub planning commits remain separate. Any dependency on #2433 landed state is rebased onto current worldenergydata `main` before PR creation. If that rebase surfaces conflicts, they are resolved on the execution branch and the targeted RED/GREEN checks are re-run; if the conflict resolution changes the failure surface beyond the three #2451 clusters, execution stops and the issue returns to planning instead of silently broadening scope.
 - [ ] Cluster A branch is chosen only after failed-job log inspection on run `24757842396` confirms the benchmark root cause. Local provenance is also checked with `uv run --all-extras` before choosing A1a vs A1b. If a workflow edit is made, it is scoped to the `test` job only; `lint` remains untouched for #2452. A2 skip-based fallback is allowed only with recorded evidence that A1a/A1b could not preserve benchmark execution within this issue's bounded scope.
 - [ ] If Cluster B remains needed after Cluster C handling, `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` exists and defines `config_with_economics` at module scope using the same values as the current in-class fixture.
 - [ ] If Cluster B is activated, `test_cash_flow_components.py` no longer contains an in-class `config_with_economics` fixture definition after the edit (no duplicate shadowing).
 - [ ] Cluster B is proven at runtime, not just collection: a representative `TestCashFlowComponents` test passes and the legacy class test is either skipped cleanly or passes after repoint.
 - [ ] Cluster C handling is collection-safe: `test_current_npv_implementation.py` no longer errors during collection, and `test_cash_flow_components.py` preserves `TestCashFlowComponents` coverage while only the legacy-API class is skipped or repointed.
-- [ ] If Cluster C uses skip-based deferral, the skip reason(s) reference `#2451` and a concrete worldenergydata follow-up issue for re-enable/delete ownership.
-- [ ] GitHub CLI access is verified with concrete repo operations before execution of any branch that depends on failed-run log inspection or tracker creation: the executor can read run `24757842396` in `vamseeachanta/worldenergydata`, view workspace-hub issue `#2451`, and, for skip-based Cluster C, create/view the required worldenergydata tracker issue. If any of those repo operations fail, execution pauses and the blocker is documented on workspace-hub issue `#2451` rather than guessed around locally.
+- [ ] If Cluster C uses skip-based deferral, the skip reason(s) use the literal template defined in this plan and reference `#2451` plus a concrete worldenergydata follow-up issue for re-enable/delete ownership. If worldenergydata issue creation is temporarily unavailable despite verified repo read access, the code comment / skip reason must still reference `#2451`, and the missing-tracker blocker must be documented immediately on `#2451` before merge/close.
+- [ ] GitHub CLI access is verified with concrete repo operations before execution of any branch that depends on failed-run log inspection or tracker creation: the executor can read run `24757842396` in `vamseeachanta/worldenergydata`, view workspace-hub issue `#2451`, and, for skip-based Cluster C, attempt to create/view the required worldenergydata tracker issue. If run-log access fails, execution pauses and the blocker is documented on workspace-hub issue `#2451` rather than guessed around locally.
 - [ ] No file under the #2433 conftest skip-set is re-introduced to the collection surface by accident (re-run `uv run pytest tests/ --collect-only --override-ini="addopts="` still reports 0 collection errors, and the skipped-path set is rechecked in execution notes).
 - [ ] A worldenergydata CI run on the fix SHA shows the three #2451 failure clusters gone from the mandatory `Test Python 3.11` job.
 - [ ] Python 3.10 / 3.12 lanes are also inspected for the affected benchmark + NPV targets after the shared test/workflow edits land. If the same three signatures appear there, those lanes become required close gates and are fixed before closure; if they do not, execution notes still record the no-regression inspection result.
 - [ ] Remaining failures, if any, are explicitly enumerated as unrelated follow-up work rather than counted toward this issue.
 - [ ] Adversarial review of this plan across ≥ 2 providers returns APPROVE or MINOR after final revisions.
 - [ ] Deferred `docs/plans/README.md` indexing has an explicit owner/trigger: the workspace-hub consolidation pass that serializes parallel planning branches after this plan converges; it is intentionally not part of this branch due to branch-contention guardrails.
-- [ ] `status:plan-review` label applied on #2451, with the plan comment linking this file and its review artifacts. User approval and `.planning/plan-approved/2451.md` marker remain workflow gates before any implementation commit, not deliverable proof.
+- [ ] `status:plan-review` label applied on #2451, with the plan comment linking this file and its review artifacts. User approval and `.planning/plan-approved/2451.md` marker remain workflow gates before any implementation commit, not deliverable proof. Do not self-apply `status:plan-approved` or treat a handoff prompt as approval.
 
 ---
 
@@ -443,18 +467,20 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | APPROVE | Plan is technically sound; remaining notes were limited to minor wording/clarification opportunities around branch gating and auditability. |
-| Codex | MAJOR | Remaining blockers focused on speculative `pyproject.toml` edit scope, stronger repo-specific GitHub preflight, and tighter 3.10/3.12 no-regression verification. |
+| Claude | MAJOR | Remaining blockers focused on delivery-contract precision, bounded A1b/C-repoint search rules, explicit 3.10/3.12 evidence shape, and hard-gate visibility. |
+| Codex | MAJOR | Remaining blockers focused on Cluster A contradiction, full-suite gate mismatch, and over-coupled tracker prerequisite. |
 | Gemini | APPROVE | No blocking defects; only minor manual-inspection / uv-version notes. |
 
-**Wave 8 overall result:** MAJOR — remaining objections are still verification-contract precision rather than root-cause diagnosis. This revision (1) removes `pyproject.toml` from the edit scope unless future execution produces a concrete repro that reopens planning, (2) strengthens GitHub preflight from `gh auth status` to concrete repo operations for run-log read and issue view/create capability, and (3) upgrades 3.10/3.12 from passive observation to targeted no-regression inspection after the shared edits land.
+**Wave 9 overall result:** MAJOR — remaining objections are still execution-contract precision rather than technical diagnosis. This revision (1) makes the delivery branch/PR path mandatory and explicit, (2) resolves the A1b/A2 contradiction by requiring replan rather than silent fallback when plugin-autoload remains unresolved, (3) converts the full-suite pytest run into observational audit instead of a hard close gate, (4) adds explicit grep/signature rules for 3.10/3.12 inspection, (5) bounds C-repoint discovery to enumerated candidate paths and turns 'no hits' into an explicit C-skip-only outcome for this plan, (6) adds literal skip-string and workflow-diff assertions, and (7) promotes the no-self-approval rule into acceptance criteria.
 
 Revisions made based on review:
-- Updated the review summary to the latest rerun wave.
-- Strengthened Step -2 to require concrete repo-operation checks, not just auth presence.
-- Re-scoped A1b so `pyproject.toml` remains diagnostic-read-only and is not an edit target under the current bounded plan.
-- Added explicit targeted 3.10/3.12 no-regression inspection plus before/after failure-set recording.
-- Split the matrix acceptance into separate mandatory-3.11, inspect-3.10/3.12, and residual-failure bullets.
+- Updated review artifact references to the latest rerun wave.
+- Added mandatory branch/PR delivery contract in the Deliverable and acceptance sections.
+- Hardened RED commands with `set -o pipefail` plus tee/log capture.
+- Enumerated bounded C-repoint search locations and made no-hit outcome explicit.
+- Resolved Cluster A contradiction: unresolved plugin-autoload after bounded A1b returns to planning; A2 is only for proven runner package absence.
+- Reframed full-suite pytest as observational audit and changed close gate to signature-based verification.
+- Added explicit 3.10/3.12 signature checks, backup Cluster B runtime test, literal skip-reason template, workflow-diff assertion, and no-self-approval language.
 
 The plan remains in `draft` pending the next rerun review wave.
 
