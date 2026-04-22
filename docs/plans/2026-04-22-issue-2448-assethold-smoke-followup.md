@@ -246,12 +246,15 @@ Since this plan remediates CI config + git-tree hygiene (not application code), 
 
 | Test | What it verifies | Expected state after fix |
 |---|---|---|
-| P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD -z \| tr '\0' '\n' \| awk -F'\t' '$2 ~ /\\\\/ {print $2}' \| wc -l` | `0` (zero backslash-containing tree entries) |
+| P1-local-path-count-precheck | `cd assethold && git ls-tree -r HEAD --name-only | grep -F '\\' | wc -l` | `2` before P1; catches any surprise extra backslash path before deletion |
 | P1-local-index-clean | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` after P1 staging/commit |
-| P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD -z \| tr '\0' '\n' \| awk -F'\t' '$2 ~ /\\\\/ {print $2}' \| wc -l` | `0` (zero backslash-containing tree entries after P1 lands) |
+| P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD --name-only | grep -F '\\' | wc -l` | `0` after P1 lands |
+| P1-local-forward-slash-blobs-intact | `cd assethold && git rev-parse HEAD:tests/modules/stocks/analysis/investment/results/Data/multiple_investment.csv && git rev-parse HEAD:tests/modules/stocks/analysis/investment/results/Data/single_investment.csv` | `ff919799...` and `a5f160b2...` remain present after P1 |
+| P1-local-no-literal-consumers | `cd assethold && grep -rI 'tests\\\\modules\\\\stocks' src tests scripts .agent-os modules` | zero hits before P1 commit |
 | P1-ci-windows-reaches-install-deps | `gh run view <p1-run-id> --repo vamseeachanta/assethold --json jobs` — each Windows matrix cell step list | every windows-latest row reaches `Install dependencies with uv` |
 | P1-ci-no-windows-invalid-path | job-scoped Windows checkout logs from `gh run view <p1-run-id> --json jobs` / `gh run view --job <job-id> --log` | zero `##[error]error: invalid path` hits in every Windows `Checkout code` step |
-| P2-local-step-order | `uv run --no-project --with pyyaml python - <<'PY' ... PY` parses `.github/workflows/python-tests.yml` and asserts `Run smoke tests first` index < `Lint with flake8` index | smoke index < lint index |
+| P2-local-step-order-precheck | `uv run --no-project --with pyyaml python - <<'PY' ... PY` parses current workflow and asserts `Run smoke tests first` index > `Lint with flake8` index before editing | pre-edit order proven wrong |
+| P2-local-step-order | `uv run --no-project --with pyyaml python - <<'PY' ... PY` parses edited workflow and asserts `Run smoke tests first` index < `Lint with flake8` index | smoke index < lint index |
 | P2-local-yaml-parses | `uv run --no-project --with pyyaml python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` | exit 0 |
 | P2-ci-step-order-proof | `gh run view <p2-run-id> --repo vamseeachanta/assethold --json jobs` — locate the `Test on Python 3.11 (ubuntu-latest)` job and assert step order in its step array places `Run smoke tests first` before `Lint with flake8` | job-scoped step order correct |
 | P2-ci-smoke-step-green | same job-scoped JSON query on `Test on Python 3.11 (ubuntu-latest)` | `Run smoke tests first` step `conclusion=success` |
@@ -270,12 +273,12 @@ Pre-push local gates:
 - [ ] Zero backslash-containing paths remain in `git ls-tree -r HEAD` on assethold main after P1
 - [ ] Forward-slash equivalents (`tests/modules/stocks/analysis/investment/results/Data/{multiple,single}_investment.csv`) remain untouched — same blob SHAs as before (`ff919799`, `a5f160b2`)
 - [ ] P1 CI run: every `windows-latest` matrix cell reaches `Install dependencies with uv`; no `invalid path` string in the run log
-- [ ] `python-tests.yml` step order in the `test` job: `Install project in development mode` → `Run smoke tests first` → `Lint with flake8` (smoke before lint) (P2 commit on main)
+- [ ] `python-tests.yml` step order in the `test` job is proven wrong before editing, then proven corrected after editing: `Install project in development mode` → `Run smoke tests first` → `Lint with flake8` (smoke before lint) (P2 commit on main)
 - [ ] P2 commit preserves all existing step arguments, env blocks, and downstream jobs — diff is scope-limited to moving one step block
 - [ ] Single post-P2 CI run on the final `main` head proves BOTH: all `windows-latest` cells reach `Install dependencies with uv` AND py3.11/ubuntu-latest `Run smoke tests first` has `conclusion=success`
 - [ ] P1 and P2 are **separate commits** pushed sequentially with CI verification between (not bundled)
 - [ ] Local smoke still green after P2: `cd assethold && uv run pytest tests/test_smoke.py -v` passes (same 17 baseline as #2442 P2)
-- [ ] Review artifacts posted to `scripts/review/results/20260422T095919Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
+- [ ] Review artifacts posted to `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
 - [ ] No changes pushed to `assethold/` during this planning session — fixes land only after user sets `status:plan-approved` on #2448 after reviewing this plan and adversarial review
 - [ ] Flake8 job may remain red in the P2 run (expected) — close criterion is the **smoke step** plus Windows-progress proof on the final run, not full test-job greenness; follow-on issues filed for flake8 offender repair and `quality-gate` chain
 - [ ] #2442 is **not** auto-closed as a side effect of #2448. If the final run satisfies the historical #2442 gate too, that is surfaced back to the user as a separate closeout decision in #2442 for audit-trail clarity
