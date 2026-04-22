@@ -1,0 +1,20 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The redraft fixes some earlier ambiguity, but the current taxonomy is still internally contradictory and the resource-intelligence evidence is not tight enough to support the proposed confinement tests.
+
+### Issues Found
+- `Resolved Classification Rule for This Issue -> Allowed bucket` and `TDD Test List -> test_stage_transition_references_are_limited_to_two_legacy_redirect_docs_outside_history_buckets` claim that only two non-history files may retain these stale names, but repo-attested source files still intentionally contain them: `tests/helpers/stale_reference_docs.py` hard-codes `start_stage.py`, `exit_stage.py`, and `verify_checklist.py` in `CORE_BANNED_STALE_REFERENCE_PATTERNS`, and `scripts/analysis/provider_session_ecosystem_audit.py` hard-codes them in `LEGACY_REMEDIATION_RULES[legacy_work_queue_transition]`. Those files are neither in the plan's allowed legacy-doc bucket nor in its history/generated bucket, so the plan's stated confinement rule does not match the repo it is planning to change.
+- `Pseudocode` says to "scan the explicit legacy redirect files and assert they are the only non-history files allowed to retain those names," while `TDD Test List` simultaneously requires `test_stage_transition_redirect_targets_exist_in_legacy_map_and_audit_rule` to validate `scripts/analysis/provider_session_ecosystem_audit.py` as an authoritative source. That leaves a correctness-critical decision unresolved: is the audit generator an allowed retained-reference surface, or must it be refactored to stop containing the stale names? The plan does not decide.
+- `Resource Intelligence Summary -> Current scan findings relevant to scope` asserts "No current matches were found in .gemini/**/*.md or .planning/templates/**/*.md," but the plan provides no attested scan artifact, command output, or enumerated path evidence for those claims. For approval-stage review, those are still assertions, not evidence-tight resource intel.
+- `Files to Change -> .claude/docs/data-format-guide.md` says the rewrite will "redirect the prose to current governance/review surfaces or a generic current parser description." That is still an execution-time branch on the only known live rewrite target. The plan has not chosen the replacement guidance, so the most important content decision is still deferred to implementation.
+
+### Suggestions
+- Add an explicit fourth bucket for live tooling/test-source files that must mention the stale names as detection or remediation data, or commit to refactoring those files so the names no longer appear literally. Update `Resolved Classification Rule`, `Pseudocode`, `TDD Test List`, and `Acceptance Criteria` to use the same taxonomy.
+- Decide now what `scripts/analysis/provider_session_ecosystem_audit.py` is for this issue: allowed retained-reference tooling, or in-scope cleanup. The current plan depends on that file and simultaneously excludes it.
+- Replace unsupported scan assertions with attested evidence: include the exact scan command/output or a checked file list for `.gemini/**/*.md` and `.planning/templates/**/*.md`, or remove those claims from resource intelligence.
+- Specify the exact replacement guidance for `.claude/docs/data-format-guide.md` instead of leaving an `or` choice. If the canonical replacement is governance docs/hooks, name them; if the right fix is a generic parser description, say that explicitly.
+
+### Questions for Author
+- Should `tests/helpers/stale_reference_docs.py` and `scripts/analysis/provider_session_ecosystem_audit.py` be treated as an intentional tooling bucket, or are they supposed to be rewritten so the stale script names disappear entirely?
+- What is the exact intended replacement text direction for `.claude/docs/data-format-guide.md`: canonical governance/review links, or a tool-agnostic parser description?

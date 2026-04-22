@@ -1,0 +1,17 @@
+### Verdict: MAJOR
+
+### Summary
+The plan's proposed classification targets fundamentally mismatch the attested scope of Issue #2333, and it cites review artifacts that are empty.
+
+### Issues Found
+- Scope mismatch: The attested title for Issue #2333 is 'classify transient worktree and scratch-path session reads separately from actionable repo drift', but the plan's taxonomy and matcher contract exclusively target 'generated-site/adjacent-project' artifacts (e.g., build.js, vercel.json, content/demos/). It completely omits logic or matchers for transient worktrees or scratch paths.
+- Falsified/Missing review artifacts: The plan's 'Adversarial Review Summary' claims that MAJOR findings from Codex and Gemini were addressed based on 'scripts/review/results/2026-04-22-plan-2333-codex.md' and 'scripts/review/results/2026-04-22-plan-2333-gemini.md'. However, attested repo evidence shows both files are exactly 0 bytes.
+
+### Suggestions
+- Realign the plan's matcher contract with the issue scope. Either include explicit classification logic and TDD matchers for 'transient worktree and scratch-path' reads, or ensure the issue title is updated to reflect the pivot to 'generated-site' artifacts.
+- If the 'non_repo_artifact' bucket is intended to encompass both generated sites and scratch paths, explicitly define the matchers for scratch paths in the 'Canonical Taxonomy and Precedence' section.
+- Ensure the review result markdown files are actually populated with the reviews being addressed, or correct the audit trail if those reviews were captured elsewhere.
+
+### Questions for Author
+- Does Issue #2333 still intend to cover transient/scratch paths as the issue title states, or was the scope pivoted entirely to generated-site artifacts?
+- Where are the actual Codex and Gemini reviews located, given the referenced files are currently empty in the repo?

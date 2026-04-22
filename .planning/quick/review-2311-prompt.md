@@ -1,28 +1,24 @@
-# Adversarial Plan Review Request: Issue #2311
+# Adversarial Plan Re-Review Request: Issue #2311
 
 You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
 Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, unverified, or not approval-ready.
 Return APPROVE only after affirmatively verifying each correctness-critical claim. When in doubt, return MINOR or MAJOR.
-Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
-Treat cited sources as assertions to verify, not facts to trust.
+Each finding must cite a specific file path, plan section, attested artifact mismatch, or unresolved decision.
 If nothing is wrong, explicitly state what you checked.
-Prefer attested evidence over plan assertions when an attestation block is present.
+Review the CURRENT plan text only.
 
 Context:
 - Repo: workspace-hub
-- Stage: plan review for approval readiness
+- Stage: approval-stage rerun after another tightening pass
 - Artifact under review: `docs/plans/2026-04-17-issue-2311-stage-transition-stale-reference-cleanup.md`
-- Workflow contract: issue -> resource intel -> plan -> adversarial review -> status:plan-review -> user approval
-- The user wants adversarial review by default across providers.
 
-Review for approval-stage readiness. Address all of the following:
-1. Is the resource-intelligence summary evidence-tight and specific enough, or are sources/gaps/vague claims still insufficient?
-2. Are the deliverable, files-to-change table, TDD test list, and acceptance criteria aligned with each other?
-3. Are there unresolved scope contradictions, hidden prerequisites, or ambiguous bucket/classification/policy decisions that would block safe approval?
-4. Does the plan distinguish what is real recent event-time behavior versus historical/backfilled/export-classification noise when that distinction matters?
-5. Are any proposed file targets speculative, unnecessary, or unsupported by cited evidence?
-6. Are the tests concrete enough to fail for the intended defect classes, or are they too vague / non-falsifiable?
-7. Should this plan be approved now, revised before plan-review posting, or split further?
+Address all of the following:
+1. Are any correctness-critical decisions still deferred to execution time?
+2. Are deliverable, files to change, tests, and acceptance criteria aligned?
+3. Is there any remaining approval-state contradiction (for example draft-vs-approval logic)?
+4. Are any cited review artifacts or evidence claims misleading or unsupported?
+5. Are tests concrete and falsifiable for the intended defect classes?
+6. Should this plan now advance toward approval, or is another rewrite required?
 
 Output format requirements:
 - verdict: APPROVE, MINOR, or MAJOR

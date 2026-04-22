@@ -1,0 +1,25 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The redraft fixes some earlier structure problems, but multiple correctness-critical claims are still unsupported by the attested evidence, and the test/decision surface is not evidence-tight enough for plan approval.
+
+### Issues Found
+- `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`, `Resource Intelligence Summary` and `Exact replacement contract`: the plan asserts specific contents and quotes for `docs/work-queue-workflow.md`, `docs/ops/legacy-claude-reference-map.md`, `notes/agent-work-queue.md`, `docs/plans/README.md`, `docs/standards/CONTROL_PLANE_CONTRACT.md`, `config/agents/codex/state-snapshots/default.rules`, and `scripts/knowledge/tests/test-knowledge-scripts.sh`, but the attested evidence provided here only proves file existence, not those contents. Approval-stage resource intelligence is therefore still not evidence-tight.
+- `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`, `Adversarial Review Summary`: the plan states Codex and Gemini produced MAJOR findings in the "latest review round," but the attested evidence shows `scripts/review/results/2026-04-22-plan-2312-codex.md` and `scripts/review/results/2026-04-22-plan-2312-gemini.md` are zero-byte files. Those verdicts are not attested by the cited artifacts.
+- `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`, `Classification decisions locked by this plan`: the plan locks `.claude/rules/**` and four `route-c-*` templates into the protected current-guidance set, and locks `config/agents/codex/state-snapshots/default.rules` plus fixture surfaces into exclusions, but no attested evidence here demonstrates why those exact buckets are correct. That leaves the prior "policy/bucket decision" class only partially resolved.
+- `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`, `TDD Test List`: `test_reference_and_fixture_surfaces_are_explicitly_out_of_scope_for_current_guidance_rule` is a governance/meta test about keeping an exclusion list updated, not a direct regression test for the defect class in Issue #2312. It does not concretely fail on stale lifecycle-script authority reappearing in live guidance, so the test bundle remains weaker than the plan claims.
+- `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`, `Acceptance Criteria`: the plan claims an "exact current-guidance surface set" but still uses the open-ended glob `.claude/rules/**`. That is not an exact fixed surface, and it makes the approved test scope depend on execution-time repository contents rather than a fully locked plan decision.
+- `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`, `Exact replacement contract`: the chosen stage-20 replacement `notes/agent-work-queue.md` is justified only by unverified narrative assertions in the plan text. Because the same plan also classifies that file as a mixed generated surface that is unsuitable for whole-file scanning, the authority decision needs stronger attested support before approval rather than being left as a trust-me replacement choice.
+
+### Suggestions
+- Replace unsupported narrative findings with attested evidence: add quoted excerpts or line-referenced citations for every file-content claim the plan relies on, especially the close/archive replacement rationale and all bucket/classification decisions.
+- Remove or regenerate the empty Codex and Gemini review artifacts before citing them as evidence. If those reviews do not exist yet, delete their verdict claims from the plan and mark fresh review as pending.
+- Lock the protected and excluded surfaces with evidence-backed rationale per path. If `.claude/rules/**` must remain in scope, justify that bucket with verified hits/no-hits evidence rather than a broad assertion.
+- Strengthen the TDD section so every planned test fails for an actual defect class in this issue. Keep the exact replacement assertion test, keep the protected-surface stale-reference ban, and drop or demote the meta exclusion-bucket test unless it is tied to a concrete failure mode.
+- Either freeze the `.claude/rules` scope to an explicit file list for this issue or explicitly justify why a recursive glob is acceptable at approval stage.
+- Add attested support for why `notes/agent-work-queue.md` is the correct stage-20 archive anchor, or choose a replacement whose authority is directly evidenced in the plan.
+
+### Questions for Author
+- Can you provide attested excerpts or line references for the content claims currently made about `docs/work-queue-workflow.md`, `docs/ops/legacy-claude-reference-map.md`, `notes/agent-work-queue.md`, `docs/plans/README.md`, and `docs/standards/CONTROL_PLANE_CONTRACT.md`?
+- Are the 2026-04-22 Codex and Gemini review files supposed to contain actual review text? If not, why are their verdicts presented as latest recorded review evidence?
+- What is the evidence-backed reason that `.claude/rules/**` belongs in the protected live-guidance set for #2312 instead of being treated like another broad historical/control-plane surface?

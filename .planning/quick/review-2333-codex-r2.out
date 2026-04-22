@@ -1,0 +1,24 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The redraft fixes some naming/scope ambiguity, but it still carries unsupported evidence claims, an approval-stage status contradiction, and test/coverage gaps against its own required contract.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2333-provider-audit-drift-classification-expansion.md`, `Resource Intelligence Summary` labels multiple claims as attested repo evidence, but the supplied attestation only verifies file existence/state, not the cited line-content assertions. Examples: the claims about current classifier branches at `scripts/analysis/provider_session_ecosystem_audit.py:213-260`, reconciliation behavior at `:1622-1655`, existing test coverage in `tests/analysis/test_provider_session_ecosystem_audit.py`, and current JSON findings at `analysis/provider-session-ecosystem-audit.json:504-513,540-541` are unsupported by the attested evidence block provided for this review.
+- `Acceptance Criteria` says `The plan remains in draft status pending implementation and rerun evidence.` That directly conflicts with approval-stage readiness. A plan cannot both be ready to advance and require staying in draft; this leaves the gate decision unresolved in the artifact itself.
+- `TDD Test List` does not cover the zero-gap reconciliation case even though `Acceptance Criteria` requires tests for `positive, zero, and negative reconciliation cases`, and `Concrete anomaly/event-time separation contract` defines `aligned` iff the gap is `0`. That leaves one correctness-critical status untested.
+- `Concrete anomaly/event-time separation contract` requires JSON assertions for `executive_summary.recent_activity_since_previous_audit.scope_note` and `executive_summary.corpus_change_since_previous_audit.scope_note`, but the listed tests only assert those scope notes in markdown (`test_render_markdown_separates_recent_event_time_scope_from_corpus_change_scope`). The JSON contract the plan says must be locked remains untested.
+- The artifact says prior review findings are addressed via `scripts/review/results/2026-04-22-plan-2333-codex.md`, but the attested evidence shows that file exists at 0 bytes. The `Adversarial Review Summary` entry `Codex | MAJOR addressed` is therefore unsupported, and the plan cannot claim that review class is closed based on an empty artifact.
+- The plan says it will `preserve existing sibling-repo/symbolic/external separation` and defines a new precedence order, but the TDD list lacks direct precedence-regression tests for that claim. There is no explicit test that `digitalmodel/specs/module-registry.yaml` still wins as `sibling_repo`, no direct classifier test for symbolic targets, and no guard that real repo-local paths still classify as `repo` after inserting `non_repo_artifact`. That leaves the new bucket boundary under-specified at the test level.
+
+### Suggestions
+- Replace every `attested` content claim with either real attestation-backed evidence or downgrade it to non-attested repo inspection language. For approval, the resource-intelligence section needs verifiable evidence, not asserted line references.
+- Fix the approval-state contradiction by changing the acceptance criterion from `plan remains in draft` to an explicit approval outcome, or clearly state the exact remaining gate that blocks approval.
+- Add a zero-gap test that asserts `status == "aligned"` and verifies the exact JSON fields used in the reconciliation contract.
+- Add a JSON-surface test for both `executive_summary.*.scope_note` fields instead of relying only on markdown rendering assertions.
+- Remove or rewrite the `Codex | MAJOR addressed` claim unless a non-empty review artifact exists and is cited. If 3-agent review is the intended standard, the artifact should also state how that requirement is being satisfied.
+- Add direct classifier/preference regression tests for `symbolic`, `sibling_repo`, and true `repo` paths so the new `non_repo_artifact` bucket cannot silently swallow existing categories.
+
+### Questions for Author
+- Is this artifact supposed to be approval-ready now, or intentionally still a draft? The current acceptance criteria say both.
+- What evidence is the plan relying on to claim the Codex MAJOR findings are resolved when `scripts/review/results/2026-04-22-plan-2333-codex.md` is empty?

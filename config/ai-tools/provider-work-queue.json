@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-21T21:20:07.959132Z",
+  "generated_at": "2026-04-22T01:20:06.333759Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-21T21:20:06.152016Z",
+  "scorecard_generated_at": "2026-04-22T01:20:04.439823Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 12,
+      "execution_ready_count": 13,
       "total_candidates": 168,
       "top_issues": [
         {
@@ -72,6 +72,28 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-21T19:10:00Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2442,
+          "title": "chore(ci-health): assethold CI \u2014 python-tests.yml never green since 2025-09-28 (7 months); YAML parse + deprecated actions",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2442",
+          "labels": [
+            "priority:high",
+            "cat:infrastructure",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-22T00:40:04Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -166,31 +188,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-20T02:02:27Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2403,
-          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:research",
-            "domain:document-intelligence",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-20T21:30:48Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
