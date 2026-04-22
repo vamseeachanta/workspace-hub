@@ -25,7 +25,7 @@
   - class `TestCashFlowComponents` (methods at lines 140, 164, 316, 388) — can see the fixture and does not independently prove a fixture-scope defect
   - class `TestProductionAPI12CashFlowMethods` (line 447, test at line 455) — **cannot see the fixture** (class-scoped fixtures do not cross sibling class boundaries)
   This distinction matters: if Cluster C uses the default skip on the legacy class, the demonstrated `config_with_economics` failure may disappear without needing immediate fixture promotion. Cluster B therefore remains conditional rather than automatically mandatory.
-- Found: `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py:23` — `from worldenergydata.modules.bsee.analysis.production_api12 import (ProductionAPI12Analysis)`. This import path does not exist on main; the real path is `worldenergydata.bsee.analysis.production_api12` (no `.modules` prefix).
+- Found: `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py` — every test in this file is legacy-API-bound. The module imports `ProductionAPI12Analysis` from the non-existent legacy path at line 23, initializes `self.analyzer = ProductionAPI12Analysis()` in `setup_method` at line 32, and its test methods call or patch `perform_npv_calculation` / the legacy workflow throughout (e.g. lines 78, 104, 251, 292). No non-legacy coverage exists in this file, so a collection-safe module-level skip is proportionate under the default C-skip path.
 - Found: `worldenergydata/pyproject.toml`
   - Line 60–75 `[project.optional-dependencies] dev = [...]` — contains `"pytest-benchmark>=4.0"` (line 68).
   - Line 213–216 `[dependency-groups] benchmark = [...]` — contains `"pytest-benchmark>=4.0.0,<5.0.0"` (line 215). This is PEP 735 dependency-group declaration.
@@ -166,6 +166,14 @@ If the same three signatures are also observed on Python 3.10 or 3.12 during exe
 ```
 # === TDD Phase: lock the RED baseline before any edits ===
 
+# Step -1: if Cluster C skip-based deferral is the selected path, create the
+# required worldenergydata follow-up tracker issue FIRST, capture its issue
+# number, and use that concrete number in every skip reason string.
+# Recommended title:
+#   follow-up(tests): re-enable or delete legacy NPV tests after financial-module audit
+# Recommended labels: ci, tests, tech-debt (or repo-standard equivalents)
+# This tracker must exist before any skip-based code edit lands.
+
 # Step 0 (RED): confirm each cluster reproduces locally before touching code.
 # For Cluster A, the authoritative RED proof is the failing CI log plus local
 # provenance, not a mandatory stale-env local failure reproduction.
@@ -227,11 +235,14 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #   2. CI workflow env and command lines for `PYTEST_DISABLE_PLUGIN_AUTOLOAD`,
 #      `-p no:pytest_benchmark`, wrapper scripts, or custom invocation layers.
 #   3. Any test-local plugin filtering that affects benchmark fixture registration.
+#   4. Duplicate declaration interaction between `[project.optional-dependencies].dev`
+#      and `[dependency-groups].benchmark` in `pyproject.toml`.
 # Allowed fixes under #2451 if A1b is confirmed:
 #   - remove/neutralize benchmark-plugin disablement in test-job scope
 #   - add explicit plugin loading only within the test job / target benchmark file
-#   - if no bounded plugin-loading fix is found quickly, stop and choose A2 with
-#     an explicit tracking issue rather than continuing unbounded diagnosis
+#   - if no bounded plugin-loading fix is found within these 4 inspection surfaces,
+#     stop and choose A2 with an explicit tracking issue rather than continuing
+#     unbounded diagnosis
 # Acceptance for A1b:
 #   - benchmark fixture is available in the test job or benchmark tests are
 #     intentionally skipped under A2 with explicit tracking
@@ -387,19 +398,18 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Required class-surgical handling in `test_cash_flow_components.py`, conditional Cluster A decisioning, concrete import evidence for that file, fixture-body preservation, and separation of planning-process gates from deliverable acceptance. |
-| Codex | MAJOR | Required Cluster A to stop treating workflow edits as preferred-by-default, required collection-safe Cluster C skip strategy, and tightened acceptance around the exact three failure signatures. |
-| Gemini | APPROVE | Minor caution on `--all-groups` breadth and uv-version support; no blocking defects beyond the other providers' findings. |
+| Claude | APPROVE | Plan is technically sound; remaining notes were about tracker ordering, explicit templates, and mechanical verification phrasing. |
+| Codex | MAJOR | Remaining blockers focused on conditional scope for Cluster B/C and making A2 invalid unless package absence is proven. |
+| Gemini | APPROVE | No blocking defects; only minor uv/version and tracker timing notes. |
 
-**Wave 5 overall result:** MAJOR — the remaining objections are now about branch selection and governance precision, not about technical diagnosis. This revision (1) narrows the primary acceptance lane to the evidenced `Test Python 3.11` job while still requiring sibling matrix coverage if the same signatures are observed there, (2) makes Cluster B explicitly conditional after Cluster C handling in every section, (3) narrows A2 so it is only valid when package absence is proven, and (4) makes C-skip the default execution path after approval unless the user explicitly overrides to a later-discovered C-repoint path.
+**Wave 6 overall result:** MAJOR — the remaining objections are limited to governance/conditional-branch precision, not root-cause diagnosis. This revision (1) proves `test_current_npv_implementation.py` is entirely legacy-bound and therefore safe for module-level skip under C-skip, (2) makes the worldenergydata follow-up tracker a step-ordered prerequisite before any skip-based code edit lands, and (3) tightens A1b with a bounded four-surface inspection set plus explicit stop-rule before falling back to A2.
 
 Revisions made based on review:
-- Updated review-artifact references to the latest rerun set.
-- Narrowed the Deliverable to the evidenced 3.11 lane, with conditional sibling-lane inclusion if the same signatures are observed there.
-- Made Cluster B conditional across resource intel, pseudocode, files-to-change, acceptance criteria, and path summary.
-- Tightened A2 so it is only valid when benchmark package absence is proven.
-- Clarified that C-skip is the default execution path after approval unless the user explicitly chooses C-repoint.
-- Preserved the required worldenergydata follow-up tracker when Cluster C uses skip-based deferral.
+- Added explicit evidence that every test in `test_current_npv_implementation.py` depends on the legacy `ProductionAPI12Analysis` / `perform_npv_calculation` surface.
+- Added Step -1 to require creation of the worldenergydata legacy-NPV follow-up issue before any skip-based implementation edit.
+- Expanded A1b to include duplicate-declaration interaction as a diagnostic surface.
+- Added an explicit bounded stop-rule for A1b before A2 can be selected.
+- Preserved the conditional Cluster B path and the default C-skip execution contract.
 
 The plan remains in `draft` pending the latest rerun review wave.
 
