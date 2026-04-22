@@ -16,7 +16,10 @@
 ### Existing repo code (worldenergydata at `nightly/2433-worldenergydata`, HEAD `0f8ac026`)
 
 - Found: `worldenergydata/src/worldenergydata/bsee/analysis/production_api12.py` — post-refactor class `ProductionAPI12Analysis` (line 26). The docstring at line 37 explicitly says *"For revenue and NPV calculations, use the financial module at..."* and the class no longer contains `perform_npv_calculation`, `generate_revenue_table`, or `_npv_calculator`.
-- Found: `worldenergydata/src/worldenergydata/bsee/analysis/legacy/production_api12_original.py` — pre-refactor copy retains all NPV helpers: `generate_revenue_table` (line 344), `perform_npv_calculation` (line 350), `perform_excel_aligned_npv_calculation` (line 354), and the delegating `_npv_calculator.perform_npv_calculation` call at line 216. This file is under `legacy/` and should not be treated as the canonical API.
+- Found: `rg -n "perform_npv_calculation|perform_excel_aligned_npv_calculation" src/worldenergydata/` on `/mnt/local-analysis/worktrees/worldenergydata-2433` — only legacy hits were found:
+  - `src/worldenergydata/bsee/analysis/legacy/production_api12_original.py`
+  - `src/worldenergydata/bsee/analysis/legacy/api12_economics.py`
+  No non-legacy replacement entry point was identified during planning, so C-repoint remains explicitly blocked on further owner-directed discovery; C-skip is the only approval-safe default today.
 - Found: `worldenergydata/tests/benchmarks/test_eia_benchmarks.py` lines 61 and 69 — two tests request the `benchmark` fixture from `pytest-benchmark`. Live pytest reports `fixture 'benchmark' not found`; loaded plugins are `anyio, asyncio, cov, timeout, hypothesis, Faker, dash` — no `benchmark` plugin.
 - Found: `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py` — the `config_with_economics` fixture is defined at line 105, inside class `TestCashFlowComponents` (line 31). The file also imports from the non-existent path `worldenergydata.modules.bsee.analysis.production_api12` at lines 20–23, but does so inside a `try/except ImportError` block, so the module still collects. It is consumed by two distinct classes:
   - class `TestCashFlowComponents` (methods at lines 140, 164, 316, 388) — can see the fixture
@@ -149,7 +152,12 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 
 ## Deliverable
 
-The worldenergydata `Test Python ${version}` CI jobs (3.10 / 3.11 / 3.12) will complete without the three failure clusters enumerated in #2451 — either by installing the missing benchmark plugin on CI, repointing imports to the refactored financial module, and promoting `config_with_economics` to shared fixture scope (fix-now path), **or** by cleanly skipping the affected tests with explicit tracking (xfail/skip path). The final `Test` job status after this plan executes will be either (a) green, or (b) materially reduced residual failure count with each remaining failure traceable to a follow-up issue. Plan #2452 remains responsible for the `Lint` job flake8 debt independently.
+The worldenergydata `Test Python ${version}` CI jobs (3.10 / 3.11 / 3.12) will complete without the three failure clusters enumerated in #2451:
+1. benchmark-fixture failure,
+2. `config_with_economics` fixture-scope failure,
+3. legacy NPV import / missing `perform_npv_calculation` failure.
+
+Those three signatures must be eliminated from the `Test` job either by bounded fixes (fixture promotion, plugin-loading remediation, targeted import/path repoint) or by collection-safe, explicitly tracked skips where the module owner chooses deferral. Unrelated residual failures may remain only if they are separately enumerated as out-of-scope follow-up work. Plan #2452 remains responsible for the `Lint` job flake8 debt independently.
 
 ---
 
@@ -181,6 +189,11 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 # If pytest_benchmark imports locally after `--all-extras`, the local missing-fixture
 # repro was a stale-env artifact and Cluster A should start from A1b (plugin loading),
 # not from an install-layer workflow edit.
+#
+# Step 0d: locate the post-refactor NPV entry point before C-repoint is selectable.
+#   rg -n "def .*npv|perform_npv_calculation|perform_excel_aligned_npv_calculation" src/worldenergydata/
+# Record the concrete module path in execution notes. If no non-legacy replacement
+# path is found, C-repoint is blocked and C-skip remains the only approval-safe default.
 
 # === Cluster A — benchmark fixture ===
 # This branch is CONDITIONAL. Do not edit ci.yml until the failing CI log proves
@@ -351,16 +364,16 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 | Codex | MAJOR | Required Cluster A to stop treating workflow edits as preferred-by-default, required collection-safe Cluster C skip strategy, and tightened acceptance around the exact three failure signatures. |
 | Gemini | APPROVE | Minor caution on `--all-groups` breadth and uv-version support; no blocking defects beyond the other providers' findings. |
 
-**Wave 2 overall result:** MAJOR — Claude and Codex narrowed the remaining defects to execution-contract inconsistencies: Cluster B needed runtime verification rather than collect-only, and the Path Decision Summary still contradicted the body on Cluster A and Cluster C. The draft has now been updated to (1) add local provenance proving `pytest_benchmark` imports after `uv run --all-extras`, which shifts Cluster A's default starting branch to plugin-loading diagnosis (A1b), (2) replace Cluster B's collect-only proof with explicit runtime tests from both affected classes, (3) reconcile the Path Decision Summary with the body's class-surgical Cluster C handling and conditional Cluster A logic, and (4) update artifact paths to the concrete Wave 2 review files.
+**Wave 3 overall result:** MAJOR — the remaining review objections are now about plan-state precision rather than core technical direction. This revision tightens the last open contracts by (1) making the Deliverable match the Acceptance Criteria exactly (all three #2451 signatures must be eliminated), (2) promoting post-refactor NPV entry-point discovery into a mandatory planning/execution gate and recording that only legacy hits were found so C-repoint is currently blocked, (3) clarifying that Cluster A1b is the default executable starting branch while A1a remains conditional on CI evidence of package absence, and (4) removing stale future-tense language from the review summary/path-decision narrative.
 
 Revisions made based on review:
-- Replaced review-artifact placeholders in the Artifact Map with the concrete Wave 2 filenames.
-- Added local provenance evidence showing `pytest_benchmark` imports successfully after `uv run --all-extras`, so a stale env — not proven CI install failure — explains the earlier local benchmark repro.
-- Added Step 0c to the pseudocode to prove local provenance before choosing Cluster A branch.
-- Changed Cluster A default starting branch to A1b (plugin-loading diagnosis), with A1a only after CI log evidence proves package absence on runner.
-- Replaced Cluster B collect-only proof with explicit runtime verification of one primary-class test and one legacy-class test outcome.
-- Will reconcile the Path Decision Summary in the next revision so Cluster A and Cluster C wording matches the body exactly.
-- Clarified that `.planning/plan-approved/2451.md` is a workflow gate before implementation, not a deliverable proof item.
+- Rewrote the Deliverable section so success explicitly means eliminating the three #2451 failure signatures, with unrelated residual failures only allowed when separately enumerated.
+- Added Step 0d to require NPV entry-point discovery before C-repoint is selectable.
+- Added resource-intel evidence that only legacy NPV entry points were found, so C-repoint is currently blocked and C-skip remains the only approval-safe default.
+- Tightened the Path Decision Summary to match the body exactly for Cluster A and Cluster C.
+- Clarified in acceptance/workflow language that the approval marker is a workflow gate, not deliverable proof.
+
+The plan remains in `draft` pending the latest rerun review wave.
 
 ---
 
@@ -387,8 +400,8 @@ Revisions made based on review:
 
 | Cluster | Preferred path | Rejected paths | Gate |
 |---|---|---|---|
-| A — benchmark fixture | A1b plugin-loading diagnosis by default; A1a `uv sync --all-extras --group benchmark` only if CI log proves package absence on runner (`--all-groups` fallback only if required) | A2 `importorskip` test-local skip (fallback only) | Failed-job log plus local `uv run --all-extras` provenance must establish whether the runner is missing the package or failing to autoload the plugin |
+| A — benchmark fixture | A1b plugin-loading diagnosis by default; A1a `uv sync --all-extras --group benchmark` only if CI log proves package absence on runner (`--all-groups` fallback only if required and supported by runner uv) | A2 `importorskip` test-local skip (fallback only) | Failed-job log plus local `uv run --all-extras` provenance must establish whether the runner is missing the package or failing to autoload the plugin |
 | B — `config_with_economics` scope | B1 module-scope conftest.py + runtime verification from both affected classes | B2 in-class duplication | None — additive fix, but runtime verification is mandatory |
-| C — legacy NPV API drift | C-skip, collection-safe and surgical: module-level skip only in `test_current_npv_implementation.py`, class-level skip only on `TestProductionAPI12CashFlowMethods` in `test_cash_flow_components.py` | C-repoint (requires financial-module audit), C-delete (too aggressive) | User confirmation required during plan-review; C-skip remains the conservative default unless owner prefers restoring coverage now |
+| C — legacy NPV API drift | C-skip, collection-safe and surgical: module-level skip only in `test_current_npv_implementation.py`, class-level skip only on `TestProductionAPI12CashFlowMethods` in `test_cash_flow_components.py`; C-repoint is blocked until a non-legacy replacement entry point is identified | C-repoint without entry-point discovery, C-delete (too aggressive) | User confirmation required during plan-review; C-skip remains the conservative default unless later discovery unlocks safe repointing |
 
 This plan explicitly stops short of implementation. Implementation requires `status:plan-approved` on #2451 and a corresponding `.planning/plan-approved/2451.md` marker.
