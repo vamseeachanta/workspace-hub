@@ -1,11 +1,11 @@
 # Plan for #2443: achantas-data — restore CI with markdown-lint + link-check (workflows deleted 2025-10)
 
-> **Status:** draft
+> **Status:** draft (v3 — Wave 2 MAJOR findings addressed, awaiting Wave 3 re-review)
 > **Complexity:** T1
-> **Date:** 2026-04-21
+> **Date:** 2026-04-21 (v3 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2443
 > **Parent meta-issue:** https://github.com/vamseeachanta/workspace-hub/issues/2424
-> **Review artifacts:** scripts/review/results/2026-04-21-plan-2443-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — to be generated for this revision)
 
 ---
 
@@ -137,7 +137,7 @@ on:
     branches: [main]
     paths: ['**/*.md', '.markdownlint.jsonc', '.github/workflows/markdown-lint.yml']
   pull_request:
-    paths: ['**/*.md', '.markdownlint.jsonc']
+    paths: ['**/*.md', '.markdownlint.jsonc', '.github/workflows/markdown-lint.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -179,7 +179,7 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           args: --config ./lychee.toml '**/*.md'
-          # fail defaults to true on lychee-action@v2; no explicit override needed
+          fail: true   # explicit (defense-in-depth vs. floating @v2 tag; Wave-2 Claude finding)
 ```
 
 ### Tool choice rationale
@@ -199,18 +199,76 @@ Per `AGENTS.md` line 7 (`TDD mandatory — tests before implementation; no excep
 | # | Step | Command | Red state (before) | Green state (after) |
 |---|---|---|---|---|
 | 1 | Baseline: no workflows exist | `gh api repos/vamseeachanta/achantas-data/actions/workflows` | `total_count: 0` | still 0 — proves starting point |
-| 2 | Author `.markdownlint.jsonc`, then assert it parses and enables ≥20 floor rules | `python3 -c "import json5, sys; cfg=json5.load(open('.markdownlint.jsonc')); floor={'MD001','MD011','MD018','MD019','MD020','MD022','MD023','MD024','MD025','MD027','MD030','MD034','MD035','MD037','MD038','MD039','MD040','MD042','MD051','MD053'}; disabled={k for k,v in cfg.items() if v is False}; missing=floor & disabled; sys.exit(1 if missing else 0)"` | exits 1 (file missing / floor rule disabled) | exits 0 — floor rules present and not disabled |
-| 3 | Author `.github/workflows/markdown-lint.yml`, validate schema | `actionlint .github/workflows/markdown-lint.yml` | schema errors (file missing or malformed) | no errors |
-| 4 | Author `.github/workflows/link-check.yml`, validate schema | `actionlint .github/workflows/link-check.yml` | schema errors | no errors |
+| 2 | Author the floor-verifier **first** (test-before-implementation), then author `.markdownlint.jsonc` and assert it enables every floor rule under ALL config shapes (including `{"default": false}` bypass). Verifier script lives at `scripts/verify-markdownlint-floor.sh` in the achantas-data repo and is callable from a pre-commit hook. Uses stdlib-only parsing (strips JSONC line/block comments, then `json.load`) — no `json5` / external-package dependency. The check explicitly rejects configs with `default: false` unless every single floor rule is independently set to `true`. Full script content is frozen in `### Floor-verifier script` below. | verifier missing OR config absent OR any floor rule's effective value is `false` (accounting for a `default: false` setting disabling unlisted rules) → exit 1 | verifier present AND config present AND every floor rule effectively enabled → exit 0 |
+| 3 | Author `.github/workflows/markdown-lint.yml`, validate schema | `command -v actionlint || { echo "FAIL: install actionlint — https://github.com/rhysd/actionlint"; exit 1; }; actionlint .github/workflows/markdown-lint.yml` (availability is gated — missing tool fails loudly, not silently) | schema errors (file missing or malformed) OR actionlint missing | no errors |
+| 4 | Author `.github/workflows/link-check.yml`, validate schema | `command -v actionlint || { echo "FAIL: install actionlint"; exit 1; }; actionlint .github/workflows/link-check.yml` | schema errors OR actionlint missing | no errors |
 | 5 | Local dry-run of markdownlint against the corpus | `npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md'` | non-zero exit if real defects (fix content; do NOT disable floor rules) | exit 0 |
 | 6 | Local dry-run of lychee against the corpus | `lychee --config ./lychee.toml '**/*.md'` | non-zero exit (expected URL rot) — resolve via per-URL `lychee.toml` exclude (whole-host prohibited) or fix links | exit 0 |
 | 7 | Push; `markdown-lint` workflow runs on the push | `gh run watch` | (not yet run) | conclusion `success` |
 | 8 | Manual dispatch of `link-check` | `gh workflow run link-check.yml && gh run watch` | (not yet run) | conclusion `success` |
 | 9 | Push a `.py`-only commit; confirm `markdown-lint` skipped | `gh run list --workflow=markdown-lint.yml --limit 1` | n/a | no new run for the .py commit (path-filter proves scope) |
 
-**Config-parse smoke test** (step 2 above): the floor-rule assertion is the test-before-implementation artifact for the markdownlint config — it fails before the file exists and before the config is correctly authored, and only passes once the non-negotiable floor is present. This satisfies the repo's mandatory TDD rule for the config artifact.
+**Config-parse smoke test** (step 2 above): the floor-rule assertion is the test-before-implementation artifact for the markdownlint config — the verifier script is authored BEFORE the config exists, so running the verifier with no config (or with a bypass config like `{"default": false}`) exits 1. Only a config that effectively enables every floor rule passes. This satisfies the repo's mandatory TDD rule (`AGENTS.md Hard Gates` item 2 — TDD mandatory, tests before implementation) for the config artifact.
 
-**Promotion path (per `.claude/rules/patterns.md` enforcement gradient)**: step 5 currently runs as a developer-machine ritual (Level 2 — script). Follow-up issue should promote the `markdownlint-cli2` local dry-run to a pre-commit hook (Level 3) so step 5 fires automatically on every commit. Filed as a deferred item, not blocking this plan.
+### Floor-verifier script
+
+File: `achantas-data/scripts/verify-markdownlint-floor.sh` (authored in step 2 BEFORE `.markdownlint.jsonc` exists). Uses stdlib-only parsing — no `json5` / `jsonc-parser` / other external package dependency. Strips line-comments (`// …`) and block-comments (`/* … */`) from JSONC then `json.load` is sufficient for the configs we author here (we commit to *not* using advanced JSON5 features like trailing commas or unquoted keys — contract test below catches that).
+
+```bash
+#!/usr/bin/env bash
+# verify-markdownlint-floor.sh — TDD floor-rule gate for .markdownlint.jsonc
+# Exit 0 iff every floor rule is effectively enabled (accounting for default:false bypass).
+set -euo pipefail
+cfg="${1:-.markdownlint.jsonc}"
+if [[ ! -f "$cfg" ]]; then
+  echo "FAIL: $cfg missing" >&2
+  exit 1
+fi
+python3 - "$cfg" <<'PY'
+import json, re, sys
+path = sys.argv[1]
+raw = open(path).read()
+# Strip JSONC comments (line + block) — safe for configs we author.
+raw = re.sub(r'/\*.*?\*/', '', raw, flags=re.DOTALL)
+raw = re.sub(r'(^|[^:])//[^\n]*', r'\1', raw)
+try:
+    cfg = json.loads(raw)
+except json.JSONDecodeError as e:
+    print(f"FAIL: unable to parse {path} as JSONC with stdlib-strip approach: {e}", file=sys.stderr)
+    print("Either fix the JSONC to avoid trailing commas / unquoted keys, or rename to .markdownlint.yaml.", file=sys.stderr)
+    sys.exit(1)
+FLOOR = {"MD001","MD011","MD018","MD019","MD020","MD022","MD023","MD024","MD025",
+         "MD027","MD030","MD034","MD035","MD037","MD038","MD039","MD040","MD042",
+         "MD051","MD053"}
+default_on = cfg.get("default", True) is not False  # True (including implicit True)
+violations = []
+for r in FLOOR:
+    v = cfg.get(r, default_on)  # if absent, effective value = the default
+    if v is False or (isinstance(v, dict) is False and v is not True and v is not default_on):
+        violations.append((r, v))
+    # Extra guard: if default is False, floor rules MUST be explicitly True (not absent, not {}-dict without truthy).
+    if not default_on and cfg.get(r, False) is False:
+        violations.append((r, f"disabled via default:false + missing explicit true"))
+if violations:
+    print(f"FAIL: {len(violations)} floor rule(s) not effectively enabled:", file=sys.stderr)
+    for r, v in violations:
+        print(f"  - {r}: {v!r}", file=sys.stderr)
+    sys.exit(1)
+print(f"OK: all {len(FLOOR)} floor rules effectively enabled (default_on={default_on})")
+PY
+```
+
+**Contract test** for the verifier itself (run once during step 2, before authoring the real config): feed the verifier a known-bypass `{"default": false}` stub and confirm it exits 1. This proves the script catches the Wave-2 rubber-stamp bypass path.
+
+```bash
+tmp=$(mktemp --suffix=.jsonc); echo '{"default": false}' > "$tmp"
+./scripts/verify-markdownlint-floor.sh "$tmp" && { echo "CONTRACT FAIL: verifier accepted bypass config"; rm -f "$tmp"; exit 1; } || echo "OK: verifier rejects bypass config"
+rm -f "$tmp"
+```
+
+**Promotion path:** step 5 (`npx markdownlint-cli2` dry-run) currently runs as a developer-machine ritual (Level 2 — script, per `.claude/rules/patterns.md` enforcement gradient). Follow-up issue should add a `pre-commit` hook invoking both `scripts/verify-markdownlint-floor.sh` and `npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md'` so floor enforcement fires automatically on every commit (Level 3). Filed as a deferred item, not blocking this plan.
+
+(Promotion path moved to the §Floor-verifier script section above.)
 
 ---
 
@@ -221,10 +279,13 @@ Per `AGENTS.md` line 7 (`TDD mandatory — tests before implementation; no excep
 - [ ] `.markdownlint.jsonc` exists on `achantas-data` `origin/main`. **Floor check**: the non-negotiable rules (MD001, MD011, MD018-MD020, MD022-MD025, MD027, MD030, MD034, MD035, MD037-MD040, MD042, MD051, MD053 — ≥20 rules) are all enabled; none may be set to `false` to achieve a green run. The §TDD step-2 assertion script exits 0 against the final config.
 - [ ] `lychee.toml` exists on `achantas-data` `origin/main`.
 - [ ] First triggered `markdown-lint` run conclusion = `success`, achieved by **fixing content** (not by disabling any floor rule).
-- [ ] First triggered `link-check` run conclusion = `success`. Remediation options for dead links: (a) fix the link, or (b) add a **per-URL** exclusion to `lychee.toml` with an inline comment stating why and a dated TODO for re-check. **Whole-host / wildcard exclusions are prohibited**. Exclusion list must resolve ≥95% of discovered links (i.e., total excludes ≤5% of unique URLs in the corpus), and must not exceed 25 entries per audit cycle — exceeding either threshold requires a follow-up issue rather than further suppression.
+- [ ] First triggered `link-check` run conclusion = `success`. Remediation options for dead links: (a) fix the link, or (b) add a **per-URL** exclusion to `lychee.toml` with an inline comment stating why and a dated TODO for re-check. **Whole-host / wildcard exclusions are prohibited**. The quantitative cap is the **tighter** of two bounds: (i) ≤25 entries per audit cycle, (ii) ≤5% of unique URLs in the corpus. Denominator for (ii) is the unique-URL count reported by `lychee --dump '**/*.md' | sort -u | wc -l` (executed during implementation step 6 and recorded in the closeout comment). If 5% of unique URLs < 25, bound (ii) binds; otherwise bound (i) binds. Exceeding either binding bound requires a follow-up issue rather than further suppression.
 - [ ] `gh api repos/vamseeachanta/achantas-data/actions/workflows` returns `total_count: 2`.
-- [ ] Review artifacts posted to `scripts/review/results/` (Claude + Codex + Gemini per cross-review policy).
-- [ ] Close-out comment on #2443 links both successful run URLs and confirms scope (no Python-tests restoration — see §OUT of scope for evidence).
+- [ ] Floor-verifier **contract test** passes: the verifier is run once against a `{"default": false}` stub during implementation step 2, exits 1, and that result is recorded in the closeout comment (proves the verifier itself is not bypassable — Wave-2 convergent-MAJOR closure evidence).
+- [ ] MD024 / MD025 first-run violation count recorded in the closeout comment (Wave-2 Claude requirement). If MD025 violations > 30 files, execution was split per §Risks and the split-PR decision is documented.
+- [ ] Follow-up issue opened to add `validate-workflows.yml` (CI-side `actionlint` gate) within 1 week of this plan landing, cross-linked from #2443 closeout and parent #2424. Rationale: closes the residual local-discipline-only backstop flagged by Codex Wave-2.
+- [ ] Wave 3 review artifacts posted to `scripts/review/results/2026-04-21-plan-2443-{claude,codex,gemini}-r3.md`.
+- [ ] Close-out comment on #2443 links both successful run URLs, records the MD025 violation count, the lychee unique-URL denominator, the floor-verifier contract-test output, and confirms scope (no Python-tests restoration — see §OUT of scope for evidence).
 
 ### Explicitly OUT of scope
 
@@ -265,24 +326,51 @@ Per `AGENTS.md` line 7 (`TDD mandatory — tests before implementation; no excep
 
 ### Revisions deferred (with rationale)
 
-- **SHA-pinning third-party actions** (Claude MINOR): `DavidAnson/markdownlint-cli2-action@v16` and `lycheeverse/lychee-action@v2` remain on minor-float tags. Rationale: this is a personal docs repo, not a security-sensitive production workflow; SHA-pin maintenance cost exceeds the supply-chain risk for a doc-only CI. Flagged for a follow-up hardening issue if the template is later reused for production repos.
-- **`validate-workflows` CI job running `actionlint`** (Claude MINOR): adds a third workflow just to validate the first two. Current plan runs `actionlint` locally as part of the TDD step 3/4 sequence. Defer self-hosting the check until the ecosystem has >3 workflows per repo.
+- **SHA-pinning third-party actions** (Claude MINOR → Wave-2 flagged as drift surface): `DavidAnson/markdownlint-cli2-action@v16` and `lycheeverse/lychee-action@v2` remain on minor-float tags. Rationale: this is a personal docs repo, not a security-sensitive production workflow. The Wave-2 concern that floating tags could silently break fail-on-broken-links is addressed by restoring the explicit `fail: true` input on lychee-action (see `link-check.yml` above) — this makes our correctness contract independent of action-version-default drift. When this template is later reused for production repos (a separate canonical-template follow-up), the first action of that follow-up is to SHA-pin both actions. Flagged for a follow-up hardening issue with that scoping.
 - **Auto-issue creation for lychee failures** (carried forward from original Open Questions): out of scope since the permission was removed. Requires a `peter-evans/create-issue-from-file` step if re-introduced later.
 - **Workspace-hub `docs/plans/README.md` index row**: per session hard-constraints, no index update during this drafting pass.
 
-### Status
+### Wave 2 (2026-04-21) — three-provider adversarial re-review against v2 plan
 
-**Revised, awaiting Wave 2 re-review.**
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | MAJOR | (1) Step-2 floor-rule assertion has rubber-stamp bypass — `{"default": false}` disables every unlisted floor rule while the `v is False` check still exits 0. (2) `import json5` is not stdlib; missing install instruction → TDD gate fails with wrong-reason error. (3) Lychee arithmetic incoherent — `≤25 entries` AND `≥95% resolution` interact unpredictably on a 495-file corpus; denominator for ≥95% unspecified. (4) Floating action tags `@v16` / `@v2` + removal of explicit `fail: true` creates silent drift surface on the one gate whose job is to fail on rot. (5) `actionlint` availability ungated — missing tool silently skips the gate. (6) MD025 first-run burden unmeasured on 495 legacy notes. |
+| Codex | MAJOR | (1) Step-2 assertion same bypass as Claude. (2) Host-exclusion contradiction — `Acceptance Criteria` says "whole-host exclusions prohibited" but `Risks` says "add rotted host to exclude list with dated TODO" (re-introduces exactly what the AC forbids). (3) TDD sequencing is implementation-first (`Author …, then assert`), violating the `AGENTS.md Hard Gates` "tests before implementation" rule while simultaneously claiming compliance. (4) `validate-workflows` deferral is under-justified for a plan whose whole point is restoring CI. |
+| Gemini | MINOR | `markdown-lint.yml` `pull_request.paths` omits `.github/workflows/markdown-lint.yml` (a PR that only edits this workflow won't self-trigger). TDD step-2 `import json5` is not stdlib. |
+
+**Wave 2 overall verdict:** MAJOR (Claude + Codex concurrent on step-2 bypass; Codex additional on host-exclusion contradiction and TDD ordering).
+
+### Revisions made in v3 based on Wave 2 review
+
+- (Claude.1 / Codex.1 → resolved) TDD step 2 now authors a separate `scripts/verify-markdownlint-floor.sh` **before** the `.markdownlint.jsonc` exists (tests-before-implementation). The verifier:
+  - Parses JSONC with stdlib only (strip comments → `json.load`), no `json5` or other external package dependency.
+  - Computes the **effective** enablement of each floor rule — accounting for `default: false` disabling unlisted rules — and fails if any floor rule resolves to `False`.
+  - Ships with a **contract test** that feeds it `{"default": false}` and asserts the verifier exits 1. This contract test runs once during step 2 and fails if the verifier itself is bypassable.
+  The full script content is frozen inline in `### Floor-verifier script`.
+- (Claude.2 / Gemini.2 → resolved) Dependency on `json5` eliminated (stdlib-only parsing, comment-stripping regex). No `pip install json5` needed. If the JSONC author ever introduces JSON5-only features (trailing commas, unquoted keys), the verifier exits 1 with a clear error pointing to either fixing the JSONC or renaming to `.markdownlint.yaml` — contract failure is loud.
+- (Claude.3 → resolved) Acceptance criterion's ≥95% resolution rule is rewritten with explicit binding: the quantitative cap is the **tighter** of `25 entries` or `5% of unique URLs`, denominator is `lychee --dump | sort -u | wc -l`. The denominator is measured during step 6 and recorded in the closeout comment, so the gate is falsifiable at review time.
+- (Claude.4 → resolved) Explicit `fail: true` restored on `lychee-action@v2` (inline comment tying the restoration to Wave-2 finding). This makes fail-on-broken-links independent of any future default change on the floating `@v2` tag. SHA-pinning deferral rationale is rewritten to explicitly cite this restoration as the substitute hardening.
+- (Claude.5 → resolved) TDD steps 3 and 4 now prefix `command -v actionlint || { echo FAIL; exit 1; }` so missing tool fails loudly. If a developer lacks actionlint, the gate no longer silently skips.
+- (Claude.6 → documented as Open / Risk) The MD024 / MD025 first-run violation count on the 495-note corpus is unmeasured. Added to §Risks and Open Questions with the mitigation: implementation step 5 (the local `npx markdownlint-cli2` dry-run) **must be run before the push** and the violation count recorded; if >30 files violate MD025, the plan splits into a two-commit execution (content fixes first, then workflow), and the T1 complexity label is revisited.
+- (Codex.2 → resolved) Host-exclusion language in §Risks rewritten to state per-URL-only, inline why-comment, dated TODO — no "add rotted host" wording remains. The §Risks entry explicitly supersedes any earlier draft's contradicting language.
+- (Codex.3 → resolved) TDD sequencing: step 2 now explicitly authors the verifier BEFORE the `.markdownlint.jsonc`, and the step-2 description reads "Author the floor-verifier **first** (test-before-implementation), then author `.markdownlint.jsonc`…". The `AGENTS.md` citation is rewritten as `AGENTS.md Hard Gates item 2 — TDD mandatory, tests before implementation, no exceptions`, matching the section heading rather than a contested line number.
+- (Codex.4 → resolved by restoring `validate-workflows` as a non-deferred commitment) The TDD steps 3 and 4 now fail loudly on missing `actionlint`, closing the local-gate silent-skip. A `validate-workflows.yml` is promoted from "deferred" to "required follow-up within 1 week of this plan landing" (tracked as a stub acceptance checkbox below).
+- (Gemini.1 → resolved) `markdown-lint.yml` `pull_request.paths` now includes `.github/workflows/markdown-lint.yml` — a PR that edits only the workflow will self-trigger.
+
+### Status (v3)
+
+**Revised, awaiting Wave 3 re-review.** Not approval-ready until Wave 3 returns no new MAJOR findings AND user explicitly labels `status:plan-approved`. This plan MUST NOT be self-approved by any agent.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk — existing MD violations**: the lenient config is my best guess; on first local dry-run there may still be non-zero violations (e.g., trailing whitespace, inconsistent list markers) on legacy notes. Mitigation: run `markdownlint-cli2 --fix` locally once before first CI run, OR disable the violating rule if the content is intentional. Acceptance criterion states "tuned until 0 violations" so this is surfaced as a completion blocker, not hidden.
-- **Risk — external link rot**: the repo contains old utility / tax / house notes with URLs possibly years old. Lychee's first run may fail. Mitigation: acceptance criterion includes "add rotted host to exclude list with dated TODO". Link-check is weekly scheduled so recurrence cost is bounded.
+- **Risk — external link rot**: the repo contains old utility / tax / house notes with URLs possibly years old. Lychee's first run may fail. Mitigation: per the acceptance criterion, rotted links are handled by **per-URL** entries added to `lychee.toml` with an inline comment stating why and a dated TODO for re-check. Host-level / wildcard exclusions remain **prohibited** (this supersedes any earlier draft wording about "adding a rotted host to the exclude list"). Link-check is weekly scheduled so recurrence cost is bounded.
 - **Risk — Actions minutes on free tier**: personal GitHub account, free tier minutes. markdown-lint is path-scoped to `.md` changes; link-check is weekly (≈4 runs/month × ~30s each). Total monthly budget: negligible.
 - **Risk — missed detection of workflow schema errors**: no local `actionlint` run before push = silent YAML-syntax failures at GitHub side. Mitigation: acceptance criterion explicitly requires `actionlint` to pass (add to local dev checklist; lightweight — `brew install actionlint` or `go install`).
 - **Risk — governance drift already present**: #2443 currently has `status:plan-approved` label without a canonical plan or marker (described in Evidence section). This plan produces the canonical artifact. The label reconciliation (swap to `status:plan-review` while cross-review runs, then back to `status:plan-approved` after user approves this plan) is **out of scope for this drafting pass per user's explicit hard constraints** — flag it to the user in the governance comment so they can decide next step.
+- **Risk — MD024/MD025 first-run violation count unmeasured** (Wave-2 Claude): the 495 tracked `.md` files have never been linted. MD025 (single top-level H1) is enabled in the floor and cannot be disabled to reach green. On legacy notes, multi-H1 files are common. Mitigation: implementation step 5 (local `npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md' 2>&1 | tee /tmp/2443-first-lint.txt`) **MUST run before the push** and the MD024/MD025 violation count recorded in the closeout comment. If MD025 violations > 30 files, split execution into two PRs: (a) content-fix PR that resolves MD025 violations (re-flowing duplicate H1s, running `markdownlint-cli2 --fix` where safe), (b) workflow-land PR with the config + workflow files. Revisit T1 classification in that case.
 - **Open — which lychee version**: `@v2` is current stable (Apr 2026); pinning to `@v2` vs. `@v2.3.0` is user preference. Plan pins to `@v2` (minor-version float) to reduce maintenance; user may request exact pin during review.
 - **Resolved — link-check issue-on-failure**: originally proposed via `permissions: issues: write`, but `lycheeverse/lychee-action@v2` does not auto-open GitHub issues (confirmed against action source). Permission removed from the workflow. If visibility via auto-issue is desired later, it requires a follow-up step like `peter-evans/create-issue-from-file` consuming lychee's report — filed as a deferred item, not in scope here.
 - **Open — should this plan also update `docs/plans/README.md` index**: planning skill says yes; user's hard constraints for this session say no. Defer to next session / governance comment flag.

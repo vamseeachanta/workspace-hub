@@ -1,12 +1,12 @@
 # Plan for #2441: digitalmodel Quality Gates — add missing `pylife` dependency (60+ runs red since 2026-04-05)
 
-> **Status:** draft
+> **Status:** draft (v3 — Wave 2 MAJOR findings addressed, awaiting Wave 3 re-review)
 > **Complexity:** T1
-> **Date:** 2026-04-21
+> **Date:** 2026-04-21 (v3 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2441
 > **Parent meta-issue:** https://github.com/vamseeachanta/workspace-hub/issues/2424
 > **Target repo:** vamseeachanta/digitalmodel (separate git repo at `/mnt/local-analysis/workspace-hub/digitalmodel/`)
-> **Review artifacts:** scripts/review/results/2026-04-21-plan-2441-claude.md | ...-codex.md | ...-gemini.md (Wave 1 complete; Wave 2 revision applied 2026-04-21)
+> **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — to be generated for this revision)
 
 ---
 
@@ -127,7 +127,7 @@ Compatible with digitalmodel's `requires-python = ">=3.11"`.
 **Gap proofs** (verified 2026-04-21):
 - `grep -n pylife digitalmodel/pyproject.toml` → no output → confirms pylife absent from deps.
 - `grep -c pylife digitalmodel/uv.lock` → 0 → confirms pylife never resolved.
-- `git ls-files docs/plans/2026-04-21-issue-2441-digitalmodel-pylife-dep.md` → returns the path; `git log --oneline -1 docs/plans/2026-04-21-issue-2441-digitalmodel-pylife-dep.md` → `3b09fc067 chore(sync): auto-sync 2026-04-21` → plan file exists and is git-tracked. This supersedes an earlier draft's "plan file MISSING" claim.
+- `git ls-files docs/plans/2026-04-21-issue-2441-digitalmodel-pylife-dep.md` → returns the path. First-landing commit: `3b09fc067` (2026-04-21 auto-sync). HEAD commit for this file will advance with each Wave revision; a reviewer running `git log --oneline -1 <path>` should not expect the first-landing SHA to remain HEAD. Wave 2 revision shipped in commit `bf2222da2`; Wave 3 revision in a new commit landing alongside the Wave 3 review artifacts. This supersedes an earlier draft's "plan file MISSING" claim.
 - `ls .planning/plan-approved/2441*` → "No such file or directory" → confirms no local approval marker (despite the issue carrying `status:plan-approved` label — flagged as governance drift).
 
 Source count: 6 distinct sources consulted (issue #2441 body, parent issue #2424, digitalmodel source files, digitalmodel pyproject/uv.lock, digitalmodel CI log run `24579096595`, PyPI pylife registry). Minimum of 3 satisfied.
@@ -153,7 +153,9 @@ Source count: 6 distinct sources consulted (issue #2441 body, parent issue #2424
 
 ## Deliverable
 
-`digitalmodel/pyproject.toml` declares `pylife>=2.2,<3.0` as a runtime dependency, `uv.lock` is refreshed, a smoke import test guards `import digitalmodel.fatigue` against missing-dep regressions, and the `Quality Gates` workflow on `vamseeachanta/digitalmodel` main returns green on the first run after the fix lands.
+`digitalmodel/pyproject.toml` declares `pylife>=2.2,<3.0` as a runtime dependency, `uv.lock` is refreshed, a smoke import test guards `import digitalmodel.fatigue` against missing-dep regressions, and the `Quality Gates` workflow `tests` gate (gate 1 in `digitalmodel/.claude/quality-gates.yaml`) no longer fails with `ModuleNotFoundError: No module named 'pylife'` — the full `fatigue/` test subtree collects and runs. A separate pre-existing `coverage` gate (gate 2) blocker is explicitly out of scope for this T1 and tracked as a follow-up (see `Risks — coverage-gate blocker` below).
+
+**Explicit scope boundary:** this plan does NOT promise an overall green Quality Gates workflow on the first post-fix run. Live code inspection of `digitalmodel/src/digitalmodel/workflows/automation/quality_gates.py:285-295` shows `_execute_coverage_gate` returns `GateStatus.ERROR` when `coverage.json` is missing, and the workflow has no step producing `coverage.json` (the `tests` gate command in `quality-gates.yaml:10` runs plain `python -m pytest` with no `--cov` flag). With `ci_cd.strict_mode: true` (`.claude/quality-gates.yaml:100`), the ERROR propagates. The pylife fix retires the `tests`-gate blocker only.
 
 ---
 
@@ -188,22 +190,31 @@ Scope constraint (HARD): during implementation, code-write scope is limited to (
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| `test_fatigue_package_imports` | `import digitalmodel.fatigue` succeeds without raising | (import statement) | no exception; module is not None |
-| `test_fatigue_exports_get_sn_curve` | Public API `get_sn_curve` is re-exported from package init | `from digitalmodel.fatigue import get_sn_curve` | callable is not None |
-| `test_fatigue_exports_dnv_curves` | Public API `DNV_CURVES` registry is re-exported | `from digitalmodel.fatigue import DNV_CURVES` | dict-like, non-empty |
+| `test_fatigue_package_imports` | `import digitalmodel.fatigue` succeeds without raising — this is the **whole-package import guard**; any broken import anywhere under `fatigue/__init__.py` trips it. | (import statement) | no exception; module is not None |
+| `test_fatigue_exports_get_sn_curve` | Representative re-export from `sn_curves` (NOT exhaustive — `fatigue/__init__.py` re-exports many symbols; this test samples the one tied to the pylife regression). | `from digitalmodel.fatigue import get_sn_curve` | callable is not None |
+| `test_fatigue_exports_dnv_curves` | Representative re-export of the DNV curve registry (NOT exhaustive — same caveat as above). | `from digitalmodel.fatigue import DNV_CURVES` | dict-like, non-empty |
 | `test_pylife_woehlercurve_importable` | The exact third-party symbol used at `sn_curves.py:15` is resolvable and instantiable with the same call contract `sn_curves.py:148` uses (`return WoehlerCurve(params)` where `params` is a `pd.Series` with keys `k_1`, `SD`, `ND`, `k_2`). | `WoehlerCurve(pd.Series({"k_1": 3.0, "SD": 52.63, "ND": 1e7, "k_2": 5.0}))` (sample values from DNV curve D air in `sn_curves.py`) | class object resolves; instantiation returns a non-None `WoehlerCurve`. Cited source: `digitalmodel/src/digitalmodel/fatigue/sn_curves.py` lines 142-148. |
 
 All four tests live in the new `tests/fatigue/test_package_imports.py` and must collect + run in under 2 seconds to keep the Quality Gates fail-fast loop tight.
 
 Implementation order (after approval):
-1. Capture pre-change baseline: in a clean env without pylife, run `cd digitalmodel && uv run pytest --collect-only tests/fatigue/ 2>&1 | tail -30` and the matching `gh run view <latest-failing-run> --log-failed` excerpt. Save the output to the issue or a scratch note so step 6 has a diffable baseline. (The embedded CI-log excerpt under `Evidence` above — 10 collection errors, all traced to `pylife` missing at `sn_curves.py:15` — serves as the canonical pre-change CI baseline.)
-2. Write the four tests above; confirm they fail (or collect-error) in a clean venv without pylife installed.
+1. Capture pre-change baseline using **both** the CI tests-gate command and the fatigue-collect command, so step 7 has a diffable baseline for each. Scaffold a throwaway venv guaranteed to lack pylife to make the baseline deterministic independent of the developer's prior `uv sync` state:
+   ```
+   cd digitalmodel
+   python3.11 -m venv /tmp/pre-2441-venv
+   /tmp/pre-2441-venv/bin/pip install -e . pytest pytest-cov ruff bandit pyyaml loguru click
+   /tmp/pre-2441-venv/bin/python -c "import pylife" 2>&1 | tee /tmp/pre-2441-pylife-check.txt   # must say ModuleNotFoundError
+   /tmp/pre-2441-venv/bin/pytest --collect-only tests/fatigue/ 2>&1 | tee /tmp/pre-2441-fatigue-collect.txt
+   /tmp/pre-2441-venv/bin/pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line tests/ 2>&1 | tee /tmp/pre-2441-ci-command-baseline.txt
+   ```
+   (The third command mirrors `digitalmodel/.claude/quality-gates.yaml:10` exactly — no `-m "not solver"` filter, matching what CI runs.) The embedded CI-log excerpt under `Evidence` also remains a canonical pre-change CI signal for the `tests` gate.
+2. Write the four tests (TDD red) in the throwaway venv from step 1 — before installing pylife, run the new `tests/fatigue/test_package_imports.py` via `/tmp/pre-2441-venv/bin/pytest tests/fatigue/test_package_imports.py -v` and confirm all four fail with `ModuleNotFoundError: No module named 'pylife'`. Keep the venv around so the green step below uses the same Python.
 3. Append `"pylife>=2.2,<3.0"` to the `dependencies = [...]` array under `[project]` in `digitalmodel/pyproject.toml`.
 4. Run `uv lock --upgrade-package pylife` in the digitalmodel repo (scoped refresh — avoids unintended bumps on other floating constraints like pydantic/pytest/hypothesis).
-5. Run `uv run pytest tests/fatigue/test_package_imports.py -v` — all four pass.
-6. Run full `uv run pytest tests/fatigue/ -v` — all 14 test modules collect cleanly.
-7. Run full `uv run pytest tests/ -v -m "not solver"` — diff failure set vs. step-1 baseline; any non-fatigue failures that existed pre-change may persist but no new failures introduced.
-8. Commit directly to `main` of the digitalmodel repo and push, per workspace `AGENTS.md` line 15 ("Git: commit to `main` + push; branch only for multi-session work"). This fix is single-session, so no branch/PR is required; confirm Quality Gates workflow returns green on the pushed commit. If during implementation the work is split across sessions, switch to a branch/PR path and cite the multi-session exception in the closeout comment.
+5. In the throwaway venv: `/tmp/pre-2441-venv/bin/pip install "pylife>=2.2,<3.0"` then `/tmp/pre-2441-venv/bin/pytest tests/fatigue/test_package_imports.py -v` — all four tests pass (TDD green).
+6. Run full `/tmp/pre-2441-venv/bin/pytest tests/fatigue/ -v` — all 14 test modules collect cleanly.
+7. Run the CI tests-gate command verbatim: `/tmp/pre-2441-venv/bin/pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line tests/ 2>&1 | tee /tmp/post-2441-ci-command.txt`. Diff against `/tmp/pre-2441-ci-command-baseline.txt` from step 1: (a) no new `ModuleNotFoundError: No module named 'pylife'` lines, (b) the fatigue-collect error count drops to zero, (c) any pre-existing failures outside `tests/fatigue/` that existed pre-change may persist (they are pre-existing regressions, not regressions of this change). Record the pre/post failure counts in the closeout comment.
+8. Commit directly to `main` of the digitalmodel repo and push, per workspace `AGENTS.md` line 15 ("Git: commit to `main` + push; branch only for multi-session work"). This fix is single-session, so no branch/PR is required. Observe the first Quality Gates run after push: **verify the `tests` gate stops logging `ModuleNotFoundError: No module named 'pylife'`** — this is the falsifiable success signal. The overall workflow may remain red due to the separately-tracked coverage-gate blocker (see `Risks`); that is expected and tracked as a follow-up, not a failure of this plan. If during implementation the work is split across sessions, switch to a branch/PR path and cite the multi-session exception in the closeout comment.
 
 ---
 
@@ -211,13 +222,13 @@ Implementation order (after approval):
 
 - [ ] `digitalmodel/pyproject.toml` — the `dependencies = [...]` array under `[project]` contains the string `"pylife>=2.2,<3.0"` (PEP 621 array, not a sub-table).
 - [ ] `digitalmodel/uv.lock` contains at least one `pylife` entry (`grep -c pylife uv.lock` > 0).
-- [ ] `uv run pytest tests/fatigue/test_package_imports.py -v` — all 4 new tests pass locally.
-- [ ] `uv run pytest tests/fatigue/ -v` — no collection errors, no ModuleNotFoundError for pylife; all 14 test modules are collected.
-- [ ] `uv run pytest tests/ -v -m "not solver"` — all tests that were passing before the change continue to pass; test collection completes without any `ModuleNotFoundError` for `pylife`. (Baseline captured in implementation step 1; diff failure sets before/after.)
-- [ ] `Quality Gates` workflow run on `vamseeachanta/digitalmodel` main returns **success** on the first run after the fix commit lands.
-- [ ] `gh run list --repo vamseeachanta/digitalmodel --branch main --status failure --limit 5` no longer shows the fix commit (or any subsequent push) in the failure list for the Quality Gates workflow.
-- [ ] Adversarial-review artifacts posted to `scripts/review/results/2026-04-21-plan-2441-{claude,codex,gemini}.md` — zero MAJOR findings outstanding (within the HARD scope declared in `Files to Change`).
-- [ ] Closeout comment posted to #2441 linking the fix commit + first green run URL.
+- [ ] Throwaway-venv smoke: `/tmp/pre-2441-venv/bin/pytest tests/fatigue/test_package_imports.py -v` — all 4 new tests pass.
+- [ ] Throwaway-venv full fatigue: `/tmp/pre-2441-venv/bin/pytest tests/fatigue/ -v` — no collection errors, no `ModuleNotFoundError: No module named 'pylife'`; all 14 test modules collect.
+- [ ] CI-command parity: post-change `/tmp/post-2441-ci-command.txt` (from step 7, which runs the exact `tests`-gate command from `digitalmodel/.claude/quality-gates.yaml:10`) contains **zero** `ModuleNotFoundError: No module named 'pylife'` lines. Pre-change baseline for the same command was captured in step 1 at `/tmp/pre-2441-ci-command-baseline.txt`; the diff shows fatigue-collection errors cleared, with pre-existing non-fatigue failures allowed to persist.
+- [ ] First post-fix Quality Gates run on `vamseeachanta/digitalmodel` main: `tests` gate (gate 1) no longer surfaces a pylife `ModuleNotFoundError`. The overall workflow status is permitted to remain red **if and only if** the remaining failure is the pre-existing coverage-gate `ERROR: Coverage file not found: coverage.json` (see `Risks — coverage-gate blocker`) — any other new failure mode invalidates the fix.
+- [ ] Follow-up issue opened to track the coverage-gate workflow blocker (`coverage.json` not produced by the `tests` gate command; `_execute_coverage_gate` returns `GateStatus.ERROR`). Cross-linked from #2441 closeout and from parent #2424.
+- [ ] Wave 3 adversarial-review artifacts posted to `scripts/review/results/2026-04-21-plan-2441-{claude,codex,gemini}-r3.md` — zero new MAJOR findings outstanding that were not present in Wave 2. (Self-referential caveat: the implementing agent does not self-assess this; user inspects the r3 artifacts before setting `status:plan-approved`.)
+- [ ] Closeout comment posted to #2441 linking the fix commit + the first post-fix Quality Gates run URL + the follow-up coverage-gate issue.
 
 ---
 
@@ -251,7 +262,36 @@ Implementation order (after approval):
 - Gemini's suggestion to migrate CI to `uv sync --frozen` — captured in `Risks` as a deferred follow-up to avoid scope creep on a T1 dep-declaration fix.
 - Parent-issue #2424 red-CI enumeration — deferred; handled in #2424's own plan, not in #2441's closeout comment.
 
-**Status:** revised, awaiting Wave 2 re-review. Overall result pending Wave 2; not approval-ready until Wave 2 returns no MAJOR findings and user explicitly labels `status:plan-approved`.
+**Status (v2):** revised, awaiting Wave 2 re-review.
+
+**Wave 2 (2026-04-21):** three-provider adversarial re-review executed against the v2 plan.
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | APPROVE (minor drift) | Stale commit-hash cite (`3b09fc067` historic vs current HEAD); TDD step 2 determinism fragile (depends on prior `uv sync` state); "Quality Gates green on first run" criterion silently assumes pylife was the only red signal; self-referential acceptance criterion on "zero MAJOR findings"; smoke-test naming over-promises coverage (2 symbols vs dozens). |
+| Codex | MAJOR | (1) `Deliverable` / `Acceptance Criteria` claim first-post-fix Quality Gates returns green, but live code inspection of `digitalmodel/src/digitalmodel/workflows/automation/quality_gates.py:285-295` shows `_execute_coverage_gate` returns `ERROR` when `coverage.json` is missing, and the workflow has no step producing `coverage.json` (the `tests`-gate command `python -m pytest ...` has no `--cov` flag, and the workflow has no prior coverage step). (2) Regression-baseline step 1 only captures `--collect-only tests/fatigue/` plus an old CI log, but acceptance requires diff of `pytest tests/ -v -m "not solver"` — a fatigue-only collect baseline cannot establish a full-suite failure-set diff. (3) Local verification command `pytest tests/ -v -m "not solver"` diverges from the CI `tests`-gate command `python -m pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line` (no `-m "not solver"` in CI); `digitalmodel/tests/solver/conftest.py` auto-marks the solver directory, so local results don't mirror CI. |
+| Gemini | MAJOR | Structural: the `Adversarial Review Summary` documents Wave 1 only; it omits what the Wave 2 findings were and how they were addressed, making a Wave 3 re-review impossible to perform as specified. |
+
+**Wave 2 overall verdict:** MAJOR (Codex + Gemini concurrent).
+
+**Revisions made in v3 based on Wave 2 review:**
+
+- (Codex.1 → resolved) `Deliverable` narrowed to "`tests` gate no longer fails with `ModuleNotFoundError` for `pylife`" and an explicit scope boundary paragraph states that an overall green workflow is NOT promised. The coverage-gate blocker is documented in `Risks — coverage-gate blocker` with the exact code cite (`quality_gates.py:285-295`) and the missing `--cov` flag cited at `.claude/quality-gates.yaml:10`. Acceptance criterion rewritten to the falsifiable form "`tests` gate stops logging `ModuleNotFoundError` for `pylife`; overall run is permitted to remain red IFF the remaining failure is the pre-existing coverage-gate ERROR". A new acceptance checkbox requires opening a follow-up issue tracking the coverage-gate wiring, cross-linked from #2441 closeout and parent #2424.
+- (Codex.2 → resolved) `Implementation order` step 1 was rewritten to capture THREE baselines, all in a throwaway venv (so the baseline is deterministic regardless of prior `uv sync` state): (a) `python -c "import pylife"` failure proof, (b) `pytest --collect-only tests/fatigue/` output, (c) the exact CI `tests`-gate command verbatim (`pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line tests/`) piped to `/tmp/pre-2441-ci-command-baseline.txt`. Step 7 now runs the same CI command post-change and diffs against that baseline.
+- (Codex.3 → resolved) `Implementation order` steps 2–7 now run the CI command verbatim in the throwaway venv. Local-vs-CI divergence (`-m "not solver"` filter and `pytest tests/ -v` shorthand) removed from steps 7 and from the acceptance criteria. Step 7 is the exact CI `tests`-gate command; the solver auto-mark in `tests/solver/conftest.py` now behaves identically locally and in CI.
+- (Gemini → resolved) This `Adversarial Review Summary` now includes a Wave 2 verdict table, a bulleted list of each Wave 2 finding mapped to its v3 resolution, and a Wave 3 status line below. A Wave 3 re-reviewer can now verify claims point-by-point.
+- (Claude.1 → resolved) Evidence block commit-hash note rewritten to clarify `3b09fc067` as first-landing and `bf2222da2` as Wave 2 HEAD (and a fresh v3 commit SHA will appear after this revision lands). Reviewers running `git log --oneline -1` on the plan file should expect the HEAD SHA to advance with each wave.
+- (Claude.2 → resolved) TDD step 2 now scaffolds `/tmp/pre-2441-venv` explicitly and asserts `python -c "import pylife"` returns `ModuleNotFoundError` before running the red pytest step — TDD red is deterministic regardless of developer prior state.
+- (Claude.3 → resolved via narrowing) "Quality Gates returns green on first run" removed; replaced with falsifiable "`tests` gate no longer logs `ModuleNotFoundError` for `pylife`" (see Codex.1 resolution above).
+- (Claude.4 → explicit acknowledgement) The acceptance criterion on "zero MAJOR findings in adversarial-review artifacts" is annotated as self-referential — the implementing agent does NOT self-assess it; the user inspects r3 artifacts before labeling `status:plan-approved`.
+- (Claude.5 → resolved) Smoke-test scope note: the two targeted `__init__` exports (`get_sn_curve`, `DNV_CURVES`) are labeled in the TDD table description as "representative re-exports from the `sn_curves` module — NOT exhaustive; `test_fatigue_package_imports` is the whole-package import guard". The file remains at `tests/fatigue/test_package_imports.py` (keeping the regression colocated with the failing package).
+
+**Revisions deferred in v3** (lower-severity, tracked as follow-up):
+- Claude's suggestion to rename the smoke test file to `test_fatigue_smoke.py` — deferred; filename is already scoped to the package, and relabeling in-file description achieves the same truthfulness without churn.
+- Claude's suggestion to specify the first post-fix `gh run` ID in advance — deferred; the implementing agent captures it immediately after `git push` in the closeout comment.
+- Claude's question on pylife 2.x transitive extras fallback — deferred; will be resolved by inspecting `uv.lock` diff during implementation (step 4), then narrowing to `[project.optional-dependencies].fatigue` only if jupyter/matplotlib-weight deps appear. This is a runtime decision, not a plan-time decision.
+
+**Status (v3):** revised, awaiting Wave 3 re-review. **Not approval-ready** until Wave 3 returns no new MAJOR findings AND user explicitly labels `status:plan-approved`. This plan MUST NOT be self-approved by any agent.
 
 ---
 
@@ -263,6 +303,7 @@ Implementation order (after approval):
 - **Risk — `uv.lock` is not a CI gate:** The Quality Gates workflow installs with `UV_NO_SOURCES=true uv pip install -e .` (`digitalmodel/.github/workflows/quality-gates.yml` line 36), which resolves dependencies on the fly from `pyproject.toml` and ignores `uv.lock`. Regenerating `uv.lock` is therefore **local-reproducibility insurance only** — it does NOT gate CI. The CI fix is driven entirely by the `pyproject.toml` change. Deferred follow-up: migrate the install step to `uv sync --frozen` so CI tests the locked graph; out of scope for this T1.
 - **Risk — collateral lockfile bumps:** Bare `uv lock` can bump any dep whose constraint floats (e.g., `pydantic>=2.7.0,<3.0.0`, `pytest>=7.4.3,<9.0.0`, `hypothesis>=6.100.0,<7.0.0`). Mitigation: implementation step 4 scopes the refresh with `uv lock --upgrade-package pylife`. Post-change, inspect `uv.lock` diff; if any non-pylife/non-transitive line churns, revert and re-run with tighter scoping.
 - **Risk — governance-drift optics:** Issue #2441 already carries `status:plan-approved` label before this plan existed. This plan is draft-only; the label does not reflect an actually-reviewed plan. Governance comment (separate from this plan) flags the drift for user resolution.
+- **Risk — coverage-gate blocker (out of scope for #2441):** Codex Wave 2 surfaced a pre-existing Quality Gates blocker independent of pylife. `digitalmodel/.github/workflows/quality-gates.yml` has no coverage step; `.claude/quality-gates.yaml:10` runs the `tests` gate with plain `python -m pytest ...` (no `--cov` flag); `src/digitalmodel/workflows/automation/quality_gates.py:285-295` `_execute_coverage_gate` returns `GateStatus.ERROR` when `coverage.json` is missing; and `.claude/quality-gates.yaml:100` sets `ci_cd.strict_mode: true`, so the ERROR blocks the workflow. After this plan's fix lands, the workflow will likely remain red due to the coverage-gate ERROR — **this is expected and explicitly out of scope for #2441**. The coverage-gate fix is tracked as a required follow-up issue (open before closing #2441), cross-linked from the closeout comment and from parent #2424. Two candidate fixes for the follow-up: (a) add `--cov=src --cov-report=json:coverage.json` to `.claude/quality-gates.yaml:10` so the `tests` gate produces `coverage.json` inline, or (b) add a dedicated coverage step to `quality-gates.yml` before the `Run Quality Gates` step. Decision deferred to the follow-up issue.
 - **Open — should `pylife-evaluation.md` be updated post-fix?** Its current phrasing is forward-looking ("Add pylife>=2.2 to digitalmodel's dependencies"). Low-priority follow-up; not blocking this plan.
 - **Open — CI-level `pip install pylife` shortcut?** The Quality Gates workflow could add `uv pip install pylife` as a temporary hot-fix before `pyproject.toml` is updated. Rejected: hot-fixes in workflow YAML drift from declared deps and create the exact class of bug this plan is fixing. Fix it in `pyproject.toml` only.
 - **Open — parent #2424 signal:** Closing this one red CI among the 7 ecosystem repos should update the parent meta-issue's tally. Post a cross-link comment on #2424 after #2441 closes.
