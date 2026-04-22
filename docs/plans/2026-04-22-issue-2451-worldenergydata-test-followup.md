@@ -517,19 +517,17 @@ These are mandatory process controls, but they are workflow gates rather than te
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | APPROVE | Plan is execution-ready; remaining notes are readability/precision suggestions only. |
-| Codex | APPROVE | Plan is execution-ready; remaining notes are implementation-detail suggestions around diagnostics, tracker rigor, and optional follow-up hardening. |
+| Claude | APPROVE | Plan is approval-ready; remaining notes are minor precision/readability suggestions only. |
+| Codex | APPROVE | Plan is approval-ready; remaining notes are non-blocking implementation-detail suggestions around diagnostics, optional hardening, and review ergonomics. |
 | Gemini | APPROVE | No blocking defects; only minor attestation/environment notes. |
 
-**Wave 17 overall result:** APPROVE — adversarial review has converged across all three providers. Remaining feedback is non-blocking polish only and does not require further plan revision before approval routing.
+**Wave 18 overall result:** APPROVE — adversarial review has fully converged across all three providers. Remaining feedback is non-blocking polish only and does not require further plan revision before approval routing.
 
 Revisions made based on review:
 - Updated review artifact references to the latest rerun wave.
-- Recorded final convergence after the prior runtime-verification and execution-practicality fixes.
+- Recorded final convergence after the prior execution-practicality and runtime-verification fixes.
 
 This plan is now ready for `status:plan-review` / user approval routing.
-
----
 
 ## Risks and Open Questions
 
