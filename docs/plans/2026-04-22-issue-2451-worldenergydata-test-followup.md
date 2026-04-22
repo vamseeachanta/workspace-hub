@@ -7,7 +7,7 @@
 > **Parent execution issue:** #2433 (collection-unblock, landed at worldenergydata `0f8ac026`)
 > **Parent meta issue:** #2424 (ecosystem CI health)
 > **Sibling follow-up:** #2452 (flake8 debt keeping `lint` job red)
-> **Review artifacts:** `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -137,9 +137,9 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-22-issue-2451-worldenergydata-test-followup.md` |
-| Plan review — Claude | `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
-| Plan review — Codex | `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
-| Plan review — Gemini | `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
+| Plan review — Claude | `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
+| Plan review — Codex | `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
+| Plan review — Gemini | `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
 | Implementation (cluster A) | `worldenergydata/.github/workflows/ci.yml` (`test` job install step only, and only if CI log proves plugin absence) **or** `worldenergydata/tests/benchmarks/test_eia_benchmarks.py` (fallback skip if workflow edit would be a no-op) |
 | Implementation (cluster B) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` (promote fixture verbatim from current class fixture) |
 | Implementation (cluster C) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py` (collection-safe module skip or repoint) + `test_cash_flow_components.py` (class-level skip on `TestProductionAPI12CashFlowMethods` only, or repoint) |
@@ -203,8 +203,8 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_f
     --override-ini="addopts=" 2>&1 \
     | tee /tmp/2451-cashflow-red.log | grep -E "fixture 'config_with_economics' not found|ERROR"
 uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py \
-    --override-ini="addopts=" --collect-only 2>&1 \
-    | tee /tmp/2451-current-npv-red.log | grep -E "ModuleNotFoundError|ImportError"
+    --override-ini="addopts=" 2>&1 \
+    | tee /tmp/2451-current-npv-red.log | grep -E "ModuleNotFoundError|ImportError|perform_npv_calculation|AttributeError|FAILED|ERROR"
 
 # Step 0b: confirm CI install-time reality — pull latest failing job log
 #   gh run view <run_id> --repo vamseeachanta/worldenergydata --log-failed \
@@ -380,13 +380,16 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 # not ERROR):
 #   - no `fixture 'benchmark' not found`
 #   - no `fixture 'config_with_economics' not found`
-#   - no `ModuleNotFoundError` / missing `perform_npv_calculation` from the
-#     two legacy NPV targets targeted by Cluster C
+#   - no legacy-NPV runtime or import failure from the targeted files, including
+#     `ModuleNotFoundError`, `ImportError`, missing `perform_npv_calculation`, or
+#     equivalent removed-method/runtime failures
 # Step V1a: prove Cluster B at runtime, not just collection:
 #   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestCashFlowComponents::test_opex_calculation_basic -v --override-ini="addopts="
 #   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestCashFlowComponents::test_net_cash_flow_calculation -v --override-ini="addopts="
 #   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestProductionAPI12CashFlowMethods::test_revenue_table_generation_structure -v --override-ini="addopts="
-# Expected: primary non-legacy tests PASS; legacy-class test is SKIPPED (C-skip) or PASSES (C-repoint), but does not error on missing fixture.
+#   uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py -v --override-ini="addopts="
+# Expected: primary non-legacy tests PASS; the legacy-class/file targets are SKIPPED (C-skip)
+# or PASS (C-repoint), but they do not fail at runtime on legacy import/method drift.
 # Step V1b: if Cluster C remains on the default skip path, supported-path verification
 # becomes a hard prerequisite for closure, not an optional note.
 #   - if Step 0d still yields no non-legacy entry point, STOP and return #2451 to
@@ -465,6 +468,7 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 | verify_cashflow_fixture_runtime_legacy_class | `uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_cash_flow_components.py::TestProductionAPI12CashFlowMethods::test_revenue_table_generation_structure -v --override-ini="addopts="` | worldenergydata with B1 + C handling | SKIPPED (C-skip) or PASS (C-repoint), but never fixture-missing ERROR |
 | verify_cashflow_no_duplicate_fixture | Grep for `def config_with_economics` in the test file after edit | post-edit file when B1 fixture promotion is applied | Exactly 0 hits in `test_cash_flow_components.py` (fixture only in conftest) |
 | verify_legacy_npv_tracker_exists | `gh issue view <worldenergydata_tracker_id> --repo vamseeachanta/worldenergydata` plus grep skip strings for both `#2451` and that tracker id | skip-based Cluster C path when issue creation is available | Tracker issue exists before merge, and every skip string references both issues; if issue creation is unavailable, execution notes + PR body must record the blocker and skip strings still reference `#2451` |
+| verify_current_npv_runtime_or_skip | `uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py -v --override-ini="addopts="` | worldenergydata with C-skip or C-repoint | File is skipped cleanly under C-skip or passes under C-repoint; no runtime legacy import/method failure remains |
 | verify_current_npv_collection_safe | `uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py --collect-only --override-ini="addopts="` | worldenergydata with C-skip or C-repoint | No import-time collection error; file is either skipped or collects cleanly |
 | verify_supported_npv_smoke_or_blocker | Concrete automated assertion against identified non-legacy financial/NPV entry point, or explicit stop-and-return-to-planning when no supported path exists | Cluster C-skip path | Supported-path assertion exists and passes before closure; if no supported path exists, #2451 does not close via skip-only remediation |
 | verify_npv_directory_no_regression | `uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/ -v --override-ini="addopts="` | after any B1 fixture promotion or any Cluster C code edit | No new failures introduced anywhere in the touched NPV directory; any newly surfaced failure there remains in scope |
@@ -486,7 +490,7 @@ Deliverable acceptance criteria below cover the observable technical outcome for
 - [ ] If Cluster B is activated, `test_cash_flow_components.py` no longer contains an in-class `config_with_economics` fixture definition after the edit (no duplicate shadowing).
 - [ ] Cluster B is proven at runtime, not just collection: a representative `TestCashFlowComponents` test passes and the legacy class test is either skipped cleanly or passes after repoint.
 - [ ] After any B1 fixture promotion or any Cluster C code edit, the bounded directory slice `tests/modules/bsee/analysis/npv-data-source-comparison/` is re-run and remains free of newly introduced failures. Any newly surfaced failure in that touched directory remains in scope for #2451 rather than being deferred as unrelated noise.
-- [ ] Cluster C handling is collection-safe: `test_current_npv_implementation.py` no longer errors during collection, and `test_cash_flow_components.py` preserves `TestCashFlowComponents` coverage while only the legacy-API class is skipped or repointed.
+- [ ] Cluster C handling is collection-safe and runtime-safe: `test_current_npv_implementation.py` no longer errors during collection or runtime, and `test_cash_flow_components.py` preserves `TestCashFlowComponents` coverage while only the legacy-API class/file targets are skipped or repointed.
 - [ ] If Cluster C stays on the skip path, closure requires replacement supported-path automated evidence: at least one concrete assertion against the currently identified non-legacy financial/NPV entry point. If Step 0d still finds no supported path, #2451 returns to planning instead of closing via skip-only remediation.
 - [ ] If Cluster C uses skip-based deferral, the skip reason(s) use the literal template defined in this plan and reference `#2451` plus a concrete worldenergydata follow-up issue for re-enable/delete ownership when issue creation is available. If worldenergydata issue creation is unavailable despite verified repo read/push/PR access, the code comment / skip reason must still reference `#2451`, and the missing-tracker blocker must be documented immediately on `#2451` and in the worldenergydata PR before merge/close.
 - [ ] GitHub CLI access is verified with concrete repo operations before execution of any branch that depends on failed-run log inspection or tracker creation: the executor can read run `24757842396` in `vamseeachanta/worldenergydata` and view workspace-hub issue `#2451`. For skip-based Cluster C, the executor either creates/views the preferred worldenergydata tracker issue or records the issue-write blocker in `#2451` plus the PR before merge. If run-log access fails, execution pauses and the blocker is documented on workspace-hub issue `#2451` rather than guessed around locally.
@@ -509,17 +513,17 @@ These are mandatory process controls, but they are workflow gates rather than te
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | APPROVE | Prior execution-contract concerns are resolved; only minor precision suggestions remain. |
-| Codex | MAJOR | Remaining blockers focused on clarifying that default C-skip is stabilization-only unless supported-path coverage is added, strengthening pytest-plugin-registration evidence for A1a vs A1b, and separating workflow gates from deliverable acceptance. |
+| Claude | APPROVE | Prior execution-contract concerns are resolved; remaining notes are minor precision/readability suggestions. |
+| Codex | MAJOR | Remaining blockers focused on adding runtime, not just collection-safe, verification for `test_current_npv_implementation.py`, clarifying Cluster C as stabilization-only by default, and keeping workflow controls separate from technical done-state. |
 | Gemini | APPROVE | No blocking defects; only minor attestation/environment notes. |
 
-**Wave 14 overall result:** MAJOR — remaining objections are now concentrated in execution-readiness precision. This revision (1) makes the default Cluster C path explicitly stabilization-only unless supported-path automated coverage is added, (2) adds pytest-plugin-registration evidence as a required discriminator for Cluster A branch selection rather than relying on package importability alone, and (3) keeps workflow gates separated from technical deliverable acceptance.
+**Wave 15 overall result:** MAJOR — remaining objections are now limited to runtime-verification precision for the legacy NPV file. This revision (1) adds explicit runtime RED/GREEN commands for `test_current_npv_implementation.py` instead of relying primarily on `--collect-only`, (2) updates Cluster C acceptance wording from collection-safe to collection-safe and runtime-safe, and (3) preserves the already-separated workflow-gate structure.
 
 Revisions made based on review:
 - Updated review artifact references to the latest rerun wave.
-- Added explicit pytest-plugin-registration checks (`pytest --fixtures` / `pytest --trace-config`) to Cluster A evidence and acceptance.
-- Reframed default Cluster C as stabilization-only unless supported-path coverage is added, eliminating ambiguity about closure.
-- Kept workflow/admin requirements isolated under `Workflow Gates` rather than mixing them into technical done-state.
+- Added runtime RED proof for `test_current_npv_implementation.py` that catches removed-method/runtime failures in addition to import drift.
+- Added runtime GREEN verification for `test_current_npv_implementation.py` under C-skip/C-repoint.
+- Updated Cluster C acceptance wording to require runtime safety, not just collection safety.
 
 The plan remains in `draft` pending the next rerun review wave.
 
