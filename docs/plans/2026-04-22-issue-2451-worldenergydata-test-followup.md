@@ -7,7 +7,7 @@
 > **Parent execution issue:** #2433 (collection-unblock, landed at worldenergydata `0f8ac026`)
 > **Parent meta issue:** #2424 (ecosystem CI health)
 > **Sibling follow-up:** #2452 (flake8 debt keeping `lint` job red)
-> **Review artifacts:** `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T115430Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -137,9 +137,9 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-22-issue-2451-worldenergydata-test-followup.md` |
-| Plan review — Claude | `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
-| Plan review — Codex | `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
-| Plan review — Gemini | `scripts/review/results/20260422T114927Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
+| Plan review — Claude | `scripts/review/results/20260422T115430Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
+| Plan review — Codex | `scripts/review/results/20260422T115430Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
+| Plan review — Gemini | `scripts/review/results/20260422T115430Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
 | Implementation (cluster A) | `worldenergydata/.github/workflows/ci.yml` (`test` job install step only, and only if CI log proves plugin absence) **or** `worldenergydata/tests/benchmarks/test_eia_benchmarks.py` (fallback skip if workflow edit would be a no-op) |
 | Implementation (cluster B) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` (promote fixture verbatim from current class fixture) |
 | Implementation (cluster C) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py` (collection-safe module skip or repoint) + `test_cash_flow_components.py` (class-level skip on `TestProductionAPI12CashFlowMethods` only, or repoint) |
@@ -517,19 +517,17 @@ These are mandatory process controls, but they are workflow gates rather than te
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | APPROVE | Prior execution-contract concerns are resolved; remaining notes are precision/readability suggestions only. |
-| Codex | MAJOR | Remaining blockers focused on making Cluster C closure path explicitly executable under stabilization-only semantics and tightening current-CI evidence requirements before any mergeable A1a workflow edit. |
+| Claude | APPROVE | Plan is execution-ready; remaining notes are readability/precision suggestions only. |
+| Codex | APPROVE | Plan is execution-ready; remaining notes are implementation-detail suggestions around diagnostics, tracker rigor, and optional follow-up hardening. |
 | Gemini | APPROVE | No blocking defects; only minor attestation/environment notes. |
 
-**Wave 16 overall result:** MAJOR — remaining objections are now concentrated in execution practicality, not diagnosis. This revision (1) makes Cluster C explicitly closable under stabilization-only semantics with tracked follow-up ownership, instead of requiring undefined supported-path restoration inside #2451, and (2) strengthens Cluster A so no mergeable workflow edit is allowed without fresh execution-branch-equivalent evidence for install state, plugin registration, and runner `uv` flag support.
+**Wave 17 overall result:** APPROVE — adversarial review has converged across all three providers. Remaining feedback is non-blocking polish only and does not require further plan revision before approval routing.
 
 Revisions made based on review:
 - Updated review artifact references to the latest rerun wave.
-- Reframed Cluster C so stabilization-only closure is explicit and operational, with supported-path restoration moved to tracked follow-up unless discovered cheaply.
-- Tightened Cluster A to require fresh execution-branch-equivalent CI evidence before any mergeable workflow edit.
-- Preserved the runtime-safe verification added in the previous wave for `test_current_npv_implementation.py`.
+- Recorded final convergence after the prior runtime-verification and execution-practicality fixes.
 
-The plan remains in `draft` pending the next rerun review wave.
+This plan is now ready for `status:plan-review` / user approval routing.
 
 ---
 
