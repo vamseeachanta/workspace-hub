@@ -24,6 +24,12 @@
 - [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents touching shared index files race on git lock; serialize the commit phase or use worktrees
 - [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mock tests pass what live CLIs reject; always do a live repro before close
 - [Attestation enables contradiction detection](feedback_attestation_enables_contradiction_detection.md) — #2405 unlocks plan-vs-live-state defect finding, not just Class-B silencing
+- [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve in chat, never pre-authorize downstream agents via handoff-prompt language; user-in-loop gate is load-bearing across session boundaries
+- [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; do NOT draft replies to generic/drive-by recruiter outreach even in active job-search context
+- [Email cross-noise](feedback_email_cross_noise.md) — third parties using user's Gmail by mistake; standard unsubscribe fails; mitigate with sender-domain DELETE in routing config
+- [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — when Codex MAJOR 3+ rounds while Claude+Gemini MINOR by v3, surface consensus-vs-minority decision instead of auto-cycling (#2045, #2289 anti-pattern)
+- [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without needing worktrees for every agent
+- [Permission gate blocks cross-review](feedback_permission_gate_blocks_cross_review.md) — planning-only sessions can't dispatch cross-review.sh; fallback is single-author r3 with transparent provenance
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -47,6 +53,7 @@
 - [TX Franchise 2026](project_tx_franchise_2026.md) — DONE; both C-Corps filed, C-Corps ineligible for passive entity
 - [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily, posts to repo-readiness issue
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
+- [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing

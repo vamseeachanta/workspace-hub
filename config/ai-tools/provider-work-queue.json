@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-22T01:20:06.333759Z",
+  "generated_at": "2026-04-22T05:20:06.563573Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-22T01:20:04.439823Z",
+  "scorecard_generated_at": "2026-04-22T05:20:04.706274Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 13,
-      "total_candidates": 168,
+      "execution_ready_count": 12,
+      "total_candidates": 170,
       "top_issues": [
         {
           "number": 2348,
@@ -71,7 +71,7 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T19:10:00Z",
+          "updatedAt": "2026-04-22T03:06:36Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -93,7 +93,7 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-22T00:40:04Z",
+          "updatedAt": "2026-04-22T02:48:06Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -206,74 +206,8 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 30,
+      "total_candidates": 28,
       "top_issues": [
-        {
-          "number": 2181,
-          "title": "test(operations): add AQWA zero-exit runtime-failure fixture suite and precedence assertions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2181",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T09:25:59Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2182,
-          "title": "test(operations): add OrcaWave L02 OC4 semi-sub manifest assertions and parity regression coverage",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2182",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T09:26:02Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2183,
-          "title": "feat(reporting): add publication rollback journal and recover-promotion command",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2183",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T09:26:05Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2188,
           "title": "test(reporting): add mixed-state golden fixture bundles for licensed-win probe reporting",
@@ -373,6 +307,70 @@
             "cat:harness"
           ],
           "updatedAt": "2026-04-11T09:53:14Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2199,
+          "title": "feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2199",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T10:30:07Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2200,
+          "title": "test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2200",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T10:30:28Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2202,
+          "title": "feat(operations): extend readiness bundle schema for additional canonical check evidence contracts",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2202",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T13:22:23Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",

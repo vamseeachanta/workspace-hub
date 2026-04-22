@@ -932,7 +932,21 @@ When you encounter an already-approved issue with no repo-tracked plan artifact:
 4. do **not** start implementation yet just because the old approval label is present
 5. next run adversarial plan review and reconcile the issue state with the actual plan artifacts before coding
 
-This recovery pattern is especially important for harness/operations issues that were approved conversationally before the repo plan discipline was enforced.
+Approval-state drift checklist learned from live use:
+- verify all three surfaces before treating an issue as execution-ready:
+  - live GitHub `status:*` label(s)
+  - canonical local plan file under `docs/plans/`
+  - local approval marker `.planning/plan-approved/NNN.md`
+- if GitHub says `status:plan-approved` but either the canonical plan file or local approval marker is missing, classify the state as **governance drift**, not true approval
+- repair the local artifacts first, then reconcile labels/comments; do not let the live label short-circuit the planning gate
+- when the user asks for manual review/approval links, provide the exact review surfaces explicitly:
+  - GitHub issue URL
+  - canonical plan URL/path
+  - exact CLI label-flip command
+  - required local approval-marker path
+- if the issue body points at a stale implementation path, call out the real repo path in the plan before review so approval is anchored to the actual file surface
+
+This recovery pattern is especially important for harness/operations issues that were approved conversationally before the repo plan discipline was enforced, and for cases where GitHub label state drifted ahead of the repo-tracked approval evidence.
 
 ## GitHub labels
 

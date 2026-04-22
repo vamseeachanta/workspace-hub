@@ -5,7 +5,7 @@ version: 1.0.0
 author: Hermes Agent
 license: MIT
 triggers:
-  - When using `gh issue comment`, `gh pr comment`, `gh issue edit --body`, or `gh pr edit --body`
+  - When using `gh issue comment`, `gh pr comment`, `gh issue edit --body`, `gh pr edit --body`, or `gh issue create --body`
   - When comment/body text contains backticks, code spans, file paths, markdown, or dynamic content
   - When a GitHub comment/body is being assembled from plan paths, test names, or command output
 tags: [github, gh, shell-safety, comments, quoting]
@@ -47,6 +47,9 @@ Also use the same pattern for:
 - `gh pr comment ... --body-file`
 - `gh issue edit ... --body-file`
 - `gh pr edit ... --body-file`
+- `gh issue create ... --body-file`
+
+Important: this is not just a comment/edit problem. `gh issue create --body "..."` is equally vulnerable. In live use, an inline create body containing markdown code spans caused bash to try executing repo paths and run IDs, producing a malformed issue body. The safe recovery was to rewrite the intended issue body to a temp markdown file and run `gh issue edit --body-file ...`.
 
 ## When body-file is mandatory
 
@@ -64,7 +67,8 @@ Use `--body-file` if the text includes:
 If an inline comment/body was already posted and looks mangled:
 1. write the intended text to a temp markdown file
 2. re-post or edit using `--body-file`
-3. verify the rendered GitHub comment/body afterward
+3. for malformed new issues created via `gh issue create --body`, immediately repair the issue with `gh issue edit --body-file <file>`
+4. verify the rendered GitHub comment/body afterward
 
 ## Minimal checklist
 

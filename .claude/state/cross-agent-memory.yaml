@@ -3,30 +3,30 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-21T07:01:17Z"
-  source_hash: "2621c98e1463261f8b3d944604ec95ca"
+  generated: "2026-04-22T07:01:19Z"
+  source_hash: "c56d5a6317df0f432d9b2ad125007256"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 17
+      entry_count: 18
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 62
+      memory_file_count: 69
 
 hermes_insights:
   environment_facts:
     - "DEFAULT MODEL (2026-04-09): openai-codex / gpt-5.4 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default."
     - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
+    - "Hermes smart_model_routing is disabled in workspace-hub because cheap-model Gemini routing bypassed explicit Codex intent and hit Gemini 429 quota."
     - "Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only."
     - "In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present."
     - "digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment."
   conventions:
     - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
-    - "2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot."
     - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."
   project_knowledge:
-    []
+    - "In workspace-hub, scripts/enforcement/require-plan-approval.sh only recognizes .planning/plan-approved/*.md markers newer than .planning/STATE.md; a stale marker can block commits even when the GitHub issue is already status:plan-approved."
   user_preferences:
     - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
     - "Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included."
@@ -36,7 +36,7 @@ hermes_insights:
     - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
     - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
     - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-    - "User approves sensible commands. For Claude implementation, prefer tmux/interactive Claude Code with --dangerously-skip-permissions. For GitHub issues, latest status:* wins; create follow-ups proactively; do a quick safety audit before side effects."
+    - "User approves sensible commands. For Claude implementation, prefer tmux/interactive Claude Code with --dangerously-skip-permissions. For GitHub issues, latest status:* wins; create follow-ups proactively; do a quick safety audit before side effects. User prefers repo/plan approvals one by one, and wants future issue prioritization to include 20% llm-wiki weighting."
 
 claude_memory_index:
   files:
@@ -96,12 +96,20 @@ claude_memory_index:
       topic: "codex needs pushed artifact"
     - file: "feedback_no_reserved_wrk_ids.md"
       topic: "no reserved wrk ids"
+    - file: "feedback_never_offer_to_self_label_plan_approved.md"
+      topic: "never offer to self label plan approved"
     - file: "project_assethold_ownership_transfer.md"
       topic: "assethold ownership transfer"
     - file: "feedback_mock_vs_live_invocation_divergence.md"
       topic: "mock vs live invocation divergence"
     - file: "project_tier1_refactor.md"
       topic: "tier1 refactor"
+    - file: "feedback_permission_gate_blocks_cross_review.md"
+      topic: "permission gate blocks cross review"
+    - file: "feedback_parallel_agent_write_only_pattern.md"
+      topic: "parallel agent write only pattern"
+    - file: "feedback_email_cross_noise.md"
+      topic: "email cross noise"
     - file: "project_cfd_openfoam_storage.md"
       topic: "cfd openfoam storage"
     - file: "feedback_worktree_gitlink_pollution.md"
@@ -148,10 +156,14 @@ claude_memory_index:
       topic: "research skill sources"
     - file: "project_nightly_researchers.md"
       topic: "nightly researchers"
+    - file: "project_claude_design_adoption.md"
+      topic: "claude design adoption"
     - file: "network_machines.md"
       topic: "network machines"
     - file: "project_doc_intel_operating_model.md"
       topic: "doc intel operating model"
+    - file: "feedback_recruiter_engagement.md"
+      topic: "recruiter engagement"
     - file: "project_workflow_tips_today.md"
       topic: "workflow tips today"
     - file: "reference_google_cli_paid.md"
@@ -160,6 +172,8 @@ claude_memory_index:
       topic: "codex sandbox no execution"
     - file: "feedback_html_refresh.md"
       topic: "html refresh"
+    - file: "feedback_codex_sustained_major_loop.md"
+      topic: "codex sustained major loop"
     - file: "project_ecosystem_theme.md"
       topic: "ecosystem theme"
     - file: "reference_achantas_data.md"
@@ -168,5 +182,4 @@ claude_memory_index:
 shared_conventions:
   # These conventions from Hermes should be honored by all agents
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
-  - "2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot."
   - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."

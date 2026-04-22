@@ -63,6 +63,11 @@ Recommended output:
 
 Important: this is the best quick test for whether Codex/Gemini/Claude/Hermes actually contributed anything new since the last audit.
 
+Implementation note:
+- In the current audit JSON, the authoritative delta summary lives at top level under `recent_activity_since_previous_audit.providers.<provider>`.
+- The per-provider objects under `providers.<provider>` do not duplicate that same nested structure in JSON even though the Markdown report renders per-provider recent sections.
+- So for machine extraction, read the top-level summary first; use the Markdown or raw logs only for deeper drill-down.
+
 ### 5. Inspect only relevant recent sessions
 Filter recent post-audit logs for the user’s target domain (for example tax, filing, issue planning, docs, etc.).
 
@@ -83,6 +88,12 @@ Prefer operational learnings, such as:
 - explicit pre-submit checkpoints
 - dedicated handoff prompt instead of restarting from memory
 - binary go/no-go decision early in the next session
+
+For provider-audit work specifically, separate two different stories:
+1. true recent event-time activity since the prior audit
+2. snapshot/corpus growth beyond recent activity (often export backfill or improved classification)
+
+If a provider has little or zero recent event-time work but still shows large corpus growth or missing-read deltas, transfer that as a classification/export interpretation, not as a claim that the provider recently "did" that work.
 
 Avoid dumping raw metrics into business notes unless the metrics themselves matter.
 

@@ -51,6 +51,13 @@ A good first pass is 3 parallel subagents:
 - intelligence accessibility / knowledge systems
 - automation / reporting / governance
 
+For a review-blocked approval-stage issue, use this specialized 3-lane split instead:
+- lane 1: tighten the canonical plan (deliverable, scope boundaries, tests, acceptance criteria)
+- lane 2: design the child-issue decomposition (2-4 concrete non-overlapping follow-up issues with dependency order)
+- lane 3: rewrite the parent GitHub issue body to a narrower v1 / foundation-only scope
+
+This pattern works especially well when adversarial review returns a MAJOR because the issue is too broad. It lets you revise the parent scope and produce the follow-up issue tree in one pass instead of doing serial rewrite cycles.
+
 A good second pass is to recurse one level deeper on the strongest tracks:
 - schema/contracts
 - evidence artifacts
@@ -108,6 +115,15 @@ Keep titles specific and implementation-ready. Prefer one concrete artifact or c
 8. Comment on the umbrella issue with the new issue numbers after each wave.
 9. Verify with `gh issue view` and `read_file`.
 10. If continuing deeper, recurse from the strongest new children rather than reopening the whole umbrella scope.
+
+For an approval-stage issue blocked by adversarial review, adapt the recipe as:
+1. Run the 3 specialized lanes in parallel: plan-tightening, child-issue design, parent-body rewrite.
+2. Apply the strongest non-conflicting revisions to the canonical plan and the parent issue body.
+3. Write all selected child-issue bodies first.
+4. Create the child issues in parallel with `gh issue create`.
+5. Update the parent issue body and the plan's follow-up issue section with the new child issue numbers.
+6. Post one parent summary comment that records the decomposition, dependency order, and the fact that re-review is still required if the plan changed materially.
+7. Do not move the parent into approval until the revised plan has been adversarially re-reviewed.
 
 ## Example outputs this pattern tends to produce
 - umbrella recurring review

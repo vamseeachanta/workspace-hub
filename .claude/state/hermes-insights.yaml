@@ -3,26 +3,26 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-21T07:01:17Z"
-  source_hash: "2621c98e1463261f8b3d944604ec95ca"
+  generated: "2026-04-22T07:01:19Z"
+  source_hash: "c56d5a6317df0f432d9b2ad125007256"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
-  entry_count: 17
+  entry_count: 18
 
 environment_facts:
   - "DEFAULT MODEL (2026-04-09): openai-codex / gpt-5.4 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default."
   - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
+  - "Hermes smart_model_routing is disabled in workspace-hub because cheap-model Gemini routing bypassed explicit Codex intent and hit Gemini 429 quota."
   - "Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only."
   - "In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present."
   - "digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment."
 
 conventions:
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
-  - "2026-04-09: Hermes smart_model_routing with cheap_model=gemini caused short queries to bypass explicit Codex intent and fail on Gemini 429 free-tier quota; config changed to disable smart_model_routing and route quick/research/data/batch commands to openai-codex instead of gemini/copilot."
   - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."
 
 project_knowledge:
-  []
+  - "In workspace-hub, scripts/enforcement/require-plan-approval.sh only recognizes .planning/plan-approved/*.md markers newer than .planning/STATE.md; a stale marker can block commits even when the GitHub issue is already status:plan-approved."
 
 user_preferences:
   - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
@@ -33,4 +33,4 @@ user_preferences:
   - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
   - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
   - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-  - "User approves sensible commands. For Claude implementation, prefer tmux/interactive Claude Code with --dangerously-skip-permissions. For GitHub issues, latest status:* wins; create follow-ups proactively; do a quick safety audit before side effects."
+  - "User approves sensible commands. For Claude implementation, prefer tmux/interactive Claude Code with --dangerously-skip-permissions. For GitHub issues, latest status:* wins; create follow-ups proactively; do a quick safety audit before side effects. User prefers repo/plan approvals one by one, and wants future issue prioritization to include 20% llm-wiki weighting."

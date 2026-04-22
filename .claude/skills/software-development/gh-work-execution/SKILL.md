@@ -222,24 +222,41 @@ GitHub check-in at entry:
 - when execution cannot proceed, post the stop reason and next route (`planning`, `blocker`, or `orchestrator decision`)
 
 ### Local plan-marker gate in worktrees
+### Local plan-marker gate in any checkout
 
 In workspace-hub-style repos, a GitHub `status:plan-approved` label may still be insufficient for implementation if local hooks enforce `.planning/plan-approved/` markers.
 
-Before launching implementation in a fresh worktree, verify all of the following in that same worktree:
+Before launching implementation in the current checkout (main checkout or fresh worktree), verify all of the following in that same checkout:
 - `.planning/plan-approved/<issue>.md` exists locally
 - the marker text uses neutral/operator approval wording (not `Worker session`, `auto-approved`, or `self-approved`)
-- the marker is committed in that worktree before write-capable Claude execution begins
+- the marker is committed in that checkout before write-capable Claude/Codex execution begins
 
-Safe sequence for approved issue execution in a worktree:
+Safe sequence for approved issue execution:
+1. ensure you are in the exact checkout that will perform the writes
+2. if `.planning/plan-approved/<issue>.md` is missing locally, create it there with neutral approval wording tied to the real user approval signal
+3. commit the marker locally in that same checkout
+4. only then launch implementation
+
+Worktree example:
 1. create the worktree from `main`
 2. write `.planning/plan-approved/<issue>.md` inside the worktree
 3. commit the marker locally in that worktree
 4. only then launch Claude/Codex for implementation
 
+Main-checkout example:
+- even if the issue is already `status:plan-approved` on GitHub and the user explicitly says to continue, create/commit the local `.planning/plan-approved/<issue>.md` in the active checkout before implementation if it is missing there
+
 Why this matters:
-- the plan-approval hook evaluates the local worktree state, not just GitHub labels
+- the plan-approval hook evaluates the local checkout state, not just GitHub labels
 - a marker created only in another checkout, or created but not committed yet, may still be treated as missing or self-approved
+- committing the marker first avoids the implementation session getting blocked mid-run by the local plan gate
 - committing the marker first avoids Claude getting blocked mid-run by the local plan gate
+
+Practical pre-commit check before your first implementation commit:
+1. confirm `.planning/plan-approved/<issue>.md` exists
+2. confirm it is newer than `.planning/STATE.md` in the current checkout
+3. if not, refresh or recreate the marker with the same user-approved content before staging implementation files
+4. then retry the commit
 
 ## Applies to
 
@@ -276,6 +293,15 @@ Evidence required to conclude `already done`:
 - at least one verification artifact: passing test output, deterministic inspection result, or runtime/CLI evidence
 - enough linkage to explain why this issue is satisfied now: commit hash, merged PR, landed file path, or issue comment reference when available
 - acceptance-criteria coverage sufficient to justify closure, not just partial progress
+- for stale-open issues closed from a verification-first path, prefer two git proofs when possible:
+  - history proof: commit containment / ancestry on `origin/main`
+  - content proof: current target artifact matches the intended landed content (not just history topology)
+
+Practical stale-open closeout rule:
+- `git merge-base --is-ancestor <commit> origin/main` is a stronger landed check than broad branch-listing alone.
+- Commit containment is not always enough in repos with merge races or follow-up reverts; add a content-parity check on the primary deliverable when feasible (for example `git diff <commit> origin/main -- <path>` expecting no relevant delta, or deterministic inspection of the current file contents).
+- For design/doc issues, the narrowest validator may be the document's own normative contract applied to the landed artifact rather than a test runner.
+- Prefer posting the closeout comment first and then closing the issue in a separate step. This avoids the `gh issue close --comment` race/drop hazard if another actor closes the issue before your close call completes.
 
 Decision outcomes:
 - `already done` -> post a GitHub update with the evidence bundle, state that implementation is already satisfied, and close the issue from the verification-first path

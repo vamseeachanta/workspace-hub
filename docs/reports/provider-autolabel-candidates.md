@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-22T01:20:06.570409Z
+Generated: 2026-04-22T05:20:06.777333Z
 Apply mode: False
 Threshold: 0.9
 
@@ -16,11 +16,11 @@ Threshold: 0.9
 | #2323 feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
-| #2181 test(operations): add AQWA zero-exit runtime-failure fixture suite and precedence assertions | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2182 test(operations): add OrcaWave L02 OC4 semi-sub manifest assertions and parity regression coverage | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2183 feat(reporting): add publication rollback journal and recover-promotion command | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2188 test(reporting): add mixed-state golden fixture bundles for licensed-win probe reporting | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2189 test(reporting): lock deterministic shared-asset canonical placement across latest/history/staged bundles | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2190 feat(reporting): add manifest-indexed pruning for orphaned shared assets after successful publication | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2194 feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2195 test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2199 feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2200 test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2202 feat(operations): extend readiness bundle schema for additional canonical check evidence contracts | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
