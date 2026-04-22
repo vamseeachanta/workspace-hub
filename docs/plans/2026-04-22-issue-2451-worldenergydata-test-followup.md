@@ -7,7 +7,7 @@
 > **Parent execution issue:** #2433 (collection-unblock, landed at worldenergydata `0f8ac026`)
 > **Parent meta issue:** #2424 (ecosystem CI health)
 > **Sibling follow-up:** #2452 (flake8 debt keeping `lint` job red)
-> **Review artifacts:** `scripts/review/results/20260422T113831Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -124,7 +124,7 @@ Refactored file (`src/worldenergydata/bsee/analysis/production_api12.py`) contai
 ```
 `--all-extras` installs `[project.optional-dependencies]`, which already includes `pytest-benchmark` via the `dev` extra. Therefore Cluster A cannot treat `--all-groups` as the default fix until the failing CI log proves the runner is specifically missing the benchmark plugin. Implementation must first inspect the failing job log on run `24757842396` and choose among explicit branches:
 - **A1a**: if CI truly shows `fixture 'benchmark' not found` and the runner is not installing the relevant dependency-group, test-job-only workflow change (`--all-extras --group benchmark` or `--all-extras --all-groups`, depending runner `uv` support)
-- **A1b**: if the package is installed but the plugin still is not available, diagnose plugin autoload / environment-isolation cause before editing ci.yml
+- **A1b**: if the package is installed but the plugin still is not available, diagnose plugin autoload / environment-isolation cause before editing ci.yml. Authoritative evidence for this branch is not only `import pytest_benchmark`, but a pytest-level registration check in CI-equivalent mode (for example `uv run --all-extras pytest --fixtures tests/benchmarks/test_eia_benchmarks.py -q | grep '^benchmark\b'` or `pytest --trace-config` showing the plugin state).
 - **A2**: fallback test-local skip only if the CI/plugin diagnosis shows the workflow edit would be a no-op or wider than this issue's scope
 This plan therefore keeps Cluster A conditional rather than pre-selecting a workflow edit as the universal preferred path.
 
@@ -137,9 +137,9 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-22-issue-2451-worldenergydata-test-followup.md` |
-| Plan review — Claude | `scripts/review/results/20260422T113831Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
-| Plan review — Codex | `scripts/review/results/20260422T113831Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
-| Plan review — Gemini | `scripts/review/results/20260422T113831Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
+| Plan review — Claude | `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
+| Plan review — Codex | `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
+| Plan review — Gemini | `scripts/review/results/20260422T114347Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
 | Implementation (cluster A) | `worldenergydata/.github/workflows/ci.yml` (`test` job install step only, and only if CI log proves plugin absence) **or** `worldenergydata/tests/benchmarks/test_eia_benchmarks.py` (fallback skip if workflow edit would be a no-op) |
 | Implementation (cluster B) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` (promote fixture verbatim from current class fixture) |
 | Implementation (cluster C) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py` (collection-safe module skip or repoint) + `test_cash_flow_components.py` (class-level skip on `TestProductionAPI12CashFlowMethods` only, or repoint) |
@@ -215,9 +215,15 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #   import pytest_benchmark
 #   print(pytest_benchmark.__file__)
 #   PY
+# Step 0c2: prove pytest-level plugin registration state in the same execution mode.
+#   uv run --all-extras pytest --fixtures tests/benchmarks/test_eia_benchmarks.py -q \
+#       | grep '^benchmark\b' || true
+#   uv run --all-extras pytest --trace-config tests/benchmarks/test_eia_benchmarks.py -q \
+#       | grep -i pytest-benchmark || true
 # If pytest_benchmark imports locally after `--all-extras`, the local missing-fixture
 # repro was a stale-env artifact and Cluster A should start from A1b (plugin loading),
-# not from an install-layer workflow edit.
+# not from an install-layer workflow edit. The branch decision between A1a and A1b must
+# use BOTH package-import evidence and pytest-plugin-registration evidence.
 #
 # Step 0d: locate the post-refactor NPV entry point before C-repoint is selectable.
 #   rg -n "def .*npv|perform_npv_calculation|perform_excel_aligned_npv_calculation" src/worldenergydata/
@@ -240,14 +246,18 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #
 # Step A0b: inspect runner/install evidence using the fullest available source:
 #   - first preference: full job log showing the install step output
+#   - also capture pytest-level registration evidence, not just package importability:
+#       `pytest --fixtures ... | grep '^benchmark\b'` and/or `pytest --trace-config`
 #   - fallback if historical logs are insufficient: add a temporary diagnostic on the
-#     execution branch/test job that prints benchmark-package/plugin presence, push that
-#     diagnostic branch, and inspect the resulting CI run before choosing A1a vs A1b
+#     execution branch/test job that prints benchmark-package AND pytest-plugin-registration
+#     evidence, push that diagnostic branch, and inspect the resulting CI run before
+#     choosing A1a vs A1b
 #   - any temporary diagnostic workflow edit is NON-MERGEABLE and must be removed from
 #     the final branch before PR review/merge; copy its deciding CI evidence into the PR
 #     body or execution notes before dropping the diagnostic commit/change
 #   - if install evidence proves pytest-benchmark is absent on the runner, proceed to A1a
-#   - if pytest-benchmark is installed but the fixture still is not available, proceed to A1b
+#   - if pytest-benchmark is installed but the fixture still is not available and pytest
+#     registration evidence shows the plugin is not active, proceed to A1b
 #
 # Branch A1a (bounded workflow fix, test job only):
 # Edit ONLY the `test` job install step in .github/workflows/ci.yml to guarantee
@@ -357,9 +367,11 @@ uv run pytest tests/modules/bsee/analysis/npv-data-source-comparison/test_curren
 #   - Rejected as default because test-preservation is cheaper than
 #     test-rewriting if the decision is later reversed.
 #
-# Recommended default: C-skip, but implemented surgically and collection-safely.
-# This preserves Cluster B coverage while deferring the refactor decision to the
-# module owner.
+# Recommended default: C-skip for stabilization of the legacy failing surface.
+# IMPORTANT: this is an approval-safe implementation default, but not automatically a
+# closure path for #2451. #2451 is only closable if supported-path automated evidence
+# is also produced. If no supported non-legacy path can be identified, execution stops
+# with a stabilization-only result and returns the issue to planning rather than closing it.
 
 # === Verification Phase (GREEN) ===
 
@@ -469,7 +481,7 @@ Deliverable acceptance criteria below cover the observable technical outcome for
 - [ ] Signature-based close gate is satisfied: the three #2451 failure signatures from the issue body are absent from the targeted local runs and from the `Test Python 3.11` CI lane on the fix SHA: (1) benchmark fixture missing, (2) `config_with_economics` fixture missing, (3) legacy NPV import / missing `perform_npv_calculation` failures.
 - [ ] Full-suite command `uv run pytest tests/ -v --tb=short --cov=src` is treated as observational audit, not a hard pass/fail gate for #2451. Any remaining non-#2451 failures are explicitly enumerated as unrelated follow-up work rather than blocking issue closure.
 - [ ] Cross-repo execution contract is explicit before implementation: the fix lands on a dedicated worldenergydata branch named `nightly/2451-worldenergydata` on upstream when push is allowed, otherwise on a fork branch with the same suffix, and opens a PR into `vamseeachanta/worldenergydata:main`. Workspace-hub planning commits remain separate. Any dependency on #2433 landed state is rebased onto current worldenergydata `main` before PR creation. If that rebase surfaces conflicts, they are resolved on the execution branch and the targeted RED/GREEN checks are re-run; if the conflict resolution changes the failure surface beyond the three #2451 clusters, execution stops and the issue returns to planning instead of silently broadening scope.
-- [ ] Cluster A branch is chosen only after CI evidence establishes both the failure signature and the install-state hypothesis. Use full job logs when available; if historical logs do not expose install-step state, add a temporary diagnostic on the execution branch/test job to print benchmark-package/plugin presence, inspect that CI run, then choose A1a vs A1b. Any temporary diagnostic change is non-mergeable and must be removed before the final PR/merge while preserving its deciding evidence in execution notes or PR body. If a workflow edit is made, it is scoped to the `test` job only; `lint` remains untouched for #2452. A2 is valid only when runner package absence is proven and the workflow edit is unsupported or out of scope.
+- [ ] Cluster A branch is chosen only after CI evidence establishes both the failure signature and the install-state hypothesis. Use full job logs when available; if historical logs do not expose install-step state, add a temporary diagnostic on the execution branch/test job to print benchmark-package/plugin presence, inspect that CI run, then choose A1a vs A1b. The branch decision must include pytest-plugin-registration evidence (`pytest --fixtures` and/or `pytest --trace-config` in CI-equivalent mode), not just package importability. Any temporary diagnostic change is non-mergeable and must be removed before the final PR/merge while preserving its deciding evidence in execution notes or PR body. If a workflow edit is made, it is scoped to the `test` job only; `lint` remains untouched for #2452. A2 is valid only when runner package absence is proven and the workflow edit is unsupported or out of scope.
 - [ ] If Cluster B remains needed after Cluster C handling, `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` exists and defines `config_with_economics` at module scope using the same values as the current in-class fixture.
 - [ ] If Cluster B is activated, `test_cash_flow_components.py` no longer contains an in-class `config_with_economics` fixture definition after the edit (no duplicate shadowing).
 - [ ] Cluster B is proven at runtime, not just collection: a representative `TestCashFlowComponents` test passes and the legacy class test is either skipped cleanly or passes after repoint.
@@ -498,16 +510,16 @@ These are mandatory process controls, but they are workflow gates rather than te
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | APPROVE | Prior execution-contract concerns are resolved; only minor precision suggestions remain. |
-| Codex | MAJOR | Remaining blockers focused on resolving the default-C-skip vs closure contract tension, tightening A1b exit criteria, and separating workflow gates from deliverable acceptance. |
+| Codex | MAJOR | Remaining blockers focused on clarifying that default C-skip is stabilization-only unless supported-path coverage is added, strengthening pytest-plugin-registration evidence for A1a vs A1b, and separating workflow gates from deliverable acceptance. |
 | Gemini | APPROVE | No blocking defects; only minor attestation/environment notes. |
 
-**Wave 13 overall result:** MAJOR — remaining objections are now concentrated in execution-contract framing rather than technical remediation logic. This revision (1) makes the default Cluster C contract explicit: C-skip may stabilize legacy failures, but issue closure still requires supported-path automated coverage or a return to planning, (2) tightens A1b with an explicit bounded exit rule of one diagnostic CI run plus either one bounded fix or a follow-up/replan, and (3) moves workflow/admin requirements into a dedicated `Workflow Gates` section so deliverable acceptance stays focused on observable #2451 outcomes.
+**Wave 14 overall result:** MAJOR — remaining objections are now concentrated in execution-readiness precision. This revision (1) makes the default Cluster C path explicitly stabilization-only unless supported-path automated coverage is added, (2) adds pytest-plugin-registration evidence as a required discriminator for Cluster A branch selection rather than relying on package importability alone, and (3) keeps workflow gates separated from technical deliverable acceptance.
 
 Revisions made based on review:
 - Updated review artifact references to the latest rerun wave.
-- Tightened A1b to a concrete bounded exit rule rather than open-ended diagnosis.
-- Split workflow/admin gates out of Acceptance Criteria into a dedicated `Workflow Gates` section.
-- Rewrote Cluster C path summary so the default stabilization branch and close criteria are no longer contradictory.
+- Added explicit pytest-plugin-registration checks (`pytest --fixtures` / `pytest --trace-config`) to Cluster A evidence and acceptance.
+- Reframed default Cluster C as stabilization-only unless supported-path coverage is added, eliminating ambiguity about closure.
+- Kept workflow/admin requirements isolated under `Workflow Gates` rather than mixing them into technical done-state.
 
 The plan remains in `draft` pending the next rerun review wave.
 
@@ -538,6 +550,6 @@ The plan remains in `draft` pending the next rerun review wave.
 |---|---|---|---|
 | A — benchmark fixture | A1b plugin-loading diagnosis by default; A1a `uv sync --all-extras --group benchmark` only if CI log proves package absence on runner (`--all-groups` fallback only if required and supported by runner uv) | A2 `importorskip` test-local skip (fallback only when package absence is proven) | Failed-job log plus local `uv run --all-extras` provenance must establish whether the runner is missing the package or failing to autoload the plugin |
 | B — `config_with_economics` scope | B1 module-scope conftest.py + runtime verification from both affected classes only if a non-skipped test still fails after Cluster C handling | B2 in-class duplication | Apply B1 only if a remaining non-legacy runtime test still fails on missing fixture after Cluster C handling |
-| C — legacy NPV API drift | Default implementation attempt is C-skip for legacy-test stabilization, but #2451 is only closable if supported-path automated coverage exists; if no supported non-legacy entry point can be identified, execution returns to planning instead of closing via skip-only remediation | C-repoint without entry-point discovery, C-delete (too aggressive), skip-only closure with no supported-path evidence | User may override to C-repoint during plan approval; absent that override, executor may use C-skip to stabilize legacy failures but must still produce supported-path automated evidence or stop and replan |
+| C — legacy NPV API drift | Default implementation attempt is C-skip for legacy-test stabilization only. #2451 closes only if supported-path automated coverage is also added; if no supported non-legacy entry point can be identified, execution returns to planning with a stabilization-only blocker report instead of closing the issue | C-repoint without entry-point discovery, C-delete (too aggressive), skip-only closure with no supported-path evidence | User may override to C-repoint during plan approval; absent that override, executor may use C-skip to stabilize legacy failures but must still produce supported-path automated evidence for closure or stop and replan |
 
 This plan explicitly stops short of implementation. Implementation requires `status:plan-approved` on #2451 and a corresponding `.planning/plan-approved/2451.md` marker.
