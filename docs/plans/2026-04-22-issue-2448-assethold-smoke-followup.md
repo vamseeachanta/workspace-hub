@@ -5,7 +5,7 @@
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2448
 > **Parent / predecessor:** #2442 (P1 commit `457ea2d`, P2 commit `b8b5439` — landed on `vamseeachanta/assethold` main)
-> **Review artifacts:** `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T103711Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Note:** This is a **follow-up plan**. Implementation is NOT authorized by this draft. User must review and set `status:plan-approved` in-thread after adversarial review converges. No `status:plan-approved` label is set by this plan.
 
 ---
@@ -296,7 +296,7 @@ Pre-push local gates:
 - [ ] Single post-P2 CI run on the final `main` head proves BOTH: all `windows-latest` cells reach `Install dependencies with uv` AND py3.11/ubuntu-latest `Run smoke tests first` has `conclusion=success`
 - [ ] P1 and P2 are **separate commits** pushed sequentially with CI verification between (not bundled)
 - [ ] Local smoke still green after P2: `cd assethold && uv run pytest tests/test_smoke.py -v` passes (same 17 baseline as #2442 P2)
-- [ ] Review artifacts posted to `scripts/review/results/20260422T103138Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
+- [ ] Review artifacts posted to `scripts/review/results/20260422T103711Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
 - [ ] No changes pushed to `assethold/` during this planning session — fixes land only after user sets `status:plan-approved` on #2448 after reviewing this plan and adversarial review
 - [ ] Flake8 job may remain red in the P2 run (expected) — close criterion is the **smoke step** plus Windows-progress proof on the final run, not full test-job greenness; follow-on issues filed for flake8 offender repair and `quality-gate` chain
 - [ ] #2442 is **not** auto-closed as a side effect of #2448. If the final run satisfies the historical #2442 gate too, that is surfaced back to the user as a separate closeout decision in #2442 for audit-trail clarity
@@ -307,20 +307,23 @@ Pre-push local gates:
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | APPROVE | Tight scope and correct diagnosis; suggested safer `git rm --cached` fallback, log-order proof instead of step timestamps, and explicit non-auto-close wording for #2442. |
-| Codex | MAJOR | Required the final close gate to be proven on a single post-P2 run, not split across P1/P2; required Windows verification to reach `Install dependencies with uv`, not just checkout; flagged `yq` tooling assumption. |
-| Gemini | APPROVE | No blocking defects; suggested optional wider Windows-workflow audit and recurrence-source question. |
+| Claude | APPROVE | Plan is approval-ready; only suggested minor command-robustness and rollback clarifications. |
+| Codex | APPROVE | Technical diagnosis and scoped remediation are sound; only minor contract-tightening suggestions remained. |
+| Gemini | APPROVE | No blocking defects; suggested early follow-on creation for recurrence/flake8 tracking. |
 
-**Wave 3 overall result:** MAJOR — remaining review concerns are now confined to verification-contract precision rather than diagnosis or scope. This revision hardens the final plan by (1) replacing shell-escape-sensitive backslash-detection commands with Python-based byte-level checks, (2) recording that matrix `fail-fast: false` is already set so the target ubuntu smoke leg remains provable, (3) updating review-artifact references to the latest concrete rerun set, and (4) promoting preservation/consumer checks into the gated TDD contract.
+**Wave 4 overall result:** APPROVE — cross-provider review has converged with no remaining MAJOR findings. The final revisions resolved the earlier execution-contract gaps around single-run proof, path-detection robustness, job-scoped CI validation, and artifact-path consistency.
 
-Revisions made based on review:
-- Added resource-intel evidence that the test matrix already uses `fail-fast: false`.
-- Replaced shell-escape-fragile path-detection commands with Python-based checks for single backslashes in tracked paths.
-- Updated the review-artifact references to the latest rerun files.
-- Promoted forward-slash blob preservation and literal-consumer grep checks into the TDD/acceptance gate set.
-- Preserved the single-run post-P2 close gate and job-scoped CI verification shape.
+Revisions made across the review waves:
+- Tightened the close gate so one post-P2 run proves both Windows reachability and ubuntu smoke success on the same final repository state.
+- Hardened P1 path handling with exact single-backslash path examples plus `git rm --cached --` fallback.
+- Replaced shell-escape-sensitive validation with Python-based tracked-path checks.
+- Switched CI proof from global log scraping to job-scoped `gh run view --json jobs` verification.
+- Added forward-slash blob-preservation checks and literal-consumer grep gates.
+- Confirmed matrix `fail-fast: false` is already present, so the target ubuntu smoke leg remains collectible.
+- Clarified that #2442 is not auto-closed by side effect; any closeout there remains a separate user-visible decision.
+- Updated all review-artifact references to the latest canonical rerun set.
 
-The plan remains in `draft` pending the latest rerun review wave.
+Plan status remains `draft` only until it is surfaced to GitHub as `status:plan-review`; technically the adversarial review gate is now satisfied and the plan is ready for user approval routing.
 
 ---
 
