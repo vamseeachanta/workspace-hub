@@ -134,7 +134,7 @@ bump line 144:  codecov/codecov-action@v3  ->  @v4
 
 # ACCEPTANCE-PHASE-1: workflow parses; jobs register; matrix executes;
 #   jobs may still fail on install step, but runs are no longer 0s-startup-reject.
-#   Verification: YAML parses via `python -c "import yaml; yaml.safe_load(...)"`
+#   Verification: YAML parses via `cd assethold && uv run python -c "import yaml; yaml.safe_load(...)"`
 #   with exit 0; `gh run view <run-id>` shows jobs[] != [].
 
 # PHASE 2 — install-step correctness (startup unblocked + smoke cell green)
@@ -231,7 +231,7 @@ Since this plan remediates CI config (not application code), the "tests" are **w
 
 | Test | What it verifies | Expected state after fix |
 |---|---|---|
-| phase-1: local YAML parses | `python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` exits 0 | exit 0, no ScannerError |
+| phase-1: local YAML parses | `cd assethold && uv run python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` exits 0 | exit 0, no ScannerError |
 | phase-1: CI YAML parses | `gh run view <run-id>` shows `jobs` array non-empty | `jobs[] != []` |
 | phase-1: startup time > 0s | workflow doesn't insta-reject | duration > 5s |
 | phase-1: upload-artifact is v4 exactly | `rg -c 'upload-artifact@v4' .github/workflows/python-tests.yml` | `== 3` |
@@ -250,7 +250,7 @@ Local pre-push gate: `cd assethold && uv run pytest tests/test_smoke.py -v` must
 
 ## Acceptance Criteria
 
-- [ ] Local YAML parse passes: `python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` exits 0 (phase-1 pre-push gate)
+- [ ] Local YAML parse passes: `cd assethold && uv run python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` exits 0 (phase-1 pre-push gate)
 - [ ] `python-tests.yml` YAML parses in CI — next push produces a run with non-empty `jobs` array (phase-1 CI gate)
 - [ ] No `actions/upload-artifact@v3`, `github/codeql-action/upload-sarif@v2`, or `codecov/codecov-action@v3` remain in `python-tests.yml` (P1 deprecated-action sweep complete)
 - [ ] Install step uses `uv pip install --system -e ../assetutilities` at all 3 sites (lines 74, 222, 269) — zero references to non-existent `requirements.txt` and zero references to the reference-only `requirements-consolidated.txt`
