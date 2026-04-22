@@ -14,6 +14,7 @@
 
 ### Existing repo code
 - Found: `assethold/.github/workflows/python-tests.yml` (393 lines) — at HEAD `b8b5439`. Step order in `test` job (lines 55-107): `Checkout code` → `Clone assetutilities sibling dependency` → `Set up Python` → `Install uv` → `Install dependencies with uv` → `Install project in development mode` → `Lint with flake8` (line 84-89) → `Type checking with mypy` → `Security check with bandit` → `Safety check` → **`Run smoke tests first`** (line 103-107). The "first" in the smoke-step name is a misnomer — it runs 4 steps after lint.
+- Found: `assethold/.github/workflows/python-tests.yml:43-47` — matrix strategy already sets `fail-fast: false`, so a failure in another matrix leg will not cancel the target `py3.11 / ubuntu-latest` leg before smoke evidence can be collected. No extra fail-fast change is needed for #2448.
 - Found: `assethold/.github/workflows/python-tests.yml:84-89` — `Lint with flake8` step runs under default shell `/bin/bash -e`, so the strict flake8 pass at line 87 (`flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics`) aborts the job on first syntax / undefined-name hit.
 - Found: `assethold/tests/test_smoke.py` — 11,615 bytes, exists, passes locally at `uv run pytest tests/test_smoke.py -v` per #2442 P2 attestation (17 passed).
 - Found: `assethold/pyproject.toml:139-140` — `[tool.pytest.ini_options] testpaths = ["tests"]`. Product-code test scope is `tests/` only; `flake8 .` is broader than pytest's authoritative scope.
@@ -246,9 +247,26 @@ Since this plan remediates CI config + git-tree hygiene (not application code), 
 
 | Test | What it verifies | Expected state after fix |
 |---|---|---|
-| P1-local-path-count-precheck | `cd assethold && git ls-tree -r HEAD --name-only | grep -F '\\' | wc -l` | `2` before P1; catches any surprise extra backslash path before deletion |
-| P1-local-index-clean | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` after P1 staging/commit |
-| P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD --name-only | grep -F '\\' | wc -l` | `0` after P1 lands |
+| P1-local-path-count-precheck | `cd assethold && uv run --no-project python - <<'PY'
+from pathlib import Path
+import subprocess
+paths = subprocess.check_output(['git','ls-tree','-r','HEAD','--name-only'], text=True).splitlines()
+print(sum('\\' in p for p in paths))
+PY` | `2` before P1; catches any surprise extra backslash path before deletion |
+| P1-local-index-clean | `cd assethold && uv run --no-project python - <<'PY'
+import subprocess, sys
+paths = subprocess.check_output(['git','ls-files'], text=True).splitlines()
+count = sum('\\' in p for p in paths)
+print(count)
+sys.exit(0 if count == 0 else 1)
+PY` | `0` after P1 staging/commit |
+| P1-local-tree-clean | `cd assethold && uv run --no-project python - <<'PY'
+import subprocess, sys
+paths = subprocess.check_output(['git','ls-tree','-r','HEAD','--name-only'], text=True).splitlines()
+count = sum('\\' in p for p in paths)
+print(count)
+sys.exit(0 if count == 0 else 1)
+PY` | `0` after P1 lands |
 | P1-local-forward-slash-blobs-intact | `cd assethold && git rev-parse HEAD:tests/modules/stocks/analysis/investment/results/Data/multiple_investment.csv && git rev-parse HEAD:tests/modules/stocks/analysis/investment/results/Data/single_investment.csv` | `ff919799...` and `a5f160b2...` remain present after P1 |
 | P1-local-no-literal-consumers | `cd assethold && grep -rI 'tests\\\\modules\\\\stocks' src tests scripts .agent-os modules` | zero hits before P1 commit |
 | P1-ci-windows-reaches-install-deps | `gh run view <p1-run-id> --repo vamseeachanta/assethold --json jobs` — each Windows matrix cell step list | every windows-latest row reaches `Install dependencies with uv` |
@@ -278,7 +296,7 @@ Pre-push local gates:
 - [ ] Single post-P2 CI run on the final `main` head proves BOTH: all `windows-latest` cells reach `Install dependencies with uv` AND py3.11/ubuntu-latest `Run smoke tests first` has `conclusion=success`
 - [ ] P1 and P2 are **separate commits** pushed sequentially with CI verification between (not bundled)
 - [ ] Local smoke still green after P2: `cd assethold && uv run pytest tests/test_smoke.py -v` passes (same 17 baseline as #2442 P2)
-- [ ] Review artifacts posted to `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
+- [ ] Review artifacts posted to `scripts/review/results/20260422T103138Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-{claude,codex,gemini}.md`
 - [ ] No changes pushed to `assethold/` during this planning session — fixes land only after user sets `status:plan-approved` on #2448 after reviewing this plan and adversarial review
 - [ ] Flake8 job may remain red in the P2 run (expected) — close criterion is the **smoke step** plus Windows-progress proof on the final run, not full test-job greenness; follow-on issues filed for flake8 offender repair and `quality-gate` chain
 - [ ] #2442 is **not** auto-closed as a side effect of #2448. If the final run satisfies the historical #2442 gate too, that is surfaced back to the user as a separate closeout decision in #2442 for audit-trail clarity
@@ -293,17 +311,16 @@ Pre-push local gates:
 | Codex | MAJOR | Required the final close gate to be proven on a single post-P2 run, not split across P1/P2; required Windows verification to reach `Install dependencies with uv`, not just checkout; flagged `yq` tooling assumption. |
 | Gemini | APPROVE | No blocking defects; suggested optional wider Windows-workflow audit and recurrence-source question. |
 
-**Wave 2 overall result:** MAJOR — Codex reduced the remaining blockers to execution-contract precision. The draft has now been updated to (1) normalize the P1 removal examples to the exact single-backslash pathnames proven in the evidence block, (2) replace global-log ordering checks with job-scoped `gh run view --json jobs` verification for the specific matrix jobs named in acceptance criteria, (3) scope the `invalid path` assertion to Windows checkout-step errors only, and (4) reconcile review-artifact paths to the concrete Wave 2 files throughout the document.
+**Wave 3 overall result:** MAJOR — remaining review concerns are now confined to verification-contract precision rather than diagnosis or scope. This revision hardens the final plan by (1) replacing shell-escape-sensitive backslash-detection commands with Python-based byte-level checks, (2) recording that matrix `fail-fast: false` is already set so the target ubuntu smoke leg remains provable, (3) updating review-artifact references to the latest concrete rerun set, and (4) promoting preservation/consumer checks into the gated TDD contract.
 
 Revisions made based on review:
-- Updated the front-matter and Artifact Map review-artifact paths to the concrete Wave 2 files.
-- Normalized the P1 path examples to the exact single-backslash filenames attested in the evidence block.
-- Replaced the duplicate local sanity rows with distinct index/tree checks.
-- Replaced global log substring checks with job-scoped JSON/step-list verification for Windows progress and ubuntu smoke ordering.
-- Added an executor note that transient failures in intermediate Windows steps after checkout should be treated as rerun/noise, not as evidence that the backslash purge failed.
-- Retained the separate-issue audit-trail rule for #2442 closeout and the out-of-scope recurrence guard follow-on.
+- Added resource-intel evidence that the test matrix already uses `fail-fast: false`.
+- Replaced shell-escape-fragile path-detection commands with Python-based checks for single backslashes in tracked paths.
+- Updated the review-artifact references to the latest rerun files.
+- Promoted forward-slash blob preservation and literal-consumer grep checks into the TDD/acceptance gate set.
+- Preserved the single-run post-P2 close gate and job-scoped CI verification shape.
 
-The plan remains in `draft` until the rerun review confirms these execution checks are approval-ready.
+The plan remains in `draft` pending the latest rerun review wave.
 
 ---
 
