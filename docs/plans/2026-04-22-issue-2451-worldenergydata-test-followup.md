@@ -7,7 +7,7 @@
 > **Parent execution issue:** #2433 (collection-unblock, landed at worldenergydata `0f8ac026`)
 > **Parent meta issue:** #2424 (ecosystem CI health)
 > **Sibling follow-up:** #2452 (flake8 debt keeping `lint` job red)
-> **Review artifacts:** `scripts/review/results/20260422T101244Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T104826Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -140,9 +140,9 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-04-22-issue-2451-worldenergydata-test-followup.md` |
-| Plan review — Claude | `scripts/review/results/20260422T101244Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
-| Plan review — Codex | `scripts/review/results/20260422T101244Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
-| Plan review — Gemini | `scripts/review/results/20260422T101244Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
+| Plan review — Claude | `scripts/review/results/20260422T104826Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md` |
+| Plan review — Codex | `scripts/review/results/20260422T104826Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-codex.md` |
+| Plan review — Gemini | `scripts/review/results/20260422T104826Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-gemini.md` |
 | Implementation (cluster A) | `worldenergydata/.github/workflows/ci.yml` (`test` job install step only, and only if CI log proves plugin absence) **or** `worldenergydata/tests/benchmarks/test_eia_benchmarks.py` (fallback skip if workflow edit would be a no-op) |
 | Implementation (cluster B) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/conftest.py` (promote fixture verbatim from current class fixture) |
 | Implementation (cluster C) | `worldenergydata/tests/modules/bsee/analysis/npv-data-source-comparison/test_current_npv_implementation.py` (collection-safe module skip or repoint) + `test_cash_flow_components.py` (class-level skip on `TestProductionAPI12CashFlowMethods` only, or repoint) |
@@ -152,12 +152,12 @@ This plan therefore keeps Cluster A conditional rather than pre-selecting a work
 
 ## Deliverable
 
-The worldenergydata `Test Python ${version}` CI jobs (3.10 / 3.11 / 3.12) will complete without the three failure clusters enumerated in #2451:
+Primary acceptance lane for #2451 is the worldenergydata `Test Python 3.11` job, because that is the matrix lane directly evidenced in the failing-run investigation. Success means that lane no longer exhibits the three #2451 failure clusters:
 1. benchmark-fixture failure,
 2. `config_with_economics` fixture-scope failure,
 3. legacy NPV import / missing `perform_npv_calculation` failure.
 
-Those three signatures must be eliminated from the `Test` job either by bounded fixes (fixture promotion, plugin-loading remediation, targeted import/path repoint) or by collection-safe, explicitly tracked skips where the module owner chooses deferral. Unrelated residual failures may remain only if they are separately enumerated as out-of-scope follow-up work. Plan #2452 remains responsible for the `Lint` job flake8 debt independently.
+If the same three signatures are also observed on Python 3.10 or 3.12 during execution, those sibling matrix lanes are included in the fix/verification set for this issue as well. Unrelated residual failures may remain only if they are separately enumerated as out-of-scope follow-up work. Plan #2452 remains responsible for the `Lint` job flake8 debt independently.
 
 ---
 
@@ -391,14 +391,15 @@ This is a cross-repo infrastructure / test-hygiene fix. "Tests" here are verific
 | Codex | MAJOR | Required Cluster A to stop treating workflow edits as preferred-by-default, required collection-safe Cluster C skip strategy, and tightened acceptance around the exact three failure signatures. |
 | Gemini | APPROVE | Minor caution on `--all-groups` breadth and uv-version support; no blocking defects beyond the other providers' findings. |
 
-**Wave 4 overall result:** MAJOR — remaining objections now focus on execution-shape precision rather than technical diagnosis. This revision (1) makes Cluster B explicitly conditional after Cluster C handling, so the plan no longer forces fixture promotion when the only demonstrated failing consumer is the legacy class being skipped, (2) narrows A2 so it is only valid when benchmark package absence is proven, not when plugin autoload is suppressed, (3) adds a required worldenergydata follow-up tracker as a first-class artifact when Cluster C uses skips, and (4) aligns acceptance with the actually evidenced failing matrix jobs rather than implying unevidenced full-matrix proof.
+**Wave 5 overall result:** MAJOR — the remaining objections are now about branch selection and governance precision, not about technical diagnosis. This revision (1) narrows the primary acceptance lane to the evidenced `Test Python 3.11` job while still requiring sibling matrix coverage if the same signatures are observed there, (2) makes Cluster B explicitly conditional after Cluster C handling in every section, (3) narrows A2 so it is only valid when package absence is proven, and (4) makes C-skip the default execution path after approval unless the user explicitly overrides to a later-discovered C-repoint path.
 
 Revisions made based on review:
-- Made Cluster B conditional in resource intel, pseudocode, files-to-change, and acceptance criteria.
-- Tightened A2 so it only applies when package absence is proven; autoload-suppression remains A1b.
-- Added the worldenergydata legacy-NPV follow-up issue as a required tracked artifact when C-skip is used.
-- Clarified acceptance around the `Test Python 3.11` job and any other matrix jobs where the three signatures are actually observed.
-- Retained the explicit cross-repo execution contract and bounded A1b remediation surface.
+- Updated review-artifact references to the latest rerun set.
+- Narrowed the Deliverable to the evidenced 3.11 lane, with conditional sibling-lane inclusion if the same signatures are observed there.
+- Made Cluster B conditional across resource intel, pseudocode, files-to-change, acceptance criteria, and path summary.
+- Tightened A2 so it is only valid when benchmark package absence is proven.
+- Clarified that C-skip is the default execution path after approval unless the user explicitly chooses C-repoint.
+- Preserved the required worldenergydata follow-up tracker when Cluster C uses skip-based deferral.
 
 The plan remains in `draft` pending the latest rerun review wave.
 
@@ -427,8 +428,8 @@ The plan remains in `draft` pending the latest rerun review wave.
 
 | Cluster | Preferred path | Rejected paths | Gate |
 |---|---|---|---|
-| A — benchmark fixture | A1b plugin-loading diagnosis by default; A1a `uv sync --all-extras --group benchmark` only if CI log proves package absence on runner (`--all-groups` fallback only if required and supported by runner uv) | A2 `importorskip` test-local skip (fallback only) | Failed-job log plus local `uv run --all-extras` provenance must establish whether the runner is missing the package or failing to autoload the plugin |
-| B — `config_with_economics` scope | B1 module-scope conftest.py + runtime verification from both affected classes | B2 in-class duplication | None — additive fix, but runtime verification is mandatory |
-| C — legacy NPV API drift | C-skip, collection-safe and surgical: module-level skip only in `test_current_npv_implementation.py`, class-level skip only on `TestProductionAPI12CashFlowMethods` in `test_cash_flow_components.py`; C-repoint is blocked until a non-legacy replacement entry point is identified | C-repoint without entry-point discovery, C-delete (too aggressive) | User confirmation required during plan-review; C-skip remains the conservative default unless later discovery unlocks safe repointing |
+| A — benchmark fixture | A1b plugin-loading diagnosis by default; A1a `uv sync --all-extras --group benchmark` only if CI log proves package absence on runner (`--all-groups` fallback only if required and supported by runner uv) | A2 `importorskip` test-local skip (fallback only when package absence is proven) | Failed-job log plus local `uv run --all-extras` provenance must establish whether the runner is missing the package or failing to autoload the plugin |
+| B — `config_with_economics` scope | B1 module-scope conftest.py + runtime verification from both affected classes only if a non-skipped test still fails after Cluster C handling | B2 in-class duplication | Apply B1 only if a remaining non-legacy runtime test still fails on missing fixture after Cluster C handling |
+| C — legacy NPV API drift | C-skip is the default implementation path once the plan is approved: module-level skip only in `test_current_npv_implementation.py`, class-level skip only on `TestProductionAPI12CashFlowMethods` in `test_cash_flow_components.py`; C-repoint remains blocked until a non-legacy replacement entry point is identified | C-repoint without entry-point discovery, C-delete (too aggressive) | User may override to C-repoint during plan approval, but absent that override the executor proceeds with C-skip + tracked follow-up issue |
 
 This plan explicitly stops short of implementation. Implementation requires `status:plan-approved` on #2451 and a corresponding `.planning/plan-approved/2451.md` marker.
