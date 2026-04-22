@@ -1,4 +1,4 @@
-# Adversarial Plan Review Request: Issue #2312
+# Adversarial Plan Review Request: Issue #2333
 
 You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
 Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, unverified, or not approval-ready.
@@ -11,7 +11,7 @@ Prefer attested evidence over plan assertions when an attestation block is prese
 Context:
 - Repo: workspace-hub
 - Stage: plan review for approval readiness
-- Artifact under review: `docs/plans/2026-04-17-issue-2312-lifecycle-script-authority-cleanup.md`
+- Artifact under review: `docs/plans/2026-04-22-issue-2333-provider-audit-drift-classification-expansion.md`
 - Workflow contract: issue -> resource intel -> plan -> adversarial review -> status:plan-review -> user approval
 - The user wants adversarial review by default across providers.
 

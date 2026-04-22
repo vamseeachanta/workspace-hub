@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-21T17:20:07.339638Z",
+  "generated_at": "2026-04-21T21:20:07.959132Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-21T17:20:05.206120Z",
+  "scorecard_generated_at": "2026-04-21T21:20:06.152016Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,34 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 15,
-      "total_candidates": 166,
+      "execution_ready_count": 12,
+      "total_candidates": 168,
       "top_issues": [
-        {
-          "number": 2269,
-          "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "cat:documentation",
-            "machine:dev-secondary",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-21T16:59:28Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 2348,
           "title": "triage: promote #1707/#1708/#1709 from review-backlog \u2014 live scanner has ToS/rate-limit exposure",
@@ -88,15 +63,15 @@
           ]
         },
         {
-          "number": 2442,
-          "title": "chore(ci-health): assethold CI \u2014 python-tests.yml never green since 2025-09-28 (7 months); YAML parse + deprecated actions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2442",
+          "number": 2433,
+          "title": "chore(ci-health): worldenergydata main CI \u2014 22+ collection errors blocking 5 Dependabot PRs (#329-#333)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2433",
           "labels": [
             "priority:high",
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T17:01:41Z",
+          "updatedAt": "2026-04-21T19:10:00Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -202,82 +177,40 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2403,
+          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "cat:research",
+            "domain:document-intelligence",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-20T21:30:48Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 1,
-      "total_candidates": 32,
+      "execution_ready_count": 0,
+      "total_candidates": 30,
       "top_issues": [
-        {
-          "number": 2227,
-          "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-21T15:49:07Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2178,
-          "title": "feat(reporting): add bundle checksum manifest and tree-diff helper for assembled publication outputs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2178",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T04:16:33Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2179,
-          "title": "feat(validation): add weekly unresolved session-read regression gate with baseline and fail budget",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2179",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T04:16:36Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2181,
           "title": "test(operations): add AQWA zero-exit runtime-failure fixture suite and precedence assertions",
@@ -387,6 +320,72 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2190,
+          "title": "feat(reporting): add manifest-indexed pruning for orphaned shared assets after successful publication",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2190",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:38:15Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2194,
+          "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:53:11Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2195,
+          "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:53:14Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ]
     },
@@ -406,7 +405,7 @@
             "domain:gtm",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T17:13:03Z",
+          "updatedAt": "2026-04-21T18:42:56Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

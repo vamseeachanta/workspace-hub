@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-21T17:20:07.675532Z",
+  "generated_at": "2026-04-21T21:20:08.144508Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 9,
@@ -15,7 +15,7 @@
         "domain:gtm",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-21T17:13:03Z",
+      "updatedAt": "2026-04-21T18:42:56Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "gemini",
@@ -32,40 +32,6 @@
         "priority-labeled",
         "strong-gemini-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2269,
-      "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering",
-        "cat:documentation",
-        "machine:dev-secondary",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-21T16:59:28Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": true
     },
@@ -136,15 +102,15 @@
       "eligible": true
     },
     {
-      "number": 2442,
-      "title": "chore(ci-health): assethold CI \u2014 python-tests.yml never green since 2025-09-28 (7 months); YAML parse + deprecated actions",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2442",
+      "number": 2433,
+      "title": "chore(ci-health): worldenergydata main CI \u2014 22+ collection errors blocking 5 Dependabot PRs (#329-#333)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2433",
       "labels": [
         "priority:high",
         "cat:infrastructure",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-21T17:01:41Z",
+      "updatedAt": "2026-04-21T19:10:00Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -297,6 +263,40 @@
       "eligible": true
     },
     {
+      "number": 2403,
+      "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:data-pipeline",
+        "cat:research",
+        "domain:document-intelligence",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-20T21:30:48Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
@@ -321,66 +321,6 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2178,
-      "title": "feat(reporting): add bundle checksum manifest and tree-diff helper for assembled publication outputs",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2178",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T04:16:33Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2179,
-      "title": "feat(validation): add weekly unresolved session-read regression gate with baseline and fail budget",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2179",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T04:16:36Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
@@ -516,6 +456,96 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-11T09:38:12Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2190,
+      "title": "feat(reporting): add manifest-indexed pruning for orphaned shared assets after successful publication",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2190",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-11T09:38:15Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2194,
+      "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-11T09:53:11Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2195,
+      "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-11T09:53:14Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
