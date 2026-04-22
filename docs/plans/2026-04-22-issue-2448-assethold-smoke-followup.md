@@ -5,7 +5,7 @@
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2448
 > **Parent / predecessor:** #2442 (P1 commit `457ea2d`, P2 commit `b8b5439` — landed on `vamseeachanta/assethold` main)
-> **Review artifacts:** `scripts/review/results/20260422T095919Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Review artifacts:** `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Note:** This is a **follow-up plan**. Implementation is NOT authorized by this draft. User must review and set `status:plan-approved` in-thread after adversarial review converges. No `status:plan-approved` label is set by this plan.
 
 ---
@@ -111,9 +111,9 @@ All offenders are in `.agent-os/`, `modules/`, `scripts/` — **outside** `src/`
 | Primary workflow to edit | `assethold/.github/workflows/python-tests.yml` |
 | Tree cleanup targets (delete) | `assethold/'tests\modules\stocks\analysis\investment\results\Data\multiple_investment.csv'` and `...\single_investment.csv` (pathological filenames with literal backslashes) |
 | Predecessor plan | `docs/plans/2026-04-21-issue-2442-assethold-python-tests.md` |
-| Plan review — Claude | `scripts/review/results/2026-04-22-plan-2448-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-04-22-plan-2448-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-22-plan-2448-gemini.md` |
+| Plan review — Claude | `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-claude.md` |
+| Plan review — Codex | `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-codex.md` |
+| Plan review — Gemini | `scripts/review/results/20260422T101242Z-2026-04-22-issue-2448-assethold-smoke-followup.md-plan-gemini.md` |
 
 ---
 
@@ -141,9 +141,9 @@ Two scoped commits: P1 (git-tree backslash purge) + P2 (workflow step reorder).
 # Fix is a single commit on assethold main that removes these 2 paths.
 
 on assethold main worktree:
-    for each of {'tests\\modules\\stocks\\analysis\\investment\\results\\Data\\multiple_investment.csv',
-                  'tests\\modules\\stocks\\analysis\\investment\\results\\Data\\single_investment.csv'}:
-        # Use single-quotes in shell to keep `\\` literal.
+    for each of {'tests\modules\stocks\analysis\investment\results\Data\multiple_investment.csv',
+                  'tests\modules\stocks\analysis\investment\results\Data\single_investment.csv'}:
+        # Use single-quotes in shell to keep `\` literal.
         # Preferred: remove the tree entry and filesystem file together.
         if test -f '<literal backslash path>' ; then
             git rm -- '<literal backslash path>'
@@ -247,19 +247,20 @@ Since this plan remediates CI config + git-tree hygiene (not application code), 
 | Test | What it verifies | Expected state after fix |
 |---|---|---|
 | P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD -z \| tr '\0' '\n' \| awk -F'\t' '$2 ~ /\\\\/ {print $2}' \| wc -l` | `0` (zero backslash-containing tree entries) |
-| P1-local-index-sanity | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` after P1 staging/commit |
-| P1-local-on-disk-sanity | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` on tracked paths regardless of shell/find glob behavior |
+| P1-local-index-clean | `cd assethold && git ls-files -z \| tr '\0' '\n' \| grep -c '\\\\'` | `0` after P1 staging/commit |
+| P1-local-tree-clean | `cd assethold && git ls-tree -r HEAD -z \| tr '\0' '\n' \| awk -F'\t' '$2 ~ /\\\\/ {print $2}' \| wc -l` | `0` (zero backslash-containing tree entries after P1 lands) |
 | P1-ci-windows-reaches-install-deps | `gh run view <p1-run-id> --repo vamseeachanta/assethold --json jobs` — each Windows matrix cell step list | every windows-latest row reaches `Install dependencies with uv` |
-| P1-ci-no-windows-invalid-path | `gh run view <p1-run-id> --log \| grep -c 'invalid path'` | `0` hits |
+| P1-ci-no-windows-invalid-path | job-scoped Windows checkout logs from `gh run view <p1-run-id> --json jobs` / `gh run view --job <job-id> --log` | zero `##[error]error: invalid path` hits in every Windows `Checkout code` step |
 | P2-local-step-order | `uv run --no-project --with pyyaml python - <<'PY' ... PY` parses `.github/workflows/python-tests.yml` and asserts `Run smoke tests first` index < `Lint with flake8` index | smoke index < lint index |
 | P2-local-yaml-parses | `uv run --no-project --with pyyaml python -c "import yaml; yaml.safe_load(open('.github/workflows/python-tests.yml'))"` | exit 0 |
-| P2-ci-smoke-step-green | `gh run view <p2-run-id>` — py3.11/ubuntu-latest `Run smoke tests first` step | `conclusion=success` |
-| P2-ci-log-order-proof | `gh run view <p2-run-id> --log \| awk '/Run smoke tests first/{smoke=NR} /Lint with flake8/{lint=NR} END {exit !(smoke>0 && lint>0 && smoke<lint)}'` | exit 0 |
+| P2-ci-step-order-proof | `gh run view <p2-run-id> --repo vamseeachanta/assethold --json jobs` — locate the `Test on Python 3.11 (ubuntu-latest)` job and assert step order in its step array places `Run smoke tests first` before `Lint with flake8` | job-scoped step order correct |
+| P2-ci-smoke-step-green | same job-scoped JSON query on `Test on Python 3.11 (ubuntu-latest)` | `Run smoke tests first` step `conclusion=success` |
 | combined-close-gate | The single post-P2 run on final `main` head shows both: Windows reaches `Install dependencies with uv` and py3.11/ubuntu-latest smoke succeeds | both true on same run |
 
 Pre-push local gates:
 - Before P1 commit: `git ls-tree -r HEAD | awk '{print $4}' | grep -c '\\\\'` returns `2` (the entries we're about to delete); after `git rm` + add, `git ls-files | grep -c '\\\\'` returns `0`.
 - Before P2 commit: local YAML parse exit 0, Python-based step-order check passes, `uv run pytest tests/test_smoke.py -v` still green (same baseline as #2442 P2).
+- If the P1 CI run fails in `Clone assetutilities sibling dependency`, `Set up Python`, or `Install uv` for transient/non-path reasons, rerun or classify it as non-P1 noise rather than treating the backslash-path purge itself as failed.
 
 ---
 
@@ -289,17 +290,17 @@ Pre-push local gates:
 | Codex | MAJOR | Required the final close gate to be proven on a single post-P2 run, not split across P1/P2; required Windows verification to reach `Install dependencies with uv`, not just checkout; flagged `yq` tooling assumption. |
 | Gemini | APPROVE | No blocking defects; suggested optional wider Windows-workflow audit and recurrence-source question. |
 
-**Wave 1 overall result:** MAJOR — Codex identified three correctness gaps in the verification contract. The draft has been revised to require (1) Windows reaching `Install dependencies with uv`, (2) a single final post-P2 run proving both Windows and ubuntu smoke conditions together, and (3) repo-standard Python-based workflow-order verification instead of `yq`.
+**Wave 2 overall result:** MAJOR — Codex reduced the remaining blockers to execution-contract precision. The draft has now been updated to (1) normalize the P1 removal examples to the exact single-backslash pathnames proven in the evidence block, (2) replace global-log ordering checks with job-scoped `gh run view --json jobs` verification for the specific matrix jobs named in acceptance criteria, (3) scope the `invalid path` assertion to Windows checkout-step errors only, and (4) reconcile review-artifact paths to the concrete Wave 2 files throughout the document.
 
 Revisions made based on review:
-- Reframed the deliverable and combined close gate so the formal proof is evaluated on one post-P2 run for the final head commit.
-- Tightened P1 acceptance from checkout success to `Install dependencies with uv` reachability on every Windows matrix cell.
-- Replaced the `yq`-based local step-order check with a `uv run --with pyyaml python` verification path.
-- Replaced timestamp-based CI ordering proof with a log-order assertion.
-- Added `git rm --cached --` fallback in case pathological paths are index-only locally.
-- Clarified that #2442 is not auto-closed as a side effect of #2448; that remains a separate user-visible closeout decision.
+- Updated the front-matter and Artifact Map review-artifact paths to the concrete Wave 2 files.
+- Normalized the P1 path examples to the exact single-backslash filenames attested in the evidence block.
+- Replaced the duplicate local sanity rows with distinct index/tree checks.
+- Replaced global log substring checks with job-scoped JSON/step-list verification for Windows progress and ubuntu smoke ordering.
+- Added an executor note that transient failures in intermediate Windows steps after checkout should be treated as rerun/noise, not as evidence that the backslash purge failed.
+- Retained the separate-issue audit-trail rule for #2442 closeout and the out-of-scope recurrence guard follow-on.
 
-The plan remains in `draft` until a rerun review confirms the revised verification contract is approval-ready.
+The plan remains in `draft` until the rerun review confirms these execution checks are approval-ready.
 
 ---
 
