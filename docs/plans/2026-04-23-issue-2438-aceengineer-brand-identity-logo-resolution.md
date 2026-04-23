@@ -13,11 +13,12 @@
 ### Existing repo code
 
 - Found: `aceengineer-website/content/partials/nav.html:9-14` still renders the visible brand as an inline placeholder SVG containing `A&CE`; this is not a reusable asset and conflicts with the 2026-04-21 decision that consumer-facing brand treatment is `AceEngineer`.
+- Found: `aceengineer-website/build.js` renders `content/` into `dist/`, and `aceengineer-website/vercel.json` deploys `dist/`; therefore canonical implementation must edit `content/**`/partials/assets, run the build, and verify generated `dist/**`. Root-level checked-in HTML is secondary/non-authoritative unless a deliberate sync step is required by the current repo workflow.
 - Found: `aceengineer-website/content/partials/footer.html:5` still uses `A&CE` as the footer heading; the same footer keeps the long-form legal/descriptive phrase at `footer.html:33`.
 - Found: `aceengineer-website/index.html:10`, `index.html:18`, and `index.html:21` still use `A&CE` in Open Graph, Twitter, and title metadata.
 - Found: `aceengineer-website/index.html:54-57` declares the organization as `Analytical & Computational Engineering`, `alternateName: A&CE`, and `logo: https://aceengineer.com/assets/img/logo.png`.
 - Found: `aceengineer-website/assets/img/` contains demo/sample imagery only; no `logo.svg` or `logo.png` exists, so the JSON-LD logo URL is broken.
-- Found: broader generated/static pages such as `about.html` and `faq.html` contain additional `A&CE` metadata, inline nav SVGs, JSON-LD `logo.png` references, and footer headings. These may be generated from partials for some surfaces but are checked in as static files and must be audited before closeout.
+- Found: broader source/generated/static pages such as `content/about.html`, `content/faq.html`, root `about.html`/`faq.html`, and generated `dist/**` contain additional `A&CE` metadata, inline nav SVGs, JSON-LD `logo.png` references, and footer headings. Reviewer inspection found the footprint spans calculators, demos, methodology, blog, case studies, pricing, 404, and FAQ; the plan must cover visible brand/chrome/metadata/schema surfaces site-wide, not only representative pages.
 
 ### Issue / decision history
 
@@ -34,7 +35,7 @@
 
 - No canonical AceEngineer logo source asset exists.
 - No raster logo exists for JSON-LD/social consumers that require PNG.
-- Static site surfaces still expose `A&CE` in visible brand, metadata, and schema.
+- Static site surfaces still expose `A&CE` in visible brand, metadata, and schema across `content/**`, root checked-in HTML, and generated `dist/**`.
 - There is no documented brand hierarchy file in `aceengineer-website` to prevent future drift.
 - There is no lightweight regression check that fails when a checked-in HTML/partial surface reintroduces the retired visible `A&CE` brand or references a missing logo path.
 
@@ -43,16 +44,16 @@
 In scope for #2438:
 - create canonical AceEngineer logo assets
 - create a minimal brand contract document
-- replace the nav/footer/homepage/blog/case-study/metadata references required to stop broken logo and retired visible `A&CE` usage
-- add tests/checks that verify logo assets exist and brand hierarchy rules are respected
+- replace visible/chrome/metadata/schema references across deployable `content/**` surfaces required to stop broken logo and retired visible `A&CE` usage; then rebuild and verify `dist/**`
+- add tests/checks in the existing repo harness that verify logo assets exist, generated output references them correctly, and brand hierarchy rules are respected
 
 Out of scope for #2438:
-- full Bootstrap color-token consolidation (#2439)
+- full Bootstrap color-token consolidation (#2439); only minimal logo sizing/contrast CSS needed to render the canonical asset is in scope
 - visual DNA ADR beyond the already locked Option B decision (#2440)
 - full redesign of aceengineer.com templates (#2435/#2436)
 - digitalmodel brand changes
 
-Implementation-surface confidence: Medium-High. The core surfaces are clear, but the exact static/generator boundary for all checked-in HTML pages must be audited during implementation.
+Implementation-surface confidence: Medium after review. The brand decisions and core source surfaces are clear, but implementation must explicitly respect the `content/` -> `dist/` build contract and decide whether root checked-in HTML is synced or treated as non-authoritative legacy output.
 
 ---
 
@@ -66,15 +67,18 @@ Implementation-surface confidence: Medium-High. The core surfaces are clear, but
 | Brand contract | `aceengineer-website/brand/BRAND.md` |
 | Visible nav source | `aceengineer-website/content/partials/nav.html` |
 | Visible footer source | `aceengineer-website/content/partials/footer.html` |
-| Homepage metadata/schema | `aceengineer-website/index.html` |
-| Static page inventory | `aceengineer-website/**/*.html` |
-| Regression tests/checks | `tests/aceengineer_website/test_brand_identity_assets.py` or equivalent repo-local test path chosen during implementation |
+| Source page inventory | `aceengineer-website/content/**/*.html` |
+| Generated deploy output | `aceengineer-website/dist/**/*.html` after `npm run build` |
+| Secondary/root checked-in HTML | `aceengineer-website/*.html` — sync only if current repo workflow requires root outputs to remain current; do not treat as deploy source |
+| Existing build script | `aceengineer-website/build.js` |
+| Existing deploy config | `aceengineer-website/vercel.json` |
+| Regression tests/checks | `aceengineer-website/tests/python/test_brand_identity_assets.py` and/or `aceengineer-website/tests/js/brand-identity.test.js` |
 
 ---
 
 ## Deliverable
 
-A canonical AceEngineer brand identity baseline for aceengineer.com: reusable `logo.svg` + `logo.png`, documented brand hierarchy, visible site chrome and metadata aligned to `AceEngineer`/`Analytical & Computational Engineering` rules, and regression coverage preventing missing-logo or retired-`A&CE` drift.
+A canonical AceEngineer brand identity baseline for aceengineer.com: reusable `logo.svg` + deterministic `logo.png`, documented brand hierarchy/allowlist, canonical `content/**` site chrome and metadata aligned to `AceEngineer`/`Analytical & Computational Engineering` rules, generated `dist/**` verified after build, and regression coverage preventing missing-logo or retired visible `A&CE` drift.
 
 ---
 
@@ -82,17 +86,17 @@ A canonical AceEngineer brand identity baseline for aceengineer.com: reusable `l
 
 ```text
 step 1: create brand contract
-  document allowed names by context:
-    visible/consumer brand -> AceEngineer
-    accessibility/SEO expansion -> Analytical & Computational Engineering
-    legal entity -> Achanta AceEngineer Inc.
-    retired placeholder -> A&CE, do not use for new visible brand surfaces
+  document allowed names by context and explicit allowlist:
+    visible/chrome/consumer brand -> AceEngineer
+    accessibility expansion, org description, selected schema name -> Analytical & Computational Engineering
+    legal/copyright/contractual entity -> Achanta AceEngineer Inc. where a legal entity is required
+    retired placeholder -> A&CE forbidden in visible chrome, page titles, OG/Twitter titles, and schema alternateName unless a historical prose mention is explicitly allowlisted
   document visual DNA dependency:
     aceengineer.com deliberately differentiates from digitalmodel per #2440 Option B
 
 step 2: create canonical logo assets
   design a simple text/mark SVG for AceEngineer that does not copy digitalmodel navy/teal identity
-  export deterministic PNG at a web/schema-safe size
+  export deterministic PNG at a documented web/schema-safe size using a recorded conversion command
   save to assets/img/logo.svg and assets/img/logo.png
 
 step 3: update visible chrome
@@ -100,15 +104,17 @@ step 3: update visible chrome
   replace footer visible A&CE heading with AceEngineer
 
 step 4: update metadata/schema surfaces
-  update homepage and representative checked-in HTML pages so titles, OG/Twitter metadata, JSON-LD name/alternateName/logo follow the brand hierarchy
-  keep Analytical & Computational Engineering only where long-form SEO/accessibility context is intended
-  remove A&CE from visible new brand treatment unless explicitly marked as legacy/historical
+  update canonical content/**/*.html sources and shared partials so titles, OG/Twitter metadata, JSON-LD name/alternateName/logo follow the brand hierarchy
+  run the site build and verify generated dist/**/*.html matches the new identity
+  keep Analytical & Computational Engineering only in the documented SEO/accessibility/schema allowlist
+  remove A&CE from visible brand/chrome/page-title/OG/Twitter/schema surfaces unless explicitly marked as historical prose
 
 step 5: add regression checks
   assert logo.svg and logo.png exist and are non-empty
-  assert JSON-LD/logo references point to existing assets
-  scan checked-in HTML/partials for retired visible A&CE patterns outside an allowlist
-  assert nav/footer use AceEngineer-facing identity
+  assert JSON-LD/logo references point to existing assets in both source and built output
+  scan content/partials and generated dist HTML for retired visible A&CE patterns outside a precise allowlist
+  assert nav/footer use AceEngineer-facing identity and accessible image text
+  assert nested generated pages resolve logo paths correctly
 ```
 
 ---
@@ -122,8 +128,11 @@ step 5: add regression checks
 | Create | `aceengineer-website/brand/BRAND.md` | durable brand hierarchy and Option B visual-DNA note |
 | Update | `aceengineer-website/content/partials/nav.html` | replace inline `A&CE` placeholder with reusable asset and accessible brand text |
 | Update | `aceengineer-website/content/partials/footer.html` | replace visible `A&CE` footer heading with `AceEngineer` |
-| Update | `aceengineer-website/index.html` plus generated/static affected pages | fix visible metadata/schema references to align with brand hierarchy and existing logo paths |
-| Create | `tests/aceengineer_website/test_brand_identity_assets.py` or nearest existing test location | regression coverage for assets, references, and retired placeholder drift |
+| Update | `aceengineer-website/content/**/*.html` and shared partials | canonical source edits for visible/chrome/metadata/schema identity surfaces |
+| Generate/verify | `aceengineer-website/dist/**/*.html` | deploy output must reflect the source changes after `npm run build` |
+| Decide/sync | `aceengineer-website/*.html` root outputs | either sync if repo policy requires root checked-in pages, or document them as non-authoritative legacy outputs |
+| Create | `aceengineer-website/tests/python/test_brand_identity_assets.py` | regression coverage for assets, source references, allowlist, and generated-output checks |
+| Optional create | `aceengineer-website/tests/js/brand-identity.test.js` | JS/build-output assertions if better aligned with existing Jest build tests |
 | Update | `docs/plans/README.md` | index this plan |
 
 ---
@@ -134,9 +143,10 @@ step 5: add regression checks
 |---|---|
 | `test_logo_assets_exist_and_are_nonempty` | fails until `assets/img/logo.svg` and `assets/img/logo.png` exist and are non-empty |
 | `test_schema_logo_references_existing_asset` | parses checked-in HTML/JSON-LD references to `/assets/img/logo.png` and verifies the asset exists |
-| `test_nav_footer_visible_brand_uses_aceengineer` | verifies shared chrome no longer exposes `A&CE` as the visible brand |
-| `test_retired_acronym_allowlist` | scans HTML/partials for `A&CE` and allows only explicitly documented legacy or accessibility contexts, not new visible brand surfaces |
-| `manual_visual_smoke_nav_logo` | open homepage and at least one nested page to confirm logo path, sizing, and contrast work in browser |
+| `test_nav_footer_visible_brand_uses_aceengineer` | verifies shared chrome no longer exposes `A&CE` as the visible brand and logo image has correct accessible text |
+| `test_retired_acronym_allowlist` | scans visible chrome, page titles, OG/Twitter metadata, and JSON-LD schema contexts for `A&CE`, using a precise allowlist rather than arbitrary body-prose matching |
+| `test_build_output_brand_identity` | runs or consumes `npm run build` output and verifies `dist/**` has copied logo assets, correct nested logo paths, and no forbidden visible/chrome/metadata/schema drift |
+| `manual_visual_smoke_nav_logo` | open homepage and at least one nested page from built output to confirm logo path, sizing, and contrast work in browser |
 
 ---
 
@@ -145,9 +155,9 @@ step 5: add regression checks
 - [ ] `aceengineer-website/assets/img/logo.svg` exists and is the canonical source logo.
 - [ ] `aceengineer-website/assets/img/logo.png` exists and satisfies current JSON-LD/social image references.
 - [ ] `aceengineer-website/brand/BRAND.md` documents the locked brand hierarchy and #2440 Option B differentiation from digitalmodel.
-- [ ] Shared nav/footer visible brand uses `AceEngineer`, not `A&CE`.
-- [ ] Homepage and affected static HTML metadata/schema references no longer point to missing logo assets.
-- [ ] Regression checks fail before the assets/reference fixes and pass after implementation.
+- [ ] Shared nav/footer visible brand uses `AceEngineer`, not `A&CE`, and exposes correct logo alt/accessible text.
+- [ ] Canonical `content/**` sources and generated `dist/**` metadata/schema references no longer point to missing logo assets or retired visible `A&CE` brand surfaces.
+- [ ] `npm run build` succeeds and regression checks fail before the assets/reference fixes and pass after implementation.
 - [ ] #2439 remains the broader token/color cleanup and is not silently absorbed.
 - [ ] #2440 remains the visual-DNA decision record and is not reopened by this implementation.
 
@@ -155,15 +165,15 @@ step 5: add regression checks
 
 ## Adversarial Review Summary
 
-Pending. Required before `status:plan-review`.
+Initial delegated adversarial review returned REQUEST_CHANGES. Required revisions applied in this draft: source-of-truth/build contract, explicit source/dist/root surface split, exact test locations, site-wide visible/chrome/metadata/schema scope, allowlist policy, deterministic PNG command requirement, dist verification, nested path/accessibility checks, and minimal-CSS scope guardrail. Fresh re-review is still required before `status:plan-review`.
 
 ---
 
 ## Risks and Open Questions
 
 - Risk: PNG generation may introduce non-deterministic binary diffs. Implementation should use a stable conversion command and document it.
-- Risk: checked-in static pages may duplicate partial content; implementation must update either the generator source plus generated outputs or the checked-in outputs explicitly, depending on the actual site build contract.
-- Risk: overly aggressive `A&CE` scanning could flag historical/legal contexts. Use a narrow allowlist tied to `brand/BRAND.md`.
+- Risk: checked-in root static pages may duplicate generated content; implementation must update canonical `content/**` sources, regenerate/verify `dist/**`, and explicitly decide whether root HTML is synced or treated as non-authoritative legacy output.
+- Risk: overly aggressive `A&CE` scanning could flag historical/legal prose. Limit automated checks to visible chrome, titles, OG/Twitter metadata, JSON-LD/schema identity fields, and a narrow allowlist tied to `brand/BRAND.md`.
 - Open: exact logo aesthetics should remain simple and production-safe; full design-system/token refinement belongs to #2439/#2435.
 
 ---
