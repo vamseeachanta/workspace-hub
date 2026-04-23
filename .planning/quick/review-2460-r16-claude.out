@@ -1,0 +1,43 @@
+I have enough evidence to render a verdict. Let me finalize the review.
+
+`★ Insight ─────────────────────────────────────`
+The separation-of-concerns question has a clean answer: after the r15→r16 cleanup, `validate_contract_docs()` (lines 274-295), the TDD List (lines 313-334), and Acceptance Criteria (lines 340-354) contain only deliverable-content assertions — no approval-marker, review-state, or governance items. The Governance Precondition section (lines 356-362) is the sole home for those checks and is explicitly labeled "a review/governance requirement, not a TDD execution test." That claim in the review framing checks out.
+`─────────────────────────────────────────────────`
+
+## Verdict: MINOR
+
+The r15→r16 separation claim is substantively correct. No approval-blocking defects remain, but several small residual defects (a broken table row, stale self-cited mtime, lingering "Future" framing in the governance title, and missing r12-r15 lineage bridge) should be fixed before posting.
+
+## Findings
+
+- [MINOR] **Broken Artifact Map table row** — `docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md:197`. The row begins with a markdown bullet `-` instead of a pipe `|`:
+  `- Plan review — Claude (2026-04-23 provider attempt, r11 UNAVAILABLE) | scripts/... |`
+  This breaks table rendering and is clearly a copy-paste/format defect (compare to the properly-piped Codex/Gemini rows on 198-200). Why it matters: the Artifact Map is a navigation surface; a malformed row there is exactly the kind of noise this plan is trying to eliminate from tier-1 routing docs.
+
+- [MINOR] **Self-cited plan mtime is stale inside the plan** — lines 76 and 79 state `current plan mtime 2026-04-23 11:12:39 -0500`, but `stat` on the live file reports `2026-04-23 12:50:09 -0500`. The plan was edited again after the evidence block was written. The directional claim (marker older than plan) is still correct, so this is not approval-blocking, but the self-citation is internally falsified and will trip any reviewer who spot-checks. Why it matters: the plan uses its own mtime as evidence of the staleness gap; stale self-evidence weakens that claim.
+
+- [MINOR] **r16 review on an r11-last-reviewed lineage, with no r12-r15 bridge** — the plan's Adversarial Review Summary (lines 371-377) and status header still reference `r11` as the latest completed rerun, but the current prompt (`.planning/quick/review-2460-r16-prompt.md`) treats this as the r16 rerun. Either r12-r15 were skipped/silent (so the plan should say so) or r12-r15 artifacts exist but aren't cited. Currently `ls scripts/review/results/ | grep 2460` returns only r11-era files. Why it matters: Codex r11 already flagged "review-state narrative is still internally inconsistent"; a 5-rev gap with no bridging narrative re-opens that failure mode.
+
+- [MINOR] **Governance Precondition title still reads as conditional** — line 356 heading `## Governance Precondition Before Any Future Approval Reuse` frames cleanup as guarding *future* reuse, even though line 360's body ("must be removed, superseded, or revision-bound before this draft can be treated as approved again") is correctly present-tense. This was exactly the Codex r11 MAJOR finding ("cleanup requirement is still conditional on a future MAJOR rerun rather than a present requirement"). Retitling to something like `## Stale Approval Surfaces — Present Cleanup Requirement` would close the loop. Why it matters: harness orchestrators and humans skim section headings; a "Future" framing in the title undercuts the present-tense body.
+
+- [MINOR] **Status-header self-reference is ambiguous across revisions** — line 3 says "*latest completed 2026-04-23 reruns still show this draft lineage is not approval-ready… the current draft remains pending a clean external rerun*." "This draft lineage" vs "the current draft" are treated as distinct entities, but the plan never defines what separates them (file revision? git SHA?). Without a revision identifier, a reviewer cannot verify whether the completed r11 reruns apply to the on-disk bytes being reviewed now. The Governance Precondition's revision-bind clause (line 361) correctly requires an "exact approved plan git commit SHA or SHA256 hash" — the same discipline should be applied retroactively to the status header so "lineage" has a deterministic identity.
+
+- [MINOR] **Plan references `#2465` as follow-through without explicit linkage to the freshness-report refresh workflow** — the Acceptance Criteria (line 345) requires the contract to "require refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`" and "explicitly name `#2465` as the follow-through issue," but there is no test or acceptance item that guards against an implementer merely mentioning `#2465` in an unrelated paragraph. The TDD entry `test_tier1_contract_marks_2465_as_daily_freshness_followthrough` (line 327) verifies linkage presence, not co-location in the freshness section. The pseudocode (line 239) does say "name #2465 in the same freshness section as the follow-through issue" — consider hardening the test name/description to match the pseudocode's co-location requirement.
+
+## Checks performed
+
+- Read the full plan (`docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md`).
+- Confirmed `validate_contract_docs()` (pseudocode 274-295) now contains only deliverable-content assertions — no governance items.
+- Confirmed TDD Test List (313-334) contains only content-level tests on the contract/checklist/test-file; no plan-text or approval-marker tests.
+- Confirmed Acceptance Criteria (340-354) contains only deliverable and test-run items; no governance items.
+- Confirmed Governance Precondition section (356-362) is labeled "review/governance requirement, not a TDD execution test" and is the sole home for governance-surface cleanup requirements.
+- Live-verified GitHub issue #2460 state/labels via `gh issue view`: `state=OPEN`, labels include `status:plan-approved` — matches plan's evidence block.
+- Verified `.planning/plan-approved/2460.md` contents and mtime against plan's evidence block (contents match; marker mtime `2026-04-23 03:22:45 -0500` is older than plan mtime, confirming staleness direction).
+- Found current plan mtime (`2026-04-23 12:50:09`) does not match the plan's self-cited mtime (`2026-04-23 11:12:39`).
+- Verified existence of every cited file: `CONTROL_PLANE_CONTRACT.md`, `FILE_STRUCTURE_TAXONOMY.md`, `DATA_PLACEMENT.md`, `tier-1-indexing-freshness-latest.md`, `2026-04-22-tier-1-indexing-scorecard.md`, `config/agents/routing-config.yaml`, `config/agents/behavior-contract.yaml`, `.claude/rules/README.md`, `.claude/rules/patterns.md`, `docs/plans/2026-04-16-issue-2209-durable-vs-transient-knowledge-boundary.md`.
+- Cross-checked DATA_PLACEMENT.md for threshold wording: lines 9-10 contain the exact `>= 10 MB` / `>= 1000 files` form the plan claims to preserve.
+- Reviewed the three r11 review artifacts (Claude UNAVAILABLE, Codex MAJOR, Gemini APPROVE) and confirmed the Adversarial Review Summary table accurately reflects them.
+- Verified `ls scripts/review/results/ | grep 2460` returns only r11-era files (no r12-r15), so the r16 label in the current prompt has no intermediate artifact trail.
+- Checked Artifact Map formatting — found one malformed table row starting with `-`.
+- Did not exhaustively verify that every child issue (#2461-#2465) title/scope matches the plan's description — trusted the plan's prior verification per its 2026-04-22T20:20:11Z `gh issue view` baseline.
+SessionEnd hook [node "${CLAUDE_PLUGIN_ROOT}/scripts/session-lifecycle-hook.mjs" SessionEnd] failed: Hook cancelled

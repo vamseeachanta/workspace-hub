@@ -1,10 +1,45 @@
+# Adversarial Review Request: Issue #2460 local plan rerun (r16)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, stale, ambiguous, or risky.
+Return APPROVE only after affirmatively verifying each correctness-critical claim. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, or quoted claim.
+Treat cited sources as assertions to verify, not facts to trust.
+If you find no issues, explicitly list what you checked.
+
+## Review target
+- Repo: /mnt/local-analysis/workspace-hub
+- Issue: #2460
+- Plan under review: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+
+## What changed since r15
+1. Removed governance requirements from validate_contract_docs().
+2. Removed remaining governance/review-state items from execution-focused Acceptance Criteria.
+3. Removed remaining plan-text/process test items from the TDD list.
+4. Kept governance requirements only in the dedicated Governance Precondition section.
+
+## Required checks
+1. Verify whether governance/pre-approval requirements are now cleanly separated from deliverable validation, TDD, and implementation sections.
+2. Verify whether any remaining approval-blocking defects still exist.
+
+## Expected output format
+Verdict: APPROVE | MINOR | MAJOR
+
+## Findings
+- [severity] finding with citation and why it matters
+
+## Checks performed
+- bullet list of concrete checks performed
+
+## Raw plan text
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
-> **Status:** plan-approved (live GitHub issue label shows `status:plan-approved`; local approval marker restored during 2026-04-23 approval-state sync after r16 returned Claude MINOR, Codex MINOR, Gemini APPROVE)
+> **Status:** draft (latest completed 2026-04-23 reruns still show this draft lineage is not approval-ready; live GitHub `status:plan-approved` and local `.planning/plan-approved/2460.md` are stale approval surfaces for an older revision, and the current draft remains pending a clean external rerun)
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2460
-> **Review artifacts:** scripts/review/results/2026-04-23-plan-2460-claude.md (latest external rerun, r16 MINOR) | scripts/review/results/2026-04-23-plan-2460-codex.md (latest external rerun, r16 MINOR) | scripts/review/results/2026-04-23-plan-2460-gemini.md (latest external rerun, r16 APPROVE) | historical self-review `scripts/review/results/2026-04-23-plan-2460-claude-self-review.md`
+> **Review artifacts:** scripts/review/results/2026-04-23-plan-2460-claude.md (latest provider-attempt artifact, r11 UNAVAILABLE) | scripts/review/results/2026-04-23-plan-2460-codex.md (latest external rerun, r11 MAJOR) | scripts/review/results/2026-04-23-plan-2460-gemini.md (latest external rerun, r11 APPROVE) | historical self-review `scripts/review/results/2026-04-23-plan-2460-claude-self-review.md`
 
 ---
 
@@ -73,11 +108,12 @@
 - EXISTS: `config/agents/behavior-contract.yaml`
 - EXISTS: `.claude/rules/README.md`
 - EXISTS: `.claude/rules/patterns.md`
-- APPROVAL MARKER EVIDENCE (synced 2026-04-23T20:27:09Z): `.planning/plan-approved/2460.md` exists for the approved r16 draft and records the live GitHub `status:plan-approved` label as the approval source.
+- EXISTS BUT STALE FOR CURRENT DRAFT REVISION: `.planning/plan-approved/2460.md` (marker mtime `2026-04-23 03:22:45 -0500` predates current plan mtime `2026-04-23 11:12:39 -0500`)
 - LIVE LABEL EVIDENCE (verified 2026-04-23 via `gh issue view 2460 --json labels,state,title,url`): `state=OPEN`, labels include `enhancement`, `priority:high`, `cat:documentation`, `cat:harness`, `domain:repo-organization`, `status:plan-approved`
-- LOCAL MARKER EVIDENCE: `.planning/plan-approved/2460.md` contents are `Approved by: user`, `Approval source: live GitHub issue label status:plan-approved observed during Hermes approval-state sync`, `Approved at: 2026-04-23T20:27:09Z`, `Issue: #2460`
-- LATEST REVIEW-ARTIFACT EVIDENCE (2026-04-23 r16): Claude `MINOR`, Codex `MINOR`, Gemini `APPROVE`
-- APPROVAL STATE SYNC: the previous stale-approval drift has been resolved by aligning live GitHub `status:plan-approved`, the local approval marker, the plan header, and the `docs/plans/README.md` row to the same approved r16 review evidence.
+- LOCAL MARKER EVIDENCE: `.planning/plan-approved/2460.md` contents are `Approved by: user`, `Approval source: current Hermes chat instruction`, `Approved at: 2026-04-23T08:22:45Z`, `Issue: #2460`
+- LOCAL TIMESTAMP EVIDENCE: marker mtime `2026-04-23 03:22:45 -0500`; current plan mtime `2026-04-23 11:12:39 -0500`
+- LATEST REVIEW-ARTIFACT EVIDENCE (2026-04-23 r11): Claude `UNAVAILABLE`, Codex `MAJOR`, Gemini `APPROVE`
+- LIVE ISSUE LABEL DRIFT: because the current live labels still include `status:plan-approved` while the latest 2026-04-23 r11 review artifacts report Claude `UNAVAILABLE`, Codex `MAJOR`, and Gemini `APPROVE`, the live label must be treated as stale for this draft lineage until governance cleanup explicitly clears, supersedes, or revision-binds it
 - MISSING (new — this issue should create): `tests/docs/test_tier1_indexing_contract.py`
 - MISSING (current gap): any `docs/plans/*2460*` file before this draft was created
 
@@ -193,9 +229,9 @@ for root, dirs, files in os.walk(repo_path):
 | Docs index update | `docs/README.md` |
 | Tests | `tests/docs/test_tier1_indexing_contract.py` |
 | Optional script/docs drift follow-up only (not in this issue) | `scripts/` / child issue `#2465` |
-| Plan review — Claude (2026-04-23 external rerun, r16 MINOR) | `scripts/review/results/2026-04-23-plan-2460-claude.md` |
-| Plan review — Codex (2026-04-23 external rerun, r16 MINOR) | `scripts/review/results/2026-04-23-plan-2460-codex.md` |
-| Plan review — Gemini (2026-04-23 external rerun, r16 APPROVE) | `scripts/review/results/2026-04-23-plan-2460-gemini.md` |
+- Plan review — Claude (2026-04-23 provider attempt, r11 UNAVAILABLE) | `scripts/review/results/2026-04-23-plan-2460-claude.md` |
+| Plan review — Codex (2026-04-23 external rerun, r11 MAJOR) | `scripts/review/results/2026-04-23-plan-2460-codex.md` |
+| Plan review — Gemini (2026-04-23 external rerun, r11 APPROVE) | `scripts/review/results/2026-04-23-plan-2460-gemini.md` |
 | Historical Claude self-review (non-authoritative compared with external reruns) | `scripts/review/results/2026-04-23-plan-2460-claude-self-review.md` |
 
 ---
@@ -352,42 +388,41 @@ function validate_contract_docs():
 - [ ] targeted regression tests pass: `uv run pytest tests/docs/test_tier1_indexing_contract.py -v`
 - [ ] existing curated-doc stale-reference guard still passes: `uv run pytest tests/docs/test_banned_stale_references.py -v`
 
-## Approval State Sync
+## Governance Precondition Before Any Future Approval Reuse
 
-This is a review/governance note, not a TDD execution test.
+This is a review/governance requirement, not a TDD execution test.
 
-- [x] Live GitHub issue now carries `status:plan-approved`.
-- [x] Local approval marker `.planning/plan-approved/2460.md` has been restored to match the live GitHub approval state.
-- [x] `docs/plans/README.md` is synced to `plan-approved` for #2460.
-- [x] Review evidence for the approved draft is recorded in `scripts/review/results/2026-04-23-plan-2460-{claude,codex,gemini}.md` with Claude MINOR, Codex MINOR, and Gemini APPROVE.
+- [ ] Because the current live approval surfaces are already stale for this draft revision, GitHub `status:plan-approved` and local `.planning/plan-approved/2460.md` must be removed, superseded, or revision-bound before this draft can be treated as approved again.
+- [ ] If revision-binding is used instead of removal, it must be immutable and name: exact approved plan file path, exact approved plan git commit SHA or SHA256 hash, exact approved review-artifact paths plus provider verdicts, and the exact approval-storage surface used.
+- [ ] README-row sync is secondary hygiene only; it must not be treated as the primary remediation surface for stale approval drift.
 
 ---
 
 ## Adversarial Review Summary
 
-Latest completed rerun for the approved draft is recorded below for traceability.
-This section has been refreshed after the local approval-state sync so the plan can proceed to implementation without stale approval-marker drift.
+Latest completed rerun for the immediately previous local draft revision is recorded below for traceability.
+This section has been refreshed after the current local patch wave so the remaining blocker list matches the draft that should be reviewed next.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MINOR | Found only non-blocking cleanup items: malformed Artifact Map row, stale self-cited plan mtime, slightly future-leaning governance-section title, ambiguous lineage wording, and a possible hardening opportunity for `#2465` freshness-section linkage |
-| Codex | MINOR | Found only stale review-summary wording after the r15→r16 separation cleanup; no remaining approval-blocking defects |
-| Gemini | APPROVE | Reviewed the current draft and found governance/pre-approval requirements cleanly separated from deliverable validation, TDD, and implementation sections |
+| Claude | UNAVAILABLE | Provider attempt hit Claude usage limit (`You've hit your limit · resets 2pm (America/Chicago)`); no substantive verdict was produced in r11 |
+| Codex | MAJOR | Approval-gate drift mitigation is still too weak because the plan frames cleanup as part of a future-rerun flow instead of a present requirement for a known-stale approved state; review-state narrative also needed cleaner revision-state wording |
+| Gemini | APPROVE | Reviewed the current draft and found no remaining blocking defects after the concrete-evidence and blocker-list cleanup patch |
 
-**Overall result for latest completed rerun:** APPROVAL-READY / USER-APPROVED — the 2026-04-23 r16 rerun returned Claude MINOR, Codex MINOR, and Gemini APPROVE; the live GitHub issue now carries `status:plan-approved`, and local approval evidence has been restored.
+**Overall result for latest completed rerun:** FAIL — the 2026-04-23 r11 rerun still contains a Codex MAJOR, Gemini APPROVE, and Claude UNAVAILABLE due to usage limit, so the draft is still not approval-ready.
 
-Approval-state sync applied:
-- The plan status/header now matches the live GitHub `status:plan-approved` label.
-- The local approval marker `.planning/plan-approved/2460.md` has been restored for this approved draft.
-- The review artifact map and summary point at the r16 Claude/Codex/Gemini results.
-- The pseudocode, validation, TDD, and Acceptance sections remain focused only on deliverable requirements; approval-state evidence is isolated to the dedicated `Approval State Sync` section.
-- The Resource Intelligence Summary includes the required documentation + harness source union with concrete file-level citations.
-- The stale-reference Acceptance Criteria names `STRICT_FILES` explicitly.
-- The `docs/plans/README.md` row is synced to `plan-approved` for #2460.
-- The DATA_PLACEMENT evidence and pseudocode use a single canonical exact-threshold form: `>= 10 MB` / `>= 1000 files`.
-- The legacy-retirement rule requires AT LEAST 3 banned-pattern signature categories.
+Changes now applied locally before the next rerun:
+- The plan status/header now says the latest completed reruns show the draft lineage is still not approval-ready while the current on-disk draft remains pending a clean external rerun, eliminating the earlier same-revision contradiction.
+- The plan now names the stale approval signals truthfully: live GitHub `status:plan-approved` plus local `.planning/plan-approved/2460.md` exist, but they apply to an older revision rather than this current draft.
+- The evidence block now quotes the exact DATA_PLACEMENT threshold lines, records the stale approval-marker / live-label drift explicitly, and includes the concrete live-label evidence excerpt from `gh issue view`.
+- The pseudocode, validation, TDD, and Acceptance sections now require present-tense governance cleanup on the real approval gates before this draft can ever be treated as approved again, and the allowed revision-binding path must name the exact approved plan artifact + review-artifact set.
+- The Resource Intelligence Summary now includes the required documentation + harness source union with concrete file-level citations.
+- The stale-reference Acceptance Criteria now names `STRICT_FILES` explicitly.
+- The `docs/plans/README.md` handling rule now explicitly stays secondary to the real approval gates.
+- The DATA_PLACEMENT evidence and pseudocode now use a single canonical exact-threshold form: `>= 10 MB` / `>= 1000 files`.
+- The legacy-retirement rule now requires AT LEAST 3 banned-pattern signature categories.
 
-Current draft state: approved for implementation. Implementation must still follow the TDD sequence and remain bounded to the #2460 deliverables.
+Current draft state: pending fresh rerun. Do not post to GitHub or add `status:plan-review` unless the next three-provider adversarial review wave clears all MAJOR findings. Review-artifact posting and approval-surface cleanup are governance prerequisites handled outside the deliverable TDD/acceptance path.
 
 ---
 
