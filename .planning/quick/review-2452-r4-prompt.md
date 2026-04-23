@@ -1,10 +1,67 @@
+# Adversarial plan r4 re-review request: workspace-hub issue #2452
+
+## Your role
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, stale, contradictory, or risky.
+Return APPROVE only after affirmatively verifying each correctness-critical claim from the supplied plan/context.
+When in doubt, return MINOR or MAJOR / REQUEST_CHANGES.
+Each finding must cite a specific file path, plan section, quoted claim, or issue number.
+
+## Review objective
+This is r4 after r3 cleanup. Decide whether the current #2452 parent plan can move from draft toward status:plan-review for user approval, or still needs revision.
+
+## Live context after r3 cleanup
+Live state checked 2026-04-23 after r3 cleanup:
+- #2452 is OPEN with labels priority:medium, cat:infrastructure; no status:plan-review or status:plan-approved.
+- No .planning/plan-approved/2452.md marker exists.
+- The plan/review artifacts are local/uncommitted in a dirty workspace-hub checkout; the plan explicitly labels them as local/uncommitted until deliberately landed.
+- r3 reviews: Codex REQUEST_CHANGES; Gemini APPROVE with MINOR findings.
+- r3 fixes applied: current Black/isort red state disclosed; #2469 owns full Black/isort/flake8 Lint proof on main; review status labels synced; #2467/#2468/#2469 bodies updated.
+- Current local verification: `git diff --check` passed for the #2452 plan/README/review artifacts.
+
+## Specific r4 checks
+1. Are review artifact statuses now internally consistent (Codex r3 REQUEST_CHANGES, Gemini r3 APPROVE-with-MINOR, r4 pending)?
+2. Does the plan accurately disclose current Black/isort drift while keeping #2452 focused on flake8-debt decomposition and assigning full Lint proof to #2469?
+3. Are local/uncommitted plan artifacts labeled truthfully enough for a draft packet in a dirty root checkout?
+4. Do #2467/#2468/#2469 live bodies align with the parent plan's closure semantics?
+5. Is any remaining finding blocker-level, or only minor cleanup that can be handled before/while posting to status:plan-review?
+
+## Required output format
+Verdict: APPROVE | MINOR | MAJOR | REQUEST_CHANGES | REJECT
+
+Findings:
+- [SEVERITY] finding with cited evidence
+
+Checks performed:
+- list exactly what you checked
+
+## Current child issue bodies
+
+### #2467
+```json
+{"body":"## Summary\nFresh flake8 inventory for #2452 shows that a single file, `src/worldenergydata/marine_safety/_cross_database_data.py`, accounts for 4,060 findings, dominated by `E231`. This is the largest single blocker to restoring the current `Lint` job.\n\n## Why split from #2452\n#2452 is too broad to approve as one flat remediation wave. This file is a pathological outlier and needs its own explicit decision and implementation path. This child issue must remove the file as a blocker without treating lint-gate weakening as a parent-satisfying outcome.\n\nIf investigation proves the file is generated, vendored, or should be excluded, the result here is not an implicit workflow relaxation. The implementer must either regenerate/normalize it so the existing lint gate remains valid, or file a separate plan-reviewed workflow/config-change issue with justification. #2452 remains blocked until the current or explicitly re-approved lint contract is green on `worldenergydata` main.\n\n## Evidence\n- Parent issue: #2452\n- Fresh inventory input: `/tmp/2452-flake8.txt` (transient draft evidence; durable inventory is owned by #2468 before source edits)\n- Top offending area: `src/worldenergydata/marine_safety/_cross_database_data.py` -\u003e 4060 findings\n- Dominant rule family: `E231` (missing whitespace after `:` / `,`)\n\n## Deliverable\nA single, reviewable decision and implementation for this file that removes it as the dominant flake8 blocker without silently broadening scope and without weakening the current lint gate as the parent-satisfying path.\n\n## Scope notes\nThis issue is only about `src/worldenergydata/marine_safety/_cross_database_data.py`. Broader multi-module flake8 cleanup stays in #2468 and final proof stays in #2469.\n","labels":[],"state":"OPEN","title":"follow-up(ci): worldenergydata flake8 pathological blocker — normalize or quarantine marine_safety/_cross_database_data.py"}
+```
+
+### #2468
+```json
+{"body":"## Summary\nFresh flake8 inventory for #2452 shows broad residual debt across `src/worldenergydata/**`, but outside the pathological `_cross_database_data.py` outlier the most actionable first-wave clusters are mechanically safer families like `F401`, `E501`, and `E402`.\n\n## Why split from #2452\n#2452 currently mixes inventory extraction, decomposition, and broad remediation. This child issue isolates the first execution-safe source-edit wave so it can be planned and approved independently of the outlier-file decision.\n\n## Required pre-source artifact\nBefore source cleanup begins, this issue owns creating a durable checked-in inventory artifact in the nested `worldenergydata` repo:\n- `worldenergydata/docs/ci/flake8-inventory-2026-04-23.md`\n\nThat report must include the exact command provenance, grouped rule-family counts, the `_cross_database_data.py` outlier classification, representative non-outlier files, and a note that `/tmp/2452-flake8.txt` was only transient draft evidence.\n\n## Evidence\n- Parent issue: #2452\n- Fresh inventory input: `/tmp/2452-flake8.txt` (transient draft evidence only; this issue must materialize the durable report above)\n- High-volume manageable families outside the outlier include:\n  - `F401`: 280\n  - `E501`: 421\n  - `E402`: 36\n- Representative module areas:\n  - `src/worldenergydata/bsee/analysis/**`\n  - `src/worldenergydata/bsee/reports/**`\n  - `src/worldenergydata/bsee/data/_legacy/**`\n  - `src/worldenergydata/bsee/paleowells/cli.py`\n\n## Deliverable\nA bounded first implementation slice that first checks in the grouped inventory report, then fixes selected `F401`/`E501`/`E402` clusters, re-runs the exact CI flake8 command, and documents any remaining residual debt explicitly for #2469.\n\n## Scope notes\nThis child issue excludes:\n- `_cross_database_data.py` pathological blocker (handled separately in #2467)\n- runtime test failures (already split to #2451)\n- higher-risk semantic rule families like `E722` / `F841` unless independently justified later\n","labels":[],"state":"OPEN","title":"follow-up(ci): worldenergydata flake8 first-wave safe-rule cleanup — F401/E501/E402 clusters outside the pathological blocker"}
+```
+
+### #2469
+```json
+{"body":"## Summary\nThe umbrella issue #2452 needs one explicit owner for the end-to-end requirement that the full CI `Lint` job becomes green on `worldenergydata` main after the remediation waves land. This issue is that owner.\n\n## Why split from #2452\n#2452 is acting as the umbrella/decomposition issue. #2467 isolates the pathological `_cross_database_data.py` blocker, and #2468 owns durable inventory plus the first execution-safe non-outlier cleanup wave. A separate final gate issue is needed so the full `Lint` job green condition has a single, reviewable owner instead of being implied across multiple children.\n\n## Evidence\n- Parent umbrella: #2452\n- Child blocker issue: #2467\n- Child first-wave / durable-inventory issue: #2468\n- CI lint sequence from `worldenergydata/.github/workflows/ci.yml`:\n  - `uv run black --check --diff src/ tests/`\n  - `uv run isort --check-only --diff src/ tests/`\n  - `uv run flake8 src/ --max-line-length=100 --extend-ignore=E203,W503 --exclude=__pycache__,*.egg-info,.git,.venv`\n- Local 2026-04-23 check shows Black/isort are currently red on main in addition to flake8 debt; final proof must cover all three gates.\n\n## Deliverable\nA final verification-and-fix issue that closes only when Black, isort, the exact CI flake8 command, and the GitHub Actions `Lint` job are green on `worldenergydata` main after upstream remediation waves land.\n\n## Scope notes\nThis issue owns:\n- final exact-command verification for all `Lint` job gates\n- any narrow residual fixes needed after #2467 and #2468, including current Black/isort drift if still present\n- the explicit proof bundle for turning `#2452` green/closable\n- GitHub Actions evidence that the `Lint` job is green on `main`, not merely on an arbitrary branch\n\nIt does not own the initial large flake8 remediation clusters themselves.\n","labels":[],"state":"OPEN","title":"follow-up(ci): worldenergydata flake8 final green-gate verification after remediation waves"}
+```
+
+## Plan under review
+
+```markdown
 # Plan for #2452: worldenergydata lint job still fails after #2433 — flake8 debt first-wave remediation
 
-> **Status:** plan-review — r4 adversarial review complete; ready for user approval review, not implementation
+> **Status:** draft — not approval-ready; latest available provider artifacts still block approval
 > **Complexity:** T3
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2452
-> **Review artifacts:** scripts/review/results/2026-04-23-plan-2452-claude.md (UNAVAILABLE/quota text only) | scripts/review/results/2026-04-23-plan-2452-codex.md (r4 MINOR) | scripts/review/results/2026-04-23-plan-2452-gemini.md (r4 APPROVE)
+> **Review artifacts:** scripts/review/results/2026-04-23-plan-2452-claude.md (UNAVAILABLE/quota text only) | scripts/review/results/2026-04-23-plan-2452-codex.md (r3 REQUEST_CHANGES) | scripts/review/results/2026-04-23-plan-2452-gemini.md (r3 APPROVE with MINOR findings)
 
 ---
 
@@ -112,8 +169,8 @@ No relevant wiki pages — this is repository hygiene and CI debt rather than do
 | Child issue — safe-rule first wave | GitHub issue #2468 |
 | Child issue — final green-gate owner | GitHub issue #2469 |
 | Plan review — Claude | `scripts/review/results/2026-04-23-plan-2452-claude.md` — unavailable/quota text only, not a substantive approval artifact |
-| Plan review — Codex | `scripts/review/results/2026-04-23-plan-2452-codex.md` — r4 MINOR |
-| Plan review — Gemini | `scripts/review/results/2026-04-23-plan-2452-gemini.md` — r4 APPROVE |
+| Plan review — Codex | `scripts/review/results/2026-04-23-plan-2452-codex.md` — r3 REQUEST_CHANGES |
+| Plan review — Gemini | `scripts/review/results/2026-04-23-plan-2452-gemini.md` — r3 APPROVE with MINOR findings |
 
 ---
 
@@ -170,7 +227,7 @@ Because #2452 is now the umbrella/decomposition issue, executable source-level T
 - [ ] The first execution-safe non-outlier remediation slice and durable inventory generation are owned by #2468
 - [ ] The exact end-to-end `flake8 src/` command and full GitHub Actions `Lint` job green proof on `worldenergydata` main are owned by #2469, including current Black/isort drift resolution or verification
 - [ ] #2452 explicitly remains the umbrella/decomposition issue until #2467, #2468, and #2469 are complete and the main-branch `Lint` job is green
-- [x] Review artifacts are posted under `scripts/review/results/`; latest substantive reviews are Codex r4 MINOR and Gemini r4 APPROVE
+- [ ] Review artifacts are posted under `scripts/review/results/` and latest substantive reviews no longer return REQUEST_CHANGES/REJECT/MAJOR
 
 ---
 
@@ -179,10 +236,10 @@ Because #2452 is now the umbrella/decomposition issue, executable source-level T
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | UNAVAILABLE | local artifact currently contains only `You've hit your limit · resets 2pm (America/Chicago)`; it is not a substantive review |
-| Codex | r4 MINOR | r4 found one non-blocking cleanup item: live #2452 issue body still had stale Black/isort-green wording; this was resolved by a superseding status comment before plan-review labeling |
-| Gemini | r4 APPROVE | r4 found no remaining findings and judged the plan structurally sound and ready for user approval |
+| Codex | r3 REQUEST_CHANGES | r3 found two remaining MAJOR blockers: stale Black/isort-green premise and review-state inconsistency; also noted local/uncommitted artifacts were not visible on `workspace-hub` main |
+| Gemini | r3 APPROVE with MINOR findings | r3 accepted the child-role cleanup but found minor drift in Artifact Map review status, active-gap wording, and non-standard issue rows in Files to Change |
 
-**Overall result:** PLAN-REVIEW READY — latest substantive r4 artifacts are Codex MINOR and Gemini APPROVE. Codex's only remaining finding was stale live #2452 body wording; that has been handled by a superseding GitHub comment before applying `status:plan-review`. This plan is ready for user approval review, not implementation.
+**Overall result:** NOT APPROVAL-READY — latest substantive r3 artifacts are Codex REQUEST_CHANGES and Gemini APPROVE-with-MINOR. The current text has been tightened again to disclose live Black/isort drift, make #2469 own full `Lint` proof on main, sync review-state labels, and mark plan/review artifacts as local/uncommitted. A fresh r4 adversarial re-review is still required before `status:plan-review`.
 
 Revisions made based on review:
 - split the pathological blocker into child issue #2467
@@ -191,7 +248,6 @@ Revisions made based on review:
 - rewrote the deliverable and acceptance criteria so #2452 stays open until #2467, #2468, and #2469 complete and the exact lint job is green
 - r2 cleanup: changed pseudocode from "create/split" to "link existing", assigned durable inventory to #2468, tightened #2467/#2469 closure invariants to current-lint-gate and main-branch proof
 - r3 cleanup: disclosed current Black/isort RED state, made #2469 own full `Lint` job proof on main, synchronized review-artifact statuses, and marked plan/review artifacts as local/uncommitted until deliberately landed
-- r4 review: Codex returned MINOR and Gemini APPROVE; the only cleanup was stale live #2452 body wording, handled by superseding GitHub comment before plan-review labeling
 
 ---
 
@@ -208,3 +264,5 @@ Revisions made based on review:
 ## Complexity: T3
 
 **T3** — the issue currently mixes inventory extraction, debt classification, and multi-module remediation across a nested repository. The fresh inventory shows one pathological single-file blocker plus broad residual debt across many module families, so safe execution requires decomposition and explicit sequencing rather than a single flat patch wave.
+
+```

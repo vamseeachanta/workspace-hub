@@ -1,10 +1,53 @@
+# Adversarial plan r4 re-review request: workspace-hub issue #2452
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise. Focus only on what is wrong, missing, stale, contradictory, or risky. Return APPROVE only after affirmatively verifying the supplied plan/context.
+
+Review objective: decide whether the current #2452 parent plan can move from draft toward status:plan-review for user approval, or still needs revision.
+
+Specific checks:
+1. Are review artifact statuses internally consistent enough for a local draft packet?
+2. Does the plan accurately disclose Black/isort drift while keeping #2452 focused on flake8-debt decomposition and assigning full Lint proof to #2469?
+3. Are local/uncommitted plan artifacts labeled truthfully enough for a dirty root checkout?
+4. Do #2467/#2468/#2469 live bodies align with the parent plan closure semantics?
+5. Is any remaining finding blocker-level, or only minor cleanup?
+
+Required output:
+Verdict: APPROVE | MINOR | MAJOR | REQUEST_CHANGES | REJECT
+
+Findings:
+- [SEVERITY] finding with cited evidence
+
+Checks performed:
+- list exactly what you checked
+
+Context summary:
+- #2452 is open, no status labels.
+- No .planning/plan-approved/2452.md marker exists.
+- Child issue bodies have been edited so #2467 cannot weaken lint gate as parent-satisfying path, #2468 owns durable inventory, #2469 owns full Black/isort/flake8 Lint proof on main.
+- Current local plan is uncommitted draft in dirty workspace-hub root.
+- r3 Codex returned REQUEST_CHANGES for stale Black/isort premise + review-state inconsistency + local/uncommitted artifact clarity.
+- r3 Gemini returned APPROVE with MINOR findings for artifact map/status drift, active-gap wording, and non-standard issue rows.
+
+Plan under review is the current file:
+/mnt/local-analysis/workspace-hub/docs/plans/2026-04-23-issue-2452-worldenergydata-flake8-debt-first-wave.md
+
+Child issue bodies to verify:
+- #2467: https://github.com/vamseeachanta/workspace-hub/issues/2467
+- #2468: https://github.com/vamseeachanta/workspace-hub/issues/2468
+- #2469: https://github.com/vamseeachanta/workspace-hub/issues/2469
+
+Use the local file if tools are available; otherwise judge from the inline plan text below.
+
+--- PLAN TEXT ---
+
+
 # Plan for #2452: worldenergydata lint job still fails after #2433 — flake8 debt first-wave remediation
 
-> **Status:** plan-review — r4 adversarial review complete; ready for user approval review, not implementation
+> **Status:** draft — not approval-ready; latest available provider artifacts still block approval
 > **Complexity:** T3
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2452
-> **Review artifacts:** scripts/review/results/2026-04-23-plan-2452-claude.md (UNAVAILABLE/quota text only) | scripts/review/results/2026-04-23-plan-2452-codex.md (r4 MINOR) | scripts/review/results/2026-04-23-plan-2452-gemini.md (r4 APPROVE)
+> **Review artifacts:** scripts/review/results/2026-04-23-plan-2452-claude.md (UNAVAILABLE/quota text only) | scripts/review/results/2026-04-23-plan-2452-codex.md (r3 REQUEST_CHANGES) | scripts/review/results/2026-04-23-plan-2452-gemini.md (r3 APPROVE with MINOR findings)
 
 ---
 
@@ -112,8 +155,8 @@ No relevant wiki pages — this is repository hygiene and CI debt rather than do
 | Child issue — safe-rule first wave | GitHub issue #2468 |
 | Child issue — final green-gate owner | GitHub issue #2469 |
 | Plan review — Claude | `scripts/review/results/2026-04-23-plan-2452-claude.md` — unavailable/quota text only, not a substantive approval artifact |
-| Plan review — Codex | `scripts/review/results/2026-04-23-plan-2452-codex.md` — r4 MINOR |
-| Plan review — Gemini | `scripts/review/results/2026-04-23-plan-2452-gemini.md` — r4 APPROVE |
+| Plan review — Codex | `scripts/review/results/2026-04-23-plan-2452-codex.md` — r3 REQUEST_CHANGES |
+| Plan review — Gemini | `scripts/review/results/2026-04-23-plan-2452-gemini.md` — r3 APPROVE with MINOR findings |
 
 ---
 
@@ -170,7 +213,7 @@ Because #2452 is now the umbrella/decomposition issue, executable source-level T
 - [ ] The first execution-safe non-outlier remediation slice and durable inventory generation are owned by #2468
 - [ ] The exact end-to-end `flake8 src/` command and full GitHub Actions `Lint` job green proof on `worldenergydata` main are owned by #2469, including current Black/isort drift resolution or verification
 - [ ] #2452 explicitly remains the umbrella/decomposition issue until #2467, #2468, and #2469 are complete and the main-branch `Lint` job is green
-- [x] Review artifacts are posted under `scripts/review/results/`; latest substantive reviews are Codex r4 MINOR and Gemini r4 APPROVE
+- [ ] Review artifacts are posted under `scripts/review/results/` and latest substantive reviews no longer return REQUEST_CHANGES/REJECT/MAJOR
 
 ---
 
@@ -179,10 +222,10 @@ Because #2452 is now the umbrella/decomposition issue, executable source-level T
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | UNAVAILABLE | local artifact currently contains only `You've hit your limit · resets 2pm (America/Chicago)`; it is not a substantive review |
-| Codex | r4 MINOR | r4 found one non-blocking cleanup item: live #2452 issue body still had stale Black/isort-green wording; this was resolved by a superseding status comment before plan-review labeling |
-| Gemini | r4 APPROVE | r4 found no remaining findings and judged the plan structurally sound and ready for user approval |
+| Codex | r3 REQUEST_CHANGES | r3 found two remaining MAJOR blockers: stale Black/isort-green premise and review-state inconsistency; also noted local/uncommitted artifacts were not visible on `workspace-hub` main |
+| Gemini | r3 APPROVE with MINOR findings | r3 accepted the child-role cleanup but found minor drift in Artifact Map review status, active-gap wording, and non-standard issue rows in Files to Change |
 
-**Overall result:** PLAN-REVIEW READY — latest substantive r4 artifacts are Codex MINOR and Gemini APPROVE. Codex's only remaining finding was stale live #2452 body wording; that has been handled by a superseding GitHub comment before applying `status:plan-review`. This plan is ready for user approval review, not implementation.
+**Overall result:** NOT APPROVAL-READY — latest substantive r3 artifacts are Codex REQUEST_CHANGES and Gemini APPROVE-with-MINOR. The current text has been tightened again to disclose live Black/isort drift, make #2469 own full `Lint` proof on main, sync review-state labels, and mark plan/review artifacts as local/uncommitted. A fresh r4 adversarial re-review is still required before `status:plan-review`.
 
 Revisions made based on review:
 - split the pathological blocker into child issue #2467
@@ -191,7 +234,6 @@ Revisions made based on review:
 - rewrote the deliverable and acceptance criteria so #2452 stays open until #2467, #2468, and #2469 complete and the exact lint job is green
 - r2 cleanup: changed pseudocode from "create/split" to "link existing", assigned durable inventory to #2468, tightened #2467/#2469 closure invariants to current-lint-gate and main-branch proof
 - r3 cleanup: disclosed current Black/isort RED state, made #2469 own full `Lint` job proof on main, synchronized review-artifact statuses, and marked plan/review artifacts as local/uncommitted until deliberately landed
-- r4 review: Codex returned MINOR and Gemini APPROVE; the only cleanup was stale live #2452 body wording, handled by superseding GitHub comment before plan-review labeling
 
 ---
 

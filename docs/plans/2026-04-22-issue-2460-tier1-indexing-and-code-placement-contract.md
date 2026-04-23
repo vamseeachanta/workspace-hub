@@ -1,6 +1,6 @@
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
-> **Status:** plan-approved (live GitHub issue label shows `status:plan-approved`; local approval marker restored during 2026-04-23 approval-state sync after r16 returned Claude MINOR, Codex MINOR, Gemini APPROVE)
+> **Status:** completed (GitHub issue #2460 closed as completed on 2026-04-23 after approved-plan implementation landed on `main`; approval marker remains as historical approval evidence)
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2460

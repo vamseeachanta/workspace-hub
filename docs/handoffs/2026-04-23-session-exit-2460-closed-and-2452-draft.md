@@ -1,4 +1,4 @@
-# Session exit handoff — 2026-04-23 — #2460 closed, #2452 remains draft
+# Session exit handoff — 2026-04-23 — #2460 closed, #2452 plan-review
 
 ## Completed in this stream
 
@@ -7,7 +7,8 @@
 3. Implemented the approved #2460 contract/checklist scope with TDD-first validation.
 4. Ran targeted validation and adversarial review.
 5. Posted closeout evidence and closed #2460 as completed.
-6. Left #2452 as draft/revision work; do not treat it as approved or executable.
+6. Synced #2460 local plan/index status from `plan-approved` to `completed` after closeout.
+7. Advanced #2452 from draft/revision state to `status:plan-review` after r4 Codex/Gemini review convergence; it is ready for user approval review, not implementation.
 
 ## Durable #2460 artifacts
 
@@ -17,12 +18,13 @@
 - `8e7b65a3d` — `docs(standards): add tier1 indexing contract for #2460`
 - `461e03f23` — `docs(#2460): lock tier1 registry path`
 - `b489cd291` — `chore(sync): auto-sync 2026-04-23`
+- `e924f2629` — `docs(handoff): add 2460 closeout exit handoff`
 
-Latest remote evidence at exit:
+Latest remote evidence before the final plan-review sync commit:
 
 - Branch: `integration/runbook-main-compatible`
 - Remote: `origin/integration/runbook-main-compatible`
-- Remote head: `b489cd291e7e6c0effd8f95d13cf3c0d4dfd210f`
+- Remote head observed: `e924f2629158758a9e844b5abce8deb418e60cab`
 
 ### Files landed for #2460
 
@@ -62,7 +64,8 @@ Latest remote evidence at exit:
 - Live GitHub issue state: `CLOSED` / `COMPLETED`
 - Live GitHub labels include `status:plan-approved`
 - Local approval marker `.planning/plan-approved/2460.md`: exists
-- `docs/plans/README.md` row: `plan-approved`
+- `docs/plans/README.md` row: `completed`
+- Plan header: `completed`
 - Latest review artifacts:
   - Claude: `MINOR`
   - Codex: `MINOR`
@@ -73,19 +76,25 @@ Interpretation: #2460 is complete. Do not reopen or reimplement it. Follow-throu
 ### #2452
 
 - Live GitHub issue state: `OPEN`
-- Live GitHub labels at exit: `priority:medium`, `cat:infrastructure`
-- No live planning status label was present in the checked output.
-- `docs/plans/README.md` row: `draft`
+- Live GitHub labels at exit: `priority:medium`, `cat:infrastructure`, `status:plan-review`
+- Local approval marker `.planning/plan-approved/2452.md`: missing, as expected; the issue is not user-approved.
+- `docs/plans/README.md` row: `plan-review`
+- Plan header: `plan-review — r4 adversarial review complete; ready for user approval review, not implementation`
 - Latest visible review artifacts:
-  - Codex: `REQUEST_CHANGES`
+  - Claude: unavailable/quota text only
+  - Codex: `MINOR`
   - Gemini: `APPROVE`
-  - Fresh r4 local prompt/log files exist but are still untracked at exit.
+- r4 raw/prompt artifacts captured locally:
+  - `.planning/quick/review-2452-r4-codex.out`
+  - `.planning/quick/review-2452-r4-gemini.out`
+  - `.planning/quick/review-2452-r4-hermes-prompt.md`
+  - `.planning/quick/review-2452-r4-prompt.md`
 
-Interpretation: #2452 remains draft/revision work, not approval or implementation work. Next session should either finish the r4 review loop or deliberately clean/commit/drop the local r4 artifacts after inspecting them.
+Interpretation: #2452 is in plan-review awaiting user approval. Do not implement it until the user approves and `.planning/plan-approved/2452.md` is created/committed in the execution checkout.
 
 ## Remaining dirty working-tree surfaces at exit
 
-Current dirty surfaces are not part of closed #2460. They are mostly provider-scorecard/report churn plus #2452 review artifacts:
+After the final #2460/#2452 planning-sync commit, remaining dirty surfaces should be provider-scorecard/report churn plus unrelated staging state only:
 
 - Modified provider config/report files:
   - `config/ai-tools/agent-quota-latest.json`
@@ -99,19 +108,17 @@ Current dirty surfaces are not part of closed #2460. They are mostly provider-sc
   - `docs/reports/provider-work-queue.md`
 - Dirty nested/staging surface:
   - `.planning/quick/issue-2408-staging`
-- Untracked #2452 r4 review artifacts:
-  - `.planning/quick/review-2452-r4-codex.out`
-  - `.planning/quick/review-2452-r4-prompt.md`
+- New unrelated handoff/artifact files may appear if background/autosync processes keep writing; re-run `git status --short --branch` before acting.
 
 ## Recommended restart sequence
 
 1. Start with `git status --short --branch` and confirm the branch is still `integration/runbook-main-compatible`.
 2. Do not redo #2460; it is closed and landed.
 3. Decide whether provider scorecard/report churn should be committed as a separate provider-utilization refresh or discarded.
-4. For #2452, inspect the r4 prompt/log artifacts and decide whether to continue plan revision or clean stale local review attempts.
-5. Keep #2452 in planning/revision mode until review evidence converges and the user explicitly approves the plan.
+4. Treat #2452 as `status:plan-review`; wait for user approval before creating `.planning/plan-approved/2452.md` or implementing.
+5. If user approves #2452, create/commit the approval marker first, then execute with TDD in a clean or narrowed worktree.
 6. Continue the tier-1 follow-through stream via child issues #2461-#2465, not by expanding #2460.
 
 ## Exit note
 
-This session is safe to pause. The #2460 implementation and closeout are durable on the remote branch. The checkout is still dirty, but the remaining dirty surfaces are unrelated to #2460 and should be handled as a separate planning/provider-scorecard cleanup pass.
+This session is safe to pause. #2460 is durable and closed. #2452 is advanced to plan-review but not approved. The checkout is still dirty from provider-scorecard/report churn and unrelated staging surfaces; handle those separately from the #2460/#2452 planning state.
