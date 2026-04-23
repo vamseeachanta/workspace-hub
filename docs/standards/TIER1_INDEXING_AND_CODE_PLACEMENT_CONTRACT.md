@@ -29,11 +29,11 @@ Each tier-1 repository must expose the following trusted routing surfaces. Optio
 | `README.md` | Required human overview and top-level navigation | `docs/standards/FILE_STRUCTURE_TAXONOMY.md` is the authority for baseline top-level repo anatomy |
 | `docs/README.md` | Required documentation discovery surface where a repo has docs | Curated docs navigation |
 | `docs/maps/<repo>-operator-map.md` | Required operator map for repo-specific work routing | Repo-specific curated routing surface |
-| one canonical machine-readable registry per repo | Required registry for tools/agents to resolve canonical modules, domains, or surfaces | Machine-readable routing contract |
+| `docs/registry/module-routing.yaml` | Required canonical machine-readable registry for tools/agents to resolve canonical modules, domains, or surfaces | Machine-readable routing contract |
 | code/tests/docs routing table | Required mapping from code areas to test and documentation surfaces | Issue planning and implementation routing |
 | source-hygiene rules | Required rules for backup/cache/runtime/generated noise and legacy references | Prevents stale or noisy surfaces from becoming active authority |
 
-The phrase one canonical machine-readable registry per repo is intentional: a repo may choose the concrete filename, but it must identify exactly one registry as canonical for routing purposes.
+The canonical machine-readable registry path is fixed as `docs/registry/module-routing.yaml` for every tier-1 repo. A child repo may add supplementary registries, but `docs/registry/module-routing.yaml` is the only canonical routing registry for this contract unless this standard is amended.
 
 ## Code / Tests / Docs Routing Table
 
@@ -68,7 +68,7 @@ Curated routing surfaces are the authority for issue work. They are intentionall
 - `README.md`
 - `docs/README.md`
 - `docs/maps/<repo>-operator-map.md`
-- the repo's one canonical machine-readable registry per repo
+- the repo's canonical `docs/registry/module-routing.yaml` registry
 - the repo's code/tests/docs routing table
 
 Raw inventory surfaces are discovery aids only. They can be broad, generated, stale, or noisy. `docs/CONTENT_INDEX.md` is a raw inventory example and must not be treated as a trusted issue-routing index by itself.
