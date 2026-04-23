@@ -1,28 +1,48 @@
-# Adversarial Plan Review Request: Issue #2460 (rerun after r9 patch)
+# Adversarial Review Request: Issue #2460 local plan rerun
+
 You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
-Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
-Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
-Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
-If you find no problems, explicitly state what you checked.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, stale, ambiguous, or risky.
+Return APPROVE only after affirmatively verifying each correctness-critical claim. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, or quoted claim.
+Treat cited sources as assertions to verify, not facts to trust.
+If you find no issues, explicitly list what you checked.
 
-Review focus:
-1. stale-reference guard enrollment for new docs is explicit and testable
-2. DATA_PLACEMENT thresholds are explicitly preserved
-3. docs/plans/README row is verification-only, not pending work
-4. review/state narrative remains current enough
-5. overall approval readiness
+## Review target
+- Repo: /mnt/local-analysis/workspace-hub
+- Issue: #2460
+- Plan under review: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+- This is a local rerun before any further GitHub posting.
+- Live GitHub currently shows `status:plan-approved` for #2460, but the local draft should be treated as authoritative for this review because the approval state is known drift from an older revision and there is no local `.planning/plan-approved/2460.md` marker.
 
-Required output format:
+## What changed since the last failing rerun
+1. The plan header/status was reset from approval language to local draft state.
+2. The plan now treats the `docs/plans/README.md` #2460 row as already-satisfied verification state, not pending implementation work.
+3. The plan now preserves the exact `>= 10 MB` / `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md` and requires citing that file as the binding threshold authority.
+4. The existing stale-reference guard language still requires explicit extension of `tests/docs/test_banned_stale_references.py` by adding both new `docs/standards/` files to `STRICT_FILES`.
+
+## Required checks
+1. Verify whether the plan now unambiguously requires adding BOTH of these paths to `STRICT_FILES` in `tests/docs/test_banned_stale_references.py`:
+   - `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
+   - `docs/standards/TIER1_INDEXING_CHECKLIST.md`
+2. Verify whether the plan preserves the exact operational thresholds from `docs/standards/DATA_PLACEMENT.md` and explicitly treats that file as the binding threshold authority.
+3. Verify whether the plan correctly treats the existing `docs/plans/README.md` #2460 row as verification-only state rather than pending implementation work.
+4. Check for any remaining stale review-state narrative, missing validation strength, missing required backlinks to upstream standards, or other approval-blocking defects.
+5. Check the actual current `tests/docs/test_banned_stale_references.py` content; it currently has a hardcoded `STRICT_FILES` list, so the plan must make enrollment concrete enough for implementation and tests.
+
+## Expected output format
 Verdict: APPROVE | MINOR | MAJOR
-Findings:
-- [severity] <concise title> — <why it matters, citing file path/section/claim>
-Checks performed:
-- <what you verified>
 
-Plan under review:
+## Findings
+- [severity] finding with citation and why it matters
+
+## Checks performed
+- bullet list of concrete checks performed
+
+## Raw plan text
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
-> **Status:** draft
+> **Status:** draft (local rerun in progress; do not treat stale live GitHub approval state as authoritative for this draft revision)
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2460
@@ -37,7 +57,7 @@ Plan under review:
 - Found: `tests/docs/test_banned_stale_references.py` — existing docs validation pattern already enforces banned references on curated documentation files; #2460 can follow the same style for a new contract doc.
 - Found: `tests/docs/test_staleness_scanner.py` and `tests/quality/test_check_doc_drift.py` — repo already uses doc-staleness and doc-drift tests, so this issue should define the contract in documentation and add focused regression tests rather than inventing a new enforcement framework here.
 - Gap: no existing tier-1 indexing contract file exists under `docs/standards/`.
-- Gap: no existing targeted plan file for #2460 exists under `docs/plans/`.
+- Gap (pre-draft baseline): no existing targeted plan file for #2460 existed under `docs/plans/` before this draft was created.
 
 ### Standards
 
@@ -57,7 +77,7 @@ Plan under review:
 - `docs/standards/CONTROL_PLANE_CONTRACT.md` — establishes `AGENTS.md` as canonical repo entry point and provider adapters as supporting surfaces.
 - `docs/standards/FILE_STRUCTURE_TAXONOMY.md` — defines expected starter-repo top-level anatomy (`AGENTS.md`, `README.md`, `src/`, `tests/`, `docs/`, `pyproject.toml`).
 - `docs/standards/DATA_PLACEMENT.md` — gives the durable rule for what belongs in repo versus on `/mnt/ace/data/`, which must be incorporated into tier-1 routing guidance.
-- `docs/plans/README.md` — confirms no #2460 plan is currently indexed and provides the canonical plan-index format to update.
+- `docs/plans/README.md` — confirms the #2460 plan row already exists locally and must be preserved as an already-satisfied indexed artifact rather than treated as new implementation work.
 - Related issues #2397 and #1962 — broader repo-organization and tier-1 refactor umbrellas; #2460 is intentionally narrower and should define the routing/index contract that child issues #2461-#2465 implement.
 
 ### Gaps identified
@@ -204,9 +224,10 @@ function define_tier1_indexing_and_code_placement_contract():
     define data-placement scope explicitly:
         universal rule = repo-vs-bulk-artifact-store
         bulk-artifact-store = non-repo storage target for large, generated, or fast-growing artifacts
-        contract must preserve the operational thresholds from DATA_PLACEMENT.md:
+        contract must preserve the exact operational thresholds from DATA_PLACEMENT.md:
             if a directory will exceed either 10 MB total or 1000 files,
             it belongs in bulk-artifact-store rather than the repo
+        contract must explicitly cite `docs/standards/DATA_PLACEMENT.md` as the binding threshold authority for that rule
         workspace-hub example = `/mnt/ace/data` as the current implementation example
 
 function define_tier1_checklist(contract):
@@ -239,7 +260,8 @@ function validate_contract_docs():
     assert contract doc names every required surface independently
     assert contract doc names the repo-vs-bulk-artifact-store rule explicitly
     assert contract doc defines bulk-artifact-store in concrete terms
-    assert contract doc preserves the 10 MB / 1000 files thresholds from DATA_PLACEMENT.md
+    assert contract doc preserves the exact 10 MB / 1000 files thresholds from DATA_PLACEMENT.md
+    assert contract doc explicitly cites `docs/standards/DATA_PLACEMENT.md` as the binding threshold authority for those exact thresholds
     assert contract doc cites `/mnt/ace/data` only as the current workspace-hub example
     assert contract doc contains the exact daily freshness wording requirement
     assert contract doc requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`
@@ -280,7 +302,7 @@ function validate_contract_docs():
 | `test_tier1_contract_requires_machine_readable_registry` | contract explicitly requires one canonical machine-readable registry per repo | contract text | requirement present |
 | `test_tier1_contract_requires_code_tests_docs_routing_table` | contract explicitly requires code/tests/docs routing-table semantics | contract text | requirement present |
 | `test_tier1_contract_requires_source_hygiene_rules` | contract explicitly requires source-hygiene rules for backup/cache/runtime noise | contract text | requirement present |
-| `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` | contract explicitly defines the universal repo-vs-bulk-artifact-store placement rule, carries forward the `>= 10 MB` or `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md`, and treats `/mnt/ace/data` only as the current workspace-hub example | contract text | universal rule, exact thresholds, and example language present |
+| `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` | contract explicitly defines the universal repo-vs-bulk-artifact-store placement rule, carries forward the exact `>= 10 MB` or `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md`, explicitly cites that standard as the binding threshold authority, and treats `/mnt/ace/data` only as the current workspace-hub example | contract text | universal rule, exact thresholds, binding-threshold citation, and example language present |
 | `test_tier1_contract_defines_curated_vs_raw_inventory_boundary` | contract distinguishes curated routing surfaces from raw inventory surfaces | contract text | boundary rule present |
 | `test_tier1_contract_defines_legacy_retirement_rule` | contract explicitly defines allowed migration language, bans active legacy product-doc routing authority, and enumerates multiple concrete banned-pattern signatures rather than a token example | contract text | allowed rule, banned rule, and multiple concrete signatures present |
 | `test_tier1_contract_links_child_issues` | contract doc references #2461-#2465 as implementation follow-through | contract text | all child issue numbers present |
@@ -301,7 +323,7 @@ function validate_contract_docs():
 
 - [ ] `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` exists and defines the minimum trusted routing/index surfaces for tier-1 repos
 - [ ] contract explicitly and independently requires: `AGENTS.md`, `README.md`, `docs/README.md`, repo operator maps, one canonical machine-readable registry per repo, code/tests/docs routing tables, and source-hygiene rules
-- [ ] contract explicitly encodes the universal repo-vs-bulk-artifact-store placement rule, carries forward the `>= 10 MB` or `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md`, and documents `/mnt/ace/data` only as the current workspace-hub implementation example
+- [ ] contract explicitly encodes the universal repo-vs-bulk-artifact-store placement rule, carries forward the exact `>= 10 MB` or `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md`, explicitly cites that standard as the binding threshold authority, and documents `/mnt/ace/data` only as the current workspace-hub implementation example
 - [ ] contract explicitly separates curated routing surfaces from raw inventory surfaces
 - [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language, banning their use as active routing authority, and enumerating multiple concrete banned-pattern signatures
 - [ ] contract includes a daily freshness rule, contains the exact phrase `daily freshness review`, includes either `every 24 hours` or `once per day`, requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`, and explicitly names `#2465` as the follow-through issue
@@ -322,24 +344,23 @@ function validate_contract_docs():
 
 ## Adversarial Review Summary
 
-Historical review results for the immediately previous draft revision are recorded below for traceability.
-They are superseded by the latest rerun wave for the current draft.
+Latest completed rerun for the previous local draft revision is recorded below for traceability.
+This section has been refreshed after the current local patch wave so the remaining blocker list matches the draft that should be reviewed next.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Stale-reference guard coverage for the new `docs/standards/*` docs is still not strong enough in the current plan; DATA_PLACEMENT threshold carry-forward remains too weakly enforced; several secondary validation concerns remain |
-| Codex | MAJOR | Review-artifact/state narrative is stale relative to the latest branch reality; the plan still carries already-satisfied `docs/plans/README.md` work and remains not approval-ready |
-| Gemini | APPROVE | Gemini judged the latest draft approval-ready and accepted the stale-reference, threshold, scope, and TDD-sequencing improvements |
+| Claude | MAJOR | Wanted unambiguous `STRICT_FILES` enrollment for both new `docs/standards/*` docs, stronger threshold authority carry-forward, and tighter validation/backlink language |
+| Codex | MAJOR | Flagged stale review/state narrative and stale treatment of the already-existing `docs/plans/README.md` #2460 row as if it were new work |
+| Gemini | APPROVE | Judged the prior draft approval-ready |
 
-**Overall result:** FAIL — the latest rerun still contains MAJOR findings from Claude and Codex, so the plan is not approval-ready for GitHub `status:plan-review`.
+**Overall result for prior rerun:** FAIL — the last completed rerun still contained MAJOR findings from Claude and Codex.
 
-Revisions still required before GitHub posting:
-- Tighten the plan so the new contract/checklist docs are unambiguously brought under the curated stale-reference guard with no ambiguity about `STRICT_FILES` enrollment.
-- Remove or re-scope stale work items in the plan that are already satisfied on branch (notably the #2460 `docs/plans/README.md` row work).
-- Strengthen the plan’s carry-forward of `docs/standards/DATA_PLACEMENT.md` thresholds so the operational rule is not reduced to looser prose.
-- Refresh the review/state narrative so the plan no longer points to outdated branch-state assumptions or stale artifact expectations.
+Changes now applied locally before the next rerun:
+- The plan now treats the #2460 `docs/plans/README.md` row as already-satisfied verification state rather than pending implementation work.
+- The DATA_PLACEMENT requirement now preserves the exact `>= 10 MB` / `>= 1000 files` thresholds and explicitly requires citing `docs/standards/DATA_PLACEMENT.md` as the binding threshold authority.
+- The plan header/status narrative has been reset to local draft state so stale approval drift is not described as authoritative for this draft revision.
 
-Current draft state: NOT approval-ready. Do not post to GitHub or add `status:plan-review` until a fresh rerun clears all MAJOR findings.
+Current draft state: pending fresh rerun. Do not post to GitHub or add `status:plan-review` unless the next three-provider adversarial review wave clears all MAJOR findings.
 
 ---
 

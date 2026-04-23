@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-23T09:21:48.179544Z
+Generated: 2026-04-23T13:20:10.487101Z
 Apply mode: False
 Threshold: 0.9
 
@@ -19,8 +19,8 @@ Threshold: 0.9
 | #2322 chore(rules): promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
-| #2455 feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2456 feat(canonical-spec): extend OrcaFlex semantic proof to lazy/steep-wave riser variants | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2194 feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2195 test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2199 feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2200 test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2202 feat(operations): extend readiness bundle schema for additional canonical check evidence contracts | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |

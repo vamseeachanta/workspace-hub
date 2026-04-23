@@ -1,6 +1,6 @@
 # Provider utilization weekly report
 
-Generated: 2026-04-23T09:21:03.657871Z
+Generated: 2026-04-23T13:20:08.173457Z
 Current week: 2026-W17
 Total monthly spend tracked: $260.0/mo
 
@@ -10,7 +10,7 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
-| claude | 138 | 6928 | 17.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| claude | 139 | 7172 | 17.6% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
 | codex | 157 | 1993 | 0.1% | quota | 0.1% | week_messages/weekly_limit from history.jsonl |
 | gemini | 13 | 90 | 2.9% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
 | hermes | 329 | 41206 | 100.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |

@@ -1,0 +1,43 @@
+I have enough evidence. Formulating the adversarial review now.
+
+`★ Insight ─────────────────────────────────────`
+A plan that claims its own approval state is "stale" is itself an approval-blocker — because the truth of that claim is load-bearing for every downstream process gate. Here the plan's framing and the on-disk reality have swapped: `.planning/plan-approved/2460.md` actually exists (dated 2026-04-23T08:22:45Z), and `scripts/review/results/2026-04-23-plan-2460-claude.md` already supersedes the 2026-04-22 review triad that the plan header cites.
+`─────────────────────────────────────────────────`
+
+---
+
+Verdict: MAJOR
+
+## Findings
+
+- [MAJOR] Plan header says "do not treat stale live GitHub approval state as authoritative" (line 3), but `.planning/plan-approved/2460.md` already exists locally with content `Approved by: user / Approval source: current Hermes chat instruction / Approved at: 2026-04-23T08:22:45Z / Issue: #2460`. The review request's own premise ("there is no local `.planning/plan-approved/2460.md` marker") is contradicted by the filesystem. The plan's framing conflates "approval is stale" (false — it's dated today) with "plan has been revised since approval" (the actual state). Why it matters: this is the exact self-description-drift class that blocks approval, because a downstream implementer reading the header will assume the approval constraint does not apply.
+
+- [MAJOR] "Review artifacts" header at line 7 cites only the 2026-04-22 triad, but a newer `scripts/review/results/2026-04-23-plan-2460-claude.md` (8 637 bytes, titled "Claude Terminal-1 Self-Review — Issue #2460 (post-r6 tightening pass)", verdict MINOR) already exists in the same sink and treats most of the r7-wave findings as RESOLVED. The plan's "Adversarial Review Summary" (lines 305–321) then narrates "FAIL — the last completed rerun still contained MAJOR findings from Claude and Codex" without surfacing the newer artifact. This is structurally identical to the "Review artifact trail is stale relative to the latest narrative" MAJOR that Codex already flagged in `scripts/review/results/2026-04-22-plan-2460-codex.md` — unresolved carry-forward of a prior MAJOR.
+
+- [MAJOR] `docs/plans/README.md` row 299 reports `2460 | ... | 2026-04-22 | draft | T2 | ...`, but both the local approval marker (dated 2026-04-23) and live GitHub `status:plan-approved` label put the plan past draft. The plan's prescription for this row is only "confirm the existing #2460 row remains correct" (line 247; AC line 296). Treating a row that is demonstrably out of sync with the approval marker as "verification-only / no additive work" means the index will continue to lie after implementation lands. The plan needs a concrete rule for whether/when the status column gets bumped, not just a "verify correctness" hand-wave.
+
+- [MINOR] The "exact thresholds" contract is internally ambiguous about which DATA_PLACEMENT wording is normative. `docs/standards/DATA_PLACEMENT.md` uses `>= 10 MB` / `>= 1000 files` in the column header (lines 9–10) but the bolded summary rule (line 15) drops the `>=`: "If a directory will exceed either threshold (10 MB or 1000 files), it belongs on the ace drive." The plan's test row (line 263) and AC (line 284) demand the `>=` form verbatim. An implementer who copies the bolded rule would satisfy the source standard but fail the plan's exactness assertion. Pick one canonical representation and bind it.
+
+- [MINOR] TDD row `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` asserts a "binding-threshold citation" to DATA_PLACEMENT.md is "present" but never specifies the substring or structural landmark that satisfies the assertion. A loose citation like "see DATA_PLACEMENT.md for details" would substring-match the filename but does not establish the standard as **binding authority**. Specify the required phrasing (e.g., the string "binding threshold authority: `docs/standards/DATA_PLACEMENT.md`") so the test is deterministic.
+
+- [MINOR] The Adversarial Review Summary table presents Gemini r7 APPROVE alongside Claude+Codex r7 MAJOR on the same commit without noting the asymmetry. Gemini's own artifact (`2026-04-22-plan-2460-gemini.md`) literally says "Verified previous semantic blockers were addressed sufficiently for Gemini's approval bar" — i.e., a softer bar than the other two providers. Presenting the three verdicts as equal-weight inputs to an overall FAIL without that provenance detail is exactly the review-state-narrative defect Codex flagged before and the user asked this review to re-check.
+
+- [MINOR] The plan's Evidence block (lines 70–121) quotes FILE_STRUCTURE_TAXONOMY, a scorecard "weaknesses" paragraph, and `build_content_index.py` — but never quotes the actual DATA_PLACEMENT.md threshold lines the plan now wants treated as "exact / binding." Given threshold exactness is now a correctness-critical contract, the evidence block should carry the source lines so a reviewer does not need to cross-fetch the source file.
+
+## Checks performed
+
+- Read the full plan `docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md` and mapped every review requirement to its pseudocode / Files-to-Change / TDD / Acceptance-Criteria location.
+- Verified `tests/docs/test_banned_stale_references.py` currently hardcodes `STRICT_FILES` (lines 7–22), confirmed neither new `docs/standards/TIER1_*` doc is enrolled today, and confirmed the plan requires BOTH to be added (pseudocode 203–206, Files-to-Change line 246, TDD row 275, AC line 294, validation assertion 232) — UNAMBIGUOUS.
+- Verified `docs/standards/DATA_PLACEMENT.md` actually contains `>= 10 MB` and `>= 1000 files` (lines 9–10, 15); compared against plan's verbatim thresholds in pseudocode 185–188, AC 284, TDD 263.
+- Verified the plan prescribes `docs/standards/DATA_PLACEMENT.md` as the binding threshold authority (pseudocode 188, AC 284, validation 222).
+- Verified `docs/plans/README.md` row 299 exists and carries status "draft" while a live approval marker `.planning/plan-approved/2460.md` dated 2026-04-23T08:22:45Z exists.
+- Verified `docs/BUSINESS_BRAIN.md` lines 19–22 enumerate exactly the four tier-1 repos the plan scopes (workspace-hub, digitalmodel, assetutilities, aceengineer-website).
+- Verified the negative-authority sentence (`MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority`) is bound identically in both contract (pseudocode 181, TDD 269, AC 288) and checklist (TDD 272, AC 291).
+- Verified child-issue linkage `#2461`–`#2465` is enforced via TDD rows 266–267 and AC 287, 290, 296.
+- Verified freshness-cadence exact wording requirements are consistent across pseudocode 174–178, TDD 268, AC 287.
+- Verified TDD test-first sequencing is load-bearing (pseudocode 201–212, TDD row 274, AC 293).
+- Listed `scripts/review/results/` and found FOUR artifacts for #2460: the 2026-04-22 triad (Claude MAJOR, Codex MAJOR, Gemini APPROVE) cited in the plan header, PLUS a newer `2026-04-23-plan-2460-claude.md` (MINOR, self-review) NOT cited in the plan.
+- Inspected the newer 2026-04-23 Claude artifact and confirmed it declares several r6/r7 MAJORs as RESOLVED — contradicting the plan's summary that the prior rerun "still contained MAJOR findings from Claude and Codex" without noting the intervening re-assessment.
+- Inspected the 2026-04-22 Codex artifact and confirmed its MAJOR finding "Review artifact trail is stale relative to the latest narrative" has the same shape as my finding #2 above.
+
+Summary: the plan's prescriptive content (what the contract/checklist/tests must say) is tight on the five points the review request asked about. The plan's self-description of its own approval and review state is not — and that is the same defect class the user explicitly said to re-hunt.

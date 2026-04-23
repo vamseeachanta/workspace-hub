@@ -1,0 +1,23 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Verdict: MAJOR
+
+## Findings
+
+- [MAJOR] Conflation of Plan Approval Prerequisites with Execution Phase Instructions
+  - **Citation:** Section `Pseudocode` -> `function implement_with_tdd():` -> `because the current live approval surfaces are already stale for this draft revision, require governance cleanup on the real approval gates before this draft can ever be treated as approved...`
+  - **Citation:** Section `Acceptance Criteria` -> `- [ ] because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup ... before this draft can be treated as approved`
+  - **Why it matters:** The Pseudocode and Acceptance Criteria define what the agent must do *during the execution phase*, which only occurs *after* the plan has been approved. Instructing the executing agent to enforce rules "before this draft can ever be treated as approved" creates a logical paradox. The executing agent cannot perform pre-approval cleanup during the post-approval implementation phase. This will cause the executing agent to fail or behave unpredictably because the instructions contradict its lifecycle state. Approval drift mitigation must be stated as a status blocker for the reviewer, not as a task for the implementer.
+
+- [MAJOR] TDD Tests Target the Plan Document Instead of Implementation Deliverables
+  - **Citation:** Section `TDD Test List` contains tests like `test_tdd_sequence_requires_tests_fail_before_doc_edits`, `test_plans_readme_2460_row_is_verified_not_readded`, and `test_real_approval_gate_drift_is_remediated_before_any_future_approval` which have `Expected input: plan text`.
+  - **Why it matters:** TDD tests (which will be implemented in `tests/docs/test_tier1_indexing_contract.py`) are for verifying the functional deliverables (the contract and checklist docs). Instructing the execution agent to write Python tests that parse the markdown of the *plan itself* (`docs/plans/2026-04-22-issue-2460...md`) to verify meta-process rules (like whether the plan contained an "explicit approval-gate cleanup rule") is a categorical error. The plan is the specification, not the system under test for the end-product regression suite.
+
+- [MAJOR] `Files to Change` Table Includes Plan-Review Conditional Logic
+  - **Citation:** Section `Files to Change` -> `| Governance cleanup before any future approval reuse | GitHub issue #2460 labels + .planning/plan-approved/2460.md | if fresh external review still returns MAJOR, remove/supersede/revision-bind stale approval surfaces before the draft can be treated as approved again |`
+  - **Why it matters:** The `Files to Change` table is a strict directive for the execution agent on what files to modify during implementation. The execution agent does not run during the review phase, so evaluating "if fresh external review still returns MAJOR" is impossible for it. This conflates the human/bot review process with the execution phase file-modification instructions, rendering the plan ambiguous and unexecutable as written.
+
+## Checks performed
+- Checked whether approval-gate drift mitigation is now strong enough and self-contained enough (it is overly integrated into the execution phase, causing paradoxes).
+- Verified whether any remaining approval-blocking defects still exist, specifically regarding execution ambiguity and test design.
+- Evaluated Pseudocode, Acceptance Criteria, TDD List, and Files to Change for logical consistency with the post-approval execution phase.

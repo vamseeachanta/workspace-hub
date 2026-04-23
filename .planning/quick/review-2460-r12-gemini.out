@@ -1,0 +1,10 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Verdict: APPROVE
+
+## Checks performed
+- Verified approval-gate drift mitigation in Pseudocode and Acceptance Criteria is now present-tense and unconditionally requires cleanup rather than waiting for a future rerun (`"because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup..."`).
+- Verified the revision-state narrative in the `Status` header cleanly separates the stale approval surfaces of an older revision from the current draft's pending status, removing previous contradictions.
+- Verified the allowed revision-binding path explicitly requires naming `"the exact approved plan artifact + review-artifact set"` in both Pseudocode and Acceptance Criteria.
+- Verified `Review artifacts` references explicitly point to `r11` results.
+- Verified no remaining contradictions exist between the `Status` header, `Review artifacts` section, and the `Adversarial Review Summary`.

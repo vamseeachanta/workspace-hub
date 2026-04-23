@@ -1,3 +1,50 @@
+OpenAI Codex v0.123.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dbb2b-7f73-73a3-ae34-8f2279254b0a
+--------
+user
+# Adversarial Review Request: Issue #2460 local plan rerun (r13)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, stale, ambiguous, or risky.
+Return APPROVE only after affirmatively verifying each correctness-critical claim. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, or quoted claim.
+Treat cited sources as assertions to verify, not facts to trust.
+If you find no issues, explicitly list what you checked.
+
+## Review target
+- Repo: /mnt/local-analysis/workspace-hub
+- Issue: #2460
+- Plan under review: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+- This is a local rerun before any further GitHub posting.
+
+## What changed since r12
+1. The evidence block now includes self-contained live-label evidence, local marker contents, local timestamp evidence, and explicit latest r11 review-artifact outcomes.
+2. The revision-binding remediation now requires an immutable mechanism with exact file path, commit SHA or SHA256 hash, exact review-artifact paths + verdicts, and approval-storage surface.
+3. Acceptance/TDD/validation were synchronized to that immutable binding language.
+
+## Required checks
+1. Verify whether approval-gate drift mitigation is now strong enough and self-contained enough.
+2. Verify whether any remaining approval-blocking defects still exist.
+
+## Expected output format
+Verdict: APPROVE | MINOR | MAJOR
+
+## Findings
+- [severity] finding with citation and why it matters
+
+## Checks performed
+- bullet list of concrete checks performed
+
+## Raw plan text
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft (latest completed 2026-04-23 reruns still show this draft lineage is not approval-ready; live GitHub `status:plan-approved` and local `.planning/plan-approved/2460.md` are stale approval surfaces for an older revision, and the current draft remains pending a clean external rerun)
@@ -269,6 +316,18 @@ function implement_with_tdd():
     then edit `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
     then edit `docs/standards/TIER1_INDEXING_CHECKLIST.md`
     then edit `docs/README.md`
+    because the current live approval surfaces are already stale for this draft revision,
+    require governance cleanup on the real approval gates before this draft can ever be treated as approved:
+        remove or supersede live GitHub `status:plan-approved`
+        remove or supersede local `.planning/plan-approved/2460.md`
+        or replace both with an explicit immutable revision-bound approval mechanism that names:
+            exact approved plan file path
+            exact approved plan git commit SHA or SHA256 content hash
+            exact approved review-artifact paths plus provider verdicts
+            exact approval-storage surface used (GitHub comment and/or local marker)
+    verify/update `docs/plans/README.md` row `#2460` without re-adding it:
+        if local row is already accurate, preserve it as verification-only state
+        if stale approval drift is still present, keep the row aligned to the effective non-approved state rather than treating stale approval signals as authoritative
     rerun targeted tests until green
 
 function validate_contract_docs():
@@ -293,6 +352,7 @@ function validate_contract_docs():
     assert checklist repeats the exact negative-authority sentence for tier-1 indexing scorecards in its preamble
     assert checklist records repo_name, operator_map_status, registry_status, data_placement_status, and evidence_source for each repo using the allowed status values
     assert `tests/docs/test_banned_stale_references.py` includes both new `docs/standards/` files in `STRICT_FILES`
+    assert docs/plans/README.md contains the #2460 index row and the plan treats that row as verification-only when accurate, but requires state-sync rather than hand-waving if stale approval drift is still present
 ```
 
 ---
@@ -304,8 +364,10 @@ function validate_contract_docs():
 | Create | `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` | canonical written contract for trusted routing surfaces, code-placement boundary, required-vs-optional inventory, freshness rule, and validation rules |
 | Create | `docs/standards/TIER1_INDEXING_CHECKLIST.md` | per-repo checklist derived from the contract for workspace-hub, digitalmodel, assetutilities, and aceengineer-website |
 | Modify | `docs/README.md` | add the new contract/checklist to a trusted discovery surface |
-| Create | `tests/docs/test_tier1_indexing_contract.py` | regression tests for each required routing surface, exact DATA_PLACEMENT thresholds, daily-freshness linkage, explicit legacy-retirement rule, and checklist coverage |
+| Create | `tests/docs/test_tier1_indexing_contract.py` | regression tests for each required routing surface, exact DATA_PLACEMENT thresholds, daily-freshness linkage, explicit legacy-retirement rule, checklist/index coverage, and branch-state assertions |
 | Modify | `tests/docs/test_banned_stale_references.py` | explicitly enroll the new `docs/standards/` contract/checklist docs in `STRICT_FILES` so the curated stale-reference guard covers them |
+| Verify/Update | `docs/plans/README.md` | preserve the existing #2460 row without re-adding it, keep it aligned to the effective non-approved state when stale approval drift is still present, and treat README-row sync as secondary to the real approval gates (`status:plan-approved` label + `.planning/plan-approved/2460.md`) |
+| Governance cleanup before any future approval reuse | GitHub issue `#2460` labels + `.planning/plan-approved/2460.md` | if fresh external review still returns MAJOR, remove/supersede/revision-bind stale approval surfaces before the draft can be treated as approved again |
 
 ---
 
@@ -334,6 +396,8 @@ function validate_contract_docs():
 | `test_tier1_checklist_records_surface_status_per_repo` | checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values drawn from `present | partial | missing | not-applicable` | checklist text | exact field names and allowed status values present |
 | `test_tdd_sequence_requires_tests_fail_before_doc_edits` | implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first, extending `tests/docs/test_banned_stale_references.py`, and confirming both targeted tests fail before editing any contract/checklist/discovery docs | plan text | explicit test-first sequence present |
 | `test_new_contract_docs_are_under_curated_stale_reference_guard` | `tests/docs/test_banned_stale_references.py` must add `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` and `docs/standards/TIER1_INDEXING_CHECKLIST.md` to `STRICT_FILES` | test text | both standards docs present in strict guard enrollment |
+| `test_plans_readme_2460_row_is_verified_not_readded` | plan treats the existing #2460 row in `docs/plans/README.md` as verification-only state when accurate, keeps it aligned to the effective non-approved state when stale approval drift is present, and explicitly treats README-row sync as secondary to the real approval gates | plan text | verification wording present, additive wording absent, drift-sync rule present, and README/gate precedence explicit |
+| `test_real_approval_gate_drift_is_remediated_before_any_future_approval` | because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup on the real approval gates by removing, superseding, or revision-binding the live GitHub `status:plan-approved` label and local `.planning/plan-approved/2460.md` marker with an immutable mechanism naming the exact approved plan file path, exact approved plan git commit SHA or SHA256 hash, exact approved review-artifact paths + verdicts, and exact approval-storage surface before this draft can be treated as approved | plan text | explicit approval-gate cleanup rule present |
 
 ---
 
@@ -354,17 +418,10 @@ function validate_contract_docs():
 - [ ] implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first, extending `tests/docs/test_banned_stale_references.py`, and confirming both targeted tests fail before editing any contract/checklist/discovery docs
 - [ ] `tests/docs/test_banned_stale_references.py` is updated so `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` and `docs/standards/TIER1_INDEXING_CHECKLIST.md` are added to `STRICT_FILES` and therefore remain under the curated-doc stale-reference guard
 - [ ] `docs/README.md` links the new contract/checklist from a trusted discovery surface
+- [ ] the existing #2460 row in `docs/plans/README.md` is verified as correct when accurate, kept aligned to the effective non-approved state when stale approval drift is present, and explicitly treated as secondary to the real approval gates rather than as the primary remediation surface
 - [ ] targeted regression tests pass: `uv run pytest tests/docs/test_tier1_indexing_contract.py -v`
 - [ ] existing curated-doc stale-reference guard still passes: `uv run pytest tests/docs/test_banned_stale_references.py -v`
 - [ ] review artifacts are posted to `scripts/review/results/`
-
-## Governance Precondition Before Any Future Approval Reuse
-
-This is a review/governance requirement, not a TDD execution test.
-
-- [ ] Because the current live approval surfaces are already stale for this draft revision, GitHub `status:plan-approved` and local `.planning/plan-approved/2460.md` must be removed, superseded, or revision-bound before this draft can be treated as approved again.
-- [ ] If revision-binding is used instead of removal, it must be immutable and name: exact approved plan file path, exact approved plan git commit SHA or SHA256 hash, exact approved review-artifact paths plus provider verdicts, and the exact approval-storage surface used.
-- [ ] README-row sync is secondary hygiene only; it must not be treated as the primary remediation surface for stale approval drift.
 
 ---
 
@@ -411,3 +468,110 @@ Current draft state: pending fresh rerun. Do not post to GitHub or add `status:p
 ## Complexity: T2
 
 **T2** — documentation contract plus a derived checklist, one trusted discovery-surface update, and focused regression tests. This is broader than a trivial docs edit but does not require multi-module implementation or deep runtime changes.
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the current #2460 plan as an approval gate, with focus on whether the revised approval-drift remediation is actually enforceable and self-contained. I’m checking the cited plan, the latest review artifacts, and the source files it claims as authority before deciding whether any blocker still stands.
+codex
+The shell wrapper is failing before command execution in this sandbox, so I’m falling back to direct file inspection through simpler non-login commands. Next I’m verifying the plan’s quoted evidence against the actual files and review artifacts.
+codex
+The shell path is unusable here, so I’m switching to MCP resources if available. I only need read access for this review; the goal is still to verify the plan’s claims against the repository state rather than trust the plan text.
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+I have a workable fallback through the Node REPL, which can read the local files directly without the broken shell wrapper. I’m using that to inspect the plan, approval marker, standards, and prior review artifacts line-for-line.
+exec
+js_repl in /mnt/local-analysis/workspace-hub
+2026-04-23T16:28:45.001575Z ERROR codex_core::tools::router: error=js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":1661879,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+ exited 1 in 60ms:
+js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":1661879,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+web search: 
+web search: site:github.com vamseeachanta workspace-hub 2460 tier1 indexing code placement contract
+codex
+I can’t trust the raw plan alone, so I’m checking whether the repository and issue are reachable through GitHub tooling. If they are, I can verify at least the tracked files and current issue state even though the local shell is blocked.
+mcp: codex_apps/github_search_repositories started
+mcp: codex_apps/github_search_repositories (completed)
+mcp: codex_apps/github_search_issues started
+mcp: codex_apps/github_search_issues (completed)
+mcp: codex_apps/github_fetch_issue started
+mcp: codex_apps/github_fetch_issue (completed)
+codex
+The GitHub connector can see the repository and confirms the live label state the plan cites. I’m now verifying whether the referenced standards, README row, stale-review artifact, and approval marker content actually match the plan’s evidence and whether the remediation language still leaves a loophole.
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (failed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (failed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (completed)
+mcp: codex_apps/github_fetch_file started
+mcp: codex_apps/github_fetch_file (failed)
+codex
+The tracked `main` branch still shows older plan content and does not have the new r11 Codex/Gemini artifacts or the approval marker, so this rerun is clearly against local-only state. I’m checking the issue discussion next to see whether the approval-drift problem is also visible in the public issue thread or only in the local draft.
+mcp: codex_apps/github_fetch_issue_comments started
+mcp: codex_apps/github_fetch_issue_comments (completed)
+mcp: codex_apps/github_fetch_pr_comments started
+mcp: codex_apps/github_fetch_pr_comments (failed)
+codex
+Verdict: MAJOR
+
+## Findings
+- [major] The proposed “immutable” approval binding is still mutable for the review basis because it records only the approved plan’s `commit SHA or SHA256 hash`, but for review artifacts it requires only `exact review-artifact paths + verdicts` rather than immutable identities for those artifacts. A later overwrite of the same file path would preserve compliance while changing what was actually approved. Citation: plan `implement_with_tdd()` remediation block, `validate_contract_docs()` approval-gate assert, TDD row `test_real_approval_gate_drift_is_remediated_before_any_future_approval`, and the matching Acceptance Criteria bullet all stop at “exact review-artifact paths + verdicts.” For a drift-mitigation plan, path-only binding is not strong enough.
+- [major] The remediation still does not define a single authoritative approval surface or precedence rule. The plan allows approval storage to be `GitHub comment and/or local marker`, which leaves split-brain state possible again across label, comment, and marker surfaces. Citation: the same remediation language in `implement_with_tdd()`, `validate_contract_docs()`, TDD, and Acceptance Criteria says the mechanism must name the `exact approval-storage surface used (GitHub comment and/or local marker)`. That is weaker than choosing one canonical source of truth and declaring the others derivative or ignored. This matters because the existing governance still describes approval as a multi-surface process: `docs/plans/README.md` Step 6 says user approval swaps the GitHub label and creates `.planning/plan-approved/NNN.md`, while `config/agents/behavior-contract.yaml` only says `implementation_requires.plan_approved: true`. Without explicit precedence, the same drift class can recur.
+
+## Checks performed
+- Verified live GitHub state for issue `#2460`: issue is open and still carries `status:plan-approved`.
+- Verified the child issues `#2461`–`#2465` exist and match the plan’s scope claims.
+- Verified `docs/standards/CONTROL_PLANE_CONTRACT.md` contains the quoted `AGENTS.md` entry-point language.
+- Verified `docs/standards/FILE_STRUCTURE_TAXONOMY.md` contains the quoted starter-repo structure block.
+- Verified `docs/standards/DATA_PLACEMENT.md` contains the exact `>= 10 MB` / `>= 1000 files` thresholds and `/mnt/ace/data/` wording.
+- Verified `docs/BUSINESS_BRAIN.md` lists the four Tier-1 repos claimed by the plan.
+- Verified `config/agents/behavior-contract.yaml` contains `implementation_requires.plan_approved: true` and the 3-reviewer cross-review requirement.
+- Verified `.claude/rules/README.md` and `.claude/rules/patterns.md` support the plan’s harness-source claims.
+- Verified `tests/docs/test_banned_stale_references.py` currently defines `STRICT_FILES`.
+- Verified `docs/plans/README.md` currently has a `#2460` row and still documents approval as label + marker creation.
+- Compared the tracked `main` branch plan file to the supplied raw local plan text and treated the raw local text as the actual review target for this rerun.
+tokens used
+97,601
+Verdict: MAJOR
+
+## Findings
+- [major] The proposed “immutable” approval binding is still mutable for the review basis because it records only the approved plan’s `commit SHA or SHA256 hash`, but for review artifacts it requires only `exact review-artifact paths + verdicts` rather than immutable identities for those artifacts. A later overwrite of the same file path would preserve compliance while changing what was actually approved. Citation: plan `implement_with_tdd()` remediation block, `validate_contract_docs()` approval-gate assert, TDD row `test_real_approval_gate_drift_is_remediated_before_any_future_approval`, and the matching Acceptance Criteria bullet all stop at “exact review-artifact paths + verdicts.” For a drift-mitigation plan, path-only binding is not strong enough.
+- [major] The remediation still does not define a single authoritative approval surface or precedence rule. The plan allows approval storage to be `GitHub comment and/or local marker`, which leaves split-brain state possible again across label, comment, and marker surfaces. Citation: the same remediation language in `implement_with_tdd()`, `validate_contract_docs()`, TDD, and Acceptance Criteria says the mechanism must name the `exact approval-storage surface used (GitHub comment and/or local marker)`. That is weaker than choosing one canonical source of truth and declaring the others derivative or ignored. This matters because the existing governance still describes approval as a multi-surface process: `docs/plans/README.md` Step 6 says user approval swaps the GitHub label and creates `.planning/plan-approved/NNN.md`, while `config/agents/behavior-contract.yaml` only says `implementation_requires.plan_approved: true`. Without explicit precedence, the same drift class can recur.
+
+## Checks performed
+- Verified live GitHub state for issue `#2460`: issue is open and still carries `status:plan-approved`.
+- Verified the child issues `#2461`–`#2465` exist and match the plan’s scope claims.
+- Verified `docs/standards/CONTROL_PLANE_CONTRACT.md` contains the quoted `AGENTS.md` entry-point language.
+- Verified `docs/standards/FILE_STRUCTURE_TAXONOMY.md` contains the quoted starter-repo structure block.
+- Verified `docs/standards/DATA_PLACEMENT.md` contains the exact `>= 10 MB` / `>= 1000 files` thresholds and `/mnt/ace/data/` wording.
+- Verified `docs/BUSINESS_BRAIN.md` lists the four Tier-1 repos claimed by the plan.
+- Verified `config/agents/behavior-contract.yaml` contains `implementation_requires.plan_approved: true` and the 3-reviewer cross-review requirement.
+- Verified `.claude/rules/README.md` and `.claude/rules/patterns.md` support the plan’s harness-source claims.
+- Verified `tests/docs/test_banned_stale_references.py` currently defines `STRICT_FILES`.
+- Verified `docs/plans/README.md` currently has a `#2460` row and still documents approval as label + marker creation.
+- Compared the tracked `main` branch plan file to the supplied raw local plan text and treated the raw local text as the actual review target for this rerun.
