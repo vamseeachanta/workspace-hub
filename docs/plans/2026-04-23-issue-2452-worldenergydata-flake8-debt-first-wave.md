@@ -1,6 +1,6 @@
 # Plan for #2452: worldenergydata lint job still fails after #2433 — flake8 debt first-wave remediation
 
-> **Status:** plan-review — r4 adversarial review complete; ready for user approval review, not implementation
+> **Status:** plan-review — ready for user approval review; not approved for implementation
 > **Complexity:** T3
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2452

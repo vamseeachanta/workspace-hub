@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-23T17:20:07.314411Z",
+  "generated_at": "2026-04-23T21:20:08.714697Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 12,
+  "eligible_count": 15,
   "applied": [],
   "candidates": [
     {
@@ -36,6 +36,72 @@
       "eligible": true
     },
     {
+      "number": 2455,
+      "title": "feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2455",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "machine:dev-primary",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-23T20:29:56Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2456,
+      "title": "feat(canonical-spec): extend OrcaFlex semantic proof to lazy/steep-wave riser variants",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2456",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "machine:dev-primary",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-23T20:30:43Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 2462,
       "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462",
@@ -50,6 +116,39 @@
       "updatedAt": "2026-04-23T08:37:56Z",
       "execution_ready": true,
       "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2457,
+      "title": "feat(canonical-spec): promote L03 ship benchmark to explicit OrcaWave roundtrip proof case",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2457",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:engineering",
+        "domain:marine",
+        "machine:dev-primary",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-23T20:31:27Z",
+      "execution_ready": true,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
@@ -232,40 +331,6 @@
       "eligible": true
     },
     {
-      "number": 2460,
-      "title": "feat(repo-organization): tier-1 indexing and code-placement contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2460",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:documentation",
-        "cat:harness",
-        "domain:repo-organization",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-23T08:37:55Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 2461,
       "title": "chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2461",
@@ -398,6 +463,40 @@
       "eligible": true
     },
     {
+      "number": 2403,
+      "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:data-pipeline",
+        "cat:research",
+        "domain:document-intelligence",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-23T15:29:28Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
@@ -422,36 +521,6 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2195,
-      "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T09:53:14Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
@@ -495,67 +564,6 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-11T10:30:28Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2202,
-      "title": "feat(operations): extend readiness bundle schema for additional canonical check evidence contracts",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2202",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T13:22:23Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2215,
-      "title": "feat(analysis): add migration-debt trend snapshots to provider-session audit",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2215",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:harness",
-        "domain:reporting"
-      ],
-      "updatedAt": "2026-04-11T13:59:27Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
