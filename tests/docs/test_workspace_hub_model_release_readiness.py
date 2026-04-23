@@ -54,6 +54,14 @@ def test_package_states_tier1_and_normalization_out_of_scope():
 
 # Contract ---------------------------------------------------------------------
 
+def test_contract_declares_read_budget_for_standards_docs():
+    for path in (CONTRACT, PLAYBOOK):
+        head = "\n".join(_read(path).splitlines()[:8])
+        assert re.search(r"read budget", head, flags=re.IGNORECASE), (
+            f"{path.name} must declare a read-budget note in its opening block"
+        )
+
+
 def test_contract_covers_context_budget_and_truncation_safety():
     text = _read(CONTRACT)
     assert re.search(r"Context[- ]Budget", text, flags=re.IGNORECASE), (
@@ -167,3 +175,17 @@ def test_audited_thin_adapters_remain_within_line_limits():
             f"{path.name} has {len(lines)} lines (limit {limit} from "
             ".claude/rules/coding-style.md). Migrate excess to a skill or doc."
         )
+
+
+def test_playbook_does_not_overclaim_codex_tree_line_limit():
+    text = _read(PLAYBOOK)
+    assert "not to the entire `.codex/**` tree" in text, (
+        "playbook must explicitly avoid claiming the 20-line policy applies to the full .codex tree"
+    )
+
+
+def test_contract_does_not_overclaim_codex_tree_line_limit():
+    text = _read(CONTRACT)
+    assert "`.codex/` tree" in text and "20-line harness-file cap" in text, (
+        "contract must explicitly distinguish .codex tree topology from the harness-file line cap"
+    )

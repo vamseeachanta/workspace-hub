@@ -3,6 +3,7 @@
 > Concrete, ordered steps for adopting a new provider/model release (Claude, Codex, or Gemini) **inside workspace-hub only**.
 >
 > Version: 1.0.0 | Date: 2026-04-20 | Issue: #2408 | Contract: [MODEL_RELEASE_READINESS_CONTRACT.md](MODEL_RELEASE_READINESS_CONTRACT.md)
+> Read budget: procedural companion — opening block identifies scope/contract; numbered steps carry the executable content.
 
 This playbook enacts the five readiness dimensions defined in the contract. It does **not** cover tier-1 downstream repos or provider-entrypoint-shape normalization — those belong to sibling issues.
 
@@ -44,7 +45,7 @@ These drifts require a plan, tests, and explicit cross-review per [AI_REVIEW_ROU
 2. Update provider config under `config/agents/<provider>/` — **not** the root entry surfaces. Only the provider directory owns model identity.
 3. Run `bash scripts/_core/sync-agent-configs.sh --dry-run` to preview sync actions from `config/agents/` templates into the machine-local provider targets (`$HOME/.claude/settings.json`, `$HOME/.codex/config.toml`, etc.). Fix divergence by editing the `config/agents/` templates and re-running without `--dry-run`; never hand-edit the machine-local targets.
 4. Audit `CLAUDE.md`, `GEMINI.md`, and `.codex/**` for stale references (old model IDs, removed flags). Apply a single-site edit per stale reference; do not rewrite the adapter.
-5. Verify each adapter file remains within the line limit in `.claude/rules/coding-style.md`. If an upgrade would push an adapter past the limit, migrate the new content to a skill or `docs/` doc first.
+5. Verify each harness-capped adapter file remains within the line limit in `.claude/rules/coding-style.md`. Today that policy applies to `CLAUDE.md` and `GEMINI.md` (and other named harness files), not to the entire `.codex/**` tree. If an upgrade would push a harness-capped adapter past the limit, migrate the new content to a skill or `docs/` doc first.
 6. Run `uv run pytest tests/docs/test_workspace_hub_model_release_readiness.py -v` and the adapter-specific suite under `scripts/_core/tests/`.
 7. Open the PR with the issue number, a "provider-owned" label, and explicit "no repo-owned changes" note in the description.
 

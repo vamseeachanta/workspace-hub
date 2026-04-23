@@ -3,6 +3,7 @@
 > Standing contract for how **workspace-hub** adapts its control-plane surfaces when a provider (Claude, Codex, Gemini) ships a new model or CLI version.
 >
 > Version: 1.0.0 | Date: 2026-04-20 | Issue: #2408
+> Read budget: standards doc — identity/version/scope must fit in the opening block; normative requirements must appear before motivational prose.
 >
 > Supersedes no prior document. Extends — does **not** replace — [CONTROL_PLANE_CONTRACT.md](CONTROL_PLANE_CONTRACT.md); where this document is silent, the control-plane contract governs.
 
@@ -24,14 +25,16 @@ A change is **workspace-hub-only** when it modifies only files under the paths l
 
 ## Canonical Anchors
 
-Discoverability is routed through two anchors. Everything else is evidence.
+Both canonical anchors MUST point to any new readiness artifact. Everything else is supporting evidence.
+
+Discoverability is routed through two anchors.
 
 | Anchor | Role |
 |---|---|
 | [`AGENTS.md`](../../AGENTS.md) | workflow contract + readiness pointer |
 | [`CONTROL_PLANE_CONTRACT.md`](CONTROL_PLANE_CONTRACT.md) | adapter topology + readiness cross-reference |
 
-Provider-entry surfaces (`CLAUDE.md`, `GEMINI.md`, `.codex/**`) are **audit-only** for this contract. They remain thin adapters governed by the line limit in [`.claude/rules/coding-style.md`](../../.claude/rules/coding-style.md) ("Agent Harness Files") and MUST NOT be grown to host readiness content.
+Provider-entry surfaces (`CLAUDE.md`, `GEMINI.md`, and the `.codex/` adapter tree) are **audit-only** for this contract. `CLAUDE.md` and `GEMINI.md` remain thin adapters governed by the line limit in [`.claude/rules/coding-style.md`](../../.claude/rules/coding-style.md) ("Agent Harness Files"). The `.codex/` tree is governed by the control-plane topology and should remain adapter/thin-entry oriented, but it is **not** subject to the 20-line harness-file cap unless a specific file is separately covered by policy. Readiness content MUST NOT be moved into provider adapters as a workaround for missing canonical anchors.
 
 ---
 
@@ -41,10 +44,10 @@ A workspace-hub change is **model-release-ready** only if it explicitly addresse
 
 ### 1. Context-Budget Awareness
 
-Every control-plane artifact MUST state its intended read budget (in lines, tokens, or fractions of the consumer's context window) and MUST fit within it.
+Every **readiness standard or playbook introduced under this contract** MUST state its intended read budget (in lines, tokens, or fractions of the consumer's context window) and MUST fit within it. This requirement applies to the contract/playbook surfaces in `docs/standards/`; it does not retroactively impose a read-budget declaration on every pre-existing control-plane artifact named in the scope section.
 
 - `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` — hard limit 20 lines (sourced from `.claude/rules/coding-style.md`).
-- Standards under `docs/standards/` — no hard line cap, but each MUST open with a two-line scope/version block so truncated loads still carry identity.
+- Standards under `docs/standards/` — no hard line cap, but each MUST open with a compact identity block carrying title/version/scope (and read-budget note where required) so truncated loads still carry identity.
 - New provider-entry content MUST go to a referenced skill or doc before it grows an adapter past its budget.
 
 ### 2. Truncation-Safe Artifact Design
@@ -52,7 +55,7 @@ Every control-plane artifact MUST state its intended read budget (in lines, toke
 Artifacts MUST assume the reader may receive only the first N kilobytes.
 
 - Identity (title, version, scope, cross-references) MUST appear in the first 500 bytes.
-- Normative requirements MUST precede motivational prose.
+- Normative requirements inside a section MUST precede explanatory or motivational prose for that same section.
 - Tables/bullets precede paragraphs; prose is a last-resort encoding.
 - Anchors (`[Name](path)`) MUST use repo-relative paths so they survive copy-paste.
 
@@ -81,14 +84,14 @@ A new control-plane artifact is "discovered" only if both canonical anchors poin
 
 ## Required Operational Surfaces
 
+Any readiness change that affects provider configuration MUST route through `scripts/_core/sync-agent-configs.sh` rather than hand-edits.
+
 These files exist today and remain the operational truth for config drift:
 
 - `config/agents/claude/settings.json`
 - `config/agents/codex/config.toml`
 - `config/agents/gemini/settings.json`
 - `scripts/_core/sync-agent-configs.sh`
-
-Any readiness change that affects provider configuration MUST route through `scripts/_core/sync-agent-configs.sh` rather than hand-edits.
 
 ---
 
