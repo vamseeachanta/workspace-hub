@@ -9,13 +9,20 @@
 | What | Location | Notes |
 |------|----------|-------|
 | **Corpus index** | `data/document-index/index.jsonl` | 1,033,933 records with domain, target_repos, status, org, readability |
-| **Registry stats** | `data/document-index/registry.yaml` | Counts by source (6), domain (12), repo (11) |
+| **Registry stats** | `data/document-index/registry.yaml` | Counts by source (6), domain (14), repo (11) |
 | **Summaries** | `data/document-index/summaries/<sha>.json` | Per-document LLM/deterministic classification (639K done) |
-| **Standards ledger** | `data/document-index/standards-transfer-ledger.yaml` | 425 standards → repo/module mapping. Done: 29, Gap: 235 |
+| **Standards ledger** | `data/document-index/standards-transfer-ledger.yaml` | 436 live ledger entries across 13 domains. Status split: 435 `done`, 1 `implemented` |
 | **Mounted sources** | `data/document-index/mounted-source-registry.yaml` | 7 source definitions (local, remote, API) |
 | **Checkpoints** | `data/document-index/checkpoints/` | Batch progress snapshots |
 | **Data audit** | `data/document-index/data-audit-report.md` | Phase B enrichment status |
-| **Maturity tracking** | `data/document-index/resource-intelligence-maturity.yaml` | Docs read, calculations implemented, follow-up WRKs |
+| **Maturity tracking** | `data/document-index/resource-intelligence-maturity.yaml` | Active maturity scope: 425 in scope, 29 read, 6.8%; follow-up WRKs and derived coverage snapshot |
+
+### Metric ownership note
+
+- `registry.yaml` owns live corpus totals, summary totals, and index-domain counts.
+- `standards-transfer-ledger.yaml` owns live standards-ledger totals and status counts.
+- `resource-intelligence-maturity.yaml` owns the bounded active-maturity-scope metrics used by convenience summaries and prioritization.
+- `data-audit-report.md` is a derived reporting surface and must label any carried-forward active-scope snapshot explicitly rather than presenting it as the live standards ledger.
 
 ### Structured Extracts (Phase B output)
 
