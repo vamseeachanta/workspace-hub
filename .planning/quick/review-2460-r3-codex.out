@@ -1,3 +1,69 @@
+OpenAI Codex v0.122.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019db783-8ef2-78c0-bf10-b87cd6b86597
+--------
+user
+# Adversarial Plan Review Request: Issue #2460 (rerun after blocker patch)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
+Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
+If you find no problems, explicitly state what you checked.
+
+## Review target
+- Issue: #2460 feat(repo-organization): tier-1 indexing and code-placement contract
+- Review stage: PLAN REVIEW (rerun after blocker patch)
+- Repository: /mnt/local-analysis/workspace-hub
+- Plan path: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+
+## Context
+This issue is intentionally narrower than #2397 and #1962. It should define a reusable contract for trusted tier-1 routing/index surfaces, not perform repo-specific implementation or daily-automation implementation directly.
+Child issues already filed:
+- #2461 assetutilities routing surfaces and source-hygiene cleanup
+- #2462 digitalmodel repo-wide routing surfaces
+- #2463 aceengineer-website routing surfaces cleanup
+- #2464 workspace-hub curated routing index cleanup
+- #2465 daily tier-1 indexing freshness audit and scorecard refresh
+
+Previous rerun blockers were:
+- daily freshness cadence not independently testable
+- local scorecard attestation not explicitly guarded from becoming canonical authority
+- legacy retirement rule too abstract
+- checklist validation too coarse
+- /mnt/ace/data wording maybe too workspace-specific
+
+This rerun should test whether those blockers are now resolved enough for plan-review readiness.
+
+## Required review checks
+Check whether the revised plan now:
+1. states a daily freshness cadence/obligation, not just a link to #2465
+2. explicitly forbids treating the scorecard as required canonical authority
+3. makes the legacy-retirement rule concrete enough to implement
+4. strengthens checklist validation beyond repo-name presence
+5. handles `/mnt/ace/data` scope clearly enough for a tier-1-wide contract
+6. remains narrow and approval-ready overall
+
+## Required output format
+Use exactly these headings:
+
+Verdict: APPROVE | MINOR | MAJOR
+
+Findings:
+- [severity] <concise title> — <why it matters, citing file path/section/claim>
+
+Checks performed:
+- <what you verified>
+
+## Plan under review
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft
@@ -264,18 +330,18 @@ function validate_contract_docs():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Plan still self-declares FAIL, keeps `/mnt/ace/data` scope unresolved, and carries stale revisions-required language; daily freshness and negative-authority guards are still judged too weakly specified |
-| Codex | MAJOR | Daily freshness validation is still not strong enough for approval readiness; non-canonical-scorecard guard remains too weakly enforced |
-| Gemini | MINOR | Only remaining concern is the contradiction between generalized bulk-artifact-store intent and the literal `/mnt/ace/data` wording still required by tests/acceptance criteria |
+| Claude | MINOR | Remaining concerns are pattern-level specificity for the legacy-retirement rule, literal `/mnt/ace/data` scope across all tier-1 repos, coarse checklist validation, and text-presence-heavy tests |
+| Codex | MAJOR | Daily freshness is still not independently validated as a daily cadence/obligation; local-attestation treatment of the scorecard is explained but not yet enforced by a dedicated negative guard |
+| Gemini | APPROVE | Revised plan judged approval-ready; indexing/code-placement scope, routing surfaces, data-placement rule, and local-attestation handling all accepted |
 
-**Overall result:** FAIL — the latest rerun still contains MAJOR findings, so the plan is not approval-ready for GitHub `status:plan-review`.
+**Overall result:** FAIL — mixed verdicts with a remaining Codex MAJOR mean the plan is still not approval-ready for GitHub `status:plan-review`.
 
 Revisions required based on the latest review wave:
-- Reconcile the plan narrative with the current rerun state so it no longer self-declares FAIL from an earlier wave once the next revision is made.
-- Resolve the `/mnt/ace/data` ambiguity by choosing one rule: either literal workspace-specific path, or general repo-vs-bulk-artifact-store with `/mnt/ace/data` as an implementation example, then align tests and acceptance criteria to that decision.
-- Replace the daily-freshness validation with a stronger, explicit pass condition than generic text-presence language.
-- Strengthen the scorecard negative-authority guard so it verifies the contract/checklist do not depend on the scorecard as required canonical authority.
-- Remove or rewrite stale "Revisions required" bullets after each rerun so the plan body remains internally consistent with its current state.
+- Add a dedicated test and acceptance criterion that the contract states a daily freshness cadence/obligation, not just that it names `#2465`.
+- Add a dedicated negative guard or acceptance criterion that the contract/checklist must not depend on `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` as required canonical authority.
+- Tighten the legacy-retirement rule to include at least one concrete banned-pattern list/example rather than only abstract allowed/banned prose.
+- Clarify whether `/mnt/ace/data` is literal tier-1-wide policy or an example of a broader bulk-artifact-store boundary.
+- Strengthen checklist validation so it verifies per-repo coverage of operator-map, registry, and data-placement status rather than only repo presence and child-issue links.
 
 ---
 
@@ -294,3 +360,52 @@ Revisions required based on the latest review wave:
 ## Complexity: T2
 
 **T2** — documentation contract plus a derived checklist, one trusted discovery-surface update, and focused regression tests. This is broader than a trivial docs edit but does not require multi-module implementation or deep runtime changes.
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the revised #2460 plan against the six required checks and the cited standards. I’m reading the plan and the referenced contract sources first to verify whether the blocker fixes are actually specific enough to implement and test.
+codex
+The shell wrapper is failing in this sandbox, so I’m retrying with a non-login shell to read the cited files directly. After that I’ll check whether the revised plan materially closes the earlier blockers or just adds text that still isn’t enforceable.
+codex
+I’m switching to the Node REPL to read the plan and source standards from disk. The shell path is unreliable here, but the review still depends on checking the actual referenced text rather than trusting the embedded excerpts.
+exec
+js_repl in /mnt/local-analysis/workspace-hub
+2026-04-22T23:26:13.024505Z ERROR codex_core::tools::router: error=js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":951754,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+ exited 1 in 51ms:
+js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":951754,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+codex
+The sandbox issue is broader than the shell; I’m checking whether the workspace is exposed through MCP resources instead. If not, the review has to rely on the plan text you provided rather than independent file verification, and I’ll state that explicitly.
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+Verdict: MAJOR
+
+Findings:
+- [major] `/mnt/ace/data` scope is still left as an open design choice — [docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md](/mnt/local-analysis/workspace-hub/docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md) `Pseudocode` says `if '/mnt/ace/data' is workspace-specific...`, and `Risks and Open Questions` still asks whether the universal rule should be `repo-vs-bulk-artifact-store` with `/mnt/ace/data` only as the workspace-hub example. Required check 5 was to resolve that wording enough for a tier-1-wide contract; this draft still leaves the core policy decision unclosed.
+- [major] Checklist validation is stronger than before but still not strong enough to prove full per-repo contract coverage — in the same plan’s `TDD Test List`, the checklist-specific guards only require repo presence, child-issue links, and status for `operator-map`, `registry`, and `data-placement`. The contract’s required surfaces also include `AGENTS.md`, `README.md`, `docs/README.md`, `code/tests/docs routing table`, and `source-hygiene rules`, but there is no checklist test or acceptance criterion that each repo records those surfaces with status/evidence. A checklist could still be materially incomplete and pass.
+- [minor] Legacy-retirement enforcement is still too weakly anchored to concrete scope evidence — `Pseudocode`, `validate_contract_docs()`, and the acceptance criteria only require `at least one concrete banned-pattern example`. That is better than pure abstraction, but it still permits a token example unrelated to the actual legacy product-doc signatures the contract is supposed to retire. For a reusable retirement rule, the banned-pattern set needs to be tied to observed legacy reference forms, not just “one example.”
+
+Checks performed:
+- Verified the revised plan now includes a dedicated daily-freshness cadence check in `Pseudocode`, `validate_contract_docs()`, `TDD Test List`, and `Acceptance Criteria`, rather than only linking `#2465`.
+- Verified the revised plan now includes an explicit negative-authority rule for `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` in `Pseudocode`, `validate_contract_docs()`, `TDD Test List`, and `Acceptance Criteria`.
+- Verified the plan remains intentionally narrow on repo-specific implementation and automation by routing those to `#2461`-`#2465` instead of pulling them into `#2460`.
+- Checked whether the prior blockers on legacy-retirement specificity, checklist validation, and `/mnt/ace/data` scope were fully closed; they were not closed enough for approval.
+- Checked the supplied plan text only. I did not treat referenced file existence/status claims outside that text as independently verified in this environment.
+tokens used
+34,336
+Verdict: MAJOR
+
+Findings:
+- [major] `/mnt/ace/data` scope is still left as an open design choice — [docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md](/mnt/local-analysis/workspace-hub/docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md) `Pseudocode` says `if '/mnt/ace/data' is workspace-specific...`, and `Risks and Open Questions` still asks whether the universal rule should be `repo-vs-bulk-artifact-store` with `/mnt/ace/data` only as the workspace-hub example. Required check 5 was to resolve that wording enough for a tier-1-wide contract; this draft still leaves the core policy decision unclosed.
+- [major] Checklist validation is stronger than before but still not strong enough to prove full per-repo contract coverage — in the same plan’s `TDD Test List`, the checklist-specific guards only require repo presence, child-issue links, and status for `operator-map`, `registry`, and `data-placement`. The contract’s required surfaces also include `AGENTS.md`, `README.md`, `docs/README.md`, `code/tests/docs routing table`, and `source-hygiene rules`, but there is no checklist test or acceptance criterion that each repo records those surfaces with status/evidence. A checklist could still be materially incomplete and pass.
+- [minor] Legacy-retirement enforcement is still too weakly anchored to concrete scope evidence — `Pseudocode`, `validate_contract_docs()`, and the acceptance criteria only require `at least one concrete banned-pattern example`. That is better than pure abstraction, but it still permits a token example unrelated to the actual legacy product-doc signatures the contract is supposed to retire. For a reusable retirement rule, the banned-pattern set needs to be tied to observed legacy reference forms, not just “one example.”
+
+Checks performed:
+- Verified the revised plan now includes a dedicated daily-freshness cadence check in `Pseudocode`, `validate_contract_docs()`, `TDD Test List`, and `Acceptance Criteria`, rather than only linking `#2465`.
+- Verified the revised plan now includes an explicit negative-authority rule for `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` in `Pseudocode`, `validate_contract_docs()`, `TDD Test List`, and `Acceptance Criteria`.
+- Verified the plan remains intentionally narrow on repo-specific implementation and automation by routing those to `#2461`-`#2465` instead of pulling them into `#2460`.
+- Checked whether the prior blockers on legacy-retirement specificity, checklist validation, and `/mnt/ace/data` scope were fully closed; they were not closed enough for approval.
+- Checked the supplied plan text only. I did not treat referenced file existence/status claims outside that text as independently verified in this environment.

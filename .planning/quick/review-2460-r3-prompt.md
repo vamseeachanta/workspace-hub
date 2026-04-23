@@ -1,3 +1,57 @@
+# Adversarial Plan Review Request: Issue #2460 (rerun after blocker patch)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
+Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
+If you find no problems, explicitly state what you checked.
+
+## Review target
+- Issue: #2460 feat(repo-organization): tier-1 indexing and code-placement contract
+- Review stage: PLAN REVIEW (rerun after blocker patch)
+- Repository: /mnt/local-analysis/workspace-hub
+- Plan path: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+
+## Context
+This issue is intentionally narrower than #2397 and #1962. It should define a reusable contract for trusted tier-1 routing/index surfaces, not perform repo-specific implementation or daily-automation implementation directly.
+Child issues already filed:
+- #2461 assetutilities routing surfaces and source-hygiene cleanup
+- #2462 digitalmodel repo-wide routing surfaces
+- #2463 aceengineer-website routing surfaces cleanup
+- #2464 workspace-hub curated routing index cleanup
+- #2465 daily tier-1 indexing freshness audit and scorecard refresh
+
+Previous rerun blockers were:
+- daily freshness cadence not independently testable
+- local scorecard attestation not explicitly guarded from becoming canonical authority
+- legacy retirement rule too abstract
+- checklist validation too coarse
+- /mnt/ace/data wording maybe too workspace-specific
+
+This rerun should test whether those blockers are now resolved enough for plan-review readiness.
+
+## Required review checks
+Check whether the revised plan now:
+1. states a daily freshness cadence/obligation, not just a link to #2465
+2. explicitly forbids treating the scorecard as required canonical authority
+3. makes the legacy-retirement rule concrete enough to implement
+4. strengthens checklist validation beyond repo-name presence
+5. handles `/mnt/ace/data` scope clearly enough for a tier-1-wide contract
+6. remains narrow and approval-ready overall
+
+## Required output format
+Use exactly these headings:
+
+Verdict: APPROVE | MINOR | MAJOR
+
+Findings:
+- [severity] <concise title> — <why it matters, citing file path/section/claim>
+
+Checks performed:
+- <what you verified>
+
+## Plan under review
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft
@@ -264,18 +318,18 @@ function validate_contract_docs():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Plan still self-declares FAIL, keeps `/mnt/ace/data` scope unresolved, and carries stale revisions-required language; daily freshness and negative-authority guards are still judged too weakly specified |
-| Codex | MAJOR | Daily freshness validation is still not strong enough for approval readiness; non-canonical-scorecard guard remains too weakly enforced |
-| Gemini | MINOR | Only remaining concern is the contradiction between generalized bulk-artifact-store intent and the literal `/mnt/ace/data` wording still required by tests/acceptance criteria |
+| Claude | MINOR | Remaining concerns are pattern-level specificity for the legacy-retirement rule, literal `/mnt/ace/data` scope across all tier-1 repos, coarse checklist validation, and text-presence-heavy tests |
+| Codex | MAJOR | Daily freshness is still not independently validated as a daily cadence/obligation; local-attestation treatment of the scorecard is explained but not yet enforced by a dedicated negative guard |
+| Gemini | APPROVE | Revised plan judged approval-ready; indexing/code-placement scope, routing surfaces, data-placement rule, and local-attestation handling all accepted |
 
-**Overall result:** FAIL — the latest rerun still contains MAJOR findings, so the plan is not approval-ready for GitHub `status:plan-review`.
+**Overall result:** FAIL — mixed verdicts with a remaining Codex MAJOR mean the plan is still not approval-ready for GitHub `status:plan-review`.
 
 Revisions required based on the latest review wave:
-- Reconcile the plan narrative with the current rerun state so it no longer self-declares FAIL from an earlier wave once the next revision is made.
-- Resolve the `/mnt/ace/data` ambiguity by choosing one rule: either literal workspace-specific path, or general repo-vs-bulk-artifact-store with `/mnt/ace/data` as an implementation example, then align tests and acceptance criteria to that decision.
-- Replace the daily-freshness validation with a stronger, explicit pass condition than generic text-presence language.
-- Strengthen the scorecard negative-authority guard so it verifies the contract/checklist do not depend on the scorecard as required canonical authority.
-- Remove or rewrite stale "Revisions required" bullets after each rerun so the plan body remains internally consistent with its current state.
+- Add a dedicated test and acceptance criterion that the contract states a daily freshness cadence/obligation, not just that it names `#2465`.
+- Add a dedicated negative guard or acceptance criterion that the contract/checklist must not depend on `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` as required canonical authority.
+- Tighten the legacy-retirement rule to include at least one concrete banned-pattern list/example rather than only abstract allowed/banned prose.
+- Clarify whether `/mnt/ace/data` is literal tier-1-wide policy or an example of a broader bulk-artifact-store boundary.
+- Strengthen checklist validation so it verifies per-repo coverage of operator-map, registry, and data-placement status rather than only repo presence and child-issue links.
 
 ---
 

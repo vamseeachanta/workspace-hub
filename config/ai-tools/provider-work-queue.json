@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-22T17:20:07.819939Z",
+  "generated_at": "2026-04-22T21:20:10.646380Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-22T17:20:05.833000Z",
+  "scorecard_generated_at": "2026-04-22T21:20:08.694112Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 13,
-      "total_candidates": 168,
+      "execution_ready_count": 11,
+      "total_candidates": 167,
       "top_issues": [
         {
           "number": 2348,
@@ -72,28 +72,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-22T09:44:25Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2442,
-          "title": "chore(ci-health): assethold CI \u2014 python-tests.yml never green since 2025-09-28 (7 months); YAML parse + deprecated actions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2442",
-          "labels": [
-            "priority:high",
-            "cat:infrastructure",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-22T14:27:19Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -199,6 +177,31 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2403,
+          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "cat:research",
+            "domain:document-intelligence",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-20T21:30:48Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -206,7 +209,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 30,
+      "total_candidates": 31,
       "top_issues": [
         {
           "number": 2451,
@@ -217,7 +220,7 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-22T13:25:45Z",
+          "updatedAt": "2026-04-22T20:56:04Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -240,7 +243,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-22T14:09:32Z",
+          "updatedAt": "2026-04-22T20:19:11Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -263,7 +266,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-22T14:09:34Z",
+          "updatedAt": "2026-04-22T20:19:13Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -276,18 +279,19 @@
           ]
         },
         {
-          "number": 2194,
-          "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+          "number": 2462,
+          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "domain:repo-organization"
           ],
-          "updatedAt": "2026-04-11T09:53:11Z",
+          "updatedAt": "2026-04-22T17:21:26Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

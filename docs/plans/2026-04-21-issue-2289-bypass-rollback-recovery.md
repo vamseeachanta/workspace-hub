@@ -1,6 +1,6 @@
 # Plan for #2289: bypass rollback / recovery — policy contract for enforcement-gate bypass handling
 
-> **Status:** draft (v7, queue-audit hardening applied; fresh re-review required)
+> **Status:** draft (v8, post-v7 external review fixes applied; fresh re-review required)
 > **Complexity:** T1 (policy document only)
 > **Date:** 2026-04-21
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2289
@@ -13,7 +13,7 @@
 > - v4: `{claude,codex,gemini}-v4.md` (MINOR, MAJOR, MINOR).
 > - v5: `{claude,codex,gemini}-v5.md` (MINOR, MAJOR, MINOR).
 > - v6: `{claude,codex,gemini}-v6.md` (MINOR, MAJOR, MINOR).
-> - v7: pending.
+> - v7: `{claude,codex,gemini}-v7.md` (pending/next external rerun target after this v8 patch wave).
 
 ---
 
@@ -78,19 +78,19 @@
 - Adversarial reviews v1–v5 (14 artifacts).
 
 ### Gaps identified
-- No written bypass-rollback policy. v6 creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
-- Follow-on implementation tracked in #2445.
+- No written bypass-rollback policy. This plan creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+- Fresh external review surfaced two cleanup gaps: stale embedded issue-state evidence and an over-narrow `auth_failed` enum definition. v8 closes both before the next rerun.
 
 ### Evidence (embedded verification)
 
-**Issue statuses** (2026-04-21):
+**Issue statuses** (historical snapshot from 2026-04-21 drafting pass; current approval evidence comes from fresh attested review blocks, not this embedded snapshot):
 - `#2289` OPEN — priority:high, cat:harness, domain:workflow.
-- `#2018` OPEN — includes `status:plan-review`.
+- `#2018` CLOSED — parent/umbrella historical reference; do not treat this bullet as live state authority.
 - `#2445` OPEN — cat:harness, domain:workflow, priority:medium.
 
-**File existence:**
+**File existence (historical drafting-pass snapshot):**
 - EXISTS: TRUST-ARCHITECTURE.md, require-{plan-approval,review-on-push}.sh, HARD-STOP-POLICY.md, AI_REVIEW_ROUTING_POLICY.md, SUBAGENT_CONTEXT_ISOLATION.md.
-- MISSING (v6 creates): `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+- MISSING at draft time (this plan creates): `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
 
 **Source count:** 5 repo files + 3 GitHub issues + 14 review artifacts + 3 standards docs + 1 governance doc = 26 distinct sources.
 
@@ -157,7 +157,7 @@ Referenced by §Taxonomy, §Branch context, §Precedence, §Audit contract, §Op
 | Value | Meaning |
 |---|---|
 | `unresolved_sha` | Bypass event exists but no `commit_sha` can be derived. |
-| `auth_failed` | `gh` authentication failed during `has_approval_intent` GitHub-label check. |
+| `auth_failed` | Authentication or permission failure prevented authoritative state lookup for a required evidence source (for example GitHub label lookup or push-remote reachability/auth check). |
 | `pushed_unknown` | `git branch -r --contains` cannot distinguish unpushed from stale-ref state. |
 | `branch_unreachable` | Event-time branch is no longer present (deleted / detached-HEAD with no event-time branch logged). |
 | `commit_unresolvable_locally` | Bypass event references a SHA that exists in event history but no longer exists in the working tree (agent-initiated rollback, force-push). |
@@ -372,19 +372,20 @@ These tests are part of the acceptance contract for #2445, even though they are 
 - [ ] `docs/governance/BYPASS-ROLLBACK-POLICY.md` exists and codifies: canonical `verdict_cause` enum; timestamp-based precedence; 6-verdict taxonomy; scenario matrix (10 rows minimum); dual safe-list; enforcement-surface protection; branch context; precedence vs TRUST-ARCHITECTURE.md; audit contract; advisory boundary; operator interface requirements.
 - [ ] `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules includes cross-reference to `BYPASS-ROLLBACK-POLICY.md`.
 - [ ] Follow-on implementation issue #2445 exists.
-- [ ] v7 adversarial review returns APPROVE or MINOR across all three providers.
-- [ ] `docs/plans/README.md` index row added and synced to the live plan maturity (draft until fresh v7 review artifacts exist).
+- [ ] v8 adversarial review returns APPROVE or MINOR across all three providers.
+- [ ] `docs/plans/README.md` index row added and synced to the live plan maturity (draft until fresh v8 review artifacts exist).
 
 ---
 
 ## Risks and Open Questions
 
-- **Resolved (v7):** precedence semantics — timestamp-based, latest-terminal-state wins, with explicit tie-breaks.
-- **Resolved (v7):** cause enum inconsistency — single canonical enum.
-- **Resolved (v7):** detached-HEAD unreliable reconstruction — default to observability_gap.
-- **Resolved (v7):** offline detection — selected push remote + true-connectivity predicate; auth failures map to `auth_failed`.
-- **Resolved (v7):** AGENTS.md skim-risk — update dropped entirely from scope; future discoverability home named.
-- **Resolved (v7):** post-revert approval contradiction — later plan approval does not override a reverted SHA; restoration requires a new SHA.
+- **Resolved (v8):** precedence semantics — timestamp-based, latest-terminal-state wins, with explicit tie-breaks.
+- **Resolved (v8):** cause enum inconsistency — single canonical enum, now broad enough to cover both GitHub and push-remote auth failures.
+- **Resolved (v8):** detached-HEAD unreliable reconstruction — default to observability_gap.
+- **Resolved (v8):** offline detection — selected push remote + true-connectivity predicate; auth failures map to `auth_failed`.
+- **Resolved (v8):** AGENTS.md skim-risk — update dropped entirely from scope; future discoverability home named.
+- **Resolved (v8):** post-revert approval contradiction — later plan approval does not override a reverted SHA; restoration requires a new SHA.
+- **Resolved (v8):** stale embedded issue-state evidence — #2018 snapshot corrected and explicitly marked historical.
 - **Open:** whether the future #2445 implementation should materialize remote-selection logic strictly from branch config only, or allow an operator override flag for unusual multi-remote repos.
 - **Open:** should the compliance dashboard's `bypass_pending_review` count include `log_only_observability_gap` verdicts? Current stance: yes, with cause-label grouping. Implementation choice in #2445.
 

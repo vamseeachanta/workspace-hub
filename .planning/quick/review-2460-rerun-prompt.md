@@ -1,3 +1,68 @@
+# Adversarial Plan Review Request: Issue #2460 (rerun after revisions)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
+Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
+If you find no problems, explicitly state what you checked.
+
+## Review target
+- Issue: #2460 feat(repo-organization): tier-1 indexing and code-placement contract
+- Review stage: PLAN REVIEW (rerun after revisions)
+- Repository: /mnt/local-analysis/workspace-hub
+- Plan path: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+
+## Context
+This issue is intentionally narrower than #2397 and #1962. It should define a reusable contract for trusted tier-1 routing/index surfaces, not perform repo-specific implementation or daily-automation implementation directly.
+Child issues already filed:
+- #2461 assetutilities routing surfaces and source-hygiene cleanup
+- #2462 digitalmodel repo-wide routing surfaces
+- #2463 aceengineer-website routing surfaces cleanup
+- #2464 workspace-hub curated routing index cleanup
+- #2465 daily tier-1 indexing freshness audit and scorecard refresh
+
+The previous review wave returned MAJOR findings around:
+- dropped code-placement scope
+- routing surfaces not independently testable
+- vague legacy-pattern rule
+- weak #2465 freshness linkage
+- local-only scorecard evidence ambiguity
+
+This rerun should test whether those defects were actually fixed.
+
+## Baseline sources the revised plan claims to rely on
+- docs/standards/CONTROL_PLANE_CONTRACT.md
+- docs/standards/FILE_STRUCTURE_TAXONOMY.md
+- docs/standards/DATA_PLACEMENT.md
+- docs/plans/README.md
+- docs/reports/2026-04-22-tier-1-indexing-scorecard.md (treated in the revised plan as local attestation, not required canonical branch state)
+
+## Required review checks
+Check whether the revised plan now:
+1. truly preserves both indexing and code-placement scope
+2. makes each issue-required routing surface independently testable
+3. explicitly carries forward the repo-vs-/mnt/ace/data rule
+4. defines a concrete, implementable legacy retirement rule
+5. explicitly binds #2465 to daily freshness
+6. avoids depending on local-only scorecard state as canonical truth
+7. keeps the issue narrow and does not leak child-issue implementation into this contract issue
+8. has acceptance criteria that are directly testable
+
+## Required output format
+Use exactly these headings:
+
+Verdict: APPROVE | MINOR | MAJOR
+
+Findings:
+- [severity] <concise title> — <why it matters, citing file/section/claim>
+
+Checks performed:
+- <what you verified>
+
+Focus on substantive defects. Do not give implementation advice unless tied to a finding.
+
+## Plan under review
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft
@@ -167,16 +232,8 @@ function define_tier1_indexing_and_code_placement_contract():
     define curated-vs-raw inventory boundary
     define explicit legacy product-doc retirement rule:
         allowed = retirement/migration note pointing to canonical surfaces
-        banned examples include concrete legacy-reference signatures to enumerate in the contract,
-            such as missing-product-doc filenames or path patterns used as active navigation authority
         banned = using legacy product-doc references as active navigation authority
     define freshness rule with daily cadence and explicit follow-through issue #2465
-    define negative authority rule:
-        the contract/checklist may cite the scorecard as local attestation only
-        the contract/checklist must not require scorecard presence as canonical authority
-    clarify data-placement scope:
-        if `/mnt/ace/data` is workspace-specific, state the general rule as repo-vs-bulk-artifact-store
-        and document `/mnt/ace/data` as the current workspace-hub implementation example
 
 function define_tier1_checklist(contract):
     for each tier-1 repo in scope:
@@ -191,12 +248,9 @@ function validate_contract_docs():
     assert docs index links both
     assert contract doc names every required surface independently
     assert contract doc names the repo-vs-/mnt/ace/data rule explicitly
-    assert contract doc states the daily freshness cadence/obligation explicitly
     assert contract doc names #2465 as the daily-freshness follow-through issue
-    assert contract doc states the scorecard is optional local attestation, not required canonical authority
-    assert legacy retirement rule allows explicit migration language and enumerates at least one concrete banned-pattern example while banning legacy product-doc references as active routing authority
+    assert legacy retirement rule allows explicit migration language but bans legacy product-doc references as active routing authority
     assert checklist covers all four tier-1 repos and links #2461-#2464
-    assert checklist records per-repo operator-map, registry, and data-placement coverage status
     assert docs/plans/README.md contains the #2460 index row
 ```
 
@@ -228,14 +282,11 @@ function validate_contract_docs():
 | `test_tier1_contract_requires_source_hygiene_rules` | contract explicitly requires source-hygiene rules for backup/cache/runtime noise | contract text | requirement present |
 | `test_tier1_contract_requires_repo_vs_ace_data_rule` | contract explicitly carries forward the repo-vs-`/mnt/ace/data` placement boundary from `docs/standards/DATA_PLACEMENT.md` | contract text | rule present |
 | `test_tier1_contract_defines_curated_vs_raw_inventory_boundary` | contract distinguishes curated routing surfaces from raw inventory surfaces | contract text | boundary rule present |
-| `test_tier1_contract_defines_legacy_retirement_rule` | contract explicitly defines allowed migration language, bans active legacy product-doc routing authority, and enumerates at least one concrete banned-pattern example | contract text | allowed rule, banned rule, and example present |
+| `test_tier1_contract_defines_legacy_retirement_rule` | contract explicitly defines allowed migration language and banned legacy product-doc reference behavior | contract text | both allowed and banned rule text present |
 | `test_tier1_contract_links_child_issues` | contract doc references #2461-#2465 as implementation follow-through | contract text | all child issue numbers present |
 | `test_tier1_contract_marks_2465_as_daily_freshness_followthrough` | contract explicitly names `#2465` as the daily-freshness follow-through issue | contract text | linkage present |
-| `test_tier1_contract_requires_daily_freshness_cadence` | contract explicitly states a daily freshness cadence/obligation, not just a child-issue link | contract text | daily cadence language present |
-| `test_tier1_contract_forbids_scorecard_as_required_canonical_authority` | contract states the scorecard may be cited as local attestation but must not be required canonical authority | contract text | negative authority rule present |
 | `test_tier1_checklist_covers_all_scope_repos` | checklist covers workspace-hub, digitalmodel, assetutilities, and aceengineer-website | checklist text | all four repo names present |
 | `test_tier1_checklist_links_repo_specific_child_issues` | checklist links #2461-#2464 to the relevant repos | checklist text | all repo-specific child issue numbers present |
-| `test_tier1_checklist_records_surface_status_per_repo` | checklist records per-repo operator-map, registry, and data-placement coverage status | checklist text | required status fields present |
 | `test_docs_readme_links_tier1_contract_and_checklist` | docs index exposes both contract and checklist for discovery | `docs/README.md` | link text/path present |
 | `test_plans_readme_indexes_2460_plan` | planning index includes the #2460 row | `docs/plans/README.md` | row present |
 
@@ -247,9 +298,8 @@ function validate_contract_docs():
 - [ ] contract explicitly and independently requires: `AGENTS.md`, `README.md`, `docs/README.md`, repo operator maps, one canonical machine-readable registry per repo, code/tests/docs routing tables, and source-hygiene rules
 - [ ] contract explicitly encodes the repo-vs-`/mnt/ace/data` placement rule from `docs/standards/DATA_PLACEMENT.md`
 - [ ] contract explicitly separates curated routing surfaces from raw inventory surfaces
-- [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language, banning their use as active routing authority, and enumerating at least one concrete banned-pattern example
-- [ ] contract includes a daily freshness rule, explicitly states daily cadence/obligation, and explicitly names `#2465` as the follow-through issue
-- [ ] contract explicitly states that `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` may be cited as local attestation but must not be required canonical authority
+- [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language while banning their use as active routing authority
+- [ ] contract includes a daily freshness rule and explicitly names `#2465` as the follow-through issue
 - [ ] `docs/standards/TIER1_INDEXING_CHECKLIST.md` exists and covers workspace-hub, digitalmodel, assetutilities, and aceengineer-website
 - [ ] checklist links repo-specific implementation follow-through issues `#2461`-`#2464`
 - [ ] `docs/README.md` links the new contract/checklist from a trusted discovery surface
@@ -264,18 +314,18 @@ function validate_contract_docs():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Plan still self-declares FAIL, keeps `/mnt/ace/data` scope unresolved, and carries stale revisions-required language; daily freshness and negative-authority guards are still judged too weakly specified |
-| Codex | MAJOR | Daily freshness validation is still not strong enough for approval readiness; non-canonical-scorecard guard remains too weakly enforced |
-| Gemini | MINOR | Only remaining concern is the contradiction between generalized bulk-artifact-store intent and the literal `/mnt/ace/data` wording still required by tests/acceptance criteria |
+| Claude | MAJOR | Code-placement scope dropped from deliverable/tests; issue-required routing surfaces compressed into non-independent checks; legacy-pattern regression underspecified; daily freshness and `#2465` linkage not independently testable |
+| Codex | MAJOR | Operator-map / registry / routing-table semantics not independently testable; repo-vs-`/mnt/ace/data` boundary not encoded; evidence depends on local-only scorecard state; checklist legacy-pattern coverage weaker than claimed |
+| Gemini | MAJOR | Data-placement rule is cited but unvalidated in TDD/acceptance criteria; legacy retirement strategy is internally contradictory |
 
-**Overall result:** FAIL — the latest rerun still contains MAJOR findings, so the plan is not approval-ready for GitHub `status:plan-review`.
+**Overall result:** FAIL — re-draft required before posting to GitHub for plan review.
 
-Revisions required based on the latest review wave:
-- Reconcile the plan narrative with the current rerun state so it no longer self-declares FAIL from an earlier wave once the next revision is made.
-- Resolve the `/mnt/ace/data` ambiguity by choosing one rule: either literal workspace-specific path, or general repo-vs-bulk-artifact-store with `/mnt/ace/data` as an implementation example, then align tests and acceptance criteria to that decision.
-- Replace the daily-freshness validation with a stronger, explicit pass condition than generic text-presence language.
-- Strengthen the scorecard negative-authority guard so it verifies the contract/checklist do not depend on the scorecard as required canonical authority.
-- Remove or rewrite stale "Revisions required" bullets after each rerun so the plan body remains internally consistent with its current state.
+Revisions required based on review:
+- Add dedicated acceptance criteria and tests for every issue-mandated routing surface, especially operator maps, machine-readable registries, and code/tests/docs routing-table semantics.
+- Make the repo-vs-`/mnt/ace/data` placement rule from `docs/standards/DATA_PLACEMENT.md` an explicit contract requirement with dedicated validation.
+- Replace the vague legacy-pattern absence test with a concrete, implementable rule that allows explicit retirement/migration language while banning the actual legacy reference pattern.
+- Resolve the dependence on local-only scorecard evidence by either landing the scorecard artifact canonically or revising the plan to treat it as local attestation rather than canonical repo state.
+- Add explicit validation that `#2465` is the daily-freshness follow-through issue and that `docs/plans/README.md` indexing plus checklist coverage are tested, not assumed.
 
 ---
 
@@ -284,10 +334,8 @@ Revisions required based on the latest review wave:
 - **Risk:** The broader `docs/standards/CONTROL_PLANE_CONTRACT.md` still contains historical legacy-path discussion; implementation for #2460 should avoid copying that legacy language into the new contract except where absolutely necessary to define retirement boundaries.
 - **Risk:** It is easy to let #2460 grow into automation or repo-specific remediation. Automation belongs to `#2465`; repo-specific changes belong to `#2461`-`#2464`.
 - **Risk:** If the contract is too abstract, it will not be implementable; if it is too specific, it will duplicate the child issues. The implementation should define a minimum reusable contract plus repo-specific checklist, not solve every child issue.
-- **Open:** Should the contract state the universal policy as repo-vs-bulk-artifact-store with `/mnt/ace/data` documented as the current workspace-hub implementation example? That wording would preserve the durable rule without overfitting a workspace-specific mount path.
 - **Open:** Should the contract live only in `docs/standards/` or also be summarized in `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md`? The plan keeps the implementation narrow by requiring only a `docs/README.md` link in this issue.
 - **Open:** Should “machine-readable registry” be standardized on one exact filename across all tier-1 repos, or only standardized as one canonical registry per repo? This issue should define the rule; child issues can pick the per-repo file path where needed.
-- **Risk:** The scorecard is currently treated as local attestation for plan drafting; the contract/checklist must not promote it into required canonical authority.
 
 ---
 
