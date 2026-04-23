@@ -120,6 +120,20 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# 3b. Invocation scan (#2320): collect per-skill session-log signal so the
+#     usage-report step below can apply invocation-driven tier demotion.
+# ---------------------------------------------------------------------------
+INVOCATION_DIR=".claude/state/skill-invocations"
+INVOCATION_FILE="${INVOCATION_DIR}/$(date +%Y-%m-%d).json"
+if [[ -d "logs/orchestrator/hermes" ]]; then
+  mkdir -p "${INVOCATION_DIR}"
+  uv run --no-project python "${WS_HUB}/scripts/skills/skill-invocation-scanner.py" \
+      --sessions-dir "logs/orchestrator/hermes" \
+      --skills-root ".claude/skills" \
+      --output "${INVOCATION_FILE}" >/dev/null 2>&1 || true
+fi
+
+# ---------------------------------------------------------------------------
 # 4. Usage Health: from latest usage report
 # ---------------------------------------------------------------------------
 USAGE_DIR=".claude/state/skill-usage-report"

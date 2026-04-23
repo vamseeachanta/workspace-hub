@@ -325,6 +325,70 @@ def classify_tiers(
 
 
 # ---------------------------------------------------------------------------
+# #2320: Invocation-signal demotion (merged from skill-invocation-scanner.py)
+# ---------------------------------------------------------------------------
+
+MIN_COVERAGE_DAYS = 14
+
+
+def load_invocation_data(path):
+    """Load skill-invocations JSON produced by skill-invocation-scanner.py.
+
+    Returns dict[skill_short_name -> {session_count, coverage_days}].
+    Silent no-op when the file is absent — preserves existing behavior.
+    """
+    try:
+        with open(path) as f:
+            payload = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+    coverage = payload.get("coverage_days", 0)
+    out = {}
+    for row in payload.get("rows", []):
+        out[row["skill"]] = {
+            "session_count": row.get("session_count_available_days", 0),
+            "coverage_days": coverage,
+        }
+    return out
+
+
+def apply_invocation_demotion(tiers, invocation_data, min_coverage=MIN_COVERAGE_DAYS):
+    """Demote each skill by one tier when it had zero sessions in a sufficient
+    coverage window — the usage-signal guard against static-reference false-alives.
+
+    Mutates `tiers` in place. Returns the count of demotions applied.
+    """
+    if not invocation_data:
+        return 0
+    demotion_chain = {"hot": "warm", "warm": "cold", "cold": "dead", "dead": "dead"}
+    # Atomic single pass — compute the new tier for each existing entry
+    # using the ORIGINAL tier, not the mutated one. Otherwise a skill demoted
+    # warm->cold would be re-demoted cold->dead in the cold pass.
+    new_tiers = {k: [] for k in tiers}
+    demoted = 0
+    for from_tier in ("hot", "warm", "cold", "dead"):
+        for entry in tiers[from_tier]:
+            inv = invocation_data.get(entry["skill"])
+            to_tier = from_tier
+            if (
+                inv
+                and inv["coverage_days"] >= min_coverage
+                and inv["session_count"] == 0
+            ):
+                to_tier = demotion_chain[from_tier]
+                if to_tier != from_tier:
+                    entry["tier"] = to_tier
+                    entry["demoted_by_invocation_signal"] = True
+                    demoted += 1
+            new_tiers[to_tier].append(entry)
+    tiers.clear()
+    tiers.update(new_tiers)
+    for tier in tiers.values():
+        tier.sort(key=lambda x: (-x["reference_count"], x["skill"]))
+    return demoted
+
+
+# ---------------------------------------------------------------------------
 # Output: skill-scores.yaml
 # ---------------------------------------------------------------------------
 
@@ -387,6 +451,9 @@ def main() -> int:
     parser.add_argument("--days", type=int, default=90, help="Git log lookback in days")
     parser.add_argument("--scores-file", default=".claude/state/skill-scores.yaml", help="Skill scores YAML")
     parser.add_argument("--output-dir", default=".claude/state/skill-usage-report", help="Output directory")
+    parser.add_argument("--invocation-data", default=None,
+                        help="Path to skill-invocations JSON (from skill-invocation-scanner.py); "
+                             "when provided, zero-session skills are demoted one tier (#2320)")
     args = parser.parse_args()
 
     repo_root = Path.cwd()
@@ -425,6 +492,16 @@ def main() -> int:
 
     # --- Step 5: Classify tiers ---
     tiers = classify_tiers(skills, ref_counts, git_mentioned)
+
+    # #2320: usage-signal tier demotion — skills with zero sessions in a
+    # sufficient coverage window get demoted one tier regardless of static
+    # references. No-op if --invocation-data is absent or points to a
+    # missing file (preserves prior behavior).
+    if getattr(args, "invocation_data", None):
+        inv = load_invocation_data(args.invocation_data)
+        demoted = apply_invocation_demotion(tiers, inv)
+        if demoted:
+            print(f"[invocation-signal] demoted {demoted} skill(s) by one tier")
     print(f"\nTier Classification:")
     print(f"  HOT:  {len(tiers['hot'])} skills")
     print(f"  WARM: {len(tiers['warm'])} skills")

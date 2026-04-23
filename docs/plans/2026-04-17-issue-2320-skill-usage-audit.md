@@ -1,6 +1,6 @@
 # Plan for #2320: Mine session logs for dead-skill candidates — usage-signal input to #2280 weekly audit
 
-> **Status:** revised 2026-04-17 — 6 deltas vs v1 (one load-bearing window reduction confirmed by user); see "Execution-time revisions"
+> **Status:** implemented (branch `issue-2320-skill-usage-audit`) — 6 pre-execution revisions applied; see "Execution-time revisions"
 > **Complexity:** T2
 > **Date:** 2026-04-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2320
