@@ -42,6 +42,26 @@ A fresh integration worktree gives you a clean room for landing only the approve
   - `git rev-parse HEAD`
 - Do this from the main checkout, not from an issue worktree.
 
+### Critical preflight: verify the landing set is still unlanded
+
+Before you create an integration worktree, check the exact target file set you think needs landing.
+
+Recommended pattern:
+- `git status --short -- <target files...>`
+- `git diff --stat -- <target files...>`
+
+Interpretation rules:
+- If both commands are empty for the target set, do **not** assume you still need a landing branch for those files. That often means the edits already landed on the current base via another session/commit.
+- In that case, switch from landing mode to **reconciliation mode**:
+  - identify which intended artifacts are already on `HEAD`
+  - isolate any truly new files from this session (for example a new runbook or prompt pack)
+  - create a worktree only for the still-unlanded residue, or skip the worktree entirely if nothing remains
+
+Why this matters:
+- in parallel agent sessions, plan/doc edits may be committed to `main` between drafting and integration
+- creating a fresh worktree and copying files can reveal that the only remaining delta is a newly-created artifact, not the full landing set you expected
+- this prevents duplicate commits for files that are already identical to the integration base
+
 3. Create a fresh integration worktree
 - Example:
   - `git worktree add -b integration-<issue-set> /path/to/integration-worktree <base-commit>`
@@ -251,3 +271,53 @@ This pattern worked well for landing two approved issues from isolated worktrees
 - Do not silently include approval-marker commits.
 - Do not push or close issues without explicit side-effect approval.
 - If a blocked issue depends on missing upstream foundations, keep it open and document the blocker rather than forcing fixture work against an invented contract.
+- Fresh integration worktrees may fail pre-push hooks for reasons unrelated to the landing commit. In workspace-hub, a clean worktree created outside the normal repo topology triggered repo-wide tier-1 checks that expected sibling repos at matching relative paths and failed before push. Practical recovery pattern:
+  1. First try pushing from a topology-compatible checkout/worktree where the hook environment already matches the repo's assumptions.
+  2. If the hook still fails only because of unrelated ecosystem debt (for example tier-1 quality failures in other repos) and the landing branch is a narrowly scoped docs-only or low-risk artifact change, consider an audited bypass push rather than mutating the clean worktree to satisfy unrelated checks.
+  3. In this repo, `GIT_PRE_PUSH_SKIP=1 git push ...` is a soft bypass that logs to `logs/hooks/pre-push-bypass.jsonl`. Use it only when the branch scope is truly isolated and you can justify that the pre-push failures are unrelated to the landing artifact.
+- Before bypassing, confirm the branch diff is exactly the intended scoped artifact set (for example a single docs runbook file) and preserve the clean non-bypass landing branch so you still have a normal-path provenance record.
+
+## Pre-push topology mismatch on clean worktrees (important live lesson)
+
+A fresh integration worktree can still fail at push time even when the landing diff is correct, because workspace-level pre-push hooks may assume the full repo ecosystem exists at paths relative to that checkout.
+
+Observed failure mode:
+- a clean worktree contained only `workspace-hub/`
+- `git push` triggered the repo pre-push hook
+- the hook tried to run tier-1 checks for sibling repos like `assetutilities`, `digitalmodel`, `worldenergydata`, and `assethold`
+- those paths did not exist under the clean worktree root, so the push failed before evaluating the actual landing diff
+- a later attempt from the topology-compatible main checkout got past the path-mismatch but still failed because the same hook enforces unrelated tier-1 quality debt across the ecosystem
+
+### Practical rule
+
+For docs-only or narrow governance landings in workspace-hub:
+1. Validate the diff in the clean integration worktree first.
+2. Before push, inspect the repo's pre-push hook assumptions:
+   - does it expect sibling repos under the checkout root?
+   - does it run ecosystem-wide tier-1 checks unrelated to the landing diff?
+3. If yes, treat the clean worktree as a validation/integration room, not necessarily the final push location.
+4. Recreate the landing commit in a topology-compatible checkout (for example the main workspace checkout where sibling repos exist) or cherry-pick it there.
+5. If the push still fails only because of unrelated ecosystem-wide checks, consider an explicit audited bypass for the docs-only branch rather than mutating the clean worktree to fake the missing topology.
+
+### Recommended sequence for this case
+
+1. Create and validate the clean worktree landing commit.
+2. Create a topology-compatible branch in the real workspace checkout.
+3. Commit or cherry-pick the same narrow landing there.
+4. Attempt a normal push once.
+5. If the only remaining blocker is unrelated repo-wide pre-push debt, use the repo's audited bypass mechanism (for example `GIT_PRE_PUSH_SKIP=1`) for the narrow docs-only branch.
+6. Record that the bypass was environmental/governance-driven, not required by the change itself.
+
+This avoids wasting time debugging a perfectly good clean worktree that simply lacks the filesystem topology expected by repo hooks.
+- In workspace-hub, a brand-new clean worktree may NOT be push-ready even for docs-only branches. Pre-push hooks can assume the full tier-1 repo topology exists relative to the current checkout (for example sibling dirs like `assetutilities/`, `digitalmodel/`, `worldenergydata/`, `assethold/`) and may also require local Python deps such as `yaml` for config-drift checks. A skeletal worktree containing only workspace-hub can therefore fail pre-push despite a clean, valid commit.
+- The topology-compatible fallback can still fail for unrelated reasons: even in the real workspace checkout, pre-push may run cross-repo quality gates across tier-1 repos and block your docs-only branch on unrelated failures (observed: `assetutilities` ruff/mypy failures blocked a push for a one-file runbook branch).
+- Practical rule: before planning to push from a fresh integration worktree, do a real push probe (with side-effect approval) or inspect the pre-push hook assumptions. If hooks expect multi-repo topology, prefer one of three paths: (1) cherry-pick the clean commit into a topology-compatible checkout/worktree where hooks already pass, (2) recreate the expected sibling-repo layout for that worktree, or (3) use an explicit user-approved bypass for the docs-only push.
+- Workspace-hub's current pre-push hook supports an audited soft bypass via `GIT_PRE_PUSH_SKIP=1`. It logs a JSONL record to `logs/hooks/pre-push-bypass.jsonl` and exits 0 before running the heavy tier-1 checks. For isolated docs/plans branches that are clean and intentionally low-risk, this can be the fastest safe landing path once the user approves the bypass. Example:
+  - `GIT_PRE_PUSH_SKIP=1 git push -u origin <branch>`
+- When using that bypass, capture in your landing notes: the exact branch pushed, the exact commit SHA, and the bypass log path. This preserves auditability and keeps the bypass scoped to the already-validated low-risk branch rather than normalizing bypass use for broader implementation work.
+- In workspace-hub, a brand-new clean worktree may NOT be push-ready even for docs-only branches. Pre-push hooks can assume the full tier-1 repo topology exists relative to the current checkout (for example sibling dirs like `assetutilities/`, `digitalmodel/`, `worldenergydata/`, `assethold/`) and may also require local Python deps such as `yaml` for config-drift checks. A skeletal worktree containing only workspace-hub can therefore fail pre-push despite a clean, valid commit.
+- The topology-compatible fallback can still fail for unrelated reasons: even in the real workspace checkout, pre-push may run cross-repo quality gates across tier-1 repos and block your docs-only branch on unrelated failures (observed: `assetutilities` ruff/mypy failures blocked a push for a one-file runbook branch).
+- Practical rule: before planning to push from a fresh integration worktree, do a real push probe (with side-effect approval) or inspect the pre-push hook assumptions. If hooks expect multi-repo topology, prefer one of three paths: (1) cherry-pick the clean commit into a topology-compatible checkout/worktree where hooks already pass, (2) recreate the expected sibling-repo layout for that worktree, or (3) use an explicit user-approved bypass for the docs-only push.
+- Workspace-hub's current pre-push hook supports an audited soft bypass via `GIT_PRE_PUSH_SKIP=1`. It logs a JSONL record to `logs/hooks/pre-push-bypass.jsonl` and exits 0 before running the heavy tier-1 checks. For isolated docs/plans branches that are clean and intentionally low-risk, this can be the fastest safe landing path once the user approves the bypass. Example:
+  - `GIT_PRE_PUSH_SKIP=1 git push -u origin <branch>`
+- When using that bypass, capture in your landing notes: the exact branch pushed, the exact commit SHA, and the bypass log path. This preserves auditability and keeps the bypass scoped to the already-validated low-risk branch rather than normalizing bypass use for broader implementation work.

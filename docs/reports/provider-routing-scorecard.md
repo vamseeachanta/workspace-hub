@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-04-23T01:20:07.851564Z
+Generated: 2026-04-23T21:20:06.613676Z
 Current week: 2026-W17
 Recommended provider order: codex, gemini, claude
 
@@ -10,13 +10,13 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: needs_cleanup
 - Priority: high
-- Current-week reported utilization: 13.6%
+- Current-week reported utilization: 18.7%
 - Quota basis: unavailable (unavailable)
-- Current-week sessions / post records: 107 / 5547
-- Audit post records: 83817
-- Missing repo reads: 8376
-- Python3 per 1k records: 8.88
-- Migration debt per 1k records: 20.75
+- Current-week sessions / post records: 159 / 7599
+- Audit post records: 86172
+- Missing repo reads: 8390
+- Python3 per 1k records: 8.65
+- Migration debt per 1k records: 20.18
 
 ### Preferred work
 - adversarial plan review
@@ -41,10 +41,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Priority: highest
 - Current-week reported utilization: 0.1%
 - Quota basis: quota (history.jsonl)
-- Current-week sessions / post records: 98 / 1334
-- Audit post records: 17843
-- Missing repo reads: 225
-- Python3 per 1k records: 18.89
+- Current-week sessions / post records: 157 / 1993
+- Audit post records: 19148
+- Missing repo reads: 435
+- Python3 per 1k records: 18.8
 - Migration debt per 1k records: 0.0
 
 ### Preferred work
@@ -65,13 +65,13 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: underused
 - Priority: highest
-- Current-week reported utilization: 2.1%
+- Current-week reported utilization: 2.9%
 - Quota basis: estimated_daily_quota (estimated)
-- Current-week sessions / post records: 9 / 65
-- Audit post records: 6147
-- Missing repo reads: 600
-- Python3 per 1k records: 47.34
-- Migration debt per 1k records: 13.99
+- Current-week sessions / post records: 13 / 90
+- Audit post records: 6172
+- Missing repo reads: 603
+- Python3 per 1k records: 47.15
+- Migration debt per 1k records: 13.93
 
 ### Preferred work
 - batched research/recon

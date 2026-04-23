@@ -1,6 +1,7 @@
 ---
 name: linkedin-post-to-gtm-ingestion
-description: Review external LinkedIn posts and fold reusable insights into ACE-style GTM docs, capability maps, and content calendars.
+description: Review external LinkedIn posts and fold reusable insights into ACE-style
+  GTM docs, capability maps, and content calendars.
 version: 1.0.0
 category: marketing
 applies-to:
@@ -16,9 +17,6 @@ tags:
 - messaging
 - content-strategy
 - aceengineer
-related_skills:
-- business/content-design/aceengineer-website-update
-- business/marketing/content-strategy
 ---
 
 # LinkedIn Post to GTM Ingestion

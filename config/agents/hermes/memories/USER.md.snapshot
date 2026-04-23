@@ -14,4 +14,4 @@ For overnight Claude work, pace usage across the available window instead of fro
 §
 User wants all reviews to be adversarial reviews by default for maximum productivity and impact.
 §
-User approves sensible commands. For Claude implementation, prefer tmux/interactive Claude Code with --dangerously-skip-permissions. For GitHub issues, latest status:* wins; create follow-ups proactively; do a quick safety audit before side effects. User prefers repo/plan approvals one by one, and wants future issue prioritization to include 20% llm-wiki weighting.
+User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, 20% llm-wiki weighting, prefer parallel work, and prefer reopening/retargeting existing roadmap issues over creating duplicate new issues unless scope is genuinely new.

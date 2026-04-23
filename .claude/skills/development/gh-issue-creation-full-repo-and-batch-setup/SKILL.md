@@ -48,6 +48,14 @@ Two practical gotchas came up in live use:
 6. If one issue is the umbrella/meta issue, edit it after creation to link the child issue numbers.
    - This is often easier than guessing future issue numbers ahead of time.
 
+7. If you need to post a follow-up comment linking the newly created issues back to a parent/umbrella issue, resolve the issue numbers first and only then write/post the comment body.
+   - Safe pattern:
+     1. create the issues and capture their numeric IDs
+     2. write the comment/body file with the real issue numbers already substituted
+     3. post with `--body-file`
+   - Do not leave literal placeholders like `#${NEW_NUM}` in the file you send to `gh issue comment`.
+   - If a placeholder leaks into a posted comment, immediately add a correction comment with the real issue numbers.
+
 7. Verify every created issue immediately.
    - Use:
      - `gh issue view N --repo OWNER/REPO --json number,title,url,labels,body`
@@ -57,7 +65,17 @@ Two practical gotchas came up in live use:
      - body rendered correctly
      - URLs/issue numbers recorded
 
+8. When posting follow-up comments that mention newly created issue numbers, render placeholders before posting.
+   - Do NOT leave shell placeholders like `#${NEW_NUM}` inside a heredoc/body file and assume later interpolation will happen automatically.
+   - Safe pattern:
+     - create the new issue
+     - capture the numeric id
+     - write the final body file with the concrete number already substituted
+     - then post with `gh issue comment --body-file ...`
+   - If a placeholder accidentally lands in a comment, immediately post a correction comment with the exact issue numbers.
+
 ## Critical gotcha
+
 
 `gh --repo` does NOT accept a bare repo name.
 

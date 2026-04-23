@@ -55,3 +55,5 @@ shown:
     tips: [cc-rename-resume, cc-rewind]
   - date: 2026-04-22
     tips: [bp-ascii-arch, eco-smart-agents]
+  - date: 2026-04-23
+    tips: [bp-context-fork, gsd-insert-phase]

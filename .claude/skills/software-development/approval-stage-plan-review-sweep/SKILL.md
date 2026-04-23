@@ -36,6 +36,12 @@ Do not treat a raw GitHub issue body as approval-ready substitute for a missing 
 8. Create a consolidated summary note listing verdicts and approval blockers.
 9. If using Hermes `delegate_task` to parallelize a sweep, remember the default concurrency cap may be lower than the user's requested lane count. In this environment, `max_concurrent_children` was 3, so a requested 4-lane sweep had to be implemented as two top-level parallel calls (3-task batch + 1-task batch). Do not promise a single 4-task `delegate_task` call without checking the actual cap first.
 10. After synthesizing the verdicts, post a short GitHub comment on each issue summarizing approval readiness and top blockers, then only surface links as "for approval" if the plan is genuinely approval-ready. If every issue is still MAJOR / not approval-ready, explicitly say there are no approval links yet.
+11. When a plan finally converges, do one last bookkeeping pass before calling it approval-ready:
+   - refresh the plan header `Review artifacts:` line to the latest converged timestamped artifact set
+   - refresh the Artifact Map review-artifact rows to the same timestamped set
+   - update the `Adversarial Review Summary` table + wave summary to the final converged verdicts
+   - post a dedicated GitHub convergence comment with the final provider verdicts and the latest artifact links
+   - if the user later approves the issue on GitHub, verify whether the matching local `.planning/plan-approved/<issue>.md` marker exists; create it if missing so GitHub and local approval state stay synchronized
 
 ## Prompt requirements
 Every review prompt should explicitly say:

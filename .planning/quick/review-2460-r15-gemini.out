@@ -1,0 +1,14 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Error during GrepLogic execution: Error: Operation timed out after 30000ms. In large repositories, consider narrowing your search scope by specifying a 'dir_path' or an 'include_pattern'.
+Verdict: MAJOR
+
+## Findings
+- [MAJOR] Execution-path pseudocode still contains governance logic. The claim "Removed governance/approval-state handling from execution-path pseudocode" is false. The `function validate_contract_docs()` in the `Pseudocode` section explicitly includes: `assert because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup on the real approval gates...`. Governance must not be mixed with execution validation logic.
+- [MAJOR] Acceptance criteria still contains governance requirements. The claim "Removed remaining plan-governance items from execution-focused acceptance/files-to-change sections" is false. The 6th checkbox in the `Acceptance Criteria` section is a governance requirement: `- [ ] because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup on the real approval gates by removing, superseding, or revision-binding the live GitHub status:plan-approved label...`.
+- [MAJOR] TDD tests are improperly scoped to test transient plan text. The `TDD Test List` includes `test_tdd_sequence_requires_tests_fail_before_doc_edits` which expects `plan text` as input to verify `explicit test-first sequence present`. Python regression tests (`tests/docs/...`) execute against the codebase to validate the final committed deliverables (the contract doc), and cannot/should not parse the transient plan document to enforce the developer's execution sequence. The same flaw appears in the 13th Acceptance Criterion ("implementation notes require writing...").
+
+## Checks performed
+- Checked whether deliverable regression tests and execution-path instructions are cleanly separated from governance/pre-approval requirements by inspecting the `Pseudocode` and `Acceptance Criteria` sections against the stated "What changed since r14" claims.
+- Reviewed the `TDD Test List` to ensure all tests are technically sound regression tests executing against deliverables rather than transient artifacts or process documents.
+- Verified `DATA_PLACEMENT.md` contents matched the thresholds provided in the plan (`>= 10 MB` and `>= 1000 files`).

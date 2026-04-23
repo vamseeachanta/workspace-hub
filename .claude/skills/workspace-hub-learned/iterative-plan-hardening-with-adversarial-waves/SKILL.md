@@ -137,6 +137,371 @@ For detector/coverage plans, decide explicitly whether:
 - one canonical source may emit multiple domain-scoped candidates.
 
 Do not dedupe by `doc_key` alone unless the plan also states and justifies a single-domain invariant. Otherwise reviewers will correctly flag silent suppression of real per-domain gaps.
+
+### I. Keep review-process narration out of the implementation contract
+A repeated MAJOR source in later review waves is stale process text embedded inside the plan body itself.
+
+Avoid putting these in the plan body as if they were part of the deliverable:
+- "fresh rerun still required"
+- "latest verdicts were X/Y"
+- "prepared for another approval pass"
+- review-history ledgers that will become stale immediately
+- success criteria like "the plan remains draft"
+
+Preferred pattern:
+- keep implementation contract sections clean: resource intel, deliverable, files, tests, acceptance, risks
+- if review status must be mentioned, use a minimal neutral note that does not assert transient process state
+- let `scripts/review/results/*` hold the real provider history
+- do not cite empty or placeholder review artifacts in the plan header/body as if they were substantive evidence; reviewers will correctly treat that as misleading governance state and return MAJOR
+- if the current review wave is still in progress, leave that state out of the plan contract entirely rather than narrating it inside the plan
+
+Related approval rule:
+- acceptance criteria should describe what makes the plan approval-ready, not require that it stay in `draft`.
+
+### I2. Reconcile review-artifact paths and wave state everywhere after each rerun
+
+A common late-wave failure is partial state refresh: one section points at the newest timestamped review artifacts while another still references an older wave or a placeholder filename.
+
+After every rerun wave, reconcile all of these together:
+- front-matter `Review artifacts:` line
+- Artifact Map review-artifact rows
+- Acceptance Criteria review-artifact references
+- Adversarial Review Summary wave number and verdict text
+
+Rules:
+- use one canonical timestamped artifact set per wave
+- do not leave `YYYYMMDD...` placeholders once real artifacts exist
+- do not mix Wave N filenames in one section with Wave N-1 filenames in another
+- if the current draft already incorporates a fix, remove future-tense bullets like "will reconcile in next revision"
+
+Typical failure signals:
+- Claude/Codex return MAJOR because the plan cites two different review-artifact timestamps
+- the plan body says a reconciliation is still pending even though the summary table already shows it as done
+- acceptance criteria mention stale artifact files after a newer rerun is already on disk
+
+### I3. Force summary tables to match the body after every review wave
+
+Later MAJOR reviews often come from summary drift rather than real design defects.
+
+High-risk sections to reconcile after each patch wave:
+- `Path Decision Summary`
+- `Files to Change`
+- `TDD Test List`
+- `Acceptance Criteria`
+- `Adversarial Review Summary`
+
+Required rule:
+- if the body changes a preferred branch, default path, or skip strategy, immediately update every summary table that restates that decision
+
+Examples from live use:
+- Cluster A body changed from default workflow edit to conditional/plugin-diagnosis-first, but the summary table still advertised the old default
+- Cluster C body changed from file-wide skip to class-surgical skip, but the summary table still described module-level/file-wide skip
+- TDD rows were revised, but the review summary still described them as if the old checks remained
+
+### I4. Replace weak `collect-only` proofs with runtime proofs when the defect is fixture/setup visibility
+
+For pytest-related plans, `--collect-only` is not enough when the real failure happens during fixture resolution or test setup.
+
+Rule:
+- if the defect is about missing fixtures, setup wiring, or class-vs-module fixture scope, require at least one runtime verification from each affected class/path
+- use `collect-only` only to prove collection safety or import safety, not fixture correctness by itself
+
+Example pattern:
+- one runtime check for the still-supported class/test that should PASS
+- one runtime check for the legacy or deferred class/test that should SKIP cleanly (or PASS after repoint), but must not error on fixture/setup
+
+### I5. Prefer job-scoped CI verification over global log grep for matrix workflows
+
+For GitHub Actions matrix jobs, global `gh run view --log | grep ...` checks are fragile because logs interleave multiple jobs and can create false positives/negatives.
+
+Rule:
+- when a plan's proof depends on step order or step success in one matrix cell, use job-scoped evidence
+- prefer `gh run view --json jobs` and inspect the specific job's `steps` array
+- only use global logs as a fallback when job-scoped data is unavailable, and state that fallback explicitly
+
+Use this especially for:
+- proving one step occurs before another
+- proving a specific matrix cell reached a named step
+- proving a specific step had `conclusion=success`
+
+### I6. Add pre-edit failing proofs for workflow-order fixes
+
+When a plan changes CI step order, later reviewers may return MAJOR if the plan only specifies the post-edit assertion.
+
+Rule:
+- include both:
+  - a pre-edit assertion proving the current order is wrong
+  - a post-edit assertion proving the new order is correct
+
+This keeps the workflow fix aligned with TDD discipline rather than relying only on narrative evidence.
+
+### I7. Keep cross-repo execution contracts explicit inside the plan
+
+For workspace-hub plans that modify another repo, reviewers will keep returning MAJOR unless the plan states exactly how execution crosses repo boundaries.
+
+Required contract fields:
+- target repo for implementation
+- target implementation branch naming convention
+- whether implementation rebases onto current target-repo `main` or another landed branch
+- whether workspace-hub planning commits are separate from target-repo implementation commits
+- PR/merge sequencing when the follow-on depends on an earlier landed issue in the target repo
+
+Do not leave this implicit just because the issue originated in workspace-hub.
+A plan that is otherwise technically correct can still be non-executable if the branch/merge path is ambiguous.
+
+### I8. Investigative default branches must still be executable, not just diagnostic
+
+A repeated MAJOR pattern in late review waves is a plan choosing an investigative branch as the default (for example plugin-loading diagnosis) without saying what concrete files/settings will be inspected, what fixes are allowed, and when to stop and fall back.
+
+If a preferred branch starts with "diagnose first", also specify:
+- exact config surfaces to inspect first
+- allowed remediation actions inside current issue scope
+- explicit stop condition where implementation must fall back or re-plan
+- acceptance condition for the investigative branch itself
+
+Otherwise the branch is only a thought, not an executable plan.
+
+### I9. Deliverable text must be no weaker than acceptance criteria
+
+Another recurring late-wave failure: the Deliverable section allows a softer outcome (for example "reduced residual failures") while Acceptance Criteria require full elimination of named failure signatures.
+
+Rule:
+- if Acceptance says the exact blockers must disappear, Deliverable must say the same
+- if Deliverable allows partial success, Acceptance must explicitly allow that same partial outcome
+- do not mix "green or reduced" wording in Deliverable with strict named-signature removal in Acceptance
+
+When these differ, reviewers correctly return MAJOR because the plan has two success definitions.
+
+### I10. Evidence-derived default branches should use provenance checks, not stale local repro assumptions
+
+For CI/test plans, local reproductions are often useful but can become misleading if they were run in a stale or differently-provisioned environment.
+
+Pattern:
+- establish CI-log evidence first
+- add a local provenance step proving whether the local env actually matches the CI install path
+- only then choose between install-layer fixes vs plugin-loading/configuration fixes
+
+If local provenance shows the package imports successfully under the CI-style install path, do not keep treating a missing local fixture repro as authoritative. Shift the default branch to plugin-loading/config diagnosis unless CI logs prove package absence.
+
+### I11. Replace shell-escape-sensitive path checks with Python when filenames contain backslashes
+
+When a plan's verification depends on detecting literal backslashes in git paths, shell and grep escaping are too error-prone.
+
+Observed failure mode:
+- reviewers keep returning MAJOR because commands like `grep -F '\\'` or `grep -c '\\\\'` can be read/implemented inconsistently and produce false clean/dirty results.
+
+Rule:
+- prefer `uv run --no-project python` one-liners for path-character checks
+- explicitly count `"\\" in path` over `git ls-tree --name-only` or `git ls-files`
+- use git/blob assertions for preservation checks rather than shell globs
+
+This is much more robust for pathological filenames and makes the gate auditable.
+
+### I12. Use job-scoped CI verification for matrix workflows, and verify fail-fast assumptions explicitly
+
+For matrix GitHub Actions plans, global log grep is fragile and reviewers will often ask whether another matrix leg can cancel the target proof leg.
+
+Rule:
+- verify whether `strategy.fail-fast: false` is already set; if not, decide whether it must enter scope
+- prefer job-scoped `gh run view --json jobs` checks over global `--log` scans
+- tie proof to a specific job name and step array rather than mixed matrix logs
+- if using global logs as fallback, document that fallback explicitly and why it is safe
+
+This is especially important when the close gate depends on one named matrix leg completing a specific step.
+
+### I13. Narrow acceptance to the CI lane actually evidenced
+
+A recurring late-wave MAJOR source is overclaiming across the whole matrix or workflow when the evidence only covers one job.
+
+Rule:
+- if logs/evidence only show one named job or one Python version lane, make that the primary acceptance lane
+- mention sibling lanes only as conditional follow-on scope when the same failure signatures are evidenced there too
+- do not claim repo-wide or workflow-wide resolution from one job's proof
+
+This is especially important for follow-up issues created after a previous fix exposed a smaller residual failure set.
+
+### I14. If default remediation is a skip/defer path, require tracker-first ordering
+
+When a plan's default safe path is to skip or defer a legacy-only test surface, reviewers will keep returning MAJOR unless the plan makes the accountability step happen before the code edit.
+
+Rule:
+- create the follow-up tracker issue before any skip-based implementation change
+- make that ordering explicit in the steps, not just in notes or risks
+- state what future re-enable/repoint decision the tracker owns
+
+This prevents "silent burial" plans where a skip lands without durable follow-through.
+
+### I15. Use line-level evidence to justify legacy-only skip boundaries
+
+If a plan proposes skipping a whole file or class rather than repointing it immediately, support that with direct source evidence.
+
+Good evidence pattern:
+- identify the import path the test expects
+- identify the instantiated class/module in setup
+- identify repeated calls/patches against the legacy-only method or symbol
+- show the modern implementation path separately
+
+If the file is entirely bound to the legacy path/method, say so plainly. That turns a contested skip into an evidence-backed temporary boundary rather than a convenience shortcut.
+
+### I16. Make adjacent fix clusters conditional when one branch can eliminate another failure surface
+
+Reviewers often flag plans that treat every surfaced failure as mandatory work even when one chosen branch can remove the need for another branch.
+
+Rule:
+- if Cluster B only matters when Cluster C remains active, say B is conditional after C
+- update Deliverable, Path Decision Summary, Files to Change, TDD, and Acceptance together to reflect that conditionality
+- do not leave all clusters sounding mandatory if the preferred branch intentionally defers one surface
+
+This keeps the plan executable and prevents reviewers from reading it as unnecessary scope expansion.
+
+### I17. For cross-repo execution plans, make delivery contract mandatory, not advisory
+
+A recurring late-wave MAJOR source is a technically solid fix plan whose repo-delivery path is only implied.
+
+Required contract fields:
+- target implementation repo
+- mandatory execution branch name/pattern
+- PR target branch
+- upstream-push vs fork fallback
+- separation between workspace-hub planning commits and target-repo implementation commits
+- rebase/conflict behavior when the plan depends on already-landed upstream state
+
+Do not say a branch name is merely "recommended" if the executor really needs one deterministic path.
+Reviewers will keep returning MAJOR until the delivery path is executable end-to-end.
+
+### I18. Use signature-based close gates when full-suite green is out of scope
+
+Another repeated late-wave failure pattern is mixing:
+- scoped blocker removal as the real issue goal, and
+- full-suite success as the written pass/fail gate.
+
+Rule:
+- if unrelated failures are allowed to remain, the hard close gate must be signature-based
+- named blocker signatures should disappear from targeted local checks plus the primary CI lane
+- the full-suite command may still run, but only as observational audit unless the issue truly owns all remaining failures
+
+Keep Deliverable, TDD, and Acceptance aligned:
+- hard gate = disappearance of named blocker signatures
+- full-suite run = audit surface for discovering unrelated residual failures
+
+### I19. For grep-filtered pytest proofs, add `set -o pipefail` and capture logs
+
+Reviewers correctly distrust plan commands like `pytest ... | grep ...` when shell failure handling is implicit.
+
+Rule:
+- use `set -o pipefail` before grep-filtered test commands
+- prefer `2>&1 | tee /tmp/<name>.log | grep ...` so both exit behavior and evidence capture are explicit
+- do not use `|| true` on the primary RED proof unless the plan explicitly explains why non-failing command status is intentional
+
+This prevents false-green plan logic when pytest crashes before emitting the expected text.
+
+### I20. Bound exploratory repoint branches to enumerated candidate paths
+
+A plan that says "discover the new module" without naming where to look is still not executable.
+
+Rule:
+- if a repoint/relink path is optional, enumerate the exact candidate directories/modules to inspect
+- define the search surface as a finite list of paths/patterns
+- if no hit is found within that exact surface, state the fallback outcome explicitly (for example: repoint is off the table for this plan, use skip/defer path instead)
+
+This turns a fuzzy discovery step into a deterministic gate.
+
+### I21. Skip/defer governance should prefer tracker-first, but must not create impossible execution deadlocks
+
+Tracker-first ordering is valuable, but reviewers may flag over-coupled governance when issue-creation capability becomes a hard non-code blocker with no bounded fallback.
+
+Rule:
+- prefer creating the follow-up tracker before skip-based edits
+- verify repo read/write capability concretely before depending on tracker creation
+- if tracker creation is temporarily unavailable, define the bounded fallback explicitly:
+  - keep the skip reason/comment referencing the parent issue
+  - document the blocker immediately on the governing issue
+  - do not silently merge/close as though the tracker existed
+
+This preserves accountability without making the plan non-executable under temporary GitHub capability limits.
+
+### I22. Separate technical acceptance from workflow gates
+
+Late MAJOR churn often comes from mixing two different ideas in one acceptance checklist:
+- technical deliverable proof
+- workflow/admin preconditions
+
+Rule:
+- keep `Acceptance Criteria` focused on observable issue outcomes: named failure signatures removed, bounded reruns clean, target CI lane verified, etc.
+- move process items into a separate section such as `Workflow Gates` or `Approval Gates`
+- typical workflow-only items to separate:
+  - `status:plan-review` / `status:plan-approved`
+  - `.planning/plan-approved/<issue>.md` marker
+  - review-wave convergence requirement
+  - README/index consolidation ownership
+  - user approval / no-self-approval reminders
+
+This reduces reviewer confusion about what proves the issue is technically solved versus what merely authorizes execution.
+
+### I23. If the default branch is a stabilization skip, say whether closure is allowed on skip-only remediation
+
+A recurring late-wave MAJOR source is a plan that says a skip/defer branch is the default implementation path while acceptance criteria forbid closure unless replacement supported-path coverage exists.
+
+Rule:
+- decide explicitly whether the issue is:
+  - a stabilization-only issue that may close on tracked skip/defer, or
+  - a closure-requires-replacement-coverage issue
+- state that same rule consistently in:
+  - Deliverable
+  - Path Decision Summary
+  - pseudocode stop/continue rules
+  - Acceptance Criteria
+- if closure requires replacement supported-path automated evidence, say the default skip path may stabilize legacy failures but cannot close the issue by itself
+- if no supported path is found, say whether execution stops and returns to planning, or whether the issue intentionally closes as tracked deferral
+
+Do not leave the plan saying both at once.
+
+### I24. Temporary diagnostic CI changes must be explicitly non-mergeable
+
+When a plan allows a temporary diagnostic workflow/job edit to learn something about CI state, reviewers will keep returning MAJOR unless the plan states what happens to that diagnostic change.
+
+Rule:
+- mark any temporary diagnostic CI edit as NON-MERGEABLE
+- require its deciding evidence to be copied into execution notes or PR body
+- require the diagnostic change/commit to be removed before the final PR/merge
+- if the diagnostic still leaves branch selection ambiguous, define a hard stop or follow-up rather than allowing a prolonged debug loop
+
+This prevents audit drift where a repo accumulates debug-only workflow noise inside the implementation branch.
+
+### I25. Investigative branches need a bounded exit rule, not just a list of surfaces
+
+A plan that says "inspect these 4 surfaces" is still under-specified if it does not say what happens after those inspections.
+
+Rule:
+- for investigate-first branches, define an exit rule such as:
+  - inspect named surfaces
+  - use one local provenance step
+  - permit at most one diagnostic CI run if still ambiguous
+  - then either apply one bounded in-scope fix, or stop and open a follow-up / return to planning
+- do not allow the issue to linger in open-ended investigation inside the implementation plan
+
+This converts diagnostic intent into an actually executable branch.
+
+### J. Machine-checkable policy plans need one canonical schema artifact
+When a plan introduces status/compliance/budget fields, reviewers keep returning MAJOR unless the plan names:
+- one authoritative schema-bearing artifact
+- exact required fields
+- allowed enum values
+- nullability / no-history behavior
+- whether other artifacts derive from that schema or merely mirror it
+
+Do not spread the contract vaguely across "JSON/scorecard outputs" or similar plural wording.
+Choose one canonical JSON artifact and state the derivative relationship explicitly.
+
+### K. Runtime replacement plans need behavior-preservation proof, not just string-removal tests
+If a plan changes launcher/runtime forms (for example `python3` -> `uv run --no-project python`), tests that only prove the old string disappeared are insufficient.
+Also define at least one check that the new invocation form is valid for the named callsites, based on one or more of:
+- file-local runtime contract (standalone uv script header, stdlib-only launcher, external-tool bootstrap path)
+- an execution/smoke expectation
+- an explicit rule that the script must not depend on the project environment
+
+Otherwise reviewers will correctly say the new command form is asserted rather than verified.
+
 - Post a concise issue comment after each meaningful wave.
 - Include the new artifact paths and current blocker cluster.
 - Say explicitly whether the issue should remain draft-only.

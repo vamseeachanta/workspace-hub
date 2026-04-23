@@ -47,8 +47,27 @@ Expected output includes:
 
 Use this only when:
 1. you already ran targeted validation in the clean worktree
-2. the failure is clearly due to missing sibling repos / worktree path assumptions
-3. review evidence is already present for feature/fix commits
+2. the failure is clearly due to missing sibling repos / worktree path assumptions OR unrelated repo-wide pre-push debt
+3. the branch is narrow and low-risk (for example a docs/plans-only branch)
+4. review evidence is already present for feature/fix commits when applicable
+
+## Important refinement learned in live use
+
+There are actually two distinct failure modes:
+
+1. Clean-worktree topology failure
+- the isolated worktree does not contain sibling tier-1 repos under the paths assumed by the pre-push hook
+- typical errors are `directory not found` for `assetutilities`, `digitalmodel`, `worldenergydata`, or `assethold`
+
+2. Topology-compatible checkout still blocked
+- even after recreating the landing commit in the real workspace checkout (where sibling repos do exist), the same pre-push hook can still block the push because it runs ecosystem-wide tier-1 checks and fails on unrelated repo debt
+- observed example: a docs-only branch was blocked by existing `assetutilities` ruff/mypy failures, not by the branch's own diff
+- another observed example: after the tier-1 checks, the hook's config-drift step can still fail with `ModuleNotFoundError: No module named 'yaml'` from `scripts/quality/check_config_drift.py`; this is also environment/governance debt unrelated to the narrow branch content
+
+Practical decision rule:
+- first try a normal push from a topology-compatible checkout once
+- if that still fails only because of unrelated ecosystem-wide checks, prefer the audited bypass for the narrow docs-only branch instead of debugging the clean worktree further
+- record that the bypass was environmental/governance-driven, not required by the branch content itself
 
 ## Verification before bypassing
 
