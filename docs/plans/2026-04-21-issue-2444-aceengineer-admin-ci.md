@@ -1,11 +1,11 @@
 # Plan for #2444: aceengineer-admin — add minimal viable CI (uv + ruff + black + pytest) scoped to src/ + tests/
 
-> **Status:** draft (v5 — post-r4 external review fixes applied; fresh rerun still required)
+> **Status:** draft (v6 — post-r5 external review fixes applied; fresh rerun required)
 > **Complexity:** T1
-> **Date:** 2026-04-21 (v5 revision: 2026-04-22)
+> **Date:** 2026-04-21 (v6 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2444
 > **Parent meta-issue:** #2424 (ecosystem CI health — 6-of-7 repos red)
-> **Review artifacts:** Wave 1 = `-claude.md` / `-codex.md` / `-gemini.md`; Wave 2 = `-*-r2.md`; interim Wave 3 = `-*-r3.md` (single-author / non-authoritative); latest fresh external rerun = `2026-04-22-plan-2444-{codex,gemini}-r4.md`
+> **Review artifacts:** Wave 1 = `-claude.md` / `-codex.md` / `-gemini.md`; Wave 2 = `-*-r2.md`; interim Wave 3 = `-*-r3.md` (single-author / non-authoritative); external reruns = `2026-04-22-plan-2444-{codex,gemini}-r4.md` and `2026-04-22-plan-2444-{codex,gemini}-r5.md`; a fresh post-v6 rerun is still required before approval
 
 ---
 
@@ -102,7 +102,8 @@ python_functions = ["test_*"]
 | Plan review — Claude | `scripts/review/results/2026-04-21-plan-2444-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-21-plan-2444-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-04-21-plan-2444-gemini.md` |
-| Plan review — latest external rerun | `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r4.md` |
+| Plan review — external reruns | `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r4.md`, `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r5.md` |
+| Next rerun target | `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r6.md` |
 | Sibling template referenced | digitalmodel/.github/workflows/workflow-automation-tests.yml |
 
 ---
@@ -177,7 +178,7 @@ Wave-2 Codex flagged the prior "CI infrastructure — no unit-test TDD" waiver a
 - [ ] Package import smoke (`python -c "import aceengineer_admin"`) runs and passes on both matrix cells
 - [ ] Lint step (ruff + black) completes **successfully** per matrix cell. (Wave-2 Claude finding: the prior "within 2 minutes" wording was runner-dependent and not deterministically verifiable. Performance is tracked as an Open question in §Risks, not as an acceptance gate.)
 - [ ] Pytest step respects `pyproject.toml` `testpaths` (no `--rootdir` override)
-- [ ] Fresh external adversarial review artifacts (Codex + Gemini, and Claude if rerun) posted for this v5 text after the interim `-r3.md` wave — the already-posted single-author `-r3.md` files do NOT satisfy this gate. Canonical current targets: `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r4.md` plus any later rerun artifacts generated from subsequent plan edits.
+- [ ] Fresh external adversarial review artifacts (Codex + Gemini, and Claude if rerun) posted for this v6 text after the interim `-r3.md` wave and after the now-historical `r4` / `r5` reruns — the already-posted `r3`, `r4`, and `r5` files do NOT satisfy this gate for approval of the current draft. Canonical next targets: `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r6.md` plus any later rerun artifacts generated from subsequent plan edits.
 - [ ] Follow-on issue opened to re-enable `tests/knowledge/` with `[knowledge-semantic]` extra once ML-extras-on-runner footprint is scoped
 - [ ] Follow-on issue opened to clean up the duplicate `common/config.py` (residual rename drift — legacy `src/aceengineer_admin/automation/common/config.py` duplicate should be removed once all callers migrate to the top-level `aceengineer_admin.common.config`). Cross-linked from #2444 closeout.
 
@@ -310,9 +311,9 @@ runs-on: ubuntu-latest
 - (Claude.3 → resolved) 2-minute lint acceptance criterion rewritten to "Lint step completes **successfully**"; runtime is tracked as an Open question in §Risks rather than an acceptance gate.
 - (Gemini.2 — false positive → documented) Gemini's attested evidence claimed `src/aceengineer_admin/cli.py` and `__init__.py` might be missing. Live verification 2026-04-22 (`git ls-files src/aceengineer_admin/cli.py src/aceengineer_admin/__init__.py`) confirms both EXIST. The v2 plan's §Evidence block now states this explicitly to prevent Wave-3 re-surfacing.
 
-### Status (v5)
+### Status (v6)
 
-**Revised after external rerun review; still NOT approval-ready.** Fresh external artifacts now exist at `2026-04-22-plan-2444-{codex,gemini}-r4.md`, and both returned MAJOR. The next required step is another focused patch wave against those findings, not user approval.
+**Revised after external rerun review; still NOT approval-ready.** External reruns now exist at `2026-04-22-plan-2444-{codex,gemini}-r4.md` and `2026-04-22-plan-2444-{codex,gemini}-r5.md`, and both waves still returned MAJOR. This v6 draft incorporates the r5 findings (status/review-state consistency, verifier artifact inventory, working-directory context, and rerun-gate clarity). The next required step is a fresh post-v6 external rerun, not user approval yet.
 
 ---
 

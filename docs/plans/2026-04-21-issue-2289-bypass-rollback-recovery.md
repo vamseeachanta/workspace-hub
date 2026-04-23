@@ -400,4 +400,4 @@ These tests are part of the acceptance contract for #2445, even though they are 
 
 ## Complexity: T1
 
-**T1** — one new policy document (~280 lines including scenario matrix), two targeted cross-references (TRUST-ARCHITECTURE.md, docs/plans/README.md). No scripts, no tests, no hooks, no AGENTS.md changes. Five rounds of adversarial review have settled the core design questions; v6 locks timestamp-based precedence and canonical enum.
+**T1** — one new policy document (~280 lines including scenario matrix), two targeted cross-references (TRUST-ARCHITECTURE.md, docs/plans/README.md), and no implementation scripts in this issue. The remaining work is policy-contract hardening around evidence binding and review governance; implementation remains deferred to #2445.

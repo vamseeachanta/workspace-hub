@@ -147,7 +147,7 @@ for root, dirs, files in os.walk(repo_path):
 
 ## Deliverable
 
-A canonical tier-1 indexing and code-placement contract plus derived checklist under `docs/standards/`, linked from `docs/README.md`, that makes each issue-required routing surface independently testable: `AGENTS.md`, `README.md`, `docs/README.md`, repo operator maps, one canonical machine-readable registry per repo, code/tests/docs routing tables, source-hygiene rules, the repo-vs-bulk-artifact-store placement boundary (with `/mnt/ace/data` documented as the current workspace-hub example), and explicit retirement guidance for legacy product-doc reference patterns.
+A canonical tier-1 indexing and code-placement contract plus derived checklist under `docs/standards/`, linked from `docs/README.md`, that makes each issue-required routing surface independently testable: `AGENTS.md`, `README.md`, `docs/README.md`, repo operator maps, one canonical machine-readable registry per repo, code/tests/docs routing tables, source-hygiene rules, the repo-vs-bulk-artifact-store placement boundary (where bulk-artifact-store means a non-repo storage target for large, generated, or fast-growing artifacts; `/mnt/ace/data` is the current workspace-hub implementation example), and explicit retirement guidance for legacy product-doc reference patterns.
 
 ---
 
@@ -170,23 +170,26 @@ function define_tier1_indexing_and_code_placement_contract():
         banned examples = enumerate concrete signatures such as literal legacy filenames,
             legacy path fragments, or legacy reference blocks used as active navigation authority
         banned = using legacy product-doc references as active navigation authority
-    define freshness rule with exact required wording:
-        contract must state "daily freshness review" and either "every 24 hours" or "once per day"
+    define freshness rule with exact required wording and obligation:
+        contract must state "daily freshness review"
+        contract must state either "every 24 hours" or "once per day"
+        contract must require refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`
         contract must name #2465 in the same freshness section as the follow-through issue
     define negative authority rule with exact required wording:
-        contract/checklist may cite the scorecard as local attestation only
-        contract/checklist must include "MUST NOT treat docs/reports/2026-04-22-tier-1-indexing-scorecard.md as required canonical authority"
+        contract/checklist may cite tier-1 indexing scorecards as local attestation only
+        contract/checklist must include "MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority"
     define data-placement scope explicitly:
         universal rule = repo-vs-bulk-artifact-store
+        bulk-artifact-store = non-repo storage target for large, generated, or fast-growing artifacts
         workspace-hub example = `/mnt/ace/data` as the current implementation example
 
 function define_tier1_checklist(contract):
     for each tier-1 repo in scope:
         record repo_name
-        record operator_map_status
-        record registry_status
-        record data_placement_status
-        record evidence_source
+        record operator_map_status using one of: present | partial | missing | not-applicable
+        record registry_status using one of: present | partial | missing | not-applicable
+        record data_placement_status using one of: present | partial | missing | not-applicable
+        record evidence_source as a concrete path, issue number, or report path
         link the corresponding remediation issue
 
 function validate_contract_docs():
@@ -195,13 +198,15 @@ function validate_contract_docs():
     assert docs index links both
     assert contract doc names every required surface independently
     assert contract doc names the repo-vs-bulk-artifact-store rule explicitly
+    assert contract doc defines bulk-artifact-store in concrete terms
     assert contract doc cites `/mnt/ace/data` only as the current workspace-hub example
     assert contract doc contains the exact daily freshness wording requirement
+    assert contract doc requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`
     assert contract doc names #2465 as the daily-freshness follow-through issue in that same section
-    assert contract doc contains the exact negative-authority sentence for the scorecard
-    assert legacy retirement rule allows explicit migration language and enumerates at least one concrete banned-pattern example while banning legacy product-doc references as active routing authority
+    assert contract doc contains the exact negative-authority sentence for tier-1 indexing scorecards
+    assert legacy retirement rule allows explicit migration language and enumerates multiple concrete banned-pattern signatures while banning legacy product-doc references as active routing authority
     assert checklist covers all four tier-1 repos and links #2461-#2464
-    assert checklist records repo_name, operator_map_status, registry_status, data_placement_status, and evidence_source for each repo
+    assert checklist records repo_name, operator_map_status, registry_status, data_placement_status, and evidence_source for each repo using the allowed status values
     assert docs/plans/README.md contains the #2460 index row
 ```
 
