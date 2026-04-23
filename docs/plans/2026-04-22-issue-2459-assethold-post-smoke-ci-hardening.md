@@ -73,7 +73,7 @@ assethold/.agent-os/modules/prompt_enhancement.py
 460-494:
 - returns an unterminated triple-quoted string block; CI flake8 reports E999 at line 460 detected at line 494
 
-assethold/modules/reporting/utils/path_utils.py
+assethold/src/assethold/modules/reporting/utils/path_utils.py
 118-132:
 - uses `os.path.commonprefix(...)` at line 125 without importing `os`
 
@@ -101,8 +101,6 @@ assethold/AGENTS.md
 | Primary workflow | `assethold/.github/workflows/python-tests.yml` |
 | Existing watchlist tests | `assethold/tests/unit/signals/test_watchlist.py` |
 | New path-utils regression test | `assethold/tests/unit/modules/reporting/utils/test_path_utils.py` |
-| New workflow-scope regression test | `assethold/tests/unit/workflows/test_python_tests_workflow_scope.py` |
-| New workflow-order regression test | `assethold/tests/unit/workflows/test_python_tests_workflow_order.py` |
 | Bounded source fixes | `assethold/src/assethold/signals/watchlist.py`, `assethold/src/assethold/modules/reporting/utils/path_utils.py` |
 | Plan review — Claude | `scripts/review/results/2026-04-22-plan-2459-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-22-plan-2459-codex.md` |
@@ -123,11 +121,7 @@ function harden_python_tests_workflow():
     keep smoke step first unchanged
     change both flake8 commands from repo-root to:
         src/assethold
-        tests/test_smoke.py
-        tests/unit/signals/test_watchlist.py
-        tests/unit/modules/reporting/utils/test_path_utils.py
-        tests/unit/workflows/test_python_tests_workflow_scope.py
-        tests/unit/workflows/test_python_tests_workflow_order.py
+        tests/
     leave any root auxiliary paths (.agent-os/, scripts/agent-os/, modules/) out of this tranche
     preserve smoke-before-lint ordering and preserve the single-line shell-neutral smoke command
     change mypy gate from repo-wide src/ to two explicit files:
@@ -165,13 +159,12 @@ function closeout_boundary(post_change_ci):
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `assethold/.github/workflows/python-tests.yml` | Change both flake8 commands from repo-root to the exact maintained tranche (`src/assethold`, `tests/test_smoke.py`, `tests/unit/signals/test_watchlist.py`, `tests/unit/modules/reporting/utils/test_path_utils.py`, `tests/unit/workflows/test_python_tests_workflow_scope.py`, `tests/unit/workflows/test_python_tests_workflow_order.py`), add `types-PyYAML`, preserve smoke-before-lint / shell-neutral smoke invariants, and change mypy from repo-wide `src/` to the targeted two-file tranche for this issue |
+| Modify | `assethold/.github/workflows/python-tests.yml` | Change both flake8 commands from repo-root to the exact maintained tranche (`src/assethold` and `tests/`), add `types-PyYAML`, preserve smoke-before-lint / shell-neutral smoke invariants, and change mypy from repo-wide `src/` to the targeted two-file tranche for this issue |
 | Modify | `assethold/src/assethold/signals/watchlist.py` | Repair the concrete mypy blocker cluster already visible in CI and local repro |
 | Modify | `assethold/src/assethold/modules/reporting/utils/path_utils.py` | Fix missing `os` import / type-check blocker |
 | Create | `assethold/tests/unit/modules/reporting/utils/test_path_utils.py` | Add targeted regression coverage for the package path-utils helper |
 | Modify | `assethold/tests/unit/signals/test_watchlist.py` | Extend existing watchlist coverage to lock in the typed/nullable behavior repaired in this issue |
-| Create | `assethold/tests/unit/workflows/test_python_tests_workflow_scope.py` | Add an executable red→green test for the workflow scope changes rather than relying on prose |
-| Create | `assethold/tests/unit/workflows/test_python_tests_workflow_order.py` | Add an executable guard that smoke stays before lint/mypy and remains shell-neutral |
+| Reference (verification-only, no new file) | `assethold/.github/workflows/python-tests.yml` | Structural verification for flake8 scope and smoke ordering will be done via deterministic YAML inspection commands in the TDD/acceptance contract rather than new workflow-specific pytest files |
 | Update | `docs/plans/README.md` | Add this plan to the canonical index |
 | Reference (no edit in this tranche) | `assethold/modules/reporting/utils/path_utils.py` | Explicitly out of scope as a non-package duplicate once flake8 is narrowed to the maintained tranche; future cleanup remains tracked separately |
 | Reference (existing future work) | `vamseeachanta/assethold#31` | Existing repo issue already tracks broad quality-gate / mypy debt beyond this bounded tranche |
@@ -188,20 +181,24 @@ function closeout_boundary(post_change_ci):
 | `test_watchlist_load_returns_mapping_when_yaml_empty` | empty/nullable YAML load is normalized safely | empty watchlist YAML | `{}`-compatible mapping, no None attr errors |
 | `test_watchlist_add_stock_persists_without_nullable_internal_state_errors` | add/update path still persists after typing changes | valid temp YAML + new ticker | ticker saved, tests stay green |
 | `test_watchlist_remove_stock_persists_without_nullable_internal_state_errors` | remove path still saves correctly | existing ticker in temp YAML | returns True and persists removal |
-| `test_python_tests_workflow_scope_targets_exact_maintained_tranche` | workflow YAML encodes the exact flake8/mypy target paths agreed in this plan | parsed workflow YAML | exact maintained-tranche path list present |
-| `test_python_tests_workflow_preserves_smoke_before_lint_and_shell_neutral_command` | workflow edits preserve the #2448 smoke ordering and single-line smoke command invariant | parsed workflow YAML | smoke step precedes lint/mypy and uses single-line command |
+| `validate_python_tests_workflow_scope_and_order` | deterministic YAML inspection proves both flake8 commands target `src/assethold` + `tests/`, smoke remains before lint/mypy, and smoke command stays single-line/shell-neutral | parsed workflow YAML | all structural assertions true |
 
 ### TDD protocol for execution
-- First write/extend `assethold/tests/unit/workflows/test_python_tests_workflow_scope.py`, `assethold/tests/unit/workflows/test_python_tests_workflow_order.py`, `assethold/tests/unit/signals/test_watchlist.py`, and `assethold/tests/unit/modules/reporting/utils/test_path_utils.py`.
-- Before editing workflow/source files, run the narrowed static-analysis commands expected after the workflow change and confirm they fail on current main:
+- First write/extend `assethold/tests/unit/signals/test_watchlist.py` and `assethold/tests/unit/modules/reporting/utils/test_path_utils.py`.
+- Before editing workflow/source files, run the narrowed static-analysis and deterministic workflow-inspection commands expected after the workflow change and confirm they fail on current main:
   - `cd assethold && uv run --with types-PyYAML mypy src/assethold/signals/watchlist.py src/assethold/modules/reporting/utils/path_utils.py --ignore-missing-imports`
-  - `cd assethold && uv run python -m pytest tests/unit/workflows/test_python_tests_workflow_scope.py --noconftest -o addopts= -q`
-  - `cd assethold && uv run python -m pytest tests/unit/workflows/test_python_tests_workflow_order.py --noconftest -o addopts= -q`
+  - `cd assethold && uv run python - <<'PY'
+from pathlib import Path
+text = Path('.github/workflows/python-tests.yml').read_text()
+assert 'flake8 src/assethold tests/' in text
+assert text.index('Run smoke tests first') < text.index('Lint with flake8') < text.index('Type checking with mypy')
+assert 'pytest tests/test_smoke.py --verbose --tb=short' in text
+PY`
 - Run the targeted pytest commands and confirm at least one new/extended assertion fails before changing workflow or source files:
   - `cd assethold && uv run python -m pytest tests/unit/signals/test_watchlist.py --noconftest -o addopts= -q`
   - `cd assethold && uv run python -m pytest tests/unit/modules/reporting/utils/test_path_utils.py --noconftest -o addopts= -q`
 - Only then edit `assethold/.github/workflows/python-tests.yml`, `src/assethold/signals/watchlist.py`, and `src/assethold/modules/reporting/utils/path_utils.py`.
-- Re-run the same targeted tests, then the targeted mypy command, then CI.
+- Re-run the same targeted tests, then the targeted mypy command, then the deterministic workflow-inspection command, then CI.
 
 ---
 
@@ -210,15 +207,14 @@ function closeout_boundary(post_change_ci):
 - [ ] This plan is indexed in `docs/plans/README.md`.
 - [ ] Adversarial review evidence is complete with at least 2 valid provider artifacts, and the summary table reflects the real verdicts / any invalid empty-artifact runs honestly.
 - [ ] The workflow continues to pass `pytest tests/test_smoke.py --verbose --tb=short` before later gates.
-- [ ] Both flake8 commands are changed from `.` to the exact maintained tranche: `src/assethold`, `tests/test_smoke.py`, `tests/unit/signals/test_watchlist.py`, `tests/unit/modules/reporting/utils/test_path_utils.py`, `tests/unit/workflows/test_python_tests_workflow_scope.py`, and `tests/unit/workflows/test_python_tests_workflow_order.py`.
+- [ ] Both flake8 commands are changed from `.` to the exact maintained tranche: `src/assethold` and `tests/`.
 - [ ] The workflow mypy gate is changed from `mypy src/ --ignore-missing-imports` to a targeted command covering only `src/assethold/signals/watchlist.py` and `src/assethold/modules/reporting/utils/path_utils.py` for this tranche.
 - [ ] `types-PyYAML` is added explicitly in the workflow dependency-install step and the same package is used in local targeted mypy verification.
 - [ ] Local targeted validators pass using the repo’s canonical pytest invocation style with repo-wide addopts disabled for true red/green checks:
   - `cd assethold && uv run python -m pytest tests/unit/signals/test_watchlist.py --noconftest -o addopts= -q`
   - `cd assethold && uv run python -m pytest tests/unit/modules/reporting/utils/test_path_utils.py --noconftest -o addopts= -q`
-  - `cd assethold && uv run python -m pytest tests/unit/workflows/test_python_tests_workflow_scope.py --noconftest -o addopts= -q`
-  - `cd assethold && uv run python -m pytest tests/unit/workflows/test_python_tests_workflow_order.py --noconftest -o addopts= -q`
   - `cd assethold && uv run --with types-PyYAML mypy src/assethold/signals/watchlist.py src/assethold/modules/reporting/utils/path_utils.py --ignore-missing-imports`
+  - `cd assethold && uv run python - <<'PY' ... PY` verifies both flake8 targets plus smoke-before-lint / shell-neutral smoke invariants in `.github/workflows/python-tests.yml`
 - [ ] The targeted mypy command reports zero errors on the two repaired source files.
 - [ ] A post-change CI run proves the workflow clears the current first post-smoke blockers and records the next exposed failure surface explicitly by run ID, job/step name, and either (a) a closeout note or (b) a linked follow-up issue if additional work remains.
 - [ ] Auxiliary broken Python outside the maintained tranche is explicitly tracked via `assethold#45`, the duplicate non-package `path_utils.py` is tracked via `assethold#46`, and broad repo-wide type debt remains tracked via `assethold#31`.

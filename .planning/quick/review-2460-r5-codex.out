@@ -1,3 +1,41 @@
+OpenAI Codex v0.123.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019db825-27eb-71f2-b407-d1d1e6acb817
+--------
+user
+# Adversarial Plan Review Request: Issue #2460 (rerun after semantic guard patch)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
+Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
+If you find no problems, explicitly state what you checked.
+
+## Review focus
+This rerun should test whether the latest semantic blockers are now resolved:
+1. bulk-artifact-store rule defined concretely enough
+2. /mnt/ace/data clearly example-only rather than universal
+3. daily freshness guard now includes a real obligation, not just wording
+4. scorecard negative-authority guard now targets the artifact class, not a dated file
+5. checklist fields and allowed values are concrete enough
+6. plan no longer self-contradicts and is approval-ready overall
+
+## Required output format
+Verdict: APPROVE | MINOR | MAJOR
+Findings:
+- [severity] <concise title> — <why it matters, citing file path/section/claim>
+Checks performed:
+- <what you verified>
+
+## Plan under review
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft
@@ -31,7 +69,6 @@
 ### Documents consulted
 - GitHub issue #2460 — defines the narrow scope: canonical routing, operator maps, canonical entry points, machine-readable registries, and daily freshness.
 - `docs/reports/2026-04-22-tier-1-indexing-scorecard.md` — local attestation baseline used to identify the gap inventory for this draft. The contract itself must not depend on that report being canonical branch state; implementation should encode durable rules from standards + issue scope, while the checklist can cite the scorecard as current local evidence when available.
-- `docs/BUSINESS_BRAIN.md` — canonical current tier-1 repo scope used by this plan: `workspace-hub`, `digitalmodel`, `assetutilities`, and `aceengineer-website`. This is the authority for why the checklist covers those four repos rather than the older starter-repo examples in `FILE_STRUCTURE_TAXONOMY.md`.
 - `docs/standards/CONTROL_PLANE_CONTRACT.md` — establishes `AGENTS.md` as canonical repo entry point and provider adapters as supporting surfaces.
 - `docs/standards/FILE_STRUCTURE_TAXONOMY.md` — defines expected starter-repo top-level anatomy (`AGENTS.md`, `README.md`, `src/`, `tests/`, `docs/`, `pyproject.toml`).
 - `docs/standards/DATA_PLACEMENT.md` — gives the durable rule for what belongs in repo versus on `/mnt/ace/data/`, which must be incorporated into tier-1 routing guidance.
@@ -185,21 +222,13 @@ function define_tier1_indexing_and_code_placement_contract():
         workspace-hub example = `/mnt/ace/data` as the current implementation example
 
 function define_tier1_checklist(contract):
-    for each tier-1 repo in scope from docs/BUSINESS_BRAIN.md:
+    for each tier-1 repo in scope:
         record repo_name
         record operator_map_status using one of: present | partial | missing | not-applicable
         record registry_status using one of: present | partial | missing | not-applicable
         record data_placement_status using one of: present | partial | missing | not-applicable
         record evidence_source as a concrete path, issue number, or report path
-        repeat the negative-authority rule for scorecards in the checklist preamble
         link the corresponding remediation issue
-
-function implement_with_tdd():
-    write `tests/docs/test_tier1_indexing_contract.py` first
-    run the targeted test file and confirm failure before editing contract/checklist docs
-    then edit `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
-    then edit `docs/standards/TIER1_INDEXING_CHECKLIST.md`
-    rerun targeted tests until green
 
 function validate_contract_docs():
     assert contract doc exists
@@ -214,10 +243,8 @@ function validate_contract_docs():
     assert contract doc names #2465 as the daily-freshness follow-through issue in that same section
     assert contract doc contains the exact negative-authority sentence for tier-1 indexing scorecards
     assert legacy retirement rule allows explicit migration language and enumerates multiple concrete banned-pattern signatures while banning legacy product-doc references as active routing authority
-    assert checklist covers the four current tier-1 repos from docs/BUSINESS_BRAIN.md and links #2461-#2464
-    assert checklist repeats the exact negative-authority sentence for tier-1 indexing scorecards in its preamble
+    assert checklist covers all four tier-1 repos and links #2461-#2464
     assert checklist records repo_name, operator_map_status, registry_status, data_placement_status, and evidence_source for each repo using the allowed status values
-    assert TDD sequencing requires tests to fail before contract/checklist doc edits begin
     assert docs/plans/README.md contains the #2460 index row
 ```
 
@@ -254,11 +281,9 @@ function validate_contract_docs():
 | `test_tier1_contract_marks_2465_as_daily_freshness_followthrough` | contract explicitly names `#2465` as the daily-freshness follow-through issue | contract text | linkage present |
 | `test_tier1_contract_requires_daily_freshness_cadence` | contract includes the exact wording `daily freshness review`, includes either `every 24 hours` or `once per day`, and requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md` in the same freshness section | contract text | exact cadence wording and refresh obligation present |
 | `test_tier1_contract_forbids_scorecard_as_required_canonical_authority` | contract contains the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority` | contract text | exact negative-authority sentence present |
-| `test_tier1_checklist_covers_all_scope_repos` | checklist covers the four current tier-1 repos defined in `docs/BUSINESS_BRAIN.md`: workspace-hub, digitalmodel, assetutilities, and aceengineer-website | checklist text | exact repo set present |
+| `test_tier1_checklist_covers_all_scope_repos` | checklist covers workspace-hub, digitalmodel, assetutilities, and aceengineer-website | checklist text | all four repo names present |
 | `test_tier1_checklist_links_repo_specific_child_issues` | checklist links #2461-#2464 to the relevant repos | checklist text | all repo-specific child issue numbers present |
-| `test_tier1_checklist_repeats_scorecard_negative_authority_rule` | checklist preamble repeats the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority` | checklist text | exact negative-authority sentence present |
 | `test_tier1_checklist_records_surface_status_per_repo` | checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values drawn from `present | partial | missing | not-applicable` | checklist text | exact field names and allowed status values present |
-| `test_tdd_sequence_requires_tests_fail_before_doc_edits` | implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first and confirming failure before editing contract/checklist docs | plan text | explicit test-first sequence present |
 | `test_docs_readme_links_tier1_contract_and_checklist` | docs index exposes both contract and checklist for discovery | `docs/README.md` | link text/path present |
 | `test_plans_readme_indexes_2460_plan` | planning index includes the #2460 row | `docs/plans/README.md` | row present |
 
@@ -273,11 +298,9 @@ function validate_contract_docs():
 - [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language, banning their use as active routing authority, and enumerating multiple concrete banned-pattern signatures
 - [ ] contract includes a daily freshness rule, contains the exact phrase `daily freshness review`, includes either `every 24 hours` or `once per day`, requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`, and explicitly names `#2465` as the follow-through issue
 - [ ] contract includes the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority`
-- [ ] `docs/standards/TIER1_INDEXING_CHECKLIST.md` exists and covers the four current tier-1 repos defined in `docs/BUSINESS_BRAIN.md`: workspace-hub, digitalmodel, assetutilities, and aceengineer-website
+- [ ] `docs/standards/TIER1_INDEXING_CHECKLIST.md` exists and covers workspace-hub, digitalmodel, assetutilities, and aceengineer-website
 - [ ] checklist links repo-specific implementation follow-through issues `#2461`-`#2464`
-- [ ] checklist repeats the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority` in its preamble
 - [ ] checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values constrained to `present | partial | missing | not-applicable`
-- [ ] implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first and confirming failure before editing contract/checklist docs
 - [ ] `docs/README.md` links the new contract/checklist from a trusted discovery surface
 - [ ] `docs/plans/README.md` includes the #2460 index row
 - [ ] targeted regression tests pass: `uv run pytest tests/docs/test_tier1_indexing_contract.py -v`
@@ -323,3 +346,73 @@ Latest blocker patch applied in this draft:
 ## Complexity: T2
 
 **T2** — documentation contract plus a derived checklist, one trusted discovery-surface update, and focused regression tests. This is broader than a trivial docs edit but does not require multi-module implementation or deep runtime changes.
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the draft against the repo artifacts it cites. I’m checking whether the claimed blockers are actually resolved in the text and whether any remaining contradictions or underspecified requirements still make the plan non-approvable.
+exec
+/bin/bash -lc "sed -n '1,220p' docs/standards/CONTROL_PLANE_CONTRACT.md" in /mnt/local-analysis/workspace-hub
+exec
+/bin/bash -lc "sed -n '1,220p' docs/standards/DATA_PLACEMENT.md" in /mnt/local-analysis/workspace-hub
+exec
+/bin/bash -lc "sed -n '1,220p' docs/standards/FILE_STRUCTURE_TAXONOMY.md" in /mnt/local-analysis/workspace-hub
+exec
+/bin/bash -lc "sed -n '1,220p' tests/docs/test_banned_stale_references.py" in /mnt/local-analysis/workspace-hub
+exec
+/bin/bash -lc "sed -n '1,220p' docs/plans/README.md" in /mnt/local-analysis/workspace-hub
+ exited 1 in 686ms:
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+
+ exited 1 in 685ms:
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+
+ exited 1 in 689ms:
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+
+ exited 1 in 684ms:
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+
+ exited 1 in 679ms:
+bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted
+
+codex
+Shell reads are failing in this sandbox, so I’m switching to the Node REPL to inspect the cited standards and test harness directly. I’m verifying whether the plan’s wording matches existing repo contracts or still leaves room for ambiguous implementation.
+exec
+js_repl in /mnt/local-analysis/workspace-hub
+2026-04-23T02:22:38.495544Z ERROR codex_core::tools::router: error=js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":1013468,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+ exited 1 in 236ms:
+js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":1013468,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+codex
+The usual local execution path is blocked by the sandbox wrapper. I’m checking whether the workspace exposes file access through MCP resources so I can still verify the cited documents before issuing a verdict.
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+Verdict: MAJOR
+Findings:
+- [major] Scorecard negative-authority guard is still only enforced on the contract, not the checklist — In `Pseudocode`, the plan says `contract/checklist must include "MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority"`, but `validate_contract_docs()`, `TDD Test List -> test_tier1_contract_forbids_scorecard_as_required_canonical_authority`, and `Acceptance Criteria` only require that sentence in `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`. That leaves `docs/standards/TIER1_INDEXING_CHECKLIST.md` unguarded, so blocker 4 is not fully closed.
+- [minor] TDD is named but not operationalized as a required sequence — Workspace instructions require `TDD mandatory — tests before implementation`, but this plan only lists tests in `TDD Test List` and required passing commands in `Acceptance Criteria`. There is no plan step, pseudocode step, or acceptance criterion requiring `tests/docs/test_tier1_indexing_contract.py` to be written and exercised before editing `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` and `docs/standards/TIER1_INDEXING_CHECKLIST.md`.
+- [minor] Checklist repo scope is still under-evidenced against the cited baseline standard — `Acceptance Criteria` and `test_tier1_checklist_covers_all_scope_repos` require only `workspace-hub`, `digitalmodel`, `assetutilities`, and `aceengineer-website`, but the same plan’s `Resource Intelligence Summary -> Line excerpts` quotes `FILE_STRUCTURE_TAXONOMY.md` with a different starter-repo set. The draft does not cite a specific artifact or section that establishes why `worldenergydata`/`assethold` are out of scope while `workspace-hub`/`aceengineer-website` are in scope.
+
+Checks performed:
+- Checked the submitted draft’s `Deliverable`, `Pseudocode`, `TDD Test List`, `Acceptance Criteria`, and `Risks and Open Questions` for the six rerun focus items.
+- Verified that the bulk-artifact-store rule is now concretized and that `/mnt/ace/data` is described as an example, not the universal rule.
+- Verified that the daily freshness section now includes cadence wording plus an actual obligation to refresh/regenerate `docs/reports/tier-1-indexing-freshness-latest.md` and links `#2465`.
+- Verified that checklist field names and allowed values are concrete.
+- Checked for remaining internal contradictions between claimed rules and what the tests/acceptance criteria actually enforce; the unresolved contradiction is the scorecard negative-authority guard not being enforced on the checklist.
+tokens used
+33,995
+Verdict: MAJOR
+Findings:
+- [major] Scorecard negative-authority guard is still only enforced on the contract, not the checklist — In `Pseudocode`, the plan says `contract/checklist must include "MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority"`, but `validate_contract_docs()`, `TDD Test List -> test_tier1_contract_forbids_scorecard_as_required_canonical_authority`, and `Acceptance Criteria` only require that sentence in `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`. That leaves `docs/standards/TIER1_INDEXING_CHECKLIST.md` unguarded, so blocker 4 is not fully closed.
+- [minor] TDD is named but not operationalized as a required sequence — Workspace instructions require `TDD mandatory — tests before implementation`, but this plan only lists tests in `TDD Test List` and required passing commands in `Acceptance Criteria`. There is no plan step, pseudocode step, or acceptance criterion requiring `tests/docs/test_tier1_indexing_contract.py` to be written and exercised before editing `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` and `docs/standards/TIER1_INDEXING_CHECKLIST.md`.
+- [minor] Checklist repo scope is still under-evidenced against the cited baseline standard — `Acceptance Criteria` and `test_tier1_checklist_covers_all_scope_repos` require only `workspace-hub`, `digitalmodel`, `assetutilities`, and `aceengineer-website`, but the same plan’s `Resource Intelligence Summary -> Line excerpts` quotes `FILE_STRUCTURE_TAXONOMY.md` with a different starter-repo set. The draft does not cite a specific artifact or section that establishes why `worldenergydata`/`assethold` are out of scope while `workspace-hub`/`aceengineer-website` are in scope.
+
+Checks performed:
+- Checked the submitted draft’s `Deliverable`, `Pseudocode`, `TDD Test List`, `Acceptance Criteria`, and `Risks and Open Questions` for the six rerun focus items.
+- Verified that the bulk-artifact-store rule is now concretized and that `/mnt/ace/data` is described as an example, not the universal rule.
+- Verified that the daily freshness section now includes cadence wording plus an actual obligation to refresh/regenerate `docs/reports/tier-1-indexing-freshness-latest.md` and links `#2465`.
+- Verified that checklist field names and allowed values are concrete.
+- Checked for remaining internal contradictions between claimed rules and what the tests/acceptance criteria actually enforce; the unresolved contradiction is the scorecard negative-authority guard not being enforced on the checklist.

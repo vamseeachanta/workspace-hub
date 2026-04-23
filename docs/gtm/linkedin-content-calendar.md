@@ -406,6 +406,28 @@ This is the difference between a calculation that satisfies a review meeting and
 
 ---
 
+### Reserve Post E --- LNG Berth Operability Is a Transfer-Interface Problem First
+
+**Hook**:
+An LNG berth does not fail operationally because the jetty looks good in plan view. It fails when motions, moorings, and the transfer interface stop agreeing with each other.
+
+**Body**:
+When terminal teams talk about capacity, the conversation usually jumps straight to throughput. The harder engineering question is whether the berth stays operable across the metocean range that matters.
+
+For LNG carrier, bunkering, STS, or FSRU interface work, I care first about the coupled operating picture: vessel motions at berth, mooring load path, fender reactions, and the transfer envelope at the loading arm or hose connection. If one of those closes earlier than the others, that becomes the real operating limit.
+
+This is why "berth operability" is not a generic port-operations phrase. It is an engineering problem around ship/shore interface definition. A mooring layout that looks acceptable in calm conditions may still create poor line balance in quartering seas. A berth that looks motion-tolerant may still be constrained by transfer-arm envelope or gangway clearance. A harbour site that looks sheltered may still have response characteristics that make downtime unacceptable.
+
+Conference programmes are useful for spotting where industry attention is going. They are not design data. Real terminal decisions still depend on project metocean, berth geometry, vessel particulars, terminal criteria, and the actual transfer system.
+
+**CTA**: Terminal and LNG engineers --- what usually becomes the first limiting factor at berth on your projects: motions, moorings, fenders, transfer arms/hoses, or harbour response?
+
+**Image**: ACE graphic showing berth operability as an interface stack: harbour response -> vessel motions -> mooring/fender loads -> transfer envelope.
+**Hashtags**: #LNG #MarineTerminal #BerthOperability #MooringAnalysis #FSRU #PortOperations
+**References**: Marine terminal engineering positioning, LNG/FSRU berth interface, conference programmes as topic signals only
+
+---
+
 ## Content Performance Tracking
 
 | Post # | Date | Type | Topic | Impressions | Reactions | Comments | Shares |

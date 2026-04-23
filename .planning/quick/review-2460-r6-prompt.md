@@ -1,3 +1,25 @@
+# Adversarial Plan Review Request: Issue #2460 (rerun after scope+guard patch)
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
+Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
+If you find no problems, explicitly state what you checked.
+
+Review focus:
+1. BUSINESS_BRAIN-backed tier-1 scope is now justified,
+2. checklist repeats the non-canonical-scorecard guard,
+3. TDD sequencing is explicit,
+4. bulk-artifact-store and /mnt/ace example wording are consistent,
+5. overall approval readiness.
+
+Required output format:
+Verdict: APPROVE | MINOR | MAJOR
+Findings:
+- [severity] <concise title> — <why it matters, citing file path/section/claim>
+Checks performed:
+- <what you verified>
+
+Plan under review:
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft

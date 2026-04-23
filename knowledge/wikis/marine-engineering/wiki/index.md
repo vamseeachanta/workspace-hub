@@ -2,7 +2,7 @@
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
 last_updated: 2026-04-23
-page_count: 19183
+page_count: 19186
 source_count: 19160
 ---
 
@@ -37,6 +37,10 @@ source_count: 19160
 | [[Cathodic Protection System]](concepts/cathodic-protection-system.md) | Galvanic and ICCP systems — design per DNV-RP-B401 | 2026-04-07 |
 | [[Coating Breakdown Factor]](concepts/coating-breakdown.md) | Degradation factor in CP design life — zone-specific tables | 2026-04-07 |
 | [[Corrosion Control]](concepts/corrosion-control.md) | CP, coatings, materials, inhibitors — multi-method strategy | 2026-04-07 |
+| [[FSRU Marine Terminal Interface]](concepts/fsru-marine-terminal-interface.md) | Floating storage and regasification terminal interface — mooring, transfer, and shore integration as one marine system | 2026-04-23 |
+| [[LNG Berth Operability]](concepts/lng-berth-operability.md) | LNG berth uptime framing — metocean, motions, transfer limits, and cargo interruption criteria | 2026-04-23 |
+| [[LNG Marine Terminal Engineering]](concepts/lng-marine-terminal-engineering.md) | Berth, jetty, transfer, operability, and ship/shore interface engineering for LNG terminals | 2026-04-23 |
+| [[LNG Transfer System Envelope]](concepts/lng-transfer-system-envelope.md) | Ship/shore motion and geometry compatibility envelope for LNG loading arms or hoses | 2026-04-23 |
 | [[Long-Period Swell & Resonance]](concepts/long-period-swell-resonance.md) | 50mm swell can part mooring lines — infragravity wave physics | 2026-04-07 |
 | [[Mooring Line Failure]](concepts/mooring-line-failure.md) | HMPE failures, snap-back, 10+ terminal incidents | 2026-04-07 |
 | [[Process Safety]](concepts/process-safety.md) | HAZOP, SIS, SIS, flare, relief — protection layers | 2026-04-07 |
@@ -48,6 +52,7 @@ source_count: 19160
 |------|-------------|------|------|-------------|
 | [[DNV-RP-B401]](sources/dnv-rp-b401-cathodic-protection.md) | Cathodic Protection Design (DNV) | Recommended Practice | 2.1 MB | 2026-04-07 |
 | [[DNVGL-OS-E201]](sources/dnvgl-os-e201-oil-gas-processing.md) | Oil and Gas Processing Systems (DNVGL) | Offshore Standard | 691 KB | 2026-04-07 |
+| [[LNG2026 TP04]](sources/lng2026-tp04-shipping-marine-port-operations.md) | Public programme evidence for LNG shipping, marine, bunkering, STS, and terminal infrastructure topics | Programme Session | Web | 2026-04-23 |
 | [[Mooring Failures]](sources/mooring-failures-lng-terminals.md) | LNG Terminal Mooring Failures (Woodside, MAIB, NOPSEMA) | Incident Compilation | 68 KB YAML | 2026-04-07 |
 | [[Piping Components]](sources/piping-components-ebook.md) | Piping Components for O&G (HardHatEngineer) | Reference Guide | 3.6 MB | 2026-04-07 |
 | [[RB122]](sources/rb122-float-equipment.md) | Float Equipment (Halliburton) | Product Catalog | 691 KB | 2026-04-07 |
@@ -64,6 +69,7 @@ _No query outputs filed yet._
 - **Energy Economics**: NPV, Arps decline, fiscal regimes, Monte Carlo uncertainty
 - **FEA & Structural**: meshing, convergence, boundary conditions, fatigue hot-spot stress
 - **Mooring Engineering**: long-period swell resonance, HMPE failures, LNG terminal incidents
+- **LNG Marine Terminals**: berth/jetty engineering, ship/shore transfer interface, bunkering, STS, and terminal operability
 - **Pipeline Integrity**: DNV RP-F101, API 579, corrosion assessment, fitness-for-service
 - **Piping**: flanges, gaskets, fittings, pressure ratings
 - **Process Systems**: separators, compressors, process safety, sour service
