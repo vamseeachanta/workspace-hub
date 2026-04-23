@@ -1,6 +1,6 @@
 # Plan for #2322: Promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient
 
-> **Status:** revised 2026-04-17 (scope reduced; third script deferred — see "Execution-time revisions")
+> **Status:** implemented (branch `issue-2322-rule-promotion`; third script deferred — see "Execution-time revisions")
 > **Complexity:** T2
 > **Date:** 2026-04-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2322
