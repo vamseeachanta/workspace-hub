@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-22T21:20:10.855562Z",
+  "generated_at": "2026-04-23T01:20:10.018284Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 10,
+  "eligible_count": 9,
   "applied": [],
   "candidates": [
     {
@@ -31,36 +31,6 @@
         "execution-ready",
         "priority-labeled",
         "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2451,
-      "title": "follow-up(ci): worldenergydata test job still fails after #2433 collection fix \u2014 benchmark fixture + legacy NPV API regressions",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2451",
-      "labels": [
-        "priority:medium",
-        "cat:infrastructure",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-22T20:56:04Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": true
@@ -431,6 +401,36 @@
       "updatedAt": "2026-04-22T17:21:26Z",
       "execution_ready": false,
       "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2194,
+      "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-11T09:53:11Z",
+      "execution_ready": false,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",

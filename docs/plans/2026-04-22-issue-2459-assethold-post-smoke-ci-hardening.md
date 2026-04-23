@@ -102,6 +102,7 @@ assethold/AGENTS.md
 | Existing watchlist tests | `assethold/tests/unit/signals/test_watchlist.py` |
 | New path-utils regression test | `assethold/tests/unit/modules/reporting/utils/test_path_utils.py` |
 | New workflow-scope regression test | `assethold/tests/unit/workflows/test_python_tests_workflow_scope.py` |
+| New workflow-order regression test | `assethold/tests/unit/workflows/test_python_tests_workflow_order.py` |
 | Bounded source fixes | `assethold/src/assethold/signals/watchlist.py`, `assethold/src/assethold/modules/reporting/utils/path_utils.py` |
 | Plan review — Claude | `scripts/review/results/2026-04-22-plan-2459-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-22-plan-2459-codex.md` |
@@ -125,11 +126,14 @@ function harden_python_tests_workflow():
         tests/test_smoke.py
         tests/unit/signals/test_watchlist.py
         tests/unit/modules/reporting/utils/test_path_utils.py
+        tests/unit/workflows/test_python_tests_workflow_scope.py
+        tests/unit/workflows/test_python_tests_workflow_order.py
     leave any root auxiliary paths (.agent-os/, scripts/agent-os/, modules/) out of this tranche
+    preserve smoke-before-lint ordering and preserve the single-line shell-neutral smoke command
     change mypy gate from repo-wide src/ to two explicit files:
         src/assethold/signals/watchlist.py
         src/assethold/modules/reporting/utils/path_utils.py
-    install types-PyYAML in the workflow dependency step so the targeted mypy command is reproducible
+    install types-PyYAML in the workflow dependency step and use the same package for local targeted mypy verification
     keep broad type-debt cleanup delegated to assethold#31 unless new evidence narrows it further
 
 function repair_watchlist_typing():
@@ -161,12 +165,13 @@ function closeout_boundary(post_change_ci):
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `assethold/.github/workflows/python-tests.yml` | Change both flake8 commands from repo-root to the exact maintained tranche (`src/assethold`, `tests/test_smoke.py`, `tests/unit/signals/test_watchlist.py`, `tests/unit/modules/reporting/utils/test_path_utils.py`), add `types-PyYAML`, and change mypy from repo-wide `src/` to the targeted two-file tranche for this issue |
+| Modify | `assethold/.github/workflows/python-tests.yml` | Change both flake8 commands from repo-root to the exact maintained tranche (`src/assethold`, `tests/test_smoke.py`, `tests/unit/signals/test_watchlist.py`, `tests/unit/modules/reporting/utils/test_path_utils.py`, `tests/unit/workflows/test_python_tests_workflow_scope.py`, `tests/unit/workflows/test_python_tests_workflow_order.py`), add `types-PyYAML`, preserve smoke-before-lint / shell-neutral smoke invariants, and change mypy from repo-wide `src/` to the targeted two-file tranche for this issue |
 | Modify | `assethold/src/assethold/signals/watchlist.py` | Repair the concrete mypy blocker cluster already visible in CI and local repro |
 | Modify | `assethold/src/assethold/modules/reporting/utils/path_utils.py` | Fix missing `os` import / type-check blocker |
 | Create | `assethold/tests/unit/modules/reporting/utils/test_path_utils.py` | Add targeted regression coverage for the package path-utils helper |
 | Modify | `assethold/tests/unit/signals/test_watchlist.py` | Extend existing watchlist coverage to lock in the typed/nullable behavior repaired in this issue |
 | Create | `assethold/tests/unit/workflows/test_python_tests_workflow_scope.py` | Add an executable red→green test for the workflow scope changes rather than relying on prose |
+| Create | `assethold/tests/unit/workflows/test_python_tests_workflow_order.py` | Add an executable guard that smoke stays before lint/mypy and remains shell-neutral |
 | Update | `docs/plans/README.md` | Add this plan to the canonical index |
 | Reference (no edit in this tranche) | `assethold/modules/reporting/utils/path_utils.py` | Explicitly out of scope as a non-package duplicate once flake8 is narrowed to the maintained tranche; future cleanup remains tracked separately |
 | Reference (existing future work) | `vamseeachanta/assethold#31` | Existing repo issue already tracks broad quality-gate / mypy debt beyond this bounded tranche |

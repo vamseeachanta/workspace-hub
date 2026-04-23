@@ -1,3 +1,54 @@
+# Adversarial Plan Review Request: Issue #2460 (rerun after exact-guard patch)
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, or insufficiently evidenced.
+Return APPROVE only after affirmatively verifying correctness-critical claims. When in doubt, return MINOR or MAJOR.
+Each finding must cite a specific file path, plan section, quoted claim, or missing artifact.
+If you find no problems, explicitly state what you checked.
+
+## Review target
+- Issue: #2460 feat(repo-organization): tier-1 indexing and code-placement contract
+- Review stage: PLAN REVIEW (rerun after exact-guard patch)
+- Repository: /mnt/local-analysis/workspace-hub
+- Plan path: docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md
+
+## Context
+This issue is intentionally narrower than #2397 and #1962. It should define a reusable contract for trusted tier-1 routing/index surfaces, not perform repo-specific implementation or daily-automation implementation directly.
+Child issues already filed:
+- #2461 assetutilities routing surfaces and source-hygiene cleanup
+- #2462 digitalmodel repo-wide routing surfaces
+- #2463 aceengineer-website routing surfaces cleanup
+- #2464 workspace-hub curated routing index cleanup
+- #2465 daily tier-1 indexing freshness audit and scorecard refresh
+
+Immediate previous blockers were:
+- stale self-declared FAIL summary
+- unresolved /mnt/ace/data vs bulk-artifact-store rule
+- weak daily-cadence guard
+- weak scorecard negative-authority guard
+- underspecified checklist status fields
+
+This rerun should decide whether those blockers are now resolved enough for plan-review readiness.
+
+## Required review checks
+Check whether the revised plan now:
+1. no longer self-contradicts with stale review-state language
+2. resolves the universal placement rule clearly enough
+3. encodes daily freshness with an exact pass condition strong enough for approval
+4. encodes scorecard non-canonical-authority with an exact pass condition strong enough for approval
+5. makes checklist field requirements concrete enough to verify
+6. remains narrow and approval-ready overall
+
+## Required output format
+Use exactly these headings:
+Verdict: APPROVE | MINOR | MAJOR
+Findings:
+- [severity] <concise title> — <why it matters, citing file path/section/claim>
+Checks performed:
+- <what you verified>
+
+## Plan under review
+
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
 > **Status:** draft

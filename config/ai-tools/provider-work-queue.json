@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-22T21:20:10.646380Z",
+  "generated_at": "2026-04-23T01:20:09.815202Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-22T21:20:08.694112Z",
+  "scorecard_generated_at": "2026-04-23T01:20:07.851564Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -208,30 +208,9 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 1,
+      "execution_ready_count": 0,
       "total_candidates": 31,
       "top_issues": [
-        {
-          "number": 2451,
-          "title": "follow-up(ci): worldenergydata test job still fails after #2433 collection fix \u2014 benchmark fixture + legacy NPV API regressions",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2451",
-          "labels": [
-            "priority:medium",
-            "cat:infrastructure",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-22T20:56:04Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2455,
           "title": "feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof",
@@ -292,6 +271,28 @@
           "updatedAt": "2026-04-22T17:21:26Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2194,
+          "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-11T09:53:11Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
