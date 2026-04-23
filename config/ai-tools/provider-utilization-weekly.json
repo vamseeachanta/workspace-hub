@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-23T13:20:08.173457Z",
+  "generated_at": "2026-04-23T17:20:04.835700Z",
   "current_week": "2026-W17",
   "report_weeks": 8,
   "subscriptions": {
@@ -926,23 +926,23 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W17",
-        "sessions": 139,
-        "post_records": 7172,
-        "activity_utilization_pct": 17.6,
+        "sessions": 153,
+        "post_records": 7420,
+        "activity_utilization_pct": 18.2,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 17.6,
+        "reported_utilization_pct": 18.2,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-04-23T13:20:02Z",
+        "quota_snapshot_ts": "2026-04-23T17:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 4308
+            "count": 4456
           },
           {
             "tool": "Read",
-            "count": 1151
+            "count": 1215
           },
           {
             "tool": "Edit",
@@ -950,7 +950,7 @@
           },
           {
             "tool": "Write",
-            "count": 360
+            "count": 362
           },
           {
             "tool": "unknown",
@@ -958,7 +958,7 @@
           }
         ],
         "first_ts": "2026-04-20T00:07:20Z",
-        "last_ts": "2026-04-23T11:07:33Z",
+        "last_ts": "2026-04-23T16:09:16Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -972,7 +972,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-04-23T13:20:02Z",
+        "quota_snapshot_ts": "2026-04-23T17:20:02Z",
         "top_tools": [
           {
             "tool": "Read",
@@ -1010,7 +1010,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-04-23T13:20:02Z",
+        "quota_snapshot_ts": "2026-04-23T17:20:02Z",
         "top_tools": [
           {
             "tool": "Read",

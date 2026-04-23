@@ -149,6 +149,6 @@ config_file = "agents/gsd-verifier.toml"
 
 
 # GSD Hooks
-[[hooks]]
-event = "SessionStart"
+# Codex 0.124+ schema: hooks is a map keyed by event name; each value is an array of hook tables.
+[[hooks.SessionStart]]
 command = "node .claude/hooks/gsd-check-update.js"

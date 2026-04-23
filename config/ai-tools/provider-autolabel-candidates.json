@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-23T13:20:10.487101Z",
+  "generated_at": "2026-04-23T17:20:07.314411Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 12,
@@ -178,7 +178,7 @@
         "domain:release-management",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-23T04:09:36Z",
+      "updatedAt": "2026-04-23T14:24:39Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -427,36 +427,6 @@
       "eligible": false
     },
     {
-      "number": 2194,
-      "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T09:53:11Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2195,
       "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
@@ -555,6 +525,37 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-11T13:22:23Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2215,
+      "title": "feat(analysis): add migration-debt trend snapshots to provider-session audit",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2215",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "cat:harness",
+        "domain:reporting"
+      ],
+      "updatedAt": "2026-04-11T13:59:27Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

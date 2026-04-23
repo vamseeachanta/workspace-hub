@@ -1,4 +1,6 @@
-Verdict: APPROVE
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Verdict: APPROVE
 
 Findings:
 - [MINOR] Contradictory review status: The "Artifact Map" section lists `scripts/review/results/2026-04-23-plan-2452-gemini.md` as "REJECT", but the "Adversarial Review Summary" and the live context correctly state it was "r2 REQUEST_CHANGES".
