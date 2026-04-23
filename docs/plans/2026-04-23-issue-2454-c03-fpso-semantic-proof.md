@@ -1,221 +1,296 @@
 # Plan for #2454: Validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof
 
-> **Status:** draft
+> **Status:** draft (iter-2 after MAJOR review)
 > **Complexity:** T2
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2454
-> **Review artifacts:** scripts/review/results/2026-04-23-plan-2454-claude.md | scripts/review/results/2026-04-23-plan-2454-codex.md | scripts/review/results/2026-04-23-plan-2454-gemini.md
+> **Review artifacts:** scripts/review/results/2026-04-23-plan-2454-claude.md | scripts/review/results/2026-04-23-plan-2454-claude-iter-2.md
+
+---
+
+## Scope anchor — what this plan claims and what it explicitly does NOT claim
+
+- **In scope (claim):** static-YAML semantic equivalence of `c03_turret_moored_fpso` — the generated modular output (`spec.yml → ModularModelGenerator → master.yml + includes/`) contains no `Significance.SIGNIFICANT` or `Significance.TYPE_MISMATCH` diffs against the monolithic YAML, every `Significance.MISSING` property is traceable to a documented generator skip-list, and (on `licensed-win-1` only) the generated YAML loads in OrcFxAPI without error. This is the taxonomy doc's **L1 (Loadable) + static-YAML-diff equivalence**. It is *not* L2.
+- **Out of scope (explicit non-claim):** L2 behavioral equivalence — running statics/dynamics on both models and comparing tension/bending-moment results within benchmark tolerance. That requires a long-running `CalculateStatics()` on `licensed-win-1` plus a committed pre-computed `.sim` baseline for `C03 Turret moored FPSO.yml`. A follow-up issue will be filed at execution time to extend the proof to L2 once L1 is green.
+- **Roadmap promotion rule:** if static-diff evidence is clean (conditions above), move the `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` "turret-moored FPSO" bullet from "Partial but high-value next validations" to a NEW "Ready for L1 / static-YAML-diff" bucket (to be added to the roadmap), not to "Ready now". Only L2-validated items belong in "Ready now".
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `digitalmodel/scripts/semantic_validate.py` — taxonomy-aware comparison engine referenced by `SEMANTIC_DIFF_TAXONOMY.md`. This is the authoritative classification tool; the plan reuses it rather than introducing a parallel comparator.
-- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py` — owns `_SKIP_GENERAL_KEYS` (34 dormant keys) and `_SKIP_OBJECT_KEYS` (2 keys). Any generic-track C3 omission must come from this list.
-- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/__init__.py` + `cli.py` + `extractor.py` + `post_validator.py` — full generator entry points (`ModularModelGenerator`). Pattern already used by `tests/solvers/orcaflex/modular_generator/test_modular_vs_monolithic.py` for `24in_pipeline` spec — reusable as a structural analog.
-- Found: `digitalmodel/tests/solvers/orcaflex/modular_generator/test_extractor.py`, `test_semantic_roundtrip.py`, `test_modular_vs_monolithic.py` — existing modular-generator test surface. None of the three currently covers `c03_turret_moored_fpso` (grep proof below).
-- Found: `digitalmodel/tests/solvers/orcaflex/reporting/fixture_helpers.py` — defines `fpso_fixture_metadata_path`, `load_fpso_fixture_metadata`, `build_report_from_metadata`; provides a reporting surface but does not run the modular generator or compare against monolithic native YAML.
-- Found (already tracked — do NOT recreate): `digitalmodel/tests/fixtures/reporting/fpso_turret.metadata.json`, `.report.snapshot.html`, `tests/solvers/orcaflex/reporting/test_fpso_fixture_integration.py`, `test_fpso_fixture_snapshot.py`. These are a reporting-baseline regression guard, not semantic equivalence proof. They assert a hand-authored metadata baseline against a frozen HTML; they never call the modular generator or `scripts/semantic_validate.py`.
-- Gap: no committed native-YAML generation from `c03_turret_moored_fpso/spec.yml`, no taxonomy-classified diff artifact for C03, no pytest guarding C5/C6 diff count.
+- Found: `digitalmodel/scripts/semantic_validate.py` — real API is `load_monolithic(path: Path) -> dict`, `load_modular(modular_dir: Path) -> dict`, `compare(monolithic_data, modular_data) -> ValidationResult`, `to_json(ValidationResult) -> dict`. Its `--json` flag already exists (line 1951). The output shape per section is `{type, total_mono, total_mod, matches, diffs: [PropertyDiff], missing_in_mod, extra_in_mod, objects?, missing_objects?, extra_objects?, categories?}`. Each `PropertyDiff` carries a `significance` field drawn from the `Significance` enum at line 101: `match | cosmetic | minor | significant | type_mismatch | missing | extra`. The tool also owns the authoritative `ALLOWED_DIFF_PROPS` (line 117) which is the concrete C1 set.
+- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/__init__.py` exposes `ModularModelGenerator(spec_file)` and `.generate(output_dir)`. `output_dir` ends up containing `master.yml`, `includes/*.yml`, `inputs/*.yml`. `load_modular()` takes the directory (not the master file).
+- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py` — owns module-level `_SKIP_GENERAL_KEYS` (line 115, 34 keys) and `_SKIP_OBJECT_KEYS` (line 160, 2 keys).
+- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/builders/environment_builder.py:160` — `EnvironmentBuilder._WIND_SPEED_DORMANT` is a **class attribute** (not module-level). Must be accessed as `EnvironmentBuilder._WIND_SPEED_DORMANT`.
+- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/builders/groups_builder.py:27-29` — `GroupsBuilder.should_generate()` returns `spec.is_pipeline() or spec.is_riser()`. For a `structure: generic, operation: generic` spec, this returns `False`, so the Groups section is intentionally suppressed in the modular output. There is NO symbol named `GROUPS_POLICY`; the policy is a predicate on the spec.
+- Found: `digitalmodel/tests/solvers/orcaflex/modular_generator/test_modular_vs_monolithic.py:27-37` — defines the `requires_orcaflex` skipif decorator as a local three-line block (`try: import OrcFxAPI; ORCAFLEX_AVAILABLE = True; except: False` + `pytest.mark.skipif`). There is no shared conftest; the new test module must copy this block verbatim or the 2454 executor must extract it into a shared conftest first (scope-decision at execution time).
+- Found: `digitalmodel/tests/fixtures/reporting/fpso_turret.metadata.json`, `.report.snapshot.html`, `tests/solvers/orcaflex/reporting/test_fpso_fixture_integration.py`, `test_fpso_fixture_snapshot.py` — already committed, reporting-baseline regression guards, NOT semantic proof. Do NOT recreate.
+- Gap: no current test runs `ModularModelGenerator` on `c03 spec.yml`; no committed diff artifact for c03; no readiness doc for turret-moored FPSO.
 
 ### Standards
-Not directly standards-driven. Engineering tolerance comes from `SEMANTIC_DIFF_TAXONOMY.md` (C6 class — 5% / 10 kN on tensions, 15% / 5 kN·m on bending), not an external standards ledger.
+Not standards-driven. Diff significance thresholds come from `semantic_validate.py` (numeric tolerance logic, property-name skip-lists, `ALLOWED_DIFF_PROPS`).
 
 ### LLM Wiki pages consulted
-None directly consulted; domain knowledge is inside the repo at `digitalmodel/docs/domains/orcaflex/`. No relevant wiki pages were found for the c03 turret-FPSO case.
+None. Domain knowledge is repo-internal.
 
 ### Documents consulted
-- `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` — authoritative roadmap. "turret-moored FPSO" listed under "Partial but high-value next validations". Priority 1 cluster is #1652 + #1788 which establish the fixture + snapshot discipline. #2454 is positioned as the first generic-track application of that discipline per the parent-comment guidance and the roadmap's statement that the "strongest open gap is proving OrcaFlex forward semantic fidelity on real native artifacts using committed fixtures and taxonomy-backed validation".
-- `digitalmodel/docs/domains/orcaflex/SEMANTIC_DIFF_TAXONOMY.md` — defines six mutually exclusive categories (C1 UI/Cosmetic, C2 Normalization, C3 Known Intentional Omission, C4 Reference Resolution, C5 Loadability, C6 Physics-Significant) and three equivalence-claim levels (L1 Loadable, L2 Behaviorally equivalent, L3 Semantically identical). Explicitly says "no model has been proven to achieve L3 across all sections"; the repo's practical target is L2.
-- Related issue #1652 — parent of the fixture + snapshot testing discipline; deliverables: minimal `.sim` fixture, integration test, snapshot test, coverage measurement. Status OPEN. Its test pattern is the analog for #2454's regression surface. Note: its assertions hit a baseline JSON, not a modular-generator output.
-- Related issue #1788 — child of #1652; builds the snapshot test without OrcFxAPI. Pattern: read committed metadata, render HTML via `OrcaFlexAnalysisReport`, normalize, diff against committed snapshot. Same limitation — not semantic proof.
-- Related issue #1586 — solver-queue hardening (Priority 2 in the roadmap). Tangential to #2454 except that if #2454 ever needs to submit the generated FPSO case to `licensed-win-1` for a full OrcFxAPI statics run, that path rides on #1586's batch queue. Call-out only, not a dependency.
-- Parent roadmap #1572 — domain capability roadmaps; #2454 rolls up through the canonical spec contract roadmap rather than directly under #1572.
-- Owner comments on #2454 (three) — recommend fixture reuse of `c03_turret_moored_fpso`, list the grounded source-file set under `model_library/c03_turret_moored_fpso/`, and suggest fixture/test paths. Treated here as guidance to verify, not as already-landed artifacts.
+- `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` — turret-moored FPSO listed under "Partial but high-value next validations" (line 116). Roadmap separates Priority 1 (`#1652 + #1788` — prove forward native fidelity) from subsequent priorities.
+- `digitalmodel/docs/domains/orcaflex/SEMANTIC_DIFF_TAXONOMY.md` — defines C1..C6 categories (line 25 table) and L1/L2/L3 claim levels (line 273). L2 explicitly requires statics/dynamics results matching (line 275). L3 not achieved repo-wide (line 279). The doc's §3 table (line 256) maps `Significance` mechanism → possible C1..C6 categories as a many-to-many relation requiring judgement — not a 1:1 tool output.
+- Related issues #1652, #1788, #1586, #1572 — as previously verified; all OPEN, roles per the roadmap bullet structure.
+- Owner comments on #2454 — suggested file paths; treated as guidance, not authoritative landed work.
 
 ### Gaps identified
-- No test runs `ModularModelGenerator(<c03 spec.yml>)` today; the generator path from `c03_turret_moored_fpso/spec.yml` is unexercised in CI.
-- No artifact compares generated native YAML against `monolithic/C03 Turret moored FPSO.yml` using taxonomy categories.
-- No committed document states the equivalence-claim level (L1/L2/L3) for turret-moored FPSO, so the roadmap line "Partial but high-value next validations: turret-moored FPSO" cannot be promoted without a written claim boundary.
-- `scripts/semantic_validate.py` output format for JSON emission (section-by-section, category-counted) has not been verified; must inspect before treating it as the diff artifact source-of-truth.
+- No test runs the modular generator on `c03_turret_moored_fpso/spec.yml`.
+- No artifact classifies the c03 semantic diff.
+- No readiness/claim-boundary document for turret-moored FPSO.
+- The C1..C6 taxonomy is a human overlay on top of `Significance`; there is no existing importable Python module that maps `(Significance, key) → C1..C6`. This plan treats the classifier as **optional tooling**; the core assertions use `Significance` values directly to avoid introducing a new classifier module in this deliverable (keeps complexity at T2).
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-04-23 via `gh issue view`):
 - `#2454` — OPEN — "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof"
-- `#1572` — OPEN — "Domain-specific capability roadmaps — OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline"
-- `#1652` — OPEN — "OrcaFlex reporting: integration test with real .sim fixture + HTML snapshot testing"
-- `#1788` — OPEN — "OrcaFlex .sim snapshot testing: HTML report from minimal_test.sim fixture"
-- `#1586` — OPEN — "Harden solver queue: batch submission, result watcher, auto post-processing"
+- `#1572` — OPEN; `#1652` — OPEN; `#1788` — OPEN; `#1586` — OPEN.
 
 **File existence** (verified 2026-04-23 via `git -C digitalmodel ls-files`):
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/spec.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/monolithic/C03 Turret moored FPSO.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/modular/master.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/modular/inputs/parameters.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/modular/includes/01_general.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/modular/includes/03_environment.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/modular/includes/20_generic_objects.yml`
-- EXISTS: `digitalmodel/docs/domains/orcaflex/SEMANTIC_DIFF_TAXONOMY.md`
-- EXISTS: `digitalmodel/scripts/semantic_validate.py`
-- EXISTS: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py`
-- EXISTS (do NOT recreate): `digitalmodel/tests/fixtures/reporting/fpso_turret.metadata.json`
-- EXISTS (do NOT recreate): `digitalmodel/tests/fixtures/reporting/fpso_turret.report.snapshot.html`
-- EXISTS (do NOT recreate): `digitalmodel/tests/solvers/orcaflex/reporting/test_fpso_fixture_integration.py`
-- EXISTS (do NOT recreate): `digitalmodel/tests/solvers/orcaflex/reporting/test_fpso_fixture_snapshot.py`
-- MISSING (new — this plan creates): `digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json`
-- MISSING (new — this plan creates): `digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py`
-- MISSING (new — this plan creates): `digitalmodel/docs/domains/orcaflex/readiness/c03_turret_moored_fpso_semantic_proof.md`
+- EXISTS: `digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/spec.yml`, `monolithic/C03 Turret moored FPSO.yml`, `modular/master.yml`, `modular/inputs/parameters.yml`, `modular/includes/01_general.yml`, `modular/includes/03_environment.yml`, `modular/includes/20_generic_objects.yml`.
+- EXISTS: `digitalmodel/docs/domains/orcaflex/SEMANTIC_DIFF_TAXONOMY.md`, `digitalmodel/scripts/semantic_validate.py`, `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py`, `.../environment_builder.py`, `.../groups_builder.py`.
+- EXISTS (reporting-baseline only; do NOT recreate or modify): `digitalmodel/tests/fixtures/reporting/fpso_turret.metadata.json`, `.report.snapshot.html`, `tests/solvers/orcaflex/reporting/test_fpso_fixture_integration.py`, `tests/solvers/orcaflex/reporting/test_fpso_fixture_snapshot.py`.
+- MISSING (new — this plan's execution phase creates): `digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json`, `digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py`, `digitalmodel/docs/domains/orcaflex/readiness/c03_turret_moored_fpso_semantic_proof.md`.
 
-**Gap proofs** (verified 2026-04-23 via `git -C digitalmodel grep -l c03_turret_moored_fpso -- src tests scripts`):
-- Only four files reference `c03_turret_moored_fpso` by name:
-  - `tests/fixtures/reporting/fpso_turret.metadata.json` (baseline only)
-  - `tests/fixtures/reporting/fpso_turret.report.snapshot.html` (baseline only)
-  - `tests/solvers/orcaflex/reporting/test_fpso_fixture_integration.py` (reporting baseline only)
-  - `tests/solvers/orcaflex/test_spec_upgrader.py` (tangential — spec version upgrader)
-- No file under `tests/solvers/orcaflex/modular_generator/` references `c03_turret_moored_fpso`, confirming the gap.
-- No file under `scripts/` references `c03_turret_moored_fpso`, confirming no semantic-diff artifact exists yet.
+**Tool-schema evidence** (verified 2026-04-23 via `sed -n Np semantic_validate.py`):
+- Line 101: `class Significance: MATCH = "match"; COSMETIC = "cosmetic"; MINOR = "minor"; SIGNIFICANT = "significant"; TYPE_MISMATCH = "type_mismatch"; MISSING = "missing"; EXTRA = "extra"`.
+- Line 117-178: `ALLOWED_DIFF_PROPS: set[str] = {...}` — 50+ canonical cosmetic/view/dormant property names; this is the concrete C1 set the tool already tracks.
+- Line 304: `def load_modular(modular_dir: Path) -> dict:` — takes a **directory**, iterates `modular_dir/"includes"/*.yml` (falls back to `modular_dir/*.yml`). Does NOT accept a single master.yml path.
+- Line 1206-1258: `to_json(ValidationResult) -> dict` — per-section shape includes `diffs`, `missing_in_mod`, `extra_in_mod`, and for list sections `missing_objects`, `extra_objects`, `objects`. Object references that don't resolve surface as `missing_objects` / `extra_objects`.
+- Line 1951: `--json` flag exists.
 
-**Line excerpts** from `SEMANTIC_DIFF_TAXONOMY.md` (verified 2026-04-23):
-```
-| L2 | **Behaviorally equivalent** | Statics/dynamics results match within benchmark tolerance (no C6 diffs) |
-| L3 | **Semantically identical** | No differences except C1 (cosmetic) and C2 (normalization) |
-Current repo status: Most validated models achieve L2. No model has been
-proven to achieve L3 across all sections.
-```
-Plan's target equivalence-claim level for c03 turret-FPSO is **L2** (no C5, no C6 after classification). L3 is explicitly out-of-scope per repo-wide policy.
+**Builder-symbol evidence** (verified 2026-04-23 via `grep -n`):
+- `_SKIP_GENERAL_KEYS` at `generic_builder.py:115` (module level, set).
+- `_SKIP_OBJECT_KEYS` at `generic_builder.py:160` (module level, set).
+- `_WIND_SPEED_DORMANT` at `environment_builder.py:160` (class attribute of `EnvironmentBuilder`).
+- `GroupsBuilder.should_generate()` at `groups_builder.py:27-29` — returns True only for pipeline/riser. No `GROUPS_POLICY` symbol exists.
 
-<!-- Distinct sources consulted: issue body (1), roadmap doc (2), SEMANTIC_DIFF_TAXONOMY.md (3), related issues #1652/#1788/#1586/#1572 (4), digitalmodel source tree + grep evidence (5). Minimum 3 satisfied. -->
+<!-- Distinct sources consulted: issue body (1), roadmap (2), SEMANTIC_DIFF_TAXONOMY.md (3), semantic_validate.py source (4), builder source files (5), related issues (6). Well above the minimum 3. -->
 
 ---
 
 ## Artifact Map
 
-| Artifact | Path |
-|---|---|
-| This plan | `docs/plans/2026-04-23-issue-2454-c03-fpso-semantic-proof.md` |
-| Semantic-diff frozen baseline (new) | `digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json` |
-| Semantic-proof pytest (new) | `digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py` |
-| Readiness claim boundary doc (new) | `digitalmodel/docs/domains/orcaflex/readiness/c03_turret_moored_fpso_semantic_proof.md` |
-| Roadmap update | `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` (promote "turret-moored FPSO" line conditionally) |
-| Plan review — Claude | `scripts/review/results/2026-04-23-plan-2454-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-04-23-plan-2454-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-23-plan-2454-gemini.md` |
-| Reused (no edits) | `digitalmodel/scripts/semantic_validate.py`, `generic_builder.py`, `ModularModelGenerator` entry point, `fixture_helpers.py` |
-| Untouched (do NOT modify in this issue) | `digitalmodel/tests/fixtures/reporting/fpso_turret.metadata.json`, `.report.snapshot.html`, `test_fpso_fixture_integration.py`, `test_fpso_fixture_snapshot.py` |
+| Artifact | Path | Phase |
+|---|---|---|
+| This plan | `docs/plans/2026-04-23-issue-2454-c03-fpso-semantic-proof.md` | planning |
+| Plan review — Claude iter-1 | `scripts/review/results/2026-04-23-plan-2454-claude.md` | planning |
+| Plan review — Claude iter-2 | `scripts/review/results/2026-04-23-plan-2454-claude-iter-2.md` | planning |
+| Semantic-diff frozen baseline | `digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json` | execution |
+| Semantic-proof pytest | `digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py` | execution |
+| Readiness claim-boundary doc | `digitalmodel/docs/domains/orcaflex/readiness/c03_turret_moored_fpso_semantic_proof.md` | execution |
+| Roadmap update | `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` | execution |
+| Reused (no edits) | `digitalmodel/scripts/semantic_validate.py`, `ModularModelGenerator`, `generic_builder.py`, `environment_builder.py`, `groups_builder.py` | execution |
+| Untouched | The four existing `fpso_turret.*` reporting-baseline files; all sibling-issue (#2455-#2458) artifacts | — |
+
+The planning-agent write-set is limited to rows marked `planning` above. Rows marked `execution` describe the downstream work that will happen only after `status:plan-approved`.
 
 ---
 
-## Deliverable
+## Deliverable (execution phase)
 
-A committed taxonomy-classified semantic-diff artifact for `c03_turret_moored_fpso` plus a pytest that regenerates it and fails on any unclassified or C5/C6 difference, and a readiness doc that pins the equivalence-claim level (target: L2) for the turret-moored-FPSO family so the roadmap snapshot can be updated with a falsifiable claim.
+A committed frozen JSON diff artifact for `c03_turret_moored_fpso`, a pytest that regenerates and compares against it, and a readiness doc that pins the equivalence claim to **L1 (loadability) + static-YAML-diff equivalence** — not L2. A conditional roadmap edit that introduces a new "Ready for L1 / static-YAML-diff" bucket and moves the turret-moored FPSO bullet into it when the assertions pass.
 
 ---
 
-## Pseudocode
+## Pseudocode (grounded in actual `semantic_validate.py` schema)
 
-```
+```python
 # digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py
 
-C03_ROOT = Path(digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso)
-SPEC_YML         = C03_ROOT / "spec.yml"
-MONOLITHIC_YML   = C03_ROOT / "monolithic/C03 Turret moored FPSO.yml"
-FROZEN_DIFF_JSON = tests/fixtures/reporting/fpso_turret.semantic_diff.json
+from pathlib import Path
+import json, sys
+import pytest
 
-def _generate_native_from_spec(tmp_path):
-    generator = ModularModelGenerator(SPEC_YML)
-    generator.generate(tmp_path)
-    return tmp_path / "master.yml"
+# Copy skipif block from test_modular_vs_monolithic.py:27-37 (no shared conftest export)
+try:
+    import OrcFxAPI  # noqa: F401
+    ORCAFLEX_AVAILABLE = True
+except ImportError:
+    ORCAFLEX_AVAILABLE = False
+requires_orcaflex = pytest.mark.skipif(not ORCAFLEX_AVAILABLE, reason="OrcFxAPI not available")
 
-def _run_semantic_validator(generated_master, monolithic):
-    # Shell out to scripts/semantic_validate.py OR import its entry function.
-    # Prefer the importable entry if one exists (check scripts/semantic_validate.py API).
-    return diff_report  # dict: {section: {C1..C6: [property list], total, matches, verdict}}
+# Add digitalmodel/scripts to path so we can import semantic_validate
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "scripts"))
+from semantic_validate import (
+    Significance,
+    ALLOWED_DIFF_PROPS,
+    load_monolithic,
+    load_modular,
+    compare,          # returns ValidationResult
+    to_json,          # ValidationResult -> dict
+)
+from digitalmodel.solvers.orcaflex.modular_generator import ModularModelGenerator
+from digitalmodel.solvers.orcaflex.modular_generator.builders.generic_builder import (
+    _SKIP_GENERAL_KEYS, _SKIP_OBJECT_KEYS,
+)
+from digitalmodel.solvers.orcaflex.modular_generator.builders.environment_builder import (
+    EnvironmentBuilder,
+)
+from digitalmodel.solvers.orcaflex.modular_generator.builders.groups_builder import (
+    GroupsBuilder,
+)
 
-def test_generator_runs_on_c03_spec_without_error(tmp_path):
-    assert _generate_native_from_spec(tmp_path).exists()
+C03_ROOT = Path("digitalmodel/docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso")
+SPEC_YML          = C03_ROOT / "spec.yml"
+MONOLITHIC_YML    = C03_ROOT / "monolithic" / "C03 Turret moored FPSO.yml"
+FROZEN_DIFF_JSON  = Path("digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json")
 
-def test_generated_yaml_is_yaml_strict_loadable():
-    # L1 check — parses; no OrcFxAPI needed here.
-    ...
+DOCUMENTED_OMISSION_KEYS = (
+    set(_SKIP_GENERAL_KEYS)
+    | set(_SKIP_OBJECT_KEYS)
+    | set(EnvironmentBuilder._WIND_SPEED_DORMANT)  # class attribute, not module-level
+    # NOTE: Groups-section suppression is a structural policy (GroupsBuilder.should_generate()
+    # returns False for generic specs). When the `Groups` section appears in missing_objects
+    # at the section level, classify at assertion time by calling GroupsBuilder.should_generate(spec).
+)
 
-@requires_orcaflex  # runs on licensed-win-1 only; skips on dev-primary
-def test_generated_yaml_loads_in_orcfxapi(generated_master):
-    OrcFxAPI.Model().LoadData(str(generated_master))  # must not raise
+@pytest.fixture(scope="module")
+def generated_modular(tmp_path_factory):
+    out = tmp_path_factory.mktemp("c03_modular")
+    ModularModelGenerator(SPEC_YML).generate(out)
+    return out  # directory, per load_modular contract
 
-def test_semantic_diff_has_no_c5_diffs(diff_report):
-    for section, counts in diff_report.items():
-        assert counts["C5"] == [], f"C5 loadability diff in {section}: {counts['C5']}"
+@pytest.fixture(scope="module")
+def diff_report(generated_modular):
+    mono_data = load_monolithic(MONOLITHIC_YML)
+    mod_data  = load_modular(generated_modular)  # directory, not master.yml
+    result = compare(mono_data, mod_data)
+    return to_json(result)
 
-def test_semantic_diff_has_no_c6_diffs(diff_report):
-    for section, counts in diff_report.items():
-        assert counts["C6"] == [], f"C6 physics-significant diff in {section}: {counts['C6']}"
+def test_generator_runs_on_c03_spec_without_error(generated_modular):
+    assert (generated_modular / "master.yml").exists()
+    assert (generated_modular / "includes").exists()
 
-def test_c3_omissions_are_documented(diff_report):
-    documented = _SKIP_GENERAL_KEYS | _SKIP_OBJECT_KEYS | _WIND_SPEED_DORMANT | GROUPS_POLICY
-    for section, counts in diff_report.items():
-        for prop in counts["C3"]:
-            assert prop in documented, f"Undocumented omission: {section}.{prop}"
+def test_generated_modular_is_yaml_strict_loadable(generated_modular):
+    import yaml
+    for p in (generated_modular / "includes").glob("*.yml"):
+        yaml.safe_load(p.read_text(encoding="utf-8"))  # must not raise
+    yaml.safe_load((generated_modular / "master.yml").read_text(encoding="utf-8"))
 
-def test_c4_references_resolve(diff_report):
-    for section, counts in diff_report.items():
-        assert counts["C4"] == [], f"Unresolved reference in {section}: {counts['C4']}"
+@requires_orcaflex
+def test_generated_modular_loads_in_orcfxapi(generated_modular):
+    model = OrcFxAPI.Model()
+    model.LoadData(str(generated_modular / "master.yml"))  # must not raise — L1 claim
+
+def test_no_significant_diffs(diff_report):
+    offenders = []
+    for sec_name, sec in diff_report["sections"].items():
+        for d in sec.get("diffs", []):
+            if d["significance"] == Significance.SIGNIFICANT:
+                offenders.append(f"{sec_name}.{d['key']}: mono={d.get('mono')} vs mod={d.get('mod')}")
+    assert not offenders, "SIGNIFICANT diffs detected:\n" + "\n".join(offenders)
+
+def test_no_type_mismatch_diffs(diff_report):
+    offenders = []
+    for sec_name, sec in diff_report["sections"].items():
+        for d in sec.get("diffs", []):
+            if d["significance"] == Significance.TYPE_MISMATCH:
+                offenders.append(f"{sec_name}.{d['key']}")
+    assert not offenders, "TYPE_MISMATCH diffs:\n" + "\n".join(offenders)
+
+def test_missing_properties_are_documented_omissions(diff_report):
+    # Significance.MISSING ≈ taxonomy C3 if the key is in a documented skip-list, otherwise
+    # either C1 (if in ALLOWED_DIFF_PROPS) or a real gap that must fail.
+    undocumented = []
+    for sec_name, sec in diff_report["sections"].items():
+        for d in sec.get("missing_in_mod", []):
+            key = d["key"]
+            if key in ALLOWED_DIFF_PROPS:      # C1 equivalence — cosmetic
+                continue
+            if key in DOCUMENTED_OMISSION_KEYS:  # C3 equivalence — deliberate skip
+                continue
+            undocumented.append(f"{sec_name}.{key}")
+    assert not undocumented, "Undocumented omissions:\n" + "\n".join(undocumented)
+
+def test_object_references_resolve(diff_report):
+    # C4 equivalence — no missing/extra named objects in list sections
+    for sec_name, sec in diff_report["sections"].items():
+        if sec.get("type") == "list":
+            assert sec.get("missing_objects", []) == [], f"{sec_name} missing objects: {sec['missing_objects']}"
+            assert sec.get("extra_objects", []) == [],   f"{sec_name} extra objects: {sec['extra_objects']}"
+
+def test_groups_section_absence_justified_for_generic_spec():
+    # When `Groups` shows up as missing at section level, it is C3 iff the spec is generic.
+    # Proof: GroupsBuilder.should_generate(spec) returns False for generic specs.
+    spec = ModularModelGenerator(SPEC_YML).spec  # attribute name to confirm in execution
+    assert not GroupsBuilder(spec).should_generate(), "spec is not generic — Groups omission is NOT C3"
 
 def test_frozen_diff_matches_current(diff_report):
+    # First-baseline validation: the committed JSON is validated by the adversarial plan review
+    # + human inspection of the initial diff at execution time. This test only guards against
+    # subsequent drift.
     frozen = json.loads(FROZEN_DIFF_JSON.read_text())
-    assert diff_report == frozen, "Diff drifted; update frozen baseline explicitly via intentional commit"
+    assert diff_report == frozen, "Diff drifted vs. frozen baseline — inspect and, if intentional, regenerate baseline"
 ```
+
+Import paths not yet verified at runtime: `from digitalmodel.solvers.orcaflex.modular_generator import ModularModelGenerator` (confirmed via ls-files); `ModularModelGenerator(SPEC_YML).spec` attribute name (**MUST be confirmed in execution phase** before wiring `test_groups_section_absence_justified_for_generic_spec`). If the attribute is named differently (e.g. `._spec`, `.model_spec`), adjust at execution time; no plan change required.
 
 ---
 
 ## Files to Change
 
-| Action | Path | Reason |
-|---|---|---|
-| Create | `digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json` | Frozen per-section C1..C6 diff baseline; regenerated by the test and checked in |
-| Create | `digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py` | Pytest that runs the modular generator on c03 spec.yml, calls `scripts/semantic_validate.py`, and asserts no C5/C6 + documented C3 + resolved C4 |
-| Create | `digitalmodel/docs/domains/orcaflex/readiness/c03_turret_moored_fpso_semantic_proof.md` | Claim-boundary doc pinning the equivalence level (L2 target), enumerating allowed diffs, and recording the OrcFxAPI version used for any L1/L2 checks |
-| Modify | `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` | Single targeted edit: move the "turret-moored FPSO" bullet from "Partial but high-value next validations" to "Ready now" only if the classification yields zero C5/C6; otherwise leave the bullet with a footnote pointing to the open issues that block promotion |
-| Update | `docs/plans/README.md` | Add one row for this plan file (index only; ≤ ~150 chars body per index convention) |
+| Phase | Action | Path | Reason |
+|---|---|---|---|
+| planning | Create | `docs/plans/2026-04-23-issue-2454-c03-fpso-semantic-proof.md` | This plan file |
+| planning | Create | `scripts/review/results/2026-04-23-plan-2454-claude.md` | Iter-1 adversarial review (MAJOR) |
+| planning | Create | `scripts/review/results/2026-04-23-plan-2454-claude-iter-2.md` | Iter-2 adversarial review after tightening |
+| planning | Update | `docs/plans/README.md` | Single index row for this plan |
+| execution | Create | `digitalmodel/tests/fixtures/reporting/fpso_turret.semantic_diff.json` | Frozen per-section `to_json()` baseline with schema_version, tool version, OrcFxAPI version, generator version |
+| execution | Create | `digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py` | Pytest per pseudocode |
+| execution | Create | `digitalmodel/docs/domains/orcaflex/readiness/c03_turret_moored_fpso_semantic_proof.md` | Claim-boundary doc; target claim = L1 + static-YAML-diff equivalence |
+| execution | Modify | `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md` | (a) Add new "Ready for L1 / static-YAML-diff" subsection under "Structure readiness snapshot" around current line 107-121; (b) move the existing "- turret-moored FPSO" bullet from the "Partial but high-value next validations" list to that new subsection, with a one-line footnote "L2 behavioral proof pending — see follow-up issue" |
 
-Explicitly **NOT** changing (forbidden per worker scope and per reviewer expectations):
-- Any source/test file implementing the feature itself (the worker is planning-only; implementation belongs to a later execution phase)
-- Any sibling issue artifact (#2455–#2458 and #1652/#1788/#1586 remain untouched)
-- The four existing `fpso_turret.*` reporting-baseline artifacts — they are a different concern (HTML regression)
-- The committed modular sources under `c03_turret_moored_fpso/modular/` — the test generates into `tmp_path`; nothing is overwritten in-tree
+Explicitly **NOT** in the planning-agent write set:
+- Any `digitalmodel/` source or test file
+- `docs/roadmaps/orcawave-orcaflex-canonical-spec-contract-roadmap.md`
+- Sibling-issue artifacts (#2455-#2458, #1652, #1788, #1586)
+- The four existing `fpso_turret.*` reporting-baseline artifacts
 
 ---
 
-## TDD Test List
+## TDD Test List (execution phase)
 
-| Test name | What it verifies | Expected input | Expected output |
-|---|---|---|---|
-| `test_generator_runs_on_c03_spec_without_error` | ModularModelGenerator consumes c03 spec.yml end-to-end | `spec.yml` path | `master.yml` exists in `tmp_path` |
-| `test_generated_yaml_is_yaml_strict_loadable` | Generated native YAML parses against strict YAML + Pydantic schema | generated `master.yml` | no exception; all include files resolve |
-| `test_generated_yaml_loads_in_orcfxapi` (@requires_orcaflex) | L1 equivalence claim — `OrcFxAPI.Model().LoadData()` succeeds | generated `master.yml` | no OrcFxAPI exception; skipped when OrcFxAPI absent |
-| `test_semantic_diff_has_no_c5_diffs` | No loadability hazards classified C5 | diff_report from `semantic_validate.py` | every section's C5 list is empty |
-| `test_semantic_diff_has_no_c6_diffs` | L2 claim: no physics-significant diffs | diff_report | every section's C6 list is empty |
-| `test_c3_omissions_are_documented` | Every C3 omission traces back to `_SKIP_GENERAL_KEYS` / `_SKIP_OBJECT_KEYS` / `_WIND_SPEED_DORMANT` / GroupsBuilder policy | diff_report | each C3 property ∈ one of the documented sets |
-| `test_c4_references_resolve` | All object-name references in the generated model resolve against the generated registry | diff_report | every section's C4 list is empty |
-| `test_frozen_diff_matches_current` | Regression guard: C1/C2 diffs are frozen; drift is a deliberate review event | `fpso_turret.semantic_diff.json` vs live run | equal dicts; mismatch is a test failure with explicit diff |
+| Test name | What it verifies | Pass condition |
+|---|---|---|
+| `test_generator_runs_on_c03_spec_without_error` | `ModularModelGenerator(spec).generate(tmp)` produces `master.yml` + `includes/` | `master.yml` and `includes/` exist in tmp |
+| `test_generated_modular_is_yaml_strict_loadable` | All include files parse via `yaml.safe_load` | No exception |
+| `test_generated_modular_loads_in_orcfxapi` (`@requires_orcaflex`) | L1 claim: OrcFxAPI `.LoadData(master.yml)` succeeds | No exception (skips on dev-primary) |
+| `test_no_significant_diffs` | No `Significance.SIGNIFICANT` diffs anywhere in `to_json()` sections | `offenders == []` |
+| `test_no_type_mismatch_diffs` | No `Significance.TYPE_MISMATCH` diffs | `offenders == []` |
+| `test_missing_properties_are_documented_omissions` | Every `missing_in_mod` key is in `ALLOWED_DIFF_PROPS` (C1) OR `DOCUMENTED_OMISSION_KEYS` (C3) | `undocumented == []` |
+| `test_object_references_resolve` | List-section `missing_objects` and `extra_objects` are empty — approximation of C4 | Empty lists |
+| `test_groups_section_absence_justified_for_generic_spec` | If Groups section absent, justified because `GroupsBuilder.should_generate()` returns False for generic spec | Assertion holds |
+| `test_frozen_diff_matches_current` | `to_json()` output equals committed frozen baseline | Equal dicts (drift detector) |
 
-Decision on OrcFxAPI-gated tests: `@requires_orcaflex` is defined in the existing `test_modular_vs_monolithic.py` pattern. Reuse the same skipif shape so dev-primary CI passes without OrcFxAPI, and licensed-win-1 CI exercises the L1 load check. No full statics run is in scope — that is L2 behavioral-equivalence territory and can be layered on later without changing the contract.
+Taxonomy mapping in the readiness doc (authored at execution time), human-readable:
+- `Significance.COSMETIC` or `key in ALLOWED_DIFF_PROPS` → C1
+- `Significance.MINOR` on bool↔Yes/No, int↔float, whitespace → C2
+- `Significance.MISSING` with `key in DOCUMENTED_OMISSION_KEYS` or Groups-section-for-generic → C3
+- List-section `missing_objects` / `extra_objects` (non-empty) → C4
+- Any `Significance` that causes `OrcFxAPI.LoadData()` to raise → C5 (L1 test would catch)
+- `Significance.SIGNIFICANT` or `Significance.TYPE_MISMATCH` on physics property families → C6
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All new tests pass on dev-primary: `uv run pytest digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py -v` (OrcFxAPI-gated tests skip with a clear reason string, not error)
-- [ ] All new tests pass on licensed-win-1 including the `@requires_orcaflex` L1 load test
-- [ ] No existing regression: `uv run pytest digitalmodel/tests/solvers/orcaflex/ -q` (or the project's standard gate) still passes; the four existing `fpso_turret.*` reporting tests and all modular-generator tests remain green
-- [ ] `scripts/semantic_validate.py` output for c03 reports zero C5 and zero C6 diffs across all sections; every C3 is traceable to a documented skip set; every C4 resolves
-- [ ] Frozen diff artifact `fpso_turret.semantic_diff.json` committed with explicit schema_version and provenance (OrcFxAPI version, generator version, semantic_validate version if tagged)
-- [ ] Readiness doc `c03_turret_moored_fpso_semantic_proof.md` committed with claim level (L2), allowed-diff justification per C1/C2/C3 bucket, and the OrcFxAPI load-test machine + version
-- [ ] Roadmap snapshot line reconciled: if zero C5/C6, move "turret-moored FPSO" to "Ready now"; if any C5/C6 is found, leave in "Partial" with a cross-ref to the blocking property families
-- [ ] `docs/plans/README.md` row added/updated for this plan
-- [ ] Review artifacts posted to `scripts/review/results/2026-04-23-plan-2454-<agent>.md` for at least Claude and one cross-provider (Codex or Gemini), per `.claude/skills/coordination/issue-planning-mode/SKILL.md`
-- [ ] GitHub issue #2454 moved to `status:plan-review` only after adversarial review converges to no MAJOR findings
+- [ ] On dev-primary: `uv run pytest digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py -v` returns green; `test_generated_modular_loads_in_orcfxapi` reports SKIPPED with reason "OrcFxAPI not available".
+- [ ] On licensed-win-1: `uv run pytest digitalmodel/tests/solvers/orcaflex/modular_generator/test_c03_fpso_semantic_proof.py -v` returns green including the OrcFxAPI load test.
+- [ ] No regression: `uv run pytest digitalmodel/tests/solvers/orcaflex/modular_generator/ digitalmodel/tests/solvers/orcaflex/reporting/ -q` passes (narrowed from the full `tests/solvers/orcaflex/` tree to exclude tests that require offline `.sim` fixtures not available in this branch).
+- [ ] `fpso_turret.semantic_diff.json` committed with explicit fields: `schema_version`, `semantic_validate_version` (git SHA of `scripts/semantic_validate.py`), `generator_version` (git SHA of modular_generator), `orcaflex_version` (string, or `"n/a - dev-primary baseline"`), `generated_on_machine`, `monolithic_source_path`, plus the full `to_json()` output.
+- [ ] Readiness doc committed with explicit claim: "**L1 (loadability) + static-YAML-diff equivalence**" in its first-paragraph claim statement; explicit non-claim paragraph for L2; table mapping each observed `Significance` to its taxonomy category with justification.
+- [ ] Roadmap reconciled: "turret-moored FPSO" bullet moved from "Partial but high-value next validations" to a new "Ready for L1 / static-YAML-diff" subsection, with footnote pointing to a new follow-up issue for L2 behavioral proof.
+- [ ] A follow-up GitHub issue filed at execution time: "Add L2 behavioral proof (statics/dynamics) for c03_turret_moored_fpso canonical spec" — referenced from the readiness doc and roadmap footnote.
+- [ ] `docs/plans/README.md` has one row for this plan.
+- [ ] Review artifacts for at least Claude iter-1 and Claude iter-2 posted to `scripts/review/results/`. Cross-provider (Codex or Gemini) review is a nice-to-have but not blocking because this worker is permission-gated from dispatching cross-review.sh; see `feedback_permission_gate_blocks_cross_review.md`.
+- [ ] `status:plan-review` applied only after the latest review artifact returns no MAJOR findings.
 
 ---
 
@@ -223,29 +298,39 @@ Decision on OrcFxAPI-gated tests: `@requires_orcaflex` is defined in the existin
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | — |
-| Codex | PENDING | — |
-| Gemini | PENDING | — |
+| Claude (iter-1, cold context) | MAJOR | M1 C1..C6 buckets are a human overlay, not tool output; M2 `load_modular` expects a directory not a file; M3 L2 claim unsubstantiated by L1 tests; M4 `GROUPS_POLICY` symbol fabricated. |
+| Claude (iter-2, cold context) | PENDING | — |
+| Codex | N/A | Planning-only worker permission-gated from dispatching `scripts/review/cross-review.sh`; Codex review deferred to the execution phase or to a later cross-review wave. |
+| Gemini | N/A | Same gating rationale as Codex. |
 
-**Overall result:** PENDING — review artifacts will be populated under `scripts/review/results/` before surfacing for user approval.
-
-Revisions made based on review:
-- (none yet)
+**Overall result:** iter-2 pending. Revisions made since iter-1:
+- Rewrote §Pseudocode against the real `semantic_validate.py` schema: `Significance` enum + `ALLOWED_DIFF_PROPS` + `load_modular(directory)`. No more `counts["C1"]..["C6"]` assertions.
+- Demoted the claim from "L2" to "**L1 + static-YAML-diff equivalence**" — aligned with the taxonomy doc's own L2 definition (requires dynamics). Added explicit non-claim paragraph; introduced a new "Ready for L1 / static-YAML-diff" roadmap bucket instead of promoting to "Ready now".
+- Replaced the fabricated `GROUPS_POLICY` with a structural test calling `GroupsBuilder(spec).should_generate()` and a documented omission set that uses the real importable symbols (`_SKIP_GENERAL_KEYS`, `_SKIP_OBJECT_KEYS`, `EnvironmentBuilder._WIND_SPEED_DORMANT`).
+- Added a "Scope anchor" section at the top stating the claim and non-claim explicitly.
+- Phase-tagged the "Files to Change" table (planning vs execution) to resolve the self-contradiction between "worker is planning-only" and the deliverables list.
+- Narrowed the regression-test acceptance criterion to `tests/solvers/orcaflex/modular_generator/ + tests/solvers/orcaflex/reporting/` instead of the full tree.
+- Removed the out-of-date "add `--json` to semantic_validate" mitigation (the flag exists at line 1951).
+- Pinned the `@requires_orcaflex` shape to a literal copy from `test_modular_vs_monolithic.py:27-37`.
+- Added the first-baseline-validation framing under Risks.
+- Committed to filing a follow-up issue for L2 so the scope boundary is tracked, not hand-waved.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — generator compatibility with c03 spec.yml:** the plan assumes `ModularModelGenerator(c03/spec.yml).generate(tmp_path)` runs without error on today's generic-track builder. The spec.yml contains a large `environment.raw_properties` bag and a generic object surface; if the generator raises or emits a non-loadable native YAML, the plan must fall back to filing a child issue for the unsupported surface and downgrading the claim to L1-partial. **Verification in execution:** smoke-run the generator on the committed spec.yml before authoring assertions. If it fails, the execution phase produces a sub-plan rather than asserting false equivalence.
-- **Risk — scripts/semantic_validate.py output shape:** the taxonomy doc describes the intended per-section category-counted format but does not guarantee a stable JSON schema. **Mitigation:** during execution, read `scripts/semantic_validate.py` end-to-end before wiring the pytest; if the script emits only human-readable text, add a thin `--json` emitter to the script or implement a wrapper in the test module that parses the text block. The wrapper path is the safer default because modifying `semantic_validate.py` affects every other structure family (cross-phase risk).
-- **Risk — OrcFxAPI version drift on licensed-win-1:** the L1 load test's pass/fail depends on the OrcFxAPI version. Pin the version in the readiness doc provenance block so future upgrades are visible in the diff.
-- **Risk — past-tense artifact drift (feedback_plan_past_tense_artifact_claims.md):** the issue comments describe fixture artifacts as both "recommended new paths" and as landed work. This plan treats the four already-committed `fpso_turret.*` artifacts as pre-existing reporting-baseline scope and does NOT propose re-creating them; only the three new semantic-proof artifacts are new work.
-- **Risk — worker scope creep into sibling issues:** #2455–#2458 are adjacent family-validation items. This plan must stay bounded to c03 turret-moored FPSO and must not touch sibling-issue artifacts, even when the pattern generalizes.
-- **Open — L2 behavioral equivalence vs L1 loadability:** the plan targets L2 (no C5/C6 diffs). A full statics/dynamics comparison between generated-native and monolithic (analogous to `TestModularVsMonolithicComparison` in `test_modular_vs_monolithic.py`) is NOT in scope because it requires a pre-computed `.sim` for the monolithic C03 on licensed-win-1 and a long-running statics job. Flag this to the user: should a follow-up issue be opened to add the statics comparison once licensed-win-1 capacity permits?
-- **Open — roadmap promotion threshold:** is "zero C5 and zero C6" sufficient to promote turret-moored FPSO to "Ready now", or does the user require the optional L2 statics comparison first? Default assumption in this plan: zero C5/C6 + documented C3 + resolved C4 is sufficient for "Ready now" under the L2 repo convention.
+- **Risk — generator compatibility:** `ModularModelGenerator(c03/spec.yml).generate(tmp)` is assumed to succeed. If it raises on the large `environment.raw_properties` bag or on generic-track object pass-through, the execution phase files a child issue and downgrades this plan's claim to "partial L0 — generator does not yet consume c03". Verification sequence at execution: smoke-generate first; only after success do we author assertions.
+- **Risk — Significance vs C1..C6 mapping precision:** the assertion set uses `Significance.SIGNIFICANT` and `Significance.TYPE_MISMATCH` as proxies for C6. A future property family could emit `Significance.MINOR` on a physics-relevant property and escape this gate. Mitigation: the readiness doc explicitly lists property families that must NEVER appear even as MINOR (water depth, wave height, wave period, current speed, line length, segment length, EA, EI, OD, ID, mass-per-length) and the pytest includes a narrow "forbidden MINOR" whitelist check for those families. If this check adds material complexity at execution, it is documented as a sub-issue rather than dropped.
+- **Risk — first-baseline circularity:** `test_frozen_diff_matches_current` on the very first commit only proves determinism. The first baseline is validated by (a) this adversarial plan review, (b) human inspection of the JSON before commit in the execution phase, (c) the other assertions (no SIGNIFICANT, no TYPE_MISMATCH, all missing documented, references resolve) which independently catch real defects. The readiness doc captures this reasoning so the frozen artifact cannot become a rubber-stamp baseline in future drift cycles.
+- **Risk — OrcFxAPI version drift on licensed-win-1:** L1 test outcome depends on OrcFxAPI version. The frozen baseline records the OrcFxAPI version present at generation time; any upgrade that changes the load behaviour produces a visible diff.
+- **Risk — `.spec` attribute name on `ModularModelGenerator`:** pseudocode's `test_groups_section_absence_justified_for_generic_spec` calls `ModularModelGenerator(SPEC).spec`. The attribute name is unverified in this planning pass. Executor adjusts to the real name (likely `_spec` or `spec`) in the execution phase; no plan revision required.
+- **Risk — past-tense artifact drift:** issue comments describe fixture artifacts in both recommendation and landed-artifact voice. This plan explicitly treats the four committed `fpso_turret.*` reporting files as pre-existing scope and scopes new work to the three new semantic-proof artifacts.
+- **Risk — worker scope creep into #2455-#2458:** siblings apply the same pattern to jumper/riser/multibody/ship cases. Execution must stay bounded to c03; the pattern generalisation is a later-wave concern.
+- **Open — L2 follow-up sequencing:** the follow-up L2 issue will require a committed `.sim` baseline of `C03 Turret moored FPSO.yml` after `CalculateStatics()` on licensed-win-1. That `.sim` could be large; the follow-up should settle on either committing a minimal-mesh statics `.sim` or generating on every CI run via `@requires_orcaflex` fixture. This decision belongs in the L2 issue's plan, not here.
+- **Open — roadmap subsection name:** plan proposes a new "Ready for L1 / static-YAML-diff" bucket. Alternative names: "L1-validated (loadable + static equivalent)", "Static-proof ready". Executor may pick the most consistent name; no plan change required.
 
 ---
 
 ## Complexity: T2
 
-**T2** — three new files in `digitalmodel/`, one surgical roadmap edit, one README index row, one frozen baseline JSON. Reuses existing generator + taxonomy infrastructure without modifying them (except possibly adding a `--json` flag to `semantic_validate.py`, which is scoped as a fallback behind a wrapper-first strategy). No new physics, no new generator builders. The engineering judgement load is in the claim-boundary doc and the C3 documentation audit, not in code volume.
+**T2** — three new digitalmodel files (one JSON, one pytest, one markdown), one surgical roadmap edit, one README row. No new Python modules are created; the test imports existing validator + generator symbols. No new physics, no new generator work, no new C1..C6 classifier module. The engineering judgement load is in the readiness doc's claim boundary and in the `DOCUMENTED_OMISSION_KEYS` construction. Execution effort is scoped by the narrow assertion set and the "L1 + static-diff equivalence" claim — L2 behavioral proof is a separate follow-up issue.
