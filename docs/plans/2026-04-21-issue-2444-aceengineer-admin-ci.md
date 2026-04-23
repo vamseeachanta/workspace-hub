@@ -1,11 +1,11 @@
 # Plan for #2444: aceengineer-admin — add minimal viable CI (uv + ruff + black + pytest) scoped to src/ + tests/
 
-> **Status:** draft (v4 — queue-audit fixes applied; fresh external re-review still required)
+> **Status:** draft (v6 — post-r5 external review fixes applied; fresh rerun required)
 > **Complexity:** T1
-> **Date:** 2026-04-21 (v4 revision: 2026-04-22)
+> **Date:** 2026-04-21 (v6 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2444
 > **Parent meta-issue:** #2424 (ecosystem CI health — 6-of-7 repos red)
-> **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — single-author interim review already posted; fresh external re-review still required)
+> **Review artifacts:** Wave 1 = `-claude.md` / `-codex.md` / `-gemini.md`; Wave 2 = `-*-r2.md`; interim Wave 3 = `-*-r3.md` (single-author / non-authoritative); external reruns = `2026-04-22-plan-2444-{codex,gemini}-r4.md` and `2026-04-22-plan-2444-{codex,gemini}-r5.md`; a fresh post-v6 rerun is still required before approval
 
 ---
 
@@ -98,9 +98,12 @@ python_functions = ["test_*"]
 |---|---|
 | This plan | docs/plans/2026-04-21-issue-2444-aceengineer-admin-ci.md |
 | New CI workflow | `aceengineer-admin/.github/workflows/ci.yml` |
-| Plan review — Claude | scripts/review/results/2026-04-21-plan-2444-claude.md |
-| Plan review — Codex | scripts/review/results/2026-04-21-plan-2444-codex.md |
-| Plan review — Gemini | scripts/review/results/2026-04-21-plan-2444-gemini.md |
+| TDD rename verifier | `aceengineer-admin/scripts/verify-stale-renames.sh` |
+| Plan review — Claude | `scripts/review/results/2026-04-21-plan-2444-claude.md` |
+| Plan review — Codex | `scripts/review/results/2026-04-21-plan-2444-codex.md` |
+| Plan review — Gemini | `scripts/review/results/2026-04-21-plan-2444-gemini.md` |
+| Plan review — external reruns | `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r4.md`, `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r5.md` |
+| Next rerun target | `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r6.md` |
 | Sibling template referenced | digitalmodel/.github/workflows/workflow-automation-tests.yml |
 
 ---
@@ -109,7 +112,7 @@ python_functions = ["test_*"]
 
 A single `aceengineer-admin/.github/workflows/ci.yml` that runs `uv sync --extra dev --extra test` → package-import smoke (`python -c "import aceengineer_admin"`) → `ruff check src tests` → `black --check src tests` → `pytest --ignore=tests/knowledge` on Python 3.11 and 3.12 on ubuntu-latest, triggered by positive `paths:` filter restricted to `src/**`, `tests/**`, `pyproject.toml`, `uv.lock`, and `.github/workflows/**`, producing a green first run that reports the existing test suite result (excluding the `tests/knowledge/` subtree, which is deferred to a follow-on issue). Plan implementation also (a) updates three stale `aceengineer_automation.*` import sites so the suite can actually collect, (b) generates and commits `aceengineer-admin/uv.lock` as part of the same implementation PR, and (c) removes the stale `aceengineer_automation*` entry from `pyproject.toml`'s `[tool.setuptools.packages.find].include` list.
 
-**Install-command design decision (v3):** `uv sync --extra dev --extra test` **without** `--frozen`. Rationale: Wave-2 Codex flagged that `uv.lock` was missing from the remote repo (verified locally — `git ls-files uv.lock` in `aceengineer-admin` returns empty; the committed `uv.lock` in the worktree is an untracked artifact from a prior `uv sync`). Using `--frozen` against a non-existent lockfile would fail immediately. Two options considered: (a) commit the generated `uv.lock` and use `--frozen` (strict reproducibility but requires implementation to author + commit the lockfile), (b) drop `--frozen` and let `uv sync` resolve afresh (simpler, but less reproducible). v3 chooses (a): the lockfile generation + commit is added to §Files to Change as an implementation step. The workflow still uses `uv sync --extra dev --extra test` (not `--frozen`) as a safety net for the case where a PR updates `pyproject.toml` without a matching `uv.lock` refresh — CI should not break purely on lockfile drift. `uv.lock` is also added to `paths:` triggers so an explicit lockfile-only update triggers CI.
+**Install-command design decision (v5):** `uv sync --extra dev --extra test` **without** `--frozen`. Rationale: Wave-2 Codex flagged that `uv.lock` was missing from the remote repo (verified locally — `git ls-files uv.lock` in `aceengineer-admin` returns empty; the committed `uv.lock` in the worktree is an untracked artifact from a prior `uv sync`). Using `--frozen` against a non-existent lockfile would fail immediately. Two options were considered: (a) commit the generated `uv.lock` and enforce `--frozen`; (b) drop `--frozen` and let `uv sync` resolve afresh. The chosen policy is a deliberate hybrid: **commit `uv.lock` for reproducibility and reviewability, but do not enforce `--frozen` in CI** so the workflow does not fail solely on manifest/lock drift. `uv.lock` remains in `paths:` triggers so an explicit lockfile-only refresh still runs CI.
 
 ---
 
@@ -124,6 +127,7 @@ T1 — trivial. See Files to Change. Workflow structure follows the digitalmodel
 | Action | Path | Reason |
 |---|---|---|
 | Create | `aceengineer-admin/.github/workflows/ci.yml` | primary deliverable — CI workflow |
+| Create | `aceengineer-admin/scripts/verify-stale-renames.sh` | TDD-first verifier authored before rename edits; runs inside `aceengineer-admin/` and asserts zero `aceengineer_automation` references remain in `src/`, `tests/`, and `pyproject.toml` |
 | Create | `aceengineer-admin/uv.lock` | Wave-2 Codex finding: lockfile is NOT currently tracked in `aceengineer-admin` (`git ls-files uv.lock` → empty). The workflow does not use `--frozen`, but committing a reproducible lockfile is the right hygiene for a CI-bootstrapped repo; it also resolves the Wave-2 trigger-path contradiction between `Deliverable` and `Detailed Spec`. Generated via `cd aceengineer-admin && uv lock` during implementation. |
 | Modify | `aceengineer-admin/tests/unit/automation/test_cli.py` | line 6: `from aceengineer_automation.cli import main` → `from aceengineer_admin.automation.cli import main`. **Why the automation subpackage (not the root `aceengineer_admin.cli`):** the test sits at `tests/unit/automation/test_cli.py` — the directory `tests/unit/automation/` mirrors the `src/aceengineer_admin/automation/` package and tests belong to that sub-CLI. Both `src/aceengineer_admin/cli.py` (the top-level `[project.scripts] aceengineer = ...` entrypoint) and `src/aceengineer_admin/automation/cli.py` (the automation sub-CLI) exist as tracked files (verified 2026-04-22 via `git ls-files`). The test's `main` symbol and assertions (`'AceEngineer Financial Automation Suite' in result.output`) match the automation sub-CLI's docstring `AceEngineer Financial Automation Suite` at `src/aceengineer_admin/automation/cli.py:12`, not the top-level CLI's identical docstring at `src/aceengineer_admin/cli.py:12` — the two CLIs have the same top-line docstring but different subcommand surfaces (the automation CLI has invoice/tax groups; the top-level CLI is a narrower wrapper). The test's directory location is the unambiguous signal; it is intended to test the automation sub-CLI. |
 | Modify | `aceengineer-admin/tests/unit/automation/common/test_config.py` | line 8: `from aceengineer_automation.common.config import Config` → `from aceengineer_admin.common.config import Config`. **Why the top-level `common.config` (not `aceengineer_admin.automation.common.config`):** Wave-2 Claude flagged ambiguity here. Both `src/aceengineer_admin/common/config.py` and `src/aceengineer_admin/automation/common/config.py` exist, and both define a `Config` class with the same `'Achanta AceEngineer Inc.'` default (the test passes either way — the original failure Codex observed was collection-time ImportError, not assertion-time). The top-level `aceengineer_admin.common.config` is the canonical one — the automation subpackage's copy is legacy scaffolding from the rename that should be removed in a follow-up cleanup (not in scope here). Cited in §Risks as residual rename drift. |
@@ -149,12 +153,12 @@ Wave-2 Codex flagged the prior "CI infrastructure — no unit-test TDD" waiver a
 | # | Step | Command | Red state (before) | Green state (after) |
 |---|---|---|---|---|
 | 1 | Baseline: no `.github/` exists | `ls aceengineer-admin/.github/ 2>&1` | `No such file or directory` | directory exists post-impl |
-| 2 | Author `scripts/verify-stale-renames.sh` **first** (test-before-implementation); the script asserts zero `aceengineer_automation` references remain in `src/` and `tests/` | `command -v actionlint || { echo "install actionlint"; exit 1; }; bash scripts/verify-stale-renames.sh` (script content: `set -euo pipefail; matches=$(grep -rn "aceengineer_automation" src/ tests/ pyproject.toml 2>&1); if [[ -n "$matches" ]]; then echo "$matches"; exit 1; fi`) | exit 1 — stale imports present (verified via `grep -rn "aceengineer_automation" src/ tests/ pyproject.toml` — see §Files to Change §Verification command) | exit 0 — all three rename sites + pyproject include cleaned |
-| 3 | Author `.github/workflows/ci.yml`, validate schema | `command -v actionlint || { echo "FAIL: install actionlint"; exit 1; }; actionlint .github/workflows/ci.yml` | schema errors (file missing / malformed) OR actionlint missing | no errors |
+| 2 | Author `aceengineer-admin/scripts/verify-stale-renames.sh` **first** (test-before-implementation); the script asserts zero `aceengineer_automation` references remain in `src/` and `tests/` | `command -v actionlint || { echo "install actionlint"; exit 1; }; cd aceengineer-admin && bash scripts/verify-stale-renames.sh` (script content: `set -euo pipefail; matches=$(grep -rn "aceengineer_automation" src/ tests/ pyproject.toml 2>&1); if [[ -n "$matches" ]]; then echo "$matches"; exit 1; fi`) | exit 1 — stale imports present (verified via `grep -rn "aceengineer_automation" src/ tests/ pyproject.toml` — see §Files to Change §Verification command) | exit 0 — all three rename sites + pyproject include cleaned |
+| 3 | Author `.github/workflows/ci.yml`, validate schema | `cd aceengineer-admin && command -v actionlint || { echo "FAIL: install actionlint"; exit 1; }; actionlint .github/workflows/ci.yml` | schema errors (file missing / malformed) OR actionlint missing | no errors |
 | 4 | Generate `uv.lock` | `cd aceengineer-admin && uv lock 2>&1` | `uv.lock` missing (current state: `git ls-files uv.lock` → empty) | `uv.lock` created; `git status` shows it as a new tracked file |
-| 5 | Local pytest dry-run matching CI gate (fail-fast on collection) | `uv sync --extra dev --extra test && uv run pytest --collect-only --ignore=tests/knowledge 2>&1` | collection errors on `tests/unit/automation/test_cli.py` (stale `aceengineer_automation.cli` import) BEFORE step 2 rewrites are applied | clean collection, N items collected |
-| 6 | Local ruff + black | `uv run ruff check src tests && uv run black --check src tests` | non-zero on formatting/lint drift | both exit 0 (or fixed in same PR via `ruff --fix` + `black src tests`) |
-| 7 | Local pytest execution (verbose, no coverage gate) | `uv run pytest --ignore=tests/knowledge -v` | any pytest failure | all collected tests pass OR pre-existing failures documented with issue links |
+| 5 | Local pytest dry-run matching CI gate (fail-fast on collection) | `cd aceengineer-admin && uv sync --extra dev --extra test && uv run pytest --collect-only --ignore=tests/knowledge 2>&1` | collection errors on `tests/unit/automation/test_cli.py` (stale `aceengineer_automation.cli` import) BEFORE step 2 rewrites are applied | clean collection, N items collected |
+| 6 | Local ruff + black | `cd aceengineer-admin && uv run ruff check src tests && uv run black --check src tests` | non-zero on formatting/lint drift | both exit 0 (or fixed in same PR via `ruff --fix` + `black src tests`) |
+| 7 | Local pytest execution (verbose, no coverage gate) | `cd aceengineer-admin && uv run pytest --ignore=tests/knowledge -v` | any pytest failure | all collected tests pass OR pre-existing failures documented with issue links |
 | 8 | Push to `aceengineer-admin main`; first Actions run on both matrix cells (py3.11, py3.12) | `gh run list --repo vamseeachanta/aceengineer-admin --workflow ci.yml --limit 1 --json conclusion` | (not yet run) | `conclusion: success` on both matrix cells |
 | 9 | Path-filter validation: push a `.claude/`-only edit, confirm no CI run queued | `gh run list --repo vamseeachanta/aceengineer-admin --workflow ci.yml --limit 5 --json createdAt,headSha,event` | n/a | no new run for the `.claude/` commit — proves positive `paths:` scoping is tight |
 
@@ -165,8 +169,8 @@ Wave-2 Codex flagged the prior "CI infrastructure — no unit-test TDD" waiver a
 ## Acceptance Criteria
 
 - [ ] `aceengineer-admin/.github/workflows/ci.yml` is committed to aceengineer-admin `main` (after user `status:plan-approved` + marker)
-- [ ] Three stale-import fixes + pyproject include cleanup + committed `uv.lock` (see §Files to Change — 5 artifacts total) committed in the same PR as the workflow
-- [ ] `scripts/verify-stale-renames.sh` exits 0 against the final state — zero `aceengineer_automation` references remain in `src/`, `tests/`, or `pyproject.toml` (TDD green-step evidence; cited in closeout comment)
+- [ ] Three stale-import fixes + pyproject include cleanup + committed `uv.lock` + committed `aceengineer-admin/scripts/verify-stale-renames.sh` (see §Files to Change) land in the same PR as the workflow
+- [ ] `aceengineer-admin/scripts/verify-stale-renames.sh` exits 0 against the final state — zero `aceengineer_automation` references remain in `src/`, `tests/`, or `pyproject.toml` (TDD green-step evidence; cited in closeout comment)
 - [ ] First GitHub Actions run on aceengineer-admin after merge is GREEN on both py3.11 and py3.12 (ubuntu-latest), scope: `tests/unit/` + `src/` (i.e., `pytest --ignore=tests/knowledge`)
 - [ ] Workflow triggers ONLY on changes to `src/**`, `tests/**`, `pyproject.toml`, `uv.lock`, or `.github/workflows/**` (positive `paths:` filter — now includes `uv.lock` consistently across Deliverable, Spec, and this AC, resolving the Wave-2 trigger-path contradiction)
 - [ ] Workflow is manually triggerable via `workflow_dispatch`
@@ -174,7 +178,7 @@ Wave-2 Codex flagged the prior "CI infrastructure — no unit-test TDD" waiver a
 - [ ] Package import smoke (`python -c "import aceengineer_admin"`) runs and passes on both matrix cells
 - [ ] Lint step (ruff + black) completes **successfully** per matrix cell. (Wave-2 Claude finding: the prior "within 2 minutes" wording was runner-dependent and not deterministically verifiable. Performance is tracked as an Open question in §Risks, not as an acceptance gate.)
 - [ ] Pytest step respects `pyproject.toml` `testpaths` (no `--rootdir` override)
-- [ ] Wave 3 adversarial review artifacts (Claude + Codex + Gemini) posted under `scripts/review/results/2026-04-21-plan-2444-{claude,codex,gemini}-r3.md` before user approval
+- [ ] Fresh external adversarial review artifacts (Codex + Gemini, and Claude if rerun) posted for this v6 text after the interim `-r3.md` wave and after the now-historical `r4` / `r5` reruns — the already-posted `r3`, `r4`, and `r5` files do NOT satisfy this gate for approval of the current draft. Canonical next targets: `scripts/review/results/2026-04-22-plan-2444-{codex,gemini}-r6.md` plus any later rerun artifacts generated from subsequent plan edits.
 - [ ] Follow-on issue opened to re-enable `tests/knowledge/` with `[knowledge-semantic]` extra once ML-extras-on-runner footprint is scoped
 - [ ] Follow-on issue opened to clean up the duplicate `common/config.py` (residual rename drift — legacy `src/aceengineer_admin/automation/common/config.py` duplicate should be removed once all callers migrate to the top-level `aceengineer_admin.common.config`). Cross-linked from #2444 closeout.
 
@@ -307,9 +311,9 @@ runs-on: ubuntu-latest
 - (Claude.3 → resolved) 2-minute lint acceptance criterion rewritten to "Lint step completes **successfully**"; runtime is tracked as an Open question in §Risks rather than an acceptance gate.
 - (Gemini.2 — false positive → documented) Gemini's attested evidence claimed `src/aceengineer_admin/cli.py` and `__init__.py` might be missing. Live verification 2026-04-22 (`git ls-files src/aceengineer_admin/cli.py src/aceengineer_admin/__init__.py`) confirms both EXIST. The v2 plan's §Evidence block now states this explicitly to prevent Wave-3 re-surfacing.
 
-### Status (v4)
+### Status (v6)
 
-**Revised after queue audit; still NOT approval-ready.** Wave 3 artifacts exist, but the issue comments explicitly note they were single-author interim reviews rather than a fresh external cross-provider dispatch. The next required step is a real external re-review wave (Claude/Codex/Gemini or equivalent) against this v4 text. User approval remains load-bearing; this plan MUST NOT be self-approved by any agent.
+**Revised after external rerun review; still NOT approval-ready.** External reruns now exist at `2026-04-22-plan-2444-{codex,gemini}-r4.md` and `2026-04-22-plan-2444-{codex,gemini}-r5.md`, and both waves still returned MAJOR. This v6 draft incorporates the r5 findings (status/review-state consistency, verifier artifact inventory, working-directory context, and rerun-gate clarity). The next required step is a fresh post-v6 external rerun, not user approval yet.
 
 ---
 

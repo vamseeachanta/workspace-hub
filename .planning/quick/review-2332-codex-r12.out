@@ -1,0 +1,19 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The plan still has a hard contradiction in the non-baseline cap rules, the markdown behavior for non-baseline states is underdefined, one launcher preservation check is not exact enough, and review-process narration remains in the plan text.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, sections `Prior-audit delta contract` and `Provider budget contract for phase 1` conflict on non-baseline caps. The delta contract says every non-baseline branch must seed `python3_cap_count = python3_current_count`, but the provider table simultaneously defines fixed phase-1 hard caps of `744/337/2059/291`. Those rules diverge whenever a non-baseline branch occurs and current counts differ from the published caps.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Prior-audit delta contract`, underdefines the human-readable output for non-baseline states. It requires distinct `delta_status` values and branch-specific `python3_compliance_reason` text, but then says to render generic `baseline only` wording in markdown/publication output. That collapses `no_prior_audit`, `prior_snapshot_unreadable`, and `provider_missing_from_prior_snapshot` into one presentation and leaves the markdown contract contradictory.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `TDD Test List`, test `test_first_wave_launcher_files_still_execute_with_uv_no_project_contract`, is not exact enough for `scripts/ai/generate-agent-radar.py`. Cases 2 and 3 assert the specific launcher call site and preserved kwargs via `subprocess.run` monkeypatching, but case 1 only checks that the script exits 0 and writes HTML. That does not prove the targeted bare-`python3` launcher was the path exercised or that argv/kwargs were preserved after the interpreter swap.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Risks and Open Questions`, still contains review-process narration: `None blocking approval readiness` and `fully specified`. That is approval commentary, not implementation content, and it violates the requirement to keep review narration out of the plan.
+
+### Suggestions
+- Resolve the cap rule by choosing one source of truth for non-baseline branches. Either keep fixed published caps even when prior history is missing/unreadable, or explicitly state that non-baseline branches temporarily seed both baseline and cap from current counts and that the provider table values apply only when `delta_status = baseline_available`.
+- Replace generic `baseline only` wording with branch-specific markdown requirements. At minimum, require markdown to surface `delta_status` plus the exact branch-specific `python3_compliance_reason`, so readers can distinguish missing history from unreadable history from provider-row absence.
+- Tighten the `generate-agent-radar.py` preservation test to inspect the exact launcher invocation, not just successful script execution. Use the same call-site assertion pattern already specified for the other two launcher files, including expected argv and preserved subprocess kwargs.
+- Delete the approval-status narration from `Risks and Open Questions` and keep only implementation-relevant risks or genuine unresolved questions.
+
+### Questions for Author
+- For non-baseline branches, should `python3_cap_count` remain the published provider cap from the phase-1 table, or intentionally reseed to `python3_current_count` until a readable prior snapshot exists?

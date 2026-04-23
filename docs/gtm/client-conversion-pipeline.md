@@ -20,6 +20,8 @@ The workspace-hub ecosystem contains production-grade engineering infrastructure
 | Wall thickness / multi-code comparison | Pipeline engineering design verification | $200-300/hr | Demo 2 (72 cases, 3 codes -- DONE) |
 | FEA + cathodic protection | Structural integrity and corrosion assessments | $250-400/hr | Case studies from digitalmodel/ |
 | API 579 Fitness-for-Service | Remaining life assessment, repair-or-replace decisions | $300-500/hr | Methodology docs |
+| Floating offshore wind transfer engineering | FOWT mooring, installation, integrity, and bankability support | $200-400/hr | Capability packaging from mooring + naval-arch + offshore wind expertise |
+| Marine terminal engineering (LNG / port ops) | Berth operability, LNG carrier / FSRU mooring interface, fendering, transfer envelope, harbour response screening | $200-400/hr | Capability packaging from mooring + marine ops + terminal engineering know-how |
 | Python automation + parametric analysis | Digital twin / calculation automation consulting | $150-250/hr | Overnight engineering demo GIFs |
 | DNV/ISO/NORSOK compliance | Standards compliance review and gap analysis | $200-350/hr | Code reference databases |
 | VIV assessment | Vortex-induced vibration screening and analysis | $250-400/hr | Demo 1 (freespan), VIV notebook |
@@ -163,6 +165,23 @@ PROSPECT --> QUALIFY --> PROPOSE --> CLOSE --> RETAIN
 | Procurement / contracts | Case studies, credentials page | Direct email, RFP responses | Issue PO |
 | Industry peers / referral sources | Technical blog posts, conference papers | LinkedIn, industry forums | Referral introduction |
 | Expert network platforms | Domain expertise profile | GLG/AlphaSights/Guidepoint | Accept consultation |
+| Offshore installation / subsea ops leads | Engineering-led execution posts with real go/no-go visuals | LinkedIn, direct outreach follow-up | Start a conversation around vessel, weather, or installation risk |
+| Naval architecture / marine structures audience | Engineer-grade explainer posts with technically correct diagrams | LinkedIn, aceengineer.com article funnel | Build authority, then convert to transport / structural analysis work |
+| LNG terminal / FSRU / port-operations teams | Berth operability, mooring/fendering, and ship/shore transfer-interface posts grounded in engineering limits | LinkedIn, expert networks, direct outreach | Convert terminal-adjacent questions into scoped screening studies |
+
+### GTM messaging upgrades from external LinkedIn review
+
+Two useful patterns emerged from recent LinkedIn review:
+
+1. **Subsea operations content wins when engineering is visibly tied to offshore execution.**
+   Generic "we do engineering" language is weaker than showing how analysis changes vessel choice, weather window, ROV/intervention limits, or offshore go/no-go decisions.
+2. **Fundamentals content can attract reach, but weak diagrams destroy credibility.**
+   ACE should publish mechanics explainers only when the graphics are precise enough for expert scrutiny.
+
+Operational rule for new content:
+- Every post should contain at least one of: quantified outcome, governing engineering insight, operational consequence, or standards-based credibility marker.
+- Educational posts must bridge directly into a service line: transport checks, installation analysis, structural integrity, seafastening, ballast/load sequencing, or parametric screening.
+- Conference programme pages and event agendas can validate topic interest, but not design evidence; LNG and terminal content must point back to berth data, vessel particulars, metocean, and recognised marine-terminal references.
 
 ### Content Production Priority
 
@@ -171,16 +190,24 @@ PROSPECT --> QUALIFY --> PROPOSE --> CLOSE --> RETAIN
    - Demo 3 (mudmat/lifting) -- next priority, showcases vessel comparison
    - Demo 5 (jumper) -- complements Demo 3 with subsea scope
    - Demo 1 (freespan) -- broadest applicability, highest case count
+   - Add an installation-analysis variant that explicitly shows segmented hydrodynamic loading, splash-zone realism, and trustworthy weather limits
 
 2. **aceengineer.com service pages** (SEO + credibility)
    - Convert top 50 engineering skills to service descriptions (#2022 pipeline)
    - Publish 4 methodology docs (done, awaiting deployment)
    - Add case studies from digitalmodel/ completed analyses
+   - Add a FOWT capability page focused on mooring, installation, integrity, and O&G-to-renewables transfer
+   - Add a marine terminal engineering page focused on berth operability, mooring/fendering, LNG transfer interface, and FSRU/import-export terminal screening boundaries
 
 3. **Outreach collateral** (direct sales)
    - Email templates for each prospect type (draft-outreach skill)
    - One-pager PDF: "ACE Engineering Capabilities" (derived from skill inventory)
    - LinkedIn articles adapted from methodology docs
+
+4. **Terminal-adjacent content production note**
+   - Use LNG2026 and similar public programmes as topic-signal inputs only --- useful for choosing themes like LNG bunkering, STS, berth operability, and FSRU interface.
+   - Build actual conversion content from engineering questions: what governs mooring loads, what constrains transfer operations, how berth motions affect loading-arm or hose envelopes, and when harbour response becomes the limiting case.
+   - Keep the service boundary explicit: screening and decision support first, detailed terminal design only with project-specific data and deeper references.
 
 ---
 

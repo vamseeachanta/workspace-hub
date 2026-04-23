@@ -12,7 +12,9 @@ P.E. | 23 Years | Houston, TX
 2. **Pipeline Integrity** --- Wall thickness, freespan/VIV, on-bottom stability (DNV-ST-F101, RP-F105)
 3. **Mooring & Riser Design** --- OrcaFlex analysis, fatigue, metocean loading (API RP 2SK)
 4. **Structural Assessment** --- FEA, fitness-for-service, cathodic protection (API 579, DNV-RP-B401)
-5. **AI-Augmented Engineering** --- Overnight parametric sweeps, real-time operations support
+5. **Floating Offshore Wind (FOWT)** --- Mooring transfer from oil & gas, installation strategy, integrity planning
+6. **Marine Terminal Engineering** --- Berth operability, mooring/fendering, LNG carrier / FSRU transfer-interface screening
+7. **AI-Augmented Engineering** --- Overnight parametric sweeps, real-time operations support
 
 ### Proof Point
 

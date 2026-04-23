@@ -1,0 +1,42 @@
+I'll read the plan and evaluate each of the six check items against the actual text.
+
+★ Insight ─────────────────────────────────────
+This review is a contract-doc plan where defects show up as lexical ambiguities, scope collisions, and test weaknesses that let a future contract pass without really satisfying the intent. "Concreteness" is especially tricky: the plan has to itself be concrete about what concreteness means, or its own validator can be fooled.
+─────────────────────────────────────────────────
+
+Verdict: MINOR
+
+Findings:
+- [MINOR] Scorecard-vs-freshness naming collision is unresolved — The negative-authority sentence (plan L180, L206, L245, L262) is `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority`, yet the refresh obligation (L176, L204, L244, L261) mandates refreshing `docs/reports/tier-1-indexing-freshness-latest.md`. Both artifacts live under `docs/reports/` with a shared `tier-1-indexing-` prefix. The plan never says whether the freshness file is or is not a "scorecard" for guard purposes. A future reader applying the guard literally could argue the freshness file is covered by the prohibition, contradicting the refresh requirement. Add an explicit carve-out (e.g., "the `*-freshness-latest.md` report is not a scorecard for purposes of this rule") or rename the guarded class.
+- [MINOR] Checklist status-value guard is documentation-only, not per-cell — Test `test_tier1_checklist_records_surface_status_per_repo` (L248) is described as asserting "field names and allowed status values present" in the checklist text. That matches a file that *mentions* `present | partial | missing | not-applicable` once in a legend, but does not enforce that every repo's `operator_map_status`/`registry_status`/`data_placement_status` cell actually uses a token from that vocabulary. A future checklist editor could type `unknown` or `todo` and the test would still pass. Tighten the test contract to parse each repo row and assert each status cell ∈ the allowed set.
+- [MINOR] "bulk-artifact-store" definition is still conceptual, not operational — L150, L165, L183–184 define it as "non-repo storage target for large, generated, or fast-growing artifacts". No size threshold, no enumeration of artifact classes (simulation outputs, caches, generated reports, logs, binaries, datasets). The validator at L201 / L239 asserts "defines bulk-artifact-store concretely" — but the plan's own definition is abstract enough that the test will trivially pass on any paraphrase of the same sentence. Either add an enumerated non-exhaustive list of artifact classes inside the definition, or drop the word "concretely" from the acceptance criterion and call it a taxonomy.
+- [MINOR] Legacy banned-pattern signature count is unbounded — L172 and the test at L241 require "multiple concrete signatures". A two-item list of trivial legacy filenames satisfies "multiple". Specify a minimum count (e.g., ≥3) and at least one signature from each named category (literal filename, path fragment, reference block).
+- [MINOR] Freshness refresh obligation is stated in contract, not enforced in this issue — L176 and L244 require the contract to state "refreshing or regenerating" the freshness report. That is a prose obligation, not a runtime check. Enforcement is delegated to #2465 (L177, L243). This is consistent with the issue scope (the contract is the deliverable), but a strict reader could still argue a "real refresh obligation" without any cadence check means the refresh can silently lapse. Either explicitly acknowledge in the contract section that enforcement cadence is out of scope and lives in #2465, or require this plan to land a minimal freshness-age sentinel.
+- [MINOR] Lexical tests are case/whitespace fragile — L244, L245, L261, L262 require exact phrases (`daily freshness review`, `every 24 hours` / `once per day`, and the full negative-authority sentence). The plan does not state whether matching is case-insensitive or whitespace-normalized. A contract author writing `Daily Freshness Review` in a heading could fail the test; a linter reformatting the negative-authority sentence across a line break could also fail. Specify normalization rules (lowercase, collapsed whitespace) in the test spec.
+- [MINOR] Adversarial Review Summary section mixes historical verdicts with "pending re-review" disclaimer — L274–292. The section header does not itself say "historical"; a reviewer skimming the table at L281–283 could mistake MAJOR/MAJOR/MINOR as the current verdict. Move the disclaimer (L276–277) above the table or rename the section "Prior Review Summary (superseded)".
+- [MINOR] "evidence_source" field has no allowed-value vocabulary — L192 says "a concrete path, issue number, or report path" but the four-token vocabulary (`present | partial | missing | not-applicable`) only applies to status fields, not evidence_source. Empty or placeholder cells (`TBD`, `n/a`, `-`) are not addressed. Either permit `not-applicable`/empty explicitly or require non-empty evidence for any non-`missing` status.
+
+Not blockers, but worth noting:
+- Deliverable sentence (L150) is one ~6-line sentence embedding a definition parenthetical; splitting it would aid readability but is not a correctness defect.
+- Checklist scope is hardcoded to four named repos (L246, L263) with no provision for a fifth; acceptable for T2 scope.
+
+On the six specific questions:
+1. **bulk-artifact-store defined concretely** — defined conceptually (L150, L183–184), but not operationally enumerated. Acceptable for a contract, weak for "concretely". MINOR.
+2. **`/mnt/ace/data` clearly example-only** — YES. Consistently scoped as "current workspace-hub implementation example" at L150, L184, L202, L239, L258. No residual language treating it as universal.
+3. **Daily freshness has real refresh obligation** — YES at contract level (L176, L204, L244, L261) with exact cadence + refresh-or-regenerate obligation on a named artifact + #2465 linkage. Enforcement cadence is punted to #2465 (acceptable but worth noting).
+4. **Scorecard guard targets the artifact class** — YES. L180/L206/L245/L262 use "any tier-1 indexing scorecard under `docs/reports/`" rather than a single filename. Collides ambiguously with the freshness file (finding above).
+5. **Checklist fields and allowed values concrete** — YES for documentation (L190–193, L209, L248, L265) but enforcement is document-surface-only (finding above).
+6. **Approval readiness reached** — MINOR. No MAJOR blockers remain. The scorecard/freshness collision and the status-enforcement weakness should be resolved before `status:plan-review` transition, but they are text-level patches.
+
+Checks performed:
+- Read the full plan file at `docs/plans/2026-04-22-issue-2460-tier1-indexing-and-code-placement-contract.md` lines 1–310
+- Verified bulk-artifact-store definition wording at L150, L165, L183–184 and validator assertions at L201, L239
+- Verified `/mnt/ace/data` scoping at L150, L184, L202, L239, L258 — consistently tagged as example
+- Verified daily-freshness obligation at L175–177, L204, L244, L261 — includes cadence + refresh artifact + #2465 linkage
+- Verified scorecard negative-authority sentence at L180, L206, L245, L262 — targets class, not file
+- Cross-checked the scorecard guard against the freshness refresh target to detect artifact-class collision
+- Verified checklist fields and allowed values at L190–193, L209, L248, L265
+- Cross-checked Acceptance Criteria (L256–270) against TDD Test List (L231–250) for parity
+- Cross-checked Artifact Map (L136–144) against Files to Change (L219–224)
+- Verified scope of checklist repos (4) matches set of repo-specific child issues (#2461–#2464)
+- Scanned Risks section (L298–304) for residual open blockers; flagged open questions are out-of-scope T2 extensions, not gating

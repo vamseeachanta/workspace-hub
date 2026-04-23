@@ -5,6 +5,18 @@
 
 ---
 
+## [2026-04-23] ingest | LNG marine terminal follow-on engineering pages
+- Source: concepts/lng-marine-terminal-engineering.md + existing LNG mooring and port-operation source pages
+- Pages created: concepts/fsru-marine-terminal-interface.md, concepts/lng-berth-operability.md, concepts/lng-transfer-system-envelope.md
+- Pages updated: concepts/lng-marine-terminal-engineering.md, index.md
+- Notes: Added three follow-on LNG terminal pages focused on berth uptime, ship/shore transfer motion compatibility, and the distinct marine interface created by FSRU-based receiving terminals. Kept claims at synthesis level and avoided unsupported numerical criteria or standard-specific design rules.
+
+## [2026-04-23] ingest | LNG2026 marine terminal and port-operations topic signal
+- Source: https://lng2026.com/lng-programme-overview + https://lng2026.com/technical-programme + TP04 session page
+- Pages created: sources/lng2026-tp04-shipping-marine-port-operations.md, concepts/lng-marine-terminal-engineering.md
+- Pages updated: entities/lng-carrier-mooring.md, index.md
+- Notes: Public programme pages do not provide design criteria, but they explicitly confirm LNG shipping, bunkering, ship-to-ship transfer, and port/terminal infrastructure as current technical themes. Added a new synthesis concept page to capture research and engineering required for LNG marine terminals and linked it into existing LNG mooring coverage.
+
 ## [2026-04-17] ingest | CadQuery entity (cross-wiki from engineering)
 - Source: https://news.ycombinator.com/item?id=47772725 + https://cadquery.github.io/
 - Pages created: entities/cadquery.md

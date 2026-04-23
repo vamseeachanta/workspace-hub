@@ -16,11 +16,13 @@ Generated: 2026-04-10 | GH: #2098
 | 8 | Pressure Vessel / FFS | digitalmodel/structural/pressure_vessel | PV demo exists | API 579, ASME VIII | Production | Remaining life assessment |
 | 9 | Mooring Design | digitalmodel/mooring | --- | DNV-OS-E301, API RP 2SK | Available | Line sizing, fatigue life |
 | 10 | Riser Analysis | digitalmodel/risers | --- | API RP 2RD, DNV-OS-F201 | Available | Dynamic response, VIV |
-| 11 | On-Bottom Stability | --- | --- | DNV-RP-F109 | Planned (#1835) | Hydrodynamic stability check |
-| 12 | Shore Approach | --- | --- | --- | Planned (#1836) | HDD, trenching, pull-in |
-| 13 | Pipeline CAPEX | --- | --- | --- | Planned (#1837) | Cost estimation |
-| 14 | Field Development Economics | digitalmodel/field_development | --- | --- | Production | NPV, CAPEX/OPEX, concept screening |
-| 15 | Drilling Rig Fleet | digitalmodel/naval_arch | --- | --- | Production (#2062) | Hull form validation |
+| 11 | Floating Offshore Wind (FOWT) | digitalmodel/mooring + digitalmodel/naval_arch | --- | API RP 2SK, DNV-RP-J203 | Available | O&G-to-FOWT transfer for moorings, installation, and integrity |
+| 12 | On-Bottom Stability | --- | --- | DNV-RP-F109 | Planned (#1835) | Hydrodynamic stability check |
+| 13 | Shore Approach | --- | --- | --- | Planned (#1836) | HDD, trenching, pull-in |
+| 14 | Pipeline CAPEX | --- | --- | --- | Planned (#1837) | Cost estimation |
+| 15 | Field Development Economics | digitalmodel/field_development | --- | --- | Production | NPV, CAPEX/OPEX, concept screening |
+| 16 | Drilling Rig Fleet | digitalmodel/naval_arch | --- | --- | Production (#2062) | Hull form validation |
+| 17 | Marine Terminal Engineering (LNG / Port Ops) | digitalmodel/mooring + digitalmodel/marine_ops + ACE marine engineering methods | --- | PIANC, OCIMF, SIGTTO, project-specific terminal criteria | Available | Berth operability, mooring/fendering checks, ship/shore transfer interface, harbour response, FSRU/import-export terminal screening |
 
 ---
 
@@ -39,10 +41,10 @@ Generated: 2026-04-10 | GH: #2098
 | Parametric demos (GTM suite) | 5 |
 | Total parametric cases across demos | 1,292 |
 | Additional demos (CP, PV, S-N) | 3 exist, not in GTM suite |
-| Disciplines with demos | 8 of 15 |
-| Disciplines at Production readiness | 10 of 15 |
-| Disciplines at Available readiness | 2 of 15 |
-| Disciplines at Planned readiness | 3 of 15 |
+| Disciplines with demos | 8 of 17 |
+| Disciplines at Production readiness | 10 of 17 |
+| Disciplines at Available readiness | 4 of 17 |
+| Disciplines at Planned readiness | 3 of 17 |
 
 ---
 
@@ -67,6 +69,8 @@ Generated: 2026-04-10 | GH: #2098
 |-----------|-----|-----------------|----------|
 | Mooring Design | Module exists, no demo packaging | 1 week | High --- mooring is a bread-and-butter discipline for FPSO/TLP clients |
 | Riser Analysis | Module exists, no demo packaging | 1 week | High --- always paired with mooring in deepwater scope |
+| Floating Offshore Wind (FOWT) | Capability exists across mooring/naval-arch/offshore-wind know-how, but no focused GTM package yet | 1 week | High --- opens renewables buyers using transferable O&G installation and integrity methods |
+| Marine Terminal Engineering (LNG / Port Ops) | Capability exists as an engineering adjacency around berth operability, mooring/fendering, transfer interface, and FSRU/import-export terminal archetypes, but no focused GTM package yet | 1 week | High --- opens LNG terminal, FSRU, and port-operations buyers without claiming full terminal design EPC scope |
 | Fatigue / S-N | 221 curves exist, notebook planned (#1692) | 3 days | Medium --- supporting capability, not standalone sale |
 
 ### Missing Capabilities (no module yet)
@@ -98,6 +102,8 @@ Generated: 2026-04-10 | GH: #2098
 - **Output**: DAF, sling loads, crane utilisation, weather window
 - **Hero chart**: go/no-go heatmap (Hs vs. structure weight)
 - **Client insight**: splash zone slamming governs for 200te+ structures; DAF alone misleading
+- **Add installation-analysis detail**: segmented hydrodynamic loading across the lifted geometry improves heave/pitch realism versus single-point loading, making splash-zone and water-entry weather limits more trustworthy
+- **Advanced modeling note**: full geometry, flow interaction, and local perforation/open-area effects matter for large subsea structures --- not just total mass and centre-point hydrodynamics
 
 ### Demo 4 --- S-Lay Pipelay (60 cases)
 - **Sweep**: pipe OD/WT x water depth x tension x stinger setting
@@ -110,6 +116,19 @@ Generated: 2026-04-10 | GH: #2098
 - **Output**: lift loads, VIV screening, orientation sensitivity
 - **Hero chart**: parametric VIV pass rate by pipe size and current
 - **Client insight**: 8" jumper VIV pass rate is 33% vs. 13% for standard pipe --- geometry matters more than mass
+
+### FOWT Capability Overlay --- Floating Offshore Wind
+- **Positioning**: transfer proven offshore oil-and-gas engineering into floating wind without pretending the loading, scale, and cost model are identical
+- **What ACE can lead with**: mooring concept selection, anchor strategy, fatigue/integrity planning, weather-limited installation logic, tow-out/hook-up planning, and bankability-oriented technical assurance
+- **Client insight**: floating wind buyers care less about generic renewables messaging and more about whether O&G mooring, installation, and integrity lessons have been adapted correctly for farm-scale repeatability
+- **Near-term GTM angle**: package ACE as the bridge between deepwater mooring/installation experience and FOWT commercialization needs
+
+### Marine Terminal Engineering Overlay --- LNG / Port Operations
+- **Positioning**: frame marine terminal engineering as an engineering adjacency, not a generic port-services claim --- focused on berth operability, LNG carrier/FSRU mooring interface, fendering logic, transfer envelope, and harbour response
+- **What ACE can lead with**: screening-level operability and interface studies around ship/shore transfer, berth motions, mooring load paths, fender performance, bunkering or STS interface checks, and import/export terminal archetype comparison
+- **Boundary**: detailed terminal design still depends on project metocean, berth geometry, terminal criteria, vessel particulars, and deeper references; conference programmes such as LNG2026 are useful topic signals, not design-data evidence
+- **Client insight**: terminal teams often need early answers on whether the berth concept, transfer interface, and marine operations philosophy are directionally sound before committing to full design campaigns
+- **Near-term GTM angle**: package ACE as the engineering bridge between offshore mooring/marine operations analysis and LNG terminal berth/interface decision support
 
 ---
 

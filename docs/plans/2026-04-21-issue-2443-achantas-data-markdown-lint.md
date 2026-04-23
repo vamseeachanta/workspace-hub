@@ -1,11 +1,11 @@
 # Plan for #2443: achantas-data — restore CI with markdown-lint + link-check (workflows deleted 2025-10)
 
-> **Status:** draft (v4 — post-queue-audit fixes, awaiting Wave 3 re-review)
+> **Status:** draft (v5 — post-r4 external review fixes applied)
 > **Complexity:** T1
-> **Date:** 2026-04-21 (v4 revision: 2026-04-22)
+> **Date:** 2026-04-21 (v5 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2443
 > **Parent meta-issue:** https://github.com/vamseeachanta/workspace-hub/issues/2424
-> **Review artifacts:** `-claude.md` / `-codex.md` / `-gemini.md` (Wave 1), `-*-r2.md` (Wave 2), `-*-r3.md` (Wave 3 — to be generated for this revision)
+> **Review artifacts:** Wave 1 = `-claude.md` / `-codex.md` / `-gemini.md`; Wave 2 = `-*-r2.md`; Wave 3 = `2026-04-22-plan-2443-{codex,gemini}-r4.md` (fresh external rerun required before approval; older `-r3` references are superseded by this v5 draft)
 
 ---
 
@@ -96,7 +96,9 @@ No relevant wiki pages — this is repo infrastructure, not domain knowledge.
 | Plan review — Claude | `scripts/review/results/2026-04-21-plan-2443-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-04-21-plan-2443-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-04-21-plan-2443-gemini.md` |
-| README index | `docs/plans/README.md` (row added during normal workflow — NOT in this drafting pass per task constraint) |
+| Plan review — Wave 2 rerun | `scripts/review/results/2026-04-21-plan-2443-{claude,codex,gemini}-r2.md` |
+| Plan review — latest external rerun | `scripts/review/results/2026-04-22-plan-2443-{codex,gemini}-r4.md` |
+| README index | `docs/plans/README.md` |
 
 Note: implementation artifacts land in the **external `achantas-data` repo**, not in workspace-hub. Execution requires `cd achantas-data/` and a separate commit/push in that repo.
 
@@ -224,7 +226,7 @@ if [[ ! -f "$cfg" ]]; then
   echo "FAIL: $cfg missing" >&2
   exit 1
 fi
-uv run python - "$cfg" <<'PY'
+python3 - "$cfg" <<'PY'
 import json, re, sys
 path = sys.argv[1]
 raw = open(path).read()
@@ -357,15 +359,15 @@ rm -f "$tmp"
 - (Codex.4 → resolved by restoring `validate-workflows` as a non-deferred commitment) The TDD steps 3 and 4 now fail loudly on missing `actionlint`, closing the local-gate silent-skip. A `validate-workflows.yml` is promoted from "deferred" to "required follow-up within 1 week of this plan landing" (tracked as a stub acceptance checkbox below).
 - (Gemini.1 → resolved) `markdown-lint.yml` `pull_request.paths` now includes `.github/workflows/markdown-lint.yml` — a PR that edits only the workflow will self-trigger.
 
-### Status (v3)
+### Status (v5)
 
-**Revised, awaiting Wave 3 re-review.** Not approval-ready until Wave 3 returns no new MAJOR findings AND user explicitly labels `status:plan-approved`. This plan MUST NOT be self-approved by any agent.
+**Revised after external rerun review; still NOT approval-ready.** Fresh external artifacts now exist at `2026-04-22-plan-2443-{codex,gemini}-r4.md`, and both returned MAJOR. The next required step is another targeted patch wave against those findings, not user approval.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — existing MD violations**: the lenient config is my best guess; on first local dry-run there may still be non-zero violations (e.g., trailing whitespace, inconsistent list markers) on legacy notes. Mitigation: run `markdownlint-cli2 --fix` locally once before first CI run, or use narrow per-file inline directives where structurally necessary. Do **not** disable floor rules globally to force green. Acceptance criteria make this a completion blocker rather than a hidden compromise.
+- **Risk — existing MD violations**: the lenient config is my best guess; on first local dry-run there may still be non-zero violations (e.g., trailing whitespace, inconsistent list markers) on legacy notes. Mitigation: run `markdownlint-cli2 --fix` locally once before first CI run, or use narrowly justified per-file inline directives only for NON-FLOOR stylistic rules. Inline directives must never disable the declared non-negotiable floor rules (MD001, MD011, MD018-MD020, MD022-MD025, MD027, MD030, MD034, MD035, MD037-MD040, MD042, MD051, MD053). Acceptance criteria make this a completion blocker rather than a hidden compromise.
 - **Risk — external link rot**: the repo contains old utility / tax / house notes with URLs possibly years old. Lychee's first run may fail. Mitigation: per the acceptance criterion, rotted links are handled by **per-URL** entries added to `lychee.toml` with an inline comment stating why and a dated TODO for re-check. Host-level / wildcard exclusions remain **prohibited** (this supersedes any earlier draft wording about "adding a rotted host to the exclude list"). Link-check is weekly scheduled so recurrence cost is bounded.
 - **Risk — Actions minutes on free tier**: personal GitHub account, free tier minutes. markdown-lint is path-scoped to `.md` changes; link-check is weekly (≈4 runs/month × ~30s each). Total monthly budget: negligible.
 - **Risk — missed detection of workflow schema errors**: no local `actionlint` run before push = silent YAML-syntax failures at GitHub side. Mitigation: acceptance criterion explicitly requires `actionlint` to pass (add to local dev checklist; lightweight — `brew install actionlint` or `go install`).
@@ -373,7 +375,7 @@ rm -f "$tmp"
 - **Risk — MD024/MD025 first-run violation count unmeasured** (Wave-2 Claude): the 495 tracked `.md` files have never been linted. MD025 (single top-level H1) is enabled in the floor and cannot be disabled to reach green. On legacy notes, multi-H1 files are common. Mitigation: implementation step 5 (local `npx markdownlint-cli2 --config .markdownlint.jsonc '**/*.md' 2>&1 | tee /tmp/2443-first-lint.txt`) **MUST run before the push** and the MD024/MD025 violation count recorded in the closeout comment. If MD025 violations > 30 files, split execution into two PRs: (a) content-fix PR that resolves MD025 violations (re-flowing duplicate H1s, running `markdownlint-cli2 --fix` where safe), (b) workflow-land PR with the config + workflow files. Revisit T1 classification in that case.
 - **Open — which lychee version**: `@v2` is current stable (Apr 2026); pinning to `@v2` vs. `@v2.3.0` is user preference. Plan pins to `@v2` (minor-version float) to reduce maintenance; user may request exact pin during review.
 - **Resolved — link-check issue-on-failure**: originally proposed via `permissions: issues: write`, but `lycheeverse/lychee-action@v2` does not auto-open GitHub issues (confirmed against action source). Permission removed from the workflow. If visibility via auto-issue is desired later, it requires a follow-up step like `peter-evans/create-issue-from-file` consuming lychee's report — filed as a deferred item, not in scope here.
-- **Open — should this plan also update `docs/plans/README.md` index**: planning skill says yes; user's hard constraints for this session say no. Defer to next session / governance comment flag.
+- **Open — README/index status:** this is now updated in `docs/plans/README.md` for #2443, but the plan remains `draft` until a fresh external rerun returns no MAJOR findings. Treat the README row as synced discovery state, not as approval evidence.
 
 ---
 

@@ -1,6 +1,6 @@
 # Plan for #2289: bypass rollback / recovery — policy contract for enforcement-gate bypass handling
 
-> **Status:** draft (v7, queue-audit hardening applied; fresh re-review required)
+> **Status:** draft (v9, post-v8 external review fixes applied; fresh re-review required)
 > **Complexity:** T1 (policy document only)
 > **Date:** 2026-04-21
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2289
@@ -13,7 +13,9 @@
 > - v4: `{claude,codex,gemini}-v4.md` (MINOR, MAJOR, MINOR).
 > - v5: `{claude,codex,gemini}-v5.md` (MINOR, MAJOR, MINOR).
 > - v6: `{claude,codex,gemini}-v6.md` (MINOR, MAJOR, MINOR).
-> - v7: pending.
+> - v7: `{claude,codex,gemini}-v7.md` (historical target superseded by later reruns).
+> - v8: `2026-04-22-plan-2289-{codex,gemini}-v8.md` (fresh external rerun; current blocker source for this v9 patch wave).
+> - v9: pending.
 
 ---
 
@@ -78,19 +80,19 @@
 - Adversarial reviews v1–v5 (14 artifacts).
 
 ### Gaps identified
-- No written bypass-rollback policy. v6 creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
-- Follow-on implementation tracked in #2445.
+- No written bypass-rollback policy. This plan creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+- Fresh external review surfaced three cleanup gaps: stale embedded issue-state evidence, an over-narrow `auth_failed` enum definition, and a missing revision-binding rule for `log_only_approved_later`. v9 closes all three before the next rerun.
 
 ### Evidence (embedded verification)
 
-**Issue statuses** (2026-04-21):
+**Issue statuses** (historical snapshot from 2026-04-21 drafting pass; current approval evidence comes from fresh attested review blocks, not this embedded snapshot):
 - `#2289` OPEN — priority:high, cat:harness, domain:workflow.
-- `#2018` OPEN — includes `status:plan-review`.
+- `#2018` CLOSED — parent/umbrella historical reference; do not treat this bullet as live state authority.
 - `#2445` OPEN — cat:harness, domain:workflow, priority:medium.
 
-**File existence:**
+**File existence (historical drafting-pass snapshot):**
 - EXISTS: TRUST-ARCHITECTURE.md, require-{plan-approval,review-on-push}.sh, HARD-STOP-POLICY.md, AI_REVIEW_ROUTING_POLICY.md, SUBAGENT_CONTEXT_ISOLATION.md.
-- MISSING (v6 creates): `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
+- MISSING at draft time (this plan creates): `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
 
 **Source count:** 5 repo files + 3 GitHub issues + 14 review artifacts + 3 standards docs + 1 governance doc = 26 distinct sources.
 
@@ -104,9 +106,10 @@
 | Policy doc (new) | `docs/governance/BYPASS-ROLLBACK-POLICY.md` |
 | TRUST-ARCHITECTURE cross-ref | `docs/governance/TRUST-ARCHITECTURE.md` — add §Rollback Rules cross-reference to new policy |
 | README index | `docs/plans/README.md` |
-| v6 reviews (pending) | `scripts/review/results/2026-04-21-plan-2289-{claude,codex,gemini}-v6.md` |
+| Latest external rerun | `scripts/review/results/2026-04-22-plan-2289-{codex,gemini}-v8.md` |
+| Next rerun target | `scripts/review/results/2026-04-22-plan-2289-{codex,gemini}-v9.md` |
 
-**AGENTS.md is no longer modified by this plan.** The `FORCE_PLAN_GATE=1` documentation lands with #2445 implementation.
+**AGENTS.md is no longer modified by this plan.** The future discoverability home for `FORCE_PLAN_GATE=1` is `scripts/enforcement/require-plan-approval.sh --help` plus the implementation/closeout docs shipped under #2445.
 
 ---
 
@@ -157,7 +160,7 @@ Referenced by §Taxonomy, §Branch context, §Precedence, §Audit contract, §Op
 | Value | Meaning |
 |---|---|
 | `unresolved_sha` | Bypass event exists but no `commit_sha` can be derived. |
-| `auth_failed` | `gh` authentication failed during `has_approval_intent` GitHub-label check. |
+| `auth_failed` | Authentication or permission failure prevented authoritative state lookup for a required evidence source (for example GitHub label lookup or push-remote reachability/auth check). |
 | `pushed_unknown` | `git branch -r --contains` cannot distinguish unpushed from stale-ref state. |
 | `branch_unreachable` | Event-time branch is no longer present (deleted / detached-HEAD with no event-time branch logged). |
 | `commit_unresolvable_locally` | Bypass event references a SHA that exists in event history but no longer exists in the working tree (agent-initiated rollback, force-push). |
@@ -174,7 +177,7 @@ When a logged bypass is evaluated against a commit SHA, exactly one of six verdi
 
 | Verdict | Applies when |
 |---|---|
-| `log_only_approved_later` | Post-commit approval evidence exists at time T_approval > T_bypass **and the bypassed SHA remains unreverted and still resolvable as the live subject under evaluation**. Evidence: marker file with `^Approved by: \S+` at mtime T_approval, OR GitHub label transition to `status:plan-approved` at T_approval. If the SHA was already reverted, later plan approval does not retroactively approve that reverted SHA; a new commit is required. |
+| `log_only_approved_later` | Post-commit approval evidence exists at time T_approval > T_bypass **and the approval can be bound to the exact bypassed SHA or to a uniquely identified revision set that still contains that SHA while unreverted**. Evidence may come from marker or GitHub label state only when that binding is demonstrable from the reviewed revision context. If the SHA was already reverted, or if later approval cannot be bound to that specific SHA/revision set, do not emit `log_only_approved_later`; emit `log_only_reverted_later` or `log_only_observability_gap` as appropriate. |
 | `log_only_reverted_later` | Commit SHA has been reverted via `git revert` or equivalent at time T_revert > T_bypass. |
 | `log_only_remediated_later` | A later commit on the same branch at time T_remediation > T_bypass carries review evidence for the bypassed change. |
 | `log_only_safe_paths` | Commit touches only paths in `ADVISOR_SAFE_PATHS` AND no path in never-safe-listed set. (Timeless — not subject to precedence ordering.) |
@@ -189,9 +192,13 @@ When multiple of `approved_later`, `reverted_later`, or `remediated_later` apply
    - marker evidence → filesystem mtime normalized to UTC
    - GitHub label evidence → API event timestamp
    - git evidence → commit committer-date normalized to UTC
-2. **Determine the max timestamp** among matching terminal-state verdicts: `T_max = max(T_approval, T_revert, T_remediation)` (considering only those that apply).
-3. **Emit the verdict corresponding to T_max.** The latest corrective/approval action is the current state of the bypass.
-4. **Tie-break rule:** if timestamps are exactly equal after normalization, prefer `log_only_reverted_later` > `log_only_approved_later` > `log_only_remediated_later`.
+2. **Within the approval class, derive `T_approval` deterministically.**
+   - if both marker and GitHub approval evidence exist and both bind to the same SHA/revision set, use the later of the two normalized timestamps as `T_approval`
+   - if only one bound approval source exists, use that source's normalized timestamp
+   - if approval evidence exists but binding is ambiguous or the two sources imply different reviewed revisions, do not emit `log_only_approved_later`; emit `log_only_observability_gap`
+3. **Determine the max timestamp** among matching terminal-state verdicts: `T_max = max(T_approval, T_revert, T_remediation)` (considering only those that apply).
+4. **Emit the verdict corresponding to T_max.** The latest corrective/approval action is the current state of the bypass.
+5. **Tie-break rule:** if timestamps are exactly equal after normalization, prefer `log_only_reverted_later` > `log_only_approved_later` > `log_only_remediated_later`.
 
 When `log_only_safe_paths` applies AND any terminal-state verdict applies, the terminal state wins. `log_only_safe_paths` has no timestamp of its own and is lower precedence than any timestamped terminal verdict. If only `log_only_safe_paths` and no terminal state, emit `log_only_safe_paths`.
 
@@ -372,19 +379,20 @@ These tests are part of the acceptance contract for #2445, even though they are 
 - [ ] `docs/governance/BYPASS-ROLLBACK-POLICY.md` exists and codifies: canonical `verdict_cause` enum; timestamp-based precedence; 6-verdict taxonomy; scenario matrix (10 rows minimum); dual safe-list; enforcement-surface protection; branch context; precedence vs TRUST-ARCHITECTURE.md; audit contract; advisory boundary; operator interface requirements.
 - [ ] `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules includes cross-reference to `BYPASS-ROLLBACK-POLICY.md`.
 - [ ] Follow-on implementation issue #2445 exists.
-- [ ] v7 adversarial review returns APPROVE or MINOR across all three providers.
-- [ ] `docs/plans/README.md` index row added and synced to the live plan maturity (draft until fresh v7 review artifacts exist).
+- [ ] v9 adversarial review returns APPROVE or MINOR across all three providers.
+- [ ] `docs/plans/README.md` index row added and synced to the live plan maturity (draft until fresh v9 review artifacts exist).
 
 ---
 
 ## Risks and Open Questions
 
-- **Resolved (v7):** precedence semantics — timestamp-based, latest-terminal-state wins, with explicit tie-breaks.
-- **Resolved (v7):** cause enum inconsistency — single canonical enum.
-- **Resolved (v7):** detached-HEAD unreliable reconstruction — default to observability_gap.
-- **Resolved (v7):** offline detection — selected push remote + true-connectivity predicate; auth failures map to `auth_failed`.
-- **Resolved (v7):** AGENTS.md skim-risk — update dropped entirely from scope; future discoverability home named.
-- **Resolved (v7):** post-revert approval contradiction — later plan approval does not override a reverted SHA; restoration requires a new SHA.
+- **Resolved (v8):** precedence semantics — timestamp-based, latest-terminal-state wins, with explicit tie-breaks.
+- **Resolved (v8):** cause enum inconsistency — single canonical enum, now broad enough to cover both GitHub and push-remote auth failures.
+- **Resolved (v8):** detached-HEAD unreliable reconstruction — default to observability_gap.
+- **Resolved (v8):** offline detection — selected push remote + true-connectivity predicate; auth failures map to `auth_failed`.
+- **Resolved (v8):** AGENTS.md skim-risk — update dropped entirely from scope; future discoverability home named.
+- **Resolved (v8):** post-revert approval contradiction — later plan approval does not override a reverted SHA; restoration requires a new SHA.
+- **Resolved (v8):** stale embedded issue-state evidence — #2018 snapshot corrected and explicitly marked historical.
 - **Open:** whether the future #2445 implementation should materialize remote-selection logic strictly from branch config only, or allow an operator override flag for unusual multi-remote repos.
 - **Open:** should the compliance dashboard's `bypass_pending_review` count include `log_only_observability_gap` verdicts? Current stance: yes, with cause-label grouping. Implementation choice in #2445.
 
@@ -392,4 +400,4 @@ These tests are part of the acceptance contract for #2445, even though they are 
 
 ## Complexity: T1
 
-**T1** — one new policy document (~280 lines including scenario matrix), two targeted cross-references (TRUST-ARCHITECTURE.md, docs/plans/README.md). No scripts, no tests, no hooks, no AGENTS.md changes. Five rounds of adversarial review have settled the core design questions; v6 locks timestamp-based precedence and canonical enum.
+**T1** — one new policy document (~280 lines including scenario matrix), two targeted cross-references (TRUST-ARCHITECTURE.md, docs/plans/README.md), and no implementation scripts in this issue. The remaining work is policy-contract hardening around evidence binding and review governance; implementation remains deferred to #2445.

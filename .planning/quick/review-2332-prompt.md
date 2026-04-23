@@ -9,14 +9,14 @@ Review the CURRENT plan text only.
 
 Context:
 - Repo: workspace-hub
-- Stage: final approval-stage rerun for #2332
+- Stage: final pass before stopping on #2332
 - Artifact under review: `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`
 
 Address all of the following:
-1. Is the canonical schema artifact explicit and sufficient?
-2. Is first-run delta behavior fully defined?
-3. Has review-process narration been removed sufficiently?
-4. Are launcher behavior-preservation checks now exact enough?
+1. Is the canonical scorecard JSON schema explicit enough?
+2. Are non-baseline states fully defined and non-contradictory?
+3. Is review narration sufficiently absent from the plan?
+4. Are launcher preservation checks exact enough?
 5. Is this plan now approval-ready?
 
 Output format requirements:
