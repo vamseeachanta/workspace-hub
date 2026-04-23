@@ -173,15 +173,64 @@ Each page has:
 
 ---
 
+## Workstream 5 — Marine Terminal Engineering Starter Packet
+
+### Engineering goal
+Turn the new LNG / port-operations signal into a defensible marine-terminal engineering workstream focused on berth operability and ship/shore transfer interfaces.
+
+### Why this is the right cut
+The recent findings support marine terminal engineering as a real ACE adjacency, but the value is in engineering definition, not broad port-industry branding. ACE should lead with berth operability, mooring/fendering, transfer envelope, harbour response, and FSRU/import-export terminal archetypes.
+
+### Scope
+1. Define the ACE marine-terminal boundary:
+   - berth operability and workability framing
+   - LNG carrier / FSRU / bunkering / STS transfer-interface screening
+   - mooring and fender load-path logic at berth
+   - harbour response and exposed-vs-sheltered berth considerations
+   - import/export terminal archetype comparison at screening level
+2. State what inputs are mandatory for real project work:
+   - vessel particulars
+   - berth geometry and arrangement
+   - project metocean / harbour response data
+   - transfer-system limits and operating philosophy
+   - terminal criteria and recognised references
+3. Capture evidence hierarchy for GTM:
+   - conference programmes such as LNG2026 = topic signals only
+   - engineering methods / standards / project data = basis for actual deliverables
+
+### Inputs already available
+- marine/marine-ops/mooring positioning already present in GTM docs
+- terminal concept clustering captured in the knowledge base
+- existing ACE strength in mooring, marine operations, and operability framing
+
+### Engineering outputs
+- `docs/gtm/marine-terminal-engineering-scope.md`
+- `docs/gtm/lng-berth-operability-framing.md`
+
+### Concrete engineering questions
+- What usually governs berth operability first: vessel motions, mooring loads, fender loads, transfer envelope, or harbour response?
+- Which terminal archetypes can be discussed credibly at screening level without overclaiming detailed terminal design?
+- What recognised references should anchor the service line?
+- What boundaries keep this adjacent to, but distinct from, FOWT and offshore installation work?
+
+### Definition of done
+- One scope note that makes marine terminal engineering a real ACE workstream
+- One buyer-usable framing note for LNG/FSRU berth operability questions
+- One explicit section on topic signals vs design evidence
+
+---
+
 ## Execution Order
 
 1. Workstream 2 — Installation Analysis Fidelity Upgrade Packet
    - fastest path because Demo 3 and GTM assets already exist
-2. Workstream 1 — FOWT Screening Starter Packet
+2. Workstream 5 — Marine Terminal Engineering Starter Packet
+   - adjacent to existing mooring/marine-ops capability and immediately useful for LNG/FSRU/port-op conversations
+3. Workstream 1 — FOWT Screening Starter Packet
    - feasible now with RAFT/MoorPy/WEIS research already documented
-3. Workstream 3 — Marine Structures / Load-Path Explainer
+4. Workstream 3 — Marine Structures / Load-Path Explainer
    - useful authority asset, but less directly tied to current demo pipeline
-4. Workstream 4 — Website Pages
+5. Workstream 4 — Website Pages
    - only after engineering notes exist
 
 ## What Not To Do Yet
@@ -189,11 +238,13 @@ Each page has:
 - Do not claim full WEIS/OpenFAST FOWT design capability as a live ACE offering yet.
 - Do not market segmented hydrodynamic loading as already implemented in Demo 3 unless the engineering method actually exists in code/workflow.
 - Do not publish marine-structures graphics until sign conventions and end conditions have been reviewed.
+- Do not position conference programmes or public event agendas as marine-terminal design evidence; use them only to validate topic interest.
 
 ## Recommended Next Engineering Actions
 
 ### Immediate
 - Write `docs/gtm/installation-analysis-method-note.md`
+- Write `docs/gtm/marine-terminal-engineering-scope.md`
 - Write `docs/gtm/fowt-engineering-scope.md`
 
 ### Next

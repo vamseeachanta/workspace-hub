@@ -1,0 +1,13 @@
+diff --git a/docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md b/docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md
+index f934219f3..e05f2bacf 100644
+--- a/docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md
++++ b/docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md
+@@ -42,7 +42,7 @@ These drifts require a plan, tests, and explicit cross-review per [AI_REVIEW_ROU
+ 
+ 1. Read the upstream release notes. Record the effective date, model ID changes, CLI changes, and any caching/context-window deltas in the upgrade issue.
+ 2. Update provider config under `config/agents/<provider>/` — **not** the root entry surfaces. Only the provider directory owns model identity.
+-3. Run `scripts/_core/sync-agent-configs.sh --check` to confirm no drift between `config/agents/` and provider adapter directories. Fix divergence by editing `config/agents/` and re-running the sync, never the other direction.
++3. Run `bash scripts/_core/sync-agent-configs.sh --dry-run` to preview sync actions from `config/agents/` templates into the machine-local provider targets (`$HOME/.claude/settings.json`, `$HOME/.codex/config.toml`, etc.). Fix divergence by editing the `config/agents/` templates and re-running without `--dry-run`; never hand-edit the machine-local targets.
+ 4. Audit `CLAUDE.md`, `GEMINI.md`, and `.codex/**` for stale references (old model IDs, removed flags). Apply a single-site edit per stale reference; do not rewrite the adapter.
+ 5. Verify each adapter file remains within the line limit in `.claude/rules/coding-style.md`. If an upgrade would push an adapter past the limit, migrate the new content to a skill or `docs/` doc first.
+ 6. Run `uv run pytest tests/docs/test_workspace_hub_model_release_readiness.py -v` and the adapter-specific suite under `scripts/_core/tests/`.
