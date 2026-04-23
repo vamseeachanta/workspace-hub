@@ -14,7 +14,7 @@
 - Python: `uv run` always — never bare `python3`
 - Git: commit to `main` + push; branch only for multi-session work
 ## Policies
-- Reviews: APPROVE|MINOR|MAJOR; resolve MAJOR; default 3-agent adversarial review
-- Routing: [AI Review Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) — Claude orchestrates
+- Reviews: APPROVE|MINOR|MAJOR; resolve MAJOR; default 3-agent adversarial review per [AI Review Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) (Claude orchestrates)
 - Subagent isolation: fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
+- Readiness: [Model-Release Readiness Contract](docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md) + [Upgrade Playbook](docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md)
 - Secrets: never hardcode API keys/tokens — use environment variables

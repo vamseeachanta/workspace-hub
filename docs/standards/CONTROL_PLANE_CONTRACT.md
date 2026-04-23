@@ -46,7 +46,10 @@ Provider-specific configuration lives in dedicated directories. These are **adap
 | SPARC methodology refs | **Historical** | Replaced by GSD workflow. |
 | Claude Flow / swarm refs | **Historical** | Replaced by direct provider adapter model. |
 
-See also: [AI Review Routing Policy](AI_REVIEW_ROUTING_POLICY.md) for provider roles and review defaults.
+See also:
+- [AI Review Routing Policy](AI_REVIEW_ROUTING_POLICY.md) — provider roles and review defaults.
+- [MODEL_RELEASE_READINESS_CONTRACT.md](MODEL_RELEASE_READINESS_CONTRACT.md) — workspace-hub readiness dimensions for new provider/model releases.
+- [MODEL_RELEASE_UPGRADE_PLAYBOOK.md](MODEL_RELEASE_UPGRADE_PLAYBOOK.md) — workspace-hub upgrade steps split by provider-owned vs repo-owned drift.
 
 ## Reading Order for AI Agents
 
