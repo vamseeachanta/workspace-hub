@@ -492,3 +492,10 @@ knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_c
 !/knowledge/wikis/engineering/
 !/knowledge/wikis/cross-links.md
 assethold-worktrees/
+
+# ecosystem-sync test fixtures — built locally, not committed
+tests/ecosystem-sync/fixtures/repos/repo-*
+tests/ecosystem-sync/fixtures/repos/*.baseline-sha
+
+# ecosystem-sync logs
+logs/ecosystem-sync/
