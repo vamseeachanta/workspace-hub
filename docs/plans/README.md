@@ -81,6 +81,27 @@ Route the plan to at least 2 other AI providers. Each gives a verdict:
 
 Save review artifacts to `scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`.
 
+#### Canonical way to run the adversarial wave (#2323)
+
+```bash
+scripts/review/plan-review-fanout.sh docs/plans/YYYY-MM-DD-issue-NNN-slug.md
+```
+
+This wraps Claude + Codex + Gemini in parallel under the shared stance contract
+at `scripts/review/plan-review-prompt.md`. It writes one per-provider artifact
+plus a `-disagreement.md` summarizing verdict splits + per-provider unique
+findings. Per-provider invocation shape is tuned to each CLI's known quirks
+(Codex and Gemini get INLINE plan body; Claude gets an `@`-path reference;
+Gemini runs from `cwd=/tmp` to dodge the `.gemini/agents/*.md` permissionMode
+validation bug). Single-provider failure does not abort the other two — the
+failing provider's artifact records `UNAVAILABLE`.
+
+Flags:
+
+- `--providers=claude,codex,gemini` — subset of providers (comma-separated).
+- `--output-dir=<dir>` — override the default `scripts/review/results/` sink
+  (useful for batch / worktree / test runs).
+
 ### Step 5: Post and Label
 
 1. Post the completed plan as a GitHub issue comment

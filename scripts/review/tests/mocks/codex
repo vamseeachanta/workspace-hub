@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Mock codex CLI — captures argv + pwd + stdin, emits canned review.
+set -u
+[[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
+capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/codex.capture"
+{
+  printf 'ARGV:'
+  for a in "$@"; do printf ' %s' "$a"; done
+  printf '\n'
+  echo "PWD: $PWD"
+  echo "STDIN:"
+  if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
+} > "$capture"
+cat <<'EOF'
+## Verdict
+MAJOR
+
+## Retrieval
+- Read inline plan body.
+
+## Findings
+1. Mock finding from codex — invocation was inline-content style.
+
+## Blockers
+1. Mock blocker.
+EOF
