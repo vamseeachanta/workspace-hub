@@ -91,6 +91,8 @@ docs/
 
 - [AI Review Routing Policy](standards/AI_REVIEW_ROUTING_POLICY.md) — provider roles, review defaults, Gemini trigger rules
 - [Control-Plane Contract](standards/CONTROL_PLANE_CONTRACT.md) — canonical entry points and provider adapters
+- [Tier-1 Indexing and Code-Placement Contract](standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md) — trusted routing surfaces, repo-vs-bulk-artifact-store placement, and freshness rules
+- [Tier-1 Indexing Checklist](standards/TIER1_INDEXING_CHECKLIST.md) — per-repo status checklist for workspace-hub, digitalmodel, assetutilities, and aceengineer-website
 - 📁 [File Organization Standards](modules/standards/FILE_ORGANIZATION_STANDARDS.md)
 - 📝 [Logging Standards](modules/standards/LOGGING_STANDARDS.md)
 - ✅ [Testing Framework Standards](modules/standards/TESTING_FRAMEWORK_STANDARDS.md)
