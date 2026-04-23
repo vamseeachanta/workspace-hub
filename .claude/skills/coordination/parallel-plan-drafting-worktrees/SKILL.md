@@ -1,15 +1,18 @@
 ---
 name: parallel-plan-drafting-worktrees
-description: Draft multiple follow-up GitHub issue plans in parallel using isolated git worktrees plus background Claude Code print-mode runs, while keeping governance-safe boundaries and avoiding shared-file contention.
+description: Draft multiple follow-up GitHub issue plans in parallel using isolated
+  git worktrees plus background Claude Code print-mode runs, while keeping governance-safe
+  boundaries and avoiding shared-file contention.
 version: 1.0.0
 author: Hermes Agent
 license: MIT
-tags: [planning, github, worktrees, claude-code, parallel, governance]
-related_skills:
-  - coordination/issue-planning-mode
-  - development/git-worktree-workflow
-  - autonomous-ai-agents/claude-code
-  - github/github-comment-body-file-safety
+tags:
+- planning
+- github
+- worktrees
+- claude-code
+- parallel
+- governance
 ---
 
 # Parallel plan drafting with worktrees

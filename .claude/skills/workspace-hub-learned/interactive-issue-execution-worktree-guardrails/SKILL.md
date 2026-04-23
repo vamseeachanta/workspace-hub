@@ -128,6 +128,58 @@ Mitigation:
 - ensure carry-forward markdown/report sections reconcile with summary counts, including unchanged non-high-confidence findings that remain active
 - if `_core` / `_internal` findings are meant to be informational-only, propagate that flag through every finding path (including leaf-collision findings), not just duplicate-name findings
 
+### 7) Approved issue scope is stale relative to current main / current CI
+Observed in worldenergydata #2451 execution:
+- the approved issue was based on an earlier failing CI run with three clustered signatures
+- on a fresh worktree from current `origin/main`, one planned cluster (benchmark fixture/plugin failure) no longer reproduced when tested under CI-like extras
+- two other signatures were still real and worth fixing, but the broader directory still had unrelated pre-existing failures
+- PR CI stayed red overall even after the bounded fix, so closure had to rely on proving the original signatures disappeared rather than waiting for a fully green repo
+
+Mitigation:
+- before editing, rerun a verification-first precheck on current `origin/main` in the isolated worktree and mirror CI conditions as closely as practical (`--all-extras`, issue-specific test targets, log inspection)
+- treat the issue body/old CI run as a hypothesis, not ground truth; narrow scope to the failures that still reproduce on current head
+- if a planned cluster no longer reproduces, do not force a speculative fix just to match the old plan; document the non-reproduction and keep the patch bounded to live failures
+- when adjacent failures appear outside the approved cluster, open explicit follow-up issues instead of silently absorbing them into the execution issue
+- if PR CI remains red for unrelated repo debt, grep the matrix logs for the original signatures and record evidence that those signatures are gone across all relevant jobs
+- only declare the issue materially complete when the approved failure signatures are removed or intentionally converted into tracked skips, even if unrelated checks still fail
+
+### 8) Background `claude -p` worktree runs can implement successfully but still be blocked from validation/commenting by repo-local allowlists
+Observed in worldenergydata cost-wave execution (#335/#338/#337):
+- delegated/subagent launch was not reliable for the parallel wave, so execution switched to direct background `claude -p` runs in isolated worktrees
+- Claude finished the code changes, but the repo-local `.claude/settings.json` allowlist blocked commands like `uv run`, `python -m pytest`, `pytest`, and `gh issue comment`
+- the worker logs asked for approval to run those commands even though the implementation itself had completed
+- closeout still succeeded by running validation and GitHub comments centrally from Hermes after inspecting the worktree diff and worker log
+
+Mitigation:
+- for parallel worktree waves, treat background `claude -p` as an implementation engine, not necessarily the authority for final validation or GitHub reporting
+- after each worker exits, inspect three things before trusting the run:
+  - `git status --short` / changed files in the worktree
+  - the worker log for any approval-blocked commands
+  - targeted tests run centrally from Hermes in the same worktree
+- if the worker was blocked on `pytest`, `uv run`, or `gh`, do not rerun the whole agent immediately; keep the produced diff, validate it centrally, then commit/push/comment from Hermes
+- post an issue note when execution ownership changes (for example: delegated worker timed out, switching to direct background Claude; worker could not comment, so closeout was posted centrally)
+- verify pre-existing regression blockers explicitly instead of treating them as worker failures; in this run a planned regression target referenced a module absent on current main, so the right outcome was: document blocker, prove it is pre-existing, and keep the issue-scoped patch bounded
+- if this allowlist pattern is expected in a repo, prefer a two-layer plan from the start:
+  - worker owns code/test-writing inside the isolated worktree
+  - Hermes owns final validation, commit/push, and GitHub comments unless the repo settings explicitly allow those commands
+
+### 8b) Parallel approved worktrees can still produce later PR merge conflicts through shared export/barrel files
+Observed in worldenergydata cost-wave landing:
+- #335, #337, and #338 were executed in separate worktrees and validated independently
+- after #335 merged first, #337 became `DIRTY` at PR level because both branches modified `src/worldenergydata/cost/data_collection/__init__.py`
+- the original execution wave had serialized #337 after #335 for implementation ownership, but the later PR-merge step still required an explicit rebase onto updated `origin/main`
+- resolving the conflict correctly required preserving both surfaces in the barrel/export file, then rerunning a combined targeted suite (`test_disclosure_ingest_contract.py`, `test_linkage.py`, `test_calibration_schema.py`) before force-pushing the rebased branch
+
+Mitigation:
+- when parallel/semi-parallel issue branches touch the same package export file, `__init__.py`, registry file, or shared manifest, assume the merge stage may still serialize even if implementation work was isolated
+- before merging the second/third PR in a wave, inspect `gh pr view <n> --json mergeStateStatus` and be ready to rebase the branch onto current `origin/main`
+- resolve shared export conflicts by composing both validated surfaces, not by picking one side mechanically
+- after rebase conflict resolution, rerun a combined targeted validation set that covers:
+  - the branch's own new tests
+  - the already-merged adjacent boundary tests touched by the shared file
+- if the rebased branch was already pushed, use `git push --force-with-lease` and document that the force-push was only to land the conflict-resolved, revalidated branch
+- treat PR mergeability as a separate verification gate from worktree-local implementation success
+
 ## Verification checklist
 - `git status --short` contains only owned files
 - no forbidden files remain modified

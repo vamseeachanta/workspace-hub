@@ -106,10 +106,38 @@ for pf in sorted(pid_dir.glob('*.pid')):
 - Do **not** grab the first `#205x`/`WRK-xxxx` in the document body; dependency references can mislead issue extraction.
 - Keep the task read-only: no file writes, no repo modifications.
 
+## Worker-claim verification rule
+
+Do not trust a finished worker's stdout summary by itself.
+
+A worker can claim:
+- issue moved to `status:plan-review`
+- plan file written
+- review artifacts present
+
+while one of those local artifacts is actually missing from the monitored worktree.
+
+For every completed worker, verify all three surfaces before reporting success:
+1. **Live GitHub issue state**
+   - check labels on the issue (`status:plan-review`, `status:plan-approved`, etc.)
+   - inspect the most recent comments if the worker claimed a plan-summary or blocker comment
+2. **Canonical local plan artifact**
+   - confirm the claimed `docs/plans/YYYY-MM-DD-issue-NNN-*.md` file actually exists in the active worktree
+3. **Local review artifacts**
+   - confirm the claimed `scripts/review/results/*plan-NNN-*` files actually exist in the active worktree
+
+If GitHub state advanced but local artifacts are missing:
+- classify the issue as **governance/artifact reconciliation required**
+- do not report it as cleanly verified
+- say explicitly: label/comment confirmed, local artifact state not confirmed
+
+This prevents false confidence when a worker comment or completion log overstates what landed on disk.
+
 ## Output checklist
 
 - Result file count
 - Completed terminal/issue list
 - One-line recommendation per completed dossier
 - Alive process count and alive terminal list
+- For each completed issue: whether GitHub state was confirmed, whether local plan file exists, whether local review artifacts exist
 - Explicit `monitoring is complete` statement when either all dossiers exist or no processes remain

@@ -1,11 +1,11 @@
 # Plan for #2444: aceengineer-admin — add minimal viable CI (uv + ruff + black + pytest) scoped to src/ + tests/
 
-> **Status:** draft (v6 — post-r5 external review fixes applied; fresh rerun required)
+> **Status:** draft (v8 — r7 external reruns landed; one governance-state blocker remains to be absorbed locally)
 > **Complexity:** T1
-> **Date:** 2026-04-21 (v6 revision: 2026-04-22)
+> **Date:** 2026-04-21 (v8 revision: 2026-04-22)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2444
 > **Parent meta-issue:** #2424 (ecosystem CI health — 6-of-7 repos red)
-> **Review artifacts:** Wave 1 = `-claude.md` / `-codex.md` / `-gemini.md`; Wave 2 = `-*-r2.md`; interim Wave 3 = `-*-r3.md` (single-author / non-authoritative); external reruns = `2026-04-22-plan-2444-{codex,gemini}-r4.md` and `2026-04-22-plan-2444-{codex,gemini}-r5.md`; a fresh post-v6 rerun is still required before approval
+> **Review artifacts:** Wave 1 = `-claude.md` / `-codex.md` / `-gemini.md`; Wave 2 = `-*-r2.md`; interim Wave 3 = `-*-r3.md` (single-author / non-authoritative); external reruns = `2026-04-22-plan-2444-{codex,gemini}-r4.md`, `2026-04-22-plan-2444-{codex,gemini}-r5.md`, `2026-04-22-plan-2444-{codex,gemini}-r6.md`, and `2026-04-22-plan-2444-{codex,gemini}-r7.md`
 
 ---
 

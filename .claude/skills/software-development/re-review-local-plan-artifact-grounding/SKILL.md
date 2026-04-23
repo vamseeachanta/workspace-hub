@@ -29,11 +29,12 @@ This can produce a false fresh `MAJOR` against problems that were already remove
 ## Reliable pattern
 
 1. Save the revised local plan first.
-2. Build a review prompt that embeds the exact revised sections inline.
-3. Tell the reviewer explicitly:
+2. Do NOT trust a compact summary-only rerun when the earlier review already drifted to stale remote/main content.
+3. Build a review prompt that embeds the exact revised sections inline.
+4. Tell the reviewer explicitly:
    - review ONLY the exact inline artifact below
    - do NOT substitute remote/default-branch/GitHub issue content
-4. Keep the inline artifact focused on the changed approval-critical sections:
+5. Keep the inline artifact focused on the changed approval-critical sections:
    - Deliverable
    - Scope Boundaries
    - Linkage Strategy
@@ -42,8 +43,13 @@ This can produce a false fresh `MAJOR` against problems that were already remove
    - Files to Change
    - TDD Test List
    - Acceptance Criteria
-5. Save raw logs and canonical review artifacts separately.
-6. If the rerun still cites stale elements already removed locally, treat that first as a packaging failure and rerun before accepting the verdict.
+6. If helpful, prepend a short list of already-fixed prior blockers so the reviewer evaluates only the real residual risk.
+7. Save raw logs and canonical review artifacts separately.
+8. If the rerun still cites stale elements already removed locally, treat that first as a packaging failure and rerun before accepting the verdict.
+
+Important lesson from live use:
+- A compact prompt that merely summarizes the revised plan can still let Codex re-ground on stale GitHub/main-branch content and return false MAJOR findings.
+- Switching to an artifact-inline prompt that embeds the exact revised local sections can flip the same review from false MAJOR to the real residual verdict (for example MINOR).
 
 ## Suggested prompt contract
 

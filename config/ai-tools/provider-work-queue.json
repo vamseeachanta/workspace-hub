@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-23T01:20:09.815202Z",
+  "generated_at": "2026-04-23T09:21:33.999910Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-23T01:20:07.851564Z",
+  "scorecard_generated_at": "2026-04-23T09:21:16.014897Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 11,
-      "total_candidates": 167,
+      "execution_ready_count": 15,
+      "total_candidates": 168,
       "top_issues": [
         {
           "number": 2348,
@@ -24,7 +24,7 @@
             "domain:gtm",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T11:31:26Z",
+          "updatedAt": "2026-04-23T09:07:12Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -49,7 +49,7 @@
             "domain:release-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-20T22:44:32Z",
+          "updatedAt": "2026-04-23T04:09:36Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -71,7 +71,57 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-22T09:44:25Z",
+          "updatedAt": "2026-04-23T08:38:30Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2460,
+          "title": "feat(repo-organization): tier-1 indexing and code-placement contract",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2460",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "cat:harness",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T08:37:55Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2461,
+          "title": "chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2461",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "cat:maintenance",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T08:22:38Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -95,7 +145,7 @@
             "domain:skills",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T10:25:29Z",
+          "updatedAt": "2026-04-23T03:43:17Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -119,7 +169,7 @@
             "domain:agent-discipline",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-19T21:36:24Z",
+          "updatedAt": "2026-04-23T03:45:01Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -128,29 +178,6 @@
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2323,
-          "title": "feat(review): single-command cross-AI plan-review fan-out (Claude + Codex + Gemini) with disagreement capture",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2323",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "domain:ai-orchestration",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-17T20:30:01Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -165,32 +192,7 @@
             "domain:memory",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-20T02:02:27Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2403,
-          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:research",
-            "domain:document-intelligence",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-20T21:30:48Z",
+          "updatedAt": "2026-04-23T03:32:04Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -208,9 +210,81 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 0,
-      "total_candidates": 31,
+      "execution_ready_count": 3,
+      "total_candidates": 30,
       "top_issues": [
+        {
+          "number": 2462,
+          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T08:37:56Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2458,
+          "title": "feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2458",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T08:22:32Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2464,
+          "title": "chore(workspace-hub): split curated tier-1 routing index from raw inventory and clean routing noise",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2464",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "cat:harness",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T08:22:43Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
         {
           "number": 2455,
           "title": "feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof",
@@ -222,7 +296,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-22T20:19:11Z",
+          "updatedAt": "2026-04-23T08:13:55Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -245,30 +319,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-22T20:19:13Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2462,
-          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "cat:documentation",
-            "domain:repo-organization"
-          ],
-          "updatedAt": "2026-04-22T17:21:26Z",
+          "updatedAt": "2026-04-23T08:46:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -344,49 +395,6 @@
             "research",
             "implementation"
           ]
-        },
-        {
-          "number": 2200,
-          "title": "test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2200",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T10:30:28Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2202,
-          "title": "feat(operations): extend readiness bundle schema for additional canonical check evidence contracts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2202",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T13:22:23Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
         }
       ]
     },
@@ -406,7 +414,7 @@
             "domain:gtm",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-21T18:42:56Z",
+          "updatedAt": "2026-04-23T08:38:31Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

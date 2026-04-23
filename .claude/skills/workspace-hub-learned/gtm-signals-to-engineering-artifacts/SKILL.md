@@ -1,6 +1,7 @@
 ---
 name: gtm-signals-to-engineering-artifacts
-description: Convert external GTM signals (LinkedIn posts, competitor messaging, market themes) into engineering-first ACE artifacts before drafting marketing copy.
+description: Convert external GTM signals (LinkedIn posts, competitor messaging, market
+  themes) into engineering-first ACE artifacts before drafting marketing copy.
 version: 1.0.0
 category: workspace-hub-learned
 applies-to:
@@ -17,9 +18,6 @@ tags:
 - installation-analysis
 - linkedin
 - capability-packaging
-related_skills:
-- development/planning/writing-plans
-- software-development/subagent-driven-development
 ---
 
 # GTM Signals -> Engineering Artifacts

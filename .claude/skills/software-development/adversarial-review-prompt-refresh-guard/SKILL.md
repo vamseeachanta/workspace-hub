@@ -25,7 +25,12 @@ When that happens, reviewers attack already-fixed artifact paths or old delivera
 2. Verify the prompt file itself before dispatch.
 3. Search the prompt for newly added artifact paths / acceptance criteria.
 4. Search the prompt for removed or superseded paths from the earlier draft.
-5. Only then launch Codex/Gemini.
+5. Reconcile the plan artifact's own self-referential sections before rerun:
+   - `## Adversarial Review Summary`
+   - any `Revisions required` / `Revisions made` bullets
+   - any open-question text that the latest patch actually resolved
+   - any old overall-result line like `FAIL` / `not approval-ready`
+6. Only then launch Codex/Gemini.
 
 ## Minimal verification pattern
 - Regenerate: rewrite `.planning/quick/review-<issue>-prompt.md`
@@ -35,6 +40,17 @@ When that happens, reviewers attack already-fixed artifact paths or old delivera
   - removed old paths are absent
   - updated acceptance criteria are present
   - issue body + latest plan text are both included
+  - the plan file does not still self-declare stale review state from the previous wave
+  - rerun-specific blockers are reflected as either fixed or still-open, not both
+
+### Artifact self-consistency guard
+A rerun can fail even with a fresh prompt if the plan file itself still contains stale review narrative.
+Common failure mode seen in live use:
+- the plan still says `**Overall result:** FAIL`
+- `Revisions required` still list changes that are already patched into the draft
+- tests/acceptance criteria are updated, but the plan's own review summary still describes the old state
+
+Reviewers treat those contradictions as real defects. Before rerun, update or neutralize stale self-referential sections so the artifact is internally consistent.
 
 ## Heuristic
 If reviewers complain about paths/artifacts you already fixed, treat stale-prompt packaging as a possible root cause before accepting the finding as a new defect in the current plan.

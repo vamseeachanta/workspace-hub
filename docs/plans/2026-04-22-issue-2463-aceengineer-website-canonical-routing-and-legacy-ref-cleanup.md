@@ -1,10 +1,10 @@
 # Plan for #2463: aceengineer-website canonical routing surfaces and legacy product-doc reference cleanup
 
-> **Status:** draft
+> **Status:** draft (post-r1 tightening applied on 2026-04-23 after a single-author Claude MINOR review; Codex/Gemini cross-review artifacts are still missing, so this is not yet cross-provider ready for approval surfacing)
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2463
-> **Review artifacts:** scripts/review/results/2026-04-22-plan-2463-claude.md | scripts/review/results/2026-04-22-plan-2463-codex.md | scripts/review/results/2026-04-22-plan-2463-gemini.md
+> **Review artifacts:** scripts/review/results/2026-04-22-plan-2463-claude.md (exists) | scripts/review/results/2026-04-22-plan-2463-codex.md (missing) | scripts/review/results/2026-04-22-plan-2463-gemini.md (missing)
 
 ---
 

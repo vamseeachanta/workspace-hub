@@ -1,6 +1,6 @@
 # Plan for #2289: bypass rollback / recovery — policy contract for enforcement-gate bypass handling
 
-> **Status:** draft (v9, post-v8 external review fixes applied; fresh re-review required)
+> **Status:** draft (v10, post-v9 external review fixes applied; fresh re-review required)
 > **Complexity:** T1 (policy document only)
 > **Date:** 2026-04-21
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2289
@@ -14,8 +14,9 @@
 > - v5: `{claude,codex,gemini}-v5.md` (MINOR, MAJOR, MINOR).
 > - v6: `{claude,codex,gemini}-v6.md` (MINOR, MAJOR, MINOR).
 > - v7: `{claude,codex,gemini}-v7.md` (historical target superseded by later reruns).
-> - v8: `2026-04-22-plan-2289-{codex,gemini}-v8.md` (fresh external rerun; current blocker source for this v9 patch wave).
-> - v9: pending.
+> - v8: `2026-04-22-plan-2289-{codex,gemini}-v8.md` (historical fresh external rerun).
+> - v9: `2026-04-22-plan-2289-{codex,gemini}-v9.md` (current blocker source for this v10 patch wave).
+> - v10: pending.
 
 ---
 
@@ -81,7 +82,7 @@
 
 ### Gaps identified
 - No written bypass-rollback policy. This plan creates `docs/governance/BYPASS-ROLLBACK-POLICY.md`.
-- Fresh external review surfaced three cleanup gaps: stale embedded issue-state evidence, an over-narrow `auth_failed` enum definition, and a missing revision-binding rule for `log_only_approved_later`. v9 closes all three before the next rerun.
+- Fresh external review surfaced four cleanup gaps across v8/v9: stale embedded issue-state evidence, an over-narrow `auth_failed` enum definition, missing revision-binding rigor for `log_only_approved_later`, and an under-specified boundary for `log_only_remediated_later`. v10 closes all four before the next rerun.
 
 ### Evidence (embedded verification)
 
@@ -177,9 +178,9 @@ When a logged bypass is evaluated against a commit SHA, exactly one of six verdi
 
 | Verdict | Applies when |
 |---|---|
-| `log_only_approved_later` | Post-commit approval evidence exists at time T_approval > T_bypass **and the approval can be bound to the exact bypassed SHA or to a uniquely identified revision set that still contains that SHA while unreverted**. Evidence may come from marker or GitHub label state only when that binding is demonstrable from the reviewed revision context. If the SHA was already reverted, or if later approval cannot be bound to that specific SHA/revision set, do not emit `log_only_approved_later`; emit `log_only_reverted_later` or `log_only_observability_gap` as appropriate. |
+| `log_only_approved_later` | Post-commit approval evidence exists at time T_approval > T_bypass **and the approval can be bound to the exact bypassed SHA or to a uniquely identified revision set that still contains that SHA while unreverted**. A **revision set** is the exact ordered set of reviewed changes identified by stable evidence fields captured at review time: at minimum `{issue_number, reviewed_plan_or_marker_identity, branch_context, commit_sha_set}` where `commit_sha_set` is the set of SHAs the approval was understood to cover. Evidence may come from marker or GitHub label state only when that binding is demonstrable from those persisted fields. If the SHA was already reverted, or if later approval cannot be bound to that specific SHA/revision set, do not emit `log_only_approved_later`; emit `log_only_reverted_later` or `log_only_observability_gap` as appropriate. |
 | `log_only_reverted_later` | Commit SHA has been reverted via `git revert` or equivalent at time T_revert > T_bypass. |
-| `log_only_remediated_later` | A later commit on the same branch at time T_remediation > T_bypass carries review evidence for the bypassed change. |
+| `log_only_remediated_later` | A later commit on the same branch at time T_remediation > T_bypass **materially addresses the bypassed change without claiming post-hoc approval of the original SHA**. A remediating commit must: (a) be reachable from the event-time branch lineage, (b) carry explicit review/remediation evidence tied to the bypassed change, and (c) identify the bypassed SHA or revision set it is correcting. Ordinary later reviewed work on the same branch does NOT count. Cherry-picks onto other branches do NOT count as same-branch remediation. Merge-based remediation counts only when the merge or its uniquely introduced ancestors carry that explicit binding. |
 | `log_only_safe_paths` | Commit touches only paths in `ADVISOR_SAFE_PATHS` AND no path in never-safe-listed set. (Timeless — not subject to precedence ordering.) |
 | `log_only_observability_gap` | Cannot determine a confident verdict. Carries a `verdict_cause` per the canonical enum above. (Timeless.) |
 | `revert_recommended` | None of the above. Bypass stands; human decision required. |
@@ -196,6 +197,7 @@ When multiple of `approved_later`, `reverted_later`, or `remediated_later` apply
    - if both marker and GitHub approval evidence exist and both bind to the same SHA/revision set, use the later of the two normalized timestamps as `T_approval`
    - if only one bound approval source exists, use that source's normalized timestamp
    - if approval evidence exists but binding is ambiguous or the two sources imply different reviewed revisions, do not emit `log_only_approved_later`; emit `log_only_observability_gap`
+   - the audit record MUST persist which evidence source(s) bound the approval and the exact bound `commit_sha_set`
 3. **Determine the max timestamp** among matching terminal-state verdicts: `T_max = max(T_approval, T_revert, T_remediation)` (considering only those that apply).
 4. **Emit the verdict corresponding to T_max.** The latest corrective/approval action is the current state of the bypass.
 5. **Tie-break rule:** if timestamps are exactly equal after normalization, prefer `log_only_reverted_later` > `log_only_approved_later` > `log_only_remediated_later`.
@@ -266,7 +268,7 @@ This matrix is normative. Implementation (#2445) tests MUST cover each row.
 
 1. **Event-time branch (primary):** the `branch` field recorded in the bypass event. If present and still exists in repo, "same branch" means commits reachable from that branch head.
 2. **Cherry-picks:** a cherry-pick on a different branch does NOT count as remediation on the bypass's branch. Each branch tracks its own bypass state.
-3. **Merge commits:** if a merge commit on the event-time branch brings in review evidence (via merge message or any ancestor reachable only through the merge), it counts as remediation.
+3. **Merge commits:** a merge commit on the event-time branch counts as remediation only when the merge commit message or uniquely introduced merged commits provide explicit remediation evidence tied to the bypassed SHA/revision set.
 4. **Branch deletion / detached-HEAD with no event-time branch:** emit `log_only_observability_gap` with cause `branch_unreachable`. v6 does NOT reconstruct branch identity from reflog or local history.
 
 This is simpler than v5 — v6 does not attempt reconstruction heuristics (Codex v5 M1 finding).
@@ -305,6 +307,9 @@ For every evaluated (or unevaluable) bypass event, the advisor writes `logs/hook
 - `verdict` — one of six
 - `verdict_cause` — value from canonical enum when verdict is `log_only_observability_gap`; else `null`
 - `terminal_event_timestamp` — for `approved_later` / `reverted_later` / `remediated_later`, the winning event timestamp normalized to UTC RFC3339 with millisecond precision; `null` for timeless verdicts (`log_only_safe_paths`, `log_only_observability_gap`, `revert_recommended`)
+- `approval_binding_source` — `marker` | `github_label` | `marker+github_label` | `null`
+- `bound_commit_sha_set` — sorted array of SHAs the approval/remediation evidence was judged to cover; `null` when no binding was possible
+- `remediation_basis` — brief classification string for `log_only_remediated_later` (for example `same-branch-fix-commit`, `merge-based-remediation`); `null` otherwise
 - `pushed_state` — `true` | `false` | `unknown`
 - `branch_context` — event-time branch, or `null` for `branch_unreachable`
 - `touched_paths` — `git diff-tree` output when commit resolvable; else `null`
@@ -357,6 +362,9 @@ Required test list for #2445 implementation:
 9. `test_safe_paths_never_override_timestamped_terminal_state`.
 10. `test_audit_record_terminal_timestamp_nullability_and_format` — `terminal_event_timestamp` is `null` for timeless verdicts, UTC RFC3339 with millisecond precision otherwise.
 11. `test_readme_and_policy_paths_documented` — implementation docs mention the operative home for `FORCE_PLAN_GATE=1` help/discoverability.
+12. `test_approval_binding_requires_persisted_commit_sha_set` — approval verdicts cannot be emitted without persisting binding provenance and the covered SHA set.
+13. `test_remediation_vs_nonremediating_later_commit_boundary` — later reviewed work on the same branch is NOT remediation unless explicit remediation evidence ties it to the bypassed SHA/revision set.
+14. `test_merge_based_remediation_requires_explicit_binding` — merge commits count only when merge metadata or uniquely introduced commits carry explicit remediation evidence.
 
 These tests are part of the acceptance contract for #2445, even though they are not authored in this policy-only issue.
 
@@ -379,8 +387,8 @@ These tests are part of the acceptance contract for #2445, even though they are 
 - [ ] `docs/governance/BYPASS-ROLLBACK-POLICY.md` exists and codifies: canonical `verdict_cause` enum; timestamp-based precedence; 6-verdict taxonomy; scenario matrix (10 rows minimum); dual safe-list; enforcement-surface protection; branch context; precedence vs TRUST-ARCHITECTURE.md; audit contract; advisory boundary; operator interface requirements.
 - [ ] `docs/governance/TRUST-ARCHITECTURE.md` §Rollback Rules includes cross-reference to `BYPASS-ROLLBACK-POLICY.md`.
 - [ ] Follow-on implementation issue #2445 exists.
-- [ ] v9 adversarial review returns APPROVE or MINOR across all three providers.
-- [ ] `docs/plans/README.md` index row added and synced to the live plan maturity (draft until fresh v9 review artifacts exist).
+- [ ] v10 adversarial review returns APPROVE or MINOR across all three providers.
+- [ ] `docs/plans/README.md` index row added and synced to the live plan maturity (draft until fresh v10 review artifacts exist).
 
 ---
 
@@ -400,4 +408,4 @@ These tests are part of the acceptance contract for #2445, even though they are 
 
 ## Complexity: T1
 
-**T1** — one new policy document (~280 lines including scenario matrix), two targeted cross-references (TRUST-ARCHITECTURE.md, docs/plans/README.md), and no implementation scripts in this issue. The remaining work is policy-contract hardening around evidence binding and review governance; implementation remains deferred to #2445.
+**T1** — one new policy document (~280 lines including scenario matrix), two targeted cross-references (TRUST-ARCHITECTURE.md, docs/plans/README.md), and no implementation scripts in this issue. The remaining work is policy-contract hardening around approval-binding provenance, remediation classification, and review governance; implementation remains deferred to #2445.

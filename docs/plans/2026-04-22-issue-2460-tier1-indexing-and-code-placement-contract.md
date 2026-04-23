@@ -1,10 +1,10 @@
 # Plan for #2460: Tier-1 indexing and code-placement contract
 
-> **Status:** draft
+> **Status:** plan-approved (live GitHub state + local approval marker reconciled on 2026-04-23; historical 2026-04-22 review artifacts remain important evidence, but the latest authoritative workflow state is approved)
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2460
-> **Review artifacts:** scripts/review/results/2026-04-22-plan-2460-claude.md | scripts/review/results/2026-04-22-plan-2460-codex.md | scripts/review/results/2026-04-22-plan-2460-gemini.md
+> **Review artifacts:** scripts/review/results/2026-04-22-plan-2460-claude.md | scripts/review/results/2026-04-22-plan-2460-codex.md | scripts/review/results/2026-04-22-plan-2460-gemini.md | local approval marker `.planning/plan-approved/2460.md`
 
 ---
 
@@ -182,6 +182,9 @@ function define_tier1_indexing_and_code_placement_contract():
     define data-placement scope explicitly:
         universal rule = repo-vs-bulk-artifact-store
         bulk-artifact-store = non-repo storage target for large, generated, or fast-growing artifacts
+        contract must preserve the operational thresholds from DATA_PLACEMENT.md:
+            if a directory will exceed either 10 MB total or 1000 files,
+            it belongs in bulk-artifact-store rather than the repo
         workspace-hub example = `/mnt/ace/data` as the current implementation example
 
 function define_tier1_checklist(contract):
@@ -196,9 +199,15 @@ function define_tier1_checklist(contract):
 
 function implement_with_tdd():
     write `tests/docs/test_tier1_indexing_contract.py` first
-    run the targeted test file and confirm failure before editing contract/checklist docs
+    extend `tests/docs/test_banned_stale_references.py` by adding:
+        `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
+        `docs/standards/TIER1_INDEXING_CHECKLIST.md`
+        to `STRICT_FILES`
+    run the targeted test file and curated stale-reference test and confirm failure before editing docs
     then edit `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
     then edit `docs/standards/TIER1_INDEXING_CHECKLIST.md`
+    then edit `docs/README.md`
+    verify `docs/plans/README.md` row `#2460` remains correct rather than re-adding it
     rerun targeted tests until green
 
 function validate_contract_docs():
@@ -208,6 +217,7 @@ function validate_contract_docs():
     assert contract doc names every required surface independently
     assert contract doc names the repo-vs-bulk-artifact-store rule explicitly
     assert contract doc defines bulk-artifact-store in concrete terms
+    assert contract doc preserves the 10 MB / 1000 files thresholds from DATA_PLACEMENT.md
     assert contract doc cites `/mnt/ace/data` only as the current workspace-hub example
     assert contract doc contains the exact daily freshness wording requirement
     assert contract doc requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`
@@ -217,8 +227,8 @@ function validate_contract_docs():
     assert checklist covers the four current tier-1 repos from docs/BUSINESS_BRAIN.md and links #2461-#2464
     assert checklist repeats the exact negative-authority sentence for tier-1 indexing scorecards in its preamble
     assert checklist records repo_name, operator_map_status, registry_status, data_placement_status, and evidence_source for each repo using the allowed status values
-    assert TDD sequencing requires tests to fail before contract/checklist doc edits begin
-    assert docs/plans/README.md contains the #2460 index row
+    assert `tests/docs/test_banned_stale_references.py` includes both new `docs/standards/` files in `STRICT_FILES`
+    assert docs/plans/README.md contains the #2460 index row and the plan treats that as verification, not new work
 ```
 
 ---
@@ -230,8 +240,9 @@ function validate_contract_docs():
 | Create | `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` | canonical written contract for trusted routing surfaces, code-placement boundary, required-vs-optional inventory, freshness rule, and validation rules |
 | Create | `docs/standards/TIER1_INDEXING_CHECKLIST.md` | per-repo checklist derived from the contract for workspace-hub, digitalmodel, assetutilities, and aceengineer-website |
 | Modify | `docs/README.md` | add the new contract/checklist to a trusted discovery surface |
-| Create | `tests/docs/test_tier1_indexing_contract.py` | regression tests for each required routing surface, data-placement rule, daily-freshness linkage, explicit legacy-retirement rule, and checklist/index coverage |
-| Update | `docs/plans/README.md` | add this #2460 plan to the index |
+| Create | `tests/docs/test_tier1_indexing_contract.py` | regression tests for each required routing surface, exact DATA_PLACEMENT thresholds, daily-freshness linkage, explicit legacy-retirement rule, checklist/index coverage, and branch-state assertions |
+| Modify | `tests/docs/test_banned_stale_references.py` | explicitly enroll the new `docs/standards/` contract/checklist docs in `STRICT_FILES` so the curated stale-reference guard covers them |
+| Verify | `docs/plans/README.md` | confirm the existing #2460 row remains correct instead of treating it as new work |
 
 ---
 
@@ -247,7 +258,7 @@ function validate_contract_docs():
 | `test_tier1_contract_requires_machine_readable_registry` | contract explicitly requires one canonical machine-readable registry per repo | contract text | requirement present |
 | `test_tier1_contract_requires_code_tests_docs_routing_table` | contract explicitly requires code/tests/docs routing-table semantics | contract text | requirement present |
 | `test_tier1_contract_requires_source_hygiene_rules` | contract explicitly requires source-hygiene rules for backup/cache/runtime noise | contract text | requirement present |
-| `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` | contract explicitly defines the universal repo-vs-bulk-artifact-store placement rule, defines bulk-artifact-store concretely, and treats `/mnt/ace/data` only as the current workspace-hub example | contract text | universal rule, definition, and example language present |
+| `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` | contract explicitly defines the universal repo-vs-bulk-artifact-store placement rule, carries forward the `>= 10 MB` or `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md`, and treats `/mnt/ace/data` only as the current workspace-hub example | contract text | universal rule, exact thresholds, and example language present |
 | `test_tier1_contract_defines_curated_vs_raw_inventory_boundary` | contract distinguishes curated routing surfaces from raw inventory surfaces | contract text | boundary rule present |
 | `test_tier1_contract_defines_legacy_retirement_rule` | contract explicitly defines allowed migration language, bans active legacy product-doc routing authority, and enumerates multiple concrete banned-pattern signatures rather than a token example | contract text | allowed rule, banned rule, and multiple concrete signatures present |
 | `test_tier1_contract_links_child_issues` | contract doc references #2461-#2465 as implementation follow-through | contract text | all child issue numbers present |
@@ -258,9 +269,9 @@ function validate_contract_docs():
 | `test_tier1_checklist_links_repo_specific_child_issues` | checklist links #2461-#2464 to the relevant repos | checklist text | all repo-specific child issue numbers present |
 | `test_tier1_checklist_repeats_scorecard_negative_authority_rule` | checklist preamble repeats the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority` | checklist text | exact negative-authority sentence present |
 | `test_tier1_checklist_records_surface_status_per_repo` | checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values drawn from `present | partial | missing | not-applicable` | checklist text | exact field names and allowed status values present |
-| `test_tdd_sequence_requires_tests_fail_before_doc_edits` | implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first and confirming failure before editing contract/checklist docs | plan text | explicit test-first sequence present |
-| `test_docs_readme_links_tier1_contract_and_checklist` | docs index exposes both contract and checklist for discovery | `docs/README.md` | link text/path present |
-| `test_plans_readme_indexes_2460_plan` | planning index includes the #2460 row | `docs/plans/README.md` | row present |
+| `test_tdd_sequence_requires_tests_fail_before_doc_edits` | implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first, extending `tests/docs/test_banned_stale_references.py`, and confirming both targeted tests fail before editing any contract/checklist/discovery docs | plan text | explicit test-first sequence present |
+| `test_new_contract_docs_are_under_curated_stale_reference_guard` | `tests/docs/test_banned_stale_references.py` must add `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` and `docs/standards/TIER1_INDEXING_CHECKLIST.md` to `STRICT_FILES` | test text | both standards docs present in strict guard enrollment |
+| `test_plans_readme_2460_row_is_verified_not_readded` | plan treats the existing #2460 row in `docs/plans/README.md` as verification-only state, not new work to add | plan text | verification wording present and additive wording absent |
 
 ---
 
@@ -268,7 +279,7 @@ function validate_contract_docs():
 
 - [ ] `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` exists and defines the minimum trusted routing/index surfaces for tier-1 repos
 - [ ] contract explicitly and independently requires: `AGENTS.md`, `README.md`, `docs/README.md`, repo operator maps, one canonical machine-readable registry per repo, code/tests/docs routing tables, and source-hygiene rules
-- [ ] contract explicitly encodes the universal repo-vs-bulk-artifact-store placement rule, defines bulk-artifact-store concretely, and documents `/mnt/ace/data` only as the current workspace-hub implementation example
+- [ ] contract explicitly encodes the universal repo-vs-bulk-artifact-store placement rule, carries forward the `>= 10 MB` or `>= 1000 files` thresholds from `docs/standards/DATA_PLACEMENT.md`, and documents `/mnt/ace/data` only as the current workspace-hub implementation example
 - [ ] contract explicitly separates curated routing surfaces from raw inventory surfaces
 - [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language, banning their use as active routing authority, and enumerating multiple concrete banned-pattern signatures
 - [ ] contract includes a daily freshness rule, contains the exact phrase `daily freshness review`, includes either `every 24 hours` or `once per day`, requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`, and explicitly names `#2465` as the follow-through issue
@@ -277,9 +288,10 @@ function validate_contract_docs():
 - [ ] checklist links repo-specific implementation follow-through issues `#2461`-`#2464`
 - [ ] checklist repeats the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority` in its preamble
 - [ ] checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values constrained to `present | partial | missing | not-applicable`
-- [ ] implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first and confirming failure before editing contract/checklist docs
+- [ ] implementation notes require writing `tests/docs/test_tier1_indexing_contract.py` first, extending `tests/docs/test_banned_stale_references.py`, and confirming both targeted tests fail before editing any contract/checklist/discovery docs
+- [ ] `tests/docs/test_banned_stale_references.py` is updated so the new contract/checklist docs are under the curated-doc stale-reference guard
 - [ ] `docs/README.md` links the new contract/checklist from a trusted discovery surface
-- [ ] `docs/plans/README.md` includes the #2460 index row
+- [ ] the existing #2460 row in `docs/plans/README.md` is verified as correct and is not treated as new additive work
 - [ ] targeted regression tests pass: `uv run pytest tests/docs/test_tier1_indexing_contract.py -v`
 - [ ] existing curated-doc stale-reference guard still passes: `uv run pytest tests/docs/test_banned_stale_references.py -v`
 - [ ] review artifacts are posted to `scripts/review/results/`
@@ -289,22 +301,23 @@ function validate_contract_docs():
 ## Adversarial Review Summary
 
 Historical review results for the immediately previous draft revision are recorded below for traceability.
-They are superseded by the latest blocker patch in this draft and should not be read as the verdict for the current unre-reviewed text.
+They are superseded by the latest rerun wave for the current draft.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | Prior draft still self-declared FAIL, kept `/mnt/ace/data` scope unresolved, and carried stale revisions-required language |
-| Codex | MAJOR | Prior draft still treated daily freshness and the scorecard negative-authority guard as too weakly specified |
-| Gemini | MINOR | Prior draft still had a contradiction between generalized bulk-artifact-store intent and literal `/mnt/ace/data` wording |
+| Claude | MAJOR | Stale-reference guard coverage for the new `docs/standards/*` docs is still not strong enough in the current plan; DATA_PLACEMENT threshold carry-forward remains too weakly enforced; several secondary validation concerns remain |
+| Codex | MAJOR | Review-artifact/state narrative is stale relative to the latest branch reality; the plan still carries already-satisfied `docs/plans/README.md` work and remains not approval-ready |
+| Gemini | APPROVE | Gemini judged the latest draft approval-ready and accepted the stale-reference, threshold, scope, and TDD-sequencing improvements |
 
-**Current draft state:** PENDING RE-REVIEW — this draft has been patched after the historical wave above and must be rerun through adversarial review again before any GitHub posting or `status:plan-review` transition.
+**Overall result:** FAIL — the latest rerun still contains MAJOR findings from Claude and Codex, so the plan is not approval-ready for GitHub `status:plan-review`.
 
-Latest blocker patch applied in this draft:
-- Replaced the placement rule with the universal repo-vs-bulk-artifact-store concept and demoted `/mnt/ace/data` to a workspace-hub example.
-- Replaced generic daily-freshness wording with exact required cadence text.
-- Replaced generic scorecard-attestation language with an exact negative-authority sentence requirement.
-- Tightened the legacy-retirement rule from a token example to concrete banned-pattern signatures.
-- Enumerated exact checklist status fields and removed stale rerun bullets from being treated as current-plan truth.
+Revisions still required before GitHub posting:
+- Tighten the plan so the new contract/checklist docs are unambiguously brought under the curated stale-reference guard with no ambiguity about `STRICT_FILES` enrollment.
+- Remove or re-scope stale work items in the plan that are already satisfied on branch (notably the #2460 `docs/plans/README.md` row work).
+- Strengthen the plan’s carry-forward of `docs/standards/DATA_PLACEMENT.md` thresholds so the operational rule is not reduced to looser prose.
+- Refresh the review/state narrative so the plan no longer points to outdated branch-state assumptions or stale artifact expectations.
+
+Current draft state: NOT approval-ready. Do not post to GitHub or add `status:plan-review` until a fresh rerun clears all MAJOR findings.
 
 ---
 

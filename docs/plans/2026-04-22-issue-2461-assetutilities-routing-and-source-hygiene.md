@@ -1,10 +1,10 @@
 # Plan for #2461: Canonical routing surfaces and source-hygiene cleanup for assetutilities
 
-> **Status:** draft (adversarial-reviewed r1 — Claude MINOR; Codex/Gemini PENDING per permission-gate fallback `feedback_permission_gate_blocks_cross_review.md`; r2 tightening applied 2026-04-23 to address Claude F1/F2/F3/F4/F7 and parallel the #2462 r2 hardening)
+> **Status:** draft (r2 tightened on 2026-04-23 after Claude MINOR; Codex/Gemini cross-review artifacts are still missing, so the plan is not yet cross-provider ready for approval surfacing)
 > **Complexity:** T2
 > **Date:** 2026-04-22 (r2 tightening 2026-04-23)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2461
-> **Review artifacts:** scripts/review/results/2026-04-22-plan-2461-claude.md | scripts/review/results/2026-04-22-plan-2461-codex.md | scripts/review/results/2026-04-22-plan-2461-gemini.md
+> **Review artifacts:** scripts/review/results/2026-04-22-plan-2461-claude.md (exists) | scripts/review/results/2026-04-22-plan-2461-codex.md (missing) | scripts/review/results/2026-04-22-plan-2461-gemini.md (missing)
 > **Contract dependency (HARD GATE):** implementation of this plan MUST NOT begin until (a) #2460 (tier-1 indexing and code-placement contract) has reached `status:plan-approved` AND (b) #2460's contract doc has been drafted to the point where the canonical machine-readable registry filename, the operator-map host location (workspace-hub `docs/maps/` vs per-repo `docs/maps/`), the required routing-surface set, and the source-hygiene rules are textually locked (either in the #2460 plan or in `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` on main). If any of those items moves in #2460, this plan is re-patched and re-reviewed before implementation.
 > **Sibling scope boundary:** #2462 owns `digitalmodel` repo-wide routing; #2463 owns `aceengineer-website`; #2464 owns `workspace-hub` curation / `docs/CONTENT_INDEX.md` hygiene; #2465 owns daily freshness automation; #2460 owns the contract itself. This plan edits ONLY `assetutilities/**` files plus, if #2460 ratifies workspace-hub host, the single workspace-hub file `docs/maps/assetutilities-operator-map.md` and the workspace-hub regression guard `tests/docs/test_banned_stale_references.py`. It does not rewrite sibling repos' routing surfaces and does not touch `docs/CONTENT_INDEX.md` or the repo-root cleanup surface.
 
@@ -256,13 +256,15 @@ function implement_with_tdd():
 
 ## Adversarial Review Summary
 
+This plan has been tightened once after the initial Claude MINOR review, but it is still missing Codex/Gemini cross-review artifacts. Operationally, treat it as a stronger draft, not as approval-ready.
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | to be filled after adversarial wave runs tonight |
-| Codex | PENDING | no artifact yet |
-| Gemini | PENDING | no artifact yet |
+| Claude | MINOR | 8 findings in `scripts/review/results/2026-04-22-plan-2461-claude.md`; the current draft folds in the important ones: host/path wording now defers to #2460, registry filename lock is promoted to a blocker/HARD GATE, operator-map and MODULE_STRUCTURE expectations are derived from the live tree rather than hard-coded, and deletion steps now require pre-delete grep discovery gates. |
+| Codex | NOT RUN / artifact missing | `scripts/review/results/2026-04-22-plan-2461-codex.md` does not exist in the repo snapshot used for salvage. Required before this plan should be surfaced as cross-provider ready. |
+| Gemini | NOT RUN / artifact missing | `scripts/review/results/2026-04-22-plan-2461-gemini.md` does not exist in the repo snapshot used for salvage. Required before this plan should be surfaced as cross-provider ready. |
 
-**Current draft state:** initial canonical draft — first Claude adversarial review artifact produced alongside this plan tonight; Codex and Gemini artifacts are pending and required before any transition to `status:plan-review`.
+**Current draft state:** tighter than the original overnight draft, but still blocked on cross-provider review completion. Keep this issue in planning state; do not treat the current artifact set as sufficient for user approval.
 
 ---
 
