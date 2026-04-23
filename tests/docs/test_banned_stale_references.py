@@ -18,6 +18,8 @@ STRICT_FILES = [
     "docs/governance/TRUST-ARCHITECTURE.md",
     "docs/modules/workflow/SPEC_LOCALITY_POLICY.md",
     "docs/plans/README.md",
+    "docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md",
+    "docs/standards/TIER1_INDEXING_CHECKLIST.md",
     "docs/work-queue-workflow.md",
 ]
 
