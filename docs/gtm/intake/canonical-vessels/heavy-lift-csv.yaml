@@ -1,0 +1,77 @@
+# ============================================================================
+# Canonical vessel — Heavy-Lift Construction Support Vessel (CSV), DP3 class
+# Plan-prescribed filename per docs/plans/2026-04-19-issue-2346-prospect-data-pipeline.md
+# Files-to-Change row: `docs/gtm/intake/canonical-vessels/heavy-lift-csv.yaml`.
+# ----------------------------------------------------------------------------
+# DISCLAIMER:
+#   - Class-typical values, not vessel-specific. Do not represent any
+#     particular commercial asset.
+#   - Intended as an intake fallback when a prospect's own vessel data is
+#     incomplete; the branded report will surface this disclaimer on the
+#     cover page when this canonical reference is used.
+#   - Last reviewed: 2026-04-23.
+#
+# CITATIONS (2-per-vessel rule, plan v3 canonical source pins):
+#   [1] Subsea7 public fleet page (heavy-lift CSV / DP3 class reference
+#       vessels such as Seven Borealis) — https://www.subsea7.com/en/our-fleet
+#       (LOA, beam, DP3, main-crane SWL). Cross-referenced with OTC-24523
+#       (2013) "Installation of Subsea Structures Using Heavy-Lift CSVs"
+#       for installation-class envelopes.
+#   [2] Bai & Bai, "Subsea Engineering Handbook" (2nd ed., 2018,
+#       ISBN 978-0-12-812622-6), Chapter 21 "Installation Vessel
+#       Characterization" — class-typical heave/roll/pitch RAOs and
+#       natural periods for DP3 heavy-lift CSVs.
+#
+# Reviewer reproducibility: LOA, beam, DP class, max water depth, and the
+# main-crane SWL below MUST be reproducible from citation [1]. Motion RAOs
+# and natural periods MUST be reproducible from citation [2].
+# ============================================================================
+
+id: "heavy-lift-csv"
+name: "Heavy-lift CSV (class-typical)"
+representative_class: "heavy_lift_csv_dp3"
+
+sources:
+  - id: "subsea7-fleet-csv-class"
+    accessed_utc: "2026-04-23T00:00:00Z"
+    url: "https://www.subsea7.com/en/our-fleet"
+    role: "general_particulars_and_crane_envelope"
+  - id: "bai-subsea-engineering-handbook-2e"
+    accessed_utc: "2026-04-23T00:00:00Z"
+    isbn: "978-0-12-812622-6"
+    role: "class_typical_motion_rao_methodology"
+
+general:
+  loa_m: 182.0                   # citation [1]
+  beam_m: 46.2                   # citation [1]
+  displacement_te: 68000         # approximate full-load, citation [1]
+  dp_class: "DP3"                # citation [1]
+  max_water_depth_m: 3000        # class-typical deepwater rating, citation [1]
+  transit_speed_kt: 13.0         # citation [1]
+  deck_area_m2: 4200             # aft working deck, citation [1]
+  accommodation_pob: 399         # citation [1]
+
+crane_main:
+  type: "mast_crane_heave_compensated"
+  swl_max_te: 5000                # citation [1]
+  swl_max_radius_m: 32.0          # citation [1]
+  crane_capacity_curve:
+    - { radius_m: 32.0, swl_te: 5000 }
+    - { radius_m: 40.0, swl_te: 4200 }
+    - { radius_m: 50.0, swl_te: 3400 }
+    - { radius_m: 60.0, swl_te: 2800 }
+    - { radius_m: 70.0, swl_te: 2300 }
+    - { radius_m: 80.0, swl_te: 1900 }
+  hoist_speed_m_per_min: 30.0     # citation [2]
+  main_wire_mbl_te: 7500          # citation [2]
+  main_wire_diameter_mm: 165      # citation [2]
+
+motion_characteristics:
+  heave_rao: 0.35                 # m / m
+  roll_rao: 0.6                   # deg / m
+  pitch_rao: 0.4                  # deg / m
+  natural_periods:
+    heave_s: 10.5
+    roll_s: 14.0
+    pitch_s: 8.5
+  _note: "Class-typical DP3 CSV RAOs at the crane tip, head-seas, Tp = 10 s, per citation [2]"
