@@ -1,9 +1,9 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-17
-page_count: 19181
-source_count: 19159
+last_updated: 2026-04-23
+page_count: 19183
+source_count: 19160
 ---
 
 # Knowledge Index: Marine Engineering

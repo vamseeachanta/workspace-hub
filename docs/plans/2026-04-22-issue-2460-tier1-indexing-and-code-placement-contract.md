@@ -236,16 +236,16 @@ function validate_contract_docs():
 | `test_tier1_contract_requires_machine_readable_registry` | contract explicitly requires one canonical machine-readable registry per repo | contract text | requirement present |
 | `test_tier1_contract_requires_code_tests_docs_routing_table` | contract explicitly requires code/tests/docs routing-table semantics | contract text | requirement present |
 | `test_tier1_contract_requires_source_hygiene_rules` | contract explicitly requires source-hygiene rules for backup/cache/runtime noise | contract text | requirement present |
-| `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` | contract explicitly defines the universal repo-vs-bulk-artifact-store placement rule and treats `/mnt/ace/data` only as the current workspace-hub example | contract text | universal rule plus example language present |
+| `test_tier1_contract_requires_repo_vs_bulk_artifact_store_rule` | contract explicitly defines the universal repo-vs-bulk-artifact-store placement rule, defines bulk-artifact-store concretely, and treats `/mnt/ace/data` only as the current workspace-hub example | contract text | universal rule, definition, and example language present |
 | `test_tier1_contract_defines_curated_vs_raw_inventory_boundary` | contract distinguishes curated routing surfaces from raw inventory surfaces | contract text | boundary rule present |
-| `test_tier1_contract_defines_legacy_retirement_rule` | contract explicitly defines allowed migration language, bans active legacy product-doc routing authority, and enumerates concrete banned-pattern signatures rather than a token example | contract text | allowed rule, banned rule, and concrete signatures present |
+| `test_tier1_contract_defines_legacy_retirement_rule` | contract explicitly defines allowed migration language, bans active legacy product-doc routing authority, and enumerates multiple concrete banned-pattern signatures rather than a token example | contract text | allowed rule, banned rule, and multiple concrete signatures present |
 | `test_tier1_contract_links_child_issues` | contract doc references #2461-#2465 as implementation follow-through | contract text | all child issue numbers present |
 | `test_tier1_contract_marks_2465_as_daily_freshness_followthrough` | contract explicitly names `#2465` as the daily-freshness follow-through issue | contract text | linkage present |
-| `test_tier1_contract_requires_daily_freshness_cadence` | contract includes the exact wording `daily freshness review` and either `every 24 hours` or `once per day` in the same freshness section | contract text | exact cadence wording present |
-| `test_tier1_contract_forbids_scorecard_as_required_canonical_authority` | contract contains the sentence `MUST NOT treat docs/reports/2026-04-22-tier-1-indexing-scorecard.md as required canonical authority` | contract text | exact negative-authority sentence present |
+| `test_tier1_contract_requires_daily_freshness_cadence` | contract includes the exact wording `daily freshness review`, includes either `every 24 hours` or `once per day`, and requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md` in the same freshness section | contract text | exact cadence wording and refresh obligation present |
+| `test_tier1_contract_forbids_scorecard_as_required_canonical_authority` | contract contains the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority` | contract text | exact negative-authority sentence present |
 | `test_tier1_checklist_covers_all_scope_repos` | checklist covers workspace-hub, digitalmodel, assetutilities, and aceengineer-website | checklist text | all four repo names present |
 | `test_tier1_checklist_links_repo_specific_child_issues` | checklist links #2461-#2464 to the relevant repos | checklist text | all repo-specific child issue numbers present |
-| `test_tier1_checklist_records_surface_status_per_repo` | checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo | checklist text | exact status field names present |
+| `test_tier1_checklist_records_surface_status_per_repo` | checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values drawn from `present | partial | missing | not-applicable` | checklist text | exact field names and allowed status values present |
 | `test_docs_readme_links_tier1_contract_and_checklist` | docs index exposes both contract and checklist for discovery | `docs/README.md` | link text/path present |
 | `test_plans_readme_indexes_2460_plan` | planning index includes the #2460 row | `docs/plans/README.md` | row present |
 
@@ -255,14 +255,14 @@ function validate_contract_docs():
 
 - [ ] `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` exists and defines the minimum trusted routing/index surfaces for tier-1 repos
 - [ ] contract explicitly and independently requires: `AGENTS.md`, `README.md`, `docs/README.md`, repo operator maps, one canonical machine-readable registry per repo, code/tests/docs routing tables, and source-hygiene rules
-- [ ] contract explicitly encodes the universal repo-vs-bulk-artifact-store placement rule, with `/mnt/ace/data` documented only as the current workspace-hub implementation example
+- [ ] contract explicitly encodes the universal repo-vs-bulk-artifact-store placement rule, defines bulk-artifact-store concretely, and documents `/mnt/ace/data` only as the current workspace-hub implementation example
 - [ ] contract explicitly separates curated routing surfaces from raw inventory surfaces
-- [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language, banning their use as active routing authority, and enumerating concrete banned-pattern signatures
-- [ ] contract includes a daily freshness rule, contains the exact phrase `daily freshness review`, includes either `every 24 hours` or `once per day`, and explicitly names `#2465` as the follow-through issue
-- [ ] contract includes the sentence `MUST NOT treat docs/reports/2026-04-22-tier-1-indexing-scorecard.md as required canonical authority`
+- [ ] contract explicitly defines retirement of legacy product-doc reference patterns by allowing migration/retirement language, banning their use as active routing authority, and enumerating multiple concrete banned-pattern signatures
+- [ ] contract includes a daily freshness rule, contains the exact phrase `daily freshness review`, includes either `every 24 hours` or `once per day`, requires refreshing or regenerating `docs/reports/tier-1-indexing-freshness-latest.md`, and explicitly names `#2465` as the follow-through issue
+- [ ] contract includes the sentence `MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority`
 - [ ] `docs/standards/TIER1_INDEXING_CHECKLIST.md` exists and covers workspace-hub, digitalmodel, assetutilities, and aceengineer-website
 - [ ] checklist links repo-specific implementation follow-through issues `#2461`-`#2464`
-- [ ] checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo
+- [ ] checklist records `repo_name`, `operator_map_status`, `registry_status`, `data_placement_status`, and `evidence_source` for each repo, with status values constrained to `present | partial | missing | not-applicable`
 - [ ] `docs/README.md` links the new contract/checklist from a trusted discovery surface
 - [ ] `docs/plans/README.md` includes the #2460 index row
 - [ ] targeted regression tests pass: `uv run pytest tests/docs/test_tier1_indexing_contract.py -v`
@@ -298,10 +298,10 @@ Latest blocker patch applied in this draft:
 - **Risk:** The broader `docs/standards/CONTROL_PLANE_CONTRACT.md` still contains historical legacy-path discussion; implementation for #2460 should avoid copying that legacy language into the new contract except where absolutely necessary to define retirement boundaries.
 - **Risk:** It is easy to let #2460 grow into automation or repo-specific remediation. Automation belongs to `#2465`; repo-specific changes belong to `#2461`-`#2464`.
 - **Risk:** If the contract is too abstract, it will not be implementable; if it is too specific, it will duplicate the child issues. The implementation should define a minimum reusable contract plus repo-specific checklist, not solve every child issue.
-- **Open:** Should the contract state the universal policy as repo-vs-bulk-artifact-store with `/mnt/ace/data` documented as the current workspace-hub implementation example? That wording would preserve the durable rule without overfitting a workspace-specific mount path.
+- **Resolved design choice:** The universal placement rule is repo-vs-bulk-artifact-store; `/mnt/ace/data` is documented only as the current workspace-hub implementation example.
 - **Open:** Should the contract live only in `docs/standards/` or also be summarized in `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md`? The plan keeps the implementation narrow by requiring only a `docs/README.md` link in this issue.
 - **Open:** Should “machine-readable registry” be standardized on one exact filename across all tier-1 repos, or only standardized as one canonical registry per repo? This issue should define the rule; child issues can pick the per-repo file path where needed.
-- **Risk:** The scorecard is currently treated as local attestation for plan drafting; the contract/checklist must not promote it into required canonical authority.
+- **Risk:** The scorecard is currently treated as local attestation for plan drafting; the contract/checklist must not promote any tier-1 indexing scorecard into required canonical authority.
 
 ---
 
