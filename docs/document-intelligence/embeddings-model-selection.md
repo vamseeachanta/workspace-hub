@@ -2,7 +2,8 @@
 
 > **Status:** scaffold — measurement phase not yet run.
 > **Blocker:** awaiting either `OPENAI_API_KEY` / `VOYAGE_API_KEY` provisioning OR a local `ollama` install (for BGE-M3).
-> **Scaffold landed at:** commit pending this session.
+> **Scaffold landed at:** `405ea2dc7` (merged to `main` on 2026-04-20).
+> **Scaffold re-verified:** 2026-04-23 — `uv run pytest tests/knowledge/test_embeddings_spike.py -v` → 12/12 passing; `--scaffold-check` CLI prints OK for eval set and config, STUB for all 3 runners (expected — measurement prereqs not provisioned).
 
 ## What exists now
 
