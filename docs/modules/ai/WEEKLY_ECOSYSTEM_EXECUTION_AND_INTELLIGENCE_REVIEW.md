@@ -107,7 +107,16 @@ Each weekly run should answer five questions:
 - [ ] Spot-check 2-3 recent plans in `docs/plans/`: does the Resource Intelligence Summary contain ≥3 specific sources?
 - [ ] Spot-check 1-2 recent close comments: do they include "Sources consumed" and "Promotion candidates" lines?
 
-### E. Output and Follow-Through
+### E. Provider Session Learning Transfer
+- [ ] Run `bash scripts/cron/codex-session-export.sh`, `bash scripts/cron/hermes-session-export.sh`, and `bash scripts/cron/gemini-session-export.sh` before interpreting provider drift.
+- [ ] Run `bash scripts/cron/provider-session-ecosystem-audit.sh` and review `docs/reports/provider-session-ecosystem-audit.md`.
+- [ ] Transfer only durable learnings into repo-root docs, memory, skills, rules, or provider prompts; do not commit raw session text unless it is already redacted and intentionally tracked.
+- [ ] For Claude/Gemini stale work-queue or `scripts/agents/*` reads, update `docs/ops/legacy-claude-reference-map.md` and relevant prompt surfaces rather than restoring deleted files.
+- [ ] For Codex missing reads, first distinguish sub-repo path assumptions from truly deleted workspace-hub files.
+- [ ] For Hermes missing reads, classify worktree and `/tmp/` paths as ephemeral unless a durable artifact should be promoted to repo-root.
+- [ ] Record whether bare `python3` usage regressed; Linux provider prompts should continue to require `uv run ... python`.
+
+### F. Output and Follow-Through
 - [ ] Write a short weekly findings summary
 - [ ] Record machine-by-machine notes
 - [ ] Record intelligence freshness/accessibility notes

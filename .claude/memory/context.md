@@ -14,6 +14,10 @@
 
 - **Linux**: ALWAYS `uv run` — never bare `python3` or `pip`
 - **Windows**: Use `python` — uv is NOT installed on licensed-win-1
+- Provider-session audit transfer (2026-04-24): Hermes, Gemini, and Codex
+  still show meaningful bare `python3` usage in recent corpora. Agent prompts
+  and review comments should explicitly preserve the Linux `uv run ... python`
+  rule when dispatching non-Claude providers.
 
 ## Workspace Layout (Linux)
 
@@ -24,6 +28,15 @@
 - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root *verified: 2026-04-19*
 - `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *verified: 2026-04-17*
 - `worldenergydata/` — energy data sub-repo *verified: 2026-04-19*
+- Provider-session audit transfer (2026-04-24): missing reads from Codex often
+  come from running at the workspace-hub root while the real target belongs to a
+  nested repo or site content root. Check `digitalmodel/`, `worldenergydata/`,
+  `assethold/`, and `aceengineer-website/` before treating those paths as
+  deleted workspace-hub files.
+- Hermes audit interpretation (2026-04-24): reads under `.claude/worktrees/`,
+  `.worktrees/`, `/mnt/local-analysis/worktrees/`, and `/tmp/` are usually
+  session-local worktree artifacts. Promote only durable outputs back to
+  repo-root docs, plans, skills, or scripts.
 
 ## Windows Path Conventions
 

@@ -64,6 +64,11 @@ Context parity = compute parity. Zero waste everywhere.
 - **No local task IDs**: Use GitHub issues directly (`gh issue list`).
 - **Issue comments**: Always post a summary comment on every implemented GitHub issue.
 - **Parallel work check**: Scan for in-flight sessions before starting GSD work.
+- **Provider drift handling** (2026-04-24): if Claude or Gemini sessions
+  reference deleted `scripts/work-queue/*`, `.claude/work-queue/*`, old
+  work-queue skills, or `scripts/agents/*`, redirect to
+  `docs/ops/legacy-claude-reference-map.md`; do not restore those stale
+  surfaces by default.
 
 ## GSD Workflow
 

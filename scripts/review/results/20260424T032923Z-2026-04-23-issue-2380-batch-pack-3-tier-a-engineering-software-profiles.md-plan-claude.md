@@ -1,0 +1,31 @@
+### Verdict: APPROVE
+
+### Summary
+Plan is directionally sound with strong embedded evidence (verified issue states, file existence via gh/ls, candidate counts via grep) and a bounded, reversible scope (docs/reports/ only, no knowledge/wikis/** writes, no network). The classification pipeline has undefined thresholds and loose heuristics, but the carry-forward artifact design makes every decision auditable and reversible, keeping execution risk low. Recommend approval with hardening suggestions rather than request-changes since the acceptance-criteria gates (especially the `union == 154` completeness check and the write-scope guard) catch the most consequential defects automatically.
+
+### Issues Found
+- [P2] Classification thresholds undefined: `MIN_NOTES_LEN` and `has_capability_keywords(notes)` in Step 2 have no concrete values or keyword list. Two execution runs could produce materially different Tier A vs Tier B partitions. Lock a numeric threshold and an explicit keyword list in the plan so results are reproducible.
+- [P2] Slug-normalization algorithm is implicit: `find_exact_slug_match` and `per-row slug unique` appear in tests and Step 5, but the rule (case-folding, dash-vs-underscore, space handling, `(tool)` suffix treatment) is never spelled out. This is load-bearing for the extend-vs-create decision — e.g., `BEMRosetta Tool` → `bemrosetta-tool.md`? `bemrosetta_tool.md`? Spec this before execution or extend-only detection is subjective.
+- [P2] Package-root collapse regex is narrow: `re.sub(r"\s*\((github|docs|huggingface|pypi)\)\s*", ...)` handles only four suffix markers. Registries often use `(website)`, `(code)`, `(repo)`, `(mirror)`, `(docs-site)` etc. Missed collapses show up as duplicates, which the `post_run_package_roots_unique` gate will then fail on — preferable to enumerate seen suffixes upfront from the registry.
+- [P3] `EXCLUDE_NAME_TOKENS` risks false-positive exclusion: substring match on `archive`, `paper`, `catalog` will flag legitimate tool names (e.g., Papermill, any `*-archive` storage tool). Mitigation via carry-forward.md exists but reviewer burden scales with false-positive rate — consider word-boundary matching or domain-qualified rules.
+- [P3] `assert len(candidates) == 154` in pseudocode will hard-fail if the registry grows mid-run or between plan approval and execution; the plan itself notes the count drifted from 153 to 154 since the design doc. Change to a warn-not-fail check and capture the observed count in the report.
+- [P3] `post_run_no_network_calls` via "shell history audit" is not a real gate — an agent could use a tool call that bypasses shell history. Stronger options: run under `unshare -n` or assert the absence of network-capable commands via process/audit log. At minimum, acknowledge the weakness.
+- [P3] `entry.domain` usage (Step 3) assumes all entries carry a `domain` field; the Resource Intelligence section does not verify domain-field coverage across the 154 candidates. If some entries lack `domain`, the `entry.get("domain") in EXCLUDE_DOMAIN_PREFIXES` check evaluates False and leaks ambiguous entries through — explicitly document this fallback.
+- [P3] `merge_cluster(rows)` behavior is undefined — when twins disagree (different notes, different last_updated), which row wins? Specify merge precedence (e.g., longest `notes`, github_repo > tool, newest updated_at) so output is deterministic.
+
+### Suggestions
+- Lock MIN_NOTES_LEN (e.g., ≥120 chars) and list capability keywords explicitly (e.g., `solver|mesh|simulat|analy|preprocess|postprocess|cfd|fem|bem|cad`) so Tier A vs Tier B is reproducible across runs.
+- Add a `Slug normalization rules` subsection: lowercase, replace spaces/underscores with dashes, strip trailing `-tool|-solver|-cfd` only when it duplicates the domain, and collision-resolve with a numeric suffix.
+- Derive the package-root suffix pattern by scanning the registry first (one-time offline pass), then paste the enumerated set into the plan so the regex is data-driven rather than guessed.
+- Use word-boundary regex for EXCLUDE_NAME_TOKENS (`\barchive\b`, `\bpaper\b`) to cut false-positive exclusions, and carry a small allowlist for known engineering tools whose names intersect with excluded tokens.
+- Replace the hard `assert == 154` with `observed = len(candidates); report_field('candidate_count_at_runtime', observed)` and surface any delta-vs-design (153) in the report header so downstream reviewers see drift.
+- Add a `Determinism` acceptance criterion: re-running the pipeline on the same registry SHA must produce byte-identical YAML for the duplicate map — this catches iteration-order bugs that would otherwise slip through.
+- Record the registry commit SHA and `wc -l` in the report header for provenance, so when someone reopens this in 6 months they can distinguish drift from defect.
+- Consider emitting a third artifact `batch-pack-3-tier-a-stats.yaml` with per-domain counts (engineering, marine, general, etc.), extend-vs-create ratios, and carry-forward reasons — cheap to produce and invaluable for the #2039 downstream ingest planning.
+
+### Questions for Author
+- What concrete threshold and keyword list defines `is_tier_a`? Without these pinned, the Tier A / Tier B boundary shifts between runs and reviewers cannot audit the decision.
+- How are entity-file slugs normalized from registry `name` fields? `CadQuery` → `cadquery.md`? `BEMRosetta Tool` → `bemrosetta-tool.md` or `bemrosetta.md`? The extend-only decision hangs on this.
+- On the open question about `The Well` (15 TB physics simulation dataset) — is there downstream consumer for a dataset-profiles wave already scoped, or would deferring it here orphan it? If no dataset wave exists, it may be better to include it in this report with a `kind: dataset` tag.
+- What happens when a registry entry has both a `github_repo` row and a `tool` row with different `domain` values (marine vs engineering)? Does `merge_cluster` keep both domains, pick one, or create two packages?
+- Is there value in running a dry-run dispatch (classification only, no writes) and committing its stats artifact first, so the user can approve the Tier A / Tier B partition before the full report is written? This would turn the plan into a two-commit sequence with a clear approval checkpoint.
