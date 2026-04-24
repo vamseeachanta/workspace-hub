@@ -104,6 +104,30 @@ git push origin main
 
 **Not pushing is OK too** — issue comments reference paths (not blob URLs), and those will work after you push.
 
+### 3-Provider Fanout Outcome — Partial Failure, Tooling Maintenance Required
+
+After the user pushed `main` to origin (per Codex-needs-pushed-artifact constraint), the 3-provider fanout (`scripts/review/plan-review-fanout.sh`) was dispatched for all 10 plans. Outcome:
+
+| Provider | Result | Root cause |
+|---|---|---|
+| **Claude** 2nd pass | 6/10 full reviews (all **MAJOR**), 3 partial, 1 zero-byte (#510) | Expected; one turn budget ran thin |
+| **Codex** | 10/10 failed with canonical "UNAVAILABLE" stub | Fanout script uses `codex exec --no-interactive`; current Codex CLI rejects that flag (`error: unexpected argument '--no-interactive' found`) |
+| **Gemini** | 10/10 failed with canonical "UNAVAILABLE" stub | Gemini CLI refuses to run in untrusted workspace; needs `GEMINI_CLI_TRUST_WORKSPACE=true` or `--skip-trust` — neither is set in the fanout script |
+
+All 30 files (real + stubs) committed as `7f54958a3` for provenance. The stubs are the fanout script's documented-failure template, not hallucinated content.
+
+**Claude second-pass signal** is interesting: **#515, #282, #500, #504, #486** all received **MAJOR** on second read despite Wave 3 rating them MINOR. Interpretation: the plans have more latent defects than Wave 3 surfaced; morning triage should treat these five as candidates for MAJOR-tier revision alongside the original MAJORs (#279, #501). The Claude 2nd-pass review files at `scripts/review/results/2026-04-24-plan-{N}-claude.md` enumerate specific defects.
+
+**Fanout maintenance needed (separate issue worth opening):**
+1. Remove `--no-interactive` flag from Codex invocation in `scripts/review/plan-review-fanout.sh` (current Codex CLI no longer supports it)
+2. Add `GEMINI_CLI_TRUST_WORKSPACE=true` to the Gemini invocation environment, or add `--skip-trust` to the Gemini command
+
+These failures **do not affect** Wave 3 single-provider Claude adversarial reviews committed at `69f3b1c02` — those remain the primary verdict source for morning approval triage.
+
+### Label Namespace Gap — Resolved After User Authorization
+
+`vamseeachanta/digitalmodel` did not have a `status:plan-review` label (only `status:pending`, `blocked`, `done`, `working`, `closed`, and `plan-approved`). After user explicitly authorized `status:plan-review` marking, I created the label and applied it to all 10 issues.
+
 ### Label Namespace Gap — Discovered Mid-Batch
 
 `vamseeachanta/digitalmodel` does not have a `status:plan-review` label (only `status:pending`, `blocked`, `done`, `working`, `closed`, and `plan-approved`). All 10 label-application attempts failed with `'status:plan-review' not found`. Comments were posted anyway — verdict info is fully visible on each issue.
