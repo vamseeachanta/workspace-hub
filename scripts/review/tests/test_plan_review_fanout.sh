@@ -169,8 +169,13 @@ test_codex_invocation_inlines_plan_body() {
     fail "codex invocation missing inline plan body"
   elif ! grep -qF -- '--- PLAN' "$cap"; then
     fail "codex invocation missing '--- PLAN' delimiter"
+  elif grep -qF -- '--no-interactive' "$cap"; then
+    # Regression guard: codex-cli 0.124.0 removed --no-interactive; the flag
+    # must not resurface in this invocation path. Fresh issue filed after the
+    # 2026-04-23 batch regression (supersedes the premature #2406 closure).
+    fail "codex invocation passes removed flag '--no-interactive' (codex-cli >=0.124.0 rejects it)"
   else
-    pass "codex invoked with inline plan body + delimiter"
+    pass "codex invoked with inline plan body + delimiter, no removed flags"
   fi
   rm -rf "$td"
 }
