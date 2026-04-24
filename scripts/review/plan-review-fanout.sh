@@ -11,9 +11,16 @@
 #   claude  — path reference: `claude -p "@<prompt> — review plan at <path>..."`
 #             Claude resolves @-sigils natively; passing by path keeps token
 #             budget tight and the plan fresh on disk.
-#   codex   — INLINE: `codex exec --no-interactive "<prompt>\n--- PLAN ---\n<body>"`
+#   codex   — INLINE: `codex exec "<prompt>\n--- PLAN ---\n<body>" </dev/null`
 #             Codex drops context when given a path-only argument and falls
-#             back to GitHub MCP lookups, producing false MAJORs.
+#             back to GitHub MCP lookups, producing false MAJORs. The
+#             `--no-interactive` flag that this invocation previously used
+#             was removed in codex-cli 0.124.0 (unknown argument, rc=2);
+#             `codex exec` is already non-interactive by definition, so
+#             dropping the flag is correct. See the fresh issue filed after
+#             the 2026-04-23 batch regression (supersedes #2406 closure).
+#             Stdin is closed with `</dev/null` to prevent codex from
+#             waiting on an inherited pipe when invoked from orchestrators.
 #   gemini  — INLINE, and invoked from cwd=/tmp to dodge a local
 #             .gemini/agents/*.md permissionMode validation bug in the repo.
 #
@@ -79,7 +86,12 @@ invoke_provider() {
       local combined
       combined="$(printf '%s\n\n--- PLAN (%s) ---\n%s' \
         "$(cat "$PROMPT_FILE")" "$PLAN_FILE" "$(cat "$PLAN_FILE")")"
-      codex exec --no-interactive "$combined" > "$out" 2>"$err" || rc=$?
+      # #2406-followup: `--no-interactive` was removed in codex-cli 0.124.0
+      # (unknown argument, rc=2). `codex exec` is already non-interactive by
+      # definition — dropping the flag is correct. `</dev/null` closes stdin
+      # explicitly so codex does not wait on an inherited pipe from the
+      # orchestrator (same hazard addressed in submit-to-codex.sh).
+      codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
       ;;
     gemini)
       local combined
