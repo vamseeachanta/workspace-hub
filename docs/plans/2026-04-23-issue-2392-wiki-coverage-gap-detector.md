@@ -1,6 +1,6 @@
 # Plan for #2392: feat(knowledge): wiki coverage-gap detector — inventory × wiki diff per discipline
 
-> **Status:** draft
+> **Status:** draft (v2 — addresses r1 findings)
 > **Complexity:** T2
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2392
@@ -50,13 +50,13 @@ Not applicable directly. The detector reads standards-identity fields but does n
 - `#2360` — OPEN — doc_key in L3 required-set (soft dep)
 - `#2389` — OPEN — `source_doc_key` threading (soft dep)
 - `#2366` — referenced in issue body; downstream consumer
-- `#2205` — OPEN — parent operating model
+- `#2205` — **CLOSED** — parent operating model (re-verified 2026-04-23 via `gh issue view 2205 --json state` → `CLOSED`). Supersedes earlier v1 assertion of OPEN.
 - `#2405` — CLOSED — sandbox repo access (unblocks cross-review verification for this detector's plan)
 
 **File existence** (2026-04-23):
 - EXISTS: `scripts/knowledge/llm_wiki.py`, `data/document-index/index.jsonl`, `data/document-index/standards-transfer-ledger.yaml`, `data/document-index/dde-standards-inventory.yaml`, `data/document-index/online-resource-registry.yaml`, `data/document-index/mounted-source-registry.yaml`, `data/document-index/registry.yaml`, `config/scheduled-tasks/schedule-tasks.yaml`
 - MISSING (this plan creates): `scripts/knowledge/detect_wiki_gaps.py`, `scripts/knowledge/tests/test_detect_wiki_gaps.py`, `docs/reports/wiki-coverage-gaps/` (directory), `docs/reports/wiki-coverage-gaps/_summary.md`
-- MISSING (does not exist, the issue asks us to check): `data/design-codes/code-registry.yaml` — verified NOT under `data/document-index/*registry*`; if used by the detector it must be cited by exact path at config time, not assumed.
+- **EXISTS (corrected in v2)**: `data/design-codes/code-registry.yaml` — verified 2026-04-23 via `ls -la data/design-codes/code-registry.yaml` (3,512 bytes). Schema: top-level `codes:` list with entries carrying `id` (e.g., `DNV-ST-F101`), `title`, `organization`, `our_edition`, `latest_known_edition`, `disciplines`, `repos`, `status`. v1 incorrectly asserted the file did not exist. Promoted to supplemental MVP input (see Inputs section below).
 
 **Gap proofs**:
 - `ls scripts/knowledge/*gap*` → no match → confirms detector does not exist.
@@ -116,6 +116,7 @@ Supplemental (missing → skipped-input diagnostic; not an error):
 - `data/document-index/standards-transfer-ledger.yaml`
 - `data/document-index/dde-standards-inventory.yaml`
 - `data/document-index/online-resource-registry.yaml` (reporting aid — contributes source candidates only for entries carrying canonical `doc_key`)
+- `data/design-codes/code-registry.yaml` (promoted in v2) — supplies standards-identity records keyed by publisher-code (`id` like `DNV-ST-F101`). These are NOT canonical `sha256:` `doc_key`s and therefore cannot produce positive coverage matches directly. Instead, they produce `identity-unresolved` source records scoped to the `standards` discipline so the gap size is visible. They will be labeled with a distinct `input_source: code-registry` tag in the per-domain YAML so that downstream consumers can treat them separately from document-index-sourced records. `online-resource-without-canonical-doc_key` is a specific diagnostic class (see TDD test list below).
 
 Reporting-only (never produces source records):
 - `data/document-index/registry.yaml`
@@ -124,7 +125,6 @@ Reporting-only (never produces source records):
 Excluded from MVP (explicitly):
 - `/mnt/ace/**` — detector does NOT scan the mount directly.
 - `docs/reports/**` — never treated as source inventory; this prevents `_summary.md` self-ingestion feedback loops.
-- `data/design-codes/code-registry.yaml` — does not exist at plan time; if a future wave promotes it to required input, a follow-up issue adds it explicitly.
 
 ---
 
@@ -184,11 +184,13 @@ def detect_wiki_gaps(args):
 | Create | `scripts/knowledge/detect_wiki_gaps.py` | main implementation |
 | Create | `scripts/knowledge/tests/test_detect_wiki_gaps.py` | TDD test suite (uses fixtures) |
 | Create | `scripts/knowledge/tests/fixtures/wiki-gaps/` | minimal synthetic inventory + wiki tree for unit tests |
-| Create | `docs/reports/wiki-coverage-gaps/` (directory placeholder via `.gitkeep` if needed) | output sink |
+| Create | `config/knowledge/detect-wiki-gaps.yaml` | detector config (domain map, slug rules, suggested-page template, truncation defaults). Concrete file — not a stub. Loaded via `--config`; default points here. |
+| Create | `docs/reports/wiki-coverage-gaps/` (directory placeholder via `.gitkeep`) | output sink |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add weekly task entry |
+| Modify | `.gitignore` | conditionally ignore large per-domain YAMLs; `_summary.md` remains tracked |
 | Update | `docs/plans/README.md` | add plan row |
 
-Gap reports themselves (`<domain>.yaml`) are NOT committed in the implementation PR — they are produced by the first scheduled run and gitignored if volume is unreasonable. A follow-up decision is tracked as open-question below.
+**`_summary.md` tracking decision (resolved v2)**: `_summary.md` IS git-tracked (it's a baseline-evidence artifact — committed on first scheduled run and updated by each subsequent run). Per-domain `<domain>.yaml` files default to gitignored (via `docs/reports/wiki-coverage-gaps/*.yaml` pattern), with an explicit allowlist for small domains (`engineering`, `naval-architecture`, `maritime-law`) whose gap reports are small enough to review in PRs. The overwrite tension in v1 is resolved by making `_summary.md` a single file the scheduler rewrites atomically on each run — no merge conflict risk because the scheduler is single-writer. The `.gitignore` modification row above captures this.
 
 ---
 
@@ -208,6 +210,12 @@ Gap reports themselves (`<domain>.yaml`) are NOT committed in the implementation
 | `test_domain_slug_kebab_case` | domain normalization | fixture with `Marine Engineering` | output file is `marine-engineering.yaml` |
 | `test_summary_md_counts_sum_to_input_size` | classification is total | fixture with N source records | sum of status counts == N |
 | `test_docs_reports_never_read_as_input` | guard against feedback loop | fixture places a `_summary.md` from a prior run | not ingested; not counted |
+| `test_domain_unresolved_emits_explicitly` | source with valid sha256 but no resolvable domain | fixture with canonical doc_key, wiki domain absent | `status: domain-unresolved`, summary count incremented |
+| `test_md5_legacy_read_only_pathway` | md5-only source never upgraded to coverage | fixture with `md5:abc...` | `status: identity-unresolved`, never `covered`, never `gap` |
+| `test_dedup_precedence_index_beats_ledger` | dedup precedence order | fixture: same doc_key in both index.jsonl and ledger with different metadata | winner comes from index.jsonl |
+| `test_online_resource_without_canonical_doc_key` | online-resource-registry entry lacking `doc_key` | fixture with URL-only entry | `status: identity-unresolved`, `input_source: online-resource-registry`; not emitted as `gap` |
+| `test_code_registry_identity_unresolved` | `code-registry.yaml` entries produce identity-unresolved records | fixture `code-registry.yaml` with DNV-ST-F101 | `status: identity-unresolved`, `input_source: code-registry`, `discipline: standards` |
+| `test_validate_schedule_passes_after_task_add` | scheduled task integrates cleanly | run `scripts/cron/validate-schedule.py` after modifying schedule-tasks.yaml | exit 0 |
 
 All tests run via `uv run pytest scripts/knowledge/tests/test_detect_wiki_gaps.py -v`.
 
@@ -222,7 +230,8 @@ All tests run via `uv run pytest scripts/knowledge/tests/test_detect_wiki_gaps.p
 - [ ] First non-dry-run against current corpus completes in under 5 minutes (measured and recorded in `_summary.md`)
 - [ ] Per-domain gap YAML has one file per domain with `status: gap` records; every record has `doc_key`, `source_path`, `availability_tier`, `discipline`, `suggested_page`
 - [ ] `_summary.md` counts: `gap`, `covered`, `identity-unresolved`, `domain-unresolved`, `domain-mismatch`, `coverage-conflict`, `wiki-schema-warning`, `legacy-slug-coverage`, `skipped_inputs`
-- [ ] `config/scheduled-tasks/schedule-tasks.yaml` contains a weekly task `wiki-coverage-gaps-weekly` that invokes the detector; `scripts/cron/validate-schedule.py` still passes
+- [ ] `config/scheduled-tasks/schedule-tasks.yaml` contains a weekly task `wiki-coverage-gaps-weekly` that invokes the detector
+- [ ] `uv run python scripts/cron/validate-schedule.py` exits 0 after the schedule-tasks.yaml edit (attested by test `test_validate_schedule_passes_after_task_add`; verified interactively before commit)
 - [ ] `docs/reports/wiki-coverage-gaps/_summary.md` is committed from the first run as baseline evidence
 - [ ] Review artifacts posted to `scripts/review/results/`
 
@@ -247,8 +256,8 @@ Revisions made based on review: none yet.
 - **Risk:** If most wiki pages lack canonical `doc_key` (confirmed by spot-check: `anode.md` uses slug-style `sources:`), the first run will show artificially high gap counts. Mitigation: `_summary.md` separately tallies `legacy-slug-coverage` so the backlog is visible and not conflated with a real coverage gap; the `gap` number is interpreted against that denominator.
 - **Risk:** Committing every `<domain>.yaml` could balloon the repo if marine-engineering has 19K uncovered sources. Mitigation: emit top-N per domain by default (configurable; default 500), record the truncation explicitly in `_summary.md`, and defer full-volume publishing to a separate follow-up.
 - **Risk:** `/mnt/ace/**` direct scanning is explicitly excluded — if the index.jsonl is stale, gap counts lag. Mitigation: `_summary.md` records `index.jsonl` mtime so freshness is visible.
-- **Risk:** `data/design-codes/code-registry.yaml` does not exist; the issue body mentions it. Mitigation: treat as out-of-scope for MVP; a follow-up issue adds it once the registry is created.
-- **Open:** Should `<domain>.yaml` files be git-tracked or gitignored? Flag for user during approval.
+- **Resolved (v2):** `data/design-codes/code-registry.yaml` DOES exist (3,512 bytes, 2026-02-24). Promoted to supplemental MVP input; records produce `identity-unresolved` status tagged `input_source: code-registry`.
+- **Resolved (v2):** `_summary.md` is git-tracked (single-writer scheduler, atomic rewrite); per-domain `<domain>.yaml` default-ignored via `.gitignore` modification; small domains allowlisted for PR review.
 - **Open:** Should truncation default to top-500 per domain? Flag for user during approval.
 - **Open:** Should the detector emit `wiki_refs` back-links as a side-effect (merging with #2363)? MVP: NO — detector is read-only. Flag for user.
 
