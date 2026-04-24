@@ -1,6 +1,6 @@
 # Plan for #2368: feat(knowledge): generate faceted portal pages for large LLM-wiki domains
 
-> **Status:** draft
+> **Status:** draft (v2 — addresses r1 findings)
 > **Complexity:** T2
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2368
@@ -42,8 +42,10 @@ Not applicable — `cat:documentation` issue; no engineering standards are exerc
 **Issue statuses** (verified 2026-04-23 via `gh issue view`):
 - `#2368` — OPEN — "feat(knowledge): generate faceted portal pages for large LLM-wiki domains"
 - `#2096` — CLOSED — "feat(knowledge): intelligence accessibility map for llm-wikis and document/resource intelligence"
-- `#2205` — OPEN — parent operating-model
+- `#2205` — **CLOSED** — parent operating-model (re-verified 2026-04-23 via `gh issue view 2205 --json state` → `CLOSED`). Supersedes earlier v1 assertion of OPEN.
 - `#2366` — referenced in issue body; treated as downstream consumer, not blocker
+
+**Helper export verification** (2026-04-23): `scripts/knowledge/llm_wiki.py` exposes `REPO_ROOT` (line 26), `WIKIS_DIR` (line 27), and `parse_frontmatter` (line 82) as module-level constants/functions — safe to import into `generate_wiki_portal.py` as `from llm_wiki import parse_frontmatter, WIKIS_DIR, REPO_ROOT`. Verified by `grep -n "^def \|^REPO_ROOT\|^WIKIS_DIR" scripts/knowledge/llm_wiki.py`.
 
 **File existence** (`ls -la` 2026-04-23):
 - EXISTS: `knowledge/wikis/marine-engineering/wiki/index.md` (21,611 lines)
@@ -95,30 +97,42 @@ A `scripts/knowledge/generate_wiki_portal.py` generator that, when invoked for a
 ## Pseudocode
 
 ```
-function generate_wiki_portal(domain, out_path="wiki/portal.md", threshold=500):
+function generate_wiki_portal(domain, out_path="wiki/portal.md",
+                              page_threshold=500, index_line_threshold=2000):
     wiki_root = REPO_ROOT / "knowledge" / "wikis" / domain / "wiki"
     pages = enumerate all *.md under wiki_root, excluding index.md and portal.md itself
-    if len(pages) < threshold and not --force:
+
+    # Threshold: EITHER page count OR index-line count crosses the bar.
+    # (Disambiguated per r1 — v1 was ambiguous on which signal gated "large".)
+    index_lines = count_lines(wiki_root / "index.md")
+    if len(pages) < page_threshold and index_lines < index_line_threshold and not --force:
         print "domain too small; skipping"; exit 0
 
-    parsed = [parse_frontmatter(p) for p in pages]   # reuses llm_wiki.py helpers
+    parsed = [parse_frontmatter(p) for p in pages]   # imports from llm_wiki (verified export)
 
     facets = {
-        "by_page_type": group_by_parent_dir(parsed),      # entities / concepts / sources / comparisons / visualizations
+        "by_page_type": group_by_parent_dir(parsed),      # entities / concepts / sources / comparisons / visualizations / standards / workflows
         "by_tag": group_by_frontmatter_tag(parsed),       # top-N tags only, configurable
         "by_standard": filter_where_source_matches_standard_regex(parsed),
-                                                          # e.g. ^(api|dnv|iso|astm|nace)-
+                                                          # Broadened regex per r1: ^(api|dnv|iso|astm|nace|abs|bv|lr|imo|ocimf)-
+                                                          # (case-insensitive; covers classification societies + OCIMF + IMO)
         "top_entries": rank_by_inbound_link_count(parsed, wiki_root),
                                                           # count [[page]] wiki-links pointing at each page
     }
 
-    rendered = render_portal_markdown(domain, facets, generated_at=utcnow())
-    write_atomic(wiki_root / out_path, rendered)          # temp + rename
+    body = render_portal_markdown(domain, facets)         # NO timestamp in body
+    content_hash = sha256(body)                           # deterministic fingerprint
+    header = render_yaml_frontmatter(domain=domain,
+                                     content_hash=content_hash,
+                                     page_count=len(pages))
+    write_atomic(wiki_root / out_path, header + body)     # temp + rename
 
     return counts_per_facet                                # used by tests
 ```
 
-Idempotency contract: re-running the generator against the same inputs must yield byte-identical output except for a single `last_generated` line in the YAML frontmatter. This is enforced via a test that runs the generator twice and diffs everything except that one line.
+Idempotency contract (revised per r1): re-running the generator against the same inputs produces BYTE-IDENTICAL output. The frontmatter carries a `content_hash` (sha256 of the rendered body) instead of a `last_generated` timestamp, so second-run determinism is strict equality, not diff-minus-one-line. A test runs the generator twice and asserts `diff` is empty.
+
+**Performance budget**: generation on the marine-engineering wiki (~19,200 pages) must complete in under 60 seconds on a 4-core CI runner. A scaled fixture test (`test_scaled_performance_budget`) generates against a synthesized 5,000-page fixture and asserts wall-clock < 20s, giving a 3x safety margin before the full-domain run.
 
 ---
 
@@ -142,7 +156,8 @@ Idempotency contract: re-running the generator against the same inputs must yiel
 |---|---|---|---|
 | `test_generates_portal_for_marine_domain` | happy path produces portal.md with expected top-level section headers | `domain=marine-engineering` | `wiki/portal.md` exists; contains `## By page type`, `## By tag`, `## By standard`, `## Top entries` |
 | `test_skips_small_domain_without_force` | small domain (engineering, 77-121 pages) is not portalized unless `--force` | `domain=engineering` | stdout says "skipping"; no file written |
-| `test_idempotent_regeneration` | second run differs only in `last_generated` YAML field | run twice | diff excluding `last_generated:` is empty |
+| `test_idempotent_regeneration` | second run is byte-identical (via content_hash, no timestamp) | run twice | `diff` exits 0 |
+| `test_scaled_performance_budget` | generation on 5,000-page synthetic fixture completes under 20s wall-clock | fixture + wall-clock timer | assert elapsed < 20s |
 | `test_ignores_portal_self` | generator does not treat portal.md as an input page | portal.md present | no self-entry in any facet |
 | `test_top_entries_ranked_by_inbound_links` | inbound-link ranking is correct on a fixture | fixture with known `[[page]]` graph | ordered list matches expected |
 | `test_frontmatter_tag_facet_respects_top_n` | `--top-tags N` limits tag facet size | fixture with 20 tags | at most N tag groups emitted |
@@ -163,7 +178,8 @@ All tests run via `uv run pytest scripts/knowledge/tests/test_generate_wiki_port
 - [ ] `docs/document-intelligence/README.md` shows a portal link for marine-engineering
 - [ ] `docs/document-intelligence/llm-wiki-portal-design.md` contains the **extend-vs-create** rule, default threshold, and regeneration contract
 - [ ] Generated portal does NOT replace `wiki/index.md` — `index.md` remains the canonical contents table
-- [ ] Idempotency test passes (same inputs → same output modulo `last_generated`)
+- [ ] Idempotency test passes (same inputs → byte-identical output via `content_hash`, no timestamp in file)
+- [ ] Scaled-fixture performance test passes (5k-page synthetic → under 20s wall-clock)
 - [ ] Review artifacts posted to `scripts/review/results/`
 
 ---
@@ -187,7 +203,7 @@ All tests run via `uv run pytest scripts/knowledge/tests/test_generate_wiki_port
 - **Risk:** Threshold choice (proposed 500 pages) is a design knob. If set wrong, small domains get unnecessary portals or marine-engineering is the only beneficiary forever. Mitigation: threshold is CLI-configurable; design doc documents the 500-page default and rationale.
 - **Risk:** Committing the generated portal creates a regenerate-drift risk. Mitigation: post-closeout CI check (out of scope for this issue — tracked as follow-up) to ensure committed portal matches re-generated output at HEAD.
 - **Open:** Should the portal be auto-regenerated nightly via `config/scheduled-tasks/schedule-tasks.yaml`? Deferred: initial issue is analysis-producing; cadence decision left to a follow-up after the first portal lands.
-- **Open:** Should the design doc formally define "large domain" (proposal: page_count ≥ 500 OR wiki/index.md line count ≥ 2000)? Flag for user during approval.
+- **Resolved (v2):** "large domain" = (page_count ≥ 500) OR (wiki/index.md line count ≥ 2000). Both signals are consulted; either crossing the bar triggers portal generation. Design doc will document both thresholds and the OR semantics.
 
 ---
 
