@@ -1,0 +1,52 @@
+---
+name: plan-review-artifact-authority-and-approval-drift
+description: Keep iterative plan-review artifacts truthful when external reruns overtake self-reviews or stale approval signals remain on older revisions.
+version: 1.0.0
+category: workspace-hub-learned
+tags: [planning, review, governance, drift, github]
+---
+
+# Plan Review Artifact Authority and Approval Drift
+
+Use when a local plan has gone through multiple adversarial review waves and any of these are true:
+- a self-review artifact exists and later external Claude/Codex/Gemini reruns also exist
+- the issue still carries `status:plan-approved` or `.planning/plan-approved/<issue>.md` from an older revision
+- `docs/plans/README.md` status lags the current effective review state
+
+## Rules
+
+1. Latest external reruns are authoritative for the current draft.
+   - Update the plan header `Review artifacts` line to point at the newest external rerun artifacts.
+   - Update the Artifact Map to list those newest external rerun artifacts.
+   - If you keep a self-review artifact, label it explicitly as historical or non-authoritative relative to the external rerun.
+
+2. Describe approval drift precisely.
+   - If `status:plan-approved` and/or `.planning/plan-approved/<issue>.md` still exist but fresh external reruns returned `MAJOR`, do not say "no approval exists".
+   - Say the approval signals exist but apply to an older revision, and therefore do not approve the current draft revision.
+
+3. Keep the review summary synchronized.
+   - In `## Adversarial Review Summary`, record the latest completed external rerun verdicts.
+   - Summarize exactly what changed in the newest patch wave.
+   - State clearly whether the current draft is still blocked from GitHub posting.
+
+4. Do not hand-wave README drift.
+   - If `docs/plans/README.md` is accurate, treat it as verification-only state.
+   - If it is stale relative to fresh review evidence, make the plan require explicit state-sync rather than merely saying "verify the row remains correct".
+
+## Useful patch targets inside the plan
+
+- Header status line
+- Header review-artifacts line
+- `### Documents consulted`
+- `### Evidence (embedded verification)`
+- `## Artifact Map`
+- `## Pseudocode`
+- `## TDD Test List`
+- `## Acceptance Criteria`
+- `## Adversarial Review Summary`
+
+## Example wording
+
+- "Live GitHub `status:plan-approved` and local `.planning/plan-approved/2460.md` reflect older approval-state drift, not approval of this current draft revision."
+- "Historical Claude self-review (non-authoritative compared with external reruns)."
+- "Verify/update `docs/plans/README.md` without re-adding the row; if stale approval drift is present, explicitly sync the row to the effective non-approved state."
