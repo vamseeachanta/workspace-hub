@@ -1,11 +1,14 @@
 ---
 title: "DNV-OS-E301 — Position Mooring"
+code_id: DNV-OS-E301
+publisher: DNV
+revision: 2021-07
 tags: [standard, dnv, mooring, position-mooring, infragravity, nearshore, fsru]
 sources:
   - mooring-failures-seed
   - skills-metadata
 added: 2026-04-09
-last_updated: 2026-04-09
+last_updated: 2026-04-24
 ---
 
 # DNV-OS-E301 — Position Mooring
