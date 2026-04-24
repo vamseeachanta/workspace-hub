@@ -172,13 +172,25 @@ tests:
 
 ---
 
-## Risks and Open Questions
+## Decisions (locked 2026-04-24 by user)
 
-- **Risk:** pilot module selection may require digitalmodel subject-matter input. Open question: mooring load-factor vs fatigue-stress-range calc — reviewer to pick.
+The 3 open questions from v1 are resolved. Implementation proceeds against these answers without requiring re-approval (plan scope unchanged; gray areas closed).
+
+| # | Question | Decision | Rationale |
+|---|---|---|---|
+| D1 | Pilot module: mooring load-factor vs fatigue-stress-range? | **mooring load-factor** | Clean standards-dependency trail (API RP 2SK, DNV-OS-E301, ISO 19901-7 — all required, not discretionary). Single-coefficient output is easier to prove the citation pattern with than fatigue arrays. Mooring is the most wiki-covered domain (40 entries at `knowledge/seeds/`), lower risk of missing-wiki-page blockers. |
+| D2 | Validation: fail-closed at calc time vs warn-at-report-render? | **fail-closed at calc time** | Professional-practice outputs should not silently ship without provenance. Consistency with `knowledge/_archive/` ingest-exclusion (landed via #2482) and future #2485 ledger pattern. Missing citation is a correctness signal. |
+| D3 | wiki_path resolution: direct file read vs MCP wiki_search (#2400)? | **direct file read, with migration-to-MCP note** | #2400 not yet shipped; coupling to unreleased infra adds a blocking dependency. Direct read is simpler, faster, and sufficient for the pilot's correctness goal (verify page exists, verify frontmatter matches `code_id`). Resolver is isolated inside a validator function — swap later without schema change. |
+
+**D2 operational note:** `CitationResolutionError` must include the citation's `code_id` in its message so operators can retarget the citation (not disable it) when a wiki page moves or is archived.
+
+**D3 migration note:** once #2400 lands, the validator function's internal resolver can switch from `pathlib.Path(wiki_path).exists()` to MCP `wiki_search` without touching the citation schema or the calc pipeline. Separate follow-up issue at that point.
+
+## Residual risks (scope-bounded; no open decisions)
+
 - **Risk:** cited wiki pages may lack frontmatter populated by #2471 when this ships. Mitigation: depend on #2471 landing first, or populate frontmatter for the specific pages the pilot needs.
-- **Risk:** citation emission in calc output may break downstream consumers expecting plain numeric result. Mitigation: put citations in a sidecar block, not in the primary result payload.
-- **Open:** should wiki_path validation happen at calc time (fail-closed) or report-render time (warn)? Current proposal fails-closed; confirm during approval.
-- **Open:** coupling to #2400 MCP — use MCP `wiki_search` for resolution, or direct file read? Direct file read is simpler; MCP adds value for fuzzy lookup.
+- **Risk:** citation emission in calc output may break downstream consumers expecting plain numeric result. Mitigation: put citations in a sidecar block, not in the primary result payload (already in §Pseudocode).
+- **Risk (D2-specific):** wiki page rename/move breaks calcs downstream. Mitigation: `CitationResolutionError` message carries `code_id` so operators retarget, not disable.
 
 ---
 
