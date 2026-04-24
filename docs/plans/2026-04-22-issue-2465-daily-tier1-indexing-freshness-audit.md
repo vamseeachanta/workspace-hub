@@ -1,6 +1,6 @@
 # Plan for #2465: daily tier-1 indexing freshness audit and scorecard refresh
 
-> **Status:** draft
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-04-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2465
@@ -268,7 +268,7 @@ Each test deterministic, offline, and runnable under 2 seconds on a cold cache.
 
 ## Adversarial Review Summary
 
-Two waves have run (r1, r2); the binding state is r2 plus post-r2 patches. r2 is a single-author Claude review under the documented permission-gate fallback (`feedback_permission_gate_blocks_cross_review.md` in memory) because `scripts/review/plan-review-fanout.sh` cannot dispatch in this session. Codex and Gemini have NOT been dispatched; a future dispatch-capable session must redispatch both before `status:plan-approved`.
+Two waves have run (r1, r2); the binding technical review state is r2 plus post-r2 patches. r2 is a single-author Claude review under the documented permission-gate fallback (`feedback_permission_gate_blocks_cross_review.md` in memory) because `scripts/review/plan-review-fanout.sh` could not dispatch in the drafting session. Codex and Gemini artifacts are explicit `UNAVAILABLE` placeholders, not substantive approvals. Live governance state was later advanced by user approval: GitHub currently carries `status:plan-approved`, and local marker `.planning/plan-approved/2465.md` records `Approved by: user` with approval source `current Hermes chat instruction`. This approval-state sync records that the reduced-provider review risk is knowingly accepted by the user-approved state; implementation must still preserve the known review-derived constraints below.
 
 ### r1 wave (single-author Claude, historical)
 
@@ -301,7 +301,7 @@ Two waves have run (r1, r2); the binding state is r2 plus post-r2 patches. r2 is
 - **r1 MINOR (routine management):** added appendix requirement to contract doc; cited `project_daily_readiness_cron.md` ecosystem pattern.
 - **r1 NIT (dated snapshots policy):** acceptance criterion now requires the contract doc to pick one policy (commit vs. gitignore).
 
-**Current draft state:** PLAN-REVIEW READY — all r1 + r2 findings (MAJOR and MINOR) have been patched. A future cross-review session should redispatch Codex and Gemini before `status:plan-approved`. Progression to `status:plan-review` is supported by r2+patches.
+**Current governance state:** PLAN APPROVED — live GitHub label `status:plan-approved` and local marker `.planning/plan-approved/2465.md` are authoritative approval signals. Review caveat: Codex and Gemini were unavailable in the drafting session and remain placeholder artifacts, so execution should treat the r2 Claude/post-r2 constraints as binding and should not weaken the dual-writer cut-over, schedule-task, retrieval-contract-union, or three-level-exit requirements.
 
 ---
 
