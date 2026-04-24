@@ -1,6 +1,6 @@
 # Plan for #2363: feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages
 
-> **Status:** draft
+> **Status:** draft (v2 — addresses r1 findings)
 > **Complexity:** T2
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2363
@@ -46,7 +46,7 @@ Not applicable — this is a doc-intel data-pipeline concern, not an engineering
 
 **Issue statuses** (verified 2026-04-23):
 - `#2363` — OPEN — "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages"
-- `#2205` — OPEN — parent operating model
+- `#2205` — **CLOSED** — parent operating model (re-verified 2026-04-23 via `gh issue view 2205 --json state` → `CLOSED`). Supersedes earlier v1 assertion of OPEN.
 - `#2360` — OPEN — doc_key in wiki required-set
 - `#2362` — OPEN — back-population of doc_key on ledger
 - `#2389` — OPEN — source_doc_key threading
@@ -104,6 +104,68 @@ A reverse-lookup path from `doc_key` → citing wiki pages, composed of (a) an e
 - **Out of scope:** creating missing `doc_key` entries on wiki pages (that is #2360's job).
 - **Out of scope:** automatic wiki-page generation from `wiki_refs`.
 
+### Acceptance-vs-scope reconciliation (v2)
+
+v1's acceptance criterion "At least one L2 surface stores `wiki_refs`" is narrower than the scope bullet "two L2 surfaces". Reconciled in v2: **implementation will target both surfaces (standards-transfer-ledger.yaml AND registry.yaml) in the tooling PR; acceptance criterion is tightened to "both L2 surfaces" to match scope.** The "at least one" phrasing was a safety-margin hedge that is no longer needed — the forward emitter naturally touches both.
+
+---
+
+## Design Decisions (v2, added per r1)
+
+### Side-cache design
+
+The emitter's `read_cached_keys_for_page()` / `update_cached_keys_for_page()` helpers require a durable side-cache so that `old_keys − new_keys` diff is accurate across runs.
+
+- **Path**: `data/document-index/wiki-refs-cache.jsonl` (git-tracked; one JSON line per wiki page).
+- **Schema** (one record per line):
+  ```json
+  {"page_path": "knowledge/wikis/<domain>/wiki/<sub>/<slug>.md",
+   "doc_keys": ["sha256:abc...", "sha256:def..."],
+   "page_content_hash": "sha256:<hex>",
+   "last_seen": "2026-04-23T12:34:56Z"}
+  ```
+- **Missing-cache semantics**: if `wiki-refs-cache.jsonl` is absent or a given page is not present in it, the emitter treats `old_keys = set()`. The `action="add"` path then adds every canonical `doc_key` found on the page. This matches backfill semantics (first-run-is-full-add) and means the cache is always repopulable from scratch by running the backfill tool once with `--limit None`.
+- **Write semantics**: the cache is rewritten atomically (temp + rename) after each emitter invocation. Corruption recovery: delete the cache, run backfill with no limit.
+
+### Locking mechanism
+
+- **Library**: `portalocker` (PyPI — cross-platform advisory file locking, used elsewhere in the Python ecosystem for exactly this pattern). Pinned via `pyproject.toml` dependency row.
+- **Semantics**: emitter acquires an exclusive lock on `<registry_path>.lock` (sibling sentinel file) before reading, mutating, and atomically writing the registry. Lock released in `finally`. Backfill uses the same lock so concurrent emitter + backfill are serialized.
+- **Why portalocker and not `fcntl`**: portalocker works on Windows too, which is relevant for dev workflows on #2205-parent machines.
+
+### Cross-registry atomicity strategy
+
+The emitter writes to TWO L2 surfaces per emit call. Strict two-phase commit is overkill for YAML files; instead:
+
+1. Lock surface A, mutate, atomic-write, release.
+2. Lock surface B, mutate, atomic-write, release.
+3. If step 2 fails after step 1 succeeds, surface A is now ahead of surface B. Recovery: emit a reconciliation warning to stderr with the page path and the doc_key(s) that made it only to surface A. Operator re-runs the emitter or the bounded backfill to re-align. This is acceptable because `wiki_refs` is a materialized derivative — the source of truth is the wiki frontmatter, so any drift is self-healing on the next emit for the same page.
+4. Reconciliation is attestable: `backfill_wiki_refs.py --reconcile` re-reads all wiki pages and flags any `wiki_refs` entry in either registry that does not correspond to a live citation. Reported; not auto-deleted (human in the loop for deletions).
+
+### YAML round-trip preservation
+
+- **Library**: `ruamel.yaml` (not `PyYAML`). Reason: ruamel preserves comments, key ordering, and flow style across load→mutate→dump, which is required for registries that humans author and review via git diff.
+- **Mode**: `YAML(typ="rt")` (round-trip) with `indent(mapping=2, sequence=4, offset=2)` to match existing file conventions. Smoke-tested: load `standards-transfer-ledger.yaml`, dump unchanged → git diff must be empty.
+- Pinned via `pyproject.toml`.
+
+### Exit codes (Unix convention, revised v2)
+
+Per Unix convention (0=success; 1=generic failure; 2=usage/format error; conventions vary for "expected negative result"):
+
+| Code | Meaning |
+|---|---|
+| 0 | Success AND at least one hit (for lookup), or no gaps (for --reconcile) |
+| 1 | Gaps found during --reconcile (exit non-zero so CI can gate), OR runtime error |
+| 2 | Malformed `doc_key` argument, missing required input, or usage error |
+
+Note: v1 proposed `3 = no hits`. This is non-standard and breaks CI gating. v2 reverts to: lookup with zero hits returns exit 0 (no hits is not a FAILURE of the tool, it is a valid answer). If callers want to gate on hits, they pipe through `grep .` or check stdout length. This matches `grep`, which exits 0 on match, 1 on no-match, and 2 on error — but here "no hits" is a legitimate answer, not a tool failure, so we diverge deliberately.
+
+### `--batch` mode for bulk ingestion
+
+- **Flag**: `emit_wiki_refs()` CLI wrapper gains `--batch <file>` where `<file>` is a newline-delimited list of `<action>\t<page_path>` rows.
+- **Semantics**: batch reads all rows first; groups mutations by registry; acquires each registry lock once; applies all grouped mutations; releases. This bounds lock contention to one acquire-release cycle per registry per batch, making nightly bulk re-ingest viable without lock storms.
+- **Fallback**: if `--batch` fails mid-batch, the rows that succeeded are durable (atomic write); the rows that failed are printed to stderr so the operator can retry or inspect.
+
 ---
 
 ## Pseudocode
@@ -156,7 +218,7 @@ def lookup(doc_key):
     return sorted(set(hits))
 ```
 
-Exit codes: 0 if ≥1 hit, 3 if no hits, 2 if doc_key malformed.
+Exit codes (Unix convention — see Design Decisions above): 0 on success (including "no hits"); 1 on runtime error or gaps-found during `--reconcile`; 2 on malformed `doc_key` / usage error.
 
 ### Bounded backfill
 
@@ -173,9 +235,11 @@ def backfill(domains=None, limit=None):
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `scripts/knowledge/llm_wiki.py` | add `emit_wiki_refs()` helper + invoke from ingest/update/delete paths |
-| Create | `scripts/knowledge/wiki_refs_reverse_lookup.py` | query CLI |
-| Create | `scripts/knowledge/backfill_wiki_refs.py` | bounded backfill tool |
+| Modify | `scripts/knowledge/llm_wiki.py` | add `emit_wiki_refs()` helper + invoke from ingest/update/delete paths; import `portalocker` + `ruamel.yaml` |
+| Create | `scripts/knowledge/wiki_refs_reverse_lookup.py` | query CLI (exit codes per Design Decisions) |
+| Create | `scripts/knowledge/backfill_wiki_refs.py` | bounded backfill tool; supports `--batch <file>` and `--reconcile` |
+| Create | `data/document-index/wiki-refs-cache.jsonl` | side-cache; initial file empty or first-run-populated; git-tracked |
+| Modify | `pyproject.toml` | pin `portalocker` (advisory file locking) and `ruamel.yaml` (YAML round-trip) |
 | Modify | `scripts/knowledge/tests/test_llm_wiki.py` | tests for emitter add/update/delete semantics |
 | Create | `scripts/knowledge/tests/test_wiki_refs_reverse_lookup.py` | tests for CLI and backfill |
 | Create | `scripts/knowledge/tests/fixtures/wiki-refs/` | synthetic registry + wiki pages |
@@ -199,8 +263,13 @@ Registry mutations in `data/document-index/*.yaml` are produced by the backfill 
 | `test_emit_ignores_slug_style_sources` | legacy `sources: [dnv-rp-b401]` is not materialized | fixture | no registry mutation |
 | `test_emit_ignores_non_canonical_doc_key` | bare hex or `md5:` citation ignored | fixture | no registry mutation; warning logged |
 | `test_reverse_lookup_returns_all_citing_pages` | CLI returns sorted, deduped list | fixture with 3 pages citing same `doc_key` | 3 paths, sorted |
-| `test_reverse_lookup_no_hits_exits_3` | unknown `doc_key` returns exit 3 | `sha256:0000...` | exit 3, empty stdout |
+| `test_reverse_lookup_no_hits_exits_0` | unknown `doc_key` returns exit 0 (no-hits is a valid answer) | `sha256:0000...` | exit 0, empty stdout |
 | `test_reverse_lookup_malformed_key_exits_2` | `xyz123` malformed input | — | exit 2, error on stderr |
+| `test_reconcile_exits_1_on_gaps` | `--reconcile` detects stale `wiki_refs` rows | fixture with registry pointing at deleted page | exit 1; warning printed |
+| `test_batch_mode_groups_locks` | `--batch` acquires each registry lock once | fixture with 10 mixed-action rows | single lock acquire per registry verified via fake-lock instrumentation |
+| `test_portalocker_serializes_concurrent_writers` | two emitter processes against same registry | fork twice; assert both complete without corruption | registry YAML round-trips cleanly afterwards |
+| `test_ruamel_roundtrip_preserves_comments` | load→dump of registry preserves comments + key order | fixture registry with comments | `diff` between load→dump output and original is empty |
+| `test_missing_side_cache_triggers_full_add` | cache absent; emitter treats old_keys=∅ | delete cache fixture | every canonical doc_key on page becomes an added ref |
 | `test_backfill_dry_run_writes_nothing` | `--dry-run` prints summary, no file changes | fixture | registry unchanged |
 | `test_backfill_bounded_by_limit` | `--limit 5` stops after 5 pages | fixture with 20 pages | exactly 5 processed |
 | `test_backfill_report_has_counts` | report written with `added_refs`, `pages_visited` | fixture | `docs/reports/wiki-refs-backfill-*.md` present |
@@ -215,7 +284,9 @@ All tests run via `uv run pytest scripts/knowledge/tests/ -v`.
 - [ ] Given a canonical `sha256:` `doc_key`, `uv run scripts/knowledge/wiki_refs_reverse_lookup.py <doc_key>` returns all citing wiki pages (one per line, sorted) without any grep
 - [ ] Back-links stay correct when a wiki page changes cited sources (add/update/delete) — covered by tests
 - [ ] Pre-existing wiki pages have a bounded backfill path via `scripts/knowledge/backfill_wiki_refs.py --domains <name> --limit <N>`; default invocation is bounded, not unbounded
-- [ ] At least one L2 surface (`standards-transfer-ledger.yaml` OR `registry.yaml`) stores `wiki_refs` as a durable sorted list of repo-relative page paths
+- [ ] BOTH L2 surfaces (`standards-transfer-ledger.yaml` AND `registry.yaml`) store `wiki_refs` as a durable sorted list of repo-relative page paths (tightened in v2 to match scope)
+- [ ] `portalocker` and `ruamel.yaml` are pinned in `pyproject.toml`; `uv run python -c "import portalocker, ruamel.yaml"` succeeds
+- [ ] Side-cache at `data/document-index/wiki-refs-cache.jsonl` is created/updated by the emitter and is repopulable from scratch via `--reconcile`
 - [ ] `docs/document-intelligence/wiki-refs-reverse-lookup.md` documents the L3→L2 back-link rule and the slug-style-out-of-scope carve-out
 - [ ] All tests pass: `uv run pytest scripts/knowledge/tests/test_wiki_refs_reverse_lookup.py -v`
 - [ ] No regression: `uv run pytest scripts/knowledge/tests/ -v` passes
