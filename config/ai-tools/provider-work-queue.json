@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-23T21:20:08.434427Z",
+  "generated_at": "2026-04-24T01:20:16.499005Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-23T21:20:06.613676Z",
+  "scorecard_generated_at": "2026-04-24T01:20:12.453083Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 14,
-      "total_candidates": 168,
+      "execution_ready_count": 13,
+      "total_candidates": 167,
       "top_issues": [
         {
           "number": 2348,
@@ -85,6 +85,31 @@
           ]
         },
         {
+          "number": 2438,
+          "title": "fix(aceengineer-website): resolve canonical brand identity + ship real logo asset",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2438",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:skills",
+            "domain:frontend-design",
+            "status:plan-approved",
+            "claude:design"
+          ],
+          "updatedAt": "2026-04-24T01:18:22Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2461,
           "title": "chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2461",
@@ -99,54 +124,6 @@
           "updatedAt": "2026-04-23T08:22:38Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2320,
-          "title": "chore(skills): mine session logs for dead-skill candidates \u2014 usage-signal input to #2280 weekly audit",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2320",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:skills",
-            "domain:skills",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T03:43:17Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2322,
-          "title": "chore(rules): promote binary-checkable .claude/rules/*.md prose to Level 2 scripts per enforcement gradient",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2322",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:agent-discipline",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T03:45:01Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -204,14 +181,38 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2424,
+          "title": "chore(ci-health): cross-repo CI audit \u2014 6 of 7 ecosystem repos have red main CI",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2424",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:infrastructure",
+            "maintenance",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-22T03:06:47Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 6,
-      "total_candidates": 30,
+      "execution_ready_count": 7,
+      "total_candidates": 31,
       "top_issues": [
         {
           "number": 2455,
@@ -225,7 +226,7 @@
             "machine:dev-primary",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T20:29:56Z",
+          "updatedAt": "2026-04-23T21:41:52Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -249,7 +250,7 @@
             "machine:dev-primary",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T20:30:43Z",
+          "updatedAt": "2026-04-23T21:41:53Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -286,6 +287,27 @@
           ]
         },
         {
+          "number": 2452,
+          "title": "follow-up(ci): worldenergydata lint job still fails after #2433 collection fix \u2014 flake8 debt in src/worldenergydata/**",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2452",
+          "labels": [
+            "priority:medium",
+            "cat:infrastructure",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T23:23:18Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 2457,
           "title": "feat(canonical-spec): promote L03 ship benchmark to explicit OrcaWave roundtrip proof case",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2457",
@@ -297,7 +319,7 @@
             "machine:dev-primary",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T20:31:27Z",
+          "updatedAt": "2026-04-23T21:41:54Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -358,36 +380,16 @@
           ]
         },
         {
-          "number": 2199,
-          "title": "feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2199",
+          "number": 2195,
+          "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:operations",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-11T10:30:07Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2200,
-          "title": "test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2200",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T10:30:28Z",
+          "updatedAt": "2026-04-11T09:53:14Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
