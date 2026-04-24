@@ -1,6 +1,6 @@
 # Plan for #2452: worldenergydata lint job still fails after #2433 — flake8 debt first-wave remediation
 
-> **Status:** plan-review — ready for user approval review; not approved for implementation
+> **Status:** plan-approved — user approved via GitHub label transition; implementation may proceed under approved-plan gates
 > **Complexity:** T3
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2452
@@ -182,7 +182,7 @@ Because #2452 is now the umbrella/decomposition issue, executable source-level T
 | Codex | r4 MINOR | r4 found one non-blocking cleanup item: live #2452 issue body still had stale Black/isort-green wording; this was resolved by a superseding status comment before plan-review labeling |
 | Gemini | r4 APPROVE | r4 found no remaining findings and judged the plan structurally sound and ready for user approval |
 
-**Overall result:** PLAN-REVIEW READY — latest substantive r4 artifacts are Codex MINOR and Gemini APPROVE. Codex's only remaining finding was stale live #2452 body wording; that has been handled by a superseding GitHub comment before applying `status:plan-review`. This plan is ready for user approval review, not implementation.
+**Overall result:** PLAN APPROVED — latest substantive r4 artifacts are Codex MINOR and Gemini APPROVE. Codex's only remaining finding was stale live #2452 body wording; that was handled by a superseding GitHub comment before `status:plan-review`, and the user subsequently approved the plan via the `status:plan-approved` label. Implementation may proceed under approved-plan gates.
 
 Revisions made based on review:
 - split the pathological blocker into child issue #2467
