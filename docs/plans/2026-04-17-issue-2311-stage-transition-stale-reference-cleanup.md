@@ -1,6 +1,6 @@
 # Plan for #2311: Stage-transition stale reference cleanup
 
-> Status: plan-review
+> Status: plan-approved
 > Complexity: T2
 > Date: 2026-04-17
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2311
@@ -190,7 +190,7 @@ Removed from scope in this redraft:
 
 Overall result: prior reviews identified real blocking issues; this redraft folds those findings into the actual plan body instead of preserving them only as a failure note. The 2026-04-24 provider-session transfer does not create a new implementation branch; it narrows the next step back to this stale-reference cleanup by distinguishing current healthy Claude activity from retained historical prompt/doc debt.
 
-Approval-gate readiness: ready for user plan review with residual risk `Medium`. The remaining risk is implementation discipline around the fixed bucket taxonomy, not unresolved scope. Execution remains blocked until explicit user approval moves the issue from `status:plan-review` to `status:plan-approved`.
+Approval-gate readiness: user-approved as of `2026-04-24T02:46:46Z` via live GitHub `status:plan-approved` label observed during approval-state sync. Residual risk remains `Medium`; the approved execution must preserve the fixed bucket taxonomy and capture any materially different stale-reference family as a follow-up issue instead of silently expanding this one.
 
 ---
 
