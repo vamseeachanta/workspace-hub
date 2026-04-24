@@ -104,7 +104,7 @@ Prompt reads are most useful when interpreted together with nearby artifacts. Co
 - plan artifacts such as `plan.md` or `plan_claude.md`
 - evidence files under `.claude/work-queue/assets/<WRK>/evidence/`
 - checkpoint / routing yaml files
-- stage exit / verification scripts such as `exit_stage.py`, `verify-gate-evidence.py`, `generate-html-review.py`
+- current governance / verification / cross-review surfaces that replaced legacy stage-exit tooling
 - skill reads under `.claude/skills/.../SKILL.md`
 
 ### Practical migration pattern discovered in historical Claude corpus

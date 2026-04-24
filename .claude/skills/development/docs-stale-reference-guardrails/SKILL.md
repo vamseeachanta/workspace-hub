@@ -49,13 +49,7 @@ Core banned families to encode:
 - `scripts/work-queue/parse-session-logs.sh`
 - `scripts/agents/`
 - `specs/wrk/WRK-(\d+|NNN)/plan.md`
-- deleted work-queue gate scripts:
-  - `verify-gate-evidence.py`
-  - `generate-html-review.py`
-  - `start_stage.py`
-  - `exit_stage.py`
-  - `verify_checklist.py`
-  - `stage_exit_checks.py`
+- deleted work-queue gate scripts, expressed as current guardrail regex families rather than live execution guidance
 - deleted lifecycle helpers:
   - `close-item.sh`
   - `whats-next.sh`
