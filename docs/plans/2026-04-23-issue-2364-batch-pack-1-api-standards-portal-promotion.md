@@ -1,143 +1,255 @@
 # Plan for #2364: Execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains
 
-> **Status:** draft
+> **Status:** draft (v2 — addresses r1 findings)
 > **Complexity:** T2
-> **Date:** 2026-04-23
+> **Date:** 2026-04-24
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2364
-> **Review artifacts:** scripts/review/results/2026-04-23-plan-2364-claude.md | ...-codex.md | ...-gemini.md
+> **Anchor HEAD:** `12b4be834954505ca1e7fc8ad8b20bda34e92baf`
+> **Supersedes:** v1 draft (2026-04-23)
+> **Review artifacts:** scripts/review/results/20260424T033343Z-2026-04-23-issue-2364-batch-pack-1-api-standards-portal-promotion.md-plan-claude.md | ...-codex.md (pending v2 fanout) | ...-gemini.md (pending v2 fanout)
+
+---
+
+## Review History
+
+| Version | Date | Reviewer(s) | Verdict | Summary |
+|---|---|---|---|---|
+| v1 | 2026-04-23 | Claude r1 | **MAJOR** | 2 P1s (forbidden-path conflict + un-cited rationalization), 3 P2s (undefined classifier sets, missing 120-char dry-run count, maritime-law AC conflict), 3 P3s (ruamel.yaml dep unverified, duplicate-check cost unbenchmarked, `noaa-ndbc` fixture id unverified). |
+| v2 | 2026-04-24 | (pending) | — | Relocates runner + test module off `scripts/**` and `tests/**` onto owned `docs/reports/**`; enumerates classifier sets from live registry (40-entry survey); embeds 120-char dry-run count (25/40 sufficient, 15/40 insufficient); adds `maritime-law` as fourth allowed `target_wiki_domain` with explicit routing for the 2 IMO entries; drops `ruamel.yaml` in favor of a scoped-key in-place YAML patch; corrects fixture id `noaa-ndbc` → `noaa_ndbc`. |
+
+**Revisions (v1 → v2):**
+- **P1 #1 (forbidden paths):** Relocated the runner and test module OFF `scripts/**` and `tests/**`. Runner lands at `docs/reports/batch-pack-1-runner.py`; tests land at `docs/reports/batch-pack-1-runner-tests.py`. Both paths are explicitly within the batch-pack §3.1 **Owned** set (`docs/reports/**`). No carve-out request is required.
+- **P1 #2 (un-cited rationalization):** Deleted the "forbidden-path rule governs runtime-execution write scope" rationale entirely. The spec is treated as binding; compliance is achieved by relocation, not interpretation.
+- **P2 #1 (classifier sets undefined):** Enumerated `MARINE_TERMS`, `NAVAL_ARCH_TERMS`, `MARINE_HOSTS`, `NAVAL_ARCH_HOSTS`, `LAW_HOSTS` in the Pseudocode section, derived from the 40-entry host/notes survey on HEAD `12b4be8`. `MARINE_TAGS` / `NAVAL_ARCH_TAGS` are removed from the pseudocode because **every one of the 40 candidate entries has `tags: None`** (verified — see Evidence); a tags-based rule is dead code on the current registry. The classifier reduces to host-regex + notes-keyword.
+- **P2 #2 (120-char dry-run):** Embedded live count — **25/40 pass**, **15/40 insufficient** (12 <120 chars, 3 ≥120 but lack capability indicator). Split is reasonable (not degenerate); threshold is retained.
+- **P2 #3 (maritime-law AC):** Added `maritime-law` as a fourth allowed `target_wiki_domain`. The 2 IMO-adjacent entries (`imo_gisis`, `gisis_imo_org_5db4e8`) route to `maritime-law` with `out-of-scope-for-promotion: true` in the stub frontmatter — they are catalogued but not targeted for promotion in this pack.
+- **P3 #1 (ruamel.yaml):** Confirmed `ruamel.yaml` is **NOT** in `pyproject.toml` or `requirements*.txt`. v2 drops the ruamel dependency and replaces the additive-write strategy with a scoped two-key text patch (`processed: true` + `processed_date: <iso>`) appended on a single `yq`-anchored line per entry, verified by structural diff (all other lines byte-identical to pre-run).
+- **P3 #2 (duplicate-check cost):** Added benchmark plan — duplicate check scans only `knowledge/wikis/*/wiki/**/*.md` frontmatter (not body) via a single `find | xargs grep -l "^source_id:"` pass, with a recorded wall-clock budget of ≤30 s over the 19,191-page marine-engineering corpus. If the benchmark exceeds 30 s on first run, the plan downgrades duplicate check to the three target-domain wikis only and records the decision.
+- **P3 #3 (fixture id):** Corrected `noaa-ndbc` → `noaa_ndbc` (underscore is the actual canonical id at line 125 of `online-resource-registry.yaml`).
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `scripts/knowledge/llm_wiki.py` — existing helper module for LLM-wiki operations; will be imported if reusable helpers (frontmatter serializer, domain classifier) already exist. Otherwise plan introduces a bounded sibling script.
-- Found: `scripts/knowledge/wiki-cross-links.py` — existing cross-link generator; the batch-pack-1 report will produce input suitable for this (stub IDs + target wiki domain + source URLs).
-- Found: `scripts/knowledge/build-knowledge-index.sh`, `scripts/knowledge/wiki_health_cron.py`, `scripts/knowledge/registry-freshness-check.py` — adjacent tooling; read-only context only.
-- Gap: No existing script titled `run-batch-pack-*.py` or `promote-online-resource-*.py`. Batch Pack 1 execution logic does not yet exist as committed code.
+- Found: `scripts/knowledge/llm_wiki.py` — existing helper module; **read-only** for this plan. If reusable helpers (frontmatter serializer, domain classifier) exist, the new runner will import them. No modifications to this file.
+- Found: `scripts/knowledge/wiki-cross-links.py` — existing cross-link generator. Batch-pack-1 output is shaped to feed this tool downstream (stub IDs + target wiki domain + source URLs).
+- Found: `scripts/knowledge/build-knowledge-index.sh`, `scripts/knowledge/wiki_health_cron.py`, `scripts/knowledge/registry-freshness-check.py` — adjacent tooling; read-only context.
+- Gap: No existing script or report titled `batch-pack-1-runner*`. The runner does not yet exist as committed code in any permitted path.
 
 ### Standards
-Not applicable directly — this is a knowledge-promotion issue, not an engineering standards implementation. However, the batch pack must preserve provenance to any API/portal entries that reference named standards families (DNV, API, IMO, CSA, OCIMF, ABS) so downstream #2207 provenance contract holds.
+Not applicable directly — this is a knowledge-promotion issue. However, the batch pack must preserve provenance to any API/portal entry that references named standards families (DNV, API, IMO, CSA, OCIMF, ABS) so the downstream #2207 provenance contract holds.
 
 ### LLM Wiki pages consulted
-- `knowledge/wikis/engineering/wiki/index.md` — current engineering wiki index (83 pages). Structure uses five buckets: `concepts/`, `entities/`, `sources/`, `standards/`, `workflows/`. Batch Pack 1 stubs will classify into `sources/` (data APIs, portals).
-- `knowledge/wikis/engineering/CLAUDE.md` — frontmatter schema confirmed: `title`, `tags`, `added`, `last_updated` required; `sources`, `domain`, `cross_links` optional.
-- `knowledge/wikis/naval-architecture/CLAUDE.md` — 46 pages total (verified `find ... | wc -l`); same pattern.
-- `knowledge/wikis/marine-engineering/CLAUDE.md` — 19,191 pages (verified); selective additions only per priority queue §2.
-- `knowledge/wikis/maritime-law/CLAUDE.md` — 23 pages; out of Batch Pack 1 target list (not named in queue §3 target wikis).
+- `knowledge/wikis/engineering/wiki/index.md` — engineering wiki index (83 pages). Five-bucket structure: `concepts/`, `entities/`, `sources/`, `standards/`, `workflows/`. Batch-pack-1 stubs will classify into `sources/` (data APIs, portals).
+- `knowledge/wikis/engineering/CLAUDE.md` — frontmatter schema: `title`, `tags`, `added`, `last_updated` required; `sources`, `domain`, `cross_links` optional.
+- `knowledge/wikis/naval-architecture/CLAUDE.md` — 46 pages; same pattern.
+- `knowledge/wikis/marine-engineering/CLAUDE.md` — 19,191 pages; selective additions only per priority queue §2.
+- `knowledge/wikis/maritime-law/CLAUDE.md` — 23 pages. **v2 change:** added as a catalog-only target for the 2 IMO-adjacent entries.
 
 ### Documents consulted
 - `docs/reports/llm-wiki-external-source-priority-queue.md` — Queue classifies `online-data-apis-and-portals` as P1, `metadata-first` promotion, target wikis `engineering, marine-eng, naval-arch`. 40 entries total.
-- `docs/reports/llm-wiki-staged-batch-packs.md` — Defines Batch Pack 1 with exact paths (`data/document-index/**`, `docs/reports/**` owned; `knowledge/wikis/**` read-only), verification sequence, and primary output `docs/reports/batch-pack-1-api-portal-metadata-stubs.md`.
-- `data/document-index/online-resource-registry.yaml` — Source registry; filter `type in [data_api, standard_portal]` yields 40 entries (31 `data_api` + 9 `standard_portal`, verified by grep count).
-- `docs/plans/2026-04-14-claude-prompt-issues-2242-2243.md` — Initial execution prompt for the upstream queue/batch-pack design issues (#2242/#2243, both CLOSED); shows owned/read-only/forbidden path conventions this plan inherits.
-- Epic `#2390` — Groups #2364 under Wave 5 promotion work; parallel-bundle with #2365 (design-code registry).
-- Related issue `#2068` (OPEN) — Cross-link JSONL package; batch-pack-1 output must be compatible so cross-link candidates feed into #2068 without re-processing.
-- Related issue `#2067` (OPEN) — Research-to-wiki ingest path.
-- Related issue `#2039` (OPEN) — Engineering-wiki ingest pipeline; downstream consumer of stubs.
+- `docs/reports/llm-wiki-staged-batch-packs.md` — Defines Batch Pack 1 with exact paths and verification sequence. **§3.1 forbidden-path clause is binding; see Attested Evidence.**
+- `data/document-index/online-resource-registry.yaml` — Source registry; filter `type in [data_api, standard_portal]` yields 40 entries (31 `data_api` + 9 `standard_portal`).
+- Epic `#2390` — Groups #2364 under Wave 5 promotion work.
+- Related issues `#2068` (cross-link JSONL), `#2067` (research→wiki ingest), `#2039` (engineering wiki ingest), `#1609` (download pipeline).
 
 ### Gaps identified
-- No `scripts/knowledge/run-batch-pack-1.py` (or equivalent) exists; must be created.
-- No existing enforcement that Batch Pack 1 output conforms to the frontmatter schema in `knowledge/wikis/*/CLAUDE.md`; plan adds a schema-validator unit test.
-- Batch Pack spec says "do not write to `scripts/**`" (forbidden). Plan resolves this tension: the runner is authored/tested locally, but its **output file** lands in `docs/reports/` as specified; the runner itself is a generic repo-level helper (same tier as existing `wiki-cross-links.py`), and per the batch-pack spec's own §4.1 Token Efficiency rule, reusing a committed runner is the correct pattern. The forbidden-paths clause targets agents being spawned into unrelated code surfaces, not adding a named helper under `scripts/knowledge/`. Open question recorded in Risks (see §Risks) — user approves at plan review whether the runner lands in `scripts/knowledge/` or purely as an inline notebook-style artifact.
-- The registry filter will split entries by `type` into two natural classes (`data_api` vs `standard_portal`) but the batch-pack spec does not pre-define a canonical `target_wiki_domain` per entry — the runner must derive domain assignment from each entry's `notes`/`tags`/domain heuristics. Gap: domain-classification heuristic is not yet specified.
-- "Insufficient notes" threshold not defined; plan introduces an explicit minimum-evidence rule (notes field ≥120 chars AND contains ≥1 capability indicator or ≥1 URL/endpoint).
+- No `docs/reports/batch-pack-1-runner.py` (or equivalent) exists in any owned path; must be created.
+- No existing enforcement that Batch Pack 1 output conforms to the frontmatter schema; plan adds a schema-validator check in the runner's self-test block.
+- **All 40 candidate entries have `tags: None`** (verified) — classifier cannot rely on tags; must use URL host + notes keywords only.
+- `target_wiki_domain` assignment is not pre-specified in the batch-pack spec; the runner will derive it from the host-regex + notes-keyword classifier enumerated in Pseudocode.
+- "Insufficient notes" threshold not defined; plan introduces a minimum-evidence rule: `len(notes) ≥ 120` AND notes contains ≥1 of the enumerated capability indicators.
 
 ### Evidence (embedded verification)
 
-**Issue statuses** (verified 2026-04-23 via `gh issue view`):
-- `#2364` — OPEN — feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains
+**Anchor:** all file/line references verified against HEAD `12b4be834954505ca1e7fc8ad8b20bda34e92baf` (2026-04-24).
+
+**Issue statuses** (verified 2026-04-24 via `gh issue view`):
+- `#2364` — OPEN — feat(knowledge): execute Batch Pack 1 …
 - `#2390` — OPEN — epic(knowledge): llm-wiki strengthening roadmap and execution waves
-- `#2242` — CLOSED — feat(llm-wiki): prioritize external-source queue
-- `#2243` — CLOSED — chore(llm-wiki): define token-efficient staged batch packs
-- `#2241` — CLOSED — feat(llm-wiki): staged web-sweep and production-readiness program
-- `#2039` — OPEN — engineering wiki ingest
-- `#2067` — OPEN — wire .planning/research into wiki ingest
-- `#2068` — OPEN — cross-link JSONL package
-- `#1609` — OPEN — Automated resource download pipeline
-- `#2001` — CLOSED — batch ingest pipeline (methodology precedent)
+- `#2242`, `#2243`, `#2241` — CLOSED — upstream queue/batch-pack design work
+- `#2039`, `#2067`, `#2068`, `#1609` — OPEN — downstream consumers and related work
 
-**File existence** (`ls` 2026-04-23):
-- EXISTS: `docs/reports/llm-wiki-external-source-priority-queue.md` (8,998 bytes)
+**File existence** (`ls` / `git ls-files` on HEAD `12b4be8`):
+- EXISTS: `docs/reports/llm-wiki-external-source-priority-queue.md`
 - EXISTS: `docs/reports/llm-wiki-staged-batch-packs.md` (17,928 bytes)
-- EXISTS: `data/document-index/online-resource-registry.yaml` (152,258 bytes)
-- EXISTS: `knowledge/wikis/engineering/wiki/index.md`, `knowledge/wikis/engineering/CLAUDE.md`, `knowledge/wikis/marine-engineering/CLAUDE.md`, `knowledge/wikis/naval-architecture/CLAUDE.md`, `knowledge/wikis/maritime-law/CLAUDE.md`
-- MISSING (new — this plan creates): `scripts/knowledge/run-batch-pack-1.py` (or agreed equivalent; see Risks)
-- MISSING (new — this plan creates): `tests/knowledge/test_batch_pack_1.py`
-- MISSING (new — this plan creates): `docs/reports/batch-pack-1-api-portal-metadata-stubs.md`
-- MISSING (new — optional if split): `data/document-index/batch-pack-1-follow-on-issues.yaml`
+- EXISTS: `data/document-index/online-resource-registry.yaml` (3,423 lines, 152,258 bytes)
+- EXISTS: all five target-wiki `CLAUDE.md` files
+- MISSING (new — this plan creates in **owned** paths): `docs/reports/batch-pack-1-runner.py`, `docs/reports/batch-pack-1-runner-tests.py`, `docs/reports/batch-pack-1-api-portal-metadata-stubs.md`, `data/document-index/batch-pack-1-follow-on-issues.yaml`
 
-**Line excerpts**:
-- Queue doc `docs/reports/llm-wiki-external-source-priority-queue.md`, §3 P1 row 1 (line 31): "Online Data APIs & Standards Portals | 40 | metadata-first | engineering, marine-eng, naval-arch | #1609, #2039, #2067" — confirms entry count = 40 and target wiki set.
-- Batch-pack doc `docs/reports/llm-wiki-staged-batch-packs.md`, §3.1 Paths (lines 74-80): `Owned: data/document-index/**, docs/reports/**; Read-only: knowledge/wikis/**, docs/document-intelligence/**; Forbidden: config/**, .claude/**, tests/**, scripts/**`.
+**Forbidden-paths clause (quoted verbatim from `docs/reports/llm-wiki-staged-batch-packs.md`, §3.1, line 80):**
+> `| **Forbidden** | \`config/**\`, \`.claude/**\`, \`tests/**\`, \`scripts/**\` |`
+
+The Owned row (same table, line 78) is:
+> `| **Owned** (may write) | \`data/document-index/**\`, \`docs/reports/**\` |`
+
+The Read-only row (line 79):
+> `| **Read-only** | \`knowledge/wikis/**\`, \`docs/document-intelligence/**\` |`
+
+**v2 resolution (P1 option a — relocate):** All four new artifacts land under `docs/reports/**` or `data/document-index/**` (both Owned). No `scripts/**` or `tests/**` write. No carve-out needed.
+
+**Domain-classifier-set sources (verified 2026-04-24):**
+- Tag survey: all 40 candidate entries have `tags: None` (verified via `yaml.safe_load` + `Counter()` on `tags` field — zero tags across all 40). Conclusion: tag-based classifier rules are dead code on current data; the classifier uses host-regex + notes-keyword only.
+- Host survey (top hosts among the 40): `www.api.org` (3), `cds.climate.copernicus.eu` (2), `gisis.imo.org` (2), `data.marine.copernicus.eu`, `www.ndbc.noaa.gov`, `factpages.sodir.no`, `www.data.boem.gov`, `rigcount.bakerhughes.com`, `www.eia.gov`, `www.data.bsee.gov`, `standards.dnv.com`, `api.tidesandcurrents.noaa.gov`, `iacs.org.uk`, `psmsl.org`, `nsidc.org`, etc. (full list embedded in runner).
+- The five classifier sets in Pseudocode below are derived from this host survey plus notes-keyword inspection.
+
+**120-char threshold dry-run count (verified 2026-04-24):**
+
+| Bucket | Count | Notes |
+|---|---:|---|
+| Sufficient (`len(notes) ≥ 120` AND ≥1 indicator) | **25 / 40** | 19 `data_api` + 6 `standard_portal` |
+| Insufficient — `len(notes) < 120` | 12 / 40 | short or empty notes |
+| Insufficient — `len(notes) ≥ 120` but no indicator | 3 / 40 | narrative notes missing `endpoint`/`api`/`http`/`portal`/`coverage`/`dataset`/`standard`/`rule` |
+| **Total insufficient** | **15 / 40** | routed to follow-on catalog |
+
+Sample insufficient entries for traceability: `cmems_marine_service` (370 chars, no indicator), `cds_climate_copernicus_eu_datasets_reanalysis_era5_single_le_3fd8e2` (130 chars, no indicator), `rigcount_bakerhughes_com_1a81d9` (107 chars), `api_org_products_and_services_standards_66556d` (74 chars), `api_org_products_and_services_standards_important_standards__839ba5` (61 chars).
+
+Split is reasonable (60/40 ≈ sufficient/insufficient) — rule is retained.
+
+**Maritime-law routing count (verified 2026-04-24):**
+Two of the 40 entries match IMO/maritime-law signals:
+- `imo_gisis` (type=`standard_portal`, url=`https://gisis.imo.org/Public/Default.aspx`)
+- `gisis_imo_org_5db4e8` (type=`data_api`, url=`https://gisis.imo.org/`)
+
+Both route to `target_wiki_domain: maritime-law` with `out-of-scope-for-promotion: true` per v2 AC.
+
+**`ruamel.yaml` dependency status (verified 2026-04-24):**
+- `grep ruamel pyproject.toml requirements*.txt` → no match.
+- v2 drops ruamel. Write-back strategy: the runner emits a scoped in-place patch that appends two lines (`  processed: true` and `  processed_date: <iso>`) under each of the 40 target entry keys using an anchored regex that matches the entry's `- id: <id>` line. Structural-diff acceptance test confirms every other byte is unchanged.
+
+**Fixture id verification (verified 2026-04-24):**
+- `grep -n "noaa_ndbc" data/document-index/online-resource-registry.yaml` → matches at **line 125** (`- id: noaa_ndbc`).
+- `grep -n "noaa-ndbc"` → **no match** (hyphen form does not exist).
+- v2 corrects the test fixture id from `noaa-ndbc` to `noaa_ndbc`.
+
+**Duplicate-check cost (benchmark plan):**
+- marine-engineering wiki: 19,191 pages. Budget: single frontmatter pass via `find knowledge/wikis/marine-engineering/wiki -name '*.md' -print0 | xargs -0 grep -l '^source_id:'`. Wall-clock target ≤30 s. If exceeded on first run, fallback is to index only the three target-domain wikis and record the decision in the output report.
+
+**Line excerpts:**
+- Queue doc §3 P1 row 1 (line 31): `Online Data APIs & Standards Portals | 40 | metadata-first | engineering, marine-eng, naval-arch | #1609, #2039, #2067`
+- Batch-pack §3.1 Paths: quoted above.
 - Engineering wiki CLAUDE.md frontmatter schema (lines 10-23): `title`, `tags`, `added`, `last_updated` required.
 
-**Gap proofs**:
-- `ls /mnt/local-analysis/workspace-hub/scripts/knowledge/run-batch-pack-*.py 2>&1` → "No such file or directory" → confirms runner does not yet exist.
-- `grep -cE "^\s*type:\s*(data_api|standard_portal)" data/document-index/online-resource-registry.yaml` → 40 (31 data_api + 9 standard_portal) → confirms entry count matches queue/batch-pack spec exactly.
+**Gap proofs:**
+- `ls docs/reports/batch-pack-1-runner*.py 2>&1` → "No such file or directory".
+- `grep -cE "^\s+type:\s+(data_api|standard_portal)" data/document-index/online-resource-registry.yaml` → 40.
 
-<!-- Source count: 9 (issue body + 8 artifacts) — exceeds ≥3 minimum. -->
+<!-- Source count: 10 (issue body + 9 artifacts/scripts) — exceeds ≥3 minimum. -->
+
+---
+
+## Attested Evidence (r1-triggered)
+
+| Claim | Evidence | Line / command |
+|---|---|---|
+| §3.1 forbidden paths include `scripts/**` AND `tests/**` | `docs/reports/llm-wiki-staged-batch-packs.md` | line 80 (quoted verbatim above) |
+| §3.1 owned paths include `docs/reports/**` | same file | line 78 |
+| 40 candidate entries have `tags: None` | live registry survey | `yaml.safe_load` + `Counter()` — zero tags across 40 |
+| 25/40 sufficient under 120-char + indicator rule | live registry survey | table above |
+| 2/40 maritime-law-adjacent (`imo_gisis`, `gisis_imo_org_5db4e8`) | live registry survey | enumerated above |
+| `ruamel.yaml` not in pyproject/requirements | `grep ruamel` | no match |
+| `noaa_ndbc` exists as real entry id at line 125 | live registry | `grep -n "noaa_ndbc"` → line 125 |
 
 ---
 
 ## Artifact Map
 
-| Artifact | Path |
-|---|---|
-| This plan | docs/plans/2026-04-23-issue-2364-batch-pack-1-api-standards-portal-promotion.md |
-| Runner | scripts/knowledge/run-batch-pack-1.py (new — subject to Risks review) |
-| Tests | tests/knowledge/test_batch_pack_1.py (new) |
-| Primary output report | docs/reports/batch-pack-1-api-portal-metadata-stubs.md (new) |
-| Follow-on catalog | data/document-index/batch-pack-1-follow-on-issues.yaml (new, conditional) |
-| Plan review — Claude | scripts/review/results/2026-04-23-plan-2364-claude.md |
-| Plan review — Codex | scripts/review/results/2026-04-23-plan-2364-codex.md |
-| Plan review — Gemini | scripts/review/results/2026-04-23-plan-2364-gemini.md |
-| Plan review — disagreement | scripts/review/results/2026-04-23-plan-2364-disagreement.md |
-| Registry delta | `processed: true` flag appended to the 40 entries in `online-resource-registry.yaml` (metadata-only; schema preserved) |
+| Artifact | Path | Owned path? |
+|---|---|---|
+| This plan | docs/plans/2026-04-23-issue-2364-batch-pack-1-api-standards-portal-promotion.md | — (planning tree) |
+| Runner | **docs/reports/batch-pack-1-runner.py** (new, relocated from `scripts/knowledge/`) | YES (§3.1 Owned) |
+| Runner self-tests | **docs/reports/batch-pack-1-runner-tests.py** (new, relocated from `tests/knowledge/`) | YES (§3.1 Owned) |
+| Primary output report | docs/reports/batch-pack-1-api-portal-metadata-stubs.md (new) | YES |
+| Follow-on catalog | data/document-index/batch-pack-1-follow-on-issues.yaml (new) | YES (§3.1 Owned) |
+| Plan reviews | scripts/review/results/…-plan-{claude,codex,gemini}.md | — (review tree) |
+| Registry delta | `processed: true` + `processed_date` appended per entry (40 entries) | YES (additive-only) |
 
 ---
 
 ## Deliverable
 
-After this issue closes, a reproducible Batch Pack 1 run will have produced `docs/reports/batch-pack-1-api-portal-metadata-stubs.md` — a durable report containing wiki-ready metadata stubs (grouped by engineering / marine-engineering / naval-architecture target domains) for all 40 `data_api`/`standard_portal` entries in `online-resource-registry.yaml`, with explicit duplicate-check against existing wiki pages, explicit split-out of insufficient-notes entries into a follow-on catalog, and provenance references to each source registry entry.
+After this issue closes, a reproducible Batch Pack 1 run will have produced `docs/reports/batch-pack-1-api-portal-metadata-stubs.md` — a durable report containing wiki-ready metadata stubs (grouped by `engineering` / `marine-engineering` / `naval-architecture` / `maritime-law` target domains) for all 40 `data_api`/`standard_portal` entries, with explicit duplicate-check against existing wiki pages, explicit split-out of insufficient-notes entries into a follow-on catalog, and provenance references to each source registry entry. Maritime-law entries will be catalogued with `out-of-scope-for-promotion: true` (enumerated but not promoted in this pack).
 
-No wiki page promotion itself happens in this issue — the report is the deliverable that *downstream* wiki-ingest work (#2039, #2067, #2068) will consume.
+No wiki page promotion itself happens in this issue — the report is the deliverable that downstream wiki-ingest work (#2039, #2067, #2068) will consume.
 
 ---
 
 ## Pseudocode
 
 ```
+# Classifier sets, derived from live 40-entry survey on HEAD 12b4be8.
+# Note: no tag-based rules because every candidate entry has tags=None.
+
+MARINE_HOSTS = {
+    "www.ndbc.noaa.gov", "api.tidesandcurrents.noaa.gov",
+    "data.marine.copernicus.eu", "psmsl.org", "nsidc.org",
+    "www.gebco.net", "cds.climate.copernicus.eu",
+}
+
+NAVAL_ARCH_HOSTS = {
+    "iacs.org.uk", "standards.dnv.com", "www.dnv.com",
+}
+
+LAW_HOSTS = {
+    "gisis.imo.org",
+}
+
+MARINE_TERMS = {
+    "marine", "ocean", "wave", "tide", "sea level", "bathymetry",
+    "offshore", "subsea", "hydrodynamic", "metocean", "wind-farm",
+}
+
+NAVAL_ARCH_TERMS = {
+    "classification society", "ship rules", "hull", "naval architecture",
+    "ship design", "class rules",
+}
+
+LAW_TERMS = {
+    "imo", "convention", "solas", "marpol", "unclos", "maritime law",
+}
+
 function run_batch_pack_1(registry_path, wiki_root, output_report_path):
     entries = load_yaml(registry_path)["entries"]
     candidates = filter(entries, lambda e: e.type in {"data_api", "standard_portal"})
-    assert len(candidates) == 40  # pre-run invariant from spec
+    assert len(candidates) == 40
 
     sufficient, insufficient = partition_by_notes_quality(candidates,
         min_chars=120,
-        require_any_of=["endpoint", "api", "http", "portal", "coverage", "dataset", "standard", "rule"])
+        require_any_of=["endpoint", "api", "http", "portal", "coverage",
+                        "dataset", "standard", "rule"])
+    assert len(sufficient) + len(insufficient) == 40
+    # Expected on 2026-04-24 HEAD: sufficient=25, insufficient=15.
 
-    grouped = {d: [] for d in ["engineering", "marine-engineering", "naval-architecture"]}
+    grouped = {d: [] for d in ["engineering", "marine-engineering",
+                               "naval-architecture", "maritime-law"]}
     for entry in sufficient:
-        domain = classify_domain(entry.tags, entry.notes, entry.url)
-        stub = build_stub(entry, domain)           # frontmatter + body per wiki CLAUDE.md schema
-        dup = check_duplicate(wiki_root, stub.title, stub.sources)
-        stub.duplicate_candidate = dup             # record, do not suppress
+        domain = classify_domain(entry)
+        stub = build_stub(entry, domain)
+        stub.out_of_scope_for_promotion = (domain == "maritime-law")
+        stub.classifier_trace = which_rule_matched(entry)   # for reviewer audit
+        dup = check_duplicate(wiki_root, stub.source_id)
+        stub.duplicate_candidate = dup
         grouped[domain].append(stub)
 
-    write_report(output_report_path, grouped, duplicates_index, insufficient_index)
-    write_follow_on_catalog("data/document-index/batch-pack-1-follow-on-issues.yaml", insufficient)
-    mark_processed(registry_path, [e.id for e in sufficient])  # additive flag only
-    return summary(total=40, promoted=len(sufficient), deferred=len(insufficient))
-```
+    write_report(output_report_path, grouped, insufficient_index, classifier_trace)
+    write_follow_on_catalog("data/document-index/batch-pack-1-follow-on-issues.yaml",
+                            insufficient)
+    patch_registry_additive(registry_path, [e.id for e in sufficient])
+    return summary(total=40, promoted=len(sufficient),
+                   deferred=len(insufficient),
+                   law=len(grouped["maritime-law"]))
 
-```
-function classify_domain(tags, notes, url):
-    # Deterministic keyword-based classifier. Precedence: explicit domain tag > URL heuristic > notes keyword > default engineering.
-    if any tag in MARINE_TAGS:       return "marine-engineering"
-    if any tag in NAVAL_ARCH_TAGS:   return "naval-architecture"
-    if url matches NAVAL_HOSTS:      return "naval-architecture"
-    if notes contains MARINE_TERMS:  return "marine-engineering"
+function classify_domain(entry):
+    host = extract_host(entry.url)
+    notes_lower = entry.notes.lower()
+    # Precedence: LAW > NAVAL_ARCH > MARINE > engineering default.
+    if host in LAW_HOSTS or any(t in notes_lower for t in LAW_TERMS):
+        return "maritime-law"
+    if host in NAVAL_ARCH_HOSTS or any(t in notes_lower for t in NAVAL_ARCH_TERMS):
+        return "naval-architecture"
+    if host in MARINE_HOSTS or any(t in notes_lower for t in MARINE_TERMS):
+        return "marine-engineering"
     return "engineering"
 ```
 
@@ -147,43 +259,55 @@ function classify_domain(tags, notes, url):
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | scripts/knowledge/run-batch-pack-1.py | runner executing the classification + stub generation pipeline |
-| Create | tests/knowledge/test_batch_pack_1.py | TDD coverage for filter, partition, classifier, stub, duplicate-check |
+| Create | **docs/reports/batch-pack-1-runner.py** | runner executing classification + stub generation (owned path per §3.1) |
+| Create | **docs/reports/batch-pack-1-runner-tests.py** | self-tests for filter, partition, classifier, stub, duplicate-check (owned path per §3.1) |
 | Create | docs/reports/batch-pack-1-api-portal-metadata-stubs.md | primary output (wiki-ready stubs grouped by domain) |
-| Create | data/document-index/batch-pack-1-follow-on-issues.yaml | catalog of entries whose `notes` were insufficient for metadata-first promotion |
-| Modify | data/document-index/online-resource-registry.yaml | additive `processed: true` + `processed_date` flag on the 40 covered entries; no schema change, no note rewrite |
+| Create | data/document-index/batch-pack-1-follow-on-issues.yaml | catalog of entries with insufficient notes |
+| Modify | data/document-index/online-resource-registry.yaml | additive `processed: true` + `processed_date` per covered entry; no schema change, no note rewrite |
 | Update | docs/plans/README.md | add index row for this plan |
+
+No `scripts/**` or `tests/**` writes. No `config/**` or `.claude/**` writes. No `knowledge/wikis/**` writes (read-only).
 
 ---
 
 ## TDD Test List
 
+Tests live in `docs/reports/batch-pack-1-runner-tests.py` (owned path). Runner imports target; tests use pytest-style asserts invoked via `uv run python docs/reports/batch-pack-1-runner-tests.py` (direct script) or `uv run pytest docs/reports/batch-pack-1-runner-tests.py -v`.
+
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_filter_yields_exact_40_entries | filter(type in {data_api, standard_portal}) count = 40 against committed registry | committed `online-resource-registry.yaml` | len == 40 |
-| test_partition_notes_quality_threshold_rejects_empty_notes | notes-length < 120 chars → insufficient bucket | entry with 30-char note | entry in insufficient |
-| test_partition_notes_quality_threshold_accepts_endpoint_mention | notes ≥120 chars AND "endpoint" keyword → sufficient | synthesized entry with 250-char note mentioning "REST endpoint" | entry in sufficient |
-| test_classify_domain_marine_tag_wins | tag-based domain wins over URL heuristic | entry tagged `[marine, wave]` with engineering-like URL | domain == "marine-engineering" |
-| test_classify_domain_default_engineering | no marine/naval signal falls back to engineering | synthesized plain data-api entry | domain == "engineering" |
-| test_build_stub_frontmatter_matches_wiki_schema | stub YAML has required fields `title`, `tags`, `added`, `last_updated` | sample entry | frontmatter keys are a superset of required set |
-| test_duplicate_check_detects_existing_wiki_page | if existing wiki page has same `sources:` frontmatter entry, flag is set | fixture wiki page referencing entry id `noaa-ndbc` | stub.duplicate_candidate is not None |
-| test_processed_flag_is_additive_only | writing back `processed: true` does not mutate any other fields | registry in-memory → round-trip yaml | diff only on `processed`/`processed_date` keys |
-| test_output_report_groups_all_40_sufficient_minus_insufficient | total stubs + insufficient == 40 | full registry filter | count invariant holds |
+| test_filter_yields_exact_40_entries | filter(type in {data_api, standard_portal}) count = 40 | committed `online-resource-registry.yaml` | len == 40 |
+| test_partition_dry_run_matches_25_15 | live partition on HEAD matches survey | committed registry | sufficient=25, insufficient=15 |
+| test_partition_notes_quality_threshold_rejects_empty_notes | notes-length < 120 → insufficient | synthesized 30-char note | insufficient |
+| test_partition_notes_quality_threshold_accepts_endpoint_mention | ≥120 chars AND "endpoint" → sufficient | synthesized 250-char note | sufficient |
+| test_classify_domain_law_wins_over_marine | IMO host routes to maritime-law even with marine-like notes | synthesized entry at `gisis.imo.org` with "ocean" notes | domain == "maritime-law" |
+| test_classify_domain_marine_host_wins | NDBC host → marine-engineering | entry at `www.ndbc.noaa.gov` | domain == "marine-engineering" |
+| test_classify_domain_naval_host_wins | IACS/DNV host → naval-architecture | entry at `iacs.org.uk` | domain == "naval-architecture" |
+| test_classify_domain_default_engineering | no marine/naval/law signal → engineering | synthesized plain data-api entry | domain == "engineering" |
+| test_imo_entries_flagged_out_of_scope | both real IMO entries get `out_of_scope_for_promotion=True` | live registry (`imo_gisis`, `gisis_imo_org_5db4e8`) | both flagged |
+| test_build_stub_frontmatter_matches_wiki_schema | stub YAML has `title`, `tags`, `added`, `last_updated` | sample entry | frontmatter keys are a superset of required |
+| test_duplicate_check_detects_existing_wiki_page | if a wiki page references entry id, flag set | fixture wiki page referencing entry id **`noaa_ndbc`** | stub.duplicate_candidate is not None |
+| test_processed_flag_is_additive_only | write-back only diffs on two new keys per entry | registry pre/post round-trip | structural diff == {`processed`, `processed_date`} only |
+| test_output_report_counts_invariant | total stubs + insufficient == 40 | full registry filter | invariant holds |
 | test_run_is_idempotent | re-running with already-processed entries yields no new stubs | already-flagged registry | report reports 0 newly-added |
+| test_duplicate_check_wall_clock_under_budget | full-wiki frontmatter scan completes ≤30 s | 19,191 marine-eng pages | wall_clock < 30.0 s; on failure, runner falls back to target-domain-only scan and logs the decision |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All new tests pass: `uv run pytest tests/knowledge/test_batch_pack_1.py -v`
-- [ ] `uv run python scripts/knowledge/run-batch-pack-1.py` exits 0 and produces `docs/reports/batch-pack-1-api-portal-metadata-stubs.md`
-- [ ] The output report contains exactly 40 rows classified as either `sufficient → stub generated` or `insufficient → follow-on catalog`, summing to 40 (pre-run invariant preserved)
-- [ ] Each generated stub has `target_wiki_domain ∈ {engineering, marine-engineering, naval-architecture}`
+- [ ] All new tests pass: `uv run pytest docs/reports/batch-pack-1-runner-tests.py -v`
+- [ ] `uv run python docs/reports/batch-pack-1-runner.py` exits 0 and produces `docs/reports/batch-pack-1-api-portal-metadata-stubs.md`
+- [ ] The output report contains exactly 40 rows classified as either `sufficient → stub generated` or `insufficient → follow-on catalog`, summing to 40
+- [ ] Each generated stub has `target_wiki_domain ∈ {engineering, marine-engineering, naval-architecture, maritime-law}` (maritime-law added in v2)
+- [ ] Every `maritime-law`-classified stub carries `out-of-scope-for-promotion: true` in its frontmatter
 - [ ] Each generated stub records provenance (`sources: [<registry-entry-id>]`) and source URL
-- [ ] Duplicate check runs against the current live wiki corpus; every matched pair is listed in a Duplicates section (does NOT block promotion — it flags it)
-- [ ] `data/document-index/batch-pack-1-follow-on-issues.yaml` exists and lists every deferred entry with a reason code
-- [ ] `online-resource-registry.yaml` only diffs on `processed`/`processed_date` keys (verified by structural diff in CI fixture)
-- [ ] No files under `config/**`, `.claude/**`, `knowledge/wikis/**` are modified
+- [ ] A **Classifier Trace** section in the report lists the rule that matched for every one of the 40 entries, with zero entries in an `Unclassified` bucket
+- [ ] Duplicate check runs against the current live wiki corpus; every matched pair is listed in a Duplicates section (does NOT block promotion)
+- [ ] Duplicate-check wall-clock ≤30 s; otherwise the report records the fallback to target-domain-only scan
+- [ ] `data/document-index/batch-pack-1-follow-on-issues.yaml` exists and lists every deferred entry with a reason code (`notes-too-short`, `no-capability-indicator`, `duplicate-suspected`, `classifier-ambiguous`)
+- [ ] `online-resource-registry.yaml` only diffs on `processed` / `processed_date` keys (verified by structural diff in acceptance test)
+- [ ] No files under `config/**`, `.claude/**`, `tests/**`, `scripts/**`, `knowledge/wikis/**` are modified (verified by `git diff --name-only | grep -vE '^(data/document-index/|docs/reports/|docs/plans/)'` returning empty)
 - [ ] Review artifacts for all three providers posted to `scripts/review/results/`
 - [ ] No wiki pages promoted — downstream #2039/#2067 consume the report
 
@@ -193,28 +317,26 @@ function classify_domain(tags, notes, url):
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | (to be filled by fanout) |
-| Codex | PENDING | (to be filled by fanout) |
-| Gemini | PENDING | (to be filled by fanout) |
+| Claude (v1) | MAJOR | 2 P1 + 3 P2 + 3 P3 — all addressed in v2 (see Review History) |
+| Claude (v2) | PENDING | (to be filled by v2 fanout) |
+| Codex (v2) | PENDING | (to be filled by v2 fanout) |
+| Gemini (v2) | PENDING | (to be filled by v2 fanout) |
 
-**Overall result:** PENDING
-
-Revisions made based on review: (none yet — this is draft v1)
+**Overall result:** PENDING (awaits v2 r1 fanout).
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk (forbidden-path tension):** Batch-pack spec §3.1 lists `scripts/**` as forbidden for batch-execution agents. This plan proposes a new `scripts/knowledge/run-batch-pack-1.py`. Rationale: the forbidden-path rule in the spec governs runtime-execution write scope, not whether a committed helper tool may exist. Existing adjacent tools (`wiki-cross-links.py`, `llm_wiki.py`) set the precedent. User approves at plan review whether to land the runner under `scripts/knowledge/` or inline it as a notebook-style artifact under `docs/reports/`.
-- **Risk (classifier precision):** Deterministic keyword classifier will misclassify edge entries (e.g., a hydrodynamic-data API with no marine tag). Mitigation: run produces a Classifier Trace section in the output report listing the signal that decided each entry's domain, so a reviewer can catch misassignments during wiki-ingest follow-on.
-- **Risk (insufficient-notes false-positives):** The 120-char + keyword threshold may push adequately-documented entries into the follow-on catalog. Mitigation: threshold is recorded in the report and is adjustable by flag for re-runs; first-pass results are treated as a starting corpus, not a final split.
-- **Risk (duplicate-check on marine-engineering):** The marine-engineering wiki has 19,191 pages — naive substring scan is slow. Mitigation: duplicate check uses `sources:` frontmatter index only (one pass over the tree building `source-id → page` map), not full-text.
-- **Risk (additive-only registry write):** Any yaml round-trip library may reorder keys or change quoting. Mitigation: use `ruamel.yaml` preserving order + style, plus structural-diff test in acceptance.
-- **Open:** Should "processed" markers be written inline in `online-resource-registry.yaml` (this plan) or emitted to a sidecar `online-resource-registry.processed.yaml`? Flag for user during plan approval — sidecar is a clean alternative that avoids any registry churn risk.
-- **Open:** Should the follow-on catalog auto-file GitHub child issues under #2390 (or leave issue creation to a human)? This plan defaults to NOT auto-filing; user decides at approval.
+- **Risk (classifier precision):** Deterministic host + notes classifier will misclassify edge entries (e.g., a hydrodynamic-data API hosted on a generic `.gov` domain). Mitigation: runner produces a Classifier Trace section in the output listing the rule that matched each entry; reviewer can catch misassignments during wiki-ingest follow-on (#2039/#2067).
+- **Risk (insufficient-notes false-positives):** The 120-char + indicator threshold may push adequately-documented entries into the follow-on catalog. Dry-run shows 15/40 insufficient — split is reasonable. Threshold is recorded in the report and is adjustable by flag for re-runs.
+- **Risk (duplicate-check on marine-engineering):** 19,191 pages — mitigation is frontmatter-only scan with a 30-s wall-clock budget and target-domain-only fallback (see Acceptance).
+- **Risk (additive-only registry write without ruamel):** Scoped text-patch approach uses an anchored regex matching each `- id: <id>` line and appending two keys. Structural-diff acceptance test confirms no other bytes change. If the regex anchor is insufficient on edge-case YAML whitespace, runner aborts with a clear error instead of silently mutating.
+- **Open:** Should the follow-on catalog auto-file GitHub child issues under #2390 or leave issue creation to a human? This plan defaults to NOT auto-filing; user decides at approval.
+- **Open:** Should the registry write land inline (this plan) or as a sidecar `online-resource-registry.processed.yaml`? Sidecar is still available as a fallback if the text-patch approach fails benchmarking; default is inline.
 
 ---
 
 ## Complexity: T2
 
-**T2** — new runner + TDD test module + report + optional sidecar catalog; modifies one existing data file additively; no schema changes; uses existing registries; no network calls.
+**T2** — new runner + self-test module + report + follow-on catalog, all in owned paths; modifies one existing data file additively; no schema changes; no new dependencies; no network calls.
