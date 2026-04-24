@@ -55,18 +55,36 @@ The 10 issues chosen for this batch **do not overlap** with #2311 or #2227; disp
 
 ## Dispatch Mechanics
 
+### 2-agent pod per issue, in 2 parallel waves (user-approved 2026-04-24)
+
+Each of the 10 issues gets a **pod** = Explorer + Planner. Pods run as two waves:
+
+- **Wave 1: 10 Explorers** (parallel) — each performs codebase recon for its assigned issue and writes intel to `/tmp/orca-batch-2026-04-24/intel-<N>.md`.
+- **Wave 2: 10 Planners** (parallel) — each reads its pod's intel + issue body + template, and writes the final plan to `docs/plans/2026-04-24-issue-<N>-<slug>.md`.
+
+This separation of concerns improves plan quality (Planner's entire context budget is available for synthesis rather than recon), and makes the batch partially resumable (if a Planner fails, we can retry it against the already-written intel without redoing recon).
+
 ### Write-only pattern (applies `feedback_parallel_agent_write_only_pattern`)
 
-Each agent:
+**Explorer agents:**
 
-- Writes **exactly one file**: `docs/plans/2026-04-24-issue-<N>-<slug>.md`
+- Write **exactly one file**: `/tmp/orca-batch-2026-04-24/intel-<N>.md`
 - Cannot commit, push, or touch `gh`
 - Cannot modify source files, tests, configs, or any other file
-- If it tries to write outside its designated plan path, the main session kills that agent rather than fix it (no cross-contamination recovery)
+- May READ anywhere in the repo; may NOT Write outside the intel path
+- If an Explorer attempts a forbidden write, the main session skips that pod's Planner (no plan is produced without intel)
+
+**Planner agents:**
+
+- Write **exactly one file**: `docs/plans/2026-04-24-issue-<N>-<slug>.md`
+- Cannot commit, push, or touch `gh`
+- Cannot re-do codebase recon (intel file is the source of truth — Planner may only verify specific claims against source if confused)
+- May READ the template, intel, issue JSON, and any file explicitly cited by the intel
+- If a Planner tries to write outside its designated plan path, the main session kills it and flags the pod as failed in the morning report
 
 ### Main session serializes post-batch work
 
-After all 10 agents complete (or timeout), the main session:
+After all 10 Planners complete (or timeout), the main session:
 
 1. Verifies each plan file exists and passes a self-review scan (placeholders, past-tense-artifact-claims, evidence count)
 2. Commits all 10 plan files in a single atomic batch
@@ -78,31 +96,49 @@ This avoids the git-lock races recorded in `feedback_multi_agent_commit_serializ
 
 ### Launch shape
 
-- **Subagent type**: `general-purpose` for all 10.
-- **Model**: inherit (Opus 4.7, 1M context) — each plan body is small; context headroom is comfortable.
-- **Background**: `run_in_background: true` on all 10 so the main session is notified as each completes, rather than blocking or polling.
-- **Launch**: a single message from the main session with 10 `Agent` tool calls — satisfies "launch independent agents in parallel".
-- **Timebox**: 25 turns each, single-pass (same as the live #2311 exec pattern).
+- **Subagent type**: `general-purpose` for all 20 (both Explorers and Planners).
+- **Model**: inherit (Opus 4.7, 1M context) — each agent's job is well-scoped; context headroom is comfortable.
+- **Background**: `run_in_background: true` on all agents so the main session is notified as each completes, rather than blocking or polling.
+- **Wave 1 launch**: a single message with 10 Explorer `Agent` tool calls in parallel.
+- **Wave 2 launch**: after all 10 Explorers complete, a single message with 10 Planner `Agent` tool calls in parallel.
+- **Timebox**: 25 turns each.
+- **Session persistence requirement**: main session must remain active between the two waves to trigger wave 2. If the session dies, wave 2 can be resumed manually by re-invoking the planner dispatch against the already-written intel files.
 
-### Per-agent prompt skeleton
+### Explorer prompt skeleton
 
-Each agent receives:
+Each Explorer receives:
 
-1. **Full issue context** pre-fetched to `/tmp/orca-batch-2026-04-24/issue-<N>.json` (raw `gh issue view` JSON). Agent reads this; does not re-fetch.
-2. **Write target** (single absolute path): `/mnt/local-analysis/workspace-hub/docs/plans/2026-04-24-issue-<N>-<slug>.md`
-3. **Plan template**: `docs/plans/_template-issue-plan.md` (all sections required, with the Resource Intelligence evidence contract from #2208).
+1. **Full issue context** pre-fetched to `/tmp/orca-batch-2026-04-24/issue-<N>.json`. Explorer reads this; does not re-fetch.
+2. **Write target** (single absolute path): `/tmp/orca-batch-2026-04-24/intel-<N>.md`.
+3. **Intel structure required**:
+   - Relevant source files (with `src/…:line_range` refs) and what each does today
+   - Existing tests that touch the area (with `tests/…` refs)
+   - Related prior plans under `docs/plans/` (with findings)
+   - Standards applicable (via `data/document-index/standards-transfer-ledger.yaml`) — engineering issues only
+   - Wiki pages applicable (via `knowledge/wikis/**`) — engineering issues only
+   - Gaps: what must be built from scratch (each gap is a testable claim)
+   - Risks surfaced: files that are large/coupled/will need adversarial review
 4. **Shared context allowlist (read-only):**
    - `docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md` (existing infra map)
-   - `src/digitalmodel/orcaflex/**` and `src/digitalmodel/hydrodynamics/**` (for file-level blueprint)
-   - `data/document-index/standards-transfer-ledger.yaml` (engineering issues)
-   - `knowledge/wikis/marine-engineering/wiki/**` (wiki references)
+   - `src/digitalmodel/**`, `tests/**`, `docs/plans/**`, `knowledge/wikis/**`, `data/document-index/**`
 5. **Hard forbidden list:**
-   - `git commit`, `git push`, `gh *` (any), any write outside the designated plan path
+   - `git commit`, `git push`, `gh *` (any), any Write outside the intel path
    - Touching `docs/plans/2026-04-17-issue-2311-*`, `docs/plans/2026-04-12-issue-2227-*` (in-flight elsewhere)
-   - Modifying code, tests, configs, memory files, `.claude/` anything
-6. **Per-issue scope boundary** (one sentence per issue) to prevent scope creep into neighbors.
-7. **Failure protocol**: if the agent cannot satisfy the evidence contract (≥3 sources with concrete findings), it writes a plan with explicit `[EVIDENCE GAP]` markers in the affected sections rather than inventing sources.
-8. **Complexity tagging**: each plan labels itself T1/T2/T3 per template; user uses this for morning approval triage.
+6. **Per-issue scope boundary** (one sentence per issue) to prevent Explorer drift into neighbors.
+
+### Planner prompt skeleton
+
+Each Planner receives:
+
+1. **Intel file** at `/tmp/orca-batch-2026-04-24/intel-<N>.md` (its pod's Explorer output).
+2. **Issue JSON** at `/tmp/orca-batch-2026-04-24/issue-<N>.json`.
+3. **Plan template**: `docs/plans/_template-issue-plan.md` (all sections required, with the Resource Intelligence evidence contract from #2208).
+4. **Write target** (single absolute path): `/mnt/local-analysis/workspace-hub/docs/plans/2026-04-24-issue-<N>-<slug>.md`.
+5. **Hard forbidden list:**
+   - `git commit`, `git push`, `gh *` (any), any Write outside the designated plan path
+   - Re-doing codebase recon — Planner must use intel-sourced citations, not fresh grep
+6. **Failure protocol**: if the intel has gaps, Planner writes the plan with explicit `[EVIDENCE GAP]` markers in the affected sections rather than inventing sources.
+7. **Complexity tagging**: each plan labels itself T1/T2/T3 per template; user uses this for morning approval triage.
 
 ### Coordination with the live #2311 and plan-2227 work
 
@@ -141,8 +177,9 @@ Each agent receives:
 
 ## Acceptance Criteria for This Batch
 
+- [ ] 10 intel files exist at `/tmp/orca-batch-2026-04-24/intel-<N>.md`.
 - [ ] 10 plan files exist at the designated paths.
-- [ ] Each plan has a non-empty Resource-Intelligence section with ≥3 sources and an Evidence block.
+- [ ] Each plan has a non-empty Resource-Intelligence section with ≥3 sources and an Evidence block, sourced from its pod's intel file.
 - [ ] No plan is self-labeled `status:plan-approved`.
 - [ ] All 10 issues carry `status:plan-review` label after batch (or the label application failed cleanly with error captured in morning report).
 - [ ] Each of the 10 issues has a summary comment posted linking to its plan.
