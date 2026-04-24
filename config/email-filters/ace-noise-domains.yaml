@@ -99,6 +99,44 @@ domains:
     category: system
     notes: "Google account notifications — already have separate alerts"
 
+  # --- Promoted from REVIEW bucket on 2026-04-24 ---
+  # Per claude-in-chrome session: now part of Gmail "AutoNoise" filter
+  # (Skip Inbox + Label only; promote to Delete after 1-week observation per #2423)
+  - domain: m.learn.coursera.org
+    action: UNSUBSCRIBE
+    category: newsletter
+    notes: "Coursera course marketing"
+
+  - domain: irctc.co.in
+    action: UNSUBSCRIBE
+    category: travel
+    notes: "Indian rail booking notifications"
+
+  - domain: info.tatacapital.co.in
+    action: DELETE_ONLY
+    category: cross-noise
+    notes: "Misdirected EMI reminders — no account; standard unsub fails"
+
+  - domain: info.dpam.com
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "Investment marketing"
+
+  - domain: blueskysfund.com
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "Investment fund marketing"
+
+  - domain: cincsystems.net
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "HOA management software marketing"
+
+  - domain: indianstarllc.ccsend.com
+    action: UNSUBSCRIBE
+    category: marketing
+    notes: "Indian community newsletter"
+
 # --- EXPLICITLY NOT NOISE (do NOT add these) ---
 # sandsig.com      — KEEP for CRE data extraction (per #1991 updated direction)
 # marcusmillichap.com — KEEP for CRE data extraction
