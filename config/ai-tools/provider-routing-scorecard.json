@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-24T13:20:08.029646Z",
+  "generated_at": "2026-04-24T21:04:24.609529Z",
   "current_week": "2026-W17",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-24T13:20:07.624744Z",
-    "audit_generated_at": "2026-04-24T02:40:12Z"
+    "utilization_generated_at": "2026-04-24T21:04:20.979930Z",
+    "audit_generated_at": "2026-04-24T15:25:36Z"
   },
   "recommended_provider_order": [
     "codex",
@@ -17,32 +17,32 @@
       "provider": "claude",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 24.9,
+      "reported_utilization_pct": 27.1,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 200,
-      "post_records_current_week": 10124,
-      "audit_post_records": 86372,
-      "missing_repo_reads": 8450,
-      "python3_per_1k_records": 8.64,
-      "migration_debt_per_1k_records": 20.13,
+      "sessions_current_week": 219,
+      "post_records_current_week": 11014,
+      "audit_post_records": 89108,
+      "missing_repo_reads": 8454,
+      "python3_per_1k_records": 8.53,
+      "migration_debt_per_1k_records": 19.52,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 6317
+          "count": 6895
         },
         {
           "tool": "Read",
-          "count": 1751
+          "count": 1927
         },
         {
           "tool": "Edit",
-          "count": 741
+          "count": 787
         },
         {
           "tool": "Write",
-          "count": 476
+          "count": 538
         },
         {
           "tool": "unknown",
@@ -76,9 +76,9 @@
       "quota_source": "history.jsonl",
       "sessions_current_week": 188,
       "post_records_current_week": 2989,
-      "audit_post_records": 20008,
-      "missing_repo_reads": 518,
-      "python3_per_1k_records": 17.99,
+      "audit_post_records": 20144,
+      "missing_repo_reads": 463,
+      "python3_per_1k_records": 17.92,
       "migration_debt_per_1k_records": 0.0,
       "top_migration_hint": null,
       "top_tools": [

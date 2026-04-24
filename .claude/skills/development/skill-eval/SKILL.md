@@ -138,6 +138,34 @@ bash scripts/skills/validate-skills.sh
 bash scripts/skills/skill-coverage-audit.sh
 ```
 
+## Housekeeping Issue Workflow
+
+When asked to review the entire skill ecosystem and create a housekeeping GitHub issue, use a layered audit rather than relying on one script:
+
+1. Run the evaluator summary for the whole ecosystem:
+   ```bash
+   uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --summary-only
+   ```
+2. Check cross-agent visibility/parity before claiming ecosystem health:
+   ```bash
+   find -L .claude/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
+   find -L .codex/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
+   find -L .gemini/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
+   test -L .codex/skills && echo codex_symlink_ok || echo codex_symlink_bad
+   test -L .gemini/skills && echo gemini_symlink_ok || echo gemini_symlink_bad
+   ```
+3. Add a targeted active-skill inventory that excludes `_archive` but deliberately reports grouping/taxonomy drift, including:
+   - top-level category counts and categories with <=2 skills
+   - missing `category` frontmatter
+   - frontmatter category vs directory mismatches
+   - duplicate frontmatter names
+   - oversized `SKILL.md` files
+   - missing `## Quick Start` / `## When to Use`
+   - skills without linked `scripts/`, `references/`, `templates/`, or `assets/`
+4. Search existing GitHub issues before creating a new one, and reference related open/closed skill-curation issues to avoid duplication.
+5. Frame the issue as a recurring housekeeping umbrella when the user asks for periodic review: weekly deterministic report, monthly semantic/grouping review, quarterly adversarial taxonomy review.
+6. Include acceptance criteria for reports, trend deltas, archive handling (`_archive` and `_archived`), category alias/waiver policy, and no issue spam.
+
 ## Best Practices
 
 - Run after creating new skills with `/skill-creator` to validate structure

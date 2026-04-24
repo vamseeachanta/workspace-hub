@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-24T13:20:09.950463Z
+Generated: 2026-04-24T21:04:30.220186Z
 Current week: 2026-W17
 Recommended provider order: codex, gemini, claude
 
@@ -9,13 +9,13 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 15
+- Execution-ready candidates: 18
 - Total routed candidates: 169
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2348 triage: promote #1707/#1708/#1709 from review-backlog — live scanner has ToS/rate-limit exposure | yes | strategy/workflow/architecture language | bug, priority:high, domain:gtm, status:plan-approved |
-| #2380 feat(knowledge): execute Batch Pack 3 Tier A for external engineering software profiles | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
+| #2368 feat(knowledge): generate faceted portal pages for large LLM-wiki domains | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:knowledge-management, status:plan-approved |
 | #2408 feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:release-management, status:plan-approved |
 | #2433 chore(ci-health): worldenergydata main CI — 22+ collection errors blocking 5 Dependabot PRs (#329-#333) | yes | strategy/workflow/architecture language | priority:high, cat:infrastructure, status:plan-approved |
 | #2461 chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:maintenance, domain:repo-organization, status:plan-approved |
@@ -36,9 +36,9 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2464 chore(workspace-hub): split curated tier-1 routing index from raw inventory and clean routing noise | yes | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:harness, domain:repo-organization, status:plan-approved |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
-| #2194 feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
 | #2195 test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
 | #2199 feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage | no | implementation/test/fix language | enhancement, priority:medium, cat:harness |
+| #2200 test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh | no | implementation/test/fix language | enhancement, priority:medium, cat:harness |
 
 ## gemini
 

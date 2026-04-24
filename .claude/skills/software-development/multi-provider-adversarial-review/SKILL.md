@@ -70,12 +70,12 @@ git diff main...HEAD > /tmp/diff-for-review.txt
 Use `codex exec` and `gemini exec` via background PTY processes:
 
 ```bash
-# Codex review
-cd /path/to/repo && codex exec "$(cat /tmp/review-prompt.md)" 2>&1 | tee /tmp/codex-review.txt
+# Codex review — prefer stdin for large/markdown-heavy prompts
+cd /path/to/repo && codex exec -C /path/to/repo - < /path/to/repo/.planning/quick/review-prompt.md 2>&1 | tee /tmp/codex-review.txt
 # Run with: terminal(command=..., pty=true, background=true, timeout=300)
 
 # Gemini review (only if three-provider trigger met)
-cd /path/to/repo && gemini exec "$(cat /tmp/review-prompt.md)" 2>&1 | tee /tmp/gemini-review.txt
+cd /path/to/repo && gemini exec "$(cat /path/to/repo/.planning/quick/review-prompt.md)" 2>&1 | tee /tmp/gemini-review.txt
 # Run with: terminal(command=..., pty=true, background=true, timeout=300)
 ```
 
@@ -183,6 +183,8 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
    - Keep the full context in a separate workspace file if needed, but do not force the entire issue history/diff corpus into argv.
    - Save the compact prompt as its own artifact (for example `.planning/quick/review-<issue>-implementation-compact-prompt.md`) so the recovery path is reproducible.
    - Prefer compact self-contained prompts over retrying the same oversized command.
+   - Codex-specific recovery: if `codex exec "$(cat prompt.md)"` exits 0 but the tee/raw artifact is empty or contains no verdict, treat it as a failed dispatch, not a successful review. Retry with stdin: `codex exec -C /path/to/repo - < /path/to/repo/.planning/quick/review-prompt.md 2>&1 | tee ...`.
+   - Always validate the raw artifact after each provider run by checking both non-zero length and a verdict/findings marker; process exit code alone is insufficient.
 
 3. **Gemini capacity limits** — `gemini-3.1-pro-preview` can hit 429 MODEL_CAPACITY_EXHAUSTED errors. Gemini CLI retries automatically but may take longer. Allow extra timeout.
    - In large parallel review waves, Gemini may fail repeatedly and never produce a usable verdict.
