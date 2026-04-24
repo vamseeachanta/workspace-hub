@@ -145,15 +145,63 @@ Each Planner receives:
 - Re-run `ps -ef | grep -E "(claude|codex)"` immediately before dispatch to confirm those PIDs are still scoped to their current issues and have not expanded.
 - Skip any issue that appears in `logs/orchestrator/hermes/` as currently in-flight (safety net — none of the 10 should hit this).
 
+## Wave 3: Adversarial Cross-Review (added mid-flight 2026-04-24)
+
+User request: each plan produced by Wave 2 must have an adversarial cross-review waiting in the morning for approval triage.
+
+### Mechanism: single-provider Claude adversarial review (the permission-gate-safe fallback)
+
+Per `feedback_permission_gate_blocks_cross_review` and `feedback_codex_needs_pushed_artifact`, the canonical 3-provider fanout (`scripts/review/plan-review-fanout.sh`) requires pushing plans to GitHub first and consumes Codex/Gemini remote-CLI quota — neither is appropriate for unsupervised overnight execution on plans the user has not yet approved.
+
+**Wave 3 shape:** 10 parallel Claude adversarial-reviewer agents, one per plan.
+
+- Each reviewer is a `general-purpose` subagent with `run_in_background: true`.
+- Each writes exactly one file: `scripts/review/results/2026-04-24-plan-<N>-adversarial.md`.
+- Verdict scale: `APPROVE` / `MINOR` / `MAJOR` (matches the existing fanout format).
+- Defect-hunting stance is mandatory per `feedback_adversarial_review_stance` — charitable reading is disallowed; the prompt forces defect-finding.
+
+### Reviewer prompt skeleton
+
+Each reviewer receives:
+
+1. **The plan file** to review (produced by Wave 2's Planner for that pod).
+2. **The intel file** that the Planner consumed (so the reviewer can check intel-to-plan coherence).
+3. **The issue JSON** (ground truth for scope).
+4. **Adversarial stance** — explicit instruction: "Your job is to find defects, not to approve. Assume the plan is wrong until proven right. If the plan says 'this will work', your default stance is 'where does this break?'"
+5. **Defect checklist** (reviewer must explicitly address each or mark N/A):
+   - **Scope drift:** does the plan do more than the issue asks?
+   - **Evidence gaps:** are the Resource-Intelligence claims verifiable? Any hallucinated file paths or function names?
+   - **TDD completeness:** does every acceptance criterion have a corresponding test in the test list?
+   - **Missing edge cases:** what inputs/states/failures does the plan not handle?
+   - **Coupling risk:** does the plan touch files outside its scope or create hidden shared state?
+   - **Past-tense drift:** does the plan describe proposed work as already-done (`feedback_plan_past_tense_artifact_claims`)?
+   - **Self-labeling:** any claim of `status:plan-approved` or equivalent pre-authorization?
+   - **Plan-vs-intel contradiction:** does the plan cite sources or approaches that the intel did not surface?
+   - **Complexity mismatch:** is T1/T2/T3 tag consistent with the plan's actual scope?
+   - **For #515 specifically:** did the plan present the existing-taxonomy tradeoff (A broad / B narrow) as an explicit user decision, or silently pick one?
+   - **For #503 specifically:** did the plan address the two-competing-scripts consolidation and the licensing/ToS gate?
+6. **Verdict rules:**
+   - `APPROVE` only if defect checklist is clean AND evidence contract is satisfied.
+   - `MINOR` for defects fixable without re-architecture.
+   - `MAJOR` if any of: scope drift, hallucinated evidence, missing TDD, self-labeling, past-tense drift, or a silently-picked-instead-of-presented tradeoff.
+7. **Hard forbidden:** any Write outside the review path; any `gh` / `git` call; any claim of "approved for implementation" (that's user-only).
+
+### Full 3-provider fanout remains available (user-triggered)
+
+After morning triage, user may run `scripts/review/plan-review-fanout.sh <plan-path>` manually for any plan they want full Claude+Codex+Gemini treatment on. Prerequisites for that path:
+- Plan must be pushed to GitHub (Codex sandbox can't read local files)
+- Remote-CLI quota available
+
 ## Morning Report Contents
 
 `docs/reports/2026-04-24-overnight-orcaflex-orcawave-planning-batch.md` will contain:
 
-1. **Per-issue verdict table** (10 rows): plan path, complexity (T1/T2/T3), evidence-count, self-review flags, recommended approve/revise/hold.
+1. **Per-issue verdict table** (10 rows): plan path, complexity (T1/T2/T3), evidence-count, self-review flags, adversarial-review verdict (APPROVE/MINOR/MAJOR), review path, recommended approve/revise/hold.
 2. **Cross-issue dependency notes**: any plan that references another (e.g., #500 ↔ #501 config surface, #279 ↔ #282 reporting primitives).
 3. **Deferred-cluster readiness**: what #515's plan locks that now unblocks planning of #517/#518/#519.
-4. **Failed lanes** (if any): cause, whether partial output is recoverable, recommended retry shape.
-5. **Recommended user actions**: suggested order of review (cheap T1s first, heavy T3s last) — but explicitly **not** suggesting which to approve.
+4. **Failed lanes** (if any): cause, whether partial output is recoverable, recommended retry shape. Covers failed Explorers, Planners, and Reviewers independently.
+5. **Adversarial-review summary**: aggregate defect counts by category across all 10 reviews; flag any MAJOR verdicts as requiring re-plan before implementation.
+6. **Recommended user actions**: suggested order of review (cheap T1s first, heavy T3s last) — but explicitly **not** suggesting which to approve.
 
 ## Guardrails Specific to This Batch
 
@@ -180,11 +228,12 @@ Each Planner receives:
 - [ ] 10 intel files exist at `/tmp/orca-batch-2026-04-24/intel-<N>.md`.
 - [ ] 10 plan files exist at the designated paths.
 - [ ] Each plan has a non-empty Resource-Intelligence section with ≥3 sources and an Evidence block, sourced from its pod's intel file.
-- [ ] No plan is self-labeled `status:plan-approved`.
+- [ ] 10 adversarial-review files exist at `scripts/review/results/2026-04-24-plan-<N>-adversarial.md` with a clear APPROVE/MINOR/MAJOR verdict.
+- [ ] No plan is self-labeled `status:plan-approved` (verified by Wave 3 reviewers as part of defect checklist).
 - [ ] All 10 issues carry `status:plan-review` label after batch (or the label application failed cleanly with error captured in morning report).
-- [ ] Each of the 10 issues has a summary comment posted linking to its plan.
-- [ ] Morning report exists at `docs/reports/2026-04-24-overnight-orcaflex-orcawave-planning-batch.md`.
-- [ ] No modifications to source code, tests, configs, memory files, `.claude/` files, or any path other than the 10 designated plans + the 1 morning report.
+- [ ] Each of the 10 issues has a summary comment posted linking to its plan AND its adversarial review.
+- [ ] Morning report exists at `docs/reports/2026-04-24-overnight-orcaflex-orcawave-planning-batch.md` with adversarial-verdict column populated.
+- [ ] No modifications to source code, tests, configs, memory files, `.claude/` files, or any path other than the 10 plans + 10 reviews + 1 morning report.
 
 ## What Happens After User Approval of This Spec
 
