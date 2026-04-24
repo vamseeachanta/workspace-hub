@@ -1,6 +1,6 @@
 # Plan for #2476: llm-wiki canonical semantic-equivalence contract and fixture cookbook
 
-> **Status:** draft (v3 — review MAJORs partially addressed; approval blocked pending provider-runner fix and re-review)
+> **Status:** plan-approved (v3 — user explicitly waived broken Codex/Gemini review-runner issue for #2475/#2476 on 2026-04-24)
 > **Complexity:** T2
 > **Date:** 2026-04-23
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2476
