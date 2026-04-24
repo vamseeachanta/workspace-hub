@@ -1,89 +1,101 @@
 # Plan for #2126: test(llm-wiki): validate markdown conversion quality across all 717 topics
 
-> **Status:** draft
+> **Status:** draft (v2 — addresses r1 findings)
 > **Complexity:** T2
 > **Date:** 2026-04-24
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2126
-> **Review artifacts:** scripts/review/results/2026-04-24-plan-2126-claude.md | ...-codex.md | ...-gemini.md (pending — cross-review infrastructure currently blocked per batch-coordination note)
+> **Base commit:** `8c235f5e4a02a5ce633f43578b7335e30a53fb4b` (live-state claims anchored to this SHA)
+> **Review artifacts:**
+> - r1 Claude (MAJOR): `scripts/review/results/20260424T150953Z-plan-2126.md-plan-claude.md`
+> - r1 Gemini (MINOR): `scripts/review/results/20260424T151456Z-plan-2126.md-plan-gemini.md`
+> - r1 Codex: not produced (codex-cli 0.124.0 upstream stdin-hang per memory `feedback_codex_cli_0_124_upstream_regression`)
+> - r2 artifacts: pending; revision-bound to this v2 (path and SHA to be recorded below once reviews land)
+
+---
+
+## Changes from v1 (summary)
+
+This v2 resolves all three P1 findings from the r1 Claude review, the four P2 findings (two from Claude, two from Gemini's implicit asks about stratification and reviewer conflict), and the two P3 findings. Past-tense artifact language has been removed throughout. An Attested Evidence block replaces the prior embedded-verification prose.
+
+| Finding | Severity | Resolution chosen |
+|---|---|---|
+| Parametrize arithmetic off-by-20 | P1 | Structural test count raised to **13** by adding six explicit structural tests (enumerated in TDD list). AC asserts `pytest --collect-only` yields exactly **133 = 13 + 120** items. |
+| Per-topic/aggregate threshold contradiction | P1 | Aggregate-mean rule **dropped**. Replaced with a floor-occupancy rule: *"on any dimension, at most 2 of 20 topics may score below the per-topic floor, and zero may score below 0.70."* Math is provably consistent (no mean/floor ordering trap). |
+| Stratification over-constrained | P1 | Relaxed to **marginal-only**. Each axis's marginal counts are honored independently; joint cells are not constrained. Validator checks marginals only. |
+| Oracle authorship circularity | P2 | Blinding protocol pinned: oracle authored from raw HTML + published-target rendering guidance, without viewing converter output. Schema field `oracle_review_method` (`from-source` \| `reviewed-from-output`) logs the method per entry; CI fails any `reviewed-from-output` row. |
+| Rubric formulas under-specified | P2 | Explicit formulas locked for all six dimensions (see Rubric section). Two implementers given the same inputs MUST produce bit-identical scores. |
+| `test_no_network_access` trivially passes | P2 | Replaced urlopen monkeypatch with `pytest-socket`'s `disable_socket` autouse session-scoped fixture + an active probe asserting `socket.socket()` raises `SocketBlockedError`. |
+| Review-artifact AC vs revision-bound gate | P3 | Moved to a "Deferred / conditional" subsection with explicit unblock condition. Plan will not enter `status:plan-review` until r2 reviews land under this v2's commit SHA. |
+| Provenance fields missing from schema | P3 | `source_url`, `fetched_at` (ISO-8601 UTC), `html_sha256`, `oracle_authored_by`, `oracle_review_method` are now **required** manifest fields; validator test rejects any missing field. |
 
 ---
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `scripts/data/llm-wiki/ingest-orcina.py` lines 98-259 — `html_to_markdown()` + `_convert_element()` + `_convert_table()` will be the single canonical conversion surface under test. It emits a `<!-- source: URL -->` header, strips `script/style/nav/footer/header/link/meta/noscript` and MadCap `MCBreadcrumbs*`/`MCMiniTocBox_0`/`MCRelatedTopics` containers, and preserves heading levels, `<p>` inline mixing (`strong|b`, `em|i`, `code`, `a`, `br`, `img`), `ul/ol` (non-nested, non-recursive — see line 192 `recursive=False`), `table` via `_convert_table`, `pre` as fenced code, `dl`/`dt`/`dd` as definition terms, and a top-level `<hr>` → `---`.
-- Found: `scripts/data/llm-wiki/tests/test_resolve_wiki_path.py` (186 lines) — existing pytest harness pattern. It already solves the hyphenated-package import problem (`sys.path.insert(0, scripts/data/llm-wiki/)` at lines 22-26) and demonstrates fixture-driven isolation with `tmp_path`, `monkeypatch`, and `patch.object(mod, "REPO_ROOT", tmp_repo)`. The new conversion-QA module will reuse this sys.path bootstrap to import `ingest-orcina` as `ingest_orcina` (hyphen → underscore) via `importlib.util.spec_from_file_location`, because the current filename contains a hyphen that blocks plain `import`.
-- Found: `scripts/data/llm-wiki/tests/__init__.py` (empty) — test package anchor already exists.
-- Found: `scripts/data/llm-wiki/resolve_wiki_path.py` — resolves topic-corpus root via env var → `config/llm-wiki.yaml` → `${REPO_ROOT}/data/llm-wiki` → `${REPO_ROOT}/knowledge/wikis`. This plan will NOT read the live 717-topic corpus from disk; it will ship self-contained HTML fixtures so all assertions execute without network or machine-specific symlinks.
-- Gap: no `html_to_markdown` quality test exists anywhere under `scripts/data/llm-wiki/tests/`, `tests/`, or `knowledge/`. The ingestion surface has been production-running since #2088 without oracle-backed regression coverage.
+- `scripts/data/llm-wiki/ingest-orcina.py` lines 98-259 — `html_to_markdown()` + `_convert_element()` + `_convert_table()` are the single canonical conversion surface under test. It emits a `<!-- source: URL -->` header, strips `script/style/nav/footer/header/link/meta/noscript` and MadCap `MCBreadcrumbs*`/`MCMiniTocBox_0`/`MCRelatedTopics` containers, and preserves heading levels, `<p>` inline mixing (`strong|b`, `em|i`, `code`, `a`, `br`, `img`), `ul/ol` (non-nested, non-recursive — see line 192 `recursive=False`), `table` via `_convert_table`, `pre` as fenced code, `dl`/`dt`/`dd` as definition terms, and a top-level `<hr>` → `---`.
+- `scripts/data/llm-wiki/tests/test_resolve_wiki_path.py` (186 lines) — existing pytest harness pattern. It already solves the hyphenated-package import problem (`sys.path.insert(0, scripts/data/llm-wiki/)` at lines 22-26) and demonstrates fixture-driven isolation with `tmp_path`, `monkeypatch`, and `patch.object(mod, "REPO_ROOT", tmp_repo)`. The new conversion-QA module will reuse this sys.path bootstrap to import `ingest-orcina` as `ingest_orcina` via `importlib.util.spec_from_file_location`.
+- `scripts/data/llm-wiki/tests/__init__.py` (empty) — test package anchor already exists.
+- `scripts/data/llm-wiki/resolve_wiki_path.py` — resolves topic-corpus root; NOT used by this plan at run time because fixtures are self-contained.
+- Gap: no `html_to_markdown` quality test exists under `scripts/data/llm-wiki/tests/`, `tests/`, or `knowledge/`. The ingestion surface has been production-running since #2088 without oracle-backed regression coverage.
 
 ### Standards
-Not applicable — the conversion rubric is domain (MadCap Flare HTML → markdown), not an engineering standard. No entry in `data/document-index/standards-transfer-ledger.yaml` applies.
+Not applicable — conversion fidelity is a domain rubric (MadCap Flare HTML → markdown), not an engineering standard.
 
 ### LLM Wiki pages consulted
-- Not directly applicable — this plan tests the *ingestion surface that produces* the marine-engineering/naval-architecture wikis, not the wiki content itself. `knowledge/wikis/` does contain the downstream consumers (`marine-engineering/`, `naval-architecture/`, `engineering/`), but the 717-topic corpus referenced in the issue title is an out-of-tree artifact (see Evidence section).
+Not directly applicable — this plan tests the ingestion surface producing wiki content, not the wiki content itself.
 
 ### Documents consulted
-- Issue body #2126 — lists 6 quality checks (table fidelity, formula preservation, cross-reference links, image alt text, code blocks, encoding), specifies a **sample-20 protocol across 5 categories** (introduction, data, theory, results, API), and names `scripts/data/llm-wiki/ingest-orcina.py` as the converter and `data/llm-wiki/orcaflex/topics/` + `data/llm-wiki/orcawave/topics/` as the sample sources.
-- Parent #2088 (CLOSED) — feat issue that shipped `ingest-orcina.py`; Orcina webhelp totals referenced in #2126 title (717 topics) correspond to the `parse_toc_xml` crawl output under `data/llm-wiki/{orcaflex,orcawave,orcfxapi}/topics/`.
-- Sibling #2141 (OPEN) — "Add fixture-backed tests for llm-wiki ingest and search scripts." Explicitly requests "Fixture-based ingestion tests for sample HTML/markdown inputs" and "small smoke test for end-to-end index build + search on fixture content." This plan executes the conversion-quality slice of that fixture work; #2141 remains for the search-side coverage and schema/ranking tests.
-- Sibling #2476 (OPEN) — "docs(llm-wiki): add canonical spec semantic-equivalence contract and fixture cookbook." Will codify shared fixture layout. This plan adopts the fixture root `tests/fixtures/llm-wiki/conversion-oracle/` so #2476's cookbook can absorb or link it without a move.
-- `docs/plans/2026-04-11-issue-2205-multi-machine-llm-wiki-resource-doc-intelligence-operating-model.md` — parent operating model. The conversion-QA module is an intelligence-quality instrument under that umbrella (verifies surface fidelity of the ingestion step).
-- `data/document-index/intelligence-accessibility-registry.yaml` lines 342-349 — confirms the llm-wiki operating model has an accessibility entry; this plan does NOT add a new registry entry because test modules are transient infrastructure, not durable intelligence surfaces per #2209's durable-vs-transient boundary.
-- `data/document-index/online-resource-registry.yaml` lines 2187-2223 — Orcina webhelp sources already registered (`orcina_com_webhelp_orcaflex_*`). Fixtures in this plan will be derived by fetching + snapshotting these pages once, NOT by re-crawling on every test run.
-- `docs/plans/README.md` lines 53 (retrieval-contract table, `cat:data-pipeline`) — requires `registry.yaml`, pipeline config, `resource-intelligence-maturity.yaml` to be consulted. Status below.
+- Issue body #2126 — 6 quality checks, sample-20 protocol, 5 categories.
+- Parent #2088 (CLOSED) — shipped `ingest-orcina.py`; Orcina webhelp totals correspond to `data/llm-wiki/{orcaflex,orcawave,orcfxapi}/topics/`.
+- Sibling #2141 (OPEN) — fixture-backed tests for llm-wiki ingest and search scripts (this plan covers the conversion-quality slice; search-side remains).
+- Sibling #2476 (OPEN) — canonical spec semantic-equivalence contract + fixture cookbook; this plan adopts `tests/fixtures/llm-wiki/conversion-oracle/` so #2476 can link/absorb.
+- `docs/plans/2026-04-11-issue-2205-multi-machine-llm-wiki-resource-doc-intelligence-operating-model.md` — parent operating model.
+- `data/document-index/intelligence-accessibility-registry.yaml` lines 342-349 — llm-wiki accessibility entry exists; no new registry row added (transient test infra per #2209 boundary).
+- `data/document-index/online-resource-registry.yaml` lines 2187-2223 — Orcina webhelp sources already registered.
+- `docs/plans/README.md` retrieval contract (`cat:data-pipeline`) — status table below.
 
 ### Data-Pipeline retrieval contract (`cat:data-pipeline`)
 | Required source | Consulted | Finding |
 |---|---|---|
-| `data/document-index/registry.yaml` | YES | Search for `llm-wiki`/`orcina`/`html_to_markdown` returned no matches. The ingestion pipeline is not yet registered. Gap: pipeline registration is out of scope for this test-only plan; flag as follow-up for #2141 or a new entry under the #2205 operating model. |
-| Pipeline config (`config/data/pipeline-manifest.yaml`) | YES | File contains `pipelines: {}` only — no llm-wiki entry. Same gap as above. |
-| `data/document-index/resource-intelligence-maturity.yaml` | YES | Search for `llm-wiki`/`orcina` returned no matches; no maturity-tier row exists. Gap noted; not extended by this plan because maturity tracks intelligence-surface durability, not test coverage. |
+| `data/document-index/registry.yaml` | YES | No match for `llm-wiki`/`orcina`/`html_to_markdown`. Ingestion pipeline unregistered. Gap flagged as follow-up; not scoped here. |
+| `config/data/pipeline-manifest.yaml` | YES | File contains `pipelines: {}` only. Same gap. |
+| `data/document-index/resource-intelligence-maturity.yaml` | YES | No llm-wiki row. Gap flagged; not extended. |
 
 ### Gaps identified
-- No existing conversion-quality test module under `scripts/data/llm-wiki/tests/`.
-- No oracle markdown fixtures exist for any of the 717 topics.
-- No stratified sampler exists — the issue references "sample 20 across categories" but provides no selection algorithm; this plan must define one.
-- `llm-wiki` ingestion is not in `registry.yaml`, `pipeline-manifest.yaml`, or `resource-intelligence-maturity.yaml` — flagged as follow-up, not scoped here.
+- No conversion-quality test module exists.
+- No oracle markdown fixtures exist for any topic.
+- No stratified sampler exists.
+- `llm-wiki` ingestion is absent from registry / pipeline-manifest / maturity ledger — flagged as follow-up, not scoped here.
 
-### Evidence (embedded verification)
+---
 
-**Issue statuses** (verified 2026-04-24 via `gh issue view`):
-- `#2126` — OPEN — test(llm-wiki): validate markdown conversion quality across all 717 topics
-- `#2088` — CLOSED — feat(llm-wiki): ingest OrcaFlex, OrcaWave, and OrcFxAPI online help into llm-wiki
-- `#2140` — CLOSED — Replace tracked absolute llm-wiki symlink with portable path resolution and smoke tests
-- `#2141` — OPEN — Add fixture-backed tests for llm-wiki ingest and search scripts
-- `#2476` — OPEN — docs(llm-wiki): add canonical spec semantic-equivalence contract and fixture cookbook
+## Attested Evidence
 
-**File existence** (`ls -la` 2026-04-24):
-- EXISTS: `scripts/data/llm-wiki/ingest-orcina.py` (637 lines, canonical conversion surface)
-- EXISTS: `scripts/data/llm-wiki/tests/test_resolve_wiki_path.py` (existing pattern)
-- EXISTS: `scripts/data/llm-wiki/tests/__init__.py` (empty package anchor)
-- EXISTS: `scripts/data/llm-wiki/resolve_wiki_path.py`
-- MISSING (gitignored per `.gitignore:445`): `data/llm-wiki/` — runtime corpus root, not in-repo.
-- MISSING (new — this plan creates): `scripts/data/llm-wiki/tests/test_conversion_quality.py`
-- MISSING (new — this plan creates): `scripts/data/llm-wiki/tests/fixtures_sampling.py`
-- MISSING (new — this plan creates, 20 files): `tests/fixtures/llm-wiki/conversion-oracle/*.{html,md,json}`
+Claims below are independently verifiable and anchored to base commit `8c235f5e4a02a5ce633f43578b7335e30a53fb4b`. Each claim is stated with the verification command so a reviewer can reproduce.
 
-**Line excerpts** (`sed -n 98,132p scripts/data/llm-wiki/ingest-orcina.py`):
-```
-def html_to_markdown(html_content: str, source_url: str = "") -> tuple[str, str]:
-    """Convert HTML to markdown using BeautifulSoup. Returns (title, markdown)."""
-    soup = BeautifulSoup(html_content, "html.parser")
-    ...
-    if source_url:
-        markdown = f"<!-- source: {source_url} -->\n\n{markdown}"
-    return title, markdown
-```
+**Issue statuses** (verify via `gh issue view <N> --json number,state,title`):
+- `#2126` — expected OPEN — `test(llm-wiki): validate markdown conversion quality across all 717 topics`
+- `#2088` — expected CLOSED — `feat(llm-wiki): ingest OrcaFlex, OrcaWave, and OrcFxAPI online help into llm-wiki`
+- `#2140` — expected CLOSED — portable path resolution + smoke tests
+- `#2141` — expected OPEN — fixture-backed tests for llm-wiki ingest and search scripts
+- `#2476` — expected OPEN — canonical spec semantic-equivalence contract and fixture cookbook
 
-**Gap proofs**:
-- `grep -n "llm-wiki\|orcina" config/data/pipeline-manifest.yaml` → empty
-- `grep -rn "llm-wiki\|orcina" data/document-index/registry.yaml` → empty
-- `grep -n "llm-wiki\|orcina" data/document-index/resource-intelligence-maturity.yaml` → empty
-- `find scripts/data/llm-wiki/tests -name "test_conversion*"` → empty
-- `ls .gitignore | grep llm-wiki` → `data/llm-wiki` (line 445) — confirms corpus is out-of-tree and fixtures MUST be committed separately.
+**File existence at HEAD = 8c235f5e** (verify via `git ls-files <path>` or `git show HEAD:<path> | wc -l`):
+- `scripts/data/llm-wiki/ingest-orcina.py` — present, 637 lines
+- `scripts/data/llm-wiki/tests/test_resolve_wiki_path.py` — present, 186 lines
+- `scripts/data/llm-wiki/tests/__init__.py` — present, 0 bytes
+- `scripts/data/llm-wiki/resolve_wiki_path.py` — present
 
-**Source count:** Issue #2126 body + `ingest-orcina.py` + `test_resolve_wiki_path.py` + `docs/plans/README.md` + 3 data-pipeline contract files + 3 related issues (#2088, #2141, #2476) + `online-resource-registry.yaml` = 10 distinct sources (≥3 required).
+**Gap proofs** (verify via the shown command):
+- `git grep -n "llm-wiki\|orcina" -- config/data/pipeline-manifest.yaml` → expected empty
+- `git grep -n "llm-wiki\|orcina" -- data/document-index/registry.yaml` → expected empty
+- `git grep -n "llm-wiki\|orcina" -- data/document-index/resource-intelligence-maturity.yaml` → expected empty
+- `git ls-files scripts/data/llm-wiki/tests/ | grep -c conversion` → expected 0
+- `git ls-files .gitignore | xargs grep -n llm-wiki` → expected to show `data/llm-wiki` ignored
+
+**Tooling availability** (verify via `python -c "import X"` under `uv run`):
+- `pytest-socket` is the chosen network-block harness; it is not yet in `pyproject.toml` dependencies and MUST be added during implementation. The plan flags this as a concrete install step, not an assumption.
 
 ---
 
@@ -94,18 +106,21 @@ def html_to_markdown(html_content: str, source_url: str = "") -> tuple[str, str]
 | This plan | `docs/plans/2026-04-24-issue-2126-markdown-conversion-qa.md` |
 | Test module | `scripts/data/llm-wiki/tests/test_conversion_quality.py` |
 | Sampling helper | `scripts/data/llm-wiki/tests/fixtures_sampling.py` |
+| Rubric scorer helper | `scripts/data/llm-wiki/tests/rubric_scorers.py` |
 | Oracle fixtures | `tests/fixtures/llm-wiki/conversion-oracle/{slug}.html` + `{slug}.md` |
 | Stratification manifest | `tests/fixtures/llm-wiki/conversion-oracle/sample-manifest.yaml` |
-| Rubric report (generated) | `scripts/data/llm-wiki/tests/.artifacts/conversion-quality-report.json` (gitignored) |
-| Plan review — Claude | `scripts/review/results/2026-04-24-plan-2126-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-04-24-plan-2126-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-24-plan-2126-gemini.md` |
+| Manifest JSON Schema | `tests/fixtures/llm-wiki/conversion-oracle/sample-manifest.schema.json` |
+| Oracle authoring checklist | `tests/fixtures/llm-wiki/conversion-oracle/README.md` |
+| Rubric report (generated, gitignored) | `scripts/data/llm-wiki/tests/.artifacts/conversion-quality-report.json` |
+| Plan review r2 — Claude | `scripts/review/results/<stamp>-plan-2126-v2.md-plan-claude.md` |
+| Plan review r2 — Codex | `scripts/review/results/<stamp>-plan-2126-v2.md-plan-codex.md` (conditional on codex-cli fix) |
+| Plan review r2 — Gemini | `scripts/review/results/<stamp>-plan-2126-v2.md-plan-gemini.md` |
 
 ---
 
 ## Deliverable
 
-A self-contained pytest module `test_conversion_quality.py` plus 20 oracle-backed HTML/markdown fixtures under `tests/fixtures/llm-wiki/conversion-oracle/` that will execute `html_to_markdown()` on stratified topics and score each output against six rubric dimensions, failing the run if any dimension falls below a published threshold.
+A self-contained pytest module `test_conversion_quality.py` plus 20 oracle-backed HTML/markdown fixtures under `tests/fixtures/llm-wiki/conversion-oracle/` that will execute `html_to_markdown()` on stratified topics, score each output against six rubric dimensions with locked formulas, and fail the run when the floor-occupancy rule is violated. Strict offline enforcement via `pytest-socket`. Oracle authorship blinded from current converter output.
 
 ---
 
@@ -113,38 +128,45 @@ A self-contained pytest module `test_conversion_quality.py` plus 20 oracle-backe
 
 ```
 # test_conversion_quality.py
+
+@pytest.fixture(scope="session", autouse=True)
+def _disable_network(request):
+    from pytest_socket import disable_socket, SocketBlockedError
+    disable_socket(allow_unix_socket=False)
+    # active probe: verify the block is live
+    with pytest.raises(SocketBlockedError):
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
 def load_sample_manifest():
     read tests/fixtures/llm-wiki/conversion-oracle/sample-manifest.yaml
+    validate against sample-manifest.schema.json (required fields enforced)
     assert len(entries) == 20
-    assert stratification counts match product/category/complexity budgets
+    assert each axis marginal matches declared quota (axis-independent; no joint constraint)
+    assert every entry.oracle_review_method == "from-source"
     return entries
 
-@pytest.mark.parametrize("entry", load_sample_manifest())
-def test_per_topic_conversion(entry):
+@pytest.mark.parametrize("entry", load_sample_manifest(), ids=lambda e: e["slug"])
+@pytest.mark.parametrize("dim", RUBRIC_DIMENSIONS)
+def test_per_topic_dimension(entry, dim):
     html = read entry.html_path
     expected_md = read entry.oracle_md_path
-    actual_title, actual_md = ingest_orcina.html_to_markdown(html, entry.source_url)
-    dimensions = score_rubric(actual_md, expected_md, html)
-    write per-dimension scores to .artifacts/per-topic/<slug>.json
-    for dim in RUBRIC_DIMENSIONS:
-        assert dimensions[dim] >= PER_TOPIC_THRESHOLD[dim], explain(dim)
+    _, actual_md = ingest_orcina.html_to_markdown(html, entry.source_url)
+    score = SCORERS[dim](actual_md, expected_md, html)  # locked formula per dim
+    write {slug, dim, score} to .artifacts/per-topic/<slug>-<dim>.json
+    # NOTE: per-topic floor is NOT asserted here; the aggregation test enforces
+    # the floor-occupancy rule so a single dipped topic does not fail the run.
 
-def test_aggregate_rubric_thresholds():
-    read .artifacts/per-topic/*.json
+def test_aggregate_floor_occupancy():
+    read .artifacts/per-topic/*.json, group by dim
     for dim in RUBRIC_DIMENSIONS:
-        aggregate = mean(topic.scores[dim] for topic in all_topics)
-        assert aggregate >= AGGREGATE_THRESHOLD[dim]
+        below_floor = [s for s in scores[dim] if s < PER_TOPIC_FLOOR[dim]]
+        below_hard  = [s for s in scores[dim] if s < HARD_MIN[dim]]
+        assert len(below_floor) <= MAX_BELOW_FLOOR[dim]   # 2 of 20 by default
+        assert len(below_hard)  == 0                       # zero tolerance for <0.70
     write .artifacts/conversion-quality-report.json
-
-# score_rubric(actual_md, expected_md, html)
-    heading_preservation: compare ordered list of ^#{1,6} tokens from actual vs oracle, Jaccard+order penalty
-    link_resolution: parse [text](href) from actual, verify count + hrefs match oracle allow-list
-    table_fidelity: parse markdown tables (| ... |) from actual, compare cell grid to oracle grid (exact cell text match, order-sensitive)
-    code_block_fidelity: compare fenced ```...``` blocks — count, language tag, body equal after normalizing trailing whitespace
-    image_alt_text: parse ![alt](src) tokens, require non-empty alt OR alt matches oracle (documents bugs without silencing)
-    list_nesting: count top-level + indented bullets; oracle encodes expected nesting shape as a tree of depths
-    return {dim: float 0..1}
 ```
+
+Formula pseudocode for composite scorers is given in the "Rubric dimensions and formulas" section below.
 
 ---
 
@@ -152,126 +174,208 @@ def test_aggregate_rubric_thresholds():
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `scripts/data/llm-wiki/tests/test_conversion_quality.py` | pytest module — per-topic + aggregate rubric assertions |
-| Create | `scripts/data/llm-wiki/tests/fixtures_sampling.py` | stratified-sampling logic + manifest schema validator; importable from both the test module and a CLI helper |
-| Create | `tests/fixtures/llm-wiki/conversion-oracle/sample-manifest.yaml` | declares the 20 selected topics, their product/category/complexity tiers, and source URLs |
-| Create | `tests/fixtures/llm-wiki/conversion-oracle/{slug}.html` × 20 | frozen HTML snapshots fetched once from orcina.com |
-| Create | `tests/fixtures/llm-wiki/conversion-oracle/{slug}.md` × 20 | oracle markdown — manually reviewed reference conversion for each snapshot |
-| Create | `tests/fixtures/llm-wiki/conversion-oracle/README.md` | describes fixture provenance, refresh policy, and oracle-authoring checklist |
-| Modify | `.gitignore` | add `scripts/data/llm-wiki/tests/.artifacts/` so generated reports stay out of git |
-| Update | `docs/plans/README.md` | add this plan to the index |
+| Create | `scripts/data/llm-wiki/tests/test_conversion_quality.py` | pytest module — per-topic scoring + aggregate floor-occupancy + structural tests |
+| Create | `scripts/data/llm-wiki/tests/fixtures_sampling.py` | marginal-quota validator + manifest schema loader |
+| Create | `scripts/data/llm-wiki/tests/rubric_scorers.py` | six pure-function scorers implementing locked formulas |
+| Create | `tests/fixtures/llm-wiki/conversion-oracle/sample-manifest.yaml` | 20-entry manifest with full provenance fields |
+| Create | `tests/fixtures/llm-wiki/conversion-oracle/sample-manifest.schema.json` | JSON Schema enforcing required fields; referenced by validator |
+| Create | `tests/fixtures/llm-wiki/conversion-oracle/{slug}.html` × 20 | frozen HTML snapshots |
+| Create | `tests/fixtures/llm-wiki/conversion-oracle/{slug}.md` × 20 | oracle markdown — from-source authorship only |
+| Create | `tests/fixtures/llm-wiki/conversion-oracle/README.md` | blinding protocol + conflict-resolution procedure |
+| Modify | `.gitignore` | add `**/.artifacts/` repo-wide (per Gemini r1 suggestion, keeps convention uniform) |
+| Modify | `pyproject.toml` / test-deps | add `pytest-socket` to the dev/test dependency group |
+| Update | `docs/plans/README.md` | index this plan |
 
 ---
 
-## Stratification strategy
+## Stratification strategy (marginal-only)
 
-Sample 20 topics from the 717-topic corpus using three orthogonal axes, then intersect. Selection is **deterministic** — the manifest pins exact topics so a reviewer can reproduce.
+Sample 20 topics from the 717-topic corpus using three axes. **Each axis's marginal counts are validated independently; joint cells are not constrained.** A 3×5×3 = 45-cell joint cannot be honored by 20 samples, and the plan does not attempt to. Selection is deterministic via the pinned manifest.
 
-**Axis 1 — Product** (3 levels, proportional to TOC counts):
-- OrcaFlex: 12 topics (largest product)
-- OrcaWave: 5 topics
-- OrcFxAPI: 3 topics
+**Axis 1 — Product marginal** (sums to 20):
+- OrcaFlex: 12; OrcaWave: 5; OrcFxAPI: 3
 
-**Axis 2 — Topic category** (5 levels, from issue body; target ≥3 products per category where possible):
-- introduction (concept/overview pages): 4 topics
-- data (parameter/input-form pages with tables): 5 topics
-- theory (equations/formulas): 4 topics
-- results (output/plot pages): 3 topics
-- API (OrcFxAPI reference pages with code blocks): 4 topics
+**Axis 2 — Topic-category marginal** (sums to 20):
+- introduction: 4; data: 5; theory: 4; results: 3; API: 4
 
-**Axis 3 — Complexity tier** (3 levels, used to force hard cases into the sample):
-- Simple (plain prose, ≤1 table, ≤5 links): 6 topics
-- Medium (multi-section, ≥2 tables OR nested lists): 8 topics
-- Hard (formulas with special chars, cross-references, code blocks, images with alt): 6 topics
+**Axis 3 — Complexity-tier marginal** (sums to 20):
+- Simple: 6; Medium: 8; Hard: 6
 
-The manifest schema encodes all three axes per entry and `fixtures_sampling.py` validates at test-collection time that the bucket budgets are met (fails loudly if the manifest drifts).
+**Hard-tier reservation** (addressing Gemini P3): **at least 2 of the 6 Hard slots MUST be formula-heavy pages** (UTF-8 Greek letters, degree signs, math operators) so the encoding check #6 from the issue body is exercised. The manifest field `encoding_stress: bool` flags these and the validator asserts `sum(encoding_stress) >= 2 within complexity == "Hard"`.
 
----
+**`fixtures_sampling.py` validates**:
+1. total entries == 20
+2. three axis marginals match the quotas above
+3. Hard-tier encoding_stress count >= 2
+4. all provenance fields populated
+5. all `oracle_review_method == "from-source"`
 
-## Rubric dimensions and thresholds
-
-| # | Dimension | Per-topic threshold | Aggregate threshold | Measurement |
-|---|---|---|---|---|
-| 1 | Heading preservation | ≥0.90 | ≥0.95 | Jaccard over ordered (level, text) tuples + order penalty |
-| 2 | Link resolution | ≥0.90 | ≥0.95 | \|actual href set ∩ oracle href set\| / \|oracle href set\| |
-| 3 | Table fidelity | ≥0.85 | ≥0.95 | cell-level exact match over flattened row-major grid |
-| 4 | Code-block fidelity | ≥0.90 | ≥0.95 | block count match AND body equality after whitespace normalization |
-| 5 | Image alt-text | ≥0.80 | ≥0.95 | fraction of images whose alt equals oracle (non-empty preferred; empty-but-matching-oracle counts as neutral, not failure) |
-| 6 | List nesting | ≥0.85 | ≥0.95 | tree-edit distance between actual and oracle depth-trees, normalized |
-
-**Why per-topic < aggregate on table/code/list:** those dimensions have high variance on edge-case pages; a single hard topic can legitimately score 0.85 while the aggregate stays ≥0.95. Thresholds are tuned to catch systematic regressions without punishing acceptable local fidelity loss.
+The validator explicitly does **not** check joint-cell occupancy; the schema docstring documents this trade-off.
 
 ---
 
-## TDD Test List
+## Rubric dimensions and formulas
 
-| Test name | What it verifies | Expected input | Expected output |
+All scores in `[0.0, 1.0]`. Two implementers given the same `(actual_md, expected_md, html)` MUST produce bit-identical scores.
+
+| # | Dimension | Formula (exact) |
+|---|---|---|
+| 1 | Heading preservation | Let `A`, `O` = ordered lists of `(level, normalized_text)` tuples extracted via regex `^(#{1,6})\s+(.*)$`. Let `J = |set(A) ∩ set(O)| / |set(A) ∪ set(O)|` (Jaccard over the set of tuples, `0` if both empty → score `1.0`). Let `K = 1 - kendall_tau_distance(common_subsequence(A, O)) / C(n, 2)` where `n = len(common)` and denominator `0` → `K = 1`. **Score = 0.7 * J + 0.3 * K**. |
+| 2 | Link resolution | Parse `[text](href)` tokens from both. Let `H_a`, `H_o` = multisets of hrefs. **Score = \|H_a ∩ H_o\| / max(\|H_o\|, 1)**. Anchor (`#...`), `mailto:`, and `https://` links are counted in the same bucket in v2; a sub-score breakdown (internal / external / anchor) is recorded in the per-topic JSON for diagnostic purposes but does not factor into the gate score. |
+| 3 | Table fidelity | Parse markdown tables via `\| ... \|` rows. Let `G_a`, `G_o` = row-major flattened cell strings (whitespace-normalized). **Score = matching_cells / max(\|G_o\|, 1)**, where a cell matches iff position and text both agree. Missing or extra tables: absent cells count as non-matching against the oracle grid. |
+| 4 | Code-block fidelity | Parse fenced ` ```...``` ` blocks. Let `B_a`, `B_o` = lists of `(lang_tag, body_normalized)`. **Score = Σ (match_i) / max(len(B_o), 1)**, where `match_i = 1` iff lang tag equals AND body equals after stripping trailing whitespace on each line. |
+| 5 | Image alt-text | Parse `![alt](src)` tokens. For each oracle image `i`, `match_i = 1` iff `alt_a[i] == alt_o[i]` (string equal). **Score = Σ match_i / max(len(oracle_images), 1)**. Empty-equals-empty counts as a match; the dimension records bugs (e.g., systematically stripped alts) because the oracle encodes what *should* be there. |
+| 6 | List nesting | Extract depth-trees `T_a`, `T_o` from bullet/ordered-list lines (leading whitespace → depth; `-`/`*`/`N.` markers). **Score = 1 - zhang_shasha_tree_edit_distance(T_a, T_o) / max(size(T_a), size(T_o), 1)**. Tree size = node count. Zhang-Shasha implementation via `zss` package (pinned `zss==1.2.0`). |
+
+**Per-topic floor and hard-min thresholds** (for the floor-occupancy rule):
+
+| Dim | Per-topic floor | Hard-min (zero-tolerance) | MAX_BELOW_FLOOR (of 20) |
 |---|---|---|---|
-| `test_sample_manifest_loads` | manifest file exists, parses, contains exactly 20 entries | `sample-manifest.yaml` | 20 entries, all fields present |
-| `test_sample_manifest_stratification` | bucket budgets match declared policy | loaded manifest | product/category/complexity counts satisfy quotas |
-| `test_sample_manifest_fixture_files_exist` | every manifest entry has both `.html` and `.md` sidecars | manifest | all 40 files resolvable, non-empty |
-| `test_html_to_markdown_import` | canonical converter is importable from hyphenated path | — | `ingest_orcina.html_to_markdown` callable |
-| `test_per_topic_heading_preservation[slug]` × 20 | per-topic dim 1 meets per-topic threshold | (html, oracle_md) | score ≥ 0.90 |
-| `test_per_topic_link_resolution[slug]` × 20 | per-topic dim 2 | " | score ≥ 0.90 |
-| `test_per_topic_table_fidelity[slug]` × 20 | per-topic dim 3 | " | score ≥ 0.85 |
-| `test_per_topic_code_block_fidelity[slug]` × 20 | per-topic dim 4 | " | score ≥ 0.90 |
-| `test_per_topic_image_alt_text[slug]` × 20 | per-topic dim 5 | " | score ≥ 0.80 |
-| `test_per_topic_list_nesting[slug]` × 20 | per-topic dim 6 | " | score ≥ 0.85 |
-| `test_aggregate_rubric_meets_thresholds` | aggregate means across all 20 topics | per-topic JSON artifacts | every dimension mean ≥ 0.95 |
-| `test_no_network_access` | assertions never hit orcina.com | monkeypatched `urllib.request.urlopen` | zero calls |
-| `test_report_artifact_written` | the `conversion-quality-report.json` is produced and schema-valid | test run exit | file present, keys conform |
+| 1 Heading | 0.90 | 0.70 | 2 |
+| 2 Link | 0.90 | 0.70 | 2 |
+| 3 Table | 0.85 | 0.70 | 2 |
+| 4 Code | 0.90 | 0.70 | 2 |
+| 5 Image alt | 0.80 | 0.70 | 2 |
+| 6 List nesting | 0.85 | 0.70 | 2 |
+
+**Rule (provably consistent)**: on any dimension `d`, fail the run iff `count(topic_scores[d] < per_topic_floor[d]) > 2` OR `count(topic_scores[d] < 0.70) > 0`. No aggregate-mean claim is made; the old mean-≥-0.95 rule has been removed.
+
+---
+
+## Oracle authorship and blinding protocol
+
+**Required method:** `from-source`. The oracle author opens the raw `.html` snapshot and the published MadCap Flare target-rendering guidance (Orcina webhelp's rendered output in a browser, which is the *specification* of what the HTML should render to), then hand-writes the `.md` file. The author MUST NOT view `html_to_markdown()` output during authorship. Each oracle file carries a YAML-comment header:
+
+```yaml
+# oracle_authored_by: <reviewer-github-handle>
+# oracle_review_method: from-source
+# oracle_authored_at: <ISO-8601 UTC>
+# oracle_second_reviewer: <second-reviewer-github-handle>
+```
+
+Matching fields are also required in `sample-manifest.yaml`. The validator test (`test_oracle_authorship_method_is_from_source`) fails the run on any `reviewed-from-output` row.
+
+**Conflict resolution** (addressing Gemini P2): if two reviewers disagree on a cell of a complex table or a nested-list shape, the fixture README prescribes:
+1. Open a "fixture-disagreement" comment on #2126 citing the specific file and cell.
+2. Both reviewers annotate the HTML element they are interpreting.
+3. If the disagreement survives one round, the fallback is the rendered view at orcina.com for that exact `source_url` at the recorded `fetched_at` timestamp.
+4. If still unresolved, the topic is swapped out of the sample and a replacement chosen from the same product/category/complexity marginal bucket; the manifest tracks `previous_slug` for auditability.
+
+---
+
+## Manifest schema (required fields)
+
+Each entry in `sample-manifest.yaml` MUST declare:
+
+```yaml
+- slug: orcaflex-line-types-intro
+  product: OrcaFlex              # one of {OrcaFlex, OrcaWave, OrcFxAPI}
+  category: introduction         # one of {introduction, data, theory, results, API}
+  complexity: Simple             # one of {Simple, Medium, Hard}
+  encoding_stress: false         # bool; >=2 true entries required among Hard
+  source_url: https://www.orcina.com/webhelp/OrcaFlex/...
+  fetched_at: 2026-04-24T14:00:00Z
+  html_sha256: <64-hex>
+  html_path: tests/fixtures/llm-wiki/conversion-oracle/orcaflex-line-types-intro.html
+  oracle_md_path: tests/fixtures/llm-wiki/conversion-oracle/orcaflex-line-types-intro.md
+  oracle_authored_by: "<handle>"
+  oracle_authored_at: 2026-04-24T15:00:00Z
+  oracle_second_reviewer: "<handle>"
+  oracle_review_method: from-source
+```
+
+`sample-manifest.schema.json` encodes these as required; the structural test `test_sample_manifest_schema_valid` runs the schema validation and fails on any missing field.
+
+---
+
+## TDD Test List (13 structural + 120 parametrized = 133 collected)
+
+### Structural (13)
+
+| # | Test name | What it verifies |
+|---|---|---|
+| 1 | `test_sample_manifest_loads` | file parses; entry count == 20 |
+| 2 | `test_sample_manifest_schema_valid` | entries conform to `sample-manifest.schema.json`; all required fields present |
+| 3 | `test_sample_manifest_marginal_axes` | product/category/complexity marginals match declared quotas |
+| 4 | `test_sample_manifest_hard_tier_encoding_stress` | `>=2` Hard-tier entries have `encoding_stress: true` |
+| 5 | `test_sample_manifest_fixture_files_exist` | every entry's `html_path` and `oracle_md_path` resolve to non-empty tracked files |
+| 6 | `test_sample_manifest_html_sha256_matches` | recomputed SHA-256 of each `.html` equals the manifest value |
+| 7 | `test_oracle_authorship_method_is_from_source` | every entry has `oracle_review_method == "from-source"` |
+| 8 | `test_oracle_has_second_reviewer` | every entry declares a non-empty `oracle_second_reviewer` distinct from `oracle_authored_by` |
+| 9 | `test_html_to_markdown_import` | `ingest_orcina.html_to_markdown` is importable via the hyphenated-path shim |
+| 10 | `test_rubric_scorer_determinism` | running each scorer twice on the same inputs returns identical floats |
+| 11 | `test_aggregate_floor_occupancy` | floor-occupancy rule holds on all six dimensions |
+| 12 | `test_no_network_access` | `pytest-socket` is active; a live `socket.socket(AF_INET, SOCK_STREAM)` call raises `SocketBlockedError` |
+| 13 | `test_report_artifact_written` | `conversion-quality-report.json` is produced and conforms to its documented key schema |
+
+### Parametrized (120 = 6 dims × 20 topics)
+
+| Test | Count | Notes |
+|---|---|---|
+| `test_per_topic_dimension[<slug>-<dim>]` | 120 | double-parametrized on `entry` × `dim`. Each case computes a single score and writes `<slug>-<dim>.json`. Per-topic assertion is informational (logged); the gate is in `test_aggregate_floor_occupancy`. |
+
+**Collection assertion**: `pytest --collect-only scripts/data/llm-wiki/tests/test_conversion_quality.py | grep -c "::test_"` == `133`. The AC below predicts exactly this number.
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `uv run pytest scripts/data/llm-wiki/tests/test_conversion_quality.py -v` passes with exit 0 and at least 125 collected items (13 structural tests + 120 parametrized `[slug]` cases).
+- [ ] `uv run pytest scripts/data/llm-wiki/tests/test_conversion_quality.py --collect-only -q | grep -c "::"` returns exactly **133**.
+- [ ] `uv run pytest scripts/data/llm-wiki/tests/test_conversion_quality.py -v` exits 0.
 - [ ] 20 `.html` + 20 `.md` oracle pairs exist under `tests/fixtures/llm-wiki/conversion-oracle/` and are tracked by `git ls-files`.
-- [ ] `sample-manifest.yaml` explicitly declares each topic's product, category, and complexity tier; `fixtures_sampling.py` validates the stratification budgets and fails on drift.
-- [ ] `scripts/data/llm-wiki/tests/.artifacts/conversion-quality-report.json` is produced on every run and contains per-dimension per-topic scores plus the six aggregate means.
-- [ ] All six rubric dimensions have published per-topic AND aggregate thresholds (see table above); report format documented in module docstring.
-- [ ] Tests run offline (no network) — enforced by `test_no_network_access`.
-- [ ] No regression: `uv run pytest scripts/data/llm-wiki/tests/ -v` passes (both existing `test_resolve_wiki_path.py` and new module).
-- [ ] Review artifacts posted to `scripts/review/results/` (deferred — cross-review infrastructure currently blocked; will attach once infrastructure restored).
+- [ ] `sample-manifest.yaml` declares, for each of the 20 entries, all required provenance fields (`source_url`, `fetched_at`, `html_sha256`, `oracle_authored_by`, `oracle_authored_at`, `oracle_second_reviewer`, `oracle_review_method`); `sample-manifest.schema.json` is the authoritative schema.
+- [ ] All 20 entries have `oracle_review_method: from-source`.
+- [ ] `fixtures_sampling.py` validates marginal-only stratification and the Hard-tier encoding-stress floor, and fails on drift.
+- [ ] `scripts/data/llm-wiki/tests/.artifacts/conversion-quality-report.json` is produced on every run; contains per-topic per-dimension scores and a `floor_occupancy_summary` block.
+- [ ] All six rubric dimensions have their formulas documented in `rubric_scorers.py` module docstring and in this plan's Rubric section; the two MUST match.
+- [ ] `pytest-socket` is present in the test dependency group; `test_no_network_access` actively verifies the block.
+- [ ] `uv run pytest scripts/data/llm-wiki/tests/ -v` passes (both existing `test_resolve_wiki_path.py` and new module).
+
+### Deferred / conditional
+
+- [ ] **(Deferred)** Three-provider cross-review artifacts posted at `scripts/review/results/` against this v2's commit SHA. Unblock condition: codex-cli 0.124.0 stdin-hang (#2479) resolved OR explicit single-author exception granted by user. Plan will not be moved to `status:plan-review` until Claude + Gemini r2 reviews (minimum two-provider) land under the v2 SHA. No self-approval is requested or implied.
 
 ---
 
 ## Non-goals (explicit)
 
-- **Not** fixing any conversion bug that the rubric surfaces. Every bug becomes a separate issue; this plan ships only the diagnostic instrument.
-- **Not** rewriting, refactoring, or extending `html_to_markdown`/`_convert_element`/`_convert_table`. Scope is test/QA only.
-- **Not** testing supplementary pages (`scripts/data/llm-wiki/ingest-orcina.py:415-451`) or PDF papers (`ingest_papers` at line 458). Per issue body — topic pages only (the 717-topic figure in the title).
-- **Not** testing the full 717 topics — the issue explicitly scopes this to a sample-20 protocol. Full-corpus QA is a separate (heavier) follow-up.
-- **Not** updating `registry.yaml`, `pipeline-manifest.yaml`, or `resource-intelligence-maturity.yaml` — the ingestion pipeline needs registration, but that is a separate governance task (flag as follow-up comment on #2126 or a new issue).
-- **Not** touching `search-wiki.py` — #2141 covers search-side test coverage.
+- **Not** fixing any conversion bug the rubric surfaces. Every bug becomes a separate issue; this plan ships only the diagnostic instrument.
+- **Not** rewriting, refactoring, or extending `html_to_markdown` / `_convert_element` / `_convert_table`. Scope is test/QA only.
+- **Not** testing supplementary pages (`ingest-orcina.py:415-451`) or PDF papers (`ingest_papers` at line 458). Topic pages only.
+- **Not** testing the full 717 topics — sample-20 protocol only.
+- **Not** registering the ingestion pipeline in `registry.yaml` / `pipeline-manifest.yaml` / `resource-intelligence-maturity.yaml` — follow-up governance task.
+- **Not** touching `search-wiki.py` — #2141 covers search-side.
+- **Not** computing an aggregate mean on any dimension; the v1 mean-rule is intentionally removed as internally inconsistent with per-topic floors.
 
 ---
 
-## Adversarial Review Summary
-
-*(Pending — cross-review infrastructure reported broken for the 2026-04-23/24 batch. Section to be populated once three-provider review runs; plan will not be marked `status:plan-review` until reviews complete.)*
+## Adversarial Review Summary (r1 — complete)
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | — | pending |
-| Codex | — | pending |
-| Gemini | — | pending |
+| Claude | **MAJOR** | 3 P1 (parametrize arithmetic; threshold contradiction; stratification over-constraint); 2 P2 (oracle circularity; formula under-specification; urlopen patch trivially passes); 2 P3 (review-artifact AC vs revision-bound gate; provenance fields missing from schema) |
+| Codex | n/a | not produced — codex-cli 0.124.0 upstream stdin-hang per memory `feedback_codex_cli_0_124_upstream_regression` (#2479) |
+| Gemini | **MINOR** | 1 P2 (missing Attested Evidence block); 1 P3 (sample size may miss encoding edge cases) |
 
-**Overall result:** PENDING
+**Overall r1 result:** MAJOR → this v2 revision.
+
+## Adversarial Review Summary (r2)
+
+*Pending. Will be populated once r2 reviews land against this v2's commit SHA. Reviews produced against the v1 artifact do not satisfy the revision-bound approval gate.*
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk (fixture drift):** Oracle markdown is authored manually. If reviewers disagree on the "correct" rendering of a complex table, the oracle itself becomes the bug. Mitigation — the fixture README documents a two-reviewer sign-off requirement on every oracle file before merge.
-- **Risk (orcina.com content change):** HTML snapshots may diverge from live pages over time, making the fixtures stale. Mitigation — snapshot provenance (URL + fetch timestamp + content SHA) is recorded in `sample-manifest.yaml`; a periodic refresh job is out of scope but noted as a follow-up for #2125 (auto-refresh-on-release).
-- **Risk (false green on dim 5):** Image alt-text dim can pass trivially if both actual and oracle have empty alts. Per-topic threshold 0.80 with the "non-empty preferred" note in the rubric is a soft guard; a sterner policy would be to require ≥50% of images to carry non-empty alt, but doing so would demand upstream content fixes that #2126 is scoped to diagnose, not solve.
-- **Open:** Should the stratification also cover **encoding edge cases** (UTF-8 Greek letters in formulas, degree signs, math operators)? The issue's check #6 explicitly calls this out. Recommendation — reserve at least 2 of the 6 "Hard" tier slots for formula-heavy topics where such characters appear. Flag for user confirmation during approval.
-- **Open:** Should the report output path `scripts/data/llm-wiki/tests/.artifacts/` be co-located with tests or hoisted to a repo-wide `.artifacts/` directory? Current placement keeps test outputs scoped; flag for user.
-- **Open:** Cross-reference link resolution (dim 2) — should we accept relative links that match the oracle's pattern even if the target topic is not in the sample? Current thinking: yes (the rubric measures conversion fidelity, not end-to-end link validity). Resolving cross-topic references is out of scope.
+- **Risk (fixture drift):** Oracle markdown is authored manually against HTML + live rendering. Mitigation — two-reviewer sign-off required, explicit blinding protocol, conflict-resolution procedure in fixture README, and a swap-and-replace path if disagreement survives.
+- **Risk (orcina.com content change):** HTML snapshots may diverge from live pages. Mitigation — `html_sha256` + `fetched_at` + `source_url` captured per entry. A refresh job is out of scope for this plan; #2125 (auto-refresh) is the natural home.
+- **Risk (scorer coupling to parser quirks):** Rubric scorers parse markdown with regexes/custom logic. Two independent implementations could still disagree on malformed inputs. Mitigation — `test_rubric_scorer_determinism` asserts repeatability; the README documents that ill-formed corner cases score `0.0` by policy.
+- **Risk (zss dependency):** `zss==1.2.0` is an external package for tree-edit distance on list-nesting trees. Added as a test-only dep; if unavailable offline in CI, the scorer falls back to a vendored implementation (flagged as follow-up if needed).
+- **Open:** Whether `**/.artifacts/` belongs in the repo-wide `.gitignore` (Gemini suggestion) or remains scoped to `scripts/data/llm-wiki/tests/.artifacts/`. Current recommendation — repo-wide, because the same pattern will recur elsewhere. Flag for user confirmation.
+- **Open:** Whether r2 can proceed with two providers (Claude + Gemini) given the codex-cli regression, or whether the plan waits for #2479 resolution. Decision belongs to the user; see deferred AC above.
 
 ---
 
 ## Complexity: T2
 
-**T2** — new test module with helper, 20 fixture pairs, one manifest, and a gitignore touch. No production code modified; TDD required; deterministic and offline. Falls cleanly into "new module with multiple files" per the template guide.
+**T2** — new test module + two helper modules + 20 fixture pairs + manifest + schema + gitignore + dependency add. No production code modified; TDD required; deterministic and offline.
