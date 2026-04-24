@@ -30,6 +30,10 @@
 - [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — when Codex MAJOR 3+ rounds while Claude+Gemini MINOR by v3, surface consensus-vs-minority decision instead of auto-cycling (#2045, #2289 anti-pattern)
 - [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without needing worktrees for every agent
 - [Permission gate blocks cross-review](feedback_permission_gate_blocks_cross_review.md) — planning-only sessions can't dispatch cross-review.sh; fallback is single-author r3 with transparent provenance
+- [Commit attestation narrow scope](feedback_commit_attestation_narrow_scope.md) — commit "gates passed" covers only that commit's files; broader gate can regress; re-run live, don't infer from `git log A..B -- <fix files>`
+- [Isolated-clone dispatch race](feedback_isolated_clone_dispatch_race.md) — subagent executing in exec-clone must check for parallel-session landing on main workspace before writing, since both lanes share the same GitHub issue
+- [Codex sandbox fallback paths](feedback_codex_sandbox_fallback_paths.md) — when shell wrapper is blocked, Codex recovers via js_repl + GitHub connector; prompt must authorize these, and MAJOR verdicts lacking a fallback-read citation are weakly grounded
+- [Gemini sandbox overlay blindness](feedback_gemini_sandbox_overlay_blindness.md) — Gemini cross-review sandbox can't see sparse-checkout overlay; 2026-04-23 batch had ~54 false-positive file-missing claims across 8 plans; always verify with `git ls-files` before accepting MAJOR
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -54,6 +58,9 @@
 - [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily, posts to repo-readiness issue
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
 - [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
+- [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
+- [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — 2026-04-23 #2471; standards get sanctioned `wiki/standards/` subtree with `code_id`/`publisher`/`revision` frontmatter; codification via plan 2026-04-23-issue-2471; unblocks #2227 CSA rollback
+- [llm-wiki stays embedded](project_llm_wiki_stays_embedded.md) — 2026-04-23 #2398 CLOSED; no spinout; triggers: 200MB, external consumer, cadence conflict, CI >5min, date 2026-10-23
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing

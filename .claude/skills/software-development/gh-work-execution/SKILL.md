@@ -565,9 +565,51 @@ Use a compact pattern:
 7. close issue with specifics
 8. create follow-up issues for deferred hardening or broader adoption work
 
+### Inventory/report prerequisite slices in nested repos
+For approved umbrella/decomposition issues where the first executable slice is a durable inventory or evidence artifact, do not jump directly to source remediation.
+Use this pattern:
+1. Confirm the parent issue is `status:plan-approved` and the local approval marker exists in the executing checkout.
+2. Post an execution-start comment that explicitly limits the first pass to the inventory/report artifact and says source remediation remains in child issues.
+3. In the nested target repo, run the exact failing command from the approved plan and capture raw output to a transient path (for example `/tmp/...`). Treat a non-zero exit as expected when inventorying known debt.
+4. Generate a checked-in report under the nested repo with: exact command provenance, exit code, parsed finding count, grouped rule-family counts, dominant outlier classification, non-outlier counts, representative findings, and an explicit note that `/tmp` raw output is transient/non-durable.
+5. Add deterministic assertions for the report content (parent issue link, child owner, exact command, total/outlier counts, and cleanup guidance) before committing.
+6. Commit and push the nested-repo artifact separately from workspace-hub governance/review artifacts; verify both nested `HEAD` and `origin/main` match.
+7. Run a compact adversarial implementation review on the report slice. If reviewers find metadata/table issues, patch the report, commit/push a follow-up, and record the review artifacts in workspace-hub.
+8. Post progress comments to both the parent umbrella and the relevant child issue, making clear which prerequisite is complete and what remains open.
+
+Common pitfalls:
+- Table grouping code may accidentally mix file paths and directory areas; define module-area tables as directory paths only.
+- UTC regeneration timestamps can cross the local session date; distinguish inventory capture date from report regeneration timestamp.
+- Do not close the parent umbrella after a prerequisite inventory lands; keep closure tied to the child issues and final proof gate.
+
 ### Verify-and-close issues
 Some issues are best solved by verification rather than code changes.
 If evidence shows the requested state already exists, comment with proof and close.
+
+### Approved umbrella/decomposition issues
+Some approved issues are umbrella/decomposition parents, not direct source-remediation tickets. When the approved plan explicitly splits implementation into child issues:
+1. Do not close the parent just because the first prerequisite lands.
+2. Pick the smallest approved parent-owned slice (often durable inventory, coordination artifacts, or proof scaffolding) before child source remediation.
+3. If the implementation artifact lives in a nested repo, commit/push it in that nested repo and record review/coordination artifacts in the parent orchestration repo separately.
+4. Post progress to both the parent umbrella and the relevant child issue so ownership stays visible.
+5. Keep source remediation inside the child issue boundaries; do not mix a pathological outlier child with a safe-rule cleanup child.
+6. After landing a prerequisite artifact, run adversarial implementation review on that artifact. If reviewers return MINOR metadata/reporting findings, fix them in a follow-up commit before calling the prerequisite complete.
+7. Parent closeout remains blocked until every child stream and the final proof owner satisfy the approved acceptance criteria.
+
+For lint-inventory prerequisites, a reusable TDD/documentation pattern is:
+- generate a durable inventory report with exact command provenance, exit code, parsed finding counts, outlier classification, non-outlier counts, transient `/tmp` warning, and cleanup guidance
+- add a small test that asserts the report preserves the key provenance/decomposition strings
+- run the exact inventory command and the focused report test
+- record implementation-review artifacts in the orchestration repo if the report itself lands in a nested repo
+
+## Git pitfalls
+When an approved parent issue has become an umbrella/decomposition contract and child issues own the source-level remediation:
+1. Do not drift into child source edits from the parent pass, even if the failing command is easy to inspect.
+2. Run the parent pre-check against the live nested/target repo state: clean `main`, exact approved command, current counts, and presence/absence of the durable inventory artifact.
+3. If the parent deliverable is an inventory/provenance artifact, use TDD against that artifact: write a failing test that locks the required command provenance, expected-red baseline, grouped counts, outlier classification, child issue ownership, and transient-vs-durable evidence warning; then make the minimal doc/report change to pass.
+4. Re-run the exact failing command after the doc/test change to prove source-remediation scope was not silently absorbed and the baseline remains the expected child-owned red state.
+5. Post the parent update without closing the umbrella unless all child completion/green-gate acceptance criteria are actually satisfied; also post a child-boundary note when the artifact belongs to a child issue.
+6. If unrelated local dirt blocks a clean-main start, preserve it with narrow temporary stashes rather than doing branch cleanup or mixing it into the issue execution.
 
 ## Git pitfalls
 

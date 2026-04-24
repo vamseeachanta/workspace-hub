@@ -3,8 +3,8 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-23T07:01:40Z"
-  source_hash: "ab4e39123534ed3bc3839ac500e7d84c"
+  generated: "2026-04-24T07:01:34Z"
+  source_hash: "3510c9cb1d75310f7990b38223d3838a"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
@@ -12,7 +12,7 @@ metadata:
       entry_count: 18
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 69
+      memory_file_count: 76
 
 hermes_insights:
   environment_facts:
@@ -29,14 +29,14 @@ hermes_insights:
     - "In workspace-hub, scripts/enforcement/require-plan-approval.sh only recognizes .planning/plan-approved/*.md markers newer than .planning/STATE.md; a stale marker can block commits even when the GitHub issue is already status:plan-approved."
   user_preferences:
     - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
-    - "Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included."
+    - "User supports autonomous overnight GitHub waves with no user interaction, strong git-contention avoidance, and may request large parallel planning batches (up to 10 agents) when useful."
     - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
     - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
     - "Prefers choices/options to be numbered or lettered for easy selection."
     - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
     - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
     - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-    - "User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, 20% llm-wiki weighting, prefer parallel work, and prefer reopening/retargeting existing roadmap issues over creating duplicate new issues unless scope is genuinely new."
+    - "User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, prefer parallel work, and when they explicitly approve a batch of plan-review issues they expect direct status:plan-approved transitions plus local approval markers without extra confirmation."
 
 claude_memory_index:
   files:
@@ -78,6 +78,8 @@ claude_memory_index:
       topic: "assethold spec location"
     - file: "feedback_no_jargon.md"
       topic: "no jargon"
+    - file: "feedback_codex_sandbox_fallback_paths.md"
+      topic: "codex sandbox fallback paths"
     - file: "project_solver_queue_architecture.md"
       topic: "solver queue architecture"
     - file: "project_hermes_codex_quota.md"
@@ -88,6 +90,10 @@ claude_memory_index:
       topic: "cross review policy"
     - file: "feedback_plugin_cache_not_repo_tracked.md"
       topic: "plugin cache not repo tracked"
+    - file: "feedback_isolated_clone_dispatch_race.md"
+      topic: "isolated clone dispatch race"
+    - file: "project_llm_wiki_stays_embedded.md"
+      topic: "llm wiki stays embedded"
     - file: "project_cad_tooling_review.md"
       topic: "cad tooling review"
     - file: "engineering-modules.md"
@@ -102,6 +108,8 @@ claude_memory_index:
       topic: "assethold ownership transfer"
     - file: "feedback_mock_vs_live_invocation_divergence.md"
       topic: "mock vs live invocation divergence"
+    - file: "feedback_gemini_sandbox_overlay_blindness.md"
+      topic: "gemini sandbox overlay blindness"
     - file: "project_tier1_refactor.md"
       topic: "tier1 refactor"
     - file: "feedback_permission_gate_blocks_cross_review.md"
@@ -112,6 +120,8 @@ claude_memory_index:
       topic: "email cross noise"
     - file: "project_cfd_openfoam_storage.md"
       topic: "cfd openfoam storage"
+    - file: "feedback_commit_attestation_narrow_scope.md"
+      topic: "commit attestation narrow scope"
     - file: "feedback_worktree_gitlink_pollution.md"
       topic: "worktree gitlink pollution"
     - file: "data_format_guidelines.md"
@@ -146,6 +156,8 @@ claude_memory_index:
       topic: "field dev economics"
     - file: "project_tx_franchise_2026.md"
       topic: "tx franchise 2026"
+    - file: "project_wiki_standards_path_decision.md"
+      topic: "wiki standards path decision"
     - file: "feedback_check_parallel_work.md"
       topic: "check parallel work"
     - file: "feedback_uv_run_isolation.md"
@@ -168,6 +180,8 @@ claude_memory_index:
       topic: "workflow tips today"
     - file: "reference_google_cli_paid.md"
       topic: "google cli paid"
+    - file: "project_issue_2460_approval_binding.md"
+      topic: "issue 2460 approval binding"
     - file: "feedback_codex_sandbox_no_execution.md"
       topic: "codex sandbox no execution"
     - file: "feedback_html_refresh.md"

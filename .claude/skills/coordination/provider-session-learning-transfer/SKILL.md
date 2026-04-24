@@ -64,9 +64,10 @@ Recommended output:
 Important: this is the best quick test for whether Codex/Gemini/Claude/Hermes actually contributed anything new since the last audit.
 
 Implementation note:
-- In the current audit JSON, the authoritative delta summary lives at top level under `recent_activity_since_previous_audit.providers.<provider>`.
-- The per-provider objects under `providers.<provider>` do not duplicate that same nested structure in JSON even though the Markdown report renders per-provider recent sections.
-- So for machine extraction, read the top-level summary first; use the Markdown or raw logs only for deeper drill-down.
+- Prefer the audit JSON if it actually exposes top-level delta blocks such as `recent_activity_since_previous_audit`.
+- But do not assume those keys exist on every refresh. In live use, the refreshed JSON sometimes only contains `generated_at`, `repo_root`, `logs_root`, `providers`, and `executive_summary`, while the Markdown report still renders the recent-activity and corpus-change sections.
+- Therefore, probe the JSON shape first. If those top-level delta blocks are absent, treat `docs/reports/provider-session-ecosystem-audit.md` as the authoritative recent-activity source and extract provider deltas from the Markdown headings/sections instead of concluding the data is unavailable.
+- The per-provider objects under `providers.<provider>` may also omit the same delta structure even when the Markdown renders it, so keep Markdown and raw logs as the fallback truth for deeper drill-down.
 
 ### 5. Inspect only relevant recent sessions
 Filter recent post-audit logs for the user’s target domain (for example tax, filing, issue planning, docs, etc.).
@@ -114,6 +115,23 @@ Before finishing, verify:
 - target repo files are modified in the intended locations
 - GitHub comment/edit succeeded
 - transferred learnings are framed as next-session execution guidance, not just retrospective commentary
+
+### 9. Convert the top actionable transfer into the next planning gate when asked
+If the user asks for the next logical step after a provider-learning transfer, do not automatically rerun the audit. Prefer converting the highest-priority concrete remediation issue into the next gate:
+1. Pick the most actionable child issue, not the broad parent, using the refreshed report and issue state. Example: a concrete stale-reference cleanup child beats the parent migration-debt backlog.
+2. Read the canonical plan and latest transfer bundle.
+3. Reconcile the transfer into the plan only if it changes evidence, scope framing, or approval readiness. Avoid broadening the implementation branch when the transfer is only standing-risk/negative evidence.
+4. Update the local plan status and planning index to `plan-review`.
+5. Post a GitHub approval-gate comment via `--body-file`, add `status:plan-review`, and remove stale conflicting status labels.
+6. Commit/push the exact plan-status changes, then verify both live GitHub labels/comments and remote `origin/main`.
+
+Pitfall: workspace-hub often has concurrent writers and background git/status processes. If `.git/index.lock` appears, inspect live git processes first, remove only stale locks, and re-run `git status`. If `git push` reports a remote ref-lock rejection but `git ls-remote origin refs/heads/main` already equals local `HEAD`, treat the push as effectively landed after verification instead of retrying blindly.
+
+## Heuristics that worked well
+
+If you rerun `bash scripts/cron/provider-session-ecosystem-audit.sh` after drafting or posting transfer notes, immediately re-read `analysis/provider-session-ecosystem-audit.json` / `docs/reports/provider-session-ecosystem-audit.md` and patch the transfer report plus posted issue comments to the final `generated_at` value. Timestamp drift between the audit, durable report, and issue comments makes future "unassessed since boundary" work ambiguous.
+
+When committing/pushing the transfer, verify remote state after any odd push error. A push can report a remote ref-lock rejection like `cannot lock ref ... is at <new> but expected <old>` even when the remote has advanced to the just-created commit. Before retrying or rebasing, run `git rev-parse HEAD` and `git ls-remote origin refs/heads/main`; if both match, treat the push as successful and avoid unnecessary conflict recovery.
 
 ## Heuristics that worked well
 - If recent Codex/Gemini counts are zero after the prior audit, say so explicitly and focus on the providers with real post-audit work.

@@ -462,6 +462,16 @@ Operational rules learned from live review waves:
 
 If repeated review rounds still return MAJOR after tightening, keep the issue in draft/review-only state and post a GitHub status comment summarizing the remaining blockers rather than prematurely moving it to `status:plan-review`.
 
+Review-state hygiene learned from live reruns:
+- If a newer rerun wave exists but one or more provider artifacts are empty, `UNAVAILABLE`, or wrapper-failed, do not describe older artifacts as simply the "latest" state. Distinguish clearly between:
+  - freshest wave status (including provider failures)
+  - last valid artifact per provider, if different
+  - whether the review gate is still unsatisfied because the newest wave did not produce the required valid artifacts
+- Re-check `.planning/plan-approved/<issue>.md` before claiming approval evidence is absent. If a marker exists with weak/non-auditable provenance (for example `Approval source: current Hermes chat instruction`), treat it as governance drift / likely self-approval evidence, remove it for open draft issues, and note the cleanup explicitly in the plan summary or GitHub status comment.
+- For CI-hardening plans that change workflow gates, include both:
+  - isolated red/green commands for the narrow source/test fixes, and
+  - at least one workflow-shaped local command that matches the CI gate closely enough to expose the likely next blocker (for example coverage thresholds / markers), so the plan does not overclaim "CI parity" from isolated tests alone.
+
 ## Planning pre-review checklist
 
 Before adversarial review, confirm all are true:
@@ -846,6 +856,31 @@ A plan is batch-ready only when:
 - no unresolved blocker or approval ambiguity remains
 
 No issue in `status:plan-review` is eligible for execution.
+
+## Approval-candidate audit rule
+
+When asked whether there are issue plans to approve, do not rely on `status:plan-review` labels alone.
+Audit all of these before saying a plan is approval-ready:
+1. live GitHub issue state and labels (`gh issue list/view`)
+2. canonical plan file under `docs/plans/`
+3. the plan header/status line and `Adversarial Review Summary`
+4. durable review artifacts under `scripts/review/results/`
+5. whether any reviewer verdict is `MAJOR`, `FAIL`, `UNAVAILABLE`, or still `pending`
+6. whether the plan itself says a fresh re-review is required
+
+Operational pattern:
+```bash
+gh issue list --repo OWNER/REPO --state open --label 'status:plan-review' --json number,title,url,labels,updatedAt
+find docs/plans -maxdepth 1 -type f -name '*issue-NNN-*' -o -name '*NNN*.md'
+find scripts/review/results -maxdepth 1 -type f -name '*plan-NNN-*.md'
+```
+
+Classification:
+- **approval candidate now**: plan exists, review artifacts exist, latest valid verdicts are only APPROVE/MINOR, and the plan does not require another review pass.
+- **approval-prep priority**: high-value issue, but missing review artifacts, stale plan status, or a fresh re-review is required.
+- **not approval-ready**: any current or latest-valid `MAJOR`, `FAIL`, unresolved blocker, missing required provider evidence, or pending review slot.
+
+If none are approval-ready, answer that directly and list the best approval-prep targets rather than presenting stale `status:plan-review` issues as ready.
 
 ## Post-approval implementation-state audit
 

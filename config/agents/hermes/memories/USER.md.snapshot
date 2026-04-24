@@ -1,6 +1,6 @@
 Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total).
 §
-Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included.
+User supports autonomous overnight GitHub waves with no user interaction, strong git-contention avoidance, and may request large parallel planning batches (up to 10 agents) when useful.
 §
 Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini.
 §
@@ -14,4 +14,4 @@ For overnight Claude work, pace usage across the available window instead of fro
 §
 User wants all reviews to be adversarial reviews by default for maximum productivity and impact.
 §
-User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, 20% llm-wiki weighting, prefer parallel work, and prefer reopening/retargeting existing roadmap issues over creating duplicate new issues unless scope is genuinely new.
+User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, prefer parallel work, and when they explicitly approve a batch of plan-review issues they expect direct status:plan-approved transitions plus local approval markers without extra confirmation.

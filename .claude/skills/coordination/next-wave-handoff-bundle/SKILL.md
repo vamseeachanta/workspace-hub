@@ -126,6 +126,16 @@ After each commit, verify:
 - plan gate passed
 - auto-push did not occur unexpectedly
 - branch status is clean or only contains the next expected artifact
+- the intended handoff file is actually tracked in the expected commit (`git log --oneline -- <file>` and `git show --stat -- <file>`), especially if hooks/tooling return confusing output such as `nothing to commit` after a commit attempt
+
+If a commit command returns non-zero or says `nothing to commit` after you just added a handoff file, do not assume failure. Immediately check:
+```bash
+git status --short --branch
+git ls-files <handoff-file> --stage
+git log --oneline -- <handoff-file> -3
+git show --stat --oneline -- <handoff-file> | head -80
+```
+Some workspace automation/hooks may have already staged/committed the file or cleaned unrelated state; verify by file-specific git history before retrying or rewriting.
 
 ### 9. Explicitly verify "no push happened"
 Do not merely assert it. Check using git/remote evidence, for example:

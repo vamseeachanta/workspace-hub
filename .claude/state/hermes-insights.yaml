@@ -3,8 +3,8 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-23T07:01:40Z"
-  source_hash: "ab4e39123534ed3bc3839ac500e7d84c"
+  generated: "2026-04-24T07:01:34Z"
+  source_hash: "3510c9cb1d75310f7990b38223d3838a"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
   entry_count: 18
@@ -26,11 +26,11 @@ project_knowledge:
 
 user_preferences:
   - "Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total)."
-  - "Overnight batch execution: 3 self-contained prompts, zero git contention, no user interaction, git contention avoidance map always included."
+  - "User supports autonomous overnight GitHub waves with no user interaction, strong git-contention avoidance, and may request large parallel planning batches (up to 10 agents) when useful."
   - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
   - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
   - "Prefers choices/options to be numbered or lettered for easy selection."
   - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
   - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
   - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-  - "User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, 20% llm-wiki weighting, prefer parallel work, and prefer reopening/retargeting existing roadmap issues over creating duplicate new issues unless scope is genuinely new."
+  - "User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, prefer parallel work, and when they explicitly approve a batch of plan-review issues they expect direct status:plan-approved transitions plus local approval markers without extra confirmation."

@@ -30,7 +30,7 @@
 - `worldenergydata/` — energy data sub-repo *verified: 2026-04-19*
 - Provider-session audit transfer (2026-04-24): missing reads from Codex often
   come from running at the workspace-hub root while the real target belongs to a
-  nested repo or site content root. Check `digitalmodel/`, `worldenergydata/`,
+nested repo or site content root. Check `digitalmodel/`, `worldenergydata/`, *verified: 2026-04-24*
   `assethold/`, and `aceengineer-website/` before treating those paths as
   deleted workspace-hub files.
 - Hermes audit interpretation (2026-04-24): reads under `.claude/worktrees/`,

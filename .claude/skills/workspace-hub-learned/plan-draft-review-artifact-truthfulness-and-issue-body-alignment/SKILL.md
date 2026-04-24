@@ -84,14 +84,36 @@ If the plan says certain excluded surfaces are safely deferred to follow-up issu
 
 Do not just mention them prose-only.
 
+If child/follow-up issues have already been created during an iterative hardening loop, update the plan from "Create issue #NNN" to "Link existing issue #NNN" and re-check live issue state before the next review. Stale create-language for already-created children is enough for adversarial reviewers to keep the plan in REQUEST_CHANGES.
+
+### 7. Treat transient evidence as draft-only unless materialized
+If a correctness-critical inventory or proof lives only in `/tmp`, a terminal buffer, or an uncommitted local file outside the target repo, label it as transient draft evidence. Do not present it as approval-grade evidence.
+
+Good pattern:
+- cite `/tmp/...` only as a local draft source
+- require a durable raw/grouped inventory artifact in the relevant repo before child implementation approval
+- if the target code is in a nested repo, name that repo/worktree explicitly and do not imply the workspace-hub root commit can carry nested-repo artifacts
+
+### 8. After handoff triage, post a GitHub state-sync comment
+When resuming from a handoff and tightening a plan without making it approval-ready, leave a short GitHub comment that states:
+- the plan remains draft / not approval-ready
+- what stale claims were corrected locally
+- current provider verdicts / unavailable artifacts
+- the next blocking action (usually fresh substantive adversarial re-review)
+
+This prevents the GitHub thread from lagging behind local cleanup and stops later agents from treating old comments as current review state.
+
 ## Fast checklist before the next review wave
-- [ ] Issue body matches the bounded tranche
+- [ ] Issue body matches the bounded tranche or parent/child closure contract
 - [ ] Review summary matches actual artifact files on disk
-- [ ] Empty artifacts are marked INVALID, not summarized
+- [ ] Empty/quota/unavailable artifacts are marked INVALID/UNAVAILABLE, not summarized as substantive reviews
 - [ ] Success condition is explicit and falsifiable
 - [ ] Local proof commands match planned CI commands
-- [ ] Follow-up issues used as scope boundaries are evidenced in the plan
+- [ ] Follow-up/child issues used as scope boundaries are evidenced with live state
+- [ ] Already-created child issues are listed as existing links, not future creations
+- [ ] Any `/tmp`/transient evidence has a required durable artifact path before approval
 - [ ] Workflow verification commands are concrete and strict
+- [ ] A GitHub state-sync comment was posted if local plan state changed but approval-readiness did not
 
 ## Anti-patterns to avoid
 - Reusing stale review summary text after reruns

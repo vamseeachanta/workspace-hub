@@ -39,6 +39,33 @@ Example planning language:
 - built artifact: `aceengineer-website/dist/sitemap.xml`
 - production URL: `https://www.example.com/sitemap.xml`
 
+### 1A. Resolve source/generated/legacy HTML contracts explicitly
+For generated static sites, do not assume the only non-source surface is root `*.html`.
+
+Before a plan is approval-ready, classify **all** HTML surfaces:
+- canonical source: e.g. `content/**/*.html` and shared partials
+- generated deploy output: e.g. `dist/**/*.html`
+- checked-in legacy/non-authoritative HTML outside both source and deploy output, e.g. root `*.html`, `blog/**`, `calculators/**`, `case-studies/**`, `demos/**`, `samples/**`, or other historical generated trees
+
+Then state exactly which happens to legacy checked-in HTML:
+- sync it during implementation, **or**
+- declare it non-authoritative and update tests/docs/scans so it cannot create false failures or stale pass conditions.
+
+Also inspect existing tests and docs for the old contract. If tests read root/legacy pages directly or assert old branding/content, the plan must include updating those tests. If README/deploy/architecture docs still describe root HTML as authoritative, include conditional docs updates when choosing the non-authoritative path.
+
+### 1B. For brand/content cleanup, scan visible body labels too
+When the task is brand identity, naming, or copy cleanup, do not limit scope to nav/footer/metadata/schema. Reviewers may find visible in-page labels that remain stale.
+
+Approval-ready plans should specify the target contexts:
+- visible chrome
+- page titles
+- consumer-facing body labels/headings/CTAs
+- OG/Twitter metadata
+- JSON-LD/schema identity fields
+- built output equivalents
+
+Use a precise allowlist for historical/legal prose so tests are not brittle, but do not exclude visible consumer-facing body labels by accident.
+
 ### 2. Split validation into two classes
 Always separate:
 
