@@ -1618,3 +1618,91 @@ def test_render_markdown_includes_top_non_repo_artifact_reads_section() -> None:
     assert "### codex top non-repo artifact reads" in markdown
     assert "- `content/demos/index.html` — 2" in markdown
     assert "- `build.js` — 1" in markdown
+
+
+
+def test_summarize_claude_precomputed_exposes_non_repo_artifact_schema_defaults(tmp_path: Path) -> None:
+    payload = {
+        "sessions_analyzed": 1,
+        "post_records": 10,
+        "missing_repo_read_total": 2,
+        "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 2}],
+    }
+    path = tmp_path / "claude-audit.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    summary = module.summarize_claude_precomputed(path)
+
+    assert summary["top_non_repo_artifact_reads"] == []
+    assert summary["non_repo_artifact_read_total"] == 0
+    assert summary["top_sibling_repo_reads"] == []
+    assert summary["sibling_repo_read_total"] == 0
+
+
+def test_build_corpus_change_summary_reports_positive_growth_gap_against_event_time_counts() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 18, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 3, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["post_record_delta"] == 8
+    assert row["event_time_post_records_since_previous_audit"] == 3
+    assert row["reconciliation_gap_post_records"] == 5
+    assert row["status"] == "positive_corpus_growth_beyond_recent_activity"
+    assert row["interpretation"].startswith("Snapshot grew more than recent event-time activity")
+
+
+def test_build_corpus_change_summary_reports_zero_gap_as_aligned() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 13, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 3, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["reconciliation_gap_post_records"] == 0
+    assert row["status"] == "aligned"
+
+
+def test_build_corpus_change_summary_reports_pruned_or_rebuilt_when_gap_is_negative() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 12, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 5, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["reconciliation_gap_post_records"] == -3
+    assert row["status"] == "corpus_pruned_or_rebuilt"
+
+
+def test_json_summary_exposes_recent_and_corpus_scope_notes(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    logs_root.mkdir(parents=True)
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {}}),
+        encoding="utf-8",
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["executive_summary"]["recent_activity_since_previous_audit"]["scope_note"] == (
+        "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records."
+    )
+    assert audit["executive_summary"]["corpus_change_since_previous_audit"]["scope_note"] == (
+        "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity."
+    )

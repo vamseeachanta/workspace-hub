@@ -532,6 +532,10 @@ def summarize_claude_precomputed(path: Path) -> dict:
         "top_repos": payload.get("repo_distribution", []),
         "top_reads": payload.get("top_reads", []),
         "top_missing_repo_reads": top_missing_repo_reads,
+        "top_sibling_repo_reads": payload.get("top_sibling_repo_reads", []),
+        "sibling_repo_read_total": payload.get("sibling_repo_read_total", 0),
+        "top_non_repo_artifact_reads": payload.get("top_non_repo_artifact_reads", []),
+        "non_repo_artifact_read_total": payload.get("non_repo_artifact_read_total", 0),
         "missing_repo_read_remediation_hints": build_missing_read_remediation_hints(top_missing_repo_reads),
         "top_missing_external_reads": payload.get("top_missing_external_reads", []),
         "limitations": [
