@@ -1,10 +1,11 @@
 # Plan for #2311: Stage-transition stale reference cleanup
 
-> Status: draft
+> Status: plan-review
 > Complexity: T2
 > Date: 2026-04-17
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2311
 > Review artifacts: scripts/review/results/2026-04-17-plan-2311-claude.md | scripts/review/results/2026-04-22-plan-2311-codex.md | scripts/review/results/2026-04-22-plan-2311-gemini.md
+> Latest transfer: docs/reports/2026-04-24-provider-session-learning-transfer.md
 
 ---
 
@@ -29,6 +30,7 @@
 - `docs/work-queue-workflow.md` documents the current GitHub issue + `.planning/` operating model and distinguishes legacy compatibility notes from canonical execution.
 - `docs/reports/provider-session-ecosystem-audit.md` and `analysis/provider-session-ecosystem-audit.json` preserve the stale-read cluster as historical evidence and reference the same redirect targets as the audit generator.
 - `scripts/review/results/2026-04-22-plan-2311-codex.md` and `scripts/review/results/2026-04-22-plan-2311-gemini.md` both require the plan to resolve the taxonomy now, remove conditional scope, and make the tests falsifiable.
+- `docs/reports/2026-04-24-provider-session-learning-transfer.md` confirms that the newest Claude event-time slice is healthier than the historical corpus (`179` post-audit records / `6` sessions, recent missing reads `none`), but that the retained historical debt still belongs here because the legacy stage-transition/work-queue redirect family remains the concrete Claude remediation child under `#2310`.
 
 ### Current scan findings relevant to scope
 - Protected current docs already covered by `tests/docs/test_banned_stale_references.py` do not need speculative expansion beyond this issue's exact stale-path cluster.
@@ -114,7 +116,7 @@ This resolves the Codex/Gemini objection that the scan universe and allowed lega
 
 ## Deliverable
 
-A bounded stale-reference cleanup plus regression suite that proves the deleted stage-transition script names are absent from fixed current instructional surfaces, while remaining allowed only in explicitly enumerated legacy redirect and historical evidence buckets.
+A bounded stale-reference cleanup plus regression suite that proves the deleted stage-transition script names are absent from fixed current instructional surfaces, while remaining allowed only in explicitly enumerated legacy redirect, tooling/test-source retained-reference, and historical/generated evidence buckets.
 
 ---
 
@@ -178,7 +180,7 @@ Removed from scope in this redraft:
 
 ---
 
-## Adversarial Review Summary
+## Adversarial Review and Readiness Summary
 
 | Provider | Verdict | Key findings now addressed in this redraft |
 |---|---|---|
@@ -186,7 +188,9 @@ Removed from scope in this redraft:
 | Codex (2026-04-22) | MAJOR | The scan universe is now explicit, the architecture-doc disposition is decided, scope-creep items were removed, and the tests are now measurable instead of omission-based. |
 | Gemini (2026-04-22) | MAJOR | The redraft removes `if needed` ambiguity, hardens redirect-target validation, and answers how instructional vs legacy/history surfaces are classified before implementation starts. |
 
-Overall result: prior reviews identified real blocking issues; this redraft folds those findings into the actual plan body instead of preserving them only as a failure note.
+Overall result: prior reviews identified real blocking issues; this redraft folds those findings into the actual plan body instead of preserving them only as a failure note. The 2026-04-24 provider-session transfer does not create a new implementation branch; it narrows the next step back to this stale-reference cleanup by distinguishing current healthy Claude activity from retained historical prompt/doc debt.
+
+Approval-gate readiness: ready for user plan review with residual risk `Medium`. The remaining risk is implementation discipline around the fixed bucket taxonomy, not unresolved scope. Execution remains blocked until explicit user approval moves the issue from `status:plan-review` to `status:plan-approved`.
 
 ---
 
@@ -194,7 +198,7 @@ Overall result: prior reviews identified real blocking issues; this redraft fold
 
 ### Risks
 - Historical surfaces are numerous; the implementation must keep the history bucket explicit so the test does not become noisy or silently permissive.
-- If additional hidden instructional surfaces are discovered during implementation, they should be added only when they match the fixed “current instructional surface” rule above, not by broad uncontrolled repo scanning.
+- Additional hidden instructional surfaces are out of scope for this approval unit unless they are already covered by the fixed protected-surface universe above. If execution discovers a materially different stale-reference family, capture it as a follow-up issue instead of silently expanding this one.
 
 ### Open questions
 - None blocking approval readiness in this draft. The previously open taxonomy and disposition questions are now resolved in-plan.
