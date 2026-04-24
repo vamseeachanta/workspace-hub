@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-24T05:20:10.092361Z
+Generated: 2026-04-24T13:20:09.950463Z
 Current week: 2026-W17
 Recommended provider order: codex, gemini, claude
 
@@ -9,19 +9,19 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 12
+- Execution-ready candidates: 15
 - Total routed candidates: 169
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2348 triage: promote #1707/#1708/#1709 from review-backlog — live scanner has ToS/rate-limit exposure | yes | strategy/workflow/architecture language | bug, priority:high, domain:gtm, status:plan-approved |
+| #2380 feat(knowledge): execute Batch Pack 3 Tier A for external engineering software profiles | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2408 feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:release-management, status:plan-approved |
 | #2433 chore(ci-health): worldenergydata main CI — 22+ collection errors blocking 5 Dependabot PRs (#329-#333) | yes | strategy/workflow/architecture language | priority:high, cat:infrastructure, status:plan-approved |
 | #2461 chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:maintenance, domain:repo-organization, status:plan-approved |
+| #2475 chore(licensed-proof): define OrcaWave/OrcaFlex native load-run proof protocol | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:marine, machine:licensed-win-1, status:plan-approved |
 | #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | yes | strategy/workflow/architecture language | priority:medium, cat:maintenance, domain:memory, status:plan-approved |
 | #2403 feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:data-pipeline, cat:research, domain:document-intelligence, status:plan-approved |
-| #2424 chore(ci-health): cross-repo CI audit — 6 of 7 ecosystem repos have red main CI | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:infrastructure, maintenance, status:plan-approved |
-| #2459 follow-up(ci): assethold python-tests still red after smoke unblock — lint/mypy/quality-gate hardening | yes | strategy/workflow/architecture language | priority:medium, cat:infrastructure, status:plan-approved |
 
 ## codex
 

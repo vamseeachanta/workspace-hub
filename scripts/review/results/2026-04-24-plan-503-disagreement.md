@@ -1,0 +1,51 @@
+# Disagreement report — plan #503 (2026-04-24)
+
+## Verdicts
+
+| Provider | Verdict |
+|---|---|
+| adversarial | The plan clears all four #503-specific hard gates convincingly — licensing is a true blocking gate, both competitor scripts are cited with correct LOC (636 + 349, confirmed via `wc -l`), consolidation is presented as a three-way tradeoff (C-A merge / C-B retire-both / C-C adopt-and-absorb), storage surface is a four-way tradeoff including `/mnt/ace/` explicitly, and #507 is kept out of scope as a downstream consumer. Scope does not overlap the adjacent 2026-04-24 plans (#2124 extends ingestion; #2125 adds auto-refresh; both presume #503 exists). Intel is deep and evidence-tagged. |
+| claude | UNKNOWN |
+| claude-r2 | MAJOR |
+| codex | UNAVAILABLE (codex CLI failed, rc=2: error: unexpected argument '--no-interactive' found    tip: to pass '--no-interactive' as a value, use '-- --no-interactive'  Usage: codex exec [OPTIONS] [PROMPT]        codex exec [OPTIONS] <COMMAND>) |
+| gemini | UNAVAILABLE (gemini CLI failed, rc=55: [31mGemini CLI is not running in a trusted directory. To proceed, either use `--skip-trust`, set the `GEMINI_CLI_TRUST_WORKSPACE=true` environment variable, or trust this directory in interactive mod) |
+
+## Findings unique to each provider
+
+A finding is 'unique to X' if its text appears in X's artifact but not
+verbatim in any other provider's artifact.
+
+### adversarial
+
+(no findings unique to this provider)
+
+### claude
+
+(no findings unique to this provider)
+
+### claude-r2
+
+- **#2398 status — FALSE throughout plan.** Plan §Documents consulted line 50 describes #2398 as an "OPEN architectural question whether llm-wiki lives embedded or as separate repo." §Evidence line 79 lists `#2398 — open spinout-vs-embedded architecture question`. §Risks line 362 states `#2398 spinout risk. If llm-wiki spins into a separate repo mid-flight…`. §Open questions Q4 asks `When #2398 spinout resolves…`. **Verified via `gh issue view 2398`: state=CLOSED**, title "feat(knowledge): assess llm-wiki spinout vs embedded workspace-hub architecture". Project memory (`MEMORY.md`) also records `#2398 CLOSED 2026-04-23; no spinout`. The spinout risk is resolved; the "plan's package boundary chosen to be relocatable" rationale loses its justification.
+- **#2034 status — FALSE.** Plan §Evidence line 78 lists `#2034 — delegated llm-wiki-ingestion implementation per #2205`. §Open questions Q3 asks `Is #2034 (the #2205-delegated implementation owner) actively in-flight or dormant?`. **Verified via `gh issue view 2034`: state=CLOSED**. The delegated implementation owner is no longer active; the "coordinate to avoid a third parallel pipeline at the meta level" risk is mis-scoped. Whether competitor A or competitor B *is* the #2034 delivery is now a verifiable fact to establish BEFORE planning, not an open question.
+- **#2088 closed-but-directly-overlapping — UNADDRESSED DUPLICATION RISK.** `ingest-orcina.py:1-636` header cites `#2088`. **Verified via `gh issue view 2088`: CLOSED**, title "feat(llm-wiki): ingest OrcaFlex, OrcaWave, and OrcFxAPI online help into llm-wiki" — identical scope to #503. The plan lists #2088 in its Evidence list without flagging that #503 may be duplicating an already-closed deliverable. Before a single file is touched this plan must document: Why is #503 still open when #2088 — with the same title phrasing — was closed? Is #503 re-opening the same work or addressing a remaining gap? The answer reshapes the entire consolidation tradeoff.
+- **#2205, #2318, #2206, #2207 all CLOSED — plan narrates them as live work.** Plan treats these as live contracts to conform to. In fact `gh`: #2205 CLOSED, #2318 CLOSED, #2206 CLOSED, #2207 CLOSED. The resulting *artifacts* (operating-model doc, cadence script, conformance plan, provenance contract) still exist and are load-bearing, but the plan's framing as live GitHub work items is stale. Acceptance criterion "First successful ingest emits a manifest the #2318 cadence reads without error" is fine as a contract, but language elsewhere such as "#2318 explicitly depends on dm#503" should be factually validated against the cron script's current expected schema, not the issue body.
+- **`grep -c orcina` claim falsified.** §Evidence line 103: `grep -c orcina data/document-index/online-resource-registry.yaml` → `29 matches`. **Actual count: 13** (both case-sensitive and case-insensitive). A grep count is a trivially falsifiable embedded-evidence claim; getting it wrong undermines trust in the broader evidence section and suggests the planner cited without re-running.
+- **WebHelp-gap count overstated.** §Evidence line 103 and §Gap 6 claim "Gap: 3 registry rows must be added" for `/webhelp/OrcaFlex/Default.htm`, `/webhelp/OrcaWave/Default.htm`, `/webhelp/OrcFxAPI/Default.htm`. **Verified via grep**: a row already exists — `id: orcina_com_webhelp_orcaflex_251e1a`, URL `https://www.orcina.com/webhelp/OrcaFlex/` — for the OrcaFlex WebHelp root (as a directory, not `/Default.htm`). The plan's narrow-URL framing (`/Default.htm`) is a technicality; MadCap Flare `/webhelp/<product>/` and `/webhelp/<product>/Default.htm` resolve to the same index page. Files-to-Change row for `online-resource-registry.yaml` says "Add 3 WebHelp-root rows (OrcaFlex, OrcaWave, OrcFxAPI)" — at most 2 rows are new (OrcaWave, OrcFxAPI); OrcaFlex needs update-in-place or dedupe, not a second row. Otherwise the plan creates a duplicate registry row.
+- **`ls digitalmodel/scripts/tests/` — cited path does not exist.** §Evidence line 105: `ls digitalmodel/scripts/tests/ (per intel) → no ingester tests → confirms competitor B is untested.` **Path does not exist.** The conclusion (competitor B untested) is true by absence, but the evidence line is a phantom command the planner did not actually run. Flag: this is stylistically identical to §Retrieval-skepticism rule #5 anti-pattern.
+- **#2293 is OPEN — plan builds acceptance gates on an unstable contract.** §Deliverable (c): "idempotent per the #2293 contract"; §Acceptance line 262: "re-run of pipeline on unchanged source produces 0 commits (per #2293)". **Verified: #2293 state=OPEN, title "fix(wiki-ingest): make nightly ingest idempotent and push-status truthful"**. The #2293 contract is not yet frozen. Building hard acceptance gates against an in-flight contract means the plan's "done" line moves under it. At minimum the plan must either (a) pin to a specific commit of #2293's deliverable, or (b) re-scope acceptance to a locally-defined idempotency test rather than "per #2293".
+- **Robots.txt TDD test misfires under ZIP-first method.** §TDD line 234: `test_fetch_robots_respected ... Live-crawl path honors robots.txt`. The plan's recommended method (M-1 ZIP) does not make per-page HTTP GETs — robots.txt is irrelevant for ZIP download unless Orcina's `robots.txt` specifically disallows `/webhelp/<product>Help.zip`. The test is only meaningful under M-2/M-3. Yet the TDD table lists it unconditionally. Either the test list must branch on the ingestion-method decision or the gate language at plan-top should make the TDD table clearly conditional.
+- **Acceptance criterion `uv run pytest scripts/` is too broad.** §Acceptance line 258: "No regression: `uv run pytest scripts/` passes". The `scripts/` tree contains hundreds of unrelated tests that may fail for reasons unrelated to this change. A plan that can only land when ALL of `scripts/` is green will be blocked by any pre-existing flake in unrelated domains. Scope to: `scripts/data/llm-wiki/tests/`, `scripts/knowledge/tests/`, `tests/cron/test_external_doc_reingest.py` — which are the actually-coupled tests and are separately listed on line 258.
+- **Licensing gate is real but decision options are under-specified.** §Risks L-1 "Authorize non-git-tracked storage on ace drive" — plan does not require the user to produce a written authorization artifact. For a gate whose failure triggers ToS exposure, the plan should require the user to either (a) quote the Orcina redistribution clause, or (b) produce a license-file reference. Currently L-1 can be cleared by a `/plan-approve` comment with no evidentiary anchor. (The user's own feedback memory — "approval markers must be revision-bound (SHA + review artifact paths + storage surface)" — captures this pattern.)
+- **Chunker token cap has no empirical basis.** §Pseudocode line 166: `cap each chunk at ~1500 tokens (target LLM context efficiency)`. No reference to the retrieval consumer's actual context budget (search-wiki.py), no sibling plan citing 1500, no benchmark mentioned. §Tradeoffs list no alternative. 1500 is asserted, not reasoned. Either cite the consumer constraint or list chunk size as a tradeoff entry alongside converter choice.
+- **Converter benchmark sub-deliverable has no acceptance criterion.** §Tradeoff K (line 326) says "a one-day benchmark against 20 representative MadCap pages (fixture set), pick the converter with the best fidelity + lowest chrome-leakage". Acceptance criteria list (lines 252–265) does not include a bullet for that benchmark's artifact, nor a definition of "fidelity" or "chrome-leakage" that a reviewer can check. A sub-deliverable without an acceptance line will be silently skipped.
+- **"Cross-repo commit" on `digitalmodel/` is asserted but not scoped.** §Files-to-Change (line 218) and §Acceptance (line 253) require a cross-repo commit to retire competitor B on `digitalmodel/`. Plan does not specify which branch/PR on digitalmodel this lands on, what reviewer approves it, or what verifies the two-repo atomicity. With #2088 already closed on digitalmodel, there is real risk of a third dangling implementation on digitalmodel from a partial rollback. Scope the digitalmodel PR explicitly.
+- **Plan's own "Adversarial Review Summary" table is empty — `status:plan-review` premature.** §Adversarial Review Summary (line 273) leaves `_placeholder — pending adversarial review_`. That's correct *now*, but it means the plan cannot satisfy its own acceptance criterion `Plan review artifacts posted (3 providers)` (line 263) until this and 2 sibling reviews exist. Not a defect of the plan's design; a forward-status flag for the orchestrator.
+
+### codex
+
+(no findings unique to this provider)
+
+### gemini
+
+(no findings unique to this provider)
+

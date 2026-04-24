@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-24T05:20:10.092361Z",
+  "generated_at": "2026-04-24T13:20:09.950463Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-24T05:20:08.068684Z",
+  "scorecard_generated_at": "2026-04-24T13:20:08.029646Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 12,
+      "execution_ready_count": 15,
       "total_candidates": 169,
       "top_issues": [
         {
@@ -34,6 +34,29 @@
           "work_type": [
             "research",
             "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2380,
+          "title": "feat(knowledge): execute Batch Pack 3 Tier A for external engineering software profiles",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2380",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-24T09:00:59Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "strategy"
           ]
         },
@@ -110,6 +133,31 @@
           ]
         },
         {
+          "number": 2475,
+          "title": "chore(licensed-proof): define OrcaWave/OrcaFlex native load-run proof protocol",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2475",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-24T08:58:40Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2324,
           "title": "chore(memory): curate MEMORY.md index before 200-line truncation \u2014 consolidate stale project_* and feedback_*",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2324",
@@ -145,52 +193,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-23T15:29:28Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2424,
-          "title": "chore(ci-health): cross-repo CI audit \u2014 6 of 7 ecosystem repos have red main CI",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2424",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:infrastructure",
-            "maintenance",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-22T03:06:47Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2459,
-          "title": "follow-up(ci): assethold python-tests still red after smoke unblock \u2014 lint/mypy/quality-gate hardening",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2459",
-          "labels": [
-            "priority:medium",
-            "cat:infrastructure",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T11:15:09Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
