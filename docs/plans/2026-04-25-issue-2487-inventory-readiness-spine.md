@@ -1,6 +1,6 @@
 # Plan for #2487: Raw-data to GTM readiness matrix and dispatch board
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-04-25
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2487
