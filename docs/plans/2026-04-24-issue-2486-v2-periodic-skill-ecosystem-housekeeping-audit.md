@@ -1,9 +1,9 @@
 # Plan for #2486: v2 periodic skill ecosystem housekeeping audit
 
-> Status: draft (v2 after initial MAJOR review; revision applied)
+> Status: plan-approved (awaiting implementation)
 > Complexity: T2
 > Date: 2026-04-24
-> Issue: https://github.com/vamseeachanta/workspace-hub/issues/2486
+> Issue: [#2486](https://github.com/vamseeachanta/workspace-hub/issues/2486)
 > Review artifacts: scripts/review/results/2026-04-24-plan-2486-claude.md | scripts/review/results/2026-04-24-plan-2486-codex.md | scripts/review/results/2026-04-24-plan-2486-gemini.md
 
 ---
