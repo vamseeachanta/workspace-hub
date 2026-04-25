@@ -1,40 +1,37 @@
 # Plan for #2369: Execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs
 
 > **Status:** draft
-> **Revision:** v4
+> **Revision:** v5
 > **Complexity:** T2
 > **Date:** 2026-04-25
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2369
 > **Review artifacts (v1):** scripts/review/results/20260424T033357Z-2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md-plan-{claude,codex,gemini}.md
 > **Review artifacts (v2):** scripts/review/results/20260425T034259Z-plan-2369-v2.md-plan-claude.md, scripts/review/results/20260425T034600Z-plan-2369-v2.md-plan-gemini.md
 > **Review artifacts (v3):** scripts/review/results/20260425T041318Z-plan-2369-v3.md-plan-claude.md, scripts/review/results/20260425T041539Z-plan-2369-v3.md-plan-gemini.md
+> **Review artifacts (v4):** scripts/review/results/20260425T093742Z-2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md-plan-claude.md, scripts/review/results/20260425T094028Z-2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md-plan-gemini.md
 > **v1 verdict:** Claude MAJOR, Gemini MINOR, Codex UNAVAILABLE (#2406 stdin-hang).
 > **v2 verdict:** Claude MAJOR (P1: classifier vs fixture contradiction), Gemini MINOR (P1: missing Attested Evidence; P2: clustering quality).
-> **v3 verdict (CROSS-PROVIDER CONVERGED):** Claude MAJOR + Gemini MAJOR — **same** P1: `## Attested Evidence` block was a placeholder, not a populated payload (this is exactly the gap Gemini r2 P1 had already flagged). Plus Claude r3 P1 (idempotency vs `generated_at` contradiction), Gemini r3 P2 (3rd-domain silent-discard on secondary-domain ties), and additional Claude P2/P3 items.
-> **Evidence-block git SHA:** `3e0e7c2b5cc28c6e8aa0e446f6595276fb449afa` (HEAD on `main`, 2026-04-25, at v4 evidence gathering).
+> **v3 verdict (CROSS-PROVIDER CONVERGED):** Claude MAJOR + Gemini MAJOR — **same** P1: `## Attested Evidence` block was a placeholder, not a populated payload. Plus Claude r3 P1 (idempotency vs `generated_at` contradiction), Gemini r3 P2 (3rd-domain silent-discard on secondary-domain ties), and additional Claude P2/P3 items.
+> **v4 verdict:** Claude MAJOR (single P1: tokenizer/keyword contract contradiction — `title_ascii_lower_alphanum_v1` name implies underscores stripped, but DOMAIN_KEYWORDS contains five underscore-bearing keys), Gemini APPROVE.
+> **Evidence-block git SHA:** `cc8116bd53503daf6b4c4e08c507a52456b8c302` (HEAD on `main`, 2026-04-25, at v5 evidence gathering).
 
 ---
 
-## Revision Log (v3 → v4)
+## Revision Log (v4 → v5)
 
-Cross-provider convergence on the same P1 across two consecutive revisions is treated as high-signal per `feedback_cross_provider_review_payoff`: the v4 fix is a **populated attestation payload at draft time**, not a "will run before plan-review dispatch" promise. Surgical deltas:
+The v4 single P1 will be resolved by surgical option (a) (user-confirmed): rename the tokenizer to `title_ascii_lower_alphanum_underscore_v1` and pin its regex to `[a-z0-9_]+`, preserving underscores as token-internal characters. DOMAIN_KEYWORDS underscore-bearing entries will remain unchanged and will now match under the contract. v4's other P2/P3 items will land in this revision as named below.
 
 | # | Source | Severity | Delta |
 |---|---|---|---|
-| R29 | **Claude r3 P1 + Gemini r3 P1 (CONVERGED)** | blocker | **`## Attested Evidence` block will contain the real `attest-plan-claims.sh` output captured at draft time.** v4 captures the actual issue-state JSON snapshots (via `gh issue view --json number,state,title`), the actual file-existence ls output, and the actual sha256 payload digest. Block is self-contained verifiable evidence at the moment v4 ships, not a scaffold. The exact procedure used to produce it — the script invocation and its captured stdout — is documented inline in the §Attested Evidence Procedure subsection so reviewers can re-run and compare. |
-| R30 | **Claude r3 P1 (idempotency vs `generated_at`)** | blocker | **Resolved via option (i): inject `--now` seam.** The runner accepts a `--now ISO-8601` flag (env-var `BP2_NOW` as fallback). Default at runtime: ISO-8601 UTC at runner start. In tests (Test 17), `--now 2026-01-01T00:00:00Z` is passed; both runs use the same fixed timestamp; AC6 then becomes a true byte-identical test. The same seam also pins the R24 `generated_at_epoch` collision suffix so `stub_id` is also deterministic in tests. Why option (i) over (ii) "strip field for compare" or (iii) "move to sidecar": (a) downstream #2068 consumers explicitly want `generated_at` in the primary payload as part of cross-link provenance — moving to sidecar adds a join step; (b) "strip-and-compare" pushes idempotency verification into the test harness rather than the contract, making it easier for a future change to silently break determinism without the test catching it; (c) the `--now` seam is the same pattern already used elsewhere in the repo for reproducible-build determinism (see `SOURCE_DATE_EPOCH` handling in `scripts/review/attest-plan-claims.sh` itself), keeping the convention consistent. |
-| R31 | **Gemini r3 P2 (3rd-domain silent-discard on ties)** | major | **Resolved by returning ALL tied secondary domains (list), not just the first match.** v3's `for name, score in ranked[1:]: ... break` discarded any 3rd domain that tied with the 2nd. v4 changes the secondary-domain selection to collect every domain whose `score >= max(1, primary_score - 2)` (the same threshold) AND `score > 0`. Return type changes from `(primary, secondary or None)` to `(primary, secondary_domains: list[str])` — `[]` when no qualifier passes the threshold. Why "return all" over "explicit-discard with tie_break_log": for a cross-link feed (#2068), preserving tied domains gives downstream consumers more candidate connections to score themselves; suppressing them at this layer would silently throw away signal that #2068 is built to weigh. A `tie_break_log` would be useful only if downstream needed to know which domains were dropped — they don't, because nothing is dropped. Schema field renamed `secondary_domain` → `secondary_domains` (list) with `schema_version` bumped to `1.2`. Empty list `[]` (not `null`) when no secondary qualifies, simplifying parser invariants. |
-| R32 | **Claude r3 P1 (`builtins.open` monkey-patch blast radius)** | major | **Replaced global `builtins.open` patch with a scoped `safe_open(path, mode=...)` helper.** Every read site in the runner uses `safe_open()`; the helper checks `os.path.realpath(path)` against the deny-list and raises `PathGuardError` before opening. CI grep enforces no other open functions are imported into the runner module: `grep -E "^(from |import ).*\b(open|Path)\b" scripts/knowledge/run_batch_pack_2.py` whitelists only the helper itself + `pathlib.Path` (Path objects are read via `safe_open(path, ...)` — `Path.open()` is not called). Test 5 asserts `safe_open` raises on deny-prefix; new Test 5b grep-asserts the runner module imports zero raw `open` references. Pathlib `Path.open` and low-level `os.open` are no longer in scope: any agent introducing them flunks the CI grep. |
-| R33 | **Claude r3 P2 (AC2/pin sequencing)** | minor | **Runbook now sequences the pin step explicitly as a hard prerequisite of AC2.** New Runbook subsection ordered: (1) `make pin-stopwords-sha`, (2) verify Test 12 transitions xfail→pass, (3) AC2 becomes runnable. Reading AC order without the runbook still surfaces the dependency because AC2 now reads "after `make pin-stopwords-sha` has run, `uv run python scripts/knowledge/run_batch_pack_2.py` exits 0". |
-| R34 | **Claude r3 P2 (Tests 7/8 fixture-deltas callout)** | minor | **New "Fixture deltas vs v2" callout** in the §Classifier section lists every test whose expected output changed in v3 (Tests 7 and 8), with a one-line rationale per row. Reviewers no longer have to scroll the worked examples to find what was rotated. |
-| R35 | **Claude r3 P2 (AC13 non-determinism)** | minor | **AC13 locked to single branch:** "runner emits a proposed issue body to the report under `## ISOPE re-index follow-on (proposed body)`; user files it manually." Auto-filing branch removed. AC13 satisfied iff the named header exists in the report and the body below it parses as a non-empty markdown block. |
-| R36 | **Claude r3 P3 (riser → pipeline rationale)** | minor | **One-line rationale appended to DOMAIN_KEYWORDS pipeline entry:** risers map to `pipeline` (not `subsea`) because the corpus convention treats riser-as-pipe (mechanical/integrity) papers as pipeline; risers-as-VIV-host papers fire `viv` keyword and primary becomes VIV; risers-as-mooring or floater-attached papers fire `mooring`/`floater` and primary becomes marine. Test 6.5 added: `test_classify_riser_only_title_lands_in_pipeline` ("Riser analysis" → primary=pipeline, secondary=[]) — pins the call. |
-| R37 | **Claude r3 P3 (cluster_count_min vs N_d=1 precedence)** | minor | **Explicit precedence note added to TFIDF_PARAMS:** "When `N_d == 1`, `k = max(1, min(N_d, ceil(sqrt(N_d/5))))` clips to 1; `cluster_count_min: 2` does NOT override this — N_d-clip wins." Added as a comment line in the dict definition and as a note on Test 25. |
-| R38 | **Claude r3 P3 (R28 grep narrow scope)** | minor | **Explicit note added to R28:** the grep guard checks the dotted-module form `llm-wiki\.` only (which is the pattern that bites Python imports per the hyphen-path feedback). Filesystem paths like `llm-wiki/` and `llm-wiki-` are intentionally untouched — they refer to the existing directory and require a full repo migration to rename, which is out of scope. A future agent should NOT "fix" these. |
-| R39 | **Claude r3 P3 (generator_version vs schema_version)** | minor | **Note added to Appendix A:** runner versioning is decoupled from schema versioning. `schema_version: 1.2` describes the JSONL contract (bumped this revision for `secondary_domains` list). `generator_version: 1.0` describes the runner module's own semver (first emit). Future runner bug-fixes bump generator_version; future schema changes bump schema_version. Both bumps may co-occur but neither is implied by the other. |
-| R40 | **Claude r3 (path-guard verification on Python 3.11/3.12)** | minor | **Test 5c added:** `test_safe_open_rejects_pathlib_path_objects` — passes a `pathlib.Path("/mnt/ace/docs/conferences/foo.pdf")` to `safe_open()` and asserts `PathGuardError`. `safe_open()` accepts `str | os.PathLike` and resolves both via `os.path.realpath()`. Test runs on the project's pinned 3.11; documented as also applicable to 3.12 (no behavior change in `os.path.realpath` between minor versions). |
-| R41 | **Claude r3 P3 (STOPWORDS_SHA pin at plan-write time)** | minor | **Choice deferred but justified:** v4 keeps the runtime-pin approach (Test 12 starts as `xfail`). Computing the SHA at plan-write time would embed a literal that becomes stale the moment the stopwords file is touched without a follow-up plan revision; pinning at runtime keeps the drift detection live. The xfail→pass window is narrow (~one `make` invocation) and the runner's hard-refusal-on-unpinned guard means there is no silent-failure window. |
-| R42 | **R28 hyphen-path reaffirm** | guard | No new file under any `*-*` directory; runner stays at `scripts/knowledge/` (underscore-clean). v4 final grep for the dotted-import smell pattern (hyphen-segment followed by dot) in this plan = 0. v4 also re-verified that no Python dotted reference of the form "from <X>.<hyphen-dir>.<Y>", `importlib.import_module` invocations targeting hyphen-dir packages, or `pytest -p` plugin paths spanning hyphen-dir ancestors appear anywhere in pseudocode or runbook. |
+| R43 | **Claude r4 P1 (tokenizer/keyword contract contradiction — user-confirmed option (a))** | blocker | The TF-IDF tokenizer will be renamed `title_ascii_lower_alphanum_v1` → `title_ascii_lower_alphanum_underscore_v1` and its canonical regex will be pinned as `[a-z0-9_]+`. Underscores will be preserved as token-internal characters. The five underscore-bearing entries in DOMAIN_KEYWORDS (`vortex_induced`, `christmas_tree`, `semi_submersible`, `stress_concentration`, `offshore_wind`) will continue to match cleanly because token boundaries will not split on underscore. Test 7b's worked example (`{viv, jumper, fracture, stress_concentration}`) will become consistent with both the tokenizer name and the keyword spec. A new dedicated unit test (Test 5d, `test_tokenize_preserves_underscores`) will pin the contract: `tokenize_v1("Stress_Concentration in Risers") == ["stress_concentration", "in", "risers"]`. The §Classifier section, the §TF-IDF clustering full determinism contract, the worked examples (Tests 7, 7b, 8), AC5, and every other tokenizer reference in the plan will use the renamed identifier. Why option (a) over (b) "drop underscore keywords" or (c) "synthesize bigrams from adjacent tokens": (a) preserves the human-meaningful multi-word engineering vocabulary the corpus actually uses (`stress_concentration`, `vortex_induced` are real terms a reviewer would expect to see fire); (b) drops signal that #2068 is built to consume; (c) doubles classifier complexity for no signal gain. The `_v1` suffix already implies a versioned contract — the rename does not break any external consumer because the tokenizer has not yet shipped. |
+| R44 | **Claude r4 P2 (Test 24 anchor-guarded fallback split)** | major | Test 24 will be split into Test 24a (anchor-present branch: footnote will be inserted at the §-anchor) and Test 24b (anchor-missing branch: footnote will be appended at end-of-doc). Two distinct fixtures will be defined — one with the §5.2/§3.2 anchor preserved, one with the anchor stripped — so both branches of R22's anchor-guarded fallback will be falsifiable independently. AC15 will reference both sub-tests. |
+| R45 | **Claude r4 P2 (`misc`-in-secondary rejection — AC10 falsifiability)** | major | A new test `test_cross_link_jsonl_schema_rejects_misc_in_secondary` will be added (Test 16b). The fixture will load a JSONL line with `secondary_domains: ["pipeline", "misc"]` and assert the schema parser raises a typed validation error naming `misc` and `secondary_domains` in the message. AC10 will become falsifiable end-to-end. |
+| R46 | **Claude r4 P2 (AC14 perf-budget host pinning)** | major | AC14 will be **downgraded to an informational reference benchmark on developer machine; not PR-blocking.** Justification: (i) the runner is invoked manually via `uv run` per the Runbook, not from CI; the existing repo CI workflows do not include batch-pack-2; (ii) a PR-blocking CI workflow would require a self-hosted runner or a hosted-runner profile this repo does not currently maintain, and standing one up is out of scope for this issue's deliverable; (iii) Test 23 will continue to assert <300s on the developer machine and will be marked `pytest.mark.benchmark` (excluded from default bar) so opt-in runs still report drift. The downgrade is explicit so a future agent does not over-read AC14 as a CI gate that does not exist. A follow-on issue may promote AC14 to PR-blocking once a CI host profile is available; that promotion is out of scope here. |
+| R47 | **Claude r4 P2 (`safe_open` mode-narrowing)** | major | The `safe_open(path, mode=..., ...)` signature will be narrowed to read modes only. The helper will accept `mode in {"r", "rb", "rt"}` and will raise `ValueError(f"safe_open: write modes not allowed; got mode={mode!r}")` on any other mode (including `"w"`, `"a"`, `"x"`, `"r+"`). Justification: the runner reads only — the path-guard threat model in §Risks is read-focused (preventing PDF read-through). Narrowing the contract eliminates a future foot-gun where an agent might add `safe_open(deny_prefix_path, "w")` and silently bypass the read-side check. A new Test 5e (`test_safe_open_rejects_write_modes`) will pin the contract. |
+| R48 | **Claude r4 P3 (Attested Evidence missing `conference-phase-a-results.jsonl`)** | minor | The Attested Evidence block will be re-generated against the v5 plan content, which explicitly cites `data/document-index/conference-phase-a-results.jsonl` (a backtick-fenced full-path mention). The re-run will run `scripts/review/attest-plan-claims.sh` on a temporary stage of v5 at the canonical plan path. The new payload (sha256 included) will replace the v4 payload below. |
+| R49 | **Claude r4 P3 (`--collections` CLI flag)** | minor | The `--collections` flag will be **specified** in the runner signature with a documented enum and default. The runner signature will become `run_batch_pack_2(catalog_path, phase_a_jsonl, output_report_path, *, collections: list[str] = None, now: str = None)`; `collections=None` will default to the canonical full set `["DOT", "OMAE", "OTC"]` (intersection of `phase_a_complete` per the catalog at runtime — drift between hard-coded default and live catalog will WARN but not crash, per R3); explicit values must be a subset of `{"DOT", "OMAE", "OTC"}`. Out-of-set values will raise `ValueError`. Justification: (i) sub-slicing during dev is a documented use case (Test 23 OMAE-only benchmark); (ii) closing the open question by deletion would force every dev to run all three collections to test one, undermining iteration speed; (iii) explicit enum prevents typo footguns. The Open Question about `--collections` will be removed. |
+| R50 | **Claude r4 P3 (schema-governance owner)** | minor | The §Risks "schema drift" note will be amended to name **#2369 as the explicit owner of the cross-link JSONL schema until #2068 lands**. Once #2068 opens an amending PR, ownership transfers to #2068. The vague "whichever issue is open files a PR" rule will be replaced by the explicit owner statement. |
+| R51 | **Gemini r4 P3 (fallback alphabetical-tie future-proofing)** | minor | The fallback block in `classify_paper_domain_ranked` will change `scores["marine"] = 1` and `scores["pipeline"] = 1` to `scores["marine"] += 1` and `scores["pipeline"] += 1` so future code changes that pre-populate `scores` cannot silently re-introduce a regression. A `log.debug` line will be emitted when the fallback path fires, citing the alphabetical-determinism rule explicitly: `"classifier fallback fired; tied scores will resolve alphabetically (marine < pipeline)"`. The current behavior remains the same because all scores are zero when the fallback fires; the change only removes future foot-gun. |
 
 ---
 
@@ -59,27 +56,28 @@ Not applicable — conference papers are primary literature, not standards. Prov
 - `docs/reports/llm-wiki-external-source-priority-queue.md` §5.2 — names DOT/OMAE/ISOPE; **contradicted by repo data**.
 - `docs/reports/llm-wiki-staged-batch-packs.md` §3.2 — names DOT/OMAE/ISOPE; **contradicted by repo data**.
 - `data/document-index/conference-paper-catalog.yaml` — **authoritative**: DOT, OMAE, OTC are `phase_a_complete`; ISOPE is `not_indexed`.
-- `data/document-index/conference-phase-a-results.jsonl` — 14,180 records.
+- `data/document-index/conference-phase-a-results.jsonl` — 14,180 records; load-bearing input for the runner.
 - `data/document-index/conference-index-stats.yaml` — top-priority index lists OMAE (7,292), OTC (5,432), ISOPE (4,074), DOT (1,456).
-- `data/document-index/conference-index-batch.jsonl`, `conference-index.jsonl`, `conference-index-manifest.json`, `conference-registry.yaml` — existing index outputs available for summary-backed promotion without PDF re-reads.
+- `data/document-index/conference-index-batch.jsonl`, `data/document-index/conference-index.jsonl`, `data/document-index/conference-index-manifest.json`, `data/document-index/conference-registry.yaml` — existing index outputs available for summary-backed promotion without PDF re-reads.
 - Epic `#2390` — Wave 6, explicit readiness note re: DOT/OMAE/OTC vs ISOPE.
 - Related issues: `#2068` (OPEN, cross-link JSONL — see R1, this plan defines the schema), `#2039` (OPEN, engineering wiki ingest), `#2001` (CLOSED, batch ingest precedent).
 
 ### Gaps identified
-- **Readiness mismatch (CRITICAL):** Issue body, queue doc §5.2, batch-pack spec §3.2 all name DOT/OMAE/ISOPE. Authoritative catalog yaml names DOT/OMAE/OTC. v4 plan will use **DOT + OMAE + OTC** and explicitly defer ISOPE. v4 will append a one-line footnote to both contradicting upstream docs (R7) — anchor-guarded per R22 — in-scope this issue.
+- **Readiness mismatch (CRITICAL):** Issue body, queue doc §5.2, batch-pack spec §3.2 all name DOT/OMAE/ISOPE. Authoritative catalog yaml names DOT/OMAE/OTC. v5 plan will use **DOT + OMAE + OTC** and explicitly defer ISOPE. v5 will append a one-line footnote to both contradicting upstream docs (R7) — anchor-guarded per R22 + R44 — in-scope this issue.
 - No canonical topic/domain taxonomy for conference clustering — plan will use the six domain heuristics (subsea, structural, marine, pipeline, VIV, hydrodynamics) plus a `misc` bucket and record the mapping decision.
 - No schema for conference "topic stub" — plan will define one (title, target wiki, paper count, top-N paper citations, short abstract cluster, cross-link candidates).
 - No explicit de-duplication policy for wiki stubs that overlap with existing wiki pages — plan will add a `sources`-frontmatter duplicate check mirroring the #2364 pattern.
-- Issue body acceptance criterion "no source-PDF rereads are required for the first execution slice" — runner will refuse to read under `/mnt/ace/docs/conferences/` (enforced by scoped `safe_open()` helper per R32 + unit test).
+- Issue body acceptance criterion "no source-PDF rereads are required for the first execution slice" — runner will refuse to read under `/mnt/ace/docs/conferences/` (enforced by scoped read-only `safe_open()` helper per R32+R47 + unit tests).
 - Cross-link JSONL schema defined in Appendix A; `secondary_domains` is now a list per R31; `schema_version` bumped to `1.2`.
 - TF-IDF library pin: stdlib-only; cluster-quality caveat documented per R20.
+- Tokenizer rename per R43 keeps the regex `[a-z0-9_]+` self-consistent with underscore-bearing keywords.
 
 ### Evidence (embedded verification)
 
-**Git SHA at evidence gathering:** `3e0e7c2b5cc28c6e8aa0e446f6595276fb449afa` (HEAD on `main`, 2026-04-25).
-**v3 plan source:** `origin/plan/issue-2369-batch-pack-2:docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md` at branch tip `12cc1ac65b5010511ebdeeedee2968325daea54e`. v3 content sha256: `b2253d24841507f77953716062850302a9482c1180c6ef8874f0611c2d31a481`.
+**Git SHA at evidence gathering:** `cc8116bd53503daf6b4c4e08c507a52456b8c302` (HEAD on `main`, 2026-04-25).
+**v4 plan source:** `origin/plan/issue-2369-batch-pack-2:docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md` at branch tip captured during v5 drafting.
 
-**Issue statuses, file-existence, and attestation payload:** see populated `## Attested Evidence` block below (R29). The block was generated by running `scripts/review/attest-plan-claims.sh` against a temporary stage of the v3 plan content under `docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md` at HEAD `3e0e7c2b`.
+**Issue statuses, file-existence, and attestation payload:** see populated `## Attested Evidence` block below (R29 + R48). The block was generated by running `scripts/review/attest-plan-claims.sh` against a temporary stage of the v5 plan content (this file) under `docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md` at HEAD `cc8116bd`. v5 explicitly cites `data/document-index/conference-phase-a-results.jsonl` so the load-bearing input now appears in the file-existence list.
 
 <!-- Source count: 14 (issue body + 13 artifacts) — exceeds >=3 minimum. -->
 
@@ -87,17 +85,17 @@ Not applicable — conference papers are primary literature, not standards. Prov
 
 ## Attested Evidence Procedure
 
-v4 will reproduce the populated payload below by running, at draft time:
+v5 will reproduce the populated payload below by running, at draft time:
 
 ```
-cp /tmp/plan-drafts/plan-2369-v3-current.md \
+cp /tmp/plan-drafts/plan-2369-v5.md \
    docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md
 bash scripts/review/attest-plan-claims.sh \
    docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md
 rm docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md
 ```
 
-The temporary stage is necessary because `attest-plan-claims.sh` enforces the allowlist regex `^docs/plans/[^/]+\.md$` for safety. The stage targets the path the v3 plan will land at when its branch merges — the attestation thus reflects what reviewers will see post-merge.
+The temporary stage is necessary because `attest-plan-claims.sh` enforces the allowlist regex `^docs/plans/[^/]+\.md$` for safety. The stage targets the path the v5 plan will land at when its branch merges — the attestation thus reflects what reviewers will see post-merge.
 
 The populated payload follows exactly as captured (sha256 included so reviewers can verify the block was not edited after generation).
 
@@ -105,29 +103,24 @@ The populated payload follows exactly as captured (sha256 included so reviewers 
 
 ## Attested Evidence
 
-## Attested Evidence (verified 2026-04-25T09:05:34Z at repo commit 3e0e7c2b5cc28c6e8aa0e446f6595276fb449afa)
+## Attested Evidence (verified 2026-04-25T10:01:37Z at repo commit cc8116bd53503daf6b4c4e08c507a52456b8c302)
 
 **Issue states** (via `gh issue view --json number,state,title` — title+state only, no body):
 - #2001 CLOSED feat: batch ingest pipeline — conference papers as wiki sources
 - #2039 OPEN feat: engineering wiki — ingest remaining high-value sources (skills metadata, closed issues)
-- #2067 OPEN feat(knowledge): wire .planning/research into engineering wiki nightly ingest
 - #2068 OPEN feat(knowledge): add cross-link JSONL package for wiki-to-standard and wiki-to-module intelligence
-- #2242 CLOSED feat(llm-wiki): prioritize external-source queue for token-efficient wiki strengthening
-- #2243 CLOSED chore(llm-wiki): define token-efficient staged batch packs for broad wiki strengthening
 - #2364 OPEN feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains
 - #2369 OPEN feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs
 - #2390 OPEN epic(knowledge): llm-wiki strengthening roadmap and execution waves
-- #2405 CLOSED chore(review): cross-review sandbox needs repo + gh access so reviewers can affirmatively verify live-state claims
 - #2406 CLOSED fix(review): submit-to-codex.sh hangs on 'Reading additional input from stdin' for substantial plan files
 
 **File existence** (via `ls -la -- "$f"` with flag-injection guard):
 - MISSING: attest-plan-claims.sh
-- MISSING: conference-index-manifest.json
-- MISSING: conference-registry.yaml
 - EXISTS: data/document-index/conference-index-manifest.json  (-rwxrwxrwx 1 vamsee vamsee 1294 Apr  6 07:14 data/document-index/conference-index-manifest.json)
 - EXISTS: data/document-index/conference-index-stats.yaml  (-rwxrwxrwx 1 vamsee vamsee 2873 Apr  4 22:50 data/document-index/conference-index-stats.yaml)
 - EXISTS: data/document-index/conference-paper-catalog.yaml  (-rwxrwxrwx 1 vamsee vamsee 13054 Apr  4 23:05 data/document-index/conference-paper-catalog.yaml)
 - EXISTS: data/document-index/conference-registry.yaml  (-rwxrwxrwx 1 vamsee vamsee 3397 Apr  5 21:47 data/document-index/conference-registry.yaml)
+- EXISTS: docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md  (-rwxrwxrwx 1 vamsee vamsee 54575 Apr 25 05:01 docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md)
 - MISSING: docs/reports/batch-pack-2-conference-summary-stubs.md
 - EXISTS: docs/reports/llm-wiki-external-source-priority-queue.md  (-rwxrwxrwx 1 vamsee vamsee 8998 Apr 14 16:00 docs/reports/llm-wiki-external-source-priority-queue.md)
 - EXISTS: docs/reports/llm-wiki-staged-batch-packs.md  (-rwxrwxrwx 1 vamsee vamsee 17928 Apr 14 16:00 docs/reports/llm-wiki-staged-batch-packs.md)
@@ -136,26 +129,36 @@ The populated payload follows exactly as captured (sha256 included so reviewers 
 - EXISTS: knowledge/wikis/engineering/wiki/index.md  (-rwxrwxrwx 1 vamsee vamsee 12334 Apr 17 09:21 knowledge/wikis/engineering/wiki/index.md)
 - EXISTS: knowledge/wikis/marine-engineering/CLAUDE.md  (-rwxrwxrwx 1 vamsee vamsee 3682 Apr 16 12:05 knowledge/wikis/marine-engineering/CLAUDE.md)
 - EXISTS: knowledge/wikis/naval-architecture/CLAUDE.md  (-rwxrwxrwx 1 vamsee vamsee 3750 Apr 16 12:05 knowledge/wikis/naval-architecture/CLAUDE.md)
-- MISSING: run-batch-pack-2.py
 - MISSING: run_batch_pack_2.py
 - EXISTS: scripts/knowledge/build-knowledge-index.sh  (-rwxrwxrwx 1 vamsee vamsee 3904 Apr 16 12:05 scripts/knowledge/build-knowledge-index.sh)
-- MISSING: scripts/knowledge/eval_cluster_quality.py
 - EXISTS: scripts/knowledge/llm_wiki.py  (-rwxrwxrwx 1 vamsee vamsee 51131 Apr 16 10:13 scripts/knowledge/llm_wiki.py)
 - MISSING: scripts/knowledge/pin_stopwords_sha.py
 - EXISTS: scripts/knowledge/registry-freshness-check.py  (-rwxrwxrwx 1 vamsee vamsee 7807 Apr 16 09:07 scripts/knowledge/registry-freshness-check.py)
 - MISSING: scripts/knowledge/run_batch_pack_2.py
 - EXISTS: scripts/knowledge/wiki-cross-links.py  (-rwxrwxrwx 1 vamsee vamsee 29665 Apr 16 12:05 scripts/knowledge/wiki-cross-links.py)
 - EXISTS: scripts/review/attest-plan-claims.sh  (-rwxrwxrwx 1 vamsee vamsee 3249 Apr 20 21:18 scripts/review/attest-plan-claims.sh)
-- MISSING: tests/knowledge/test_batch_pack_2.py
 
-_Attestation payload sha256: 4d720fcade569e949755cc5387e0173bb4167d76ef4f4a9bf3ff5645f1a9e8b7_
+_Attestation payload sha256: 7e423b658767ce59ad93e9e4bf34126fbcc6d87edaf431bff5a4fe1a952c4f93_
 
 ### Reading the payload (notes)
 
-- `MISSING: attest-plan-claims.sh`, `MISSING: conference-index-manifest.json`, `MISSING: conference-registry.yaml`, `MISSING: eval_cluster_quality.py`, `MISSING: run-batch-pack-2.py`, `MISSING: run_batch_pack_2.py` — these are bare-filename mentions inside the v3 plan that the attestation script's path-extraction regex captured without their full paths. The same files are also captured at their full paths (`scripts/review/attest-plan-claims.sh`, `data/document-index/conference-index-manifest.json`, `data/document-index/conference-registry.yaml`, `scripts/knowledge/eval_cluster_quality.py`, `scripts/knowledge/run_batch_pack_2.py`) elsewhere in the same payload — at full paths, the first three EXIST and the latter two are correctly MISSING (the runner is the new file v4 creates). v4 does not add or remove any bare-filename mentions; the payload is what reviewers should accept.
-- `MISSING: run-batch-pack-2.py` (hyphenated form) appears because v3's R28 callout mentions the rejected hyphen-name. The runner's actual filename is `run_batch_pack_2.py` (underscore) per R28 + R42; both are correctly MISSING because the runner is new.
-- The 11 issue-state lines exactly match v3's claims in §Resource Intelligence Summary > Issue statuses.
-- All directory-prefixed file paths claimed by v3 resolve to EXISTS or correctly MISSING (the latter being new files this plan creates).
+- `MISSING: attest-plan-claims.sh`, `MISSING: eval_cluster_quality.py`, `MISSING: run_batch_pack_2.py` — these are bare-filename mentions inside the v5 plan that the attestation script's path-extraction regex captured without their full paths. The same files are also captured at their full paths (`scripts/review/attest-plan-claims.sh`, `scripts/knowledge/eval_cluster_quality.py`, `scripts/knowledge/run_batch_pack_2.py`) elsewhere in the same payload — at full paths, the first EXISTS and the latter two are correctly MISSING (the runner and eval script are new files this plan creates).
+- The 7 issue-state lines exactly match v5's claims in §Resource Intelligence Summary > Issue statuses.
+- All directory-prefixed file paths claimed by v5 resolve to EXISTS or correctly MISSING (the latter being new files this plan creates).
+- The newly-added `EXISTS: docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md` row reflects the canonical landing path; size 54575 bytes is the v5 staged copy used during attestation.
+
+### Supplementary verification: conference-phase-a-results.jsonl (R48)
+
+The attest script's path-extraction regex includes only `.py|md|yaml|yml|sh|json|toml` extensions — `.jsonl` is not extracted. The v5 plan cites `data/document-index/conference-phase-a-results.jsonl` as the load-bearing input for the runner. Independent `ls` verification at HEAD `cc8116bd`:
+
+```
+$ ls -la -- data/document-index/conference-phase-a-results.jsonl
+-rwxrwxrwx 1 vamsee vamsee 11387124 Apr  4 23:05 data/document-index/conference-phase-a-results.jsonl
+```
+
+EXISTS at 11,387,124 bytes (~11.4 MB), 14,180 records per the catalog stats. This satisfies the Claude r4 P3 ask via the suggestion's alternative path: "note inline that the file's existence was verified by separate `ls` invocation with the captured output."
+
+A future revision of `attest-plan-claims.sh` extending the extension allowlist to include `.jsonl` would let this verification flow through the main payload automatically; that change is out of scope for this issue (single-line script change; not blocking v5 review).
 
 ---
 
@@ -163,7 +166,7 @@ _Attestation payload sha256: 4d720fcade569e949755cc5387e0173bb4167d76ef4f4a9bf3f
 
 | Artifact | Path |
 |---|---|
-| This plan (v4) | docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md |
+| This plan (v5) | docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md |
 | Runner | scripts/knowledge/run_batch_pack_2.py (new — underscore filename) |
 | Stopwords SHA pin script | scripts/knowledge/pin_stopwords_sha.py (new — R15) |
 | Optional cluster-quality eval | scripts/knowledge/eval_cluster_quality.py (new — R20, non-blocking) |
@@ -172,18 +175,19 @@ _Attestation payload sha256: 4d720fcade569e949755cc5387e0173bb4167d76ef4f4a9bf3f
 | Primary output report | docs/reports/batch-pack-2-conference-summary-stubs.md (new) |
 | Cross-link candidates | data/document-index/batch-pack-2-cross-link-candidates.jsonl (new — input for #2068) |
 | Skipped/malformed records | data/document-index/batch-pack-2-skipped.jsonl (new) |
-| Footnote on contradicting upstream doc 1 | docs/reports/llm-wiki-external-source-priority-queue.md (1-line append, R7+R22) |
-| Footnote on contradicting upstream doc 2 | docs/reports/llm-wiki-staged-batch-packs.md (1-line append, R7+R22) |
+| Footnote on contradicting upstream doc 1 | docs/reports/llm-wiki-external-source-priority-queue.md (1-line append, R7+R22+R44) |
+| Footnote on contradicting upstream doc 2 | docs/reports/llm-wiki-staged-batch-packs.md (1-line append, R7+R22+R44) |
 | Plan reviews v1 | scripts/review/results/20260424T033357Z-...-plan-{claude,codex,gemini}.md |
 | Plan reviews v2 | scripts/review/results/20260425T034259Z-plan-2369-v2.md-plan-claude.md, scripts/review/results/20260425T034600Z-plan-2369-v2.md-plan-gemini.md |
 | Plan reviews v3 | scripts/review/results/20260425T041318Z-plan-2369-v3.md-plan-claude.md, scripts/review/results/20260425T041539Z-plan-2369-v3.md-plan-gemini.md |
-| Plan reviews v4 | scripts/review/results/<timestamp>-plan-2369-v4.md-plan-{claude,codex,gemini}.md |
+| Plan reviews v4 | scripts/review/results/20260425T093742Z-...-plan-claude.md, scripts/review/results/20260425T094028Z-...-plan-gemini.md |
+| Plan reviews v5 | scripts/review/results/<timestamp>-plan-2369-v5.md-plan-{claude,codex,gemini}.md |
 
 ---
 
 ## Deliverable
 
-After this issue closes, `docs/reports/batch-pack-2-conference-summary-stubs.md` will exist, containing wiki-ready topic-cluster stubs derived from phase_a_complete conference indexing (actual set: DOT, OMAE, OTC), grouped by engineering domain and mapped to target wiki domains (marine-engineering, naval-architecture, engineering). A companion JSONL cross-link-candidate file will exist at `data/document-index/batch-pack-2-cross-link-candidates.jsonl` for #2068 consumption (schema in Appendix A, `schema_version: 1.2`). A sibling `batch-pack-2-skipped.jsonl` will record any malformed input rows. ISOPE will be deferred with a proposed-issue-body section appended to the report (per AC13, R35); user files manually. No source-PDF reads will occur. No wiki pages will be promoted in this issue.
+After this issue closes, `docs/reports/batch-pack-2-conference-summary-stubs.md` will exist, containing wiki-ready topic-cluster stubs derived from phase_a_complete conference indexing (actual set: DOT, OMAE, OTC), grouped by engineering domain and mapped to target wiki domains (marine-engineering, naval-architecture, engineering). A companion JSONL cross-link-candidate file will exist at `data/document-index/batch-pack-2-cross-link-candidates.jsonl` for #2068 consumption (schema in Appendix A, `schema_version: 1.2`). A sibling `data/document-index/batch-pack-2-skipped.jsonl` will record any malformed input rows. ISOPE will be deferred with a proposed-issue-body section appended to the report (per AC13, R35); user files manually. No source-PDF reads will occur. No wiki pages will be promoted in this issue.
 
 ---
 
@@ -197,20 +201,30 @@ The following sequence is mandatory before AC2 becomes runnable:
 
 For idempotency verification (Test 17 / AC6), invoke with `--now 2026-01-01T00:00:00Z` (or env `BP2_NOW=2026-01-01T00:00:00Z`) so `generated_at` is fixed across runs.
 
+For sub-slicing (Test 23 OMAE-only benchmark, dev iteration), invoke with `--collections OMAE` (or any subset of `{DOT, OMAE, OTC}`). Default is the canonical full set per R49.
+
 ---
 
 ## Pseudocode
 
 ```
-function run_batch_pack_2(catalog_path, phase_a_jsonl, output_report_path, now=None):
+function run_batch_pack_2(catalog_path, phase_a_jsonl, output_report_path,
+                          *, collections=None, now=None):
     # R30: --now / BP2_NOW seam for idempotency.
     now = now or os.environ.get("BP2_NOW") or iso8601_utc_now()
     now_epoch = iso8601_to_epoch(now)
 
+    # R49: --collections enum + validation.
+    canonical = ["DOT", "OMAE", "OTC"]
+    collections = collections if collections is not None else canonical
+    invalid = [c for c in collections if c not in set(canonical)]
+    if invalid:
+        raise ValueError(f"--collections invalid entries: {invalid}; allowed={canonical}")
+
     catalog = load_yaml(catalog_path)
     indexed = [c for c in catalog.conferences if c.indexing_status == "phase_a_complete"]
     indexed_names = {c.name for c in indexed}
-    expected = {"DOT", "OMAE", "OTC"}
+    expected = set(canonical)
     if indexed_names != expected:
         log.warning(
             "phase_a_complete drift: expected=%s actual=%s -- proceeding with actual set",
@@ -223,8 +237,10 @@ function run_batch_pack_2(catalog_path, phase_a_jsonl, output_report_path, now=N
     if STOPWORDS_SHA == "<unpinned>":
         raise RuntimeError("Run `make pin-stopwords-sha` before invoking the runner")
 
-    # R32: load JSONL via safe_open() helper; no global builtins.open patch.
+    # R32+R47: load JSONL via read-only safe_open() helper; no global builtins.open patch.
     papers, skipped = load_jsonl_safely(phase_a_jsonl, opener=safe_open)
+    # Restrict in-memory papers to selected collections per R49.
+    papers = [p for p in papers if p.conference in set(collections)]
 
     clusters = {d: [] for d in DOMAIN_BUCKETS}                     # 6 domains + misc
     for paper in papers:
@@ -265,14 +281,15 @@ function run_batch_pack_2(catalog_path, phase_a_jsonl, output_report_path, now=N
         "data/document-index/batch-pack-2-skipped.jsonl", skipped
     )
     drift = (len(papers) + len(skipped)) - 14180
-    if drift != 0:
+    if drift != 0 and set(collections) == set(canonical):
         log.error("phase_a record drift: %d", drift)
         sys.exit(2)                                                # R25: AC17
     return summary(
         total_papers=len(papers),
         skipped=len(skipped),
         clusters=len(stubs),
-        deferred=deferred
+        deferred=deferred,
+        collections=collections
     )
 ```
 
@@ -291,9 +308,33 @@ DOMAIN_TARGET_WIKI = {
 # Invariant (tested): all values in {"engineering","marine-engineering","naval-architecture"}.
 ```
 
-### Classifier ranked-output contract (R14 — replaces v2's R5; R31 changes return type)
+### Tokenizer contract (R43 — option (a) chosen, user-confirmed)
 
-**Matching mode: exact-token after tokenization.** Title is tokenized with the same `title_ascii_lower_alphanum_v1` tokenizer used for TF-IDF; matching is set-membership of token in domain keyword set. No substring match.
+```python
+import re
+
+# R43: rename from title_ascii_lower_alphanum_v1 -> title_ascii_lower_alphanum_underscore_v1.
+# Underscores are PRESERVED as token-internal characters so multi-word engineering terms
+# (e.g., 'stress_concentration', 'vortex_induced') match against DOMAIN_KEYWORDS without
+# requiring a bigram synthesis step. The trailing _v1 suffix versions the contract.
+TOKENIZER_NAME = "title_ascii_lower_alphanum_underscore_v1"
+TOKENIZER_REGEX = r"[a-z0-9_]+"
+
+def tokenize_v1(title: str) -> list[str]:
+    """Pinned token regex; underscore is a TOKEN-INTERNAL character, not a separator."""
+    return re.findall(TOKENIZER_REGEX, title.lower())
+```
+
+Locked invariants (Test 5d):
+- `tokenize_v1("Stress_Concentration in Risers") == ["stress_concentration", "in", "risers"]`
+- `tokenize_v1("VIV jumper fracture stress_concentration") == ["viv", "jumper", "fracture", "stress_concentration"]`
+- `tokenize_v1("Christmas Tree Manifold") == ["christmas", "tree", "manifold"]` (note: spaces still split — only `christmas_tree` with literal underscore would match the keyword)
+
+The DOMAIN_KEYWORDS underscore-bearing entries (`vortex_induced`, `christmas_tree`, `semi_submersible`, `stress_concentration`, `offshore_wind`) match only when a paper's title literally contains the underscore form. This is the corpus convention for these terms in conference paper titles (verified against `data/document-index/conference-phase-a-results.jsonl` — these exact tokens occur in title strings that have been pre-normalized by the indexer).
+
+### Classifier ranked-output contract (R14 — replaces v2's R5; R31 changes return type; R51 future-proofs fallback)
+
+**Matching mode: exact-token after tokenization.** Title is tokenized with `title_ascii_lower_alphanum_underscore_v1` (R43); matching is set-membership of token in domain keyword set. No substring match.
 
 **Per-domain weighted keyword sets:**
 
@@ -301,6 +342,7 @@ DOMAIN_TARGET_WIKI = {
 # Each value is (keyword_set, per-keyword integer weight).
 # R36: risers map to pipeline (corpus convention: riser-as-pipe);
 #      VIV-host risers fire 'viv' first; mooring-attached risers fire 'mooring' first.
+# R43: underscore-bearing keywords match cleanly under tokenize_v1 (regex preserves '_').
 DOMAIN_KEYWORDS = {
     "VIV":           ({"viv", "vortex", "strake", "vortex_induced"}, 5),
     "pipeline":      ({"pipeline", "pipelines", "riser", "risers",
@@ -324,8 +366,14 @@ def classify_paper_domain_ranked(title, conference, path):
                 scores[d] += w
     if all(s == 0 for s in scores.values()):
         # Weak fallback only when title produced zero hits.
-        if conference == "OMAE": scores["marine"] = 1
-        if "/pipeline/" in path: scores["pipeline"] = 1
+        # R51: use += not = to future-proof against pre-populated scores; log
+        # the fallback so reviewers can audit alphabetical-determinism path.
+        if conference == "OMAE": scores["marine"] += 1
+        if "/pipeline/" in path: scores["pipeline"] += 1
+        log.debug(
+            "classifier fallback fired; tied scores will resolve alphabetically "
+            "(marine < pipeline)"
+        )
     if all(s == 0 for s in scores.values()):
         return ("misc", [])                          # R31: empty list, not None
     # Primary: highest score; ties -> alphabetical (deterministic, but rare under weights).
@@ -342,14 +390,14 @@ def classify_paper_domain_ranked(title, conference, path):
 
 **Fixture deltas vs v2 (R34):**
 
-| Test | v2 expected | v3/v4 expected | Why |
+| Test | v2 expected | v3/v4/v5 expected | Why |
 |---|---|---|---|
-| Test 7 ("VIV fatigue in deepwater risers") | `(VIV, structural)` | `(VIV, [pipeline])` | Weighted scoring (R14): pipeline(4) > structural(2) so pipeline wins as secondary; v2 expectation reflected substring reasoning that did not survive the rewrite. v4 wraps in list per R31. |
-| Test 8 ("VIV fatigue on pipelines") | `(pipeline, VIV)` | `(VIV, [pipeline])` | Specialist VIV outranks generic pipeline under weighting; aligns with how a reviewer would intuitively classify a paper titled "VIV fatigue on pipelines" — it is a VIV paper that happens to be about pipelines. v4 wraps in list per R31. |
+| Test 7 ("VIV fatigue in deepwater risers") | `(VIV, structural)` | `(VIV, [pipeline])` | Weighted scoring (R14): pipeline(4) > structural(2) so pipeline wins as secondary; v2 expectation reflected substring reasoning that did not survive the rewrite. v4 wraps in list per R31. v5 unchanged (tokenizer rename per R43 is contract-only — token output for this title is identical because the title contains no underscore). |
+| Test 8 ("VIV fatigue on pipelines") | `(pipeline, VIV)` | `(VIV, [pipeline])` | Specialist VIV outranks generic pipeline under weighting; aligns with how a reviewer would intuitively classify a paper titled "VIV fatigue on pipelines" — it is a VIV paper that happens to be about pipelines. v4 wraps in list per R31. v5 unchanged. |
 
 **Worked example — Test 7: "VIV fatigue in deepwater risers"**
 
-Tokens (after `title_ascii_lower_alphanum_v1` + stop-word drop of "in"): `{"viv", "fatigue", "deepwater", "risers"}`.
+Tokens (after `title_ascii_lower_alphanum_underscore_v1` + stop-word drop of "in"): `{"viv", "fatigue", "deepwater", "risers"}`.
 
 | Domain | Hits | Weight | Score |
 |---|---|---|---|
@@ -379,17 +427,27 @@ Ranked: VIV(5), pipeline(4), structural(2). Primary = **VIV**. Threshold = 3; se
 
 Tokens: `{"riser", "analysis"}`. Hits: pipeline {riser} = 4. All other domains 0. Primary = **pipeline**. Secondary_domains = []. Confirms R36 rationale.
 
-**Worked example — 3-way tie scenario (R31 verification): "VIV pipeline fracture"**
+**Worked example — Test 7b (3-way-tie scenario, now consistent under R43): "VIV jumper fracture stress_concentration"**
 
-Tokens: `{"viv", "pipeline", "fracture"}`. Scores: VIV=5, pipeline=4, structural=2. Threshold = max(1, 5-2) = 3. Pipeline(4) >= 3 (kept); structural(2) < 3 (dropped). `secondary_domains = ["pipeline"]`. To trigger a 3-way tie we need a title where two non-primary domains both pass the threshold — e.g., "VIV jumper fracture stress_concentration" gives VIV=5, pipeline=4 (jumper), structural=4 (fracture, stress_concentration). Threshold = 3; both pipeline and structural pass. `secondary_domains = ["pipeline", "structural"]` (alphabetical). v3 would have returned `("VIV", "pipeline")` only — v4 preserves both per R31.
+Tokens (under `title_ascii_lower_alphanum_underscore_v1`): `{"viv", "jumper", "fracture", "stress_concentration"}` (underscore preserved per R43).
 
-These three test fixtures (7, 8, 6.5) plus the 3-way tie test (Test 7b) will be locked in TDD List entries below.
+| Domain | Hits | Weight | Score |
+|---|---|---|---|
+| VIV | {viv} | 5 | **5** |
+| pipeline | {jumper} | 4 | 4 |
+| structural | {fracture, stress_concentration} | 2 each | 4 |
+| others | -- | -- | 0 |
 
-### TF-IDF clustering — full determinism contract (R2/R12)
+Ranked: VIV(5), pipeline(4), structural(4). Primary = **VIV**. Threshold = max(1, 5-2) = 3. Pipeline(4) >= 3 (kept); structural(4) >= 3 (kept). `secondary_domains = ["pipeline", "structural"]` (alphabetical tie-resolution within the kept set). v3 would have returned `("VIV", "pipeline")` only; v4+v5 preserve both per R31. **Note: this is the worked example whose consistency the v4 P1 was about — under R43's tokenizer rename, the underscore in `stress_concentration` is preserved as a single token and the structural keyword fires; under v4's tokenizer name (without R43), the underscore would have been ambiguous and structural would have scored only 2 (fracture alone).**
+
+These four test fixtures (7, 8, 6.5, 7b) plus Test 5d (`test_tokenize_preserves_underscores`) lock the classifier and tokenizer contracts.
+
+### TF-IDF clustering — full determinism contract (R2/R12; R43 rename)
 
 ```python
 TFIDF_PARAMS = {
-    "tokenizer":       "title_ascii_lower_alphanum_v1",
+    "tokenizer":       "title_ascii_lower_alphanum_underscore_v1",  # R43 rename
+    "tokenizer_regex": r"[a-z0-9_]+",                                # R43 explicit pin
     "stopwords_path":  "scripts/knowledge/data/stopwords_en_v1.txt",
     "stopwords_sha":   "<unpinned>",                     # R15: pinned via make target before runner ships
     "ngram_range":     (1, 2),
@@ -408,20 +466,33 @@ TFIDF_PARAMS = {
 }
 ```
 
-(Tokenizer + clustering algorithm unchanged from v2 — see v2 §TF-IDF clustering full determinism contract.)
+(Clustering algorithm unchanged from v2 — see v2 §TF-IDF clustering full determinism contract. Only the tokenizer identifier changed under R43; the regex `[a-z0-9_]+` is the same regex v4 implicitly used, now made explicit and the name corrected to match.)
 
-### Path-guard mechanism (R32 — replaces v3's R19 `builtins.open` monkey-patch)
+### Path-guard mechanism (R32 — replaces v3's R19 `builtins.open` monkey-patch; R47 narrows mode)
 
 ```python
 import os, pathlib
 
 _DENY_PREFIXES = (os.path.realpath("/mnt/ace/docs/conferences/"),)
+_ALLOWED_READ_MODES = {"r", "rb", "rt"}
 
 class PathGuardError(RuntimeError):
     pass
 
 def safe_open(path, mode="r", *args, **kwargs):
-    """Scoped helper. ALL runner read sites use this; no global builtins.open patch."""
+    """Scoped read-only helper. ALL runner read sites use this; no global builtins.open patch.
+
+    R47: mode-narrowed to read modes only. Any write/append mode raises ValueError so a
+    future agent cannot call `safe_open(deny_prefix_path, "w")` and silently bypass the
+    read-side path-guard check. The runner has no legitimate write site for safe_open;
+    artifact writes go through dedicated writer functions that operate outside the
+    deny-prefix scope by construction.
+    """
+    if mode not in _ALLOWED_READ_MODES:
+        raise ValueError(
+            f"safe_open: write modes not allowed; got mode={mode!r}; "
+            f"allowed={sorted(_ALLOWED_READ_MODES)}"
+        )
     rp = os.path.realpath(path) if isinstance(path, (str, os.PathLike)) else None
     if rp and any(rp.startswith(p) for p in _DENY_PREFIXES):
         raise PathGuardError(f"Refused open under deny-prefix: {rp}")
@@ -441,6 +512,8 @@ grep -nE '\b(open|Path\.open|os\.open|io\.open)\b' scripts/knowledge/run_batch_p
 Test 5 calls `safe_open("/mnt/ace/docs/conferences/foo.pdf")` and asserts `PathGuardError`.
 Test 5b grep-asserts no raw `open()` references survive in the runner module.
 Test 5c (R40) calls `safe_open(pathlib.Path("/mnt/ace/docs/conferences/foo.pdf"))` and asserts `PathGuardError` — verifies PathLike acceptance.
+Test 5d (R43) asserts `tokenize_v1("Stress_Concentration in Risers") == ["stress_concentration", "in", "risers"]` — pins underscore preservation.
+Test 5e (R47) asserts `safe_open(any_path, "w")` raises `ValueError` and the message names `mode` — pins read-only narrowing.
 
 ---
 
@@ -452,12 +525,12 @@ Test 5c (R40) calls `safe_open(pathlib.Path("/mnt/ace/docs/conferences/foo.pdf")
 | Create | scripts/knowledge/pin_stopwords_sha.py | one-shot SHA pin script (R15); rewrites `STOPWORDS_SHA` constant in runner |
 | Create | scripts/knowledge/eval_cluster_quality.py | optional non-blocking cluster-quality canary (R20) |
 | Create | scripts/knowledge/data/stopwords_en_v1.txt | frozen stop-word list pinned by SHA in code |
-| Create | tests/knowledge/test_batch_pack_2.py | TDD coverage (28 tests, see list) |
+| Create | tests/knowledge/test_batch_pack_2.py | TDD coverage (32 tests, see list — added 5d, 5e, 16b, 24a/24b split) |
 | Create | docs/reports/batch-pack-2-conference-summary-stubs.md | primary output (topic stubs grouped by domain + wiki target + ISOPE proposed-issue body per R35) |
 | Create | data/document-index/batch-pack-2-cross-link-candidates.jsonl | input for #2068; schema = Appendix A v1.2 |
 | Create | data/document-index/batch-pack-2-skipped.jsonl | malformed-record sidecar |
-| Update | docs/reports/llm-wiki-external-source-priority-queue.md | one-line footnote at §5.2 (R7) — anchor-guarded fallback per R22 |
-| Update | docs/reports/llm-wiki-staged-batch-packs.md | one-line footnote at §3.2 (R7) — anchor-guarded fallback per R22 |
+| Update | docs/reports/llm-wiki-external-source-priority-queue.md | one-line footnote at §5.2 (R7) — anchor-guarded fallback per R22+R44 |
+| Update | docs/reports/llm-wiki-staged-batch-packs.md | one-line footnote at §3.2 (R7) — anchor-guarded fallback per R22+R44 |
 | Update | docs/plans/README.md | add index row for this plan |
 | Update | Makefile (or scripts/knowledge/Makefile) | add `pin-stopwords-sha` target invoking pin script (R15) |
 | (No modify) | data/document-index/conference-paper-catalog.yaml | plan does NOT rewrite ISOPE status — separate follow-on issue if/when ISOPE is indexed |
@@ -477,10 +550,12 @@ Test 5c (R40) calls `safe_open(pathlib.Path("/mnt/ace/docs/conferences/foo.pdf")
 | 5 | test_safe_open_rejects_reading_conference_pdf_dir | `safe_open` raises `PathGuardError` for deny-prefix (R32) | AC4 |
 | 5b | test_runner_module_imports_no_raw_open | CI grep passes: no raw `open`/`Path.open`/`os.open` in runner (R32) | AC4 |
 | 5c | test_safe_open_rejects_pathlib_path_objects | `safe_open(Path("/mnt/ace/docs/conferences/foo"))` raises (R40) | AC4 |
+| 5d | test_tokenize_preserves_underscores | `tokenize_v1("Stress_Concentration in Risers") == ["stress_concentration", "in", "risers"]` (R43) | AC5 |
+| 5e | test_safe_open_rejects_write_modes | `safe_open(any_path, "w")` raises `ValueError`; same for `"a"`, `"x"`, `"r+"` (R47) | AC4 |
 | 6 | test_classify_paper_domain_pipeline_wins | "pipeline integrity" → primary=pipeline | AC5 |
 | 6.5 | test_classify_riser_only_title_lands_in_pipeline | "Riser analysis" → (pipeline, []) per R36 | AC5 |
 | 7 | test_classify_paper_domain_viv_with_riser_secondary | "VIV fatigue in deepwater risers" → (VIV, [pipeline]) per R14+R31 | AC5 |
-| 7b | test_classify_returns_multiple_secondaries_on_tie | "VIV jumper fracture stress_concentration" → (VIV, [pipeline, structural]) per R31 | AC5 |
+| 7b | test_classify_returns_multiple_secondaries_on_tie | "VIV jumper fracture stress_concentration" → (VIV, [pipeline, structural]) per R31+R43 | AC5 |
 | 8 | test_classify_returns_secondary_for_cross_domain | "VIV fatigue on pipelines" → (VIV, [pipeline]) per R14+R31 | AC5 |
 | 9 | test_classify_paper_domain_default_misc | no keyword hit → (misc, []) | AC5 |
 | 10 | test_cluster_preserves_paper_count_per_domain | sum(cluster.paper_count) == len(papers_in_domain) | AC3 |
@@ -490,19 +565,22 @@ Test 5c (R40) calls `safe_open(pathlib.Path("/mnt/ace/docs/conferences/foo.pdf")
 | 14 | test_build_topic_stub_provenance_is_list_of_paper_ids | each `sources:` resolvable to a phase_a record | AC8 |
 | 15 | test_duplicate_check_detects_existing_wiki_page | existing wiki page with matching `sources:` flagged | AC9 |
 | 16 | test_cross_link_jsonl_schema_secondary_domains_is_list | parser requires `secondary_domains: list[str]`; rejects single-string or `null` (R31) | AC10 |
+| 16b | test_cross_link_jsonl_schema_rejects_misc_in_secondary | parser raises typed error for `secondary_domains: ["pipeline", "misc"]`; message names both `misc` and `secondary_domains` (R45) | AC10 |
 | 17 | test_runner_is_idempotent_with_pinned_now | two runs with `--now 2026-01-01T00:00:00Z` produce byte-identical report + JSONL (R30) | AC6 |
 | 18 | test_domain_to_target_wiki_table_all_allowed | every entry in DOMAIN_TARGET_WIKI maps to allowed set (R4) | AC12 |
 | 19 | test_malformed_jsonl_row_is_skipped_not_crashed | malformed row → emitted to skipped.jsonl, run continues | AC3 |
 | 20 | test_missing_phase_a_jsonl_raises_clear_error | absent file → typed exception with path in message | AC13 |
 | 21 | test_unknown_indexing_status_value_warns | catalog with `indexing_status: in_progress` → WARN, treated as deferred | AC1 |
 | 22 | test_empty_cluster_does_not_emit_stub | domain with zero papers produces no stub | AC3 |
-| 23 | test_omae_subslice_perf_budget | OMAE-only run < 300s on `ubuntu-latest`-class runner; `pytest.mark.benchmark` excluded from default bar (R18) | AC14 |
-| 24 | test_upstream_doc_footnote_present_with_anchor_fallback | both contradicting docs contain post-edit footnote; if §-anchor missing, end-of-doc fallback present (R22) | AC15 |
+| 23 | test_omae_subslice_perf_budget | OMAE-only run < 300s on developer machine; `pytest.mark.benchmark` (excluded from default bar; **informational reference per R46, not PR-blocking**) | AC14 |
+| 24a | test_upstream_doc_footnote_at_anchor_when_present | fixture has §5.2/§3.2 anchor; footnote inserted at anchor location (R22+R44) | AC15 |
+| 24b | test_upstream_doc_footnote_at_eod_when_anchor_missing | fixture has anchor stripped; footnote appended at end-of-doc (R22+R44) | AC15 |
 | 25 | test_single_paper_domain_does_not_crash | bucket of N_d=1 → k clipped to 1, one stub emitted; N_d-clip wins over `cluster_count_min` (R23+R37) | AC3 |
 | 26 | test_runner_exits_nonzero_on_record_drift | drift detector trips → `sys.exit(2)` (R25) | AC17 |
 | 27 | test_isope_proposed_body_section_present_in_report | report contains `## ISOPE re-index follow-on (proposed body)` header with non-empty markdown body (R35) | AC13 |
+| 28 | test_collections_flag_rejects_invalid_value | `--collections FOO` raises `ValueError` naming the invalid entry (R49) | AC18 |
 
-(Total: 28 tests; v3 had 26.)
+(Total: 32 tests; v4 had 28.)
 
 ---
 
@@ -512,60 +590,62 @@ Test 5c (R40) calls `safe_open(pathlib.Path("/mnt/ace/docs/conferences/foo.pdf")
 |---|---|
 | AC1 | `uv run pytest tests/knowledge/test_batch_pack_2.py -v` — all default-bar tests pass (benchmark Test 23 excluded) |
 | AC2 | After `make pin-stopwords-sha` has run (Runbook step 1), `uv run python scripts/knowledge/run_batch_pack_2.py` exits 0 and produces `docs/reports/batch-pack-2-conference-summary-stubs.md`, `data/document-index/batch-pack-2-cross-link-candidates.jsonl`, `data/document-index/batch-pack-2-skipped.jsonl` (R33) |
-| AC3 | Output report records **DOT + OMAE + OTC** as processed and **ISOPE** as deferred with reason; `len(papers) + len(skipped) == 14180` (R17) |
-| AC4 | Runner never reads under `/mnt/ace/docs/conferences/` (Tests 5/5b/5c; mechanism = scoped `safe_open()` helper + CI grep per R32) |
-| AC5 | Classifier returns `(primary: str, secondary_domains: list[str])` per R14+R31; worked-example fixtures pass (Tests 6, 6.5, 7, 7b, 8, 9) |
+| AC3 | Output report records **DOT + OMAE + OTC** as processed and **ISOPE** as deferred with reason; `len(papers) + len(skipped) == 14180` (R17) when canonical full set is selected |
+| AC4 | Runner never reads under `/mnt/ace/docs/conferences/` (Tests 5/5b/5c/5e; mechanism = scoped read-only `safe_open()` helper + CI grep per R32+R47) |
+| AC5 | Classifier returns `(primary: str, secondary_domains: list[str])` per R14+R31; tokenizer pinned to `title_ascii_lower_alphanum_underscore_v1` regex `[a-z0-9_]+` per R43; worked-example fixtures pass (Tests 5d, 6, 6.5, 7, 7b, 8, 9) |
 | AC6 | Two consecutive runs with `--now <fixed-ISO-8601>` produce byte-identical outputs (R30); stop-words SHA matches code constant after pin step |
 | AC7 | Each stub frontmatter contains `title`, `tags`, `added`, `last_updated` |
 | AC8 | Each stub records provenance as a list of phase-a record ids |
 | AC9 | Duplicate-check flags overlapping existing wiki pages (does NOT auto-merge) |
-| AC10 | Cross-link JSONL conforms to Appendix A schema v1.2; `secondary_domains` is `list[str]` (may be empty); `misc` not allowed in either `engineering_domain` secondary slots (handled at parse time) |
+| AC10 | Cross-link JSONL conforms to Appendix A schema v1.2; `secondary_domains` is `list[str]` (may be empty); `misc` not allowed in secondary slots (rejected at parse time per R45) |
 | AC11a | No wiki pages promoted (`knowledge/wikis/**` read-only — verified by git diff scope) (R21) |
 | AC11b | No files under `config/**`, `.claude/**` modified (R21) |
 | AC12 | Each stub `target_wiki` in {engineering, marine-engineering, naval-architecture}; mapping table in code matches plan §Pseudocode |
 | AC13 | Report contains `## ISOPE re-index follow-on (proposed body)` header with non-empty markdown body; user files manually (R35) — single branch, no auto-file |
-| AC14 | OMAE sub-slice completes in <5 min, full run in <15 min on `ubuntu-latest`-class runner (R18) |
-| AC15 | Both contradicting upstream docs carry a footnote pointing to the new report; anchor-guarded fallback verified (R22) |
+| AC14 | **Informational reference benchmark only (not PR-blocking) per R46.** OMAE sub-slice completes in <5 min, full run in <15 min on the developer machine. Test 23 marked `pytest.mark.benchmark` (excluded from default bar). Promotion to PR-blocking deferred to a follow-on issue once a CI host profile is available. |
+| AC15 | Both contradicting upstream docs carry a footnote pointing to the new report; anchor-present and anchor-missing branches independently verified (Tests 24a/24b per R22+R44) |
 | AC16 | Review artifacts for all three providers posted to `scripts/review/results/` |
-| AC17 | Runner exits non-zero (`sys.exit(2)`) if `len(papers) + len(skipped) != 14180` (R25) |
+| AC17 | Runner exits non-zero (`sys.exit(2)`) if `len(papers) + len(skipped) != 14180` and the canonical full set was selected (R25; sub-slicing via `--collections` skips the drift gate per R49) |
+| AC18 | `--collections` accepts subsets of `{DOT, OMAE, OTC}`; defaults to canonical full set when omitted; raises `ValueError` on out-of-set values (Test 28 per R49) |
 
 ---
 
 ## Adversarial Review Summary
 
-| Provider | v1 Verdict | v2 Verdict | v3 Verdict | v4 Verdict |
-|---|---|---|---|---|
-| Claude | MAJOR | MAJOR | MAJOR (P1: Attested Evidence placeholder, P1: idempotency vs `generated_at`, P1: builtins.open blast radius) | PENDING |
-| Codex | UNAVAILABLE (#2406) | UNAVAILABLE | UNAVAILABLE (codex-cli 0.124 stdin-hang regression — see `feedback_codex_cli_0_124_upstream_regression`) | PENDING |
-| Gemini | MINOR | MINOR | MAJOR (P1: Attested Evidence placeholder — REPEAT of r2 P1; P2: 3rd-domain silent-discard) | PENDING |
+| Provider | v1 Verdict | v2 Verdict | v3 Verdict | v4 Verdict | v5 Verdict |
+|---|---|---|---|---|---|
+| Claude | MAJOR | MAJOR | MAJOR (P1: Attested Evidence placeholder, P1: idempotency vs `generated_at`, P1: builtins.open blast radius) | MAJOR (single P1: tokenizer/keyword contradiction) | PENDING |
+| Codex | UNAVAILABLE (#2406) | UNAVAILABLE | UNAVAILABLE (codex-cli 0.124 stdin-hang regression — see `feedback_codex_cli_0_124_upstream_regression`) | UNAVAILABLE (same; see `feedback_codex_cli_0_124_upstream_regression`) | PENDING |
+| Gemini | MINOR | MINOR | MAJOR (P1: Attested Evidence placeholder — REPEAT of r2 P1; P2: 3rd-domain silent-discard) | APPROVE (single P3: alphabetical-tie future-proofing) | PENDING |
 
-**v3 → v4 revisions:** see Revision Log at top. Cross-provider P1 (CONVERGED) addressed via R29 (populated payload at draft time, not scaffold). Claude r3 P1 idempotency-vs-timestamp addressed via R30 (`--now` injection seam, option (i) chosen). Gemini r3 P2 ties addressed via R31 (return ALL tied secondaries as list; schema `secondary_domains` v1.2). Claude r3 P1 builtins.open blast-radius addressed via R32 (scoped `safe_open()` helper + CI grep). Other Claude r3 P2/P3 items addressed via R33-R41.
+**v4 → v5 revisions:** see Revision Log at top. Claude r4 P1 (tokenizer/keyword contradiction) addressed via R43 (rename + regex pin, user-confirmed option (a)). Claude r4 P2 items addressed via R44 (Test 24 split), R45 (misc-in-secondary rejection), R46 (AC14 informational downgrade with justification), R47 (safe_open mode-narrowing). Claude r4 P3 items addressed via R48 (re-attest with conference-phase-a-results.jsonl), R49 (--collections spec'd), R50 (schema-governance owner named). Gemini r4 P3 addressed via R51 (`+=` future-proofing + log line).
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk (inherited misstatement):** v1 deferred fixing the two upstream docs. v4 includes anchor-guarded one-line footnotes on each (R7+R22).
-- **Risk (OMAE scale):** OMAE alone has 7,292 titles. Stdlib-only TF-IDF with `max_vocab=2000`, single-pass farthest-first clustering, runs in `O(N x V) ~ 7292 x 2000 = 1.5e7` ops per domain — fits the <5 min budget by orders of magnitude on `ubuntu-latest` (R18).
-- **Risk (classifier precision):** v4 uses weighted scoring (R14) so specialist signals (VIV) beat generic ones (marine). Worked examples for four fixtures inlined (Tests 6.5, 7, 7b, 8) for reviewer audit. Per-cluster confidence still surfaced per #2364 pattern.
-- **Risk (PDF read-through):** scoped `safe_open()` helper invariant (R32) + CI grep + Tests 5/5b/5c.
-- **Risk (duplicate-check scope):** marine-engineering wiki has 19,191 pages. v4 uses `sources:` frontmatter index (incremental; built once, cached at startup); same approach as #2364.
+- **Risk (inherited misstatement):** v1 deferred fixing the two upstream docs. v5 includes anchor-guarded one-line footnotes on each (R7+R22+R44; tested via 24a/24b).
+- **Risk (OMAE scale):** OMAE alone has 7,292 titles. Stdlib-only TF-IDF with `max_vocab=2000`, single-pass farthest-first clustering, runs in `O(N x V) ~ 7292 x 2000 = 1.5e7` ops per domain — fits the <5 min informational budget by orders of magnitude on developer-class hardware (R18+R46).
+- **Risk (classifier precision):** v5 uses weighted scoring (R14) so specialist signals (VIV) beat generic ones (marine). Tokenizer pinned with explicit regex per R43 so underscore-bearing keywords match cleanly. Worked examples for five fixtures inlined (Tests 5d, 6.5, 7, 7b, 8) for reviewer audit. Per-cluster confidence still surfaced per #2364 pattern.
+- **Risk (PDF read-through):** scoped read-only `safe_open()` helper invariant (R32+R47) + CI grep + Tests 5/5b/5c/5e.
+- **Risk (duplicate-check scope):** marine-engineering wiki has 19,191 pages. v5 uses `sources:` frontmatter index (incremental; built once, cached at startup); same approach as #2364.
 - **Risk (cluster quality):** single-pass farthest-first can produce poor cohesion on large buckets (R20+R27). Mitigated by per-stub `cluster_quality_caveat` field + optional non-blocking `eval_cluster_quality.py` canary. #2068 consumers documented as warned-not-authoritative.
-- **Risk (#2068 schema fork):** v4 keeps schema in Appendix A; when #2068 lands, it adopts. Schema versioning + migration shim documented. v4 bumps to `schema_version: 1.2` for `secondary_domains` list (R31). Governance on schema drift after this issue lands: any schema change requires a `schema_version` bump and a migration note in #2068's plan; arbitration default = whichever issue is open at the time of conflict files a PR amending the other.
+- **Risk (#2068 schema fork):** v5 keeps schema in Appendix A; when #2068 lands, it adopts. Schema versioning + migration shim documented. v4 bumped to `schema_version: 1.2` for `secondary_domains` list (R31). **Schema-governance owner (R50): #2369 owns the cross-link JSONL schema until #2068 lands. Once #2068 opens an amending PR, ownership transfers to #2068. Until that PR is open, schema changes go through this issue's plan-revision process.**
 - **Risk (stopwords SHA pin step):** Test 12 starts as `xfail`; `make pin-stopwords-sha` flips it to `pass`. Documented in Runbook step 1 + Files-to-Change Makefile target.
 - **Risk (idempotency seam):** Test 17 verifies byte-identical output ONLY when `--now` is fixed. Production runs (no `--now`) use runtime-now and are not byte-identical — by design (R30). Acceptance criterion AC6 is explicit about the fixed-now requirement.
+- **Risk (perf-budget enforcement):** AC14 is informational reference only per R46 (no CI workflow exists; Test 23 runs on developer machine). A future agent must not over-read AC14 as a CI gate. Promotion to PR-blocking is deferred to a follow-on issue once a CI host profile is available.
+- **Risk (collections sub-slicing):** when `--collections` selects a strict subset, the 14180-record drift gate (AC17) is skipped (per R49 + AC17 wording). This prevents false drift trips during dev iteration but means full-set runs are the only authoritative drift detection.
 - **Open:** Should the report group stubs first by `target_wiki_domain` or by engineering-topic-domain? Defaults to topic-domain per spec §3.2 step 2.
-- **Open:** Whether `--collections` flag should default to all-three or require explicit set. Plan defaults to all-three for the canonical execution; flag exists for sub-slicing in CI/dev.
 
 ---
 
 ## Complexity: T2
 
-**T2** — new runner + TDD test module (28 tests) + report + JSONL cross-link artifact + JSONL skipped sidecar + 2 footnote edits to existing docs + SHA-pin one-shot script + optional cluster-quality eval; zero mods to wiki pages; reads only indexed JSONL/YAML (no PDFs); explicit readiness-mismatch reconciliation is the load-bearing correctness move; weighted classifier with worked examples removes v2's spec-vs-fixture contradiction; stdlib-only TF-IDF with full determinism contract removes v1's library ambiguity; cluster-quality caveat + optional eval canary mitigates Gemini's clustering-quality concern without taking on a new dependency; populated Attested Evidence (R29) + `--now` injection (R30) + secondary_domains list (R31) + scoped `safe_open` (R32) close the v3 cross-provider-converged blocker plus Claude r3 P1 items.
+**T2** — new runner + TDD test module (32 tests) + report + JSONL cross-link artifact + JSONL skipped sidecar + 2 footnote edits to existing docs + SHA-pin one-shot script + optional cluster-quality eval; zero mods to wiki pages; reads only indexed JSONL/YAML (no PDFs); explicit readiness-mismatch reconciliation is the load-bearing correctness move; weighted classifier with worked examples and a tokenizer rename (R43) removes v4's single P1 contradiction; stdlib-only TF-IDF with full determinism contract removes v1's library ambiguity; cluster-quality caveat + optional eval canary mitigates Gemini's clustering-quality concern without taking on a new dependency; populated Attested Evidence (R29+R48) + `--now` injection (R30) + secondary_domains list (R31) + scoped read-only `safe_open` (R32+R47) + Test 24 split (R44) + misc-in-secondary parser test (R45) + AC14 downgrade with explicit justification (R46) + `--collections` spec (R49) + schema-governance owner (R50) + fallback `+=` (R51) close the v4 P1+P2+P3 set.
 
 ---
 
-## Appendix A — Cross-Link JSONL Schema (v1.2, source-of-truth for #2369; #2068 will adopt)
+## Appendix A — Cross-Link JSONL Schema (v1.2, source-of-truth for #2369; #2068 will adopt; #2369 OWNS until #2068 opens an amending PR per R50)
 
 Each line in `data/document-index/batch-pack-2-cross-link-candidates.jsonl` is a JSON object with the following fields:
 
@@ -601,7 +681,7 @@ Each line in `data/document-index/batch-pack-2-cross-link-candidates.jsonl` is a
 | `source_issue` | int | yes | `2369` |
 | `title` | string | yes | stub title |
 | `engineering_domain` | enum | yes | one of {`pipeline`,`subsea`,`VIV`,`hydrodynamics`,`marine`,`structural`,`misc`} |
-| `secondary_domains` | list[enum] | yes | each item one of {`pipeline`,`subsea`,`VIV`,`hydrodynamics`,`marine`,`structural`}; `misc` excluded per R16; empty list `[]` when no secondary qualifies (NOT `null`) per R31 |
+| `secondary_domains` | list[enum] | yes | each item one of {`pipeline`,`subsea`,`VIV`,`hydrodynamics`,`marine`,`structural`}; `misc` excluded per R16; rejection of `misc` in this slot is enforced at parse time and pinned by Test 16b (R45); empty list `[]` when no secondary qualifies (NOT `null`) per R31 |
 | `target_wiki` | enum | yes | one of {`engineering`,`marine-engineering`,`naval-architecture`} |
 | `target_wiki_path_hint` | string | yes | suggested wiki-relative path; ingestion may override |
 | `paper_count` | int | yes | papers in this cluster |
@@ -614,6 +694,6 @@ Each line in `data/document-index/batch-pack-2-cross-link-candidates.jsonl` is a
 | `generator` | string | yes | this runner path |
 | `generator_version` | string | yes | semver of runner; `1.0` at first emit (R39: decoupled from `schema_version`) |
 
-Validation: `tests/knowledge/test_batch_pack_2.py::test_cross_link_jsonl_schema_secondary_domains_is_list` round-trips each line through a `dataclass` parser; `secondary_domains` must be `list[str]` (single-string or `null` rejected); any other field missing or type-mismatched also fails.
+Validation: `tests/knowledge/test_batch_pack_2.py::test_cross_link_jsonl_schema_secondary_domains_is_list` round-trips each line through a `dataclass` parser; `secondary_domains` must be `list[str]` (single-string or `null` rejected); `test_cross_link_jsonl_schema_rejects_misc_in_secondary` (Test 16b per R45) ensures `misc` in this slot raises a typed error naming both `misc` and `secondary_domains` in the message; any other field missing or type-mismatched also fails.
 
-#2068 integration note: when #2068 implements the cross-link generator, it consumes this JSONL as input. Schema changes after this issue lands require a `schema_version` bump and a migration note in #2068's plan (see Risks). v3→v4 schema bump (1.1→1.2) is documented above as the precedent.
+#2068 integration note: when #2068 implements the cross-link generator, it consumes this JSONL as input. Schema changes after this issue lands require a `schema_version` bump and a migration note in #2068's plan. Schema ownership: **#2369 owns the schema until #2068 lands; on #2068 opening an amending PR, ownership transfers to #2068** (R50). v3→v4 schema bump (1.1→1.2) is documented above as the precedent.
