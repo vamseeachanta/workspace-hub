@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-25T13:20:07.613158Z",
+  "generated_at": "2026-04-25T17:20:07.284831Z",
   "current_week": "2026-W17",
   "report_weeks": 8,
   "subscriptions": {
@@ -926,23 +926,23 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W17",
-        "sessions": 259,
-        "post_records": 11999,
-        "activity_utilization_pct": 29.5,
+        "sessions": 261,
+        "post_records": 12044,
+        "activity_utilization_pct": 29.6,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 29.5,
+        "reported_utilization_pct": 29.6,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-04-25T13:20:01Z",
+        "quota_snapshot_ts": "2026-04-25T17:20:01Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 7526
+            "count": 7545
           },
           {
             "tool": "Read",
-            "count": 2133
+            "count": 2152
           },
           {
             "tool": "Edit",
@@ -958,7 +958,7 @@
           }
         ],
         "first_ts": "2026-04-20T00:07:20Z",
-        "last_ts": "2026-04-25T13:20:02Z",
+        "last_ts": "2026-04-25T13:39:08Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -972,7 +972,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-04-25T13:20:01Z",
+        "quota_snapshot_ts": "2026-04-25T17:20:01Z",
         "top_tools": [
           {
             "tool": "Read",
@@ -1010,7 +1010,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-04-25T13:20:01Z",
+        "quota_snapshot_ts": "2026-04-25T17:20:01Z",
         "top_tools": [
           {
             "tool": "Read",
