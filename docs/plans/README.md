@@ -307,6 +307,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2438 | aceengineer-brand-identity-logo-resolution | `docs/plans/2026-04-23-issue-2438-aceengineer-brand-identity-logo-resolution.md` | 2026-04-23 | completed | T2 | Implemented and closed in `aceengineer-website` commit `47694fc`: canonical SVG/PNG logo assets, brand hierarchy doc, content-to-dist brand cleanup, legacy HTML/test/docs contract handling, and regression checks. |
 | 2475 | licensed-load-run-proof-protocol | `docs/plans/2026-04-23-issue-2475-licensed-load-run-proof-protocol.md` | 2026-04-23 | draft | T2 | Next OrcaWave/OrcaFlex semantic-proof wave: define licensed-win-1 native load/run proof protocol, self-contained prompt, evidence manifest, and failure classification before executing solver proof. |
 | 2476 | llm-wiki-semantic-equivalence-contract | `docs/plans/2026-04-23-issue-2476-llm-wiki-semantic-equivalence-contract.md` | 2026-04-23 | draft | T2 | Next OrcaWave/OrcaFlex semantic-proof wave: define durable llm-wiki semantic-equivalence contract and fixture expansion cookbook before broadening structure-family proof coverage. |
+| 2488 | reconcile-untracked-active-skill-files-before-loss | `docs/plans/2026-04-25-issue-2488-reconcile-untracked-active-skill-files-before-loss.md` | 2026-04-25 | draft | T2 | Bounded skills-housekeeping plan to surface filesystem-only active skills, disposition loss-risk skill files, preserve mirror counting, and keep weekly audit local-only. |
 ## Entry Format
 
 Add one row per plan:
