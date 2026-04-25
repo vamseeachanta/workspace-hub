@@ -17,7 +17,7 @@
 - Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval. *stale: 2026-04-11*
 - Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only.
 - In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present.
-- digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment.
+- digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment. *stale: 2026-04-25*
 
 ### User Profile
 
@@ -65,7 +65,7 @@ Context parity = compute parity. Zero waste everywhere.
 - **Issue comments**: Always post a summary comment on every implemented GitHub issue.
 - **Parallel work check**: Scan for in-flight sessions before starting GSD work.
 - **Provider drift handling** (2026-04-24): if Claude or Gemini sessions
-  reference deleted `scripts/work-queue/*`, `.claude/work-queue/*`, old
+reference deleted `scripts/work-queue/*`, `.claude/work-queue/*`, old *stale: 2026-04-25*
   work-queue skills, or `scripts/agents/*`, redirect to
   `docs/ops/legacy-claude-reference-map.md`; do not restore those stale
   surfaces by default.

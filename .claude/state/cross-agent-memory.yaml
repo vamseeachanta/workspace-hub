@@ -3,8 +3,8 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-24T07:01:34Z"
-  source_hash: "3510c9cb1d75310f7990b38223d3838a"
+  generated: "2026-04-25T07:01:35Z"
+  source_hash: "db77c7021001615aeb69a12cc4169008"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
@@ -12,7 +12,7 @@ metadata:
       entry_count: 18
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 76
+      memory_file_count: 88
 
 hermes_insights:
   environment_facts:
@@ -32,7 +32,7 @@ hermes_insights:
     - "User supports autonomous overnight GitHub waves with no user interaction, strong git-contention avoidance, and may request large parallel planning batches (up to 10 agents) when useful."
     - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
     - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
-    - "Prefers choices/options to be numbered or lettered for easy selection."
+    - "Prefers numbered/lettered choices and clickable GitHub issue/PR links for #NNNN references."
     - "Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible."
     - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
     - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
@@ -40,12 +40,18 @@ hermes_insights:
 
 claude_memory_index:
   files:
+    - file: "feedback_stash_caret_3_for_untracked.md"
+      topic: "stash caret 3 for untracked"
     - file: "feedback_gh_issue_close_silent_comment_drop.md"
       topic: "gh issue close silent comment drop"
     - file: "feedback_dark_intelligence_excel.md"
       topic: "dark intelligence excel"
+    - file: "feedback_gmail_filter_first_over_per_thread.md"
+      topic: "gmail filter first over per thread"
     - file: "project_daily_readiness_cron.md"
       topic: "daily readiness cron"
+    - file: "feedback_codex_cli_0_124_upstream_regression.md"
+      topic: "codex cli 0 124 upstream regression"
     - file: "feedback_codex_sandbox_write_blocked.md"
       topic: "codex sandbox write blocked"
     - file: "ai-orchestration.md"
@@ -54,6 +60,8 @@ claude_memory_index:
       topic: "github workflow"
     - file: "working-style.md"
       topic: "working-style"
+    - file: "feedback_gemini_trust_env_blocks_reviews.md"
+      topic: "gemini trust env blocks reviews"
     - file: "feedback_repo_scope.md"
       topic: "repo scope"
     - file: "project_gsd_migration.md"
@@ -64,10 +72,14 @@ claude_memory_index:
       topic: "ai harness evaluations"
     - file: "feedback_gh_issue_comment.md"
       topic: "gh issue comment"
+    - file: "feedback_gif_creator_as_proof_pattern.md"
+      topic: "gif creator as proof pattern"
     - file: "feedback_specs_plans_location.md"
       topic: "specs plans location"
     - file: "feedback_queue_git_tracked.md"
       topic: "queue git tracked"
+    - file: "feedback_gmail_override_filters_silent_defeat.md"
+      topic: "gmail override filters silent defeat"
     - file: "reference_gmail_mcp_scope.md"
       topic: "gmail mcp scope"
     - file: "feedback_attestation_enables_contradiction_detection.md"
@@ -94,10 +106,14 @@ claude_memory_index:
       topic: "isolated clone dispatch race"
     - file: "project_llm_wiki_stays_embedded.md"
       topic: "llm wiki stays embedded"
+    - file: "project_aceengineer_copy_canonical_sources.md"
+      topic: "aceengineer copy canonical sources"
     - file: "project_cad_tooling_review.md"
       topic: "cad tooling review"
     - file: "engineering-modules.md"
       topic: "engineering-modules"
+    - file: "feedback_reflog_as_ground_truth.md"
+      topic: "reflog as ground truth"
     - file: "feedback_codex_needs_pushed_artifact.md"
       topic: "codex needs pushed artifact"
     - file: "feedback_no_reserved_wrk_ids.md"
@@ -140,6 +156,10 @@ claude_memory_index:
       topic: "field dev arch patterns"
     - file: "feedback_merge_race_silent_revert.md"
       topic: "merge race silent revert"
+    - file: "feedback_gmail_bulk_archive_no_confirm.md"
+      topic: "gmail bulk archive no confirm"
+    - file: "feedback_autosync_silent_pusher.md"
+      topic: "autosync silent pusher"
     - file: "user_voice_prompt_tips.md"
       topic: "user voice prompt tips"
     - file: "feedback_no_shortcuts_knowledge.md"
@@ -172,6 +192,8 @@ claude_memory_index:
       topic: "claude design adoption"
     - file: "network_machines.md"
       topic: "network machines"
+    - file: "feedback_claude_in_chrome_session_scoped.md"
+      topic: "claude in chrome session scoped"
     - file: "project_doc_intel_operating_model.md"
       topic: "doc intel operating model"
     - file: "feedback_recruiter_engagement.md"
@@ -188,6 +210,8 @@ claude_memory_index:
       topic: "html refresh"
     - file: "feedback_codex_sustained_major_loop.md"
       topic: "codex sustained major loop"
+    - file: "feedback_llm_wiki_hyphen_module_path_pattern.md"
+      topic: "llm wiki hyphen module path pattern"
     - file: "project_ecosystem_theme.md"
       topic: "ecosystem theme"
     - file: "reference_achantas_data.md"

@@ -34,6 +34,17 @@
 - [Isolated-clone dispatch race](feedback_isolated_clone_dispatch_race.md) — subagent executing in exec-clone must check for parallel-session landing on main workspace before writing, since both lanes share the same GitHub issue
 - [Codex sandbox fallback paths](feedback_codex_sandbox_fallback_paths.md) — when shell wrapper is blocked, Codex recovers via js_repl + GitHub connector; prompt must authorize these, and MAJOR verdicts lacking a fallback-read citation are weakly grounded
 - [Gemini sandbox overlay blindness](feedback_gemini_sandbox_overlay_blindness.md) — Gemini cross-review sandbox can't see sparse-checkout overlay; 2026-04-23 batch had ~54 false-positive file-missing claims across 8 plans; always verify with `git ls-files` before accepting MAJOR
+- [codex-cli 0.124.0 upstream stdin-hang](feedback_codex_cli_0_124_upstream_regression.md) — installed 2026-04-23; blocks ALL `codex exec` calls regardless of stdin redirection; reproduces on 90-byte plans; #2479 filed; workaround = downgrade to 0.123.0
+- [Reflog as ground truth](feedback_reflog_as_ground_truth.md) — `[rejected]` pushes and "lock failed" rebase errors can mask successful operations; check reflog + `git status` before retrying
+- [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` silently fails for untracked-when-stashed files; use `stash@{0}^3` (third parent = untracked tree)
+- [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync also resolves push contention by quietly pushing local-ahead commits; wait+verify after `[rejected]` instead of retrying
+- [Gemini trust-env blocks reviews](feedback_gemini_trust_env_blocks_reviews.md) — Gemini CLI exits 55 in headless without `GEMINI_CLI_TRUST_WORKSPACE=true`; wrapper masked the real stderr; durable fix landed in submit-to-gemini.sh 2026-04-24
+- [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` directory name poisons every Python dotted-path reference below it; recurred 3x in 2026-04-24 agent-drafted plans; grep plans for `llm-wiki\.` as a P1 smell
+- [Gmail override-filters silent defeat](feedback_gmail_override_filters_silent_defeat.md) — Inbox "Override filters for important" silently nullifies Skip-Inbox; flip to "Don't override" before installing filters (2026-04-24 ace sweep)
+- [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread state machines for actionable ~20% residue
+- [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` tools bind to main session; subagents can't drive Chrome; partition: main=browser, subagents=research
+- [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive (any volume) has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome; stay on archive+filter surface
+- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures up to 50 frames w/ click indicators; audit/skill-authoring/compliance artifact; start_recording → export to `docs/sessions/`
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -58,6 +69,7 @@
 - [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily, posts to repo-readiness issue
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
 - [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
+- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — 2026-04-23 #2471; standards get sanctioned `wiki/standards/` subtree with `code_id`/`publisher`/`revision` frontmatter; codification via plan 2026-04-23-issue-2471; unblocks #2227 CSA rollback
 - [llm-wiki stays embedded](project_llm_wiki_stays_embedded.md) — 2026-04-23 #2398 CLOSED; no spinout; triggers: 200MB, external consumer, cadence conflict, CI >5min, date 2026-10-23
