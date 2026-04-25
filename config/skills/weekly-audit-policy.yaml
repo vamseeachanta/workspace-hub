@@ -1,5 +1,5 @@
-version: 1
-policy_id: weekly-skills-audit-v1
+version: 2
+policy_id: weekly-skills-audit-v2
 scope: weekly skill ecosystem audit classification and ranking policy
 source_of_truth: config/skills/weekly-audit-policy.yaml
 companion_doc: docs/standards/weekly-skills-audit-policy.md
@@ -279,3 +279,61 @@ fixtures:
     expected_severity: medium
     expected_confidence: low
     expected_escalation: candidate
+
+
+v2:
+  schema_contract:
+    append_only_v1: true
+    required_optional_collections:
+      - usage_findings
+      - follow_up_candidates
+    baseline_reader: ignore_unknown_keys
+  size:
+    oversized_active_skill_lines: 30
+  adapter_contract:
+    include_exclude_universe: must_match_weekly_skills_audit_inventory
+    required_fields: [canonical_name, path, source_id]
+    no_network: true
+    no_writes_outside_output_root: true
+    timeout_seconds: 10
+  category_alias_families:
+    - id: workspace-hub-learned
+      canonical: workspace-hub-learned
+      aliases: [workspace_hub_learned, workspace-hub-learned]
+    - id: business-admin
+      canonical: business/admin
+      aliases: [business_admin, business/admin]
+    - id: archive
+      canonical: _archive
+      aliases: [_archive, _archived]
+  rules:
+    content-quality.malformed-frontmatter:
+      severity: high
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Repair YAML frontmatter before relying on this skill for automated routing.
+    content-quality.missing-category:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Add category frontmatter aligned with the skill path taxonomy.
+    grouping.category-path-mismatch:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Align category frontmatter and directory taxonomy or declare an explicit alias family.
+    grouping.category-alias-drift:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Normalize the alias family through a bounded cleanup issue after review.
+    size.oversized-skill:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Review for split, wrapper, or reference-file extraction opportunity.
