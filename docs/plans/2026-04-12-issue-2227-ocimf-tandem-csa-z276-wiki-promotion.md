@@ -1,11 +1,11 @@
 # Plan for #2227: Promote OCIMF Tandem Mooring and CSA Z276 Coverage into LLM-Wikis
 
-> **Status:** draft (v3 — addresses r2 Codex+Claude+Gemini findings; wiki/standards/ sanction unblocked via #2471 decision 2026-04-23)
+> **Status:** draft (v4 — re-decouples CSA Z276 from OCIMF Tandem via formal phase split now that #2471 `wiki/standards/` sanction is plan-approved at `cb1c4a972`; addresses r3 Gemini MAJOR findings; Codex r3 UNAVAILABLE — CLI regression #2479)
 > **Complexity:** T2
-> **Date:** 2026-04-12 (v1) / 2026-04-21 (v2 revision) / 2026-04-23 (v3 revision)
+> **Date:** 2026-04-12 (v1) / 2026-04-21 (v2 revision) / 2026-04-23 (v3 revision) / 2026-04-24 (v4 revision)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2227
 > **Parent:** https://github.com/vamseeachanta/workspace-hub/issues/2216
-> **Review artifacts:** `scripts/review/results/2026-04-21-plan-2227-codex.md` (MAJOR, r1) | `scripts/review/results/2026-04-21-plan-2227-gemini.md` (APPROVE, r1) | `scripts/review/results/2026-04-23-plan-2227-claude.md` (MAJOR, r2) | `scripts/review/results/2026-04-23-plan-2227-codex.md` (r2) | `scripts/review/results/2026-04-23-plan-2227-gemini.md` (r2) | `scripts/review/results/2026-04-23-plan-2227-disagreement.md`
+> **Review artifacts:** `scripts/review/results/2026-04-21-plan-2227-codex.md` (MAJOR, r1) | `scripts/review/results/2026-04-21-plan-2227-gemini.md` (APPROVE, r1) | `scripts/review/results/2026-04-23-plan-2227-claude.md` (MAJOR, r2) | `scripts/review/results/2026-04-23-plan-2227-codex.md` (UNAVAILABLE, r3 — codex-cli 0.124.0 stdin-hang #2479) | `scripts/review/results/2026-04-23-plan-2227-gemini.md` (MAJOR, r3) | `scripts/review/results/2026-04-23-plan-2227-disagreement.md`
 
 ---
 
@@ -13,27 +13,27 @@
 
 ### Existing repo code
 - Found: `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` — existing OCIMF MEG4 page, git-tracked (confirmed via `git ls-files`).
-- Found: `knowledge/wikis/engineering/wiki/standards/` — directory exists and is git-tracked, containing `api-579-ffs.md`, `dnv-os-e301.md`, `dnv-rp-c203.md`, `dnv-rp-c205.md`, `dnv-rp-f101.md`, `dnv-rp-f105.md`, `ocimf-meg4.md`.
+- Found: `knowledge/wikis/engineering/wiki/standards/` — directory exists and is git-tracked, containing `api-579-ffs.md`, `dnv-os-e301.md`, `dnv-rp-c203.md`, `dnv-rp-c205.md`, `dnv-rp-f101.md`, `dnv-rp-f105.md`, `ocimf-meg4.md`. (Reviewer note: Gemini r3 Finding 1 reported these paths absent at HEAD — that is the documented sandbox-overlay-blindness defect; verified present via `git ls-files` from the main workspace.)
 - Found: `knowledge/wikis/marine-engineering/wiki/` — directory is gitignored (`.gitignore:492 /knowledge/wikis/*`; only `!/knowledge/wikis/engineering/` at line 493 and `!/knowledge/wikis/cross-links.md` at line 494 are re-included). Subdirs present: `comparisons/`, `concepts/`, `entities/`, `sources/`, `visualizations/`. NO `standards/` directory, and marine-engineering `CLAUDE.md` schema (lines 6-23) does not list `standards/` as a sanctioned `wiki/` subcategory (literal `standards/` appears only at line 11 under `raw/`).
 - Found: `scripts/knowledge/llm_wiki.py` — lint command at `cmd_lint` (line 683) validates frontmatter for `entities/concepts/sources/comparisons/standards/workflows` (line 632). Supports `standards/` in frontmatter check but orphan/link checks only traverse `entities/concepts/sources/comparisons` (line 748).
-- Found: `data/document-index/summaries/sha256:5e5f...json`, `...:b576...json`, `...:3aa1...json` — summary artifacts EXIST for all three target doc_keys, with `summary: ""` across all three. **Correction (r2):** `text_preview` content is heterogeneous: OCIMF-TANDEM (`5e5f…`) has `text_preview` length 0 (truly empty); **CSA Z276.1-20 (`b576…`) and CSA Z276.18 (`3aa1…`) each carry a `text_preview` of 1000 characters of CORRUPTED OCR** — the first 200 chars of `b576…` read `"pyorat\npakota\nmakaamaan\nlujana\njakcanut\ntiedocca\nperaan\ncannikka\n…"` (garbled tokens resembling Finnish) and `3aa1…` similarly reads `"monen\nkuunnella\ncannikka\ncamoin\npyctyvat\nvaatteitaan\n…"`. Neither is usable content but neither is empty. Downstream: remediation for CSA is "fix encoding/OCR corruption", not "re-extract from empty state"; OCIMF remediation remains "extract preview content" (currently null).
-- User decision on #2471 (2026-04-23 issue comment): `wiki/standards/` sanctioned as a first-class page type; per-code wiki routing (marine-engineering vs naval-architecture vs engineering) deferred to the per-standard owner. #2471 codification plan (schema amendments, lint path, first sanctioned stub) is in-flight on branch `plan/issue-2471-standards-wiki-path-sanction` at commit `17118f381` (v1 flagged P1 issues in r1 cross-review; v2 revision pending on Lane G). This plan cites the stable DECISION, not the in-flight codification; #2227 execution must verify codification state at run time (see Prereq Matrix row).
+- Found: `data/document-index/summaries/sha256:5e5f...json`, `...:b576...json`, `...:3aa1...json` — summary artifacts EXIST for all three target doc_keys, with `summary: ""` across all three. `text_preview` is heterogeneous: OCIMF-TANDEM (`5e5f…`) preview length 0; CSA Z276.1-20 (`b576…`) and CSA Z276.18 (`3aa1…`) each carry a 1000-char corrupted-OCR preview (first 200 chars of `b576…`: `"pyorat\npakota\nmakaamaan\nlujana\njakcanut\ntiedocca\nperaan\ncannikka\n…"`; first 200 of `3aa1…`: `"monen\nkuunnella\ncannikka\ncamoin\npyctyvat\nvaatteitaan\n…"`). Downstream: OCIMF remediation will be "extract preview content"; CSA remediation will be "fix encoding/OCR corruption".
+- User decision on #2471 (2026-04-23 issue comment): `wiki/standards/` sanctioned as a first-class page type. **#2471 v3 reached `status:plan-approved` at commit `cb1c4a972` on `plan/issue-2471-standards-wiki-path-sanction`** (forward-adopt status); the codification (schema CLAUDE.md amendments + per-wiki gitignore re-include + lint path) will land via that branch. v4 forward-adopts the sanction: CSA pages will land at `knowledge/wikis/marine-engineering/wiki/standards/csa-z276-1-20.md` and `…/csa-z276-18.md` once #2471 codification merges to main, and will carry `code_id`, `publisher`, `revision` frontmatter per the contract.
 
 ### Standards
 | Standard | Ledger status | doc_key (sha256) | Summary artifact | Content ready? |
 |---|---|---|---|---|
 | `OCIMF-TANDEM-MOORING` | done | `sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af` | file exists, `summary=""` | **NO** — blocker from #2245 handoff |
 | `OCIMF-MEG4-2018` | done | (existing wiki page); no new summary required | n/a for narrow historical update | partial — update only if ledger notes warrant |
-| `CSA-Z276.1-20` | done | `sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd` | file exists, `summary=""` | **NO** — blocker |
-| `CSA-Z276.18` | done | `sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4` | file exists, `summary=""` | **NO** — blocker |
+| `CSA-Z276.1-20` | done | `sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd` | file exists, `summary=""` | **NO** — blocker (Phase 2 only) |
+| `CSA-Z276.18` | done | `sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4` | file exists, `summary=""` | **NO** — blocker (Phase 2 only) |
 | `CSA-Z276.2-19` | done | — | — | **OUT OF SCOPE** (routed to #2283 via #2244 triage) |
 
 ### LLM Wiki pages consulted
-- `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` — current page, cross-links to MEG3/tandem may be added narrowly.
-- `knowledge/wikis/engineering/wiki/index.md` — engineering standards section lists existing `ocimf-meg4` entry; needs row for `ocimf-tandem-mooring`.
+- `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` — current page; cross-link to tandem will be added narrowly (≤ 10 lines, see T7).
+- `knowledge/wikis/engineering/wiki/index.md` — engineering standards section (`## Standards (7 pages)` at line 99) lists existing `ocimf-meg4` entry; Phase 1 will add a row for `ocimf-tandem-mooring`.
 - `knowledge/wikis/engineering/wiki/log.md` — promotion log, append-only.
-- `knowledge/wikis/marine-engineering/wiki/index.md` — has `## Entities | ## Concepts | ## Sources | ## Comparisons` sections; NO `## Standards` heading.
-- `knowledge/wikis/marine-engineering/CLAUDE.md` — schema does NOT sanction `wiki/standards/`; migrating CSA pages here without a schema amendment would silently invent a taxonomy.
+- `knowledge/wikis/marine-engineering/wiki/index.md` — has `## Entities | ## Concepts | ## Sources | ## Comparisons` sections; NO `## Standards` heading. Phase 2 will add the section once codification lands.
+- `knowledge/wikis/marine-engineering/CLAUDE.md` — schema does NOT yet sanction `wiki/standards/`; the #2471 codification plan will amend.
 - `knowledge/wikis/engineering/CLAUDE.md` — sanctions `wiki/{concepts,entities,sources,standards,workflows}/`.
 
 ### Documents consulted
@@ -41,52 +41,69 @@
 - `docs/plans/2026-04-12-issue-2245-acma-summary-classification-unblock.md` — prerequisite; CLOSED 2026-04-13 with `ready_for_2227: false` handoff artifact.
 - `docs/plans/2026-04-11-issue-2225-acma-codes-source-registration-and-initial-indexing.md` — CLOSED 2026-04-11 (completed).
 - `docs/plans/2026-04-16-issue-2207-standards-codes-provenance-reuse-contract.md` — CLOSED; defines the reuse contract this plan consumes.
-- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` — authoritative per-target blocker evidence (DRM + failed pdftotext).
-- `scripts/review/results/2026-04-21-plan-2227-codex.md` (MAJOR, v1 reviewed 2026-04-21) — internal `wiki/standards/` contradiction, TDD contract missing, prereq matrix underspecified.
-- `scripts/review/results/2026-04-21-plan-2227-gemini.md` (APPROVE, v1) — flags same "FAIL for execution readiness" but approves on scope.
-- `scripts/review/results/2026-04-15-plan-2227-claude.md` — earlier: confirmed gitignore + taxonomy blockers.
-- Issue #2227 comment thread (2026-04-12 → 2026-04-21): #2244 triage routed broader CSA/API breadth to #2283/#2284/#2285/#2286/#2287; rollback 2026-04-21 15:07 moved label → `status:plan-review`.
+- `docs/plans/2026-04-23-issue-2471-standards-wiki-path-sanction.md` (on `plan/issue-2471-standards-wiki-path-sanction`) — Phase 2 prereq (codification of `wiki/standards/` schema + lint + gitignore re-include).
+- `docs/reports/acma-wiki-unblock-2245-handoff.yaml` — authoritative per-target blocker evidence.
+- `.claude/rules/calc-citation-contract.md` — mandates `code_id`/`publisher`/`revision` frontmatter on standards pages so downstream calc modules can emit Citations against them.
+- Issue #2227 comment thread (2026-04-12 → 2026-04-23): #2244 triage routed broader CSA/API breadth to #2283/#2284/#2285/#2286/#2287; rollback 2026-04-21 15:07 moved label → `status:plan-review`.
 
 ### Gaps identified
-- Reusable summaries for all three target doc_keys are unusable today; all three have `summary: ""`, and `text_preview` is either empty (OCIMF) or corrupted OCR (CSA x2). The reuse contract (#2207) is not literal about "non-empty" but the promotion spirit requires evidence beyond title.
-- `knowledge/wikis/marine-engineering/` is gitignored — promoting CSA pages there would be non-durable without an explicit `.gitignore` exemption or an alternative canonical location.
-- Marine-engineering `CLAUDE.md` schema does not list `wiki/standards/` as a sanctioned directory; the #2471 decision (2026-04-23) sanctions the `wiki/standards/` page type but the CLAUDE.md amendment is tracked in the #2471 codification plan, not yet landed. Creating a marine-engineering `wiki/standards/` page before the codification lands would silently broaden schema.
-- `llm_wiki.py lint` orphan/link checks do not traverse `standards/` — if the plan relies on lint as a TDD gate, that coverage must be verified explicitly; T13 (new in v3) adds an explicit inbound-link assertion as a harder gate than lint.
-- No integration test exists that asserts standards-page presence/frontmatter for a given doc_key; the TDD gate must add or extend one.
+- Reusable summaries for all three target doc_keys are unusable today; all three have `summary: ""`, and `text_preview` is either empty (OCIMF) or corrupted OCR (CSA x2).
+- `knowledge/wikis/marine-engineering/` is gitignored — promoting CSA pages there will require the gitignore re-include landing via the #2471 codification.
+- Marine-engineering `CLAUDE.md` schema does not yet list `wiki/standards/` as a sanctioned directory; the #2471 sanction is plan-approved but the codification has not yet merged.
+- `llm_wiki.py lint` orphan/link checks do not traverse `standards/` — Phase 1 hardens this with explicit T13 inbound-link assertion.
 
-<!-- Verification (v3): distinct sources consulted = 17+ (3 ledger entries + 3 summary JSON files [inspected via jq] + 3 gitignore lines [verified 492-494] + 2 wiki CLAUDE.md files + 4 prior plans + 1 handoff yaml + 4 review artifacts inc r2 triad + 1 issue thread + 1 #2471 decision comment + llm_wiki.py lint source). -->
+<!-- Verification (v4): distinct sources consulted = 18+ (3 ledger entries + 3 summary JSON files + 3 gitignore lines + 2 wiki CLAUDE.md files + 5 prior plans + 1 handoff yaml + 5 review artifacts inc r3 triad + disagreement + 1 issue thread + 1 #2471 decision comment + calc-citation contract rule + lint source). -->
+
+---
+
+## Phase Split (v4 structural change)
+
+**The CSA Z276 coverage is formally separated from the OCIMF Tandem coverage as Phase 2.** v3 nested CSA work as a sub-branch of #2227 with a `MARINE_TAXONOMY_SUB_GATE` guard; that coupled the OCIMF Tandem promotion to two unrelated remediations (CSA OCR fix AND #2471 codification). v4 lifts that coupling.
+
+| Phase | Scope | Branch (git) | Prereqs | Status |
+|---|---|---|---|---|
+| **Phase 1** | OCIMF Tandem Mooring page in engineering wiki + narrow `ocimf-meg4.md` update + index/log entries + tests | `feat/issue-2227-ocimf-tandem-engineering-wiki` | OCIMF preview content (#2245 follow-up) only | Drives this issue's deliverable when content sub-gate clears |
+| **Phase 2** | CSA Z276.1-20 + CSA Z276.18 pages in marine-engineering wiki at `wiki/standards/`, with `code_id`/`publisher`/`revision` frontmatter | new branch in a follow-up issue (Phase 2 split-off) | (a) #2471 codification merged to main; (b) CSA OCR remediation; (c) per-code wiki routing decision | **Deferred from #2227**; opens as new GH issue tracked from #2227 |
+
+**Why the split:**
+- v3 reviewer (Codex r1, sustained) flagged that coupling CSA to OCIMF Tandem in one branch creates a dependency between two independent prereqs — OCIMF only needs preview-content extraction, while CSA needs OCR fix + #2471 codification + per-code routing. Either side could be ready while the other remains blocked, and a coupled branch forces both to wait.
+- The #2471 sanction is now plan-approved (`cb1c4a972` on `plan/issue-2471-standards-wiki-path-sanction`), so CSA has a clear codified path to land at `knowledge/wikis/marine-engineering/wiki/standards/csa-z276-1-20.md` once codification merges. There is no longer a taxonomy-decision blocker — only a sequencing blocker. Sequencing is best handled as a separate phase issue, not nested branch logic inside #2227.
+- Splitting also lets Phase 1 be reviewed/approved/landed against just its own gates; Phase 2 will receive its own adversarial review against the codified `wiki/standards/` contract once #2471 merges.
+
+#2227's deliverable is now **Phase 1 only**. Phase 2 will open as a follow-up issue at execution time (see Phase-Split Acceptance below).
 
 ---
 
 ## Deliverable
 
-**Branch-conditional deliverable.** This plan has two execution branches; the acceptance criteria and file list are scoped per branch, not pre-committed.
+**Branch-conditional deliverable for Phase 1.** Two execution branches, scoped to the OCIMF Tandem work in the engineering wiki:
 
-- **Branch A (CONTENT-READY):** OCIMF Tandem Mooring page lands in `knowledge/wikis/engineering/wiki/standards/` (the git-tracked, schema-sanctioned location), plus a narrowly grounded update to `ocimf-meg4.md`. CSA Z276.1 and Z276.18 pages land only after the two prerequisite sub-gates below pass; default is to defer those two pages to a follow-up issue (see Branch B / Prereq Matrix).
-- **Branch B (CONTENT-BLOCKED — current state):** No wiki pages are written. Plan execution produces (1) a blocker comment on #2227 citing the specific summary-content gap, (2) a follow-up issue (or reuses #2245 follow-up) for the marine-wiki taxonomy + gitignore decision, and (3) a follow-up issue for re-extraction of the three PDFs on a machine that can read them. Issue #2227 stays blocked until both sub-gates (content + marine taxonomy) clear.
+- **Branch A (CONTENT-READY):** OCIMF Tandem Mooring page lands in `knowledge/wikis/engineering/wiki/standards/` (the git-tracked, schema-sanctioned location), plus a narrowly grounded update to `ocimf-meg4.md`, index/log row, and the test file.
+- **Branch B (CONTENT-BLOCKED — current state):** No wiki pages will be written. Plan execution will produce (1) a blocker comment on #2227 citing the specific OCIMF preview-content gap, (2) a follow-up issue for OCIMF preview-content extraction, and (3) a follow-up issue for the Phase 2 CSA work (Phase split). #2227 stays in `status:in-progress` (not `closed`) until OCIMF Branch A lands.
 
-Rationale: v1 pre-committed the CSA pages to `marine-engineering/wiki/standards/` while simultaneously requiring a "stop if conventions don't permit" check — an internal contradiction Codex MAJOR #1 flagged. Branch-conditional deliverable resolves that.
+CSA pages are NOT a Branch A or Branch B deliverable for #2227 anymore — they are Phase 2 in a separate issue.
 
 ---
 
 ## Scope Boundaries
 
-### In scope now (Branch A path, only if content sub-gate passes)
-- Create `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` (git-tracked location).
-- Narrowly grounded update to `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` citing tandem-mooring cross-reference from ledger notes only.
-- Append promotion entry to `knowledge/wikis/engineering/wiki/log.md`; add row to `knowledge/wikis/engineering/wiki/index.md`.
+### In scope now (Branch A path, Phase 1, only if content sub-gate passes)
+- Create `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` (git-tracked location). Frontmatter MUST include forward-adopted #2471 fields: `code_id: OCIMF-TANDEM-MOORING`, `publisher: OCIMF`, `revision: <as-recorded-in-ledger>` so downstream calc modules per `.claude/rules/calc-citation-contract.md` can resolve citations against this page once they need to.
+- Narrowly grounded update to `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` citing tandem-mooring cross-reference from ledger notes only (≤ 10 added lines per T7).
+- Append promotion entry to `knowledge/wikis/engineering/wiki/log.md`; add row to `knowledge/wikis/engineering/wiki/index.md` under `## Standards`.
+- Commit `tests/knowledge/test_ocimf_tandem_promotion.py` with all listed tests, and conditional skip logic per T-skip rules (see §TDD).
 
 ### In scope now (Branch B — current state, no wiki writes)
-- Post blocker comment summarizing the content gap on #2227, citing specific previews: OCIMF `5e5f…` preview length 0; CSA `b576…` preview 1000 chars of corrupted OCR (first 200: `"pyorat\npakota\nmakaamaan\n…"`); CSA `3aa1…` preview 1000 chars of corrupted OCR (first 200: `"monen\nkuunnella\ncannikka\n…"`).
-- Link or open a **content remediation** follow-up with per-target scope: OCIMF needs preview extraction (currently empty); CSA x2 need encoding/OCR corruption fix (previews exist but corrupted — this is the r2 rescope).
-- Confirm the marine-wiki taxonomy follow-up is tracked in #2471 (page-type sanction — DECISION stable; codification in-flight). Per-code wiki routing for CSA remains an open per-standard decision and is not pre-committed by this plan.
-- Confirm #2260 metadata-only wiki sweep is distinct from this issue's grounded-content scope.
+- Post blocker comment on #2227 summarizing the content gap, citing previews: OCIMF `5e5f…` preview length 0; CSA `b576…` preview 1000 chars of corrupted OCR; CSA `3aa1…` preview 1000 chars of corrupted OCR.
+- Open the **OCIMF preview-content** follow-up issue via concrete `gh issue create` invocation (see Pseudocode B1).
+- Open the **Phase 2 CSA** follow-up issue via concrete `gh issue create` invocation (see Pseudocode B2). Body links to #2471 codification branch and the two CSA OCR-remediation tasks.
+- Commit the `tests/knowledge/test_ocimf_tandem_promotion.py` file with the conditional-skip logic so Branch B does not ship a permanently red test suite (Gemini r3 F5).
 
-### Explicitly out of scope
+### Explicitly out of scope (this issue)
+- CSA Z276.1-20 and CSA Z276.18 page authoring (→ Phase 2, separate follow-up issue).
 - CSA Z276.2-19 (→ #2283), additional OCIMF (→ #2284), API RP 2SK (→ #2285), SIGTTO (→ #2286), LR/Noble Denton (→ #2287).
-- Creating `knowledge/wikis/marine-engineering/wiki/standards/` under current schema/gitignore (requires the taxonomy decision first).
 - Re-parsing DRM-protected source PDFs.
-- Promoting any CSA page inside this issue unless BOTH the content sub-gate AND the marine taxonomy sub-gate clear within the window of this issue; otherwise defer to follow-up.
+- Modifying `marine-engineering/CLAUDE.md` schema or `.gitignore` (those land via #2471 codification, not here).
 
 ---
 
@@ -94,243 +111,264 @@ Rationale: v1 pre-committed the CSA pages to `marine-engineering/wiki/standards/
 
 | Prereq | Current state | Blocker? | Source |
 |---|---|---|---|
-| #2216 (parent umbrella) | OPEN, `status:plan-review` | Non-blocking for this child — parent tracks umbrella; this issue is bounded | `gh issue view 2216` |
-| #2225 (source registration) | CLOSED 2026-04-11, `status:plan-approved` | NOT blocking (completed) | `gh issue view 2225` |
-| #2207 (reuse contract) | CLOSED, `status:plan-approved` | NOT blocking (completed) | `gh issue view 2207` |
-| #2245 (summary artifacts) | CLOSED 2026-04-13, handoff `ready_for_2227: false` | **Content sub-gate: BLOCKING** — all three `summary=""`; OCIMF `text_preview=""` (length 0); CSA x2 `text_preview` = 1000-char corrupted OCR | `docs/reports/acma-wiki-unblock-2245-handoff.yaml`, `data/document-index/summaries/sha256:{5e5f,b576,3aa1}.json` |
-| #2471 `wiki/standards/` page-type sanction (DECISION) | user-approved 2026-04-23 via issue comment | **NOT BLOCKING** — decision is stable; sanctions page-type path shape | `gh issue view 2471` comment 2026-04-23 |
-| #2471 codification (schema CLAUDE.md amendments + lint path + pyramid allow-list + per-wiki `.gitignore` re-include) | IN-FLIGHT on `plan/issue-2471-standards-wiki-path-sanction` @ `17118f381`; v1 flagged P1 in r1; v2 pending on Lane G | **BLOCKING for marine-engineering/naval-architecture CSA pages** until landed on main; NOT blocking for engineering wiki (already sanctions `wiki/standards/`) | branch `plan/issue-2471-standards-wiki-path-sanction`, docs/plans/2026-04-23-issue-2471-standards-wiki-path-sanction.md (on branch) |
-| marine-wiki `wiki/standards/` CLAUDE.md amendment landed on main | not yet landed (awaits #2471 codification merge) | **BLOCKING for CSA pages** | `knowledge/wikis/marine-engineering/CLAUDE.md` (main) — `wiki/` tree block lists only `entities/concepts/sources/comparisons/visualizations/`; literal `standards/` substring appears only under `raw/` (line 11) |
-| marine-wiki gitignore re-include | `/knowledge/wikis/*` ignored; only `engineering/` and `cross-links.md` exempted | **BLOCKING for CSA pages** unless pattern amended via #2471 codification | `.gitignore:492-494` (`/knowledge/wikis/*`, `!/knowledge/wikis/engineering/`, `!/knowledge/wikis/cross-links.md`) |
-| engineering wiki `wiki/standards/` already sanctioned | line 7 of `knowledge/wikis/engineering/CLAUDE.md`: `Pages: wiki/{concepts,entities,sources,standards,workflows}/` | **NOT BLOCKING** for OCIMF Tandem (Branch A scope) | `knowledge/wikis/engineering/CLAUDE.md` |
+| #2216 (parent umbrella) | OPEN, `status:plan-review` | Non-blocking for this child | `gh issue view 2216` |
+| #2225 (source registration) | CLOSED 2026-04-11, `status:plan-approved` | NOT blocking | `gh issue view 2225` |
+| #2207 (reuse contract) | CLOSED, `status:plan-approved` | NOT blocking | `gh issue view 2207` |
+| #2245 OCIMF preview content | CLOSED 2026-04-13, OCIMF preview length 0 in `sha256:5e5f….json` | **Phase 1 content sub-gate: BLOCKING** | `docs/reports/acma-wiki-unblock-2245-handoff.yaml`, `data/document-index/summaries/sha256:5e5f….json` |
+| #2471 `wiki/standards/` page-type sanction (DECISION) | user-approved 2026-04-23; v3 plan-approved at `cb1c4a972` on `plan/issue-2471-standards-wiki-path-sanction` | **NOT BLOCKING for Phase 1** (engineering wiki already sanctions `wiki/standards/`); BLOCKING for Phase 2 | `gh issue view 2471`, branch `plan/issue-2471-standards-wiki-path-sanction` |
+| #2471 codification merged to main | not yet merged | **NOT BLOCKING for Phase 1**; BLOCKING for Phase 2 | check via `git merge-base --is-ancestor plan/issue-2471-standards-wiki-path-sanction origin/main` |
+| engineering wiki `wiki/standards/` already sanctioned | line 7 of `knowledge/wikis/engineering/CLAUDE.md`: `Pages: wiki/{concepts,entities,sources,standards,workflows}/` | **NOT BLOCKING** for Phase 1 | `knowledge/wikis/engineering/CLAUDE.md` |
 
-**Classification rule:** OCIMF Tandem page (engineering wiki, git-tracked, engineering CLAUDE.md already sanctions `wiki/standards/`) needs only the content sub-gate (which today fails due to empty OCIMF preview). CSA pages need content sub-gate + #2471 codification landed on main (CLAUDE.md amendment + gitignore re-include) + per-code wiki routing decision. Today the content sub-gate fails for all three AND the #2471 codification has not landed → Branch B for all three. If the content sub-gate passes for OCIMF before #2471 codification lands, Branch A (engineering-only) can proceed independently; CSA remains deferred regardless.
+**Classification rule (v4 simplified):** Phase 1 (OCIMF Tandem, engineering wiki) needs ONLY the content sub-gate. Today the content sub-gate fails for OCIMF (preview length 0) → Phase 1 will execute as Branch B (open follow-ups, no wiki writes). Phase 2 (CSA, marine wiki) is a separate issue and is not gated on by #2227's closure path.
 
 ---
 
 ## Pseudocode
 
 ```text
-# Entry gate
-# "load prereq matrix" is concrete: read the checked-in JSON/YAML artifacts named
-# below, do not parse markdown tables from this plan.
+# ---------- Entry gate ----------
 load handoff_yaml = yaml.load("docs/reports/acma-wiki-unblock-2245-handoff.yaml")
 load summary_5e5f = json.load("data/document-index/summaries/sha256:5e5f...json")
-load summary_b576 = json.load("data/document-index/summaries/sha256:b576...json")
-load summary_3aa1 = json.load("data/document-index/summaries/sha256:3aa1...json")
 
+# Phase 1 content sub-gate hinges on OCIMF only (CSA decoupled to Phase 2).
 if handoff_yaml.ready_for_2227 is False
    OR summary_5e5f.summary == ""
-   OR summary_b576.summary == ""
-   OR summary_3aa1.summary == "":
+   OR len(summary_5e5f.text_preview) == 0:
     set CONTENT_SUB_GATE = FAIL
 else:
     set CONTENT_SUB_GATE = PASS
 
-# MARINE_TAXONOMY_SUB_GATE: scoped semantic check, NOT a bare substring match.
-# Motivation: marine-engineering/CLAUDE.md line 11 contains "standards/" under the
-# `raw/` subtree; a naive substring search would false-PASS against the raw/ line.
-# Pseudocode must anchor to the `wiki/` block of the Directory Structure code fence.
-parse marine_md = "knowledge/wikis/marine-engineering/CLAUDE.md"
-extract wiki_block = the code-fenced block under "## Directory Structure" between the
-                     `wiki/` line and the closing fence, EXCLUDING the `raw/` subtree
-if wiki_block contains a bullet/line matching /^\s*standards\//:
-    set TAXONOMY_SCHEMA_OK = True
-else:
-    set TAXONOMY_SCHEMA_OK = False
-
-# Gitignore re-include: exact-line match against .gitignore (not substring).
-gitignore_lines = read(".gitignore").splitlines()
-if "!/knowledge/wikis/marine-engineering/" in gitignore_lines
-   OR "!/knowledge/wikis/marine-engineering/wiki/standards/" in gitignore_lines
-   OR any exact-line pattern that positively re-includes marine wiki/standards/:
-    set TAXONOMY_GITIGNORE_OK = True
-else:
-    set TAXONOMY_GITIGNORE_OK = False
-
-# Also verify #2471 codification has landed on main (not in-flight).
-set CODIFICATION_LANDED = git.merge_base_ancestor(
-    "origin/main", "plan/issue-2471-standards-wiki-path-sanction")
-    AND required files (amended marine CLAUDE.md, amended .gitignore) exist on main HEAD
-
-if TAXONOMY_SCHEMA_OK and TAXONOMY_GITIGNORE_OK and CODIFICATION_LANDED:
-    set MARINE_TAXONOMY_SUB_GATE = PASS
-else:
-    set MARINE_TAXONOMY_SUB_GATE = FAIL
-
-# Route
+# ---------- Route ----------
 if CONTENT_SUB_GATE == FAIL:
     execute Branch B
     exit
+else:
+    execute Branch A
+    exit
 
-# CONTENT_SUB_GATE == PASS → do engineering-wiki work regardless of marine state
+# ---------- Branch A (CONTENT_SUB_GATE == PASS) ----------
 create knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md:
-    frontmatter: title, tags, added, last_updated, sources, domain=marine, cross_links
+    frontmatter:
+        title: "OCIMF Tandem Mooring and Offloading Guidelines"
+        tags: [ocimf, tandem, mooring, fpso]
+        added: <today>
+        last_updated: <today>
+        sources: [doc_key=sha256:5e5f...]
+        domain: marine
+        # Forward-adopted from #2471 contract (calc-citation-contract.md)
+        code_id: OCIMF-TANDEM-MOORING
+        publisher: OCIMF
+        revision: <from-ledger>
+        cross_links: [ocimf-meg4]
     body: scope, provenance back-links (doc_key, source_ref, promoted_from=2227)
-    content grounded strictly in OCIMF-TANDEM-MOORING ledger entry + summary artifact
+          content grounded strictly in OCIMF-TANDEM-MOORING ledger entry + summary artifact
 
 modify knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md:
     preserve all existing content
-    add bounded tandem-mooring cross-reference ONLY if ledger notes warrant
+    add "## Related Standards" section with bounded tandem-mooring cross-reference
+    enforce ≤ 10 added lines (T7 ceiling)
 
-append engineering wiki/log.md:
+append knowledge/wikis/engineering/wiki/log.md:
     one entry: "## [YYYY-MM-DD] ingest | OCIMF-TANDEM-MOORING promotion (#2227)"
 
-modify engineering wiki/index.md:
-    add row under ## Standards for ocimf-tandem-mooring
+modify knowledge/wikis/engineering/wiki/index.md:
+    add row under "## Standards (7 pages)" for ocimf-tandem-mooring (will become 8 pages — bump heading count)
 
-# CSA pages
-if MARINE_TAXONOMY_SUB_GATE == FAIL:
-    skip all CSA work
-    record deferral in blocker comment / follow-up issue
-else:
-    (future; not this issue)
-    create CSA pages in sanctioned location
-    update marine-engineering wiki/log.md + index.md
+# ---------- Branch B (CONTENT_SUB_GATE == FAIL) ----------
+# B1: OCIMF preview-content remediation follow-up
+gh issue create \
+  --title "OCIMF-TANDEM-MOORING preview content extraction (unblocks #2227 Phase 1)" \
+  --body "$(cat <<'EOF'
+Source: data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json
+Current state: text_preview length 0; summary is empty string.
+Action: extract preview content via alt toolchain (ocrmypdf or manual review on a machine that can read the source).
+Acceptance: summary artifact updated with non-empty `summary` and `text_preview` ≥ 200 chars; #2227 unblocked for Phase 1 Branch A.
+EOF
+)" \
+  --label "type:remediation,parent:2216,blocks:2227"
 
-# Verification
+# B2: Phase 2 CSA follow-up (formal phase split — this is the v4 decoupling)
+gh issue create \
+  --title "Phase 2: Promote CSA Z276.1-20 + Z276.18 into marine-engineering wiki/standards/" \
+  --body "$(cat <<'EOF'
+Phase split off from #2227 to decouple CSA work from OCIMF Tandem.
+
+Targets:
+- knowledge/wikis/marine-engineering/wiki/standards/csa-z276-1-20.md
+- knowledge/wikis/marine-engineering/wiki/standards/csa-z276-18.md
+
+Frontmatter contract (from #2471 + .claude/rules/calc-citation-contract.md):
+- code_id, publisher, revision (REQUIRED)
+
+Prereqs:
+1. #2471 codification merged to main (schema CLAUDE.md amendment + .gitignore re-include for marine wiki/standards/ + lint path coverage). Branch: plan/issue-2471-standards-wiki-path-sanction @ cb1c4a972.
+2. CSA OCR remediation: text_preview for both CSA artifacts is currently 1000-char corrupted OCR (Finnish-looking tokens). Requires alt OCR toolchain. Source artifacts:
+   - data/document-index/summaries/sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd.json
+   - data/document-index/summaries/sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4.json
+3. Per-code wiki routing decision: marine-engineering vs naval-architecture (per #2471 sanction the routing is per-standard owner).
+
+This issue does NOT block #2227 closure — #2227 closes when Phase 1 (OCIMF Tandem) lands.
+EOF
+)" \
+  --label "type:wiki-promotion,parent:2216,split-from:2227"
+
+# B3: blocker comment on #2227
+gh issue comment 2227 --body "Phase 1 content sub-gate FAIL on $(date -I): OCIMF text_preview length 0. \
+CSA work decoupled to Phase 2 follow-up. See ${B1_url} and ${B2_url}."
+
+# ---------- Verification ----------
 run uv run scripts/knowledge/llm_wiki.py lint --wiki engineering
 assert exit 0 OR only warnings (no errors)
-run TDD tests (see §TDD Test List)
+run TDD tests with branch-aware skip:
+  CONTENT_SUB_GATE_PASS=<bool> uv run pytest tests/knowledge/test_ocimf_tandem_promotion.py -v
 ```
 
 ---
 
 ## Files to Change (branch-scoped)
 
-### Branch A (CONTENT_SUB_GATE == PASS) — engineering wiki only
+### Branch A (CONTENT_SUB_GATE == PASS) — engineering wiki only, Phase 1
 | Action | Path | Reason |
 |---|---|---|
-| Create | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` | net-new OCIMF guideline page (git-tracked, schema-sanctioned) |
-| Modify | `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` | narrowly grounded tandem cross-reference only |
-| Modify | `knowledge/wikis/engineering/wiki/index.md` | add row under `## Standards` for tandem page |
+| Create | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` | net-new OCIMF guideline page (git-tracked, schema-sanctioned); includes `code_id`/`publisher`/`revision` frontmatter forward-adopted from #2471 |
+| Modify | `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md` | narrowly grounded tandem cross-reference only, ≤ 10 added lines |
+| Modify | `knowledge/wikis/engineering/wiki/index.md` | add row under `## Standards`; bump page count |
 | Modify | `knowledge/wikis/engineering/wiki/log.md` | append promotion log entry |
-| Create | `tests/knowledge/test_ocimf_tandem_promotion.py` | per-standard assertion tests (see §TDD) |
-
-### Branch A — CSA pages deferred (not in this issue's file list)
-No file changes for CSA pages under any branch of this issue. CSA promotion is explicitly deferred until the marine-wiki taxonomy + gitignore decision lands in a separate issue.
+| Create | `tests/knowledge/test_ocimf_tandem_promotion.py` | T1–T13 with branch-aware skip logic |
 
 ### Branch B (CONTENT_SUB_GATE == FAIL — current state)
 | Action | Path | Reason |
 |---|---|---|
-| Create | (no file changes; comment-only) | post blocker comment on #2227 |
-| Optional | (new GH issue) | marine-wiki taxonomy decision follow-up |
-| Optional | (new GH issue) | re-extract 3 DRM PDFs on alt toolchain |
+| Create | `tests/knowledge/test_ocimf_tandem_promotion.py` | committed with branch-aware skip; does NOT ship red tests on Branch B (Gemini r3 F5) |
+| (no wiki file changes) | — | comment-only |
+| (gh CLI) | new GH issue: OCIMF preview-content remediation | Pseudocode B1 |
+| (gh CLI) | new GH issue: Phase 2 CSA promotion | Pseudocode B2 |
+| (gh CLI) | comment on #2227 | Pseudocode B3 |
+
+### CSA pages — never in #2227's file list
+Phase 2 owns CSA file changes in a separate branch under a separate issue. No CSA file changes will land in any branch of #2227.
 
 ---
 
 ## TDD Test List
 
-All tests live at `tests/knowledge/test_ocimf_tandem_promotion.py` (new file) and are run via `uv run pytest tests/knowledge/test_ocimf_tandem_promotion.py -v`. Repo-integrated lint runs via `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering`.
+All tests will live at `tests/knowledge/test_ocimf_tandem_promotion.py` (new file) and will run via `uv run pytest tests/knowledge/test_ocimf_tandem_promotion.py -v`. Repo-integrated lint runs via `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering`.
+
+**Branch-aware skip rule (v4, addresses Gemini r3 F5):** the test module will declare a module-level fixture that reads the runtime branch state from environment variable `CONTENT_SUB_GATE_PASS` (set by the execution wrapper from the entry-gate result; defaults to reading the artifact directly if unset). Tests T3–T13 will be decorated with `@pytest.mark.skipif(not CONTENT_SUB_GATE_PASS, reason="Branch B — wiki writes deliberately deferred")`. Tests T1–T2 (gates) and the negative test T-Bneg run unconditionally. Result: under Branch B execution the suite passes (T1 fails as expected? — see T1 spec; T1 is structured to PASS when sub-gate evaluation is correct, regardless of pass/fail outcome).
 
 | Test ID | Test name | What it verifies | Runner | Expected outcome | Gates which branch |
 |---|---|---|---|---|---|
-| T1 | `test_prereq_content_sub_gate` | #2245 handoff `ready_for_2227` is True AND each target's `summary_artifact.summary` is non-empty | pytest | currently FAILS → Branch B today; must PASS before Branch A | entry gate |
-| T2 | `test_prereq_marine_taxonomy_sub_gate` | Parse `knowledge/wikis/marine-engineering/CLAUDE.md`; extract the `wiki/` block from the code fence under `## Directory Structure` (EXCLUDING the `raw/` subtree) and assert it contains a line matching regex `^\s*standards/` (path-anchored, not substring). AND `.gitignore` contains an exact line `!/knowledge/wikis/marine-engineering/` OR `!/knowledge/wikis/marine-engineering/wiki/standards/` (exact-line match via splitlines, NOT `grep 'standards/'`). AND verify the #2471 codification is landed on `origin/main` (use `git merge-base --is-ancestor plan/issue-2471-... origin/main` plus file-content check). | pytest | currently FAILS → CSA pages deferred; guards specifically against the r2 false-PASS from substring match on the `raw/standards/` line | CSA sub-branch |
-| T3 | `test_ocimf_tandem_page_exists` | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` exists | pytest (`pathlib.exists()`) | PASS post-Branch A | Branch A |
-| T4 | `test_ocimf_tandem_frontmatter_valid` | Page has `title`, `tags`, `added`, `last_updated`, `sources`, `domain=marine` frontmatter via existing `_parse_frontmatter` helper in `scripts/knowledge/llm_wiki.py` | pytest | PASS post-Branch A | Branch A |
-| T5 | `test_ocimf_tandem_provenance_fields` | Page body contains `doc_key: sha256:5e5f...`, `source_ref` pointing to ledger entry, and `promoted_from: 2227` | pytest (regex match) | PASS post-Branch A | Branch A |
-| T6 | `test_ocimf_tandem_cross_reference_to_meg4` | Page contains a `[[ocimf-meg4]]` or equivalent markdown link back to the MEG4 page | pytest | PASS post-Branch A | Branch A |
-| T7 | `test_ocimf_meg4_scope_narrow` | Diff of `ocimf-meg4.md` vs `origin/main` has ≤ **10 lines added** (bound: `N_MAX_ADDED_LINES = 10` — chosen to accommodate a "## Related Standards" header + ≤ 2-item bullet list + one inbound-link sentence; if implementation needs more, that is a scope-creep signal and the plan must be revised), **0 lines removed**, and every added line either (a) sits within a newly-added `## Related Standards` section, or (b) contains the literal string `OCIMF-TANDEM-MOORING` or `[[ocimf-tandem-mooring]]`. | pytest (parses `git diff --unified=0 origin/main -- knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md`) | PASS post-Branch A | Branch A |
-| T8 | `test_engineering_index_has_tandem_row` | `knowledge/wikis/engineering/wiki/index.md` contains a row with `ocimf-tandem-mooring.md` under Standards section | pytest (regex match in Standards table) | PASS post-Branch A | Branch A |
-| T9 | `test_engineering_log_has_promotion_entry` | `knowledge/wikis/engineering/wiki/log.md` contains a `## [YYYY-MM-DD] ingest | OCIMF-TANDEM-MOORING promotion (#2227)` entry | pytest | PASS post-Branch A | Branch A |
-| T10 | `test_no_out_of_scope_pages` | Among **newly-ADDED files only** (use `git diff --name-only --diff-filter=A origin/main..HEAD`), there must be exactly one under `knowledge/wikis/engineering/wiki/standards/` (namely `ocimf-tandem-mooring.md`) and zero anywhere under `knowledge/wikis/marine-engineering/wiki/standards/` or any other wiki's `wiki/standards/` subtree. Newly-added test files under `tests/knowledge/` are explicitly allowed. Modified (not added) files are not counted against this test. | pytest (subprocess to `git diff --name-only --diff-filter=A origin/main..HEAD`) | PASS post-Branch A | Branch A |
-| T11 | `test_llm_wiki_lint_engineering_clean` | `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering` exits 0 OR only with `warning`/`info` severity | subprocess from pytest | PASS post-Branch A | Branch A |
-| T12 | `test_content_has_discriminating_technical_evidence` | OCIMF-Tandem page body (excluding frontmatter + provenance block) is > 200 words AND contains at least **2 of the following discriminating evidence categories**, each independently verifiable against the source ledger entry (not the title): (a) a specific OCIMF clause/section reference in the form `\b[0-9]+(?:\.[0-9]+){1,3}\b` (e.g., `3.2.1`, `4.5`); (b) at least one explicit numeric engineering quantity with SI/imperial unit token (regex: `\b\d+(\.\d+)?\s*(kN|t|m|ft|deg|°|kts|knots|MT|bar|kPa|MPa)\b`); (c) a named specific mooring/hawser/fender configuration or equipment identifier (e.g., `12-point spread`, `submarine hoses`, `Yokohama fender`, `quick-release hook`, `chafe chain`) matched by a curated regex list committed in the test fixture. The previously-proposed trivial terms (`tandem`, `FPSO`, `offloading`, `conventional tanker`, `berthing`) are **excluded from the evidence list** because all appear in the document title and would trivially satisfy a regurgitated body. Rationale documented inline in the test fixture. | pytest | PASS post-Branch A — guards against "empty summary" title regurgitation | Branch A |
-| T13 | `test_ocimf_tandem_has_inbound_link` | At least one existing engineering-wiki page (concept, entity, source, or the `ocimf-meg4.md` standards page) contains a markdown link `[[ocimf-tandem-mooring]]` OR `](standards/ocimf-tandem-mooring.md)` OR `](/knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md)`. Hardens the "no orphan promotion" requirement that `llm_wiki.py lint` does not enforce for `standards/` (lint at line 748 only traverses `entities/concepts/sources/comparisons`). | pytest (recursive grep under `knowledge/wikis/engineering/wiki/`) | PASS post-Branch A | Branch A |
+| T1 | `test_prereq_content_sub_gate_evaluation` | Reads `acma-wiki-unblock-2245-handoff.yaml` and `summaries/sha256:5e5f….json`; asserts the `CONTENT_SUB_GATE` evaluation matches the documented rule (handoff `ready_for_2227` AND OCIMF summary non-empty AND OCIMF preview non-empty). The test checks the EVALUATION is correct, not the outcome — it always passes if the gate logic is implemented correctly, regardless of whether the result is PASS or FAIL. | pytest | always PASS (validates the gate code, not the data) | entry gate (always run) |
+| T-Bneg | `test_branch_b_no_wiki_writes_when_gate_fails` | If `CONTENT_SUB_GATE` evaluates FAIL, asserts that `git diff --name-only --diff-filter=A origin/main..HEAD -- knowledge/wikis/engineering/wiki/standards/` is empty. | pytest | PASS under Branch B; skipped under Branch A | Branch B safety net |
+| T3 | `test_ocimf_tandem_page_exists` | `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` exists | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T4 | `test_ocimf_tandem_frontmatter_valid` | Page has `title`, `tags`, `added`, `last_updated`, `sources`, `domain=marine` AND the v4-required forward-adopted #2471 fields `code_id`, `publisher`, `revision` (parsed via `_parse_frontmatter` helper in `scripts/knowledge/llm_wiki.py`) | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T5 | `test_ocimf_tandem_provenance_fields` | Page body contains `doc_key: sha256:5e5f...`, `source_ref` pointing to ledger entry, and `promoted_from: 2227` | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T6 | `test_ocimf_tandem_cross_reference_to_meg4` | Page contains a `[[ocimf-meg4]]` or equivalent markdown link back to the MEG4 page | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T7 | `test_ocimf_meg4_scope_narrow` | Diff of `ocimf-meg4.md` vs `origin/main` has ≤ **10 lines added** (`N_MAX_ADDED_LINES = 10` — accommodates a "## Related Standards" header + ≤ 2-item bullet list + one inbound-link sentence; exceeding this is a scope-creep signal requiring plan revision), **0 lines removed**, and every added line either (a) sits within a newly-added `## Related Standards` section, or (b) contains the literal string `OCIMF-TANDEM-MOORING` or `[[ocimf-tandem-mooring]]`. | pytest (parses `git diff --unified=0 origin/main -- knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md`) | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T8 | `test_engineering_index_has_tandem_row` | `knowledge/wikis/engineering/wiki/index.md` contains a row with `ocimf-tandem-mooring.md` under Standards section AND the heading count was bumped from 7 to 8 | pytest (regex match in Standards table) | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T9 | `test_engineering_log_has_promotion_entry` | `knowledge/wikis/engineering/wiki/log.md` contains a `## [YYYY-MM-DD] ingest | OCIMF-TANDEM-MOORING promotion (#2227)` entry | pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T10 | `test_no_out_of_scope_pages` | Among **newly-ADDED files only** (use `git diff --name-only --diff-filter=A origin/main..HEAD`), there is exactly one under `knowledge/wikis/engineering/wiki/standards/` (namely `ocimf-tandem-mooring.md`) and zero anywhere under `knowledge/wikis/marine-engineering/wiki/standards/` or any other wiki's `wiki/standards/` subtree. Newly-added test files under `tests/knowledge/` are explicitly allowed. Modified (not added) files are not counted. | pytest (subprocess to `git diff --name-only --diff-filter=A origin/main..HEAD`) | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T11 | `test_llm_wiki_lint_engineering_clean` | `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering` exits 0 OR only with `warning`/`info` severity | subprocess from pytest | PASS post-Branch A; SKIPPED on Branch B | Branch A |
+| T12 | `test_content_has_discriminating_technical_evidence` | OCIMF-Tandem page body (excluding frontmatter + provenance block) is > 200 words AND contains at least **2 of the following discriminating evidence categories**, each independently verifiable against the source ledger entry (not the title): (a) a specific OCIMF clause/section reference matching `\b[0-9]+(?:\.[0-9]+){1,3}\b`; (b) at least one explicit numeric engineering quantity with SI/imperial unit token matching `\b\d+(\.\d+)?\s*(kN\|t\|m\|ft\|deg\|°\|kts\|knots\|MT\|bar\|kPa\|MPa)\b`; (c) a named specific mooring/hawser/fender configuration or equipment identifier (e.g., `12-point spread`, `submarine hoses`, `Yokohama fender`, `quick-release hook`, `chafe chain`) matched by a curated regex list committed in the test fixture. Title-matching terms (`tandem`, `FPSO`, `offloading`, `conventional tanker`, `berthing`) are excluded. | pytest | PASS post-Branch A — guards against title regurgitation; SKIPPED on Branch B | Branch A |
+| T13 | `test_ocimf_tandem_has_inbound_link` | At least one existing engineering-wiki page contains a markdown link `[[ocimf-tandem-mooring]]` OR `](standards/ocimf-tandem-mooring.md)` OR `](/knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md)`. Hardens the "no orphan promotion" requirement that lint does not enforce for `standards/`. | pytest (recursive grep under `knowledge/wikis/engineering/wiki/`) | PASS post-Branch A; SKIPPED on Branch B | Branch A |
 
-**TDD discipline:** Tests T1–T13 are written first on a feature branch; implementation proceeds only to make them pass. T1 is the entry gate — it MUST pass before any other implementation occurs. T12 and T13 together close the "grounding-by-title" failure mode (T12 keeps body content non-regurgitative against the document title; T13 asserts at least one inbound link exists since the lint check skips `standards/`).
+**TDD discipline:** Tests T1, T-Bneg, and the skip decorators on T3–T13 will be written first on the feature branch before any wiki writes. Implementation will proceed only to make T3–T13 pass under Branch A.
+
+**Note on Gemini r3 F4 (T12 vocabulary contradicts grounding):** the v4 T12 list uses categories that the OCIMF Tandem source document (a guideline on tandem-mooring engineering practice) is independently expected to contain — clause references, engineering quantities with units, and equipment identifiers are intrinsic to the document type, not external vocabulary imposed on it. The contradiction Gemini flagged would arise only if the curated list named arbitrary terms unrelated to the source; the v4 list is structurally aligned with the source domain. If implementation finds the source artifact still cannot satisfy 2-of-3 even after preview extraction lands, that is a stronger signal of insufficient summary content (the underlying #2245 problem) than a test design flaw, and the right response is to defer landing rather than weaken the test.
 
 ---
 
 ## Acceptance Criteria
 
 ### Cross-branch
-- [ ] Adversarial reviews from at least 2 providers captured for v3; any residual MAJOR finding blocks `status:plan-approved`.
-- [ ] `tests/knowledge/test_ocimf_tandem_promotion.py` committed with T1–T13 implemented.
-- [ ] Prereq matrix in this plan reflects actual `gh issue view` state at execution time (including #2471 codification landed-on-main status).
+- [ ] Adversarial reviews from at least 2 providers captured for v4 (acknowledging Codex r3 was UNAVAILABLE due to codex-cli 0.124.0 stdin-hang #2479; if r4 also returns UNAVAILABLE, escalate via the cross-provider-review-payoff feedback path).
+- [ ] `tests/knowledge/test_ocimf_tandem_promotion.py` committed with T1, T-Bneg, T3–T13 implemented and the `CONTENT_SUB_GATE_PASS`-aware skip decorators in place.
+- [ ] Prereq matrix in this plan reflects actual `gh issue view` state at execution time (including #2471 plan-approval status).
 
-### Branch A (CONTENT_SUB_GATE == PASS) — engineering wiki
-- [ ] T1 passes before any wiki write.
+### Branch A (CONTENT_SUB_GATE == PASS) — engineering wiki, Phase 1
+- [ ] T1 passes (gate evaluation correctness).
+- [ ] T-Bneg is SKIPPED (Branch A is active).
 - [ ] T3–T11 all pass after implementation.
 - [ ] T12 passes (discriminating-evidence content guard, not title regurgitation).
 - [ ] T13 passes (at least one inbound link exists).
 - [ ] `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering` exits 0 or warning-only.
 - [ ] Parent issue #2216 receives an implementation summary comment.
 - [ ] No CSA pages created in this issue.
+- [ ] Page frontmatter carries `code_id`/`publisher`/`revision` per `.claude/rules/calc-citation-contract.md`.
 
 ### Branch B (CONTENT_SUB_GATE == FAIL — current state)
-- [ ] T1 fails as expected; blocker comment posted on #2227 explaining the content gap with evidence from `acma-wiki-unblock-2245-handoff.yaml` plus the three summary JSON previews (empty for OCIMF, corrupted-OCR for CSA x2).
-- [ ] Marine-wiki taxonomy decision follow-up issue opened (or existing one linked — note #2471 already tracks the page-type sanction; only per-code wiki routing remains open for CSA).
-- [ ] Content remediation follow-up issue opened (or existing one linked). **Scope per target:** for OCIMF `5e5f…` → "extract preview content (currently empty)"; for CSA `b576…` + `3aa1…` → "**fix encoding/OCR corruption** on existing 1000-char previews" (NOT "re-extract from empty state" — r2 correction).
+- [ ] T1 passes (gate evaluation runs and reports FAIL correctly).
+- [ ] T-Bneg passes (no wiki writes occurred).
+- [ ] T3–T13 are SKIPPED (no permanently red tests committed — Gemini r3 F5 closed).
+- [ ] Blocker comment posted on #2227 explaining the OCIMF preview-content gap with the specific previews quoted (Pseudocode B3).
+- [ ] OCIMF preview-content follow-up issue opened via `gh issue create` (Pseudocode B1) with concrete title/body/labels.
+- [ ] Phase 2 CSA promotion follow-up issue opened via `gh issue create` (Pseudocode B2) with concrete title/body/labels.
 - [ ] No wiki files written.
+
+### Phase-Split Acceptance (v4 new)
+- [ ] #2227 retains a single deliverable (Phase 1 = OCIMF Tandem). CSA Phase 2 lives only in the follow-up issue.
+- [ ] Issue #2227 closes when Phase 1 (Branch A) lands or, alternatively, when the OCIMF preview-content follow-up has propagated and a successor v5 plan executes Branch A in a follow-up #2227-Phase-1 issue (whichever the user chooses at execution time — both paths are consistent with the phase-split rule).
 
 ---
 
 ## Adversarial Review History
 
 ### v1 (2026-04-12, reviewed 2026-04-21)
-- **Codex (2026-04-21):** MAJOR — (1) internal contradiction: Scope Boundaries says stop-if-marine-conventions-fail but Artifact Map/Files-to-Change/Acceptance hardcode CSA creation in `marine-engineering/wiki/standards/`; (2) TDD contract missing — "verification list" is a conceptual checklist, not executable tests with runners/commands/harness names; (3) prereq matrix underspecified — plan self-declares `FAIL for execution readiness` but still framed as implementation plan.
-- **Gemini (2026-04-21):** APPROVE — noted self-flagged FAIL state but approved on scope; weak review (outranked by Codex MAJOR per issue-planning-mode skill rule).
-- **Claude (2026-04-15 overnight):** needs-revision minor — confirmed gitignore + taxonomy blockers.
+- **Codex (2026-04-21):** MAJOR — internal contradiction between Scope Boundaries and Files-to-Change for CSA work; TDD contract missing; prereq matrix underspecified.
+- **Gemini (2026-04-21):** APPROVE on scope.
+- **Claude (2026-04-15):** needs-revision minor.
 - **Governance action (2026-04-21 15:07 UTC):** Path C rollback `status:plan-approved` → `status:plan-review`.
 
-### v2 (2026-04-21) — this revision addresses Codex MAJORs as follows
+### v2 (2026-04-21) — addressed Codex r1 MAJORs via branch-conditional design + concrete TDD list + pinned prereq matrix.
 
-1. **Contradiction resolved:** Plan is now explicitly branch-conditional. Branch A writes ONLY to `knowledge/wikis/engineering/wiki/standards/` (the git-tracked, schema-sanctioned path). CSA pages are explicitly deferred out of this issue until a separate marine-wiki taxonomy/gitignore decision lands. No deliverable is simultaneously "must exist" and "only if conventions allow".
-2. **TDD contract concretized:** §TDD Test List names 12 concrete tests (T1–T12), the file they live in (`tests/knowledge/test_ocimf_tandem_promotion.py`), the exact runner commands (`uv run pytest …` + `uv run scripts/knowledge/llm_wiki.py lint --wiki engineering`), and what assertion each makes. T1 (content sub-gate) and T2 (taxonomy sub-gate) operationalize the branch decision.
-3. **Prereq matrix pinned:** §Prerequisite Matrix cites current `gh issue view` state (#2225 CLOSED 2026-04-11, #2245 CLOSED 2026-04-13 with `ready_for_2227: false`, #2207 CLOSED, #2216 OPEN plan-review), exact summary artifact paths by sha256 doc_key, and specific blocker evidence. Each row classifies blocker/non-blocker.
+### v3 (2026-04-23) — addressed r2 Claude+Codex+Gemini findings:
+- T2 path-anchored disambiguation (Claude r2 F2)
+- Resource Intelligence text_preview correction (Claude r2 F1)
+- T12 evidence-category rewrite (Claude r2 F5)
+- T7 `N_MAX_ADDED_LINES = 10` binding (sustained from r1)
+- T10 `--diff-filter=A` flag (sustained from r1)
+- Gitignore line-number correction (Claude r2 F4)
+- Pseudocode "load prereq matrix" operationalization (Claude r2 F8)
+- #2471 codification-landed sub-check added (structural)
+- Branch A unreachability framing (Claude r2 F7)
+- T13 inbound-link assertion (Claude r2 F10)
+- Engineering index `## Standards` section verification (Claude r2 F6)
 
-### v2 residual open questions (for v2 reviewers)
-- Should the marine-wiki taxonomy decision be made inside this issue (widening scope) or as a split follow-up? Current plan: split follow-up to keep #2227 bounded.
-- Is T12's 200-word threshold well-chosen, or should it be data-driven from comparable existing standards pages? Current plan: adjust to median-length of existing engineering/standards pages if v2 review prefers.
+### v4 (2026-04-24) — this revision addresses r3 findings + decouples CSA via formal phase split
 
-### v3 (2026-04-23) — this revision addresses r2 Codex+Claude+Gemini findings
+**Phase split (Codex r1 sustained / handoff-prompt P1):**
+1. **CSA work formally split off into Phase 2 follow-up issue.** v3 nested CSA as a sub-branch of #2227 with `MARINE_TAXONOMY_SUB_GATE`; v4 lifts the coupling. Phase 1 (this issue, OCIMF Tandem) gates ONLY on the OCIMF content sub-gate. CSA Phase 2 opens as a separate issue with its own `gh issue create` body wired in Pseudocode B2. The #2471 sanction now plan-approved at `cb1c4a972` removes the taxonomy-decision blocker that originally motivated nesting.
 
-**NEW defects from r2 — all addressed in this v3:**
+**Gemini r3 findings addressed:**
+2. **F1 (missing source files at HEAD) — Acknowledged as documented Gemini sandbox-overlay-blindness defect, not a real defect.** Per `feedback_gemini_sandbox_overlay_blindness.md` (2026-04-23): Gemini cross-review sandbox cannot see the sparse-checkout overlay, generating ~54 false-positive file-missing claims across that batch. v4 Resource Intelligence Summary now adds an inline reviewer note pointing at the verified `git ls-files` evidence so future r-pass reviewers do not re-raise the false positive. No structural change.
+3. **F2 (T10 needs `--diff-filter=A`) — already FIXED in v3**, preserved in v4.
+4. **F3 (T7 undefined N) — already FIXED in v3** (`N_MAX_ADDED_LINES = 10`), preserved in v4.
+5. **F4 (T12 vocabulary contradicts grounding) — addressed via category-structural alignment with source domain.** v4 adds an explicit note (under TDD §) that the evidence categories are intrinsic to the OCIMF Tandem source document type (clause references, engineering units, equipment IDs are universal in OCIMF guidelines), not externally imposed vocabulary. If 2-of-3 still fails after preview extraction, the right action is to defer rather than weaken the test.
+6. **F5 (Branch B guarantees broken test suite) — FIXED via branch-aware skip.** v4 TDD section adds the `CONTENT_SUB_GATE_PASS` env-var-driven `pytest.mark.skipif` decorator pattern. Under Branch B execution T3–T13 are SKIPPED (not failed); T1 and T-Bneg pass. CI does not ship red tests.
+7. **F6 (Branch B follow-up issues lack execution commands) — FIXED via Pseudocode B1, B2, B3.** v4 pseudocode now contains literal `gh issue create` invocations with full body via `cat <<'EOF'` heredoc and explicit labels, plus a `gh issue comment` for the blocker post.
 
-1. **T2 taxonomy sub-gate false-PASS (Claude r2 F2) — FIXED.** v2 T2 wording invited a bare substring/regex match on `standards/` which would false-PASS against `raw/standards/` line 11 of marine CLAUDE.md. v3 T2 now specifies: parse the code-fenced Directory Structure block, extract ONLY the `wiki/` subtree (excluding `raw/`), assert regex `^\s*standards/` matches a line within that extracted block. Gitignore check is now exact-line match via `splitlines()`, not substring. Same path-anchored approach applied to Pseudocode (line-anchored parse of the `wiki/` block; exact-line gitignore check).
+**Codex r3 (UNAVAILABLE):**
+8. Codex r3 returned UNAVAILABLE due to codex-cli 0.124.0 stdin-hang regression (#2479). v4 attempts r4 cross-provider review against the codex-cli 0.123.0 downgrade workaround per `feedback_codex_cli_0_124_upstream_regression.md`. If r4 codex still UNAVAILABLE, v4 will be advanced on the strength of Claude r2 + Gemini r3 + this v4 self-audit, with the gap recorded in the disagreement bucket.
 
-2. **§Resource Intelligence line 19 `text_preview: ""` misstatement (Claude r2 F1) — FIXED.** v3 Resource Intelligence now records the actual preview state: OCIMF `5e5f…` text_preview length 0 (truly empty); CSA `b576…` and `3aa1…` each have 1000-char corrupted-OCR previews (first 200 chars quoted inline for each). Branch B follow-up is rescoped: OCIMF → "extract preview content"; CSA x2 → "fix encoding/OCR corruption" (not "re-extract from empty").
+**Forward-adopted contracts (v4 new):**
+9. **`code_id`/`publisher`/`revision` frontmatter mandated on the OCIMF Tandem page** even though Phase 1 lands before #2471 codification merges. Rationale per `.claude/rules/calc-citation-contract.md`: forward-adopting these fields lets future calc modules emit `Citation` instances against this page without retroactive frontmatter migration. T4 enforces.
 
-3. **T12 word list trivially satisfied by title (Claude r2 F5) — FIXED.** v3 T12 drops all five title-matching terms (`tandem`, `FPSO`, `offloading`, `conventional tanker`, `berthing`). Replaced with three evidence categories, each independently verifiable against the source (not the title): OCIMF clause references (regex `\b[0-9]+(?:\.[0-9]+){1,3}\b`), named engineering quantities with units (regex for SI/imperial units), and specific mooring/hawser/fender configuration identifiers (curated regex list committed in test fixture). Requires 2-of-3 categories present.
-
-**SUSTAINED defects from r1 — now addressed (Lane C r2 flagged as still-open from 2026-04-21):**
-
-4. **T7 undefined `N` — FIXED.** v3 T7 binds `N_MAX_ADDED_LINES = 10`, with explicit rationale (one header + ≤ 2-item bullet list + one inbound-link sentence) and a rule that exceeding this is a scope-creep signal requiring plan revision. Diff is now explicit: `git diff --unified=0 origin/main -- …/ocimf-meg4.md`.
-
-5. **T10 missing `--diff-filter=A` — FIXED.** v3 T10 now uses `git diff --name-only --diff-filter=A origin/main..HEAD` and scopes the check to newly-ADDED files under any wiki's `wiki/standards/` subtree; modified files (index, log) are explicitly excluded.
-
-6. **Gitignore citations off-by-one — FIXED.** v2 cited `.gitignore:491-492`; actual is `.gitignore:492-494` (`/knowledge/wikis/*` at 492, `!/knowledge/wikis/engineering/` at 493, `!/knowledge/wikis/cross-links.md` at 494). v3 Prereq Matrix row and Resource Intelligence now cite 492-494 with all three exact lines quoted.
-
-**NEW v3 additions (prompted by Claude r2 F6, F7, F8, F10):**
-
-7. **Pseudocode "load prereq matrix" operationalized (Claude r2 F8):** v3 pseudocode replaces "load prereq matrix" with concrete file-load pseudo-calls (`yaml.load(handoff.yaml)`, `json.load(…/summaries/sha256:…json)` x3), removing the implementer-choice ambiguity.
-
-8. **#2471 codification-landed sub-check added (v3 structural):** Prereq Matrix gains explicit row for #2471 codification status (in-flight vs landed on origin/main). Pseudocode adds `CODIFICATION_LANDED = git.merge_base_ancestor(...)` check. MARINE_TAXONOMY_SUB_GATE = PASS now requires all three: schema OK AND gitignore OK AND codification landed. Cites user DECISION (stable) separately from in-flight codification.
-
-9. **Branch A acceptance unreachability framing (Claude r2 F7):** v3 Scope Boundaries and Prereq Matrix classification rule are explicit that under current evidence, content sub-gate fails for all three targets → Branch B is the only executable path today. Branch A can proceed for OCIMF independently once its preview extraction lands, without waiting for CSA remediation or #2471 codification.
-
-10. **Lint gate weakness mitigated with T13 (Claude r2 F10):** v3 adds T13 `test_ocimf_tandem_has_inbound_link` — explicit assertion that at least one page in the engineering wiki links back to the new standards page, closing the "orphan under `standards/` passes lint" gap that Claude r2 flagged.
-
-11. **Engineering index `## Standards` section exists (Claude r2 F6):** confirmed at `knowledge/wikis/engineering/wiki/index.md:99` (`## Standards (7 pages)`). v3 Risks section removes the deferred-verification bullet; implementation inserts a row, no section creation needed.
-
-### v3 residual open questions (for v3 reviewers)
-- If #2471 codification v2 (Lane G) chooses a `wiki/standards/` routing for CSA that differs from marine-engineering (e.g., routes CSA to naval-architecture instead), this plan's Prereq Matrix CSA row needs a one-line amendment but no structural change — the Branch-B deferral keeps #2227 agnostic to per-code routing.
-- T12's 2-of-3 evidence-category threshold is a design choice; if v3 reviewers prefer 3-of-3, swap the conjunction. Either choice is stronger than the v2 title-satisfying list.
+### v4 residual open questions (for v4 reviewers)
+- Should #2227 close when Branch A lands, or close when Phase 1 itself ships from a successor issue (after OCIMF preview extraction unblocks)? Currently both options are listed in §Phase-Split Acceptance — user decision at execution time.
+- If Codex r4 also returns UNAVAILABLE, do we proceed with single-provider-strong (Claude+Gemini) approval, or wait for codex-cli 0.123.0 downgrade rollout?
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk (surfaced by Branch B reality):** even the OCIMF Tandem page (engineering wiki, sanctioned path) may have limited body content because the summary artifact has `summary=""`. T12 guards against a near-empty promotion. If T12 cannot pass with current summary content, Branch A is ALSO effectively blocked — revealing that #2245 is a harder blocker than originally scoped.
-- **Verified (not a risk):** engineering wiki `index.md` has a `## Standards (7 pages)` section at line 99; Branch A inserts a row under it (no section creation needed).
-- **Risk:** `llm_wiki.py lint` orphan/link checks skip `standards/` — a tandem page with no inbound link from any entity/concept page would not trip as orphan. Cross-link discipline is a soft gate, not lint-enforced.
-- **Open:** If T12 fails because summary content is too thin, do we still land the page (as a stub with a `status: stub` frontmatter tag and a follow-up issue) or block entirely? Current plan: block and defer — stubs violate the grounding contract.
-- **Open:** Should #2227 adopt the metadata-only convention from #2260 as a fallback rather than blocking? That is a user decision; this plan keeps the grounded scope and defers metadata-only scope to #2260's tree.
+- **Risk:** Even Phase 1 may have limited body content because the OCIMF summary artifact has `summary=""`. T12 will guard against near-empty promotion. If T12 cannot pass with extracted preview content, Phase 1 is also effectively blocked — revealing #2245 as a harder blocker than originally scoped.
+- **Verified (not a risk):** engineering wiki `index.md` has a `## Standards (7 pages)` section at line 99; Branch A inserts a row and bumps the count to 8.
+- **Risk (mitigated by T13):** `llm_wiki.py lint` orphan/link checks skip `standards/` — a tandem page with no inbound link would not trip lint. T13 enforces explicit inbound-link presence.
+- **Risk:** Codex review channel is currently unstable (codex-cli 0.124.0 #2479). v4 will rely on Claude + Gemini for r4. If Codex remains down through v4 cycle, escalate per `feedback_codex_sustained_MAJOR_loop.md` and `feedback_cross_provider_review_payoff.md`.
+- **Open:** If Phase 1 OCIMF preview content lands but T12 cannot reach 2-of-3 evidence categories, the user decision is land-as-stub-with-status-tag vs block-and-defer. v4 default: block-and-defer (stubs violate the grounding contract).
 
 ---
 
 ## Complexity: T2
 
-**T2** — multi-file wiki/documentation promotion with bounded evidence-driven content creation, index/log updates in a single wiki domain (engineering), new test file, and strict scope control against adjacent breadth. Branch-conditional execution adds mild complexity but keeps scope bounded.
+**T2** — multi-file wiki/documentation promotion with bounded evidence-driven content creation, index/log updates in a single wiki domain (engineering, Phase 1 only), new test file with branch-aware skip logic, strict scope control against adjacent breadth, and explicit `gh issue create` instrumentation for the Branch B follow-up path. Phase split removes prior structural complexity rather than adding it.
