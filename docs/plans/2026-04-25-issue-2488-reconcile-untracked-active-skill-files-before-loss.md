@@ -14,6 +14,8 @@
 - Found: `scripts/skills/weekly_skills_audit.py` — deterministic weekly skill audit entrypoint already exists from #2281/#2486. It scans `.claude/skills`, excludes `_archive` and `_diverged`, classifies duplicate canonical names / leaf collisions / wrapper pairs, applies baseline and waiver logic, and emits JSON + Markdown artifacts. Gap: it does not currently model tracked-vs-filesystem inventory or filesystem-only active skills as a first-class high-signal finding.
 - Found: `scripts/cron/skills-curation.sh` — existing cron wrapper runs `uv run --no-project python scripts/skills/weekly_skills_audit.py` and supports `SKILLS_AUDIT_OUTPUT_ROOT` for redirectable test output. #2488 must preserve this local-only deterministic wrapper and avoid adding network posting.
 - Found: `tests/skills/test_weekly_skills_audit.py` — existing pytest coverage for inventory scope, classification buckets, output schema, baseline delta, waiver handling, and read-only behavior. Gap: no coverage currently asserts that active filesystem-only `SKILL.md` files are detected/reported distinctly from tracked active skills.
+- Found: `tests/cron/test_skills_curation.py` — existing wrapper regression coverage for `--dry-run`, `--help`, `SKILLS_AUDIT_OUTPUT_ROOT` forwarding, and stale `WORKSPACE_HUB` handling; #2488 must preserve these invariants while keeping manual reconcile outside the cron path.
+- Found: `config/scheduled-tasks/schedule-tasks.yaml` — authoritative scheduled-task source includes `id: skills-curation`, Monday 04:00 schedule, wrapper command, and description currently saying duplicate/leaf/wrapper audit and “Read-only in v1. Issue #2281.” #2488 should update the YAML description only if the recurring task contract text changes; the command remains the wrapper.
 - Found: current live inventory re-check on 2026-04-25 from repo root: tracked total `3028`, tracked active `922` when excluding `_archive` and `_archived`, filesystem total `3100`, filesystem active `928`, untracked/filesystem-only total `72`, untracked/filesystem-only active `6`, missing tracked active from filesystem `0`. This matches the issue-body conclusion: no tracked active skills are missing, but six active filesystem-only skills are at loss risk. Note: excluding only `_archive` and `_diverged` yields tracked active `928`; adding `_archived` excludes the six tracked `email/_archived` skills and yields the stricter active baseline `922`.
 - Found: mirror state remains canonical and must be preserved: `.codex/skills -> ../.claude/skills`; `.gemini/skills -> ../.claude/skills`. #2488 must not duplicate provider skill trees.
 
@@ -24,7 +26,7 @@
 | TDD before implementation | required | `AGENTS.md` |
 | Weekly skills audit policy | active / relevant | `config/skills/weekly-audit-policy.yaml`, `docs/standards/weekly-skills-audit-policy.md` |
 | Document intelligence entry point | checked / low direct relevance | `docs/document-intelligence/README.md` — navigation/provenance context; no additional skill-curation constraints found. |
-| Existing scheduled-task contract | active / relevant | `scripts/cron/skills-curation.sh`, `docs/ops/scheduled-tasks.md` |
+| Existing scheduled-task contract | active / relevant | `config/scheduled-tasks/schedule-tasks.yaml`, `scripts/cron/skills-curation.sh`, `tests/cron/test_skills_curation.py`, `docs/ops/scheduled-tasks.md` |
 
 ### LLM Wiki pages consulted
 - No relevant domain wiki pages apply. This is repo-maintenance / control-plane skill hygiene work, not offshore engineering knowledge content.
@@ -50,9 +52,11 @@
 
 **File existence and excerpts** (verified 2026-04-25):
 - EXISTS: `scripts/skills/weekly_skills_audit.py` — deterministic audit script; current top-level constants include `EXCLUDED_DIRS = {"_archive", "_diverged"}` and do not include `_archived` in the v1 duplicate/collision exclusion set.
-- EXISTS: `scripts/cron/skills-curation.sh` — lines 41-47 build the command array and append `--output-dir` when `SKILLS_AUDIT_OUTPUT_ROOT` is set; lines 51-55 print that command in dry-run mode.
+- EXISTS: `scripts/cron/skills-curation.sh` — lines 41-47 build the command array and append `--output-dir` when `SKILLS_AUDIT_OUTPUT_ROOT` is set; lines 51-58 print that command and exit in dry-run mode.
 - EXISTS: `tests/skills/test_weekly_skills_audit.py` — tests cover inventory/classification/output but not tracked-vs-filesystem loss-risk reporting.
-- EXISTS: `config/skills/weekly-audit-policy.yaml` — classification buckets and carry-forward rules remain authoritative for existing duplicate/collision findings.
+- EXISTS: `tests/cron/test_skills_curation.py` — wrapper tests cover dry-run/help/output-root/stale-workspace behavior; add coverage here if CLI or wrapper expectations are touched.
+- EXISTS: `config/skills/weekly-audit-policy.yaml` — authoritative schema uses `signal_vocabulary`, `classification_buckets`, `precedence_order`, and `v2.rules`; #2488 must extend the existing schema append-only rather than inventing a separate top-level `signals` map.
+- EXISTS: `config/scheduled-tasks/schedule-tasks.yaml` — authoritative `skills-curation` task uses `bash scripts/cron/skills-curation.sh`; command remains unchanged.
 
 **Live inventory proof** (command embedded per the plan evidence contract, 2026-04-25):
 ```bash
@@ -148,7 +152,7 @@ A deterministic extension to the weekly skills housekeeping workflow that surfac
 function build_skill_inventory_with_git(skills_dir, repo_root, tracked_paths=None, git_list_fn=None, symlink_resolver=None):
     if tracked_paths is provided, use it (test seam for tmp_path fixtures); symlink_resolver(path: Path) -> {is_symlink: bool, target: str|null, error: str|null} and never raises
     else call git_list_fn or default git ls-files for repo-relative skills_dir ending /SKILL.md; never hard-code .claude/skills when --skills-dir points elsewhere
-    filesystem_skill_paths = all SKILL.md under skills_dir
+    filesystem_skill_paths = all SKILL.md under skills_dir using a non-pruning walk; do not reuse the existing duplicate/collision `build_inventory` walk because it prunes `_archive`/`_diverged` and would undercount archived filesystem-only files
     active_filter(path): exact path segments _archive and _archived are non-active for #2488 loss-risk counts, matching the issue definition; report legacy `_diverged` exclusion separately for compatibility metrics
     _core and _internal remain in-scope for filesystem-only loss-risk reporting; do not reuse INFORMATIONAL_DIRS to suppress them
     audit_inventory_filter(path): keep existing EXCLUDED_DIRS behavior for duplicate/collision pipeline; do not add _archived to EXCLUDED_DIRS unless a separate review approves changing legacy audit semantics
@@ -224,11 +228,13 @@ implementation_flow():
 | Create | `scripts/skills/reconcile_filesystem_only_skills.py` | Separate manual reconcile entrypoint that validates disposition ledger, hard-fails on untrusted/partial inventory, and renders the tracked disposition report. This keeps the weekly cron entrypoint read-only. |
 | Create | `tests/skills/test_reconcile_filesystem_only_skills.py` | TDD coverage for manual reconcile strictness, terminal-state rules, force-add evidence, personal-skill authorization, and tracked report rendering. |
 | Modify | `tests/cron/test_skills_curation.py` | Add/adjust wrapper dry-run coverage proving the existing cron command remains compatible and does not invoke manual reconcile behavior. |
-| Modify | `config/skills/weekly-audit-policy.yaml` | Add `signals.filesystem_only_active` severity/ranking/reporting contract for the weekly read-only signal. Manual reconcile schema lives with the separate reconcile script/ledger docs, not the cron policy. |
+| Modify | `config/skills/weekly-audit-policy.yaml` | Append a `filesystem_only_active` entry to the existing policy schema (prefer `signal_vocabulary` plus an append-only `v2.rules.filesystem_only_active`/classification reference, matching current `signal_vocabulary`, `classification_buckets`, `precedence_order`, and `v2.rules` conventions). Do not create an undocumented top-level `signals` map. Manual reconcile schema lives with the separate reconcile script/ledger docs, not the cron policy. |
 | Create | `config/skills/filesystem-only-skill-dispositions.yaml` | Machine-readable disposition ledger for active filesystem-only skills; gives future audit runs a durable resolved/ignored/consolidated source of truth without overloading duplicate-skill buckets. |
-| Modify | `docs/standards/weekly-skills-audit-policy.md` | Document new inventory summary schema and `filesystem_only_active` signal for the weekly read-only audit. |
+| Modify | `docs/standards/weekly-skills-audit-policy.md` | Document new inventory summary schema and where `filesystem_only_active` lives in the existing policy schema. |
 | Modify | `docs/ops/scheduled-tasks.md` | Document that recurring `skills-curation` remains local-only/read-only and reference the separate manual reconcile command as an operator action, not a cron path. |
+| Maybe modify | `config/scheduled-tasks/schedule-tasks.yaml` | Update only the `skills-curation` description if implementation changes the recurring task description from duplicate/leaf/wrapper audit to include filesystem-only inventory; do not change schedule, command, machines, or log path. |
 | Create | `docs/reports/2026-04-25-skills-disposition-2488.md` | Durable, tracked disposition report for every active filesystem-only skill discovered at implementation-time. Use this tracked docs path because `.gitignore` ignores `logs/*`, including `logs/maintenance/...`. |
+| Create | `tests/fixtures/skills/issue-2488-archived-duplicate-baseline.json` | Frozen pre-change `_archived` duplicate/collision baseline used by regression tests to assert delta = 0 rather than absolute no-findings. |
 | Maybe add/track | active filesystem-only `SKILL.md` paths discovered at implementation time | Promote only those classified as valuable active skills; do not mass-add all 72 filesystem-only files. If a promoted path is ignored by `.gitignore`, use explicit `git add -f <path>` only after ledger scan/disposition evidence is recorded; do not broadly relax `.gitignore` for `digitalmodel/`, `personal-*`, or `memory/`. |
 | Verify / maybe document | `.gitignore` | Do not change by default; record the current ignore rule for any promoted path in the disposition ledger and use targeted `git add -f` for approved promotions. For the known parent-directory ignore rules, single-line negations are ineffective; modify `.gitignore` only in a separately reviewed follow-up if a full multi-line re-include cascade is justified. |
 | Planning lifecycle only | `docs/plans/README.md` | Add/update the #2488 row during plan-gate work; do not treat this as an implementation file. Status should be `plan-review` when the approval gate is posted. |
@@ -247,12 +253,12 @@ implementation_flow():
 | `test_inventory_summary_records_provider_skill_mirror_symlinks` | mirror status remains explicit | resolver-injection seam supplies `.codex/skills` and `.gemini/skills` link targets | JSON records links to `../.claude/skills` without platform-dependent symlink setup |
 | `test_weekly_markdown_surfaces_filesystem_only_active_skills` | operator report is high-signal | audit result with active filesystem-only path | Markdown includes `Filesystem-only active skills` section and path |
 | `test_filesystem_only_archived_skills_do_not_escalate_active_loss_risk` | archived local files do not create false active alarms | untracked `_archive` and `_archived` SKILL.md files | active loss-risk count remains 0; archived count is reported separately |
-| `test_filesystem_only_core_and_internal_skills_are_not_suppressed` | control-plane/internal namespaces are still protected against untracked loss | untracked `_core` and `_internal` SKILL.md files | active filesystem-only count includes these paths |
+| `test_filesystem_only_core_and_internal_skills_are_not_suppressed` | control-plane/internal namespaces are still protected against untracked loss | untracked `_core` and `_internal` SKILL.md files | active filesystem-only count includes these paths and each path object carries `informational_namespace: true` |
 | `test_disposition_ledger_accepts_only_known_disposition_values` | dispositions are machine-checkable | invalid disposition string | manual reconcile validation fails |
 | `test_weekly_mode_reports_unresolved_without_hard_failure` | recurring cron remains report-only | active filesystem-only skill without ledger entry | weekly result records high-signal finding and exits successfully |
 | `test_git_inventory_failure_is_reported_not_cron_fatal` | weekly cron remains deterministic on Git errors | git_list_fn raises or skills_dir is outside a repo | weekly result records inventory warning and exits successfully |
 | `test_manual_reconcile_hard_fails_on_untrusted_or_partial_inventory` | reconcile proof is authoritative | git adapter errors, sparse checkout, or partial tracked manifest | manual reconcile script exits nonzero before writing tracked report |
-| `test_policy_yaml_defines_filesystem_only_active_signal` | YAML is authoritative | policy fixture | weekly-audit parser exposes `signals.filesystem_only_active` |
+| `test_policy_yaml_defines_filesystem_only_active_signal` | YAML is authoritative | policy fixture following existing `signal_vocabulary`/`v2.rules` shape | weekly-audit parser exposes the append-only `filesystem_only_active` signal/rule without requiring a new top-level `signals` map |
 | `test_existing_weekly_audit_cli_flags_remain_backward_compatible` | wrapper invariance is protected | argparse invocation with existing flags only | command parses, remains read-only, and does not write tracked docs |
 | `test_cron_wrapper_dry_run_command_parses_existing_cli` | wrapper command remains compatible with argparse | `bash scripts/cron/skills-curation.sh --dry-run` output | printed command parses using existing CLI flags and never references manual reconcile script |
 | `test_sparse_checkout_or_partial_git_inventory_is_warned_not_trusted` | successful-but-partial git inventory does not create false loss findings | git adapter reports sparse checkout or unexpectedly low tracked count | weekly report emits inventory warning and does not assert missing-tracked loss without explicit confirmation |
@@ -263,7 +269,7 @@ implementation_flow():
 | `test_promote_ignored_skill_requires_force_add_attestation` | ignored-path promotions are intentional | gitignored filesystem-only skill with promote/redact disposition | manual reconcile validation requires `force_add_attestation_when_ignored` with ignore rule/line and final `git ls-files` evidence; personal paths additionally require `user_authorization_when_personal` |
 | `test_archived_duplicate_collision_delta_is_zero_vs_prechange_baseline` | `_archived` loss-risk exclusion does not worsen legacy duplicate noise | frozen pre-change `_archived` duplicate/collision baseline + post-change run | duplicate/collision delta is zero; absolute pre-existing findings may remain documented |
 | `test_scan_attestation_required_for_promote_commit_and_personal_or_memory_skills` | conditional secret/content scans are contractual | promote/redact/consolidate disposition missing structured scan attestation | manual reconcile validation fails with actionable error |
-| `test_personal_skill_promotion_requires_user_authorization_field` | personal ignored skills are not force-added on reviewer judgment alone | `personal-*` skill with promote/redact disposition but no authorization field | manual reconcile validation fails |
+| `test_personal_skill_promotion_requires_user_authorization_field` | personal ignored skills are not force-added on reviewer judgment alone | leaf slug matching `.gitignore`-style `personal-*` plus promote/redact disposition but no authorization field | manual reconcile validation fails |
 | `test_deleted_or_archived_terminal_states_do_not_reopen_when_original_path_absent` | delete/archive lifecycles are deterministic | ledger entry with final_status deleted/archived and original path absent | weekly audit treats entry as resolved, not reopened |
 | `test_existing_duplicate_collision_fixture_counts_unchanged` | duplicate/collision baseline behavior not broken | frozen existing fixture before and after inventory extension | duplicate/collision summary counts and finding IDs are unchanged |
 
@@ -273,7 +279,7 @@ implementation_flow():
 
 - [ ] RED tests are added before implementation for tracked-vs-filesystem inventory and filesystem-only active skill reporting.
 - [ ] Weekly audit JSON includes `inventory_summary.counts`, `inventory_summary.paths`, and `inventory_summary.mirrors`; counts are numeric, paths are arrays of `{path, informational_namespace}` objects; `_core`/`_internal` paths remain active loss-risk but carry `informational_namespace: true`, mirror fields are symlink/status strings. Stable field names include `missing_tracked_active` and `filesystem_only_active`.
-- [ ] `config/skills/weekly-audit-policy.yaml` defines concrete `signals.filesystem_only_active` keys, and tests prove the weekly-audit parser consumes those keys rather than hard-coding severity in Python.
+- [ ] `config/skills/weekly-audit-policy.yaml` defines `filesystem_only_active` in the existing append-only policy schema (`signal_vocabulary` plus the relevant `v2.rules`/classification reference), and tests prove the weekly-audit parser consumes those keys rather than hard-coding severity in Python; do not introduce an undocumented top-level `signals` map.
 - [ ] Weekly Markdown output includes a high-signal section listing active filesystem-only skills when any exist.
 - [ ] Active loss-risk filtering for #2488 excludes exact path segments `_archive` and `_archived`; `_diverged` remains included in #2488 active counts and is additionally reported as a separate legacy-compatibility count; `_core` and `_internal` filesystem-only skills remain reportable as active loss-risk; legacy duplicate/collision behavior is not worsened by #2488; implementation must record a pre-change `_archived` duplicate/collision baseline and assert duplicate/collision delta is zero; absolute pre-existing findings may remain documented rather than changing `EXCLUDED_DIRS`.
 - [ ] `.codex/skills` and `.gemini/skills` remain symlink mirrors; no provider duplicate skill trees are created.
@@ -282,12 +288,12 @@ implementation_flow():
 - [ ] Manual closeout validation confirms both `missing_tracked_active = 0` and `unresolved_filesystem_only_active = 0` after reconciliation, using terminal-state rules: promoted/redacted/consolidated entries tracked active at final_path; archived/deleted entries absent from active filesystem-only inventory with recorded final_status; ignored entries backed by durable policy rationale.
 - [ ] Existing weekly audit behavior remains backward-compatible: pre-existing duplicate/collision tests still pass, and new tests are added for the inventory/disposition extension.
 - [ ] `docs/reports/2026-04-25-skills-disposition-2488.md` is generated once during implementation closeout at the tracked docs path with stable Markdown schema and matches the YAML disposition ledger; the recurring weekly cron does not rewrite tracked docs.
-- [ ] `scripts/cron/skills-curation.sh` remains unchanged unless a test proves wrapper changes are necessary; the existing weekly audit CLI flags (`--skills-dir`, `--output-dir`, `--policy`, `--waivers`, `--render-github-payload`) remain backward-compatible, and tracked closeout report generation is only available through the separate manual `scripts/skills/reconcile_filesystem_only_skills.py --disposition-report docs/reports/2026-04-25-skills-disposition-2488.md` entrypoint.
+- [ ] `scripts/cron/skills-curation.sh` remains unchanged unless a test proves wrapper changes are necessary; the existing weekly audit CLI flags (`--skills-dir`, `--output-dir`, `--policy`, `--waivers`, `--render-github-payload`) remain backward-compatible, and tracked reconcile report generation is only available through the separate manual `scripts/skills/reconcile_filesystem_only_skills.py --disposition-report docs/reports/2026-04-25-skills-disposition-2488.md` entrypoint; `tests/cron/test_skills_curation.py` continues to cover dry-run/help/output-root/stale-workspace behavior.
 - [ ] No unrelated local dirt is staged or committed.
 - [ ] Plan review artifacts are posted before implementation begins.
-- [ ] The implementation records a pre-change `_archived` duplicate/collision baseline in the closeout report or fixture so regression tests cannot claim “pre-existing” without evidence.
+- [ ] The implementation records a pre-change `_archived` duplicate/collision baseline in `tests/fixtures/skills/issue-2488-archived-duplicate-baseline.json` and summarizes it in the disposition report so regression tests cannot claim “pre-existing” without evidence.
 - [ ] Sparse-checkout/partial `git ls-files` states are detected or warned, and cannot generate authoritative missing-tracked loss findings without confirmation.
-- [ ] Any promotion of `personal-tax-filing-packet` requires explicit user authorization recorded in `user_authorization_when_personal` in the disposition ledger in addition to scan attestation; if no explicit authorization is available during implementation, it must not be promoted and must be archived/deleted/ignored with rationale instead.
+- [ ] Any promotion of a personal skill, defined as a skill whose leaf directory slug matches `.gitignore`-style `personal-*` (including `personal-tax-filing-packet`), requires explicit user authorization recorded in `user_authorization_when_personal` in the disposition ledger in addition to scan attestation; if no explicit authorization is available during implementation, it must not be promoted and must be archived/deleted/ignored with rationale instead.
 
 ---
 
@@ -295,14 +301,17 @@ implementation_flow():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Pending plan-review fanout. |
-| Codex | PENDING | Pending plan-review fanout. |
-| Gemini | PENDING | Pending plan-review fanout. |
+| Claude | MINOR | Latest pass flagged action/schema clarifications: wrapper test path, dual-walk archived inventory, policy schema shape, exact dry-run citation, informational namespace assertion, personal-skill match rule, and baseline fixture placement. |
+| Codex | MAJOR | Latest pass flagged stale review summary, missing scheduled-task YAML/test evidence, and underspecified policy schema shape. These findings are addressed in this revision. |
+| Gemini | UNAVAILABLE | Latest pass produced an explicit unavailable artifact due CLI filesystem scan errors; no substantive verdict. |
 
-**Overall result:** PENDING — do not move to `status:plan-review` until this section is updated.
+**Overall result:** REVISING — do not move to `status:plan-review` until the next review pass has no MAJOR findings.
 
 Revisions made based on review:
-- Pending.
+- Replaced stale PENDING review summary with latest provider state.
+- Added `config/scheduled-tasks/schedule-tasks.yaml` and `tests/cron/test_skills_curation.py` to resource intelligence/evidence.
+- Specified that `filesystem_only_active` extends the existing `weekly-audit-policy.yaml` schema append-only rather than introducing an undocumented top-level `signals` map.
+- Clarified that scheduled YAML is maybe-modified only for description text; schedule/command/machines/log path remain unchanged.
 
 ---
 
@@ -311,9 +320,9 @@ Revisions made based on review:
 - **Risk:** live counts can drift between planning and implementation. Mitigation: implementation must compute live counts at runtime and record the timestamp/source rather than hard-coding counts; the current verified baseline is tracked total `3028`, tracked active `922`, filesystem total `3100`, filesystem active `928`, filesystem-only total `72`, filesystem-only active `6`. The planning-time six are local filesystem evidence and must be recomputed before closeout.
 - **Risk:** `logs/maintenance/...` is transient/ignored. Mitigation: recurring generated weekly audit artifacts remain under `logs/maintenance/...`; durable disposition state lives in `config/skills/filesystem-only-skill-dispositions.yaml`; the tracked docs report is manual reconcile only.
 - **Risk:** committing untracked active skills without content review could preserve low-quality, generated, PII, or secret-bearing artifacts. Mitigation: require per-skill disposition, structured scan attestation, final_status/final_path, and rationale before any `git add`.
-- **Risk:** adding filesystem-only findings to the same duplicate/collision classification pipeline could create noisy false positives. Mitigation: use a separate inventory signal governed by concrete `signals.filesystem_only_active` policy keys in `config/skills/weekly-audit-policy.yaml`.
+- **Risk:** adding filesystem-only findings to the same duplicate/collision classification pipeline could create noisy false positives. Mitigation: use a separate inventory signal governed by an append-only `filesystem_only_active` policy entry in the existing `config/skills/weekly-audit-policy.yaml` schema, not a second top-level policy surface.
 - **Risk:** changing `EXCLUDED_DIRS` would alter legacy duplicate/collision audit semantics. Mitigation: do not extend `EXCLUDED_DIRS`; implement a separate active loss-risk filter that excludes exact path segments `_archive` and `_archived` for #2488 loss-risk counts only; `_diverged` remains included in #2488 active counts and is also reported as a legacy compatibility count.
-- **Decision:** durable disposition state lives in `config/skills/filesystem-only-skill-dispositions.yaml`; signal vocabulary/ranking lives in `config/skills/weekly-audit-policy.yaml`; the human-readable one-time implementation triage report path is `docs/reports/2026-04-25-skills-disposition-2488.md`; recurring scheduled audit artifacts remain under `logs/maintenance/` only and must not mutate tracked docs.
+- **Decision:** durable disposition state lives in `config/skills/filesystem-only-skill-dispositions.yaml`; signal vocabulary/ranking lives append-only in the existing `config/skills/weekly-audit-policy.yaml` schema; the human-readable one-time implementation triage report path is `docs/reports/2026-04-25-skills-disposition-2488.md`; recurring scheduled audit artifacts remain under `logs/maintenance/` only and must not mutate tracked docs.
 - **Decision:** `scripts/cron/skills-curation.sh` should remain unchanged unless implementation tests prove otherwise; wrapper invariance is part of the implementation acceptance criteria.
 - **Decision:** future ignored skills under broad ignore prefixes remain visible through the weekly filesystem-only signal; for approved promoted skills, implementation may use targeted `git add -f`, and must not broadly unignore private/vendor/generated namespaces.
 
