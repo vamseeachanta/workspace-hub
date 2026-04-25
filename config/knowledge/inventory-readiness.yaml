@@ -1,0 +1,208 @@
+schema_version: 1
+provider_queue_snapshot:
+  generated_at: "2026-04-25T09:20:15.784834Z"
+  source: docs/reports/provider-work-queue.md
+  current_counts:
+    codex_candidates: 4
+    gemini_tasks: 1
+    claude_reviews: 17
+package_families:
+  - id: inventory_readiness_spine
+    title: "#2487 inventory-readiness validator and dispatch board"
+    owner_provider: codex
+    preferred_next_provider: codex
+    readiness:
+      raw_data: READY
+      inventory: READY
+      llm_wiki: PARTIAL
+      calculation_code: PARTIAL
+      parametric_outputs: MISSING
+      website_gtm: PARTIAL
+    evidence:
+      raw_data_paths:
+        - /mnt/ace/O&G-Standards/_inventory.db
+        - /mnt/ace/.ace-knowledge/index.db
+      inventory_artifacts:
+        - tools/SCHEMA_COMPARISON.md
+        - data/document-index/registry.yaml
+        - data/document-index/resource-intelligence-maturity.yaml
+      wiki_doc_keys: []
+      calculation_artifacts: []
+      parametric_artifacts: []
+      website_gtm_artifacts: []
+      stale_artifacts: []
+      issue_refs:
+        - issue: 2481
+          relation: reference
+          approval_state: plan-review
+          produces_stages:
+            - calculation_code
+          implemented_artifacts: []
+          artifact_contract: calculation-output citation contract plan
+        - issue: 2464
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - inventory
+          implemented_artifacts: []
+          artifact_contract: curated tier-1 routing index
+        - issue: 2403
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - llm_wiki
+          implemented_artifacts: []
+          artifact_contract: embeddings model-selection spike
+        - issue: 2346
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - website_gtm
+          implemented_artifacts: []
+          artifact_contract: prospect-data customized-demo pipeline
+        - issue: 2465
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - inventory
+          implemented_artifacts: []
+          artifact_contract: daily tier-1 indexing freshness audit and scorecard refresh
+        - issue: 2402
+          relation: downstream_candidate
+          approval_state: plan-review
+          produces_stages:
+            - llm_wiki
+          implemented_artifacts: []
+          artifact_contract: embeddings index L2+L3 plus query CLI
+        - issue: 2392
+          relation: downstream_candidate
+          approval_state: open
+          produces_stages:
+            - llm_wiki
+          implemented_artifacts: []
+          artifact_contract: wiki coverage-gap detector inventory/wiki diff
+    dependency_roles:
+      - issue: 2471
+        role: downstream_only
+        reason: "Live dependency context only; no local plan artifact required for #2487."
+    dispatch:
+      ready_for_provider: codex
+      rationale: "Implement and maintain the readiness validator/report spine; downstream work remains separately issue-gated."
+      dependency_issues:
+        - 2464
+        - 2403
+        - 2346
+        - 2465
+        - 2402
+        - 2392
+      expected_output_artifact: docs/reports/inventory-readiness-matrix-2026-04-25.md
+  - id: raw_data_scouting_backlog
+    title: "Raw data scouting backlog for llm-wiki promotion candidates"
+    owner_provider: gemini
+    preferred_next_provider: gemini
+    readiness:
+      raw_data: READY
+      inventory: PARTIAL
+      llm_wiki: MISSING
+      calculation_code: MISSING
+      parametric_outputs: MISSING
+      website_gtm: MISSING
+    evidence:
+      raw_data_paths:
+        - /mnt/ace/O&G-Standards/_inventory.db
+      inventory_artifacts:
+        - tools/SCHEMA_COMPARISON.md
+      wiki_doc_keys: []
+      calculation_artifacts: []
+      parametric_artifacts: []
+      website_gtm_artifacts: []
+      stale_artifacts: []
+      issue_refs:
+        - issue: 2392
+          relation: downstream_candidate
+          approval_state: open
+          produces_stages:
+            - llm_wiki
+          implemented_artifacts: []
+          artifact_contract: wiki coverage-gap detector inventory/wiki diff
+        - issue: 2403
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - llm_wiki
+          implemented_artifacts: []
+          artifact_contract: embeddings model-selection spike
+    dependency_roles:
+      - issue: 2392
+        role: downstream_only
+        reason: "Gemini scouting can prepare candidates; implementation remains future issue scope."
+    dispatch:
+      ready_for_provider: gemini
+      rationale: "Run an unexecuted scouting batch to identify source/wiki gaps and produce future package candidates."
+      dependency_issues:
+        - 2392
+        - 2403
+      expected_output_artifact: null
+  - id: plan_review_and_governance_backlog
+    title: "Plan-review and governance queue for downstream package execution"
+    owner_provider: claude
+    preferred_next_provider: claude
+    readiness:
+      raw_data: READY
+      inventory: READY
+      llm_wiki: PARTIAL
+      calculation_code: PARTIAL
+      parametric_outputs: MISSING
+      website_gtm: PARTIAL
+    evidence:
+      raw_data_paths:
+        - /mnt/ace/O&G-Standards/_inventory.db
+      inventory_artifacts:
+        - docs/reports/provider-work-queue.md
+      wiki_doc_keys: []
+      calculation_artifacts: []
+      parametric_artifacts: []
+      website_gtm_artifacts: []
+      stale_artifacts: []
+      issue_refs:
+        - issue: 2464
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - inventory
+          implemented_artifacts: []
+          artifact_contract: curated tier-1 routing index
+        - issue: 2346
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - website_gtm
+          implemented_artifacts: []
+          artifact_contract: prospect-data customized-demo pipeline
+        - issue: 2403
+          relation: downstream_candidate
+          approval_state: plan-approved
+          produces_stages:
+            - llm_wiki
+          implemented_artifacts: []
+          artifact_contract: embeddings model-selection spike
+        - issue: 2481
+          relation: reference
+          approval_state: plan-review
+          produces_stages:
+            - calculation_code
+          implemented_artifacts: []
+          artifact_contract: calculation-output citation contract plan
+    dependency_roles:
+      - issue: 2465
+        role: downstream_only
+        reason: "Re-audit before dispatch, but not blocking #2487 matrix publication."
+    dispatch:
+      ready_for_provider: claude
+      rationale: "Review and harden downstream package plans before user approval and Codex/Gemini execution."
+      dependency_issues:
+        - 2464
+        - 2346
+        - 2465
+        - 2403
+      expected_output_artifact: scripts/review/results/downstream-package-review.md
