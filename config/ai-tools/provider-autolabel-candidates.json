@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-25T05:20:11.118458Z",
+  "generated_at": "2026-04-25T09:20:16.236484Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 12,
@@ -200,6 +200,39 @@
       "eligible": true
     },
     {
+      "number": 2373,
+      "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:data-pipeline",
+        "domain:knowledge-management",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-25T08:52:41Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 2408,
       "title": "feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2408",
@@ -365,40 +398,6 @@
       "eligible": true
     },
     {
-      "number": 2403,
-      "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:data-pipeline",
-        "cat:research",
-        "domain:document-intelligence",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-23T15:29:28Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
@@ -530,35 +529,6 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-11T09:53:14Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2199,
-      "title": "feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2199",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T10:30:07Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

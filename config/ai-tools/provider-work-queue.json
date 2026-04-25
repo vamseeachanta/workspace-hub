@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-25T05:20:10.886294Z",
+  "generated_at": "2026-04-25T09:20:15.784834Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-25T05:20:08.853100Z",
+  "scorecard_generated_at": "2026-04-25T09:20:13.690050Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 16,
+      "execution_ready_count": 17,
       "total_candidates": 168,
       "top_issues": [
         {
@@ -49,6 +49,30 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-24T16:30:04Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2373,
+          "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-25T08:52:41Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -180,38 +204,13 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2403,
-          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:data-pipeline",
-            "cat:research",
-            "domain:document-intelligence",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T15:29:28Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 3,
+      "execution_ready_count": 4,
       "total_candidates": 30,
       "top_issues": [
         {
@@ -231,6 +230,29 @@
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2227,
+          "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-25T08:53:00Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
@@ -365,27 +387,6 @@
             "cat:harness"
           ],
           "updatedAt": "2026-04-11T09:53:14Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2199,
-          "title": "feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2199",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T10:30:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
