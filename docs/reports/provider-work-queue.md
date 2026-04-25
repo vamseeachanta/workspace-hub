@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-24T21:04:30.220186Z
+Generated: 2026-04-24T21:20:08.016771Z
 Current week: 2026-W17
 Recommended provider order: codex, gemini, claude
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 18
-- Total routed candidates: 169
+- Execution-ready candidates: 16
+- Total routed candidates: 168
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 3
-- Total routed candidates: 29
+- Total routed candidates: 30
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -36,9 +36,9 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2464 chore(workspace-hub): split curated tier-1 routing index from raw inventory and clean routing noise | yes | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:harness, domain:repo-organization, status:plan-approved |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
+| #2194 feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
 | #2195 test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows | no | implementation/test/fix language | enhancement, priority:medium, cat:operations, cat:harness |
 | #2199 feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage | no | implementation/test/fix language | enhancement, priority:medium, cat:harness |
-| #2200 test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh | no | implementation/test/fix language | enhancement, priority:medium, cat:harness |
 
 ## gemini
 

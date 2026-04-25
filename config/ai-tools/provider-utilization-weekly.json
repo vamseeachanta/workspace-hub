@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T21:04:20.979930Z",
+  "generated_at": "2026-04-24T21:20:05.897478Z",
   "current_week": "2026-W17",
   "report_weeks": 8,
   "subscriptions": {
@@ -927,30 +927,30 @@
         "provider": "claude",
         "week": "2026-W17",
         "sessions": 219,
-        "post_records": 11014,
+        "post_records": 11020,
         "activity_utilization_pct": 27.1,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 27.1,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-04-24T21:04:07Z",
+        "quota_snapshot_ts": "2026-04-24T21:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 6895
+            "count": 6898
           },
           {
             "tool": "Read",
-            "count": 1927
+            "count": 1928
           },
           {
             "tool": "Edit",
-            "count": 787
+            "count": 788
           },
           {
             "tool": "Write",
-            "count": 538
+            "count": 539
           },
           {
             "tool": "unknown",
@@ -958,7 +958,7 @@
           }
         ],
         "first_ts": "2026-04-20T00:07:20Z",
-        "last_ts": "2026-04-24T20:57:23Z",
+        "last_ts": "2026-04-24T21:11:25Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -972,7 +972,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-04-24T21:04:07Z",
+        "quota_snapshot_ts": "2026-04-24T21:20:02Z",
         "top_tools": [
           {
             "tool": "Read",
@@ -1010,7 +1010,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-04-24T21:04:07Z",
+        "quota_snapshot_ts": "2026-04-24T21:20:02Z",
         "top_tools": [
           {
             "tool": "Read",

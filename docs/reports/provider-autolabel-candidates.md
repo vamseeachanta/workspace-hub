@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-24T21:04:33.301564Z
+Generated: 2026-04-24T21:20:08.200223Z
 Apply mode: False
 Threshold: 0.9
 
@@ -21,6 +21,6 @@ Threshold: 0.9
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2194 feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2195 test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2199 feat(claude): validate hook wiring and backfill session_id parity for historical provider-audit coverage | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2200 test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |

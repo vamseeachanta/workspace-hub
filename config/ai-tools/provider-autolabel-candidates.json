@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T21:04:33.301564Z",
+  "generated_at": "2026-04-24T21:20:08.200223Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 12,
@@ -490,6 +490,36 @@
       "eligible": false
     },
     {
+      "number": 2194,
+      "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-11T09:53:11Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 2195,
       "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
@@ -529,35 +559,6 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-11T10:30:07Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2200,
-      "title": "test(operations): add wrapper-level subprocess smoke coverage for provider-session-ecosystem-audit.sh",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2200",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-11T10:30:28Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
