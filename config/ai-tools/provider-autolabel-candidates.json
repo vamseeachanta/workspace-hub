@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-25T09:20:16.236484Z",
+  "generated_at": "2026-04-25T13:20:09.915051Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 12,
@@ -167,6 +167,39 @@
       "eligible": true
     },
     {
+      "number": 2364,
+      "title": "feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2364",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:documentation",
+        "domain:knowledge-management",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-25T11:47:59Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 2368,
       "title": "feat(knowledge): generate faceted portal pages for large LLM-wiki domains",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2368",
@@ -200,6 +233,39 @@
       "eligible": true
     },
     {
+      "number": 2369,
+      "title": "feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2369",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:data-pipeline",
+        "domain:knowledge-management",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-25T11:48:00Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 2373,
       "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
@@ -210,7 +276,7 @@
         "domain:knowledge-management",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-25T08:52:41Z",
+      "updatedAt": "2026-04-25T11:48:01Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -312,72 +378,6 @@
       "updatedAt": "2026-04-23T08:22:38Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2475,
-      "title": "chore(licensed-proof): define OrcaWave/OrcaFlex native load-run proof protocol",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2475",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering",
-        "domain:marine",
-        "machine:licensed-win-1",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-24T08:58:40Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2324,
-      "title": "chore(memory): curate MEMORY.md index before 200-line truncation \u2014 consolidate stale project_* and feedback_*",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2324",
-      "labels": [
-        "priority:medium",
-        "cat:maintenance",
-        "domain:memory",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-23T03:32:04Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",

@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-04-25T09:20:15.784834Z
+Generated: 2026-04-25T13:20:09.684170Z
 Current week: 2026-W17
 Recommended provider order: codex, gemini, claude
 
@@ -9,19 +9,19 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 17
+- Execution-ready candidates: 19
 - Total routed candidates: 168
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2348 triage: promote #1707/#1708/#1709 from review-backlog — live scanner has ToS/rate-limit exposure | yes | strategy/workflow/architecture language | bug, priority:high, domain:gtm, status:plan-approved |
+| #2364 feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:knowledge-management, status:plan-approved |
 | #2368 feat(knowledge): generate faceted portal pages for large LLM-wiki domains | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:knowledge-management, status:plan-approved |
+| #2369 feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2373 feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2408 feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:release-management, status:plan-approved |
 | #2433 chore(ci-health): worldenergydata main CI — 22+ collection errors blocking 5 Dependabot PRs (#329-#333) | yes | strategy/workflow/architecture language | priority:high, cat:infrastructure, status:plan-approved |
 | #2461 chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:maintenance, domain:repo-organization, status:plan-approved |
-| #2475 chore(licensed-proof): define OrcaWave/OrcaFlex native load-run proof protocol | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, domain:marine, machine:licensed-win-1, status:plan-approved |
-| #2324 chore(memory): curate MEMORY.md index before 200-line truncation — consolidate stale project_* and feedback_* | yes | strategy/workflow/architecture language | priority:medium, cat:maintenance, domain:memory, status:plan-approved |
 
 ## codex
 
