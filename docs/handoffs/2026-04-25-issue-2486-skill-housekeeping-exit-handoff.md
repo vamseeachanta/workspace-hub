@@ -117,6 +117,8 @@ Original-checkout unrelated dirt observed before creating the temporary worktree
 
 Those original-checkout changes were intentionally not modified or committed by this exit handoff.
 
+Final note: after removing the temporary handoff worktree, the original checkout reported additional branch/status drift (`plan/issue-2125-orcina-auto-refresh...origin/plan/issue-2125-orcina-auto-refresh` in `git status`, while `git branch --show-current` returned `plan/issue-2126-markdown-conversion-qa`) plus unrelated session-state and plan/review untracked files. Treat that original checkout as a separate active planning workspace; do not assume it is clean `main`. The #2486 closeout evidence is on `origin/main`, not dependent on that checkout's current branch.
+
 ## Recommended next actions
 1. Treat [#2486](https://github.com/vamseeachanta/workspace-hub/issues/2486) as complete; do not reopen unless a new regression appears.
 2. If continuing in `/mnt/local-analysis/workspace-hub`, first decide whether the active branch should remain `plan/issue-2103-aqwa-bemrosetta-ingestion` or return to `main`.
