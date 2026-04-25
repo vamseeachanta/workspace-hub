@@ -7,4 +7,3 @@ Summary:
 - Earlier MAJOR concerns remained fixed.
 - Local-only/no-GitHub contract looked satisfied.
 - Remaining MINOR items were hygiene only: stage the new test file, exclude unrelated dirt, clean transient planning files, and update stale v1 wording. Stale wording was subsequently fixed before closeout.
-
