@@ -146,7 +146,7 @@ A deterministic extension to the weekly skills housekeeping workflow that surfac
 
 ```text
 function build_skill_inventory_with_git(skills_dir, repo_root, tracked_paths=None, git_list_fn=None, symlink_resolver=None):
-    if tracked_paths is provided, use it (test seam for tmp_path fixtures)
+    if tracked_paths is provided, use it (test seam for tmp_path fixtures); symlink_resolver(path: Path) -> {is_symlink: bool, target: str|null, error: str|null} and never raises
     else call git_list_fn or default git ls-files for repo-relative skills_dir ending /SKILL.md; never hard-code .claude/skills when --skills-dir points elsewhere
     filesystem_skill_paths = all SKILL.md under skills_dir
     active_filter(path): exact path segments _archive and _archived are non-active for #2488 loss-risk counts, matching the issue definition; report legacy `_diverged` exclusion separately for compatibility metrics
@@ -162,13 +162,13 @@ function build_skill_inventory_with_git(skills_dir, repo_root, tracked_paths=Non
         codex_skills_link, gemini_skills_link
     JSON schema:
         inventory_summary.counts = {tracked_total, tracked_active, filesystem_total, filesystem_active, filesystem_only_total, filesystem_only_active, missing_tracked_total, missing_tracked_active, filesystem_only_archived_total, legacy_diverged_compatibility_total}
-        inventory_summary.paths = {filesystem_only_active: [{path, informational}], missing_tracked_active: [{path, informational}], filesystem_only_archived: [{path, informational}]}
+        inventory_summary.paths = {filesystem_only_active: [{path, informational_namespace}], missing_tracked_active: [{path, informational_namespace}], filesystem_only_archived: [{path, informational_namespace}]}
         inventory_summary.mirrors = {codex_skills_link, gemini_skills_link}
 
 function classify_filesystem_only_skill(path):
     read full file for scan-sensitive skills; read frontmatter and first content section for initial routing
     inspect current file content and frontmatter first
-    inspect git history using deterministic fallback keys (frontmatter name and leaf slug), because a filesystem-only path itself may have no git history; git-history lookup failures are non-fatal warnings in weekly_report and manual_closeout evidence, not cron failures
+    inspect git history using deterministic fallback keys (frontmatter name and leaf slug), because a filesystem-only path itself may have no git history; git-history lookup failures are non-fatal warnings in weekly_report evidence, but trusted full git/filesystem inventory is mandatory for manual reconcile
     search canonical active skills for same frontmatter name, same leaf slug, or documented replacement
     assign disposition:
         promote_commit if valuable, unique, reusable, clean after scan, and either not ignored or approved for targeted `git add -f` with the matching ignore rule recorded
@@ -190,11 +190,11 @@ function run_weekly_audit_extension():
     unresolved findings are reportable, not a weekly-cron hard failure
     preserve local-only/no-network behavior and write recurring outputs only under the configured output_dir/logs/maintenance/skills-curation/ tree
 
-function validate_and_render_dispositions(disposition_yaml, mode):
-    mode is explicit CLI: `--mode {weekly_report,manual_closeout}` defaulting to `weekly_report`; optional `--disposition-ledger` and `--disposition-report` are honored only for manual_closeout
-    weekly_report: load ledger, classify unresolved paths, never write tracked docs, never fail solely because a new filesystem-only skill lacks disposition
-    manual_closeout: require one entry per active filesystem-only skill discovered at implementation time; fail on missing/invalid entries; render docs/reports/2026-04-25-skills-disposition-2488.md
-    require fields: path, disposition, reason, reviewed_at, reviewer, reviewed_file_sha256, final_status, final_path, scan_attestation, force_add_attestation_when_ignored
+function validate_and_render_dispositions_for_manual_reconcile(disposition_yaml):
+    separate manual entrypoint, not the cron-owned weekly audit CLI; weekly_skills_audit.py remains read-only and local-output-only
+    require trusted full git/filesystem inventory; git errors, sparse checkout, or partial inventory are hard failures in manual reconcile but warning-only in weekly_report
+    require one entry per active filesystem-only skill discovered at implementation time; fail on missing/invalid entries; render docs/reports/2026-04-25-skills-disposition-2488.md
+    require fields: path, disposition, reason, reviewed_at, reviewer, reviewed_file_sha256, final_status, final_path, scan_attestation, force_add_attestation_when_ignored, user_authorization_when_personal
     define reviewed_file_sha256 = sha256 of the exact SKILL.md file bytes at review time; for terminal move/archive/delete actions record the pre-action sha256 plus final_status/final_path
     allowed dispositions: promote_commit, consolidate_then_commit, redact_then_commit, archive_intentionally, ignore_generated_transient, delete_if_junk
     scan_attestation schema: {tool_or_method, scope: full_file|frontmatter|content_overlap, scanned_at, finding_count, finding_summary, reviewer}; force_add_attestation schema when ignored: {gitignore_rule, gitignore_line, git_add_force_required, git_add_force_invoked_at, final_git_ls_files_contains_path}
@@ -203,13 +203,13 @@ function validate_and_render_dispositions(disposition_yaml, mode):
         archive_intentionally: resolved only when original path is absent from active filesystem-only set and final_path is under an archive segment or tracked archive path
         delete_if_junk: resolved only when original path is absent and final_status is deleted_with_reason
         ignore_generated_transient: resolved only when a matching durable policy/ignore rationale exists in the ledger/YAML policy
-    future weekly audit runs read the YAML ledger and mark terminal resolved entries resolved; reviewed_file_sha256 matching on non-terminal unchanged filesystem-only entries marks them reviewed but still visible as unresolved local filesystem-only inventory; terminal entries are governed by final_status/final_path rules and are the only states that remove unresolved loss-risk
+    future weekly audit runs may read the YAML ledger to annotate reviewed/resolved state, but remain read-only; reviewed_file_sha256 matching on non-terminal unchanged filesystem-only entries marks them reviewed but still visible as unresolved local filesystem-only inventory; terminal entries are governed by final_status/final_path rules and are the only states that remove unresolved loss-risk
 
 implementation_flow():
     RED: add tests for inventory_summary and filesystem_only_active reporting
     GREEN: implement minimal tracked-vs-filesystem inventory helper and output section
     RED/GREEN: add fixture tests for symlink mirror reporting and _archived exclusion
-    RED/GREEN: add disposition ledger plus explicit manual-closeout report mode for every active filesystem-only skill discovered at implementation time
+    RED/GREEN: add separate manual reconcile script for disposition ledger validation/report generation for every active filesystem-only skill discovered at implementation time
     verify no unrelated local dirt is staged
 ```
 
@@ -219,16 +219,19 @@ implementation_flow():
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `scripts/skills/weekly_skills_audit.py` | Add tracked-vs-filesystem inventory summary, filesystem-only active skill reporting, disposition-ledger loading/validation/rendering helpers, and mirror/symlink status reporting. Keep legacy duplicate/collision `EXCLUDED_DIRS` behavior unchanged; use a separate active loss-risk filter. |
-| Modify | `tests/skills/test_weekly_skills_audit.py` | Add TDD coverage for tracked-vs-filesystem inventory via injectable tracked manifest/git adapter seam, active filesystem-only findings, missing tracked active files, active loss-risk filtering, disposition ledger/report schema, and symlink status serialization. |
-| Modify | `config/skills/weekly-audit-policy.yaml` | Add `signals.filesystem_only_active` (severity/ranking/reporting mode) and `modes.weekly_report/manual_closeout` contract. |
+| Modify | `scripts/skills/weekly_skills_audit.py` | Add tracked-vs-filesystem inventory summary, filesystem-only active skill reporting, optional read-only ledger annotation, and mirror/symlink status reporting. Keep legacy duplicate/collision `EXCLUDED_DIRS` behavior unchanged; use a separate active loss-risk filter. Do not add tracked-doc write behavior to this cron-owned script. |
+| Modify | `tests/skills/test_weekly_skills_audit.py` | Add TDD coverage for tracked-vs-filesystem inventory via injectable tracked manifest/git adapter seam, active filesystem-only findings, missing tracked active files, active loss-risk filtering, optional read-only ledger annotation, and symlink status serialization. |
+| Create | `scripts/skills/reconcile_filesystem_only_skills.py` | Separate manual reconcile entrypoint that validates disposition ledger, hard-fails on untrusted/partial inventory, and renders the tracked disposition report. This keeps the weekly cron entrypoint read-only. |
+| Create | `tests/skills/test_reconcile_filesystem_only_skills.py` | TDD coverage for manual reconcile strictness, terminal-state rules, force-add evidence, personal-skill authorization, and tracked report rendering. |
+| Modify | `tests/cron/test_skills_curation.py` | Add/adjust wrapper dry-run coverage proving the existing cron command remains compatible and does not invoke manual reconcile behavior. |
+| Modify | `config/skills/weekly-audit-policy.yaml` | Add `signals.filesystem_only_active` severity/ranking/reporting contract for the weekly read-only signal. Manual reconcile schema lives with the separate reconcile script/ledger docs, not the cron policy. |
 | Create | `config/skills/filesystem-only-skill-dispositions.yaml` | Machine-readable disposition ledger for active filesystem-only skills; gives future audit runs a durable resolved/ignored/consolidated source of truth without overloading duplicate-skill buckets. |
-| Modify | `docs/standards/weekly-skills-audit-policy.md` | Document new inventory summary schema, `filesystem_only_active` signal, `weekly_report` vs `manual_closeout`, disposition vocabulary, and scan_attestation schema. |
-| Modify | `docs/ops/scheduled-tasks.md` | Document the `weekly_report` default mode, explicit `manual_closeout` invocation, tracked disposition ledger/report, and the fact that recurring cron remains local-only/report-only. |
+| Modify | `docs/standards/weekly-skills-audit-policy.md` | Document new inventory summary schema and `filesystem_only_active` signal for the weekly read-only audit. |
+| Modify | `docs/ops/scheduled-tasks.md` | Document that recurring `skills-curation` remains local-only/read-only and reference the separate manual reconcile command as an operator action, not a cron path. |
 | Create | `docs/reports/2026-04-25-skills-disposition-2488.md` | Durable, tracked disposition report for every active filesystem-only skill discovered at implementation-time. Use this tracked docs path because `.gitignore` ignores `logs/*`, including `logs/maintenance/...`. |
 | Maybe add/track | active filesystem-only `SKILL.md` paths discovered at implementation time | Promote only those classified as valuable active skills; do not mass-add all 72 filesystem-only files. If a promoted path is ignored by `.gitignore`, use explicit `git add -f <path>` only after ledger scan/disposition evidence is recorded; do not broadly relax `.gitignore` for `digitalmodel/`, `personal-*`, or `memory/`. |
-| Verify / maybe document | `.gitignore` | Do not change by default; record the current ignore rule for any promoted path in the disposition ledger and use targeted `git add -f` for approved promotions. Modify only if tests prove a narrow negation rule is safer than force-add; narrow negations for approved `.claude/skills/.../SKILL.md` paths are allowed, but broad unignores for `digitalmodel/`, `personal-*`, or `memory/` are not. |
-| Update | `docs/plans/README.md` | Add or update the #2488 row; status should be `plan-review` when the approval gate is posted. |
+| Verify / maybe document | `.gitignore` | Do not change by default; record the current ignore rule for any promoted path in the disposition ledger and use targeted `git add -f` for approved promotions. For the known parent-directory ignore rules, single-line negations are ineffective; modify `.gitignore` only in a separately reviewed follow-up if a full multi-line re-include cascade is justified. |
+| Planning lifecycle only | `docs/plans/README.md` | Add/update the #2488 row during plan-gate work; do not treat this as an implementation file. Status should be `plan-review` when the approval gate is posted. |
 
 ---
 
@@ -245,44 +248,46 @@ implementation_flow():
 | `test_weekly_markdown_surfaces_filesystem_only_active_skills` | operator report is high-signal | audit result with active filesystem-only path | Markdown includes `Filesystem-only active skills` section and path |
 | `test_filesystem_only_archived_skills_do_not_escalate_active_loss_risk` | archived local files do not create false active alarms | untracked `_archive` and `_archived` SKILL.md files | active loss-risk count remains 0; archived count is reported separately |
 | `test_filesystem_only_core_and_internal_skills_are_not_suppressed` | control-plane/internal namespaces are still protected against untracked loss | untracked `_core` and `_internal` SKILL.md files | active filesystem-only count includes these paths |
-| `test_disposition_ledger_accepts_only_known_disposition_values` | dispositions are machine-checkable | invalid disposition string | manual closeout validation fails |
+| `test_disposition_ledger_accepts_only_known_disposition_values` | dispositions are machine-checkable | invalid disposition string | manual reconcile validation fails |
 | `test_weekly_mode_reports_unresolved_without_hard_failure` | recurring cron remains report-only | active filesystem-only skill without ledger entry | weekly result records high-signal finding and exits successfully |
 | `test_git_inventory_failure_is_reported_not_cron_fatal` | weekly cron remains deterministic on Git errors | git_list_fn raises or skills_dir is outside a repo | weekly result records inventory warning and exits successfully |
-| `test_policy_yaml_defines_filesystem_only_active_signal_and_modes` | YAML is authoritative | policy fixture | parser exposes `signals.filesystem_only_active` and `modes.weekly_report/manual_closeout` |
-| `test_default_cli_mode_is_weekly_report_for_cron_wrapper` | wrapper invariance is protected | argparse/default CLI invocation with only --output-dir | mode defaults to `weekly_report` and does not write tracked docs |
-| `test_cron_wrapper_dry_run_command_parses_with_default_mode` | wrapper command remains compatible with argparse | `bash scripts/cron/skills-curation.sh --dry-run` output | printed command parses without requiring `--mode` |
+| `test_manual_reconcile_hard_fails_on_untrusted_or_partial_inventory` | reconcile proof is authoritative | git adapter errors, sparse checkout, or partial tracked manifest | manual reconcile script exits nonzero before writing tracked report |
+| `test_policy_yaml_defines_filesystem_only_active_signal` | YAML is authoritative | policy fixture | weekly-audit parser exposes `signals.filesystem_only_active` |
+| `test_existing_weekly_audit_cli_flags_remain_backward_compatible` | wrapper invariance is protected | argparse invocation with existing flags only | command parses, remains read-only, and does not write tracked docs |
+| `test_cron_wrapper_dry_run_command_parses_existing_cli` | wrapper command remains compatible with argparse | `bash scripts/cron/skills-curation.sh --dry-run` output | printed command parses using existing CLI flags and never references manual reconcile script |
 | `test_sparse_checkout_or_partial_git_inventory_is_warned_not_trusted` | successful-but-partial git inventory does not create false loss findings | git adapter reports sparse checkout or unexpectedly low tracked count | weekly report emits inventory warning and does not assert missing-tracked loss without explicit confirmation |
-| `test_manual_closeout_mode_requires_complete_terminal_dispositions` | closeout gate is strict | active filesystem-only skill missing ledger entry or terminal state | manual closeout validation fails |
+| `test_manual_reconcile_requires_complete_terminal_dispositions` | closeout gate is strict | active filesystem-only skill missing ledger entry or terminal state | manual reconcile validation fails |
 | `test_disposition_report_written_to_tracked_docs_path_with_stable_schema` | one-time closeout report is generated where Git can track it | valid disposition ledger | `docs/reports/2026-04-25-skills-disposition-2488.md` contains path/disposition/reason/reviewed_file_sha256 table |
 | `test_nonterminal_reviewed_entries_remain_visible_until_terminal_resolution` | reviewed unchanged filesystem-only skills are not hidden as resolved | inventory + matching non-terminal disposition ledger with reviewed_file_sha256 | path is marked reviewed but remains visible/unresolved; only terminal final_status removes unresolved loss-risk |
-| `test_promote_commit_disposition_requires_tracked_active_result` | promotion actually removes loss risk | disposition `promote_commit` for a filesystem-only skill | manual closeout validation fails until final_path is present in tracked active skill files |
-| `test_promote_ignored_skill_requires_force_add_attestation` | ignored-path promotions are intentional | gitignored filesystem-only skill with promote/redact disposition | manual closeout validation requires `force_add_attestation_when_ignored` with ignore rule/line and either final `git ls-files` evidence or narrow negation evidence |
-| `test_archived_loss_filter_does_not_create_new_duplicate_findings` | `_archived` loss-risk exclusion does not worsen legacy duplicate noise | `_archived` duplicate fixture | no new duplicate/collision finding is introduced by the inventory extension |
-| `test_scan_attestation_required_for_promote_commit_and_personal_or_memory_skills` | conditional secret/content scans are contractual | promote/redact/consolidate disposition missing structured scan attestation | manual closeout validation fails with actionable error |
+| `test_promote_commit_disposition_requires_tracked_active_result` | promotion actually removes loss risk | disposition `promote_commit` for a filesystem-only skill | manual reconcile validation fails until final_path is present in tracked active skill files |
+| `test_promote_ignored_skill_requires_force_add_attestation` | ignored-path promotions are intentional | gitignored filesystem-only skill with promote/redact disposition | manual reconcile validation requires `force_add_attestation_when_ignored` with ignore rule/line and final `git ls-files` evidence; personal paths additionally require `user_authorization_when_personal` |
+| `test_archived_duplicate_collision_delta_is_zero_vs_prechange_baseline` | `_archived` loss-risk exclusion does not worsen legacy duplicate noise | frozen pre-change `_archived` duplicate/collision baseline + post-change run | duplicate/collision delta is zero; absolute pre-existing findings may remain documented |
+| `test_scan_attestation_required_for_promote_commit_and_personal_or_memory_skills` | conditional secret/content scans are contractual | promote/redact/consolidate disposition missing structured scan attestation | manual reconcile validation fails with actionable error |
+| `test_personal_skill_promotion_requires_user_authorization_field` | personal ignored skills are not force-added on reviewer judgment alone | `personal-*` skill with promote/redact disposition but no authorization field | manual reconcile validation fails |
 | `test_deleted_or_archived_terminal_states_do_not_reopen_when_original_path_absent` | delete/archive lifecycles are deterministic | ledger entry with final_status deleted/archived and original path absent | weekly audit treats entry as resolved, not reopened |
-| `test_existing_weekly_audit_behavior_remains_backward_compatible` | duplicate/collision baseline behavior not broken | existing fixture tests | existing tests still pass |
+| `test_existing_duplicate_collision_fixture_counts_unchanged` | duplicate/collision baseline behavior not broken | frozen existing fixture before and after inventory extension | duplicate/collision summary counts and finding IDs are unchanged |
 
 ---
 
 ## Acceptance Criteria
 
 - [ ] RED tests are added before implementation for tracked-vs-filesystem inventory and filesystem-only active skill reporting.
-- [ ] Weekly audit JSON includes `inventory_summary.counts`, `inventory_summary.paths`, and `inventory_summary.mirrors`; counts are numeric, paths are arrays of `{path, informational}` objects, mirror fields are symlink/status strings. Stable field names include `missing_tracked_active` and `filesystem_only_active`.
-- [ ] `config/skills/weekly-audit-policy.yaml` defines concrete `signals.filesystem_only_active` and `modes.weekly_report/manual_closeout` keys, and tests prove the parser consumes those keys rather than hard-coding severity in Python.
+- [ ] Weekly audit JSON includes `inventory_summary.counts`, `inventory_summary.paths`, and `inventory_summary.mirrors`; counts are numeric, paths are arrays of `{path, informational_namespace}` objects; `_core`/`_internal` paths remain active loss-risk but carry `informational_namespace: true`, mirror fields are symlink/status strings. Stable field names include `missing_tracked_active` and `filesystem_only_active`.
+- [ ] `config/skills/weekly-audit-policy.yaml` defines concrete `signals.filesystem_only_active` keys, and tests prove the weekly-audit parser consumes those keys rather than hard-coding severity in Python.
 - [ ] Weekly Markdown output includes a high-signal section listing active filesystem-only skills when any exist.
-- [ ] Active loss-risk filtering for #2488 excludes exact path segments `_archive` and `_archived`; `_diverged` remains included in #2488 active counts and is additionally reported as a separate legacy-compatibility count; `_core` and `_internal` filesystem-only skills remain reportable as active loss-risk; legacy duplicate/collision behavior is not worsened by #2488; implementation must add a regression test that `_archived` active-loss exclusion does not create new duplicate/collision findings, and if current legacy behavior already reports `_archived` collisions, document that as pre-existing rather than changing `EXCLUDED_DIRS`.
+- [ ] Active loss-risk filtering for #2488 excludes exact path segments `_archive` and `_archived`; `_diverged` remains included in #2488 active counts and is additionally reported as a separate legacy-compatibility count; `_core` and `_internal` filesystem-only skills remain reportable as active loss-risk; legacy duplicate/collision behavior is not worsened by #2488; implementation must record a pre-change `_archived` duplicate/collision baseline and assert duplicate/collision delta is zero; absolute pre-existing findings may remain documented rather than changing `EXCLUDED_DIRS`.
 - [ ] `.codex/skills` and `.gemini/skills` remain symlink mirrors; no provider duplicate skill trees are created.
 - [ ] Every active filesystem-only skill discovered at the implementation-time manual-closeout pass is individually dispositioned in `config/skills/filesystem-only-skill-dispositions.yaml` with disposition, reason, reviewer/date, reviewed_file_sha256, final_status/final_path, and structured scan_attestation where applicable; the current known count is six local files, but success is not hard-coded to six if live state changes.
-- [ ] Valuable skills are committed/promoted in canonical `.claude/skills/...` paths; every `promote_commit`, `redact_then_commit`, or `consolidate_then_commit` ledger entry is verified to appear in tracked active skill files after reconciliation; if a path is gitignored, the ledger records the exact ignore rule and the implementation uses either targeted `git add -f` or a narrow `.gitignore` negation for the approved skill path only after scan/disposition approval; non-active references are intentionally archived, deleted with reason, or documented as ignored/transient; nothing is mass-added blindly.
+- [ ] Valuable skills are committed/promoted in canonical `.claude/skills/...` paths; every `promote_commit`, `redact_then_commit`, or `consolidate_then_commit` ledger entry is verified to appear in tracked active skill files after reconciliation; if a path is gitignored, the ledger records the exact ignore rule and the implementation uses targeted `git add -f` only after scan/disposition approval; non-active references are intentionally archived, deleted with reason, or documented as ignored/transient; nothing is mass-added blindly.
 - [ ] Manual closeout validation confirms both `missing_tracked_active = 0` and `unresolved_filesystem_only_active = 0` after reconciliation, using terminal-state rules: promoted/redacted/consolidated entries tracked active at final_path; archived/deleted entries absent from active filesystem-only inventory with recorded final_status; ignored entries backed by durable policy rationale.
 - [ ] Existing weekly audit behavior remains backward-compatible: pre-existing duplicate/collision tests still pass, and new tests are added for the inventory/disposition extension.
 - [ ] `docs/reports/2026-04-25-skills-disposition-2488.md` is generated once during implementation closeout at the tracked docs path with stable Markdown schema and matches the YAML disposition ledger; the recurring weekly cron does not rewrite tracked docs.
-- [ ] `scripts/cron/skills-curation.sh` remains unchanged unless a test proves wrapper changes are necessary; the audit script CLI defaults to `--mode weekly_report`, and the tracked closeout report is generated only through explicit `--mode manual_closeout --disposition-report docs/reports/2026-04-25-skills-disposition-2488.md`.
+- [ ] `scripts/cron/skills-curation.sh` remains unchanged unless a test proves wrapper changes are necessary; the existing weekly audit CLI flags (`--skills-dir`, `--output-dir`, `--policy`, `--waivers`, `--render-github-payload`) remain backward-compatible, and tracked closeout report generation is only available through the separate manual `scripts/skills/reconcile_filesystem_only_skills.py --disposition-report docs/reports/2026-04-25-skills-disposition-2488.md` entrypoint.
 - [ ] No unrelated local dirt is staged or committed.
 - [ ] Plan review artifacts are posted before implementation begins.
 - [ ] The implementation records a pre-change `_archived` duplicate/collision baseline in the closeout report or fixture so regression tests cannot claim “pre-existing” without evidence.
 - [ ] Sparse-checkout/partial `git ls-files` states are detected or warned, and cannot generate authoritative missing-tracked loss findings without confirmation.
-- [ ] Any promotion of `personal-tax-filing-packet` requires explicit user authorization in the disposition ledger in addition to scan attestation.
+- [ ] Any promotion of `personal-tax-filing-packet` requires explicit user authorization recorded in `user_authorization_when_personal` in the disposition ledger in addition to scan attestation; if no explicit authorization is available during implementation, it must not be promoted and must be archived/deleted/ignored with rationale instead.
 
 ---
 
@@ -304,16 +309,16 @@ Revisions made based on review:
 ## Risks and Open Questions
 
 - **Risk:** live counts can drift between planning and implementation. Mitigation: implementation must compute live counts at runtime and record the timestamp/source rather than hard-coding counts; the current verified baseline is tracked total `3028`, tracked active `922`, filesystem total `3100`, filesystem active `928`, filesystem-only total `72`, filesystem-only active `6`. The planning-time six are local filesystem evidence and must be recomputed before closeout.
-- **Risk:** `logs/maintenance/...` is transient/ignored. Mitigation: recurring generated weekly audit artifacts remain under `logs/maintenance/...`; durable disposition state lives in `config/skills/filesystem-only-skill-dispositions.yaml`; the tracked docs report is manual closeout only.
+- **Risk:** `logs/maintenance/...` is transient/ignored. Mitigation: recurring generated weekly audit artifacts remain under `logs/maintenance/...`; durable disposition state lives in `config/skills/filesystem-only-skill-dispositions.yaml`; the tracked docs report is manual reconcile only.
 - **Risk:** committing untracked active skills without content review could preserve low-quality, generated, PII, or secret-bearing artifacts. Mitigation: require per-skill disposition, structured scan attestation, final_status/final_path, and rationale before any `git add`.
 - **Risk:** adding filesystem-only findings to the same duplicate/collision classification pipeline could create noisy false positives. Mitigation: use a separate inventory signal governed by concrete `signals.filesystem_only_active` policy keys in `config/skills/weekly-audit-policy.yaml`.
 - **Risk:** changing `EXCLUDED_DIRS` would alter legacy duplicate/collision audit semantics. Mitigation: do not extend `EXCLUDED_DIRS`; implement a separate active loss-risk filter that excludes exact path segments `_archive` and `_archived` for #2488 loss-risk counts only; `_diverged` remains included in #2488 active counts and is also reported as a legacy compatibility count.
 - **Decision:** durable disposition state lives in `config/skills/filesystem-only-skill-dispositions.yaml`; signal vocabulary/ranking lives in `config/skills/weekly-audit-policy.yaml`; the human-readable one-time implementation triage report path is `docs/reports/2026-04-25-skills-disposition-2488.md`; recurring scheduled audit artifacts remain under `logs/maintenance/` only and must not mutate tracked docs.
 - **Decision:** `scripts/cron/skills-curation.sh` should remain unchanged unless implementation tests prove otherwise; wrapper invariance is part of the implementation acceptance criteria.
-- **Decision:** future ignored skills under broad ignore prefixes remain visible through the weekly filesystem-only signal; for approved promoted skills, implementation may use targeted `git add -f` or narrow `.gitignore` negations, but must not broadly unignore private/vendor/generated namespaces.
+- **Decision:** future ignored skills under broad ignore prefixes remain visible through the weekly filesystem-only signal; for approved promoted skills, implementation may use targeted `git add -f`, and must not broadly unignore private/vendor/generated namespaces.
 
 ---
 
 ## Complexity: T3
 
-**T3** — moderate multi-file maintenance/audit enhancement with tests, one existing script, likely one existing test module, optional docs/policy updates, and a controlled disposition pass over locally discovered skill files, explicit ignored-path tracking evidence, and operator-facing docs. It does not require broad ecosystem rewrite or multi-repo architecture changes.
+**T3** — moderate multi-file maintenance/audit enhancement with tests, one existing script, likely one existing test module, docs/policy updates, and a controlled disposition pass over locally discovered skill files, explicit ignored-path tracking evidence, and operator-facing docs. It does not require broad ecosystem rewrite or multi-repo architecture changes.
