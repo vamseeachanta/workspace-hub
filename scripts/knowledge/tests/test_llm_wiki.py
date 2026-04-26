@@ -76,6 +76,7 @@ class TestInit:
         assert (wiki_root / "wiki" / "sources").exists()
         assert (wiki_root / "wiki" / "comparisons").exists()
         assert (wiki_root / "wiki" / "visualizations").exists()
+        assert (wiki_root / "wiki" / "standards").exists()
 
     def test_init_creates_schema(self):
         run_cmd("init", "test-domain")
@@ -163,6 +164,44 @@ class TestStatus:
         assert run_cmd("status", "--wiki", "test-domain") == 0
         captured = capsys.readouterr()
         assert "entities" in captured.out
+
+    def test_status_counts_standards_subdir(self, capsys):
+        run_cmd("init", "test-domain")
+        standards_dir = WIKIS_DIR / "test-domain" / "wiki" / "standards"
+        standards_dir.mkdir(parents=True, exist_ok=True)
+        (standards_dir / "fixture-a.md").write_text("# Fixture A")
+        (standards_dir / "fixture-b.md").write_text("# Fixture B")
+        assert run_cmd("status", "--wiki", "test-domain") == 0
+        captured = capsys.readouterr()
+        assert "standards" in captured.out
+        for line in captured.out.splitlines():
+            if "standards" in line and "pages" in line:
+                count = int(line.split()[1])
+                assert count == 2
+                break
+        else:
+            pytest.fail("standards count line not found in cmd_status output")
+
+    @pytest.mark.skipif(
+        not (Path(__file__).resolve().parent.parent.parent.parent / "knowledge" / "wikis" / "engineering").exists(),
+        reason="Real engineering wiki not present in this environment",
+    )
+    def test_status_counts_engineering_wiki_standards(self, capsys):
+        """Smoke: cmd_status engineering reports standards count >= 7."""
+        from unittest.mock import patch as _patch
+        import scripts.knowledge.llm_wiki as m
+        real_wikis_dir = Path(__file__).resolve().parent.parent.parent.parent / "knowledge" / "wikis"
+        with _patch.object(m, "WIKIS_DIR", real_wikis_dir):
+            assert run_cmd("status", "--wiki", "engineering") == 0
+        captured = capsys.readouterr()
+        assert "standards" in captured.out
+        for line in captured.out.splitlines():
+            if "standards" in line and "pages" in line:
+                count = int(line.split()[1])
+                assert count >= 7
+                break
+        else:
+            pytest.fail("standards count line not found in engineering wiki status output")
 
 
 # ────────────────────────────
