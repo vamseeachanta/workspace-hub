@@ -64,10 +64,13 @@ def pytest_sessionfinish(session, exitstatus):
         print("FLOOR-OCCUPANCY VIOLATIONS:", violations, file=sys.stderr)
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def _disable_network():
     # Activation only; active probe lives in test_no_network_access (test #13).
     # Scoped to markdown_qa/ via subdirectory conftest — sibling tests unaffected.
-    from pytest_socket import disable_socket
+    # function scope because pytest-socket's pytest_runtest_teardown calls
+    # _remove_restrictions() after each test, undoing a session-scoped disable.
+    from pytest_socket import disable_socket, enable_socket
     disable_socket(allow_unix_socket=False)
     yield
+    enable_socket()

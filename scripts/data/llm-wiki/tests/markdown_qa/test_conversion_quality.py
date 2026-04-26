@@ -41,7 +41,7 @@ from rubric_scorers import SCORERS, RUBRIC_DIMENSIONS  # noqa: E402
 # ── Paths ─────────────────────────────────────────────────────────────────────
 
 _THIS_DIR = Path(__file__).parent
-_REPO_ROOT = _THIS_DIR.resolve().parents[3]  # workspace-hub/
+_REPO_ROOT = _THIS_DIR.resolve().parents[4]  # workspace-hub/
 _ORACLE_DIR = _REPO_ROOT / "tests" / "fixtures" / "llm-wiki" / "conversion-oracle"
 MANIFEST_PATH = _ORACLE_DIR / "sample-manifest.yaml"
 SCHEMA_PATH = _ORACLE_DIR / "sample-manifest.schema.json"
@@ -326,3 +326,21 @@ def test_oracle_md_provenance_matches_manifest():
                 f"  manifest: {manifest_str!r}\n"
                 f"  html-comment: {html_str!r}"
             )
+
+
+# ── Parametrized tests (6 dims × 20 topics = 120 cases) ──────────────────────
+
+@pytest.mark.parametrize("dim", RUBRIC_DIMENSIONS)
+@pytest.mark.parametrize("entry", _MANIFEST, ids=lambda e: e["slug"])
+def test_per_topic_dimension(entry, dim):
+    """120-case parametrized: score each oracle entry on each rubric dimension.
+
+    Does NOT assert a per-topic floor here; the floor-occupancy gate is enforced
+    by pytest_sessionfinish in conftest.py after ALL 120 cases complete.
+    The per-topic artifact written here feeds that gate.
+    """
+    html = (_REPO_ROOT / entry["html_path"]).read_text()
+    expected_md = (_REPO_ROOT / entry["oracle_md_path"]).read_text()
+    _, actual_md = ingest_orcina.html_to_markdown(html, entry["source_url"])
+    score = SCORERS[dim](actual_md, expected_md, html)
+    write_per_topic_artifact(entry["slug"], dim, score)
