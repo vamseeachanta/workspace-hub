@@ -5,7 +5,7 @@
 # DO NOT put API keys or tokens here — those go in ~/.hermes/auth.json and ~/.hermes/.env
 #
 model:
-  default: gpt-5.4
+  default: gpt-5.5
   provider: openai-codex
 fallback_providers: []
 credential_pool_strategies:

@@ -63,7 +63,7 @@ EOF
 EOF
 
     cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [status_line]
@@ -73,7 +73,7 @@ EOF
 
     cat > "$ws_root/config/agents/hermes/config.yaml.template" <<'EOF'
 model:
-  default: gpt-5.4
+  default: gpt-5.5
   provider: openai-codex
 terminal:
   backend: local

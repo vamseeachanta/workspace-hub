@@ -674,7 +674,7 @@ upsert_codex_root_model_defaults() {
     sanitize_codex_managed_keys "$target" "$tmp_clean"
 
     cat > "$tmp_final" <<'EOF'
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 EOF
@@ -825,7 +825,7 @@ sync_codex_managed_config() {
         ensure_parent_dir "$target"
         tmp_new="$(mktemp)"
         cat > "$tmp_new" <<'EOF'
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 EOF
@@ -855,7 +855,7 @@ EOF
     sanitize_codex_managed_keys "$target" "$tmp" true
 
     cat > "$tmp_new" <<'EOF'
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 EOF
