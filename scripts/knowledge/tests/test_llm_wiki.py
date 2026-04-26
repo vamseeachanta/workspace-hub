@@ -190,9 +190,11 @@ class TestStatus:
         """Smoke: cmd_status engineering reports standards count >= 7."""
         from unittest.mock import patch as _patch
         import scripts.knowledge.llm_wiki as m
-        real_wikis_dir = Path(__file__).resolve().parent.parent.parent.parent / "knowledge" / "wikis"
-        with _patch.object(m, "WIKIS_DIR", real_wikis_dir):
-            assert run_cmd("status", "--wiki", "engineering") == 0
+        real_repo_root = Path(__file__).resolve().parent.parent.parent.parent
+        real_wikis_dir = real_repo_root / "knowledge" / "wikis"
+        with _patch.object(m, "REPO_ROOT", real_repo_root):
+            with _patch.object(m, "WIKIS_DIR", real_wikis_dir):
+                assert run_cmd("status", "--wiki", "engineering") == 0
         captured = capsys.readouterr()
         assert "standards" in captured.out
         for line in captured.out.splitlines():
