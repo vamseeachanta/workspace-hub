@@ -1,6 +1,6 @@
 # Plan for #2488: reconcile untracked active skill files before loss
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T3
 > **Date:** 2026-04-25
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2488
@@ -37,7 +37,7 @@
 - Issue #2488 — defines the exact loss-risk problem, six active filesystem-only skills, scope exclusions, and acceptance criteria.
 - Issue #2486 — completed v2 periodic skill ecosystem housekeeping audit; established the active/archive/symlink count model and should not be reopened by #2488.
 - `docs/plans/2026-04-14-issue-2281-implement-v1-weekly-audit-for-existing-skills-curation-workflow.md` — prior deterministic weekly audit plan; #2488 should extend that surface rather than invent a second audit runner.
-- `docs/plans/README.md` — plan index and mandatory approval workflow; this plan must be indexed and moved only to `status:plan-review`, not self-approved.
+- `docs/plans/README.md` — plan index and mandatory approval workflow; plan-review was completed, and live user approval via GitHub label now moves #2488 to `status:plan-approved` with local approval evidence before implementation.
 - `docs/ops/scheduled-tasks.md` — operator-facing scheduled-task table already lists Monday 04:00 `skills-curation`; #2488 should update narrowly because recurring output semantics add filesystem-only active loss-risk inventory; preserve the existing local-only/artifact-location contract.
 
 ### Gaps identified
@@ -302,7 +302,7 @@ Before posting `status:plan-review`, the planning operator must run a fresh post
 - [ ] `config/scheduled-tasks/schedule-tasks.yaml` description for `skills-curation` is updated from v1 duplicate/leaf/wrapper-only wording to exact v2 wording “Weekly skills curation v2 (Monday 04:00): scans .claude/skills/ for duplicate names, leaf collisions, wrapper pairs, and filesystem-only active skill loss-risk inventory. Emits JSON + Markdown artifacts to logs/maintenance/skills-curation/. Local-only/report-only; no network posting. Issues #2281, #2488.”; `TestScheduleIntegration.test_validate_schedule_still_passes_with_skills_curation_task` asserts the updated text while preserving label/schedule/command/machines/requires/log/is_claude_task byte-for-byte; implement with a targeted text patch/unified diff, not a YAML round-trip dumper.
 - [ ] `docs/ops/scheduled-tasks.md` receives only a narrow skills-curation v2 recurring-contract update: add filesystem-only active inventory to the existing local-only/artifact-location description and do not make it the source of truth for one-time #2488 closeout mechanics.
 - [ ] No unrelated local dirt is staged or committed.
-- [ ] Final plan comment containing the plan link, scope, review synthesis, and explicit approval request is posted to [#2488](https://github.com/vamseeachanta/workspace-hub/issues/2488), `status:plan-review` is applied and verified on the issue, and implementation remains blocked until the user explicitly approves and the issue is moved to `status:plan-approved`.
+- [x] Final plan comment containing the plan link, scope, review synthesis, and explicit approval request was posted to [#2488](https://github.com/vamseeachanta/workspace-hub/issues/2488); user approval was later provided via live GitHub `status:plan-approved` label and reconciled with `.planning/plan-approved/2488.md` before implementation.
 - [ ] Implementation records an `_archived` duplicate/collision baseline fixture in `tests/fixtures/skills/issue-2488-archived-duplicate-baseline.json` and asserts the post-change duplicate/collision `{finding_key, severity, paths}` tuple set plus summary counts are unchanged; this is verified by tests rather than commit-history/branch-range enforcement.
 - [ ] Sparse-checkout/partial `git ls-files` states are treated conservatively by `detect_git_inventory_trust()` returning `{trusted: bool, reason: str, evidence: dict}`: weekly audit records an inventory warning and avoids authoritative missing-tracked or filesystem-only findings when `git ls-files -z -- <skills_dir>` errors, returns zero while the filesystem has skills, `git config --bool core.sparseCheckout` is true and `git sparse-checkout list` does not cover `skills_dir`, or sparse checkout excludes `skills_dir`. The recurring audit does not compare against `docs/reports/issue-2488-planning-inventory-snapshot.json`; that snapshot is path-authoritative for one-time closeout only, not recurring weekly trust logic.
 - [ ] Any promotion of a personal skill, defined as a skill whose leaf directory slug matches `.gitignore`-style `personal-*` (including `personal-tax-filing-packet`), is out of scope for #2488 approval unless the user separately authorizes it during implementation after scan/redaction; absent that separate authorization, the implementation must choose archive/ignore/delete with rationale so no plan-time authorization question blocks the gate.
@@ -319,7 +319,7 @@ Latest approval-gate review evidence for this patched plan is non-blocking: Clau
 | Codex | `scripts/review/results/2026-04-26-plan-2488-codex.md`: MINOR | Three clarification findings patched here: stale unsupported-complexity wording removed, archive destination rule defined, raw YAML test fixture location clarified. |
 | Gemini | Historical immutable unavailable placeholder `scripts/review/results/20260425T125029Z-plan-2488-gemini.md` | Provider-infra unavailable; not treated as substantive approval, but the available Claude/Codex evidence has no MAJOR blockers. |
 
-**Current gate state:** ready for `status:plan-review` / user approval queue. Do not implement #2488 from this plan until the user explicitly approves it later and the issue moves to `status:plan-approved` with local approval evidence.
+**Current gate state:** user-approved / implementation-ready. Live GitHub approval was provided via the `status:plan-approved` label and reconciled locally in `.planning/plan-approved/2488.md`; implementation may proceed only under the approved-plan/TDD execution gate and must stay within this plan.
 
 Revisions made based on review:
 - Added concrete schema access, secret/PII, live-closeout, style-preservation, and retention contracts.
