@@ -545,7 +545,10 @@ run_config_drift() {
     echo "WARNING: check_config_drift.py not found — skipping" >&2
     return 0
   fi
-  uv run --no-project python "$drift_script" 2>&1
+  # Drop `python` prefix so uv reads the script's PEP-723 inline metadata
+  # (which declares pyyaml dependency). With `python <script>`, uv treats
+  # python as the entry point and ignores the script header.
+  uv run --no-project "$drift_script" 2>&1
 }
 
 if $OPT_CONFIG_DRIFT; then
