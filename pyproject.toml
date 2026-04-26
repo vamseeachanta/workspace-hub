@@ -23,6 +23,10 @@ dev = [
     "pytest>=8.0",
     "pytest-cov>=4.0",
     "jsonschema>=4.21",
+    "pytest-socket",
+    "zss==1.2.0",
+    "scipy>=1.11",
+    "PyYAML>=6.0",
 ]
 workqueue = [
     "markdown>=3.6",
