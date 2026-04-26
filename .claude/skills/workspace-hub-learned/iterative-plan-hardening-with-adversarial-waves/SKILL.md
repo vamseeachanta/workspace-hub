@@ -137,8 +137,8 @@ For detector/coverage plans, decide explicitly whether:
 - one canonical source may emit multiple domain-scoped candidates.
 
 Do not dedupe by `doc_key` alone unless the plan also states and justifies a single-domain invariant. Otherwise reviewers will correctly flag silent suppression of real per-domain gaps.
-
 ### I. Keep review-process narration out of the implementation contract
+
 A repeated MAJOR source in later review waves is stale process text embedded inside the plan body itself.
 
 Avoid putting these in the plan body as if they were part of the deliverable:
@@ -157,6 +157,59 @@ Preferred pattern:
 
 Related approval rule:
 - acceptance criteria should describe what makes the plan approval-ready, not require that it stay in `draft`.
+
+### I1. Separate governance/pre-approval requirements from execution/TDD sections
+
+A high-value lesson from repeated #2460 contract-plan reruns: reviewers will keep returning MAJOR if governance-state cleanup is mixed into execution-path sections.
+
+Do NOT put approval/governance requirements inside these sections as if they were implementation work:
+- `Pseudocode` / `implement_with_tdd()`
+- `validate_contract_docs()`
+- `Files to Change`
+- `TDD Test List`
+- execution-focused `Acceptance Criteria`
+
+Typical anti-patterns:
+- TDD rows that expect `plan text` as input
+- validation assertions about stale GitHub labels or approval markers
+- acceptance criteria that require removing `status:plan-approved`
+- pseudo file rows like "Governance cleanup before any future approval reuse"
+- implementation steps that tell the executor to handle a non-approved state even though execution requires approval
+
+Preferred pattern:
+- keep execution/TDD sections about final deliverables only (contract doc, checklist doc, docs index link, stale-reference guard, etc.)
+- create a separate section such as `## Governance Precondition Before Any Future Approval Reuse`
+- put stale approval-surface cleanup there, including label/marker cleanup or immutable revision-binding rules
+- if README/index sync is only hygiene, say explicitly that it is secondary to the real approval gates
+
+Why this matters:
+- execution-phase agents cannot satisfy pre-approval governance requirements
+- tests should validate deliverables, not transient planning text or workflow state
+- mixing these concerns creates logical paradoxes that reviewers correctly flag as MAJOR
+
+### I2. For stale approval-surface evidence, make the evidence self-contained
+
+When a plan claims a live approval label or local approval marker is stale for the current draft revision, make that claim self-contained in the evidence block.
+
+Include concrete evidence such as:
+- live label command result excerpt (`gh issue view ... labels/state`)
+- local marker contents
+- local marker mtime
+- current plan mtime
+- latest review-artifact verdict tuple for the current draft lineage
+
+Do not rely on reviewers being able to re-open local files in their environment. A provider may have sandbox limits or quota limits and still demand affirmative verification.
+
+### I3. If revision-binding is allowed, require an immutable binding contract
+
+Do not say merely "revision-bind approval".
+Require the binding to name:
+- exact approved plan file path
+- exact approved plan git commit SHA or SHA256 content hash
+- exact approved review-artifact paths plus provider verdicts
+- exact approval-storage surface used
+
+Otherwise reviewers will correctly say the stale-approval-reuse hazard is reduced but not closed.
 
 ### I2. Reconcile review-artifact paths and wave state everywhere after each rerun
 
@@ -492,6 +545,79 @@ When a plan introduces status/compliance/budget fields, reviewers keep returning
 
 Do not spread the contract vaguely across "JSON/scorecard outputs" or similar plural wording.
 Choose one canonical JSON artifact and state the derivative relationship explicitly.
+
+### J1. Keep cron-owned audit entrypoints separate from manual closeout tools
+
+A lesson from #2488 skill-housekeeping planning: reviewers will reject a plan that lets a scheduled/read-only audit script also write tracked closeout docs via a mode flag. A mode flag alone is not a sufficient isolation story for cron-owned paths.
+
+Rule:
+- keep the scheduled/default audit entrypoint local-only, read-only, and backward-compatible with existing wrapper flags
+- put tracked report rendering, terminal disposition validation, and human closeout gates in a separate manual script/module
+- add wrapper tests proving the cron command parses unchanged and never invokes manual closeout behavior
+- make manual closeout hard-fail on untrusted git inventory, sparse checkout, or partial manifests even when the weekly audit merely warns
+
+### J2. For ignored-file promotion plans, require force-add evidence or a full re-include cascade
+
+If a file is untracked because a parent directory is ignored, a single `!path/to/file` `.gitignore` negation usually does not work. Git cannot re-include a file while its parent directory remains excluded.
+
+Rule:
+- prefer targeted `git add -f <path>` for approved one-off promotions from ignored namespaces
+- record the ignore rule/line and final `git ls-files` evidence in the disposition ledger
+- do not propose broad `.gitignore` relaxations for private/vendor/generated namespaces inside a reconciliation plan
+- only allow `.gitignore` changes if the plan explicitly specifies a full multi-line re-include cascade and that change is separately reviewed
+
+### J3. Review/triage status is not a terminal disposition
+
+For filesystem-only reconciliation, a path being "reviewed" is not enough to remove loss risk. Reviewers will correctly flag plans where a reviewed hash suppresses unresolved inventory findings.
+
+Rule:
+- non-terminal states may annotate a finding, but must still appear as unresolved local inventory
+- terminal states need explicit semantics such as promoted/tracked, consolidated into a tracked path, archived intentionally, deleted as junk, or ignored transient with rationale
+- terminal states should include pre-action content hash, final path/status, scan attestation, and any force-add/user-authorization evidence needed for ignored or personal paths
+- personal/private ignored paths need an explicit authorization field; if unavailable, the plan must choose archive/delete/ignore with rationale rather than promotion
+
+### J4. Align active-loss filters with the issue definition, not legacy helper constants
+
+When extending an existing detector, legacy constants like `EXCLUDED_DIRS` may serve an older duplicate/collision pipeline and should not be silently reused for a new loss-risk signal.
+
+Rule:
+- define the new active-loss filter by exact path segments and state how it differs from legacy filters
+- if an existing policy already defines archive aliases (for example `category_alias_families.archive.aliases`), either consume that policy surface or add a test proving the new filter's alias set cannot drift from it
+- avoid adding compatibility-only diagnostics as permanent recurring schema fields unless there is a named consumer/follow-up issue; otherwise keep them local to tests or issue-specific evidence
+- for legacy duplicate/collision behavior, assert delta against a pre-change baseline rather than absolute zero if pre-existing findings may remain
+- if `_core`/`_internal` are informational namespaces, decide explicitly whether that is only a metadata flag or whether it suppresses active loss-risk; avoid reusing an `informational` field name ambiguously
+
+### J5. Do not overbuild recurring audit plans with manual-closeout machinery
+
+A lesson from #2488 skill-housekeeping planning: repeated MAJOR reviews came from mixing a small recurring audit extension with a broad manual reconciliation framework, disposition ledgers, trust-attestation schemas, issue-body drift schemas, and custom exit-code contracts.
+
+Rule:
+- keep the recurring audit change as small as possible: deterministic local inventory, stable JSON/Markdown fields, baseline compatibility, and wrapper safety
+- move one-time disposition/closeout into a bounded issue-specific helper only when the issue genuinely needs it
+- make the helper's CLI invokable and tested end-to-end, but do not route cron through it
+- do not let a terminal disposition hide a live filesystem-only path from the recurring inventory; recurring audit remains filesystem truth, closeout report remains human disposition truth
+- for ignored/private paths, choose a default non-promotion disposition unless the user separately authorizes tracking after scan/redaction
+
+### J6. Match policy schema shape exactly; do not invent dotted pseudo-paths
+
+Reviewers will reject plans that describe config keys in a shape the actual YAML does not use.
+
+Rule:
+- inspect the real policy shape before naming keys; if `weekly_summary_sections` is a list of objects with `id`, write "`weekly_summary_sections` entry `id: filesystem_only_inventory`", not `weekly_summary_sections.filesystem_only_inventory`
+- distinguish a flat YAML key such as `v2.rules: {"family.rule-id": ...}` from nested YAML
+- add cross-key tests that reflect the real structure, not an invented shorthand
+- if output order is intentionally canonical/literal, call it that; do not label it "policy-driven" unless tests prove the renderer consumes policy order
+
+### J7. Approval-gate review evidence needs a concrete artifact-production path
+
+A plan can be technically sound but still fail review if it requires timestamped, SHA-bound review artifacts without saying how those artifacts are produced from existing fanout tooling.
+
+Rule:
+- do not require changes to the review fanout script unless the issue owns that tool
+- instead, define a gate-runner copy step: copy latest non-empty fanout/fallback stdout into timestamped immutable files and prepend `Reviewed-Commit:` plus `Plan-SHA256:` metadata
+- define unavailable-provider artifacts explicitly: attempted command, stdout/stderr byte counts, raw-error path if present, and the same reviewed-commit/hash metadata
+- if provider CLI output is empty or sandbox-broken, record it as provider infrastructure state and use the repo review policy to decide whether it blocks the gate
+- never cite mutable/empty review files as if they were approval evidence
 
 ### K. Runtime replacement plans need behavior-preservation proof, not just string-removal tests
 If a plan changes launcher/runtime forms (for example `python3` -> `uv run --no-project python`), tests that only prove the old string disappeared are insufficient.

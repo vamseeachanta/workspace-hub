@@ -1,6 +1,6 @@
-Context parity mandate: corrections in one agent sync to ALL others. Zero waste across all AI subscriptions ($269/mo total).
+User requires context parity across agents and zero-waste AI spend; target provider usage is ~90% by day 5, ~10% reserve days 6–7.
 §
-User supports autonomous overnight GitHub waves with no user interaction, strong git-contention avoidance, and may request large parallel planning batches (up to 10 agents) when useful.
+User wants continuous autonomous GitHub throughput: keep issues planned, adversarially reviewed, and user-approved so overnight planning/implementation can run and next-day review/QA has ready artifacts.
 §
 Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini.
 §
@@ -8,7 +8,7 @@ Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/moo
 §
 Prefers numbered/lettered choices and clickable GitHub issue/PR links for #NNNN references.
 §
-Prefers preserving Codex credits for interactive/daytime work; for overnight parallel batches, favor Claude-only execution when feasible.
+For overnight batches, prefers Claude-only staged pacing and preserving Codex for interactive/daytime work.
 §
 For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution.
 §

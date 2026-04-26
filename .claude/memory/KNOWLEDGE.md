@@ -49,7 +49,7 @@
 
 ## Skill Registration
 
-- Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`) *verified: 2026-04-18*
+- Skills are discovered via `.claude/commands/<category>/<name>.md` (NOT `.claude/skills/`) *stale: 2026-04-26*
 - `.claude/skills/` holds the detailed SKILL.md implementation *verified: 2026-03-15*
 - Command file references SKILL.md via `@.claude/skills/<path>/SKILL.md` *stale: 2026-04-17*
 - Command file needs YAML frontmatter: `name`, `description`, `category`
@@ -61,7 +61,7 @@
 - Pre-existing test failures: AQWA runner detect tests (real exe found), CLI integration tests
 - WRK-NNN references: Always include brief description inline (never bare IDs)
 - `.gitignore` blanket rules (e.g., `lib/`, `memory/`) override earlier whitelists — add negation AFTER the blanket rule *stale: 2026-04-03*
-- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *verified: 2026-04-15*
+- Negated `lib/` dirs so far: `!scripts/agents/lib/`, `!scripts/coordination/routing/lib/` *stale: 2026-04-26*
 - Always verify new `lib/` directories: `git check-ignore <path>` *stale: 2026-04-07*
 
 ## Shell Script Portability

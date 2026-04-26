@@ -29,7 +29,13 @@ Use when a local plan has gone through multiple adversarial review waves and any
    - Summarize exactly what changed in the newest patch wave.
    - State clearly whether the current draft is still blocked from GitHub posting.
 
-4. Do not hand-wave README drift.
+4. Treat mutable fanout outputs as diagnostic until promoted to immutable evidence.
+   - Do not cite mutable paths like `scripts/review/results/YYYY-MM-DD-plan-<issue>-claude.md` as approval evidence unless they are committed, non-empty, SHA-bound to the reviewed plan revision, and contain a parseable `## Verdict`/`## Verdicts` section.
+   - Prefer timestamped immutable provider artifacts for gate evidence, e.g. `scripts/review/results/YYYYMMDDTHHMMSSZ-plan-<issue>-claude.md`.
+   - Provider artifacts are authoritative over disagreement/synthesis artifacts. If a disagreement summary conflicts with the provider files, treat the conflict as a gate blocker until adjudicated; do not let the synthesis file override provider verdicts.
+   - If a fanout rewrites mutable artifacts to empty/truncated files or leaves only `.err` files, mark that run as diagnostic/provider-infra evidence only and rerun or copy fresh valid artifacts before claiming review clearance.
+
+5. Do not hand-wave README drift.
    - If `docs/plans/README.md` is accurate, treat it as verification-only state.
    - If it is stale relative to fresh review evidence, make the plan require explicit state-sync rather than merely saying "verify the row remains correct".
 
