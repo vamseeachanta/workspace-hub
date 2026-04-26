@@ -18,11 +18,11 @@ This document is **not** an approval mechanism. The user-only `status:plan-appro
 
 | # | Issue | Section | Question | Recommended answer | Rationale | Your answer |
 |---|---|---|---|---|---|---|
-| 1 | [#2](https://github.com/vamseeachanta/aceengineer-strategy/issues/2) | §Decision Content #4 | Mooring wedge time horizon before considering vertical-2 | **18 months** | Plan body specifies 12–18mo range; 18mo gives meaningful loop cycles (≥3 quarterly cycles after first anchor pilot lands) without being indefinite. 12mo too tight given anchor-pilot procurement cycle. 24mo risks losing momentum. | _____ |
-| 2 | [#2](https://github.com/vamseeachanta/aceengineer-strategy/issues/2) | §Decision Content #6 | Rollback gate type when triggers fire | **soft** (checkpoint) | A "hard" rollback forces a wedge change without context-aware judgment. A "soft" checkpoint forces the explicit review (per the rollback procedure (i)/(ii)/(iii) added in the v2 patch) but lets you accept context that justifies continuing. The procedure requirement is the actual discipline; the gate type just controls automaticity. | _____ |
-| 3 | [#3](https://github.com/vamseeachanta/aceengineer-strategy/issues/3) | §Decision Content #1 | Primary ICP for v1 paid integration tier | **A — Operators** | Best fit with mooring wedge: operators own the FPSOs/spread-mooring assets, generate the telemetry that closes the loop ([#11](https://github.com/vamseeachanta/aceengineer-strategy/issues/11)), and have the dollar-value to support institutional pricing. EPCs (B) are second-best but their bid-cycle data is harder to feed back. C and D are downstream segments. | _____ |
-| 4 | [#3](https://github.com/vamseeachanta/aceengineer-strategy/issues/3) | §Decision Content #3 | Named anchor accounts (3–5) | **Cannot recommend** — depends on your existing AceEngineer relationship strength | Per [#9](https://github.com/vamseeachanta/aceengineer-strategy/issues/11) plan, the anchor pilot is the keystone of layers 6 and 7. Account selection should be: 2–3 with strongest existing AceEngineer relationship + 1–2 strategic stretch (industry leaders whose endorsement compounds inbound). Name them and we proceed. | _____ |
-| 5 | [#4](https://github.com/vamseeachanta/aceengineer-strategy/issues/4) | §License-Class Frontmatter Field | Standards-text licensing posture for DNV/API public publication | **`summary-only-with-citation` as default + engage outside counsel before broad rollout beyond DNV-OS-E301 + API RP 2SK seed** | The v2 patch already encoded `summary-only-with-citation` as the default for copyrighted standards. The only open decision is whether to engage outside counsel proactively (recommended) before populating beyond the wedge-pair, or wait until publication challenge. Outside-counsel-first is cheaper than litigation-first. | _____ |
+| 1 | [#2](https://github.com/vamseeachanta/aceengineer-strategy/issues/2) | §Decision Content #4 | Mooring wedge time horizon before considering vertical-2 | **18 months** | Plan body specifies 12–18mo range; 18mo gives meaningful loop cycles (≥3 quarterly cycles after first anchor pilot lands) without being indefinite. 12mo too tight given anchor-pilot procurement cycle. 24mo risks losing momentum. | **18mo** (user accepted default 2026-04-26) |
+| 2 | [#2](https://github.com/vamseeachanta/aceengineer-strategy/issues/2) | §Decision Content #6 | Rollback gate type when triggers fire | **soft** (checkpoint) | A "hard" rollback forces a wedge change without context-aware judgment. A "soft" checkpoint forces the explicit review (per the rollback procedure (i)/(ii)/(iii) added in the v2 patch) but lets you accept context that justifies continuing. The procedure requirement is the actual discipline; the gate type just controls automaticity. | **soft** (user accepted default 2026-04-26) |
+| 3 | [#3](https://github.com/vamseeachanta/aceengineer-strategy/issues/3) | §Decision Content #1 | Primary ICP for v1 paid integration tier | **A — Operators** | Best fit with mooring wedge: operators own the FPSOs/spread-mooring assets, generate the telemetry that closes the loop ([#11](https://github.com/vamseeachanta/aceengineer-strategy/issues/11)), and have the dollar-value to support institutional pricing. EPCs (B) are second-best but their bid-cycle data is harder to feed back. C and D are downstream segments. | **A — Operators** (user accepted default 2026-04-26) |
+| 4 | [#3](https://github.com/vamseeachanta/aceengineer-strategy/issues/3) | §Decision Content #3 | Named anchor accounts (3–5) | **Cannot recommend** — depends on your existing AceEngineer relationship strength | Per [#11](https://github.com/vamseeachanta/aceengineer-strategy/issues/11) plan, the anchor pilot is the keystone of layers 6 and 7. Account selection should be: 2–3 with strongest existing AceEngineer relationship + 1–2 strategic stretch (industry leaders whose endorsement compounds inbound). Name them and we proceed. | **DEFERRED** — pending user input. This is the **only** blocker for #3 plan-execution; #3 plan-structure approval can proceed (per pre-execution gate in plan body), execution waits on this row. |
+| 5 | [#4](https://github.com/vamseeachanta/aceengineer-strategy/issues/4) | §License-Class Frontmatter Field | Standards-text licensing posture for DNV/API public publication | **`summary-only-with-citation` as default + engage outside counsel before broad rollout beyond DNV-OS-E301 + API RP 2SK seed** | The v2 patch already encoded `summary-only-with-citation` as the default for copyrighted standards. The only open decision is whether to engage outside counsel proactively (recommended) before populating beyond the wedge-pair, or wait until publication challenge. Outside-counsel-first is cheaper than litigation-first. | **agree (engage counsel first)** (user accepted default 2026-04-26) |
 
 ---
 
@@ -59,3 +59,24 @@ Either:
 - 2026-04-25 brainstorm session (this file's commit history is authoritative)
 - Companion design spec: [`2026-04-25-cradle-to-grave-engineering-flywheel-design.md`](./2026-04-25-cradle-to-grave-engineering-flywheel-design.md)
 - The five questions are extracted verbatim or near-verbatim from the §Open Questions sections of the three P0 plan files; recommendations reflect plan-internal logic.
+
+## Resolution Status (2026-04-26)
+
+User instruction: "continue with your defaults." Recorded acceptance:
+
+- **Row 1 (#2 time horizon):** 18 months — accepted.
+- **Row 2 (#2 rollback gate):** soft (checkpoint with explicit review procedure) — accepted.
+- **Row 3 (#3 primary ICP):** A — Operators — accepted.
+- **Row 4 (#3 anchor accounts):** **DEFERRED** — user-relationship-dependent, no agent-default available. Sole blocker for #3 plan-execution; per the pre-execution gate in plan body, plan-structure approval (`status:plan-approved`) may still proceed; execution waits on user supplying ≥3 named accounts in a follow-up message.
+- **Row 5 (#4 licensing posture):** agree — `summary-only-with-citation` default + engage outside counsel before broad rollout beyond DNV-OS-E301 + API RP 2SK — accepted.
+
+**Effect:**
+- aces-#2 plan: all user-input questions resolved → ready for `status:plan-approved` label by user.
+- aces-#3 plan: structure approvable; execution blocked on Row 4 user input.
+- aces-#4 plan: top-five questions resolved; minor remaining open questions (DNV/API revision baseline, crosswalk scope ISO/ABS inclusion) can be locked at execution time per the plan's Risks section.
+
+**No agent action taken on labels.** User-only `status:plan-approved` gate per epic #1 governance and `feedback_never_offer_to_self_label_plan_approved.md` continues to apply. To approve, run for each:
+```
+gh issue edit N --repo vamseeachanta/aceengineer-strategy --remove-label "status:plan-review" --add-label "status:plan-approved"
+mkdir -p .planning/plan-approved && echo "Approved by: vamsee 2026-04-26 — defaults accepted via decision panel" > .planning/plan-approved/aces-N.md
+```
