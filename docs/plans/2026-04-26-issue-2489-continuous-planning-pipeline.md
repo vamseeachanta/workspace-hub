@@ -15,8 +15,8 @@
 - `tests/analysis/test_provider_work_queue.py` provides the nearest fixture/unit-test pattern for queue classification and rendering.
 - `scripts/automation/generate_issue_prompts.py` already generates prompts from approved issues and can remain the downstream dispatch mechanism once #2489 produces a trustworthy Lane B list.
 - `.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` enforce local approval markers for implementation writes/commits. This confirms label-only execution readiness is unsafe.
-- `scripts/review/plan-review-fanout.sh` is the canonical plan-review fanout wrapper, intended to create per-provider artifacts under `scripts/review/results/`.
-- Gap: no script/report computes Lane A/B/C with all evidence: open issue, labels, plan file, review verdicts, approval marker, and stale/contradictory warnings.
+- `scripts/review/plan-review-fanout.sh` is the canonical plan-review fanout wrapper, intended to create per-provider artifacts under `scripts/review/results/`. Live re-review found the wrapper can still emit `UNAVAILABLE` for Gemini when Gemini CLI trust configuration is missing; #2489 includes a narrow fanout-hardening change so automated review artifacts can be populated, detect empty stdout, and record plan hashes.
+- Gap: no script/report computes Lane A/B/C with all evidence: open issue, labels, plan file, review verdicts, approval marker, current plan sha256, posted approval-request evidence, and stale/contradictory warnings.
 - Gap: no morning approval/QA packet and no buffer-threshold report for the desired 5-10 Lane A, 5-10 Lane B, and 10-20 Lane C targets.
 
 ### Documents consulted
@@ -34,6 +34,7 @@
 - Interpretation: Lane B has apparent label supply, but must be evidence-filtered by plan/review/marker checks before unattended implementation. Lane A approval-candidate buffer is empty and needs continuous refill.
 - Verified existing files: `scripts/ai/provider-work-queue.py`, `tests/analysis/test_provider_work_queue.py`, `scripts/automation/generate_issue_prompts.py`, `.claude/hooks/plan-approval-gate.sh`, `scripts/enforcement/require-plan-approval.sh`, `scripts/review/plan-review-fanout.sh`, `docs/plans/README.md`, `docs/standards/HARD-STOP-POLICY.md`.
 - New files proposed by this plan: `scripts/ai/continuous-planning-pipeline.py`, `tests/analysis/test_continuous_planning_pipeline.py`, `config/ai-tools/continuous-planning-pipeline.json`, `docs/reports/continuous-planning-pipeline.md`.
+- Scope boundary sharpened by review: #2489 is a read/report pipeline. It may read issue, plan, review, label, and approval-marker evidence, but must not write GitHub labels, create/edit approval markers, close issues, or perform #2129/#2255 reconciliation side effects.
 
 ---
 
@@ -58,24 +59,33 @@ A tested continuous-planning pipeline report command that classifies open GitHub
 ```text
 load_live_issues(repo, offline_json):
     read fixture or call gh issue list for open issues with number/title/url/labels/updatedAt/body
+    for candidate Lane A issues or when --include-comments is enabled, call gh issue view <n> --json comments to verify latest plan/review summary was posted for user approval
 
 discover_plan_files(plans_dir):
-    scan docs/plans/YYYY-MM-DD-issue-NNN-*.md and map issue -> newest plan
+    scan docs/plans/YYYY-MM-DD-issue-<digits>-*.md and map issue -> newest plan
+    reuse the existing plan-file parser semantics ([0-9]+ issue ids), not a literal NNN glob
+    compute plan_sha256 from the plan body for review freshness checks
 
 discover_review_artifacts(results_dir):
-    scan scripts/review/results/*-plan-NNN-*.md
-    parse provider and verdict APPROVE/MINOR/MAJOR/FAIL/UNAVAILABLE
-    unknown or unavailable verdicts are not clean approvals
+    scan scripts/review/results/*-plan-<issue>-<provider>.md for known providers only
+    ignore synthesis files such as *-disagreement.md when computing provider verdicts
+    parse provider and verdict APPROVE/MINOR/MAJOR/UNAVAILABLE
+    empty or missing provider artifacts are UNAVAILABLE-equivalent blockers, not ignorable files
+    require artifact metadata Plan-SHA256 when present; legacy artifacts without hashes are clean only when explicitly allowed by --allow-legacy-review-artifacts
+    clean_review(issue) requires all configured required providers (default: claude,codex,gemini) to have APPROVE or MINOR artifacts tied to the current plan sha256/date; stale, MAJOR, unknown, disagreement-only, missing, empty, or UNAVAILABLE artifacts are blockers/warnings
 
 discover_approval_markers(marker_dir):
     scan .planning/plan-approved/*.md
-    numeric marker names are issue-specific; non-numeric markers are session-level only
+    for workspace-hub Lane B, issue-specific markers are numeric <issue>.md files with committed/non-self-approved evidence when available
+    inherit plan-approval-gate.sh semantics: self-approved markers and recent/uncommitted markers do not qualify for Lane B
+    non-numeric markers are non-issue-keyed or cross-repo/workstream scoped and out of scope for workspace-hub issue-keyed Lane B unless an explicit repo/workstream mapping is configured
+    marker content quality is classified: revision-bound marker > minimal marker > missing/self-approved/uncommitted marker
 
 classify_issue(issue, plans, reviews, markers):
-    warn if dual status labels, approved-no-marker, approved-no-plan, approved-no-clean-review
-    if open + status:plan-approved + numeric marker + plan + clean review: Lane B
-    else if plan + clean review and awaiting approval/status:plan-review: Lane A
-    else: Lane C
+    warn if dual status labels, approved-no-marker, approved-no-plan, approved-no-clean-review, stale-review, disagreement-only-review, marker-without-open-approved-issue, self-approved-marker, uncommitted-marker, gate-allows-but-lane-b-denies
+    if open + status:plan-approved + workspace-hub issue marker + plan + clean review: Lane B
+    else if open + status:plan-review + plan + clean review + latest plan was posted/commented for user approval: Lane A
+    else: Lane C, blocked, or needs-planning depending on missing evidence
     return lane item with evidence, missing_requirements, warnings, suggested_action
 
 compute_buffer_health(lanes):
@@ -93,9 +103,12 @@ render_json_and_markdown(snapshot):
 |---|---|---|
 | Create | `scripts/ai/continuous-planning-pipeline.py` | Lane classifier and report generator. |
 | Create | `tests/analysis/test_continuous_planning_pipeline.py` | TDD coverage for classification, evidence, warnings, thresholds, deterministic output. |
+| Create | `tests/analysis/fixtures/continuous_planning_pipeline_issues.json` | Offline GitHub issue/comment fixture corpus for deterministic tests. |
+| Create | `tests/analysis/fixtures/continuous_planning_pipeline_markers/` | Marker fixtures covering revision-bound, minimal, self-approved, uncommitted, orphan, and non-issue-keyed markers. |
 | Create/update | `config/ai-tools/continuous-planning-pipeline.json` | Machine-readable latest snapshot. |
 | Create/update | `docs/reports/continuous-planning-pipeline.md` | User-facing morning/overnight packet. |
 | Update | `docs/plans/README.md` | Index this plan. |
+| Narrow update | `scripts/review/plan-review-fanout.sh` | Add review artifact metadata header (`Plan-SHA256`), empty-stdout fallback to `UNAVAILABLE`, and Gemini trust configuration support so future review artifacts are machine-checkable. |
 | Optional update | `scripts/ai/provider-work-queue.py` | Link to the readiness report if needed; do not broaden provider queue into reconciliation. |
 
 ---
@@ -106,47 +119,64 @@ render_json_and_markdown(snapshot):
 | `test_lane_b_requires_label_plan_review_and_marker` | Lane B requires all evidence | Approved issue + plan + clean reviews + marker | Lane B |
 | `test_approved_without_marker_not_lane_b` | Prevents label-only dispatch | Approved issue without marker | warning `approved_no_marker`; not Lane B |
 | `test_approved_without_plan_not_lane_b` | Prevents stale labels | Approved issue + marker but no plan | warning `approved_no_plan`; not Lane B |
-| `test_plan_review_with_clean_reviews_is_lane_a` | Approval candidates surface correctly | Plan + APPROVE/MINOR reviews + `status:plan-review` | Lane A |
+| `test_plan_review_with_clean_reviews_is_lane_a` | Approval candidates surface correctly | Plan + current APPROVE/MINOR reviews + `status:plan-review` + posted plan marker/comment evidence | Lane A |
 | `test_major_review_blocks_lane_a` | MAJOR reviews block approval | Plan + MAJOR artifact | blocked/warning |
+| `test_unavailable_review_not_clean` | Provider failure is not approval | UNAVAILABLE artifact | warning; not clean |
+| `test_empty_review_artifact_not_clean` | Empty stdout provider artifact is a review failure | zero-byte provider artifact | warning `empty_review`; not clean |
+| `test_disagreement_artifact_not_provider_verdict` | Summary files are excluded from provider verdict aggregation | `*-disagreement.md` plus provider artifacts | disagreement ignored for clean-review calculation |
+| `test_stale_review_does_not_approve_revised_plan` | Review artifacts must match the current plan sha256 | old APPROVE artifact + modified plan | warning `stale_review`; not clean |
+| `test_self_approved_marker_not_lane_b` | Mirrors plan-approval-gate self-approval rejection | marker containing self/auto-approved language | warning `self_approved_marker`; not Lane B |
+| `test_uncommitted_marker_not_lane_b` | Mirrors plan-approval-gate recent/uncommitted marker rejection | recent marker with no git history | warning `uncommitted_marker`; not Lane B |
+| `test_marker_content_quality_classified` | Marker existence is not the only signal | minimal marker vs revision-bound marker | content quality surfaced in evidence |
+| `test_orphan_marker_flagged` | Orphan local marker is reported | marker exists but issue missing/closed/not approved | warning `marker_without_open_approved_issue` |
 | `test_open_unplanned_priority_issue_is_lane_c` | Feedstock classification | Priority issue without plan/review/approval | Lane C |
 | `test_dual_status_labels_flagged` | Contradictory labels detected | Both `status:plan-review` and `status:plan-approved` | warning |
-| `test_non_numeric_marker_not_issue_specific` | Session marker does not approve issue | `session.md` marker only | not Lane B |
-| `test_unavailable_review_not_clean` | Provider failure is not approval | UNAVAILABLE artifact | warning; not clean |
+| `test_non_numeric_marker_handled_as_cross_repo_out_of_scope` | Cross-repo markers are not mislabeled as session markers | `aces-2.md` marker with no repo-prefix config | excluded from workspace-hub Lane B with explicit out-of-scope evidence |
 | `test_buffer_health_flags_empty_lane_a` | Detects approval starvation | 0 Lane A items | below-minimum warning |
 | `test_markdown_has_morning_and_overnight_sections` | User packet is usable | Mixed lanes | required sections present |
 | `test_json_schema_is_deterministic` | Agents can consume output | Mixed fixture | stable sorted JSON |
-| `test_fail_under_buffer_exit_code` | Optional cron gate works | below-minimum with flag | exit code 2 |
+| `test_fail_under_buffer_exit_code` | Optional cron gate works without colliding with argparse | below-minimum with flag | exit code 3 |
 
 ---
 
 ## Acceptance Criteria
 - [ ] CLI exists: `scripts/ai/continuous-planning-pipeline.py --help`.
 - [ ] CLI supports offline fixture input for deterministic tests.
-- [ ] Lane B requires open issue + `status:plan-approved` + canonical plan + issue-specific local marker + no MAJOR/FAIL/UNAVAILABLE review blocker.
-- [ ] Lane A requires canonical plan + clean adversarial review evidence and awaits user approval.
+- [ ] Lane B requires open issue + `status:plan-approved` + canonical plan + issue-specific local marker + current clean review evidence.
+- [ ] Lane A requires open issue + `status:plan-review` + canonical plan + current clean adversarial review evidence + a posted plan/comment for user approval.
+- [ ] Clean review means all configured required provider artifacts for the current plan sha256 are `APPROVE` or `MINOR`; default required provider set is Claude + Codex + Gemini, with `--required-providers` as an explicit override. `MAJOR`, `UNAVAILABLE`, unknown verdicts, stale artifacts, missing/empty files, or disagreement-only evidence are not clean.
 - [ ] Lane C excludes closed issues and issues cleanly classified into Lane A/B.
 - [ ] Report includes target buffer checks: Lane A 5-10, Lane B 5-10, Lane C 10-20.
-- [ ] Report flags dual status labels, approved-without-marker, approved-without-plan, missing/MAJOR/UNAVAILABLE reviews, marker-without-open-approved-issue.
+- [ ] Report flags dual status labels, approved-without-marker, approved-without-plan, missing/empty/MAJOR/UNAVAILABLE/stale reviews, disagreement-only review evidence, marker-without-open-approved-issue, self-approved/uncommitted markers, gate-allows-but-Lane-B-denies mismatches, and out-of-scope non-issue-keyed markers.
 - [ ] Report emits JSON and Markdown.
 - [ ] Markdown includes morning user approval packet and overnight dispatch packet sections.
 - [ ] Implementation does not change labels, create approval markers, or close issues; it is read-only/reporting except writing configured report artifacts.
+- [ ] Implementation does not write `.planning/plan-approved/`, mutate `docs/plans/` for other issues, or perform reconciliation side effects owned by #2129/#2255.
 - [ ] Scope does not duplicate #2129 issue-hygiene analysis or #2255 marker reconciliation; it can consume their outputs/signals when present.
 - [ ] Tests pass: `uv run pytest tests/analysis/test_continuous_planning_pipeline.py -v`.
 - [ ] Existing provider queue tests pass: `uv run pytest tests/analysis/test_provider_work_queue.py -v`.
-- [ ] Adversarial plan review artifacts exist and any MAJOR findings are resolved before moving #2489 to `status:plan-review`.
+- [ ] Adversarial plan review artifacts exist for the current revised plan and any MAJOR findings are resolved before moving #2489 to `status:plan-review`.
 
 ---
 
 ## Adversarial Review Summary
-Formal multi-provider plan review attempted on 2026-04-26, but the first fanout run produced only an empty disagreement artifact and no provider-specific #2489 artifacts. Treat that output as invalid. Re-run review using an artifact-inline/no-tools or otherwise side-effect-safe route before applying `status:plan-review`.
+Formal multi-provider plan review on 2026-04-26 initially returned MAJOR findings from Claude and Codex plus Gemini `UNAVAILABLE`. The plan was revised to address the blockers before requesting final `status:plan-review`:
 
-| Provider | Verdict | Key findings |
+- Corrected the review-artifact model: provider artifacts are parsed separately from `*-disagreement.md` synthesis files, and review evidence must be current to the plan revision/fingerprint.
+- Removed the previously proposed extra verdict name that no current review producer emits; parser/test scope is `APPROVE`, `MINOR`, `MAJOR`, and `UNAVAILABLE` unless existing tooling adds another documented verdict later.
+- Resolved the UNAVAILABLE policy contradiction: conservative default is that `UNAVAILABLE` is not a clean review for Lane A/B.
+- Fixed plan-file discovery language to support any digit-length issue id, aligned with the existing parser.
+- Corrected approval-marker semantics: workspace-hub Lane B uses workspace-hub issue markers; non-numeric markers are non-issue-keyed/cross-repo/workstream scoped and out of scope unless a repo/workstream mapping is configured.
+- Added marker content quality, self-approved/uncommitted marker rejection, orphan-marker warnings, and read-only/non-reconciliation scope boundaries.
+- Changed `--fail-under-buffer` planned exit code from 2 to 3 to avoid `argparse` error-code collision.
+
+| Provider | Verdict | Key findings / disposition |
 |---|---|---|
-| Claude | PENDING | Needs side-effect-safe re-review. |
-| Codex | PENDING | Needs side-effect-safe re-review. |
-| Gemini | PENDING | Needs side-effect-safe re-review. |
+| Claude | MAJOR on first pass | Blockers addressed in this revision: prior artifact narrative, UNAVAILABLE policy, verdict vocabulary, cross-repo marker semantics. |
+| Codex | MAJOR on first pass | Blockers addressed in this revision: canonical artifact/index state, provider-vs-synthesis parsing, stale review binding, Lane A label/comment evidence, marker validation. |
+| Gemini | UNAVAILABLE on first pass | Fanout needs trusted-directory env/flag; this plan treats UNAVAILABLE conservatively and should be re-reviewed after rerun. |
 
-**Overall result:** PENDING — keep #2489 in draft until valid reviews exist.
+**Overall result:** revised after MAJOR findings; final rerun required before applying `status:plan-review`.
 
 ---
 
@@ -155,8 +185,8 @@ Formal multi-provider plan review attempted on 2026-04-26, but the first fanout 
 - **Risk:** Review artifact parsing can be inconsistent across historical artifacts. Treat unknown verdicts conservatively.
 - **Risk:** Current live state has 48 approved labels and 0 plan-review labels. Avoid encouraging execution until marker/plan/review evidence is verified.
 - **Risk:** Scope creep into #2129/#2255. Keep #2489 focused on lane readiness, buffer health, and morning/overnight packets.
-- **Open:** Should Lane A require all three providers, or allow two APPROVE/MINOR with one UNAVAILABLE? Conservative default blocks on UNAVAILABLE.
-- **Open:** Should buffer underfill fail cron by default? Proposed: no; only fail with `--fail-under-buffer`.
+- **Open (implementation tuning):** Keep the default required provider set as Claude + Codex + Gemini for maximum assurance; use `--required-providers` only as an explicit operator override when a provider is documented unavailable.
+- **Open:** Should buffer underfill fail cron by default? Proposed: no; only fail with `--fail-under-buffer` returning exit code 3.
 
 ---
 
