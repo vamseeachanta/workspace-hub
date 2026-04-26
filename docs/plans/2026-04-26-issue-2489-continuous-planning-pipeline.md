@@ -1,6 +1,6 @@
 # Plan for #2489: Continuous Planning Pipeline for AFK Issue Throughput
 
-> **Status:** draft
+> **Status:** plan-approved
 > **Complexity:** T3
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2489
