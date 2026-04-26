@@ -177,11 +177,11 @@ Formal multi-provider plan review on 2026-04-26 initially returned MAJOR finding
 
 | Provider | Verdict | Key findings / disposition |
 |---|---|---|
-| Claude | MAJOR on first pass | Blockers addressed in this revision: prior artifact narrative, UNAVAILABLE policy, verdict vocabulary, cross-repo marker semantics. |
-| Codex | MAJOR on first pass | Blockers addressed in this revision: canonical artifact/index state, provider-vs-synthesis parsing, stale review binding, Lane A label/comment evidence, marker validation. |
-| Gemini | UNAVAILABLE on first pass | Fanout needs trusted-directory env/flag; this plan treats UNAVAILABLE conservatively and should be re-reviewed after rerun. |
+| Claude | MINOR on final side-effect-safe re-review | No MAJOR blockers; recommended implementation-time tightening for comment-check limits, dual-label blocked lane semantics, and report distinction for legacy review artifacts. |
+| Codex | APPROVE on final side-effect-safe re-review | No MAJOR blockers; confirmed Lane A/B/C definitions are implementable and label-only Lane B is prevented. |
+| Gemini | APPROVE on final side-effect-safe re-review | No MAJOR blockers; confirmed approval-marker, review-artifact, comment-evidence, and buffer-threshold edge cases are sufficiently covered. |
 
-**Overall result:** revised after MAJOR findings; final rerun required before applying `status:plan-review`.
+**Overall result:** READY FOR `status:plan-review` — no MAJOR blockers remain. Implementation remains blocked until explicit user approval and local plan-approved marker.
 
 ---
 

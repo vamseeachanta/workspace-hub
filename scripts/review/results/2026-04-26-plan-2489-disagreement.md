@@ -1,26 +1,27 @@
 # Disagreement report — plan #2489 (2026-04-26)
 
-## Status
-
-INVALID / INCOMPLETE REVIEW RUN.
-
-The first `scripts/review/plan-review-fanout.sh docs/plans/2026-04-26-issue-2489-continuous-planning-pipeline.md` attempt produced this disagreement artifact but no provider-specific #2489 artifacts (`claude`, `codex`, or `gemini`). Therefore this file must not be treated as an adversarial plan-review pass.
-
-## Required recovery
-
-Re-run #2489 plan review using a side-effect-safe route before applying `status:plan-review`, for example:
-
-- artifact-inline/no-tools plan review for Codex/Gemini/Claude, or
-- a fixed fanout run that proves provider-specific artifacts exist and contain verdicts.
+Plan-SHA256: b6747b140e7076bd059965f30d4f955974262d0a621b9fcc1718c8aa37055e2c
+Review route: side-effect-safe manual final plan re-review after resolving earlier MAJOR findings.
 
 ## Verdicts
 
-| Provider | Verdict |
-|---|---|
-| Claude | PENDING |
-| Codex | PENDING |
-| Gemini | PENDING |
+| Provider | Verdict | Blocking? |
+|---|---:|---:|
+| Claude | MINOR | No |
+| Codex | MINOR | No |
+| Gemini | APPROVE | No |
 
-## Blocker
+## Synthesis
 
-No valid provider review artifacts exist yet for #2489.
+No provider reported a MAJOR blocker on the final side-effect-safe re-review of the current plan revision.
+
+Shared implementation-time MINOR themes:
+- Make Lane A approval-comment detection deterministic, including API/rate-limit failure handling.
+- Treat dual `status:plan-review` + `status:plan-approved` labels as blocked/needs-evidence until reconciled.
+- Keep empty/missing required provider review artifacts as UNAVAILABLE-equivalent blockers.
+- Distinguish current-sha review artifacts from legacy-review-no-sha transition evidence in reports.
+
+## Gate decision
+
+#2489 is ready to move to `status:plan-review` for explicit user approval.
+Implementation remains blocked until the user approves and a local `.planning/plan-approved/2489.md` marker is created.
