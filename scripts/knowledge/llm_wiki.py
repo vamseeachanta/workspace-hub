@@ -49,6 +49,7 @@ INIT_DIRS = [
     "wiki/sources",
     "wiki/comparisons",
     "wiki/visualizations",
+    "wiki/standards",
 ]
 
 SCHEMA_TEMPLATE = """# Wiki Schema: {domain}
@@ -276,7 +277,7 @@ def cmd_status(args: argparse.Namespace) -> int:
     # Count files
     counts = {}
     total_wiki_files = 0
-    for sub in ["entities", "concepts", "sources", "comparisons", "visualizations"]:
+    for sub in ["entities", "concepts", "sources", "comparisons", "visualizations", "standards"]:
         subdir = wiki_root / "wiki" / sub
         count = len(list(subdir.glob("*.md"))) if subdir.exists() else 0
         counts[sub] = count
