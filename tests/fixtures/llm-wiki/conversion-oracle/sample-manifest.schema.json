@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LLM-Wiki Conversion-Oracle Sample Manifest",
+  "description": "Schema for sample-manifest.yaml — 20 stratified oracle fixture entries.",
+  "type": "array",
+  "minItems": 20,
+  "maxItems": 20,
+  "items": {
+    "type": "object",
+    "required": [
+      "slug",
+      "product",
+      "category",
+      "complexity",
+      "encoding_stress",
+      "source_url",
+      "fetched_at",
+      "html_sha256",
+      "html_path",
+      "oracle_md_path",
+      "oracle_authored_by",
+      "oracle_authored_at",
+      "oracle_second_reviewer",
+      "single_reviewer_timelag",
+      "oracle_review_method"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "slug": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$",
+        "description": "Kebab-case identifier unique within the manifest."
+      },
+      "product": {
+        "type": "string",
+        "enum": ["OrcaFlex", "OrcaWave", "OrcFxAPI"]
+      },
+      "category": {
+        "type": "string",
+        "enum": ["introduction", "data", "theory", "results", "API"]
+      },
+      "complexity": {
+        "type": "string",
+        "enum": ["Simple", "Medium", "Hard"]
+      },
+      "encoding_stress": {
+        "type": "boolean",
+        "description": "True iff page contains UTF-8 Greek letters, degree signs, or math operators."
+      },
+      "source_url": {
+        "type": "string",
+        "format": "uri"
+      },
+      "fetched_at": {
+        "type": "string",
+        "description": "ISO-8601 UTC timestamp when the HTML snapshot was captured."
+      },
+      "html_sha256": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$",
+        "description": "SHA-256 hex digest of the html_path file content."
+      },
+      "html_path": {
+        "type": "string",
+        "description": "Repo-relative path to the frozen HTML snapshot."
+      },
+      "oracle_md_path": {
+        "type": "string",
+        "description": "Repo-relative path to the oracle markdown file."
+      },
+      "oracle_authored_by": {
+        "type": "string",
+        "minLength": 1
+      },
+      "oracle_authored_at": {
+        "type": "string",
+        "description": "ISO-8601 UTC timestamp of initial oracle authorship."
+      },
+      "oracle_second_reviewer": {
+        "type": "string",
+        "minLength": 1,
+        "description": "GitHub handle of second reviewer, OR 'self-reviewed-with-24h-delay'."
+      },
+      "oracle_reviewed_at": {
+        "type": "string",
+        "description": "ISO-8601 UTC timestamp of re-review (required when single_reviewer_timelag=true)."
+      },
+      "single_reviewer_timelag": {
+        "type": "boolean",
+        "description": "True iff oracle_second_reviewer is the sentinel string."
+      },
+      "oracle_review_method": {
+        "type": "string",
+        "enum": ["from-source"],
+        "description": "Authorship method. Only 'from-source' is valid."
+      }
+    },
+    "if": {
+      "properties": {
+        "single_reviewer_timelag": {"const": true}
+      }
+    },
+    "then": {
+      "required": ["oracle_reviewed_at"]
+    }
+  }
+}

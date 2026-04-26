@@ -1,0 +1,23 @@
+<!DOCTYPE html><html><head><title>Fatigue Analysis Theory | OrcaFlex</title></head>
+<body>
+<h1>Fatigue Analysis</h1>
+<p>OrcaFlex performs fatigue analysis using the S-N curve approach.</p>
+<h2>S-N Curves</h2>
+<p>S-N curves relate stress range to number of cycles to failure.</p>
+<h3>Standard Curves</h3>
+<table>
+<tr><th>Curve</th><th>Environment</th><th>m</th><th>log K</th></tr>
+<tr><td>B</td><td>Air</td><td>4.0</td><td>15.117</td></tr>
+<tr><td>C</td><td>Air</td><td>3.5</td><td>12.592</td></tr>
+<tr><td>D</td><td>Air</td><td>3.0</td><td>10.970</td></tr>
+</table>
+<h2>Rainflow Counting</h2>
+<p>OrcaFlex uses the rainflow cycle-counting algorithm.</p>
+<h3>Algorithm</h3>
+<pre>for each half-cycle in time series:
+    count cycle
+    apply Goodman correction
+    accumulate damage</pre>
+<h4>Damage Calculation</h4>
+<p>Miner's rule: D = sum(n_i / N_i) where failure occurs when D reaches 1.0.</p>
+</body></html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><title>Connectors | OrcaFlex</title></head>
+<body>
+<h1>Connectors</h1>
+<p>Connectors model flexible joints and clamps between line segments and objects.</p>
+<h2>Connector Types</h2>
+<table>
+<tr><th>Type</th><th>DOF</th><th>Stiffness</th><th>Damping</th><th>Application</th></tr>
+<tr><td>Ball joint</td><td>3R</td><td>None</td><td>Optional</td><td>Flexible riser base</td></tr>
+<tr><td>Flex joint</td><td>3R</td><td>Rotational</td><td>Rotational</td><td>Stress joint</td></tr>
+<tr><td>Link</td><td>1T</td><td>Axial</td><td>Axial</td><td>Chain stopper</td></tr>
+<tr><td>Winch</td><td>1T</td><td>None</td><td>None</td><td>Active tensioning</td></tr>
+</table>
+<h2>Stiffness Matrix</h2>
+<p>The full 6x6 stiffness matrix can be specified for general connectors.</p>
+<h3>Coupled Terms</h3>
+<table>
+<tr><th>Term</th><th>Coupling</th><th>Units</th></tr>
+<tr><td>K11</td><td>Surge-Surge</td><td>kN/m</td></tr>
+<tr><td>K22</td><td>Sway-Sway</td><td>kN/m</td></tr>
+<tr><td>K44</td><td>Roll-Roll</td><td>kNm/rad</td></tr>
+</table>
+</body></html>

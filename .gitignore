@@ -500,3 +500,6 @@ tests/ecosystem-sync/fixtures/repos/*.baseline-sha
 
 # ecosystem-sync logs
 logs/ecosystem-sync/
+
+# markdown-QA runtime artifacts (#2126)
+**/.artifacts/
