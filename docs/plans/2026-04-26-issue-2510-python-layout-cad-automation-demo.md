@@ -1,6 +1,6 @@
 # Plan for #2510: Python layout/CAD automation demo for chip/package geometries
 
-> **Status:** plan-review — r10 MAJOR findings patched; r11 adversarial review pending after GitHub update
+> **Status:** plan-review — r11 MAJOR findings patched; r12 adversarial review pending after push
 > **Complexity:** T2
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2510
@@ -14,6 +14,7 @@
 > **Review artifacts (r8 archive):** scripts/review/results/2026-04-26-plan-2510-claude-r8.md | scripts/review/results/2026-04-26-plan-2510-codex-r8.md | scripts/review/results/2026-04-26-plan-2510-gemini-r8.md
 > **Review artifacts (r9 archive):** scripts/review/results/2026-04-27-plan-2510-claude-r9.md | scripts/review/results/2026-04-27-plan-2510-codex-r9.md | scripts/review/results/2026-04-27-plan-2510-gemini-r9.md
 > **Review artifacts (r10 archive):** scripts/review/results/2026-04-27-plan-2510-claude-r10.md | scripts/review/results/2026-04-27-plan-2510-codex-r10.md | scripts/review/results/2026-04-27-plan-2510-gemini-r10.md
+> **Review artifacts (r11 archive):** scripts/review/results/2026-04-27-plan-2510-claude-r11.md | scripts/review/results/2026-04-27-plan-2510-codex-r11.md | scripts/review/results/2026-04-27-plan-2510-gemini-r11.md
 > **Review artifacts (next current/canonical after rerun):** `scripts/review/results/${TODAY}-plan-2510-{claude,codex,gemini}.md` where `${TODAY}` is emitted by `scripts/review/plan-review-fanout.sh` at runtime; archive immediately to `-${round}.md` before another rerun
 
 ---
@@ -152,7 +153,7 @@ In scope:
 - Deterministic artifact generation from a CLI.
 - Metadata extraction: layers, polygons/rectangles, bounding boxes, area totals, ports/pads, net labels where represented, geometry invariants, writer/reader package versions, and a final `artifact_hashes` map populated only after all manifest-covered artifacts are written, excluding `layout_metadata.json` itself to avoid a self-referential hash.
 - SVG preview and JSON/CSV metadata always generated.
-- Real GDS exchange artifact generated with an open Python layout tool. Primary path: GDSFactory (`gdsfactory`) creates the parameterized component and writes `chip_package_demo.gds`. KLayout is not an alternate reader/validator for #2510; `klayout==0.30.8` may be present only as a transitive/runtime package in the pinned open-tool stack. Any KLayout-specific validation requires a future plan revision.
+- Real GDS exchange artifact generated with an open Python layout tool. Primary path: GDSFactory (`gdsfactory`) creates the parameterized component and writes `chip_package_demo.gds`. KLayout is not an alternate reader/validator for #2510; `klayout==0.30.8` may be injected explicitly only as a pinned runtime dependency needed by the GDSFactory/kfactory stack, not as an independent validation surface. Any KLayout-specific validation requires a future plan revision.
 - Import/read-back of the generated GDS using the pinned GDSFactory 9.40.2 API `from gdsfactory.read import import_gds` to verify bounding boxes/layer counts/invariants after round-trip. No alternate reader, including KLayout, is allowed inside #2510 without plan revision.
 - If `gdsfactory` cannot be installed or invoked in the execution environment, implementation must stop and post a blocker/future-dependency issue rather than silently closing with a pure JSON fallback.
 
@@ -182,7 +183,7 @@ The import/read-back test must compare only fields that are expected to survive 
 
 - Read-back must use GDSFactory 9.40.2 with primary API `from gdsfactory.read import import_gds`; if that import path is unavailable in the pinned version, implementation must stop and revise the plan rather than guessing a new API surface.
 - `cell_name` equals the deterministic top component name.
-- Layer identity is keyed by `(layer, datatype)` tuples, not human display names.
+- In Python comparison code, layer identity is keyed by `(layer, datatype)` tuples, not human display names. In JSON artifacts such as `gds_readback_metadata.json`, layer identities must be encoded as deterministic records with integer fields (`{"layer": <int>, "datatype": <int>, ...}`) or stable string keys of the exact form `L<layer>_D<datatype>`; do not attempt to serialize tuple keys directly.
 - Bounding boxes are compared in micrometers with absolute tolerance `1e-3` µm.
 - Imported geometry must be flattened before counting. For this bounded demo geometry, compare geometry-derived expected counts per required layer (substrate, die, bump/pad, route/keepout) against read-back counts using exact equality only for layers generated as simple axis-aligned rectangles; if a layer uses non-rectangular/reader-fracturable geometry, the implementation must encode a layer-specific bounded range and document it in `gds_readback_metadata.json`. Exact label/port round-trip is not required because plain GDS labels/ports can be lossy across readers.
 - Read-back metadata must state the reader package and version.
@@ -218,8 +219,8 @@ function import_exchange_artifact(gds_path):
     read chip_package_demo.gds back through the pinned API `from gdsfactory.read import import_gds`
     extract read-back cell name, layer/polygon counts, bbox, and labels/ports where available
     compare read-back invariants against generated geometry metadata
-    if any required invariant fails, write gds_readback_metadata.json with mismatch details and exit the CLI non-zero; do not produce a passing manifest/report
-    write gds_readback_metadata.json only for passing invariant checks
+    if any required invariant fails, write gds_readback_metadata.json with mismatch details, exit the CLI non-zero, and do not produce a passing manifest/report
+    otherwise, write gds_readback_metadata.json with passing invariant-check details
 
 function write_metadata_initial(geometry, artifacts):
     write layout_metadata.json with parameters, layers, bboxes, counts, invariants, writer mode, and an empty artifact_hashes placeholder
@@ -266,7 +267,7 @@ function finalize_metadata_and_manifest(output_dir, report_path):
 | `test_outputs_are_deterministic_across_runs` | repeat runs produce identical deterministic artifact hashes under the pinned GDS timestamp policy | two temp dirs | equal content hashes for manifest-covered artifacts and byte-identical `artifact_manifest.sha256` text |
 | `test_missing_open_layout_dependency_blocks_rather_than_fakes_gds` | missing GDSFactory/open reader is treated as execution blocker, not a passing fake artifact | monkeypatch the lazy import helper to raise `ModuleNotFoundError` | clear RuntimeError/blocker message that includes the pinned `uv run --python 3.11 --with ...` invocation; no fake `.gds` produced |
 | `test_csv_manifest_and_report_use_lf_line_endings` | cross-platform determinism for CSV/manifest/report text artifacts | generated CSV/manifest/report bytes | no `\r` bytes; explicit `\n` line endings |
-| `test_report_and_metadata_have_role_relevance_and_no_signoff_overclaims` | portfolio report maps demo to chip/package CAD roles and report/metadata avoid compliance/tapeout claims | generated report plus `layout_metadata.json` | case-insensitive forbidden-phrase scan over report+metadata excludes these exact positive-claim variants; canonical disclaimer wording must avoid the forbidden phrases and use `not a foundry/PDK signoff flow and not production tapeout evidence` instead: `JEDEC compliant`, `meets JEDEC`, `IPC compliant`, `DRC clean`, `LVS clean`, `signoff-ready`, `production tapeout`, `tapeout-ready`, `tapeout ready`, `PDK-qualified`, `foundry signoff`, `PDK DRC`, and `PDK LVS` |
+| `test_report_and_metadata_have_role_relevance_and_no_signoff_overclaims` | portfolio report maps demo to chip/package CAD roles and report/metadata avoid positive compliance/tapeout claims | generated report plus `layout_metadata.json` | case-insensitive forbidden-phrase scan over report+metadata rejects positive-claim variants: `JEDEC compliant`, `meets JEDEC`, `IPC compliant`, `DRC clean`, `LVS clean`, `signoff-ready`, `tapeout-ready`, `tapeout ready`, `PDK-qualified`, `foundry signoff`, `PDK DRC`, and `PDK LVS`. The canonical limitation sentence must avoid those banned positive phrases while using non-claim wording such as `not a foundry or PDK signoff flow and not evidence for manufacturing release`; the negative disclaimer itself must not include the banned phrase `production tapeout`. |
 
 ---
 
@@ -309,8 +310,11 @@ function finalize_metadata_and_manifest(output_dir, report_path):
 | Claude r10 | MAJOR | Required direct-import seam tightening, failing `--report` outside `--output` test, fail-closed round-trip mismatch semantics, r10 state reconciliation, and minor cleanup for determinism/forbidden-claim/KLayout wording. |
 | Codex r10 | MAJOR | Required one-source review artifact path policy, KLayout-vs-GDSFactory reader consistency, GitHub status comment refresh, and clean `kfactory==2.4.7` resolution proof. |
 | Gemini r10 | UNAVAILABLE | Gemini CLI failed before reading the plan; no substantive signal. |
+| Claude r11 | UNAVAILABLE | Claude CLI stalled during r11 fanout after Codex returned substantive blockers; archived as explicit non-empty `UNAVAILABLE` evidence. |
+| Codex r11 | MAJOR | Required non-contradictory forbidden-phrase/disclaimer wording, JSON-safe layer identity encoding, current-wave sustained-MAJOR governance wording, and stricter handling of canonical artifact validity. |
+| Gemini r11 | MAJOR | Required the same forbidden-phrase/disclaimer reconciliation as Codex, clarified fail-closed `gds_readback_metadata.json` write semantics, and corrected KLayout dependency wording from transitive-only to explicitly pinned runtime dependency. |
 
-**Overall result:** r10 returned Claude/Codex MAJOR and Gemini UNAVAILABLE. This revision patches r10 blockers, archives r10 evidence to `2026-04-27-...-r10.md`, and is queued for r11 adversarial review after a GitHub issue update makes the current plan-review wave visible.
+**Overall result:** r11 returned Codex/Gemini MAJOR with Claude UNAVAILABLE. This revision patches r11 blockers, archives r11 evidence to `2026-04-27-...-r11.md`, and is queued for r12 adversarial review after push.
 
 Revisions made based on reviews so far:
 - Required real open-tool GDS generation/read-back rather than pure JSON fallback; removed remaining fake-layout acceptance ambiguity.
@@ -335,6 +339,7 @@ Revisions made based on reviews so far:
 - Added failing-case TDD for `--report` outside `--output`, fail-closed GDS round-trip mismatch semantics, and clean `kfactory==2.4.7` resolution proof.
 - Removed KLayout as a secondary #2510 reader/validator to keep the import/read-back contract single-source on GDSFactory.
 - Labeled external URL checks as planning-time reachability anchors, not approval-gating evidence.
+- Patched r11 findings: removed contradictory `production tapeout` disclaimer wording from forbidden-phrase tests, specified JSON-safe layer identity encoding, clarified fail-closed `gds_readback_metadata.json` write semantics, corrected KLayout dependency wording to explicit pinned runtime dependency rather than transitive-only, refreshed sustained-MAJOR governance text to current-wave language, and required future current canonical review artifacts to begin with `## Verdict`.
 
 ---
 
@@ -345,7 +350,7 @@ Revisions made based on reviews so far:
 - `status:plan-review` may be applied only with a GitHub comment that explicitly says the current plan is under adversarial review and not user-approval-ready if any MAJOR remains. The final approval request is posted only after the latest valid reviews are APPROVE/MINOR.
 - #2511 is used as an implementation-convention source because issue #2511 is closed and its implementation files exist on `main`; stale #2511 planning-index/header statuses are known drift and are not used as authority for #2510.
 - MCP-only Codex review evidence is valid only when the artifact cites exact fetched GitHub/repo paths, issue URLs, or commit-visible plan/review files and explicitly states any sandbox limitation. If MCP-only evidence contradicts the local filesystem without citing a fetched source, classify that provider artifact as `UNAVAILABLE` for gating rather than as a substantive MAJOR.
-- Sustained-MAJOR governance: after three or more MAJOR waves, each new wave must be classified as (a) consensus blocker with a concrete plan patch, (b) sandbox/tooling/retrieval defect handled as `UNAVAILABLE` or packaging repair, or (c) minority/non-blocking concern with explicit evidence-based rationale. If the next wave after this r8 patch still returns only review-state/tooling MAJORs rather than substantive CAD/test blockers, park the issue with a GitHub blocker/minority-report summary or ask the user whether to accept the residual risk; do not keep silently grinding through unlimited prose-only reviews.
+- Sustained-MAJOR governance: after three or more MAJOR waves, each new wave must be classified as (a) consensus blocker with a concrete plan patch, (b) sandbox/tooling/retrieval defect handled as `UNAVAILABLE` or packaging repair, or (c) minority/non-blocking concern with explicit evidence-based rationale. For the next wave after this r11 patch, classify any remaining MAJOR as either a concrete CAD/test/metadata blocker to patch, a provider/tooling/retrieval defect to archive as `UNAVAILABLE`, or a minority non-blocking concern with evidence. If the next wave returns only review-state/tooling MAJORs and no substantive CAD/test blockers, park the issue with a GitHub blocker/minority-report summary or ask the user whether to accept the residual risk; do not keep silently grinding through unlimited prose-only reviews.
 
 ---
 
@@ -355,7 +360,7 @@ Before asking for user approval:
 
 - Latest current review outputs land in runtime-dated canonical paths emitted by `scripts/review/plan-review-fanout.sh`: `scripts/review/results/${TODAY}-plan-2510-{claude,codex,gemini}.md`. Do not assume the plan-file date (`2026-04-26`) after midnight; immediately archive each successful/current run to corresponding `-${round}.md` snapshots before rerunning.
 - Each successful wave is archived immediately to suffixed snapshots (`-r4.md`, `-r5.md`, etc.) before another rerun can overwrite canonical paths.
-- Canonical unsuffixed files must not be 0 bytes after the review command completes; transient 0-byte placeholders created by the fanout runner during an active run are not approval evidence and must be replaced by provider output or a non-empty `UNAVAILABLE` artifact before committing or requesting approval.
+- Canonical unsuffixed files must not be 0 bytes after the review command completes; transient 0-byte placeholders created by the fanout runner during an active run are not approval evidence and must be replaced by provider output or a non-empty `UNAVAILABLE` artifact before committing or requesting approval. For future approval-routing waves, canonical provider artifacts should begin with `## Verdict`; historical artifacts that contain preamble before `## Verdict` may remain archived as diagnostic evidence but are not sufficient as the final approval-gate artifacts unless the synthesis explicitly classifies them as non-gating.
 - Recovery for inverted review state: if unsuffixed canonical files are 0 bytes but the immediately preceding `-rN.md` archives are populated, preserve the populated archives, mark the failed canonical provider(s) `UNAVAILABLE` in the synthesis, rerun fanout into temp files before replacing canonicals, and do not request approval until the latest canonical artifacts are non-empty valid reviews or explicit non-empty `UNAVAILABLE` artifacts.
 - If all three current provider artifacts are `UNAVAILABLE`/FAIL/0-byte after retry, stop and post a blocker comment instead of treating older archives as current approval evidence.
 - The plan summary must cite the latest valid runtime-dated canonical artifacts and the latest archived snapshots; older `2026-04-26` canonicals may remain as historical r8 evidence but are not current after the 2026-04-27 fanout.
