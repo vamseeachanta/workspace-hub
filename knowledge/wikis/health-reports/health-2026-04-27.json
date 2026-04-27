@@ -1,0 +1,280 @@
+{
+  "generated_at": "2026-04-27 15:03 UTC",
+  "wikis_checked": 5,
+  "total_pages": 19337,
+  "total_issues": 3,
+  "domain_results": [
+    {
+      "domain": "engineering",
+      "status": "healthy",
+      "page_count": 73,
+      "source_count": 13,
+      "entity_count": 23,
+      "concept_count": 34,
+      "link_density": 5.37,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "marine-engineering",
+      "status": "has_issues",
+      "page_count": 19192,
+      "source_count": 19162,
+      "entity_count": 15,
+      "concept_count": 12,
+      "link_density": 1.13,
+      "issues": [
+        {
+          "severity": "warning",
+          "category": "orphan",
+          "page": "/mnt/local-analysis/workspace-hub/knowledge/wikis/marine-engineering/wiki/sources/mark-prentice-r5-mooring-chain-hardness-limit.md",
+          "message": "No inbound links to mark-prentice-r5-mooring-chain-hardness-limit.md"
+        }
+      ],
+      "issue_summary": {
+        "orphan": 1
+      }
+    },
+    {
+      "domain": "maritime-law",
+      "status": "healthy",
+      "page_count": 22,
+      "source_count": 2,
+      "entity_count": 10,
+      "concept_count": 7,
+      "link_density": 2.5,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "naval-architecture",
+      "status": "healthy",
+      "page_count": 45,
+      "source_count": 36,
+      "entity_count": 0,
+      "concept_count": 6,
+      "link_density": 1.22,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "personal",
+      "status": "has_issues",
+      "page_count": 5,
+      "source_count": 0,
+      "entity_count": 4,
+      "concept_count": 0,
+      "link_density": 0.8,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        },
+        {
+          "severity": "warning",
+          "category": "cross-refs",
+          "message": "Low link density (0.8 avg/page)"
+        }
+      ],
+      "issue_summary": {
+        "log": 1,
+        "cross-refs": 1
+      }
+    }
+  ],
+  "cross_link_suggestions": [
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "cadquery",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/cadquery.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "dwop",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/ai-dwop.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "anode",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/anode.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "cfd-offshore",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/cfd-offshore.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "offshore",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/cfd-offshore.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "energy",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/energy-economics.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "economics",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/energy-economics.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "fea-structural-analysis",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/fea-structural-analysis.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "structural",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/fea-structural-analysis.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "carrier",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/lng-carrier-mooring.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "pipeline-integrity",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/pipeline-integrity.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "pipeline",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/pipeline-integrity.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "integrity",
+      "links_to_wiki": "marine-engineering",
+      "links_to_page": "knowledge/wikis/marine-engineering/wiki/entities/pipeline-integrity.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "jsonl-knowledge-stores",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "jsonl",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "knowledge",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "stores",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/jsonl-knowledge-stores.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "python-type-safety",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/python-type-safety.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "python",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/python-type-safety.md"
+    },
+    {
+      "from_wiki": "engineering",
+      "from_page": "knowledge/wikis/engineering/wiki/index.md",
+      "mentions": "type",
+      "links_to_wiki": "personal",
+      "links_to_page": "knowledge/wikis/personal/wiki/entities/python-type-safety.md"
+    }
+  ],
+  "knowledge_gaps": [
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "pipe-fitting"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "flange"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "gasket"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "piping-class"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "pressure-rating"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "dnvgl-os-e201"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "api-5l"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "float-collar"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "float-shoe"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "cementing-plug"
+    }
+  ]
+}

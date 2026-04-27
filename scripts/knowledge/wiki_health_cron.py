@@ -28,11 +28,19 @@ MD_FILE_RE = re.compile(r'\.md$')
 
 
 def get_wiki_domains():
-    """List all wiki domains."""
+    """List all wiki domains.
+
+    Hidden operational directories (for example .planning) are not wikis and
+    should not be linted. Directories that contain only a domain CLAUDE.md are
+    included so the health report can flag the missing wiki/ scaffold instead
+    of silently skipping them.
+    """
     if not WIKIS_DIR.exists():
         return []
     return sorted([d.name for d in WIKIS_DIR.iterdir()
-                   if d.is_dir() and d.name != "health-reports"])
+                   if d.is_dir()
+                   and d.name != "health-reports"
+                   and not d.name.startswith(".")])
 
 
 def run_lint(domain):
@@ -45,6 +53,17 @@ def run_lint(domain):
                 "source_count": 0, "entity_count": 0, "concept_count": 0,
                 "link_density": 0.0, "issues": [{"severity": "critical",
                 "category": "missing", "message": f"Wiki directory not found"}]}
+
+    if not wiki_dir.exists():
+        return {"domain": domain, "status": "missing", "page_count": 0,
+                "source_count": 0, "entity_count": 0, "concept_count": 0,
+                "link_density": 0.0, "issues": [{"severity": "critical",
+                "category": "missing", "message": "wiki/ directory not found"},
+                {"severity": "critical", "category": "index",
+                "message": "index.md missing"},
+                {"severity": "critical", "category": "log",
+                "message": "log.md missing"}],
+                "issue_summary": {"missing": 1, "index": 1, "log": 1}}
 
     issues = []
 
