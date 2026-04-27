@@ -77,7 +77,9 @@ Interpretation: issue #2519 should require a root cleanliness / stash / allowed-
 
 ## AI/dev CLI readiness on ace-linux-2
 
-Available:
+Updated check after user correction: the initial probe used a non-login SSH shell, which omitted user-level paths. A login shell (`bash -lc`) shows Hermes and Codex are available.
+
+Available in non-login shell:
 
 | Tool | Version / status |
 |---|---|
@@ -86,17 +88,24 @@ Available:
 | git | 2.43.0 |
 | gh | 2.90.0 |
 
-Blocked / missing:
+Available in login shell (`bash -lc`):
+
+| Tool | Path / version / status |
+|---|---|
+| `hermes` | `/home/vamsee/.local/bin/hermes`; Hermes Agent v0.11.0 (2026.4.23) |
+| Hermes default model | `{'default': 'gpt-5.5', 'provider': 'openai-codex', 'base_url': 'https://chatgpt.com/backend-api/codex'}` |
+| `codex` | `/home/vamsee/.npm-global/bin/codex`; `codex-cli 0.123.0` |
+| Codex auth files | `~/.codex/auth.json` and `~/.codex/config.toml` exist |
+
+Remaining caveats:
 
 | Tool/auth | Status | Delegation impact |
 |---|---|---|
-| `gh auth status` | token invalid for `vamseeachanta` | Cannot safely post comments, create branches/PRs/issues, or push via `gh` until re-authenticated. |
-| `hermes` | not in `PATH` | Cannot run Hermes worker/orchestration prompts directly. |
-| `claude` | not in `PATH` | Cannot run Claude Code worker prompts directly. |
-| `codex` | not in `PATH` | Cannot burn expiring Codex credit from this machine yet. |
-| `gemini` | not in `PATH` | Cannot run Gemini CLI directly. |
+| `gh auth status` | token invalid for `vamseeachanta` | Cannot safely post comments, create branches/PRs/issues, or push via `gh` until re-authenticated, unless work is strictly local and ace-linux-1 handles GitHub mutations. |
+| `claude` | not found in login-shell check | Do not route Claude Code CLI work here without separate setup. |
+| `gemini` | not found in login-shell check | Do not route Gemini CLI work here without separate setup. |
 
-Interpretation: `ace-linux-2` is currently repo-ready but not AI-agent-runtime-ready. It can become an execution worker after installing/wiring the relevant CLIs and refreshing GitHub auth.
+Interpretation: `ace-linux-2` is repo-ready and **Hermes/Codex-runtime-ready when launched through a login shell**. Delegated prompts must use `ssh ace-linux-2 'bash -lc ...'` or otherwise source the user environment so `/home/vamsee/.local/bin` and `/home/vamsee/.npm-global/bin` are present. GitHub mutation still needs either GH auth repair on `ace-linux-2` or an explicit pattern where `ace-linux-1` owns issue/PR comments and pushes.
 
 ## Engineering programs detected on ace-linux-2
 
@@ -139,5 +148,6 @@ Before delegating work to `ace-linux-2`, the Hermes control-plane on `ace-linux-
 ## Current delegation recommendation
 
 - `ace-linux-1`: primary control plane / orchestrator.
-- `ace-linux-2`: candidate overflow worker for repo tasks and open-source engineering programs, but **blocked for direct AI-provider execution until GitHub auth and AI CLIs are fixed**.
-- For the immediate Codex-expiry objective, do **not** assign Codex work to `ace-linux-2` until `codex` is installed/authenticated or Hermes on `ace-linux-1` can dispatch through an alternate mechanism that still consumes the intended Codex credit.
+- `ace-linux-2`: candidate overflow worker for repo tasks, open-source engineering programs, and Codex/Hermes execution **when launched through a login shell**.
+- For the immediate Codex-expiry objective, `ace-linux-2` can be considered a Codex worker if the launch command uses `bash -lc` and a lightweight preflight confirms Hermes default model remains `openai-codex / gpt-5.5`.
+- Keep GitHub mutation authority on `ace-linux-1` until `gh auth status` is repaired on `ace-linux-2`, or explicitly constrain `ace-linux-2` workers to local commits/artifacts with `ace-linux-1` handling issue comments, labels, pushes, PRs, and closeout.
