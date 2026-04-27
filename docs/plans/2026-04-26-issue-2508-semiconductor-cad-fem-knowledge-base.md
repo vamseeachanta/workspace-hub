@@ -1,6 +1,6 @@
 # Plan for #2508: research(semiconductor): build chip-design CAD/FEM knowledge base and job taxonomy
 
-> **Status:** plan-review — revised after first adversarial review wave; r2 Claude/Codex/Gemini APPROVE
+> **Status:** plan-approved — user approved 2026-04-27; implementation authorized for the scoped docs/research deliverables
 > **Complexity:** T2
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2508
@@ -260,7 +260,7 @@ Tests must be written before the report/YAML implementation under the approved p
 | Codex r2 | APPROVE | Revised plan resolves prior blockers and is approval-ready |
 | Gemini r2 | APPROVE | Approval-ready |
 
-**Overall result:** First review wave returned MAJOR (Codex/Gemini). Plan was revised; r2 Claude/Codex/Gemini all APPROVE. Approval-ready for user decision; implementation remains blocked until explicit approval.
+**Overall result:** First review wave returned MAJOR (Codex/Gemini). Plan was revised; r2 Claude/Codex/Gemini all APPROVE. User approved #2508 on 2026-04-27; implementation is authorized for the scoped docs/research deliverables.
 
 Revisions made based on review:
 - Corrected local job evidence from loose `MATCH_COUNT 10` to curated high-relevance `MATCH_COUNT 6` and embedded the exact `uv run python` scan command.
