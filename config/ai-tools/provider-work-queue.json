@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-26T05:20:07.264573Z",
+  "generated_at": "2026-04-26T21:20:11.829579Z",
   "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-26T05:20:05.382136Z",
+  "scorecard_generated_at": "2026-04-26T21:20:10.065609Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -11,9 +11,57 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 19,
-      "total_candidates": 168,
+      "execution_ready_count": 29,
+      "total_candidates": 170,
       "top_issues": [
+        {
+          "number": 2269,
+          "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "machine:dev-secondary",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-26T11:57:34Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2289,
+          "title": "Plan rollback/recovery for enforcement bypasses detected after commit or push",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2289",
+          "labels": [
+            "priority:high",
+            "cat:harness",
+            "domain:workflow",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-26T11:57:29Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
         {
           "number": 2348,
           "title": "triage: promote #1707/#1708/#1709 from review-backlog \u2014 live scanner has ToS/rate-limit exposure",
@@ -48,7 +96,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-25T11:47:59Z",
+          "updatedAt": "2026-04-26T13:06:37Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -72,7 +120,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-24T16:30:04Z",
+          "updatedAt": "2026-04-26T13:06:38Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -96,7 +144,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-25T11:48:00Z",
+          "updatedAt": "2026-04-26T18:02:05Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -120,7 +168,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-25T11:48:01Z",
+          "updatedAt": "2026-04-26T21:01:01Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -134,65 +182,17 @@
           ]
         },
         {
-          "number": 2408,
-          "title": "feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2408",
+          "number": 2402,
+          "title": "feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2402",
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:release-management",
+            "cat:data-pipeline",
+            "domain:document-intelligence",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T14:24:39Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2433,
-          "title": "chore(ci-health): worldenergydata main CI \u2014 22+ collection errors blocking 5 Dependabot PRs (#329-#333)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2433",
-          "labels": [
-            "priority:high",
-            "cat:infrastructure",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T10:45:03Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2461,
-          "title": "chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2461",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "cat:maintenance",
-            "domain:repo-organization",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T08:22:38Z",
+          "updatedAt": "2026-04-26T11:57:27Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -211,7 +211,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 30,
+      "total_candidates": 27,
       "top_issues": [
         {
           "number": 2462,
@@ -248,7 +248,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-25T11:47:58Z",
+          "updatedAt": "2026-04-26T20:00:53Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -355,16 +355,17 @@
           ]
         },
         {
-          "number": 2194,
-          "title": "feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2194",
+          "number": 2215,
+          "title": "feat(analysis): add migration-debt trend snapshots to provider-session audit",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2215",
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:operations",
-            "cat:harness"
+            "cat:documentation",
+            "cat:harness",
+            "domain:reporting"
           ],
-          "updatedAt": "2026-04-11T09:53:11Z",
+          "updatedAt": "2026-04-11T13:59:27Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -377,16 +378,14 @@
           ]
         },
         {
-          "number": 2195,
-          "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
+          "number": 2221,
+          "title": "feat(daily-report): refresh stale data sources and complete reflect pipeline",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2221",
           "labels": [
-            "enhancement",
             "priority:medium",
-            "cat:operations",
-            "cat:harness"
+            "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-04-11T09:53:14Z",
+          "updatedAt": "2026-04-11T17:19:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -404,7 +403,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 1,
-      "total_candidates": 2,
+      "total_candidates": 3,
       "top_issues": [
         {
           "number": 2346,
@@ -440,6 +439,26 @@
           "updatedAt": "2026-04-16T02:54:39Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
+        {
+          "number": 2501,
+          "title": "chore(planning): #2105 governance-lock \u2014 handoff vs live-state discrepancy",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2501",
+          "labels": [
+            "priority:medium",
+            "cat:documentation",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-26T17:57:48Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",

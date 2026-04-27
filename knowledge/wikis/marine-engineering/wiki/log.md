@@ -5,6 +5,12 @@
 
 ---
 
+## [2026-04-26] query | Offshore wind and O&G cross-section taxonomy
+- Processed: offshore wind array/export cable guide pages, Prysmian 66 kV cable PDF, SUT umbilicals PDF, Prysmian power/optical umbilical PDF, DNV-ST-F101 page, Vallourec coating page, Octal concrete weight coating page.
+- Pages created: concepts/subsea-cable-umbilical-cross-sections.md, sources/offshore-cable-umbilical-cross-section-recon-2026-04-26.md, comparisons/offshore-wind-oil-gas-cross-section-assessment.md.
+- Pages updated: index.md (counts 19186→19189, source_count 19160→19161).
+- Notes: Established first-pass taxonomy for offshore wind inter-array/export cables, O&G umbilicals, rigid pipelines, and flexible pipe/riser follow-up.
+
 ## [2026-04-23] ingest | LNG marine terminal follow-on engineering pages
 - Source: concepts/lng-marine-terminal-engineering.md + existing LNG mooring and port-operation source pages
 - Pages created: concepts/fsru-marine-terminal-interface.md, concepts/lng-berth-operability.md, concepts/lng-transfer-system-envelope.md

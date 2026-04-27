@@ -1,9 +1,9 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-23
-page_count: 19186
-source_count: 19160
+last_updated: 2026-04-26
+page_count: 19189
+source_count: 19161
 ---
 
 # Knowledge Index: Marine Engineering
@@ -45,6 +45,7 @@ source_count: 19160
 | [[Mooring Line Failure]](concepts/mooring-line-failure.md) | HMPE failures, snap-back, 10+ terminal incidents | 2026-04-07 |
 | [[Process Safety]](concepts/process-safety.md) | HAZOP, SIS, SIS, flare, relief — protection layers | 2026-04-07 |
 | [[Sour Service]](concepts/sour-service.md) | H2S environments — SSC, HIC, SOHIC, NACE MR0175 | 2026-04-07 |
+| [[Subsea Cable and Umbilical Cross-Sections]](concepts/subsea-cable-umbilical-cross-sections.md) | Offshore wind cable, O&G umbilical, pipeline, and flexible-pipe cross-section taxonomy | 2026-04-26 |
 
 ## Sources
 
@@ -55,11 +56,14 @@ source_count: 19160
 | [[LNG2026 TP04]](sources/lng2026-tp04-shipping-marine-port-operations.md) | Public programme evidence for LNG shipping, marine, bunkering, STS, and terminal infrastructure topics | Programme Session | Web | 2026-04-23 |
 | [[Mooring Failures]](sources/mooring-failures-lng-terminals.md) | LNG Terminal Mooring Failures (Woodside, MAIB, NOPSEMA) | Incident Compilation | 68 KB YAML | 2026-04-07 |
 | [[Piping Components]](sources/piping-components-ebook.md) | Piping Components for O&G (HardHatEngineer) | Reference Guide | 3.6 MB | 2026-04-07 |
+| [[Subsea Cable, Umbilical, and Pipeline Cross-Section Reconnaissance]](sources/offshore-cable-umbilical-cross-section-recon-2026-04-26.md) | First-pass external source synthesis for offshore wind cables, O&G umbilicals, rigid pipelines, and cross-section modeling gaps | Web/PDF recon | Web | 2026-04-26 |
 | [[RB122]](sources/rb122-float-equipment.md) | Float Equipment (Halliburton) | Product Catalog | 691 KB | 2026-04-07 |
 
 ## Comparisons
 
-_No query outputs filed yet._
+| Page | Summary | Last Updated |
+|------|---------|-------------|
+| [[Offshore Wind and Oil & Gas Cross-Section Assessment]](comparisons/offshore-wind-oil-gas-cross-section-assessment.md) | Prioritized comparison of offshore wind cable, O&G umbilical, rigid pipeline, and flexible-pipe cross-section modeling needs | 2026-04-26 |
 
 ## Topics Covered
 
@@ -71,6 +75,7 @@ _No query outputs filed yet._
 - **Mooring Engineering**: long-period swell resonance, HMPE failures, LNG terminal incidents
 - **LNG Marine Terminals**: berth/jetty engineering, ship/shore transfer interface, bunkering, STS, and terminal operability
 - **Pipeline Integrity**: DNV RP-F101, API 579, corrosion assessment, fitness-for-service
+- **Subsea Cross-Sections**: offshore wind array/export cables, O&G umbilicals, rigid pipelines, flexible-pipe layer taxonomy
 - **Piping**: flanges, gaskets, fittings, pressure ratings
 - **Process Systems**: separators, compressors, process safety, sour service
 - **VIV & Riser Fatigue**: OrcaFlex VIV, wake interference, S-N curves, design fatigue factors
