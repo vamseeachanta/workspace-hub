@@ -1,10 +1,10 @@
 # Plan for #2511: Semiconductor package thermal/thermo-mechanical FEM benchmark
 
-> **Status:** draft — r1 adversarial review MAJOR, revised for r2
+> **Status:** plan-review — r1/r3/r4 MAJOR findings revised; awaiting explicit user approval
 > **Complexity:** T3
 > **Date:** 2026-04-27
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2511
-> **Review artifacts:** scripts/review/results/2026-04-26-plan-2511-claude-r1.md | scripts/review/results/2026-04-26-plan-2511-codex-r1.md | scripts/review/results/2026-04-26-plan-2511-gemini-r1.md | scripts/review/results/2026-04-26-plan-2511-claude.md | scripts/review/results/2026-04-26-plan-2511-codex.md
+> **Review artifacts:** scripts/review/results/2026-04-26-plan-2511-claude-r1.md | scripts/review/results/2026-04-26-plan-2511-codex-r1.md | scripts/review/results/2026-04-26-plan-2511-gemini-r1.md | scripts/review/results/2026-04-26-plan-2511-claude-r2.md | scripts/review/results/2026-04-26-plan-2511-codex-r2.md | scripts/review/results/2026-04-26-plan-2511-claude-r3.md | scripts/review/results/2026-04-26-plan-2511-codex-r3.md | scripts/review/results/2026-04-26-plan-2511-claude-r4.md | scripts/review/results/2026-04-26-plan-2511-codex-r4.md | scripts/review/results/2026-04-26-plan-2511-gemini.md
 
 ---
 
@@ -37,7 +37,7 @@
 - Parent issue #2507 — open umbrella for the semiconductor chip-design CAD/FEM career lane.
 - Sibling issues #2510, #2509, #2512 — remain open; #2511 must not mutate them or depend on their implementation.
 - `docs/research/open-source-fea-survey.md` — ranks CalculiX first for Linux engineering assignments; notes CalculiX supports structural, thermal, and thermo-mechanical workflows and integrates with Gmsh/ParaView.
-- `docs/research/scikit-fem-eval.md` — scikit-fem is useful for Python-native prototypes and mesh I/O but has no shell elements or built-in post-processor; use it as optional follow-up, not as the first solver target.
+- `docs/research/scikit-fem-eval.md` — scikit-fem is useful for Python-native solid-FEM prototypes and mesh I/O; it remains optional follow-up because #2511 prioritizes a local solver path with external-deck/reporting experience (CalculiX first), not because scikit-fem lacks shell elements for this package-solid geometry.
 - `docs/resources/structural-resources.md` — lists CalculiX, Gmsh, FEniCSx, FreeCAD, Elmer, ParaView, SciPy, SfePy, and SALib as structural/FEA resources.
 - External probes on 2026-04-27 returned HTTP 200 for CalculiX, Gmsh docs, CalculiX PDF, scikit-fem docs, and FEniCS project; Elmer docs probe returned 403 and is therefore not a first-wave dependency.
 
@@ -127,12 +127,18 @@ Source count: 8+ distinct sources (issue body, parent/sibling issues, #2508 repo
 | Plan review — Claude r1 | `scripts/review/results/2026-04-26-plan-2511-claude-r1.md` |
 | Plan review — Codex r1 | `scripts/review/results/2026-04-26-plan-2511-codex-r1.md` |
 | Plan review — Gemini r1 | `scripts/review/results/2026-04-26-plan-2511-gemini-r1.md` |
-| Plan review — Claude r2 | `scripts/review/results/2026-04-26-plan-2511-claude.md` |
-| Plan review — Codex r2 | `scripts/review/results/2026-04-26-plan-2511-codex.md` |
-| Plan review — Gemini r2 | `scripts/review/results/2026-04-26-plan-2511-gemini.md` |
-| Plan review disagreement/synthesis | `scripts/review/results/2026-04-26-plan-2511-disagreement.md` |
+| Plan review — Claude r2 | `scripts/review/results/2026-04-26-plan-2511-claude-r2.md` |
+| Plan review — Codex r2 | `scripts/review/results/2026-04-26-plan-2511-codex-r2.md` |
+| Plan review — Claude r3 | `scripts/review/results/2026-04-26-plan-2511-claude-r3.md` |
+| Plan review — Codex r3 | `scripts/review/results/2026-04-26-plan-2511-codex-r3.md` |
+| Plan review — Claude r4 | `scripts/review/results/2026-04-26-plan-2511-claude-r4.md` |
+| Plan review — Codex r4 | `scripts/review/results/2026-04-26-plan-2511-codex-r4.md` |
+| Plan review — Gemini r2 waiver | `scripts/review/results/2026-04-26-plan-2511-gemini.md` (UNAVAILABLE/waiver artifact; r1 trust failure persisted) |
 | Artifact-map note | Review artifact filenames use the local review-execution date (`date +%F`), which may differ from the plan-publication date in the plan filename. |
-| Implementation review | `scripts/review/results/2026-04-27-issue-2511-implementation-review.md` |
+| Implementation review — Claude | `scripts/review/results/2026-04-27-issue-2511-implementation-claude.md` |
+| Implementation review — Codex | `scripts/review/results/2026-04-27-issue-2511-implementation-codex.md` |
+| Implementation review — Gemini | `scripts/review/results/2026-04-27-issue-2511-implementation-gemini.md` or explicit UNAVAILABLE/waiver artifact |
+| Implementation review synthesis | `scripts/review/results/2026-04-27-issue-2511-implementation-review.md` |
 
 ---
 
@@ -174,7 +180,7 @@ PackageLayer dataclass:
     validate positive thickness and integer divisions
 
 Material dataclass:
-    store name, E_Pa, nu, cte_per_K, k_W_m_K, density_kg_m3 optional, source, source_note
+    store name, E_Pa, nu, cte_per_K, k_W_m_K, source, source_note
     validate engineering units, reasonable positive values, and non-empty provenance fields
 
 BenchmarkSpec dataclass:
@@ -196,7 +202,8 @@ write_calculix_inputs(spec, mesh, output_dir):
     write common node/element/material sections
     write thermal .inp with material conductivity and temperature/flux boundary placeholders
     write mechanical .inp with elastic/expansion material data and simple constraints/load step
-    include comments explaining simplifications and units
+    include explicit CalculiX output cards: `*NODE FILE` / `*EL FILE` for `.frd` smoke artifacts and/or `*NODE PRINT` / `*EL PRINT` for `.dat` smoke artifacts
+    include comments explaining simplifications, units, and material provenance
 
 run_calculix_if_available(input_path, output_dir, require_solver_smoke=False, no_solver=False):
     if no_solver and require_solver_smoke: raise ValueError("--no-solver and --require-solver-smoke are mutually exclusive")
@@ -204,23 +211,28 @@ run_calculix_if_available(input_path, output_dir, require_solver_smoke=False, no
     if ccx missing: return skipped status; if require_solver_smoke then raise a clear error
     run ccx in artifact directory with timeout
     capture stdout/stderr/status and expected artifact presence
-    expected CalculiX smoke artifact is a non-empty .dat or .frd file with the same job basename; record .cvg/.sta when present as diagnostics
+    expected CalculiX smoke artifact is a non-empty `.frd` produced by explicit `*NODE FILE` / `*EL FILE` output cards, or a non-empty `.dat` produced by explicit `*NODE PRINT` / `*EL PRINT` cards, with the same job basename; record `.cvg`/`.sta` when present as diagnostics
     if ccx exists and returns nonzero or no expected artifact, record failed; raise when require_solver_smoke=True
 
 summarize_benchmark(spec, mesh, solver_status):
     compute mesh counts, element counts by material/layer, package dimensions, aspect-ratio checks
-    compute simple analytical/sanity checks: layer thermal resistance per area, delta-T estimate from heat flux, free thermal strain estimate from CTE mismatch, curvature/warpage-style educational estimate
-    write JSON and CSV summaries with units, material provenance, solver status, and artifact hashes
+    compute analytical sanity checks with fixed formulas/tolerances: R_layer=thickness/(k*area), R_total=sum(R_layer), delta_T=heat_W*R_total, free_strain=(cte_layer-cte_substrate)*delta_T, warpage_style_um bounded as a positive educational curvature proxy; tests assert finite values, positive thermal resistance/delta_T, and documented tolerance windows rather than exact production physics
+    write initial JSON/CSV summaries with units, material provenance, and solver status; after plots/report/manifest are written, update summary artifact hashes in a deterministic second pass
 
 render_result_plots(spec, summary, output_dir):
     write temperature_profile.svg showing through-thickness temperature estimate
     write stress_warpage_estimates.svg showing layer CTE mismatch / normalized stress and warpage-style estimates
+    use deterministic SVG emission: fixed float precision, sorted/constant attribute order, explicit UTF-8, locale-independent decimal formatting
     write result_profiles.csv with plotted data and units
 
 render_report(spec, summary, output_dir):
     create Markdown report at docs/reports/semiconductor-package-fem-benchmark.md
     embed generated tables, stackup schematic, temperature plot, and stress/warpage-style plot
     document boundary conditions, loads, materials, units, solver status, convergence notes, limitations, portfolio framing
+
+main():
+    parse --output, --report, and mutually exclusive argparse flags `--no-solver` / `--require-solver-smoke` before writing artifacts
+    run generation, optional solver smoke, initial summary, deterministic plots/report, manifest, then final summary hash update
 ```
 
 ---
@@ -244,7 +256,10 @@ render_report(spec, summary, output_dir):
 | Create | `docs/reports/semiconductor-package-fem-benchmark.md` | Portfolio-safe engineering report |
 | Update | `docs/plans/README.md` | Add #2511 plan row |
 | Create | `.planning/plan-approved/2511.md` | Only after explicit user approval, before implementation commit |
-| Create | `scripts/review/results/2026-04-27-issue-2511-implementation-review.md` | Post-implementation adversarial review artifact |
+| Create | `scripts/review/results/2026-04-27-issue-2511-implementation-claude.md` | Post-implementation Claude review artifact |
+| Create | `scripts/review/results/2026-04-27-issue-2511-implementation-codex.md` | Post-implementation Codex review artifact |
+| Create | `scripts/review/results/2026-04-27-issue-2511-implementation-gemini.md` | Post-implementation Gemini review artifact or explicit unavailable/waiver artifact |
+| Create | `scripts/review/results/2026-04-27-issue-2511-implementation-review.md` | Post-implementation review synthesis artifact |
 
 ---
 
@@ -261,7 +276,7 @@ Write these tests before implementation.
 | `test_calculix_input_decks_include_materials_steps_units_and_solver_names` | `.inp` writer includes nodes/elements/materials, expansion/conductivity data, step blocks, units comments, compatible element/material keywords, and documented solver smoke status | generated mesh | thermal and thermomechanical `.inp` files contain required sections/strings and summary can record smoke result |
 | `test_summary_contains_sanity_checks_sources_manifest_and_solver_status` | summary JSON records mesh counts, thermal resistance estimate, CTE mismatch/warpage estimate, material sources, units, artifact hashes, and solver skipped/run/failed status | generated artifacts | required JSON keys and numeric values in plausible ranges |
 | `test_result_plots_and_report_documents_engineering_assumptions_and_limitations` | temperature/stress/warpage-style SVGs exist and report includes BCs, loads, materials, units, convergence/mesh note, result-plot references, and portfolio-only limitation | generated artifacts/report | required SVGs and headings/phrases present |
-| `test_report_does_not_claim_jedec_or_ipc_compliance` | standards guardrail prevents overclaiming with case-insensitive regex | generated report | no phrases matching hyphenated or non-hyphenated `JEDEC[- ]?compliant`, `IPC[- ]?compliant`, `meets JESD22`, `per IPC`, `validated to JEDEC`, `certified`, or `production signoff` |
+| `test_report_does_not_claim_jedec_or_ipc_compliance` | standards guardrail prevents affirmative overclaiming with case-insensitive regex while allowing negative limitation disclaimers | generated report | implement guard as token/window logic: flag affirmative phrases unless preceded within three tokens by `not`, `no`, `without`, or `does not`; forbid affirmative JEDEC/IPC compliance, `meets JESD22`, `per IPC`, `validated to JEDEC`, affirmative certified, or affirmative production signoff; explicitly allow negative limitation phrases such as `not JEDEC-compliant`, `not IPC-compliant`, `not production-certified`, `not validated to JEDEC`, and `not for production signoff` |
 | `test_cli_regenerates_expected_artifacts_and_manifest_is_stable` | CLI can regenerate all committed artifacts in a temp output directory and compare manifest/schema invariants against the committed artifact set | `uv run python scripts/semiconductor/package_fem_benchmark.py --output <tmp> --report <tmp>/report.md --no-solver` | expected files exist, manifest lists all artifacts, and stable schema/mesh/material hashes match committed invariants |
 | `test_solver_wrapper_skips_cleanly_when_ccx_missing_without_require_flag` | solver execution is skip-safe in tests when unavailable | monkeypatch `shutil.which` to None | status `skipped` with reason `ccx not found` |
 | `test_solver_wrapper_requires_smoke_when_flag_is_set` | implementation has an enforceable solver-smoke mode instead of an unfalsifiable suitability claim | monkeypatch `shutil.which` to None and call with `require_solver_smoke=True` | clear RuntimeError / failure status |
@@ -273,6 +288,7 @@ Write these tests before implementation.
 ## Acceptance Criteria
 
 - [ ] Canonical plan and review artifacts exist and #2511 is explicitly approved before implementation begins.
+- [ ] Implementation starts with the documented Hermes/workspace contention preflight or an equivalent clean-worktree verification.
 - [ ] Tests are written first and the initial focused test run fails for missing implementation/artifacts.
 - [ ] `uv run pytest tests/semiconductor/test_package_fem_benchmark.py -q` passes after implementation.
 - [ ] `uv run python scripts/semiconductor/package_fem_benchmark.py --output data/semiconductor/package_fem_benchmark --report docs/reports/semiconductor-package-fem-benchmark.md --no-solver` regenerates the committed deterministic benchmark artifacts.
@@ -283,8 +299,8 @@ Write these tests before implementation.
 - [ ] `package_stackup.svg`, `temperature_profile.svg`, `stress_warpage_estimates.svg`, and `result_profiles.csv` are generated, non-empty, and referenced by the report.
 - [ ] Report explicitly documents boundary conditions, loads, materials/provenance, units, mesh/convergence notes, solver status, result-plot interpretation, and limitations.
 - [ ] Report frames the result as a portfolio benchmark, not a production-certified semiconductor model.
-- [ ] Report and generated artifacts do not claim JEDEC/IPC compliance or proprietary source extraction.
-- [ ] Post-implementation adversarial review is run; any MAJOR findings are fixed before closeout.
+- [ ] Report and generated artifacts do not make affirmative JEDEC/IPC compliance, certification, validation, or production-signoff claims; negative limitation disclaimers are required and allowed by tests.
+- [ ] Post-implementation adversarial review is run with Claude/Codex/Gemini artifacts or explicit provider-unavailable waiver artifacts; any MAJOR findings are fixed before closeout.
 
 ---
 
@@ -297,9 +313,11 @@ Write these tests before implementation.
 | Gemini r1 | UNAVAILABLE | CLI trust failure before retrieval; no review signal. |
 | Claude r2 | MINOR | All r1 blockers resolved; requested tightening around stackup SVG test, solver flag precedence, citation-contract boundary, artifact-date convention, Hermes preflight, and expected CalculiX artifacts. |
 | Codex r2 | MAJOR | Provider could not retrieve the local uncommitted plan and flagged solver-downgrade risk plus standards-regex guardrail; solver/regex findings were folded into this revision, retrieval concern is resolved by committing/pushing the plan before approval request. |
-| Gemini r2 | NOT RUN | r1 trust failure; no additional signal required before approval if Claude/Codex issues are addressed and artifacts are committed. |
+| Gemini r2 waiver | UNAVAILABLE | `scripts/review/results/2026-04-26-plan-2511-gemini.md` records the policy reduction: Gemini r1 failed before retrieval with rc=55 and Claude/Codex provided substantive adversarial coverage. |
+| Claude r3/r4 | MAJOR | Found stale artifact pointers, untracked review artifacts, regex ambiguity, missing numeric sanity ranges, missing output-card/CLI/preflight detail, and self-referential wrapper artifacts. |
+| Codex r3/r4 | MAJOR | Found canonical-plan drift before commit, missing Gemini waiver artifact before commit, summary/hash ordering, and standards-guard contradiction. |
 
-**Overall result:** r1 FAIL / r2 CONDITIONAL — do not implement yet; ready for plan-review posting after this revision is committed/pushed and user explicitly approves.
+**Overall result:** r1/r3/r4 FAILINGS ADDRESSED IN PLAN — do not implement yet; plan-review artifacts must be committed/pushed and user must explicitly approve before TDD implementation.
 
 Revisions made based on r1 review:
 - Added temperature profile and stress/warpage-style SVG/CSV result artifacts and tests.
@@ -309,12 +327,13 @@ Revisions made based on r1 review:
 - Added artifact manifest/regeneration invariants.
 - Added per-material source/provenance fields and tests.
 - Corrected review artifact bookkeeping to preserve r1 artifacts and note review-execution-date naming.
-- Added stackup SVG test/AC, solver flag mutual exclusion, stricter standards-overclaim regex, explicit CalculiX smoke artifact contract, Hermes preflight risk, and mandatory local solver smoke closeout when `ccx` is present.
+- Added stackup SVG test/AC, solver flag mutual exclusion at CLI/parser level, explicit token/window standards-overclaim guard with negative-disclaimer allowance, explicit CalculiX output-card/smoke artifact contract, Hermes active-writer preflight risk, deterministic SVG emission, per-provider implementation-review artifacts, fixed formula/tolerance expectations for sanity checks, deterministic two-pass summary hash ordering, versioned review artifact pointers, and mandatory local solver smoke closeout when `ccx` is present.
 
 ---
 
 ## Risks and Open Questions
 
+- **Risk: Hermes/workspace contention.** Before implementation or commit from this worktree, run `git fetch origin main`, `git status -sb`, and a quick `pgrep -af "git (rebase|stash push|commit|merge|reset|checkout)"` preflight; if main is dirty or another writer is active, keep work isolated in a temp worktree and cherry-pick only intended artifacts.
 - **Risk: CalculiX input semantics.** A generated `.inp` can be solver-ready in structure but still need iterative solver-specific fixes. Mitigation: tests verify deck structure; deterministic regeneration may use `--no-solver`; issue closeout must run `--require-solver-smoke` when local `ccx` exists and must stop for fixes/re-scope if the local solver rejects the deck; report must clearly state whether real solver execution succeeded, skipped, or failed.
 - **Risk: solver availability differs by machine.** Mitigation: implementation must not require `ccx` in CI/test; command availability is recorded in summary.
 - **Risk: stdlib-only plotting limits visual quality.** Mitigation: generate simple but explicit SVG temperature and stress/warpage-style plots plus tables first; richer Plotly/ParaView visuals become follow-up work if needed.
