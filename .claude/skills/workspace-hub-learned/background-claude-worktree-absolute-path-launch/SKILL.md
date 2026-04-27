@@ -59,6 +59,16 @@ Failure signal:
 - process status is `exited`
 - output preview shows missing prompt path or missing log path
 
+Also persist a small run manifest immediately after launch (for example `logs/overnight/<run>/RUNNING.md` or a shell transcript) with:
+- issue / terminal mapping
+- Hermes process session ID
+- OS PID, if available
+- prompt file path
+- log file path
+- expected result artifact path
+
+Hermes `process(action="list")` can return an empty process list even while direct polling by a known `session_id` still reports `running`. Treat the launch-returned session IDs as authoritative and poll them directly. Do not relaunch solely because `process list` is empty or because Claude logs are still zero bytes; first check direct poll, OS PID liveness, and expected result artifact creation.
+
 ## Recovery
 
 If the first launch used relative paths and failed:

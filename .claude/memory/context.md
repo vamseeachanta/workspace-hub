@@ -33,7 +33,7 @@
 nested repo or site content root. Check `digitalmodel/`, `worldenergydata/`, *verified: 2026-04-24*
 `assethold/`, and `aceengineer-website/` before treating those paths as *verified: 2026-04-25*
   deleted workspace-hub files.
-- Hermes audit interpretation (2026-04-24): reads under `.claude/worktrees/`,
+- Hermes audit interpretation (2026-04-24): reads under `.claude/worktrees/`, *verified: 2026-04-27*
   `.worktrees/`, `/mnt/local-analysis/worktrees/`, and `/tmp/` are usually
   session-local worktree artifacts. Promote only durable outputs back to
   repo-root docs, plans, skills, or scripts.
@@ -51,7 +51,7 @@ Memory travels with the repo via git. No Hermes needed on Windows.
 1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
 2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory, *verified: 2026-04-12*
 injects it into the `<!-- BRIDGE:START/END -->` section of `agents.md` via template, *stale: 2026-04-17*
-   mirrors Claude auto-memory topic files to `topics/`, commits and pushes.
+mirrors Claude auto-memory topic files to `topics/`, commits and pushes. *stale: 2026-04-27*
 3. **Windows (licensed-win-1)**: `git pull` — gets updated `.claude/memory/` automatically. *verified: 2026-04-11*
 4. **Return enrichment**: New lessons learned on any machine go into `KNOWLEDGE.md`
    or topic files, committed and pushed. Next `git pull` on any machine picks them up.

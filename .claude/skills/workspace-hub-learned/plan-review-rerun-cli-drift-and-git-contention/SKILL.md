@@ -53,6 +53,15 @@ Use this when hardening a `status:plan-review` issue through repeated adversaria
    - Post a progress comment with exact local artifacts prepared for commit and leave the worktree for the active writer to clear.
    - Only remove `.git/index.lock` when no real git process is running.
 
+7. Recover when the terminal/fanout path itself is unstable.
+   - If the terminal tool fails before running commands (for example `FileNotFoundError: [Errno 2] No such file or directory: '%s'`), switch to `execute_code` with `subprocess.run(..., cwd='<repo>')` for git, `gh`, and review commands rather than abandoning the gate.
+   - If a combined fanout command times out, rerun providers one at a time (for example `--providers=codex` then `--providers=claude`) and read the regenerated provider artifacts directly.
+   - If ad-hoc provider CLI reruns stall with empty stdout/logs, do not wait indefinitely: poll once or twice, kill the stuck process, preserve any successful provider output, and record the stalled provider as infrastructure/tooling state rather than substantive review signal.
+   - For non-interactive reruns, prefer an explicit prompt file plus the provider's documented stdin mode. Avoid shell patterns that confuse the wrapper into waiting for stdin (for example a positional prompt while stdin is still open, or giant command substitutions that bypass expected file input). If a wrapper prints "Reading additional input from stdin..." or "no stdin data received" and then hangs, relaunch with corrected stdin handling or mark unavailable.
+   - Treat review artifacts as stale unless they were generated after the latest plan commit or patch. A MAJOR artifact that predates the final patch is diagnostic input, not current gate evidence.
+   - When a provider rerun downgrades to MINOR with an empty Blockers list, patch only governance/clarity minors that materially affect implementability before the final gate; do not churn the plan for cosmetic findings.
+   - Before citing review artifacts in a committed plan, verify the artifact path is trackable in the target repo. If `scripts/review/results/` is ignored, either use an already-tracked review-artifact location such as `docs/reports/` or explicitly force-add only when repo policy allows it; do not cite ignored local-only files as durable approval evidence.
+
 ## GitHub progress comment template
 
 ```text

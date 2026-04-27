@@ -56,6 +56,8 @@ Do not blur them in one mixed list.
 - Keep the issue OPEN but draft-only.
 - Do not add `status:plan-review` while MAJOR remains.
 - Post short GitHub comments summarizing the latest blocker cluster and linking the fresh review artifacts.
+- If 3+ consecutive waves return MAJOR, explicitly surface the sustained-MAJOR loop in the plan/governance notes instead of pretending the next wave is routine.
+- Define a termination/escalation rule: keep patching concrete contradictions or missing executable contract details; if remaining MAJOR findings are demonstrably false positives, provider-unavailable/retrieval failures, or minority dissent after valid evidence, stop the churn, document the dissent with artifact paths, and route to explicit user decision. Do not self-approve.
 
 6. Rerun review immediately after each patch wave.
 Do not leave the plan claiming blockers are fixed without a fresh wave.
@@ -618,6 +620,44 @@ Rule:
 - define unavailable-provider artifacts explicitly: attempted command, stdout/stderr byte counts, raw-error path if present, and the same reviewed-commit/hash metadata
 - if provider CLI output is empty or sandbox-broken, record it as provider infrastructure state and use the repo review policy to decide whether it blocks the gate
 - never cite mutable/empty review files as if they were approval evidence
+
+### J8. Review-artifact metadata contracts must bind producer input, metadata, and parser authority
+
+When hardening a plan that changes review-artifact provenance or stale-SHA detection, reviewers will keep returning MAJOR unless the plan defines the whole evidence chain, not just a parser rule.
+
+Rule:
+- require a strict metadata header at byte zero; do not recover machine trust from quoted/fenced body text or body `## Verdict` sections
+- require machine fields such as `Issue`, `Plan-Path`, `Provider`, `Perspective`, `Verdict`, `Plan-SHA256`, `Plan-Commit`, `Reviewed-Revision`, and `Reviewed-At`
+- bind provider input and metadata to the same immutable plan snapshot; read the plan once, hash those bytes, and feed every provider from those same bytes
+- emit a real git commit SHA only when the reviewed snapshot equals the committed plan blob; otherwise use an explicit `WORKTREE:<plan_sha256>` draft sentinel
+- treat `WORKTREE:*` artifacts as diagnostic only, not clean Lane A/B approval evidence
+- cover every producer path that can create plan-review artifacts, including fanout success/failure stubs and adjacent submit-wrapper/cross-review failure paths, or explicitly exclude those paths from ingestion
+- preserve raw provider stdout/stderr after the metadata header when raw output is part of the evidentiary contract
+- make provider CLI trust/sandbox flags concrete and testable; avoid vague wording like “set appropriate trust flags”
+
+Typical tests:
+- quoted/body `Plan-SHA256` ignored
+- missing header `Verdict` is metadata-incomplete
+- malformed timestamp and abbreviated commit SHA rejected
+- provider/perspective mismatch is untrusted
+- duplicate current artifacts with conflicting verdict/status/SHA block clean evidence
+- fanout metadata SHA matches the exact bytes sent to each provider
+
+### J9. Separate draft-content blockers from promotion/retrievability blockers
+
+When iteratively hardening a local draft, adversarial reviewers may return MAJOR for two different classes of issues:
+- true plan-content defects that must be patched before the next rerun
+- promotion/readiness defects such as missing peer-provider artifacts, local artifacts not yet committed to `main`, or provider sandbox failures (`bwrap`/network/retrieval errors) that prevent independent verification
+
+Rule:
+- patch true content defects immediately
+- do not keep rewriting the implementation contract merely to satisfy a reviewer that cannot retrieve local files if the current run used the exact inline artifact
+- record retrieval failures as environment/review-infrastructure limitations, not as design facts
+- keep the issue `draft` / not `status:plan-review` until required provider artifacts exist and are committed/retrievable
+- if the plan cites live repo facts, either include self-contained attested evidence for those facts or move them to explicit prechecks/manual verification steps
+- missing Claude/Gemini/Codex artifacts are gate blockers for promotion, but not necessarily content blockers during a targeted single-provider hardening loop
+
+This prevents churn where the plan is repeatedly rewritten for non-content findings while still preserving the hard gate that no issue advances without clean, retrievable review evidence.
 
 ### K. Runtime replacement plans need behavior-preservation proof, not just string-removal tests
 If a plan changes launcher/runtime forms (for example `python3` -> `uv run --no-project python`), tests that only prove the old string disappeared are insufficient.

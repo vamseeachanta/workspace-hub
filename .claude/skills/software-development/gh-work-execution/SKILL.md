@@ -447,6 +447,11 @@ For non-trivial changes, run a review pass focused on:
 - shell safety / state handling / regression risk
 - adequacy of tests
 - whether discovered extra work should become future issues instead of expanding scope
+- artifact/output contract drift across every emitted surface, not just the primary code path
+
+For report, audit, inventory, or generated-artifact work, the adversarial review must challenge JSON summaries, Markdown sections, helper scripts, closeout reports, fixture/dry-run modes, and untrusted/partial-state behavior. If a safety condition suppresses authoritative findings, verify summaries and generated artifacts are suppressed or clearly marked too; do not accept a green test suite that only covers the primary findings list while secondary outputs can still mislead closeout.
+
+For generated engineering/scientific artifacts, add a model-to-artifact consistency challenge: do not rely on string-presence tests or report claims alone. Verify the numerical/physical model used in analytical summaries is the same model emitted into solver decks, CSV/JSON profiles, plots, and reports. Add at least one regression assertion at an interface/boundary/representative point that would fail if the artifact uses a simplified or stale formula (for example cumulative layer resistance vs linear-thickness interpolation, load magnitude in a solver card vs reported power, or boundary-condition value vs report text).
 
 Classify the result explicitly:
 - `PASS` -> no material objections remain
@@ -523,6 +528,10 @@ Keep the issue open when:
 - acceptance traceability has a gap
 - validation or review evidence is missing
 - a blocker was identified without a resolved reroute path
+
+After close/push, verify and repair status labels explicitly. Auto-closing through a `Closes #NNNN` commit can leave stale workflow labels such as `status:plan-approved` on a closed issue. Read the final issue labels, remove conflicting `status:*` labels, and apply the terminal label used by the repo (for workspace-hub, usually `status:done`) before reporting final gate state.
+
+For generated inventory/report closeouts, preserve authoritative input snapshots rather than overwriting them with a simplified helper fixture. If a helper needs planning-time paths, parse the existing snapshot schema (for example `paths.filesystem_only_active`) and add tests for that schema. Treat accidental snapshot shrinkage as artifact drift: restore the snapshot, update the helper adapter, rerun targeted tests, regenerate only the intended closeout report, and then commit.
 
 ### 8. Multi-agent closeout/integration reporting
 When delegated or hybrid execution was used, append a compact integration block to the final closeout comment:
@@ -614,10 +623,12 @@ When an approved parent issue has become an umbrella/decomposition contract and 
 ## Git pitfalls
 
 If push fails due to remote mismatch after a valid local commit:
-- pull --rebase
-- push again
+- first verify whether the remote actually advanced despite the error: `git fetch origin <branch> && git rev-parse HEAD origin/<branch>`
+- if `HEAD == origin/<branch>`, treat the push as landed and do not retry/pull unnecessarily
+- if GitHub rejects with `cannot lock ref ... is at <new-sha> but expected <old-sha>`, that can still mean the push landed while another process updated the local remote-tracking ref; immediately fetch and compare `HEAD` vs `origin/<branch>` before retrying
+- if the remote is genuinely ahead or divergent, inspect the new remote commits, then `git pull --rebase` only when it is safe for the current scope, and push again
 
-If unrelated edits block the push, stash them temporarily, finish the current issue push, then restore.
+If unrelated edits block the push, stash them temporarily when safe. If stash silently fails or branch switching is blocked by unrelated dirt, use a clean temporary worktree from the target branch to make docs-only/closeout commits; record that the original checkout remains dirty so the next operator does not assume a clean `main` state.
 
 ## Artifact hygiene
 

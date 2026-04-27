@@ -45,11 +45,22 @@ unless the new artifact is already present and non-empty.
 Before citing a review artifact in the plan body or summary, check:
 - `wc -c scripts/review/results/<file>.md`
 - `read_file()` or `terminal("sed -n '1,40p' ...")`
+- `git status -s scripts/review/results/` to catch deleted/renamed tracked stubs or untracked real artifacts
+- `git ls-tree -r --name-only HEAD scripts/review/results | grep <issue>` after commit to verify the committed evidence paths match the plan's header / Artifact Map
 
 Minimum acceptable evidence:
 - a verdict line
 - a summary line
 - at least one substantive finding or explicit statement of what was checked
+- the exact cited artifact path is non-empty and committed when requesting user approval
+
+## Round-archiving rule for mutable fanout outputs
+
+If the review fanout writes mutable provider paths like `YYYY-MM-DD-plan-<issue>-claude.md`, do not `mv` a valid artifact away and then cite the now-empty/missing mutable path in the plan. Prefer one of these safe patterns:
+1. Copy the populated mutable file to an immutable round path (`...-claude-r2.md`) after verifying it is non-empty, then update the plan to cite the immutable path; or
+2. Keep citing the mutable path, but do not move it and verify it remains populated after any rerun.
+
+If a rerun fails and leaves `*.md` as 0 bytes with only a `*.err` sidecar, treat that run as provider-infrastructure evidence only. Either rerun successfully or cite an explicit unavailable/waiver artifact; never let the plan's front-matter or Artifact Map point at the 0-byte file.
 
 ## Why this matters
 This prevents self-inflicted review failures where the plan appears to claim evidence that does not yet exist. It keeps approval-stage artifacts honest and avoids wasting a rerun on governance contradictions instead of real plan quality.

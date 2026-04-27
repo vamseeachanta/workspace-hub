@@ -60,10 +60,25 @@ When building the next adversarial-review prompt:
 
 1. Read the handoff
 2. Recheck the six-state set above
-3. Patch the local plan/header/review summary to match current reality
-4. Generate the fresh review prompt from the patched draft
-5. Run provider reruns
-6. Only after the rerun, decide whether GitHub labels/comments/markers need rollback or promotion
+3. Compare any preserved todo/task list against live state; after context compaction, todos may be stale relative to already-completed commits/comments/labels
+4. If the gate is already complete, do a narrow verification/cleanup pass only; do not rerun reviews, repost comments, or re-apply labels just because stale todos say they are pending
+5. Patch the local plan/header/review summary to match current reality when live state proves drift remains
+6. Generate the fresh review prompt from the patched draft only if a material re-review is still needed
+7. Run provider reruns only when the current artifact trail is missing, stale, or blocking
+8. Only after any needed rerun, decide whether GitHub labels/comments/markers need rollback or promotion
+
+### Context-compaction resume guard
+
+When resuming after a compressed handoff, treat the summary as evidence to verify, not as a command to replay. A preserved active todo list can lag behind completed operations. Before executing pending-looking steps, check:
+- whether the claimed commit is already in `git log` / pushed to `origin/main`
+- whether the final GitHub comment already exists
+- whether labels already match the intended gate state
+- whether README/plan/review artifacts already reflect the final state
+- whether `.planning/plan-approved/<issue>.md` exists or is absent as expected
+
+If all surfaces already agree, stop at verification and final reporting. Avoid duplicate GitHub comments, duplicate label churn, and unnecessary review reruns.
+
+If a local-only session-state file (for example `.claude/state/session-signals/*.jsonl`) remains dirty after stash restoration and is unrelated to the issue gate, classify it as session churn rather than plan work; restore or stash it separately before finalizing so the planning gate stays clean.
 
 ## Next-step triage after a dirty handoff
 

@@ -16,10 +16,18 @@ Use when you have already produced a roadmap, readiness matrix, or gap analysis 
 
 ## When to use
 - A roadmap identifies future work and the user wants issues created
+- The user names a new domain/career lane and asks to research practices, create GitHub features/issues, or build job-ready capability; first create a lightweight roadmap artifact, then turn it into an issue wave
 - You have an issue/review/readiness summary and need to convert only the missing items into GitHub issues
 - You need one umbrella issue plus a small set of focused child issues
 
 ## Core pattern
+0. If the roadmap does not exist yet, create a lightweight roadmap first
+   - Put it under `docs/roadmaps/<domain>-<purpose>-roadmap.md` when it is durable product/career direction
+   - Mine local job-market scans or strategy docs for existing demand signals before fresh web research
+   - Check current external practice/tool anchors just enough to avoid stale framing
+   - Include a capability-wave sequence and an initial issue set in the roadmap
+   - Commit/push the roadmap before or immediately after creating the issue wave when repo policy permits docs-only commits
+
 1. Ground on the roadmap artifact first
    - Read the roadmap/review doc that defines the future work
    - Extract the exact candidate issues to create
@@ -63,6 +71,21 @@ Use when you have already produced a roadmap, readiness matrix, or gap analysis 
 - Use children for family-level proofs/examples, not for already-open infrastructure work
 - Do not recreate broad infra issues if they already exist; reference them from the new epic
 - If an issue is really a duplicate/sub-scope of an existing open issue, fold it into the existing issue rather than create a new one
+
+## Domain / career-lane issue wave pattern
+
+When the user names a new technical domain or career lane and asks to build knowledge, demos, and job-readiness:
+- Start with a bounded research/docs taxonomy issue before implementation-heavy demos.
+- Use that first issue to inventory current practices, tools, role taxonomy, and job-skill mapping.
+- Sequence downstream child issues from lower-risk proof to public portfolio packet, for example:
+  1. knowledge base + job taxonomy
+  2. solver/benchmark proof in the domain
+  3. CAD/layout/process automation demo
+  4. full tool-flow demo/report
+  5. portfolio/job-application packet
+- Keep each child issue one artifact family wide. Do not let the knowledge-base issue absorb downstream benchmark code, CAD automation, full tool-flow execution, or resume/portfolio writing.
+- In the first issue plan, explicitly list downstream issue numbers as non-goals / follow-ups so adversarial review can verify scope discipline.
+- Lock the first issue to durable artifacts that can guide later execution, such as a report plus a machine-readable taxonomy/skill matrix and a test that verifies required sections/entries.
 
 ## Recommended body skeleton
 

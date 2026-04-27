@@ -43,4 +43,6 @@ It removes ambiguity about which artifact is under review and prevents the revie
 ## Notes
 - This is especially useful after iterative plan hardening on GitHub issues.
 - Use compact prompts first when possible, but switch to artifact-inline once the reviewer keeps citing removed content.
+- If the provider reports sandbox/local retrieval failures while the exact artifact was inlined, separate true content findings from infrastructure/retrievability findings. Patch content defects, but treat missing `main` visibility or failed `sed`/`grep` retrieval as promotion-gate evidence rather than proof the inline draft is wrong.
+- Do not cite uncommitted/local-only artifacts as approval evidence. Keep the issue draft-only until clean review artifacts are committed and retrievable from the required branch.
 - Save the raw rerun output and replace the canonical review artifact only after the rerun succeeds.

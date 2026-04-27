@@ -31,9 +31,13 @@ Use when a local plan has gone through multiple adversarial review waves and any
 
 4. Treat mutable fanout outputs as diagnostic until promoted to immutable evidence.
    - Do not cite mutable paths like `scripts/review/results/YYYY-MM-DD-plan-<issue>-claude.md` as approval evidence unless they are committed, non-empty, SHA-bound to the reviewed plan revision, and contain a parseable `## Verdict`/`## Verdicts` section.
-   - Prefer timestamped immutable provider artifacts for gate evidence, e.g. `scripts/review/results/YYYYMMDDTHHMMSSZ-plan-<issue>-claude.md`.
+   - Prefer timestamped or round-suffixed immutable provider artifacts for gate evidence, e.g. `scripts/review/results/YYYYMMDDTHHMMSSZ-plan-<issue>-claude.md` or `scripts/review/results/YYYY-MM-DD-plan-<issue>-claude-r2.md`.
    - Provider artifacts are authoritative over disagreement/synthesis artifacts. If a disagreement summary conflicts with the provider files, treat the conflict as a gate blocker until adjudicated; do not let the synthesis file override provider verdicts.
    - If a fanout rewrites mutable artifacts to empty/truncated files or leaves only `.err` files, mark that run as diagnostic/provider-infra evidence only and rerun or copy fresh valid artifacts before claiming review clearance.
+   - If mutable canonical outputs are `0` bytes after a completed run but round-suffixed archive artifacts are populated, treat that as an inverted-routing/review-infra state: verify file sizes in the real worktree, archive the non-empty artifacts with explicit provenance, and rerun or create non-empty `UNAVAILABLE` artifacts before citing the canonical paths. Never cite empty canonical files as valid evidence.
+   - If all providers are simultaneously `UNAVAILABLE`, the plan is not approval-ready by default. Escalate to the user with the attempted commands, stderr/stdout byte counts, and artifact paths; require a fresh valid provider review or explicit documented user override before implementation.
+   - When a provider cannot read local files and switches to GitHub/main retrieval, commit and push the current plan first, then verify the remote path/sha or URL before treating the review as authoritative. Inline or uncommitted-plan reviews can be useful feedback, but they must not be represented as approval evidence for the canonical plan until the canonical committed plan matches the reviewed text.
+   - If a provider falls back to MCP-only or remote-only retrieval because local sandboxing fails (for example `bwrap`/namespace errors), classify it as valid only when the artifact cites immutable GitHub/blob/commit evidence and states the local limitation. Otherwise classify it as `UNAVAILABLE`, not as a substantive approval signal.
 
 5. Do not hand-wave README drift.
    - If `docs/plans/README.md` is accurate, treat it as verification-only state.

@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-04-26T21:20:11.829579Z",
-  "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-26T21:20:10.065609Z",
+  "generated_at": "2026-04-27T05:20:08.340267Z",
+  "current_week": "2026-W18",
+  "scorecard_generated_at": "2026-04-27T05:20:06.505719Z",
   "recommended_provider_order": [
-    "codex",
     "gemini",
+    "codex",
     "claude"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 29,
+      "execution_ready_count": 25,
       "total_candidates": 170,
       "top_issues": [
         {
@@ -32,7 +32,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -55,30 +55,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2348,
-          "title": "triage: promote #1707/#1708/#1709 from review-backlog \u2014 live scanner has ToS/rate-limit exposure",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2348",
-          "labels": [
-            "bug",
-            "priority:high",
-            "domain:gtm",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T09:07:12Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -102,7 +79,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -126,7 +103,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -150,7 +127,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -174,7 +151,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -198,7 +175,32 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2408,
+          "title": "feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2408",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:release-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-23T14:24:39Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -342,7 +344,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-24T01:33:08Z",
+          "updatedAt": "2026-04-26T21:54:09Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",

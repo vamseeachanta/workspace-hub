@@ -1,27 +1,27 @@
 # Provider work queue
 
-Generated: 2026-04-26T21:20:11.829579Z
-Current week: 2026-W17
-Recommended provider order: codex, gemini, claude
+Generated: 2026-04-27T05:20:08.340267Z
+Current week: 2026-W18
+Recommended provider order: gemini, codex, claude
 
 Execution-ready means the issue already carries `status:plan-approved` or an explicit agent label.
 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 29
+- Execution-ready candidates: 25
 - Total routed candidates: 170
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:documentation, machine:dev-secondary, status:plan-approved |
 | #2289 Plan rollback/recovery for enforcement bypasses detected after commit or push | yes | strategy/workflow/architecture language | priority:high, cat:harness, domain:workflow, status:plan-approved |
-| #2348 triage: promote #1707/#1708/#1709 from review-backlog — live scanner has ToS/rate-limit exposure | yes | strategy/workflow/architecture language | bug, priority:high, domain:gtm, status:plan-approved |
 | #2364 feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:knowledge-management, status:plan-approved |
 | #2368 feat(knowledge): generate faceted portal pages for large LLM-wiki domains | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:knowledge-management, status:plan-approved |
 | #2369 feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2373 feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:plan-approved |
+| #2408 feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:release-management, status:plan-approved |
 
 ## codex
 
