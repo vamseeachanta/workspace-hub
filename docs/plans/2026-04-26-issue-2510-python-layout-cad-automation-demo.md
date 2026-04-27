@@ -1,6 +1,6 @@
 # Plan for #2510: Python layout/CAD automation demo for chip/package geometries
 
-> **Status:** plan-review — r7 MAJOR findings patched; r8 adversarial review pending
+> **Status:** plan-review — r9 MAJOR findings patched; r10 adversarial review pending after push
 > **Complexity:** T2
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2510
@@ -10,8 +10,10 @@
 > **Review artifacts (r4 archive):** scripts/review/results/2026-04-26-plan-2510-claude-r4.md | scripts/review/results/2026-04-26-plan-2510-codex-r4.md | scripts/review/results/2026-04-26-plan-2510-gemini-r4.md
 > **Review artifacts (r5 archive):** scripts/review/results/2026-04-26-plan-2510-claude-r5.md | scripts/review/results/2026-04-26-plan-2510-codex-r5.md | scripts/review/results/2026-04-26-plan-2510-gemini-r5.md
 > **Review artifacts (r6 archive):** scripts/review/results/2026-04-26-plan-2510-claude-r6.md | scripts/review/results/2026-04-26-plan-2510-codex-r6.md | scripts/review/results/2026-04-26-plan-2510-gemini-r6.md
-> **Review artifacts (r7 current/canonical):** scripts/review/results/2026-04-26-plan-2510-claude.md | scripts/review/results/2026-04-26-plan-2510-codex.md | scripts/review/results/2026-04-26-plan-2510-gemini.md
-> **Review artifacts (r7 archive after run):** scripts/review/results/2026-04-26-plan-2510-claude-r6.md | scripts/review/results/2026-04-26-plan-2510-codex-r6.md | scripts/review/results/2026-04-26-plan-2510-gemini-r6.md
+> **Review artifacts (r7 archive):** scripts/review/results/2026-04-26-plan-2510-claude-r7.md | scripts/review/results/2026-04-26-plan-2510-codex-r7.md | scripts/review/results/2026-04-26-plan-2510-gemini-r7.md
+> **Review artifacts (r8 archive):** scripts/review/results/2026-04-26-plan-2510-claude-r8.md | scripts/review/results/2026-04-26-plan-2510-codex-r8.md | scripts/review/results/2026-04-26-plan-2510-gemini-r8.md
+> **Review artifacts (r9 archive):** scripts/review/results/2026-04-27-plan-2510-claude-r9.md | scripts/review/results/2026-04-27-plan-2510-codex-r9.md | scripts/review/results/2026-04-27-plan-2510-gemini-r9.md
+> **Review artifacts (next current/canonical after rerun):** `scripts/review/results/${TODAY}-plan-2510-{claude,codex,gemini}.md` where `${TODAY}` is emitted by `scripts/review/plan-review-fanout.sh` at runtime; archive immediately to `-${round}.md` before another rerun
 
 ---
 
@@ -50,7 +52,7 @@ Because #2510 carries `cat:engineering`, the engineering retrieval bundle from `
 
 - `data/document-index/standards-transfer-ledger.yaml`: 436 standards-ledger entries, largely offshore/API/DNV/mechanical; no semiconductor layout/Pdk/GDS design-rule standard source found for #2510. Non-applicable except as evidence that local standards inventory does not supply chip-layout signoff rules.
 - `data/design-codes/code-registry.yaml`: offshore/mechanical design-code registry; no chip-layout DRC/LVS/GDS rule deck authority.
-- `data/document-index/online-resource-registry.yaml`: 247 online resources; CAD domain exists but registry is not a semiconductor PDK/GDSFactory authority for this issue. External GDSFactory/KLayout docs remain the relevant open-tool anchors.
+- `data/document-index/online-resource-registry.yaml`: 248 `- id:` list entries by live count; file metadata currently says `total_entries: 247`, so #2510 treats the registry as a non-authoritative planning inventory with known count drift, not a semiconductor PDK/GDSFactory authority. External GDSFactory/KLayout docs remain the relevant open-tool anchors.
 - `docs/document-intelligence/data-intelligence-map.md`: confirms the standards ledger, online registry, and intelligence entry points; no semiconductor-layout-specific local corpus path identified.
 - Local wiki/knowledge search for semiconductor/ASIC/OpenROAD/OpenLane/GDSFactory/KLayout found no reusable semiconductor layout wiki page; #2510 must create a bounded demo and report rather than claim local signoff knowledge.
 
@@ -147,7 +149,7 @@ A reproducible Python layout/CAD automation demo that generates a deterministic 
 In scope:
 - Parameterized geometry for a simple package/interposer-style layout: die, substrate/interposer outline, bump/pad array, routing/keepout markers, and named layers.
 - Deterministic artifact generation from a CLI.
-- Metadata extraction: layers, polygons/rectangles, bounding boxes, area totals, ports/pads, net labels where represented, geometry invariants, and artifact hashes.
+- Metadata extraction: layers, polygons/rectangles, bounding boxes, area totals, ports/pads, net labels where represented, geometry invariants, writer/reader package versions, and a final `artifact_hashes` map populated only after all manifest-covered artifacts are written, excluding `layout_metadata.json` itself to avoid a self-referential hash.
 - SVG preview and JSON/CSV metadata always generated.
 - Real GDS exchange artifact generated with an open Python layout tool. Primary path: GDSFactory (`gdsfactory`) creates the parameterized component and writes `chip_package_demo.gds`. KLayout scripting may be used as a secondary/import validation path if available.
 - Import/read-back of the generated GDS using the pinned GDSFactory 9.40.2 API `from gdsfactory.read import import_gds` to verify bounding boxes/layer counts/invariants after round-trip. No alternate reader is allowed inside #2510 without plan revision.
@@ -168,7 +170,7 @@ Out of scope:
   - `--report <path>` required and must resolve under `--output`; otherwise the CLI must exit with a clear error before writing partial artifacts.
   - optional geometry parameters may be added only with deterministic defaults.
 - Validation commands must use pinned transient dependency invocation `uv run --python 3.11 --with gdsfactory==9.40.2 --with kfactory==2.4.7 --with klayout==0.30.8 --with numpy==2.4.4 --with shapely==2.1.2 ...` so the required GDSFactory/kfactory/KLayout dependency surface is explicit, version-bounded, and does not change repo-wide dependencies.
-- `scripts/semiconductor/layout_cad_demo.py` must expose a lazy import helper named `_load_gdsfactory()` for TDD monkeypatching. It may import GDSFactory lazily inside writer/import functions, but when generation is requested and GDSFactory is unavailable it must fail loudly with a dependency message that includes the exact `uv run --python 3.11 --with gdsfactory==9.40.2 --with kfactory==2.4.7 --with klayout==0.30.8 --with numpy==2.4.4 --with shapely==2.1.2 ...` invocation.
+- `scripts/semiconductor/layout_cad_demo.py` must expose a module-level lazy import helper named `_load_gdsfactory()` for TDD monkeypatching via `monkeypatch.setattr("scripts.semiconductor.layout_cad_demo._load_gdsfactory", ...)`. It may import GDSFactory lazily inside writer/import functions, but when generation is requested and GDSFactory is unavailable it must fail loudly with a dependency message that includes the exact `uv run --python 3.11 --with gdsfactory==9.40.2 --with kfactory==2.4.7 --with klayout==0.30.8 --with numpy==2.4.4 --with shapely==2.1.2 ...` invocation.
 - No pure-Python fake `.gds` or JSON fallback can satisfy closeout.
 
 ---
@@ -217,8 +219,8 @@ function import_exchange_artifact(gds_path):
     compare read-back invariants against generated geometry metadata
     write gds_readback_metadata.json
 
-function write_metadata(geometry, artifacts):
-    write layout_metadata.json with parameters, layers, bboxes, counts, invariants, writer mode
+function write_metadata_initial(geometry, artifacts):
+    write layout_metadata.json with parameters, layers, bboxes, counts, invariants, writer mode, and an empty artifact_hashes placeholder
     write geometry_summary.csv with deterministic row order and LF endings
 
 function render_report(metadata, artifacts):
@@ -227,8 +229,11 @@ function render_report(metadata, artifacts):
     state limitations: no PDK DRC/LVS/signoff, no JEDEC/IPC compliance
     cite open-tool anchors checked during planning
 
-function write_manifest_after_report(artifacts, report_path):
-    after report and all generated artifacts are written, compute SHA256 manifest entries relative to the manifest directory
+function finalize_metadata_and_manifest(output_dir, report_path):
+    after report and all generated artifacts except manifest are written, compute SHA256 entries relative to the manifest directory
+    update layout_metadata.json artifact_hashes with the final relative-path -> sha256 map for generated artifacts except `layout_metadata.json` and `artifact_manifest.sha256`
+    compute the final layout_metadata.json hash after artifact_hashes is populated and include that metadata hash only in artifact_manifest.sha256
+    write artifact_manifest.sha256 last with deterministic row order and LF endings
 ```
 
 ---
@@ -252,13 +257,13 @@ function write_manifest_after_report(artifacts, report_path):
 |---|---|---|---|
 | `test_default_spec_has_chip_package_layout_layers_and_units` | spec contains substrate, die, bump/pad, route/keepout layers with SI/um units and provenance | default spec | named layers, dimensions, role mapping |
 | `test_geometry_invariants_for_die_pads_and_substrate` | die is inside substrate; all bumps/pads are inside die/substrate bounds; counts/pitch deterministic | default geometry | invariant booleans true, expected counts/bboxes |
-| `test_metadata_extracts_layers_bboxes_ports_and_counts` | JSON metadata captures layers, polygons/rectangles, bbox, area, pads/ports/nets | generated geometry | deterministic metadata keys and numeric values |
+| `test_metadata_extracts_layers_bboxes_ports_counts_and_final_hashes` | JSON metadata captures layers, polygons/rectangles, bbox, area, pads/ports/nets, writer/reader versions, and final artifact hashes | generated full CLI output | deterministic metadata keys/numeric values; `layout_metadata.json["artifact_hashes"]` matches `artifact_manifest.sha256` for every final artifact except `layout_metadata.json` and `artifact_manifest.sha256`; the manifest itself contains the final `layout_metadata.json` hash |
 | `test_gds_export_import_roundtrip_preserves_core_invariants` | real GDS export/import exists and read-back metadata preserves layer counts and bbox invariants | generated `chip_package_demo.gds` | `gds_readback_metadata.json` with bbox tolerance, contract-matched per-layer counts (exact for generated simple rectangles; documented bounded ranges only for intentionally fracturable geometry), and reader object `reader: {"package": "gdsfactory", "version": actual_imported_version}` where the version is asserted against the pinned runtime |
 | `test_cli_regenerates_artifacts_manifest_and_report` | CLI writes SVG, CSV, JSON, real `.gds`, read-back JSON, manifest, and report | temp output/report paths | files exist, manifest validates, report links resolve via `Path(report.parent / svg_link).exists()` |
 | `test_outputs_are_deterministic_across_runs` | repeat runs produce identical deterministic artifact hashes under the pinned GDS timestamp policy | two temp dirs | equal content hashes for manifest-covered artifacts and byte-identical `artifact_manifest.sha256` text |
 | `test_missing_open_layout_dependency_blocks_rather_than_fakes_gds` | missing GDSFactory/open reader is treated as execution blocker, not a passing fake artifact | monkeypatch the lazy import helper to raise `ModuleNotFoundError` | clear RuntimeError/blocker message that includes the pinned `uv run --python 3.11 --with ...` invocation; no fake `.gds` produced |
 | `test_csv_manifest_and_report_use_lf_line_endings` | cross-platform determinism for CSV/manifest/report text artifacts | generated CSV/manifest/report bytes | no `\r` bytes; explicit `\n` line endings |
-| `test_report_has_role_relevance_and_no_signoff_overclaims` | portfolio report maps demo to chip/package CAD roles and avoids compliance/tapeout claims | generated report | contains role relevance; excludes `JEDEC compliant`, `DRC clean`, `tapeout-ready` |
+| `test_report_and_metadata_have_role_relevance_and_no_signoff_overclaims` | portfolio report maps demo to chip/package CAD roles and report/metadata avoid compliance/tapeout claims | generated report plus `layout_metadata.json` | contains role relevance; report and metadata exclude forbidden variants: `JEDEC compliant`, `meets JEDEC`, `IPC compliant`, `DRC clean`, `LVS clean`, `signoff-ready`, `production tapeout`, `tapeout-ready`, `tapeout ready`, `PDK-qualified`, `foundry signoff`, `PDK DRC`, and `PDK LVS` |
 
 ---
 
@@ -267,12 +272,12 @@ function write_manifest_after_report(artifacts, report_path):
 - [ ] TDD RED is captured before implementation using `uv run --python 3.11 --with gdsfactory==9.40.2 --with kfactory==2.4.7 --with klayout==0.30.8 --with numpy==2.4.4 --with shapely==2.1.2 pytest tests/semiconductor/test_layout_cad_demo.py -q`.
 - [ ] Final targeted tests pass: `uv run --python 3.11 --with gdsfactory==9.40.2 --with kfactory==2.4.7 --with klayout==0.30.8 --with numpy==2.4.4 --with shapely==2.1.2 pytest tests/semiconductor/test_layout_cad_demo.py -q`.
 - [ ] CLI can regenerate deterministic artifacts locally without proprietary tools using transient dependency invocation: `uv run --python 3.11 --with gdsfactory==9.40.2 --with kfactory==2.4.7 --with klayout==0.30.8 --with numpy==2.4.4 --with shapely==2.1.2 python scripts/semiconductor/layout_cad_demo.py --output data/semiconductor/layout_cad_demo --report data/semiconductor/layout_cad_demo/semiconductor-layout-cad-automation-demo.md`.
-- [ ] Generated artifacts include metadata JSON, geometry CSV, SVG preview, real `.gds` exchange artifact, GDS read-back metadata JSON, report, and SHA256 manifest.
+- [ ] Generated artifacts include metadata JSON, geometry CSV, SVG preview, real `.gds` exchange artifact, GDS read-back metadata JSON, report, and SHA256 manifest; metadata is finalized after report/read-back generation so its `artifact_hashes` map matches the final manifest hash map for every artifact except `layout_metadata.json` and `artifact_manifest.sha256`; the manifest contains the final `layout_metadata.json` hash.
 - [ ] Manifest validates from the artifact directory with `cd data/semiconductor/layout_cad_demo && sha256sum -c artifact_manifest.sha256`; manifest entries are relative to the manifest file parent, including report paths such as `semiconductor-layout-cad-automation-demo.md`. This supports both canonical repo output dirs and pytest temp output dirs without absolute paths.
 - [ ] GDS export/import round-trip check passes and the report states the writer/reader package versions.
 - [ ] Report explains relevance to chip design, package/interposer CAD automation, and job-skill development.
-- [ ] Report and metadata explicitly avoid PDK DRC/LVS, JEDEC/IPC, or tapeout/signoff claims.
-- [ ] Implementation cross-review is explicit and non-circular: Claude, Codex, and Gemini are requested. A valid review artifact is a non-empty Markdown file at the expected provider path containing `## Verdict`, `## Retrieval`, `## Findings`, and `## Blockers`, with verdict in `APPROVE|MINOR|MAJOR|UNAVAILABLE`. Empty files, stderr-only runs, missing headings, or parser failures count as `UNAVAILABLE`. Closeout requires no unresolved MAJOR from any valid provider review; if a provider is UNAVAILABLE after a documented retry, closeout may proceed only with two valid APPROVE/MINOR reviews plus a repo-tracked unavailable artifact and a GitHub note calling out degraded provenance.
+- [ ] Report and metadata explicitly avoid PDK DRC/LVS, JEDEC/IPC, or tapeout/signoff claims, including the exact forbidden variants enumerated in `test_report_and_metadata_have_role_relevance_and_no_signoff_overclaims`.
+- [ ] Implementation cross-review is explicit and non-circular: Claude, Codex, and Gemini are requested. A valid review artifact is a non-empty Markdown file at the expected provider path containing `## Verdict`, `## Retrieval`, `## Findings`, and `## Blockers`, with verdict in `APPROVE|MINOR|MAJOR|UNAVAILABLE`. Empty files, stderr-only runs, missing headings, or parser failures count as `UNAVAILABLE`. Closeout requires no unresolved MAJOR from any valid provider review. If one provider is UNAVAILABLE after a documented retry, closeout may proceed only with two valid APPROVE/MINOR reviews plus a repo-tracked unavailable artifact and a GitHub note calling out degraded provenance. If all three providers are UNAVAILABLE/FAIL, do not request approval; fix review tooling or park the issue with a blocker comment, because triple-unavailable state is not adversarial review evidence.
 
 ---
 
@@ -292,8 +297,14 @@ function write_manifest_after_report(artifacts, report_path):
 | Claude r7 | MAJOR | Required non-empty canonical artifacts, polygon-count consistency, Files-to-Change row, reuse/justify #2511 manifest helpers, report-under-output CLI guard, dependency-error assertion, and Gemini availability policy. |
 | Codex r7 | MAJOR | Required polygon-count consistency, report-location deviation from #2511 convention, single current/canonical artifact label, and review artifact files row. |
 | Gemini r7 | MAJOR | Findings 1-7 were false positives caused by sandbox overlay reading a different worktree; no substantive patch applied from Gemini r7. |
+| Claude r8 | MAJOR | Required header/archive path repair, 0-byte canonical-artifact recovery procedure, triple-UNAVAILABLE branch, sustained-MAJOR governance, and MCP-only Codex evidence classification. |
+| Codex r8 | MAJOR | Required r7 archive path repair, broader report+metadata overclaim guardrails, and explicit final metadata/hash ordering. |
+| Gemini r8 | MAJOR | Reported empty canonical-artifact risk and corrected online-resource-registry count from 247 to 248; empty-artifact claim is treated as a review-state hygiene blocker unless local nonzero artifacts are archived and cited. |
+| Claude r9 | MAJOR | Required dynamic review-artifact date handling, push-before-review traceability, non-circular metadata hash contract, module-level monkeypatch seam, external-anchor labeling, and degraded r9 fanout acknowledgement. |
+| Codex r9 | MAJOR | Required commit-visible r8/r9 plan/review artifacts, non-self-referential metadata hash contract, count-drift wording for `online-resource-registry.yaml`, and issue-label drift acknowledgement. |
+| Gemini r9 | UNAVAILABLE | Fanout produced a 0-byte Gemini artifact at the runtime-dated path; archived as explicit non-empty `UNAVAILABLE` evidence, not substantive plan criticism. |
 
-**Overall result:** r7 returned MAJOR; this revision addresses the substantive r7 blockers and is queued for r8 adversarial review before any approval request.
+**Overall result:** r9 returned Claude/Codex MAJOR and Gemini UNAVAILABLE. This revision patches r9 blockers, archives runtime-dated r9 evidence to `2026-04-27-...-r9.md`, and is queued for r10 adversarial review after the r8/r9 patches and archives are pushed to `main` so sandbox/GitHub-MCP reviewers can retrieve them.
 
 Revisions made based on reviews so far:
 - Required real open-tool GDS generation/read-back rather than pure JSON fallback; removed remaining fake-layout acceptance ambiguity.
@@ -307,6 +318,14 @@ Revisions made based on reviews so far:
 - Corrected roadmap/report citations so they do not claim issue-number mapping or exact phrases not present in those files.
 - Defined review artifact validity and current/archive routing before approval.
 - Replaced circular implementation-review AC with an explicit provider/verdict closeout policy.
+- Corrected r7/r8 review artifact traceability, including r7 archive paths and nonzero r8 archive snapshots.
+- Clarified final metadata/hash ordering so `layout_metadata.json` is updated after report/read-back artifacts exist and before `artifact_manifest.sha256` is written last.
+- Expanded overclaim guardrail tests to cover both report and metadata with JEDEC/IPC, DRC/LVS, signoff, production tapeout, and PDK-qualified variants.
+- Added review-governance rules for 0-byte canonical artifact recovery, triple-UNAVAILABLE review failure, sustained-MAJOR loops, and MCP-only Codex evidence validity.
+- Reconciled fanout runtime-dated review paths (`${TODAY}-plan-2510-*`) with plan traceability so review artifacts are not pinned to the original plan-file date after midnight.
+- Fixed the metadata hash contract to exclude `layout_metadata.json` from its own embedded `artifact_hashes` map while still including final metadata hash in `artifact_manifest.sha256`.
+- Required `_load_gdsfactory()` to be module-level for monkeypatchable missing-dependency TDD.
+- Labeled external URL checks as planning-time reachability anchors, not approval-gating evidence.
 
 ---
 
@@ -316,6 +335,8 @@ Revisions made based on reviews so far:
 - Until that push exists, review prompts must carry the full plan inline; reviewers must not be asked to rely on a GitHub path that still returns 404.
 - `status:plan-review` may be applied only with a GitHub comment that explicitly says the current plan is under adversarial review and not user-approval-ready if any MAJOR remains. The final approval request is posted only after the latest valid reviews are APPROVE/MINOR.
 - #2511 is used as an implementation-convention source because issue #2511 is closed and its implementation files exist on `main`; stale #2511 planning-index/header statuses are known drift and are not used as authority for #2510.
+- MCP-only Codex review evidence is valid only when the artifact cites exact fetched GitHub/repo paths, issue URLs, or commit-visible plan/review files and explicitly states any sandbox limitation. If MCP-only evidence contradicts the local filesystem without citing a fetched source, classify that provider artifact as `UNAVAILABLE` for gating rather than as a substantive MAJOR.
+- Sustained-MAJOR governance: after three or more MAJOR waves, each new wave must be classified as (a) consensus blocker with a concrete plan patch, (b) sandbox/tooling/retrieval defect handled as `UNAVAILABLE` or packaging repair, or (c) minority/non-blocking concern with explicit evidence-based rationale. If the next wave after this r8 patch still returns only review-state/tooling MAJORs rather than substantive CAD/test blockers, park the issue with a GitHub blocker/minority-report summary or ask the user whether to accept the residual risk; do not keep silently grinding through unlimited prose-only reviews.
 
 ---
 
@@ -323,10 +344,12 @@ Revisions made based on reviews so far:
 
 Before asking for user approval:
 
-- Latest current review outputs land in unsuffixed canonical paths: `scripts/review/results/2026-04-26-plan-2510-{claude,codex,gemini}.md`; immediately after each run, archive them to the corresponding `-rN.md` paths before rerunning.
+- Latest current review outputs land in runtime-dated canonical paths emitted by `scripts/review/plan-review-fanout.sh`: `scripts/review/results/${TODAY}-plan-2510-{claude,codex,gemini}.md`. Do not assume the plan-file date (`2026-04-26`) after midnight; immediately archive each successful/current run to corresponding `-${round}.md` snapshots before rerunning.
 - Each successful wave is archived immediately to suffixed snapshots (`-r4.md`, `-r5.md`, etc.) before another rerun can overwrite canonical paths.
 - Canonical unsuffixed files must not be 0 bytes after the review command completes; transient 0-byte placeholders created by the fanout runner during an active run are not approval evidence and must be replaced by provider output or a non-empty `UNAVAILABLE` artifact before committing or requesting approval.
-- The plan summary must cite the latest valid canonical artifacts and the latest archived snapshots.
+- Recovery for inverted review state: if unsuffixed canonical files are 0 bytes but the immediately preceding `-rN.md` archives are populated, preserve the populated archives, mark the failed canonical provider(s) `UNAVAILABLE` in the synthesis, rerun fanout into temp files before replacing canonicals, and do not request approval until the latest canonical artifacts are non-empty valid reviews or explicit non-empty `UNAVAILABLE` artifacts.
+- If all three current provider artifacts are `UNAVAILABLE`/FAIL/0-byte after retry, stop and post a blocker comment instead of treating older archives as current approval evidence.
+- The plan summary must cite the latest valid runtime-dated canonical artifacts and the latest archived snapshots; older `2026-04-26` canonicals may remain as historical r8 evidence but are not current after the 2026-04-27 fanout.
 
 ---
 
