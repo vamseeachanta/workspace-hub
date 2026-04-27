@@ -16,6 +16,7 @@ import argparse
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import time
 from collections import Counter, defaultdict
@@ -521,6 +522,266 @@ def _detect_size_findings(inventory: list[dict], policy: dict) -> list[dict]:
     return _sort_findings(findings)
 
 
+def _archive_alias_tokens(policy: dict) -> set[str]:
+    """Return path-segment spellings that mean intentionally archived skills."""
+    aliases = {"_archive"}
+    for family in _alias_families(policy):
+        if family.get("id") != "archive":
+            continue
+        aliases.add(str(family.get("canonical", "")))
+        aliases.update(str(a) for a in family.get("aliases", []) if a)
+    return {a.strip() for a in aliases if a and a.strip()}
+
+
+def _is_active_skill_path(rel_path: str, policy: dict) -> bool:
+    parts = Path(rel_path).parts
+    archive_aliases = _archive_alias_tokens(policy)
+    return not any(part in archive_aliases for part in parts)
+
+
+def _git_repo_root(path: Path) -> Path | None:
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if proc.returncode != 0:
+        return None
+    root = proc.stdout.strip()
+    return Path(root) if root else None
+
+
+def _git_bool(repo_root: Path, key: str) -> bool | None:
+    proc = subprocess.run(
+        ["git", "-C", str(repo_root), "config", "--bool", key],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    value = proc.stdout.strip().lower()
+    if value == "true":
+        return True
+    if value == "false":
+        return False
+    return None
+
+
+def detect_git_inventory_trust(skills_dir: Path) -> dict:
+    """Classify whether git tracked-skill inventory is authoritative for skills_dir."""
+    repo_root = _git_repo_root(skills_dir)
+    filesystem_count = sum(1 for _ in skills_dir.glob("**/SKILL.md")) if skills_dir.exists() else 0
+    evidence: dict = {"filesystem_skill_count": filesystem_count}
+    if repo_root is None:
+        return {"trusted": False, "reason": "skills_dir is not inside a git worktree", "evidence": evidence}
+
+    try:
+        rel_skills_dir = skills_dir.resolve().relative_to(repo_root.resolve())
+    except ValueError:
+        return {"trusted": False, "reason": "skills_dir is outside git repository root", "evidence": evidence | {"repo_root": str(repo_root)}}
+
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(repo_root), "ls-files", "-z", "--", str(rel_skills_dir)],
+            check=False,
+            capture_output=True,
+            timeout=15,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        return {"trusted": False, "reason": f"git ls-files failed: {exc}", "evidence": evidence | {"repo_root": str(repo_root)}}
+
+    if proc.returncode != 0:
+        stderr = proc.stderr.decode("utf-8", errors="replace") if isinstance(proc.stderr, bytes) else str(proc.stderr)
+        return {"trusted": False, "reason": "git ls-files returned non-zero", "evidence": evidence | {"returncode": proc.returncode, "stderr": stderr.strip()}}
+
+    tracked_paths = [p.decode("utf-8", errors="replace") for p in proc.stdout.split(b"\0") if p]
+    tracked_skill_paths = [p for p in tracked_paths if p.endswith("/SKILL.md")]
+    evidence.update({
+        "repo_root": str(repo_root),
+        "skills_dir": str(rel_skills_dir),
+        "tracked_skill_count": len(tracked_skill_paths),
+    })
+
+    sparse_enabled = _git_bool(repo_root, "core.sparseCheckout")
+    evidence["core.sparseCheckout"] = sparse_enabled
+    if sparse_enabled:
+        sparse_proc = subprocess.run(
+            ["git", "-C", str(repo_root), "sparse-checkout", "list"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        sparse_patterns = [line.strip() for line in sparse_proc.stdout.splitlines() if line.strip()]
+        evidence["sparse_checkout_patterns"] = sparse_patterns
+        rel_text = str(rel_skills_dir).rstrip("/")
+        covered = any(pattern.rstrip("/") in {rel_text, ".claude", ".claude/skills"} or rel_text.startswith(pattern.rstrip("/") + "/") for pattern in sparse_patterns)
+        if not covered:
+            return {"trusted": False, "reason": "sparse checkout does not cover skills_dir", "evidence": evidence}
+
+    if filesystem_count > 0 and len(tracked_skill_paths) == 0:
+        return {"trusted": False, "reason": "git ls-files returned zero while filesystem has skills", "evidence": evidence}
+
+    return {"trusted": True, "reason": "git ls-files inventory is authoritative for skills_dir", "evidence": evidence}
+
+
+def _tracked_skill_paths(skills_dir: Path, trust: dict) -> set[str]:
+    if not trust.get("trusted"):
+        return set()
+    repo_root = Path(str(trust.get("evidence", {}).get("repo_root", "")))
+    rel_skills_dir = Path(str(trust.get("evidence", {}).get("skills_dir", "")))
+    if not repo_root or not rel_skills_dir:
+        return set()
+    proc = subprocess.run(
+        ["git", "-C", str(repo_root), "ls-files", "-z", "--", str(rel_skills_dir)],
+        check=False,
+        capture_output=True,
+        timeout=15,
+    )
+    if proc.returncode != 0:
+        return set()
+    rel_prefix = str(rel_skills_dir).rstrip("/") + "/"
+    tracked: set[str] = set()
+    for raw in proc.stdout.split(b"\0"):
+        if not raw:
+            continue
+        path = raw.decode("utf-8", errors="replace")
+        if not path.endswith("/SKILL.md") or not path.startswith(rel_prefix):
+            continue
+        tracked.add(path[len(rel_prefix):])
+    return tracked
+
+
+def _path_object(path: str, *, informational: bool = False) -> dict:
+    return {"path": path, "informational": informational}
+
+
+def _all_filesystem_skill_paths(skills_dir: Path) -> set[str]:
+    if not skills_dir.exists():
+        return set()
+    return {str(path.relative_to(skills_dir)) for path in skills_dir.glob("**/SKILL.md")}
+
+
+def _is_informational_path(rel_path: str) -> bool:
+    return any(part in INFORMATIONAL_DIRS for part in Path(rel_path).parts)
+
+
+def _provider_skill_mirrors(skills_dir: Path) -> dict:
+    workspace = skills_dir.parent.parent if skills_dir.name == "skills" else skills_dir.parent
+    mirrors: dict[str, str] = {}
+    for provider in ("codex", "gemini"):
+        path = workspace / f".{provider}" / "skills"
+        key = f"{provider}_skills_link"
+        if path.is_symlink():
+            try:
+                mirrors[key] = os.readlink(path)
+            except OSError as exc:
+                mirrors[key] = f"error:{exc}"
+        elif path.exists():
+            mirrors[key] = "directory"
+        else:
+            mirrors[key] = "missing"
+    return mirrors
+
+
+def _repo_relative_skill_path(rel_path: str, trust: dict) -> str:
+    evidence = trust.get("evidence", {}) if isinstance(trust.get("evidence"), dict) else {}
+    rel_skills_dir = str(evidence.get("skills_dir", "")).strip("/")
+    return f"{rel_skills_dir}/{rel_path}" if rel_skills_dir else rel_path
+
+
+def build_inventory_summary(skills_dir: Path, policy: dict, tracked_skill_paths: set[str], trust: dict) -> dict:
+    filesystem_paths = _all_filesystem_skill_paths(skills_dir)
+    archive_aliases = _archive_alias_tokens(policy)
+    tracked_active = {p for p in tracked_skill_paths if _is_active_skill_path(p, policy)}
+    filesystem_active = {p for p in filesystem_paths if _is_active_skill_path(p, policy)}
+    filesystem_only = filesystem_paths - tracked_skill_paths
+    filesystem_only_active = sorted(filesystem_active - tracked_active)
+    missing_tracked_active = sorted(tracked_active - filesystem_active)
+    filesystem_only_archived = sorted(p for p in filesystem_only if not _is_active_skill_path(p, policy))
+    if not trust.get("trusted"):
+        filesystem_only = set()
+        filesystem_only_active = []
+        missing_tracked_active = []
+        filesystem_only_archived = []
+    warnings = []
+    if not trust.get("trusted"):
+        warnings.append(f"Git inventory not trusted: {trust.get('reason', 'unknown')}")
+    return {
+        "counts": {
+            "tracked_total": len(tracked_skill_paths),
+            "tracked_active": len(tracked_active),
+            "filesystem_total": len(filesystem_paths),
+            "filesystem_active": len(filesystem_active),
+            "filesystem_only_total": len(filesystem_only),
+            "filesystem_only_active": len(filesystem_only_active),
+            "missing_tracked_total": len(tracked_skill_paths - filesystem_paths),
+            "missing_tracked_active": len(missing_tracked_active),
+            "filesystem_only_archived_total": len(filesystem_only_archived),
+        },
+        "paths": {
+            "filesystem_only_active": [_path_object(_repo_relative_skill_path(p, trust), informational=_is_informational_path(p)) for p in filesystem_only_active],
+            "missing_tracked_active": [_path_object(_repo_relative_skill_path(p, trust), informational=_is_informational_path(p)) for p in missing_tracked_active],
+            "filesystem_only_archived": [_path_object(_repo_relative_skill_path(p, trust), informational=True) for p in filesystem_only_archived],
+        },
+        "mirrors": _provider_skill_mirrors(skills_dir),
+        "archive_aliases": sorted(archive_aliases),
+        "warnings": warnings,
+    }
+
+
+def _detect_filesystem_inventory_findings(
+    inventory: list[dict],
+    policy: dict,
+    *,
+    skills_dir: Path,
+    tracked_skill_paths: set[str],
+    trust: dict,
+) -> list[dict]:
+    """Find active SKILL.md files that exist only on disk or only in git."""
+    if not trust.get("trusted"):
+        return []
+    fs_active = {item["path"]: item for item in inventory if _is_active_skill_path(str(item["path"]), policy)}
+    tracked_active = {path for path in tracked_skill_paths if _is_active_skill_path(path, policy)}
+    findings: list[dict] = []
+
+    filesystem_only = sorted(set(fs_active) - tracked_active)
+    if filesystem_only:
+        display_paths = [_repo_relative_skill_path(path, trust) for path in filesystem_only]
+        names = [fs_active[path]["canonical_name"] for path in filesystem_only]
+        findings.append(_mk_v2_finding(
+            policy,
+            family="filesystem-inventory",
+            rule_id="filesystem-only-active",
+            canonical_names=names,
+            paths=display_paths,
+            summary=f"{len(filesystem_only)} active skill file(s) exist on disk but are not tracked by git",
+            recommended_action="Disposition as promote_after_review, archive_intentionally, ignore_with_rationale, or delete_after_backup before local filesystem state is lost.",
+            key_parts=["filesystem-inventory.filesystem-only-active", *display_paths],
+        ))
+
+    missing_tracked = sorted(tracked_active - set(fs_active))
+    if missing_tracked:
+        display_paths = [_repo_relative_skill_path(path, trust) for path in missing_tracked]
+        findings.append(_mk_v2_finding(
+            policy,
+            family="filesystem-inventory",
+            rule_id="missing-tracked-active",
+            canonical_names=[Path(path).parent.name for path in missing_tracked],
+            paths=display_paths,
+            summary=f"{len(missing_tracked)} active skill file(s) are tracked by git but missing from the filesystem",
+            recommended_action="Restore the missing tracked skill file(s) or intentionally remove them in a separate reviewed cleanup.",
+            key_parts=["filesystem-inventory.missing-tracked-active", *display_paths],
+        ))
+
+    return _sort_findings(findings)
+
+
 def _skill_counts(inventory: list[dict], errors: list[str], skills_dir: Path) -> dict:
     excluded = 0
     for excluded_dir in EXCLUDED_DIRS:
@@ -633,6 +894,7 @@ def _baseline_finding_sources(baseline: dict) -> list[dict]:
         "content_quality_findings",
         "grouping_findings",
         "size_findings",
+        "filesystem_inventory_findings",
         "usage_findings",
     ):
         values = baseline.get(key, [])
@@ -765,7 +1027,7 @@ def _write_json_artifact(result: dict, artifact_path: Path) -> None:
 
 def _all_active_findings(result: dict) -> list[dict]:
     findings: list[dict] = []
-    for key in ("findings", "content_quality_findings", "grouping_findings", "size_findings", "usage_findings"):
+    for key in ("findings", "content_quality_findings", "grouping_findings", "size_findings", "filesystem_inventory_findings", "usage_findings"):
         values = result.get(key, [])
         if isinstance(values, list):
             findings.extend(f for f in values if isinstance(f, dict))
@@ -806,6 +1068,37 @@ def _append_finding_section(lines: list[str], title: str, findings: list[dict], 
         lines.append("")
 
 
+def _append_inventory_summary_section(lines: list[str], result: dict) -> None:
+    summary = result.get("inventory_summary", {}) if isinstance(result.get("inventory_summary"), dict) else {}
+    counts = summary.get("counts", {}) if isinstance(summary.get("counts"), dict) else {}
+    paths = summary.get("paths", {}) if isinstance(summary.get("paths"), dict) else {}
+    warnings = summary.get("warnings", []) if isinstance(summary.get("warnings"), list) else []
+    lines.append("## Filesystem-only skill files")
+    lines.append("")
+    lines.append(
+        "Inventory counts: "
+        f"tracked_active={counts.get('tracked_active', 0)}, "
+        f"filesystem_active={counts.get('filesystem_active', 0)}, "
+        f"filesystem_only_active={counts.get('filesystem_only_active', 0)}, "
+        f"missing_tracked_active={counts.get('missing_tracked_active', 0)}, "
+        f"filesystem_only_archived={counts.get('filesystem_only_archived_total', 0)}"
+    )
+    lines.append("")
+    if warnings:
+        for warning in warnings:
+            lines.append(f"- WARNING: {warning}")
+        lines.append("")
+    filesystem_only_active = paths.get("filesystem_only_active", []) if isinstance(paths.get("filesystem_only_active"), list) else []
+    if filesystem_only_active:
+        for item in filesystem_only_active:
+            suffix = " (informational)" if item.get("informational") else ""
+            lines.append(f"- `{item.get('path', '')}`{suffix}")
+        lines.append("")
+    else:
+        lines.append("No filesystem-only active skill files.")
+        lines.append("")
+
+
 def _write_markdown_artifact(result: dict, md_path: Path) -> None:
     md_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -834,10 +1127,14 @@ def _write_markdown_artifact(result: dict, md_path: Path) -> None:
     changed = [f for f in all_findings if f.get("is_changed")]
     _append_finding_section(lines, "Changed Findings", changed, "No changed findings.")
 
-    # Section 3: Stable v2 family sections
+    # Section 3: Filesystem-only inventory section
+    _append_inventory_summary_section(lines, result)
+
+    # Section 4: Stable v2 family sections
     _append_finding_section(lines, "Content Quality Findings", _markdown_actionable_findings(result.get("content_quality_findings", [])), "No content quality findings.")
     _append_finding_section(lines, "Grouping / Taxonomy Drift Findings", _markdown_actionable_findings(result.get("grouping_findings", [])), "No grouping or taxonomy drift findings.")
     _append_finding_section(lines, "Oversized / Maintainability Findings", _markdown_actionable_findings(result.get("size_findings", [])), "No oversized or maintainability findings.")
+    _append_finding_section(lines, "Filesystem-Only Active Skill Loss-Risk Inventory", _markdown_actionable_findings(result.get("filesystem_inventory_findings", [])), "No filesystem-only active skill loss-risk findings.")
     _append_finding_section(lines, "Usage / Staleness Findings", _markdown_actionable_findings(result.get("usage_findings", [])), "No usage or staleness findings.")
     _append_finding_section(lines, "Follow-up Candidates", result.get("follow_up_candidates", []), "No follow-up candidates.")
 
@@ -905,6 +1202,9 @@ def run_audit(
     # Build inventory
     inventory = build_inventory(skills_dir)
     inventory_seconds = time.monotonic() - scan_started
+    git_inventory_trust = detect_git_inventory_trust(skills_dir)
+    tracked_skill_paths = _tracked_skill_paths(skills_dir, git_inventory_trust)
+    inventory_summary = build_inventory_summary(skills_dir, policy, tracked_skill_paths, git_inventory_trust)
 
     # Detect errors (malformed frontmatter)
     errors: list[str] = []
@@ -918,6 +1218,13 @@ def run_audit(
     content_quality_findings = _detect_content_quality_findings(inventory, policy)
     grouping_findings = _detect_grouping_findings(inventory, policy)
     size_findings = _detect_size_findings(inventory, policy)
+    filesystem_inventory_findings = _detect_filesystem_inventory_findings(
+        inventory,
+        policy,
+        skills_dir=skills_dir,
+        tracked_skill_paths=tracked_skill_paths,
+        trust=git_inventory_trust,
+    )
     usage_findings: list[dict] = []
     detection_seconds = time.monotonic() - detection_started
 
@@ -940,6 +1247,7 @@ def run_audit(
         _apply_baseline(content_quality_findings, baseline)
         _apply_baseline(grouping_findings, baseline)
         _apply_baseline(size_findings, baseline)
+        _apply_baseline(filesystem_inventory_findings, baseline)
 
     # Move _core/_internal findings out of the active ranked findings set first.
     active_findings, informational_findings = _split_informational_findings(findings)
@@ -950,11 +1258,13 @@ def run_audit(
     content_quality_findings, suppressed_content_quality = _apply_waivers(content_quality_findings, waivers)
     grouping_findings, suppressed_grouping = _apply_waivers(grouping_findings, waivers)
     size_findings, suppressed_size = _apply_waivers(size_findings, waivers)
+    filesystem_inventory_findings, suppressed_filesystem_inventory = _apply_waivers(filesystem_inventory_findings, waivers)
     usage_findings, suppressed_usage = _apply_waivers(usage_findings, waivers)
     suppressed_findings.extend(informational_findings)
     suppressed_findings.extend(suppressed_content_quality)
     suppressed_findings.extend(suppressed_grouping)
     suppressed_findings.extend(suppressed_size)
+    suppressed_findings.extend(suppressed_filesystem_inventory)
     suppressed_findings.extend(suppressed_usage)
 
     # Sort findings per ranking policy
@@ -962,10 +1272,11 @@ def run_audit(
     content_quality_findings = _sort_findings(content_quality_findings)
     grouping_findings = _sort_findings(grouping_findings)
     size_findings = _sort_findings(size_findings)
+    filesystem_inventory_findings = _sort_findings(filesystem_inventory_findings)
     usage_findings = _sort_findings(usage_findings)
     suppressed_findings = _sort_findings(suppressed_findings)
 
-    active_all_findings = _sort_findings(active_findings + content_quality_findings + grouping_findings + size_findings + usage_findings)
+    active_all_findings = _sort_findings(active_findings + content_quality_findings + grouping_findings + size_findings + filesystem_inventory_findings + usage_findings)
     headline_all_findings = _headline_findings(active_all_findings)
     carry_forward_findings = [
         f for f in active_all_findings
@@ -989,6 +1300,9 @@ def run_audit(
             "detection_seconds": round(detection_seconds, 6),
         },
         "skill_counts": _skill_counts(inventory, errors, skills_dir),
+        "inventory_summary": inventory_summary,
+        "git_inventory_trust": git_inventory_trust,
+        "tracked_skill_count": len(tracked_skill_paths),
         "category_summary": _category_summary(inventory),
         "summary_counts": {
             "total": len(headline_all_findings),
@@ -996,6 +1310,7 @@ def run_audit(
             "content_quality_total": len(content_quality_findings),
             "grouping_total": len(grouping_findings),
             "size_total": len(size_findings),
+            "filesystem_inventory_total": len(filesystem_inventory_findings),
             "usage_total": len(usage_findings),
             "new": sum(1 for f in headline_all_findings if f.get("is_new")),
             "changed": sum(1 for f in headline_all_findings if f.get("is_changed")),
@@ -1007,6 +1322,7 @@ def run_audit(
         "content_quality_findings": content_quality_findings,
         "grouping_findings": grouping_findings,
         "size_findings": size_findings,
+        "filesystem_inventory_findings": filesystem_inventory_findings,
         "usage_findings": usage_findings,
         "follow_up_candidates": follow_up_candidates,
         "errors": errors,

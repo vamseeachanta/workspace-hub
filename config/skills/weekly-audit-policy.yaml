@@ -162,6 +162,8 @@ weekly_summary_sections:
     description: Findings first observed in the current weekly run.
   - id: changed_findings
     description: Existing findings whose severity, confidence, scope, or escalation materially changed.
+  - id: filesystem_only_inventory
+    description: Active filesystem-only SKILL.md files that are at risk of loss before disposition.
   - id: unresolved_high_confidence_findings
     description: High-confidence findings still open after carry-forward evaluation.
   - id: suppressed_carry_forward_findings
@@ -173,6 +175,7 @@ ranking_policy:
   section_order:
     - new_findings
     - changed_findings
+    - filesystem_only_inventory
     - unresolved_high_confidence_findings
     - suppressed_carry_forward_findings
     - operational_errors_or_skipped_inputs
@@ -337,3 +340,15 @@ v2:
       headline: true
       escalation_state: candidate
       recommended_action: Review for split, wrapper, or reference-file extraction opportunity.
+    filesystem-inventory.filesystem-only-active:
+      severity: high
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Disposition as promote_after_review, archive_intentionally, ignore_with_rationale, or delete_after_backup before local filesystem state is lost.
+    filesystem-inventory.missing-tracked-active:
+      severity: high
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Restore the missing tracked skill file(s) or intentionally remove them in a separate reviewed cleanup.
