@@ -52,6 +52,14 @@ def test_package_states_tier1_and_normalization_out_of_scope():
     )
 
 
+def test_package_validation_evidence_avoids_stale_fixed_test_counts():
+    text = _read(PACKAGE)
+    assert not re.search(r"\b\d+\s+tests?,\s+all passing\b", text), (
+        "durable package validation evidence must not embed a fixed test count; "
+        "the closeout comment carries current run evidence"
+    )
+
+
 # Contract ---------------------------------------------------------------------
 
 def test_contract_declares_read_budget_for_standards_docs():
