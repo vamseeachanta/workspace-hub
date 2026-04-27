@@ -1,0 +1,153 @@
+schema_version: 1
+issue: 2508
+title: Semiconductor CAD/FEM job-skill matrix
+created: 2026-04-27
+scope: research/docs-only taxonomy for chip-design CAD/FEM career lane
+role_families:
+  - id: ic-packaging-simulation
+    name: IC Packaging Simulation Engineer
+    domains: [package-fem-thermal-mechanical]
+    target_titles: [IC Packaging Simulation Engineer, Package Simulation Engineer, Electronics Packaging FEA Engineer]
+    required_skills: [thermal resistance modeling, thermo-mechanical stress, CTE mismatch, solder/package fatigue screening, FEA model verification, Python post-processing]
+    tools: [CalculiX, FEniCSx, Elmer, scikit-fem, ParaView, Python]
+    local_evidence: [docs/research/open-source-fea-survey.md, docs/research/scikit-fem-eval.md, docs/resources/structural-resources.md]
+    source_limitations: JEDEC and IPC sources are restricted or not locally ingested; use only as vocabulary/follow-up targets until source text is available.
+    portfolio_artifacts: ["#2511 package thermal/thermo-mechanical FEM benchmark with traceable assumptions"]
+    child_issues_or_followups: ["#2511"]
+  - id: semiconductor-mechanical-thermal-engineer
+    name: Semiconductor Mechanical/Thermal Engineer
+    domains: [package-fem-thermal-mechanical]
+    target_titles: [Mechanical Engineer with Semiconductor Experience, Thermal Engineer, Thermal Analyst]
+    required_skills: [heat-transfer boundary conditions, package material stacks, reliability-oriented stress interpretation, design-of-experiments, Python reporting]
+    tools: [FEniCSx, Elmer, CalculiX, Plotly, Pandas]
+    local_evidence: [docs/strategy/gtm/job-market-scan/raw-results/2026-04-20.json]
+    source_limitations: Local job data contains direct semiconductor and many thermal-adjacent roles; classify relevance explicitly.
+    portfolio_artifacts: [thermal model comparison report, package warpage/stress sensitivity dashboard]
+    child_issues_or_followups: ["#2511", "follow-up: electronics-cooling source ingestion"]
+  - id: advanced-packaging-engineer
+    name: Advanced Packaging Engineer
+    domains: [package-fem-thermal-mechanical, layout-cad-automation]
+    target_titles: [Principal Engineer Advanced Packaging, Packaging Engineer Microelectronics, Advanced Packaging Engineer]
+    required_skills: [heterogeneous integration vocabulary, chiplet/package interface awareness, substrate/package geometry abstraction, thermal-mechanical design tradeoffs]
+    tools: [GDSFactory, KLayout, Python, CalculiX]
+    local_evidence: [docs/strategy/gtm/job-market-scan/raw-results/2026-04-13.json]
+    source_limitations: Job scan has sparse semiconductor-specific hits; use external open-tool docs for practice claims.
+    portfolio_artifacts: [package geometry generator linked to a thermal benchmark]
+    child_issues_or_followups: ["#2510", "#2511"]
+  - id: asic-eda-technical-program-role
+    name: ASIC/EDA Technical Program Role
+    domains: [eda-flow]
+    target_titles: [Sr Technical Program Manager ASIC, EDA Flow Program Manager, Silicon CAD Program Manager]
+    required_skills: [RTL-to-GDS flow vocabulary, CI/reproducibility framing, milestone/risk tracking, PDK/open-source EDA boundaries, cross-functional review]
+    tools: [OpenROAD, OpenLane, OpenROAD-flow-scripts, Sky130, GF180MCU, GitHub Actions]
+    local_evidence: [docs/strategy/gtm/job-market-scan/raw-results/2026-04-02.json]
+    source_limitations: This is a bridge role; portfolio should demonstrate flow literacy rather than claim chip-tapeout ownership.
+    portfolio_artifacts: ["#2509 reproducible RTL-to-GDS demo report with logs and generated artifacts"]
+    child_issues_or_followups: ["#2509"]
+  - id: physical-design-eda-flow-learner-track
+    name: Physical-design / EDA-flow Learner Track
+    domains: [eda-flow]
+    target_titles: [Physical Design Engineer Learner, CAD Flow Engineer, OpenROAD Flow Contributor]
+    required_skills: [synthesis, floorplanning, placement, CTS, routing, DRC/LVS vocabulary, PDK constraints, report interpretation]
+    tools: [OpenROAD, OpenLane, OpenROAD-flow-scripts, Yosys, Magic, KLayout, Sky130, GF180MCU]
+    local_evidence: [docs/roadmaps/chip-design-cad-fem-career-roadmap.md]
+    source_limitations: Keep work to open educational designs and open PDKs unless a foundry agreement exists.
+    portfolio_artifacts: [tiny RTL-to-GDS runbook, timing/area/power report interpretation note]
+    child_issues_or_followups: ["#2509"]
+  - id: layout-cad-automation-track
+    name: Layout/CAD Automation Track
+    domains: [layout-cad-automation]
+    target_titles: [Python CAD Automation Engineer, Layout Automation Engineer, EDA/CAD Tooling Engineer]
+    required_skills: [parametric geometry, GDS/OASIS layout concepts, design-rule-aware scripting, KLayout inspection, reusable Python APIs]
+    tools: [GDSFactory, KLayout, Python, Shapely, pytest]
+    local_evidence: [docs/roadmaps/chip-design-cad-fem-career-roadmap.md]
+    source_limitations: Generated geometries should be demo/educational and must not imply foundry signoff.
+    portfolio_artifacts: ["#2510 Python layout/CAD automation demo for chip/package geometries"]
+    child_issues_or_followups: ["#2510"]
+job_evidence:
+  - title: Mechanical Engineer with semiconductor exp.
+    company: I3 INFOTEK INC
+    location: Gloucester, MA
+    source_file: docs/strategy/gtm/job-market-scan/raw-results/2026-04-20.json
+    relevance: direct semiconductor mechanical bridge
+  - title: IC Packaging Simulation Engineer
+    company: Apple
+    location: Austin, TX
+    source_file: docs/strategy/gtm/job-market-scan/raw-results/2026-04-13.json
+    relevance: direct package simulation role
+  - title: Principal Engineer, Advanced Packaging
+    company: Marvell
+    location: Austin, TX
+    source_file: docs/strategy/gtm/job-market-scan/raw-results/2026-04-13.json
+    relevance: direct advanced packaging role
+  - title: Packaging Engineer - Micro-Optics/Microelectronics
+    company: COKA
+    location: San Francisco Bay Area
+    source_file: docs/strategy/gtm/job-market-scan/raw-results/2026-04-13.json
+    relevance: microelectronics packaging role
+  - title: Sr. Technical Program Manager, ASIC
+    company: Amazon Kuiper Manufacturing Enterprises LLC
+    location: Sunnyvale, CA
+    source_file: docs/strategy/gtm/job-market-scan/raw-results/2026-04-02.json
+    relevance: ASIC program/flow literacy target
+  - title: Staff Engineer, Semi Packaging Engineering
+    company: Analog Devices
+    location: Wilmington, MA
+    source_file: docs/strategy/gtm/job-market-scan/raw-results/2026-04-13.json
+    relevance: direct semiconductor packaging engineering role
+tool_practices:
+  - tool: OpenROAD
+    practice: use an integrated open-source RTL-to-GDS physical-design application for synthesis/place/route/report literacy
+    source_url: https://openroad.readthedocs.io/
+    accessed: 2026-04-27
+    supports: OpenROAD is the primary open-source physical-design engine for the #2509 learner demo.
+  - tool: OpenROAD-flow-scripts
+    practice: run reproducible reference flows and preserve metrics/logs as evidence
+    source_url: https://openroad-flow-scripts.readthedocs.io/
+    accessed: 2026-04-27
+    supports: Flow scripts provide demo structure and artifact expectations for RTL-to-GDS practice.
+  - tool: OpenLane
+    practice: use a packaged open-source RTL-to-GDS flow for educational designs and CI-oriented reproducibility
+    source_url: https://openlane.readthedocs.io/
+    accessed: 2026-04-27
+    supports: OpenLane anchors a practical flow alternative for #2509.
+  - tool: KLayout
+    practice: inspect GDS/OASIS layouts and write scripted checks/macros for layout QA
+    source_url: https://www.klayout.de/doc.html
+    accessed: 2026-04-27
+    supports: KLayout is the visual/scripted inspection bridge for #2510 outputs.
+  - tool: GDSFactory
+    practice: build Python-parametric layout cells and export layout artifacts for repeatable demos
+    source_url: https://gdsfactory.github.io/gdsfactory/
+    accessed: 2026-04-27
+    supports: GDSFactory supports Python layout automation and reusable component generation.
+  - tool: SkyWater SKY130 PDK
+    practice: constrain open educational EDA examples to documented open PDK rules and examples
+    source_url: https://github.com/google/skywater-pdk
+    accessed: 2026-04-27
+    supports: SKY130 is an open PDK anchor for educational layout/flow work.
+  - tool: GF180MCU Open PDK
+    practice: use the open GF180 documentation as a second PDK reference for portability awareness
+    source_url: https://gf180mcu-pdk.readthedocs.io/
+    accessed: 2026-04-27
+    supports: GF180MCU provides another open PDK reference without proprietary foundry access.
+  - tool: CalculiX
+    practice: run structural/thermal finite-element benchmarks where open solver capability is sufficient
+    source_path: docs/research/open-source-fea-survey.md
+    accessed: 2026-04-27
+    supports: Existing local FEA survey identifies CalculiX as a reusable open solver candidate.
+  - tool: FEniCSx/scikit-fem
+    practice: create transparent Python FEM prototypes and verification notebooks before heavier solver coupling
+    source_path: docs/research/scikit-fem-eval.md
+    accessed: 2026-04-27
+    supports: Existing local evaluation supports Python-native FEM experimentation.
+standards_and_source_limits:
+  - name: JEDEC reliability concepts / JESD22 family
+    access_status: restricted or not locally ingested
+    allowed_use: vocabulary and acquisition/ingestion target only
+    prohibited_use: do not claim requirements extraction, compliance, or detailed standard content without accessible source text
+  - name: IPC electronics packaging terminology
+    access_status: restricted or not locally ingested
+    allowed_use: vocabulary and acquisition/ingestion target only
+    prohibited_use: do not claim requirements extraction, compliance, or detailed standard content without accessible source text
+recommended_execution_order: ["#2508", "#2511", "#2510", "#2509", "#2512"]
