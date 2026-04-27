@@ -120,6 +120,19 @@ The workspace-hub contains a large-scale intelligence ecosystem spanning domain 
 
 For architecture and reading order, start at the [intelligence landing page](document-intelligence/README.md).
 
+<!-- tier1-routing-block:open; see docs/plans/2026-04-22-issue-2464 -->
+
+### Tier-1 Routing
+
+Where to send work in the four tier-1 repos:
+
+- 🗺️ **[Tier-1 Routing Index](ROUTING_INDEX.md)** — curated issue-type → repo → canonical-path matrix. Start here for placement decisions.
+- 📒 **[Intelligence Accessibility Registry](../data/document-index/intelligence-accessibility-registry.yaml)** — machine-readable inventory of intelligence surfaces, with discoverability and freshness metadata.
+- 🩺 **[Tier-1 Indexing Scorecard (2026-04-22)](reports/2026-04-22-tier-1-indexing-scorecard.md)** — latest readiness review across all tier-1 repos.
+- ⚠️ `docs/CONTENT_INDEX.md` is a raw machine-generated inventory only — **not** a curated routing surface. Use the routing index above for placement.
+
+<!-- tier1-routing-block:close; see docs/plans/2026-04-22-issue-2464 -->
+
 ## Core Modules
 
 ### 🧠 [AI-Native](modules/ai-native/)

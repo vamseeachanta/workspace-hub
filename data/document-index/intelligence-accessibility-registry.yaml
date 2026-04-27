@@ -473,6 +473,23 @@ assets:
     gaps: "Not linked from navigation surfaces"
     owner_issue: null
 
+  - asset_key: tier1-routing-index
+    title: Tier-1 Routing Index
+    asset_type: map
+    layer: L4
+    canonical_path: docs/ROUTING_INDEX.md
+    human_entry_point: docs/ROUTING_INDEX.md
+    agent_entry_point: docs/ROUTING_INDEX.md
+    query_command: null
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: durable
+    freshness_source: "git log -1 --format=%ci docs/ROUTING_INDEX.md"
+    freshness_cadence: on-demand
+    discoverability: discoverable
+    gaps: null
+    owner_issue: '#2464'
+
   # ── Recurring-Operational ──────────────────────────────────────────────
 
   - asset_key: operational-weekly-review
