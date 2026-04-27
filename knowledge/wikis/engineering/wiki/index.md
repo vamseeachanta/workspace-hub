@@ -1,8 +1,8 @@
 ---
 domain: engineering
 created: 2026-04-08 16:07 UTC
-last_updated: 2026-04-17
-page_count: 77
+last_updated: 2026-04-26
+page_count: 79
 source_count: 13
 ---
 
@@ -11,12 +11,13 @@ source_count: 13
 *Repo engineering methodology — how the workspace-hub ecosystem is built and operated.*
 *Updated by LLM during ingest operations.*
 
-## Concepts (31 pages)
+## Concepts (32 pages)
 
 | Page | Summary | Last Updated |
 |------|---------|-------------|
 | [Agent Delegation](concepts/agent-delegation.md) | Spawning focused sub-agents with fresh context for specific tasks | 2026-04-08 |
 | [AI Drill Well on Paper](concepts/ai-drill-well-on-paper.md) | GenAI applied to DWOP pre-spud well planning (IADC session) | 2026-04-08 |
+| [Canonical Spec Semantic Equivalence Contract](concepts/canonical-spec-semantic-equivalence.md) | Cross-solver semantic equivalence contract for canonical `spec.yml` -> native OrcaWave/OrcaFlex YAML | 2026-04-26 |
 | [Cathodic Protection Design](concepts/cathodic-protection-design.md) | CP system design — DNV-RP-B401/F103, anode sizing, ICCP vs sacrificial | 2026-04-08 |
 | [CFD Offshore Hydrodynamics](concepts/cfd-offshore-hydrodynamics.md) | OpenFOAM/Fluent for wave loading, Morison, scour, VIV | 2026-04-08 |
 | [Compliance Dashboard](concepts/compliance-dashboard.md) | Automated review compliance tracking and reporting | 2026-04-08 |
@@ -108,11 +109,12 @@ source_count: 13
 | [DNV-RP-F105](standards/dnv-rp-f105.md) | Free spanning pipelines — VIV screening, fatigue, clean-room implementation | 2026-04-09 |
 | [OCIMF MEG4](standards/ocimf-meg4.md) | Mooring equipment guidelines — HMPE, snap-back zones, mooring deck safety | 2026-04-09 |
 
-## Workflows (3 pages)
+## Workflows (4 pages)
 
 | Page | Summary | Last Updated |
 |------|---------|-------------|
-| [OrcaWave-to-OrcaFlex Pipeline](workflows/orcawave-to-orcaflex-pipeline.md) | Automated single-command diffraction-to-vessel-type handoff | 2026-04-09 |
+| [OrcaWave / OrcaFlex Fixture Expansion Cookbook](workflows/orcawave-orcaflex-fixture-expansion-cookbook.md) | Procedure for adding new structure-family semantic-proof fixtures without overfitting to native YAML formatting | 2026-04-26 |
+| [OrcaWave-to-OrcaFlex Pipeline](workflows/orcawave-to-orcaflex-pipeline.md) | Automated single-command diffraction-to-vessel-type handoff | 2026-04-26 |
 | [Parametric Engineering Reports](workflows/parametric-engineering-reports.md) | Automated parametric report generation for GTM demos | 2026-04-08 |
 | [Solver Debugging Protocol](workflows/solver-debugging-protocol.md) | Systematic approach to debugging engineering solver failures | 2026-04-08 |
 
