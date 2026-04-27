@@ -84,6 +84,18 @@ cadences:
     check_method: "file_mtime"
     notes: "Navigation index for the intelligence architecture"
 
+  # L4 — Tier-1 routing/indexing freshness audit (#2465)
+  - asset_type: "tier-1-indexing-freshness"
+    path: "docs/reports/tier-1-indexing-freshness-latest.md"
+    layer: L4
+    expected_cadence: "daily"
+    staleness_days: 2
+    check_method: "in_body_generated_timestamp"
+    notes: >-
+      Refreshed by scripts/cron/tier1-indexing-freshness.sh (#2465). Staleness
+      check reads in-body 'Generated:' timestamp, NOT filesystem mtime, since
+      mtime is unreliable after git clone. Contract: docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md.
+
 # Staleness signals — what to look for during weekly review
 signals:
   - name: "nightly-ingest-zero-files"

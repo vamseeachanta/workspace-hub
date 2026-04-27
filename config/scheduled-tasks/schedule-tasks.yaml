@@ -621,3 +621,22 @@ tasks:
       (248 URL validation). Creates GitHub issues on conformance failures
       (label: conformance) or dead links (label: registry-health).
       Issues #2206, #1614, #2105.
+
+  - id: tier1-indexing-freshness
+    label: Daily tier-1 indexing freshness audit
+    schedule: "30 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/tier1-indexing-freshness.sh
+      >> $WORKSPACE_HUB/logs/freshness/tier-1-indexing-freshness-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/freshness/tier-1-indexing-freshness-*.log
+    is_claude_task: false
+    description: >-
+      Daily 06:30 UTC — local audit of tier-1 routing/indexing surfaces against
+      docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md. Refreshes
+      docs/reports/tier-1-indexing-freshness-latest.md and a dated snapshot;
+      emits a #2291 cron-health evidence line. Three-level exit (0/1/2).
+      Contract: docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md. Issue #2465.
