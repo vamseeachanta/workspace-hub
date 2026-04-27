@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360">
+<rect width="720" height="360" fill="#ffffff"/>
+<text x="70" y="30" font-size="18" font-family="Arial">CTE mismatch stress / warpage-style estimates</text>
+<text x="70" y="88" font-size="13" font-family="Arial">solder_zone</text>
+<rect x="190" y="70" width="188.059" height="28" fill="#4dabf7" stroke="#222"/>
+<text x="620" y="88" font-size="12" font-family="Arial">warp 0.159 um</text>
+<text x="70" y="143" font-size="13" font-family="Arial">substrate</text>
+<rect x="190" y="125" width="0.000" height="28" fill="#4dabf7" stroke="#222"/>
+<text x="620" y="143" font-size="12" font-family="Arial">warp 1.38 um</text>
+<text x="70" y="198" font-size="13" font-family="Arial">die</text>
+<rect x="190" y="180" width="420.000" height="28" fill="#4dabf7" stroke="#222"/>
+<text x="620" y="198" font-size="12" font-family="Arial">warp 2.77 um</text>
+<text x="70" y="253" font-size="13" font-family="Arial">mold</text>
+<rect x="190" y="235" width="125.373" height="28" fill="#4dabf7" stroke="#222"/>
+<text x="620" y="253" font-size="12" font-family="Arial">warp 3.96 um</text>
+<text x="70" y="330" font-size="13" font-family="Arial">Normalized educational estimates from CTE mismatch; not for production signoff</text>
+</svg>
