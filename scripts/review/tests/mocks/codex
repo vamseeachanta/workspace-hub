@@ -11,6 +11,20 @@ capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/codex.capture"
   echo "STDIN:"
   if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
 } > "$capture"
+if [[ "${MOCK_CODEX_EMPTY:-0}" == "1" ]]; then
+  exit 0
+fi
+if [[ "${MOCK_CODEX_STDERR_PARTIAL_THEN_SLEEP:-0}" == "1" ]]; then
+  {
+    echo '## Verdict'
+    echo 'MAJOR'
+  } >&2
+  sleep "${MOCK_CODEX_SLEEP_AFTER_PARTIAL_S:-3}"
+  exit 0
+fi
+if [[ "${MOCK_CODEX_STDERR_REVIEW:-0}" == "1" ]]; then
+  exec 1>&2
+fi
 cat <<'EOF'
 ## Verdict
 MAJOR

@@ -9,6 +9,7 @@ capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/gemini.capture"
   for a in "$@"; do printf ' %s' "$a"; done
   printf '\n'
   echo "PWD: $PWD"
+  echo "GEMINI_CLI_TRUST_WORKSPACE: ${GEMINI_CLI_TRUST_WORKSPACE:-}"
   echo "STDIN:"
   if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
 } > "$capture"

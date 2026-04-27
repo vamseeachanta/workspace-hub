@@ -153,7 +153,7 @@ test_claude_invocation_uses_path_reference() {
 }
 
 test_codex_invocation_inlines_plan_body() {
-  run_test "codex is invoked with INLINE plan body (not a path reference)"
+  run_test "codex is invoked with INLINE plan body in argv and closed stdin"
 
   local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
@@ -164,18 +164,16 @@ test_codex_invocation_inlines_plan_body() {
     rm -rf "$td"; return
   fi
 
-  # Whole-capture grep (argv may span multiple lines).
   if ! grep -qF "$FIXTURE_FIRST_LINE" "$cap"; then
-    fail "codex invocation missing inline plan body"
+    fail "codex argv missing inline plan body"
   elif ! grep -qF -- '--- PLAN' "$cap"; then
-    fail "codex invocation missing '--- PLAN' delimiter"
+    fail "codex argv missing '--- PLAN' delimiter"
+  elif grep -q '^ARGV: exec -$' "$cap"; then
+    fail "codex invocation must not use stdin sentinel 'exec -' (known hang path)"
   elif grep -qF -- '--no-interactive' "$cap"; then
-    # Regression guard: codex-cli 0.124.0 removed --no-interactive; the flag
-    # must not resurface in this invocation path. Fresh issue filed after the
-    # 2026-04-23 batch regression (supersedes the premature #2406 closure).
     fail "codex invocation passes removed flag '--no-interactive' (codex-cli >=0.124.0 rejects it)"
   else
-    pass "codex invoked with inline plan body + delimiter, no removed flags"
+    pass "codex invoked with argv inline plan body + delimiter, no removed flags"
   fi
   rm -rf "$td"
 }
@@ -196,8 +194,10 @@ test_gemini_invocation_inlines_plan_body() {
     fail "gemini invocation missing inline plan body"
   elif ! grep -qF -- '--- PLAN' "$cap"; then
     fail "gemini invocation missing '--- PLAN' delimiter"
+  elif ! grep -qF 'GEMINI_CLI_TRUST_WORKSPACE: true' "$cap"; then
+    fail "gemini invocation did not set trusted-workspace env" "$(grep 'GEMINI_CLI_TRUST_WORKSPACE:' "$cap" || true)"
   else
-    pass "gemini invoked with inline plan body + delimiter"
+    pass "gemini invoked with inline plan body + delimiter + trust env"
   fi
   rm -rf "$td"
 }
@@ -391,6 +391,87 @@ test_gemini_unavailable_does_not_abort_codex() {
   rm -rf "$td"
 }
 
+
+test_codex_stderr_review_is_promoted_to_artifact() {
+  run_test "codex structured review emitted on stderr is promoted to canonical artifact"
+
+  local td; td="$(mktemp -d)"
+  MOCK_CODEX_STDERR_REVIEW=1 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing"
+  elif ! grep -qF 'Mock finding from codex' "$codex_art"; then
+    fail "stderr review was not promoted into canonical artifact" "$(head -20 "$codex_art")"
+  elif [[ -e "${codex_art}.err" ]]; then
+    fail "stderr review sidecar should not remain after promotion"
+  else
+    pass "codex stderr review promoted to canonical artifact"
+  fi
+  rm -rf "$td"
+}
+
+test_empty_provider_output_becomes_unavailable_stub() {
+  run_test "empty provider output becomes actionable UNAVAILABLE stub"
+
+  local td; td="$(mktemp -d)"
+  MOCK_CODEX_EMPTY=1 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing"
+  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "empty provider output did not become UNAVAILABLE" "$(head -20 "$codex_art")"
+  elif ! grep -qF 'empty provider output' "$codex_art"; then
+    fail "UNAVAILABLE stub missing actionable empty-output reason" "$(head -20 "$codex_art")"
+  else
+    pass "empty output converted to actionable UNAVAILABLE stub"
+  fi
+  rm -rf "$td"
+}
+
+test_provider_timeout_becomes_unavailable_stub() {
+  run_test "provider timeout becomes UNAVAILABLE stub without aborting other providers"
+
+  local td; td="$(mktemp -d)"
+  PLAN_REVIEW_PROVIDER_TIMEOUT_SEC=1 MOCK_SLEEP_S=3 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing after timeout"
+  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "timeout did not produce UNAVAILABLE stub" "$(head -20 "$codex_art")"
+  else
+    pass "timeout produced UNAVAILABLE stub"
+  fi
+  rm -rf "$td"
+}
+
+
+test_partial_stderr_timeout_becomes_unavailable_stub() {
+  run_test "partial stderr review followed by timeout becomes UNAVAILABLE, not promoted"
+
+  local td; td="$(mktemp -d)"
+  PLAN_REVIEW_PROVIDER_TIMEOUT_SEC=1 MOCK_CODEX_STDERR_PARTIAL_THEN_SLEEP=1 MOCK_CODEX_SLEEP_AFTER_PARTIAL_S=3 \
+    run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing after partial timeout"
+  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "partial stderr timeout was promoted instead of UNAVAILABLE" "$(head -20 "$codex_art")"
+  elif grep -q '^MAJOR$' "$codex_art" && ! grep -qF 'rc=124' "$codex_art"; then
+    fail "partial stderr verdict leaked into canonical artifact" "$(head -20 "$codex_art")"
+  else
+    pass "partial stderr timeout converted to UNAVAILABLE stub"
+  fi
+  rm -rf "$td"
+}
+
 # --- Runner ---
 
 test_extracts_issue_num_from_filename
@@ -403,6 +484,10 @@ test_gemini_runs_from_tmp_cwd
 test_writes_claude_artifact
 test_parallel_execution
 test_gemini_unavailable_does_not_abort_codex
+test_codex_stderr_review_is_promoted_to_artifact
+test_empty_provider_output_becomes_unavailable_stub
+test_provider_timeout_becomes_unavailable_stub
+test_partial_stderr_timeout_becomes_unavailable_stub
 test_disagreement_report_captures_unique_finding
 test_two_fixture_plumbing
 
