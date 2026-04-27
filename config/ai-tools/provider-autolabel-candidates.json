@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-27T05:20:08.648391Z",
+  "generated_at": "2026-04-27T17:48:00.036809Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 12,
@@ -178,7 +178,7 @@
         "domain:workflow",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-26T11:57:29Z",
+      "updatedAt": "2026-04-27T13:25:24Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",

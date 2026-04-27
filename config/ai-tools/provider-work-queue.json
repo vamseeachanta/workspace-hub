@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-27T05:20:08.340267Z",
+  "generated_at": "2026-04-27T17:47:59.844103Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-27T05:20:06.505719Z",
+  "scorecard_generated_at": "2026-04-27T17:47:58.154901Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 25,
-      "total_candidates": 170,
+      "total_candidates": 172,
       "top_issues": [
         {
           "number": 2269,
@@ -49,7 +49,7 @@
             "domain:workflow",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-26T11:57:29Z",
+          "updatedAt": "2026-04-27T13:25:24Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -213,7 +213,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 27,
+      "total_candidates": 25,
       "top_issues": [
         {
           "number": 2462,
