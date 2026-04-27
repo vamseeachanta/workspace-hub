@@ -50,6 +50,12 @@ else
     fail "skill-eval integration missing"
 fi
 
+if grep -q "repo_ecosystem_autoresearch.py" "$SCRIPT" && grep -q -- "--target-type skill" "$SCRIPT"; then
+    pass "delegates to generic repo ecosystem runner"
+else
+    fail "generic runner delegation missing"
+fi
+
 if grep -q "timeout\|TIMEOUT\|TIME_BUDGET" "$SCRIPT"; then
     pass "time budget mechanism present"
 else
