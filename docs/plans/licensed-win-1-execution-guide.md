@@ -5,6 +5,11 @@ Machine: licensed-win-1 (Windows, D:\workspace-hub)
 Available: Claude Code CLI, Codex CLI, Gemini CLI, Python, Git Bash, OrcFxAPI
 NOT available: Hermes (installation restriction)
 
+## Active prompts
+
+- Semantic-proof native load/run protocol — `docs/plans/licensed-win-1-semantic-proof-load-run-prompt.md` (issue [#2475](https://github.com/vamseeachanta/workspace-hub/issues/2475)). Operating contract: `docs/solver/orcawave-orcaflex-native-load-run-proof-protocol.md`. Use this prompt for first-wave fixture proofs (#2455 / #2456 / #2457).
+- Session-3 fixture-generation prompts — `docs/plans/licensed-win-1-session-3-prompts.md` (legacy generation flow; not a substitute for the proof protocol).
+
 ## Best execution approach for this machine
 
 Since Hermes cannot be installed but all 3 agent CLIs (claude, codex, gemini) work,

@@ -1,0 +1,104 @@
+# Semantic-proof evidence manifest — template
+#
+# Purpose: durable per-fixture evidence record produced on the licensed machine
+# after a load-only or load+run proof attempt under the protocol at
+# docs/solver/orcawave-orcaflex-native-load-run-proof-protocol.md (issue #2475).
+#
+# Authoring rules:
+#   - Author this file directly on the licensed machine after each attempt.
+#   - Replace every <placeholder> below. Empty values are allowed only where the
+#     comment explicitly says "may be empty".
+#   - Commit alongside the proof artifacts. Reference the file path in the
+#     GitHub comment posted to the fixture's issue.
+#   - Required top-level keys (validated by the protocol contract):
+#     machine, solver, git, inputs, outputs, classification, evidence.
+#     Additional keys below are recommended but not strictly required.
+
+# --- Identity ---------------------------------------------------------------
+issue: 0                                # GitHub issue number for the fixture (e.g. 2455, 2456, 2457)
+fixture: <fixture-name>                 # Stable fixture name from the digitalmodel repo
+proof_level: <level1|level2|level3|level4>  # Highest proof level reached (see protocol §3)
+
+# --- Machine ----------------------------------------------------------------
+machine:
+  hostname: <licensed-win-1>
+  os: <Windows 10 / 11 / Server 20XX>
+  user: <login user — optional, may be empty>
+  workspace_root: <D:\workspace-hub>
+
+# --- Solver -----------------------------------------------------------------
+solver:
+  application: <OrcaWave|OrcaFlex>
+  application_version: <e.g. 11.5e>     # From the application About box or installer
+  orcfxapi_version: <e.g. 11.5.1>       # OrcFxAPI.version() if available, otherwise wheel filename
+
+# Convenience alias kept for backwards compat with operator scripts that
+# expect a top-level `orcfxapi`. Mirror solver.orcfxapi_version above.
+orcfxapi: <e.g. 11.5.1>
+
+# --- Git provenance ---------------------------------------------------------
+git:
+  workspace_hub_sha: <40-char SHA>
+  digitalmodel_sha: <40-char SHA>
+  workspace_hub_dirty: false            # true if git status not clean at proof time
+  digitalmodel_dirty: false
+  branch_workspace_hub: main
+  branch_digitalmodel: main
+
+# --- Inputs (generated native files under proof) ----------------------------
+inputs:
+  - path: <repo-relative path to the .owd / .yml / .dat file>
+    sha256: <optional content hash; may be empty>
+    source_issue: <issue number that produced this input on dev-primary>
+    source_pr: <PR number on digitalmodel; may be empty>
+  # Add additional rows for include files, mesh files, secondary inputs.
+
+# --- Outputs (artifacts produced by the licensed run, if any) ----------------
+# May be empty when classification is skip-run, missing input artifact,
+# or missing license/API. Result file paths are relative to the licensed-win-1
+# workspace; binary outputs above the size policy are referenced here but not
+# necessarily committed.
+outputs:
+  - path: <repo-relative path to .owr / .sim / sidecar .xlsx>
+    bytes: 0                             # File size; 0 if not produced
+    committed: false                     # true if checked into git
+    sha256: <optional content hash>
+  # Add additional rows for sidecar exports, screenshots, console logs.
+
+# --- Classification ---------------------------------------------------------
+# Exactly one primary classification value per the protocol §6 matrix.
+# A second classification may be added when level 2 passed but level 3 was
+# skipped or failed (e.g. pass-load + runtime/disk guard exceeded).
+classification:
+  primary: <pass-load|pass-run|semantic mismatch|solver-version/default drift|missing license/API|missing input artifact|unrelated environment failure|runtime/disk guard exceeded|skip-run>
+  secondary: <one of the above; may be empty>
+  reason: <one-line human-readable reason — required>
+
+# --- Evidence ---------------------------------------------------------------
+# Pointers to the artifacts that back the classification. Paths are repo-relative
+# unless explicitly marked external. Include enough detail that a reviewer can
+# reconstruct the verdict from these artifacts alone.
+evidence:
+  load_console: <repo-relative path to load-attempt console capture; may be empty>
+  run_console: <repo-relative path to run-attempt console capture; may be empty>
+  stderr_excerpt: |
+    <pasted stderr snippet, if any>
+  screenshot: <repo-relative path to a small PNG, if applicable; may be empty>
+  queue_result_yaml: <repo-relative path to queue/completed/<job>/result.yaml if the queue was used; may be empty>
+  wallclock_seconds: 0                   # Total wall-clock observed for the run, if level 3 attempted
+  notes: |
+    <free-form operator notes — optional>
+
+# --- Linkage ----------------------------------------------------------------
+links:
+  - https://github.com/vamseeachanta/workspace-hub/issues/2475   # protocol issue
+  - <https://github.com/vamseeachanta/workspace-hub/issues/{fixture-issue}>
+  - <https://github.com/vamseeachanta/digitalmodel/pull/528>     # baseline PR (level 1)
+  - <add additional fixture-specific issues/PRs>
+
+# --- Audit ------------------------------------------------------------------
+audit:
+  authored_by: <human or agent name>
+  authored_at: <ISO-8601 UTC timestamp, e.g. 2026-04-26T20:30:00Z>
+  protocol_version: v1
+  protocol_path: docs/solver/orcawave-orcaflex-native-load-run-proof-protocol.md
