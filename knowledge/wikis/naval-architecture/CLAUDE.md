@@ -20,6 +20,7 @@ wiki/         # LLM-maintained markdown pages
   sources/    # Source summary pages (one per ingested document)
   comparisons/# Filed query outputs (tables, analyses, comparisons)
   visualizations/ # matplotlib plots, Marp slide decks
+  standards/  # Standards pages (publisher-agnostic; code_id, publisher, revision required)
 ```
 
 ## Conventions
@@ -49,6 +50,18 @@ added: 2026-04-07
 last_updated: 2026-04-07
 ---
 ```
+
+### Standards page extra fields (`wiki/standards/*.md`)
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `code_id` | required (L0 prose) | Canonical code identifier, e.g. `csa-z276`, `api-17j`, `ocimf-meg4` |
+| `publisher` | required (L0 prose) | Publishing body, e.g. `CSA Group`, `API`, `OCIMF` |
+| `revision` | required (L0 prose) | Revision/edition/year, e.g. `2023`, `4e` |
+| `jurisdiction` | optional | Geographic or regulatory scope |
+| `supersedes` | optional | Prior revisions or codes replaced |
+
+> L0-prose enforcement only. Level-2 promotion tracked in follow-up issue (see `docs/plans/2026-04-23-issue-2471-standards-wiki-path-sanction.md`).
 
 ### Page format
 - Title in YAML frontmatter (see schema above)
