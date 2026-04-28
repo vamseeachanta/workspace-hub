@@ -1,9 +1,9 @@
 ---
 domain: engineering
 created: 2026-04-08 16:07 UTC
-last_updated: 2026-04-26
-page_count: 79
-source_count: 13
+last_updated: 2026-04-28
+page_count: 72
+source_count: 15
 ---
 
 # Knowledge Index: Engineering
@@ -121,3 +121,6 @@ source_count: 13
 ## Comparisons
 
 _No query outputs filed yet._
+
+| [[Elements ingest catalog — digitalmodel-qgis]](sources/elements-digitalmodel-qgis.md) | QGIS reusable engineering workflow/tooling data from the Elements drive. | 2026-04-28 |
+| [[Elements ingest catalog — doris-university]](sources/elements-doris-university.md) | Doris University training corpus from the Elements drive; metadata-first training/source catalog. | 2026-04-28 |

@@ -77,3 +77,10 @@
 - Total pages: 52 (25 concepts, 13 entities, 8 sources, 4 standards, 2 workflows)
 - Index, overview updated with complete inventory
 - Notes: Issue #2034 seed complete. 5+ source classes ingested, 52 pages total. Incremental ingest workflow documented in CLAUDE.md and SOURCE_INVENTORY.md.
+
+## [2026-04-28 19:24 UTC] batch-ingest | Batch 1 (2 records)
+- Domain: engineering
+- Records: 2
+- Titles (sample): Elements ingest catalog — digitalmodel-q, Elements ingest catalog — doris-universi
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md

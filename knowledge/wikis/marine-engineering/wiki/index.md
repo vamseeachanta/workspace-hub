@@ -1,9 +1,9 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-26
-page_count: 19189
-source_count: 19161
+last_updated: 2026-04-28
+page_count: 19192
+source_count: 19164
 ---
 
 # Knowledge Index: Marine Engineering
@@ -21613,4 +21613,6 @@ source_count: 19161
 | [[SIGTTO LNG Operations in Port Areas]](sources/sigtto-lng-operations-port-areas.md) | Society of International Gas Tanker and Terminal Operators guidance on LNG operations in port areas.... | 2026-04-16 |
 | [[SIGTTO Liquefied Gas Handling Principles on Ships and in Terminals]](sources/sigtto-liquefied-gas-handling-principles.md) | SIGTTO comprehensive reference for liquefied gas handling on ships and terminals. Covers cargo conta... | 2026-04-16 |
 | [[SIGTTO Mooring at Single Point Moorings]](sources/sigtto-mooring-single-point-moorings.md) | SIGTTO guidance on mooring operations at single point moorings (SPMs) for gas carriers. Covers appro... | 2026-04-16 |
+| [[Elements ingest catalog — digitalmodel-suction-pile-sizing]](sources/elements-digitalmodel-suction-pile-sizing.md) | Suction pile sizing reference corpus from the Elements drive; small, high-value offshore foundation... | 2026-04-28 |
+| [[Elements ingest catalog — digitalmodel-riser-toolbox]](sources/elements-digitalmodel-riser-toolbox.md) | Riser Toolbox reference corpus from the Elements drive; small, high-value riser/offshore methodology... | 2026-04-28 |
 

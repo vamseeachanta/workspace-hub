@@ -2265,3 +2265,10 @@
 - Titles (sample): CSA Z276.2-19 — Near-Shoreline FLNG Faci, CSA Z276.1-20 — Marine Structures Associ, CSA Z276.18 — LNG Production, Storage, a, OCIMF Mooring Equipment Guidelines — 3rd, OCIMF Mooring Equipment Guidelines — 4th ... (+5 more)
 - Pages created: wiki/sources/<slug>.md for each record
 - Index updated: wiki/index.md
+
+## [2026-04-28 19:24 UTC] batch-ingest | Batch 1 (2 records)
+- Domain: marine-engineering
+- Records: 2
+- Titles (sample): Elements ingest catalog — digitalmodel-s, Elements ingest catalog — digitalmodel-r
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md

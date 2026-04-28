@@ -1,0 +1,13 @@
+=== Wiki Lint: engineering-standards ===
+
+Found 1 issue(s):
+
+  [WARNING] cross-refs: Low link density (0.2 avg/page)
+
+Summary:
+  Orphan pages:     0
+  Empty pages:      0
+  Index issues:     0
+  Log issues:       0
+  Frontmatter:      0
+  Link density:     0.2 avg per page

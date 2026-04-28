@@ -1,0 +1,14 @@
+=== Wiki Lint: engineering-standards ===
+
+Found 2 issue(s):
+
+  [WARNING] cross-refs: Low link density (0.2 avg/page)
+  [WARNING] frontmatter: 'sources/elements-doris-codes-specs.md' missing recommended field 'sources'
+
+Summary:
+  Orphan pages:     0
+  Empty pages:      0
+  Index issues:     0
+  Log issues:       0
+  Frontmatter:      1
+  Link density:     0.2 avg per page
