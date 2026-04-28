@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:apps='http://schemas.google.com/apps/2006'>
+  <title>workspace-hub Gmail Filters — 2026-04-27</title>
+  <!--
+    Source runbook: docs/email/2026-04-27-filter-installation-runbook.md
+    Derivation: 50-thread sample of vamsee.achanta@aceengineer.com inbox, 2026-04-27
+    Companion issue: https://github.com/vamseeachanta/workspace-hub/issues/2529 (daily tracker)
+
+    PREFLIGHT (do this before importing, in this order):
+      1. Settings → Inbox → uncheck "Override filters for important"
+         (without this, Skip-Inbox silently no-ops on important-classified mail —
+         see feedback memory `feedback_gmail_override_filters_silent_defeat.md`)
+      2. Create a new label called `gh-dependabot` in the Gmail UI
+         (Gmail's filter import does NOT auto-create labels — Group 6 will fail
+         to apply if this label doesn't exist yet)
+      3. Settings → Filters and Blocked Addresses → "Import filters"
+         → upload this file → review each entry → check "Apply filter to existing
+         conversations" if you want immediate cleanup → Create filters
+
+    Behavior notes:
+      - Group 5 (Trello deleted-account bot) uses shouldTrash because the
+        runbook flags this as immediate-delete (account is gone, no recovery
+        path). All other groups use shouldArchive (safer; reversible).
+      - Group 3 (industry feeds) intentionally omits shouldMarkAsRead so
+        weekly skim of O&G Industry label stays easy.
+      - Existing user labels assumed to exist: AutoNoise, CRE, O&G Industry.
+        These were verified present via Gmail MCP list_labels on 2026-04-27.
+  -->
+
+  <!-- Group 1 — Pure marketing/promo -->
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <id>tag:mail.google.com,2008:filter:wh-2026-04-27-g1</id>
+    <updated>2026-04-27T21:00:00Z</updated>
+    <content></content>
+    <apps:property name='from' value='lowes@e.lowes.com OR email@e.godaddy.com OR zmail@zmail.zillow.com OR marketing@supermicro.com OR estore-support@supermicro.com OR eagle@indianeagle.com OR newsletter@mailing.milesandmore.com OR costcoauto@mail.costcoauto.com OR homedepotcustomercare@mg.homedepot.com OR info@c.davidweekleyhomes.com OR service@info.remitly.com'/>
+    <apps:property name='label' value='AutoNoise'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldMarkAsRead' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+
+  <!-- Group 2 — Newsletters / weekly reads -->
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <id>tag:mail.google.com,2008:filter:wh-2026-04-27-g2</id>
+    <updated>2026-04-27T21:00:00Z</updated>
+    <content></content>
+    <apps:property name='from' value='sahil@sahilbloom.com OR turiya@mail.beehiiv.com OR info@realpython.com OR jason@pyquantnews.com OR welcome@openrouter.ai OR noreply@email.openai.com OR no-reply@kaggle.com OR nasem@nationalacademies.org OR newsletter@sparkforautism.org'/>
+    <apps:property name='label' value='AutoNoise'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='shouldMarkAsRead' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+
+  <!-- Group 3 — Industry feeds (real signal, just not inbox-worthy; left unread for weekly skim) -->
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <id>tag:mail.google.com,2008:filter:wh-2026-04-27-g3</id>
+    <updated>2026-04-27T21:00:00Z</updated>
+    <content></content>
+    <apps:property name='from' value='update@maritimereporter.com OR registrar@api.org'/>
+    <apps:property name='label' value='O&amp;G Industry'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+
+  <!-- Group 4 — CRE listings (extraction target per #2017) -->
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <id>tag:mail.google.com,2008:filter:wh-2026-04-27-g4</id>
+    <updated>2026-04-27T21:00:00Z</updated>
+    <content></content>
+    <apps:property name='from' value='rorik@sethequities.com OR IanIppolito@therealestatecrowdfundingreview.com'/>
+    <apps:property name='label' value='CRE'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+
+  <!-- Group 5 — Trello bot from deleted account (immediate trash; runbook authorizes this) -->
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <id>tag:mail.google.com,2008:filter:wh-2026-04-27-g5</id>
+    <updated>2026-04-27T21:00:00Z</updated>
+    <content></content>
+    <apps:property name='from' value='do-not-reply@trello.com'/>
+    <apps:property name='subject' value='deleted account'/>
+    <apps:property name='shouldTrash' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+
+  <!-- Group 6 — Dependabot review-requests for worldenergydata
+       REQUIRES: `gh-dependabot` label must be created in Gmail UI before import. -->
+  <entry>
+    <category term='filter'></category>
+    <title>Mail Filter</title>
+    <id>tag:mail.google.com,2008:filter:wh-2026-04-27-g6</id>
+    <updated>2026-04-27T21:00:00Z</updated>
+    <content></content>
+    <apps:property name='from' value='notifications@github.com'/>
+    <apps:property name='to' value='worldenergydata@noreply.github.com'/>
+    <apps:property name='label' value='gh-dependabot'/>
+    <apps:property name='shouldArchive' value='true'/>
+    <apps:property name='sizeOperator' value='s_sl'/>
+    <apps:property name='sizeUnit' value='s_smb'/>
+  </entry>
+
+  <!-- Group 7 is a one-time bulk-archive sweep (closed/stale GitHub threads),
+       not a recurring filter. Per the runbook, do this manually via search:
+         from:notifications@github.com older_than:30d -is:starred
+       Then bulk-archive. No filter entry needed. -->
+
+</feed>
