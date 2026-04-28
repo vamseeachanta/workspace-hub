@@ -132,3 +132,15 @@
 {"ts":"2026-04-25T06:16:05Z","agent":"hermes","action":"modify","skill_path":".claude/skills/workspace-hub/provider-session-ecosystem-audit-and-exporters/SKILL.md","commit":"05581827edd5ae0097bb4d8a6cdf93eaf3dd27bd"}
 {"ts":"2026-04-26T07:04:26Z","agent":"unknown","action":"create","skill_path":".claude/skills/ai/inventory-readiness-provider-dispatch/SKILL.md","commit":"4017adfee2f3a15223215b2ccf8e785e2807ae52"}
 {"ts":"2026-04-26T07:04:26Z","agent":"unknown","action":"create","skill_path":".claude/skills/coordination/continuous-planning-pipeline/SKILL.md","commit":"4017adfee2f3a15223215b2ccf8e785e2807ae52"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/README.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/booking-timeline/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/cost-estimation/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/itinerary-design/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/lodging-selection/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/risk-and-redundancy/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/templates/destination-issue-body.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/templates/ranking-matrix.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/templates/trip-issue-body.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/transport-and-passes/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/trip-planner/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
+{"ts":"2026-04-28T01:43:49Z","agent":"claude","action":"create","skill_path":".claude/skills/travel/visual-review-board/SKILL.md","commit":"0722fa9948bc11e8d305b1d09d2cde2ffee1651f"}
