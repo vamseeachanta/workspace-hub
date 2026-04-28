@@ -2,8 +2,8 @@
 domain: engineering
 created: 2026-04-08 16:07 UTC
 last_updated: 2026-04-28
-page_count: 72
-source_count: 15
+page_count: 82
+source_count: 16
 ---
 
 # Knowledge Index: Engineering
@@ -96,6 +96,7 @@ source_count: 15
 | [Closed Engineering Issues](sources/closed-engineering-issues.md) | Key decisions from 5 closed cat:engineering GitHub issues | closed-issues | 2026-04-09 |
 | [Nightly Research Outputs](sources/research-outputs.md) | Standards tracking from nightly researcher system | research-outputs | 2026-04-09 |
 | [HN CadQuery Discussion](sources/2026-04-17-hn-cadquery.md) | 180-point HN thread — CadQuery Python parametric CAD, B-rep vs mesh, LLM codegen signals | hn-discussion | 2026-04-17 |
+| [Elements QGIS Flowline/DEM Deep Extraction](sources/elements-qgis-flowline-dem-deep-extraction.md) | First-pass extraction of Elements QGIS flowline alignment, UTM Zone 15N projection, DEM grid stats, and DXF entity counts | elements-deep-extraction | 2026-04-28 |
 
 ## Standards (7 pages)
 
@@ -117,6 +118,7 @@ source_count: 15
 | [OrcaWave-to-OrcaFlex Pipeline](workflows/orcawave-to-orcaflex-pipeline.md) | Automated single-command diffraction-to-vessel-type handoff | 2026-04-26 |
 | [Parametric Engineering Reports](workflows/parametric-engineering-reports.md) | Automated parametric report generation for GTM demos | 2026-04-08 |
 | [Solver Debugging Protocol](workflows/solver-debugging-protocol.md) | Systematic approach to debugging engineering solver failures | 2026-04-08 |
+| [QGIS Flowline Alignment and DEM Preprocessing](workflows/qgis-flowline-dem-preprocessing.md) | Convert DXF flowline alignment plus UTM DEM grid into station/elevation engineering preprocessing artifacts | 2026-04-28 |
 
 ## Comparisons
 

@@ -3,6 +3,11 @@
 > Chronological record of all wiki operations.
 > Format: ## [YYYY-MM-DD] operation | Title
 
+## [2026-04-28] deep-extraction | Elements QGIS flowline/DEM corpus (#2536)
+- Pages created: `sources/elements-qgis-flowline-dem-deep-extraction.md`, `workflows/qgis-flowline-dem-preprocessing.md`.
+- Extraction artifacts: `.planning/intel/elements-deep-extraction/gis/dem-stats.json`, `gis/dxf-entity-summary.json`, `gis/qgis-files.json`.
+- Notes: Raw GIS/CAD files remain link-only in `/mnt/ace/digitalmodel/tools/qgis`; `.tif` suffix was found to contain ASCII-grid style DEM content.
+
 ## [2026-04-26] add | Canonical Spec Semantic Equivalence Contract + Fixture Expansion Cookbook (#2476)
 - Pages created:
   - `concepts/canonical-spec-semantic-equivalence.md` — defines semantic equivalence dimensions for canonical `spec.yml` -> native OrcaWave/OrcaFlex YAML; nine dimensions plus reverse-parser equivalence and anti-pattern catalogue

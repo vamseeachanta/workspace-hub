@@ -1,0 +1,427 @@
+{
+  "path": "/mnt/ace/digitalmodel/references/suction-pile-sizing/pile soil defl i doris system-suction pile.xlsm",
+  "name": "pile soil defl i doris system-suction pile.xlsm",
+  "size": 62339,
+  "sheets": [
+    {
+      "title": "Sheet1",
+      "max_row": 1001,
+      "max_column": 13,
+      "non_empty_cells": 490,
+      "formula_cells": 109,
+      "labels": [
+        {
+          "cell": "C1",
+          "value": "Suction Pile divisions"
+        },
+        {
+          "cell": "E1",
+          "value": "50"
+        },
+        {
+          "cell": "J1",
+          "value": "4"
+        },
+        {
+          "cell": "K1",
+          "value": "0.001"
+        },
+        {
+          "cell": "L1",
+          "value": "3125.793717674006"
+        },
+        {
+          "cell": "M1",
+          "value": "1"
+        },
+        {
+          "cell": "C2",
+          "value": "Solution"
+        },
+        {
+          "cell": "J2",
+          "value": "3.999951377312197"
+        },
+        {
+          "cell": "K2",
+          "value": "0.01818167074881257"
+        },
+        {
+          "cell": "L2",
+          "value": "1721.7000996387458"
+        },
+        {
+          "cell": "M2",
+          "value": "2"
+        },
+        {
+          "cell": "C3",
+          "value": "Pivot pt."
+        },
+        {
+          "cell": "D3",
+          "value": "(ft)"
+        },
+        {
+          "cell": "E3",
+          "value": "2.1"
+        },
+        {
+          "cell": "F3",
+          "value": "above bottom"
+        },
+        {
+          "cell": "J3",
+          "value": "2.8038135761530727"
+        },
+        {
+          "cell": "K3",
+          "value": "0.036916903520637936"
+        },
+        {
+          "cell": "L3",
+          "value": "913.3859628651907"
+        },
+        {
+          "cell": "M3",
+          "value": "3"
+        },
+        {
+          "cell": "C4",
+          "value": "Tilt"
+        },
+        {
+          "cell": "D4",
+          "value": "(deg)"
+        },
+        {
+          "cell": "E4",
+          "value": "4.81"
+        },
+        {
+          "cell": "J4",
+          "value": "2.4504302272350675"
+        },
+        {
+          "cell": "K4",
+          "value": "0.052186205597519277"
+        },
+        {
+          "cell": "L4",
+          "value": "605.8818607366404"
+        },
+        {
+          "cell": "M4",
+          "value": "4"
+        },
+        {
+          "cell": "C5",
+          "value": "Pull-out f/s"
+        },
+        {
+          "cell": "D5",
+          "value": "(#)"
+        },
+        {
+          "cell": "E5",
+          "value": "1.71"
+        },
+        {
+          "cell": "J5",
+          "value": "2.200208073853857"
+        },
+        {
+          "cell": "K5",
+          "value": "0.06847459788898551"
+        },
+        {
+          "cell": "L5",
+          "value": "295.951056354369"
+        },
+        {
+          "cell": "M5",
+          "value": "5"
+        },
+        {
+          "cell": "C6",
+          "value": "Pile Data"
+        },
+        {
+          "cell": "J6",
+          "value": "2.131623882855733"
+        },
+        {
+          "cell": "K6",
+          "value": "0.0762027734406633"
+        },
+        {
+          "cell": "L6",
+          "value": "147.69090730802486"
+        },
+        {
+          "cell": "M6",
+          "value": "6"
+        },
+        {
+          "cell": "B7",
+          "value": "1"
+        },
+        {
+          "cell": "C7",
+          "value": "dia"
+        },
+        {
+          "cell": "D7",
+          "value": "(in)"
+        },
+        {
+          "cell": "E7",
+          "value": "6.625"
+        },
+        {
+          "cell": "F7",
+          "value": "pile OD"
+        },
+        {
+          "cell": "J7",
+          "value": "2.102917542354774"
+        },
+        {
+          "cell": "K7",
+          "value": "0.08007522080566536"
+        },
+        {
+          "cell": "L7",
+          "value": "73.55241830443664"
+        },
+        {
+          "cell": "M7",
+          "value": "7"
+        },
+        {
+          "cell": "B8",
+          "value": "2"
+        },
+        {
+          "cell": "C8",
+          "value": "wall thick."
+        },
+        {
+          "cell": "D8",
+          "value": "(in)"
+        },
+        {
+          "cell": "E8",
+          "value": "0.6"
+        },
+        {
+          "cell": "F8",
+          "value": "pile wall thickness"
+        },
+        {
+          "cell": "J8",
+          "value": "2.0896321762071906"
+        },
+        {
+          "cell": "K8",
+          "value": "0.0819980961751549"
+        },
+        {
+          "cell": "L8",
+          "value": "36.67590654887612"
+        },
+        {
+          "cell": "M8",
+          "value": "8"
+        },
+        {
+          "cell": "B9",
+          "value": "3"
+        },
+        {
+          "cell": "C9",
+          "value": "pile length"
+        },
+        {
+          "cell": "D9",
+          "value": "(ft)"
+        },
+        {
+          "cell": "E9",
+          "value": "8"
+        },
+        {
+          "cell": "F9",
+          "value": "pile lgt"
+        },
+        {
+          "cell": "J9",
+          "value": "2.08322397785196"
+        },
+        {
+          "cell": "K9",
+          "value": "0.08295399577223726"
+        },
+        {
+          "cell": "L9",
+          "value": "18.31138202121656"
+        },
+        {
+          "cell": "M9",
+          "value": "9"
+        },
+        {
+          "cell": "B10",
+          "value": "4"
+        },
+        {
+          "cell": "C10",
+          "value": "pile depth"
+        },
+        {
+          "cell": "D10",
+          "value": "(ft)"
+        },
+        {
+          "cell": "E10",
+          "value": "8"
+        },
+        {
+          "cell": "J10",
+          "value": "2.0800888661236083"
+        },
+        {
+          "cell": "K10",
+          "value": "0.08343005584810234"
+        },
+        {
+          "cell": "L10",
+          "value": "9.15739418875111"
+        },
+        {
+          "cell": "M10",
+          "value": "10"
+        },
+        {
+          "cell": "B11",
+          "value": "5"
+        },
+        {
+          "cell": "C11",
+          "value": "water table"
+        },
+        {
+          "cell": "D11",
+          "value": "(ft)"
+        },
+        {
+          "cell": "E11",
+          "value": "4"
+        },
+        {
+          "cell": "J11",
+          "value": "2.078540540239568"
+        },
+        {
+          "cell": "K11",
+          "value": "0.08366821308418755"
+        },
+        {
+          "cell": "L11",
+          "value": "4.576921794202385"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "B17",
+          "value": "=1+B16"
+        },
+        {
+          "cell": "A25",
+          "value": "=A19+1"
+        },
+        {
+          "cell": "B25",
+          "value": "=B19"
+        },
+        {
+          "cell": "A26",
+          "value": "=A20+1"
+        },
+        {
+          "cell": "B26",
+          "value": "=B20"
+        },
+        {
+          "cell": "A27",
+          "value": "=A21+1"
+        },
+        {
+          "cell": "B27",
+          "value": "=B21"
+        },
+        {
+          "cell": "A28",
+          "value": "=A22+1"
+        },
+        {
+          "cell": "B28",
+          "value": "=B22"
+        },
+        {
+          "cell": "A29",
+          "value": "=A23+1"
+        },
+        {
+          "cell": "B29",
+          "value": "=B23"
+        },
+        {
+          "cell": "A30",
+          "value": "=A24+1"
+        },
+        {
+          "cell": "B30",
+          "value": "=B24"
+        },
+        {
+          "cell": "A31",
+          "value": "=A25+1"
+        },
+        {
+          "cell": "B31",
+          "value": "=B25"
+        },
+        {
+          "cell": "A32",
+          "value": "=A26+1"
+        },
+        {
+          "cell": "B32",
+          "value": "=B26"
+        },
+        {
+          "cell": "A33",
+          "value": "=A27+1"
+        },
+        {
+          "cell": "B33",
+          "value": "=B27"
+        },
+        {
+          "cell": "A34",
+          "value": "=A28+1"
+        }
+      ]
+    },
+    {
+      "title": "Sheet2",
+      "max_row": 1,
+      "max_column": 1,
+      "non_empty_cells": 0,
+      "formula_cells": 0,
+      "labels": [],
+      "formulas_sample": []
+    }
+  ]
+}

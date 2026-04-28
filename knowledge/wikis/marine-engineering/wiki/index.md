@@ -2,8 +2,8 @@
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
 last_updated: 2026-04-28
-page_count: 19192
-source_count: 19164
+page_count: 19197
+source_count: 19166
 ---
 
 # Knowledge Index: Marine Engineering
@@ -46,6 +46,8 @@ source_count: 19164
 | [[Process Safety]](concepts/process-safety.md) | HAZOP, SIS, SIS, flare, relief — protection layers | 2026-04-07 |
 | [[Sour Service]](concepts/sour-service.md) | H2S environments — SSC, HIC, SOHIC, NACE MR0175 | 2026-04-07 |
 | [[Subsea Cable and Umbilical Cross-Sections]](concepts/subsea-cable-umbilical-cross-sections.md) | Offshore wind cable, O&G umbilical, pipeline, and flexible-pipe cross-section taxonomy | 2026-04-26 |
+| [[Suction Pile Preliminary Sizing with API p-y/t-z Curves]](concepts/suction-pile-preliminary-sizing-api-py-tz.md) | Preliminary suction pile sizing pattern using API p-y/t-z curves, rigid-body rotation, and Newton iteration | 2026-04-28 |
+| [[Riser Extreme Statistics from OrcaFlex Workbooks]](concepts/riser-extreme-statistics-orcaflex-workbooks.md) | Legacy OrcaFlex workbook pattern for stress/tension envelope extraction and Weibull/Gumbel-style extreme statistics | 2026-04-28 |
 
 ## Sources
 
@@ -57,6 +59,8 @@ source_count: 19164
 | [[Mooring Failures]](sources/mooring-failures-lng-terminals.md) | LNG Terminal Mooring Failures (Woodside, MAIB, NOPSEMA) | Incident Compilation | 68 KB YAML | 2026-04-07 |
 | [[Piping Components]](sources/piping-components-ebook.md) | Piping Components for O&G (HardHatEngineer) | Reference Guide | 3.6 MB | 2026-04-07 |
 | [[Subsea Cable, Umbilical, and Pipeline Cross-Section Reconnaissance]](sources/offshore-cable-umbilical-cross-section-recon-2026-04-26.md) | First-pass external source synthesis for offshore wind cables, O&G umbilicals, rigid pipelines, and cross-section modeling gaps | Web/PDF recon | Web | 2026-04-26 |
+| [[Elements Suction Pile Sizing Deep Extraction]](sources/elements-suction-pile-sizing-deep-extraction.md) | First-pass extraction of Doris suction pile sizing PDF/workbooks and API p-y/t-z methodology | Elements deep extraction | Link-only | 2026-04-28 |
+| [[Elements Riser Toolbox Deep Extraction]](sources/elements-riser-toolbox-deep-extraction.md) | First-pass extraction of OrcaFlex riser statistics workbooks for stress/tension envelopes and extreme fitting | Elements deep extraction | Link-only | 2026-04-28 |
 | [[RB122]](sources/rb122-float-equipment.md) | Float Equipment (Halliburton) | Product Catalog | 691 KB | 2026-04-07 |
 
 ## Comparisons

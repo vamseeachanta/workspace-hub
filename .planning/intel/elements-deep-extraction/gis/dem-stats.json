@@ -1,0 +1,15 @@
+{
+  "NCOLS": 12240.0,
+  "NROWS": 4596.0,
+  "XLLCORNER": 184001.55,
+  "YLLCORNER": 2067807.1,
+  "DX": 9.9995237,
+  "DY": 9.9986037,
+  "NODATA_VALUE": -9999.0,
+  "cell_count_read": 56255040,
+  "valid_cell_count": 14418578,
+  "nodata_count": 41836462,
+  "min": -1415.0,
+  "max": 65.0,
+  "mean": -350.5472352228998
+}

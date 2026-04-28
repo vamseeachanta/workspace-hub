@@ -1,0 +1,10 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.14, pytest-9.0.2, pluggy-1.6.0
+rootdir: /mnt/local-analysis/workspace-hub
+configfile: pyproject.toml
+collected 41 items
+
+scripts/knowledge/tests/test_llm_wiki.py ............................... [ 75%]
+..........                                                               [100%]
+
+============================== 41 passed in 0.72s ==============================

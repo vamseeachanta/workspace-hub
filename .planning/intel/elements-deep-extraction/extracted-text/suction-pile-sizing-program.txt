@@ -1,0 +1,252 @@
+SUCTION PILE SIZING PROGRAM
+INTRODUCTION
+
+A suction pile program was developed and placed on the Doris T: drive {T:\Subsea\3-UFR\09-
+Suction_Pile_Sizing\....xlsm} for execution.
+
+The program executes in Excel, however it will not run successfully with correct results if executed
+outside the T: drive location since it uses miscellaneous resources of the Doris system.
+
+The program is the proprietary property of Doris Inc. / Houston. The author and administrator for the
+software is R. Haun.
+
+SUCTION PILE DEFLECTION CONSIDERATIONS AND ASSUMPTIONS
+
+The structural deformation of a suction pile, much like a short beam, is principally due to lateral shear
+since the overall length to diameter ratios are very low (3<L/D<7). Shear deformation is generally
+negligible and can be omitted for general diameter and length sizing but can be used to determine a
+practical cross sectional area requirement for the pile wall thickness.
+
+Points of applied external forces acting on the pile introduce local shell deformation which is a detail
+design activity for local stiffening and can be ignored for preliminary diameter and length sizing for cost
+analysis.
+
+With negligible bending and shear deformations, the global behavior of a properly sized suction pile is
+dominated therefore by the rigid body motion of the pile in the deforming soil. The angular deflection
+of a suction pile due to applied loads can be determined due to the soil system deformation as defined
+by ‘p-y’ data in API RP-2A.
+
+The vertical resistance and deformation can be determined by ‘t-z’ data in API RP-2A. The program uses
+the t-z data to report the factor of safety against vertical pull-out relative to the estimated pile weight
+and the specified vertical load. As in all soil analysis a factor of safety above 2 is considered acceptable.
+
+Each of the soil layers is considered to act alone in its zone and is considered to behave in accordance
+with the guidelines in API RP-2A.
+
+SOLUTION METHODOLGY
+
+The suction pile program resolves the rigid body rotation in a variety of layered soils that can be defined
+by the API p-y and t-z data.
+
+Lateral and vertical loads can be applied anywhere along the length of the pile but are defined at the
+same location to represent an applied force vector.
+
+Overburden pressure is determined for each vertical division of the pile length for determination of the
+identified parameters utilized within API RP-2A including the ‘Xr’ value for clay soils. The ‘Xr’ value
+which is the soil depth boundary between shallow and deep clay behavior is determined when the clay
+strength affected by the cohesive shear strength, overburden pressure and pile to depth ratio is equal to
+the deep clay ultimate strength ratio (=9*cohesive shear strength).
+The program solution is determined with the accuracy of 1/100th of the applied load as an accuracy level
+of the square of the sum of the squares of the force and moment equation residuals {[the difference in
+the lateral applied force and the soil resistance force] and [the difference in the resulting moment of the
+lateral applied force and the point of rotation to the resulting moment of the soil resistances and their
+distances from the point of rotation]}. While the units appear mixed for the solution residuals, the
+methodology ensures accuracy independent of the problem definition. This accuracy value is seen to be
+adequate for practical applications. The upper allowable limit of iterations within the solution is 1,000
+although a good pile estimate will likely converge in less than 50 iterations. The Newton non-linear
+solution method is employed to resolve the unknowns.
+
+Solution time for a well-defined and practical problem on a standard computer is less than 2 seconds.
+
+PROGRAM INPUT AND OUTPUT
+
+The input data format is shown in Appendix A following a successful execution with 10 layers of soil with
+variations of soil type (sand or clay) and with variations of density and strength. The program maximum
+limit is currently 10 layers of soil and considered practical since soil lab data is normally not available for
+more closely spaced soil in the first 100 feet of soil depth.
+
+The solution procedure divides the embedded section of the pile into individual segments to refine the
+solution. There is no limit of the number of segments within the defined soil layers. The soil properties
+defined at the center of a pile segment are used to determine the local deflection and the soil resistance
+due to that deflection. The number of suction pile divisions is unlimited within the software however
+divisions finer than one foot are not considered practical due to the accuracy of the layer depths and the
+tolerances on the field and lab tests.
+
+The pile data to be defined by the user includes:
+
+    •   Pile Diameter;
+    •   Wall thickness (optional for weight estimate used in the pull-out F/S calculation);
+    •   Pile length;
+    •   Pile Depth into the soil (after any scour considerations);
+    •   Water table depth (for seabed piles=Pile depth; provided as a parameter for beach start-up pile
+        estimates);
+    •   Elevation of the applied lateral and vertical forces from the bottom of the pile;
+    •   Horizontal force magnitude;
+    •   Vertical force magnitude;
+    •   Applied moment magnitude (normally zero);
+    •   Plug indication flag (1 for plugged pile & 0 for unplugged pile; for sensitivity evaluations);
+    •   Number of soil layers to be considered (if 20 layers are defined but 10 are considered, the last
+        layer will be used for the positions below that layer).
+
+Each layer of soil includes:
+
+    •   Depth of the start of the soil properties below the mudline or soil surface;
+    •   Soil type (sand [s] or clay [c]);
+    •   Wet in-situ soil weight from lab or field report (dry air weight – buoyancy);
+    •   Friction angle (if sand else ignored for clay);
+    •   Cohesive shear strength (if clay else ignored for sand);
+    •   Epsilon (the value of strain ratio [in/in] at 50% of the unconfined ultimate shear strength,
+        without data use. 0.1).
+
+The soil data is repeated for each layer. Layer numbers (not shown on the report printout but shown on
+the input screen) are provided to assist in tabulating the soil layers. Property numbers (1-6) on the input
+screen are provided to assist to prevent error.
+
+The lateral resistance is computed with the non-linear relationships defined by API RP-2A (p-y data) for
+both sand and clay soils at the number of equal divisions defined for the pile depth below the top of soil.
+
+An assumption in the program is that the loads will be cyclic in accordance with API RP-2A providing
+some degree of conservatism if there is a single static load condition.
+
+The vertical resistance is computed with the non-linear relationships defined by API RP-2A (t-z data) for
+both sand and clay soils.
+
+The program includes the lateral shear at the pile bottom as a linear value of cross sectional area time
+the shear strength without non-linear effects in addition to the rotational resistance of the p-y data.
+
+PROGRAM EXECUTION AND CONVERGENCE
+
+The program solution is non-linear and resolved with Newton’s method. The convergence is relatively
+quick for a valid solution. A graph is developed during the program execution indicating convergence.
+The graph for the sample problem is provide below. Newton’s method provides quadratic convergence
+which is apparent in the graph.
+
+                                                                 Convergence Rate
+                                                      1600
+                 Imbalance of RMS Force and Moments
+
+
+
+
+                                                      1400
+                                                      1200
+                                                      1000
+                                                      800
+                                                      600
+                                                      400
+                                                      200
+                                                        0
+                                                             0   5         10        15   20
+                                                                        Iterations
+
+
+In the event the problem posed does not converge, several conditions may exist. These are:
+
+    •   The pile is too short for the applied loads and excessive rotation occurs;
+    •   The pile diameter is too small for the applied loads and excessive rotation occurs;
+   •   The soil has too little resistance for the diameter and length of the pile and excessive rotation
+       occurs;
+   •   The loads are so small for the diameter and length of pile that deflections are lost in numerical
+       coarseness during the solution of the Jacobian matrix.
+
+REFERENCES
+
+[1] API RP-2A Planning, Design and Construction Fixed Offshore Platforms – Load and Resistance Factor
+Design, American Petroleum Institute 1993
+APPENDIX A
+
+Typical Data Run with the Execute button in Blue, the input data cells in Yellow and the results in Lt.
+Green:
+
+
+                          Suction Pile divisions           50
+                                       Solution
+                                                                from bottom of
+                          Pivot pt.          (ft)       2.1     pile
+                          Tilt              (deg)      0.83
+                          Pull-out f/s       (#)       1.65
+                                            Pile Data
+                      1   dia                (in)     6.625     pile OD
+                      2   wall thick.        (in)       0.6     pile wall thickness
+                      3   pile length        (ft)         8     pile lgt
+                      4   pile depth         (ft)         8
+                      5   water table        (ft)         4
+                                                             from bottom of
+                      6   Felev               (ft)         7 pile
+                      7   Fx                  (#)        500
+                      8   Fy                  (#)        500
+                      9   moment            (ft-#)         0 moment at top of pile
+                    10    plug              (1/0)          0 1=plug 0=no plug
+                    11    nn                   (-)        10 number of soil segments
+ Layers        Property                     Soil Data
+           1          1   depth               (ft)          0
+           1          2   soil type          (s/c) s          sand or clay
+           1          3   density           (pcf)         90 insitu soil density
+           1          4   friction angle    (deg)         35 for sand
+           1          5   cohesion          (psf)         70 for clay
+                                                              clay strain @50% unc. Shear
+           1          6   epsilon           (in/in)       0.1 str.
+           2          1   depth                (ft)         1
+           2          2   soil type           (s/c) c         sand or clay
+           2          3   density            (pcf)        80 insitu soil density
+           2          4   friction angle     (deg)        35 for sand
+           2          5   cohesion           (psf)        70 for clay
+                                                              clay strain @50% unc. Shear
+           2          6   epsilon           (in/in)       0.1 str.
+           3          1   depth                (ft)         2
+           3          2   soil type           (s/c) s         sand or clay
+           3          3   density            (pcf)        80 insitu soil density
+           3          4   friction angle     (deg)        30 for sand
+           3          5   cohesion           (psf)        70 for clay
+                                         clay strain @50% unc. Shear
+3   6   epsilon          (in/in)     0.1 str.
+4   1   depth               (ft)       3
+4   2   soil type          (s/c) c       sand or clay
+4   3   density           (pcf)      70 insitu soil density
+4   4   friction angle    (deg)      30 for sand
+4   5   cohesion          (psf)      70 for clay
+                                         clay strain @50% unc. Shear
+4   6   epsilon          (in/in)     0.1 str.
+5   1   depth               (ft)       4
+5   2   soil type          (s/c) c       sand or clay
+5   3   density           (pcf)      25 insitu soil density
+5   4   friction angle    (deg)      30 for sand
+5   5   cohesion          (psf)      70 for clay
+                                         clay strain @50% unc. Shear
+5   6   epsilon          (in/in)     0.1 str.
+6   1   depth               (ft)       5
+6   2   soil type          (s/c) c       sand or clay
+6   3   density           (pcf)      20 insitu soil density
+6   4   friction angle    (deg)      30 for sand
+6   5   cohesion          (psf)      70 for clay
+                                         clay strain @50% unc. Shear
+6   6   epsilon          (in/in)     0.1 str.
+7   1   depth               (ft)       6
+7   2   soil type          (s/c) c       sand or clay
+7   3   density           (pcf)      20 insitu soil density
+7   4   friction angle    (deg)      30 for sand
+7   5   cohesion          (psf)      70 for clay
+                                         clay strain @50% unc. Shear
+7   6   epsilon          (in/in)     0.1 str.
+8   1   depth               (ft)       7
+8   2   soil type          (s/c) c       sand or clay
+8   3   density           (pcf)      20 insitu soil density
+8   4   friction angle    (deg)      30 for sand
+8   5   cohesion          (psf)      70 for clay
+                                         clay strain @50% unc. Shear
+8   6   epsilon          (in/in)     0.1 str.
+9   1   depth               (ft)       8
+9   2   soil type          (s/c) c       sand or clay
+9   3   density           (pcf)      20 insitu soil density
+9   4   friction angle    (deg)      30 for sand
+9   5   cohesion          (psf)      70 for clay
+                                         clay strain @50% unc. Shear
+9   6 epsilon            (in/in)     0.1 str.
+10   1   depth              (ft)         9
+10   2   soil type         (s/c)    c         sand or clay
+10   3   density          (pcf)         20    insitu soil density
+10   4   friction angle   (deg)         30    for sand
+10   5   cohesion         (psf)         70    for clay
+                                              clay strain @50% unc. Shear
+10   6 epsilon            (in/in)       0.1   str.
+
