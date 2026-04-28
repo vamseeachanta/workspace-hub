@@ -1,0 +1,9 @@
+fixture_id: letstok-01-fatigue-analysis
+sender: contact@letstok.example.com
+subject: Web form submission for fatigue analysis
+body: >
+  Letstok can provide fatigue analysis and engineering analysis support for
+  offshore assets. Please reply if there is an active requirement.
+expected_classification: spam
+expected_rule: letstok_web_form_abuse
+

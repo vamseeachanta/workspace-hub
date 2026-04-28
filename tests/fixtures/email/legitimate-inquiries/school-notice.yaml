@@ -1,0 +1,8 @@
+fixture_id: legitimate-school-notice
+sender: notice@example.org
+subject: School event reminder
+body: >
+  This reminder includes the event date, location, and required forms for the
+  upcoming school activity.
+expected_classification: archive
+

@@ -1,0 +1,8 @@
+fixture_id: legitimate-insurance-renewal
+sender: agent@example.net
+subject: Insurance renewal terms
+body: >
+  Renewal terms include policy period, premium, deductible, carrier, and
+  requested confirmation before the expiration date.
+expected_classification: actionable
+

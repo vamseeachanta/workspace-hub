@@ -24,6 +24,11 @@ repos:
         # Fire on any staged harness file (excluded dirs handled inside the script).
         files: '(^|/)(CLAUDE|MEMORY|AGENTS|GEMINI)\.md$'
         pass_filenames: false
+      - id: email-fixture-redaction-check
+        name: email fixture redaction check
+        entry: python scripts/email/fixture-redaction-check.py
+        language: system
+        files: '^tests/fixtures/email/.*\.(ya?ml|txt|md)$'
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2
