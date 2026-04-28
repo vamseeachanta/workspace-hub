@@ -210,6 +210,44 @@ def test_prepare_branch_isolates_work_on_autoresearch_branch(tmp_path: Path, mon
     assert ["switch", "-c", "autoresearch/repo-ecosystem-2026-04-27", "main"] in calls
 
 
+def test_prepare_branch_does_not_mark_stash_when_stash_push_fails(tmp_path: Path, monkeypatch) -> None:
+    runner = load_runner()
+    calls: list[list[str]] = []
+
+    class FakeProcess:
+        def __init__(self, returncode: int = 0, stdout: str = "", stderr: str = ""):
+            self.returncode = returncode
+            self.stdout = stdout
+            self.stderr = stderr
+
+    def fake_run_git(_root: Path, args: list[str], check: bool = True) -> FakeProcess:
+        calls.append(args)
+        if args == ["branch", "--show-current"]:
+            return FakeProcess(stdout="codex/nextwave-20260427-issue-2417\n")
+        if args == ["status", "--porcelain"]:
+            return FakeProcess(stdout=" M docs/notes.md\n")
+        if args[:4] == ["stash", "push", "--include-untracked", "-m"]:
+            return FakeProcess(returncode=1, stderr="cannot save the current worktree state")
+        if args == ["rev-parse", "--verify", "autoresearch/repo-ecosystem-2026-04-27"]:
+            return FakeProcess(returncode=1)
+        if args == ["switch", "-c", "autoresearch/repo-ecosystem-2026-04-27", "main"]:
+            return FakeProcess(returncode=0)
+        if args == ["switch", "codex/nextwave-20260427-issue-2417"]:
+            return FakeProcess(returncode=0)
+        if args == ["stash", "pop"]:
+            return FakeProcess(returncode=0)
+        raise AssertionError(f"unexpected git call: {args}")
+
+    monkeypatch.setattr(runner, "run_git", fake_run_git)
+
+    original, stashed = runner.prepare_branch(tmp_path, "autoresearch/repo-ecosystem-2026-04-27")
+    runner.restore_branch(tmp_path, original, stashed)
+
+    assert original == "codex/nextwave-20260427-issue-2417"
+    assert stashed is False
+    assert ["stash", "pop"] not in calls
+
+
 def test_cli_dry_run_supports_every_v1_target_type(tmp_path: Path, capsys) -> None:
     runner = load_runner()
     write_fixture_tree(tmp_path)

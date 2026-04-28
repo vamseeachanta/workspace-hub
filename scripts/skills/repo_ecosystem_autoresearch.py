@@ -499,8 +499,12 @@ def prepare_branch(root: Path, branch: str) -> tuple[str, bool]:
     stashed = False
     if run_git(root, ["status", "--porcelain"], check=True).stdout.strip():
         print("WARNING: working tree not clean; stashing changes before autoresearch branch switch")
-        run_git(root, ["stash", "push", "--include-untracked", "-m", f"autoresearch-pre-stash-{branch}"], check=False)
-        stashed = True
+        stash_result = run_git(
+            root,
+            ["stash", "push", "--include-untracked", "-m", f"autoresearch-pre-stash-{branch}"],
+            check=False,
+        )
+        stashed = stash_result.returncode == 0
     exists = run_git(root, ["rev-parse", "--verify", branch], check=False).returncode == 0
     if exists:
         run_git(root, ["switch", branch], check=False)
