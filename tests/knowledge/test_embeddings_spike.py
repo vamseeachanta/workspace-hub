@@ -11,6 +11,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 
@@ -174,3 +175,85 @@ def test_runner_module_importable():
     assert hasattr(spike, "load_eval_set")
     assert hasattr(spike, "SpikeConfig")
     assert hasattr(spike, "CostCapExceeded")
+
+
+# ── real backend client wiring (measurement remains env/runtime gated) ───────
+
+def _json_response(payload: dict):
+    response = Mock()
+    response.__enter__ = Mock(return_value=response)
+    response.__exit__ = Mock(return_value=None)
+    response.read.return_value = json.dumps(payload).encode("utf-8")
+    return response
+
+
+def test_openai_runner_posts_embedding_request(monkeypatch):
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append((req, timeout))
+        return _json_response({"data": [{"embedding": [0.1, 0.2, 0.3]}]})
+
+    monkeypatch.setattr(spike.urllib.request, "urlopen", fake_urlopen)
+    runner = spike.make_openai_runner(
+        spike.SpikeConfig(openai_api_key="test-openai-key")
+    )
+
+    assert not isinstance(runner, spike._StubRunner)
+    assert runner.embed("query text") == [0.1, 0.2, 0.3]
+    req, timeout = calls[0]
+    assert req.full_url == "https://api.openai.com/v1/embeddings"
+    assert req.headers["Authorization"] == "Bearer test-openai-key"
+    assert json.loads(req.data.decode("utf-8")) == {
+        "model": "text-embedding-3-large",
+        "input": "query text",
+    }
+    assert timeout == 60
+
+
+def test_voyage_runner_posts_embedding_request(monkeypatch):
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append((req, timeout))
+        return _json_response({"data": [{"embedding": [0.4, 0.5]}]})
+
+    monkeypatch.setattr(spike.urllib.request, "urlopen", fake_urlopen)
+    runner = spike.make_voyage_runner(
+        spike.SpikeConfig(voyage_api_key="test-voyage-key")
+    )
+
+    assert not isinstance(runner, spike._StubRunner)
+    assert runner.embed("query text") == [0.4, 0.5]
+    req, timeout = calls[0]
+    assert req.full_url == "https://api.voyageai.com/v1/embeddings"
+    assert req.headers["Authorization"] == "Bearer test-voyage-key"
+    assert json.loads(req.data.decode("utf-8")) == {
+        "model": "voyage-3",
+        "input": ["query text"],
+    }
+    assert timeout == 60
+
+
+def test_bge_runner_posts_ollama_request(monkeypatch):
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append((req, timeout))
+        return _json_response({"embedding": [0.6, 0.7]})
+
+    monkeypatch.setattr(spike.shutil, "which", lambda name: "/usr/bin/ollama")
+    monkeypatch.setattr(spike.urllib.request, "urlopen", fake_urlopen)
+    runner = spike.make_bge_m3_local_runner(
+        spike.SpikeConfig(ollama_host="http://localhost:11434")
+    )
+
+    assert not isinstance(runner, spike._StubRunner)
+    assert runner.embed("query text") == [0.6, 0.7]
+    req, timeout = calls[0]
+    assert req.full_url == "http://localhost:11434/api/embeddings"
+    assert json.loads(req.data.decode("utf-8")) == {
+        "model": "bge-m3",
+        "prompt": "query text",
+    }
+    assert timeout == 120

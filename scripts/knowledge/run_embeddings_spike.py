@@ -5,14 +5,10 @@ Compares BGE-M3 (local via Ollama) vs Voyage-3 vs text-embedding-3-large on a
 curated eval set. Writes per-model measurement JSON to docs/reports/embeddings-spike/
 and a decision doc to docs/document-intelligence/embeddings-model-selection.md.
 
-This is a SCAFFOLD-PHASE implementation. Core logic (validation, cost-cap,
-decision-doc rendering) is complete and tested with mocks. The three
-model-specific runners (BGEM3LocalRunner, VoyageRunner, OpenAIRunner) are
-stubs — they raise RuntimeError until the corresponding API key / Ollama
-install is provisioned.
-
-Measurement phase is user-gated. Once prereqs are available, fill in the
-stub runners and invoke `main()`.
+This implementation keeps measurement phase user-gated: factories return
+stubs until the corresponding API key or Ollama install is provisioned. When
+those prerequisites exist, the backend runners issue the real embedding
+requests and can be exercised by the measurement loop in a follow-up tranche.
 """
 from __future__ import annotations
 
@@ -20,9 +16,11 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
+import urllib.request
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -180,7 +178,7 @@ def render_decision_doc(
     return output_path
 
 
-# ── Stub runners (scaffold phase; user provisions prereqs later) ──────────────
+# ── Backend runners (measurement phase remains prereq-gated) ─────────────────
 
 
 class _StubRunner:
@@ -195,24 +193,86 @@ class _StubRunner:
         )
 
 
+@dataclass
+class _HttpEmbeddingRunner:
+    """HTTP-backed embedding runner for a single model endpoint."""
+
+    name: str
+    url: str
+    headers: dict[str, str]
+    payload_for_text: Callable[[str], dict[str, Any]]
+    response_to_embedding: Callable[[dict[str, Any]], list[float]]
+    timeout_s: int = 60
+    cost_per_1k_docs: float = 0.0
+    cost_tally: float = 0.0
+
+    def embed(self, text: str) -> list[float]:
+        body = json.dumps(self.payload_for_text(text)).encode("utf-8")
+        req = urllib.request.Request(
+            self.url,
+            data=body,
+            headers={
+                "Content-Type": "application/json",
+                **self.headers,
+            },
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=self.timeout_s) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+        return self.response_to_embedding(payload)
+
+
+def _extract_openai_style_embedding(payload: dict[str, Any]) -> list[float]:
+    return [float(x) for x in payload["data"][0]["embedding"]]
+
+
+def _extract_ollama_embedding(payload: dict[str, Any]) -> list[float]:
+    return [float(x) for x in payload["embedding"]]
+
+
 def make_bge_m3_local_runner(cfg: SpikeConfig) -> ModelRunner:
-    return _StubRunner(
-        "bge-m3-local",
-        "Ollama not installed. Install from https://ollama.com/, then `ollama pull bge-m3`.",
+    if not shutil.which("ollama"):
+        return _StubRunner(
+            "bge-m3-local",
+            "Ollama not installed. Install from https://ollama.com/, then `ollama pull bge-m3`.",
+        )
+    return _HttpEmbeddingRunner(
+        name="bge-m3-local",
+        url=cfg.ollama_host.rstrip("/") + "/api/embeddings",
+        headers={},
+        payload_for_text=lambda text: {"model": "bge-m3", "prompt": text},
+        response_to_embedding=_extract_ollama_embedding,
+        timeout_s=120,
+        cost_per_1k_docs=0.0,
     )
 
 
 def make_voyage_runner(cfg: SpikeConfig) -> ModelRunner:
     if not cfg.voyage_api_key:
         return _StubRunner("voyage-3-cloud", "VOYAGE_API_KEY not set.")
-    return _StubRunner("voyage-3-cloud", "Runner impl deferred — key detected; fill in.")
+    return _HttpEmbeddingRunner(
+        name="voyage-3-cloud",
+        url="https://api.voyageai.com/v1/embeddings",
+        headers={"Authorization": f"Bearer {cfg.voyage_api_key}"},
+        payload_for_text=lambda text: {"model": "voyage-3", "input": [text]},
+        response_to_embedding=_extract_openai_style_embedding,
+        timeout_s=60,
+    )
 
 
 def make_openai_runner(cfg: SpikeConfig) -> ModelRunner:
     if not cfg.openai_api_key:
         return _StubRunner("text-embedding-3-large", "OPENAI_API_KEY not set.")
-    return _StubRunner(
-        "text-embedding-3-large", "Runner impl deferred — key detected; fill in."
+    return _HttpEmbeddingRunner(
+        name="text-embedding-3-large",
+        url="https://api.openai.com/v1/embeddings",
+        headers={"Authorization": f"Bearer {cfg.openai_api_key}"},
+        payload_for_text=lambda text: {
+            "model": "text-embedding-3-large",
+            "input": text,
+        },
+        response_to_embedding=_extract_openai_style_embedding,
+        timeout_s=60,
     )
 
 
