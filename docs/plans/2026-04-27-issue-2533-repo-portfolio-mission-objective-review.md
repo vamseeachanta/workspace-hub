@@ -1,6 +1,6 @@
 # Plan for #2533: Repo Portfolio Mission/Objective Review
 
-> **Status:** draft — rev-2 after Codex MAJOR review
+> **Status:** draft — rev-3 after Codex rev-2 MAJOR review
 > **Complexity:** T2
 > **Date:** 2026-04-27
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2533
@@ -14,7 +14,7 @@
 - Found: `docs/BUSINESS_BRAIN.md` — current onboarding source lists four Tier-1 repos (`workspace-hub`, `digitalmodel`, `assetutilities`, `aceengineer-website`), seven Tier-2 repos, and Tier-3/support/archive candidates. It has only short domain labels, not full mission/objective/routing rules.
 - Found: `docs/ROUTING_INDEX.md` — current Tier-1 routing index for the four active routing-contract repos. It defines per-repo roles and issue-type placement rules, but intentionally does not cover Tier-2/Tier-3 mission/objective classification.
 - Found: `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md` — broader legacy/overview inventory claims 25 managed repositories and lists additional repos absent from `docs/BUSINESS_BRAIN.md`, including `CAD-DEVELOPMENTS`, `heavyequipemnt-rag`, and `simpledigitalmarketing`. The implementation must treat these as inventory-source conflicts or overview-only candidates, not silently omit them.
-- Found: `docs/README.md` — docs landing page contains workspace discovery links and repo-count/context claims that should be checked for discoverability drift when adding the portfolio artifact.
+- Found: `docs/README.md` — docs landing page contains workspace discovery links and repo-count/context claims that must be reconciled because current lines still reference `26+` repos and legacy `.agent-os/product/mission.md` as “Mission & Vision”; implementation must update this discovery surface so it points to `docs/REPO_MISSION_PORTFOLIO.md` and does not route agents to legacy mission authority.
 - Found: `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md` and `docs/standards/TIER1_INDEXING_CHECKLIST.md` — Tier-1 routing/indexing contract exists and remains authority for Tier-1 code-placement checks.
 - Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` — documentation/control-plane issues must preserve `AGENTS.md` as canonical per-repo entry point and avoid reviving `.agent-os/` as an authority; `.agent-os` is legacy content only.
 - Found: `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` (#2209) — durable docs should own reusable knowledge, while issues/plans/review artifacts are execution-state evidence. Therefore the portfolio mission table belongs in durable docs, while review artifacts remain under `scripts/review/results/`.
@@ -76,7 +76,7 @@ When repo-tier sources conflict, implementation must record the conflict and use
 - EXISTS: `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md`, lines 53-87 list broader work/personal repo inventory, including overview-only repos not in `BUSINESS_BRAIN`.
 - EXISTS: `docs/standards/CONTROL_PLANE_CONTRACT.md`, lines 9-17 establish `AGENTS.md` as canonical entry point and lines 37-47 mark `.agent-os/` legacy.
 - EXISTS: `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md`, lines 17-27 define durable/transient classification and promotion guardrails.
-- EXISTS: `docs/plans/README.md`, lines 15-27 define the issue planning gate.
+- EXISTS: `docs/README.md`, lines 7 and 206 reference `26+` repositories; lines 263-264 and 298-302 reference `.agent-os/product/*` mission/product docs. These stale discovery links must be replaced or clearly marked legacy as part of this issue.
 - MISSING (new — this issue creates): `docs/REPO_MISSION_PORTFOLIO.md`.
 - MISSING (new — this issue creates): `docs/registry/repo-portfolio-inventory.yaml`.
 
@@ -162,7 +162,10 @@ function validate_artifact():
     assert every overview-table repo has a portfolio row or explicit excluded/overview-only status
     assert every repo in committed inventory registry is represented or excluded
     assert each row has non-empty mission/objective/source/routing/conflict-status fields
+    assert every row source path exists in the repo checkout or is explicitly marked external/legacy with a rationale
+    assert source evidence paths are tied to the row's mission/objective fields, not generic repo roots
     assert Tier-1 rows align with ROUTING_INDEX and #2460 current four-repo routing baseline
+    assert docs/README.md links the new mission portfolio and no longer promotes .agent-os/product/mission.md as active mission authority
 ```
 
 ---
@@ -175,7 +178,7 @@ function validate_artifact():
 | Create | `docs/registry/repo-portfolio-inventory.yaml` | Deterministic inventory source-of-truth for tests; reconciles BUSINESS_BRAIN, overview docs, and optional local inventory snapshot |
 | Modify | `docs/BUSINESS_BRAIN.md` | Link the canonical portfolio mission artifact without bloating the onboarding file |
 | Modify | `docs/ROUTING_INDEX.md` | Cross-link from Tier-1 routing to portfolio-level mission/objective context and clarify Tier-1 routing precedence |
-| Modify | `docs/README.md` | Optional discoverability link if docs index lacks a portfolio-governance entry |
+| Modify | `docs/README.md` | Required discoverability cleanup: link `docs/REPO_MISSION_PORTFOLIO.md`, reconcile repo-count language with the new inventory registry, and remove or clearly mark legacy `.agent-os/product/mission.md` references so agents do not treat `.agent-os` as active mission authority |
 | Create | `tests/docs/test_repo_mission_portfolio.py` | Regression checks for required rows, inventory registry coverage, fields, links, source precedence, and Tier-1 alignment |
 | Update | `docs/plans/README.md` | Verify/update the existing #2533 plan-index row status only; do not duplicate the row |
 
@@ -191,6 +194,9 @@ function validate_artifact():
 | `test_overview_repos_are_represented_or_explicitly_excluded` | Overview-only repos such as `CAD-DEVELOPMENTS`, `heavyequipemnt-rag`, and `simpledigitalmarketing` cannot disappear silently | overview doc + inventory registry + mission artifact | every overview repo has a row or explicit excluded/overview-only status |
 | `test_inventory_registry_repos_are_represented_or_excluded` | Tests use committed inventory, not ambient local filesystem, for deterministic CI behavior | inventory YAML + mission artifact | no silent omissions |
 | `test_required_columns_present` | Table has mission/objectives/status/source/routing/conflict fields | mission artifact markdown | all required columns found |
+| `test_row_source_paths_exist_or_are_explicitly_external` | Source evidence is correctness-critical, not just non-empty prose | mission artifact + repo checkout | every source path exists, or row marks source as external/legacy with rationale |
+| `test_row_source_paths_are_specific` | Rows cannot use generic repo roots as evidence for detailed mission/objectives | mission artifact | source paths include a file path and, where practical, line/range or section marker |
+| `test_docs_readme_points_to_portfolio_not_legacy_agent_os` | Docs landing page routes mission discovery to the new artifact and not active `.agent-os/product/mission.md` | docs/README.md | portfolio link present; legacy `.agent-os/product/mission.md` is absent or clearly in a legacy/deprecated section |
 | `test_tier1_rows_align_with_current_routing_index` | Current Tier-1 rows align with `ROUTING_INDEX` and #2460 four-repo routing baseline | mission artifact + ROUTING_INDEX | no contradictions for workspace-hub, digitalmodel, assetutilities, aceengineer-website |
 | `test_1962_tier_conflict_is_documented` | Historical eight-repo #1962 Tier-1 language is acknowledged and not silently used as current authority | mission artifact | conflict section documents #1962 vs current BUSINESS_BRAIN/#2460 precedence |
 | `test_overlap_notes_cover_known_conflicts` | Known repo mission overlaps are explicitly addressed | mission artifact | overlap section includes expected repo pairs |
@@ -206,10 +212,13 @@ function validate_artifact():
 - [ ] Every repo in `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md` is represented, explicitly excluded, or marked as overview-only/inventory drift.
 - [ ] Every repo in the committed inventory registry is represented or explicitly excluded in the portfolio artifact.
 - [ ] Each row has source evidence: exact repo/path used for mission/objective derivation.
+- [ ] Source evidence is validated: paths exist in the checkout, or external/legacy sources are explicitly marked with rationale.
+- [ ] Source evidence is specific enough to verify the mission/objective claim (file path plus section/line/range where practical).
 - [ ] Each row has a tier/status classification and issue-routing guidance.
 - [ ] Known overlapping repo missions are called out with a resolution or follow-up recommendation.
 - [ ] The #1962 historical eight-repo Tier-1 language is documented as a source conflict, with current Tier-1 routing precedence assigned to `BUSINESS_BRAIN` + `ROUTING_INDEX` + #2460.
 - [ ] Tier-1 rows are consistent with `docs/ROUTING_INDEX.md`, #2460, and the relevant child issue outputs (#2461-#2465).
+- [ ] `docs/README.md` links to the portfolio mission artifact and no longer promotes `.agent-os/product/mission.md` as active mission authority.
 - [ ] TDD tests in `tests/docs/test_repo_mission_portfolio.py` pass with `uv run pytest tests/docs/test_repo_mission_portfolio.py -q`.
 - [ ] `docs/plans/README.md` has exactly one #2533 row with current status; no duplicate index row is added.
 - [ ] No implementation proceeds until adversarial plan review is complete and user approval applies `status:plan-approved`.
@@ -223,7 +232,7 @@ function validate_artifact():
 | Codex | MAJOR | Rev-1 missed documentation-class retrieval (`CONTROL_PLANE_CONTRACT.md`, #2209), did not resolve #1962 vs current Tier-1 conflict, missed overview-only repos in tests, made inventory test environment-dependent, and risked duplicating the #2533 plan-index row. |
 | Gemini | UNAVAILABLE | `gemini-3.1-pro-preview` returned repeated `429 RESOURCE_EXHAUSTED / MODEL_CAPACITY_EXHAUSTED`; no substantive verdict produced. |
 
-**Overall result:** REVISION REQUIRED after rev-1; rev-2 addresses Codex blockers and should be rerun before `status:plan-review`.
+**Overall result:** REVISION REQUIRED after rev-2; rev-3 addresses Codex rev-2 blockers and should be rerun before `status:plan-review`.
 
 Revisions made based on review:
 - Added documentation-class required sources: `CONTROL_PLANE_CONTRACT.md` and #2209 durable/transient boundary.
@@ -232,6 +241,9 @@ Revisions made based on review:
 - Added overview-repo coverage tests for `docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md` entries, including overview-only candidates.
 - Changed local filesystem inventory from direct CI test dependency to optional implementation-time snapshot captured in the registry.
 - Changed `docs/plans/README.md` action from “add row” to “verify/update existing row only”.
+- Rev-3 added source-path existence/specificity tests to make evidence verifiable, not just non-empty.
+- Rev-3 made `docs/README.md` cleanup mandatory so mission discovery points to the new portfolio artifact instead of active-looking `.agent-os/product/mission.md` references.
+- Rev-3 was committed and pushed before rerun so reviewers bind to the durable on-`main` plan and artifacts rather than a local-only inline copy.
 
 ---
 
