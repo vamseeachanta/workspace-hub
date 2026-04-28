@@ -33,7 +33,9 @@ Tracks progress against the approved plan at
   included.
 - `scripts/gtm/prospect_adapter.py` — interface + two validation gates:
   `load_and_validate()` (schema + cross-field checks) plus partial
-  `materialize_demo_inputs()` support for demos 4 and 5. Demo_04 writes
+  `materialize_demo_inputs()` support for demos 3, 4, and 5. Demo_03 writes
+  `csv_hlv_vessels.json`, `mudmat_structures.json`, and optional
+  `prospect_env.json`; demo_04 writes
   `pipelay_vessels.json`, `pipelines.json`, and optional
   `prospect_env.json`; demo_05 writes `csv_hlv_vessels.json`,
   `rigid_jumpers.json`, and optional `prospect_env.json` into
@@ -60,13 +62,11 @@ Future work on #2346 will need to land, in roughly this order:
   and `plsv.yaml` now exist under `docs/gtm/intake/canonical-vessels/` with
   the required disclaimer + citation blocks. Remaining work shifts to
   materialization, demo dispatch, and delivery/reporting layers.
-- **`materialize_demo_inputs` per-demo logic**: fill in the remaining stub.
-  Demos 4 and 5 now materialize their required files. Remaining work is to
-  add equivalent support for demo_03 (`csv_hlv_vessels.json` + mudmat
-  structure shaping) and any additional structure-body shaping needed beyond
-  the current demo_04 pipeline and demo_05 rigid-jumper paths. Honor
-  `vessel.source == canonical_ref` by loading the referenced YAML and
-  inlining its body.
+- **`materialize_demo_inputs` per-demo logic**: demos 3, 4, and 5 now
+  materialize their required files. Remaining work is any additional
+  structure-body shaping needed beyond the current demo_03 mudmat, demo_04
+  pipeline, and demo_05 rigid-jumper paths. `vessel.source == canonical_ref`
+  is honored by loading the referenced YAML and inlining its body.
 - **`run_demo` subprocess dispatch**: subprocess-launch
   `digitalmodel/examples/demos/gtm/demo_0{N}_*.py` with the new
   `--prospect-data-dir` / `--prospect-env` / `--brand-header` /

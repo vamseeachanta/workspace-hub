@@ -9,8 +9,9 @@ Covers:
   6. Q6 rejection: demo_01 + vessel block is rejected.
   7. Q6 rejection: demo_03 without vessel block is rejected.
   8. Demo_04 materialization writes the expected data files and optional env override.
-  9. Demo_05 materialization writes the expected csv_hlv / rigid-jumper files.
-  10. Non-demo_03 materialization gaps + run_demo remain explicit stubs.
+  9. Demo_03 materialization writes the expected csv_hlv / mudmat files.
+  10. Demo_05 materialization writes the expected csv_hlv / rigid-jumper files.
+  11. Remaining materialization gaps + run_demo remain explicit stubs.
 """
 from __future__ import annotations
 
@@ -121,6 +122,36 @@ structure:
     plan_area_m2: 120.0
 output:
   brand_header: "Prepared for Acme Marine"
+  brand_footer: "Confidential - NDA"
+  publish_private_url: false
+"""
+
+
+def _valid_demo_03_mudmat_yaml() -> str:
+    """Demo_03 intake that references a canonical CSV/HLV and mudmat body."""
+    return """\
+prospect:
+  company: "Northshore Installation"
+  contact: "ops@northshore.example"
+  nda_in_place: true
+  target_demo: "demo_03"
+  delivery_deadline_utc: "2026-04-22T17:00Z"
+vessel:
+  shape: "csv_hlv"
+  source: "canonical_ref"
+  canonical_ref: "heavy-lift-csv"
+structure:
+  kind: "mudmat"
+  body:
+    id: "prospect-mudmat"
+    plan_area_m2: 120.0
+    submerged_weight_te: 85.0
+    install_height_m: 4.5
+environment:
+  water_depths_m: [900, 1200]
+  hs_values_m: [1.5, 2.0]
+output:
+  brand_header: "Prepared for Northshore Installation"
   brand_footer: "Confidential - NDA"
   publish_private_url: false
 """
@@ -335,6 +366,35 @@ def test_materialize_demo_04_writes_environment_override_when_present(
     assert env_payload["current_velocity_ms"] == pytest.approx(0.4)
 
 
+def test_materialize_demo_03_writes_csv_hlv_and_mudmat_files(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "northshore-demo03.yaml"
+    intake_file.write_text(_valid_demo_03_mudmat_yaml(), encoding="utf-8")
+    prospect = load_and_validate(intake_file)
+
+    bundle = materialize_demo_inputs(prospect, tmp_path)
+
+    assert isinstance(bundle, DemoInputBundle)
+    assert bundle.demo_id == "demo_03"
+    assert bundle.data_dir == tmp_path / "data"
+    assert bundle.vessel_file == bundle.data_dir / "csv_hlv_vessels.json"
+    assert bundle.structure_file == bundle.data_dir / "mudmat_structures.json"
+    assert bundle.env_override_path == bundle.data_dir / "prospect_env.json"
+    assert bundle.vessel_file.exists()
+    assert bundle.structure_file.exists()
+    assert bundle.env_override_path.exists()
+    vessel_payload = json.loads(bundle.vessel_file.read_text(encoding="utf-8"))
+    assert vessel_payload["vessels"][0]["id"] == "heavy-lift-csv"
+    assert "crane_main" in vessel_payload["vessels"][0]
+    structure_payload = json.loads(bundle.structure_file.read_text(encoding="utf-8"))
+    assert structure_payload["mudmats"][0]["id"] == "prospect-mudmat"
+    assert structure_payload["mudmats"][0]["plan_area_m2"] == pytest.approx(120.0)
+    env_payload = json.loads(bundle.env_override_path.read_text(encoding="utf-8"))
+    assert env_payload["water_depths_m"] == [900, 1200]
+    assert env_payload["hs_values_m"] == [1.5, 2.0]
+
+
 def test_materialize_demo_05_writes_csv_hlv_and_rigid_jumper_files(
     tmp_path: Path,
 ) -> None:
@@ -378,10 +438,12 @@ def test_materialize_demo_inputs_is_a_wired_stub_for_unimplemented_demo(tmp_path
     intake_file = tmp_path / "bad-demo03.yaml"
     intake_file.write_text(
         _valid_demo_05_intake_yaml()
-        .replace('target_demo: "demo_05"', 'target_demo: "demo_03"')
-        .replace('kind: "rigid_jumper"', 'kind: "mudmat"')
-        .replace('length_m: 45.0\n', 'plan_area_m2: 120.0\n')
-        .replace('outer_diameter_m: 0.3239\n    wall_thickness_m: 0.0254\n    ', ''),
+        .replace('target_demo: "demo_05"', 'target_demo: "demo_02"')
+        .replace(
+            'vessel:\n  shape: "csv_hlv"\n  source: "canonical_ref"\n  canonical_ref: "seven-borealis"\n',
+            "",
+        )
+        .replace('kind: "rigid_jumper"', 'kind: "pipeline"'),
         encoding="utf-8",
     )
     prospect = load_and_validate(intake_file)
