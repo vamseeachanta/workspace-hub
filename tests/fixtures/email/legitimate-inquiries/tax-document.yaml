@@ -1,0 +1,8 @@
+fixture_id: legitimate-tax-document
+sender: taxdesk@example.com
+subject: Tax document available
+body: >
+  Your tax package for the current filing year is ready for review. Download
+  the form and retain the amounts in the tax records.
+expected_classification: data_extract
+

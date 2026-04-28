@@ -1,0 +1,8 @@
+fixture_id: legitimate-invoice
+sender: billing@example.net
+subject: Invoice for consulting services
+body: >
+  Attached is the monthly invoice with amount, service period, due date, and
+  purchase order reference.
+expected_classification: data_extract
+

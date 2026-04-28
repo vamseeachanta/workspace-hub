@@ -1,0 +1,8 @@
+fixture_id: legitimate-cre-listing
+sender: broker@example.com
+subject: Net lease listing package
+body: >
+  New retail property offering with asking price, tenant summary, lease term,
+  location, and broker contact details.
+expected_classification: data_extract
+

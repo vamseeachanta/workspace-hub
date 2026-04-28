@@ -1,0 +1,8 @@
+fixture_id: legitimate-project-deliverable
+sender: project.team@example.com
+subject: Deliverable review package
+body: >
+  The calculation package and review notes are ready. Please log the report
+  link against the active project record.
+expected_classification: drive_doc
+

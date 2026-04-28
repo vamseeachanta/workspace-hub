@@ -1,0 +1,138 @@
+version: 1
+description: Contract schema for the local email-as-queue state layer.
+states:
+  - inbound
+  - extracted
+  - awaiting-reply
+  - completed
+  - purged
+schemas:
+  writer_identity:
+    type: object
+    required:
+      - process_name
+      - pid
+      - hostname
+      - boot_id
+    properties:
+      process_name: {type: string}
+      pid: {type: integer}
+      hostname: {type: string}
+      boot_id: {type: string}
+  queue_state_entry:
+    type: object
+    required:
+      - account_id
+      - thread_id
+      - from_state
+      - to_state
+      - ts_utc
+      - writer_identity
+    properties:
+      account_id: {type: string}
+      thread_id: {type: string}
+      from_state:
+        type: string
+        enum: [inbound, extracted, awaiting-reply, completed, purged]
+      to_state:
+        type: string
+        enum: [inbound, extracted, awaiting-reply, completed, purged]
+      ts_utc:
+        type: string
+        format: iso8601-utc-z
+      reason: {type: string}
+      linked_extraction: {type: string}
+      primary_classification:
+        type: string
+        enum: [actionable, data_extract, drive_doc, unsubscribe, archive, noise, spam]
+      secondary_classification:
+        type: array
+        items: {type: string}
+      completed_at:
+        type: string
+        format: iso8601-utc-z
+      needs_schema: {type: boolean}
+      writer_identity:
+        $ref: "#/schemas/writer_identity"
+        required:
+          - process_name
+          - pid
+          - hostname
+          - boot_id
+    dedup_key:
+      - account_id
+      - thread_id
+      - from_state
+      - to_state
+  queue_learning_log_entry:
+    type: object
+    required:
+      - account_id
+      - thread_id
+      - ts_utc
+      - triggering_event
+      - writer_identity
+    properties:
+      account_id: {type: string}
+      thread_id: {type: string}
+      ts_utc:
+        type: string
+        format: iso8601-utc-z
+      triggering_event:
+        type: string
+        enum:
+          - manual_state_correction
+          - extraction_missing_on_reactivation
+          - spam_false_positive_override
+      from_state: {type: string}
+      to_state: {type: string}
+      user_reason: {type: string}
+      original_classification: {type: string}
+      corrected_classification: {type: string}
+      rule_matched: {type: string}
+      writer_identity:
+        $ref: "#/schemas/writer_identity"
+  queue_state_snapshot:
+    type: object
+    key_format: "{account_id}::{thread_id}"
+    additionalProperties:
+      type: object
+      required:
+        - account_id
+        - thread_id
+        - state
+        - ts_utc
+      properties:
+        account_id: {type: string}
+        thread_id: {type: string}
+        state:
+          type: string
+          enum: [inbound, extracted, awaiting-reply, completed, purged]
+        ts_utc:
+          type: string
+          format: iso8601-utc-z
+        linked_extraction: {type: string}
+        completed_at:
+          type: string
+          format: iso8601-utc-z
+        primary_classification: {type: string}
+        secondary_classification:
+          type: array
+          items: {type: string}
+        needs_schema: {type: boolean}
+  queue_state_snapshot_meta:
+    type: object
+    required:
+      - last_log_byte_offset
+      - last_log_sha256
+      - snapshot_sha256
+      - written_at_utc
+      - log_generation
+    properties:
+      last_log_byte_offset: {type: integer}
+      last_log_sha256: {type: string}
+      snapshot_sha256: {type: string}
+      written_at_utc:
+        type: string
+        format: iso8601-utc-z
+      log_generation: {type: integer}
