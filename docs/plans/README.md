@@ -200,7 +200,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |
 |---|---|---|---|---|---|---|
-| 2533 | repo-portfolio-mission-objective-review | `docs/plans/2026-04-27-issue-2533-repo-portfolio-mission-objective-review.md` | 2026-04-27 | draft | T2 | Portfolio-wide mission/objective review issue linking #1962, #2397, #2390, and Tier-1 routing outputs #2460-#2465; draft plan pending adversarial review before status:plan-review. |
+| 2533 | repo-portfolio-mission-objective-review | `docs/plans/2026-04-27-issue-2533-repo-portfolio-mission-objective-review.md` | 2026-04-27 | draft (rev-2) | T2 | Portfolio-wide mission/objective review issue linking #1962, #2397, #2390, and Tier-1 routing outputs #2460-#2465; Codex rev-1 MAJOR addressed in rev-2; Gemini unavailable due capacity; pending rerun before status:plan-review. |
 | 1963 | email-infrastructure-cluster-a | `docs/plans/2026-04-09-issue-1963-email-infrastructure-cluster-a.md` | 2026-04-09 | draft | T3 | Cluster A architecture plan anchored by #1963 |
 | 2045 | agent-planning-onboarding | `docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md` | 2026-04-09 | plan-review | T2 | Onboard all agents to strict planning workflow |
 | 2046 | planning-compliance-audit | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | 2026-04-09 | plan-approved | T2 | Audit agent compliance with planning workflow; 2026-04-21 fresh Codex MAJOR (marker contradiction + discovery gap + narrow stale-review heuristic) + Gemini MINOR; user retained approval with pending remediation |
