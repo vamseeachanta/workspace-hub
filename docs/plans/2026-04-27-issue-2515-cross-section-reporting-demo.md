@@ -1,6 +1,6 @@
 # Plan for #2515: Generate offshore cable umbilical pipeline cross-section reports
 
-> **Status:** plan-review-ready
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-04-27
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2515
