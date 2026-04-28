@@ -9,11 +9,6 @@ DEFAULT_VERDICT="$REPO_ROOT/logs/engineering/openfoam-baseline/latest-verdict.ya
 RUNNER_SCRIPT_DEFAULT="$REPO_ROOT/scripts/openfoam/run-openfoam-tutorials.sh"
 RAW_VERDICT_DEFAULT="${TMPDIR:-/tmp}/openfoam-baseline-raw.yaml"
 BASHRC_PATHS_DEFAULT="/usr/lib/openfoam/openfoam2312/etc/bashrc:/opt/openfoam2312/etc/bashrc"
-if command -v uv >/dev/null 2>&1; then
-    PYTHON_CMD=(uv run python)
-else
-    PYTHON_CMD=(python3)
-fi
 
 VERDICT_PATH="$DEFAULT_VERDICT"
 BENCHMARK=""
@@ -36,6 +31,23 @@ while [[ $# -gt 0 ]]; do
 done
 
 mkdir -p "$(dirname "$VERDICT_PATH")"
+
+if ! command -v uv >/dev/null 2>&1; then
+    msg="ERROR: uv is required for OpenFOAM baseline verdict normalization; refusing bare python3 fallback"
+    echo "uv-missing: $msg" >&2
+    cat > "$VERDICT_PATH" << YAML
+generated_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+machine: ${OPENFOAM_HOSTNAME:-$(hostname)}
+overall_verdict: FAIL
+error_summary: uv-missing
+error_message: "$msg"
+attempted_bashrc_paths: []
+tutorials: []
+YAML
+    exit 1
+fi
+
+PYTHON_CMD=(uv run python)
 
 write_failure_verdict() {
     local error_summary="$1"
@@ -105,6 +117,7 @@ if [[ -n "$skipped_bashrc" ]]; then
 fi
 
 export OPENFOAM_BASHRC="$resolved_bashrc"
+export OPENFOAM_BASHRC_RESOLVED="$resolved_bashrc"
 set +u
 # shellcheck disable=SC1090
 source "$resolved_bashrc" 2>/dev/null || true
@@ -118,7 +131,7 @@ rm -f "$raw_verdict"
 version_command="${OPENFOAM_VERSION_COMMAND:-foamVersion}"
 version_output="$(bash -lc "$version_command" 2>/dev/null || true | tr -d '\r')"
 version="$(printf '%s' "$version_output" | grep -o 'v[0-9][0-9]*' | head -1)"
-version="${version:-${WM_PROJECT_VERSION:-v2312}}"
+version="${version:-}"
 normalized_foam_version="$version"
 verification_method="WM_PROJECT_VERSION=${WM_PROJECT_VERSION:-unknown}; foamVersion=${normalized_foam_version}; WM_PROJECT_DIR=${WM_PROJECT_DIR:-missing}"
 machine_name="${OPENFOAM_HOSTNAME:-$(hostname)}"
@@ -138,7 +151,7 @@ if [[ -n "$BENCHMARK" ]]; then
 fi
 
 runner_stderr="$(mktemp)"
-if ! bash "$runner_script" --verdict "$raw_verdict" --tutorials "$selected_tutorials" 2>"$runner_stderr"; then
+if ! bash "$runner_script" --skip-bootstrap --verdict "$raw_verdict" --tutorials "$selected_tutorials" 2>"$runner_stderr"; then
     runner_error="$(cat "$runner_stderr")"
     rm -f "$runner_stderr"
     if [[ -n "$runner_error" ]]; then

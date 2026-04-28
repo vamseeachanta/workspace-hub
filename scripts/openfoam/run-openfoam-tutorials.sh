@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run-openfoam-tutorials.sh — Headless OpenFOAM tutorial runner
-# Usage: bash scripts/openfoam/run-openfoam-tutorials.sh [--verdict /path/to/verdict.yaml] [--tutorials cavity,pitzDaily]
+# Usage: bash scripts/openfoam/run-openfoam-tutorials.sh [--skip-bootstrap] [--verdict /path/to/verdict.yaml] [--tutorials cavity,pitzDaily]
 #
 # Runs selected tutorials, checks convergence, writes YAML verdict.
 # No interactive session or GUI required.
@@ -9,10 +9,15 @@ set -eo pipefail
 
 OPENFOAM_BASHRC="${OPENFOAM_BASHRC:-/usr/lib/openfoam/openfoam2312/etc/bashrc}"
 VERDICT_FILE="/tmp/openfoam-tutorial-verdict.yaml"
-TUTORIALS="cavity,damBreak"
+TUTORIALS="cavity"
+SKIP_BOOTSTRAP=0
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        --skip-bootstrap)
+            SKIP_BOOTSTRAP=1
+            shift
+            ;;
         --verdict)
             VERDICT_FILE="$2"
             shift 2
@@ -29,11 +34,19 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Source OpenFOAM (cannot use set -u — bashrc has unbound variables)
-if [[ ! -f "$OPENFOAM_BASHRC" ]]; then
-    echo "ERROR: OpenFOAM bashrc not found at $OPENFOAM_BASHRC" >&2
-    exit 1
+if [[ "$SKIP_BOOTSTRAP" == "1" ]]; then
+    if [[ -z "${WM_PROJECT_DIR:-}" || -z "${WM_PROJECT_VERSION:-}" ]]; then
+        echo "ERROR: --skip-bootstrap requires WM_PROJECT_DIR and WM_PROJECT_VERSION to be set" >&2
+        exit 1
+    fi
+else
+    echo "WARNING: runner standalone bootstrap mode is deprecated; prefer verify-openfoam-baseline.sh" >&2
+    if [[ ! -f "$OPENFOAM_BASHRC" ]]; then
+        echo "ERROR: OpenFOAM bashrc not found at $OPENFOAM_BASHRC" >&2
+        exit 1
+    fi
+    source "$OPENFOAM_BASHRC" 2>/dev/null || true
 fi
-source "$OPENFOAM_BASHRC" 2>/dev/null || true
 
 RUN_DIR="$HOME/foam/run"
 mkdir -p "$RUN_DIR"
