@@ -85,6 +85,9 @@ class TestInit:
         content = schema.read_text()
         assert "Wiki Schema: test-domain" in content
         assert "Directory Structure" in content
+        assert "standards/  # Standards pages" in content
+        assert "Standards page extra fields" in content
+        assert "`code_id`" in content
         assert "Ingest Workflow" in content
         assert "Lint Workflow" in content
 

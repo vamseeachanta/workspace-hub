@@ -74,6 +74,7 @@ wiki/         # LLM-maintained markdown pages
   sources/    # Source summary pages (one per ingested document)
   comparisons/# Filed query outputs (tables, analyses, comparisons)
   visualizations/ # matplotlib plots, Marp slide decks
+  standards/  # Standards pages (publisher-agnostic; code_id, publisher, revision required)
 ```
 
 ## Conventions
@@ -91,6 +92,18 @@ All wiki pages use YAML frontmatter (`---` delimited) with the following fields:
 | `sources` | recommended | list | Source documents referenced |
 | `domain` | optional | string | Explicit domain classification |
 | `cross_links` | optional | list | Cross-wiki references |
+
+### Standards page extra fields (`wiki/standards/*.md`)
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `code_id` | required (L0 prose) | Canonical code identifier, e.g. `csa-z276`, `api-17j`, `ocimf-meg4` |
+| `publisher` | required (L0 prose) | Publishing body, e.g. `CSA Group`, `API`, `OCIMF` |
+| `revision` | required (L0 prose) | Revision/edition/year, e.g. `2023`, `4e` |
+| `jurisdiction` | optional | Geographic or regulatory scope |
+| `supersedes` | optional | Prior revisions or codes replaced |
+
+> L0-prose enforcement only. Level-2 promotion is tracked in the standards-page schema follow-up.
 
 ### Page format
 - Title in YAML frontmatter (see schema above)
