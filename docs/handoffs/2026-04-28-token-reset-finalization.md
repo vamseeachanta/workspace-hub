@@ -9,7 +9,7 @@ After the early token reset, the autonomous lane keeper was paused and the activ
 - Codex 10-thread lane keeper cron `770ed0f726da` was paused to avoid duplicate work after reset.
 - No active `codex exec` lane processes were found in the final filtered process inventory.
 - Active/non-owned interactive Hermes/Claude desktop processes remain on the workstation and were not killed.
-- Active primary-checkout process observed during finalization: plan-review fanout for issue #2533 writing under `scripts/review/results/2026-04-28-plan-2533-rev3`; avoid hard reset/cleaning `/mnt/local-analysis/workspace-hub` until that finishes.
+- During finalization, a primary-checkout plan-review fanout for issue #2533 was observed writing under `scripts/review/results/2026-04-28-plan-2533-rev3`; the final process check no longer showed that fanout, but avoid hard reset/cleaning `/mnt/local-analysis/workspace-hub` unless the current interactive Hermes/tmux owner is understood.
 
 ## Merged / closed work
 
@@ -49,7 +49,7 @@ Validation before the final workspace-hub push:
 - PR head observed: `397686ed682527517ad1edcda84dcb6e9a51513a`.
 - Non-test checks were green, but test jobs remained red on API12/NPV failures, especially `ProductionAPI12Analysis.perform_npv_calculation` missing.
 - New follow-up issue created: https://github.com/vamseeachanta/worldenergydata/issues/357
-- workspace-hub #2433 remains open/working until #357 is resolved and PR #356 turns green.
+- workspace-hub #2433 is labeled `status:blocked` until #357 is resolved and PR #356 turns green.
 
 ### #2459 / assethold
 
@@ -57,7 +57,7 @@ Validation before the final workspace-hub push:
 - PR head observed: `b922e2533beb68d2dc44a6dfd6c9954ef39a39b0`.
 - Focused #2459 tests pass, but repo-wide CI remains red on coverage below 80% and Python 3.9 market-hours failures caused by runtime evaluation of `| None` typing.
 - New follow-up issue created: https://github.com/vamseeachanta/assethold/issues/48
-- workspace-hub #2459 remains open/working until #48 is resolved and PR #47 turns green.
+- workspace-hub #2459 is labeled `status:blocked` until #48 is resolved and PR #47 turns green.
 
 ### #2227
 
