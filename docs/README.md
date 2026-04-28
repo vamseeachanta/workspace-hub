@@ -86,6 +86,7 @@ docs/
 - 🗓️ [Weekly Ecosystem Execution & Intelligence Review](modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md)
 - 📖 [Implementation Roadmap](modules/workflow/IMPLEMENTATION_ROADMAP.md)
 - 🌊 [OpenFOAM v2312 Baseline Workflow](engineering/portability/openfoam-v2312-baseline-workflow.md)
+- 🎬 [Blender Headless Baseline Workflow](engineering/portability/blender-headless-baseline-workflow.md)
 
 ### Standards & Compliance
 

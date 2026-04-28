@@ -40,11 +40,13 @@ scripts_exempt: true
 
 - Blender Python API: https://docs.blender.org/api/current/
 - Blender CLI Reference: https://docs.blender.org/manual/en/latest/advanced/command_line/arguments.html
+- workspace-hub blender-headless baseline package: `docs/engineering/portability/blender-headless-baseline-workflow.md`, `scripts/blender/verify-blender-baseline.sh`, and `scripts/blender/smoke-render.py`
 
 ---
 
 ## Version History
 
+- **1.1.1** (2026-04-28): Added repo-tracked blender-headless baseline package reference for issue #2270.
 - **1.1.0** (2026-02-24): Validated against Blender 5.0.1. Added 5.x migration column (EEVEE enum revert, use_nodes deprecation), version-safe render config, 2 new failure diagnosis entries.
 - **1.0.0** (2026-02-23): Initial full interface skill covering CLI execution, bpy API, 3.x/4.x migration, rendering, mesh validation, and engineering integration.
 
