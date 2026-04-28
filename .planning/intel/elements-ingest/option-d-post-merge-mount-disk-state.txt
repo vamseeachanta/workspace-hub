@@ -1,0 +1,7 @@
+## findmnt /mnt/elements
+TARGET        SOURCE    FSTYPE  OPTIONS
+/mnt/elements /dev/sdi1 fuseblk ro,relatime,user_id=0,group_id=0,default_permissions,allow_other,blksize=4096
+
+## df /mnt/ace after merge
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/sda1      ext4  7.3T  6.4T  539G  93% /mnt/ace

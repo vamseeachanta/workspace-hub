@@ -1,0 +1,54 @@
+relative_path	parent_size
+MOVE-LOG.md	889
+analysis/metocean_ocr/hilli_p75-075.png	986953
+analysis/metocean_ocr/hilli_p75_600-075.png	2547303
+analysis/metocean_ocr/hilli_table_7_8.png	430721
+analysis/metocean_ocr/hilli_table_7_8_600.png	1045145
+analysis/metocean_ocr/hilli_table_7_9.png	408229
+analysis/metocean_ocr/hilli_table_7_9_600.png	1182623
+analysis/metocean_ocr/mk2_p67_68-067.png	757616
+analysis/metocean_ocr/mk2_p67_68-068.png	389783
+analysis/metocean_ocr/mk2_p67_68_600-067.png	1427825
+analysis/metocean_ocr/mk2_p67_68_600-068.png	347165
+analysis/metocean_ocr/mk2_table_7_8.png	270199
+analysis/metocean_ocr/mk2_table_7_8_600.png	609568
+analysis/metocean_ocr/mk2_table_7_9.png	175319
+analysis/metocean_ocr/mk2_table_7_9_600.png	96202
+analysis/metocean_tables/metocean_tables_clean.xlsx	16157
+analysis/metocean_tables/metocean_tables_ocr.xlsx	8972
+analysis/pipeline_comparison/output/HILLI_20in_50mm_diagram.png	221787
+analysis/pipeline_comparison/output/HILLI_20in_70mm_diagram.png	216441
+analysis/pipeline_comparison/output/MKII_24in_diagram.png	209970
+data/GSM-AO-G-BDI-10011-0000-0 HILII Pipeline Design Basis.pdf	900747
+data/GSM-AO-G-BDI-10012-0000-0_A MKII Pipeline Design Basis.pdf	870178
+data/GSM-AO-G-ITE-10042-0000-1-A metocean Tidal_study.pdf	5860055
+data/Metaoceánicos/GSM-AO-Q-PRO-10066-0000-A Rev JW JRA.pdf	9212274
+data/Metaoceánicos/GSM-AO-Q-PRO-10066-0000-A Rev JW JRA_en.pdf	123672638
+data/Metaoceánicos/Hilli/GSM-AO-G-ITE-10024-0000-1-A.pdf	10869356
+data/Metaoceánicos/MKII/GSM-AO-G-ITE-10029-0000-1-A.pdf	9280888
+data/Metaoceánicos/OrcaFlex_Nearshore_Cases_SSW.xlsx	15418
+data/alignment/GSM-AO-G-LYO-10021-0001-0-A.pdf	3276276
+data/alignment/GSM-AO-G-LYO-10027-0001-0-B.pdf	2965203
+data/alignment/GSM-AO-G-LYO-10027-0001-0/GSM-AO-G-LYO-10027-0001.dwg	10879289
+data/alignment/GSM-AO-L-LYO-10032-0001-A.dwg	23362107
+data/alignment/GSM-AO-L-LYO-10032-0001-A.pdf	3497969
+data/alignment/GSM-AO-L-LYO-10033-0001-A.dwg	23593186
+data/alignment/GSM-AO-L-LYO-10033-0001-A.pdf	3945928
+data/calculations/GSM-AO-M-MCA-10020-0000-A.xlsx	1083439
+data/calculations/GSM-AO-M-MCA-10020-0000-A_codex.xlsx	1068828
+data/calculations/GSM-AO-M-MCA-10020-0000-A_en_claude.xlsx	1069109
+data/calculations/GSM-AO-M-MCA-10020-0000-A_en_gemini.xlsx	1069280
+data/calculations/GSM-AO-T-MCA-10001-0000-A.xlsx	1107292
+data/calculations/GSM-AO-T-MCA-10001-0000-A_codex.xlsx	1097884
+data/calculations/GSM-AO-T-MCA-10001-0000-A_en_claude.xlsx	1098296
+data/calculations/GSM-AO-T-MCA-10001-0000-A_en_gemini.xlsx	1098411
+data/float/GSM-AO-T-TIP-10001-0001-A Float_drawing.dwg	436931
+data/float/GSM-AO-T-TIP-10001-0001-A Float_drawing.pdf	313963
+data/float/float_drawing.png	495766
+data/float/freecad_model_verification.png	279324
+data/float/geometry_comparison.png	301416
+data/float/model_v4_verification.png	414210
+data/float/model_v5_views.png	453982
+data/float/model_v6_views.png	398627
+data/float/model_verification_v2.png	142324
+data/float/model_verification_v3.png	196651
