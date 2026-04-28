@@ -6,7 +6,7 @@ After the early token reset, the autonomous lane keeper was paused and the activ
 
 ## Agent/process state
 
-- Codex 10-thread lane keeper cron `770ed0f726da` was paused to avoid duplicate work after reset.
+- Codex 10-thread lane keeper cron `770ed0f726da` was paused during finalization and then removed to avoid duplicate work after reset.
 - No active `codex exec` lane processes were found in the final filtered process inventory.
 - Active/non-owned interactive Hermes/Claude desktop processes remain on the workstation and were not killed.
 - During finalization, a primary-checkout plan-review fanout for issue #2533 was observed writing under `scripts/review/results/2026-04-28-plan-2533-rev3`; the final process check no longer showed that fanout, but avoid hard reset/cleaning `/mnt/local-analysis/workspace-hub` unless the current interactive Hermes/tmux owner is understood.
