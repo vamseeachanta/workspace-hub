@@ -1,4 +1,4 @@
-User requires context parity across agents and zero-waste AI spend; target provider usage is ~90% by day 5, ~10% reserve days 6–7.
+User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation.
 §
 User wants continuous autonomous GitHub throughput: keep issues planned, adversarially reviewed, and user-approved so overnight planning/implementation can run and next-day review/QA has ready artifacts.
 §
@@ -10,8 +10,8 @@ Prefers numbered/lettered choices and clickable GitHub issue/PR links for #NNNN 
 §
 For overnight batches, prefers Claude-only staged pacing and preserving Codex for interactive/daytime work.
 §
-For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution.
-§
 User wants all reviews to be adversarial reviews by default for maximum productivity and impact.
 §
-User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, prefer parallel work, and when they explicitly approve a batch of plan-review issues they expect direct status:plan-approved transitions plus local approval markers without extra confirmation.
+User approves sensible direct execution. GitHub: latest status:* wins, proactive follow-ups, quick safety audits, parallel work, and direct plan-approved transitions/local markers when explicitly approving batches. Travel-planning issues should include realistic seasonal photos plus destination/stay links and scenery caveats.
+§
+Post-reboot recovery priority: salvage current work first, research/restart ongoing work second, set off future work last.

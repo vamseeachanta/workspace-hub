@@ -49,6 +49,9 @@
 - [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's default `docs/superpowers/specs/` path is silently gitignored (workspace-hub `.gitignore:438`); write durable specs to `docs/governance/` instead
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — when Hermes runs "remove unrelated files" cleanup loops on main, parallel commits get reverted within minutes; preflight `pgrep -af 'git (rebase|stash push|commit|merge|reset|checkout)'` and use a worktree+feature-branch if active
 - [git switch --discard-changes](feedback_git_switch_discard_changes_pattern.md) — use `git switch --discard-changes` (not `git checkout`) when `.claude/state/` is dirty; plain checkout aborts silently and downstream cp+commit lands on the wrong branch (recurred 2x in 2026-04-25 wave-3/wave-5 contamination)
+- [x11vnc vs TigerVNC for headless](feedback_x11vnc_vs_tigervnc_headless.md) — x11vnc is a screen mirror and crashloops on headless hosts (no GUI session to attach to); use TigerVNC `vncserver :N` instead — verified 2026-04-27 ace-linux-2 (67,189 crashloops in 4 days)
+- [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` (in-kernel) refuses dirty NTFS volumes; use `ntfs-3g` (FUSE) which auto-replays journal; drop `default_permissions` and pass explicit `uid`/`gid` for ownership
+- [Wikimedia thumb width quirk](feedback_wikimedia_thumb_width_quirk.md) — query `imageinfo` API for canonical `thumburl`; never hand-construct width segment; main-session re-verify (subagent verification was wrong twice on 2026-04-27)
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -74,9 +77,12 @@
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
 - [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
 - [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24
+- [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser automation only for interactive UI tasks
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing principle sanctioned across eng/marine/naval wikis; **#2471 is CSA-Z276-only** (verified 2026-04-25), referenced codification plan does not exist; general offshore/marine substrate now scoped to aceengineer-strategy aces-#4
 - [llm-wiki stays embedded](project_llm_wiki_stays_embedded.md) — 2026-04-23 #2398 CLOSED; no spinout; triggers: 200MB, external consumer, cadence conflict, CI >5min, date 2026-10-23
+- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
+- [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing
@@ -86,3 +92,4 @@
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
+- [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data

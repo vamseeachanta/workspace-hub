@@ -857,6 +857,19 @@ A plan is batch-ready only when:
 
 No issue in `status:plan-review` is eligible for execution.
 
+## Audit-report to overnight queue pattern
+
+Use this pattern when a repo capability/readiness audit produces several GitHub follow-up issues that need to become overnight-ready work items.
+
+Operational rules:
+1. Treat the audit reports as Step 2 resource-intelligence evidence, but still re-read the issue bodies, canonical repo docs, manifests/configs, and related source files needed to draft each plan.
+2. Batch related issues only when they share evidence but have separable implementation surfaces; each issue still needs its own canonical `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md` artifact and GitHub final plan comment.
+3. Freeze source-of-truth decisions in the plan before review when multiple registries disagree (for example manifest vs source tree vs catalog vs CLI registry vs scheduler config). Reviewers should see the chosen authority for each artifact class, not an open-ended reconciliation exercise.
+4. For capability/data/scheduler readiness issues, explicitly separate documentation/index reconciliation from runtime refresh execution. Do not authorize unbounded downloads, full refreshes, or long-running scheduler jobs unless the approved plan says so and prerequisite runtime readiness is proven.
+5. When one issue owns a shared surface that another issue touches only by reference, state that ownership boundary in both plans so overnight workers do not race on the same file or semantic decision.
+6. Use adversarial review to convert vague cleanup themes into frozen decisions, testable acceptance criteria, and bounded no-download smoke checks before moving issues to `status:plan-review`.
+7. `status:plan-review` means the issue is ready for human approval, not overnight execution. Only move into long-running/overnight implementation batches after explicit user approval and `status:plan-approved`.
+
 ## Approval-candidate audit rule
 
 When asked whether there are issue plans to approve, do not rely on `status:plan-review` labels alone.

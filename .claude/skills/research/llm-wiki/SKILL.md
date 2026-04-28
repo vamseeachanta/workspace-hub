@@ -369,6 +369,7 @@ For best results:
 
 ## Pitfalls
 
+- **Automated wiki health cron gotchas** — For workspace-hub `scripts/knowledge/wiki_health_cron.py` runs, verify the domain list before trusting the report. Hidden/operational directories under `knowledge/wikis/` (for example `.planning/`) are not domain wikis and should be skipped. Directories that contain only `CLAUDE.md` or otherwise lack `wiki/` should be reported as critical missing scaffold/index/log issues, not allowed to crash the cron before reports are written. Health reports under `knowledge/wikis/health-reports/` may be ignored by `.gitignore`; use `git add -f knowledge/wikis/health-reports/health-YYYY-MM-DD.{json,md}` when committing them.
 - **Never modify files in `raw/`** — sources are immutable. Corrections go in wiki pages.
 - **Always orient first** — read SCHEMA + index + recent log before any operation in a new session.
   Skipping this causes duplicates and missed cross-references.

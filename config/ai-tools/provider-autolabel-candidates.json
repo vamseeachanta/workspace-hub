@@ -1,239 +1,10 @@
 {
-  "generated_at": "2026-04-28T05:20:18.808490Z",
+  "generated_at": "2026-04-28T09:20:26.548589Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 6,
+  "eligible_count": 0,
   "applied": [],
   "candidates": [
-    {
-      "number": 2346,
-      "title": "feat(gtm): prospect-data customized-demo pipeline \u2014 48hr turnaround + pre-staged vessel templates",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2346",
-      "labels": [
-        "priority:high",
-        "cat:engineering",
-        "domain:gtm",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-23T10:50:30Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2269,
-      "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering",
-        "cat:documentation",
-        "machine:dev-secondary",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-26T11:57:34Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2289,
-      "title": "Plan rollback/recovery for enforcement bypasses detected after commit or push",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2289",
-      "labels": [
-        "priority:high",
-        "cat:harness",
-        "domain:workflow",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-27T13:25:24Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2270,
-      "title": "feat(blender): standardize headless baseline workflow and smoke render validation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2270",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering",
-        "cat:documentation",
-        "machine:dev-secondary",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-26T11:57:33Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2271,
-      "title": "feat(ecosystem): harden shared-skill propagation for engineering portability",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2271",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:harness",
-        "machine:multi",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-26T11:57:31Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2272,
-      "title": "test(portability): add repeatable OpenFOAM and Blender smoke verification",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2272",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering",
-        "cat:harness",
-        "machine:multi",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-26T11:57:30Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2327,
-      "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
-      "labels": [
-        "priority:low",
-        "cat:engineering",
-        "cat:research",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-17T14:55:48Z",
-      "execution_ready": true,
-      "priority_rank": 3,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
     {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
@@ -303,6 +74,198 @@
       "updatedAt": "2026-04-26T11:45:09Z",
       "execution_ready": false,
       "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2519,
+      "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
+      "labels": [
+        "enhancement",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "priority:critical",
+        "domain:ai-orchestration",
+        "domain:workstations",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-27T18:57:43Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2520,
+      "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
+      "labels": [
+        "bug",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "priority:critical",
+        "domain:ai-orchestration",
+        "domain:workstations",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-27T17:45:28Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2254,
+      "title": "fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2254",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:harness",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-26T21:54:49Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2291,
+      "title": "fix(cron-health): harden failure detection and align task evidence contracts",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-16T10:39:33Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2301,
+      "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-16T14:37:26Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2363,
+      "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:data-pipeline",
+        "domain:document-intelligence"
+      ],
+      "updatedAt": "2026-04-26T21:54:20Z",
+      "execution_ready": false,
+      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",

@@ -1,16 +1,19 @@
 ---
 name: workspace-hub-overnight-plan-monitor
-description: Read-only monitoring workflow for workspace-hub overnight planning batches using PID files and dossier result markdowns.
+description: Monitor and reconcile workspace-hub overnight planning or implementation batches, including process status, result artifacts, issue/commit verification, and controlled failed-lane recovery.
 triggers:
   - Monitor Claude/Codex/Gemini overnight planning runs in workspace-hub
-  - Count completed dossiers under docs/plans/overnight-prompts/*/results
-  - Check which batch terminal processes are still alive from logs/*.pid
-  - Summarize final recommendations from dossier markdown files
+  - Monitor parallel Claude implementation batches launched by Hermes background process sessions
+  - Count completed dossiers under docs/plans/overnight-prompts/*/results or /mnt/local-analysis/overnight-batch-*/results
+  - Check which batch terminal processes are still alive from logs/*.pid or Hermes process session IDs
+  - Summarize final recommendations from dossier markdown files or implementation lane summaries
+  - Reconcile missing central result artifacts when workers wrote `.nightly-results/` inside the repo
+  - Convert failed/no-output/max-turn lanes into blocker notes or narrow recovery prompts
 ---
 
 # Workspace-hub overnight plan monitor
 
-Use this when a cron/job asks for a status report on an overnight planning batch (for example a 10-pack under `logs/.../*.pid` and `docs/plans/overnight-prompts/.../results/*.md`).
+Use this when a cron/job or user asks for a status report on an overnight planning or implementation batch (for example a 10-pack under `logs/.../*.pid` and `docs/plans/overnight-prompts/.../results/*.md`, or a Hermes-launched batch under `/mnt/local-analysis/overnight-batch-*/{logs,prompts,results}`).
 
 ## Why this skill exists
 
@@ -26,6 +29,12 @@ A few practical quirks showed up during monitoring:
 1. **List PID files and result files**
    - Use `search_files(target='files')` on the exact batch directories.
    - For file listings, read from `result.get('files', [])` first and fall back only if needed.
+
+1a. **Verify expected worktree roots before trusting missing artifacts**
+   - For explicit worktree monitoring requests, first test whether each expected root exists and is a git repo/worktree (`Path.exists()`, `.git` file/dir, or `git worktree list --porcelain`).
+   - If expected worktree roots are missing, say the run is incomplete at the requested locations and list the launched paths for operator inspection.
+   - Use a bounded exact-path fallback in the main checkout (for example `/mnt/local-analysis/workspace-hub/<same-relative-summary-path>` and the same prompt directory) to find central salvage artifacts, but classify them separately from the expected worktree outputs.
+   - Avoid broad `rglob`/`search_files` over all of `/mnt/local-analysis` for summary names unless tightly bounded; it can time out on large workspaces.
 
 2. **Check live processes with direct Python/OS calls**
    - Prefer a short Python script via `terminal` or `execute_code`:
@@ -133,11 +142,53 @@ If GitHub state advanced but local artifacts are missing:
 
 This prevents false confidence when a worker comment or completion log overstates what landed on disk.
 
+## Implementation-batch reconciliation pattern
+
+When the batch is an implementation/closeout batch rather than a pure plan-review dossier batch, treat stdout as a lead, not proof.
+
+1. **Poll Hermes process sessions if no PID files exist**
+   - Use `process(action='poll', session_id=...)` for launches created by `terminal(background=true)`.
+   - Record `status`, `exit_code`, and the output preview.
+   - A worker can exit successfully while writing its summary to an alternate sandbox path; a worker can also be superseded by another lane while its original process exits `-15`.
+
+2. **Verify GitHub and commit surfaces for every claimed completion**
+   - `gh issue view <n> --json state,stateReason,labels,comments,url`
+   - `git rev-parse --verify <sha>^{commit}`
+   - `git branch -a --contains <sha>` or direct remote containment checks
+   - `git show --stat --name-only --oneline <sha>`
+   - Classify separately: issue state, remote landed state, local checkout/worktree state.
+
+3. **Reconcile result artifact locations**
+   - Workers may be sandboxed to `/mnt/local-analysis/workspace-hub` and unable to write `/mnt/local-analysis/overnight-batch-*/results`.
+   - Search for `.nightly-results/<date>-terminal-*-summary.md` in the repo checkout and batch worktrees.
+   - If the user expects a central batch directory, mirror/copy the missing summaries into `overnight-batch-*/results/` and note that this is an orchestrator reconciliation action.
+
+4. **Handle failed/no-output/max-turn lanes decisively**
+   - Do not relaunch blindly.
+   - First inspect the lane log, GitHub issue state, and owned-path diff/status only.
+   - If the log is just `Error: Reached max turns (...)` and owned-path status/diff is empty, write a central blocker/current-state note documenting that no owned-path edits landed.
+   - Then launch a narrower recovery prompt scoped to the exact owned paths, required validators, and closeout steps.
+   - If the lane was intentionally superseded (for example original process exited `-15` but another path completed the issue), preserve both a blocker/supersession note and a completion summary so morning review sees why the raw process status looks failed.
+
+5. **Handle post-reboot ghost completions**
+   - After a reboot, Hermes background process state may be gone and the worker log/central summary may be empty or missing even though the implementation commit landed on `origin/main`.
+   - If a claimed or discovered commit is already on the intended remote and contains exactly the owned paths, treat this as a **closeout-only reconciliation**, not a rerun trigger.
+   - Re-run the prompt's read-only validation block against the committed files and check residual owned-path diffs only for the scoped paths.
+   - If validation passes but the issue is still open or still labeled `status:plan-approved`, write the missing central summary artifact, post a closeout comment, close the issue as completed, and move the label to `status:done`.
+   - This closeout can be safe even while unrelated interactive agents are active in the repo, provided you do not mutate git state and only touch the external results artifact plus GitHub issue state.
+
+6. **Write an aggregate verification report**
+   - Include one row per lane: process result, GitHub state, commit/artifact verification, verdict, and next action.
+   - Store it in the central results directory (for example `results/post-batch-verification-YYYY-MM-DD.md`).
+
 ## Output checklist
 
 - Result file count
 - Completed terminal/issue list
-- One-line recommendation per completed dossier
-- Alive process count and alive terminal list
-- For each completed issue: whether GitHub state was confirmed, whether local plan file exists, whether local review artifacts exist
-- Explicit `monitoring is complete` statement when either all dossiers exist or no processes remain
+- One-line recommendation per completed dossier or implementation summary
+- Alive process count and alive terminal/session list
+- For each completed issue: whether GitHub state was confirmed, whether claimed commits are present on the intended remote, whether claimed files appear in the commit, whether local artifacts exist
+- Missing or mirrored summary artifacts, including source and destination paths
+- Failed-lane classification: max-turn/no-output/superseded/blocked, with blocker path if written
+- Recovery session ID/log path if a narrow recovery run was launched
+- Explicit `monitoring is complete` statement when either all expected artifacts exist or no processes remain; otherwise name the exact still-running recovery sessions

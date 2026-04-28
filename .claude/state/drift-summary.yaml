@@ -5558,3 +5558,613 @@
     git_non_conventional: 3
     git_missing_wrk_ref: 35
     git_exempt_type: 14
+- scanned_at: "2026-04-28T07:35:59Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T04-40-21-019dce4f-aee9-7250-a085-2481f5a78528.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:00Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T04-55-04-019dce5d-260e-75b0-879b-2943dd195d68.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:00Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T05-03-06-019dce64-8058-7d02-a661-f2dd84261668.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:00Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T05-10-35-019dce6b-5d0f-7563-ab91-6fd79104e286.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:00Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T05-21-12-019dce75-155b-79e2-b652-d015bd2013a3.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-32-21-019dcf91-f0f6-72c3-8573-0dde0263cafa.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-32-43-019dcf92-4885-70a0-979a-b852173f687b.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-35-08-019dcf94-7e6b-7d03-a92c-c05f100a03b5.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-36-57-019dcf96-2787-7b41-8248-eeff6a53263b.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-37-23-019dcf96-8d51-7ee0-a834-55feed2f3716.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-38-41-019dcf97-bce4-79f3-acee-35820a5f846d.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-40-14-019dcf99-2857-70d2-90c5-9529f6791871.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-41-47-019dcf9a-928b-7602-be73-1961df41ef99.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-43-20-019dcf9c-00e6-7861-a234-c3784b41e747.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-44-52-019dcf9d-65db-7313-b1a0-e3bae843f81f.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:03Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-46-27-019dcf9e-d869-7e70-872c-04e3d3f045ee.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:03Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-48-23-019dcfa0-9dfb-7ce3-9067-b872ae481880.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:03Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T10-49-41-019dcfa1-d17c-7031-b156-d19bb20625b6.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:03Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T11-40-36-019dcfd0-6d14-7412-a768-f2d471c57a49.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:04Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T11-49-29-019dcfd8-8edc-72c0-a8d2-9e7bcc76ea6e.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:04Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T11-54-49-019dcfdd-7272-7112-99c9-f4e7814ec740.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:04Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-04-29-019dd01d-3b44-7113-bd7d-4dde512df74a.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:04Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-04-30-019dd01d-3b9b-7ec3-9f98-7808257f1899.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:04Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-04-30-019dd01d-3c75-7be1-bb62-87237a6afd26.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:05Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-11-27-019dd023-9a8c-70c2-936a-77673f5f9754.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:05Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-11-27-019dd023-9b51-7e23-bc31-e29c53815c3f.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:05Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-11-30-019dd023-a6e1-7ef1-9594-6cd153b505b0.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:05Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-12-30-019dd024-9172-7e43-aa9b-e50bd978bc6a.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:05Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-14-25-019dd026-508b-7671-85c6-5f22986faf1e.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 2
+    git_non_conventional: 0
+    git_missing_wrk_ref: 2
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:07Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-14-28-019dd026-5ee4-7670-90fb-ca647a0ec356.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 2
+    git_non_conventional: 0
+    git_missing_wrk_ref: 2
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:09Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T13-14-30-019dd026-6531-7960-96ed-50e6bb8c2e66.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:09Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T14-02-46-019dd052-9734-73d0-96ff-7e1ca4dde03e.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 1
+- scanned_at: "2026-04-28T07:36:09Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T14-03-02-019dd052-d5ff-7c73-9ab2-2141a3223aeb.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 1
+- scanned_at: "2026-04-28T07:36:09Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-11-14-019dd0c8-3221-7860-9920-14b7c276e6c0.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:10Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-11-32-019dd0c8-7a43-7823-91d6-2e3a033fa26f.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:10Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-11-54-019dd0c8-ce5d-7f90-b4bf-5c4781282bbb.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:15Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-51-36-019dd0ed-27ff-7bc3-b999-cc24a4523e5d.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 2
+    git_non_conventional: 0
+    git_missing_wrk_ref: 2
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:20Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-52-01-019dd0ed-8b2e-7460-955d-2aeafe86b2fc.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 1
+- scanned_at: "2026-04-28T07:36:25Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-52-07-019dd0ed-9f94-7451-82cc-2c68609b51c6.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:30Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-52-07-019dd0ed-9fd1-7683-8e95-56db5e3c8a5d.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 1
+- scanned_at: "2026-04-28T07:36:34Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T16-52-12-019dd0ed-b535-7840-ad84-a9ae3d65f51b.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:35Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T18-58-27-019dd161-4b98-75c3-8f17-59cc16011564.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:36Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T18-58-37-019dd161-7010-7b21-9ffa-dc16aa5705d8.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:37Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T18-59-12-019dd161-fa1b-7eb0-aaf1-862263c123b4.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:37Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-18-019dd235-8cfd-7f81-b7ef-9672e641ad47.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:37Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-19-019dd235-9364-78a2-9434-64774d706a1b.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 3
+    git_non_conventional: 0
+    git_missing_wrk_ref: 3
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:42Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-20-019dd235-94bd-7dd2-83ef-f81216f9f533.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:46Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-20-019dd235-9585-7d40-8bdf-4515a6ef70a7.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:50Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-27-019dd235-b33f-76d1-b967-296b578f1dce.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 2
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 1
+- scanned_at: "2026-04-28T07:36:55Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-40-019dd235-e3bb-7b23-aa41-e22d8dbad7c8.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:58Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-40-019dd235-e464-7182-8937-73afd69b9d30.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:36:59Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-45-019dd235-f962-7e33-88a3-ad78dc8c63b0.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:00Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-47-019dd235-fdc6-7993-b8d5-b0e62b995799.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T22-50-58-019dd236-2ae6-7280-857d-4a2bf051b1ab.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:01Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T23-54-31-019dd270-5a17-74d1-89ab-7a353f1d9c2f.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T23-55-28-019dd271-37e3-7d30-9f1c-add34c5ef3bd.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 1
+    git_non_conventional: 0
+    git_missing_wrk_ref: 1
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T23-56-22-019dd272-0c13-7fd2-be84-62a4e54db12c.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 3
+    git_non_conventional: 0
+    git_missing_wrk_ref: 3
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T23-56-31-019dd272-2c72-7791-92c6-bd7363e5b1e0.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:02Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T23-56-58-019dd272-98e8-7b11-bc46-d20c32e274c6.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:03Z"
+  log: "/home/vamsee/.codex/sessions/2026/04/27/rollout-2026-04-27T23-57-04-019dd272-b08f-79a1-bf9d-e2e9b1b18f0c.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-04-28T07:37:19Z"
+  log: "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude/session_20260427.jsonl"
+  provider: "claude"
+  violations:
+    python_runtime: 30
+    file_placement: 0
+    git_workflow: 26
+    git_non_conventional: 3
+    git_missing_wrk_ref: 23
+    git_exempt_type: 7

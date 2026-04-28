@@ -3,19 +3,19 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-04-26T07:03:29Z"
-  source_hash: "aa813bc578910d185aa917f48a7d27e5"
+  generated: "2026-04-28T07:02:50Z"
+  source_hash: "5290395ea72a5dbd4e0a96795fbbf6b1"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
   entry_count: 18
 
 environment_facts:
-  - "DEFAULT MODEL (2026-04-25): openai-codex / gpt-5.5 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default."
+  - "DEFAULT MODEL (2026-04-25): openai-codex/gpt-5.5 via chatgpt backend; smart_model_routing disabled. ace-linux-2 needs login shell (`bash -lc`) for Hermes/Codex PATH. Codex CLI 0.125 may hang at `Reading additional input from stdin...`; Hermes pattern: terminal(background=true) then `process close`."
   - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
   - "Hermes smart_model_routing is disabled in workspace-hub because cheap-model Gemini routing bypassed explicit Codex intent and hit Gemini 429 quota."
   - "Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only."
-  - "In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present."
   - "digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment."
+  - "Elements ingest /mnt/ace mapping: qgis → digitalmodel; Woodfibre 31522 → acma-projects; casa_grande_77017 → assethold; staging uses `_from_elements` without dates; client_projects is a real repo bucket, not a misc category."
 
 conventions:
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
@@ -25,12 +25,12 @@ project_knowledge:
   - "In workspace-hub, scripts/enforcement/require-plan-approval.sh only recognizes .planning/plan-approved/*.md markers newer than .planning/STATE.md; a stale marker can block commits even when the GitHub issue is already status:plan-approved."
 
 user_preferences:
-  - "User requires context parity across agents and zero-waste AI spend; target provider usage is ~90% by day 5, ~10% reserve days 6–7."
+  - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation."
   - "User wants continuous autonomous GitHub throughput: keep issues planned, adversarially reviewed, and user-approved so overnight planning/implementation can run and next-day review/QA has ready artifacts."
   - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
   - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
   - "Prefers numbered/lettered choices and clickable GitHub issue/PR links for #NNNN references."
   - "For overnight batches, prefers Claude-only staged pacing and preserving Codex for interactive/daytime work."
-  - "For overnight Claude work, pace usage across the available window instead of front-loading it; prefer staged all-night execution."
   - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-  - "User approves sensible direct execution; for GitHub use latest status:* wins, proactive follow-ups, quick safety audits, prefer parallel work, and when they explicitly approve a batch of plan-review issues they expect direct status:plan-approved transitions plus local approval markers without extra confirmation."
+  - "User approves sensible direct execution. GitHub: latest status:* wins, proactive follow-ups, quick safety audits, parallel work, and direct plan-approved transitions/local markers when explicitly approving batches. Travel-planning issues should include realistic seasonal photos plus destination/stay links and scenery caveats."
+  - "Post-reboot recovery priority: salvage current work first, research/restart ongoing work second, set off future work last."

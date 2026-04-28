@@ -25,7 +25,8 @@ Use when a delegated `claude -p` implementation run is launched in a worktree an
    - `git status --short -- <owned paths>`
 
 2. If useful partial edits exist and stdout is still stalled, stop the delegated run:
-   - kill the tracked Hermes background process if available, or kill the Claude subprocess.
+   - kill the tracked Hermes background process if available, or kill the exact Claude subprocess/process group.
+   - If Claude is stalled inside a child command such as `git push`, inspect `ps -eo pid,ppid,pgid,stat,comm,args` first and terminate exact PIDs/negative PGIDs; avoid `pkill -f` patterns that can match the invoking shell and kill the recovery command itself.
    - preserve in-scope edits; do not reset the worktree blindly.
 
 3. Verify path contract immediately:
