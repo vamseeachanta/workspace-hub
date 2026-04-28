@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-28T09:20:24.150812Z",
+  "generated_at": "2026-04-28T13:20:11.958185Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-28T09:20:19.484712Z",
+  "scorecard_generated_at": "2026-04-28T13:20:09.497896Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 1,
-      "total_candidates": 150,
+      "total_candidates": 155,
       "top_issues": [
         {
           "number": 2229,
@@ -115,6 +115,27 @@
           ]
         },
         {
+          "number": 2219,
+          "title": "chore(sync): resolve main branch divergence \u2014 9 local vs 134 origin commits",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2219",
+          "labels": [
+            "priority:high",
+            "cat:engineering"
+          ],
+          "updatedAt": "2026-04-11T17:19:07Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2254,
           "title": "fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2254",
@@ -182,37 +203,14 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2363,
-          "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:document-intelligence"
-          ],
-          "updatedAt": "2026-04-26T21:54:20Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 25,
-      "total_candidates": 48,
+      "execution_ready_count": 19,
+      "total_candidates": 43,
       "top_issues": [
         {
           "number": 2269,
