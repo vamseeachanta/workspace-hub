@@ -24,11 +24,13 @@ def test_2521_ocimf_summary_artifact_unblocks_preview_gate() -> None:
     assert payload["issue"] == 2521
     assert payload["downstream_issue"] == 2227
     assert payload["extraction_method"] == "ocr_tesseract_first_pages"
-    assert len(payload["text_preview"].strip()) >= 200
+    assert 200 <= len(payload["text_preview"].strip()) <= 1200
     assert len(payload["summary"].strip()) >= 80
     assert "Tandem Mooring" in payload["title"]
     assert "OCIMF" in payload["summary"] or "Oil Companies International Marine Forum" in payload["text_preview"]
-    assert "raw_pdf_committed" not in payload
+    assert payload["provenance"]["source_of_record"] == SOURCE_PATH
+    assert payload["provenance"]["raw_pdf_committed_to_git"] is False
+    assert "temporary render images deleted" in payload["provenance"]["ocr_scope"]
 
 
 def test_2521_handoff_marks_ocimf_target_ready_without_claiming_csa_ready() -> None:
