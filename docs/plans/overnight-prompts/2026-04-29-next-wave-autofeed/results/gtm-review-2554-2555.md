@@ -119,6 +119,24 @@ Neither #2554 nor #2555 carries `status:plan-review` or `status:plan-approved` t
 - No outreach drafted, sent, or staged.
 - No durable memory writes from this wave.
 
+## Commit/push outcome — landed via auto-sync (with parallel-agent paths bundled)
+
+Initial `git commit` attempt for this wave's 12 staged paths failed against a stale `.git/index.lock` held by a wedged `git status --porcelain` (PID 1345075, Codex companion shell with no parent reaper). During the wait period, **`Hermes auto-sync` swept the entire combined index into a single push commit** at `6a401705b chore(sync): auto-sync 2026-04-29` and pushed to `origin/main`. This is the canonical [auto-sync silent pusher](feedback_autosync_silent_pusher.md) pattern.
+
+**Two consequences of this race:**
+
+1. **All 12 wave artifacts are committed and pushed** under `6a401705b` — no work was lost. `git rev-list --count HEAD ^origin/main` returns 0 (HEAD at parity with `origin/main`).
+2. **The auto-sync commit also bundled 5 unrelated paths from a parallel agent** (working on issues #2521 and #2245) that staged concurrently into the shared index between this wave's `git add` and the auto-sync sweep:
+   - `.planning/intel/ocimf-tandem-2521/extract_ocimf_tandem_preview.py`
+   - `.planning/plan-approved/2521.md`
+   - `data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json`
+   - `docs/reports/acma-wiki-unblock-2245-handoff.yaml`
+   - `scripts/data/document-index/tests/test_ocimf_tandem_unblock_2521.py`
+
+   The bundled commit message — `chore(sync): auto-sync 2026-04-29` — is generic and does not narrate either the GTM-review work nor the OCIMF/ACMA work. The substantive narrative for the GTM-review portion lives in this result file and the patched plan tables; the substantive narrative for the OCIMF/ACMA portion is the responsibility of that parallel agent.
+
+**No corrective action needed by this lane.** The 12 wave artifacts are durable on `origin/main`. Future readers wanting to attribute the GTM-review portion of the bundle should grep `6a401705b`'s tree for `2026-04-29-plan-255{4,5}-nextwave-*.md` and the patched-plan-table hunks. Memories applicable to interpreting this race: [auto-sync silent pusher](feedback_autosync_silent_pusher.md), [merge-race silent revert](feedback_merge_race_silent_revert.md), [multi-agent commit serialization](feedback_multi_agent_commit_serialization.md).
+
 ---
 
 ## Cross-references
