@@ -185,15 +185,22 @@ These checks replace the standard `pytest` lines that would appear for an engine
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | not yet routed |
-| Codex | PENDING | not yet routed |
-| Gemini | PENDING | not yet routed |
+| Claude (next-wave self-review, 2026-04-29) | MINOR | (1) Test List row 1 grep `^### Target — ` is off-by-one separator vs. actual scaffold heading `^### Target N — `; literal pattern returns 0 instead of 22. (2) Internal inconsistency: scaffold §376 says 9 High-priority targets but the actual count is 10 (named list contains 10). (3) AC #5 unmet by any wave that lacks Codex+Gemini live evidence. (4) Pseudocode evidence-URL gate satisfied in letter (corporate-domain root) but not spirit (no deep-link verification). (5) `pain_point_hypothesis` rows lack a citable evidence slot. |
+| Codex (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation; codex-cli 0.124.0 upstream regression also unverified on this host (`feedback_codex_cli_0_124_upstream_regression.md`). See `scripts/review/results/2026-04-29-plan-2554-nextwave-codex.md`. |
+| Gemini (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation. See `scripts/review/results/2026-04-29-plan-2554-nextwave-gemini.md`. |
 
-**Overall result:** PENDING — adversarial review wave has not yet been executed against this plan. The plan is draft until the wave lands.
+**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. AC #5 (this plan §177) requires Claude + at least one of Codex/Gemini; only Claude evidence exists. Plan stays `draft`. No revisions to the plan body are required for the MINOR findings listed above; they are recorded as **patch tasks** below for a future wave.
 
-The lane that produced this plan is a **planning/research lane only** (no `claude --providers` permission to run `scripts/review/plan-review-fanout.sh`); the next-action recommendation in the summary file points the user (or a follow-on lane with the right permissions) at the canonical fan-out command.
+**Patch tasks for the next permitted lane:**
+- Fix Test List row 1 grep pattern to `^### Target [0-9]` (or `^### Target `).
+- Reconcile the High-priority count (9 vs 10): either correct §376 of the scaffold and the lane summary to 10, or downgrade one named row's `outreach_priority` and document why.
+- Drive a permitted-lane fanout that produces at least one of Codex/Gemini live verdicts so AC #5 can be satisfied.
+- Add a `pain_point_evidence:` slot per scaffold row (even if v1 ships with `inferred-from-demo-coverage` placeholders).
+- Decide whether to split the URL gate into "non-empty at plan-review" + "deep-link at plan-approved" vs. raise the bar at plan-review.
 
-Revisions made based on review: (none yet — this is the v1 draft.)
+Revisions made based on review: (none — MINOR findings recorded but plan body not revised this wave per user prompt's "leave as draft and list patch tasks" guidance.)
+
+Review evidence: `scripts/review/results/2026-04-29-plan-2554-nextwave-{claude,codex,gemini}.md` (this wave); canonical-fanout artifacts at `…/2026-04-29-plan-2554-{claude,codex,gemini}.md` (no `-nextwave` suffix) reserved for a permitted-lane re-run.
 
 ---
 

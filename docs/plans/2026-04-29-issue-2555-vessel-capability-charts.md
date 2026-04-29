@@ -205,14 +205,23 @@ Implementation-time tests (deferred to a follow-on plan-approved slice) include 
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | TBD | (not run; see Risks below) |
-| Codex | TBD | (codex-cli sandbox/regression status per memory: monitor before dispatch) |
-| Gemini | TBD | (run with `GEMINI_CLI_TRUST_WORKSPACE=true` per memory) |
+| Claude (next-wave self-review, 2026-04-29) | MINOR | (1) TDD Test List row 1 grep `^## Chart C` is off-by-one heading depth vs. actual storyboard `^### Chart C`; literal pattern returns 0 instead of 4. (2) AC #5 (cross-provider review) unmet without Codex+Gemini live evidence. (3) Chart-rendering code-home unspecified — Files-to-Change marks `digitalmodel/**` out of scope but storyboard pseudocode reuses `report_template.py` which lives there; entry-point path needs naming. (4) Brochure-asset target `docs/reports/gtm/assets/` does not yet exist. (5) Caption draft for C1 cites three of four inherited standards; API RP 1111 omitted without justification despite shallow-S-lay job inheriting it. **Positive verification (not a finding):** Shallow Water Barge headline-number claim ("100% pass rate across 30 cases") matches `vessel_comparison_matrix.json` exactly. |
+| Codex (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation; codex-cli 0.124.0 upstream regression also unverified on this host. See `scripts/review/results/2026-04-29-plan-2555-nextwave-codex.md`. |
+| Gemini (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation. See `scripts/review/results/2026-04-29-plan-2555-nextwave-gemini.md`. |
 
-**Overall result:** PENDING (status remains `draft` until provider artifacts exist under `scripts/review/results/`).
+**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. AC §197 requires Claude + Codex + Gemini cross-provider review; only Claude evidence exists. Plan stays `draft`. No revisions to the plan body are required for the MINOR findings listed above; they are recorded as **patch tasks** below for a future wave.
+
+**Patch tasks for the next permitted lane:**
+- Fix TDD Test List row 1 grep pattern to `^### Chart C` (or `^#+ Chart C`).
+- Name the chart-rendering code-home explicitly (e.g., `scripts/gtm/render_brochure_charts.py` or equivalent), and clarify whether `report_template.py` is *imported* from `digitalmodel/` or whether a new shim is needed; resolve the "NO edits to digitalmodel/" tension.
+- Add `docs/reports/gtm/assets/` mkdir to the follow-on implementation slice's Files-to-Change.
+- Either add API RP 1111 to the C1 caption draft or document why it is intentionally omitted.
+- Drive a permitted-lane fanout that produces Codex and Gemini live verdicts so AC §197 can be satisfied.
 
 Revisions made based on review:
-- N/A — review not yet run.
+- N/A — MINOR findings recorded but plan body not revised this wave per user prompt's "leave as draft and list patch tasks" guidance.
+
+Review evidence: `scripts/review/results/2026-04-29-plan-2555-nextwave-{claude,codex,gemini}.md` (this wave); canonical-fanout artifacts at `…/2026-04-29-plan-2555-{claude,codex,gemini}.md` (no `-nextwave` suffix) reserved for a permitted-lane re-run.
 
 ---
 
