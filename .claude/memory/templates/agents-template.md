@@ -39,6 +39,7 @@ Context parity = compute parity. Zero waste everywhere.
 - **GTM issue routing**: with GTM messages in view, convert each signal by updating an existing GitHub issue, reopening an existing issue, or opening a new one.
 - **Code-readiness loop**: strengthen code with methodologies, standards, tests, and review artifacts before claiming delivery readiness.
 - **Legal promotion gate**: before promoting raw-data-derived material into public `llm-wiki` pages or other artifacts, preserve engineering evidence boundaries and run legal sanity review/scan.
+- **Autonomous gate evolution**: hard gates remain in force until metrics prove agent rigor is consistently safe; over time, shift routine plan/review/execution/verification cycles from user-managed approval to evidence-threshold approval so the owner focuses on ideas, GTM throughput, and customer/prospect artifacts.
 - **No local task IDs**: Use GitHub issues directly (`gh issue list`).
 - **Issue comments**: Always post a summary comment on every implemented GitHub issue.
 - **Parallel work check**: Scan for in-flight sessions before starting GSD work.

@@ -77,6 +77,27 @@ Spend assumptions must reflect real subscriptions and live usage headroom, not s
 
 GSD is the control plane. Do not replace it. Do not build parallel frameworks.
 
+## Autonomous Hard-Gate Evolution
+
+The current hard gates remain authoritative until replaced by measured evidence, but they must not become a permanent throughput ceiling. As AI-agent rigor, repeatability, and cross-review quality mature, the operating model should evolve from user-managed gates toward confidence-threshold gates.
+
+Target direction:
+- The owner should focus primarily on **idea origination, GTM throughput, customer/prospect artifacts, and strategic approvals**.
+- AI agents should self-cycle the rest: issue decomposition, plan drafting, adversarial review, legal/provenance checks, test design, implementation, verification, closeout evidence, and queue feeding.
+- Do **not** remove hard gates by assertion. Establish threshold metrics over time, then relax specific user approvals only when evidence shows the automated loop is consistently safe.
+
+Candidate threshold metrics for future self-cycling:
+- repeated APPROVE/MINOR adversarial-review outcomes across Claude/Codex/Gemini with no unresolved MAJOR findings,
+- legal sanity scans passing for public-facing data/wiki/artifact promotion,
+- TDD evidence present before implementation and tests passing after implementation,
+- plan/implementation/closeout artifacts matching issue acceptance criteria,
+- low rework rate after user review,
+- no unauthorized GitHub label/status mutations,
+- no secrets/client-identifying content leakage,
+- reproducible logs/artifacts sufficient for later audit.
+
+Until these metrics are formalized and proven, keep the explicit Issue → Plan → Review → User Approval → Plan-Approved → TDD Implementation → Review → Close gate. The long-term Business Brain goal is to make that gate increasingly evidence-driven so user time is spent on GTM and new ideas, not routine orchestration.
+
 - Tasks tracked as **GitHub issues** with `[WRK]` prefix
 - Issue template: `.github/ISSUE_TEMPLATE/wrk-item.yml`
 - Skills directory: `.claude/skills/` (568 active, 2734 total)
