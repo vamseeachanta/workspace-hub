@@ -62,16 +62,16 @@ Machine inventory must answer: installed programs, license availability, AI-prov
 
 ## AI Provider Accounts
 
-Only one paid Codex account is currently active.
+Spend assumptions must reflect real subscriptions and live usage headroom, not stale template inventory. AI credits are **not** the current bottleneck; harness throughput is.
 
 | Provider | Plan | Cost/mo | Role |
 |----------|------|---------|------|
-| Codex (OpenAI) | $200 account | $200 | Primary paid coding/execution worker; preserve for implementation, tests, fixes, cleanup |
-| Claude (Anthropic) | As available/authenticated | TBD | Planning, orchestration, adversarial review, long-context synthesis |
-| Gemini (Google) | As available/authenticated | TBD | Research/recon, large-context review, risk enumeration |
+| Claude (Anthropic) | Claude Max | $200 max | Primary planning/orchestration subscription; long-context synthesis, adversarial review, workflow control |
+| Gemini (Google) | Google AI Pro | $20 | Research/recon, broad-context review, risk enumeration |
+| Codex / OpenAI | Confirm active account before allocating load | Variable by authenticated account | Implementation, tests, fixes, cleanup when available; do not assume extra paid seats without machine/auth evidence |
 
 **Provider auth policy:** Hermes is the primary driver. All AI providers should be authenticated on all worker machines where practical, but `ace-linux-1` remains the control plane for dispatch, GitHub mutation, and reconciliation.
-**Current volume hierarchy:** Hermes-led orchestration; Codex is the only confirmed paid $200 provider account.
+**Current spend rule:** treat Claude Max ($200) and Gemini ($20) as the baseline confirmed subscriptions for planning; verify Codex/OpenAI account availability from live machine/auth evidence before promising parallel lanes. As of the latest user-provided quota screenshot, Claude Max still has substantial weekly headroom (All models 38% used, Sonnet only 7% used; current session 3% used) and Codex shows large remaining weekly capacity (89% overall remaining; GPT-5.3-Codex-Spark 100% remaining). Therefore plan preparation and executing approved work are primary; do not let weekly limits reset unused. The owner can tolerate up to ~2 days of depleted credits at the end of a reset window if that burn produced durable plans, reviews, tests, code, and GTM artifacts.
 
 ## Workflow Framework: GSD (Get Shit Done)
 
@@ -82,9 +82,30 @@ GSD is the control plane. Do not replace it. Do not build parallel frameworks.
 - Skills directory: `.claude/skills/` (568 active, 2734 total)
 - Commands: `/gsd:help`, `/gsd:new-project`, `/gsd:do`, etc.
 
+## GTM-to-Code Readiness Loop
+
+1. **GTM signal intake:** Keep GTM messages, prospect needs, market signals, and repo evidence in view. Convert each useful signal into one of: update an existing GitHub issue, reopen an existing issue, or open a new bounded issue.
+2. **Knowledge promotion:** Promote raw data and public data sources into `llm-wiki` / knowledge artifacts only through explicit source, provenance, license, and legal sanity gates. Raw inputs may provide data, codes/standards references, methodology notes, and reusable context, but public-facing artifacts must be sanitized and evidence-bounded.
+3. **Engineering hardening:** Convert knowledge into code-readiness by strengthening methodology, tests, fixtures, acceptance criteria, and implementation plans before execution.
+4. **Execution throughput:** Once a plan is approved, dispatch bounded implementation/test work aggressively to available providers/machines. The harness should feed work continuously rather than let weekly AI usage reset unused.
+5. **Evidence boundary:** No public/client-facing GTM claim should exceed repo evidence, validation output, or an explicit engineering caveat.
+
+## Legal Sanity Gates for Public Artifacts
+
+Legal/IP sanity checks are mandatory before raw data, client-derived context, standards extracts, document intelligence, or code-porting insights become public-facing `llm-wiki` pages, GTM artifacts, GitHub issues, PRs, or demo reports. Use `scripts/legal/legal-sanity-scan.sh --diff-only` for changed files, repo/full scans where relevant, and block promotion until violations are redacted/sanitized and the scan passes.
+
+Minimum public-promotion sanity gate:
+- source provenance recorded,
+- public-vs-private inputs identified,
+- methodology and standards citations attached,
+- tests/review state known,
+- legal scan/review run when applicable,
+- no confidential/client-identifying content promoted.
+
 ## Portfolio Refresh Obligation
 
 Because substantial work is happening across repos, periodically assess completed repo work and update this Brain accordingly. At minimum reconcile: repo missions/objectives, archive/retirement candidates, Tier-1 routing, machine/software inventory, provider accounts/auth, and evidence from recent GitHub issues/PRs. Do not let stale repo classifications or provider/machine assumptions remain authoritative.
+
 
 ## Review Routing (settled policy)
 
@@ -106,6 +127,7 @@ Full policy: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 4. **Commit to `main`** — branch only for multi-session work
 5. **No hardcoded secrets** — environment variables only
 6. **Review verdicts:** APPROVE | MINOR | MAJOR — resolve MAJOR before completion
+7. **Harness throughput primary** — provider credits are not the bottleneck; keep plan preparation, review, approved execution, and reconciliation lanes fed so weekly usage does not reset unused
 
 ## Key Standards Documents
 
