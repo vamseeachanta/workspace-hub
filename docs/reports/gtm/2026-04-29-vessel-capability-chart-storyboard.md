@@ -1,7 +1,7 @@
 # Vessel Capability Chart Storyboard — Brochure Pack v0
 
 > **Date:** 2026-04-29
-> **Status:** draft (planning artifact — no rendered assets exist yet)
+> **Status:** plan-approved specification (no rendered assets exist yet)
 > **Issue:** [#2555](https://github.com/vamseeachanta/workspace-hub/issues/2555)
 > **Plan:** [`docs/plans/2026-04-29-issue-2555-vessel-capability-charts.md`](../../plans/2026-04-29-issue-2555-vessel-capability-charts.md)
 > **Sibling lanes:** [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) (contractor matrix) · [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) (brochure send) · [#2557](https://github.com/vamseeachanta/workspace-hub/issues/2557) (productivity review)
@@ -115,7 +115,7 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - **Deferred to render slice:** the exact `8-24 in` and `7 m depth` phrasing must be recomputed from the latest demo 4 source/result files before export, because this planning wave did not exhaustively trace every plotted cell.
 
 **Caption draft**
-> Shallow-water S-lay envelope: where each vessel class can install which pipe size. Green cells indicate cases meeting tension, overbend, sagbend, and stinger checks per DNV-ST-F101 and API RP 1111. Marginal cells flag governing constraint within 5% of allowable. Source vessel parameters are representative-class — not exact specs of any named vessel. Detailed go/no-go for a specific project requires metocean, soil, and rigging inputs.
+> Shallow-water S-lay envelope: where each vessel class can install which pipe size. Green cells indicate cases meeting tension, overbend, sagbend, and stinger checks per DNV-ST-F101 and API RP 1111 (cited as inherited from `pipelay_vessels.json` `_references`, not as an independent code-conformance review). DNV-OS-F101 (also inherited from `pipelay_vessels.json` `_references`) is intentionally omitted because DNV-ST-F101 (2021) supersedes it as the controlling submarine-pipeline citation; both editions remain in the source `_references` for historical continuity. Marginal cells flag governing constraint within 5% of allowable. Source vessel parameters are representative-class — not exact specs of any named vessel. Detailed go/no-go for a specific project requires metocean, soil, and rigging inputs.
 
 **Evidence & legal scope**
 - Uses the same 2 representative-class vessels disclosed in source JSON.

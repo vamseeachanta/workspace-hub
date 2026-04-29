@@ -1,6 +1,6 @@
 # Plan for #2555: feat(gtm): vessel capability charts for contractor brochure
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2555
@@ -231,11 +231,12 @@ Implementation-time tests (deferred to a follow-on plan-approved slice) include 
 | Codex (live canonical rerun, 2026-04-29) | MINOR | `scripts/review/results/2026-04-29-plan-2555-codex.md`: no critical/high findings; document-level fixes requested for generated-asset legal scan coverage, planning-only vs brochure-ready wording, C4 citation completeness, brand palette re-confirmation, and C1 `108 cases` recomputation. Safe textual patches applied to plan/storyboard; live Gemini evidence still required before status promotion under the current AC. |
 | Gemini (live canonical rerun, 2026-04-29) | MINOR | `scripts/review/results/2026-04-29-plan-2555-gemini.md`: conditional plan-review readiness if live Claude and Codex artifacts are present; requested pseudocode fixes for C4 Markdown input handling, export-before-legal-scan ordering, and C4 row-by-row standards validation. Pseudocode patches applied after review. |
 
-**Overall result:** READY-FOR-`status:plan-review` after this document patch wave. Cross-provider live-evidence gate (AC §213) is now satisfied with three canonical live MINOR verdicts: Claude, Codex, and Gemini (all 2026-04-29). User approval remains required to flip `status:plan-review` → `status:plan-approved`; implementation/rendering/outbound work remains gated.
+**Overall result:** READY-FOR-`status:plan-review` after this document patch wave. Cross-provider live-evidence gate (AC §213) is now satisfied with three canonical live MINOR verdicts: Claude, Codex, and Gemini (all 2026-04-29). User approval was recorded via live GitHub `status:plan-approved` label on 2026-04-29 and reconciled locally in `.planning/plan-approved/2555.md`; implementation/rendering/outbound work remains gated by the approved scope, legal-scan requirements, and sibling #2556 send approval boundary.
 
 **Remaining tasks for the next permitted lane:**
-- Promote toward `status:plan-review` only after repo/GitHub label reconciliation confirms this patched plan plus the three live canonical artifacts are committed/pushed and no unrelated agent work is mixed in.
-- During the later implementation slice, create `scripts/gtm/render_brochure_charts.py` and `docs/reports/gtm/assets/` exactly as specified here; neither is created in this planning-only patch wave.
+- Live GitHub approval label has been reconciled to local marker `.planning/plan-approved/2555.md`.
+- During the later implementation slice, create `scripts/gtm/render_brochure_charts.py` and `docs/reports/gtm/assets/` exactly as specified here; neither is created by the planning artifact itself.
+- Keep #2556 external-send mechanics blocked until chart assets, legal scan output, and explicit outbound approval are available.
 
 Revisions made based on review:
 - Fixed the TDD heading-depth check from `^## Chart C` to `^### Chart C`.
