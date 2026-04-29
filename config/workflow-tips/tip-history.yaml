@@ -59,3 +59,5 @@ shown:
     tips: [bp-context-fork, gsd-insert-phase]
   - date: 2026-04-28
     tips: [gsd-stats, cc-chrome]
+  - date: 2026-04-29
+    tips: [eco-insights, cc-desktop-server]
