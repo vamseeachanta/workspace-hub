@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-04-28T21:20:19.839158Z
+Generated: 2026-04-29T02:10:27.580931Z
 Apply mode: False
 Threshold: 0.9
 
@@ -12,6 +12,7 @@ Threshold: 0.9
 | #2431 Compliance alert: W17 — 20% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2519 feat(hermes): orchestrate AI provider usage and workstation dispatch | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2520 fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2219 chore(sync): resolve main branch divergence — 9 local vs 134 origin commits | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2254 fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2291 fix(cron-health): harden failure detection and align task evidence contracts | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2301 bug(hermes): classify and recover from openai-codex transport/challenge failures | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2363 feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |

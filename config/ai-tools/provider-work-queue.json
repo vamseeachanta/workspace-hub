@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-28T21:20:18.422984Z",
+  "generated_at": "2026-04-29T02:10:27.390945Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-28T21:20:14.925189Z",
+  "scorecard_generated_at": "2026-04-29T02:10:25.519044Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,35 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 2,
-      "total_candidates": 155,
+      "execution_ready_count": 1,
+      "total_candidates": 157,
       "top_issues": [
-        {
-          "number": 2229,
-          "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "status:working",
-            "machine:licensed-win-1",
-            "agent:claude",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T06:09:41Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 2515,
           "title": "feat(digitalmodel): generate offshore cable umbilical pipeline cross-section reports",
@@ -140,27 +114,6 @@
           ]
         },
         {
-          "number": 2219,
-          "title": "chore(sync): resolve main branch divergence \u2014 9 local vs 134 origin commits",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2219",
-          "labels": [
-            "priority:high",
-            "cat:engineering"
-          ],
-          "updatedAt": "2026-04-11T17:19:07Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2254,
           "title": "fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2254",
@@ -205,14 +158,60 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2301,
+          "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-16T14:37:26Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2363,
+          "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:document-intelligence"
+          ],
+          "updatedAt": "2026-04-26T21:54:20Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 19,
-      "total_candidates": 43,
+      "execution_ready_count": 18,
+      "total_candidates": 41,
       "top_issues": [
         {
           "number": 2269,
