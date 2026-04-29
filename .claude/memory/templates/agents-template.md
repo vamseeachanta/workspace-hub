@@ -31,8 +31,10 @@ Context parity = compute parity. Zero waste everywhere.
 
 ## Workflow Rules
 
+- **ace-linux-1 control surface**: keep user approvals, launch decisions, GitHub mutations, and cross-lane reconciliation on `ace-linux-1` unless explicit failover is chosen.
 - **Overnight batch**: 3 self-contained prompts, one per terminal, zero git contention.
   Always include a git contention avoidance map.
+- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`.
 - **Adversarial review**: BOTH stages — plan review AND code/artifact review.
   Minimum: Claude + Codex + Gemini all review.
 - **Context parity**: Corrections made in one agent must propagate to all others.
@@ -58,3 +60,5 @@ On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent pr
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
+- GTM control rule: continuous AI work should convert external signals, repo engineering work, and approved issue outputs into client-ready material, but keep engineering evidence boundaries explicit.
+- Control-surface rule: `ace-linux-1` remains the approval and reconciliation surface while `ace-linux-1` / `ace-linux-2` long-running lanes keep planning, execution, review, and GTM packaging moving in the background.

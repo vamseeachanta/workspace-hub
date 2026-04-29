@@ -1,13 +1,14 @@
 ---
 name: workstation-aware-provider-orchestration
 description: Plan and operate a Hermes-led control plane that routes AI provider work across workstations using quota urgency, machine readiness, GitHub issue gates, and a dispatch ledger.
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 tags: [hermes, provider-routing, workstation-orchestration, quota-management, dispatch-ledger, github-issues]
 related_skills:
   - agent-usage-optimizer
   - gh-work-planning
   - licensed-machine-prompt-orchestration
+  - ace-linux-1-control-surface
 ---
 
 # Workstation-Aware Provider Orchestration
@@ -29,10 +30,12 @@ Design or operate a central AI workflow control plane that combines provider quo
 ## Default workspace-hub assumptions
 
 - `ace-linux-1` is the primary Hermes/operator control-plane workstation for almost all AI workflow orchestration: provider usage decisions, queue review, prompt generation, dispatch ledger updates, GitHub state changes, and cross-workstation reconciliation.
+- `ace-linux-1` is also the **continuous user-facing control surface**: this is where approvals, plan decisions, work approvals, and morning reconciliation happen even when background lanes continue elsewhere.
 - `ace-linux-2` is the first overflow/execution worker node, not an equal peer control plane unless failover is explicitly chosen.
 - Claude is best preserved for orchestration, planning, synthesis, and adversarial review.
 - Codex is best for bounded implementation, tests, fixes, cleanup, and mechanical execution, especially when credits are expiring.
 - Gemini is best for batched research, recon, risk enumeration, and architecture review where telemetry may be directional rather than exact.
+- Continuous GTM objective: keep converting signals, approved repo work, and engineering outputs into client-ready material without crossing the engineering-evidence boundary.
 
 ## Planning workflow
 
@@ -108,6 +111,27 @@ When a provider credit expires within about 24 hours:
 5. Assign first to `ace-linux-1`; use `ace-linux-2` for overflow only if readiness and zero-git-contention are verified.
 6. Generate self-contained prompts/commands per issue/workstation.
 7. Ask for final approval before launching a long-running batch.
+
+## GTM push loop overlay
+
+Use this overlay when the goal is not just throughput, but steady movement toward outreach.
+
+1. **Ingest signals**
+   - Read fresh GTM/prospect inputs from `docs/gtm/`, issue comments, job-market outputs, or research notes.
+   - Treat external programmes, conference pages, and social posts as topic signals, not engineering proof.
+2. **Map signals to engineering evidence**
+   - Link each signal to a real repo asset: demo report, methodology note, benchmark, capability page, or approved issue.
+   - If the engineering evidence does not exist yet, create or update the plan/issue instead of marketing beyond the evidence.
+3. **Route the work by lane type**
+   - `ace-linux-1` control surface: approvals, queue selection, dispatch ledger, morning synthesis, outreach packaging decisions.
+   - `ace-linux-1` local lanes: Codex/Gemini/Claude planning, synthesis, bounded implementation, or packaging work with repo-owned prompts.
+   - `ace-linux-2` overflow lanes: isolated implementation/review worktrees only after readiness checks.
+4. **Produce client-ready outputs with boundaries**
+   - Preferred outputs: `docs/gtm/*.md`, demo reports, website drafts, outreach templates, issue comments, and evidence summaries.
+   - Every artifact must state what is demonstrated now vs what requires deeper project-specific engineering.
+5. **Feed the next outreach step**
+   - End each batch with one of: ready-to-send outreach material, a refined demo/report, a tighter capability note, or a clearly scoped blocker that needs approval/data.
+   - Record the next human decision on `ace-linux-1`, not inside a remote worker lane.
 
 ## Pre-delegation worker readiness gate
 

@@ -92,6 +92,8 @@
 ## Session Log Ecosystem
 
 - Raw provider session logs under `logs/orchestrator/<provider>/session_*.jsonl` are machine-local and gitignored; portable insight should move through audit artifacts and repo-tracked memory/docs instead of committing raw logs *stale: 2026-04-23*
+- `ace-linux-1` is the durable control surface for user approvals, launch decisions, GitHub mutations, and cross-lane reconciliation; use repo-tracked prompt packs and memory updates to preserve this role across reboots and machine changes *verified: 2026-04-28*
+- Long-running `tmux` or subprocess lanes on `ace-linux-1` and `ace-linux-2` should write evidence to repo-tracked prompts/results plus local logs (for example `logs/night-runs/`) so GTM packaging can continue without losing engineering provenance *verified: 2026-04-28*
 - Interpret high-volume missing-path reads in provider audits as migration debt first; redirect to `docs/ops/legacy-claude-reference-map.md` rather than recreating deleted workflow files *verified: 2026-04-11*
 
 ## Topic Files
