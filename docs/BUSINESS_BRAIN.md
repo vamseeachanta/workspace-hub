@@ -109,6 +109,8 @@ Weekly targets should be established interactively with the owner, then decompos
 
 Current/next weekly target seed: **for the week of April 1, produce vessel capability charts and send a good brochure to all researched vessel contractors**. Required agent support includes contractor research, vessel-contractor list hygiene, capability chart generation, brochure/collateral preparation, evidence-backed claims, and outbound/send tracking.
 
+This week should also include a review of the owner's full work pattern to identify productivity hacks that make work flow faster. Agents should audit recent sessions, GitHub throughput, GTM artifacts, context handoffs, repeated friction points, and tool/provider bottlenecks, then propose practical changes that reduce owner time spent on orchestration and increase GTM/artifact throughput.
+
 ## GTM-to-Code Readiness Loop
 
 1. **GTM signal intake:** Keep GTM messages, prospect needs, weekly targets, market signals, and repo evidence in view. Convert each useful signal into one of: update an existing GitHub issue, reopen an existing issue, or open a new bounded issue.

@@ -67,7 +67,7 @@ GTM messages should update/reopen/create GitHub issues. Raw data and public data
 
 ### Weekly GTM Target Rule
 
-Establish weekly GTM targets interactively with the owner, then turn them into bounded GitHub issues and agent-executable packets. Current/next seed: week of April 1 should produce vessel capability charts plus a strong brochure sent to all researched vessel contractors; agents should handle contractor research, list hygiene, capability-chart/brochure preparation, evidence-backed claims, and outbound/send tracking.
+Establish weekly GTM targets interactively with the owner, then turn them into bounded GitHub issues and agent-executable packets. Current/next seed: week of April 1 should produce vessel capability charts plus a strong brochure sent to all researched vessel contractors; agents should handle contractor research, list hygiene, capability-chart/brochure preparation, evidence-backed claims, and outbound/send tracking. This week should also include a review of the owner's full work pattern to suggest productivity hacks: audit recent sessions, GitHub throughput, GTM artifacts, handoffs, repeated friction points, and tool/provider bottlenecks, then propose changes that reduce owner orchestration time and increase GTM/artifact flow.
 
 ## ACE Engineer GTM Context
 
