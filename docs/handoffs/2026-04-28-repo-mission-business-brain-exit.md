@@ -11,8 +11,8 @@ Generated: 2026-04-28T21:10:17-05:00
 - At handoff creation, several provider/quota report files and `.claude/state/*` files were also modified in the root checkout; do not stage them accidentally when committing Business Brain/handoff changes.
 - Subrepo state checked at exit:
   - `sabithaandkrishnaestates`: clean but `main` is ahead of `origin/main` by 1 pre-existing commit.
-  - `sd-work`: uncommitted mission edit in `.agent-os/product/mission.md`.
-  - `seanation`: uncommitted mission edit in `.agent-os/product/mission.md`.
+  - `sd-work`: mission edit committed and pushed to `vamseeachanta/sd-work` as `c4e3bea` (`docs(mission): restrict sd-work to bio-pharmacy reference`).
+  - `seanation`: mission edit committed and pushed to `vamseeachanta/seanation` as `a95b5f8` (`docs(mission): mark seanation for extraction archive`).
   - Other reviewed subrepos checked in this exit pass were clean at their current local HEADs.
 
 ## GitHub issues created during the review wave
