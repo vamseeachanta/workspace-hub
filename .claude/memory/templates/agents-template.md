@@ -65,6 +65,10 @@ Provider credits are not the current bottleneck. The harness must prioritize pre
 
 GTM messages should update/reopen/create GitHub issues. Raw data and public data sources may feed `llm-wiki` with provenance, data, codes/standards references, and methodology, but public-facing pages/artifacts require legal sanity checks, sanitization, and explicit evidence boundaries. Code readiness comes from converting those methods into tests, fixtures, acceptance criteria, and bounded implementation plans.
 
+### Weekly GTM Target Rule
+
+Establish weekly GTM targets interactively with the owner, then turn them into bounded GitHub issues and agent-executable packets. Current/next seed: week of April 1 should produce vessel capability charts plus a strong brochure sent to all researched vessel contractors; agents should handle contractor research, list hygiene, capability-chart/brochure preparation, evidence-backed claims, and outbound/send tracking.
+
 ## ACE Engineer GTM Context
 
 - `aceengineer-strategy/` — private nested repo with full GTM strategy

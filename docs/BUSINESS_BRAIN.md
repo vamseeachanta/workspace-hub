@@ -103,9 +103,15 @@ Until these metrics are formalized and proven, keep the explicit Issue → Plan 
 - Skills directory: `.claude/skills/` (568 active, 2734 total)
 - Commands: `/gsd:help`, `/gsd:new-project`, `/gsd:do`, etc.
 
+## Interactive Weekly GTM Targets
+
+Weekly targets should be established interactively with the owner, then decomposed into agent-executable issue/plan/review/execution packets. The weekly target should be concrete enough to produce GTM artifacts, not just internal engineering progress.
+
+Current/next weekly target seed: **for the week of April 1, produce vessel capability charts and send a good brochure to all researched vessel contractors**. Required agent support includes contractor research, vessel-contractor list hygiene, capability chart generation, brochure/collateral preparation, evidence-backed claims, and outbound/send tracking.
+
 ## GTM-to-Code Readiness Loop
 
-1. **GTM signal intake:** Keep GTM messages, prospect needs, market signals, and repo evidence in view. Convert each useful signal into one of: update an existing GitHub issue, reopen an existing issue, or open a new bounded issue.
+1. **GTM signal intake:** Keep GTM messages, prospect needs, weekly targets, market signals, and repo evidence in view. Convert each useful signal into one of: update an existing GitHub issue, reopen an existing issue, or open a new bounded issue.
 2. **Knowledge promotion:** Promote raw data and public data sources into `llm-wiki` / knowledge artifacts only through explicit source, provenance, license, and legal sanity gates. Raw inputs may provide data, codes/standards references, methodology notes, and reusable context, but public-facing artifacts must be sanitized and evidence-bounded.
 3. **Engineering hardening:** Convert knowledge into code-readiness by strengthening methodology, tests, fixtures, acceptance criteria, and implementation plans before execution.
 4. **Execution throughput:** Once a plan is approved, dispatch bounded implementation/test work aggressively to available providers/machines. The harness should feed work continuously rather than let weekly AI usage reset unused.
