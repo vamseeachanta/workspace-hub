@@ -1,6 +1,6 @@
 # Plan for #2555: feat(gtm): vessel capability charts for contractor brochure
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2555

@@ -9,7 +9,7 @@
 ## What shipped
 
 1. **Canonical plan.** `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` — T2, full Resource Intelligence Summary (16 sources cited), Pseudocode, Files-to-Change, research-artifact "test list" (8 falsifiable checks), Acceptance Criteria, Risks/Open Questions, and PENDING Adversarial Review Summary block. Status: `draft`.
-2. **Research scaffold.** `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` — first artifact under the new `docs/reports/gtm/` directory (created by this lane). Ranks **22 vessel-installation contractor / operator targets** (acceptance criterion bar is ≥20). Each row carries `tier_seed`/`tier_revised`/`segment`/`relevant_fleet`/`demo_anchor`/`pain_point_hypothesis`/`evidence_urls`/`can_say_now`/`cannot_claim_yet`/`outreach_priority`/`private_route`. **9 High-priority targets** identified (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura, Helix), of which 7 carry a named-vessel anchor inherited from [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799).
+2. **Research scaffold.** `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` — first artifact under the new `docs/reports/gtm/` directory. After owner approved defaults, the scaffold ranks **24 total rows** and **20 live countable vessel/operator targets** (acceptance criterion bar is ≥20). Each row carries `tier_seed`/`tier_revised`/`segment`/`relevant_fleet`/`demo_anchor`/`pain_point_hypothesis`/`corporate_root_evidence`/`deep_link_evidence`/`pain_point_evidence`/`can_say_now`/`cannot_claim_yet`/`outreach_priority`/`private_route`. **12 High-priority targets** are identified (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura, Helix, Hornbeck Offshore Services, Edison Chouest Offshore), with GoM niche targets High when they map to Demo 3/5 and Gulf access.
 3. **Plan Index row.** `docs/plans/README.md` line 348 — new row for #2554 inserted ahead of the sibling weekly-GTM rows (#2555, #2556, #2557).
 4. **Public/private boundary decision recorded.** Scaffold header explicitly states: corporate-domain evidence URLs only, no individual contact data inline, named contact routing lives outside this repo.
 
@@ -19,7 +19,7 @@
 - **`status:plan-review` label.** Not applied — the prompt is explicit that the label requires both a canonical plan AND adversarial review evidence; we have only the plan.
 - **`status:plan-approved` label.** Not applied — explicitly forbidden by the prompt and the planning skill v3.1.0 (no self-approval).
 - **Deep-link URL fabrication.** Avoided. Every `evidence_urls` value is a corporate-domain root that any reader can verify resolves to the named company. Deep-link confirmation (vessel datasheets, project announcements) is matrix-fill execution work tracked in the scaffold's "Matrix-Fill Execution Backlog" section.
-- **Follow-up issue creation.** The scaffold lists 4 candidate follow-up issues but the lane elected not to file them against a draft plan/scaffold that may pivot during review. User decision after review.
+- **Follow-up issue creation.** Completed after owner approved defaults: [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) for High-priority deep-link/pain-point evidence fill, [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561) for FOWT worked example, and [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) for GoM niche evidence expansion.
 - **Email send.** Not executed (forbidden by prompt).
 - **GitHub issue progress comment on #2554.** Not posted — `gh issue comment` mutation is outside the planning-research lane's scope per the strict-rules block. Recommended comment text is provided below for the user or a follow-on lane to post.
 
@@ -27,26 +27,22 @@
 
 | Acceptance criterion (from #2554 body) | Scaffold status |
 |---|---|
-| ≥20 ranked contractor / operator targets | **PASS** (22 ranked) |
-| Each target has public evidence and a reason for outreach fit | **PARTIAL** — corporate-domain anchor + reason present for all targets; deep-link verification deferred to matrix-fill execution |
+| ≥20 ranked contractor / operator targets | **PASS** (24 rows; 20 live countable vessel/operator targets after excluding Acteon partner-shape and deferred/deprecated rows) |
+| Each target has public evidence and a reason for outreach fit | **PARTIAL** — corporate-domain anchor + reason present for all targets; Hornbeck/ECO have official fleet/vessels deep links; remaining High-priority deep-link verification tracked in [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) |
 | Private contact data kept out of public artifacts | **PASS** — header decision + structural absence enforced |
-| Follow-up issues created for high-value missing data | **DEFERRED** — 4 candidate follow-ups specified in scaffold; not yet filed (see "What is intentionally NOT done") |
+| Follow-up issues created for high-value missing data | **PASS** — [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560), [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561), [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) opened |
 
 ## Blockers
 
 - **Adversarial-review fanout permission.** This lane cannot run `scripts/review/plan-review-fanout.sh`. Need a successor lane (or user-driven invocation) to drive Claude / Codex / Gemini reviews and write artifacts to `scripts/review/results/`. **Note:** memory `feedback_codex_cli_0_124_upstream_regression.md` flags that codex-cli 0.124.0 stdin-hangs on `codex exec`; downgrade to 0.123.0 before any fanout attempt that includes Codex.
 - **FOWT worked-example dependency for wind-segment targets.** Targets 8/9/13/14/17 (Van Oord, DEME, Seaway7, Cadeler, JDN-wind) sit at `outreach_priority: Medium` or `Defer` because the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3) has not been authored. Outreach to these targets stalls on that artifact, not on this matrix.
-- **GoM-niche ICP confirmation.** Targets 15 (Helix) and 20 (Otto Candies) sit in the Gulf-niche segment. Issue #2554 mentions GoM scope; whether GoM-niche operators sit at the same priority as global Tier-1 majors is flagged for user confirmation.
+- **High-priority evidence-fill.** [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) must close or be explicitly waived before [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) consumes the matrix.
+- **GoM-niche ICP confirmation.** Resolved by owner default approval: GoM targets are High when mapped to Demo 3/5 and Gulf access; broader evidence expansion is tracked in [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562).
 
 ## Exact next action
 
-**Option A (recommended) — adversarial review wave.**
-Run from a permitted lane:
-```bash
-scripts/review/plan-review-fanout.sh \
-  docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md
-```
-This writes one artifact per provider plus a `-disagreement.md` summary. After the wave lands, refresh the plan's Adversarial Review Summary section and (only if all verdicts are APPROVE/MINOR) update the plan/README status from `draft` → `plan-review` and apply the `status:plan-review` label on [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554). If any provider returns MAJOR, revise the plan/scaffold and rerun.
+**Option A (recommended) — evidence-fill, then re-review.**
+Complete or explicitly waive [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560), then rerun live adversarial review against `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`. Apply `status:plan-review` only if no remaining MAJOR findings block promotion.
 
 **Option B — post a progress comment on #2554 first.**
 Recommended comment body (verbatim, ready to paste):
@@ -56,8 +52,8 @@ Planning/research lane progress (2026-04-29):
 
 - Canonical plan landed: docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md (status: draft, T2)
 - Research scaffold landed: docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md
-  - 22 vessel-installation contractor / operator targets ranked (≥20 required)
-  - 9 High-priority targets, 7 with named-vessel anchors from #1799
+- 24 total rows / 20 live countable vessel-operator targets (≥20 required)
+- 12 High-priority targets after owner-approved GoM defaults
   - Demo 3 / 4 / 5 mapped per target as proof anchors
   - Public/private boundary: corporate-domain evidence URLs only; no contact data inline
 - Plan Index updated: docs/plans/README.md
@@ -65,7 +61,7 @@ Planning/research lane progress (2026-04-29):
 
 Not yet done (intentionally, per the planning-only lane scope):
 - Adversarial review wave (Claude/Codex/Gemini) — needed to lift status to plan-review.
-- Follow-up issues for FOWT worked-example unblock and per-target deep-link verification — held until plan reviewed.
+- Evidence-fill and follow-up work remains before send-readiness: #2560, #2561, #2562.
 - No labels mutated; no emails sent.
 
 Recommended next action: run `scripts/review/plan-review-fanout.sh` against the plan file above, then return for user approval.

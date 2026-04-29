@@ -394,6 +394,40 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **outreach_priority.** **Low** (ICP fit uncertain; flag for user confirmation).
 - **private_route.** none yet.
 
+### Target 23 — Hornbeck Offshore Services
+
+- **company.** Hornbeck Offshore Services (US Gulf, Covington LA)
+- **tier_seed.** (not in [#1669](https://github.com/vamseeachanta/workspace-hub/issues/1669) seed — added after owner approved GoM niche targets as High when they map to Demo 3/5 + Gulf access)
+- **tier_revised.** T3
+- **segment.** OSV / MPSV / GoM offshore support; deepwater logistics and specialty offshore support
+- **relevant_fleet.** New-generation OSVs and MPSVs; Hornbeck states its vessels primarily operate in GoM, Brazil, Mexico, and select international regions, and that its fleet supports deepwater/ultra-deepwater drilling and specialty services.
+- **demo_anchor.** Demo 3 (mudmat installation, GoM/deepwater screening economics), Demo 5 (rigid jumper / tie-in workflow adjacency)
+- **pain_point_hypothesis.** GoM deepwater support operators compete on utilization, weather windows, and rapid engineering screening for varied specialty jobs; ACE's screening-grade HTML/report flow is a fit for pre-bid / workpack triage.
+- **corporate_root_evidence.** https://hornbeckoffshore.com/
+- **deep_link_evidence.** https://hornbeckoffshore.com/fleet/fleet-overview — official fleet overview; fetch verified 2026-04-29 via browser snapshot.
+- **pain_point_evidence.** Hornbeck fleet overview says the company expanded from GoM-focused OSVs to 62 OSVs and 10 MPSVs, primarily operating in GoM/Brazil/Mexico, with DP systems and deepwater/ultra-deepwater support capability; supports GoM/high-utilization screening hook.
+- **can_say_now.** "ACE can package screening-grade installation / tie-in workflows as self-contained HTML/PDF artifacts that help a GoM support operator triage feasibility before proprietary vessel-specific RAOs are available."
+- **cannot_claim_yet.** Hornbeck-vessel-specific RAOs, named-Hornbeck project work, DP envelope validation, or guaranteed weather-window improvement.
+- **outreach_priority.** **High** — owner-approved GoM niche default + official fleet evidence + Demo 3/5 adjacency.
+- **private_route.** omitted-public-artifact.
+
+### Target 24 — Edison Chouest Offshore
+
+- **company.** Edison Chouest Offshore / ECO (US Gulf, Cut Off LA)
+- **tier_seed.** (not in [#1669](https://github.com/vamseeachanta/workspace-hub/issues/1669) seed — added after owner approved GoM niche targets as High when they map to Demo 3/5 + Gulf access)
+- **tier_revised.** T3
+- **segment.** OSV / subsea services / GoM offshore marine support
+- **relevant_fleet.** ECO official site states it supports the majority of U.S. Gulf deepwater operations with specialized new-generation offshore service and supply vessels.
+- **demo_anchor.** Demo 3 (mudmat install, deepwater support), Demo 5 (subsea/jumper tie-in support), methodology/citation contract
+- **pain_point_hypothesis.** GoM deepwater support breadth creates repeated screening/shortlist decisions where standards-cited, auditable engineering artifacts can reduce proposal and pre-job uncertainty.
+- **corporate_root_evidence.** https://chouest.com/
+- **deep_link_evidence.** https://chouest.com/vessels.html — official vessels page; fetch verified 2026-04-29 via browser snapshot.
+- **pain_point_evidence.** ECO official home/vessels page states ECO supports the majority of U.S. Gulf deepwater operations and an expanding global market with highly specialized new-generation offshore service and supply vessels; supports GoM/high-utilization screening hook.
+- **can_say_now.** "ACE's self-contained screening reports and traceable calculation methods can be framed as pre-bid/pre-job engineering triage for GoM deepwater support scopes."
+- **cannot_claim_yet.** ECO-vessel-specific RAOs, named-ECO project work, DP envelope validation, or proprietary fleet data.
+- **outreach_priority.** **High** — owner-approved GoM niche default + official vessels evidence + Demo 3/5 adjacency.
+- **private_route.** omitted-public-artifact.
+
 ### Target 21 — Solstad Offshore (legacy, now DOF)
 
 - **company.** Solstad Offshore (now consolidated into DOF Group post-merger; retained here as named-vessel anchor)
@@ -412,28 +446,28 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 
 ## Summary Counts
 
-- **Total scaffold rows:** 22.
-- **Live usable targets:** 19. Deprecated/deferred rows are excluded from the ≥20 acceptance count, so this does **not** yet satisfy the ≥20 live-target requirement unless the user explicitly accepts 19 live targets plus 3 deferred/deprecated rows for this wave.
-- **Live targets (priority High / Medium / Low):** 19. Deprecated/deferred: 3 (Solstad, EMAS, Cadeler-deferred).
-- **Targets with at least one shipped-demo anchor:** 17 of 19 live (Demo 3 / 4 / 5 mapping).
-- **Targets in `outreach_priority: High`:** 10 (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix). Each carries a named-vessel anchor and a demo-mapping.
-- **High-priority evidence state:** 10 of 10 currently have `corporate_root_evidence`, `deep_link_evidence`, and `pain_point_evidence` fields present; all 10 still require replacement of scaffold placeholders with verified public deep links / pain-point proof before send.
-- **Targets in `outreach_priority: Medium`:** 7 (Van Oord, DEME, Bourbon, Seaway7, DeepOcean, Jan De Nul, Acteon).
-- **Targets in `outreach_priority: Low`:** 2 (Eidesvik, Otto Candies).
+- **Total scaffold rows:** 24.
+- **Live countable vessel/operator targets:** 20. This excludes Acteon (partner-shape / non-counted service firm) and excludes deferred/deprecated rows. Owner approved the default to add fully populated GoM vessel/operator targets rather than accepting 19+3 as sufficient.
+- **Live rows (priority High / Medium / Low plus non-counted partner-shape):** 22. Countable vessel/operator targets: 20. Deprecated/deferred: 3 (Solstad, EMAS, Cadeler-deferred).
+- **Countable targets with at least one shipped-demo anchor:** 19 of 20 live countable vessel/operator targets (Demo 3 / 4 / 5 mapping).
+- **Targets in `outreach_priority: High`:** 12 (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore). Each carries a named-vessel/fleet anchor and a demo-mapping.
+- **High-priority evidence state:** 12 of 12 currently have `corporate_root_evidence`, `deep_link_evidence`, and `pain_point_evidence` fields present; 2 GoM targets (Hornbeck, ECO) now have verified official fleet/vessels deep links, while the prior 10 High rows still require replacement of scaffold placeholders with verified public deep links / pain-point proof before send. Tracked by [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560).
+- **Targets in `outreach_priority: Medium`:** 7 (Van Oord, DEME, Bourbon, Seaway7, DeepOcean, Jan De Nul, Acteon). Acteon is explicitly partner-shape / non-counted for the vessel-contractor minimum unless owner later approves it as countable.
+- **Targets in `outreach_priority: Low`:** 2 (Eidesvik, Otto Candies). Otto Candies remains low until GoM-niche expansion evidence is refreshed under [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562).
 - **Targets in `outreach_priority: Defer`:** 3.
 
 ---
 
 ## Matrix-Fill Execution Backlog (follow-up issues to open)
 
-Per [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #4, follow-up issues should be opened for high-value targets with insufficient evidence depth before the brochure-send lane ([#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556)) consumes this matrix. **BLOCKER for `status:plan-review`: required follow-up issues for High-priority rows with insufficient deep-link/pain-point evidence are not yet opened.** The lane that produced this scaffold intentionally stopped before issue creation to avoid mutating backlog against a draft that may pivot during review.
+Per [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #4, follow-up issues should be opened for high-value targets with insufficient evidence depth before the brochure-send lane ([#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556)) consumes this matrix. **Follow-up issues are now opened after owner approved the default path; #2554 remains draft until those evidence-fill blockers are completed or explicitly waived for the final matrix.**
 
 Recommended issues to file after user review:
 
-1. **Per-target deep-link verification.** For each High-priority target: confirm fleet/project deep-link URLs, vessel datasheet pages, and any current public project announcements. Output: keep `corporate_root_evidence` as the official-domain anchor, fill `deep_link_evidence` with verified public subpages, and add fetch-date footnotes.
-2. **FOWT worked example unblock.** Targets 8 (Van Oord), 9 (DEME), 13 (Seaway7), 14 (Cadeler), 17 (JDN-wind) are blocked on the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3). Open issue: "feat(gtm): FOWT mooring screening worked example — OC4-DeepCwind reference geometry, 1-pager output".
-3. **Ex-EMAS hull mapping.** If the SE Asia / Gulf small-barge segment becomes a focus lane, file a research issue: "DATA: map ex-EMAS / Ezra hulls to current operators (2017+ restructuring)".
-4. **GoM-niche ICP confirmation.** Targets 15 (Helix), 20 (Otto Candies) sit in the GoM niche segment. If the user confirms GoM is in scope at High priority, file a research issue to expand GoM-niche coverage (Hornbeck, Edison Chouest, Tidewater) before the next iteration of this matrix.
+1. **Per-target deep-link verification:** [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560). For each High-priority target: confirm fleet/project deep-link URLs, vessel datasheet pages, and any current public project announcements. Output: keep `corporate_root_evidence` as the official-domain anchor, fill `deep_link_evidence` with verified public subpages, and add fetch-date footnotes.
+2. **FOWT worked example unblock:** [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561). Targets 8 (Van Oord), 9 (DEME), 13 (Seaway7), 14 (Cadeler), 17 (JDN-wind) are blocked on the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3).
+3. **GoM-niche evidence expansion:** [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562). Targets 15 (Helix), 20 (Otto Candies), 23 (Hornbeck), and 24 (ECO) sit in the GoM niche segment; owner approved GoM niche targets as High when they map to Demo 3/5 and Gulf access.
+4. **Ex-EMAS hull mapping.** If the SE Asia / Gulf small-barge segment becomes a later focus lane, file a separate research issue: "DATA: map ex-EMAS / Ezra hulls to current operators (2017+ restructuring)".
 
 ---
 
