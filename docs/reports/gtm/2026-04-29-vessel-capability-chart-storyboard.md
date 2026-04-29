@@ -44,7 +44,9 @@ This document is **planning-only**. No PNG/SVG/PDF assets are emitted by this ar
 | `chart-name.1page.pdf` | Standalone leave-behind | 8.5 × 11 in | Same | Caption + scope disclosure rendered into the PDF, not just the brochure body |
 | `chart-name.html` (optional) | Demo report embed | per `report_template.py` | Plotly defaults | Already exists for demo 4; reuse rather than rebuild |
 
-The brochure assets live under `docs/reports/gtm/assets/` once rendered. Demo HTML reports remain at `digitalmodel/examples/demos/gtm/output/` and are not duplicated.
+The brochure assets live under `docs/reports/gtm/assets/` once rendered unless adversarial review explicitly rejects that home. Demo HTML reports remain at `digitalmodel/examples/demos/gtm/output/` and are not duplicated.
+
+The future render entry point is a new wrapper script at `scripts/gtm/render_brochure_charts.py`. That wrapper may import `digitalmodel/examples/demos/gtm/report_template.py` helpers, but #2555 itself does not edit `digitalmodel/` source.
 
 Per memory `aceengineer-website` brand hierarchy and visual-DNA were locked 2026-04-21 (project_claude_design_adoption). Asset palette must be re-confirmed against that contract before rendering.
 
@@ -70,10 +72,14 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - `digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json` — primary feed (pass-rate by capability)
 
 **Headline-number rule**
-- Pick the highest pass-rate vessel-job pair from the matrix. As of the 2026-04-15 demo run, the headline reads: **"Shallow Water Barge: 100% pass rate across 30 cases for 8-24 in pipe at 7-30 m water depth."** Headline must be regenerated on every demo rerun.
+- Pick the highest pass-rate vessel-job pair from the matrix. As of the 2026-04-15 demo run, the headline reads: **"Shallow Water Barge: 100% pass rate across 30 cases for 8-24 in pipe at 7-30 m water depth."**
+
+**Verification scope (now vs later)**
+- **Verified in this planning wave:** `vessel_comparison_matrix.json` confirms the Shallow Water Barge pair is the highest pass-rate vessel-job pair with `pass_rate_pct = 100.0` and `cases_total = 30`.
+- **Deferred to render slice:** the pipe-size span (`8-24 in`) and water-depth span (`7-30 m`) must be re-verified from the latest pipelay input/result files at render time and then regenerated if demo outputs changed.
 
 **Caption draft**
-> Vessel-vs-job screening envelope from ACE Engineer's parametric analysis suite (108 cases across mudmat, jumper, and shallow-pipelay screening). Coloured cells show pass rate of cases meeting governing-load checks per DNV-RP-H103, DNV-ST-N001, and DNV-ST-F101. Vessel parameters reflect representative classes — not measured telemetry of any named vessel. Send-screening grade for shortlist purposes; detailed feasibility requires per-project metocean and rigging inputs.
+> Vessel-vs-job screening envelope from ACE Engineer's parametric analysis suite (108 cases across mudmat, jumper, and shallow-pipelay screening). Coloured cells show pass rate of cases meeting governing-load checks per DNV-RP-H103, DNV-ST-N001, DNV-ST-F101, and API RP 1111 where shallow-pipelay screening is involved. Vessel parameters reflect representative classes — not measured telemetry of any named vessel. Send-screening grade for shortlist purposes; detailed feasibility requires per-project metocean and rigging inputs.
 
 **Evidence & legal scope**
 - All 4 vessels are representative classes, disclosed in source JSON headers.
@@ -102,7 +108,11 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - `digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json` (`plv_comparison.head_to_head` block)
 
 **Headline-number rule**
-- Compute pass-rate ratio between barge and PLV in shallow water (≤30 m). Headline reads: **"Shallow Water Barge handles 8-24 in pipe at 7 m depth where the Large PLV cannot operate (vessel-draft limited)."** Numbers regenerate on demo rerun.
+- Compute pass-rate ratio between barge and PLV in shallow water (≤30 m). As drafted today, the headline reads: **"Shallow Water Barge handles 8-24 in pipe at 7 m depth where the Large PLV cannot operate (vessel-draft limited)."**
+
+**Verification scope (now vs later)**
+- **Verified in this planning wave:** the cross-demo narrative and the Large PLV shallow-water limitation are directionally supported by the current comparison matrix and cited pipelay dataset.
+- **Deferred to render slice:** the exact `8-24 in` and `7 m depth` phrasing must be recomputed from the latest demo 4 source/result files before export, because this planning wave did not exhaustively trace every plotted cell.
 
 **Caption draft**
 > Shallow-water S-lay envelope: where each vessel class can install which pipe size. Green cells indicate cases meeting tension, overbend, sagbend, and stinger checks per DNV-ST-F101 and API RP 1111. Marginal cells flag governing constraint within 5% of allowable. Source vessel parameters are representative-class — not exact specs of any named vessel. Detailed go/no-go for a specific project requires metocean, soil, and rigging inputs.
@@ -133,7 +143,11 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - `digitalmodel/examples/demos/gtm/results/structure_comparison_matrix.json` (`by_vessel.*.crane_util_at_1500m`)
 
 **Headline-number rule**
-- Compute the largest utilisation delta between vessels for a single structure. Headline reads: **"At 200 te mudmat, 1500 m depth: Large CSV at 20.6% crane utilisation, Medium CSV at 71.5% — same go-decision, very different margin."**
+- Compute the largest utilisation delta between vessels for a single structure. As drafted today, the headline reads: **"At 200 te mudmat, 1500 m depth: Large CSV at 20.6% crane utilisation, Medium CSV at 71.5% — same go-decision, very different margin."**
+
+**Verification scope (now vs later)**
+- **Verified in this planning wave:** the intended metric source is locked to `structure_comparison_matrix.json` `by_vessel.*.crane_util_at_1500m`.
+- **Deferred to render slice:** the exact utilisation percentages and the identity of the largest delta pair must be recomputed from the latest matrix before export.
 
 **Caption draft**
 > Crane-utilisation margin at 1500 m water depth for the 50 / 100 / 200 te mudmat installation cases. Both vessel classes pass go/no-go, but margin matters: lower utilisation reduces sensitivity to weight growth, rigging revisions, and weather stand-by. Vessel crane curves are representative-class. Per DNV-RP-H103 dynamic amplification framework; full lift sensitivity requires project-specific RAO/sea-state inputs.
@@ -163,6 +177,10 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 
 **Headline-number rule**
 - Headline reads: **"10 of 17 disciplines at production readiness today; 1,292 parametric cases across 5 demos."** (Source: lines 38-42 of capability-map.md.)
+
+**Verification scope (now vs later)**
+- **Verified in this planning wave:** the headline is sourced from the cited `docs/gtm/capability-map.md` lines.
+- **Deferred to render slice:** re-check those counts against the latest capability map before brochure export in case readiness totals changed.
 
 **Caption draft**
 > ACE Engineer's screening-grade discipline coverage for offshore installation, integrity, and field-development scope. Production rows have parametric demos and traceable code-versus-code outputs ready for client review. Available rows have working modules without packaged demos. Planned rows have GitHub-tracked work with named dependencies. Per-discipline standards citations inherited from upstream.
@@ -202,6 +220,8 @@ Before any chart is exported for external use, all of the following must be true
 5. **Legal scan run** — `scripts/legal/legal-sanity-scan.sh --diff-only` over the changed export files passes; output archived alongside the asset commit.
 6. **No confidential/client-identifying content promoted** — automated check + manual eyeball before each send.
 
+Provider-review readiness for this storyboard follows the paired plan: preferred evidence is Claude + Codex + Gemini live verdicts; permitted fallback is Claude plus at least one additional live provider verdict, with any unavailable provider explicitly documented with timestamp and blocking reason in `scripts/review/results/2026-04-29-plan-2555-*.md`.
+
 Per `docs/BUSINESS_BRAIN.md:122-132`, this gate is mandatory and cannot be waived for "small" sends.
 
 ---
@@ -210,6 +230,7 @@ Per `docs/BUSINESS_BRAIN.md:122-132`, this gate is mandatory and cannot be waive
 
 - **Re-render trigger:** when any of the source JSONs change (typically a demo rerun), regenerate every chart and re-run the legal scan.
 - **Brand alignment:** colour palette and typography must match the locked brand contract from #2426/2435 (per memory `project_claude_design_adoption`). Reconfirm against `aceengineer-website` brand assets before rendering.
+- **Headline-number discipline:** only C1's `100% across 30 cases` pair is partially verified in this planning wave; every exact brochure headline must be recomputed against the latest source/result files during rendering, even when a draft number is quoted here.
 - **Sibling handoff to #2556:** brochure-send agent reads this storyboard's chart inventory + caption drafts as the canonical chart spec. Headline-number values must be regenerated against the latest demo run before send, not copied from this draft.
 - **Sibling handoff to #2554:** contractor recipient list determines whether the chart pack needs additional vessel classes. If recipients include contractors operating outside the 4 representative classes, escalate to #1799 before sending.
 

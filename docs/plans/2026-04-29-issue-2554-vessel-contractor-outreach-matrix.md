@@ -116,18 +116,21 @@ function build_contractor_matrix(seed_list, public_evidence_corpus, demo_anchors
             relevant_fleet: [],                           # public fleet refs
             demo_anchor: [],                              # Demo 3 / 4 / 5 / 6 / 7
             pain_point_hypothesis: null,                  # public-evidence-bounded
-            evidence_urls: [],                            # ≥1 public URL required
+            pain_point_evidence: [],                      # public source or explicit demo-coverage inference
+            corporate_root_evidence: [],                  # ≥1 official domain root required at plan-review
+            deep_link_evidence: [],                       # official fleet/project/vessel page required before send
             can_say_now: [],                              # ACE-claim envelope
             cannot_claim_yet: [],                         # adjacent-claim guard
             outreach_priority: null,                      # High / Medium / Low / Defer
             private_data_route: null                      # never inline; pointer if exists
         }
-        validate evidence_urls is non-empty before promoting High priority
+        validate corporate_root_evidence is non-empty before promoting High priority in draft review
+        require deep_link_evidence + pain_point_evidence before send-ready promotion
         validate no individual contact (name, title, email, phone) is present
         targets.append(candidate)
 
     rank(targets, key = (outreach_priority, demo_anchor_density, evidence_strength))
-    drop targets with empty evidence_urls and tier_seed = T3 (deferred to follow-up issue)
+    drop targets with empty corporate_root_evidence and tier_seed = T3 (deferred to follow-up issue until official-domain proof exists)
     open follow-up issue per High-priority target with insufficient evidence
 
     return matrix  # markdown table + per-target brief blocks
@@ -155,13 +158,16 @@ Because the deliverable is a research artifact rather than executable code, the 
 
 | Check | What it verifies | How to execute |
 |---|---|---|
-| `count_targets ≥ 20` | Acceptance criterion #1 in #2554 | `grep -c "^### Target — " docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` |
-| `each_target has ≥1 evidence URL` | Acceptance criterion #2 in #2554 | per-target field `evidence_urls:` non-empty (manual or grep-script) |
+| `count_targets ≥ 20` | Acceptance criterion #1 in #2554 | `grep -cE "^### Target [0-9]+ — " docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` |
+| `each_target has ≥1 corporate-root evidence URL` | Acceptance criterion #2 at scaffold-review depth | per-target field `corporate_root_evidence:` non-empty (manual or grep-script) |
+| `each live High-priority target has a deep-link backlog slot` | Corporate-root vs deep-link distinction is explicit | per-target field `deep_link_evidence:` present, even if marked `PENDING` in scaffold v1 |
+| `each live target has pain-point evidence traceability` | Hypotheses are attributable, not freehand | per-target field `pain_point_evidence:` present |
 | `no individual contact details inline` | Acceptance criterion #3 in #2554 + Legal Sanity Gate | `scripts/legal/legal-sanity-scan.sh --diff-only` returns clean for the new file |
 | `each High-priority target has ≥1 demo anchor` | Outreach-readiness check (matrix usable for #2556) | per-target field `demo_anchor:` non-empty for `outreach_priority: High` |
 | `tier_seed reconciliation is recorded` | Traceability to #1669 (no silent retiering) | each target's `tier_seed` and `tier_revised` fields both present |
 | `cannot_claim_yet field is populated` | Inherits the proof-bounding contract from `outreach-candidate-briefs-2026-04-28.md` | per-target field `cannot_claim_yet:` non-empty |
 | `follow-up issues opened for High + low-evidence` | Acceptance criterion #4 in #2554 | issue list at the bottom of the scaffold cross-links each filed issue |
+| `provider fallback is documented without weakening gate order` | Review-readiness contract is explicit | AC text says `UNAVAILABLE` artifacts document a blocked provider but do not by themselves satisfy promotion |
 | `public/private routing decision recorded` | Boundary policy applied per BUSINESS_BRAIN | scaffold header carries the explicit decision text |
 
 These checks replace the standard `pytest` lines that would appear for an engineering plan. The acceptance criteria below restate them in user-facing form.
@@ -171,10 +177,11 @@ These checks replace the standard `pytest` lines that would appear for an engine
 ## Acceptance Criteria
 
 - [ ] Scaffold lists at least 20 vessel-installation contractor or operator targets, each with `tier_seed`, `tier_revised`, `segment`, `outreach_priority`, and `demo_anchor` fields populated.
-- [ ] Every target has at least one public evidence URL (`evidence_urls:` non-empty).
+- [ ] Every live target has at least one official corporate-root evidence URL (`corporate_root_evidence:` non-empty), and High-priority rows carry an explicit `deep_link_evidence:` slot showing what still must be verified before send.
 - [ ] No individual contact details (named persons, titles, direct emails, phone numbers) appear inline in the public artifact. The scaffold carries an explicit "private contact data routes outside this repo" note in its header.
 - [ ] Each `outreach_priority: High` target maps to at least one shipped ACE demo (Demo 3, 4, or 5 as the immediate set; 6, 7 if/when shipped) under `demo_anchor:`.
-- [ ] Adversarial review artifacts exist for Claude + at least one of Codex/Gemini at `scripts/review/results/2026-04-29-plan-2554-*.md`. Provider unavailability is recorded explicitly per the planning skill v3.1.0 stance contract.
+- [ ] Review-routing contract is explicit: `status:plan-review` still requires Claude + at least one live non-Claude review at `scripts/review/results/2026-04-29-plan-2554-*.md`; if a provider is unavailable in a given wave, an `UNAVAILABLE` artifact is written at the same path family to document the blocked lane, but that fallback does not by itself satisfy promotion.
+- [ ] Each live target carries a `pain_point_evidence:` slot that either cites a public source path / URL or explicitly says the current statement is an inference from demo coverage pending deeper public verification.
 - [ ] Plan Index row exists in `docs/plans/README.md` reflecting the current plan status (`draft` until adversarial review lands, `plan-review` once it does).
 - [ ] Lane summary at `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` records what shipped, what is blocked, and the exact next action for the user.
 - [ ] No commits to production code paths (`digitalmodel/`, `assetutilities/`, etc.) and no email sends or external contacts initiated by this lane.
@@ -189,16 +196,14 @@ These checks replace the standard `pytest` lines that would appear for an engine
 | Codex (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation; codex-cli 0.124.0 upstream regression also unverified on this host (`feedback_codex_cli_0_124_upstream_regression.md`). See `scripts/review/results/2026-04-29-plan-2554-nextwave-codex.md`. |
 | Gemini (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation. See `scripts/review/results/2026-04-29-plan-2554-nextwave-gemini.md`. |
 
-**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. AC #5 (this plan §177) requires Claude + at least one of Codex/Gemini; only Claude evidence exists. Plan stays `draft`. No revisions to the plan body are required for the MINOR findings listed above; they are recorded as **patch tasks** below for a future wave.
+**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. The review-routing contract remains: Claude + at least one live non-Claude review are required for promotion; `UNAVAILABLE` artifacts document blocked providers but do not satisfy the gate on their own. Plan stays `draft` until a later permitted wave lands Gemini or Codex evidence.
 
-**Patch tasks for the next permitted lane:**
-- Fix Test List row 1 grep pattern to `^### Target [0-9]` (or `^### Target `).
-- Reconcile the High-priority count (9 vs 10): either correct §376 of the scaffold and the lane summary to 10, or downgrade one named row's `outreach_priority` and document why.
-- Drive a permitted-lane fanout that produces at least one of Codex/Gemini live verdicts so AC #5 can be satisfied.
-- Add a `pain_point_evidence:` slot per scaffold row (even if v1 ships with `inferred-from-demo-coverage` placeholders).
-- Decide whether to split the URL gate into "non-empty at plan-review" + "deep-link at plan-approved" vs. raise the bar at plan-review.
+**Remaining patch tasks for the next permitted lane:**
+- Drive a permitted-lane fanout that produces at least one of Codex/Gemini live verdicts so the unchanged promotion gate can be satisfied.
+- Replace `deep_link_evidence: PENDING` placeholders in High-priority rows with verified official fleet/project/vessel links before any send-ready claim is made.
+- Replace `pain_point_evidence:` inference placeholders with public fleet/project proof where available.
 
-Revisions made based on review: (none — MINOR findings recorded but plan body not revised this wave per user prompt's "leave as draft and list patch tasks" guidance.)
+Revisions made based on review: fixed the target-heading grep pattern; corrected the evidence model to distinguish `corporate_root_evidence` vs. `deep_link_evidence`; added a required `pain_point_evidence` slot; clarified that `UNAVAILABLE` review artifacts document provider blockage but do not satisfy the live non-Claude review gate for `status:plan-review`.
 
 Review evidence: `scripts/review/results/2026-04-29-plan-2554-nextwave-{claude,codex,gemini}.md` (this wave); canonical-fanout artifacts at `…/2026-04-29-plan-2554-{claude,codex,gemini}.md` (no `-nextwave` suffix) reserved for a permitted-lane re-run.
 

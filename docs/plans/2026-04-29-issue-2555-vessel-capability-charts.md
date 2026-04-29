@@ -20,6 +20,7 @@
 - Found: `digitalmodel/examples/demos/gtm/output/demo_04_shallow_pipelay_report.html` — already renders a Plotly Go/No-Go heatmap (`chart-go_nogo`) for shallow pipelay at line 1086. Demonstrates that chart-rendering scaffolding exists.
 - Found: `digitalmodel/examples/demos/gtm/report_template.py` — templating module that the existing 5 demo reports share. New brochure-bound charts should reuse this template path rather than introduce a new renderer.
 - Gap: no consolidated brochure-ready capability chart pack exists across `digitalmodel/`, `docs/gtm/`, or `docs/reports/`. `docs/reports/gtm/` did not exist before this plan and is created here.
+- Gap: the future chart-rendering entry point outside `digitalmodel/` was previously unnamed; this patch locks the intended implementation home to a new follow-on wrapper script at `scripts/gtm/render_brochure_charts.py`, which may import existing `digitalmodel/examples/demos/gtm/report_template.py` helpers without editing `digitalmodel/` source.
 
 ### Standards
 | Standard | Status | Source |
@@ -142,12 +143,12 @@ For each chart concept C in {C1..Cn}:
     assert inputs.fields ⊇ C.required_fields
     assert all(inputs.disclaimer == "representative of real vessel classes")  # legal gate
     headline = compute_headline_number(inputs, C.headline_rule)
-    figure   = render(C.style, inputs, headline)        # Plotly or matplotlib via report_template.py
+    figure   = render_via_scripts_gtm(inputs, headline)  # future entry point: scripts/gtm/render_brochure_charts.py; may import report_template.py without editing digitalmodel/
     caption  = C.caption_template.format(headline=headline,
                                          scope=C.scope_disclosure,
                                          standards=C.standards_cited)
     legal_scan(figure, caption, C.scope_disclosure)     # scripts/legal/legal-sanity-scan.sh
-    export(figure, formats=["png_brochure", "svg_print", "pdf_1page"])
+    export(figure, asset_home="docs/reports/gtm/assets/", formats=["png_brochure", "svg_print", "pdf_1page"])
 ```
 
 Chart concepts and their headline-number rules are spec'd in the storyboard artifact so reviewers can assess plausibility without re-deriving them inline.
@@ -160,6 +161,8 @@ Chart concepts and their headline-number rules are spec'd in the storyboard arti
 |---|---|---|
 | Create | `docs/plans/2026-04-29-issue-2555-vessel-capability-charts.md` | this plan |
 | Create | `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` | chart inventory + caption drafts + format manifest |
+| Create (future implementation slice) | `scripts/gtm/render_brochure_charts.py` | exact non-`digitalmodel/` chart-rendering entry point; may import demo rendering helpers without mutating them |
+| Create (future implementation slice) | `docs/reports/gtm/assets/` | locked home for brochure PNG/SVG/PDF outputs unless adversarial review rejects it |
 | Update | `docs/plans/README.md` | add draft index row |
 | Create | `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2555-summary.md` | overnight worker handoff |
 | (Out of scope) | `digitalmodel/examples/demos/gtm/**` | NO edits in this plan |
@@ -173,7 +176,7 @@ Planning-only deliverable. The tests below are *plan-readiness checks*, not unit
 
 | Check | Verifies | How |
 |---|---|---|
-| chart_count_ge_3 | Storyboard documents ≥3 chart concepts | grep `^## Chart C` count in storyboard |
+| chart_count_ge_3 | Storyboard documents ≥3 chart concepts | grep `^### Chart C` count in storyboard |
 | every_chart_has_data_inputs | Each chart names exact JSON file paths | per-chart "Data Inputs" subsection present |
 | every_chart_has_evidence_note | Each chart has public-source/assumption note | per-chart "Evidence & Legal Scope" subsection present |
 | every_chart_has_caption_draft | Each chart has draft caption text | per-chart "Caption Draft" subsection present |
@@ -194,9 +197,11 @@ Implementation-time tests (deferred to a follow-on plan-approved slice) include 
 - [ ] Storyboard explicitly enumerates the legal sanity-scan gate before any chart is exported for external use, and binds the gate to `scripts/legal/legal-sanity-scan.sh` per `docs/BUSINESS_BRAIN.md:124`.
 - [ ] Storyboard has a traceability matrix mapping issue #2555 ACs to chart concepts.
 - [ ] Plan index row added to `docs/plans/README.md`.
-- [ ] Cross-provider adversarial review run (Claude + Codex + Gemini) before any `status:plan-review` label is applied. Until then, status remains `draft`.
+- [ ] Cross-provider adversarial review evidence is recorded before any `status:plan-review` label is applied: preferred evidence is Claude + Codex + Gemini live verdicts; permitted fallback is Claude plus at least one additional live provider verdict, with any unavailable provider explicitly documented in `scripts/review/results/2026-04-29-plan-2555-*.md` together with the blocking reason and timestamp. Until that evidence exists, status remains `draft`.
 - [ ] No edits to `digitalmodel/` source code during this plan's lifecycle.
 - [ ] No proprietary/client telemetry referenced in any chart concept.
+- [ ] Future implementation home is explicitly `scripts/gtm/render_brochure_charts.py` (new wrapper outside `digitalmodel/`), and brochure asset home is explicitly `docs/reports/gtm/assets/` unless adversarial review rejects that location.
+- [ ] Storyboard distinguishes headline numbers verified in this planning wave from headline numbers that must be recomputed/verified during the later render slice.
 - [ ] Rendering and brochure-export work is *not* attempted under this plan; a follow-on slice plan is created if implementation is desired.
 
 ---
@@ -209,17 +214,18 @@ Implementation-time tests (deferred to a follow-on plan-approved slice) include 
 | Codex (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation; codex-cli 0.124.0 upstream regression also unverified on this host. See `scripts/review/results/2026-04-29-plan-2555-nextwave-codex.md`. |
 | Gemini (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation. See `scripts/review/results/2026-04-29-plan-2555-nextwave-gemini.md`. |
 
-**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. AC §197 requires Claude + Codex + Gemini cross-provider review; only Claude evidence exists. Plan stays `draft`. No revisions to the plan body are required for the MINOR findings listed above; they are recorded as **patch tasks** below for a future wave.
+**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. Review evidence is still incomplete, so the plan stays `draft`. This patch wave resolves the document-level MINOR findings by correcting the readiness checks, naming the non-`digitalmodel/` render entry point, locking the brochure asset home, and clarifying provider-unavailable fallback plus headline-number verification scope; live provider artifacts are still required before any status escalation.
 
-**Patch tasks for the next permitted lane:**
-- Fix TDD Test List row 1 grep pattern to `^### Chart C` (or `^#+ Chart C`).
-- Name the chart-rendering code-home explicitly (e.g., `scripts/gtm/render_brochure_charts.py` or equivalent), and clarify whether `report_template.py` is *imported* from `digitalmodel/` or whether a new shim is needed; resolve the "NO edits to digitalmodel/" tension.
-- Add `docs/reports/gtm/assets/` mkdir to the follow-on implementation slice's Files-to-Change.
-- Either add API RP 1111 to the C1 caption draft or document why it is intentionally omitted.
-- Drive a permitted-lane fanout that produces Codex and Gemini live verdicts so AC §197 can be satisfied.
+**Remaining tasks for the next permitted lane:**
+- Obtain live Gemini and/or Codex review artifacts so AC §197's review-evidence requirement can be satisfied under the clarified fallback wording.
+- If reviewers reject `docs/reports/gtm/assets/` as the brochure asset home, update the plan/storyboard with the approved replacement before implementation.
+- During implementation, create `scripts/gtm/render_brochure_charts.py` and `docs/reports/gtm/assets/` exactly as specified here; neither is created in this planning-only patch wave.
 
 Revisions made based on review:
-- N/A — MINOR findings recorded but plan body not revised this wave per user prompt's "leave as draft and list patch tasks" guidance.
+- Fixed the TDD heading-depth check from `^## Chart C` to `^### Chart C`.
+- Clarified the provider-review acceptance criterion and documented the permitted unavailable-provider fallback.
+- Named the future non-`digitalmodel/` render entry point as `scripts/gtm/render_brochure_charts.py` and locked brochure assets to `docs/reports/gtm/assets/` unless review rejects that home.
+- Added an explicit acceptance criterion requiring the storyboard to mark which headline numbers are verified now versus regenerated later.
 
 Review evidence: `scripts/review/results/2026-04-29-plan-2555-nextwave-{claude,codex,gemini}.md` (this wave); canonical-fanout artifacts at `…/2026-04-29-plan-2555-{claude,codex,gemini}.md` (no `-nextwave` suffix) reserved for a permitted-lane re-run.
 
