@@ -3,6 +3,7 @@ set -euo pipefail
 PROMPT_FILE="$1"
 LOG_FILE="$2"
 MODE="${3:-acceptEdits}"
+export PATH="$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"
 ROOT="/mnt/local-analysis/workspace-hub"
 cd "$ROOT"
 mkdir -p "$(dirname "$LOG_FILE")"
