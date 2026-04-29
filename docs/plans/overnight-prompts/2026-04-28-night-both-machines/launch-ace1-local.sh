@@ -32,7 +32,7 @@ launch_tmux \
 launch_tmux \
   "ace1-gemini-recon-20260428" \
   "$BATCH_DIR/ace1-gemini-recon-batch.md" \
-  "hermes chat --provider openrouter --model google/gemini-2.5-pro --quiet -q" \
+  "gemini -p" \
   "$LOG_DIR/ace1-gemini-recon-batch-20260428.log"
 
 launch_tmux \
