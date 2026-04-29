@@ -4,7 +4,7 @@
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2557
-> **Review artifacts:** scripts/review/results/2026-04-29-plan-2557-claude.md (pending) | ...-codex.md (pending) | ...-gemini.md (pending)
+> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2557-nextwave-claude.md` (MAJOR, single-author Claude self-review) | `...-codex.md` (UNAVAILABLE, #2479 + permission gate) | `...-gemini.md` (UNAVAILABLE, permission gate)
 
 ---
 
@@ -197,14 +197,16 @@ This is an analysis deliverable; instead of a TDD test list, the plan commits to
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | not yet routed |
-| Codex | PENDING | likely blocked by #2479 codex-cli 0.124 stdin-hang; document blocker explicitly when routing |
-| Gemini | PENDING | route only after sparse-checkout overlay caveat applied (per `feedback_gemini_sandbox_overlay_blindness`) |
+| Claude (single-author r1, 2026-04-29 nextwave) | MAJOR | (1) Report TL;DR cites `claude 6.6%` for W18; live `provider-utilization-weekly.md` shows `claude 5.8%` — the 6.6% figure does not exist in current source. (2) Generation-timestamp cited as `2026-04-29T13:20Z`, actual is `2026-04-29T09:20:08Z`. (3) Codex work-queue cited as "8 ready / 17 routed" — live source shows `18 ready / 41 routed`. (4) Claude work-queue cited as 3 ready (`#2490, #2510, #2515`); live source shows 1 ready (`#2515`). (5) H1 "Pin codex-cli to 0.123.0" Tier-1 framing misleading — per `feedback_codex_cli_0_124_upstream_regression.md` (verified 2026-04-24), 0.123.0 also hangs from inside Claude Code's Bash tool, so the pin only restores Codex for plain-terminal invocations, not Hermes-dispatched lanes; recovery estimate must be re-derived against the actual surface. (6) EC-2 internally inconsistent — three hacks (H7, H11, H12) explicitly mark "Indirect / Zero immediate" but EC-2 demands "numeric or bounded" estimates; report's Validation log claims EC-2 satisfied. (7) H10's 4-deliverable GTM split overlaps with sibling brochure outline (#2556 §3.3, §4) without naming the overlap. (8) Plan/report references `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/` while live overnight-prompts root for this batch is `2026-04-29-next-wave-autofeed/` — declare canonical summary location to avoid future split-brain. |
+| Codex | UNAVAILABLE | Bash permission gate in this planning-only autofeed session blocked `scripts/review/plan-review-fanout.sh` dispatch (`feedback_permission_gate_blocks_cross_review.md`); even if dispatched, codex-cli 0.124.0 hangs on stdin per [#2479](https://github.com/vamseeachanta/workspace-hub/issues/2479) and downgrade does not help from inside Claude Code's Bash tool. Operator should run from un-sandboxed terminal after `npm install -g @openai/codex@0.123.0`. |
+| Gemini | UNAVAILABLE | Same Bash permission-gate; Gemini wrapper itself is healthy after the 2026-04-24 `GEMINI_CLI_TRUST_WORKSPACE` fix. Run from un-sandboxed terminal; validate any "file missing" claim against `git ls-files` per `feedback_gemini_sandbox_overlay_blindness.md`. |
 
-**Overall result:** PENDING — plan stays in `draft` until at least one provider review artifact lands. The plan **must not** be promoted to `status:plan-review` solely because GitHub UI shows the prior weekly-target label scheme.
+**Overall result:** SINGLE-AUTHOR MAJOR — multi-provider consensus is not yet established. Plan must remain at `status: draft` until at least one additional provider lands a structured artifact. Three Claude findings (#1 stale W18 number, #3 stale Codex queue counts, #5 H1 misleading owner-time estimate) are blocking; revise the report against freshly-read live sources before re-running cross-review.
+
+Per `docs/BUSINESS_BRAIN.md` lines 89–97, promoting to `status:plan-approved` requires *"repeated APPROVE/MINOR adversarial-review outcomes across Claude/Codex/Gemini"* — current artifacts do not satisfy that criterion.
 
 Revisions made based on review:
-- (none yet — initial draft)
+- (none yet — Claude r1 surfaced 8 findings, 3 blocking; revision pass deferred to operator authorization since this autofeed session is planning/review/synthesis only.)
 
 ---
 

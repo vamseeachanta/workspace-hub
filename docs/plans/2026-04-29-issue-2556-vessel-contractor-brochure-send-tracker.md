@@ -4,7 +4,7 @@
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2556
-> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2556-claude.md` | `...-codex.md` | `...-gemini.md` (none yet — adversarial review pending)
+> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2556-nextwave-claude.md` (MAJOR, single-author Claude self-review) | `...-codex.md` (UNAVAILABLE, #2479 + permission gate) | `...-gemini.md` (UNAVAILABLE, permission gate)
 
 ---
 
@@ -237,13 +237,13 @@ Plan-level acceptance:
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | (not yet) | — |
-| Codex  | (not yet) | — |
-| Gemini | (not yet) | — |
+| Claude (single-author r1, 2026-04-29 nextwave) | MAJOR | (1) Gap-proof claims `docs/strategy/gtm/vessel-installation-contractors/` is empty, but `email-templates.md` (2026-04-02, 5,157 bytes) exists there — duplicate-source risk vs `docs/gtm/email-outreach-templates.md`. (2) Brochure proof-counts (Demo 1: 680 / 2: 72 / 3: 180 / 4: 60 / 5: 300, total 1,292) ship with no provenance check in TDD. (3) `outline_chart_slots_match_2555` is unverifiable today — #2555 has only a storyboard, no chart deliverables; declare `Depends on: #2555` or rewrite check. (4) `installation-analysis-method-note.md` cited in outline §3.3 but missing from plan §Resource Intelligence "Documents consulted". (5) Demo path strings in outline §3.4 (`demo_01`...`demo_05`) do not match real filenames (`demo_01_dnv_freespan_viv.py`...). (6) Disposition of existing `vessel-installation-contractors/email-templates.md` not declared. (7) `send_tracker_state_enum` / `send_tracker_legal_gate` deferred to "future issue scope" but Acceptance Criteria treat them as in-scope — name the runtime-enforcement issue. |
+| Codex | UNAVAILABLE | Bash permission gate in this planning-only autofeed session blocked `scripts/review/plan-review-fanout.sh` dispatch (`feedback_permission_gate_blocks_cross_review.md`); even if dispatched, codex-cli 0.124.0 hangs on stdin per [#2479](https://github.com/vamseeachanta/workspace-hub/issues/2479) and downgrade does not help from inside Claude Code's Bash tool. Run from un-sandboxed terminal after `npm install -g @openai/codex@0.123.0`. |
+| Gemini | UNAVAILABLE | Same Bash permission-gate; Gemini wrapper itself is healthy after the 2026-04-24 `GEMINI_CLI_TRUST_WORKSPACE` fix. Run from un-sandboxed terminal. |
 
-**Overall result:** PENDING — adversarial review has not been dispatched as part of this draft.
+**Overall result:** SINGLE-AUTHOR MAJOR — multi-provider consensus is not yet established. Plan must remain at `status: draft` until at least one additional provider (Codex via downgrade, or Gemini) lands a structured artifact under `scripts/review/results/`. Three Claude findings (#1 gap-proof error, #3 #2555 ordering, #6 duplicate-source) are blocking; revise before re-running cross-review.
 
-This plan is intentionally held at `status: draft` per the prompt's strict rules ("Only add status:plan-review if you completed a canonical plan plus adversarial review evidence"). Promotion to `status:plan-review` is the next operational action; the user must dispatch the cross-review wave or authorize an agent to do so via `scripts/review/cross-review.sh` (or the `submit-to-codex.sh` / `submit-to-gemini.sh` per-provider wrappers).
+Per `docs/BUSINESS_BRAIN.md` lines 89–97, promoting to `status:plan-approved` requires *"repeated APPROVE/MINOR adversarial-review outcomes across Claude/Codex/Gemini with no unresolved MAJOR findings"* — current artifacts do not satisfy that criterion.
 
 ---
 
