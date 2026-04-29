@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-29T09:20:10.666336Z",
+  "generated_at": "2026-04-29T17:20:44.772375Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-29T09:20:08.282381Z",
+  "scorecard_generated_at": "2026-04-29T17:20:36.733667Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,9 +11,79 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 1,
-      "total_candidates": 157,
+      "execution_ready_count": 6,
+      "total_candidates": 159,
       "top_issues": [
+        {
+          "number": 2540,
+          "title": "epic(llm-wiki): overnight Elements corpus planning wave after #2536",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2540",
+          "labels": [
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-29T14:30:46Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2490,
+          "title": "chore(ci-health): digitalmodel Quality Gates coverage gate blocker (split from #2441)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2490",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:infrastructure",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-29T10:02:17Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2510,
+          "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:tooling",
+            "status:plan-approved",
+            "domain:semiconductor",
+            "domain:chip-design"
+          ],
+          "updatedAt": "2026-04-29T09:59:49Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
         {
           "number": 2515,
           "title": "feat(digitalmodel): generate offshore cable umbilical pipeline cross-section reports",
@@ -27,6 +97,54 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-29T02:28:01Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2541,
+          "title": "feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2541",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-29T14:31:03Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2544,
+          "title": "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2544",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-29T14:30:53Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -62,139 +180,18 @@
           ]
         },
         {
-          "number": 2519,
-          "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
+          "number": 2517,
+          "title": "Compliance alert: W18 \u2014 42% (high)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
           "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
+            "priority:high",
+            "priority:medium",
             "priority:critical",
-            "domain:ai-orchestration",
-            "domain:workstations",
-            "domain:agent-cost-tracking"
+            "compliance-alert"
           ],
-          "updatedAt": "2026-04-27T18:57:43Z",
+          "updatedAt": "2026-04-29T11:45:13Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2520,
-          "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
-          "labels": [
-            "bug",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "priority:critical",
-            "domain:ai-orchestration",
-            "domain:workstations",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-27T17:45:28Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2254,
-          "title": "fix(provider-telemetry): improve Claude and Gemini quota observability for exact weekly targeting",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2254",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-26T21:54:49Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2291,
-          "title": "fix(cron-health): harden failure detection and align task evidence contracts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T10:39:33Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2301,
-          "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T14:37:26Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2363,
-          "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:document-intelligence"
-          ],
-          "updatedAt": "2026-04-26T21:54:20Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -211,7 +208,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 18,
-      "total_candidates": 41,
+      "total_candidates": 39,
       "top_issues": [
         {
           "number": 2269,

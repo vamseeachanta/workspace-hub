@@ -1,10 +1,11 @@
 # Plan for #2556: Vessel-Contractor Brochure and Outbound Send Tracker
 
-> **Status:** draft
+> **Status:** draft (plan-revision r2 — 2026-04-29 next-wave-autofeed-followup; ready for re-review, NOT for approval)
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2556
-> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2556-nextwave-claude.md` (MAJOR, single-author Claude self-review) | `...-codex.md` (UNAVAILABLE, #2479 + permission gate) | `...-gemini.md` (UNAVAILABLE, permission gate)
+> **Depends on:** [#2555](https://github.com/vamseeachanta/workspace-hub/issues/2555) (chart deliverables; this plan cannot promote past `status:plan-review` until #2555 lands real chart artifacts under `docs/reports/gtm/charts/`); soft input from [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) (contractor matrix — drives first-batch ready-to-send list shape).
+> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2556-nextwave-claude.md` (MAJOR, single-author Claude self-review) | `...-codex.md` (UNAVAILABLE, [#2479](https://github.com/vamseeachanta/workspace-hub/issues/2479) + permission gate) | `...-gemini.md` (UNAVAILABLE, permission gate)
 
 ---
 
@@ -25,7 +26,8 @@ This issue produces collateral artifacts and a tracker schema; no library code i
 - Found: `docs/gtm/overnight-client-ready-material-2026-04-28.md` — overnight-generated client-ready content; candidate brochure source material.
 - Found: `docs/strategy/engineering-chatbot-oilgas-pitch.md` — the AI-engineering pitch that frames Tier 1/2 brochure messaging.
 - Found: `docs/gtm/gtm-plan-30day.md` — 30-day GTM plan; brochure-send is one channel within it.
-- Gap: `docs/strategy/gtm/vessel-installation-contractors/` directory is empty. The campaign README/prospect-list/value-proposition deliverables called for in #1669 do not exist yet.
+- Found: `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` (5,157 bytes, 2026-04-02) — pre-existing canonical-campaign-folder template document. Predates and overlaps `docs/gtm/email-outreach-templates.md` (244 lines, 7 templates, more recent). **Disposition declared in §Files to Change:** retire the canonical-folder copy by replacing its body with a deprecation header that redirects to `docs/gtm/email-outreach-templates.md` as the single source-of-truth for outbound copy variants. This eliminates the duplicate-source risk surfaced in Claude r1 finding #6 before `brochure-source.md` lands in the same folder.
+- Gap: `docs/strategy/gtm/vessel-installation-contractors/` is otherwise sparse — `README.md`, `prospect-list.md`, `value-proposition.md`, `capability-summary.md` called for in #1669 still do not exist. The single existing file is the `email-templates.md` retire candidate above.
 - Gap: No outbound send tracker exists today; only the inbound `deliveries-log.md`.
 - Gap: No brochure-as-source artifact (Markdown or HTML) exists; only the 1-page summary and a stale PDF.
 
@@ -40,6 +42,7 @@ Not applicable to this issue — wiki content is consumed downstream when chart 
 ### Documents consulted
 
 - `docs/BUSINESS_BRAIN.md` — confirms current weekly target ("for the week of April 1, produce vessel capability charts and send a good brochure to all researched vessel contractors"); legal-sanity gates section enumerates the public-promotion checklist this brochure must pass.
+- `docs/gtm/installation-analysis-method-note.md` (17,720 bytes, 2026-04-22) — methodology note required by brochure outline §3.3 Chart C caption. Added per Claude r1 finding #4 (retrieval-completeness gap).
 - Issue #2556 body — scope, deliverables, acceptance criteria.
 - Issue #2554 body — sibling research/matrix work; brochure consumes its output (target list + tier).
 - Issue #2555 body — sibling capability-charts work; brochure embeds its outputs.
@@ -74,7 +77,9 @@ What this plan must produce that does not exist yet:
 - EXISTS: `docs/gtm/deliveries-log.md` (44 lines)
 - EXISTS: `docs/gtm/outreach-candidate-briefs-2026-04-28.md` (49,249 bytes)
 - EXISTS: `docs/strategy/engineering-chatbot-oilgas-pitch.md`
-- EXISTS: `docs/strategy/gtm/vessel-installation-contractors/` (directory; empty)
+- EXISTS: `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` (5,157 bytes, 2026-04-02) — pre-existing template file (retire path declared in §Files to Change)
+- EXISTS: `docs/gtm/installation-analysis-method-note.md` (17,720 bytes, 2026-04-22) — methodology note for brochure outline §3.3 Chart C
+- EXISTS: `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` — current #2555 deliverable (storyboard only; chart artifacts pending)
 - MISSING (this plan creates): `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md`
 - MISSING (this plan creates): `docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md`
 - MISSING (this plan creates, downstream of approval): `docs/strategy/gtm/vessel-installation-contractors/brochure-source.md`
@@ -82,10 +87,10 @@ What this plan must produce that does not exist yet:
 - MISSING (gitignored, NEVER tracked): `docs/gtm/intake/send-tracker.private.yaml`
 
 **Gap proofs:**
-- `ls /mnt/local-analysis/workspace-hub/docs/strategy/gtm/vessel-installation-contractors/` returns empty (no `README.md`, no `prospect-list.md`, no `value-proposition.md`, no `email-templates.md`, no `capability-summary.md`) — confirms #1669 Phase 1 deliverables are not yet present at the canonical campaign location.
-- `ls /mnt/local-analysis/workspace-hub/docs/reports/gtm/` was missing; this plan's first action is `mkdir -p docs/reports/gtm/`.
+- `ls /mnt/local-analysis/workspace-hub/docs/strategy/gtm/vessel-installation-contractors/` returns ONE file: `email-templates.md` (5,157 bytes, 2026-04-02). MISSING: `README.md`, `prospect-list.md`, `value-proposition.md`, `capability-summary.md` — confirms #1669 Phase 1 is partial: only the template doc exists, and it is the older copy (the `docs/gtm/email-outreach-templates.md` 244-line doc is the more recent and richer version). Plan §Files to Change declares the retire-and-redirect disposition for the existing canonical-folder file.
+- `ls /mnt/local-analysis/workspace-hub/docs/reports/gtm/` returns the #2555 storyboard only — no chart artifact files. Confirms #2555 has not yet shipped chart deliverables; this plan's `outline_chart_slots_match_2555_artifacts` check is hard-blocked behind #2555 closure.
 
-<!-- Source count: 5 distinct sources (issue body + #2554/#2555/#1669/#2016 + BUSINESS_BRAIN + 8 GTM files). Meets ≥3 requirement. -->
+<!-- Source count: 6 distinct sources (issue body + #2554/#2555/#1669/#2016 + BUSINESS_BRAIN + 9 GTM files including installation-analysis-method-note.md added in r2). Meets ≥3 requirement. -->
 
 ---
 
@@ -180,6 +185,7 @@ legal_sanity_gate(send_row):
 
 | Action | Path | Reason |
 |---|---|---|
+| Modify (retire+redirect) | `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` | Resolves Claude r1 finding #6 duplicate-source risk. Replace body with a one-screen deprecation header pointing at `docs/gtm/email-outreach-templates.md` as the single source-of-truth for outbound copy variants; preserve the file as a redirect stub so any downstream reader landing on the canonical-folder path is routed to the up-to-date copy. Do NOT delete (history is referenced from #1669 Phase 1). |
 | Create | `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md` | Canonical brochure outline (sections, chart slots, proof slots, CTA, outbound copy variants) |
 | Create | `docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md` | Public/private split send-tracker schema documentation |
 | Create | `docs/strategy/gtm/vessel-installation-contractors/brochure-source.md` | Brochure-as-source Markdown (post-approval) |
@@ -209,8 +215,11 @@ This issue is artifact-driven, not module-driven. The "tests" are checklist gate
 | send_tracker_state_enum | `send_state` field uses the allowed enum exclusively | Schema doc lists enum; future validator script enforces |
 | send_tracker_legal_gate | No row may transition to `SENT` without `last_legal_scan_utc` populated | Schema doc states the rule; runtime enforcement is a future-issue scope |
 | brochure_pdf_renderable | The Markdown source renders to PDF via the `data:md-to-pdf` skill or `pandoc` without errors | Successful PDF output, ≥3 pages, all chart slots replaced |
-| outline_chart_slots_match_2555 | Each chart slot in the outline is named to match a deliverable produced by #2555 | Cross-reference table in outline; reviewer-verifiable |
-| copy_variants_per_tier | Outline includes ≥3 outbound copy variants (Tier 1/2/3) sourced from `email-outreach-templates.md` | 3+ variants, each named to template-id |
+| outline_chart_slots_match_2555_storyboard | Each chart slot in the outline matches a slot ID in the existing #2555 storyboard at `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` | Cross-reference table in outline lists storyboard slot IDs; reviewer-verifiable today |
+| outline_chart_slots_match_2555_artifacts | Each chart slot resolves to a real chart artifact (PNG/SVG) under `docs/reports/gtm/charts/` produced by #2555 | **Hard-blocked behind #2555 closure.** This check moves from "deferred" to "passing" only after #2555 lands chart files; promotion past `status:plan-review` is gated on this. |
+| brochure_proof_count_provenance | Each per-demo case-count claim cited in brochure outline §3.4 (Demo 1: 680 / 2: 72 / 3: 180 / 4: 60 / 5: 300 / total 1,292) is traceable to a literal in `digitalmodel/examples/demos/gtm/demo_0X_*.py` or its README | Each number traces by `grep` to a cited demo file or its generated output; failed traces block publication. Resolves Claude r1 finding #2 (1,292-cases reviewer-discipline-only). |
+| brochure_demo_path_full_filenames | Outline §3.4 cites canonical filenames (`demo_01_dnv_freespan_viv.py`, `demo_02_wall_thickness_multicode.py`, `demo_03_deepwater_mudmat_installation.py`, `demo_04_shallow_water_pipelay.py`, `demo_05_deepwater_rigid_jumper_installation.py`) — not bare `demo_01`/`demo_02` shorthand | Reviewer can ctrl-click each to source; `grep -F` against the outline returns the full filenames. Resolves Claude r1 finding #5. |
+| copy_variants_per_tier | Outline includes ≥3 outbound copy variants (Tier 1/2/3) sourced from `docs/gtm/email-outreach-templates.md` (NOT the retired canonical-folder copy) | 3+ variants, each named to template-id; provenance comments cite the `docs/gtm/` source only |
 
 ---
 
@@ -220,8 +229,8 @@ Mapped to the GitHub issue's acceptance criteria:
 
 - [ ] Brochure has an evidence-bounded value proposition and (slots for) vessel capability visuals from #2555. → covered by `brochure_provenance_check` + `outline_chart_slots_match_2555`.
 - [ ] Outreach copy is personalized by contractor tier/segment. → covered by `copy_variants_per_tier`; populated from `docs/gtm/email-outreach-templates.md`.
-- [ ] Send tracker exists and distinguishes public artifact paths from private contact details. → covered by `send_tracker_pii_split` + `send_tracker_gitignore`.
-- [ ] Legal/evidence sanity review is complete before public/client-facing distribution. → covered by `legal_sanity_scan` + `send_tracker_legal_gate`.
+- [ ] Send tracker **schema document** exists (at `docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md`) and the schema distinguishes public artifact paths from private contact details (PII). → covered by `send_tracker_pii_split` + `send_tracker_gitignore` (file-presence + grep checks). **Note:** runtime enforcement of the `send_state` enum and the `last_legal_scan_utc` legal gate is documentation-surface only in this plan; binding runtime enforcement is out of scope and tracked under §Risks "runtime-enforcement follow-up". Resolves Claude r1 finding #7.
+- [ ] Legal/evidence sanity review is complete before public/client-facing distribution. → covered by `legal_sanity_scan` (existing script over the brochure-source diff) + `send_tracker_legal_gate` schema rule (documentation-surface only — runtime enforcement deferred to follow-up issue).
 
 Plan-level acceptance:
 
@@ -241,9 +250,23 @@ Plan-level acceptance:
 | Codex | UNAVAILABLE | Bash permission gate in this planning-only autofeed session blocked `scripts/review/plan-review-fanout.sh` dispatch (`feedback_permission_gate_blocks_cross_review.md`); even if dispatched, codex-cli 0.124.0 hangs on stdin per [#2479](https://github.com/vamseeachanta/workspace-hub/issues/2479) and downgrade does not help from inside Claude Code's Bash tool. Run from un-sandboxed terminal after `npm install -g @openai/codex@0.123.0`. |
 | Gemini | UNAVAILABLE | Same Bash permission-gate; Gemini wrapper itself is healthy after the 2026-04-24 `GEMINI_CLI_TRUST_WORKSPACE` fix. Run from un-sandboxed terminal. |
 
-**Overall result:** SINGLE-AUTHOR MAJOR — multi-provider consensus is not yet established. Plan must remain at `status: draft` until at least one additional provider (Codex via downgrade, or Gemini) lands a structured artifact under `scripts/review/results/`. Three Claude findings (#1 gap-proof error, #3 #2555 ordering, #6 duplicate-source) are blocking; revise before re-running cross-review.
+**Overall result:** SINGLE-AUTHOR MAJOR — multi-provider consensus is not yet established. Plan must remain at `status: draft` until at least one additional provider (Codex via downgrade, or Gemini) lands a structured artifact under `scripts/review/results/`. Three Claude findings (#1 gap-proof error, #3 #2555 ordering, #6 duplicate-source) are blocking; the plan-revision r2 below addresses them in-document but does NOT establish multi-provider consensus.
 
 Per `docs/BUSINESS_BRAIN.md` lines 89–97, promoting to `status:plan-approved` requires *"repeated APPROVE/MINOR adversarial-review outcomes across Claude/Codex/Gemini with no unresolved MAJOR findings"* — current artifacts do not satisfy that criterion.
+
+**Revisions made (plan-revision r2 — 2026-04-29 next-wave-autofeed-followup):**
+
+| Finding | Severity | Resolution in r2 |
+|---|---|---|
+| #1 — gap-proof factual error (claimed `vessel-installation-contractors/` directory empty) | MAJOR / blocking | §Resource Intelligence "Existing repo code", "Evidence → File existence", and "Gap proofs" rewritten to acknowledge the existing 5,157-byte `email-templates.md` (2026-04-02) and declare the retire-and-redirect disposition |
+| #2 — 1,292-cases proof claim shipped without provenance check | MINOR | Added `brochure_proof_count_provenance` TDD row that grep-traces each per-demo number to `digitalmodel/examples/demos/gtm/demo_0X_*.py` |
+| #3 — `outline_chart_slots_match_2555` unverifiable until #2555 ships chart artifacts | MAJOR / blocking | Front-matter declares `Depends on: #2555`. TDD row split into `_storyboard` (passable today) and `_artifacts` (hard-blocked behind #2555 closure; gates promotion past `status:plan-review`) |
+| #4 — `installation-analysis-method-note.md` cited in outline §3.3 but missing from plan's Documents-consulted | MINOR | Added to §Resource Intelligence "Documents consulted" and "File existence" |
+| #5 — demo-path strings in outline §3.4 do not match real filenames | MINOR | Added `brochure_demo_path_full_filenames` TDD row that requires canonical filenames; outline body fix is downstream of plan-approval (cannot edit outline from this patch lane) |
+| #6 — disposition of canonical-folder `email-templates.md` undeclared | MAJOR / blocking | New row in §Files to Change: "Modify (retire+redirect)" replaces body with deprecation header pointing at `docs/gtm/email-outreach-templates.md` as single source-of-truth; preserves history without leaving a duplicate-source trap |
+| #7 — `send_tracker_state_enum` / `_legal_gate` deferred to future issue but ACs treat them as in-scope | MINOR | Acceptance Criteria rephrased to verify documentation-surface only (schema doc + grep checks); runtime enforcement explicitly deferred and called out in §Risks as a follow-up to file before any human-initiated outbound send executes |
+
+**Provider coverage after r2:** Unchanged. Codex remains UNAVAILABLE (#2479 + this session's permission gate); Gemini remains UNAVAILABLE (permission gate). r2 is a single-author plan-revision pass, NOT a re-review. The plan is ready for re-review only — not for `status:plan-review` and definitely not for `status:plan-approved`. Operator must run `bash scripts/review/plan-review-fanout.sh docs/plans/2026-04-29-issue-2556-vessel-contractor-brochure-send-tracker.md` from an un-sandboxed terminal (after `npm install -g @openai/codex@0.123.0` per #2479) to land real Codex + Gemini artifacts before the Business-Brain consensus criterion can be met.
 
 ---
 
@@ -254,6 +277,9 @@ Per `docs/BUSINESS_BRAIN.md` lines 89–97, promoting to `status:plan-approved` 
 - **Risk:** Personalization hooks pulled from `outreach-candidate-briefs-2026-04-28.md` may include scraped material that has not passed legal sanity. Mitigation: the legal-sanity gate runs against the brochure source AND each personalization hook before it is committed to the public tracker.
 - **Risk:** Send-tracker schema bifurcation is only as strong as the `.gitignore` enforcement and reviewer discipline; an accidental `git add -f` could leak the private file. Mitigation: pre-commit hook check (future issue scope) + explicit naming pattern (`*.private.yaml`) that already pattern-blocks easily.
 - **Risk:** ACE Engineer brand voice in `email-outreach-templates.md` is established; rewriting it for the brochure may drift the voice. Mitigation: the brochure outline lifts copy directly where it can; new copy is bounded to chart captions and proof slots.
+- **Risk (ordering, declared in front-matter):** This plan depends on #2555 chart deliverables. `outline_chart_slots_match_2555_artifacts` cannot pass until #2555 lands real chart files under `docs/reports/gtm/charts/`. Mitigation: front-matter `Depends on: #2555`; promotion past `status:plan-review` is gated on #2555 closure; `_storyboard` variant of the same check provides interim verification against the existing storyboard.
+- **Risk (duplicate-source):** Two `email-templates`/`email-outreach-templates` documents currently coexist (`docs/strategy/gtm/vessel-installation-contractors/email-templates.md` 2026-04-02, 5,157 bytes vs `docs/gtm/email-outreach-templates.md` 2026-04-29-ish, 244 lines). Mitigation: the `Modify (retire+redirect)` row in §Files to Change replaces the older canonical-folder copy with a deprecation header before any new collateral lands in that directory.
+- **Runtime-enforcement follow-up (must file before any send executes):** `send_tracker_state_enum` (state-machine guard) and `send_tracker_legal_gate` (mandatory `last_legal_scan_utc` populated before any row can flip to `SENT`) are documented in this plan but enforced only by reviewer discipline. Before any human-initiated outbound send executes against a populated tracker, a sibling issue must be filed to (a) write a tracker-validator script that fails closed when state-machine or legal-gate invariants are violated, (b) wire it into pre-commit and into a hypothetical `gh-action: gtm-send-validator`, and (c) define the precommit hook path. This plan does not file that issue (planning-only patch lane); the operator must file it at user-approval time. Resolves Claude r1 finding #7 by making the deferred surface explicit instead of implicitly in-scope.
 - **Open:** Should the brochure ship as PDF only, HTML only, or both? Recommended default: Markdown source + PDF for cold sends, HTML for the gated-URL surface defined in `prospect-demo-sop.md`. Flag for user decision at approval time.
 - **Open:** Should the public send tracker be Markdown table or YAML? The schema document defaults to YAML for tooling-friendliness; Markdown rendered table can be auto-generated from YAML if the user prefers visual review.
 - **Open:** Tracker write-frequency — append-on-event (every send) vs. batch nightly. Affects whether agent-driven sends are allowed at all. Default: append-on-event, human-initiated only.

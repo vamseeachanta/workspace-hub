@@ -123,6 +123,8 @@ Deduplicate across providers. Structure as:
 gh issue comment NNNN --body-file /tmp/consolidated-review.md
 ```
 
+For GTM/business-critical plan-review closeout, see `references/gtm-plan-review-closeout-2026-04-29.md` for a worked pattern covering live review replacement of `UNAVAILABLE` placeholders, owner-decision packets, numeric-claim verification, and concurrent-git closeout.
+
 ## Post-Review: Acting on MAJOR Verdicts
 
 If ANY reviewer returns MAJOR at plan stage, the plan is not approval-ready and must be revised before implementation or user approval. Do not average this down because another provider returned APPROVE or MINOR. Typical pattern:
@@ -254,6 +256,12 @@ Then post a concise GitHub issue comment summarizing verdicts, shared blockers, 
 - include the concrete failure reason (for example model capacity exhaustion) and point to the raw CLI log path
 - treat the plan review wave as incomplete unless repo policy explicitly allows reduced-provider review for that run
 This avoids ambiguous "pending" review state, preserves evidence for governance audits, and makes it clear the blocker was provider availability rather than missing execution.
+
+22. **Claude CLI review can fail silently or exhaust turns** — `claude -p` may time out with an empty tee file, or exit with `Error: Reached max turns` before producing a usable verdict. Treat both as failed dispatches, not review evidence. Retry with a compact prompt that lists exact files, known review state, required output format, and owner-decision questions; increase `--max-turns` enough for the review. Save only the successful substantive output as the canonical Claude artifact.
+
+23. **GTM numeric claims need source-file calculation, not prose review** — For brochure/outreach plan reviews, force at least one lane to compute headline numbers from source JSON/report files. A 2026-04-29 review caught a `108 cases` caption that should have been `156` by summing the matrix; text-only reviewers had missed it. Mark each number as either verified-now or render-time recompute-required.
+
+24. **Concurrent background agents can make broad git status/add unusable** — In active workspace-hub sessions, global `git status` or broad `git add -A` can hang behind other agents/VS Code git operations and can stage unrelated work. For review closeout, use scoped verification and staging: `git diff -- <target-files>`, `git ls-files <target-files>`, `git add <target-files>`, and `git diff --cached --name-only`. Commit only the intended review artifacts and plan patches.
 
 ## Post-Review: Batch Follow-Up Issue Creation from Findings
 

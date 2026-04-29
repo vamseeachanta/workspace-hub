@@ -1,0 +1,23 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Ripgrep is not available. Falling back to GrepTool.
+Verdict: MINOR
+
+1. **Summary rationale**: 
+The plan is highly rigorous and correctly tightens the provider-review gates (rejecting UNAVAILABLE as sufficient evidence) and explicitly locks the render entry point and asset directory. However, there are logic gaps in the pseudocode contract that will cause implementation failures: it assumes all inputs are JSON with specific properties (which breaks Chart C4) and it attempts to run a file-based bash legal scan before the assets are actually exported to disk.
+
+2. **Severity-ranked findings**:
+- **HIGH**: **Pseudocode input-type constraint mismatch for C4.** The pseudocode states `inputs = read(C.data_paths) # all from existing JSON files only` and then asserts `all(inputs.disclaimer == "representative of real vessel classes")`. Chart C4 relies on `docs/gtm/capability-map.md` (a Markdown file). The implementer will fail here because a Markdown file cannot be parsed as JSON, nor will it have a JSON disclaimer attribute.
+- **MEDIUM**: **Pseudocode order of operations for legal scan.** The storyboard's Legal & Evidence Gate mandates running `scripts/legal/legal-sanity-scan.sh` in a mode that scans "actual generated PNG/SVG/PDF/caption artifacts". However, the pseudocode calls `legal_scan(...)` *before* the `export(...)` step. A shell script cannot scan in-memory objects; the artifacts must be exported to the filesystem (even if to a staging directory) before the bash script is invoked.
+- **LOW**: **Standard citation logic for C4.** The pseudocode asserts that inherited standards are a simple subset of caption standards (`set(C.inherited_standards) <= set(caption.standards)`). Chart C4 introduces a row-by-row standard citation requirement which does not fit this simple set logic.
+
+3. **Explicit answer: Is this ready for `status:plan-review`? Why or why not?**
+Yes, but conditionally. It is ready for `status:plan-review` *if and only if* this Gemini artifact is committed to the repository (removing the UNAVAILABLE status for Gemini) alongside live APPROVE or MINOR artifacts from both Claude and Codex. The plan correctly holds itself in `draft` status until this exact condition is met. This artifact fulfills the Gemini requirement.
+
+4. **Exact must-fix patches**:
+- **Patch 1 (Pseudocode Input Parsing):** Update the pseudocode to branch logic for C4's Markdown input, or abstract the `read()` and disclaimer assertion to only apply to vessel-data JSON files, explicitly exempting the capability map.
+- **Patch 2 (Pseudocode Scan Order):** Move the `export(...)` function call to occur *before* the `legal_scan(...)` call in the pseudocode. Ensure the legal scan targets the `docs/reports/gtm/assets/` directory where the files were just written.
+- **Patch 3 (C4 Standards Exemption):** Add a note in the pseudocode or C4's storyboard entry explicitly stating that C4's row-by-row standard validation requires custom implementation logic and bypasses the global `set()` assertion.
+
+5. **Any user inputs needed before downstream #2556 brochure/outbound work**:
+None required. Once the pseudocode patches are applied and the plan achieves `status:plan-approved` via the user, the follow-on implementation slice can safely proceed.
