@@ -1,10 +1,44 @@
 {
-  "generated_at": "2026-04-28T17:20:23.280133Z",
+  "generated_at": "2026-04-28T21:20:19.839158Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 0,
+  "eligible_count": 1,
   "applied": [],
   "candidates": [
+    {
+      "number": 2515,
+      "title": "feat(digitalmodel): generate offshore cable umbilical pipeline cross-section reports",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2515",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:engineering",
+        "domain:pipeline",
+        "domain:marine",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-28T17:26:02Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
     {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
@@ -231,37 +265,6 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-16T10:39:33Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2301,
-      "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-16T14:37:26Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "claude",

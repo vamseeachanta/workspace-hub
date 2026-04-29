@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-28T17:20:20.680575Z",
+  "generated_at": "2026-04-28T21:20:18.422984Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-28T17:20:15.838007Z",
+  "scorecard_generated_at": "2026-04-28T21:20:14.925189Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 1,
+      "execution_ready_count": 2,
       "total_candidates": 155,
       "top_issues": [
         {
@@ -38,6 +38,31 @@
           "work_type": [
             "research",
             "implementation"
+          ]
+        },
+        {
+          "number": 2515,
+          "title": "feat(digitalmodel): generate offshore cable umbilical pipeline cross-section reports",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2515",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:pipeline",
+            "domain:marine",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T17:26:02Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
           ]
         },
         {
@@ -169,29 +194,6 @@
             "cat:harness"
           ],
           "updatedAt": "2026-04-16T10:39:33Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2301,
-          "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T14:37:26Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
