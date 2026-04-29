@@ -24,42 +24,54 @@ No team members. AI agents are the workforce.
 ### Tier-2 (domain-specific, periodic work)
 | Repo | Domain |
 |------|--------|
-| OGManufacturing | Oil & gas manufacturing |
-| acma-projects | ACMA engineering projects |
-| frontierdeepwater | Deepwater engineering |
-| seanation | Maritime/naval architecture |
+| OGManufacturing | Manufacturing/domain project context; reusable code routes to `digitalmodel` |
+| acma-projects | ACMA naval-architecture client project data/delivery |
+| frontierdeepwater | Startup project data; AceEngineer has 5% stake |
 | worldenergydata | Energy data analysis |
-| investments | Investment analysis |
-| rock-oil-field | Oil field engineering |
+| sabithaandkrishnaestates | Corporate/investment admin: finance tracking, taxes, entity records |
 
-### Tier-3 (low-frequency, reference, or archival)
+### Tier-3 (low-frequency, reference, client archive, or retirement candidates)
 aceengineer-admin, aceengineer-strategy, achantas-data, achantas-media,
 assethold, client_projects, doris, hobbies, pdf-large-reader,
-sabithaandkrishnaestates, saipem, sd-work, teamresumes
+saipem, sd-work, teamresumes
+
+### Archive / extraction candidates
+| Repo | Disposition |
+|------|-------------|
+| investments | Private triage; migrate analysis/code to `assethold`, private records to `achantasdata`; retire within 3 months after no-loss migration |
+| rock-oil-field | Sanity-check and migrate useful code/data/analysis to Tier-1 repos; archive/retire if possible |
+| seanation | Client repo; extract useful data/information and archive |
+| saipem | Engineering installation contractor repo; extract useful info and archive/retire over time |
 
 ## Machines (workstation inventory)
 
+Hermes on `ace-linux-1` is the primary control plane for dispatching work to all machines. Maintain an inventory of installed programs, licenses, AI-provider auth, repo readiness, and dispatch capability so work can flow continuously from `ace-linux-1` to worker machines.
+
 | Machine | Role | OS | Primary Use |
 |---------|------|----|-------------|
-| ace-linux-1 | Primary dev | Linux | Daily AI work, Claude/Codex sessions |
-| ace-linux-2 | Secondary dev | Linux | Parallel AI work, overflow |
-| licensed-win-1 | Licensed software | Windows | OrcaFlex, licensed engineering tools |
-| licensed-win-2 | Licensed software | Windows | OrcaFlex, licensed engineering tools |
+| ace-linux-1 | Primary control plane | Linux | Hermes driver, GitHub mutation, provider routing, dispatch ledgers |
+| ace-linux-2 | Overflow worker | Linux | Parallel AI execution after repo/tool/auth readiness checks |
+| licensed-win-1 | Licensed engineering worker | Windows | OrcaFlex and AQWA runs to start; dispatched from `ace-linux-1` |
+| licensed-win-2 | Licensed engineering worker | Windows | Future/overflow licensed engineering tools |
 | macbook-portable | Portable dev | macOS | Travel, mobile sessions |
 | home-win | Home workstation | Windows | Off-hours work |
 | acma-ws014 | Office workstation | Windows | On-site ACMA work |
 | multi | — | — | Issues spanning all machines |
 
+Machine inventory must answer: installed programs, license availability, AI-provider auth state, repo checkout locations, run/smoke-test commands, and what work may be dispatched safely.
+
 ## AI Provider Accounts
+
+Only one paid Codex account is currently active.
 
 | Provider | Plan | Cost/mo | Role |
 |----------|------|---------|------|
-| Claude (Anthropic) | Max | $200 | **Default orchestrator** — deepest context, richest surface |
-| Codex (OpenAI) #1 | Plus | $20 | Coding worker, adversarial reviewer |
-| Codex (OpenAI) #2 | Plus | $20 | Parallel coding, overflow |
-| Gemini (Google) | AI Pro | $20 | Narrow third-lane: large-context research, architecture review |
+| Codex (OpenAI) | $200 account | $200 | Primary paid coding/execution worker; preserve for implementation, tests, fixes, cleanup |
+| Claude (Anthropic) | As available/authenticated | TBD | Planning, orchestration, adversarial review, long-context synthesis |
+| Gemini (Google) | As available/authenticated | TBD | Research/recon, large-context review, risk enumeration |
 
-**Volume hierarchy:** Claude >> Codex > Gemini
+**Provider auth policy:** Hermes is the primary driver. All AI providers should be authenticated on all worker machines where practical, but `ace-linux-1` remains the control plane for dispatch, GitHub mutation, and reconciliation.
+**Current volume hierarchy:** Hermes-led orchestration; Codex is the only confirmed paid $200 provider account.
 
 ## Workflow Framework: GSD (Get Shit Done)
 
@@ -69,6 +81,10 @@ GSD is the control plane. Do not replace it. Do not build parallel frameworks.
 - Issue template: `.github/ISSUE_TEMPLATE/wrk-item.yml`
 - Skills directory: `.claude/skills/` (568 active, 2734 total)
 - Commands: `/gsd:help`, `/gsd:new-project`, `/gsd:do`, etc.
+
+## Portfolio Refresh Obligation
+
+Because substantial work is happening across repos, periodically assess completed repo work and update this Brain accordingly. At minimum reconcile: repo missions/objectives, archive/retirement candidates, Tier-1 routing, machine/software inventory, provider accounts/auth, and evidence from recent GitHub issues/PRs. Do not let stale repo classifications or provider/machine assumptions remain authoritative.
 
 ## Review Routing (settled policy)
 
@@ -108,7 +124,7 @@ Full policy: `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
 The owner is a **subsea/offshore engineer** working in oil & gas, renewable energy,
 and maritime engineering. Key technical domains:
 
-- Hydrodynamics (OrcaFlex, OrcaWave, Capytaine)
+- Hydrodynamics (OrcaFlex, OrcaWave, AQWA, Capytaine)
 - Structural analysis (DNV, NORSOK, ISO, ASTM standards)
 - Finite element analysis
 - Mooring and riser design
