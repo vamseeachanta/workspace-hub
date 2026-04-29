@@ -318,3 +318,26 @@ A second gate sits between `status:plan-approved` and any wiki write: ACMA / pro
 ## Complexity: T2
 
 **T2** — multiple new planning artifacts plus a deferred multi-file wiki ingestion (1 corpus pointer + 15 abstract pages + index/log/overview updates = 19 wiki edits). No code changes in this plan. The bounded-extraction script that consumes the TSV is a follow-up implementation issue, not part of this plan.
+
+## Adversarial Review Resolution Addendum (2026-04-29)
+
+This addendum is authoritative over earlier pseudocode if there is any conflict.
+
+### Split approval: pointer/scout metadata only first
+- The approval-ready subset for #2544 is **metadata pointer/scout output only**.
+- No document abstract extraction, technical summary extraction, direct quote extraction, table extraction, or figure extraction may occur under #2544 until a separate extraction plan is written after clearance.
+
+### Clearance authority and row-level schema
+- `docs/governance/woodfibre-extraction-clearance-2026.md` remains a hard prerequisite for any post-scout extraction.
+- Accepted approvers must be explicitly named by role: ACMA project owner, client-authorized reviewer, or legal/IP delegate. A generic "project lead" is insufficient.
+- Row-level clearance must record: source path, document identifier, approver, approval date, allowed extraction level (`metadata-only`, `curated-fields`, `short-quote-approved`, `abstract-approved`), prohibited content, and expiration/review condition.
+
+### No persisted full-text or default quotes
+- Implementation must not persist full extracted PDF/DOCX/TXT text in `.planning/`, `knowledge/`, or any git-tracked path.
+- Extraction, if later approved, must be streaming/bounded with strict page/character caps and no intermediate full-text files.
+- Direct quotes are prohibited by default; no 2 KB quote allowance exists unless row-level clearance explicitly sets `short-quote-approved`.
+
+### Sequential LNG wiki updates
+- Because #2541 and #2544 both touch `knowledge/wikis/lng-projects/wiki/index.md` and `log.md`, execute them sequentially and rebase/revalidate between them.
+- #2544 should run after #2541 only if both retain separate clearance records and non-overlapping page names.
+

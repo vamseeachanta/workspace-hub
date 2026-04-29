@@ -234,3 +234,27 @@ Terminal 2 will not add either label.
 - Existing source page (#2535): `knowledge/wikis/engineering/wiki/sources/elements-doris-university.md`
 - Vendor-derivative deny-list: vamseeachanta/aceengineer-strategy#15 governance tracker (referenced from #2482)
 - LLM-wiki CLI: `scripts/knowledge/llm_wiki.py`
+
+## Adversarial Review Resolution Addendum (2026-04-29)
+
+This addendum is authoritative over earlier pseudocode if there is any conflict.
+
+### TDD is test-first, not post-condition-only
+- Implementation must begin by adding failing validation tests/checks for page schema, source path allowlists, extraction allowlists, no raw assets, no unresolved standards citations, and no copied full-text training material.
+- Post-generation checks alone are insufficient and must not be treated as TDD compliance.
+
+### Metadata-first curated extraction
+- Replace any broad instruction that each artifact will be converted to full wiki text content.
+- Tranche-1 output is metadata-first plus curated, authored summaries only.
+- Per-artifact IP screening is required before any slide text, speaker notes, calculation text, figures, or standard-derived excerpts are summarized.
+- Default prohibited: full deck text, copied figures, standard excerpts/clauses, screenshots, and OCR-derived text.
+
+### Standards namespace and citation resolver
+- Standards pages must target `knowledge/wikis/engineering-standards/wiki/standards/` as the canonical namespace, not `knowledge/wikis/engineering/wiki/standards/`.
+- Engineering/training concept pages may cross-link to engineering-standards pages.
+- A standards stub may only be created from public publisher metadata with revision/source/date fields; if revision metadata is unknown, fail closed and leave an unresolved citation note.
+
+### OCR out of scope for tranche 1
+- OCR fallback is explicitly out of scope for this tranche unless separately approved per artifact.
+- Text-layer failures should result in metadata-only treatment, not OCR.
+

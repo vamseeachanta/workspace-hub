@@ -234,3 +234,30 @@ This is a planning-only T2 — multiple new artifacts, evidence-driven dossier, 
 ## Approval boundary
 
 This terminal does NOT add `status:plan-approved`. After the user reviews the dossier, tranche TSV, and this plan, they apply `status:plan-approved` themselves; the implementation phase is opened as a follow-up issue with its own plan.
+
+## Adversarial Review Resolution Addendum (2026-04-29)
+
+This addendum is authoritative over earlier pseudocode if there is any conflict.
+
+### Clearance gate: hard block before extraction
+- **No SESA extraction, source page publication, concept page publication, comparison page publication, or quote/snippet emission may occur until SESA citeability is confirmed and recorded.**
+- Required clearance record: `docs/governance/sesa-extraction-clearance-2026.md` or an issue comment on #2541 from the responsible project/data owner explicitly allowing the named tranche rows and extraction level.
+- The clearance record must include: approver name/role, approval date, allowed extraction level per row, prohibited content classes, and whether vendor/TBE material is allowed.
+
+### No persisted full-text intermediates
+- Replace any earlier instruction to write extracted text such as `.planning/intel/elements-deep-extraction/sesa/<slug>.txt`.
+- Implementation may only persist bounded structured outputs: per-row YAML/JSON metadata, allowed short fields, and authored wiki summaries.
+- Tests must fail if repo artifacts contain full extracted document bodies, raw text dumps, or copied source documents.
+
+### Vendor/TBE brochure policy
+- Vendor/TBE rows are excluded from tranche-1 extraction unless row-level clearance explicitly allows them.
+- Default allowed fields are limited to file path, file name, byte size, document type, vendor name if visible in the file name/metadata, and a one-sentence non-technical reason for deferral.
+- Prohibited by default: body text, tables, specifications, quoted clauses, equipment details, and screenshots/images.
+
+### Test-first additions
+Before any wiki write, add failing tests or validation checks proving:
+1. clearance record exists and covers every row selected for extraction;
+2. no full-text `.txt`/raw extraction dump is written under `.planning/` or `knowledge/`;
+3. vendor/TBE rows without clearance remain metadata-only;
+4. `knowledge/wikis/lng-projects/wiki/index.md` and `log.md` are updated sequentially, not concurrently with #2544.
+
