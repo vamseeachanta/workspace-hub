@@ -7,7 +7,7 @@ After the early token reset and reboot recovery stream, the autonomous lane keep
 Final closeout status on 2026-04-29:
 
 - `assethold` PR #47 is merged; `assethold` #48 is closed; workspace-hub #2459 is closed and labeled `status:done`.
-- `worldenergydata` PR #356 is still open but has received another recovery commit, `24a28bf20fca966ccb5a6b71ab8faca6e7e906be`, after local dashboard/export regressions passed. The latest pull_request CI is still running, so the PR and linked issues remain open/blocked.
+- `worldenergydata` PR #356 is merged after final CI recovery; `worldenergydata` #357 is closed; workspace-hub #2433 is closed and labeled `status:done`.
 - workspace-hub primary checkout remained dirty with active/generated planning artifacts and was not mutated directly. This handoff update was made from a clean isolated worktree.
 
 ## Agent/process state
@@ -54,73 +54,60 @@ Validation before the final workspace-hub push from the previous merge wave:
   - `assethold` #48 closed with evidence.
   - workspace-hub #2459 closed and labeled `status:done`.
 
-## Open / blocked work
+## Closed after final CI recovery
 
 ### #2433 / worldenergydata
 
-- PR remains open: https://github.com/vamseeachanta/worldenergydata/pull/356
-- Linked issue remains open: https://github.com/vamseeachanta/worldenergydata/issues/357
-- workspace-hub issue remains open/blocked: https://github.com/vamseeachanta/workspace-hub/issues/2433
-- Latest pushed PR head at closeout: `24a28bf20fca966ccb5a6b71ab8faca6e7e906be`.
-- Latest commit message: `fix(ci): stabilize dashboard export and field aggregation`.
-- Latest PR Validation run after that push: `25121226272`.
-- Latest CI run after that push: `25121226224`.
-- Current GitHub state observed at closeout: PR #356 is `OPEN`, `MERGEABLE`, but `UNSTABLE` because the latest pull_request CI is still in progress.
-- Progress comments posted:
-  - worldenergydata #357: https://github.com/vamseeachanta/worldenergydata/issues/357#issuecomment-4345644677
-  - workspace-hub #2433: https://github.com/vamseeachanta/workspace-hub/issues/2433#issuecomment-4345644787
+- PR merged: https://github.com/vamseeachanta/worldenergydata/pull/356
+- Linked issue closed: https://github.com/vamseeachanta/worldenergydata/issues/357
+  - Closeout comment: https://github.com/vamseeachanta/worldenergydata/issues/357#issuecomment-4348155820
+- workspace-hub issue closed and labeled `status:done`: https://github.com/vamseeachanta/workspace-hub/issues/2433
+  - Closeout comment: https://github.com/vamseeachanta/workspace-hub/issues/2433#issuecomment-4348155966
+- Final pushed PR head: `13efb8a877383736c0ad63194346694099df9217`.
+- Final commit message: `fix(ci): silence dashboard compatibility lint`.
+- Passing CI run: https://github.com/vamseeachanta/worldenergydata/actions/runs/25137620183
+  - `Lint`: success
+  - `Type Check`: success
+  - `Security Scan`: success
+  - `Documentation`: success
+  - `Test Python 3.10`: success
+  - `Test Python 3.11`: success
+  - `Test Python 3.12`: success
+  - `Build Package`: success
+- PR Validation checks passed; changelog check was skipped as expected.
+- Merge commit: `26b9dc511bd01088471f8f257a8919bfc7e3efb1`.
+- Merged at: `2026-04-29T23:06:22Z`.
 
-Local validation before pushing `24a28bf20fca966ccb5a6b71ab8faca6e7e906be`:
+Final local validation before the last PR push:
 
 ```bash
-PYTHONPATH=src UV_COMPILE_BYTECODE=0 uv run pytest \
-  tests/unit/well_production_dashboard/test_export_manager.py \
-  tests/unit/well_production_dashboard/test_field_aggregation.py \
-  tests/unit/well_production_dashboard/test_api_enhanced.py \
-  tests/unit/validation/test_schemas.py \
-  -q --tb=short
-# 139 passed, 9 warnings
+uv run --with flake8 flake8 \
+  src/worldenergydata/analysis/dashboard/well_detail_views.py \
+  --max-line-length=100 --extend-ignore=E203,W503 \
+  --exclude=__pycache__,*.egg-info,.git,.venv
+# pass
 
-PYTHONPATH=src UV_COMPILE_BYTECODE=0 uv run pytest \
-  tests/unit/well_production_dashboard/test_export_manager.py \
-  tests/unit/well_production_dashboard/test_field_aggregation.py \
-  tests/unit/well_production_dashboard/test_api_enhanced.py \
-  tests/unit/validation/test_schemas.py \
-  tests/unit/sodir/test_cross_regional.py \
-  tests/unit/test_infrastructure_smoke.py \
-  tests/unit/test_performance_tracking.py \
-  -q --tb=short
-# 210 passed, 5 skipped, 12 warnings
+uv run black --check src/worldenergydata/analysis/dashboard/well_detail_views.py
+# pass
 
-uv run black \
-  src/worldenergydata/well_production_dashboard/export_manager.py \
-  src/worldenergydata/well_production_dashboard/field_aggregation.py \
-  tests/unit/well_production_dashboard/test_field_aggregation.py
-# unchanged/pass
-
-uv run isort \
-  src/worldenergydata/well_production_dashboard/export_manager.py \
-  src/worldenergydata/well_production_dashboard/field_aggregation.py \
-  tests/unit/well_production_dashboard/test_field_aggregation.py
+uv run isort --check-only src/worldenergydata/analysis/dashboard/well_detail_views.py
 # pass
 
 git diff --check
 # pass
+
+PYTHONPATH=src UV_COMPILE_BYTECODE=0 uv run pytest \
+  tests/unit/well_production_dashboard/test_well_detail_views.py::TestWellDetailView::test_render_well_detail_page \
+  -q --tb=short --disable-warnings
+# 1 passed
 ```
 
-Dashboard/export fixes included in the latest pushed commit:
+Earlier dashboard/export and compatibility fixes in this recovery included:
 
-- Export manager now passes `output_path=Path(output_path)` through the comprehensive Excel/PDF exporter config path.
-- Invalid dashboard Excel payloads now fail explicitly with `No exportable dashboard data found` instead of creating an empty successful workbook.
-- `_prepare_excel_data()` accepts both canonical and dashboard legacy keys:
-  - `production_data` / `well_data`
-  - `economic_data` / `economic_metrics`
-  - `verification_data` / `verification_metadata`
-- Field aggregation now uses the current BSEE `Well(name=...)` constructor contract.
-- Field aggregation preserves canonical BSEE aggregate names while exposing dashboard compatibility aliases (`total_oil`, `total_gas`, `total_water`, `well_count`, `active_wells`).
-- Field aggregation test mock injection was repaired so tests exercise the intended mocked path.
-
-Do not close `worldenergydata` #357 or workspace-hub #2433 until PR #356 CI is green and the PR is merged.
+- Dashboard/export data-key compatibility and explicit empty-payload failure.
+- Field aggregation compatibility aliases and current BSEE `Well(name=...)` constructor usage.
+- Dashboard `config_path`, legacy CLI/export/integration helpers, interactive component re-exports, lazy-loading compatibility, well-detail legacy import namespace, decline-curve compatibility method, and legacy verification badge icons.
+- Final lint-only fix added `# noqa` guards to the compatibility wrapper so flake8 accepts the intentional re-export surface.
 
 ### #2227
 
@@ -139,33 +126,23 @@ Do not close `worldenergydata` #357 or workspace-hub #2433 until PR #356 CI is g
 
 ## Follow-up issues created / used in this finalization
 
-1. https://github.com/vamseeachanta/worldenergydata/issues/357 — downstream blocker for PR #356. Originally opened for `ProductionAPI12Analysis.perform_npv_calculation` / NPV contract, then used to track subsequent CI failure clusters until PR #356 is green.
+1. https://github.com/vamseeachanta/worldenergydata/issues/357 — downstream blocker for PR #356. Originally opened for `ProductionAPI12Analysis.perform_npv_calculation` / NPV contract, then used to track subsequent CI failure clusters until PR #356 was green. Resolved and closed after PR #356 merge.
 2. https://github.com/vamseeachanta/assethold/issues/48 — coverage and Python 3.9 market-hours failures blocking PR #47. Resolved and closed after PR #47 merge.
 
 ## Safety notes
 
 - Do not force-push any branch from this recovery.
-- Do not merge PR #356 until its pull_request CI is green or the user explicitly accepts failing gates.
-- Push only to the existing PR branch `codex/nextwave-20260427-issue-2433` for PR #356.
+- PR #356 is now merged; do not push further recovery commits to `codex/nextwave-20260427-issue-2433` unless a new follow-up is explicitly opened.
 - Do not use `/mnt/local-analysis/assethold-pr47` as an authoritative worktree; a timed-out repair subagent left it with massive local delete noise. Use `/mnt/local-analysis/recovery-finish-20260428/assethold` or a fresh clone/worktree for any future assethold inspection.
 - Keep `/mnt/local-analysis/codex-10thread-20260427-2036/issue-2459` untouched unless intentionally cleaning stale partial worktrees.
 - Keep `/mnt/local-analysis/workspace-hub` primary checkout intact until its active/generated planning artifacts are reconciled by the current owner.
 
 ## Recommended next session entrypoint
 
-1. Check the latest state of PR #356:
-   ```bash
-   gh pr view 356 --repo vamseeachanta/worldenergydata \
-     --json url,state,headRefOid,mergeStateStatus,mergeable,statusCheckRollup,mergedAt,mergeCommit
-   gh run list --repo vamseeachanta/worldenergydata \
-     --branch codex/nextwave-20260427-issue-2433 --limit 5
-   ```
-2. If CI run `25121226224` failed, download logs/artifacts and continue the same patch/validate/push loop from `/mnt/local-analysis/recovery-finish-20260428/worldenergydata`.
-3. If PR #356 is green/mergeable, merge it:
-   ```bash
-   gh pr merge 356 --repo vamseeachanta/worldenergydata --merge --delete-branch=false
-   gh pr view 356 --repo vamseeachanta/worldenergydata --json state,mergedAt,mergeCommit,url
-   ```
-4. After PR #356 is merged, comment/close worldenergydata #357 and workspace-hub #2433 with merge/check evidence; remove `status:blocked` from #2433 and add/verify `status:done` if acceptance is satisfied.
-5. Then run the foundation chain #2139/#2146/#2147 before resuming #2152.
-6. Then run #2521 before completing #2227 content promotion.
+1. Treat the PR #356 / worldenergydata #357 / workspace-hub #2433 lane as closed unless a new regression appears on `worldenergydata` main.
+2. Preserve `/mnt/local-analysis/recovery-finish-20260428/worldenergydata` as the evidence worktree for this recovery until any final archive/cleanup pass; it was clean after the final push/merge verification.
+3. Continue unresolved workspace-hub lanes in dependency order:
+   - Run the foundation chain #2139/#2146/#2147 before resuming #2152.
+   - Run #2521 before completing #2227 content promotion.
+   - Review `status:plan-review` issues #2510 and #2490 only after their review evidence is complete.
+4. Keep `/mnt/local-analysis/workspace-hub` primary checkout intact until its active/generated planning artifacts are reconciled by the current owner.
