@@ -10,7 +10,7 @@
 
 ## Purpose
 
-Lock the chart pack design for ACE Engineer's vessel-contractor brochure (week of April 1 GTM target). Produce ≥3 brochure-ready capability charts, each derived from existing repo data with explicit public-source/representative-class disclosure and a binding legal sanity gate before any external send.
+Lock the chart pack design for ACE Engineer's vessel-contractor brochure (week of April 1 GTM target). Produce ≥3 storyboard-ready chart specifications, each derived from existing repo data with explicit public-source/representative-class disclosure and a binding legal sanity gate before any external send. Rendered charts become brochure-ready only in the follow-on implementation slice after recomputation, export, visual QA, legal scan, and required review evidence.
 
 This document is **planning-only**. No PNG/SVG/PDF assets are emitted by this artifact. Asset generation is a follow-on plan-approved implementation slice.
 
@@ -39,7 +39,7 @@ This document is **planning-only**. No PNG/SVG/PDF assets are emitted by this ar
 
 | Format | Use | Dimensions | Palette | Notes |
 |---|---|---|---|---|
-| `chart-name.brochure.png` | Brochure embed | 1600 × 900 px @ 2× | ACE primary (TBC against `aceengineer-website` brand), with the existing demo green/amber/red traffic light only for go/no-go cells | Flat — no Plotly hover; no interactive controls |
+| `chart-name.brochure.png` | Brochure embed | 1600 × 900 px @ 2× | ACE primary palette, to be re-confirmed against the locked `aceengineer-website` brand contract during the render slice before export; existing demo green/amber/red traffic light only for go/no-go cells | Flat — no Plotly hover; no interactive controls |
 | `chart-name.print.svg` | Print-quality | vector | Same | Embedded fonts; CMYK-safe colour |
 | `chart-name.1page.pdf` | Standalone leave-behind | 8.5 × 11 in | Same | Caption + scope disclosure rendered into the PDF, not just the brochure body |
 | `chart-name.html` (optional) | Demo report embed | per `report_template.py` | Plotly defaults | Already exists for demo 4; reuse rather than rebuild |
@@ -75,21 +75,21 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - Pick the highest pass-rate vessel-job pair from the matrix. As of the 2026-04-15 demo run, the headline reads: **"Shallow Water Barge: 100% pass rate across 30 cases for 8-24 in pipe at 7-30 m water depth."**
 
 **Verification scope (now vs later)**
-- **Verified in this planning wave:** `vessel_comparison_matrix.json` confirms the Shallow Water Barge pair is the highest pass-rate vessel-job pair with `pass_rate_pct = 100.0` and `cases_total = 30`.
-- **Deferred to render slice:** the pipe-size span (`8-24 in`) and water-depth span (`7-30 m`) must be re-verified from the latest pipelay input/result files at render time and then regenerated if demo outputs changed.
+- **Verified in this planning wave:** `vessel_comparison_matrix.json` confirms the Shallow Water Barge × shallow_pipelay pair carries `pass_rate_pct = 100.0` and `cases_total = 30`. Three vessel-job pairs tie at 100% pass rate: Large CSV × mudmat (18/18), Medium CSV × mudmat (18/18), and Shallow Water Barge × shallow_pipelay (30/30). The brochure leads on the SWB pair because it maps to the contractor-brochure shallow-water wedge — editorial choice, not unique fact.
+- **Deferred to render slice:** the pipe-size span (`8-24 in`), water-depth span (`7-30 m`), and total cross-demo case count must be recomputed from the latest source/result files at render time and regenerated if demo outputs changed. The current matrix sums to **156 cases** across all six vessel × capability rows (Large CSV mudmat=18, Large CSV jumper=30, Medium CSV mudmat=18, Medium CSV jumper=30, Large PLV shallow_pipelay=30, Shallow Water Barge shallow_pipelay=30); the brochure caption must quote the recomputed value tagged with the source matrix run timestamp.
 
 **Caption draft**
-> Vessel-vs-job screening envelope from ACE Engineer's parametric analysis suite (108 cases across mudmat, jumper, and shallow-pipelay screening). Coloured cells show pass rate of cases meeting governing-load checks per DNV-RP-H103, DNV-ST-N001, DNV-ST-F101, and API RP 1111 where shallow-pipelay screening is involved. Vessel parameters reflect representative classes — not measured telemetry of any named vessel. Send-screening grade for shortlist purposes; detailed feasibility requires per-project metocean and rigging inputs.
+> Vessel-vs-job screening envelope from ACE Engineer's parametric analysis suite (case count: pending render-time recomputation; current matrix totals 156 cases across mudmat, jumper, and shallow-pipelay screening). Coloured cells show pass rate of cases meeting governing-load checks per DNV-RP-H103, DNV-ST-N001, DNV-ST-F101, DNV-OS-H101 (lift operability), and API RP 1111 (shallow-pipelay only). DNV-OS-F101 is omitted intentionally because DNV-ST-F101 is the controlling current citation for the planned shallow-pipelay caption. Vessel parameters reflect representative classes — not measured telemetry of any named vessel. Send-screening grade for shortlist purposes; detailed feasibility requires per-project metocean and rigging inputs.
 
 **Evidence & legal scope**
 - All 4 vessels are representative classes, disclosed in source JSON headers.
 - All standards citations inherited from upstream JSON `_references` arrays.
 - No client/named-vessel telemetry.
-- Required: `scripts/legal/legal-sanity-scan.sh --diff-only` against the generated PNG/SVG/PDF before external send.
+- Required: run `scripts/legal/legal-sanity-scan.sh --all --json` from repo root after assets are written to `docs/reports/gtm/assets/`. Archive output at `docs/reports/gtm/legal-scans/2026-04-XX-chart-pack-scan.json` alongside the asset commit. If the scanner does not natively scan binary chart artifacts, the implementation slice must either (a) extract caption text + figure metadata into sidecar `.txt` companions per asset and rerun `--all`, (b) extend `scripts/legal/legal-sanity-scan.sh` with an explicit include path for `docs/reports/gtm/assets/`, or (c) document the manual legal-review checklist explicitly before any outbound use.
 
 **Output formats:** PNG brochure, SVG print, PDF 1-page.
 
-**Maps to issue ACs:** AC1 (≥3 brochure-ready charts — covers 3 jobs in one), AC2 (public-source disclosure), AC3 (legal-suitable framing), AC4 (feeds brochure without re-assembly).
+**Maps to issue ACs:** AC1 (≥3 storyboard-ready chart specifications — covers 3 jobs in one), AC2 (public-source disclosure), AC3 (legal-suitable framing), AC4 (feeds brochure without re-assembly).
 
 ---
 
@@ -150,7 +150,7 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - **Deferred to render slice:** the exact utilisation percentages and the identity of the largest delta pair must be recomputed from the latest matrix before export.
 
 **Caption draft**
-> Crane-utilisation margin at 1500 m water depth for the 50 / 100 / 200 te mudmat installation cases. Both vessel classes pass go/no-go, but margin matters: lower utilisation reduces sensitivity to weight growth, rigging revisions, and weather stand-by. Vessel crane curves are representative-class. Per DNV-RP-H103 dynamic amplification framework; full lift sensitivity requires project-specific RAO/sea-state inputs.
+> Crane-utilisation margin at 1500 m water depth for the 50 / 100 / 200 te mudmat installation cases. Both vessel classes pass go/no-go, but margin matters: lower utilisation reduces sensitivity to weight growth, rigging revisions, and weather stand-by. Vessel crane curves are representative-class. Per the DNV-RP-H103 dynamic amplification framework and the DNV-ST-N001 marine-operations governing-load envelope (both inherited from `csv_hlv_vessels.json` `_references`); full lift sensitivity requires project-specific RAO/sea-state inputs.
 
 **Evidence & legal scope**
 - Both vessels are representative-class; disclosure in source JSON.
@@ -183,7 +183,7 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - **Deferred to render slice:** re-check those counts against the latest capability map before brochure export in case readiness totals changed.
 
 **Caption draft**
-> ACE Engineer's screening-grade discipline coverage for offshore installation, integrity, and field-development scope. Production rows have parametric demos and traceable code-versus-code outputs ready for client review. Available rows have working modules without packaged demos. Planned rows have GitHub-tracked work with named dependencies. Per-discipline standards citations inherited from upstream.
+> ACE Engineer's screening-grade discipline coverage for offshore installation, integrity, and field-development scope. Production rows have parametric demos and traceable code-versus-code outputs ready for client review. Available rows have working modules without packaged demos. Planned rows have GitHub-tracked work with named dependencies. Per-discipline standards citations must be rendered row-by-row from `docs/gtm/capability-map.md` or explicitly marked `citation pending`; C4 is not sendable if any rendered row lacks either a standards citation or an inline omission rationale.
 
 **Evidence & legal scope**
 - All entries cite repo paths and standards bodies; no client engagements claimed.
@@ -200,7 +200,7 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 
 | Issue #2555 AC | C1 | C2 | C3 | C4 |
 |---|---|---|---|---|
-| AC1 — ≥3 brochure-ready capability charts produced or planned with exact data inputs | ✓ | ✓ | ✓ | (optional) |
+| AC1 — ≥3 storyboard-ready chart specifications planned with exact data inputs. Rendered charts become brochure-ready only in the follow-on implementation slice after recomputation, export, visual QA, legal scan, and required review evidence. | ✓ | ✓ | ✓ | (optional) |
 | AC2 — every chart has public-source/evidence notes or explicit assumption notes | ✓ | ✓ | ✓ | ✓ |
 | AC3 — chart claims suitable for public-facing GTM collateral after legal/evidence sanity review | ✓ | ✓ | ✓ | ✓ |
 | AC4 — outputs feed the brochure/send issue without requiring the user to reassemble context | ✓ | ✓ | ✓ | ✓ |
@@ -217,10 +217,10 @@ Before any chart is exported for external use, all of the following must be true
 2. **Public-vs-private inputs identified** — every data path is from `digitalmodel/examples/demos/gtm/**` (representative-class disclosure inherited) or `docs/gtm/capability-map.md`. No paths from `client_projects/`, `acma-projects/`, `seanation/`, `frontierdeepwater/`, or any private archive.
 3. **Methodology and standards citations attached** — caption names DNV/API standards inherited from the JSON `_references`.
 4. **Tests/review state known** — chart-render run cleanly; demo source data not regenerated since last cross-provider review.
-5. **Legal scan run** — `scripts/legal/legal-sanity-scan.sh --diff-only` over the changed export files passes; output archived alongside the asset commit.
+5. **Legal scan run** — `scripts/legal/legal-sanity-scan.sh` is run in a mode that scans the actual generated collateral and caption text, not only textual git diffs. If `--diff-only` is used, generated PNG/SVG/PDF/caption artifacts must first be tracked or otherwise explicitly passed to the scanner; output is archived alongside the asset commit.
 6. **No confidential/client-identifying content promoted** — automated check + manual eyeball before each send.
 
-Provider-review readiness for this storyboard follows the paired plan: preferred evidence is Claude + Codex + Gemini live verdicts; permitted fallback is Claude plus at least one additional live provider verdict, with any unavailable provider explicitly documented with timestamp and blocking reason in `scripts/review/results/2026-04-29-plan-2555-*.md`.
+Provider-review readiness for this storyboard follows the paired plan: required evidence is Claude **and** Codex **and** Gemini live verdicts (each APPROVE or MINOR). UNAVAILABLE provenance documents a blocker (timestamp and blocking reason recorded in `scripts/review/results/2026-04-29-plan-2555-*.md`) but does NOT satisfy promotion for any of the three providers; the storyboard remains pre-promotion until canonical-fanout artifacts at `scripts/review/results/2026-04-29-plan-2555-{codex,gemini}.md` (no `-nextwave` suffix) carry live verdicts. Mirrors plan AC §209 ("Cross-provider adversarial review evidence...").
 
 Per `docs/BUSINESS_BRAIN.md:122-132`, this gate is mandatory and cannot be waived for "small" sends.
 

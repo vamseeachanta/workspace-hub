@@ -4,7 +4,7 @@
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2555
-> **Review artifacts:** scripts/review/results/2026-04-29-plan-2555-claude.md (TBD) | ...-codex.md (TBD) | ...-gemini.md (TBD)
+> **Review artifacts:** scripts/review/results/2026-04-29-plan-2555-claude.md (live MINOR, 2026-04-29) | ...-codex.md (live MINOR, 2026-04-29) | ...-gemini.md (live MINOR, 2026-04-29)
 > **Sibling overnight prompt:** `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/2555-capability-charts.md`
 > **Storyboard artifact:** `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md`
 
@@ -113,9 +113,9 @@ Distinct sources: 8 (issue #2555 body + 3 related issues #1799/#1669/#2016 + 5 i
 | Existing data inputs | `digitalmodel/examples/demos/gtm/data/{pipelay_vessels,csv_hlv_vessels}.json` |
 | Existing result feeds | `digitalmodel/examples/demos/gtm/results/{vessel,structure}_comparison_matrix.json` |
 | Existing chart precedent | `digitalmodel/examples/demos/gtm/output/demo_04_shallow_pipelay_report.html` |
-| Plan review — Claude | scripts/review/results/2026-04-29-plan-2555-claude.md (TBD) |
-| Plan review — Codex | scripts/review/results/2026-04-29-plan-2555-codex.md (TBD) |
-| Plan review — Gemini | scripts/review/results/2026-04-29-plan-2555-gemini.md (TBD) |
+| Plan review — Claude | `scripts/review/results/2026-04-29-plan-2555-claude.md` (live MINOR, 2026-04-29) |
+| Plan review — Codex | `scripts/review/results/2026-04-29-plan-2555-codex.md` (live MINOR, 2026-04-29) |
+| Plan review — Gemini | `scripts/review/results/2026-04-29-plan-2555-gemini.md` (live MINOR, 2026-04-29) |
 | Overnight result | `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2555-summary.md` |
 | Plan index update | `docs/plans/README.md` |
 
@@ -129,7 +129,7 @@ Out-of-scope (handed off):
 
 ## Deliverable
 
-A planning-only artifact pair (canonical plan + chart storyboard) under `docs/plans/` and `docs/reports/gtm/` that locks chart inventory, data inputs, evidence/legal gate, output format, and acceptance criteria for ≥3 brochure-ready vessel capability charts derivable from existing repo data — without changing `digitalmodel/` source code.
+A planning-only artifact pair (canonical plan + chart storyboard) under `docs/plans/` and `docs/reports/gtm/` that locks chart inventory, data inputs, evidence/legal gate, output format, and acceptance criteria for ≥3 storyboard-ready vessel capability chart specifications derivable from existing repo data. Rendered charts become brochure-ready only in the follow-on implementation slice after recomputation, export, visual QA, legal scan, and required review evidence — without changing `digitalmodel/` source code.
 
 ---
 
@@ -139,16 +139,29 @@ This is a planning artifact. The "code" here is the storyboard's chart-derivatio
 
 ```
 For each chart concept C in {C1..Cn}:
-    inputs = read(C.data_paths)            # all from existing JSON files only
-    assert inputs.fields ⊇ C.required_fields
-    assert all(inputs.disclaimer == "representative of real vessel classes")  # legal gate
+    inputs = read(C.data_paths)
+    if C.source_type == "representative_vessel_json":
+        assert inputs.fields ⊇ C.required_fields
+        assert all(inputs.disclaimer == "representative of real vessel classes")  # legal gate for C1-C3 JSON feeds
+        assert set(C.inherited_standards) <= set(C.caption.standards) | set(C.omission_rationale.keys())
+    elif C.source_type == "capability_map_markdown":
+        assert C.id == "C4"
+        assert inputs.path == "docs/gtm/capability-map.md"
+        assert each_rendered_row_has_standard_or_inline_omission_rationale(inputs)
+    else:
+        raise UnsupportedChartInput(C.source_type)
+
     headline = compute_headline_number(inputs, C.headline_rule)
     figure   = render_via_scripts_gtm(inputs, headline)  # future entry point: scripts/gtm/render_brochure_charts.py; may import report_template.py without editing digitalmodel/
     caption  = C.caption_template.format(headline=headline,
                                          scope=C.scope_disclosure,
                                          standards=C.standards_cited)
-    legal_scan(figure, caption, C.scope_disclosure)     # scripts/legal/legal-sanity-scan.sh
-    export(figure, asset_home="docs/reports/gtm/assets/", formats=["png_brochure", "svg_print", "pdf_1page"])
+    # Asset-directory creation gate: brochure asset home must exist before export.
+    # Directory is created by the follow-on implementation-slice plan (mkdir -p docs/reports/gtm/assets/),
+    # not by this planning artifact. Render aborts cleanly if the gate is missing.
+    assert exists("docs/reports/gtm/assets/"), "asset-directory gate not met; create via follow-on slice"
+    exported_paths = export(figure, asset_home="docs/reports/gtm/assets/", formats=["png_brochure", "svg_print", "pdf_1page"])
+    legal_scan(exported_paths, caption, C.scope_disclosure)  # scripts/legal/legal-sanity-scan.sh in a mode that scans actual generated collateral/caption text, not only textual git diffs
 ```
 
 Chart concepts and their headline-number rules are spec'd in the storyboard artifact so reviewers can assess plausibility without re-deriving them inline.
@@ -194,13 +207,15 @@ Implementation-time tests (deferred to a follow-on plan-approved slice) include 
 - [ ] Plan and storyboard exist under the paths in the Artifact Map.
 - [ ] Storyboard inventory has ≥3 chart concepts, each addressing at least one issue AC.
 - [ ] Each chart concept names: data inputs (existing repo paths only), required data fields, public-source/representative-class disclosure, standards citations inherited from upstream JSON, draft caption, headline-number rule, and output-format spec (PNG/SVG/PDF dimensions, palette).
-- [ ] Storyboard explicitly enumerates the legal sanity-scan gate before any chart is exported for external use, and binds the gate to `scripts/legal/legal-sanity-scan.sh` per `docs/BUSINESS_BRAIN.md:124`.
+- [ ] Storyboard explicitly enumerates the legal sanity-scan gate before any chart is exported for external use, and binds the gate to `scripts/legal/legal-sanity-scan.sh` per `docs/BUSINESS_BRAIN.md:124`; the implementation slice must run the scanner in a mode that covers actual generated PNG/SVG/PDF/caption artifacts, not only textual diffs, and archive the scanner output.
 - [ ] Storyboard has a traceability matrix mapping issue #2555 ACs to chart concepts.
 - [ ] Plan index row added to `docs/plans/README.md`.
-- [ ] Cross-provider adversarial review evidence is recorded before any `status:plan-review` label is applied: preferred evidence is Claude + Codex + Gemini live verdicts; permitted fallback is Claude plus at least one additional live provider verdict, with any unavailable provider explicitly documented in `scripts/review/results/2026-04-29-plan-2555-*.md` together with the blocking reason and timestamp. Until that evidence exists, status remains `draft`.
+- [ ] Cross-provider adversarial review evidence is recorded before any `status:plan-review` label is applied: required evidence is Claude **and** Codex **and** Gemini live verdicts (each APPROVE or MINOR). UNAVAILABLE provenance is NOT sufficient for any of the three providers — a `*-nextwave-*` UNAVAILABLE artifact records that the lane could not exercise the provider but does **not** satisfy this AC. If Codex or Gemini is blocked on the host (codex-cli regression, lane-permission scope, sandbox restriction), status remains `draft` until a permitted lane on a working host produces the canonical live artifact at `scripts/review/results/2026-04-29-plan-2555-{codex,gemini}.md` (no `-nextwave` suffix). Until all three live verdicts exist, status remains `draft`.
 - [ ] No edits to `digitalmodel/` source code during this plan's lifecycle.
 - [ ] No proprietary/client telemetry referenced in any chart concept.
 - [ ] Future implementation home is explicitly `scripts/gtm/render_brochure_charts.py` (new wrapper outside `digitalmodel/`), and brochure asset home is explicitly `docs/reports/gtm/assets/` unless adversarial review rejects that location.
+- [ ] Future implementation-slice plan creates `docs/reports/gtm/assets/` via `mkdir -p` as an explicit Files-to-Change row before any render call. Render aborts cleanly if the directory is missing (asset-directory gate is enumerated in the Pseudocode `assert exists(...)` step). This planning artifact does NOT create the directory itself.
+- [ ] Every chart caption cites the full inherited-standards set from the upstream JSON `_references` arrays (DNV-ST-F101, DNV-RP-H103, DNV-ST-N001, DNV-OS-H101 where applicable, API RP 1111 where shallow-pipelay screening is in scope). If a standard is intentionally omitted (e.g., scope-limited to deepwater-only or crane-lift-only jobs), the storyboard chart entry must record the omission rationale inline; bare omission is not acceptable.
 - [ ] Storyboard distinguishes headline numbers verified in this planning wave from headline numbers that must be recomputed/verified during the later render slice.
 - [ ] Rendering and brochure-export work is *not* attempted under this plan; a follow-on slice plan is created if implementation is desired.
 
@@ -210,22 +225,29 @@ Implementation-time tests (deferred to a follow-on plan-approved slice) include 
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (next-wave self-review, 2026-04-29) | MINOR | (1) TDD Test List row 1 grep `^## Chart C` is off-by-one heading depth vs. actual storyboard `^### Chart C`; literal pattern returns 0 instead of 4. (2) AC #5 (cross-provider review) unmet without Codex+Gemini live evidence. (3) Chart-rendering code-home unspecified — Files-to-Change marks `digitalmodel/**` out of scope but storyboard pseudocode reuses `report_template.py` which lives there; entry-point path needs naming. (4) Brochure-asset target `docs/reports/gtm/assets/` does not yet exist. (5) Caption draft for C1 cites three of four inherited standards; API RP 1111 omitted without justification despite shallow-S-lay job inheriting it. **Positive verification (not a finding):** Shallow Water Barge headline-number claim ("100% pass rate across 30 cases") matches `vessel_comparison_matrix.json` exactly. |
-| Codex (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation; codex-cli 0.124.0 upstream regression also unverified on this host. See `scripts/review/results/2026-04-29-plan-2555-nextwave-codex.md`. |
-| Gemini (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation. See `scripts/review/results/2026-04-29-plan-2555-nextwave-gemini.md`. |
+| Claude (live canonical rerun, 2026-04-29) | MINOR | `scripts/review/results/2026-04-29-plan-2555-claude.md`: independent live review found one HIGH numeric-caption defect (`108 cases` wrong; current matrix totals 156), standards-completeness/rationale drift, and stale review-state metadata. Required document-level patches applied before promotion. Prior next-wave self-review also found: (1) TDD Test List row 1 grep `^## Chart C` is off-by-one heading depth vs. actual storyboard `^### Chart C`; literal pattern returns 0 instead of 4. (2) AC #5 (cross-provider review) unmet without Codex+Gemini live evidence. (3) Chart-rendering code-home unspecified — Files-to-Change marks `digitalmodel/**` out of scope but storyboard pseudocode reuses `report_template.py` which lives there; entry-point path needs naming. (4) Brochure-asset target `docs/reports/gtm/assets/` does not yet exist. (5) Caption draft for C1 cites three of four inherited standards; API RP 1111 omitted without justification despite shallow-S-lay job inheriting it. **Positive verification (not a finding):** Shallow Water Barge headline-number claim ("100% pass rate across 30 cases") matches `vessel_comparison_matrix.json` exactly. |
+| Codex (live canonical rerun, 2026-04-29) | MINOR | `scripts/review/results/2026-04-29-plan-2555-codex.md`: no critical/high findings; document-level fixes requested for generated-asset legal scan coverage, planning-only vs brochure-ready wording, C4 citation completeness, brand palette re-confirmation, and C1 `108 cases` recomputation. Safe textual patches applied to plan/storyboard; live Gemini evidence still required before status promotion under the current AC. |
+| Gemini (live canonical rerun, 2026-04-29) | MINOR | `scripts/review/results/2026-04-29-plan-2555-gemini.md`: conditional plan-review readiness if live Claude and Codex artifacts are present; requested pseudocode fixes for C4 Markdown input handling, export-before-legal-scan ordering, and C4 row-by-row standards validation. Pseudocode patches applied after review. |
 
-**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. Review evidence is still incomplete, so the plan stays `draft`. This patch wave resolves the document-level MINOR findings by correcting the readiness checks, naming the non-`digitalmodel/` render entry point, locking the brochure asset home, and clarifying provider-unavailable fallback plus headline-number verification scope; live provider artifacts are still required before any status escalation.
+**Overall result:** READY-FOR-`status:plan-review` after this document patch wave. Cross-provider live-evidence gate (AC §213) is now satisfied with three canonical live MINOR verdicts: Claude, Codex, and Gemini (all 2026-04-29). User approval remains required to flip `status:plan-review` → `status:plan-approved`; implementation/rendering/outbound work remains gated.
 
 **Remaining tasks for the next permitted lane:**
-- Obtain live Gemini and/or Codex review artifacts so AC §197's review-evidence requirement can be satisfied under the clarified fallback wording.
-- If reviewers reject `docs/reports/gtm/assets/` as the brochure asset home, update the plan/storyboard with the approved replacement before implementation.
-- During implementation, create `scripts/gtm/render_brochure_charts.py` and `docs/reports/gtm/assets/` exactly as specified here; neither is created in this planning-only patch wave.
+- Promote toward `status:plan-review` only after repo/GitHub label reconciliation confirms this patched plan plus the three live canonical artifacts are committed/pushed and no unrelated agent work is mixed in.
+- During the later implementation slice, create `scripts/gtm/render_brochure_charts.py` and `docs/reports/gtm/assets/` exactly as specified here; neither is created in this planning-only patch wave.
 
 Revisions made based on review:
 - Fixed the TDD heading-depth check from `^## Chart C` to `^### Chart C`.
-- Clarified the provider-review acceptance criterion and documented the permitted unavailable-provider fallback.
+- Clarified the provider-review acceptance criterion and documented the permitted unavailable-provider fallback (subsequently tightened — see next-wave patch row below).
 - Named the future non-`digitalmodel/` render entry point as `scripts/gtm/render_brochure_charts.py` and locked brochure assets to `docs/reports/gtm/assets/` unless review rejects that home.
 - Added an explicit acceptance criterion requiring the storyboard to mark which headline numbers are verified now versus regenerated later.
+
+**Next-wave patch (2026-04-29, planning-only lane — `nextwave-followup-plan-patch-2555-20260429-1446.md`):**
+- **Tightened cross-provider AC** so UNAVAILABLE provenance is NOT sufficient for `status:plan-review` for any of the three providers; required evidence is Claude + Codex + Gemini *live* verdicts (each APPROVE or MINOR). Reverses the earlier "permitted fallback" clause that admitted Claude + 1 live + 1 UNAVAILABLE-documented.
+- **Added pseudocode mkdir gate** for `docs/reports/gtm/assets/` — render aborts cleanly via `assert exists(...)` if the asset directory is missing; directory creation belongs to the follow-on implementation-slice plan, not this artifact.
+- **Added pseudocode standards-citation completeness check** so every inherited standard from upstream JSON `_references` either appears in caption.standards or is recorded in `C.omission_rationale` (defensibility-of-claims rule covering the API RP 1111 concern).
+- **Added two acceptance criteria** binding the asset-directory gate and the caption-completeness/omission-rationale rule at plan-AC level.
+- Verified during this patch wave: Finding 1 (TDD grep pattern) was already corrected to `^### Chart C` by a prior wave (see Test List row 1 in §"TDD Test List"). Finding 3 (rendering home) was already named to `scripts/gtm/render_brochure_charts.py` in §"Resource Intelligence Summary", §"Files to Change", and §"Acceptance Criteria". Finding 5 (API RP 1111 omitted) was already cited in storyboard C1 caption (line 82); this patch enforces the rule at plan-AC level.
+- Patch lane intentionally did NOT (a) edit the storyboard/report files, (b) drive cross-provider fanout, (c) mutate any GitHub label, comment, or status, (d) apply `status:plan-review` or `status:plan-approved`. Cross-provider AC remains unmet and the plan stays `draft`.
 
 Review evidence: `scripts/review/results/2026-04-29-plan-2555-nextwave-{claude,codex,gemini}.md` (this wave); canonical-fanout artifacts at `…/2026-04-29-plan-2555-{claude,codex,gemini}.md` (no `-nextwave` suffix) reserved for a permitted-lane re-run.
 
@@ -234,11 +256,11 @@ Review evidence: `scripts/review/results/2026-04-29-plan-2555-nextwave-{claude,c
 ## Risks and Open Questions
 
 - **Risk: representative-class data may be miscommunicated as named-vessel data.** Mitigation: storyboard mandates a "Scope & Disclosure" line on every chart caption stating the data is representative of vessel classes, not measured telemetry of any named vessel; legal scan gate before export.
-- **Risk: charts that look "good enough" get sent to contractors without legal-scan completion.** Mitigation: acceptance criteria binds `scripts/legal/legal-sanity-scan.sh` as a hard gate; sibling #2556 (brochure-send) must verify the gate before transmission.
+- **Risk: charts that look "good enough" get sent to contractors without legal-scan completion.** Mitigation: acceptance criteria binds `scripts/legal/legal-sanity-scan.sh` as a hard gate in a mode that covers actual generated collateral/caption artifacts, not only textual diffs; sibling #2556 (brochure-send) must verify the gate before transmission.
 - **Risk: chart pack drifts from upstream demo numbers when demos rerun.** Mitigation: chart inputs are explicit JSON paths; rerun-and-regenerate is single-step. Storyboard documents the regen contract.
 - **Risk: contractor-facing charts overclaim vessel capabilities ACE has not validated against client engagements.** Mitigation: caption template surfaces "screening-grade analysis envelope" framing — never "we have built and operated" framing.
 - **Risk: sibling #2554 contractor matrix may add segments (e.g., FOWT installation vessels) that the existing 4-class data does not cover.** Mitigation: storyboard's traceability matrix flags coverage gaps; expansion to new vessel classes is gated on #1799 closure, not on this plan.
-- **Risk: Codex review-runner regression** (per memory: codex-cli stdin-hang and sandbox-no-execution issues) **may block adversarial review.** Mitigation: wait for clean Codex evidence rather than self-approve; if blocked, document with same provenance pattern used in `aces-2`/`aces-3`/`aces-4` (Codex UNAVAILABLE annotated) and rely on Claude + Gemini cross-coverage.
+- **Risk: Codex review-runner regression** (per memory: codex-cli stdin-hang and sandbox-no-execution issues) **may block adversarial review.** Mitigation: live Codex evidence is required before any status escalation per the tightened AC §209 — Claude + Gemini cross-coverage does NOT satisfy the cross-provider gate when Codex is blocked. If Codex CLI 0.124.0 stdin-hang or sandbox-execution restrictions persist, escalate to the operator for a host-level pin or downgrade per `feedback_codex_cli_0_124_upstream_regression.md` (#2479). Document the UNAVAILABLE provenance for audit, but treat the plan as `draft` until a permitted lane on a working host produces the canonical live artifact at `scripts/review/results/2026-04-29-plan-2555-codex.md`.
 - **Open:** Should chart pack default to a 4-class scope (existing data) or wait for #1799 to expand to 8-12 classes? Default in this plan: ship 4-class to unblock #2556; #1799 expansion is a follow-on.
 - **Open:** Should rendered chart assets live under `docs/reports/gtm/` (workspace-hub) or `digitalmodel/examples/demos/gtm/output/`? Default: brochure-bound assets live under `docs/reports/gtm/` so they decouple from demo regeneration. Demo HTML reports continue to embed their hero charts as before.
 

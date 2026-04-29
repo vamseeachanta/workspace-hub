@@ -61,7 +61,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "We screened 180 deepwater mudmat installation cases against a Seven Borealis-class envelope overnight, and 300 rigid-jumper cases including a 50 mm tie-in alignment phase — both as auditable HTML." Source: `digitalmodel/examples/demos/gtm/output/demo_03_*.html`, `demo_05_*.html`.
 - **cannot_claim_yet.** Vessel-specific RAOs; full DP envelope at landing; named-Subsea7-project case studies (we hold no such public license).
 - **outreach_priority.** **High** — Tier-1 fit + named-vessel anchor in our shipped demo input.
-- **private_route.** external (LinkedIn-routed; no detail in this repo).
+- **private_route.** omitted-public-artifact (details intentionally absent from this public repo).
 
 ### Target 2 — TechnipFMC (Subsea)
 
@@ -78,7 +78,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "DNV-ST-F101 / API RP 1111 / PD 8010-2 wall-thickness comparison across 72 cases for an 8″–20″ portfolio at concept stage."
 - **cannot_claim_yet.** iEPCI integration depth; named-TechnipFMC project work; vessel-specific motion analysis without their RAOs.
 - **outreach_priority.** **High** — Tier-1 fit; even without a vessel-anchored demo match, Demo 1 + Demo 2 are credible anchors.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 3 — Saipem
 
@@ -95,7 +95,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "60-case shallow-water S-lay screening across 2 barge classes × 5 pipe sizes × 6 depths" (Demo 4); "180-case deepwater mudmat installation against Large-CSV / Medium-CSV envelopes" (Demo 3).
 - **cannot_claim_yet.** Castorone-specific RAOs; named-Saipem project case studies.
 - **outreach_priority.** **High**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 4 — McDermott International
 
@@ -112,7 +112,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "60-case S-lay screening, including 8″–24″ pipe range, in self-contained HTML — no proprietary toolchain to install for inspection."
 - **cannot_claim_yet.** Vessel-specific dynamics under DB101 RAOs; named-McDermott project work.
 - **outreach_priority.** **High** — GoM proximity, named-vessel anchor in [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799).
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 5 — Allseas
 
@@ -129,7 +129,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Every numeric in the screening report cites the code clause it came from." Methodology proof: `.claude/rules/calc-citation-contract.md` + `digitalmodel/src/digitalmodel/citations/schema.py`.
 - **cannot_claim_yet.** Pioneering-Spirit-class single-lift dynamics; vessel-specific motion analysis.
 - **outreach_priority.** **High**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 6 — Heerema Marine Contractors
 
@@ -146,7 +146,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "180-case mudmat install screening across 5 Hs values per case — overnight HTML report."
 - **cannot_claim_yet.** Sleipnir-/Thialf-specific RAOs; HLV-specific DP envelope.
 - **outreach_priority.** **High**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 7 — Boskalis (Subsea Services)
 
@@ -163,7 +163,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Shallow-water S-lay screening with overbend / sagbend / tension / stinger-departure outputs in a single HTML."
 - **cannot_claim_yet.** Boskalis-specific vessel motion data.
 - **outreach_priority.** **High**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 8 — Van Oord
 
@@ -180,7 +180,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Shallow-water lay screening for the Stork-class envelope" (Demo 4); "explicit boundary on what oil-and-gas mooring expertise transfers to floating wind" (FOWT scope note).
 - **cannot_claim_yet.** Full IEC 61400-3 DLC execution; coupled aero-hydro-servo-elastic time-domain; certification-grade output.
 - **outreach_priority.** **Medium** — wind segment best contacted *after* the FOWT worked example (OC4-DeepCwind 1-pager, `outreach-candidate-briefs-2026-04-28.md` §4.3) ships. Pipelay segment can lead today.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 9 — DEME Offshore
 
@@ -197,7 +197,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Hs sensitivity sweep across mudmat sizes and water depths" (Demo 3 transferable framing).
 - **cannot_claim_yet.** Wind-foundation-specific dynamics; named-DEME project work.
 - **outreach_priority.** **Medium** (defer until FOWT worked example ships).
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ---
 
@@ -218,7 +218,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "300-case rigid-jumper install screening — including the 50 mm tie-in alignment phase."
 - **cannot_claim_yet.** Skandi-class-specific RAOs; named-DOF project work.
 - **outreach_priority.** **High** — Tier-2 fit, named-segment match.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 11 — Bourbon Offshore
 
@@ -235,7 +235,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Self-contained HTML reports — your engineers spot-check the calc surface without installing proprietary toolchains" (Demo 4 framing applies broadly).
 - **cannot_claim_yet.** Vessel-specific RAOs; named-Bourbon project work.
 - **outreach_priority.** **Medium**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 12 — Sapura Energy
 
@@ -252,7 +252,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Shallow-water S-lay screening — barge selection across pipe size and water depth."
 - **cannot_claim_yet.** Sapura-Constructor-specific dynamics; named-Sapura project work.
 - **outreach_priority.** **High** (named-vessel anchor in [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799)).
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 13 — Seaway7 (Subsea7 Renewables)
 
@@ -269,7 +269,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Mooring concept screening at pre-FEED level using the same OrcaFlex workflow as deepwater oil-and-gas mooring — with explicit gaps vs. IEC DLCs flagged" (FOWT scope note).
 - **cannot_claim_yet.** Coupled aero-hydro-servo-elastic verification; certification-grade output.
 - **outreach_priority.** **Medium** (defer until FOWT worked example ships).
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 14 — Cadeler
 
@@ -303,7 +303,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "300-case rigid-jumper install screening including the 50 mm tie-in alignment phase, which is where day-rate bleed actually happens."
 - **cannot_claim_yet.** Q-class-specific RAOs; named-Helix project work; well-intervention dynamics specifically.
 - **outreach_priority.** **High** (GoM proximity + tie-in alignment hook).
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ---
 
@@ -324,7 +324,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Self-contained HTML screening reports — overnight turnaround, code-clause-cited."
 - **cannot_claim_yet.** DeepOcean-vessel-specific dynamics; named-DeepOcean project work.
 - **outreach_priority.** **Medium**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 17 — Jan De Nul
 
@@ -341,7 +341,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **can_say_now.** "Concept-stage screening + explicit transfer-and-gap framing for offshore wind work."
 - **cannot_claim_yet.** Voltaire-specific dynamics; named-JDN project work; full IEC DLC.
 - **outreach_priority.** **Medium**.
-- **private_route.** external.
+- **private_route.** omitted-public-artifact.
 
 ### Target 18 — Eidesvik Offshore
 
@@ -412,7 +412,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 
 ## Summary Counts
 
-- **Total target rows:** 22 (≥ 20 required by [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #1).
+- **Total scaffold rows:** 22.
+- **Live usable targets:** 19. Deprecated/deferred rows are excluded from the ≥20 acceptance count, so this does **not** yet satisfy the ≥20 live-target requirement unless the user explicitly accepts 19 live targets plus 3 deferred/deprecated rows for this wave.
 - **Live targets (priority High / Medium / Low):** 19. Deprecated/deferred: 3 (Solstad, EMAS, Cadeler-deferred).
 - **Targets with at least one shipped-demo anchor:** 17 of 19 live (Demo 3 / 4 / 5 mapping).
 - **Targets in `outreach_priority: High`:** 10 (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix). Each carries a named-vessel anchor and a demo-mapping.
@@ -425,7 +426,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 
 ## Matrix-Fill Execution Backlog (follow-up issues to open)
 
-Per [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #4, follow-up issues should be opened for high-value targets with insufficient evidence depth before the brochure-send lane ([#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556)) consumes this matrix. **The lane that produced this scaffold has issue-mutation permissions but is electing not to open issues until the user reviews the matrix structure**, to avoid creating issues against a draft that may pivot during review.
+Per [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #4, follow-up issues should be opened for high-value targets with insufficient evidence depth before the brochure-send lane ([#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556)) consumes this matrix. **BLOCKER for `status:plan-review`: required follow-up issues for High-priority rows with insufficient deep-link/pain-point evidence are not yet opened.** The lane that produced this scaffold intentionally stopped before issue creation to avoid mutating backlog against a draft that may pivot during review.
 
 Recommended issues to file after user review:
 
