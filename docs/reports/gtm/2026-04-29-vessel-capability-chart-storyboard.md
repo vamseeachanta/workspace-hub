@@ -150,7 +150,7 @@ The four charts below cover all four issue acceptance criteria. C1, C2, C3 are t
 - **Deferred to render slice:** the exact utilisation percentages and the identity of the largest delta pair must be recomputed from the latest matrix before export.
 
 **Caption draft**
-> Crane-utilisation margin at 1500 m water depth for the 50 / 100 / 200 te mudmat installation cases. Both vessel classes pass go/no-go, but margin matters: lower utilisation reduces sensitivity to weight growth, rigging revisions, and weather stand-by. Vessel crane curves are representative-class. Per the DNV-RP-H103 dynamic amplification framework and the DNV-ST-N001 marine-operations governing-load envelope (both inherited from `csv_hlv_vessels.json` `_references`); full lift sensitivity requires project-specific RAO/sea-state inputs.
+> Crane-utilisation margin at 1500 m water depth for the 50 / 100 / 200 te mudmat installation cases. Both vessel classes pass go/no-go, but margin matters: lower utilisation reduces sensitivity to weight growth, rigging revisions, and weather stand-by. Vessel crane curves are representative-class. Per the DNV-RP-H103 dynamic amplification framework, the DNV-ST-N001 marine-operations governing-load envelope, and DNV-OS-H101 general marine-operations criteria (all three inherited from `csv_hlv_vessels.json` `_references`); full lift sensitivity requires project-specific RAO/sea-state inputs.
 
 **Evidence & legal scope**
 - Both vessels are representative-class; disclosure in source JSON.

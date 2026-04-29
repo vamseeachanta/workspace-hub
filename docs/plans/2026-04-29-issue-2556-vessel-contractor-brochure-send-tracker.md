@@ -80,8 +80,8 @@ What this plan must produce that does not exist yet:
 - EXISTS: `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` (5,157 bytes, 2026-04-02) — pre-existing template file (retire path declared in §Files to Change)
 - EXISTS: `docs/gtm/installation-analysis-method-note.md` (17,720 bytes, 2026-04-22) — methodology note for brochure outline §3.3 Chart C
 - EXISTS: `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` — current #2555 deliverable (storyboard only; chart artifacts pending)
-- MISSING (this plan creates): `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md`
-- MISSING (this plan creates): `docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md`
+- EXISTS (created with this draft plan, 2026-04-29 11:51, 12,034 bytes, git-tracked): `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md`
+- EXISTS (created with this draft plan, 2026-04-29 11:51, 12,510 bytes, git-tracked): `docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md`
 - MISSING (this plan creates, downstream of approval): `docs/strategy/gtm/vessel-installation-contractors/brochure-source.md`
 - MISSING (this plan creates, downstream of approval): `docs/gtm/intake/send-tracker.public.yaml`
 - MISSING (gitignored, NEVER tracked): `docs/gtm/intake/send-tracker.private.yaml`

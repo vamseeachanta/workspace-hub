@@ -25,12 +25,14 @@
 ### Standards
 | Standard | Status | Source |
 |---|---|---|
-| DNV-ST-F101 (Submarine Pipeline Systems) | referenced (Demo 4 inputs) | `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json:5` |
-| DNV-RP-H103 (Marine Operations modelling) | referenced (Demos 3/5 inputs) | `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json:5` |
-| DNV-ST-N001 (Marine Operations & Marine Warranty) | referenced (Demos 3/5 inputs) | `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json:6` |
-| API RP 1111 (Offshore Hydrocarbon Pipelines) | referenced (Demo 4 inputs) | `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json:7` |
+| DNV-ST-F101 (Submarine Pipeline Systems, 2021) | referenced (Demo 4 inputs) | `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json:5` |
+| DNV-OS-F101 (Submarine Pipeline Systems, 2013) | inherited from upstream JSON; intentionally omitted from chart captions because DNV-ST-F101 (2021) is the controlling/current citation for shallow-pipelay framing — see C1 caption omission rationale (storyboard line 82) | `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json:6` |
+| DNV-RP-H103 (Marine Operations modelling, 2011) | referenced (Demos 3/5 inputs) | `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json:5` |
+| DNV-ST-N001 (Marine Operations & Marine Warranty, 2021) | referenced (Demos 3/5 inputs) | `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json:6` |
+| DNV-OS-H101 (Marine Operations, General, 2011) | referenced (Demos 3/5 inputs) — covers general marine-operations governing-load envelope alongside DNV-ST-N001 | `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json:7` |
+| API RP 1111 (Offshore Hydrocarbon Pipelines, 2015) | referenced (Demo 4 inputs) | `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json:7` |
 
-Standards are already cited in the upstream data files. This plan does not introduce new standards work; it inherits the existing chain. Citation contract `.claude/rules/calc-citation-contract.md` remains binding for any *new* numeric constants used by future brochure annotations.
+Standards are already cited in the upstream data files. This plan does not introduce new standards work; it inherits the existing chain. Six distinct standards span the two source JSONs; five are cited in chart captions and DNV-OS-F101 is intentionally omitted with the rationale recorded in the table row above and at storyboard C1 caption (line 82). Citation contract `.claude/rules/calc-citation-contract.md` remains binding for any *new* numeric constants used by future brochure annotations.
 
 ### LLM Wiki pages consulted
 - No relevant wiki pages — capability charts are GTM artifacts, not domain knowledge promotion. Wiki promotion is explicitly out-of-scope per `.claude/rules/calc-citation-contract.md` and the deny-list policy on vendor-derivative content.
