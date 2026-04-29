@@ -89,3 +89,8 @@
 - Titles (sample): Elements ingest catalog — digitalmodel-q, Elements ingest catalog — doris-universi
 - Pages created: wiki/sources/<slug>.md for each record
 - Index updated: wiki/index.md
+
+## [2026-04-29] ingest | Doris University metadata-first tranche 1 (#2542)
+- Pages created: 7 source pointers and 8 curated concept shells.
+- Standards resolver: `engineering-standards/wiki/standards/api-17e.md` public-metadata-only stub.
+- Source of record: `/mnt/ace/doris/training`; no raw training decks, figures, full text, OCR output, or standards excerpts copied.

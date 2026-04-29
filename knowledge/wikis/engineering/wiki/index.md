@@ -1,7 +1,7 @@
 ---
 domain: engineering
 created: 2026-04-08 16:07 UTC
-last_updated: 2026-04-28
+last_updated: 2026-04-29
 page_count: 82
 source_count: 16
 ---
@@ -126,3 +126,19 @@ _No query outputs filed yet._
 
 | [[Elements ingest catalog — digitalmodel-qgis]](sources/elements-digitalmodel-qgis.md) | QGIS reusable engineering workflow/tooling data from the Elements drive. | 2026-04-28 |
 | [[Elements ingest catalog — doris-university]](sources/elements-doris-university.md) | Doris University training corpus from the Elements drive; metadata-first training/source catalog. | 2026-04-28 |
+
+| [Doris University Module 1.00 — Subsea Production Systems Overview](sources/doris-university-module-1-00-subsea-production-systems-overview.md) | Rows 1; metadata-first overview of SPS curriculum context. | 2026-04-29 |
+| [Doris University Module 1.01 — Production Control Systems](sources/doris-university-module-1-01-production-control-systems.md) | Rows 2-3; metadata-first pointer to control-system curriculum materials. | 2026-04-29 |
+| [Doris University Module 1.02 — Umbilical Systems](sources/doris-university-module-1-02-umbilical-systems.md) | Rows 4-6; metadata-first pointer to umbilical systems training materials. | 2026-04-29 |
+| [Doris University Module 1.03 — Installation/Workover Control](sources/doris-university-module-1-03-installation-workover-control.md) | Rows 7-8; metadata-first pointer to IWOCS training materials. | 2026-04-29 |
+| [Doris University Lunch and Learn — Control Systems](sources/doris-university-lunch-and-learn-control-systems.md) | Rows 13-14; metadata-first pointer to Doris-authored lunch-and-learn content. | 2026-04-29 |
+| [Doris University Lunch and Learn — Umbilical Systems](sources/doris-university-lunch-and-learn-umbilical-systems.md) | Rows 15-17; metadata-first pointer to umbilical lunch-and-learn content. | 2026-04-29 |
+| [Doris University syllabus snapshot](sources/doris-university-syllabus-snapshot.md) | Row 18; syllabus/taxonomy validation pointer. | 2026-04-29 |
+| [Subsea production system overview](concepts/subsea-production-system-overview.md) | Connects Doris University SPS overview material to reusable subsea production system concepts. | 2026-04-29 |
+| [Subsea production control system](concepts/subsea-production-control-system.md) | Metadata-first synthesis hook for production control system curriculum. | 2026-04-29 |
+| [Subsea umbilical system](concepts/subsea-umbilical-system.md) | Metadata-first synthesis hook for umbilical system curriculum. | 2026-04-29 |
+| [Installation/workover control system](concepts/installation-workover-control-system.md) | Metadata-first synthesis hook for IWOCS curriculum. | 2026-04-29 |
+| [Methanol injection analysis](concepts/methanol-injection-analysis.md) | Calculation concept placeholder; no formulas or standard-derived text extracted. | 2026-04-29 |
+| [Umbilical tube sizing and API 17E citation boundary](concepts/umbilical-tube-sizing-api-17e.md) | Calculation concept placeholder linked to API 17E public metadata stub. | 2026-04-29 |
+| [Hydrostatic pressure with depth](concepts/hydrostatic-pressure-depth.md) | Calculation concept placeholder; no formula extraction in tranche 1. | 2026-04-29 |
+| [Subsea accumulator sizing](concepts/subsea-accumulator-sizing.md) | Calculation concept placeholder; API 17G/API 16D resolution deferred until public metadata verified. | 2026-04-29 |

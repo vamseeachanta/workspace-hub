@@ -10,3 +10,8 @@
 - Titles (sample): Elements ingest catalog — doris-codes-sp
 - Pages created: wiki/sources/<slug>.md for each record
 - Index updated: wiki/index.md
+
+## [2026-04-29] ingest | DORIS Codes metadata-only standards pointer pass (#2543)
+- Pages created: `sources/doris-codes-specs-faceted-index.md`, `sources/doris-techstreet-drop.md`, `sources/doris-company-specs.md`, `sources/doris-deepstar.md`.
+- Source of record: `/mnt/ace/doris/codes`; no raw standards text copied or extracted.
+- Notes: BV publisher stub deferred pending public revision/source/date evidence; #2534 cleanup remains blocked.
