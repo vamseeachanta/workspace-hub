@@ -59,15 +59,15 @@ Each chart in the brochure source uses a labelled placeholder (`{{CHART_A}}`, `{
 
 A 5-row table that matches `docs/strategy/gtm/vessel-installation-contractors/` to demo IDs:
 
-| Study | Cases | Source |
+| Study | Cases | Source (canonical filename, ctrl-clickable) |
 |---|---|---|
-| Demo 1 — freespan / VIV | 680 | `digitalmodel/examples/demos/gtm/demo_01` |
-| Demo 2 — wall thickness comparison (API/DNV/PD8010) | 72 | `digitalmodel/examples/demos/gtm/demo_02` |
-| Demo 3 — mudmat installation screening | 180 | `digitalmodel/examples/demos/gtm/demo_03` |
-| Demo 4 — shallow-water pipelay screening | 60 | `digitalmodel/examples/demos/gtm/demo_04` |
-| Demo 5 — rigid jumper installation | 300 | `digitalmodel/examples/demos/gtm/demo_05` |
+| Demo 1 — freespan / VIV | 680 | `digitalmodel/examples/demos/gtm/demo_01_dnv_freespan_viv.py` |
+| Demo 2 — wall thickness comparison (API/DNV/PD8010) | 72 | `digitalmodel/examples/demos/gtm/demo_02_wall_thickness_multicode.py` |
+| Demo 3 — mudmat installation screening | 180 | `digitalmodel/examples/demos/gtm/demo_03_deepwater_mudmat_installation.py` |
+| Demo 4 — shallow-water pipelay screening | 60 | `digitalmodel/examples/demos/gtm/demo_04_shallow_water_pipelay.py` |
+| Demo 5 — rigid jumper installation | 300 | `digitalmodel/examples/demos/gtm/demo_05_deepwater_rigid_jumper_installation.py` |
 
-Total of these = 1,292, matching the `capability-summary.md` proof line. Reviewers can verify the case counts directly against the referenced demo directories.
+Total of these = 1,292, matching the `capability-summary.md` proof line. Each filename above resolves directly on disk under `digitalmodel/examples/demos/gtm/` — verified via `ls -la` 2026-04-29 (file sizes 44,438 / 50,067 / 45,472 / 60,376 / 42,881 bytes respectively). The plan's `brochure_demo_path_full_filenames` TDD row enforces this canonical form against the brochure source at gate time. `demo_03` additionally has a `demo_03_requirements.md` companion in the same directory, but the brochure cites the executable `.py` file as the case-count provenance source.
 
 ### 3.5 Engagement tiers + pricing
 

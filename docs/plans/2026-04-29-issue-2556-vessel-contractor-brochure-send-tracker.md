@@ -1,6 +1,6 @@
 # Plan for #2556: Vessel-Contractor Brochure and Outbound Send Tracker
 
-> **Status:** draft (plan-revision r2 — 2026-04-29 next-wave-autofeed-followup; ready for re-review, NOT for approval)
+> **Status:** draft (plan-revision r3 — 2026-04-29 next-wave-autofeed-followup; ready for re-review, NOT for approval. r3 lands the outline body fix for Claude r1 finding #5 — canonical demo filenames now cited in `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md` §3.4 — and reinforces dependency-on-#2555 + no-send legal gate language as called out below)
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2556
@@ -89,6 +89,18 @@ What this plan must produce that does not exist yet:
 **Gap proofs:**
 - `ls /mnt/local-analysis/workspace-hub/docs/strategy/gtm/vessel-installation-contractors/` returns ONE file: `email-templates.md` (5,157 bytes, 2026-04-02). MISSING: `README.md`, `prospect-list.md`, `value-proposition.md`, `capability-summary.md` — confirms #1669 Phase 1 is partial: only the template doc exists, and it is the older copy (the `docs/gtm/email-outreach-templates.md` 244-line doc is the more recent and richer version). Plan §Files to Change declares the retire-and-redirect disposition for the existing canonical-folder file.
 - `ls /mnt/local-analysis/workspace-hub/docs/reports/gtm/` returns the #2555 storyboard only — no chart artifact files. Confirms #2555 has not yet shipped chart deliverables; this plan's `outline_chart_slots_match_2555_artifacts` check is hard-blocked behind #2555 closure.
+
+**Demo / proof path canon (verified on disk 2026-04-29 via `ls -la digitalmodel/examples/demos/gtm/`).** These are the only acceptable strings the brochure source and outline may cite for case-count provenance — no shorthand. Each is `git ls-files`-tracked under `digitalmodel/examples/demos/gtm/`:
+
+| Demo | Canonical filename | Bytes | Cases cited in brochure |
+|---|---|---|---|
+| 1 | `digitalmodel/examples/demos/gtm/demo_01_dnv_freespan_viv.py` | 44,438 | 680 |
+| 2 | `digitalmodel/examples/demos/gtm/demo_02_wall_thickness_multicode.py` | 50,067 | 72 |
+| 3 | `digitalmodel/examples/demos/gtm/demo_03_deepwater_mudmat_installation.py` | 45,472 | 180 |
+| 4 | `digitalmodel/examples/demos/gtm/demo_04_shallow_water_pipelay.py` | 60,376 | 60 |
+| 5 | `digitalmodel/examples/demos/gtm/demo_05_deepwater_rigid_jumper_installation.py` | 42,881 | 300 |
+
+Sum 680+72+180+60+300 = 1,292 — matches the `capability-summary.md` "1,292 parametric engineering cases screened overnight" headline number. Reviewers verify per-demo case counts by grepping the literal numeric inside the cited `.py` file or its generated output under `digitalmodel/examples/demos/gtm/output/`. The TDD rows `brochure_demo_path_full_filenames` and `brochure_proof_count_provenance` enforce both the canonical-filename form and the per-demo numeric provenance at gate time.
 
 <!-- Source count: 6 distinct sources (issue body + #2554/#2555/#1669/#2016 + BUSINESS_BRAIN + 9 GTM files including installation-analysis-method-note.md added in r2). Meets ≥3 requirement. -->
 
@@ -240,6 +252,20 @@ Plan-level acceptance:
 - [ ] Adversarial review artifacts posted under `scripts/review/results/` from at least two providers; no unresolved MAJOR.
 - [ ] No emails are sent and no contact details land in any public file as part of this issue's execution slice.
 
+### No-send legal gate (explicit, plan-binding)
+
+This issue produces collateral and a tracker schema **only**. It does **not** authorize, schedule, or execute any outbound send. The following are absolute, plan-binding constraints — violation invalidates the plan-approved status and forces a fresh plan:
+
+1. **Zero outbound sends from this issue's execution slice.** No email, LinkedIn message, calendar invite, or other contact-bearing outbound action may be performed by any agent or human acting on this plan. The first send is gated on (a) a separately-approved sibling issue that authorizes the batch and (b) the legal-sanity gate steps below.
+2. **`scripts/legal/legal-sanity-scan.sh --diff-only` must exit 0** against the brochure-source diff before the brochure file is committed. This is encoded in the `legal_sanity_scan` TDD row.
+3. **Every numeric / standards / methodology claim in the brochure must cite a repo path or an external public source.** Encoded in `brochure_provenance_check` + `brochure_proof_count_provenance`. The Demo / proof path canon table above defines the only acceptable form for demo-case-count citations.
+4. **Public send-tracker file must contain zero contact-name, contact-email, contact-phone, or LinkedIn-URL fields.** Encoded in `send_tracker_pii_split`. The private companion file is gitignored and never committed.
+5. **No row in the public tracker may carry `send_state=SENT` until `last_legal_scan_utc` is populated** for that row. Documentation-surface-only in this plan; runtime enforcement is the named follow-up issue under §Risks "runtime-enforcement follow-up".
+6. **`Depends on: #2555` is a hard gate.** This plan cannot promote past `status:plan-review` until #2555 lands real chart artifacts under `docs/reports/gtm/charts/`. The TDD row `outline_chart_slots_match_2555_artifacts` is the verification surface; the storyboard-only variant cannot substitute.
+7. **No personalization-hook content sourced from `outreach-candidate-briefs-2026-04-28.md` may land in the public tracker without passing the legal-sanity scan first.** Hooks may contain scraped material that has not yet been legally cleared.
+
+If any of constraints 1–7 is violated by an execution slice, the operator must (i) revert the offending commit, (ii) drop `status:plan-approved`, and (iii) re-run cross-provider review before any further work proceeds.
+
 ---
 
 ## Adversarial Review Summary
@@ -262,11 +288,20 @@ Per `docs/BUSINESS_BRAIN.md` lines 89–97, promoting to `status:plan-approved` 
 | #2 — 1,292-cases proof claim shipped without provenance check | MINOR | Added `brochure_proof_count_provenance` TDD row that grep-traces each per-demo number to `digitalmodel/examples/demos/gtm/demo_0X_*.py` |
 | #3 — `outline_chart_slots_match_2555` unverifiable until #2555 ships chart artifacts | MAJOR / blocking | Front-matter declares `Depends on: #2555`. TDD row split into `_storyboard` (passable today) and `_artifacts` (hard-blocked behind #2555 closure; gates promotion past `status:plan-review`) |
 | #4 — `installation-analysis-method-note.md` cited in outline §3.3 but missing from plan's Documents-consulted | MINOR | Added to §Resource Intelligence "Documents consulted" and "File existence" |
-| #5 — demo-path strings in outline §3.4 do not match real filenames | MINOR | Added `brochure_demo_path_full_filenames` TDD row that requires canonical filenames; outline body fix is downstream of plan-approval (cannot edit outline from this patch lane) |
+| #5 — demo-path strings in outline §3.4 do not match real filenames | MINOR | r2: Added `brochure_demo_path_full_filenames` TDD row that requires canonical filenames; outline body fix was deferred. **r3 (this revision):** outline §3.4 body now cites canonical filenames (`demo_01_dnv_freespan_viv.py`, `demo_02_wall_thickness_multicode.py`, `demo_03_deepwater_mudmat_installation.py`, `demo_04_shallow_water_pipelay.py`, `demo_05_deepwater_rigid_jumper_installation.py`) — verified on disk via `ls -la digitalmodel/examples/demos/gtm/`. The TDD row's grep check now passes against the outline as edited. **Status: RESOLVED.** |
 | #6 — disposition of canonical-folder `email-templates.md` undeclared | MAJOR / blocking | New row in §Files to Change: "Modify (retire+redirect)" replaces body with deprecation header pointing at `docs/gtm/email-outreach-templates.md` as single source-of-truth; preserves history without leaving a duplicate-source trap |
 | #7 — `send_tracker_state_enum` / `_legal_gate` deferred to future issue but ACs treat them as in-scope | MINOR | Acceptance Criteria rephrased to verify documentation-surface only (schema doc + grep checks); runtime enforcement explicitly deferred and called out in §Risks as a follow-up to file before any human-initiated outbound send executes |
 
 **Provider coverage after r2:** Unchanged. Codex remains UNAVAILABLE (#2479 + this session's permission gate); Gemini remains UNAVAILABLE (permission gate). r2 is a single-author plan-revision pass, NOT a re-review. The plan is ready for re-review only — not for `status:plan-review` and definitely not for `status:plan-approved`. Operator must run `bash scripts/review/plan-review-fanout.sh docs/plans/2026-04-29-issue-2556-vessel-contractor-brochure-send-tracker.md` from an un-sandboxed terminal (after `npm install -g @openai/codex@0.123.0` per #2479) to land real Codex + Gemini artifacts before the Business-Brain consensus criterion can be met.
+
+**r3 delta (2026-04-29 next-wave-autofeed-followup, this revision):**
+
+- **Outline body fix landed for finding #5.** `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md` §3.4 now cites canonical filenames (`demo_01_dnv_freespan_viv.py`, `demo_02_wall_thickness_multicode.py`, `demo_03_deepwater_mudmat_installation.py`, `demo_04_shallow_water_pipelay.py`, `demo_05_deepwater_rigid_jumper_installation.py`). Verified each filename resolves on disk via `ls -la digitalmodel/examples/demos/gtm/`. The `brochure_demo_path_full_filenames` TDD row's grep check passes against the outline as edited.
+- **Demo / proof path canon block added in §Resource Intelligence Evidence.** Lists each filename + byte-size + cases-cited so reviewers do not have to cross-section-hop to verify.
+- **No-send legal gate block added in §Acceptance Criteria.** Encodes the seven plan-binding constraints (zero outbound sends, legal-sanity scan exit-0, provenance citation rule, public-tracker PII rule, `last_legal_scan_utc` rule, `Depends on: #2555` hard gate, personalization-hook clearance rule). Promotes language that was previously scattered across §Risks + §Pseudocode + Acceptance Criteria into one auditable block.
+- **`Depends on: #2555` reinforced** as constraint #6 in the no-send gate. Front-matter dependency declaration unchanged.
+
+**Provider coverage after r3:** Still UNCHANGED. Same UNAVAILABLE status for Codex and Gemini. r3 is a single-author Claude pass like r2; it does **not** establish multi-provider consensus and does **not** change the plan's `status:draft` posture. The blockers from the 17:12 re-review (multi-provider consensus, #2555 closure gate, runtime-enforcement follow-up issue, user decisions on brochure formats / tracker write-frequency) all remain in force exactly as before.
 
 ---
 
