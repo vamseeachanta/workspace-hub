@@ -1,10 +1,10 @@
 # Plan for #2554: feat(gtm): weekly vessel contractor outreach matrix for April target
 
-> **Status:** draft
+> **Status:** evidence-filled; awaiting live re-review / promotion decision
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2554
-> **Review artifacts:** scripts/review/results/2026-04-29-plan-2554-claude.md | ...-codex.md | ...-gemini.md (PENDING — not yet generated)
+> **Review artifacts:** scripts/review/results/2026-04-29-plan-2554-claude.md | ...-codex.md | ...-gemini.md; post-fill live review: `scripts/review/results/2026-04-30-plan-2554-hermes-delegate.md`
 > **Self-reference slug:** `2026-04-29-issue-2554-vessel-contractor-outreach-matrix`
 
 ---
@@ -98,7 +98,7 @@ Not applicable. `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` �
 
 ## Deliverable
 
-A draft repo-tracked vessel-contractor outreach scaffold at `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` that ranks the current vessel-installation contractor/operator candidate set by outreach fit, attaches at least one public corporate-root evidence URL per live target, maps each live target to one or more shipped ACE demos as a proof anchor where available, and keeps individual contact details out of the public artifact. Owner-approved defaults have been applied: Hornbeck Offshore Services and Edison Chouest Offshore were added as fully populated GoM vessel/operator targets, Acteon remains partner-shape / non-counted for the vessel-contractor minimum, wind-only targets remain Medium/Defer pending a FOWT worked example, and the scaffold now has 20 live countable vessel/operator targets. The scaffold can feed #2556 only after deep-link/pain-point evidence blockers are completed or explicitly waived.
+A draft repo-tracked vessel-contractor outreach scaffold at `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` that ranks the current vessel-installation contractor/operator candidate set by outreach fit, attaches at least one public corporate-root evidence URL per live target, maps each live target to one or more shipped ACE demos as a proof anchor where available, and keeps individual contact details out of the public artifact. Owner-approved defaults have been applied: Hornbeck Offshore Services and Edison Chouest Offshore were added as fully populated GoM vessel/operator targets, Acteon remains partner-shape / non-counted for the vessel-contractor minimum, wind-only targets remain Medium/Defer pending a FOWT worked example, and the scaffold now has 20 live countable vessel/operator targets. The scaffold can feed #2556 only after live re-review clears #2554 and the owner explicitly approves any send.
 
 ---
 
@@ -198,12 +198,12 @@ These checks replace the standard `pytest` lines that would appear for an engine
 | Codex (live canonical rerun, 2026-04-29) | MAJOR → PARTIALLY REMEDIATED | `scripts/review/results/2026-04-29-plan-2554-codex.md`: initial promotion block found the live usable target count was 19 if deprecated/deferred rows were excluded, evidence depth/follow-up issues were incomplete, and provider-review gate still lacked a second live provider if policy requires it. Owner-approved defaults were then applied: Hornbeck + ECO were added as official-evidence GoM targets, Acteon was kept non-counted, wind-only targets were kept Medium/Defer pending [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561), and evidence-fill follow-ups [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) / [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) were opened. Count blocker is remediated; evidence-fill/re-review blocker remains before `status:plan-review`. |
 | Gemini (next-wave) | UNAVAILABLE | Lane permission did not auto-approve fanout invocation. See `scripts/review/results/2026-04-29-plan-2554-nextwave-gemini.md`. |
 
-**Overall result:** DRAFT / BLOCKED-FOR-EVIDENCE-FILL. The owner-approved default path resolved the live-count blocker and created the required follow-up issues, but `status:plan-review` is still not applied. [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) remains draft until [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) closes or the user explicitly waives remaining High-priority deep-link/pain-point evidence for this wave, followed by a live re-review showing no remaining MAJOR. [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) must not consume this matrix before that gate.
+**Overall result:** EVIDENCE-FILLED / POST-FILL REVIEW MINOR; AWAITING PROMOTION DECISION. The owner-approved default path resolved the live-count blocker and created the required follow-up issues; [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) has now filled or explicitly bounded the 12 High-priority deep-link and pain-point evidence rows. A post-fill live review is recorded at `scripts/review/results/2026-04-30-plan-2554-hermes-delegate.md` with substantive evidence/privacy findings acceptable and only residual promotion-decision risk. [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) remains blocked until final promotion/approval is applied. [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) must not consume this matrix before that gate or an explicit owner waiver + send approval.
 
 **Remaining patch tasks for the next permitted lane:**
-- Complete or explicitly waive [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) so remaining High-priority `deep_link_evidence: PENDING` placeholders are replaced with verified official fleet/project/vessel links before any send-ready claim is made.
-- Complete or explicitly waive [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) so remaining High-priority `pain_point_evidence:` inference placeholders are replaced with public fleet/project proof where available.
-- Run a permitted live re-review after evidence-fill changes; promotion requires no remaining MAJOR.
+- Decide whether to promote [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) after the post-fill review artifact (`scripts/review/results/2026-04-30-plan-2554-hermes-delegate.md`); keep send blocked until owner approval.
+- Keep [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) blocked until #2554 clears or the owner explicitly waives the dependency and approves send.
+- If reviewers reject any official-site access-boundary row (notably Subsea7), either human-verify the blocked official pages or leave the row bounded as internal-only rather than inventing third-party proof.
 
 Revisions made based on review: fixed the target-heading grep pattern; corrected the evidence model to distinguish `corporate_root_evidence` vs. `deep_link_evidence`; added a required `pain_point_evidence` slot; clarified that `UNAVAILABLE` review artifacts document provider blockage but do not satisfy the live non-Claude review gate for `status:plan-review`. Subsequent plan-only patch lane (2026-04-29 next-wave autofeed, result file `docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2554-20260429-1446.md`) added an explicit Test List + AC gate for High-priority count consistency across the scaffold body, scaffold Summary Counts block, and lane-summary file (Finding 2 of the next-wave Claude review). No outreach claims, contact data, or evidence URLs were invented; the gate is a structural consistency check only and any reconciliation of the lane-summary count from 9 → 10 must be performed by a permitted lane.
 
