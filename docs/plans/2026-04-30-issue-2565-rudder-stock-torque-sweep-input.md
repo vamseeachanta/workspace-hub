@@ -1,6 +1,6 @@
 # Plan for #2565: feat(naval-arch): rudder stock torque sweep input for typical ship
 
-> **Status:** plan-review candidate after MAJOR review remediation — implementation blocked until user approval moves #2565 to `status:plan-approved` and approval marker/label state are synchronized.
+> **Status:** completed — implemented in `digitalmodel` commit `3609b7dca981de3c6213413ddd6b404920b56f29` and closed after targeted validation + follow-up adversarial review APPROVE.
 > **Complexity:** T2
 > **Date:** 2026-04-30
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2565
@@ -364,3 +364,39 @@ No follow-up issue is created yet; create only if review/user asks to split or p
 - Complexity: **T2** — bounded new calculation module, packaged YAML, tests, docs, and output artifacts, reusing #2564 infrastructure.
 - Agent-team delegation: **not recommended** for implementation; file surface is small and shared with #2564 output patterns, so one execution lane avoids git contention.
 - Implementation blocked until plan review passes and user approval is recorded.
+
+
+## Implementation Closeout — 2026-04-30
+
+Implementation completed in `digitalmodel` commit `3609b7dca981de3c6213413ddd6b404920b56f29` after user approval via GitHub label `status:plan-approved`. Local approval marker was committed before code changes in `/mnt/local-analysis/digitalmodel-issue2565` (`b2095b4e`).
+
+Delivered files in `digitalmodel`:
+
+- `src/digitalmodel/naval_architecture/rudder_stock_torque.py`
+- `src/digitalmodel/naval_architecture/data/rudder_stock_torque_typical_ship.yml`
+- `tests/naval_architecture/test_rudder_stock_torque_sweep.py`
+- `docs/domains/marine-engineering/rudder-stock-torque-sweep.md`
+- `src/digitalmodel/naval_architecture/__init__.py` public exports
+
+Delivered output contract:
+
+- `rudder_stock_torque_sweep.csv`
+- `rudder_stock_torque_sweep.json`
+- `rudder_stock_torque_provenance.json`
+- `artifact_manifest.json`
+- required PNG/HTML charts:
+  - `rudder_stock_torque_vs_rudder_angle_by_speed`
+  - `rudder_stock_torque_vs_speed_by_rudder_angle`
+  - `scalar_normal_force_vs_rudder_angle_by_speed`
+  - `rudder_stock_torque_speed_angle_heatmap`
+
+Validation evidence:
+
+- TDD red: initial `test_rudder_stock_torque_sweep.py` run failed with missing module/YAML as expected.
+- Torque test suite: `19 passed`.
+- Targeted regression: `62 passed` for `test_maneuverability.py`, `test_yaw_moment_sweep.py`, and `test_rudder_stock_torque_sweep.py`.
+- Ruff: `All checks passed!` for new/modified Python files.
+- Smoke generation: 35 rows plus CSV/JSON/provenance/manifest and all four PNG+HTML charts.
+- Adversarial implementation review: initial MINOR findings fixed; follow-up verdict `APPROVE`.
+
+Final calculation boundary remains unchanged: preliminary constant-arm hydrodynamic rudder-stock torque and equal/opposite steering-gear holding torque only. No class/SOLAS compliance, actuator sizing, steering gear machinery sizing, or rudder stock scantling is claimed.
