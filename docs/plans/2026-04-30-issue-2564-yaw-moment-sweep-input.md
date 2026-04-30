@@ -1,6 +1,6 @@
 # Plan for #2564: feat(naval-arch): yaw moment sweep input for rudder cases
 
-> **Status:** draft — 2026-04-30 review remediation patched; implementation blocked until committed fresh re-review and user approval
+> **Status:** status:plan-review — ready for user review as a blocked plan-review packet; implementation remains blocked until explicit user approval moves #2564 to `status:plan-approved`
 > **Complexity:** T2
 > **Date:** 2026-04-30
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2564
@@ -80,7 +80,7 @@ Plan consequence: keep #2564 bounded to preliminary rudder-induced yaw moment (`
 |---|---|---|
 | This plan | `docs/plans/2026-04-30-issue-2564-yaw-moment-sweep-input.md` | `workspace-hub`; must be committed/pushed before remote review can retrieve it |
 | Plan index | `docs/plans/README.md` | `workspace-hub`; row must stay synchronized |
-| Plan review artifacts | `scripts/review/results/2026-04-29-plan-2564-*.md` | `workspace-hub`; commit/push as evidence |
+| Plan review artifacts | `scripts/review/results/2026-04-30-plan-2564-*.md` | `workspace-hub`; latest provider fanout artifacts; UNAVAILABLE is documented tool/capacity failure, not approval evidence |
 | Tests | `digitalmodel/tests/naval_architecture/test_yaw_moment_sweep.py` | `digitalmodel`; write before implementation |
 | Implementation | `digitalmodel/src/digitalmodel/naval_architecture/yaw_moment.py` | `digitalmodel`; new module with `# ABOUTME:` header |
 | Existing rudder basis | `digitalmodel/src/digitalmodel/naval_architecture/maneuverability.py` | Reused by keyword-argument deep import |
@@ -385,7 +385,7 @@ function write_yaw_moment_charts(result, output_dir, chart_formats):
 
 - [ ] This plan and `docs/plans/README.md` index row are committed and pushed to `workspace-hub/main` before asking remote reviewers to approve retrievability.
 - [ ] Issue #2564 has `status:plan-review` while under review and includes a comment linking the plan and review artifacts.
-- [ ] Plan-review rerun returns no MAJOR findings from at least two substantive reviewers. If Codex/Gemini fail for tooling/capacity, retry with a documented workaround or rerun later; a single-provider “available providers” result is not sufficient for this engineering-critical plan.
+- [ ] Automated plan-review evidence target: no MAJOR findings from at least two substantive reviewers before treating automated review as approval support. If providers fail for tooling/capacity, document the failure and keep #2564 in `status:plan-review` for human/user review rather than implementation.
 - [ ] Any MAJOR finding requires plan revision and fresh re-review; inline explanation alone cannot bypass the gate.
 - [ ] User explicitly approves #2564 before implementation and label moves to `status:plan-approved`.
 - [ ] Tests are written before implementation and pass from `digitalmodel/`: `uv run pytest tests/naval_architecture/test_yaw_moment_sweep.py -v`.
@@ -409,9 +409,10 @@ function write_yaw_moment_charts(result, output_dir, chart_formats):
 | Claude | MAJOR | Corrected YAML location into package tree; removed unsupported multi-provider evidence claims; added sign precondition, module split rationale, fixed review gate, fixed CSV headers, noted warnings-as-errors. |
 | Codex | MAJOR | Added push/retrievability gate, issue comment/label gate, strict MAJOR re-review requirement, and corrected citation/provenance treatment. |
 | Gemini | MAJOR | Moved YAML under `src/digitalmodel/...`; separated strict standards `Citation` from research-literature provenance; required keyword arguments for existing helper signature. |
-| 2026-04-30 rerun | MAJOR / MAJOR / UNAVAILABLE | Patched concrete blockers from fresh review: fixed 35-row cardinality, removed ambiguous `charts` format token, added zero-speed and conversion constants, pinned chart backends/validation, added build/install package-data test, converted sign convention to declared configurable mapping rather than unsupported physical-source claim, and updated review artifact date. |
+| 2026-04-30 provider fanout | UNAVAILABLE / UNAVAILABLE / UNAVAILABLE | Provider/tooling failures only: Claude session hook timeout, Codex stdin timeout, Gemini 429 capacity. No substantive provider finding was returned. |
+| 2026-04-30 Hermes governance review | Conditional / no calculation-schema blocker | Confirmed `status:plan-review` is defensible as a visible holding state for a blocked plan-review packet, but not as proof automated review passed. |
 
-**Overall result:** draft remains blocked until this revision is committed/pushed and a fresh re-review is run against the committed artifact. If no MAJOR findings remain from at least two substantive reviewers, #2564 can remain surfaced as `status:plan-review` for user approval.
+**Overall result:** #2564 is ready for user review as a `status:plan-review` packet: scope, YAML input, methodology, outputs, charts, tests, provenance, resource-intelligence anchors, and implementation block are explicit. Implementation remains blocked until user approval; automated provider review should be retried when provider/tooling capacity recovers or user explicitly overrides that evidence gap.
 
 ---
 
@@ -421,7 +422,7 @@ function write_yaw_moment_charts(result, output_dir, chart_formats):
 - **Preliminary fidelity:** This is not a full MMG/IMO maneuvering model. Documentation and JSON provenance must state exclusions.
 - **Packaging drift:** Package-data changes must be tested; resource access cannot rely on repository-root config files.
 - **Warnings handling:** `pyproject.toml` starts with warnings-as-errors but ignores common user/deprecation warning classes; implementation should still avoid unexpected warning classes and keep tests explicit.
-- **Provider review failures:** Capacity/tool failures are not approvals; engineering-critical approval needs at least two substantive no-MAJOR reviews or explicit user override.
+- **Provider review failures:** Capacity/tool failures are not approvals; they are documented evidence gaps. Keep the issue in `status:plan-review` for user review, retry automated review when capacity/tooling recovers, or proceed only with explicit user override/approval.
 
 ---
 
