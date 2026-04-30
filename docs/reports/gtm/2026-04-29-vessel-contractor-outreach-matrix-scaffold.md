@@ -3,7 +3,7 @@
 > **Issue:** [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) — feat(gtm): weekly vessel contractor outreach matrix for April target
 > **Parent campaign:** [#1669](https://github.com/vamseeachanta/workspace-hub/issues/1669) — vessel installation contractor outreach
 > **GTM umbrella:** [#2016](https://github.com/vamseeachanta/workspace-hub/issues/2016) — client conversion pipeline
-> **Demo proof anchors:** Demo 3 (deepwater mudmat installation), Demo 4 (shallow-water S-lay), Demo 5 (deepwater rigid-jumper installation) — all shipped Apr 14
+> **Demo positioning anchors:** Demo 3 (deepwater mudmat installation), Demo 4 (shallow-water S-lay), Demo 5 (deepwater rigid-jumper installation) — concept anchors only until public proof outputs are restored or replaced
 > **Authoring lane:** Claude planning/research worker, ace-linux-1, 2026-04-29
 > **Status:** **evidence-filled blocker-removal snapshot — still not a send-ready list.** Per-target evidence is split into `corporate_root_evidence` vs. `deep_link_evidence`, and `pain_point_evidence` is carried explicitly. The 12 High-priority rows now have official deep-link evidence or explicit `no-public-proof-found` boundaries from #2560; contact routing, final review, and owner send approval remain required before #2556 can consume this matrix.
 
@@ -462,7 +462,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 
 Per [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) acceptance criterion #4, follow-up issues should be opened for high-value targets with insufficient evidence depth before the brochure-send lane ([#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556)) consumes this matrix. **Follow-up issues are now opened after owner approved the default path; [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) has filled or explicitly bounded the 12 High-priority evidence rows, and #2554 remains draft until the live re-review / approval gate clears for the final matrix.**
 
-Recommended issues to file after user review:
+Opened follow-up issues / current state:
 
 1. **Per-target deep-link verification:** [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560). For each High-priority target: confirm fleet/project deep-link URLs, vessel datasheet pages, and any current public project announcements. Output: keep `corporate_root_evidence` as the official-domain anchor, fill `deep_link_evidence` with verified public subpages or explicit official-site access boundaries, and add fetch-date notes.
 2. **FOWT worked example unblock:** [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561). Targets 8 (Van Oord), 9 (DEME), 13 (Seaway7), 14 (Cadeler), 17 (JDN-wind) are blocked on the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3).

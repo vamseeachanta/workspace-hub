@@ -10,7 +10,7 @@
 
 1. **Canonical plan.** `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` — T2, Resource Intelligence Summary, Pseudocode, Files-to-Change, research-artifact test list, Acceptance Criteria, Risks/Open Questions, and r2 review gate. Status: `blocker-remediation patch applied; pending fresh clean r2 review`.
 2. **Research scaffold.** `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` — first artifact under the new `docs/reports/gtm/` directory. After owner approved defaults, the scaffold ranks **24 total rows** and **20 live countable vessel/operator targets** (acceptance criterion bar is ≥20). Each row carries `tier_seed`/`tier_revised`/`segment`/`relevant_fleet`/`demo_anchor`/`pain_point_hypothesis`/`corporate_root_evidence`/`deep_link_evidence`/`pain_point_evidence`/`can_say_now`/`cannot_claim_yet`/`outreach_priority`/`private_route`. **12 High-priority targets** are identified (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura, Helix, Hornbeck Offshore Services, Edison Chouest Offshore), with GoM niche targets High when they map to Demo 3/5 and Gulf access.
-3. **Plan Index row.** `docs/plans/README.md` line 348 — new row for #2554 inserted ahead of the sibling weekly-GTM rows (#2555, #2556, #2557).
+3. **Plan Index row.** `docs/plans/README.md` — new row for #2554 inserted ahead of the sibling weekly-GTM rows (#2555, #2556, #2557).
 4. **Public/private boundary decision recorded.** Scaffold header explicitly states: corporate-domain evidence URLs only, no individual contact data inline, named contact routing lives outside this repo.
 
 ## What is intentionally NOT done
@@ -60,7 +60,7 @@ Planning/research lane progress (2026-04-29):
 - Lane summary: docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md
 
 Not yet done (intentionally, per the planning-only lane scope):
-- Adversarial review wave (Claude/Codex/Gemini) — needed to lift status to plan-review.
+- Clean adversarial review wave (Claude/Codex/Gemini or documented working fallback per plan AC) — needed to lift status to plan-review.
 - Evidence-fill #2560 is closed; #2561/#2562 remain follow-up enrichment lanes before broader send-readiness. No sends authorized.
 - No labels mutated; no emails sent.
 
@@ -76,7 +76,7 @@ Two open questions in the plan ("GoM-niche priority?" and "wind-segment outreach
 
 - **Plan:** `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`
 - **Scaffold:** `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`
-- **Index row:** `docs/plans/README.md` line 348
+- **Index row:** `docs/plans/README.md` (#2554 row; line number may drift as README changes)
 - **Sibling overnight plans:** [#2555](https://github.com/vamseeachanta/workspace-hub/issues/2555) (capability charts), [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) (brochure send-tracker), [#2557](https://github.com/vamseeachanta/workspace-hub/issues/2557) (productivity-flow review) — all `draft` per README rows immediately following #2554.
 - **Email-template assumptions:** `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` placeholders (`{{COMPANY}}`, `{{PAIN_POINT_1..3}}`) are designed to consume this matrix's `pain_point_hypothesis` field once it hardens past the v1 hypothesis stage.
 - **Memory feedback most relevant:** `feedback_inline_gh_issue_url.md` (issue links rendered as Markdown), `feedback_data_format_guidelines.md` (Markdown for human reading; YAML companion is a possible follow-up), `feedback_codex_cli_0_124_upstream_regression.md` (downgrade Codex CLI before fanout).

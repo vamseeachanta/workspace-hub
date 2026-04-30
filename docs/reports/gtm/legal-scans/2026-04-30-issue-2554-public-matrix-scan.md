@@ -1,6 +1,7 @@
 # Legal/privacy and semantic-count validation — issue #2554 public matrix
 
 Date: 2026-04-30
+Generator: `uv run python scripts/validation/validate_gtm_2554_matrix.py --write-artifact`
 Scope:
 - `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`
 - `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`
@@ -8,7 +9,7 @@ Scope:
 
 ## Why this exists
 
-The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-only` can false-pass once the matrix files are already committed. This artifact records a targeted committed-file scan and a semantic target count, so #2554 promotion does not depend on an empty diff.
+The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-only` can false-pass once the matrix files are already committed. This artifact is generated from the scaffold and targeted committed files so #2554 promotion does not depend on an empty diff or hand-counted rows.
 
 ## Results
 
@@ -56,4 +57,4 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 ## Promotion note
 
-This scan does not authorize outreach or send. It only supports the #2554 plan-review promotion gate by proving that the public matrix artifacts contain no deny-list/contact-pattern hits and that the scaffold has at least 20 live/countable vessel/operator rows after excluding legacy/deprecated, `Defer`, and explicitly non-counted partner-shape rows.
+This scan does not authorize outreach or send. It only supports the #2554 plan-review promotion gate by proving that the public matrix artifacts contain no deny-list/contact-pattern hits and deriving live/countable and High-priority counts from the scaffold parser.
