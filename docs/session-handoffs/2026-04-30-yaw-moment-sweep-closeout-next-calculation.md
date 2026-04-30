@@ -42,7 +42,7 @@ The workflow now has a reusable pattern for future calculations:
 
 ## Recommended next calculation
 
-Recommended next calculation: **rudder stock / steering gear torque sweep**.
+Recommended next calculation: **rudder stock / steering gear torque sweep**. Tracking issue created: #2565 (<https://github.com/vamseeachanta/workspace-hub/issues/2565>).
 
 Why this is the best next step:
 
@@ -122,7 +122,7 @@ We completed #2564 yaw moment sweep. Start the next plan-gated engineering calcu
 
 ## Operator checklist before starting the next calculation
 
-1. Confirm the selected next calculation with the user if they do not explicitly choose option A/B/C/D.
+1. #2565 now tracks the recommended option A. Confirm with the user before drafting the canonical plan if they want a different option instead.
 2. Search GitHub for duplicates before creating a new issue.
 3. Re-read #2564 closeout evidence and `digitalmodel` commit `0db57cd564720431213ee659cb1787a55683e922`.
 4. Run resource intelligence for the selected calculation, including `/mnt/ace` and naval-architecture wiki references when engineering standards or textbook context is needed.
