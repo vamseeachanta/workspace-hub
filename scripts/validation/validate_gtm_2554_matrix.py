@@ -11,8 +11,11 @@ from __future__ import annotations
 import argparse
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
+MIN_LIVE_TARGETS = 20
+DISALLOWED_EVIDENCE_HOSTS = {"github.com", "linkedin.com", "wikipedia.org", "facebook.com", "x.com", "twitter.com"}
 SCAFFOLD = ROOT / "docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md"
 PLAN = ROOT / "docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md"
 SUMMARY = ROOT / "docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md"
@@ -126,7 +129,7 @@ def count_claims(scaffold: str, summary: str) -> tuple[dict[str, int | None], li
     patterns = {
         "scaffold_live": (r"Live countable vessel/operator targets[^\n]*:\*\*\s*(\d+)", scaffold),
         "scaffold_high": (r"Targets in `outreach_priority: High`[^\n]*:\*\*\s*(\d+)", scaffold),
-        "summary_live": (r"\*\*20 live countable vessel/operator targets\*\*|\*\*(\d+) live countable vessel/operator targets\*\*", summary),
+        "summary_live": (r"\*\*(\d+) live countable vessel/operator targets\*\*", summary),
         "summary_high": (r"High-priority rows?:[^\n]*?\*\*\s*(\d+)|\*\*(\d+) High-priority rows\*\*|\n-\s*(\d+)\s+High-priority targets", summary),
     }
     for key, (pattern, text) in patterns.items():
@@ -135,10 +138,34 @@ def count_claims(scaffold: str, summary: str) -> tuple[dict[str, int | None], li
             claims[key] = None
             errors.append(f"missing count claim: {key}")
             continue
-        value = next((g for g in match.groups() if g), None) or ("20" if key == "summary_live" else None)
+        value = next((g for g in match.groups() if g), None)
         claims[key] = int(value) if value else None
     return claims, errors
 
+
+
+def extract_urls(text: str) -> list[str]:
+    return re.findall(r"https?://[^\s);]+", text)
+
+
+def evidence_urls_are_allowed(text: str) -> bool:
+    urls = extract_urls(text)
+    if not urls:
+        return False
+    for url in urls:
+        host = urlparse(url).netloc.lower().removeprefix("www.")
+        if any(host == disallowed or host.endswith("." + disallowed) for disallowed in DISALLOWED_EVIDENCE_HOSTS):
+            return False
+    return True
+
+
+def high_deep_link_is_bounded(text: str) -> bool:
+    lower = text.lower()
+    if "pending" in lower:
+        return False
+    if "no-public-proof-found" in lower or "access-boundary" in lower or "official-site" in lower:
+        return True
+    return evidence_urls_are_allowed(text) and "official" in lower
 
 def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hits: list[tuple[str, str]], contact_hits: list[tuple[str, str, str]]) -> list[str]:
     errors: list[str] = []
@@ -150,8 +177,8 @@ def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hi
         expected = live_count if key.endswith("live") else high_count
         if value is not None and value != expected:
             errors.append(f"{key}={value} does not match derived {expected}")
-    if live_count < 20:
-        errors.append(f"live_countable={live_count} is below 20")
+    if live_count < MIN_LIVE_TARGETS:
+        errors.append(f"live_countable={live_count} is below {MIN_LIVE_TARGETS}")
     if deny_hits:
         errors.append(f"deny_hits={len(deny_hits)}")
     if contact_hits:
@@ -161,10 +188,10 @@ def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hi
         if missing:
             errors.append(f"target {row['target']} missing required fields: {', '.join(missing)}")
         fields = row["fields"]
-        if row["counted"] and not str(fields["corporate_root_evidence"]).startswith("http"):
-            errors.append(f"target {row['target']} counted row lacks public corporate_root_evidence URL")
-        if row["priority"] == "High" and "pending" in str(fields["deep_link_evidence"]).lower():
-            errors.append(f"target {row['target']} High row has pending deep_link_evidence")
+        if row["counted"] and not evidence_urls_are_allowed(str(fields["corporate_root_evidence"])):
+            errors.append(f"target {row['target']} counted row lacks allowed public corporate_root_evidence URL")
+        if row["priority"] == "High" and not high_deep_link_is_bounded(str(fields["deep_link_evidence"])):
+            errors.append(f"target {row['target']} High row lacks official-domain deep_link_evidence or bounded no-public-proof/access note")
         if row["priority"] == "High" and not str(fields["private_route"]).lower().startswith("omitted-public-artifact"):
             errors.append(f"target {row['target']} High row must keep private_route omitted-public-artifact")
     return errors
@@ -222,7 +249,7 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 ## Promotion note
 
-This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, comparing count claims across artifacts, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
+This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts, comparing count claims across artifacts, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
 """
 
 

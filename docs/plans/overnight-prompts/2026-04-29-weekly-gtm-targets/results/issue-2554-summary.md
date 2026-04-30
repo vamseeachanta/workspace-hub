@@ -15,8 +15,8 @@
 
 ## What is intentionally NOT done
 
-- **Adversarial review wave.** Not run. The lane prompt does not authorize provider fanout, and the `scripts/review/plan-review-fanout.sh` invocation is a separate execution permission. Plan review artifacts at `scripts/review/results/2026-04-29-plan-2554-{claude,codex,gemini}.md` do **not** exist yet.
-- **`status:plan-review` label.** Not applied — the prompt is explicit that the label requires both a canonical plan AND adversarial review evidence; we have only the plan.
+- **Adversarial review wave.** Original overnight lane could not run provider fanout. Post-#2560 r1 review artifacts exist at `scripts/review/results/2026-04-30-plan-2554-{claude,codex,gemini,disagreement}.md` and returned MAJOR; the remaining next action is a clean rerun archived as `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md`.
+- **`status:plan-review` label.** Not applied — #2554 remains `status:blocked` until the clean rerun artifacts are archived and show no unresolved MAJOR findings.
 - **`status:plan-approved` label.** Not applied — explicitly forbidden by the prompt and the planning skill v3.1.0 (no self-approval).
 - **Deep-link URL fabrication.** Avoided. Evidence URLs are official corporate-domain roots or official deep links / explicit access-boundary notes. #2560 closed the High-priority evidence-fill lane; remaining Medium/Low/Defer rows stay bounded and no send is authorized.
 - **Follow-up issue creation.** Completed after owner approved defaults: [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) for High-priority deep-link/pain-point evidence fill, [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561) for FOWT worked example, and [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) for GoM niche evidence expansion.
