@@ -254,6 +254,35 @@ Revisions made based on review:
 
 Review evidence: `scripts/review/results/2026-04-29-plan-2555-nextwave-{claude,codex,gemini}.md` (this wave); canonical-fanout artifacts at `…/2026-04-29-plan-2555-{claude,codex,gemini}.md` (no `-nextwave` suffix) reserved for a permitted-lane re-run.
 
+## Implementation Slice Completion — 2026-04-30
+
+Approved rendering/export slice executed after live GitHub `status:plan-approved` reconciliation.
+
+Artifacts created:
+- Renderer: `scripts/gtm/render_brochure_charts.py`
+- Tests: `tests/test_render_brochure_charts.py`
+- Closeout handoff: `docs/session-handoffs/2026-04-29-issue-2555-closeout.md`
+- Legal scan archive: `docs/reports/gtm/legal-scans/2026-04-30-chart-pack-scan.json`
+- Manifest: `docs/reports/gtm/assets/vessel-capability-chart-pack-manifest.json`
+- C1/C2/C3 brochure PNGs: `docs/reports/gtm/assets/c{1,2,3}-*.brochure.png`
+- C1/C2/C3 print SVGs: `docs/reports/gtm/assets/c{1,2,3}-*.print.svg`
+- C1/C2/C3 one-page PDFs: `docs/reports/gtm/assets/c{1,2,3}-*.1page.pdf`
+- C1/C2/C3 caption sidecars: `docs/reports/gtm/assets/c{1,2,3}-*.caption.txt`
+- C1/C2/C3 metadata sidecars: `docs/reports/gtm/assets/c{1,2,3}-*.metadata.json`
+
+Validation evidence:
+- `uv run pytest tests/test_render_brochure_charts.py -q` → `3 passed`.
+- `uv run python scripts/gtm/render_brochure_charts.py --digitalmodel-root /mnt/local-analysis/digitalmodel-issue-2514-impl --output-dir docs/reports/gtm/assets --legal-scan-dir docs/reports/gtm/legal-scans --create-output-dirs` → rendered C1/C2/C3 PNG/SVG/PDF/caption/metadata outputs.
+- `scripts/legal/legal-sanity-scan.sh --diff-only --json` → `rc=0` with no output on pass.
+- `uv run python -m py_compile scripts/gtm/render_brochure_charts.py` and `git diff --check` passed during closeout.
+- Artifact leak scan over `docs/reports/gtm/assets docs/reports/gtm/legal-scans` found no `/mnt/local-analysis`, `/tmp/pytest`, `client_projects`, `acma-projects`, `seanation`, or `frontierdeepwater` strings.
+- Visual QA inspected C1 PNG for legibility and obvious rendering corruption; remaining visual polish caveats are non-blocking and belong in #2556 brochure assembly if desired.
+
+Boundary retained:
+- #2555 is closed with `status:done` as of commit `a6d95c4a4`; handoff commit `71840decf` records closeout evidence.
+- These are internal-review chart-pack assets until #2556 brochure/outbound approval. #2556 remains blocked on #2554/#2560 evidence gating or explicit owner waiver, plus explicit owner approval before any external outreach.
+- C4 remains optional/internal and was not rendered in this slice.
+
 ---
 
 ## Risks and Open Questions
