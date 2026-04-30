@@ -175,8 +175,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** Demo 4 (S-lay shallow envelope, Stork analogue); FOWT segment is currently scope-note-only (`docs/gtm/fowt-engineering-scope.md`) — no shipped FOWT demo.
 - **pain_point_hypothesis.** Wind installation differs from oil-and-gas; ACE messaging needs explicit "what transfers and what doesn't" to be credible (covered by the FOWT scope note).
 - **corporate_root_evidence.** https://www.vanoord.com/ (corporate root)
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.vanoord.com/en/equipment/ — official equipment/fleet index; https://www.vanoord.com/en/equipment/aeolus/ — official Aeolus offshore-installation vessel page.
+- **pain_point_evidence.** Van Oord official equipment pages expose installation-vessel capability and the Aeolus offshore-wind vessel page; use only transfer/gap framing for wind work until a FOWT worked example ships.
 - **can_say_now.** "Shallow-water lay screening for the Stork-class envelope" (Demo 4); "explicit boundary on what oil-and-gas mooring expertise transfers to floating wind" (FOWT scope note).
 - **cannot_claim_yet.** Full IEC 61400-3 DLC execution; coupled aero-hydro-servo-elastic time-domain; certification-grade output.
 - **outreach_priority.** **Medium** — wind segment best contacted *after* the FOWT worked example (OC4-DeepCwind 1-pager, `outreach-candidate-briefs-2026-04-28.md` §4.3) ships. Pipelay segment can lead today.
@@ -192,8 +192,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** scope-note-only — FOWT lane not shipped; Demo 3 deepwater mudmat envelope partially analogous for foundation install
 - **pain_point_hypothesis.** Wind-foundation install is operability-window-bound; Hs / period sensitivity screening at concept stage is the core decision aid.
 - **corporate_root_evidence.** https://www.deme-group.com/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.deme-group.com/technologies/orion — official Orion DP3 offshore installation vessel page; https://www.deme-group.com/technologies/living-stone — official Living Stone DP3 cable-installation/multipurpose vessel page.
+- **pain_point_evidence.** DEME official vessel pages identify Orion as an offshore installation vessel and Living Stone as a cable-installation/multipurpose vessel; use Hs/period sensitivity only as transferable screening framing, not as DEME-specific project proof.
 - **can_say_now.** "Hs sensitivity sweep across mudmat sizes and water depths" (Demo 3 transferable framing).
 - **cannot_claim_yet.** Wind-foundation-specific dynamics; named-DEME project work.
 - **outreach_priority.** **Medium** (defer until FOWT worked example ships).
@@ -230,8 +230,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** Demo 5 (rigid jumper), Demo 3 (mudmat install)
 - **pain_point_hypothesis.** Mid-tier fleet operators bid against majors on cost; anything that strengthens engineering rigor without buying tooling is a margin lever.
 - **corporate_root_evidence.** https://www.bourbon-online.com/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.bourbonoffshore.com/ — official Bourbon Offshore site; public fetch verified offshore marine services / subsea navigation text, while candidate deep fleet subpages on `bourbon-online.com` were not reliably accessible in this pass.
+- **pain_point_evidence.** Official site exposes offshore marine services and subsea-service positioning; no-public-proof-found for a stable official Bourbon Evolution vessel deep page in this pass, so keep vessel-specific claims bounded and do not send without a deeper private/source check.
 - **can_say_now.** "Self-contained HTML reports — your engineers spot-check the calc surface without installing proprietary toolchains" (Demo 4 framing applies broadly).
 - **cannot_claim_yet.** Vessel-specific RAOs; named-Bourbon project work.
 - **outreach_priority.** **Medium**.
@@ -264,8 +264,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** scope-note-only (FOWT lane not shipped)
 - **pain_point_hypothesis.** Same FOWT-credibility problem as Target 8 — explicit transfer-and-gap framing is the lead, not capacity claims.
 - **corporate_root_evidence.** https://www.seaway7.com/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.seaway7.com/fleet/seaway-strashnov/ — official Seaway Strashnov heavy-lift vessel page; Seaway7 official navigation also exposes fleet/project categories.
+- **pain_point_evidence.** Official Seaway Strashnov page supports heavy-lift/foundation-installation fleet relevance; retain FOWT-transfer claims as scope-note framing, not certification-grade wind proof.
 - **can_say_now.** "Mooring concept screening at pre-FEED level using the same OrcaFlex workflow as deepwater oil-and-gas mooring — with explicit gaps vs. IEC DLCs flagged" (FOWT scope note).
 - **cannot_claim_yet.** Coupled aero-hydro-servo-elastic verification; certification-grade output.
 - **outreach_priority.** **Medium** (defer until FOWT worked example ships).
@@ -319,8 +319,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** Demo 5 (rigid jumper), Demo 3 (mudmat install)
 - **pain_point_hypothesis.** IRM operators run high-cycle workflows where engineering-screening rigor compounds across many small jobs.
 - **corporate_root_evidence.** https://www.deepoceangroup.com/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.deepoceangroup.com/ — official root; no stable public fleet/service deep page was verified in this pass (candidate `/fleet/` and `/services/subsea-services/` paths returned 404).
+- **pain_point_evidence.** no-public-proof-found for a stable official DeepOcean fleet/service deep page in this pass; keep IRM utilization framing as a bounded hypothesis and require a follow-up evidence check before any send.
 - **can_say_now.** "Self-contained HTML screening reports — overnight turnaround, code-clause-cited."
 - **cannot_claim_yet.** DeepOcean-vessel-specific dynamics; named-DeepOcean project work.
 - **outreach_priority.** **Medium**.
@@ -336,8 +336,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** scope-note-only (wind segment) + Demo 4 (shallow-water lay framing)
 - **pain_point_hypothesis.** Cross-segment buyer; wind-credibility framing required.
 - **corporate_root_evidence.** https://www.jandenul.com/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.jandenul.com/fleet — official fleet/vessels page describing Jan De Nul as owner of a modern/diverse dredging fleet and equipment investment; no stable official Voltaire deep page was verified in this pass.
+- **pain_point_evidence.** Official fleet page supports cross-segment vessel/equipment relevance; wind-installation and Voltaire-specific claims remain bounded until a stable official vessel/project deep link is captured.
 - **can_say_now.** "Concept-stage screening + explicit transfer-and-gap framing for offshore wind work."
 - **cannot_claim_yet.** Voltaire-specific dynamics; named-JDN project work; full IEC DLC.
 - **outreach_priority.** **Medium**.
@@ -353,8 +353,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** Demo 5 (rigid jumper)
 - **pain_point_hypothesis.** Mid-tier Norwegian operator competing on engineering rigor + utilization.
 - **corporate_root_evidence.** https://www.eidesvik.no/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.eidesvik.no/vessels/ — official vessels page with Supply/Subsea/Wind categories and named vessel listings.
+- **pain_point_evidence.** Official vessels page supports the subsea/OSV fleet relevance; keep engineering-rigor/utilization language as bounded hypothesis pending a project-specific public source.
 - **can_say_now.** Same as Target 16.
 - **cannot_claim_yet.** Eidesvik-vessel-specific dynamics.
 - **outreach_priority.** **Low** (audience saturation may be high for this segment).
@@ -387,8 +387,8 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **demo_anchor.** Demo 3 (mudmat install, GoM proximity)
 - **pain_point_hypothesis.** Gulf-niche operator economics are utilization-driven; methodology messaging may be over-tooled relative to ICP.
 - **corporate_root_evidence.** https://www.ottocandies.com/
-- **deep_link_evidence.** PENDING — verify official fleet/project/vessel subpage before send; scaffold v1 intentionally stops at the corporate root.
-- **pain_point_evidence.** `inferred-from-demo-coverage` for scaffold v1; replace with public fleet/project/source proof before send.
+- **deep_link_evidence.** https://www.ottocandies.com/fleet/ — official fleet page (browser/curl fetch may return 406 to some agents but the route is the official fleet URL); official root remains https://www.ottocandies.com/.
+- **pain_point_evidence.** Official fleet route supports OSV/MPSV/ROV-support relevance at public-scaffold depth; keep Gulf/weather-window claims bounded until a project-specific public source is captured.
 - **can_say_now.** "Concept-stage screening on a Gulf-relevant water-depth envelope."
 - **cannot_claim_yet.** GoM-specific weather-window data; named-Candies project work.
 - **outreach_priority.** **Low** (ICP fit uncertain; flag for user confirmation).
