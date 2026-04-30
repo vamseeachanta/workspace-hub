@@ -25,34 +25,34 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 - none
 
-## Semantic target inventory
+## Semantic target inventory (visual rows are contiguous; original target heading preserved)
 
-| Target | Title | Priority | Count status |
-|---:|---|---|---|
-| 1 | Subsea7 | High | counted |
-| 2 | TechnipFMC (Subsea) | High | counted |
-| 3 | Saipem | High | counted |
-| 4 | McDermott International | High | counted |
-| 5 | Allseas | High | counted |
-| 6 | Heerema Marine Contractors | High | counted |
-| 7 | Boskalis (Subsea Services) | High | counted |
-| 8 | Van Oord | Medium | counted |
-| 9 | DEME Offshore | Medium | counted |
-| 10 | DOF Group (DOF Subsea + Solstad merger) | High | counted |
-| 11 | Bourbon Offshore | Medium | counted |
-| 12 | Sapura Energy | High | counted |
-| 13 | Seaway7 (Subsea7 Renewables) | Medium | counted |
-| 14 | Cadeler | Defer | defer |
-| 15 | Helix Energy Solutions | High | counted |
-| 16 | DeepOcean Group | Medium | counted |
-| 17 | Jan De Nul | Medium | counted |
-| 18 | Eidesvik Offshore | Low | counted |
-| 19 | Acteon Group | Medium | explicit non-counted partner-shape |
-| 20 | Otto Candies LLC | Low | counted |
-| 23 | Hornbeck Offshore Services | High | counted |
-| 24 | Edison Chouest Offshore | High | counted |
-| 21 | Solstad Offshore (legacy, now DOF) | Defer | legacy/deprecated, defer |
-| 22 | EMAS / Ezra Holdings (legacy) | Defer | legacy/deprecated, defer |
+| Row | Target heading | Title | Priority | Count status |
+|---:|---:|---|---|---|
+| 1 | 1 | Subsea7 | High | counted |
+| 2 | 2 | TechnipFMC (Subsea) | High | counted |
+| 3 | 3 | Saipem | High | counted |
+| 4 | 4 | McDermott International | High | counted |
+| 5 | 5 | Allseas | High | counted |
+| 6 | 6 | Heerema Marine Contractors | High | counted |
+| 7 | 7 | Boskalis (Subsea Services) | High | counted |
+| 8 | 8 | Van Oord | Medium | counted |
+| 9 | 9 | DEME Offshore | Medium | counted |
+| 10 | 10 | DOF Group (DOF Subsea + Solstad merger) | High | counted |
+| 11 | 11 | Bourbon Offshore | Medium | counted |
+| 12 | 12 | Sapura Energy | High | counted |
+| 13 | 13 | Seaway7 (Subsea7 Renewables) | Medium | counted |
+| 14 | 14 | Cadeler | Defer | defer |
+| 15 | 15 | Helix Energy Solutions | High | counted |
+| 16 | 16 | DeepOcean Group | Medium | counted |
+| 17 | 17 | Jan De Nul | Medium | counted |
+| 18 | 18 | Eidesvik Offshore | Low | counted |
+| 19 | 19 | Acteon Group | Medium | explicit non-counted partner-shape |
+| 20 | 20 | Otto Candies LLC | Low | counted |
+| 21 | 23 | Hornbeck Offshore Services | High | counted |
+| 22 | 24 | Edison Chouest Offshore | High | counted |
+| 23 | 21 | Solstad Offshore (legacy, now DOF) | Defer | legacy/deprecated, defer |
+| 24 | 22 | EMAS / Ezra Holdings (legacy) | Defer | legacy/deprecated, defer |
 
 ## Promotion note
 

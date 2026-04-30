@@ -18,9 +18,9 @@
 - **Found:** `docs/gtm/capability-summary.md`, `docs/gtm/capability-map.md`, `docs/gtm/marine-terminal-engineering-scope.md`, `docs/gtm/fowt-engineering-scope.md` — capability framing already split by service line and adjacent segments. The contractor matrix should reference these via path, not re-author scope text.
 - **Found:** Issue #1669 body (Apr 2) — pre-existing tier seed list (Tier-1 majors: Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, Van Oord, DEME; Tier-2 specialists: DOF Subsea, Solstad, Bourbon, Sapura, EMAS/Ezra, Seaway7; Tier-3 niche: Helix, Superior Energy, DeepOcean, Gulf Offshore). **Implication:** the matrix takes #1669's tier list as the starting set and must reconcile (drop, retier, add) using the criteria below; #1669 has no evidence URLs attached to most names.
 - **Found:** Issue #1799 body — pipelay barge spec collection target (Allseas Lorelay, Subsea 7 Seven Navica, Saipem Castorone, McDermott DB101, Sapura Constructor, Van Oord Stork, Boskalis lay barges). **Implication:** vessel-spec data anchors the "relevant fleet angle" column for ~7 contractors and is also a public-source seed for the matrix. #1799 itself is a separate data-collection issue — the matrix references its outputs without duplicating spec rows.
-- **Not found at this workspace-hub HEAD:** `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json` and `digitalmodel/examples/demos/gtm/demo_03|04|05_*` output files. **Implication:** the #2554 matrix may use Demo 3/4/5 only as internal/conceptual GTM anchors inherited from the briefs; #2556 or any send-ready artifact must not claim local demo-file proof unless those artifacts are restored or replaced by a committed proof path.
+- **Demo artifact boundary:** `docs/gtm/outreach-candidate-briefs-2026-04-28.md` provides the Demo 3/4/5 positioning language used by this matrix. Exact `digitalmodel/examples/demos/gtm/output/demo_03|04|05_*.html` proof paths are not present on GitHub `main` for this repo, so the public matrix must not cite those local output paths as proof. If another checkout has generated demo outputs, treat them as separate implementation evidence that must be committed or linked before send-ready claims.
 - **Found:** `docs/gtm/intake/prospect-schema.json` (Draft-07 validated per #2346) — defines the YAML intake shape used to produce 48-hour custom demo reruns. **Implication:** the matrix `outreach priority` column should flag which contractors would be worth pre-staging an intake YAML for once their interest is confirmed.
-- **Gap:** No existing single artifact merges (a) #1669 tier list, (b) public fleet evidence, (c) #1799 vessel-spec coverage, (d) per-target pain-point hypotheses, and (e) demo-anchor mapping into one outreach-ready matrix. `ls docs/reports/gtm/ 2>&1` returned "No such file or directory" — the target directory has to be created.
+- **Resolved gap:** Before the #2554 lane there was no single artifact merging (a) #1669 tier list, (b) public fleet evidence, (c) #1799 vessel-spec coverage, (d) per-target pain-point hypotheses, and (e) demo-anchor mapping. The current scaffold now provides that matrix at `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`.
 - **Gap:** No automated public/private boundary check exists for GTM matrices. `scripts/legal/legal-sanity-scan.sh --diff-only` exists per `docs/BUSINESS_BRAIN.md` §"Legal Sanity Gates", but `--diff-only` can false-pass after files are committed. This plan therefore requires a targeted committed-artifact scan recorded at `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md`.
 
 ### Standards
@@ -67,15 +67,15 @@ Not applicable. `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` �
 - EXISTS: `docs/gtm/outreach-candidate-briefs-2026-04-28.md`
 - EXISTS: `docs/gtm/capability-summary.md`, `docs/gtm/capability-map.md`
 - EXISTS: `docs/plans/_template-issue-plan.md`, `docs/plans/README.md`
-- NOT FOUND at this workspace-hub HEAD: `digitalmodel/examples/demos/gtm/demo_03_deepwater_mudmat_installation.py` and Demo 3/4/5 HTML outputs; treat demo anchors as conceptual until a committed proof path is restored
-- MISSING (this plan creates): `docs/reports/gtm/` (parent dir), `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`
-- MISSING (this plan creates): `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` (this file)
+- GitHub-main boundary: exact `digitalmodel/examples/demos/gtm/output/demo_03|04|05_*.html` report paths are not present on `main`; treat Demo 3/4/5 row values as positioning anchors from the GTM briefs unless/until a committed proof path is restored.
+- EXISTS after #2554/#2560 work: `docs/reports/gtm/` and `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`.
+- EXISTS: `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` (this file).
 
 **Gap proofs**:
-- Historical creation proof: `docs/reports/gtm/` did not exist before the scaffold lane; it now exists and contains the #2554 matrix plus this blocker-removal validation artifact.
-- `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` is the reusable template source; there is still no public prospect-list artifact with individual contacts to extend, and this matrix intentionally keeps contact data out of repo.
+- Current artifact proof: `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` and `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md` exist on `main` after the blocker-remediation patch.
+- `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` is the reusable template source; there is no public prospect-list artifact with individual contacts to extend, and this matrix intentionally keeps contact data out of repo.
 
-<!-- Source count: issue body (#2554) + 5 sibling/parent issues (#1669/#2016/#1799/#2554/BUSINESS_BRAIN) + 6 repo file paths + 2 memory entries + plan template + planning skill = 16 distinct sources. Minimum 3 satisfied. -->
+<!-- Source count: 4 GitHub issues (#2554/#1669/#2016/#1799) + Business Brain + 6 repo file paths + 2 memory entries + plan template + planning skill = 15 distinct sources. Minimum 3 satisfied. -->
 
 ---
 
@@ -94,7 +94,7 @@ Not applicable. `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` �
 | Existing reused | `docs/gtm/outreach-candidate-briefs-2026-04-28.md` (cross-linked) |
 | Required r2 review | `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md` |
 | Legal/privacy validation | `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md` |
-| Not currently present | `digitalmodel/examples/demos/gtm/demo_0[345]_*.html` (do not cite as local proof until restored) |
+| Demo proof boundary | Do not cite `digitalmodel/examples/demos/gtm/output/demo_0[345]_*.html` as public proof unless those exact paths exist on GitHub `main` or are restored in a follow-up. |
 
 ---
 
@@ -147,11 +147,11 @@ function build_contractor_matrix(seed_list, public_evidence_corpus, demo_anchors
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` | Primary deliverable — research scaffold |
-| Create | `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` | This plan (canonical) |
-| Update | `docs/plans/README.md` | Add Plan Index row pointing at the canonical plan |
-| Create | `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` | Lane summary for the overnight orchestrator |
-| Create | `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md` | Targeted committed-artifact legal/privacy scan and semantic target-count inventory |
+| Update / done | `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` | Primary deliverable — research scaffold; patched for evidence/legal/demo-boundary drift |
+| Update / done | `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` | This canonical plan; patched after r1/r2 blocker findings |
+| Update / done | `docs/plans/README.md` | Plan Index row points at the canonical plan and current blocked/r2 status |
+| Update / done | `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` | Lane summary reconciled after #2560 closure and blocker-remediation patch |
+| Create / done | `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md` | Targeted committed-artifact legal/privacy scan and semantic target-count inventory |
 | Pending r2 review | `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md` | Fresh independent adversarial review artifacts required before `status:plan-review` |
 
 No production-code paths are touched. No edits to `digitalmodel/`, `assetutilities/`, or other Tier-1 repos. No edits to `docs/gtm/` (existing GTM corpus stays as-is and is referenced by path).
@@ -173,7 +173,7 @@ Because the deliverable is a research artifact rather than executable code, the 
 | `tier_seed reconciliation is recorded` | Traceability to #1669 (no silent retiering) | each target's `tier_seed` and `tier_revised` fields both present |
 | `cannot_claim_yet field is populated` | Inherits the proof-bounding contract from `outreach-candidate-briefs-2026-04-28.md` | per-target field `cannot_claim_yet:` non-empty |
 | `follow-up issues opened for High + low-evidence` | Acceptance criterion #4 in #2554 | issue list at the bottom of the scaffold cross-links each filed issue |
-| `high_priority_count_consistency` | Numeric count of High-priority rows agrees with the named list, both in the scaffold's Summary Counts block and in the lane-summary file | `grep -cE '\*\*outreach_priority\.\*\* \*\*High\*\*' docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` must equal the integer printed in the scaffold's "Targets in `outreach_priority: High`" bullet AND match the count printed in `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` |
+| `high_priority_count_consistency` | Numeric count of High-priority rows agrees with the named list, scaffold Summary Counts, lane-summary file, and legal-scan inventory | Re-run the semantic row inventory used for `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md`; compare its High count to the scaffold Summary Counts bullet and the lane-summary High count. Do not rely on markdown-emphasis grep alone. |
 | `provider fallback is documented without weakening gate order` | Review-readiness contract is explicit | AC text says `UNAVAILABLE` artifacts document a blocked provider but do not by themselves satisfy promotion |
 | `public/private routing decision recorded` | Boundary policy applied per BUSINESS_BRAIN | scaffold header carries the explicit decision text |
 
@@ -187,9 +187,9 @@ These checks replace the standard `pytest` lines that would appear for an engine
 - [ ] Every live countable target has at least one official corporate-root evidence URL (`corporate_root_evidence:` non-empty). Every High-priority row has official-domain `deep_link_evidence:` and `pain_point_evidence:` populated with either public official evidence or explicit bounded language such as `no-public-proof-found` / access-boundary notes; corporate roots alone are not sufficient for High-priority outreach-fit claims.
 - [ ] No individual contact details (named persons, direct emails, phone numbers, individual LinkedIn URLs) appear inline in the public artifact. The scaffold carries an explicit "private contact data routes outside this repo" note in its header, and the committed-artifact legal/privacy scan records zero deny-list/contact-pattern hits.
 - [ ] Each `outreach_priority: High` target maps to at least one GTM demo concept (Demo 3, 4, or 5 as the immediate set; 6, 7 if/when shipped/restored) under `demo_anchor:`. This is an internal positioning anchor, not proof that local Demo 3/4/5 output files are present.
-- [ ] Review-routing contract is explicit: `status:plan-review` requires non-empty, independent r2 artifacts at `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini}.md` plus a synthesis at `...-r2-synthesis.md`; all substantive verdicts must be `APPROVE` or `MINOR`, and the r2 synthesis must explicitly disposition every MINOR finding as addressed, accepted-with-boundary, or deferred outside #2554 scope with rationale. `UNAVAILABLE`, zero-byte, self-bootstrap, or stale-path artifacts document failure but do not satisfy promotion.
+- [ ] Review-routing contract is explicit: `status:plan-review` requires non-empty, independent r2 artifacts at `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini}.md` plus a synthesis at `...-r2-synthesis.md`; those artifacts must cite the commit SHA or plan hash they reviewed. During the r2 run these artifacts may not exist yet; promotion is allowed only after they are archived. All substantive verdicts must be `APPROVE` or `MINOR`, and the r2 synthesis must explicitly disposition every MINOR finding as addressed, accepted-with-boundary, or deferred outside #2554 scope with rationale. `UNAVAILABLE`, zero-byte, self-bootstrap, or stale-path artifacts document failure but do not satisfy promotion.
 - [ ] Each live target carries a `pain_point_evidence:` slot that either cites a public source path / URL or explicitly says the current statement is an inference from demo coverage pending deeper public verification.
-- [ ] Live-countable and High-priority counts are consistent across artifacts: `Semantic live/countable vessel/operator target count` in the legal-scan artifact must match the lane summary live-countable integer, and the integer printed in the scaffold's "Targets in `outreach_priority: High`" Summary Counts bullet equals the row-grep count (`grep -cE '\*\*outreach_priority\.\*\* \*\*High\*\*'` over the scaffold) AND equals the count printed in `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md`. Any mismatch is a blocker for `status:plan-review` and must be reconciled before promotion. Historical note: the 2026-04-29 next-wave review found a prior body/summary divergence; current patched artifacts record 20 live-countable targets and 12 High-priority targets.
+- [ ] Live-countable and High-priority counts are consistent across artifacts: `Semantic live/countable vessel/operator target count` in the legal-scan artifact must match the lane summary live-countable integer, and the integer printed in the scaffold's "Targets in `outreach_priority: High`" Summary Counts bullet equals the semantic High count in the legal-scan inventory AND equals the count printed in `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md`. Any mismatch is a blocker for `status:plan-review` and must be reconciled before promotion. Historical note: the 2026-04-29 next-wave review found a prior body/summary divergence; current patched artifacts record 20 live-countable targets and 12 High-priority targets.
 - [ ] Plan Index row exists in `docs/plans/README.md` reflecting the current plan status (`draft` until adversarial review lands, `plan-review` once it does).
 - [ ] Lane summary at `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` records what shipped, what is blocked, and the exact next action for the user.
 - [ ] No commits to production code paths (`digitalmodel/`, `assetutilities/`, etc.) and no email sends or external contacts initiated by this lane.

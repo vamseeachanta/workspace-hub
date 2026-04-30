@@ -15,7 +15,7 @@ This artifact is **public repo-tracked content**.
 
 - **In this file:** company names (already public), public segment / fleet category, official corporate-root evidence URLs, planned deep-link evidence slots, pain-point evidence slots, demo-anchor mappings, `can-say-now` / `cannot-claim-yet` envelopes, and outreach priority.
 - **Not in this file:** named individual contacts, direct emails, phone numbers, LinkedIn URLs of named persons, BD-ops session notes, or any private-route data. Per-target private-routing pointers (e.g., "search LinkedIn for offshore-engineering-lead at [company]") are recorded *outside this repo* and referenced here only as `private_route: external` with no detail.
-- **Legal sanity gate:** any future promotion of this file to a public-facing surface (aceengineer.com, brochure attachment, expert-network deck) must pass `scripts/legal/legal-sanity-scan.sh --diff-only` and a manual public/private boundary review, per `docs/BUSINESS_BRAIN.md` §"Legal Sanity Gates for Public Artifacts".
+- **Legal sanity gate:** any future promotion of this file to a public-facing surface (aceengineer.com, brochure attachment, expert-network deck) must use the committed-artifact scan pattern recorded at `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md` plus manual public/private boundary review. `scripts/legal/legal-sanity-scan.sh --diff-only` is useful before commit, but is not sufficient after files are already committed.
 
 ---
 
@@ -58,7 +58,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **corporate_root_evidence.** https://www.subsea7.com/ (corporate root)
 - **deep_link_evidence.** https://www.subsea7.com/en/our-business/assets.html — official assets/fleet section; https://www.subsea7.com/en/media/datasheets.html — official datasheets index; https://www.subsea7.com/en/our-business/subsea-and-conventional.html — official Subsea and Conventional service line. Fetch note 2026-04-30: official URLs are discoverable but returned challenge/access-denied in this environment, so use as official-domain anchors only until browser-verified by a human before send.
 - **pain_point_evidence.** no-public-proof-found — retain hypothesis as internal only until Subsea7 official page content is human-verified beyond the access challenge.
-- **can_say_now.** "We screened 180 deepwater mudmat installation cases against a Seven Borealis-class envelope overnight, and 300 rigid-jumper cases including a 50 mm tie-in alignment phase — both as auditable HTML." Source: `digitalmodel/examples/demos/gtm/output/demo_03_*.html`, `demo_05_*.html`.
+- **can_say_now.** "ACE has a reusable deepwater-mudmat and rigid-jumper screening workflow concept suitable for auditable HTML reporting once a client-safe proof artifact is selected." Source boundary: exact public demo-output paths are not present on GitHub `main`; do not cite generated local demo files as public proof until restored or replaced.
 - **cannot_claim_yet.** Vessel-specific RAOs; full DP envelope at landing; named-Subsea7-project case studies (we hold no such public license).
 - **outreach_priority.** **High** — Tier-1 fit + named-vessel anchor in our shipped demo input.
 - **private_route.** omitted-public-artifact (details intentionally absent from this public repo).
@@ -477,7 +477,7 @@ Recommended issues to file after user review:
 - **Capability framing:** `docs/gtm/capability-summary.md`, `docs/gtm/capability-map.md`.
 - **Buyer-segment briefs (deeper proof paths):** `docs/gtm/outreach-candidate-briefs-2026-04-28.md` Candidates 3 / 4 / 5 (vessel-installation segment) and Candidate 8 (methodology lane).
 - **Adjacent segment scope notes (out-of-scope-for-this-matrix but referenced):** `docs/gtm/marine-terminal-engineering-scope.md` (LNG terminals), `docs/gtm/fowt-engineering-scope.md` (floating wind).
-- **Demo proof anchors:** `digitalmodel/examples/demos/gtm/output/demo_03_mudmat_installation_report.html`, `demo_04_shallow_pipelay_report.html`, `demo_05_jumper_installation_report.html`.
+- **Demo concept anchors:** Demo 3 (deepwater mudmat), Demo 4 (shallow pipelay), and Demo 5 (rigid jumper) are used as positioning concepts from the GTM briefs. Public demo-output proof paths are not present on GitHub `main`; restore or replace before any send-ready proof claim.
 - **Vessel-spec data dependency:** [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799) (pipelay barge specs collection) — provides spec depth for Targets 1, 3, 4, 5, 7, 12.
 
 ---

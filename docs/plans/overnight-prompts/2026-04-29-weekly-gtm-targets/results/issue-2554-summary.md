@@ -8,7 +8,7 @@
 
 ## What shipped
 
-1. **Canonical plan.** `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` — T2, full Resource Intelligence Summary (16 sources cited), Pseudocode, Files-to-Change, research-artifact "test list" (8 falsifiable checks), Acceptance Criteria, Risks/Open Questions, and PENDING Adversarial Review Summary block. Status: `draft`.
+1. **Canonical plan.** `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` — T2, Resource Intelligence Summary, Pseudocode, Files-to-Change, research-artifact test list, Acceptance Criteria, Risks/Open Questions, and r2 review gate. Status: `blocker-remediation patch applied; pending fresh clean r2 review`.
 2. **Research scaffold.** `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md` — first artifact under the new `docs/reports/gtm/` directory. After owner approved defaults, the scaffold ranks **24 total rows** and **20 live countable vessel/operator targets** (acceptance criterion bar is ≥20). Each row carries `tier_seed`/`tier_revised`/`segment`/`relevant_fleet`/`demo_anchor`/`pain_point_hypothesis`/`corporate_root_evidence`/`deep_link_evidence`/`pain_point_evidence`/`can_say_now`/`cannot_claim_yet`/`outreach_priority`/`private_route`. **12 High-priority targets** are identified (Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura, Helix, Hornbeck Offshore Services, Edison Chouest Offshore), with GoM niche targets High when they map to Demo 3/5 and Gulf access.
 3. **Plan Index row.** `docs/plans/README.md` line 348 — new row for #2554 inserted ahead of the sibling weekly-GTM rows (#2555, #2556, #2557).
 4. **Public/private boundary decision recorded.** Scaffold header explicitly states: corporate-domain evidence URLs only, no individual contact data inline, named contact routing lives outside this repo.
@@ -18,7 +18,7 @@
 - **Adversarial review wave.** Not run. The lane prompt does not authorize provider fanout, and the `scripts/review/plan-review-fanout.sh` invocation is a separate execution permission. Plan review artifacts at `scripts/review/results/2026-04-29-plan-2554-{claude,codex,gemini}.md` do **not** exist yet.
 - **`status:plan-review` label.** Not applied — the prompt is explicit that the label requires both a canonical plan AND adversarial review evidence; we have only the plan.
 - **`status:plan-approved` label.** Not applied — explicitly forbidden by the prompt and the planning skill v3.1.0 (no self-approval).
-- **Deep-link URL fabrication.** Avoided. Every `evidence_urls` value is a corporate-domain root that any reader can verify resolves to the named company. Deep-link confirmation (vessel datasheets, project announcements) is matrix-fill execution work tracked in the scaffold's "Matrix-Fill Execution Backlog" section.
+- **Deep-link URL fabrication.** Avoided. Evidence URLs are official corporate-domain roots or official deep links / explicit access-boundary notes. #2560 closed the High-priority evidence-fill lane; remaining Medium/Low/Defer rows stay bounded and no send is authorized.
 - **Follow-up issue creation.** Completed after owner approved defaults: [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) for High-priority deep-link/pain-point evidence fill, [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561) for FOWT worked example, and [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) for GoM niche evidence expansion.
 - **Email send.** Not executed (forbidden by prompt).
 - **GitHub issue progress comment on #2554.** Not posted — `gh issue comment` mutation is outside the planning-research lane's scope per the strict-rules block. Recommended comment text is provided below for the user or a follow-on lane to post.
@@ -28,7 +28,7 @@
 | Acceptance criterion (from #2554 body) | Scaffold status |
 |---|---|
 | ≥20 ranked contractor / operator targets | **PASS** (24 rows; 20 live countable vessel/operator targets after excluding Acteon partner-shape and deferred/deprecated rows) |
-| Each target has public evidence and a reason for outreach fit | **PARTIAL** — corporate-domain anchor + reason present for all targets; Hornbeck/ECO have official fleet/vessels deep links; remaining High-priority deep-link verification tracked in [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) |
+| Each target has public evidence and a reason for outreach fit | **PASS at scaffold-review depth / NOT SEND-READY** — live rows have official corporate roots; High-priority rows have official deep links or explicit access-boundary notes from #2560; Medium/Low rows are bounded and require deeper verification before individualized send copy. |
 | Private contact data kept out of public artifacts | **PASS** — header decision + structural absence enforced |
 | Follow-up issues created for high-value missing data | **PASS** — [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560), [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561), [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) opened |
 
@@ -36,13 +36,13 @@
 
 - **Adversarial-review fanout permission.** This lane cannot run `scripts/review/plan-review-fanout.sh`. Need a successor lane (or user-driven invocation) to drive Claude / Codex / Gemini reviews and write artifacts to `scripts/review/results/`. **Note:** memory `feedback_codex_cli_0_124_upstream_regression.md` flags that codex-cli 0.124.0 stdin-hangs on `codex exec`; downgrade to 0.123.0 before any fanout attempt that includes Codex.
 - **FOWT worked-example dependency for wind-segment targets.** Targets 8/9/13/14/17 (Van Oord, DEME, Seaway7, Cadeler, JDN-wind) sit at `outreach_priority: Medium` or `Defer` because the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3) has not been authored. Outreach to these targets stalls on that artifact, not on this matrix.
-- **High-priority evidence-fill.** [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) must close or be explicitly waived before [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) consumes the matrix.
+- **High-priority evidence-fill.** [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) is CLOSED/status:done. Remaining #2554 blocker is clean r2 adversarial review/promotion, not evidence-fill execution.
 - **GoM-niche ICP confirmation.** Resolved by owner default approval: GoM targets are High when mapped to Demo 3/5 and Gulf access; broader evidence expansion is tracked in [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562).
 
 ## Exact next action
 
 **Option A (recommended) — evidence-fill, then re-review.**
-Complete or explicitly waive [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560), then rerun live adversarial review against `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`. Apply `status:plan-review` only if no remaining MAJOR findings block promotion.
+Rerun live adversarial review against `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` after the blocker-remediation patch. Apply `status:plan-review` only if no remaining MAJOR findings block promotion.
 
 **Option B — post a progress comment on #2554 first.**
 Recommended comment body (verbatim, ready to paste):
@@ -61,7 +61,7 @@ Planning/research lane progress (2026-04-29):
 
 Not yet done (intentionally, per the planning-only lane scope):
 - Adversarial review wave (Claude/Codex/Gemini) — needed to lift status to plan-review.
-- Evidence-fill and follow-up work remains before send-readiness: #2560, #2561, #2562.
+- Evidence-fill #2560 is closed; #2561/#2562 remain follow-up enrichment lanes before broader send-readiness. No sends authorized.
 - No labels mutated; no emails sent.
 
 Recommended next action: run `scripts/review/plan-review-fanout.sh` against the plan file above, then return for user approval.
