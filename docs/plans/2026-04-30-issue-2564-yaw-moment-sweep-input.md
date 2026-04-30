@@ -1,10 +1,10 @@
 # Plan for #2564: feat(naval-arch): yaw moment sweep input for rudder cases
 
-> **Status:** draft — MAJOR review remediation in progress; implementation blocked until clean re-review and user approval
+> **Status:** draft — 2026-04-30 review remediation patched; implementation blocked until committed fresh re-review and user approval
 > **Complexity:** T2
 > **Date:** 2026-04-30
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2564
-> **Latest review artifacts:** `scripts/review/results/2026-04-29-plan-2564-claude.md` | `...-codex.md` | `...-gemini.md` | `...-disagreement.md`
+> **Fresh review artifact target:** `scripts/review/results/2026-04-30-plan-2564-claude.md` | `...-codex.md` | `...-gemini.md` | `...-disagreement.md`
 
 ---
 
@@ -27,7 +27,7 @@ This is intentionally a cross-repo **governance + implementation** task, not a m
 | `digitalmodel/src/digitalmodel/naval_architecture/maneuverability.py` | Existing rudder helpers: `rudder_lift_coefficient(...)` and `rudder_normal_force(velocity_m_s, rho_kg_m3, rudder_area_m2, rudder_span_m, rudder_angle_deg, behind_hull=True)`. The scalar lift coefficient is proportional to `math.sin(delta_rad)` and the module docstring names the Whicker & Fehlner lift model. | Reuse `rudder_normal_force`; do not duplicate the rudder-force formula. Call it with **keyword arguments** to avoid positional scrambling. |
 | `digitalmodel/src/digitalmodel/naval_architecture/__init__.py` | Does not export `rudder_normal_force` / `rudder_lift_coefficient`. | New `yaw_moment.py` should deep-import from `maneuverability.py`; optionally export only new public yaw-moment helpers. |
 | `digitalmodel/tests/naval_architecture/` | Existing naval-architecture test directory with maneuverability/compliance tests. | Add focused `test_yaw_moment_sweep.py` here. |
-| `digitalmodel/pyproject.toml` | Setuptools packages are discovered from `src`; package data must live inside `src/digitalmodel/...` to be `importlib.resources`-addressable. Pytest treats warnings as errors via `filterwarnings = ["error", ...]`. | Put sample YAML inside the package tree and add package-data coverage; avoid warning-prone APIs or filter explicitly in tests only with justification. |
+| `digitalmodel/pyproject.toml` | Setuptools packages are discovered from `src`; package data must live inside `src/digitalmodel/...` to be `importlib.resources`-addressable. Pytest starts with `filterwarnings = ["error", ...]` but explicitly ignores `UserWarning`, `DeprecationWarning`, and `PendingDeprecationWarning`. | Put sample YAML inside the package tree and add package-data coverage; avoid unexpected warning classes; do not overstate deprecation risk. |
 | Current gaps | No `yaw_moment.py`, no yaw-moment tests, no yaw-moment sample YAML, no output writer. | Implement a bounded new module plus sample/data/tests/docs after approval. |
 
 ### Document-intelligence / standards retrieval
@@ -87,7 +87,7 @@ Plan consequence: keep #2564 bounded to preliminary rudder-induced yaw moment (`
 | Packaged sample YAML | `digitalmodel/src/digitalmodel/naval_architecture/data/yaw_moment_typical_ship.yml` | Inside package tree so `importlib.resources.files("digitalmodel.naval_architecture.data")` is viable |
 | Package-data update | `digitalmodel/pyproject.toml` | Add e.g. `digitalmodel = ["naval_architecture/data/*.yml"]` or equivalent tested configuration |
 | Optional package export | `digitalmodel/src/digitalmodel/naval_architecture/__init__.py` | Export new yaw-moment public helpers only if matching package style |
-| Usage docs | `digitalmodel/docs/domains/marine-engineering/yaw-moment-sweep.md` | Units, sign convention, sample usage, provenance |
+| Usage docs | `digitalmodel/docs/domains/marine-engineering/yaw-moment-sweep.md` | Units, sign convention, sample usage, output schema, chart interpretation, provenance |
 
 ---
 
@@ -98,8 +98,9 @@ A TDD-backed `digitalmodel` yaw-moment sweep capability that:
 1. Loads a packaged typical-ship YAML sample plus user-specified YAML paths.
 2. Computes rudder normal force via `digitalmodel.naval_architecture.maneuverability.rudder_normal_force(...)` using keyword arguments.
 3. Computes yaw moment about CG using `M_z = x_rudder_from_cg_m * normal_force_N` under a named coordinate/sign convention.
-4. Produces in-memory rows and writes CSV and JSON outputs with stable schema, units, sign-convention metadata, and literature/provenance metadata.
-5. Documents scope: preliminary rudder-induced yaw moment only; not full MMG, IMO maneuvering, dynamic yaw response, or class-rule compliance.
+4. Produces in-memory rows and writes CSV, JSON, and required chart outputs with stable schema, units, sign-convention metadata, and literature/provenance metadata.
+5. Generates review-ready charts for engineering interpretation: yaw moment vs rudder angle by speed, yaw moment vs speed by rudder angle, transverse normal force vs rudder angle by speed, and a speed/angle yaw-moment heatmap.
+6. Documents scope: preliminary rudder-induced yaw moment only; not full MMG, IMO maneuvering, dynamic yaw response, or class-rule compliance.
 
 ### YAML/package-data decision
 
@@ -115,6 +116,50 @@ Required access tests:
 
 1. `test_load_packaged_typical_ship_yaml_with_importlib_resources` — uses `importlib.resources.files(...)` to load the packaged sample.
 2. `test_load_user_yaml_from_explicit_path` — copies/loads a temp YAML path to ensure user-provided files remain supported.
+
+### Input YAML contract
+
+The packaged sample and user-provided input files must use a documented YAML shape like:
+
+```yaml
+case:
+  id: typical_single_screw_ship
+  description: Preliminary rudder-induced yaw moment sweep for a typical ship
+vessel:
+  name: Typical Ship
+  length_between_perpendiculars_m: 180.0
+  draft_m: 10.0
+  displacement_t: 30000.0
+rudder:
+  area_m2: 20.0
+  span_m: 5.0
+  x_from_cg_m: -45.0
+  behind_hull: false
+sign_convention:
+  axes: "+x forward, +y port, +z up"
+  positive_yaw_moment: "bow_to_port"
+  positive_force_direction: port
+environment:
+  rho_kg_m3: 1025.0
+sweep:
+  speeds:
+    units: kn
+    values: [0, 2, 5, 10, 15]
+  rudder_angles_deg: [-35, -20, -10, 0, 10, 20, 35]
+outputs:
+  directory: results/yaw_moment_typical_ship
+  tables: [csv, json]
+  charts:
+    enabled: true
+    formats: [png, html]
+    required:
+      - yaw_moment_vs_rudder_angle_by_speed
+      - yaw_moment_vs_speed_by_rudder_angle
+      - normal_force_vs_rudder_angle_by_speed
+      - yaw_moment_speed_angle_heatmap
+```
+
+Implementation must validate required top-level sections (`case`, `rudder`, `environment`, `sweep`, `outputs`) and reject ambiguous/unsupported speed units rather than silently assuming knots or m/s. `outputs.tables` controls CSV/JSON table writers; `outputs.charts.enabled` controls chart generation. A populated `outputs.charts.required` section with `enabled: false` is invalid, so there is no ambiguous `charts` token in the table format list. Use `KNOT_TO_M_PER_S = 0.514444` and `M_PER_S_TO_KNOT = 1 / 0.514444` for all conversions.
 
 ### Module split vs colocation decision
 
@@ -145,6 +190,7 @@ Even though the strict standards `Citation` schema is not applicable, outputs mu
     "yaw_moment_relation": "M_z = x_rudder_from_cg_m * normal_force_N",
     "force_source_module": "digitalmodel.naval_architecture.maneuverability.rudder_normal_force",
     "force_source_note": "Existing maneuverability module documents Whicker & Fehlner rudder lift model; no new standards-derived constants introduced here.",
+    "positive_force_direction": "port",
     "scope_limitations": "Preliminary rudder-force lever-arm sweep; excludes hull/propeller/rudder interaction, drift, yaw inertia, MMG derivatives, and class-rule/IMO compliance."
   }
 }
@@ -179,8 +225,9 @@ If this precondition fails at HEAD, stop and revise the plan/sign convention bef
 - Ship-fixed axes: `+x` forward, `+y` port, `+z` upward.
 - Positive yaw moment `+M_z`: bow turns to port (counterclockwise viewed from above).
 - `x_rudder_from_cg_m`: rudder longitudinal position relative to CG; a stern rudder aft of CG is negative.
-- Existing `rudder_normal_force` positive scalar is treated as positive transverse force toward port (`+Y`) only after the precondition probe above confirms `+delta` returns a positive scalar.
-- For a stern rudder aft of CG (`x < 0`), `M_z = x * Y`; therefore `+delta` produces negative `M_z` under this convention.
+- Existing `rudder_normal_force` returns a signed scalar, not a documented ship-fixed transverse vector. The new wrapper must therefore expose an explicit computational sign mapping in configuration/metadata instead of claiming the source helper proves physical `+Y`.
+- Packaged default mapping: `positive_force_direction: port` means positive scalar normal force is reported as positive transverse force `Y_N`; `positive_force_direction: starboard` means the wrapper multiplies the scalar by `-1` before moment calculation.
+- For the packaged default stern rudder aft of CG (`x < 0`) and `positive_force_direction: port`, `M_z = x * Y`; therefore `+delta` produces negative `M_z` under the declared computational convention. This is a transparent sign convention, not a class-rule or literature claim.
 
 Falsifiable required numeric test:
 
@@ -194,9 +241,10 @@ x_rudder_from_cg_m = -45.0
 behind_hull = False
 
 Expected:
-normal_force_N > 0
+scalar_normal_force_N > 0
+transverse_force_N > 0
 yaw_moment_Nm < 0
-yaw_moment_Nm == normal_force_N * (-45.0)
+yaw_moment_Nm == transverse_force_N * (-45.0)
 ```
 
 Symmetry tests may be added, but they cannot replace the absolute sign tests.
@@ -216,10 +264,21 @@ CSV_HEADERS = [
   "rudder_span_m",
   "x_rudder_from_cg_m",
   "behind_hull",
-  "normal_force_N",
+  "scalar_normal_force_N",
+  "transverse_force_N",
   "yaw_moment_Nm",
   "sign_convention",
 ]
+
+REQUIRED_CHARTS = [
+  "yaw_moment_vs_rudder_angle_by_speed",
+  "yaw_moment_vs_speed_by_rudder_angle",
+  "normal_force_vs_rudder_angle_by_speed",
+  "yaw_moment_speed_angle_heatmap",
+]
+KNOT_TO_M_PER_S = 0.514444
+M_PER_S_TO_KNOT = 1.0 / KNOT_TO_M_PER_S
+CHART_BACKENDS = {"png": "matplotlib", "html": "plotly-self-contained-html"}
 
 function validate_finite(name, value): reject NaN, +inf, -inf
 
@@ -228,7 +287,7 @@ function rudder_yaw_moment(...):
     validate velocity_m_s >= 0
     validate rho_kg_m3 > 0
     validate rudder_area_m2 > 0 and rudder_span_m > 0
-    normal_force_N = rudder_normal_force(
+    scalar_force_N = rudder_normal_force(
         velocity_m_s=velocity_m_s,
         rho_kg_m3=rho_kg_m3,
         rudder_area_m2=rudder_area_m2,
@@ -236,8 +295,9 @@ function rudder_yaw_moment(...):
         rudder_angle_deg=rudder_angle_deg,
         behind_hull=behind_hull,
     )
-    yaw_moment_Nm = x_rudder_from_cg_m * normal_force_N
-    return typed result with values and metadata
+    transverse_force_N = scalar_force_N if positive_force_direction == "port" else -scalar_force_N
+    yaw_moment_Nm = x_rudder_from_cg_m * transverse_force_N
+    return typed result with scalar/transverse force values and metadata
 
 function load_packaged_typical_ship_yaml():
     use importlib.resources.files("digitalmodel.naval_architecture.data")
@@ -245,9 +305,11 @@ function load_packaged_typical_ship_yaml():
 
 function load_yaw_moment_input(path):
     parse YAML from explicit path
-    validate vessel, rudder, environment, sweep, output sections
-    convert speed list from knots or m/s to m/s
+    validate case, vessel, rudder, environment, sweep, output sections
+    validate supported speed units exactly: "kn" or "m/s"
+    convert speed list from knots or m/s to m/s and include speed_kn in output rows
     validate rudder angles finite, density > 0, lever arm finite
+    validate outputs.tables, outputs.charts.enabled, outputs.charts.formats, and outputs.charts.required against supported values
     return typed scenario object
 
 function run_yaw_moment_sweep(config):
@@ -257,7 +319,18 @@ function run_yaw_moment_sweep(config):
 
 function write_yaw_moment_results(result, output_path, formats):
     write CSV using exact CSV_HEADERS order
-    write JSON with {"metadata", "provenance", "rows"}
+    write JSON with {"metadata", "provenance", "rows", "artifacts"}
+    if charts requested: call write_yaw_moment_charts(result, output_path, chart_formats)
+    return manifest containing generated artifact paths
+
+function write_yaw_moment_charts(result, output_dir, chart_formats):
+    create yaw moment vs rudder angle lines grouped by speed
+    create yaw moment vs speed lines grouped by rudder angle
+    create transverse normal force vs rudder angle lines grouped by speed
+    create yaw moment heatmap with speed on one axis and rudder angle on the other
+    write requested PNG via Matplotlib and self-contained HTML via Plotly
+    validate generated PNG signature and HTML title/Plotly marker before returning
+    return chart artifact paths keyed by REQUIRED_CHARTS
 ```
 
 ---
@@ -267,9 +340,9 @@ function write_yaw_moment_results(result, output_path, formats):
 | Action | Path | Reason |
 |---|---|---|
 | Create | `digitalmodel/tests/naval_architecture/test_yaw_moment_sweep.py` | TDD tests for sign, validation, package data, output schema, provenance, and sweep shape |
-| Create | `digitalmodel/src/digitalmodel/naval_architecture/yaw_moment.py` | Calculation/workflow surface; include `# ABOUTME:` header |
+| Create | `digitalmodel/src/digitalmodel/naval_architecture/yaw_moment.py` | Calculation/workflow surface, YAML loader, output writers, chart manifest; include `# ABOUTME:` header |
 | Create | `digitalmodel/src/digitalmodel/naval_architecture/data/__init__.py` | Make sample-data directory resource-addressable if needed |
-| Create | `digitalmodel/src/digitalmodel/naval_architecture/data/yaw_moment_typical_ship.yml` | Packaged reusable typical-ship sample input |
+| Create | `digitalmodel/src/digitalmodel/naval_architecture/data/yaw_moment_typical_ship.yml` | Packaged reusable typical-ship sample input with sweep/output/chart sections |
 | Modify | `digitalmodel/pyproject.toml` | Add package-data coverage for `naval_architecture/data/*.yml`; respect warnings-as-errors |
 | Modify if needed | `digitalmodel/src/digitalmodel/naval_architecture/__init__.py` | Export new yaw-moment helpers only |
 | Create | `digitalmodel/docs/domains/marine-engineering/yaw-moment-sweep.md` | Usage, units, sign convention, limitations, provenance |
@@ -281,19 +354,24 @@ function write_yaw_moment_results(result, output_path, formats):
 
 | Test name | What it verifies | Expected output |
 |---|---|---|
-| `test_existing_rudder_normal_force_positive_angle_precondition` | Existing helper sign for `+10°` under `behind_hull=False` | `normal_force_N > 0`; if not, stop/replan |
-| `test_yaw_moment_positive_angle_stern_rudder_absolute_sign` | Absolute convention for `+delta`, stern rudder | `normal_force_N > 0`, `yaw_moment_Nm < 0`, `Mz = Fn * -45` |
-| `test_yaw_moment_negative_angle_stern_rudder_absolute_sign` | Opposite absolute sign | `normal_force_N < 0`, `yaw_moment_Nm > 0` |
+| `test_existing_rudder_normal_force_positive_angle_precondition` | Existing helper scalar sign for `+10°` under `behind_hull=False` | `scalar_normal_force_N > 0`; if not, stop/replan |
+| `test_yaw_moment_positive_angle_stern_rudder_declared_port_mapping` | Declared computational convention for `+delta`, stern rudder, `positive_force_direction=port` | `scalar_force_N > 0`, `transverse_force_N > 0`, `yaw_moment_Nm < 0`, `Mz = transverse_force_N * -45` |
+| `test_yaw_moment_starboard_mapping_flips_transverse_force_and_moment` | Explicit sign-mapping switch is functional | same scalar force, opposite `transverse_force_N` and `yaw_moment_Nm` versus port mapping |
 | `test_yaw_moment_zero_rudder_angle_is_zero` | zero angle result | force and moment are zero |
 | `test_yaw_moment_scales_with_speed_squared` | dynamic pressure scaling | 10 m/s moment is 4× 5 m/s moment |
 | `test_yaw_moment_uses_keyword_call_to_rudder_normal_force` | guards existing signature/order | mocked helper receives expected keyword names |
-| `test_load_packaged_typical_ship_yaml_with_importlib_resources` | packaged sample accessible after install/source import | sample loads from package resource |
+| `test_load_packaged_typical_ship_yaml_with_importlib_resources` | packaged sample accessible in source tree | sample loads from package resource |
+| `test_packaged_yaml_in_built_distribution` | package-data claim survives build/install | temp installed wheel/sdist can load sample via `importlib.resources` |
 | `test_load_user_yaml_from_explicit_path` | user path support | temp YAML loads and validates |
 | `test_load_typical_ship_yaml_converts_knots` | speed unit conversion | `kn * 0.514444` |
-| `test_sweep_cardinality_matches_grid` | full grid | 4 speeds × 7 angles = 28 rows |
+| `test_sweep_cardinality_matches_grid` | full packaged sample grid | 5 speeds × 7 angles = 35 rows |
 | `test_write_results_csv_schema` | exact CSV contract | headers exactly equal `CSV_HEADERS` order |
-| `test_write_results_json_schema` | exact JSON contract | top-level `metadata`, `provenance`, `rows` |
-| `test_output_rows_include_units_and_sign_convention` | self-describing output | units and `+Mz bow-to-port` convention present |
+| `test_write_results_json_schema` | exact JSON contract | top-level `metadata`, `provenance`, `rows`, `artifacts` |
+| `test_zero_speed_all_angles_are_zero_force_and_moment` | zero-speed branch because packaged sample includes 0 kn | all rows with `speed_m_s == 0` have zero force and yaw moment |
+| `test_write_required_chart_manifest` | required chart contract | manifest includes all `REQUIRED_CHARTS` keys |
+| `test_write_chart_files_png_or_html` | chart artifacts are created with stable names and real backends | PNG starts with PNG signature; HTML contains expected title and Plotly marker |
+| `test_yaw_moment_heatmap_grid_shape` | heatmap matches speed × rudder-angle grid | matrix shape equals `len(speeds) × len(angles)` |
+| `test_output_metadata_includes_units_and_sign_convention` | self-describing output | JSON metadata declares units; CSV uses unit-suffixed headers; sign convention states `+Mz bow-to-port` and `positive_force_direction` |
 | `test_provenance_metadata_declares_non_standard_literature_basis` | avoids fake strict Citation | provenance has force-source note; no fabricated `code_id` for Whicker & Fehlner |
 | `test_invalid_negative_speed_rejected` | invalid speed | `ValueError` |
 | `test_invalid_density_rejected` | density positive/finite | `ValueError` for `rho <= 0`, NaN, inf |
@@ -311,12 +389,15 @@ function write_yaw_moment_results(result, output_path, formats):
 - [ ] Any MAJOR finding requires plan revision and fresh re-review; inline explanation alone cannot bypass the gate.
 - [ ] User explicitly approves #2564 before implementation and label moves to `status:plan-approved`.
 - [ ] Tests are written before implementation and pass from `digitalmodel/`: `uv run pytest tests/naval_architecture/test_yaw_moment_sweep.py -v`.
+- [ ] Packaging validation proves installed-package resource access, e.g. build a wheel/sdist via the repo-approved `uv` workflow, install into a temporary environment, and verify `importlib.resources.files("digitalmodel.naval_architecture.data")` can read `yaw_moment_typical_ship.yml`.
 - [ ] Implementation reuses `rudder_normal_force` with keyword arguments; no duplicated rudder lift formula is introduced.
-- [ ] Sign convention has precondition and absolute positive/negative yaw-moment tests.
+- [ ] Sign convention has precondition, declared force-direction mapping tests, and explicit metadata; implementation does not claim `rudder_normal_force` alone proves physical transverse direction.
 - [ ] Validation rejects negative speed, nonpositive density, nonfinite density/angle/lever arm, and nonpositive rudder area/span.
 - [ ] Packaged sample YAML loads via `importlib.resources`, and explicit user YAML paths also load.
-- [ ] CSV output uses exact `CSV_HEADERS`; JSON output includes `metadata`, `provenance`, and `rows`.
-- [ ] Usage docs state units, sign convention, limitations, and provenance.
+- [ ] CSV output uses exact `CSV_HEADERS`; JSON output includes `metadata`, `provenance`, `rows`, and `artifacts`.
+- [ ] Required chart outputs are generated with stable names and documented interpretation: yaw moment vs rudder angle by speed, yaw moment vs speed by rudder angle, transverse normal force vs rudder angle by speed, and speed/angle yaw-moment heatmap.
+- [ ] Chart backend is pinned to installed/base dependencies: Matplotlib for PNG and Plotly self-contained HTML for HTML. PNG tests verify file signature, not just non-empty bytes; HTML tests verify expected Plotly markup/title.
+- [ ] Usage docs state units, YAML schema, sign convention, output schema, chart interpretation, limitations, and provenance.
 - [ ] `digitalmodel` implementation commit/test evidence is linked back to #2564 before closeout.
 
 ---
@@ -328,8 +409,9 @@ function write_yaw_moment_results(result, output_path, formats):
 | Claude | MAJOR | Corrected YAML location into package tree; removed unsupported multi-provider evidence claims; added sign precondition, module split rationale, fixed review gate, fixed CSV headers, noted warnings-as-errors. |
 | Codex | MAJOR | Added push/retrievability gate, issue comment/label gate, strict MAJOR re-review requirement, and corrected citation/provenance treatment. |
 | Gemini | MAJOR | Moved YAML under `src/digitalmodel/...`; separated strict standards `Citation` from research-literature provenance; required keyword arguments for existing helper signature. |
+| 2026-04-30 rerun | MAJOR / MAJOR / UNAVAILABLE | Patched concrete blockers from fresh review: fixed 35-row cardinality, removed ambiguous `charts` format token, added zero-speed and conversion constants, pinned chart backends/validation, added build/install package-data test, converted sign convention to declared configurable mapping rather than unsupported physical-source claim, and updated review artifact date. |
 
-**Overall result:** draft remains blocked until this revision is committed/pushed, issue governance is updated, and review is rerun cleanly.
+**Overall result:** draft remains blocked until this revision is committed/pushed and a fresh re-review is run against the committed artifact. If no MAJOR findings remain from at least two substantive reviewers, #2564 can remain surfaced as `status:plan-review` for user approval.
 
 ---
 
@@ -338,7 +420,7 @@ function write_yaw_moment_results(result, output_path, formats):
 - **Sign convention mismatch:** If the precondition probe shows the existing scalar sign is not compatible with the desired convention, stop and revise this plan before coding.
 - **Preliminary fidelity:** This is not a full MMG/IMO maneuvering model. Documentation and JSON provenance must state exclusions.
 - **Packaging drift:** Package-data changes must be tested; resource access cannot rely on repository-root config files.
-- **Warnings-as-errors:** `pyproject.toml` treats warnings as errors; YAML/path code must avoid deprecated APIs.
+- **Warnings handling:** `pyproject.toml` starts with warnings-as-errors but ignores common user/deprecation warning classes; implementation should still avoid unexpected warning classes and keep tests explicit.
 - **Provider review failures:** Capacity/tool failures are not approvals; engineering-critical approval needs at least two substantive no-MAJOR reviews or explicit user override.
 
 ---
