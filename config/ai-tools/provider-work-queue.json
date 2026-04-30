@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-29T17:20:44.772375Z",
+  "generated_at": "2026-04-30T01:20:07.347901Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-29T17:20:36.733667Z",
+  "scorecard_generated_at": "2026-04-30T01:20:05.588044Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 6,
-      "total_candidates": 159,
+      "execution_ready_count": 7,
+      "total_candidates": 158,
       "top_issues": [
         {
           "number": 2540,
@@ -25,6 +25,30 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-29T14:30:46Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2555,
+          "title": "feat(gtm): vessel capability charts for contractor brochure",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2555",
+          "labels": [
+            "priority:high",
+            "cat:business",
+            "cat:strategy",
+            "domain:gtm",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-29T23:15:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -178,37 +202,14 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2517,
-          "title": "Compliance alert: W18 \u2014 42% (high)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
-          "labels": [
-            "priority:high",
-            "priority:medium",
-            "priority:critical",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-04-29T11:45:13Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 18,
-      "total_candidates": 39,
+      "execution_ready_count": 16,
+      "total_candidates": 40,
       "top_issues": [
         {
           "number": 2269,

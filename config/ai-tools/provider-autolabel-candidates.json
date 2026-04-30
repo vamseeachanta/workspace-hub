@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-29T17:20:50.188884Z",
+  "generated_at": "2026-04-30T01:20:07.559824Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 6,
+  "eligible_count": 7,
   "applied": [],
   "candidates": [
     {
@@ -16,6 +16,39 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-04-29T14:30:46Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2555,
+      "title": "feat(gtm): vessel capability charts for contractor brochure",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2555",
+      "labels": [
+        "priority:high",
+        "cat:business",
+        "cat:strategy",
+        "domain:gtm",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-04-29T23:15:03Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -269,37 +302,6 @@
         "compliance-alert"
       ],
       "updatedAt": "2026-04-26T11:45:09Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2517,
-      "title": "Compliance alert: W18 \u2014 42% (high)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
-      "labels": [
-        "priority:high",
-        "priority:medium",
-        "priority:critical",
-        "compliance-alert"
-      ],
-      "updatedAt": "2026-04-29T11:45:13Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",
