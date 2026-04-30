@@ -1,6 +1,6 @@
 # Plan for #2564: feat(naval-arch): yaw moment sweep input for rudder cases
 
-> **Status:** status:plan-review — ready for user review as a blocked plan-review packet; implementation remains blocked until explicit user approval moves #2564 to `status:plan-approved`
+> **Status:** completed — implemented in `digitalmodel` commit [`0db57cd564720431213ee659cb1787a55683e922`](https://github.com/vamseeachanta/digitalmodel/commit/0db57cd564720431213ee659cb1787a55683e922); #2564 closed with `status:done` on 2026-04-30.
 > **Complexity:** T2
 > **Date:** 2026-04-30
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2564
@@ -429,3 +429,28 @@ function write_yaw_moment_charts(result, output_dir, chart_formats):
 ## Complexity: T2
 
 **T2** — bounded engineering calculation/workflow with one new module, one test file, one packaged YAML sample, one docs page, and a package-data update. Governance artifacts span `workspace-hub`; implementation artifacts stay in `digitalmodel`.
+---
+
+## Implementation Closeout — 2026-04-30
+
+| Evidence | Result |
+|---|---|
+| `digitalmodel` implementation commit | [`0db57cd564720431213ee659cb1787a55683e922`](https://github.com/vamseeachanta/digitalmodel/commit/0db57cd564720431213ee659cb1787a55683e922) |
+| GitHub issue state | #2564 closed as completed with `status:done` |
+| Targeted yaw-moment tests | `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_yaw_moment_sweep.py -q` → 21 passed |
+| Regression slice | `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_maneuverability.py tests/naval_architecture/test_yaw_moment_sweep.py -q` → 43 passed |
+| Lint | `UV_NO_SYNC=1 uv run --with ruff ruff check src/digitalmodel/naval_architecture/yaw_moment.py tests/naval_architecture/test_yaw_moment_sweep.py src/digitalmodel/naval_architecture/__init__.py` → passed |
+| Smoke artifact generation | 35 sweep rows, CSV/JSON tables, citation sidecar, artifact manifest, and all four required charts generated |
+| Post-fix adversarial review | Hermes follow-up review verdict: APPROVE after package-data and chart-contract fixes |
+
+Implemented artifacts in `digitalmodel`:
+
+- `src/digitalmodel/naval_architecture/yaw_moment.py`
+- `src/digitalmodel/naval_architecture/data/yaw_moment_typical_ship.yml`
+- `src/digitalmodel/naval_architecture/data/__init__.py`
+- `tests/naval_architecture/test_yaw_moment_sweep.py`
+- `docs/domains/marine-engineering/yaw-moment-sweep.md`
+- `pyproject.toml` package-data extension preserving existing subsea fixtures and adding the new naval-architecture YAML.
+
+Next-calculation preparation is documented in `docs/session-handoffs/2026-04-30-yaw-moment-sweep-closeout-next-calculation.md`.
+
