@@ -1,6 +1,6 @@
 # Plan for #2565: feat(naval-arch): rudder stock torque sweep input for typical ship
 
-> **Status:** draft — resource-intelligence and initial plan prepared; implementation blocked until adversarial review passes and user approval moves #2565 to `status:plan-approved`.
+> **Status:** plan-review candidate after MAJOR review remediation — implementation blocked until user approval moves #2565 to `status:plan-approved` and approval marker/label state are synchronized.
 > **Complexity:** T2
 > **Date:** 2026-04-30
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2565
@@ -31,6 +31,23 @@
 | `knowledge/wikis/naval-architecture/wiki/concepts/yaw-moment-rudder-sweep.md` | #2564 source-backed checks include speed-squared scaling, zero cases, non-tautological sign convention, and citation sidecar. | Reuse these checks for torque: torque should scale with scalar normal force and lever arm; zero speed/angle/arm cases must produce zero torque. |
 | `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md` | PNA and EN400 convention pages pin yaw/rudder sign conventions. | Rudder-stock torque must not silently inherit yaw sign; document torque sign separately as a torque about rudder stock opposing/applied by steering gear, with an explicit `positive_torque_direction` field. |
 | `data/standards/promoted/naval-architecture/glossary.yaml` | Promoted SOLAS text defines steering gear vocabulary: auxiliary steering gear, power actuating system, rudder stock, maximum ahead service speed. | Use vocabulary/caveat context only. Do **not** claim SOLAS/class compliance or machinery sizing; keep this issue as preliminary torque envelope. |
+
+
+### Engineering registry retrieval evidence
+
+| Registry / entry point | Evidence found | Decision for #2565 |
+|---|---|---|
+| `docs/document-intelligence/README.md` | Confirms the operational retrieval surfaces: corpus index, `standards-transfer-ledger.yaml`, `code-registry.yaml`, maturity tracking, and naval-architecture wiki index. | Retrieval path is recorded here; implementation does not rely on ad-hoc search alone. |
+| `data/document-index/standards-transfer-ledger.yaml` | Ledger contains 436 standards records, but targeted searches for `SOLAS`, `Principles-of-Naval`, `PNA`, `Vessel Maneuverability`, `rudder stock`, and `steering gear` returned no direct standards-ledger match for this bounded torque issue. | No standards-ledger implementation target is claimed. If later scope adds class/SOLAS machinery or scantling formulas, stop and add a new retrieval/promotion pass. |
+| `data/design-codes/code-registry.yaml` | Current registry is focused on DNV/API/ASME/ISO offshore/pipeline/structural codes; targeted search found no rudder-stock or steering-gear design-code entry. | Do not cite a design-code edition as an active basis for #2565. |
+| `data/document-index/online-resource-registry.yaml` | Naval-architecture records include PNA volumes, USNA EN400, and SOLAS 2020 with local backups under `/mnt/ace/docs/_standards/...`; USNA EN400 is also indexed. | Use these as context/vocabulary only; existing wiki-promoted #2564 sources remain the authoritative local knowledge anchors. |
+| `data/standards/promoted/naval-architecture/glossary.yaml` | Promoted SOLAS snippets define steering gear, auxiliary steering gear, power actuating system, rudder stock, and maximum ahead service speed. | Include SOLAS terms as vocabulary/caveats only; no SOLAS compliance calculation is in scope. |
+
+### `/mnt/ace` and wiki-promotion decision
+
+No new `/mnt/ace` mining or wiki-promotion is required before implementation **if** #2565 remains bounded to: existing rudder normal force × user-supplied perpendicular stock/center-of-pressure arm, with no new standards-derived coefficients/constants and no compliance claims. Existing #2564 wiki pages (`rudder-force-modeling`, `yaw-moment-rudder-sweep`, `maneuvering-coordinate-conventions`) are sufficient for this bounded scope.
+
+Hard stop: if implementation introduces any new coefficient (`C_QN`, `C_QR`, hull/propeller interaction coefficient, class-rule allowable, stock scantling factor, actuator sizing coefficient, SOLAS/class acceptance criterion), pause implementation and add a fresh raw-reference/wiki-promotion step before coding.
 
 ### Documents consulted
 
@@ -128,6 +145,27 @@ A bounded first-pass yaw calculation may use a rudder normal force F_N and a CG 
 | Plan review — Codex | `scripts/review/results/2026-04-30-plan-2565-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-04-30-plan-2565-gemini.md` |
 | Review synthesis | `scripts/review/results/2026-04-30-plan-2565-disagreement.md` |
+| GitHub plan comment | `https://github.com/vamseeachanta/workspace-hub/issues/2565#issuecomment-4356324863` (update after review remediation) |
+| Plan approval marker | `.planning/plan-approved/2565.md` (must exist before implementation) |
+| Label transition | `status:plan-review` only after clean review; `status:plan-approved` only after user approval |
+
+---
+
+### Exact output artifact contract
+
+The implementation must write torque-specific artifact names, not copied yaw-moment names:
+
+- `rudder_stock_torque_sweep.csv`
+- `rudder_stock_torque_sweep.json`
+- `rudder_stock_torque_provenance.json`
+- `artifact_manifest.json`
+- chart basenames:
+  - `rudder_stock_torque_vs_rudder_angle_by_speed`
+  - `rudder_stock_torque_vs_speed_by_rudder_angle`
+  - `scalar_normal_force_vs_rudder_angle_by_speed`
+  - `rudder_stock_torque_speed_angle_heatmap`
+
+If shared writer/chart code is extracted from #2564 `yaw_moment.py`, keep the refactor narrow and run yaw-moment regression tests to prevent filename/JSON contract drift.
 
 ---
 
@@ -141,17 +179,21 @@ A `rudder_stock_torque.py` workflow in `digitalmodel` that loads a typical-ship 
 
 ### In scope
 
-- Preliminary torque envelope:
+- Preliminary torque envelope using **hydrodynamic torque exerted by the flow on the rudder/stock**:
 
 ```text
-rudder_stock_torque_Nm = scalar_normal_force_N * stock_to_center_of_pressure_arm_m
+hydrodynamic_rudder_stock_torque_Nm = scalar_normal_force_N * stock_to_center_of_pressure_arm_m
+required_steering_gear_holding_torque_Nm = -hydrodynamic_rudder_stock_torque_Nm
 ```
 
 - Reuse `rudder_normal_force(...)` through #2564-style keyword arguments.
 - User-configurable `stock_to_center_of_pressure_arm_m` in YAML.
+- Define `stock_to_center_of_pressure_arm_m` as the assumed constant **perpendicular distance from the rudder stock axis to the line of action of the resultant rudder normal force**. It is not a generic chordwise offset unless the input author has projected it perpendicular to the normal-force line of action.
+- Emit both hydrodynamic and required holding torque so sign ambiguity cannot hide equal-and-opposite steering-gear reaction torque.
 - Explicit sign convention metadata:
   - `scalar_normal_force_N` preserves existing helper sign.
-  - `rudder_stock_torque_Nm` sign follows `positive_torque_direction` and the signed scalar force convention.
+  - `hydrodynamic_rudder_stock_torque_Nm` is positive when the flow torque acts in the configured positive rudder-stock rotation sense, viewed from above.
+  - `required_steering_gear_holding_torque_Nm` is equal and opposite to hydrodynamic torque.
   - `rudder_stock_torque_abs_Nm` / `rudder_stock_torque_abs_kNm` emitted for design-envelope ranking.
 - CSV/JSON output tables and required charts.
 - Provenance sidecar stating formula, reused force source, limitations, and whether strict citation objects were needed.
@@ -162,10 +204,10 @@ rudder_stock_torque_Nm = scalar_normal_force_N * stock_to_center_of_pressure_arm
 - Rudder-stock diameter/stress/scantling calculations.
 - Bearing reactions, actuator ram forces, tiller/quadrant geometry, hydraulic power, relief valve settings.
 - SOLAS/class compliance checks.
-- Propeller slipstream correction, hull interaction, MMG/turning-circle simulation.
+- Center-of-pressure migration with rudder angle, stall, propeller slipstream correction, hull interaction, MMG/turning-circle simulation.
 - Environmental current/wind yaw moment or torque envelopes.
 
-Future issues should cover the out-of-scope items only after this preliminary envelope is validated.
+Future issues should cover the out-of-scope items only after this preliminary envelope is validated. #2565 is not computing Bertram/PNA coefficient-based stock torque (`Q_N`, `Q_R`, `C_QN`, `C_QR`); those symbols remain reference vocabulary for later higher-fidelity work.
 
 ---
 
@@ -175,12 +217,11 @@ Future issues should cover the out-of-scope items only after this preliminary en
 function rudder_stock_torque(...):
     validate velocity >= 0, rho > 0, rudder geometry > 0
     validate stock_to_center_of_pressure_arm_m is finite and >= 0
-    validate positive_torque_direction in {"resists_positive_rudder_force", "assists_positive_rudder_force"} or equivalent explicit enum
+    validate positive_hydrodynamic_torque_direction is a geometric rotation convention
     scalar_normal_force_N = rudder_normal_force(... keyword args ...)
-    signed_torque_Nm = scalar_normal_force_N * stock_to_center_of_pressure_arm_m
-    if positive_torque_direction maps positive scalar force to negative applied steering torque:
-        signed_torque_Nm *= -1
-    return result with scalar force, signed torque, absolute torque, units, convention metadata
+    hydrodynamic_torque_Nm = scalar_normal_force_N * stock_to_center_of_pressure_arm_m
+    required_holding_torque_Nm = -hydrodynamic_torque_Nm
+    return result with scalar force, hydrodynamic torque, holding torque, absolute torque, units, convention metadata
 
 function validate_rudder_stock_torque_input(payload):
     require case, vessel, rudder, stock, environment, sweep, outputs sections
@@ -194,8 +235,8 @@ function run_rudder_stock_torque_sweep(config):
     for speed in speeds and angle in rudder_angles:
         result = rudder_stock_torque(...)
         append row with speed_m_s, speed_kn, rudder angle, scalar_normal_force_N,
-                   stock_to_center_of_pressure_arm_m, rudder_stock_torque_Nm,
-                   rudder_stock_torque_kNm, abs torque, convention fields
+                   stock_to_center_of_pressure_arm_m, hydrodynamic_rudder_stock_torque_Nm,
+                   required_steering_gear_holding_torque_Nm, absolute torque, convention fields
     attach provenance and units metadata
     return rows + metadata
 
@@ -217,7 +258,7 @@ function write_rudder_stock_torque_results(result, output_dir, table_formats, ch
 |---|---|---|
 | Create | `digitalmodel/src/digitalmodel/naval_architecture/rudder_stock_torque.py` | Main calculation, YAML validation, sweep, output writers, chart writers. |
 | Create | `digitalmodel/src/digitalmodel/naval_architecture/data/rudder_stock_torque_typical_ship.yml` | Packaged typical-ship torque input. |
-| Modify | `digitalmodel/src/digitalmodel/naval_architecture/__init__.py` | Export approved public helpers such as `rudder_stock_torque`, `run_rudder_stock_torque_sweep`, loaders/writers. |
+| Modify | `digitalmodel/src/digitalmodel/naval_architecture/__init__.py` | Export only top-level workflow helpers with demonstrated downstream value, e.g. `load_packaged_rudder_stock_torque_yaml`, `load_rudder_stock_torque_input`, `rudder_stock_torque`, `run_rudder_stock_torque_sweep`, and `write_rudder_stock_torque_results`; keep validators, chart builders, constants, and internal dataclasses module-private. |
 | Create | `digitalmodel/tests/naval_architecture/test_rudder_stock_torque_sweep.py` | TDD tests for formula, YAML, packaging, outputs, charts, provenance. |
 | Update | `digitalmodel/docs/domains/marine-engineering/rudder-stock-torque-sweep.md` | User-facing methodology, inputs, outputs, limitations. |
 | Update | `docs/plans/README.md` | Add #2565 plan row. |
@@ -243,9 +284,13 @@ No implementation code may be changed until this plan passes review and the user
 | `test_zero_speed_all_angles_are_zero_force_and_torque` | Zero speed has zero force/torque | `speed=0` rows | all force/torque zero |
 | `test_invalid_negative_stock_arm_rejected` | Input validation prevents invalid arm sign if arm is defined as magnitude | `stock_to_center_of_pressure_arm_m=-0.1` | `ValueError` |
 | `test_write_results_csv_json_and_required_chart_manifest` | Output table/chart contract is stable | run default case | CSV, JSON, manifest, sidecar, all charts exist |
-| `test_output_rows_include_units_and_abs_torque` | Rows include signed and absolute torque fields | run default case | `rudder_stock_torque_Nm`, `rudder_stock_torque_abs_Nm`, `rudder_stock_torque_kNm` present |
+| `test_output_rows_include_units_and_abs_torque` | Rows include signed and absolute torque fields | run default case | `hydrodynamic_rudder_stock_torque_Nm`, `required_steering_gear_holding_torque_Nm`, `rudder_stock_torque_abs_Nm`, `rudder_stock_torque_abs_kNm` present |
 | `test_provenance_sidecar_states_preliminary_scope` | Sidecar includes formula, force source, limitations, citation status | write results | sidecar references formula and excludes class compliance |
 | `test_required_charts_are_torque_specific` | Required charts do not accidentally inherit yaw-moment names | packaged YAML | exact four torque chart names |
+| `test_base_case_positive_angle_absolute_torque_sign` | Non-tautological sign check pinned to helper behavior | `rudder_angle_deg=+10`, arm > 0 | hydrodynamic torque sign matches documented convention; holding torque has opposite sign |
+| `test_negative_angle_reverses_hydrodynamic_and_holding_torque_signs` | Negative rudder angle reverses both signed torque fields | `+10` vs `-10` | signs flip; magnitudes match |
+| `test_single_row_torque_identity` | Direct identity, not just ratios | one row | `hydrodynamic_rudder_stock_torque_Nm == scalar_normal_force_N * arm` |
+| `test_provenance_declares_user_supplied_arm_and_constant_arm_assumption` | Prevents coefficient/class-rule confusion | write sidecar | states arm is user input and not a standards-derived coefficient |
 
 ---
 
@@ -253,12 +298,16 @@ No implementation code may be changed until this plan passes review and the user
 
 - [ ] New tests are written before implementation and initially fail for missing `rudder_stock_torque` module/YAML.
 - [ ] `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_rudder_stock_torque_sweep.py -q` passes after implementation.
-- [ ] `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_yaw_moment_sweep.py tests/naval_architecture/test_rudder_stock_torque_sweep.py -q` passes as targeted regression.
+- [ ] `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_maneuverability.py tests/naval_architecture/test_yaw_moment_sweep.py tests/naval_architecture/test_rudder_stock_torque_sweep.py -q` passes as targeted regression. If any shared helper/writer is touched, this full slice is mandatory.
 - [ ] `UV_NO_SYNC=1 uv run --with ruff ruff check src/digitalmodel/naval_architecture/rudder_stock_torque.py tests/naval_architecture/test_rudder_stock_torque_sweep.py src/digitalmodel/naval_architecture/__init__.py` passes.
 - [ ] Packaged YAML loads with `importlib.resources` and is present in built wheel without dropping existing package data.
+- [ ] Public import/API smoke passes outside pytest path injection: `PYTHONPATH=src UV_NO_SYNC=1 uv run python -c "from digitalmodel.naval_architecture import load_packaged_rudder_stock_torque_yaml, run_rudder_stock_torque_sweep"`.
 - [ ] Default case writes 35 sweep rows, CSV, JSON, provenance/citation sidecar, artifact manifest, and all four required charts.
 - [ ] Output rows include stable units and both signed and absolute torque values.
 - [ ] Documentation explicitly states preliminary scope and excludes steering gear machinery sizing, structural/scantling checks, bearing reactions, and class/SOLAS compliance.
+- [ ] Fresh plan-review artifacts exist at canonical paths with at least two substantive provider/reviewer results plus synthesis. `UNAVAILABLE` artifacts do not count toward substantive coverage unless explicitly justified in synthesis.
+- [ ] No unresolved MAJOR findings remain before moving to `status:plan-review`.
+- [ ] `.planning/plan-approved/2565.md` and `status:plan-approved` label are synchronized before implementation starts.
 - [ ] Implementation review/cross-review returns no unresolved MAJOR findings before closeout.
 
 ---
@@ -267,20 +316,29 @@ No implementation code may be changed until this plan passes review and the user
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | pending review |
-| Codex | pending | pending review |
-| Gemini | pending | pending review |
+| Claude/Hermes engineering review | MAJOR -> remediated in plan | Required hydrodynamic vs holding torque split, perpendicular-arm definition, non-tautological sign tests, direct identity test, user-supplied arm provenance. |
+| Codex/Hermes package/API review | MAJOR -> remediated in plan | Required maneuverability regression slice, exact output artifact names, public import smoke, narrowed public API export boundary. |
+| Gemini/Hermes governance review | MAJOR -> remediated in plan | Required engineering registry retrieval evidence, canonical review/approval gate criteria, governance artifacts, explicit `/mnt/ace`/wiki-promotion decision. |
 
-**Overall result:** pending — do not move to `status:plan-review` until review artifacts are created and any MAJOR findings are resolved.
+**Overall result:** remediated plan-review candidate. Initial reviews found MAJOR issues; this revision addresses them. Move to `status:plan-review` only after the review artifact files and synthesis are published and a final verification confirms no unresolved MAJOR remains.
 
 Revisions made based on review:
-- Pending.
+- Split signed output into `hydrodynamic_rudder_stock_torque_Nm` and `required_steering_gear_holding_torque_Nm`.
+- Defined `stock_to_center_of_pressure_arm_m` as a perpendicular force-line moment arm, not generic geometry.
+- Added constant-arm, no-coefficient, no-SOLAS/class-compliance caveats.
+- Added exact torque-specific output filenames and chart basenames.
+- Added non-tautological sign, negative-angle, direct-identity, and user-supplied-arm provenance tests.
+- Expanded targeted regression to include `test_maneuverability.py`.
+- Added public import smoke outside pytest path injection.
+- Narrowed public API export boundary.
+- Added engineering-registry retrieval evidence and explicit `/mnt/ace`/wiki-promotion decision.
+- Added governance artifacts and acceptance gates for review artifacts, `status:plan-review`, and `.planning/plan-approved/2565.md`.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — sign convention ambiguity:** steering/rudder-stock torque sign is not the same as yaw moment sign. The implementation must define a torque-specific convention and emit absolute torque for envelope use.
+- **Risk — sign convention ambiguity:** steering/rudder-stock torque sign is not the same as yaw moment sign. The plan now requires separate hydrodynamic and equal/opposite holding torque fields plus a named geometric positive rotation convention and absolute torque for envelope use.
 - **Risk — false compliance implication:** SOLAS/class terms are relevant vocabulary only; this issue must not imply steering gear approval or machinery compliance.
 - **Risk — package-data regression:** #2564 already exposed package-data risk. The wheel test must preserve existing data while adding new YAML.
 - **Risk — copy/paste drift from #2564:** Chart names, output filenames, docs, and provenance must use torque terminology, not yaw-moment labels.
