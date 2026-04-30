@@ -4,6 +4,20 @@
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2564
 > Scope: find additional local raw references under `/mnt/ace` to support preliminary rudder-induced yaw-moment calculations for a typical ship.
 
+## Result
+
+This review was promoted into the naval-architecture LLM wiki on 2026-04-30. The preserved knowledge pack lives under `/mnt/local-analysis/workspace-hub/knowledge/wikis/naval-architecture/wiki/`:
+
+- `concepts/yaw-moment-rudder-sweep.md`
+- `concepts/rudder-force-modeling.md`
+- `concepts/maneuvering-coordinate-conventions.md`
+- `concepts/maneuvering-validation-metrics.md`
+- `concepts/environmental-yaw-moment-coefficients.md`
+- `comparisons/yaw-moment-source-extraction-2026-04-30.md`
+- source pages for ABS, IMO, USCG, ShipMo3D, OrcaFlex, and OCIMF yaw coefficient figures
+
+Validation: `uv run scripts/knowledge/llm_wiki.py lint --wiki naval-architecture` returned OK after ingestion.
+
 ## Method
 
 - Used parallel subagents to scan `/mnt/ace` by filename, targeted text-searchable content, and naval-architecture reference collections.

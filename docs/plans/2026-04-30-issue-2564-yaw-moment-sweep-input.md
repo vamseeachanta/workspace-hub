@@ -45,6 +45,15 @@ This is intentionally a cross-repo **governance + implementation** task, not a m
 
 Detailed addendum: `docs/plans/2026-04-30-issue-2564-mnt-ace-raw-reference-review.md`.
 
+LLM-wiki ingestion completed on 2026-04-30 under `knowledge/wikis/naval-architecture/wiki/`; validation returned `llm_wiki.py lint --wiki naval-architecture` = OK. Primary implementation anchors now include:
+
+- `concepts/yaw-moment-rudder-sweep.md`
+- `concepts/rudder-force-modeling.md`
+- `concepts/maneuvering-coordinate-conventions.md`
+- `concepts/maneuvering-validation-metrics.md`
+- `concepts/environmental-yaw-moment-coefficients.md`
+- `comparisons/yaw-moment-source-extraction-2026-04-30.md`
+
 | Raw reference | Verified relevance | Use in #2564 |
 |---|---|---|
 | `/mnt/ace/O&G-Standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf` | Controllability volume; text hits for turning ability, hydrodynamics of control surfaces, maneuvering trials/performance, rudder/control-device design, yaw sign-convention content. | Primary reference for controllability framework and sign/axis convention. |
