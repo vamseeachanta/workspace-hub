@@ -1,10 +1,10 @@
 # Plan for #2556: Vessel-Contractor Brochure and Outbound Send Tracker
 
-> **Status:** draft (plan-revision r3 — 2026-04-29 next-wave-autofeed-followup; ready for re-review, NOT for approval. r3 lands the outline body fix for Claude r1 finding #5 — canonical demo filenames now cited in `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md` §3.4 — and reinforces dependency-on-#2555 + no-send legal gate language as called out below)
+> **Status:** draft (plan-revision r4 — 2026-04-30 nightly immediate batch 4/5; #2555 chart assets are now landed under `docs/reports/gtm/assets/`, but this issue remains NOT approved and no-send. r4 updates the dependency evidence and keeps #2556 blocked behind #2554/#2560 contractor-evidence readiness or explicit owner waiver, plus explicit user approval before any implementation or outreach.)
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2556
-> **Depends on:** [#2555](https://github.com/vamseeachanta/workspace-hub/issues/2555) (chart deliverables; this plan cannot promote past `status:plan-review` until #2555 lands real chart artifacts under `docs/reports/gtm/charts/`); soft input from [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) (contractor matrix — drives first-batch ready-to-send list shape).
+> **Depends on:** [#2555](https://github.com/vamseeachanta/workspace-hub/issues/2555) (chart deliverables landed and #2555 is closed `status:done`; consume only the approved chart pack under `docs/reports/gtm/assets/` after #2556 itself is approved); hard input from [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) / [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) (contractor matrix evidence gate — drives first-batch ready-to-send list shape; do not send or schedule outreach until complete or explicitly waived).
 > **Review artifacts:** `scripts/review/results/2026-04-29-plan-2556-nextwave-claude.md` (MAJOR, single-author Claude self-review) | `...-codex.md` (UNAVAILABLE, [#2479](https://github.com/vamseeachanta/workspace-hub/issues/2479) + permission gate) | `...-gemini.md` (UNAVAILABLE, permission gate)
 
 ---
@@ -64,8 +64,9 @@ What this plan must produce that does not exist yet:
 
 **Issue statuses** (verified 2026-04-29 via `gh issue view`):
 - `#2556` — OPEN — feat(gtm): vessel contractor brochure and outbound send tracker — labels: `priority:high`, `cat:business`, `cat:strategy`, `domain:gtm`.
-- `#2554` — OPEN — feat(gtm): weekly vessel contractor outreach matrix for April target.
-- `#2555` — OPEN — feat(gtm): vessel capability charts for contractor brochure.
+- `#2554` — OPEN — feat(gtm): weekly vessel contractor outreach matrix for April target — labels include `status:blocked` as of the batch-4 inventory.
+- `#2555` — CLOSED — feat(gtm): vessel capability charts for contractor brochure — labels include `status:done`; closeout comment records chart assets under `docs/reports/gtm/assets/` and legal scan sidecar under `docs/reports/gtm/legal-scans/`.
+- `#2560` — OPEN — DATA(gtm): fill deep-link evidence for high-priority vessel contractor targets — downstream blocker for #2556's first-batch send readiness unless explicitly waived.
 - `#1669` — OPEN — [WRK] GTM: Vessel Installation Contractor Email Outreach Campaign.
 - `#2016` — OPEN — feat(gtm): client conversion pipeline -- turn repo capability into paying clients.
 
@@ -79,7 +80,12 @@ What this plan must produce that does not exist yet:
 - EXISTS: `docs/strategy/engineering-chatbot-oilgas-pitch.md`
 - EXISTS: `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` (5,157 bytes, 2026-04-02) — pre-existing template file (retire path declared in §Files to Change)
 - EXISTS: `docs/gtm/installation-analysis-method-note.md` (17,720 bytes, 2026-04-22) — methodology note for brochure outline §3.3 Chart C
-- EXISTS: `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` — current #2555 deliverable (storyboard only; chart artifacts pending)
+- EXISTS: `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` — #2555 planning/storyboard artifact.
+- EXISTS: `docs/reports/gtm/assets/vessel-capability-chart-pack-manifest.json` — #2555 landed chart-pack manifest.
+- EXISTS: `docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.brochure.png` plus `.print.svg`, `.1page.pdf`, `.caption.txt`, `.metadata.json` sidecars.
+- EXISTS: `docs/reports/gtm/assets/c2-pipelay-operating-envelope.brochure.png` plus `.print.svg`, `.1page.pdf`, `.caption.txt`, `.metadata.json` sidecars.
+- EXISTS: `docs/reports/gtm/assets/c3-crane-utilisation-margin-map.brochure.png` plus `.print.svg`, `.1page.pdf`, `.caption.txt`, `.metadata.json` sidecars.
+- EXISTS: `docs/reports/gtm/legal-scans/2026-04-30-chart-pack-scan.json` — #2555 chart-pack legal/evidence sidecar.
 - EXISTS (created with this draft plan, 2026-04-29 11:51, 12,034 bytes, git-tracked): `docs/reports/gtm/2026-04-29-vessel-contractor-brochure-outline.md`
 - EXISTS (created with this draft plan, 2026-04-29 11:51, 12,510 bytes, git-tracked): `docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md`
 - MISSING (this plan creates, downstream of approval): `docs/strategy/gtm/vessel-installation-contractors/brochure-source.md`
@@ -87,8 +93,8 @@ What this plan must produce that does not exist yet:
 - MISSING (gitignored, NEVER tracked): `docs/gtm/intake/send-tracker.private.yaml`
 
 **Gap proofs:**
-- `ls /mnt/local-analysis/workspace-hub/docs/strategy/gtm/vessel-installation-contractors/` returns ONE file: `email-templates.md` (5,157 bytes, 2026-04-02). MISSING: `README.md`, `prospect-list.md`, `value-proposition.md`, `capability-summary.md` — confirms #1669 Phase 1 is partial: only the template doc exists, and it is the older copy (the `docs/gtm/email-outreach-templates.md` 244-line doc is the more recent and richer version). Plan §Files to Change declares the retire-and-redirect disposition for the existing canonical-folder file.
-- `ls /mnt/local-analysis/workspace-hub/docs/reports/gtm/` returns the #2555 storyboard only — no chart artifact files. Confirms #2555 has not yet shipped chart deliverables; this plan's `outline_chart_slots_match_2555_artifacts` check is hard-blocked behind #2555 closure.
+- `ls docs/strategy/gtm/vessel-installation-contractors/` returns ONE file: `email-templates.md` (5,157 bytes, 2026-04-02). MISSING: `README.md`, `prospect-list.md`, `value-proposition.md`, `capability-summary.md` — confirms #1669 Phase 1 is partial: only the template doc exists, and it is the older copy (the `docs/gtm/email-outreach-templates.md` 244-line doc is the more recent and richer version). Plan §Files to Change declares the retire-and-redirect disposition for the existing canonical-folder file.
+- `ls docs/reports/gtm/assets/` now returns the #2555 chart-pack manifest plus C1/C2/C3 PNG/SVG/PDF/caption/metadata sidecars. Confirms the former #2555 chart-deliverable blocker is cleared; #2556 remains blocked by #2554/#2560 contractor-evidence readiness or explicit waiver, cross-provider review cleanup, and user approval before any implementation or outbound action.
 
 **Demo / proof path canon (verified on disk 2026-04-29 via `ls -la digitalmodel/examples/demos/gtm/`).** These are the only acceptable strings the brochure source and outline may cite for case-count provenance — no shorthand. Each is `git ls-files`-tracked under `digitalmodel/examples/demos/gtm/`:
 
@@ -168,7 +174,7 @@ build_send_tracker_schema():
         evidence_source_url,     # public; verified URL
         personalization_hook,    # short string referencing fleet/recent_project
         artifact_id,             # brochure_v1, demo_3, ...
-        send_state,              # SCHEDULED|SENT|REPLIED|MEETING|CLOSED|FAILED
+        send_state,              # SCHEDULED|SENT|REPLIED|MEETING_SCHEDULED|CLOSED_WON|CLOSED_LOST|FAILED_SEND (matches schema artifact)
         send_channel,            # email_personal | linkedin
         send_date_utc,
         followup_due_utc,
@@ -220,7 +226,7 @@ This issue is artifact-driven, not module-driven. The "tests" are checklist gate
 | Check | What it verifies | Pass condition |
 |---|---|---|
 | brochure_provenance_check | Every numeric/standards claim in the brochure source cites a repo path or external public source | All claims grep-locatable to a citation in the same file |
-| brochure_no_client_logos | Brochure does not embed client logos, client project names, or seal/certification of third parties | Visual inspection + grep against `client_projects/` indices |
+| brochure_no_client_logos | Brochure does not embed client logos, client project names, or seal/certification of third parties | Visual inspection + grep against the repo's configured public-artifact deny-list | 0 deny-list hits |
 | legal_sanity_scan | `scripts/legal/legal-sanity-scan.sh --diff-only` over brochure-source diff | Exit 0 |
 | send_tracker_pii_split | Public tracker contains zero contact-name, email, phone, or LinkedIn-URL fields | grep `(contact_name|contact_email|contact_phone|linkedin)` against public file → 0 matches |
 | send_tracker_gitignore | Private tracker path is matched by `.gitignore` | `git check-ignore docs/gtm/intake/send-tracker.private.yaml` returns the path |
@@ -228,7 +234,7 @@ This issue is artifact-driven, not module-driven. The "tests" are checklist gate
 | send_tracker_legal_gate | No row may transition to `SENT` without `last_legal_scan_utc` populated | Schema doc states the rule; runtime enforcement is a future-issue scope |
 | brochure_pdf_renderable | The Markdown source renders to PDF via the `data:md-to-pdf` skill or `pandoc` without errors | Successful PDF output, ≥3 pages, all chart slots replaced |
 | outline_chart_slots_match_2555_storyboard | Each chart slot in the outline matches a slot ID in the existing #2555 storyboard at `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` | Cross-reference table in outline lists storyboard slot IDs; reviewer-verifiable today |
-| outline_chart_slots_match_2555_artifacts | Each chart slot resolves to a real chart artifact (PNG/SVG) under `docs/reports/gtm/charts/` produced by #2555 | **Hard-blocked behind #2555 closure.** This check moves from "deferred" to "passing" only after #2555 lands chart files; promotion past `status:plan-review` is gated on this. |
+| outline_chart_slots_match_2555_artifacts | Each chart slot resolves to a real chart artifact (PNG/SVG/PDF + caption/metadata sidecars) under `docs/reports/gtm/assets/` produced by #2555 | Now unblocked by #2555 closeout: verify C1/C2/C3 files and manifest paths exist before #2556 promotion. |
 | brochure_proof_count_provenance | Each per-demo case-count claim cited in brochure outline §3.4 (Demo 1: 680 / 2: 72 / 3: 180 / 4: 60 / 5: 300 / total 1,292) is traceable to a literal in `digitalmodel/examples/demos/gtm/demo_0X_*.py` or its README | Each number traces by `grep` to a cited demo file or its generated output; failed traces block publication. Resolves Claude r1 finding #2 (1,292-cases reviewer-discipline-only). |
 | brochure_demo_path_full_filenames | Outline §3.4 cites canonical filenames (`demo_01_dnv_freespan_viv.py`, `demo_02_wall_thickness_multicode.py`, `demo_03_deepwater_mudmat_installation.py`, `demo_04_shallow_water_pipelay.py`, `demo_05_deepwater_rigid_jumper_installation.py`) — not bare `demo_01`/`demo_02` shorthand | Reviewer can ctrl-click each to source; `grep -F` against the outline returns the full filenames. Resolves Claude r1 finding #5. |
 | copy_variants_per_tier | Outline includes ≥3 outbound copy variants (Tier 1/2/3) sourced from `docs/gtm/email-outreach-templates.md` (NOT the retired canonical-folder copy) | 3+ variants, each named to template-id; provenance comments cite the `docs/gtm/` source only |
@@ -261,7 +267,7 @@ This issue produces collateral and a tracker schema **only**. It does **not** au
 3. **Every numeric / standards / methodology claim in the brochure must cite a repo path or an external public source.** Encoded in `brochure_provenance_check` + `brochure_proof_count_provenance`. The Demo / proof path canon table above defines the only acceptable form for demo-case-count citations.
 4. **Public send-tracker file must contain zero contact-name, contact-email, contact-phone, or LinkedIn-URL fields.** Encoded in `send_tracker_pii_split`. The private companion file is gitignored and never committed.
 5. **No row in the public tracker may carry `send_state=SENT` until `last_legal_scan_utc` is populated** for that row. Documentation-surface-only in this plan; runtime enforcement is the named follow-up issue under §Risks "runtime-enforcement follow-up".
-6. **`Depends on: #2555` is a hard gate.** This plan cannot promote past `status:plan-review` until #2555 lands real chart artifacts under `docs/reports/gtm/charts/`. The TDD row `outline_chart_slots_match_2555_artifacts` is the verification surface; the storyboard-only variant cannot substitute.
+6. **`Depends on: #2555` is cleared for chart-asset existence but still gated for #2556 consumption.** #2555 chart artifacts now exist under `docs/reports/gtm/assets/`; #2556 may consume them only after this plan's own external review, legal/evidence gates, and explicit user approval. The TDD row `outline_chart_slots_match_2555_artifacts` verifies the C1/C2/C3 manifest and sidecars; it does not authorize outbound sending.
 7. **No personalization-hook content sourced from `outreach-candidate-briefs-2026-04-28.md` may land in the public tracker without passing the legal-sanity scan first.** Hooks may contain scraped material that has not yet been legally cleared.
 
 If any of constraints 1–7 is violated by an execution slice, the operator must (i) revert the offending commit, (ii) drop `status:plan-approved`, and (iii) re-run cross-provider review before any further work proceeds.
@@ -312,7 +318,7 @@ Per `docs/BUSINESS_BRAIN.md` lines 89–97, promoting to `status:plan-approved` 
 - **Risk:** Personalization hooks pulled from `outreach-candidate-briefs-2026-04-28.md` may include scraped material that has not passed legal sanity. Mitigation: the legal-sanity gate runs against the brochure source AND each personalization hook before it is committed to the public tracker.
 - **Risk:** Send-tracker schema bifurcation is only as strong as the `.gitignore` enforcement and reviewer discipline; an accidental `git add -f` could leak the private file. Mitigation: pre-commit hook check (future issue scope) + explicit naming pattern (`*.private.yaml`) that already pattern-blocks easily.
 - **Risk:** ACE Engineer brand voice in `email-outreach-templates.md` is established; rewriting it for the brochure may drift the voice. Mitigation: the brochure outline lifts copy directly where it can; new copy is bounded to chart captions and proof slots.
-- **Risk (ordering, declared in front-matter):** This plan depends on #2555 chart deliverables. `outline_chart_slots_match_2555_artifacts` cannot pass until #2555 lands real chart files under `docs/reports/gtm/charts/`. Mitigation: front-matter `Depends on: #2555`; promotion past `status:plan-review` is gated on #2555 closure; `_storyboard` variant of the same check provides interim verification against the existing storyboard.
+- **Risk (ordering, declared in front-matter):** This plan depends on #2555 chart deliverables. `outline_chart_slots_match_2555_artifacts` cannot pass until #2555 lands real chart files under `docs/reports/gtm/assets/`. Mitigation: front-matter `Depends on: #2555`; promotion past `status:plan-review` is gated on #2555 closure; `_storyboard` variant of the same check provides interim verification against the existing storyboard.
 - **Risk (duplicate-source):** Two `email-templates`/`email-outreach-templates` documents currently coexist (`docs/strategy/gtm/vessel-installation-contractors/email-templates.md` 2026-04-02, 5,157 bytes vs `docs/gtm/email-outreach-templates.md` 2026-04-29-ish, 244 lines). Mitigation: the `Modify (retire+redirect)` row in §Files to Change replaces the older canonical-folder copy with a deprecation header before any new collateral lands in that directory.
 - **Runtime-enforcement follow-up (must file before any send executes):** `send_tracker_state_enum` (state-machine guard) and `send_tracker_legal_gate` (mandatory `last_legal_scan_utc` populated before any row can flip to `SENT`) are documented in this plan but enforced only by reviewer discipline. Before any human-initiated outbound send executes against a populated tracker, a sibling issue must be filed to (a) write a tracker-validator script that fails closed when state-machine or legal-gate invariants are violated, (b) wire it into pre-commit and into a hypothetical `gh-action: gtm-send-validator`, and (c) define the precommit hook path. This plan does not file that issue (planning-only patch lane); the operator must file it at user-approval time. Resolves Claude r1 finding #7 by making the deferred surface explicit instead of implicitly in-scope.
 - **Open:** Should the brochure ship as PDF only, HTML only, or both? Recommended default: Markdown source + PDF for cold sends, HTML for the gated-URL surface defined in `prospect-demo-sop.md`. Flag for user decision at approval time.
