@@ -35,7 +35,7 @@
 ## Blockers
 
 - **Adversarial-review fanout permission.** This lane cannot run `scripts/review/plan-review-fanout.sh`. Need a successor lane (or user-driven invocation) to drive Claude / Codex / Gemini reviews and write artifacts to `scripts/review/results/`. **Note:** memory `feedback_codex_cli_0_124_upstream_regression.md` flags that codex-cli 0.124.0 stdin-hangs on `codex exec`; downgrade to 0.123.0 before any fanout attempt that includes Codex.
-- **FOWT worked-example dependency for wind-segment targets.** Targets 8/9/13/14/17 (Van Oord, DEME, Seaway7, Cadeler, JDN-wind) sit at `outreach_priority: Medium` or `Defer` because the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3) has not been authored. Outreach to these targets stalls on that artifact, not on this matrix.
+- **FOWT worked-example dependency for wind-segment targets.** Targets 8/9/13/14/17 (Van Oord, DEME, Seaway7, Cadeler, JDN-wind) sit at `outreach_priority: Medium` or `Defer` for send-readiness because the OC4-DeepCwind FOWT mooring screening 1-pager (`outreach-candidate-briefs-2026-04-28.md` §4.3) has not been authored. DEME and Seaway7 also have broader offshore contractor/operator evidence, so they remain live-countable but not send-ready; Cadeler remains Defer/non-counted.
 - **High-priority evidence-fill.** [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560) is CLOSED/status:done. Remaining #2554 blocker is clean r2 adversarial review/promotion, not evidence-fill execution.
 - **GoM-niche ICP confirmation.** Resolved by owner default approval: GoM targets are High when mapped to Demo 3/5 and Gulf access; broader evidence expansion is tracked in [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562).
 

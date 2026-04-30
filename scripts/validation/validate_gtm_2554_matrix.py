@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Validate issue #2554 GTM vessel-contractor matrix artifacts.
 
-This script is intentionally narrow: it parses the Markdown scaffold, derives the
-semantic live/countable and High-priority counts, checks public-contact patterns,
-and optionally rewrites the durable validation artifact used by the #2554 plan.
+The gate intentionally validates only repository-public artifacts. It parses the
+Markdown scaffold as the source of truth, derives semantic target counts, checks
+required row fields, compares generated counts to the scaffold/summary count
+claims, and screens for public-contact leakage patterns.
 """
 from __future__ import annotations
 
@@ -18,11 +19,37 @@ SUMMARY = ROOT / "docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/res
 SCAN = ROOT / "docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md"
 DENY = ROOT / ".legal-deny-list.yaml"
 
+REQUIRED_FIELDS = [
+    "company",
+    "tier_seed",
+    "tier_revised",
+    "segment",
+    "relevant_fleet",
+    "demo_anchor",
+    "pain_point_hypothesis",
+    "corporate_root_evidence",
+    "deep_link_evidence",
+    "pain_point_evidence",
+    "can_say_now",
+    "cannot_claim_yet",
+    "outreach_priority",
+    "private_route",
+]
+
 CONTACT_REGEXES = {
     "email": re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"),
     "phone_like": re.compile(r"(?<!\d)(?:\+?1[-.\s]?)?(?:\(?\d{3}\)?[-.\s]?){2}\d{4}(?!\d)"),
     "individual_linkedin": re.compile(r"https?://(?:www\.)?linkedin\.com/in/[^\s)]+"),
+    "named_person_with_title": re.compile(
+        r"\b(?:CEO|CTO|CFO|COO|VP|Vice President|Director|Manager|Lead|Engineer)\s+[A-Z][a-z]+\s+[A-Z][a-z]+\b|"
+        r"\b[A-Z][a-z]+\s+[A-Z][a-z]+,\s*(?:CEO|CTO|CFO|COO|VP|Vice President|Director|Manager|Lead|Engineer)\b"
+    ),
 }
+
+
+def parse_field(body: str, field: str) -> str:
+    match = re.search(rf"^- \*\*{re.escape(field)}\.\*\*\s*(.*)$", body, re.M)
+    return match.group(1).strip() if match else ""
 
 
 def parse_rows(scaffold: str) -> list[dict[str, object]]:
@@ -31,19 +58,33 @@ def parse_rows(scaffold: str) -> list[dict[str, object]]:
         target = int(match.group(1))
         title = match.group(2).strip()
         body = match.group(3)
-        priority_match = re.search(r"outreach_priority\.\*\* \*\*(.*?)\*\*|outreach_priority\.\*\* (.*)", body)
-        priority = ((priority_match.group(1) or priority_match.group(2)).strip() if priority_match else "")
+        fields = {field: parse_field(body, field) for field in REQUIRED_FIELDS}
+        priority_text = re.sub(r"[*`]", "", fields["outreach_priority"]).split("—", 1)[0].strip()
+        priority = re.match(r"[A-Za-z]+", priority_text).group(0) if re.match(r"[A-Za-z]+", priority_text) else priority_text
         lower = f"{title}\n{body}".lower()
         exclusions: list[str] = []
         if "legacy" in title.lower() or "deprecated" in lower:
             exclusions.append("legacy/deprecated")
-        if "outreach_priority.** **defer" in lower or "outreach_priority.** defer" in lower:
+        if priority.lower().startswith("defer"):
             exclusions.append("defer")
         if "partner-shape" in lower or "not a vessel-fleet target" in lower or "non-counted for the vessel-contractor minimum" in lower:
             exclusions.append("explicit non-counted partner-shape")
         if "wind-only; excluded from live_countable until fowt worked example" in lower:
             exclusions.append("wind-only pending FOWT worked example")
-        rows.append({"target": target, "title": title, "priority": priority, "status": ", ".join(exclusions) or "counted", "counted": not exclusions})
+        missing = [field for field, value in fields.items() if not value]
+        if exclusions:
+            missing = []
+        rows.append(
+            {
+                "target": target,
+                "title": title,
+                "priority": priority,
+                "status": ", ".join(exclusions) or "counted",
+                "counted": not exclusions,
+                "fields": fields,
+                "missing_fields": missing,
+            }
+        )
     return rows
 
 
@@ -68,21 +109,81 @@ def scan_contacts(files: list[Path]) -> tuple[list[tuple[str, str]], list[tuple[
                 deny_hits.append((str(path.relative_to(ROOT)), pattern))
         for name, regex in CONTACT_REGEXES.items():
             for match in regex.finditer(text):
-                contact_hits.append((str(path.relative_to(ROOT)), name, match.group(0)[:80]))
+                contact_hits.append((str(path.relative_to(ROOT)), name, match.group(0)[:100]))
     return deny_hits, contact_hits
 
 
-def render_scan(rows: list[dict[str, object]], deny_hits: list[tuple[str, str]], contact_hits: list[tuple[str, str, str]]) -> str:
+def extract_int(pattern: str, text: str, label: str) -> tuple[int | None, str | None]:
+    match = re.search(pattern, text, re.I | re.S)
+    if not match:
+        return None, f"missing count claim: {label}"
+    return int(match.group(1)), None
+
+
+def count_claims(scaffold: str, summary: str) -> tuple[dict[str, int | None], list[str]]:
+    errors: list[str] = []
+    claims: dict[str, int | None] = {}
+    patterns = {
+        "scaffold_live": (r"Live countable vessel/operator targets[^\n]*:\*\*\s*(\d+)", scaffold),
+        "scaffold_high": (r"Targets in `outreach_priority: High`[^\n]*:\*\*\s*(\d+)", scaffold),
+        "summary_live": (r"\*\*20 live countable vessel/operator targets\*\*|\*\*(\d+) live countable vessel/operator targets\*\*", summary),
+        "summary_high": (r"High-priority rows?:[^\n]*?\*\*\s*(\d+)|\*\*(\d+) High-priority rows\*\*|\n-\s*(\d+)\s+High-priority targets", summary),
+    }
+    for key, (pattern, text) in patterns.items():
+        match = re.search(pattern, text, re.I | re.S)
+        if not match:
+            claims[key] = None
+            errors.append(f"missing count claim: {key}")
+            continue
+        value = next((g for g in match.groups() if g), None) or ("20" if key == "summary_live" else None)
+        claims[key] = int(value) if value else None
+    return claims, errors
+
+
+def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hits: list[tuple[str, str]], contact_hits: list[tuple[str, str, str]]) -> list[str]:
+    errors: list[str] = []
+    live_count = sum(1 for row in rows if row["counted"])
+    high_count = sum(1 for row in rows if row["priority"] == "High")
+    claims, claim_errors = count_claims(scaffold, summary)
+    errors.extend(claim_errors)
+    for key, value in claims.items():
+        expected = live_count if key.endswith("live") else high_count
+        if value is not None and value != expected:
+            errors.append(f"{key}={value} does not match derived {expected}")
+    if live_count < 20:
+        errors.append(f"live_countable={live_count} is below 20")
+    if deny_hits:
+        errors.append(f"deny_hits={len(deny_hits)}")
+    if contact_hits:
+        errors.append(f"contact_hits={len(contact_hits)}")
+    for row in rows:
+        missing = row["missing_fields"]
+        if missing:
+            errors.append(f"target {row['target']} missing required fields: {', '.join(missing)}")
+        fields = row["fields"]
+        if row["counted"] and not str(fields["corporate_root_evidence"]).startswith("http"):
+            errors.append(f"target {row['target']} counted row lacks public corporate_root_evidence URL")
+        if row["priority"] == "High" and "pending" in str(fields["deep_link_evidence"]).lower():
+            errors.append(f"target {row['target']} High row has pending deep_link_evidence")
+        if row["priority"] == "High" and not str(fields["private_route"]).lower().startswith("omitted-public-artifact"):
+            errors.append(f"target {row['target']} High row must keep private_route omitted-public-artifact")
+    return errors
+
+
+def render_scan(rows: list[dict[str, object]], deny_hits: list[tuple[str, str]], contact_hits: list[tuple[str, str, str]], errors: list[str]) -> str:
     live_count = sum(1 for row in rows if row["counted"])
     high_count = sum(1 for row in rows if row["priority"] == "High")
     table = "\n".join(
-        f"| {idx} | {row['target']} | {row['title']} | {row['priority']} | {row['status']} |"
+        f"| {idx} | {row['target']} | {row['title']} | {row['priority']} | {row['status']} | {', '.join(row['missing_fields']) or 'none'} |"
         for idx, row in enumerate(rows, 1)
     )
     deny = "- none" if not deny_hits else "\n".join(f"- `{path}`: `{pattern}`" for path, pattern in deny_hits)
     contacts = "- none" if not contact_hits else "\n".join(f"- `{path}`: {kind} `{value}`" for path, kind, value in contact_hits)
+    status = "PASS" if not errors else "FAIL"
+    error_text = "- none" if not errors else "\n".join(f"- {error}" for error in errors)
     return f"""# Legal/privacy and semantic-count validation — issue #2554 public matrix
 
+Status: **{status}**
 Date: 2026-04-30
 Generator: `uv run python scripts/validation/validate_gtm_2554_matrix.py --write-artifact`
 Scope:
@@ -97,9 +198,13 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 ## Results
 
 - Legal deny-list fixed-string hits: {len(deny_hits)}
-- Contact-pattern hits (email, phone-like, individual LinkedIn URL): {len(contact_hits)}
+- Contact-pattern hits (email, phone-like, individual LinkedIn URL, simple named-person-with-title pattern): {len(contact_hits)}
 - Semantic live/countable vessel/operator target count: {live_count}
 - High-priority row count: {high_count}
+
+## Validation errors
+
+{error_text}
 
 ## Legal deny-list hits
 
@@ -111,13 +216,13 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 ## Semantic target inventory (visual rows are contiguous; original target heading preserved)
 
-| Row | Target heading | Title | Priority | Count status |
-|---:|---:|---|---|---|
+| Row | Target heading | Title | Priority | Count status | Missing required fields |
+|---:|---:|---|---|---|---|
 {table}
 
 ## Promotion note
 
-This scan does not authorize outreach or send. It only supports the #2554 plan-review promotion gate by proving that the public matrix artifacts contain no deny-list/contact-pattern hits and deriving live/countable and High-priority counts from the scaffold parser.
+This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, comparing count claims across artifacts, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
 """
 
 
@@ -126,17 +231,19 @@ def main() -> int:
     parser.add_argument("--write-artifact", action="store_true")
     args = parser.parse_args()
     scaffold = SCAFFOLD.read_text()
+    summary = SUMMARY.read_text()
     rows = parse_rows(scaffold)
     deny_hits, contact_hits = scan_contacts([PLAN, SCAFFOLD, SUMMARY])
-    output = render_scan(rows, deny_hits, contact_hits)
+    errors = validate(rows, scaffold, summary, deny_hits, contact_hits)
+    output = render_scan(rows, deny_hits, contact_hits, errors)
     if args.write_artifact:
         SCAN.write_text(output)
     live_count = sum(1 for row in rows if row["counted"])
     high_count = sum(1 for row in rows if row["priority"] == "High")
-    print(f"live_countable={live_count} high={high_count} deny_hits={len(deny_hits)} contact_hits={len(contact_hits)}")
-    if live_count < 20 or high_count != 12 or deny_hits or contact_hits:
-        return 1
-    return 0
+    print(f"status={'PASS' if not errors else 'FAIL'} live_countable={live_count} high={high_count} deny_hits={len(deny_hits)} contact_hits={len(contact_hits)} errors={len(errors)}")
+    for error in errors:
+        print(f"ERROR: {error}")
+    return 1 if errors else 0
 
 
 if __name__ == "__main__":
