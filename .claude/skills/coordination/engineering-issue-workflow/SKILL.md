@@ -71,6 +71,7 @@ c) **Document intelligence** — are there relevant indexed documents?
    - Read `data/document-index/online-resource-registry.yaml`
    - Search for document name, topic, or standard
    - Check /mnt/ace/ for local PDFs (if mounted and accessible)
+   - If the user asks to preserve raw context before implementation, promote verified `/mnt/ace` references into the relevant `knowledge/wikis/<domain>/` LLM wiki before coding: source pages + concept anchors + comparison/extraction summary; then update the plan and GitHub issue with the wiki anchors.
 
 d) **Engineering reference data** — what parameters/constants apply?
    - `search_files(pattern="constants", path="digitalmodel/")`
