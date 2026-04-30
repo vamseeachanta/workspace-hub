@@ -1,10 +1,10 @@
 # Plan for #2550: Codify public repo interaction-limit renewal in scheduled tasks
 
-> **Status:** plan-review (single-author adversarial review applied 2026-04-29; awaiting user approval — Codex/Gemini fanout NOT run)
+> **Status:** plan-review (batch2 hardening applied 2026-04-30; NOT approval-ready until Gemini MAJOR findings are patched and a fresh substantive re-review returns no MAJOR)
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2550
-> **Review artifacts:** docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-review-2550-20260429-1246.md (single-author Claude); Codex/Gemini fanout pending — see §"Adversarial Review Summary" provider-coverage note
+> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2550-claude.md` (canonicalized from single-author Claude review), `scripts/review/results/2026-04-29-plan-2550-codex.md` (UNAVAILABLE timeout), `scripts/review/results/2026-04-29-plan-2550-gemini.md` (MAJOR; includes stale-workspace claims plus substantive archived-repo / 404 / Bash-test findings), `scripts/review/results/2026-04-29-plan-2550-disagreement.md`
 
 ---
 
@@ -106,7 +106,7 @@ renew-interaction-limits.sh [--dry-run]
 
   OWNER = "vamseeachanta"
   PUBLIC_REPOS = gh repo list $OWNER --json name,isPrivate,isArchived --paginate
-                 | filter isPrivate=false
+                 | filter isPrivate=false AND isArchived=false
                  | extract name list
 
   # Fail-closed empty-list guard (resolves F3 from
@@ -118,14 +118,14 @@ renew-interaction-limits.sh [--dry-run]
 
   for each repo in PUBLIC_REPOS:
     if --dry-run:
-      current = gh api repos/$OWNER/$repo/interaction-limits
+      current = gh api repos/$OWNER/$repo/interaction-limits OR 404 => {limit: "unset", expires_at: null}
       print "DRY-RUN | $repo | current limit=$(current.limit) | expires=$(current.expires_at)"
     else:
       gh api -X PUT repos/$OWNER/$repo/interaction-limits
              -f limit=collaborators_only -f expiry=six_months
 
   for each repo in PUBLIC_REPOS:
-    verify = gh api repos/$OWNER/$repo/interaction-limits
+    verify = gh api repos/$OWNER/$repo/interaction-limits OR 404 => {limit: "unset", expires_at: null}
     if verify.limit != "collaborators_only":
       print "FAIL: $repo not collaborators_only after renewal"
       FAIL_COUNT++
@@ -143,7 +143,7 @@ renew-interaction-limits.sh [--dry-run]
 | Action | Path | Reason |
 |---|---|---|
 | Create | `scripts/security/renew-interaction-limits.sh` | main renewal script with dry-run + verification + fail-closed empty-list guard |
-| Create | `tests/security/test_renew_interaction_limits.py` | TDD test suite — pytest with mocked `gh` subprocess (unit-level coverage) |
+| Create | `tests/security/test_renew_interaction_limits.py` | pytest wrapper tests that execute the real Bash script with a stubbed `gh` on `$PATH`; do NOT rely on Python mocks of Bash child-process internals |
 | Create | `tests/security/test_renew_interaction_limits.bats` | bats integration test using a stubbed `gh` in `$PATH` (live-invocation coverage; resolves F2 mock-vs-live divergence per `feedback_mock_vs_live_invocation_divergence.md`) |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add `github-interaction-limit-renewal` task entry pinned to `machines: [ace-linux-1]` (single runner — avoids double-PUT race) |
 | Modify | `docs/ops/scheduled-tasks.md` | add row to task schedule table |
@@ -154,14 +154,14 @@ renew-interaction-limits.sh [--dry-run]
 
 ## TDD Test List
 
-**Pytest unit tests** (`tests/security/test_renew_interaction_limits.py` — mocks `gh` subprocess):
+**Pytest wrapper tests** (`tests/security/test_renew_interaction_limits.py` — execute the real Bash script with a stubbed `gh` on `$PATH`; no Python-only mocks of Bash internals):
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | `test_dry_run_does_not_call_put` | `--dry-run` calls GET only, no PUT | `--dry-run`, mocked gh responses | stdout contains "DRY-RUN", no PUT call made |
 | `test_all_compliant_exits_zero` | all repos return `collaborators_only` after renewal | mocked PUT success + GET returns `collaborators_only` | exit code 0, no FAIL lines |
 | `test_noncompliant_repo_exits_nonzero` | one repo fails verification | mocked GET returns `limit=null` for one repo | exit code 1, "FAIL" in stdout for that repo |
-| `test_report_includes_all_public_repos` | all 10 known public repos appear in output | mocked `gh repo list` returning 10 repos | all 10 repo names in stdout |
+| `test_report_includes_all_public_repos` | all non-archived public repos appear in output while archived repos are skipped | stubbed `gh repo list` returning public/private/archived repos | non-archived public repo names in stdout; archived/private absent |
 
 **Bats integration tests** (`tests/security/test_renew_interaction_limits.bats` — invokes the actual Bash script with a stubbed `gh` in `$PATH`; resolves F2 by exercising real `set -euo pipefail`, real shell quoting, real flag parsing):
 
@@ -179,6 +179,8 @@ renew-interaction-limits.sh [--dry-run]
 - [ ] `scripts/security/renew-interaction-limits.sh` (live mode) exits 0 when all public repos confirm `collaborators_only`
 - [ ] Script exits 1 when any public repo does not report `collaborators_only` after renewal attempt
 - [ ] When `gh repo list` returns empty/null (auth, network, or API failure), script exits 1 with explicit error message — verified by `test_empty_repo_list_fails_closed` (resolves F3)
+- [ ] Repository discovery filters to non-private AND non-archived repositories before any PUT call; archived public repositories are skipped to avoid GitHub 403 failures.
+- [ ] Dry-run and verification GET calls handle GitHub `404 Not Found` as an explicit `unset` interaction-limit state rather than crashing under `set -euo pipefail`.
 - [ ] All pytest unit tests pass: `uv run pytest tests/security/test_renew_interaction_limits.py -v`
 - [ ] All bats integration tests pass: `bats tests/security/test_renew_interaction_limits.bats` (resolves F2 — live invocation against stubbed `gh`)
 - [ ] No regression: `uv run pytest workspace-hub/tests/` passes
@@ -196,10 +198,10 @@ renew-interaction-limits.sh [--dry-run]
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | MINOR_PATCH_NEEDED → patches applied | F1 Hermes cron decommission gap (MAJOR), F2 mock-vs-live test divergence (MAJOR), F3 silent-failure on empty `gh repo list` (MAJOR), F4 incomplete `schedule-tasks.yaml` schema (MINOR), F5 orphan `--output FILE` flag (MINOR), F6 single-machine spec missing (MINOR — folded into F4 patch), F7 imprecise cron cadence (MINOR), F8 pagination future-proofing (LOW), F9 failure-escalation path (LOW), F10/F11 review-summary placeholder (LOW). Patches F1–F8 landed in this revision. F9 retained as Open question for user. Full review at `docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-review-2550-20260429-1246.md`. |
-| Codex | NOT RUN | Fanout deferred — see provider-coverage note. codex-cli 0.124.0 has an upstream stdin-hang regression (`feedback_codex_cli_0_124_upstream_regression.md`, #2479) blocking autofeed-lane invocation; user can run `scripts/review/plan-review-fanout.sh` from a terminal session with codex-cli pinned at 0.123.0 if cross-provider verdict is desired before approval. |
-| Gemini | NOT RUN | Fanout deferred — see provider-coverage note. Gemini cross-review requires interactive permission grants this autofeed lane cannot satisfy and a `GEMINI_CLI_TRUST_WORKSPACE=true` env per `feedback_gemini_trust_env_blocks_reviews.md`. |
+| Codex | UNAVAILABLE (2026-04-30 batch2 fanout) | `scripts/review/results/2026-04-29-plan-2550-codex.md` timed out in Codex CLI/stdin path and contributed no substantive signal. |
+| Gemini | MAJOR (2026-04-30 batch2 fanout) | `scripts/review/results/2026-04-29-plan-2550-gemini.md` includes some stale-workspace false negatives about missing files, but also raises substantive blockers now patched into this plan: skip archived public repos, handle interaction-limit GET 404 as unset, and avoid Python mocks that cannot exercise Bash child process behavior. |
 
-**Overall result:** Single-author MINOR patches applied; awaiting user approval. Per `feedback_permission_gate_blocks_cross_review.md`, single-author transparent-provenance review is acceptable; user retains the option to (a) approve on Claude-only verdict + applied patches, or (b) run cross-provider fanout from a terminal session before approval.
+**Overall result:** NEEDS FRESH RE-REVIEW after batch2 hardening. The plan is not approval-ready while the latest substantive Gemini verdict is MAJOR and Codex/Claude fanout did not return fresh usable output. The canonical Claude single-author review remains useful historical evidence, but approval should wait for a clean rerun or explicit user override.
 
 **Provider-coverage honesty note:** Only the Claude review artifact exists today. Codex and Gemini have not produced verdicts on this plan. Per `feedback_never_offer_to_self_label_plan_approved.md`, this plan does NOT self-approve; the `status:plan-review` GitHub label remains until the user explicitly flips it.
 
