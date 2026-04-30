@@ -1,0 +1,17 @@
+{
+  "issue": 2555,
+  "chart_id": "C1",
+  "title": "Vessel-vs-Job Capability Heatmap",
+  "headline": "Shallow Water Barge \u2014 Shallow-Water Pipelay: 100.0% pass rate across 30 cases; current matrix totals 156 cases.",
+  "data_inputs": [
+    "digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json",
+    "digitalmodel/examples/demos/gtm/data/pipelay_vessels.json",
+    "digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json"
+  ],
+  "disclosure": "Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.",
+  "assets": {
+    "png": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.brochure.png",
+    "svg": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.print.svg",
+    "pdf": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.1page.pdf"
+  }
+}

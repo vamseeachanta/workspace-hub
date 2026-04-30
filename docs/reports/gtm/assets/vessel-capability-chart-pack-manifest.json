@@ -1,0 +1,53 @@
+{
+  "issue": 2555,
+  "chart_count": 3,
+  "generated_at": "2026-04-30T02:51:13.144468+00:00",
+  "total_cases": 156,
+  "legal_scan_status": "passed",
+  "legal_scan": "docs/reports/gtm/legal-scans/2026-04-30-chart-pack-scan.json",
+  "charts": [
+    {
+      "chart_id": "C1",
+      "title": "Vessel-vs-Job Capability Heatmap",
+      "headline": "Shallow Water Barge \u2014 Shallow-Water Pipelay: 100.0% pass rate across 30 cases; current matrix totals 156 cases.",
+      "png": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.brochure.png",
+      "svg": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.print.svg",
+      "pdf": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.1page.pdf",
+      "caption_sidecar": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.caption.txt",
+      "metadata_sidecar": "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.metadata.json",
+      "data_inputs": [
+        "digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json",
+        "digitalmodel/examples/demos/gtm/data/pipelay_vessels.json",
+        "digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json"
+      ]
+    },
+    {
+      "chart_id": "C2",
+      "title": "Pipelay Operating Envelope",
+      "headline": "Shallow Water Barge screens GO across 8in\u201324in at 7m\u201330m while Large PLV is draft-limited at the shallowest row.",
+      "png": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.brochure.png",
+      "svg": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.print.svg",
+      "pdf": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.1page.pdf",
+      "caption_sidecar": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.caption.txt",
+      "metadata_sidecar": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.metadata.json",
+      "data_inputs": [
+        "digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json",
+        "digitalmodel/examples/demos/gtm/data/pipelay_vessels.json"
+      ]
+    },
+    {
+      "chart_id": "C3",
+      "title": "Crane-Utilisation Margin Map",
+      "headline": "Mudmat-L-200te at 1500 m: Large CSV at 20.6% crane utilisation vs Medium CSV at 71.5% \u2014 same GO decision, different margin.",
+      "png": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.brochure.png",
+      "svg": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.print.svg",
+      "pdf": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.1page.pdf",
+      "caption_sidecar": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.caption.txt",
+      "metadata_sidecar": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.metadata.json",
+      "data_inputs": [
+        "digitalmodel/examples/demos/gtm/results/structure_comparison_matrix.json",
+        "digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json"
+      ]
+    }
+  ]
+}
