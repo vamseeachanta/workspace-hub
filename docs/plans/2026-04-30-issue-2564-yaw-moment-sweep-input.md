@@ -41,6 +41,22 @@ This is intentionally a cross-repo **governance + implementation** task, not a m
 | `data/document-index/research-literature-report.md:143+` | Hydrodynamics/maneuvering literature context includes OpenProp, four-quadrant maneuvering, Wageningen resources. | Future fidelity upgrades may add hull/propeller/rudder interaction; out of scope here. |
 | `knowledge/wikis/naval-architecture/wiki/index.md` | Lists PNA Vol. III, USNA EN400, Practical Ship Hydrodynamics, Marine Hydrodynamics, Basic Ship Theory. | Source index/background; do not fabricate a `Citation` target without required frontmatter fields. |
 
+### /mnt/ace raw-reference review
+
+Detailed addendum: `docs/plans/2026-04-30-issue-2564-mnt-ace-raw-reference-review.md`.
+
+| Raw reference | Verified relevance | Use in #2564 |
+|---|---|---|
+| `/mnt/ace/O&G-Standards/SNAME/textbooks/Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf` | Controllability volume; text hits for turning ability, hydrodynamics of control surfaces, maneuvering trials/performance, rudder/control-device design, yaw sign-convention content. | Primary reference for controllability framework and sign/axis convention. |
+| `/mnt/ace/O&G-Standards/SNAME/hydrostatics-stability/Practical-Ship-Hydrodynamics-Bertram-2000.pdf` | Chapter 5 ship manoeuvring; force coefficients; rudders; simple rudder estimates; rudder/propeller and rudder/hull interactions. | Practical source for first-cut rudder force/yaw-moment caveats and excluded interactions. |
+| `/mnt/ace/digitalmodel/docs/ship-design/literature/maneuvering_ship.pdf` | McTaggart/ShipMo3D report; metadata and extracted text show hull maneuvering forces, rudder deflection forces, rudder-propeller interaction, `FNrudder`, turning-circle comparisons. | Implementation-oriented reference for future force decomposition and validation-style examples. |
+| `/mnt/ace/O&G-Standards/SNAME/textbooks/USNA-EN400-Principles-Ship-Performance-2020.pdf` | Chapter 9 ship maneuverability; rudder dimensions, speed/rudder-angle dependence, slow-speed maneuverability below ~5 kn, DOF/yaw definitions. | Typical sample ranges, engineering explanation, and sanity checks. |
+| `/mnt/ace/acma-codes/ABS Rules/Vessel Maneuverability/Vessel_Maneuverability_Guide_e-Feb17.pdf` | Mathematical model, rudder forces, expressions for rudder forces, yawing equation. | Regulatory/design-guide context; do not claim ABS compliance. |
+| `/mnt/ace/acma-codes/IMO/Maneouvrability/2002 MSC Circ.1053 Explanatory Notes to Manoeuvrability.pdf` | Steady turning with yaw rate ψ, speed V, drift angle β, `R = V/ψ`; yaw-rate/rudder-angle relation; turning circle and zig-zag definitions. | External maneuverability metrics for future validation, not the first formula derivation. |
+| `/mnt/ace/digitalmodel/llm-wiki/orcaflex/topics/Vesseltheory,Manoeuvringload.md` | Plain-text `fx, fy, fz, mx, my, mz` equations and Munk-moment/current-load double-counting warning. | Guardrail if future yaw models mix added-mass/current load terms with rudder moment. |
+
+Plan consequence: keep #2564 bounded to preliminary rudder-induced yaw moment (`F_N × lever arm`) while adding stronger references for sign convention, caveats, and future extensions. Do not fabricate strict standards `Citation` objects for raw literature; use provenance metadata unless a standards-derived constant is adopted from a resolvable wiki page.
+
 ### Related issues
 
 - `#2564` — current requested yaw-moment workflow and typical-ship sweep input.
