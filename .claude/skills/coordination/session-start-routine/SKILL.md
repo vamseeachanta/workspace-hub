@@ -42,3 +42,24 @@ Pre-flight checklist for every new session. Run these checks before beginning wo
 - Start of every interactive session
 - After a context reset or conversation compression
 - When resuming work after a break
+- When the user asks for a terse live "status update" from mobile/Telegram
+
+## Mobile status-update mode
+
+When the user asks only "Status update" (especially from Telegram), produce a compact evidence-backed snapshot rather than a broad narrative.
+
+1. Gather live state before summarizing:
+   - `git status --short --branch` in the active repo.
+   - Active/background agent processes or Hermes process-manager state.
+   - `hermes cron`/cronjob list for active, paused, failed, and next scheduled jobs.
+   - GitHub counts for `wip`, `status:plan-review`, `status:plan-approved`, and recent closed issues.
+   - Most recent relevant cron output files when scheduled jobs produced user-facing findings.
+2. Separate counts clearly:
+   - live label counts are not the same as artifact-audited approval readiness;
+   - closed/recent results are not the same as currently running lanes;
+   - paused autofeed monitors are not active throughput.
+3. For Telegram/mobile delivery:
+   - avoid pipe tables; use numbered bullets and labeled key/value lines;
+   - link GitHub issues as `[#{number}](url)`;
+   - keep to the shortest useful update, with risks and next best action last.
+4. Never clean/reset/stage dirty control-plane files during a status-only request; report dirty state and recommend a narrow reconciliation pass if needed.

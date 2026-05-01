@@ -1,0 +1,23 @@
+=== Wiki Lint: engineering ===
+
+Found 11 issue(s):
+
+  [WARNING] frontmatter: 'sources/agent-equivalence-architecture-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/ai-agent-guidelines-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/ai-development-ecosystem-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/baseline-testing-standards-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/closed-engineering-issues.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/compound-engineering-methodology.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/elements-digitalmodel-qgis.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/elements-doris-university.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/mooring-failures-seed.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/research-outputs.md' missing recommended field 'sources'
+  [INFO] frontmatter: ... and 1 more frontmatter issues (showing first 10)
+
+Summary:
+  Orphan pages:     0
+  Empty pages:      0
+  Index issues:     0
+  Log issues:       0
+  Frontmatter:      11
+  Link density:     5.3 avg per page

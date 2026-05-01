@@ -5,6 +5,11 @@
 
 ---
 
+## [2026-04-28] deep-extraction | Elements suction pile and riser toolbox corpora (#2536)
+- Pages created: `sources/elements-suction-pile-sizing-deep-extraction.md`, `concepts/suction-pile-preliminary-sizing-api-py-tz.md`, `sources/elements-riser-toolbox-deep-extraction.md`, `concepts/riser-extreme-statistics-orcaflex-workbooks.md`.
+- Extraction artifacts: `.planning/intel/elements-deep-extraction/extracted-text/`, `workbook-summary.json`, and `workbooks/*.json`.
+- Notes: Raw Elements files remain link-only in `/mnt/ace`; large Riser Toolbox workbooks were deferred to a separately scoped code-port/extraction pass.
+
 ## [2026-04-26] query | Offshore wind and O&G cross-section taxonomy
 - Processed: offshore wind array/export cable guide pages, Prysmian 66 kV cable PDF, SUT umbilicals PDF, Prysmian power/optical umbilical PDF, DNV-ST-F101 page, Vallourec coating page, Octal concrete weight coating page.
 - Pages created: concepts/subsea-cable-umbilical-cross-sections.md, sources/offshore-cable-umbilical-cross-section-recon-2026-04-26.md, comparisons/offshore-wind-oil-gas-cross-section-assessment.md.
@@ -2263,5 +2268,12 @@
 - Domain: marine-engineering
 - Records: 10
 - Titles (sample): CSA Z276.2-19 — Near-Shoreline FLNG Faci, CSA Z276.1-20 — Marine Structures Associ, CSA Z276.18 — LNG Production, Storage, a, OCIMF Mooring Equipment Guidelines — 3rd, OCIMF Mooring Equipment Guidelines — 4th ... (+5 more)
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-28 19:24 UTC] batch-ingest | Batch 1 (2 records)
+- Domain: marine-engineering
+- Records: 2
+- Titles (sample): Elements ingest catalog — digitalmodel-s, Elements ingest catalog — digitalmodel-r
 - Pages created: wiki/sources/<slug>.md for each record
 - Index updated: wiki/index.md

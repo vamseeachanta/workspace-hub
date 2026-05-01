@@ -71,6 +71,7 @@ c) **Document intelligence** — are there relevant indexed documents?
    - Read `data/document-index/online-resource-registry.yaml`
    - Search for document name, topic, or standard
    - Check /mnt/ace/ for local PDFs (if mounted and accessible)
+   - If the user asks to preserve raw context before implementation, promote verified `/mnt/ace` references into the relevant `knowledge/wikis/<domain>/` LLM wiki before coding: source pages + concept anchors + comparison/extraction summary; then update the plan and GitHub issue with the wiki anchors.
 
 d) **Engineering reference data** — what parameters/constants apply?
    - `search_files(pattern="constants", path="digitalmodel/")`
@@ -181,6 +182,10 @@ Issues WITHOUT engineering-critical labels:
 ---
 
 ## Pitfalls & Gotchas (from historical session data)
+
+### Engineering calculation plan hardening
+
+When planning or executing engineering-calculation issues, especially in `digitalmodel`, apply the checklist in `references/engineering-calculation-plan-hardening.md` before moving to `status:plan-review` and again before implementation closeout. Key lessons: split equal/opposite physical quantities into explicit fields, define force-line lever arms geometrically, name exact output artifacts/charts, add non-tautological sign and identity tests, verify public imports outside pytest path injection, include upstream-helper regression slices, record engineering-registry retrieval evidence, explicitly decide whether `/mnt/ace`/wiki promotion is required before coding, and during implementation honor YAML-configured artifact names/chart subsets, reject empty sweeps early, preserve subprocess environments, and pin physical sign conventions in code/YAML/docs/tests.
 
 ### Agents Skipping the Workflow
 

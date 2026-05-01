@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>.title{font:700 52px DejaVu Sans,Arial;fill:#fff}.headline{font:32px DejaVu Sans,Arial;fill:#0B2341}.row{font:26px DejaVu Sans,Arial;fill:#1F2937}.small{font:20px DejaVu Sans,Arial;fill:#334155}</style>
+  <rect width="1600" height="900" fill="#F7FAFC"/>
+  <rect width="1600" height="112" fill="#0B2341"/>
+  <text x="48" y="72" class="title">C1: Vessel-vs-Job Capability Heatmap</text>
+  <text x="48" y="170" class="headline">Shallow Water Barge - Shallow-Water Pipelay: 100.0% pass rate across 30 cases; current matrix totals 156 cases.</text>
+  <text x="48" y="210" class="small">Colour cue: green &gt;=80% pass/utilisation margin OK; amber 50-79% or high utilisation risk; red &lt;50%.</text>
+  <rect x="48" y="232" width="20" height="34" fill="#2EA44F"/><text x="80" y="260" class="row">Large CSV | Mudmat Installation | 100.0% | 18/18 pass; limiting: Landing bearing pressure</text>
+<rect x="48" y="286" width="20" height="34" fill="#EB5757"/><text x="80" y="314" class="row">Large CSV | Jumper Installation | 20.0% | 6/30 pass; limiting: Tie-in alignment tolerance</text>
+<rect x="48" y="340" width="20" height="34" fill="#2EA44F"/><text x="80" y="368" class="row">Medium CSV | Mudmat Installation | 100.0% | 18/18 pass; limiting: Splash zone hydrodynamic loads</text>
+<rect x="48" y="394" width="20" height="34" fill="#EB5757"/><text x="80" y="422" class="row">Medium CSV | Jumper Installation | 20.0% | 6/30 pass; limiting: Tie-in alignment tolerance</text>
+<rect x="48" y="448" width="20" height="34" fill="#2EA44F"/><text x="80" y="476" class="row">Large PLV | Shallow-Water Pipelay | 83.3% | 25/30 pass; limiting: tension</text>
+<rect x="48" y="502" width="20" height="34" fill="#2EA44F"/><text x="80" y="530" class="row">Shallow Water Barge | Shallow-Water Pipelay | 100.0% | 30/30 pass; limiting: overbend</text>
+  <rect y="780" width="1600" height="120" fill="#EAF2F8"/>
+  <text x="48" y="824" class="small">Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.</text>
+</svg>

@@ -34,14 +34,33 @@ Meanwhile a nested implementation repo (for example `aceengineer-website/`) may 
    - real source/docs changes affecting the intended task
 4. Check for active agent processes before concluding the dirty state is yours to clean up.
    - `ps aux | grep -E 'claude|codex|gemini' | grep -v grep`
+   - Include interactive shells/agents, not only background jobs: `pwdx <pid>` can reveal an active `claude` sitting in the repo even after a reboot.
+   - `process(action='list')` may be empty after reboot because Hermes-tracked background sessions do not survive, while OS-level Claude/Hermes/TUI processes may still exist.
 5. Correlate active processes with the dirty paths and any issue-specific overnight work.
    - If an overnight agent is actively working an issue, avoid choosing a path that collides with that issue.
-6. Report the result precisely:
+   - If an active interactive Claude process has cwd in the same repo, treat repo-wide Git mutation as unsafe even if no Hermes background sessions are listed.
+6. For post-reboot salvage or stale-lock recovery, preserve state before any mutation:
+   - create a backup branch at current `HEAD`, e.g. `git branch salvage/post-reboot-YYYYMMDD-HHMMSS HEAD`
+   - save `git diff --binary`, `git diff --cached --binary`, and `git status --porcelain=v1` outside the repo or under a dated salvage directory
+   - copy any key handoff/result file explicitly before reset/rebase/stash attempts
+   - only remove `.git/index.lock` after confirming no live Git/agent process owns it or is working in the repo; a stale lock alone is not permission to mutate when an active Claude cwd is present
+7. Report the result precisely:
    - which repo is clean
    - which repo is dirty
    - whether the dirt appears operational/generated vs implementation work
-   - whether an active background agent makes the state unsafe to touch
-7. Recommend the next task based on lowest contention, not just highest priority.
+   - whether an active background/interactive agent makes the state unsafe to touch
+   - where salvage artifacts were written if mutation is deferred
+8. Recommend the next task based on lowest contention, not just highest priority.
+   - If safe reconciliation is blocked by an active writer, schedule or hand off a delayed narrow reconciliation job that re-checks process/git state before mutating.
+
+9. For post-reboot recovery where important commits/artifacts exist outside the dirty primary checkout, reconcile from an isolated clean worktree rather than touching the active checkout.
+   - Create or use a throwaway reconciliation worktree from `origin/main` (for example `/mnt/local-analysis/reconcile-main-YYYYMMDD`).
+   - Fetch the remote, cherry-pick/rebase only the recovered commits or copy only the recovered handoff/artifact files into that worktree.
+   - Resolve shared planning-index conflicts there, preserving newer remote rows/status and adding only the missing recovered rows/artifacts.
+   - Push the reconciled commit(s) from the clean worktree if verification passes.
+   - Leave the primary dirty checkout untouched while any Claude/Hermes/TUI process has cwd there.
+   - Separately schedule a delayed cleanup/reconcile job for the primary checkout that re-checks live processes and saves diffs before any reset/stash.
+   - If the recovery also reveals queued plan-review or implementation work, schedule that as a separate future job from the clean worktree so salvage, restart/review, and future work are decoupled.
 
 ## Good output pattern
 

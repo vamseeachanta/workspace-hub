@@ -15,8 +15,8 @@ The `mcp__claude_ai_Gmail__*` MCP (claude_ai_Gmail namespace) is authorized with
 
 **Verbs that fail with "Request had insufficient authentication scopes":**
 - `unlabel_thread` — cannot remove INBOX (= archive) or any other label
-- Probably `label_thread` as well (same scope family — untested but likely fails)
-- `unlabel_message`, `label_message` — same category
+- `create_label` — confirmed 2026-04-27 probe (reverified): server returns `"Request had insufficient authentication scopes."` even though tool schema appears in deferred-tool list
+- `label_thread`, `unlabel_message`, `label_message` — same scope family, treat as failing without re-testing
 
 **Implication for triage work:**
 - Reading + classification + drafting replies: all possible via MCP

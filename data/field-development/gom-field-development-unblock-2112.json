@@ -1,0 +1,262 @@
+{
+  "issue": 2112,
+  "parent_issue": 2055,
+  "generated_date": "2026-04-29",
+  "purpose": "Provisional online-research candidate dataset for #2112. It captures public-source leads and architecture/equipment/cost fields, but does not yet satisfy the no-invented-values gate for #2055.",
+  "schema_version": "field-development-unblock-v1",
+  "required_gate": {
+    "minimum_complete_records": 10,
+    "required_fields": [
+      "num_trees",
+      "num_manifolds",
+      "tieback_distance_km"
+    ],
+    "records_with_all_required": 10,
+    "status": "blocked_adversarial_review_failed",
+    "records_with_all_required_structural": 10,
+    "records_with_all_required_public_sourced_and_semantically_consistent": 0,
+    "blocking_reason": "Adversarial review found manifold, tieback_distance_km, and cost_usd_bn values mix direct facts with proxy/placeholder/cost-class seeds; not sufficient to remove status:needs-data from #2055."
+  },
+  "data_policy": {
+    "raw_public_pages_not_copied": true,
+    "raw_internal_project_data_not_used": true,
+    "value_policy": "Values are public-source or explicitly basis-coded from public-source architecture descriptors. Low-confidence/proxy-coded records are flagged and should be reviewed before engineering use.",
+    "unblock_status": "not_unblocked",
+    "review_disposition": "MAJOR: keep #2112/#2055 status:needs-data until primary-source values replace proxy/placeholder entries."
+  },
+  "gom_fields": [
+    {
+      "name": "Perdido",
+      "region": "US Gulf of Mexico",
+      "operator": "Shell",
+      "water_depth_m": 2438,
+      "host": "Spar",
+      "architecture": "Ultra-deepwater spar hub with direct-vertical-access and remote subsea wells tied back to the host; subsea boosting/flow-assurance enabled development.",
+      "startup_year": 2010,
+      "capacity_bopd": 100000,
+      "num_trees": 35,
+      "num_trees_basis": "NS Energy / Global Drilling public summaries describe 35 planned subsea wells: 22 direct vertical access wells plus 13 remote wells.",
+      "num_manifolds": 3,
+      "num_manifolds_basis": "Proxy-coded from the three-field Perdido hub grouping commonly described for Great White, Tobago, and Silvertip; public search result confirms manifolds exist but the reviewed accessible source did not publish a precise count.",
+      "tieback_distance_km": 110,
+      "tieback_distance_km_basis": "Prior repository scan captured 110 km flowlines for Perdido; public sources reviewed here confirm flowline-system focus but should be rechecked against the OTC/JPT paper before engineering use.",
+      "cost_usd_bn": 3.0,
+      "cost_usd_bn_basis": "Approximate public project-cost class for Perdido-style deepwater spar development; retained as low-confidence seed for correlation only.",
+      "source_urls": [
+        "https://www.nsenergybusiness.com/projects/perdido-deepwater-oil-and-gas-development/",
+        "http://www.globaldrilling.com/SHELL_PERDIDO_ARTICLE_PDF.pdf",
+        "https://onepetro.org/JPT/article/62/08/53/194307/Perdido-Development-Subsea-and-Flowline-Systems"
+      ],
+      "confidence": "low"
+    },
+    {
+      "name": "Appomattox",
+      "region": "US Gulf of Mexico",
+      "operator": "Shell",
+      "water_depth_m": 2255,
+      "host": "Semi-submersible",
+      "architecture": "Integrated deepwater Appomattox/Vicksburg host with HP/HT subsea production system, drill centres, subsea trees/manifolds, and export pipelines.",
+      "startup_year": 2019,
+      "capacity_bopd": 125000,
+      "num_trees": 18,
+      "num_trees_basis": "Offshore Technology states TechnipFMC scope included 18 subsea trees for Appomattox.",
+      "num_manifolds": 4,
+      "num_manifolds_basis": "Offshore Technology states TechnipFMC scope included four production manifolds.",
+      "tieback_distance_km": 145,
+      "tieback_distance_km_basis": "Offshore Technology states crude export through the 90 mi / 145 km Mattox Pipeline; this is export/tieback length, not max well-to-host offset.",
+      "cost_usd_bn": 4.0,
+      "cost_usd_bn_basis": "Public articles state Shell reduced Appomattox cost by ~20%; exact full cost not locked in reviewed source, so retained as low-confidence cost-class seed.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/appomattox-deepwater-development-gulf-of-mexico/"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "name": "Whale",
+      "region": "US Gulf of Mexico",
+      "operator": "Shell",
+      "water_depth_m": 2600,
+      "host": "Semi-submersible",
+      "architecture": "Vito-style four-column semi-submersible host with subsea wells tied back to host via subsea infrastructure and steel catenary risers.",
+      "startup_year": 2025,
+      "capacity_bopd": 100000,
+      "num_trees": 15,
+      "num_trees_basis": "Shell/S&P public summaries state a total of 15 wells will be tied back to the Whale host.",
+      "num_manifolds": 5,
+      "num_manifolds_basis": "Proxy-coded from McDermott public statement that five steel catenary risers were installed; use as architecture complexity proxy until a manifold count is sourced.",
+      "tieback_distance_km": 16,
+      "tieback_distance_km_basis": "Offshore Technology places Whale about 16 km from the Perdido floating oil platform; used as a regional tieback/proximity metric rather than Whale well-to-host offset.",
+      "cost_usd_bn": 5.0,
+      "cost_usd_bn_basis": "Low-confidence cost-class seed for Vito-replicated deepwater host; replace with FID/project sanction cost when sourced.",
+      "source_urls": [
+        "https://www.shell.us/about-us/news-and-insights/media/2025-media-releases/shell-starts-production-at-whale-in-the-us-gulf-of-mexico.html",
+        "https://www.spglobal.com/energy/en/news-research/latest-news/crude-oil/010925-shell-starts-up-whale-field-in-us-gulf-of-mexico",
+        "https://www.offshore-technology.com/projects/whale-field-development-gulf-of-mexico/",
+        "https://www.offshore-mag.com/regional-reports/us-gulf-of-mexico/news/55272693/mcdermott-mcdermott-completes-pipelay-construction-work-for-shells-whale-project"
+      ],
+      "confidence": "low"
+    },
+    {
+      "name": "Atlantis",
+      "region": "US Gulf of Mexico",
+      "operator": "BP",
+      "water_depth_m": 2156,
+      "host": "Semi-submersible",
+      "architecture": "Semi-submersible host with network of wet-tree subsea wells and phased subsea expansions tied back to the Atlantis platform.",
+      "startup_year": 2007,
+      "capacity_bopd": 200000,
+      "num_trees": 18,
+      "num_trees_basis": "Offshore Technology describes potential for more than 18 wet-tree subsea wells tied back to Atlantis; coded to the conservative threshold value 18.",
+      "num_manifolds": 2,
+      "num_manifolds_basis": "Proxy-coded from public descriptions of manifold/pipeline-end-manifold replacement and expansion work; exact count remains a low-confidence review item.",
+      "tieback_distance_km": 0,
+      "tieback_distance_km_basis": "No public max well-to-host tieback distance found in reviewed sources; coded 0 for host-local development seed and flagged low confidence.",
+      "cost_usd_bn": 1.3,
+      "cost_usd_bn_basis": "Public ports/summary snippet captured $1.3B Atlantis Phase 3 expansion; base development cost not claimed.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/atlantis-platform/",
+        "https://ports.marinelink.com/oilrigs/rig/atlantis-gc743--bp"
+      ],
+      "confidence": "low"
+    },
+    {
+      "name": "Thunder Horse",
+      "region": "US Gulf of Mexico",
+      "operator": "BP",
+      "water_depth_m": 1844,
+      "host": "Semi-submersible PDQ",
+      "architecture": "Large semi-submersible production/drilling/quarters facility with wet-tree subsea wells and later subsea tieback/expansion drill centres.",
+      "startup_year": 2008,
+      "capacity_bopd": 250000,
+      "num_trees": 25,
+      "num_trees_basis": "NS Energy states Thunder Horse was developed with 25 wet-tree subsea wells tied back to the PDQ facility.",
+      "num_manifolds": 2,
+      "num_manifolds_basis": "NS Energy/BP expansion descriptions identify a new two-slot subsea manifold and two subsea drill centres for expansion; coded as two manifolds/drill-centre units for correlation seed.",
+      "tieback_distance_km": 3.2,
+      "tieback_distance_km_basis": "NS Energy states expansion wells/production system approximately 3.2 km north/south of Thunder Horse platform.",
+      "cost_usd_bn": 5.0,
+      "cost_usd_bn_basis": "Low-confidence deepwater cost-class seed; exact base cost not asserted from reviewed source.",
+      "source_urls": [
+        "https://www.nsenergybusiness.com/projects/thunder-horse-oil-field-expansion/",
+        "https://www.bp.com/en_us/united-states/home/news/press-releases/bp-continues-growth-in-gulf-of-mexico-with-start-up-of-thunder-horse-south-expansion-phase-2.html"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "name": "Mars / Mars B Olympus",
+      "region": "US Gulf of Mexico",
+      "operator": "Shell",
+      "water_depth_m": 896,
+      "host": "TLP",
+      "architecture": "Original Mars TLP plus Mars B/Olympus TLP with self-contained drilling rig, well slots, subsea wells at West Boreas/South Deimos, and export infrastructure.",
+      "startup_year": 1996,
+      "capacity_bopd": 100000,
+      "num_trees": 24,
+      "num_trees_basis": "Offshore Technology states Olympus features 24 well slots; used as dry-tree/well-slot count for equipment correlation.",
+      "num_manifolds": 2,
+      "num_manifolds_basis": "Proxy-coded from two named subsea tieback fields in Mars B scope: West Boreas and South Deimos; exact manifold count not published in reviewed source.",
+      "tieback_distance_km": 0,
+      "tieback_distance_km_basis": "Host-local/dry-tree TLP seed value; subsea tieback offset not sourced in reviewed public article.",
+      "cost_usd_bn": 1.0,
+      "cost_usd_bn_basis": "Offshore Technology states initial Mars development cost was approximately $1B.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/mars/",
+        "https://www.nsenergybusiness.com/projects/mars-b-olympus/"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "name": "Mad Dog Phase 2 / Argos",
+      "region": "US Gulf of Mexico",
+      "operator": "BP",
+      "water_depth_m": 1800,
+      "host": "Semi-submersible FPU",
+      "architecture": "Argos floating production unit serving southern/southwestern Mad Dog expansion with multiple drill centres, production and water-injection wells, SURF, subsea trees/manifolds/jumpers.",
+      "startup_year": 2023,
+      "capacity_bopd": 140000,
+      "num_trees": 22,
+      "num_trees_basis": "Offshore Technology states Mad Dog Phase 2 includes 14 production wells and eight water injectors.",
+      "num_manifolds": 5,
+      "num_manifolds_basis": "Offshore Technology states wells are drilled from five drill centres; TechnipFMC supplied manifolds/jumpers. Drill-centre count is used as manifold-center proxy.",
+      "tieback_distance_km": 10,
+      "tieback_distance_km_basis": "Offshore Technology states Argos is moored approximately 10 km south-west of existing Mad Dog spar; used as architecture/tieback separation metric.",
+      "cost_usd_bn": 9.0,
+      "cost_usd_bn_basis": "Offshore Technology states revised Mad Dog Phase 2 cost was further reduced to $9B.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/mad-dog-phase-2-gulf-of-mexico/"
+      ],
+      "confidence": "high"
+    },
+    {
+      "name": "Stones",
+      "region": "US Gulf of Mexico",
+      "operator": "Shell",
+      "water_depth_m": 2900,
+      "host": "FPSO",
+      "architecture": "Ultra-deepwater subsea development tied back to Turritella FPSO with initial subsea production wells and later additional wells.",
+      "startup_year": 2016,
+      "capacity_bopd": 60000,
+      "num_trees": 8,
+      "num_trees_basis": "A Barrel Full / public Stones summaries describe initial two subsea production wells followed by six additional production wells.",
+      "num_manifolds": 2,
+      "num_manifolds_basis": "Proxy-coded as two production-well phases/manifold clusters; public reviewed source did not expose a precise manifold count.",
+      "tieback_distance_km": 20,
+      "tieback_distance_km_basis": "Prior repository scan captured Stones as a deepest subsea tieback around 20 km to host; public sources confirm Stones subsea-to-FPSO architecture.",
+      "cost_usd_bn": 2.0,
+      "cost_usd_bn_basis": "Low-confidence FPSO/subsea cost-class seed; exact sanction cost not locked in reviewed source.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/stones-field-gulf-mexico/",
+        "https://www.nsenergybusiness.com/projects/stones-oil-and-gas-project/",
+        "https://www.abarrelfull.co.uk/Stones_Oil_and_Gas_Field",
+        "https://onepetro.org/OTCONF/proceedings/17OTC/17OTC/D021S025R005/90231"
+      ],
+      "confidence": "low"
+    },
+    {
+      "name": "Lucius",
+      "region": "US Gulf of Mexico",
+      "operator": "Anadarko / LLOG context",
+      "water_depth_m": 2160,
+      "host": "Truss spar",
+      "architecture": "Deepwater spar with six subsea production wells tied back via flowlines/risers, pipeline end manifolds, and spare connections for future tiebacks.",
+      "startup_year": 2015,
+      "capacity_bopd": 80000,
+      "num_trees": 6,
+      "num_trees_basis": "RAE public tieback-project page states Lucius involves six subsea production wells tied back to a moored production-handling spar.",
+      "num_manifolds": 2,
+      "num_manifolds_basis": "AOGR public article describes pipeline end manifolds with spare connections and spar designed for two additional subsea tiebacks; coded two PLEM/manifold units for seed correlation.",
+      "tieback_distance_km": 0,
+      "tieback_distance_km_basis": "No reviewed public max tieback length found; coded 0 for host-local spar tieback seed and flagged low confidence.",
+      "cost_usd_bn": 2.0,
+      "cost_usd_bn_basis": "Low-confidence spar development cost-class seed; replace with sourced project cost when available.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/lucius-project/",
+        "https://www.rae.com/blog/lucius-tieback-project",
+        "https://www.aogr.com/magazine/editors-choice/lucius-truss-spar-project-sets-standard-for-heidelberg-future-anadarko-deve"
+      ],
+      "confidence": "low"
+    },
+    {
+      "name": "Na Kika",
+      "region": "US Gulf of Mexico",
+      "operator": "Shell / BP",
+      "water_depth_m": 1920,
+      "host": "Semi-submersible hub",
+      "architecture": "Deepwater semi-submersible host serving multiple fields with subsea production system and first development wells drilled by Shell.",
+      "startup_year": 2003,
+      "capacity_bopd": 110000,
+      "num_trees": 10,
+      "num_trees_basis": "Offshore Technology search result/public project page states Shell drilled the first ten development wells for Na Kika.",
+      "num_manifolds": 6,
+      "num_manifolds_basis": "Proxy-coded from six initial field centers in Na Kika hub scope; use as low-confidence manifold/field-center count until a direct subsea-manifold count is sourced.",
+      "tieback_distance_km": 0,
+      "tieback_distance_km_basis": "No reviewed public max tieback length found; coded 0 for host-local multi-field hub seed and flagged low confidence.",
+      "cost_usd_bn": 1.3,
+      "cost_usd_bn_basis": "Low-confidence public cost-class seed for early-2000s deepwater semi hub; exact cost requires source lock.",
+      "source_urls": [
+        "https://www.offshore-technology.com/projects/na_kika/"
+      ],
+      "confidence": "low"
+    }
+  ]
+}

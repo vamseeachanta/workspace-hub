@@ -9,6 +9,15 @@ sends vessel / structure / project-condition data and asks for a
 customized demo report. The SLA is **≤ 48 hours from intake receipt to
 delivery on both channels**.
 
+**No outbound outreach is performed by this SOP.** It starts only after
+an inbound or already-authorized intake exists, and it never instructs an
+agent to send unsolicited email, LinkedIn messages, or contractor contact.
+
+**public-safe rule:** artifacts committed to git use **logical paths only**
+(for example `docs/gtm/intake/...` or `private-log/fallback-applied.json`).
+Do not commit workstation paths, prospect file-share paths, screenshots of
+private directories, or proprietary data-source locations.
+
 > Terminology: the word "demo" throughout refers to one of the five GTM
 > parametric studies (`demo_01`..`demo_05`) already shipped under
 > `digitalmodel/examples/demos/gtm/`. The intake YAML routes the prospect
@@ -36,7 +45,7 @@ delivery on both channels**.
 ## 1. 48-hour decision tree
 
 ```
-Hour 0–2    RECEIVE prospect data (email / LinkedIn / form)
+Hour 0-4    RECEIVE prospect data (email / LinkedIn / form)
              │
              ▼
             File raw intake at
@@ -44,7 +53,7 @@ Hour 0–2    RECEIVE prospect data (email / LinkedIn / form)
              (directory is .gitignored — NDA isolation)
              │
              ▼
-Hour 2–6    VALIDATE with prospect_adapter.load_and_validate()
+Hour 4-24   VALIDATE with prospect_adapter.load_and_validate()
              │
        ┌─────┴─────┐
        │           │
@@ -69,18 +78,14 @@ Hour 6–24   MATERIALIZE + RUN demo via prospect_adapter.materialize_demo_input
        │           ▼  §2 row "Numerical failure"
        │           │
        ▼           ▼
-Hour 24–36  RENDER branded report via branded_report.wrap_with_client_branding()
+Hour 24-40  RENDER branded report via branded_report.wrap_with_client_branding()
              Spot-check: all charts render, brand header/footer present,
              NDA watermark when nda_in_place=true, class-typical
              disclaimer on cover page when a canonical vessel was used.
              │
              ▼
-Hour 36–44  INTERNAL REVIEW — ≥1 engineer reads the full report. On any
-             flag, fix in place or escalate. DO NOT skip this step under
-             time pressure.
-             │
-             ▼
-Hour 44–48  DELIVER on BOTH channels (serial, email-first per §3):
+Hour 40-48  INTERNAL REVIEW + DELIVER on BOTH channels (serial,
+             email-first per §3):
              1. Email HTML + optional PDF to prospect.contact
              2. Publish to /private/<hash>/<slug>.html on aceengineer-website
                 (unless output.publish_private_url == false)
@@ -104,11 +109,11 @@ logged to both:
 
 | Fallback | Code | Applies to | Prospect authorization | Report-cover disclosure |
 |---|---|---|---|---|
-| **F1** — Refuse + email back | `refuse` | Default for any unclear or ambiguous failure | None | N/A — no report rendered |
-| **F2** — Closest canonical vessel | `closest-canonical` | Missing `vessel` block (demos 3/4/5) OR vessel fails numeric-sanity gate | **Pre-authorized** (intake email said "use your closest vessel") | "Vessel spec supplied by ACE canonical library: `<class name>`. Class-typical values; not vessel-specific." + source citations |
-| **F3** — Class-default field | `canonical-default-field` | One missing scalar inside an otherwise-complete block (e.g. `crane_main.swl_max_radius_m` missing but rest of vessel present). Allowlist only. | Implicit for allowlist fields; explicit otherwise | Line-item list of every substituted field with its canonical-class value |
-| **F4** — One clarification email | `clarify` | Single well-defined missing field or ambiguous enum value | None (this IS the refuse) | N/A — no report rendered until reply |
-| **F5** — Reduced-scope analysis | `reduced-scope` | Parametric-sweep failure sidesteppable by narrowing sweep (e.g. depth > vessel rating → cap sweep at vessel rating) | **Pre-authorized** (intake email said "deliver reduced-scope if needed") OR explicit email confirmation within Hour 2–6 | "Scope reduced: `<what was cut>`. Full-envelope analysis requires `<what>`." red-banner caveat |
+| **F1 — refuse** | `refuse` | Default for any unclear or ambiguous failure | None | N/A — no report rendered |
+| **F2 — closest canonical vessel** | `closest-canonical` | Missing `vessel` block (demos 3/4/5) OR vessel fails numeric-sanity gate | **Pre-authorized** (intake email said "use your closest vessel") | "Vessel spec supplied by ACE canonical library: `<class name>`. Class-typical values; not vessel-specific." + source citations |
+| **F3 — canonical-class default** | `canonical-default-field` | One missing scalar inside an otherwise-complete block (e.g. `crane_main.swl_max_radius_m` missing but rest of vessel present). Allowlist only. | Implicit for allowlist fields; explicit otherwise | Line-item list of every substituted field with its canonical-class value |
+| **F4 — one clarification email** | `clarify` | Single well-defined missing field or ambiguous enum value | None (this IS the refuse) | N/A — no report rendered until reply |
+| **F5 — reduced scope with caveats** | `reduced-scope` | Parametric-sweep failure sidesteppable by narrowing sweep (e.g. depth > vessel rating → cap sweep at vessel rating) | **Pre-authorized** (intake email said "deliver reduced-scope if needed") OR explicit email confirmation within Hour 0-4 | "Scope reduced: `<what was cut>`. Full-envelope analysis requires `<what>`." red-banner caveat |
 
 ### Applicability by failure mode
 
@@ -202,8 +207,10 @@ Implementation lives in `prospect_adapter.deliver()`.
 
 ### Key sequencing rules
 
-- **Email first, URL second.** URL publish is gated on email-success so
-  the prospect never sees a URL without the accompanying email context.
+- **Email first, URL second.** This is the required email-first sequence.
+  URL publish is gated on email-success so the prospect never sees a URL
+  without the accompanying email context; if email fails, no private URL
+  is published (`no private URL is published` is the gate invariant).
 - **Retry budget:** 3 attempts per channel with exponential backoff
   `[30s, 2min, 10min]`, tolerance ±10%.
 - **No email recall.** `state=DELIVERED_EMAIL_ONLY` is terminal — we do

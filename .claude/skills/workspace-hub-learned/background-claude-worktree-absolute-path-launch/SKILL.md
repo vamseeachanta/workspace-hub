@@ -47,6 +47,23 @@ claude -p \
   "$PROMPT" </dev/null | tee /abs/path/to/worker.log
 ```
 
+## Hermes background-process launch rule
+
+When launching a Claude worker from Hermes, do **not** wrap the shell command with `nohup`, trailing `&`, `disown`, or `setsid` in a foreground `terminal()` call. Hermes rejects shell-level background wrappers and cannot track them reliably.
+
+Use the tool's native background mode instead:
+
+```text
+terminal(
+  background=true,
+  notify_on_complete=true,
+  workdir="/abs/path/to/worktree",
+  command="claude --print --dangerously-skip-permissions < /abs/path/to/prompt.md"
+)
+```
+
+For approved issue implementation/landing work where a user asks to "use a subagent", prefer this real background Claude process over `delegate_task`; it writes to the intended checkout and can commit/push, while `delegate_task` may lose repo writes. First verify the issue number exists before dispatching; if the requested number is missing but the current active issue is obvious, state the correction in the worker prompt and proceed only on the verified active issue.
+
 ## Verification step
 
 Immediately poll the background process once after launch.

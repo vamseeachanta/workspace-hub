@@ -76,6 +76,26 @@
         ]
       },
       {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-state-file-size-precommit.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git push*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-state-file-size-prepush.sh",
+            "timeout": 20
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit",
         "hooks": [
           {

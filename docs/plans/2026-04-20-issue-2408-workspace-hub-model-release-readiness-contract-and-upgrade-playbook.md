@@ -1,6 +1,6 @@
 # Plan for #2408: Workspace-hub-only model-release readiness contract and upgrade playbook
 
-> **Status:** draft
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-04-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2408
@@ -117,34 +117,38 @@ stop at workspace-hub scope and explicitly defer tier-1 repo ecosystem inventory
 
 ## Acceptance Criteria
 
-- [ ] `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md` exists
-- [ ] `docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md` exists
-- [ ] `docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md` exists and contains a named workspace-hub-only gap summary section
-- [ ] `tests/docs/test_workspace_hub_model_release_readiness.py` exists
-- [ ] contract explicitly covers context-budget/truncation-safe artifact design
-- [ ] contract explicitly covers machine-readable rules/skills vs prose-only guidance
-- [ ] contract explicitly covers prompt-pack portability for workspace-hub workflows
-- [ ] canonical discoverability anchors exist in `AGENTS.md` and `docs/standards/CONTROL_PLANE_CONTRACT.md`
-- [ ] live root provider entry surfaces (`CLAUDE.md`, `GEMINI.md`) are updated for consistency with the canonical workflow-anchor model
-- [ ] package/contract explicitly state that tier-1 ecosystem inventory and provider-adapter-shape normalization are out of scope for this issue
-- [ ] line-count compliance for thin adapters is explicitly tested
-- [ ] non-contradiction with `CONTROL_PLANE_CONTRACT.md` is checked using concrete assertions, not vague contradiction language
-- [ ] review artifacts are posted to `scripts/review/results/`
+- [x] `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md` exists
+- [x] `docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md` exists
+- [x] `docs/reports/2026-04-20-issue-2408-workspace-hub-readiness-package.md` exists and contains a named workspace-hub-only gap summary section
+- [x] `tests/docs/test_workspace_hub_model_release_readiness.py` exists
+- [x] contract explicitly covers context-budget/truncation-safe artifact design
+- [x] contract explicitly covers machine-readable rules/skills vs prose-only guidance
+- [x] contract explicitly covers prompt-pack portability for workspace-hub workflows
+- [x] canonical discoverability anchors exist in `AGENTS.md` and `docs/standards/CONTROL_PLANE_CONTRACT.md`
+- [x] root provider entry surfaces (`CLAUDE.md`, `GEMINI.md`) are audited only for thin-adapter compliance; provider-entrypoint-shape normalization remains out of scope for #2408
+- [x] package/contract explicitly state that tier-1 ecosystem inventory and provider-adapter-shape normalization are out of scope for this issue
+- [x] line-count compliance for thin adapters is explicitly tested
+- [x] non-contradiction with `CONTROL_PLANE_CONTRACT.md` is checked using concrete assertions, not vague contradiction language
+- [x] issue-thread review/validation evidence records the review outcome and branch evidence without requiring new provider-entrypoint normalization work in this issue
 
 ---
 
 ## Adversarial Review Summary
 
-| Provider | Verdict | Key findings |
+| Review lane | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Awaiting review |
-| Codex | PENDING | Awaiting review |
-| Gemini | PENDING | Awaiting review |
+| Planning review waves | MAJOR -> resolved | Earlier review waves rejected mixed authority/provider-entrypoint normalization scope; the approved direction is strict canonical-doc strategy with provider normalization deferred to #2421. |
+| Implementation adversarial review | APPROVE | Post-remediation review accepted the narrowed read-budget rule and `.codex/` line-limit carveout. |
+| Next-wave self-review | PASS | Branch evidence confirmed the workspace-hub-only package, canonical anchors, stale-validation guard, and targeted readiness tests. |
 
-**Overall result:** PENDING
+**Overall result:** APPROVE within the #2408 workspace-hub-only scope.
 
 Revisions made based on review:
-- none yet
+- Chose strict canonical-doc strategy: update `AGENTS.md` and `CONTROL_PLANE_CONTRACT.md`; audit provider entry surfaces only.
+- Deferred provider-entrypoint-shape normalization to follow-up issue #2421.
+- Narrowed the `.codex/` line-limit claim so it does not overstate `.claude/rules/coding-style.md`.
+- Narrowed the read-budget rule to readiness standards/playbooks introduced under this contract.
+- Added a regression guard preventing durable validation evidence from embedding stale fixed test counts.
 
 ---
 

@@ -117,7 +117,7 @@ _tmpws="$_td/ws" && mkdir -p "$_tmpws/testrepo"
 (cd "$_tmpws/testrepo" && git init -q \
     && git config user.email "t@t" && git config user.name "T" \
     && echo "init" > init.txt && git add init.txt && git commit -q -m "init") 2>/dev/null
-echo "change" > "$_tmpws/testrepo/change.txt"   # unstaged file
+echo "change" >> "$_tmpws/testrepo/init.txt"   # tracked unstaged file
 _rfile="$_td/result"
 (WORKSPACE_ROOT="$_tmpws"; source "$AUTO_HELPER" 2>/dev/null
  _auto_sync_one "$_rfile" "testrepo" "2026-01-01" "false") 2>/dev/null
@@ -211,6 +211,68 @@ for _bad in '.' '..' '../etc' 'foo/../bar' '/absolute'; do
         && _pass "behavioral: traversal guard rejects '$_bad'" \
         || _fail "behavioral: traversal guard missing for '$_bad' (got: $_res)"
 done
+rm -rf "$_td"
+
+# T29: large-repo status probes must avoid full untracked enumeration by default
+grep -q 'status.showUntrackedFiles=no' "$AUTO_HELPER" \
+    && _pass "large-repo-safe status disables untracked enumeration" \
+    || _fail "missing status.showUntrackedFiles=no in helper"
+
+# T29b: dry-run status probes are bounded so huge repos cannot stall the whole sync
+grep -q '_bounded_status_probe' "$AUTO_HELPER" && grep -q 'timeout 10s git' "$AUTO_HELPER" \
+    && _pass "dry-run status probe is timeout-bounded" \
+    || _fail "dry-run status probe is not timeout-bounded"
+
+# T30: sync helper must detect git index locks instead of deleting them
+(grep -q '_has_git_lock' "$AUTO_HELPER" && grep -q 'index.lock' "$AUTO_HELPER" \
+    && ! grep -q 'rm -f.*index.lock' "$AUTO_HELPER") \
+    && _pass "git lock detection present; no auto-delete of index.lock" \
+    || _fail "git lock detection missing or unsafe index.lock removal present"
+
+# T31: sync helper should write recovery backups under .git/recovery-backups before staging
+(grep -q 'recovery-backups' "$AUTO_HELPER" && grep -q '_create_recovery_backup' "$AUTO_HELPER") \
+    && _pass "recovery backup support present" \
+    || _fail "recovery backup support missing"
+
+# T32: default branch handling should not hard-code only main/master
+(grep -q '_default_branch' "$AUTO_HELPER" && grep -q 'origin/HEAD' "$AUTO_HELPER") \
+    && _pass "default branch detection via origin/HEAD present" \
+    || _fail "default branch detection missing"
+
+# T33: pulls must be fast-forward-only; no rebase/autostash in scheduled sync
+(grep -q -- '--ff-only' "$AUTO_HELPER" && ! grep -q -- '--rebase --autostash' "$AUTO_HELPER") \
+    && _pass "pull uses safe fast-forward-only mode" \
+    || _fail "pull does not use safe --ff-only mode or still uses rebase/autostash"
+
+# T34: behavioral — dirty repo creates backup under .git/recovery-backups
+_td=$(mktemp -d)
+_tmpws="$_td/ws" && mkdir -p "$_tmpws/testrepo"
+(cd "$_tmpws/testrepo" && git init -q \
+    && git config user.email "t@t" && git config user.name "T" \
+    && echo "init" > init.txt && git add init.txt && git commit -q -m "init") 2>/dev/null
+echo "change" >> "$_tmpws/testrepo/init.txt"
+_rfile="$_td/result"
+(WORKSPACE_ROOT="$_tmpws"; source "$AUTO_HELPER" 2>/dev/null
+ _auto_sync_one "$_rfile" "testrepo" "2026-01-01" "false") >/dev/null 2>&1
+find "$_tmpws/testrepo/.git/recovery-backups" -type f 2>/dev/null | grep -q . \
+    && _pass "behavioral: dirty repo backup file created" \
+    || _fail "behavioral: dirty repo backup missing"
+rm -rf "$_td"
+
+# T35: behavioral — active index lock blocks sync without removing the lock
+_td=$(mktemp -d)
+_tmpws="$_td/ws" && mkdir -p "$_tmpws/testrepo"
+(cd "$_tmpws/testrepo" && git init -q \
+    && git config user.email "t@t" && git config user.name "T" \
+    && echo "init" > init.txt && git add init.txt && git commit -q -m "init" \
+    && touch .git/index.lock) 2>/dev/null
+_rfile="$_td/result"
+(WORKSPACE_ROOT="$_tmpws"; source "$AUTO_HELPER" 2>/dev/null
+ _auto_sync_one "$_rfile" "testrepo" "2026-01-01" "false") >/dev/null 2>&1
+_res=$(cat "$_rfile" 2>/dev/null || echo "")
+([ -e "$_tmpws/testrepo/.git/index.lock" ] && echo "$_res" | grep -q 'warn-git-lock') \
+    && _pass "behavioral: index lock blocks sync and is preserved" \
+    || _fail "behavioral: index lock not preserved or not reported (got: $_res)"
 rm -rf "$_td"
 
 echo ""

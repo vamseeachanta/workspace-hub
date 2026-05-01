@@ -1,0 +1,16 @@
+[batch-ingest] Loading metadata from: .planning/intel/elements-to-llm-wiki/batches/lng-projects.jsonl
+[batch-ingest] Loaded 2 records
+[batch-ingest] DRY-RUN mode — no files will be written
+
+  [DRY-RUN] Would create: wiki/sources/elements-doris-62092-sesa.md — Elements ingest catalog — doris-62092-sesa
+  [DRY-RUN] Would create: wiki/sources/elements-acma-projects-31522-woodfibre.md — Elements ingest catalog — acma-projects-31522-woodfibre
+  Progress: 2/2 (100%) — created=2 skipped=0 errors=0
+  [batch 1] Wrote 2 entries to index.md and log.md (dry-run)
+
+[batch-ingest] Complete (DRY-RUN)
+  Total records:    2
+  Created:          2
+  Repaired:         0
+  Skipped (done):   0
+  Errors:           0
+  Batches flushed:  1

@@ -41,6 +41,7 @@ For each candidate issue, check all of these:
 4. Approval evidence
 - `.planning/plan-approved/NNN.md`
 - absence of this marker means the item is still only a recommendation candidate, not approved
+- First verify that the checkout used for marker inspection is not stale or behind the target branch. If the active worktree is behind `origin/main`, either fast-forward/use a fresh worktree or inspect the committed remote tree directly (for example `git ls-tree -r --name-only origin/main -- .planning/plan-approved/NNN.md`) before reporting the marker as missing. Stale governance worktrees can otherwise misclassify truly committed approval markers.
 
 5. Explicit prerequisites
 - machine constraints (`machine:*` labels)

@@ -1,0 +1,8 @@
+C1: Vessel-vs-Job Capability Heatmap
+Headline: Shallow Water Barge — Shallow-Water Pipelay: 100.0% pass rate across 30 cases; current matrix totals 156 cases.
+Caption: Screening-grade vessel-vs-job capability matrix from ACE Engineer's GTM demo outputs. Standards cited/inherited: DNV-ST-F101, DNV-OS-F101, API RP 1111, DNV-RP-H103, DNV-ST-N001, DNV-OS-H101. Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.
+Disclosure: Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.
+Data inputs:
+- digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json
+- digitalmodel/examples/demos/gtm/data/pipelay_vessels.json
+- digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json

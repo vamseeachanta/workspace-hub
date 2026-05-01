@@ -17,9 +17,10 @@
 #   1.0.0 (2026-04-11) — initial registry
 #   1.1.0 (2026-04-17) — additive: per-asset `fields:` sub-block for structural field declarations (#2307)
 #   1.1.1 (2026-04-17) — declared `summary_file_exists` alongside `summary_done` after #2309 field split; added `semantic` and `semantic_pair` keys on field entries to document companion relationships
+#   1.1.2 (2026-04-28) — normalized `freshness_cadence: daily` to `nightly` per #2105 governance vocabulary; no registry field rename
 
 generated: '2026-04-11'
-schema_version: '1.1.1'
+schema_version: '1.1.2'
 
 assets:
 
@@ -400,7 +401,7 @@ assets:
     source_of_truth_tier: git-tracked
     durability: durable
     freshness_source: "git log -1 --format=%ci docs/ROUTING_INDEX.md"
-    freshness_cadence: daily
+    freshness_cadence: nightly
     discoverability: discoverable
     gaps: null
     owner_issue: 2464

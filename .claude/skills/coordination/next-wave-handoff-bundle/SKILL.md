@@ -16,6 +16,8 @@ Typical trigger phrases:
 - "continue this stream/worktree"
 - "draft follow-up issues / authorization note / deploy checklist"
 - "operator handoff"
+- "prepare notes; document and prepare to exit"
+- "handover this info to parallel Hermes terminal"
 - "no push, no bypass, avoid code churn"
 
 ## Goal
@@ -137,11 +139,28 @@ git show --stat --oneline -- <handoff-file> | head -80
 ```
 Some workspace automation/hooks may have already staged/committed the file or cleaned unrelated state; verify by file-specific git history before retrying or rewriting.
 
-### 9. Explicitly verify "no push happened"
-Do not merely assert it. Check using git/remote evidence, for example:
+### 9. Explicitly verify push/no-push state and post-push CI
+Do not merely assert whether a push happened. Check using git/remote evidence, for example:
 - `git branch -vv`
 - `git ls-remote --heads origin <branch>`
+- `git rev-parse HEAD` and `git rev-parse origin/main` after `git fetch origin`
 - post-commit output indicating no upstream configured / no auto-push
+
+If the user chooses the exit path of "commit/push, document, and prepare to exit":
+1. commit the handoff artifact as a narrow docs-only commit
+2. push it
+3. verify local `HEAD` equals the pushed remote ref
+4. inspect the CI run triggered by the handoff commit
+5. separate scoped-success evidence from unrelated CI failures
+
+If `git push` reports a remote ref-lock/race error such as `cannot lock ref ... is at <new> but expected <old>`, do not assume the handoff failed. Immediately run `git fetch origin <branch>` and compare `git rev-parse HEAD` with `git rev-parse origin/<branch>`. In concurrent/auto-sync environments the remote may already contain the just-created commit despite the non-zero push result; if hashes match, treat the push as effectively complete and avoid duplicate commits or force-pushes.
+
+A docs-only handoff commit can still trigger repo CI/docs workflows. If CI is red for failures outside the completed stream's scope, do not reopen the completed issue by default. Instead:
+- record the relevant scoped pass/fail evidence in the handoff and/or issue comment
+- open or draft a new follow-up issue for the remaining failure family
+- explicitly state that the completed stream remains complete only if its acceptance gate stayed green
+
+Example: after a lint-restoration stream, a handoff commit triggered CI where `Lint`, `Type Check`, and `Security Scan` passed but Python test-matrix jobs failed. Correct closeout was to preserve the lint handoff, keep the lint issue closed, and create a new plan-gated follow-up issue for the Python test-matrix failures.
 
 Report the evidence plainly.
 

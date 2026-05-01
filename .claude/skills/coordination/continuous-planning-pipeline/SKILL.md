@@ -75,7 +75,7 @@ Required evidence:
 - worktree / repo state is clean or isolated
 - target files are not owned by another active worker
 
-Do not treat GitHub labels alone as sufficient approval. If a workflow uses revision-bound approval comments/plan branches instead of local numeric markers, treat that as `approval-drift` unless/until the repo hooks and approval scripts have an approved policy recognizing that exact schema. Remote routine state or session transcripts never upgrade an issue into Lane B.
+Do not treat GitHub labels alone as sufficient approval. Verify marker evidence from a checkout that is current with the execution base: after `git fetch`, if the active worktree is behind `origin/main`, inspect `origin/main` directly or create/freshen an isolated worktree before declaring a marker missing. A stale governance worktree can undercount committed `.planning/plan-approved/NNN.md` files and misroute approved work back to approval drift. If a workflow uses revision-bound approval comments/plan branches instead of local numeric markers, treat that as `approval-drift` unless/until the repo hooks and approval scripts have an approved policy recognizing that exact schema. Remote routine state or session transcripts never upgrade an issue into Lane B.
 
 ### Lane C — planning feedstock
 

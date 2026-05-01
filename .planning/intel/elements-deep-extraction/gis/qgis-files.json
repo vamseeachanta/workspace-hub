@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/mnt/ace/digitalmodel/tools/qgis/18inch Flowline_2.1_align.dxf",
+    "name": "18inch Flowline_2.1_align.dxf",
+    "size": 546567,
+    "suffix": ".dxf"
+  },
+  {
+    "path": "/mnt/ace/digitalmodel/tools/qgis/dem.prj",
+    "name": "dem.prj",
+    "size": 599,
+    "suffix": ".prj"
+  },
+  {
+    "path": "/mnt/ace/digitalmodel/tools/qgis/dem.tif",
+    "name": "dem.tif",
+    "size": 397944941,
+    "suffix": ".tif"
+  }
+]

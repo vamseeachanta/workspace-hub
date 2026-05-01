@@ -117,7 +117,7 @@ Partial but high-value next validations:
 - PLET-to-PLEM rigid jumper
 - lazy-wave / steep-wave riser
 - OrcaWave L03 ship benchmark full roundtrip
-- named multi-body OrcaWave benchmark
+- named multi-body OrcaWave benchmark - promoted under #2458
 
 ## Execution order
 

@@ -1,17 +1,15 @@
 `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
 §
-DEFAULT MODEL (2026-04-25): openai-codex / gpt-5.5 via https://chatgpt.com/backend-api/codex. smart_model_routing disabled. quick/research/data use gpt-5.4-mini, code/review use gpt-5.4, batch uses gpt-5.2. fallback_model disabled/empty. Gemini and Copilot are explicit-use only; never automatic fallback/default.
+Business Brain: Plan AI provider dispatch from fresh capacity telemetry about every 6h, not fixed rules. Default main execution capacity is Claude Max ($200/mo) + Codex ($200/mo). Gemini is USD $20 and usually for cross/adversarial reviews, but if reliable capacity exists, delegate suitable work rather than rigidly excluding it. Target state: capacity-aware next-work planning. Hermes on ace-linux-1 remains the control surface; ace-linux-2 is overflow after repo/tool/auth checks.
 §
-workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis.
+Elements→/mnt/ace ingest conventions: canonical layout is /mnt/ace/<repo-name>/<domain>/; `client_projects` is a real repo bucket; Woodfibre uses repo bucket `acma-projects` (not `acma_projects`) with project code 31522; `qgis` is reusable digitalmodel workflow/data; `casa_grande_77017` belongs under `assethold`; staging folders use `_from_elements/` without dates.
 §
-Hermes smart_model_routing is disabled in workspace-hub because cheap-model Gemini routing bypassed explicit Codex intent and hit Gemini 429 quota.
+Telegram/Hermes mobile bot branding chosen: “AceEng Bot” with username “AceEngBot” preferred; fallback names include AceEngineerBot, AceEngAIBot, AceEngineerAIBot, AceOpsBot.
 §
-Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval.
+Telegram/Hermes mobile bot actual username created: @AceEngineerBot / t.me/AceEngineerBot. Initial token was pasted into chat and should be treated as compromised; rotate via @BotFather before configuring Hermes.
 §
-Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only.
+Codex is also on a USD $200 membership with roughly 85% usage left; quota reset time reported as April 5 at 12 PM.
 §
-In workspace-hub shell, `gsd` is not currently available as a PATH executable (`gsd --help` => command not found); use the documented planning workflow/templates directly unless the slash-command runtime is present.
+ace-linux-1 Telegram/Hermes setup: Telegram Desktop installed from `tsetup.6.7.8.tar.xz` at `/home/vamsee/.local/share/Telegram/Telegram`; helper script at `/home/vamsee/Downloads/install-telegram-desktop.sh`; `@AceEngineerBot` gateway is allowlist-only via `TELEGRAM_ALLOWED_USERS` in `/home/vamsee/.hermes/.env`; handoff artifact path is `/mnt/local-analysis/workspace-hub/docs/session-handoffs/2026-04-30-telegram-hermes-mobile-access-handoff.md`.
 §
-digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment.
-§
-In workspace-hub, scripts/enforcement/require-plan-approval.sh only recognizes .planning/plan-approved/*.md markers newer than .planning/STATE.md; a stale marker can block commits even when the GitHub issue is already status:plan-approved.
+Provider capacity note as of 2026-04-30 18:59 CDT: Claude weekly capacity had ~40% remaining with ~36 hours to reset; prioritize appropriate Claude/Codex throughput from fresh telemetry.

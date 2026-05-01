@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-28T05:20:13.881313Z",
+  "generated_at": "2026-05-01T18:33:55.480833Z",
   "current_week": "2026-W18",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-04-28T05:20:12.382844Z",
+    "utilization_generated_at": "2026-05-01T18:33:55.291890Z",
     "audit_generated_at": "2026-04-24T15:25:36Z"
   },
   "recommended_provider_order": [
@@ -15,13 +15,13 @@
   "recommendations": [
     {
       "provider": "claude",
-      "status": "underused",
+      "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 4.3,
+      "reported_utilization_pct": 12.2,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 50,
-      "post_records_current_week": 1747,
+      "sessions_current_week": 164,
+      "post_records_current_week": 4969,
       "audit_post_records": 89108,
       "missing_repo_reads": 8454,
       "python3_per_1k_records": 8.53,
@@ -30,23 +30,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 1340
+          "count": 2968
         },
         {
           "tool": "Read",
-          "count": 273
+          "count": 896
+        },
+        {
+          "tool": "unknown",
+          "count": 534
         },
         {
           "tool": "Write",
-          "count": 55
+          "count": 200
         },
         {
           "tool": "Edit",
-          "count": 37
-        },
-        {
-          "tool": "Grep",
-          "count": 22
+          "count": 149
         }
       ],
       "preferred_work": [
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 0.4,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 40,
-      "post_records_current_week": 681,
+      "sessions_current_week": 196,
+      "post_records_current_week": 7863,
       "audit_post_records": 20144,
       "missing_repo_reads": 463,
       "python3_per_1k_records": 17.92,
@@ -83,20 +83,24 @@
       "top_migration_hint": null,
       "top_tools": [
         {
-          "tool": "Read",
-          "count": 499
+          "tool": "Bash",
+          "count": 6167
         },
         {
-          "tool": "Bash",
-          "count": 146
+          "tool": "Read",
+          "count": 1344
         },
         {
           "tool": "Grep",
-          "count": 33
+          "count": 157
         },
         {
-          "tool": "list_mcp_resources",
-          "count": 3
+          "tool": "_add_comment_to_issue",
+          "count": 76
+        },
+        {
+          "tool": "_fetch_commit_workflow_runs",
+          "count": 16
         }
       ],
       "preferred_work": [
@@ -118,11 +122,11 @@
       "provider": "gemini",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 0.2,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 4,
+      "post_records_current_week": 5,
       "audit_post_records": 6173,
       "missing_repo_reads": 603,
       "python3_per_1k_records": 47.14,
@@ -130,36 +134,8 @@
       "top_migration_hint": "legacy_local_work_queue_items",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 2288
-        },
-        {
-          "tool": "Read",
-          "count": 2181
-        },
-        {
-          "tool": "Grep",
-          "count": 655
-        },
-        {
-          "tool": "Write",
-          "count": 535
-        },
-        {
-          "tool": "Edit",
-          "count": 394
-        },
-        {
           "tool": "Browser",
-          "count": 106
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 9
-        },
-        {
-          "tool": "generalist",
-          "count": 3
+          "count": 5
         }
       ],
       "preferred_work": [

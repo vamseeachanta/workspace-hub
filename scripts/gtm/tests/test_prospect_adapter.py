@@ -126,6 +126,44 @@ output:
 """
 
 
+def _valid_demo_03_canonical_csv_hlv_yaml() -> str:
+    """Demo_03 intake that references a canonical heavy-lift CSV and mudmat."""
+    return """\
+prospect:
+  company: "Delta Subsea Construction"
+  contact: "installations@delta.example"
+  nda_in_place: true
+  target_demo: "demo_03"
+  delivery_deadline_utc: "2026-04-23T17:00Z"
+vessel:
+  shape: "csv_hlv"
+  source: "canonical_ref"
+  canonical_ref: "seven-borealis"
+structure:
+  kind: "mudmat"
+  body:
+    id: "prospect-mudmat-01"
+    name: "Prospect Mudmat"
+    mass_te: 85.0
+    dimensions:
+      length_m: 12.0
+      width_m: 10.0
+      height_m: 1.2
+    cog:
+      x_m: 0.0
+      y_m: 0.0
+      z_m: 0.6
+environment:
+  water_depths_m: [500, 1000]
+  hs_values_m: [1.5, 2.5]
+  current_velocity_ms: 0.35
+output:
+  brand_header: "Prepared for Delta Subsea Construction"
+  brand_footer: "Confidential - NDA"
+  publish_private_url: false
+"""
+
+
 def _valid_demo_04_canonical_pipelay_yaml() -> str:
     """Demo_04 intake that references the canonical pipelay-barge vessel."""
     return """\
@@ -335,6 +373,32 @@ def test_materialize_demo_04_writes_environment_override_when_present(
     assert env_payload["current_velocity_ms"] == pytest.approx(0.4)
 
 
+def test_materialize_demo_03_writes_csv_hlv_and_mudmat_files(
+    tmp_path: Path,
+) -> None:
+    intake_file = tmp_path / "delta-demo03.yaml"
+    intake_file.write_text(_valid_demo_03_canonical_csv_hlv_yaml(), encoding="utf-8")
+    prospect = load_and_validate(intake_file)
+
+    bundle = materialize_demo_inputs(prospect, tmp_path)
+
+    assert isinstance(bundle, DemoInputBundle)
+    assert bundle.demo_id == "demo_03"
+    assert bundle.data_dir == tmp_path / "data"
+    assert bundle.vessel_file == bundle.data_dir / "csv_hlv_vessels.json"
+    assert bundle.structure_file == bundle.data_dir / "mudmat_structures.json"
+    assert bundle.env_override_path == bundle.data_dir / "prospect_env.json"
+    vessel_payload = json.loads(bundle.vessel_file.read_text(encoding="utf-8"))
+    assert vessel_payload["vessels"][0]["id"] == "seven-borealis"
+    assert "crane_main" in vessel_payload["vessels"][0]
+    structure_payload = json.loads(bundle.structure_file.read_text(encoding="utf-8"))
+    assert structure_payload["structures"][0]["id"] == "prospect-mudmat-01"
+    assert structure_payload["structures"][0]["mass_te"] == pytest.approx(85.0)
+    env_payload = json.loads(bundle.env_override_path.read_text(encoding="utf-8"))
+    assert env_payload["water_depths_m"] == [500, 1000]
+    assert env_payload["current_velocity_ms"] == pytest.approx(0.35)
+
+
 def test_materialize_demo_05_writes_csv_hlv_and_rigid_jumper_files(
     tmp_path: Path,
 ) -> None:
@@ -374,24 +438,8 @@ def test_materialize_demo_05_accepts_plsv_canonical_ref(
     assert "crane_main" in vessel_payload["vessels"][0]
 
 
-def test_materialize_demo_inputs_is_a_wired_stub_for_unimplemented_demo(tmp_path: Path) -> None:
-    intake_file = tmp_path / "bad-demo03.yaml"
-    intake_file.write_text(
-        _valid_demo_05_intake_yaml()
-        .replace('target_demo: "demo_05"', 'target_demo: "demo_03"')
-        .replace('kind: "rigid_jumper"', 'kind: "mudmat"')
-        .replace('length_m: 45.0\n', 'plan_area_m2: 120.0\n')
-        .replace('outer_diameter_m: 0.3239\n    wall_thickness_m: 0.0254\n    ', ''),
-        encoding="utf-8",
-    )
-    prospect = load_and_validate(intake_file)
-
-    with pytest.raises(NotImplementedError, match=r"materialize_demo_inputs"):
-        materialize_demo_inputs(prospect, tmp_path)
-
-
 def test_run_demo_is_a_wired_stub(tmp_path: Path) -> None:
-    # Construct a DemoInputBundle directly (materialize is still a stub).
+    # Construct a DemoInputBundle directly; subprocess dispatch is still a stub.
     bundle = DemoInputBundle(
         demo_id="demo_05",
         tmpdir=tmp_path,

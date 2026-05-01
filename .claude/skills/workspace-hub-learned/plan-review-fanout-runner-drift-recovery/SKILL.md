@@ -140,6 +140,62 @@ ps -ef | grep -E 'claude|codex|gemini' | grep -v grep | tail -n 20 || true
 
 A single provider leg (often Claude print-mode) can keep the fanout alive after other providers have finished. Preserve any real provider artifacts, but do not convert a hung/no-artifact run into approval evidence.
 
+## Post-reboot / interrupted fanout salvage
+
+Use a separate reconciliation worktree when the primary checkout may have active Hermes/Claude/Git writers or dirty user work. Preserve primary dirty state first (diff/stash/status snapshots), then run review recovery from the safe worktree.
+
+When a fanout is interrupted by reboot or context loss:
+
+1. Re-check live processes before doing anything else.
+
+```bash
+ps -eo pid,ppid,pgid,stat,comm,args \
+  | awk '$0 ~ /wave_review_runner|plan-review-fanout|claude -p|codex exec|gemini -p|gemini exec/ && $0 !~ /awk/ {print}'
+```
+
+2. Stop only exact PIDs or process groups. Avoid `pkill -f 'long pattern from this shell command'` because the pattern can match and terminate the invoking shell/session.
+
+```bash
+# Prefer exact process group once verified from ps output.
+kill -TERM -<pgid> 2>/dev/null || true
+sleep 2
+kill -KILL -<pgid> 2>/dev/null || true
+```
+
+3. Normalize artifacts immediately after killing or timeout.
+   - Non-empty provider artifacts with a valid verdict are retained.
+   - Missing or zero-byte provider artifacts become canonical `UNAVAILABLE` stubs with the concrete reason: `timeout`, `provider rc`, `workspace trust`, `empty artifact`, or `interrupted fanout`.
+   - Move noisy `.md.err` provider logs out of `scripts/review/results/` into a salvage log directory unless they are intentionally tracked; otherwise they become untracked churn.
+
+4. Record a status handoff before rerunning anything.
+   - Include all issue/provider statuses: `PENDING`, `UNAVAILABLE`, `APPROVE`, `MINOR`, `MAJOR`.
+   - Distinguish unattempted `PENDING` from attempted-but-failed `UNAVAILABLE`.
+   - Mention the exact provider-wrapper failure issue if one exists.
+
+5. If future work is needed, schedule a narrow one-shot retry for only the still-`PENDING` plans. Do not rerun the whole wave, do not auto-approve, and do not change labels/comments from the retry job.
+
+## Provider-specific recovery notes
+
+- Gemini may fail with workspace-trust rc=55. For bounded retry jobs, set `GEMINI_CLI_TRUST_WORKSPACE=true` or use the approved trust/skip-trust flag from a trusted cwd.
+- Codex may emit useful session output to `.md.err` while the canonical `.md` artifact remains empty. The wrapper should capture/normalize stdout and stderr; until fixed, treat empty canonical artifacts as `UNAVAILABLE` and archive `.err` logs as salvage evidence.
+- A shell-level `timeout -k 5s <duration>s bash scripts/review/plan-review-fanout.sh ...` is safer than letting provider CLIs hang indefinitely. Still verify child/orphan processes after timeout.
+
+## Wrapper hardening checklist
+
+When the root cause is the fanout wrapper itself, harden the wrapper before rerunning broad review waves:
+
+- Add a bounded per-provider timeout knob (for example `PLAN_REVIEW_PROVIDER_TIMEOUT_SEC`) so one hung Claude/Codex/Gemini leg cannot stall the whole fanout indefinitely.
+- Keep Codex non-interactive invocation on the known-safe path: pass the combined prompt/plan body as argv and close stdin with `</dev/null`; avoid `codex exec -` stdin-sentinel patterns because they can hang in some Codex CLI versions.
+- For Gemini CLI trust failures, set the approved trust environment (for example `GEMINI_CLI_TRUST_WORKSPACE=true`) and run from a cwd that avoids local `.gemini/agents/*.md` permission-mode bugs when appropriate.
+- Normalize every provider slot into a canonical artifact:
+  - successful stdout with content -> canonical artifact
+  - successful stdout empty but stderr contains a complete structured review -> promote stderr only if required headers are present, such as `## Verdict`, `## Findings`, and `## Blockers`
+  - timeout/nonzero exit/empty unstructured output -> explicit `UNAVAILABLE` stub with concrete reason
+  - partial stderr followed by timeout -> `UNAVAILABLE`, not promotion
+- Sanitize failure excerpts written into `UNAVAILABLE` artifacts: trim length, flatten newlines, remove control characters, and escape quotes.
+- If adding cleanup traps for background provider jobs, unregister them after all provider PIDs have been waited and clear the PID list (`pids=(); trap - INT TERM EXIT`) so normal shell exit cannot kill already-reaped/recycled PIDs.
+- Add shell tests/mocks for each failure mode before accepting the wrapper fix: argv/stdin capture, trust env capture, timeout, stderr promotion, partial-stderr-timeout, empty output, and parallel completion.
+
 ## Pitfalls
 
 - Do not self-approve because a provider artifact is empty.
@@ -147,4 +203,6 @@ A single provider leg (often Claude print-mode) can keep the fanout alive after 
 - Do not leave review-artifact paths pointing at a different date than the files actually written.
 - Do not treat a `0` exit from the fanout as proof that provider artifacts exist; verify artifact files and verdict blocks explicitly.
 - Do not keep an empty disagreement stub when provider artifacts are missing; it is misleading evidence, not a review.
+- Do not leave `.md.err` logs untracked in `scripts/review/results/` after committing canonical `.md` artifacts; archive them under a reboot/review salvage log directory.
 - Do not stage/commit while active git operations hold `.git/index.lock`; check `ps` first and wait rather than deleting an active lock.
+- Do not use broad `pkill -f` patterns copied from the command line; they can kill the shell running the cleanup. Kill verified exact PIDs/PGIDs instead.

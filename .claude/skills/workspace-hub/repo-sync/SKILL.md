@@ -49,6 +49,7 @@ Apply the appropriate fix per failure type:
 | Diverged branches | `git pull --no-rebase` (merge strategy) |
 | Uncommitted changes | `git stash && git pull --no-rebase && git stash pop` |
 | No upstream | Report only, no auto-fix |
+| Large repo partial checkout / timed-out pull | Use no-untracked status probes, kill hung sync/status processes if needed, preserve recovery artifacts under `.git/recovery-backups/`, restore accidental tracked deletions; see `references/large-repo-partial-checkout-recovery.md` |
 | Archived/read-only remote | Do not force workaround; preserve/export local-only commits and open a follow-up issue |
 
 ### Archived / Read-only Remote Exception Handling
@@ -174,6 +175,8 @@ Format as markdown table:
 - Workspace-hub can mutate state during commit/push hooks (`.claude/state/*`, logs, generated reports). After a commit or failed push, always re-run `git status` and re-fetch before retrying; apparent ref-lock push failures may be stale-expectation races rather than true divergence.
 - New-branch pushes in workspace-hub may trigger expensive pre-push checks across tier-1 repos and can time out. If the user has approved sensible commands and the goal is repo hygiene/sync rather than validation, `git push --no-verify` may be necessary after verifying local/remote state.
 - Archived/read-only repos can still be committed locally for preservation, but push/merge to remote will fail; report them explicitly as blocked rather than retrying.
+- In huge repos, do not run broad `git status --porcelain -uall`, full `du`, or full checkout/pull loops as the first recovery move. Start with no-untracked status and ahead/behind probes, then follow `references/large-repo-partial-checkout-recovery.md`.
+- If interrupted sync creates `.claude.partial-pull-backup-*`, `.codex.partial-pull-backup-*`, or generated provider cache trees, preserve them inside `.git/recovery-backups/` instead of committing or deleting them; they are recovery artifacts unless the user explicitly says otherwise.
 
 ## Iron Law
 

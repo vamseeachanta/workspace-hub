@@ -4,8 +4,8 @@
 > **Complexity:** T2
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2374
-> **Review artifacts:** scripts/review/results/2026-04-26-plan-2374-claude.md | ...-codex.md | ...-gemini.md
-> **Self-reference slug:** `2026-04-27-issue-2374-transient-promotion-candidate-queue` (use `2026-04-26-issue-2374-transient-promotion-candidate-queue` when this plan is moved into `docs/plans/`)
+> **Review artifacts:** scripts/review/results/2026-04-29-plan-2374-claude.md | ...-codex.md | ...-gemini.md
+> **Self-reference slug:** `2026-04-27-issue-2374-transient-promotion-candidate-queue`
 
 ---
 
@@ -15,8 +15,8 @@
 - Found: `scripts/knowledge/synthesize_archive.py`, `scripts/knowledge/capture-wrk-summary.sh`, `scripts/knowledge/categorize_uncategorized.py` — three upstream extractors that already operate over the WRK-archive/JSONL surface and emit structured records. The candidate-queue generator built here will reuse the same atomic-write + `flock` patterns and the `categorize_uncategorized.RULES` priority list when classifying candidate findings by category.
 - Found: `scripts/knowledge/query-knowledge.sh` and `scripts/knowledge/build-knowledge-index.sh` — query-side surface that consumes `knowledge-base/*.jsonl`. The candidate ledger must live in a path that is either (a) already on the index, or (b) explicitly added so the queue is queryable from the same surface.
 - Found: `scripts/knowledge/wiki-cross-links.py` and `scripts/knowledge/wiki_health_cron.py` — show that wiki-targeting helpers already exist and route by category. The `wiki_target_domain` field on each candidate will adopt the same coarse domain vocabulary (`engineering` / `marine` / `naval` / `process` / `personal` / `general`) used by these helpers, so the queue's routing column is not invented from scratch.
-- Found: `scripts/operations/comprehensive-learning-nightly.sh`, `scripts/operations/harvest-workflow-tips.sh`, `scripts/operations/queue-refresh-weekly.sh` — recurring-run drivers that already produce weekly/nightly outputs in `docs/reports/`. These are the "recurring-run outputs" the issue body names as a third candidate source.
-- Found: sibling wave-2 plan `docs/plans/2026-04-26-issue-2375-wrk-completions-normalize-seeds.md` — design for the normalized `knowledge/seeds/wrk-completions.yaml` seed and a derived `knowledge-base/wiki-candidates.yaml` projection. The wave-2 plan explicitly proposes a status vocabulary `{candidate, reviewed, promoted, rejected}` and a 0..3 scoring rubric (reusable methodology / durable category / evidence richness). **This wave-3 plan adopts that vocabulary and rubric verbatim** so the WRK-side and handoff-side queues remain merge-compatible.
+- Found: `scripts/cron/comprehensive-learning-nightly.sh`, `scripts/cron/harvest-workflow-tips.sh`, `scripts/cron/queue-refresh-weekly.sh` — recurring-run drivers that already produce weekly/nightly outputs in `docs/reports/`. These are the "recurring-run outputs" the issue body names as a third candidate source.
+- Found: sibling wave-2 plan `docs/plans/2026-04-26-issue-2375-wrk-completions-normalize-seeds.md` — design for the normalized `knowledge/seeds/wrk-completions.yaml` seed and a derived `data/document-index/wrk-wiki-candidates.yaml` projection (path updated per the superseding #2375 plan at `docs/plans/2026-04-29-issue-2375-wrk-completions-normalize.md`; prior draft used `knowledge-base/wiki-candidates.yaml`). The wave-2 plan explicitly proposes a status vocabulary `{candidate, reviewed, promoted, rejected}` and a 0..3 scoring rubric (reusable methodology / durable category / evidence richness). **This wave-3 plan adopts that vocabulary and rubric verbatim** so the WRK-side and handoff-side queues remain merge-compatible.
 - Gap: no script today scans `docs/handoffs/*.md` for promotion candidates. `grep -rl 'transient-promotion'` over the repo returns three hits (this issue's epic family + the wave-2 plan + a 2026-04-19 wiki-roadmap prompt), all prose; no extractor.
 - Gap: no script today scans `scripts/review/results/*.md` for promotion candidates. The directory holds 1,107+ artifacts (1,111 entries minus a small WRK-prefixed input subset), so the extractor must be selective, not greedy.
 - Gap: no script today scans `docs/reports/*.md` (150 files) for promotion candidates emitted by recurring runs. Those reports today are read by humans, never harvested.
@@ -32,12 +32,12 @@ Not applicable. `cat:data-pipeline, cat:harness, domain:knowledge-management` �
 - Issue #2374 body — defines candidate sources (handoffs, review artifacts, recurring-run outputs), required fields per candidate (source path, issue ref, finding summary, suggested durable target, status), and the explicit non-goal that this issue must NOT auto-promote.
 - Parent issue #2205 (CLOSED, status:plan-approved) — operating model; transient artifacts (handoffs, session reports, review artifacts) are L2; durable targets (wiki, registries, follow-on issues) are L3/L4. This queue is the L2→L3 bridge.
 - Issue #2209 (CLOSED) — durable-vs-transient boundary policy. Confirms handoffs and review artifacts are *transient*; promotion to durable requires explicit candidate selection. This queue is the operational substrate that policy assumes.
-- Sibling issue #2375 (OPEN) — wave-2 partner. Sources from JSONL WRK corpus; emits `knowledge-base/wiki-candidates.yaml`. Wave-3 (this plan) sources from text-Markdown artifacts; emits `knowledge-base/promotion-candidates.yaml`. Both share `entries[]`/`candidates[]` schema fields, status vocabulary, and scoring rubric so a future merge into a unified ledger is mechanical.
+- Sibling issue #2375 (OPEN) — wave-2 partner. Sources from JSONL WRK corpus; emits `data/document-index/wrk-wiki-candidates.yaml` (path per the superseding #2375 plan; prior draft used `knowledge-base/wiki-candidates.yaml`). Wave-3 (this plan) sources from text-Markdown artifacts; emits `knowledge-base/promotion-candidates.yaml`. Both share `candidates[]` schema fields, status vocabulary, and scoring rubric shape (0..3 binary-increment) so a future merge into a unified ledger is structurally compatible with union-schema reconciliation. **Caveat:** the `DURABLE_CATEGORIES` sets are almost disjoint (#2374: 7 members including `ai-orchestration`, `ci`, `data-pipeline`, `automation`, `knowledge-management`, `documentation`; #2375: 4 members including `data`, `harness`, `standards`; overlap: only `engineering`). Scores are therefore not directly comparable across the two ledgers without re-scoring against a unified DURABLE_CATEGORIES set. Shape compatibility ≠ score comparability. **Note:** #2370 uses a structurally different 4-dimension × 0-5 weighted composite scoring system; any three-way ledger merge must normalize scores before comparison.
 - Sibling issue #2370 (OPEN) — closed-issue promotion ledger for `cat:engineering*`. Same scoring philosophy (reusable methodology + stable decision value + evidence richness). This wave-3 ledger borrows the rubric.
 - Issue #2236 (OPEN) — post-closure promotion workflow. The output of this queue is the *input* to that workflow. The queue does not implement promotion — it stages candidates for the workflow to act on.
 - Issue #2238 (OPEN) — closed-issue citation guardrail. Each candidate must include enough provenance (source path + sha at extraction time + issue ref where present) for the guardrail to verify references downstream.
 - Issue #2366 (OPEN) — strengthening scorecard. Queue size, candidate-status distribution, and time-to-promotion will be scorecard metrics.
-- `docs/plans/2026-04-26-issue-2375-wrk-completions-normalize-seeds.md` — wave-2 plan; lines 219-269 define the wiki-candidate generator and its scoring rule. This plan reuses `score_candidate()` semantics (0..3 scale, reasons list) and `route_domain()` (`engineering` / `marine` / `naval` / `process` / `personal` / `general`).
+- `docs/plans/2026-04-26-issue-2375-wrk-completions-normalize-seeds.md` — wave-2 plan; lines 219-269 define the wiki-candidate generator and its scoring rule. This plan reuses `score_candidate()` semantics (0..3 scale, reasons list) and `route_domain()` (`engineering` / `marine` / `naval` / `process` / `personal` / `general`). Note: `DURABLE_CATEGORIES` and the `route_domain` process-category set intentionally differ between #2374 and #2375 due to different source material — see Risks § "Coordination note (feed18 patch)" for details.
 - `docs/plans/_template-issue-plan.md` — the canonical template; this plan follows its section order and the embedded retrieval contract.
 - `.claude/skills/coordination/issue-planning-mode/SKILL.md` (v3.1.0) — the planning workflow skill. Confirms draft → adversarial review → `status:plan-review` → user approval gating; no self-approval per memory rule `feedback_never_offer_to_self_label_plan_approved.md`.
 - Memory feedback `feedback_data_format_guidelines.md` — default to YAML for agent-facing structured data; JSON only for machine-consumed tool output. Candidate ledger is YAML.
@@ -48,7 +48,7 @@ Not applicable. `cat:data-pipeline, cat:harness, domain:knowledge-management` �
 - No recurring-run report extractor. Must build.
 - No `knowledge-base/promotion-candidates.yaml` ledger artifact. Must create.
 - No reusable parser for "issue-reference + finding" extraction across heterogeneous Markdown bodies. Must build, with regex-and-heuristic strategy and a TDD fixture set drawn from the three source classes.
-- No documented merge contract between this queue and the wave-2 `wiki-candidates.yaml`. Must document in `knowledge/seeds/schema.md` (which the wave-2 plan already extends with a `type: wrk` variant).
+- No documented merge contract between this queue and the wave-2 `wrk-wiki-candidates.yaml` (at `data/document-index/wrk-wiki-candidates.yaml`). Must document in `knowledge/seeds/schema.md` (which the wave-2 plan already extends with a `type: wrk` variant).
 - No append/update flow that keeps the ledger fresh as new handoffs and review artifacts land. Must build (cron-friendly entry point + idempotent re-extraction).
 
 ### Evidence (embedded verification)
@@ -64,9 +64,9 @@ Not applicable. `cat:data-pipeline, cat:harness, domain:knowledge-management` �
 - `#2366` — OPEN — strengthening scorecard
 
 **File existence** (`ls` 2026-04-27):
-- EXISTS: `docs/handoffs/` — 82 files (53 `*-handoff.md` style + 29 `session-*.md` style; verified by `ls docs/handoffs/ | wc -l`)
-- EXISTS: `scripts/review/results/` — 1,111 entries (`ls | wc -l`); date-named modern artifacts (`2026-04-25-plan-2487-*.md`, `2026-04-27-plan-2514-*.md`) coexist with timestamp-named legacy artifacts (`20260209T204919Z-*.md`)
-- EXISTS: `docs/reports/` — 150 files (`ls | wc -l`); recurring-run outputs include `compliance-weekly-YYYYMMDD.md`, `provider-autolabel-candidates.md`, `provider-utilization-weekly.md`, `2026-04-2X-provider-session-learning-transfer.md`
+- EXISTS: `docs/handoffs/` — 82 files as of 2026-04-27 (counts grow daily; extractors use glob patterns, not hardcoded counts) (53 `*-handoff.md` style + 29 `session-*.md` style; verified by `ls docs/handoffs/ | wc -l`)
+- EXISTS: `scripts/review/results/` — 1,111 entries as of 2026-04-27 (counts grow daily; extractor regex-filters to date-named subset) (`ls | wc -l`); date-named modern artifacts (`2026-04-25-plan-2487-*.md`, `2026-04-27-plan-2514-*.md`) coexist with timestamp-named legacy artifacts (`20260209T204919Z-*.md`)
+- EXISTS: `docs/reports/` — 150 files as of 2026-04-27 (counts grow weekly; extractor uses bounded RECURRING_GLOBS) (`ls | wc -l`); recurring-run outputs include `compliance-weekly-YYYYMMDD.md`, `provider-autolabel-candidates.md`, `provider-utilization-weekly.md`, `2026-04-2X-provider-session-learning-transfer.md`
 - EXISTS: `knowledge-base/index.jsonl`, `knowledge-base/wrk-completions.jsonl`, `knowledge-base/wrk-completions.jsonl.lock`
 - EXISTS: `docs/plans/2026-04-26-issue-2375-wrk-completions-normalize-seeds.md` (wave-2 plan; cited above)
 - EXISTS: `scripts/knowledge/synthesize_archive.py`, `scripts/knowledge/capture-wrk-summary.sh`, `scripts/knowledge/categorize_uncategorized.py`, `scripts/knowledge/wiki-cross-links.py`
@@ -137,7 +137,7 @@ These are the bounded recurring-run outputs the issue body refers to. The extrac
 
 | Artifact | Path |
 |---|---|
-| This plan | `docs/plans/2026-04-27-issue-2374-transient-promotion-candidate-queue.md` (final-slug = `2026-04-26-issue-2374-transient-promotion-candidate-queue`) |
+| This plan | `docs/plans/2026-04-27-issue-2374-transient-promotion-candidate-queue.md` |
 | Handoff extractor | `scripts/knowledge/extract_handoff_findings.py` |
 | Review-artifact extractor | `scripts/knowledge/extract_review_findings.py` |
 | Recurring-run extractor | `scripts/knowledge/extract_recurring_findings.py` |
@@ -150,9 +150,9 @@ These are the bounded recurring-run outputs the issue body refers to. The extrac
 | Tests — recurring extractor | `scripts/knowledge/tests/test_extract_recurring_findings.py` |
 | Tests — queue builder | `scripts/knowledge/tests/test_build_promotion_candidates.py` |
 | Plans index update | `docs/plans/README.md` |
-| Plan review — Claude | `scripts/review/results/2026-04-26-plan-2374-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-04-26-plan-2374-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-26-plan-2374-gemini.md` |
+| Plan review — Claude | `scripts/review/results/2026-04-29-plan-2374-claude.md` |
+| Plan review — Codex | `scripts/review/results/2026-04-29-plan-2374-codex.md` |
+| Plan review — Gemini | `scripts/review/results/2026-04-29-plan-2374-gemini.md` |
 
 ---
 
@@ -334,6 +334,12 @@ function route_domain(c):
     if cat == "engineering":
         return route_engineering_subdomain(c)  # marine | naval | engineering | general
     if cat in ("ai-orchestration", "ci", "automation", "data-pipeline"):
+        # NOTE: #2375 routes only (ai-orchestration, ci, automation) → process;
+        # "data-pipeline" falls through to "general" in #2375.  This plan
+        # intentionally includes "data-pipeline" → process because the handoff/
+        # review-artifact source surface contains process-oriented data-pipeline
+        # findings (e.g., solver-queue, batch-runner).  Any unified-ledger merge
+        # must reconcile this routing divergence.
         return "process"
     if cat == "personal":
         return "personal"
@@ -356,7 +362,7 @@ function route_domain(c):
 | Create | `scripts/knowledge/tests/test_extract_review_findings.py` | TDD coverage for review extractor |
 | Create | `scripts/knowledge/tests/test_extract_recurring_findings.py` | TDD coverage for recurring-run extractor |
 | Create | `scripts/knowledge/tests/test_build_promotion_candidates.py` | TDD coverage for orchestrator and scoring |
-| Modify | `knowledge/seeds/schema.md` | Document `promotion-candidates.yaml` schema and the merge contract with wave-2 `wiki-candidates.yaml` |
+| Modify | `knowledge/seeds/schema.md` | Document `promotion-candidates.yaml` schema and the merge contract with wave-2 `wrk-wiki-candidates.yaml` (at `data/document-index/wrk-wiki-candidates.yaml`) |
 | Update | `docs/plans/README.md` | Add this plan to the index |
 
 No engineering-package files (`digitalmodel/`, `assethold/`, `assetutilities/`, etc.) are touched. All work is hub-local under `scripts/knowledge/`, `knowledge-base/`, `knowledge/`, and `docs/`.
@@ -393,7 +399,7 @@ No engineering-package files (`digitalmodel/`, `assethold/`, `assetutilities/`, 
 | test_route_domain_ci_to_process | ai-orchestration / ci routes to process | candidate with CI keyword | wiki_target_domain == "process" |
 | test_score_full_three_dimensions | candidate with patterns + durable-category + evidence scores 3 | rich fixture | score == 3, all three reasons present |
 | test_schema_round_trip | every emitted candidate has all required keys | run, then re-parse | required keys present on every candidate |
-| test_schema_doc_documents_merge_contract | `knowledge/seeds/schema.md` mentions `wiki-candidates.yaml` (wave-2) and `promotion-candidates.yaml` (this plan) | static check | both files referenced |
+| test_schema_doc_documents_merge_contract | `knowledge/seeds/schema.md` mentions `wrk-wiki-candidates.yaml` (wave-2, at `data/document-index/`) and `promotion-candidates.yaml` (this plan) | static check | both files referenced |
 
 ---
 
@@ -403,7 +409,7 @@ No engineering-package files (`digitalmodel/`, `assethold/`, `assetutilities/`, 
 - [ ] All three source classes are represented in the first generated ledger: at least one `handoff`-kind candidate from `docs/handoffs/*.md`, at least one `review`-kind candidate from a `2026-MM-DD-plan-NNNN-*.md` file, at least one `recurring-run`-kind candidate from a recurring report in `docs/reports/`.
 - [ ] Legacy timestamp-prefixed review files (`20260209T204919Z-…`) are explicitly filtered out, verified by a test.
 - [ ] `docs/reports/promotion-candidates-extraction-report.md` lists per-source-kind candidate counts, field-fill rates per field, an "Unrecoverable" section naming each (file, section) pair the extractor could not parse, and the recurring-glob list used.
-- [ ] `knowledge/seeds/schema.md` documents the `promotion-candidates.yaml` schema and the merge contract with the wave-2 `wiki-candidates.yaml` (shared `status` vocabulary `{candidate, reviewed, promoted, rejected}`, shared `score` rubric, shared `wiki_target_domain` vocabulary).
+- [ ] `knowledge/seeds/schema.md` documents the `promotion-candidates.yaml` schema and the merge contract with the wave-2 `wrk-wiki-candidates.yaml` (at `data/document-index/wrk-wiki-candidates.yaml`; shared `status` vocabulary `{candidate, reviewed, promoted, rejected}`, shared 0..3 binary-increment `score` rubric, shared `wiki_target_domain` vocabulary).
 - [ ] No automatic promotion: the ledger is generation-only. There is no script in this issue that mutates wiki pages, opens follow-on issues, or changes candidate status from `candidate`. Verified by code review and by absence of any wiki-write or `gh issue` calls in the new scripts.
 - [ ] All new tests pass: `uv run pytest scripts/knowledge/tests/test_extract_handoff_findings.py scripts/knowledge/tests/test_extract_review_findings.py scripts/knowledge/tests/test_extract_recurring_findings.py scripts/knowledge/tests/test_build_promotion_candidates.py -v`.
 - [ ] No regression: `uv run pytest scripts/knowledge/tests/ -v` and `bash scripts/knowledge/tests/test-knowledge-scripts.sh` pass.
@@ -418,14 +424,15 @@ No engineering-package files (`digitalmodel/`, `assethold/`, `assetutilities/`, 
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | (filled after review wave) |
+| Claude (feed17) | MINOR | F1: DURABLE_CATEGORIES divergence vs #2375; F2: wrong script paths; F3: route_domain process-set divergence; F4-F7: cosmetic/stale |
 | Codex | PENDING | (filled after review wave) |
 | Gemini | PENDING | (filled after review wave) |
 
-**Overall result:** PENDING
+**Overall result:** PENDING (Claude MINOR addressed in feed18 patch; Codex/Gemini pending)
 
 Revisions made based on review:
-- (none yet)
+- **feed16 patch (2026-04-29):** patched 7 stale wiki-candidate path references (`knowledge-base/wiki-candidates.yaml` → `data/document-index/wrk-wiki-candidates.yaml`) per #2375 superseding plan. Added #2370 scoring-architecture difference note at line 35 and coordination note in Risks. See `docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2374-feed16.md`.
+- **feed18 patch (2026-04-29):** addressed all 3 MINOR findings (F1-F3) and all 4 LOW observations (F4-F7) from Claude feed17 adversarial review. See `docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2374-feed18.md`.
 
 ---
 
@@ -435,12 +442,14 @@ Revisions made based on review:
 - **Risk — review-results corpus is huge (1,111 entries) and historically heterogeneous:** the legacy `20260209T204919Z-*` cohort is WRK-era and structurally different from modern `2026-MM-DD-plan-NNNN-*` files. Greedy scanning would inflate noise. Mitigation: hard regex filter `^\d{4}-\d{2}-\d{2}-plan-\d+-(?:claude|codex|gemini|disagreement)\.md$` at extraction time; legacy cohort is explicitly out of scope and documented as such in the schema doc.
 - **Risk — recurring-run subset drift:** new recurring-run reports may appear later (e.g., a future weekly cron). The extractor's `RECURRING_GLOBS` is a fixed list; it will silently miss new ones. Mitigation: add an extraction-report row "Reports in `docs/reports/` matching no glob" so reviewers can extend `RECURRING_GLOBS` over time. Out of scope for this issue: an auto-discovery scheme.
 - **Risk — duplicate findings across handoff and review files:** a finding cited in a review may be re-summarized in the next session-exit handoff. Without dedup, the ledger inflates. Mitigation: dedup key is `(normalized(finding_summary[:120]), issue_ref)`; first occurrence wins; second occurrence is logged in the report's `Suppressed duplicates` section.
-- **Risk — schema drift vs wave-2 `wiki-candidates.yaml`:** if this plan's schema diverges from `#2375`'s, downstream consumers must reconcile two schemas plus the wave-1 closed-issue ledger from `#2370`. Mitigation: this plan adopts wave-2's `status`, scoring rubric, and `wiki_target_domain` vocabulary verbatim; the schema doc names the merge contract explicitly so future drift is visible.
+- **Risk — schema drift vs wave-2 `wrk-wiki-candidates.yaml`:** if this plan's schema diverges from `#2375`'s (artifact at `data/document-index/wrk-wiki-candidates.yaml`), downstream consumers must reconcile two schemas plus the wave-1 closed-issue ledger from `#2370`. Mitigation: this plan adopts wave-2's `status`, 0..3 binary-increment scoring rubric, and `wiki_target_domain` vocabulary verbatim; the schema doc names the merge contract explicitly so future drift is visible. **Note:** #2370 uses a structurally different 4-dimension × 0-5 weighted composite; any three-way merge must normalize scores.
 - **Risk — `source_sha` churn:** every commit to a handoff file changes its blob sha, marking the candidate as stale even when the finding is unchanged. Mitigation: `source_sha` is informational; dedup is on summary + issue_ref, not sha; sha is used only by `#2238` citation guardrail downstream.
 - **Risk — extractor regex misclassifies prose as bullets:** numbered lists, indented continuations, and code fences inside bullets can confuse a naive `^- ` walker. Mitigation: parse via a markdown-aware splitter (e.g., reuse `markdown-it-py` if already a dep, otherwise a regex set covering `^- `, `^* `, `^\d+\.\s`); record problem cases as unrecoverable rather than silently truncating.
 - **Open:** Does the ledger live under `knowledge-base/` (cache convention; matches `wrk-completions.jsonl`) or under `knowledge/seeds/` (entries-schema convention)? Plan picks `knowledge-base/promotion-candidates.yaml` because the data is regenerable from the source Markdown and is a *cache* of extracted findings, not an authoritative seed. Flag for user during approval.
 - **Open:** Should `existing_wiki_page_for(c)` actually scan `knowledge/wikis/*/wiki/` to set `extend_or_create` accurately, or default to `create` and let the human reviewer adjust at promotion time? Plan defaults to `create` for v1 with a TODO for a wiki-index lookup follow-on, to keep the v1 scope bounded.
-- **Open:** Should the orchestrator be wired into a recurring schedule (cron / `scripts/operations/`) in this issue, or left as a manual `uv run` call until the queue stabilizes? Plan keeps it manual for v1; a follow-on issue can wire cron after one human review pass confirms the candidate quality.
+- **Coordination note (feed16 patch, 2026-04-29):** six stale references to the prior-draft wiki-candidate path `knowledge-base/wiki-candidates.yaml` in this plan were updated to `data/document-index/wrk-wiki-candidates.yaml` per the superseding #2375 plan (`docs/plans/2026-04-29-issue-2375-wrk-completions-normalize.md`). The #2375 plan's Risk section already documented this coordination hazard. Lines patched: 19, 35, 51, 359, 396, 406, 438 (original numbering). Additionally, line 35 now notes the #2370 scoring-architecture difference (0..3 binary vs 4-dim × 0-5 weighted) identified by feed14/F1.
+- **Coordination note (feed18 patch, 2026-04-29):** Patched 7 findings from Claude feed17 adversarial review (3 MINOR, 4 LOW). F1: downgraded "mechanical merge" claim to "structurally compatible with union-schema reconciliation" and added explicit DURABLE_CATEGORIES divergence caveat (overlap with #2375 is only `engineering`). F2: fixed 3 script paths from `scripts/operations/` → `scripts/cron/`. F3: documented intentional `data-pipeline` → `process` routing divergence vs #2375 in `route_domain` pseudocode comment. F4: removed stale `2026-04-26` self-reference slug parenthetical. F5: added "(counts as of 2026-04-27; …)" qualifiers to file-count evidence. F6: updated review artifact date prefix from `2026-04-26` to `2026-04-29`. F7: removed redundant "(final-slug = ...)" parenthetical from artifact map. Lines patched: 7, 8, 18, 35, 40, 67–69, 140, 153–155, 336 (original numbering).
+- **Open:** Should the orchestrator be wired into a recurring schedule (cron / `scripts/cron/`) in this issue, or left as a manual `uv run` call until the queue stabilizes? Plan keeps it manual for v1; a follow-on issue can wire cron after one human review pass confirms the candidate quality.
 
 ---
 

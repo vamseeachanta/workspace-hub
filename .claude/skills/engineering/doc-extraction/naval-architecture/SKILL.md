@@ -46,6 +46,7 @@ type: reference
 - Extracting resistance estimation data (Holtrop-Mennen, ITTC)
 - Building hull form parameter databases from general arrangement plans
 - Processing hydrostatic curves from stability booklets and design documents
+- Mining vessel/project rudder workbooks, converted scripts, notes, and PDFs before yaw-moment or turning-trace calculations; see `references/rudder-yaw-moment-time-trace.md` for source-pack and model-boundary patterns.
 
 ## Related Skills
 

@@ -43,3 +43,16 @@ Effective redlines provide specific language ready for insertion, explain ration
 Issues organize into three tiers: Tier 1 (deal-breakers requiring resolution), Tier 2 (strong preferences with negotiation room), and Tier 3 (concession candidates). Strategy involves leading with critical items while trading lower-priority concessions.
 
 The methodology emphasizes balanced, commercially reasonable positions rather than aggressive stances that impede negotiations.
+
+## Lease Reimbursement Evidence Requests
+
+When the user asks whether a tenant/landlord can bill or recover a charge under a lease, treat it as an evidence-extraction task, not just a legal summary:
+
+1. Identify the controlling document, parties, date, property, and exact section number/title.
+2. Search for both the charge label and broader legal buckets: `tax`, `assessment`, `charges`, `common area`, `CAM`, `association`, `HOA`, `POA`, `reimburse`, `invoice`, `evidence of payment`, `deadline`, `cap`, `first year`, and `separately assessed`.
+3. Quote the operative reimbursement language verbatim, including conditions and deadlines.
+4. Separate clearly reimbursable recurring charges from one-time/admin/transfer fees unless the lease language expressly includes them.
+5. Return a send-ready counterparty note with document name, section number, quoted text, and payment/invoice evidence to attach.
+6. If the source is a PDF and visual proof matters, export only the relevant pages (not the whole document) to images or clipped PDFs so the user can quickly verify the section visually before sending.
+
+See `references/lease-reimbursement-evidence.md` for a compact example pattern from a Family Dollar HOA reimbursement review, including a PDF-page proof workflow.

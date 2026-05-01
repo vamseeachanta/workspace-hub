@@ -1,0 +1,20 @@
+{
+  "issue": 2555,
+  "status": "passed",
+  "generated_at": "2026-04-30T02:51:13.649137+00:00",
+  "scanner": "render_brochure_charts.py sidecar legal scan",
+  "scanned_files": [
+    "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.caption.txt",
+    "docs/reports/gtm/assets/c2-pipelay-operating-envelope.caption.txt",
+    "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.caption.txt",
+    "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.metadata.json",
+    "docs/reports/gtm/assets/c2-pipelay-operating-envelope.metadata.json",
+    "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.metadata.json",
+    "docs/reports/gtm/assets/vessel-capability-chart-pack-manifest.json",
+    "docs/reports/gtm/assets/c1-vessel-job-capability-heatmap.print.svg",
+    "docs/reports/gtm/assets/c2-pipelay-operating-envelope.print.svg",
+    "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.print.svg"
+  ],
+  "findings": [],
+  "note": "Binary PNG/PDF files are covered through adjacent caption/metadata/SVG sidecars."
+}

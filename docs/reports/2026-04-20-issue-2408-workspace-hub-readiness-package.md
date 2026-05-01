@@ -103,7 +103,7 @@ Strategy 3 keeps provider entry surfaces thin, leaves `AI_REVIEW_ROUTING_POLICY.
 
 ## Validation
 
-- `uv run pytest tests/docs/test_workspace_hub_model_release_readiness.py -v` — 12 tests, all passing.
+- `uv run pytest tests/docs/test_workspace_hub_model_release_readiness.py -v` — targeted readiness suite passing; current run evidence belongs in the issue closeout comment.
 - Manual audit: `CLAUDE.md`, `GEMINI.md`, `AGENTS.md` each remain ≤ 20 lines (limit sourced from `.claude/rules/coding-style.md`).
 - Non-contradiction audit: new docs reference only the adapter paths defined in `CONTROL_PLANE_CONTRACT.md` (`AGENTS.md`, `.claude/`, `.codex/`, `.gemini/`) and introduce no new adapter roots.
 

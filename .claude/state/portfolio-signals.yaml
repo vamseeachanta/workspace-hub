@@ -1,4 +1,4 @@
-generated_at: '2026-04-27T07:03:06Z'
+generated_at: '2026-05-01T07:04:34Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,14 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-04-27'
+  provider: claude
+  capability: Claude Opus 4.7 for complex computation
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://anthropic.com/
 - date: '2026-04-24'
   provider: gemini
   capability: Physics & Finite Element Analysis API Integration
@@ -167,19 +175,11 @@ capability_signals:
   - structural
   impact: medium
   source: https://www.anthropic.com/news/opus-fem-optimization
-- date: '2026-04-02'
-  provider: claude
-  capability: Physics-Informed Neural Network (PINN) Integration
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://anthropic.com/news/claude-pinn-engineering
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: false
+  parse_success: true
   signals_added: 0
   signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  carry_forward: false
+  source_verified: true

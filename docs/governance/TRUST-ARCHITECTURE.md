@@ -215,6 +215,12 @@ audit_entry:
 
 ## Rollback Rules
 
+These rollback rules cover agent-initiated rollback of the agent's own actions.
+For enforcement bypasses detected after commit or push, use the advisory policy
+in `docs/governance/BYPASS-ROLLBACK-POLICY.md`; that policy preserves bypass
+evidence, classifies rollback/recovery state, and never performs automatic
+reverts.
+
 ### What Is Reversible
 
 | Action type | Reversible? | Rollback method |

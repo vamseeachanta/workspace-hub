@@ -2,7 +2,7 @@
 
 Current state for issue #2346:
 - validation + interface surface are implemented
-- demo_04 materialization is implemented
+- demo_03, demo_04, and demo_05 materialization are implemented
 - other demo materialization paths are still explicit follow-up work
 - demo invocation remains stubbed
 
@@ -88,8 +88,8 @@ class ProspectInput:
 class DemoInputBundle:
     """Filesystem layout that `run_demo` will consume.
 
-    Demo_04 materialization now returns this bundle concretely. Other demo
-    paths remain follow-up work and still raise NotImplementedError from
+    Demo_03/04/05 materialization now returns this bundle concretely. Other
+    demo paths remain follow-up work and still raise NotImplementedError from
     `materialize_demo_inputs`.
     """
 
@@ -137,6 +137,44 @@ def _canonical_shape_matches_expected(body: Mapping[str, object], expected_shape
     if expected_shape == "csv_hlv":
         return "crane_main" in body and "pipelay_system" not in body
     return False
+
+
+def _materialize_demo_03_inputs(prospect: ProspectInput, tmpdir: Path) -> DemoInputBundle:
+    """Materialize demo_03 inputs into tmpdir/data/."""
+    data_dir = tmpdir / "data"
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    vessel_body = _resolved_vessel_body(prospect)
+    vessel_file = data_dir / "csv_hlv_vessels.json"
+    vessel_file.write_text(
+        json.dumps({"vessels": [vessel_body]}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    structure_body = deepcopy(prospect.raw["structure"]["body"])
+    structure_file = data_dir / "mudmat_structures.json"
+    structure_file.write_text(
+        json.dumps({"structures": [structure_body]}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    env_override_path = None
+    environment = prospect.raw.get("environment")
+    if isinstance(environment, dict) and environment:
+        env_override_path = data_dir / "prospect_env.json"
+        env_override_path.write_text(
+            json.dumps(environment, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+    return DemoInputBundle(
+        demo_id=prospect.target_demo,
+        tmpdir=tmpdir,
+        data_dir=data_dir,
+        env_override_path=env_override_path,
+        vessel_file=vessel_file,
+        structure_file=structure_file,
+    )
 
 
 def _materialize_demo_04_inputs(prospect: ProspectInput, tmpdir: Path) -> DemoInputBundle:
@@ -345,10 +383,13 @@ def materialize_demo_inputs(
 ) -> DemoInputBundle:
     """Map prospect fields onto the JSON shapes expected by the GTM demos.
 
-    Current implementation is intentionally narrow: demo_04 is materialized,
-    while the other demos remain explicit follow-up work.
+    Current implementation is intentionally narrow: demo_03, demo_04, and
+    demo_05 are materialized, while demos 1 and 2 remain explicit follow-up
+    work.
     """
     tmpdir = Path(tmpdir)
+    if prospect.target_demo == "demo_03":
+        return _materialize_demo_03_inputs(prospect, tmpdir)
     if prospect.target_demo == "demo_04":
         return _materialize_demo_04_inputs(prospect, tmpdir)
     if prospect.target_demo == "demo_05":
@@ -356,9 +397,10 @@ def materialize_demo_inputs(
 
     raise NotImplementedError(
         "materialize_demo_inputs is partially implemented. "
-        "Demo_04 shaping (pipelay_vessels.json, pipelines.json, prospect_env.json) and "
+        "Demo_03 shaping (csv_hlv_vessels.json, mudmat_structures.json, prospect_env.json), "
+        "demo_04 shaping (pipelay_vessels.json, pipelines.json, prospect_env.json), and "
         "demo_05 shaping (csv_hlv_vessels.json, rigid_jumpers.json, prospect_env.json) exist; "
-        "other demos remain follow-up work. "
+        "demos 1 and 2 remain follow-up work. "
         f"target_demo={prospect.target_demo!r}, tmpdir={tmpdir!s}"
     )
 
