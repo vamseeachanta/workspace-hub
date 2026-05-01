@@ -312,6 +312,34 @@ PY
     rm -rf "$tmpdir"
 }
 
+run_dry_run_claude_memory_missing_target_count_test() {
+    local tmpdir ws_root home_root output
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$ws_root/config/agents/claude/memory-snapshots"
+    cat > "$ws_root/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# context
+EOF
+
+    output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" --dry-run 2>&1)" || {
+        fail "dry_run_claude_memory_missing_target_count command completed"
+        rm -rf "$tmpdir"
+        return
+    }
+    pass "dry_run_claude_memory_missing_target_count command completed"
+
+    if printf '%s\n' "$output" | grep -q "syntax error in expression"; then
+        fail "dry_run_claude_memory_missing_target_count has no arithmetic warning"
+    else
+        pass "dry_run_claude_memory_missing_target_count has no arithmetic warning"
+    fi
+
+    rm -rf "$tmpdir"
+}
+
 echo "=== test_sync_agent_helpers.sh ==="
 run_hermes_placeholder_and_terminal_test
 run_invalid_json_create_test
@@ -319,6 +347,7 @@ run_invalid_json_create_without_jq_test
 run_invalid_yaml_create_test
 run_invalid_json_update_cleanup_test
 run_python3_fallback_to_uv_test
+run_dry_run_claude_memory_missing_target_count_test
 
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"

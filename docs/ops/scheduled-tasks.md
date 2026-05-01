@@ -36,7 +36,7 @@
 
 | Time | ID | Description | Log |
 |------|-----|-------------|-----|
-| 01:15 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
+| 01:45 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
 
 ## Skills Curation v2 Contract
@@ -82,7 +82,7 @@ crontab -l
 
 ## Audit Notes (2026-04-01)
 
-- `harness-update` added to ace-linux-2 (was ace-linux-1 only) — updates GStack, Hermes, Superpowers, GSD daily at 01:15
+- `harness-update` added to ace-linux-2 (was ace-linux-1 only) — updates GStack, Hermes, Superpowers, GSD daily at 01:45
 - Hermes config templates added to `config/agents/hermes/` — synced via `sync-agent-configs.sh`
 - ace-linux-2 NVIDIA kernel module missing for 6.17.0-20 — tracked in #1581
 - Hermes install on ace-linux-2 — tracked in #1582

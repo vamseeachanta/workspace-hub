@@ -1262,7 +1262,11 @@ CLAUDE_MEM_SNAP="$WS_HUB/config/agents/claude/memory-snapshots"
 WS_HUB_ENCODED="$(echo "$WS_HUB" | sed 's|^/||; s|/|-|g')"
 CLAUDE_MEM_TARGET="$HOME/.claude/projects/-${WS_HUB_ENCODED}/memory"
 if [[ -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
-    EXISTING_COUNT=$(ls "$CLAUDE_MEM_TARGET"/*.md 2>/dev/null | wc -l || echo 0)
+    if [[ -d "$CLAUDE_MEM_TARGET" ]]; then
+        EXISTING_COUNT=$(find "$CLAUDE_MEM_TARGET" -maxdepth 1 -type f -name '*.md' | wc -l)
+    else
+        EXISTING_COUNT=0
+    fi
     if [[ "$EXISTING_COUNT" -lt 5 ]] || [[ "$FORCE" == "true" ]]; then
         mkdir -p "$CLAUDE_MEM_TARGET"
         if [[ "$DRY_RUN" == "true" ]]; then
