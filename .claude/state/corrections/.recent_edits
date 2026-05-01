@@ -1,11 +1,3 @@
-2026-04-30T10:37:48-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-claude-plan-review-hardening-2-rerun.md|19364
-2026-04-30T11:49:42-05:00|/mnt/local-analysis/workspace-hub/docs/plans/overnight-results/provider-autofeed-manual-20260430-164435/claude-governance-loop-3.md|19365
-2026-04-30T19:18:48-05:00|/mnt/local-analysis/agent-logs/provider-capacity-aware-20260501-0004/results/claude-elements-approved-execution-readiness.md|19366
-2026-04-30T19:29:53-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-code-eager-treasure.md|19367
-2026-04-30T19:32:19-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-code-typed-harp.md|19368
-2026-04-30T19:38:48-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-code-shiny-boole.md|19369
-2026-04-30T19:39:30-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-code-clever-peacock.md|19370
-2026-05-01T01:21:18-05:00|/mnt/local-analysis/workspace-hub/.planning/abundant-painting-mist.md|19371
 2026-05-01T03:51:01-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-1-control-luminous-balloon.md|19372
 2026-05-01T03:52:17-05:00|/mnt/local-analysis/workspace-hub/.claude/hooks/check-skill-content.sh|19373
 2026-05-01T03:52:28-05:00|/mnt/local-analysis/workspace-hub/.claude/hooks/check-skill-content.sh|19374
@@ -48,3 +40,11 @@
 2026-05-01T07:30:12-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-running-keen-wadler.md|19411
 2026-05-01T07:54:14-05:00|/mnt/local-analysis/workspace-hub/scripts/benchmarks/ntfs3-trial.sh|19412
 2026-05-01T07:55:45-05:00|/mnt/local-analysis/workspace-hub/scripts/benchmarks/ntfs3-trial.sh|19413
+2026-05-01T11:21:26-05:00|/mnt/local-analysis/workspace-hub/docs/runbooks/perf-tuning.md|19414
+2026-05-01T11:23:07-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-01-repo-sync-resume-final-state.md|19415
+2026-05-01T11:23:25-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_naive_secret_scan_false_positive_cascade.md|19416
+2026-05-01T11:23:41-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_origin_committed_with_unresolved_markers.md|19417
+2026-05-01T11:24:01-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_emergency_stop_recovery_pattern.md|19418
+2026-05-01T11:24:17-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_bundle_orphan_sha_from_worktree.md|19419
+2026-05-01T11:24:36-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_pre_push_hook_no_verify_for_preservation.md|19420
+2026-05-01T11:24:59-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md|19421

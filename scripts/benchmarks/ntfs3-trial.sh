@@ -72,12 +72,12 @@ probe() {
 
     echo "[4/5] Open handles (must be empty before swap)"
     local handles
-    handles=$(sudo lsof "$MOUNT" 2>/dev/null | tail -n +2 | wc -l)
+    handles=$(sudo lsof "$MOUNT" 2>/dev/null | tail -n +2 | grep -v "ntfs3-trial\.sh$" | wc -l || true)
     if (( handles == 0 )); then
         echo "      OK: no open handles"
     else
         echo "      WARN: $handles open handles — close before running swap:"
-        sudo lsof "$MOUNT" 2>/dev/null | head -10
+        sudo lsof "$MOUNT" 2>/dev/null | grep -v "ntfs3-trial\.sh$" | head -10
     fi
 
     echo "[5/5] Hermes processes"
@@ -117,7 +117,7 @@ swap() {
     confirm "Unmount $MOUNT now?" || { echo "Aborted by user."; exit 0; }
 
     local handles
-    handles=$(sudo lsof "$MOUNT" 2>/dev/null | tail -n +2 | wc -l)
+    handles=$(sudo lsof "$MOUNT" 2>/dev/null | tail -n +2 | grep -v "ntfs3-trial\.sh$" | wc -l || true)
     if (( handles > 0 )); then
         echo "FAIL: $handles open handles remain. Inspect with:"
         echo "  sudo lsof $MOUNT"
