@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-01T09:20:55.202702Z",
+  "generated_at": "2026-05-01T12:25:23.921458Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -16,41 +16,6 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-04-29T14:30:46Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2571,
-      "title": "feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2571",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:engineering-calculations",
-        "domain:hydrodynamics",
-        "domain:visualization",
-        "domain:naval-architecture",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-01T02:34:25Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -250,6 +215,40 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-05-01T00:41:52Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2568,
+      "title": "feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2568",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:engineering-calculations",
+        "domain:hydrodynamics",
+        "domain:naval-architecture",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-01T00:41:59Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",

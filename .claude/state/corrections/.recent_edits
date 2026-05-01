@@ -1,11 +1,3 @@
-2026-04-30T08:29:15-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-125920-claude-control-synthesis-1.md|19356
-2026-04-30T08:42:09-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-125920-claude-governance-recovery-3.md|19357
-2026-04-30T10:21:04-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-20260430-145633-claude-control-synthesis-recovery-1.md|19358
-2026-04-30T10:23:50-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-claude-plan-review-hardening-2.md|19359
-2026-04-30T10:25:13-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-20260430-145633-claude-control-synthesis-recovery-1.md|19360
-2026-04-30T10:26:11-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-145633-claude-governance-loop-rules-3.md|19361
-2026-04-30T10:36:20-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-102247-claude-control-plane-synthesis-1.md|19362
-2026-04-30T10:37:08-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-provider-autofeed-102247-claude-governance-autofeed-rules-3.md|19363
 2026-04-30T10:37:48-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-04-30-claude-plan-review-hardening-2-rerun.md|19364
 2026-04-30T11:49:42-05:00|/mnt/local-analysis/workspace-hub/docs/plans/overnight-results/provider-autofeed-manual-20260430-164435/claude-governance-loop-3.md|19365
 2026-04-30T19:18:48-05:00|/mnt/local-analysis/agent-logs/provider-capacity-aware-20260501-0004/results/claude-elements-approved-execution-readiness.md|19366
@@ -48,3 +40,11 @@
 2026-05-01T05:02:53-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-01-repo-sync-handoff-prompt.md|19403
 2026-05-01T05:40:43-05:00|/tmp/cpupower-performance.service|19404
 2026-05-01T05:47:53-05:00|/mnt/local-analysis/workspace-hub/scripts/benchmarks/perf-bench.sh|19405
+2026-05-01T05:53:39-05:00|/mnt/local-analysis/workspace-hub/docs/runbooks/local-perf-tuning.md|19406
+2026-05-01T05:54:25-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/local-perf-tuning/SKILL.md|19407
+2026-05-01T06:00:56-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/perf-tuning/SKILL.md|19408
+2026-05-01T06:01:23-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/perf-tuning/SKILL.md|19409
+2026-05-01T06:16:19-05:00|/mnt/local-analysis/workspace-hub/docs/runbooks/perf-tuning.md|19410
+2026-05-01T07:30:12-05:00|/mnt/local-analysis/workspace-hub/.planning/you-are-claude-running-keen-wadler.md|19411
+2026-05-01T07:54:14-05:00|/mnt/local-analysis/workspace-hub/scripts/benchmarks/ntfs3-trial.sh|19412
+2026-05-01T07:55:45-05:00|/mnt/local-analysis/workspace-hub/scripts/benchmarks/ntfs3-trial.sh|19413
