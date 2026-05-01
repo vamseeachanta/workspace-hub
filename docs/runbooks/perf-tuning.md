@@ -46,6 +46,15 @@ column -t -s $'\t' scripts/benchmarks/results.tsv | tail -20
 - All shells, editors, and Hermes processes out of `/mnt/local-analysis` (remount requires unmount)
 - A `perf-bench.sh` baseline labeled `pre-ntfs3` already in `scripts/benchmarks/results.tsv`
 - 30-minute maintenance window — even if the swap succeeds, the workspace is offline during the swap
+- **Run from outside the mount.** A first probe attempt on 2026-05-01 found 127 open handles — almost all from the Claude Code session and the interactive shell that *invoked the script*. The cleanest invocation is over SSH from a different host: `ssh -t ace-linux-1 '/mnt/local-analysis/workspace-hub/scripts/benchmarks/ntfs3-trial.sh swap'`. The `-t` is required so the script's confirmation prompts work.
+
+**Use the script (preferred):**
+```bash
+scripts/benchmarks/ntfs3-trial.sh probe       # read-only, run anytime
+scripts/benchmarks/ntfs3-trial.sh swap        # destructive; needs TTY + zero open handles
+scripts/benchmarks/ntfs3-trial.sh rollback    # restores /etc/fstab.pre-ntfs3
+```
+The script enforces TTY-only execution for `swap`, refuses to run when CWD is inside the mount, backs up fstab before any edit, and runs `pre-ntfs3` / `post-ntfs3` benchmarks automatically.
 
 **Procedure (do not execute without explicit go-ahead):**
 ```bash
