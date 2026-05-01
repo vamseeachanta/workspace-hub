@@ -228,9 +228,13 @@ Plus **niche extension for capability-map gaps (8):**
 - [x] Any private contact data is kept out of public artifacts →
   Contact-Discovery column is status only; no PII; no project-confidential data.
 - [x] Follow-up issues are created for high-value missing data rather than
-  burying blockers → §2 Niche Coverage Gaps + §3 Evidence Quality Notes capture
-  the follow-up shape; existing #1835/#1836/#1837 already cover the on-bottom
-  stability / shore-approach / pipeline-CAPEX module gaps.
+  burying blockers → [#2578](https://github.com/vamseeachanta/workspace-hub/issues/2578)
+  filed for the matrix evidence-URL repair (closed 2026-05-01 with 12 of 14
+  rows cleanly repaired plus §3a WAF documentation); §3b documents the 2
+  remaining narrative-edit rows (Bourbon Gulf Offshore split, Otto Candies
+  Kelly Ann replacement) for human-judgment follow-up. Existing
+  #1835 / #1836 / #1837 cover the on-bottom stability / shore-approach /
+  pipeline-CAPEX module gaps surfaced in §2.
 
 ## §6 — Acceptance Criteria Checklist (#2562)
 
