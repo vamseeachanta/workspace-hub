@@ -1,0 +1,4 @@
+frames/
+
+# Override the repo-wide *.mp4 ignore for this deliberately-tracked proof artifact.
+!2026-05-01-gtm-bundle-tour.mp4

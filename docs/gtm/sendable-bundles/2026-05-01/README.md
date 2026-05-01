@@ -114,6 +114,15 @@ Recommended cadence per prospect:
 
 ---
 
+## Visual proof of the live deliverable
+
+A recorded 9-page tour of every shipped page is in `proof/`:
+- [`proof/2026-05-01-gtm-bundle-tour.mp4`](proof/2026-05-01-gtm-bundle-tour.mp4) — 1280×720, 27 s, 906 KB (best for in-browser embedding)
+- [`proof/2026-05-01-gtm-bundle-tour.gif`](proof/2026-05-01-gtm-bundle-tour.gif) — 900×506, 270 frames, 828 KB (best for email paste; survives Outlook)
+- [`proof/record-tour.sh`](proof/record-tour.sh) — reproducible: re-run anytime with `bash record-tour.sh`
+
+Each page is held for 3 seconds — readable at a glance without dragging the proof past 30 seconds total.
+
 ## Provenance
 
 | Asset | Issue closed | Commit |
