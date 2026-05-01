@@ -117,7 +117,7 @@ validate llm-wiki status/lint and plan/source-pack consistency
 ---
 
 ## Acceptance Criteria
-- [ ] HARD STOP: after this plan reaches `status:plan-review`, wait for explicit user approval / `status:plan-approved` before implementation.
+- [ ] HARD STOP: after this plan reaches `status:done`, wait for explicit user approval / `status:plan-approved` before implementation.
 - [ ] `UV_NO_SYNC=1 uv run scripts/knowledge/llm_wiki.py status --wiki acma-projects` passes.
 - [ ] `UV_NO_SYNC=1 uv run scripts/knowledge/llm_wiki.py lint --wiki acma-projects` passes.
 - [ ] Source crosswalk includes exact B1528 file paths, workbook sheet names/cells or named ranges where recoverable, units, extracted values, and derived-value notes.
@@ -152,3 +152,23 @@ Revisions made based on review:
 
 ## Complexity: T2
 **T2** — documentation/source-intelligence deliverable with structured YAML validation and wiki updates, but no numerical implementation.
+
+
+## Implementation closeout
+
+Completed 2026-05-01.
+
+Delivered artifacts:
+
+- `docs/projects/acma/B1528/sirocco-rudder-source-pack.md`
+- `docs/projects/acma/B1528/sirocco-turning-benchmark.yaml`
+- `scripts/validation/validate_b1528_source_pack.py`
+- Updated `knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md`
+- `scripts/review/results/2026-05-01-implementation-2569-hermes.md`
+
+Validation:
+
+- `UV_NO_SYNC=1 uv run --with pyyaml scripts/validation/validate_b1528_source_pack.py`
+- `UV_NO_SYNC=1 uv run scripts/knowledge/llm_wiki.py lint --wiki acma-projects`
+
+Adversarial implementation review verdict: `APPROVE`.
