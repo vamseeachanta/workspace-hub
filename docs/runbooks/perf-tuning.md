@@ -38,11 +38,49 @@ numactl --cpunodebind=0 --membind=0 scripts/benchmarks/perf-bench.sh numa0-pinne
 column -t -s $'\t' scripts/benchmarks/results.tsv | tail -20
 ```
 
+## Next action (2026-05-01) — try the in-kernel `ntfs3` driver
+
+**Recommended next move because it has the highest impact-per-hour ratio:** if `ntfs3` accepts the volume, you get a multi-threaded driver in place of single-threaded FUSE without touching data. If it refuses, you've spent 15 minutes and learned that filesystem migration is the only path forward — either way the answer becomes clear.
+
+**Prerequisites (verify before starting):**
+- All shells, editors, and Hermes processes out of `/mnt/local-analysis` (remount requires unmount)
+- A `perf-bench.sh` baseline labeled `pre-ntfs3` already in `scripts/benchmarks/results.tsv`
+- 30-minute maintenance window — even if the swap succeeds, the workspace is offline during the swap
+
+**Procedure (do not execute without explicit go-ahead):**
+```bash
+# 1. Confirm kernel module is available
+sudo modprobe ntfs3
+grep ntfs3 /proc/filesystems   # expect: "       ntfs3"
+
+# 2. Check volume cleanliness (read-only diagnostic, safe)
+sudo umount /mnt/local-analysis
+sudo ntfsfix --no-action /dev/sdc1   # reports dirty/clean without writing
+
+# 3a. If CLEAN: edit /etc/fstab to swap ntfs-3g → ntfs3, then mount
+# (keep a backup of fstab first: sudo cp /etc/fstab /etc/fstab.pre-ntfs3)
+sudo mount /mnt/local-analysis
+mount | grep local-analysis   # expect: "type ntfs3" not "type fuseblk"
+
+# 3b. If DIRTY: ntfs3 will refuse. Two options:
+#     - sudo ntfsfix /dev/sdc1   # writes journal replay, then retry mount
+#     - revert fstab and stay on ntfs-3g; escalate to migration plan
+
+# 4. Re-bench and compare
+scripts/benchmarks/perf-bench.sh post-ntfs3
+column -t -s $'\t' scripts/benchmarks/results.tsv | grep -E "pre-ntfs3|post-ntfs3"
+```
+
+**Success criteria:** `git_status` workload drops from ~155 s to under 5 s. `cpu_*` workloads should be unchanged (this isn't a CPU change). If `git_status` is still >10 s, ntfs3 alone is not enough and migration is the only remaining lever.
+
+**Rollback:** `sudo cp /etc/fstab.pre-ntfs3 /etc/fstab && sudo umount /mnt/local-analysis && sudo mount /mnt/local-analysis` returns to ntfs-3g. Data is untouched throughout — both drivers read the same on-disk format.
+
+**Memory caveat (2026-04-27):** ntfs3 refused the Elements drive because it was dirty. `/dev/sdc1` is a different volume, mounted continuously, and likely clean — but `ntfsfix --no-action` is the test of record before swapping the driver.
+
 ## Future changes (ranked by effort × impact)
 
-### High impact, high effort
-- **Migrate `/mnt/local-analysis` from NTFS → ext4 or btrfs.** This is the #1 win and will easily 10–100× small-file IO (which dominates Hermes `git` operations and Python imports). Requires: full backup of `/dev/sdc1` (~232 GB used), reformat, restore. Plan for a maintenance window. Verify backup integrity before destroying NTFS volume.
-- **Interim mitigation:** Try the in-kernel `ntfs3` driver — it's multi-threaded. Check with `modprobe ntfs3 && grep ntfs3 /proc/filesystems`. Then change fstab `ntfs-3g` → `ntfs3` and remount. Memory note (2026-04-27) flags ntfs3 as refusing dirty volumes; verify clean state with `ntfsfix --no-action` first.
+### High impact, high effort (only if ntfs3 trial fails)
+- **Migrate `/mnt/local-analysis` from NTFS → ext4 or btrfs.** Will 10–100× small-file IO (which dominates Hermes `git` operations and Python imports). Requires: full backup of `/dev/sdc1` (~232 GB used), reformat, restore. Plan for a maintenance window. Verify backup integrity before destroying NTFS volume.
 
 ### Medium impact, low effort
 - **NUMA-pin heavy batch jobs.** Prefix compute-heavy commands with `numactl --cpunodebind=0 --membind=0` (or `=1`). Two independent jobs can run socket-pinned and never touch each other's L3 cache or memory controller. Helpful for the overnight 5-terminal batch pattern.
