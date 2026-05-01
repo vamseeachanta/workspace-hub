@@ -30,7 +30,7 @@ This page captures the project-specific input evidence needed before implementin
 | Yaw lever in legacy workbook | 135.3 | m | `0.6 * LBP`, `Barrass!B29` |
 | Rudder constant | 600 | — | `Barrass!C17` |
 | Port prop rotation factor | 1.065 | — | `Barrass!C19`, `Barrass-chk!C30` |
-| Starboard prop rotation factor | 0.935 | — | `PNA89!C63` note / converted script |
+| Starboard prop rotation factor | 0.935 | — | `Barrass` sheet note (`1.065` port / `0.935` stbd); converted script corroborates but is not canonical |
 | Requested forward speed | 2.5 | kn | user request + workbook note |
 | Requested rudder angles | +1, -1 | deg | user request |
 
