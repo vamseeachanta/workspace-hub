@@ -1,9 +1,9 @@
 ---
 domain: lng-projects
 created: 2026-04-28 19:23 UTC
-last_updated: 2026-04-28
-page_count: 2
-source_count: 2
+last_updated: 2026-05-01
+page_count: 3
+source_count: 3
 ---
 
 # Knowledge Index: lng-projects
@@ -20,7 +20,7 @@ _No concept pages yet._
 
 ## Sources
 
-_No sources ingested yet._
+Tracked source and pointer pages for the `lng-projects` wiki.
 
 ## Comparisons
 
@@ -30,4 +30,4 @@ _No query outputs filed yet._
 |------|---------|-------------|
 | [[Elements ingest catalog — doris-62092-sesa]](sources/elements-doris-62092-sesa.md) | SESA FLNG Terminal Project corpus staged from Elements and merged under Doris project data. | 2026-04-28 |
 | [[Elements ingest catalog — acma-projects-31522-woodfibre]](sources/elements-acma-projects-31522-woodfibre.md) | Woodfibre LNG project corpus for AceEngineer project 31522; very large corpus, metadata-first with c... | 2026-04-28 |
-
+| [[Woodfibre LNG corpus pointer (ACMA project 31522)]](sources/woodfibre-corpus-pointer.md) | Metadata-only pointer to the Woodfibre LNG corpus shape, deliverable families, and extraction boundary. | 2026-05-01 |
