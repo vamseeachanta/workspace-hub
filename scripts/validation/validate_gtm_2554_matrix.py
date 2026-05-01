@@ -145,7 +145,7 @@ def count_claims(scaffold: str, summary: str) -> tuple[dict[str, int | None], li
 
 
 def extract_urls(text: str) -> list[str]:
-    return re.findall(r"https?://[^\s);]+", text)
+    return re.findall(r"https://[^\s);]+", text)
 
 
 def evidence_urls_are_allowed(text: str) -> bool:
@@ -190,6 +190,8 @@ def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hi
         fields = row["fields"]
         if row["counted"] and not evidence_urls_are_allowed(str(fields["corporate_root_evidence"])):
             errors.append(f"target {row['target']} counted row lacks allowed public corporate_root_evidence URL")
+        if row["counted"] and not str(fields["deep_link_evidence"]).strip():
+            errors.append(f"target {row['target']} counted row lacks populated deep_link_evidence or explicit boundary")
         if row["priority"] == "High" and not high_deep_link_is_bounded(str(fields["deep_link_evidence"])):
             errors.append(f"target {row['target']} High row lacks official-domain deep_link_evidence or bounded no-public-proof/access note")
         if row["priority"] == "High" and not str(fields["private_route"]).lower().startswith("omitted-public-artifact"):
