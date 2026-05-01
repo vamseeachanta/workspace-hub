@@ -1,6 +1,6 @@
 # GTM nightly batch 4/5 — inventory and #2346 bounded implementation slice
 
-Generated: 2026-04-30 UTC
+Generated: 2026-04-30 UTC; refreshed by cron batch 4/5 on 2026-05-01 UTC
 Repository: `vamseeachanta/workspace-hub`
 Scope: GTM engineering artifacts and issue-plan readiness only; no outbound outreach.
 
@@ -39,7 +39,7 @@ Open GTM collateral scaffolds already present:
 
 1. #2555 chart assets are ready as brochure inputs, but #2554 is still blocked by contractor evidence quality.
 2. #2556 remains gated because the brochure/send tracker must not consume an unapproved or evidence-thin contractor matrix.
-3. #2346 still lacks demo subprocess dispatch, digitalmodel per-demo CLI flags, branded report wrapping, dual-delivery state machine, and SOP completion.
+3. #2346 still lacks demo subprocess dispatch, digitalmodel per-demo CLI flags, branded report wrapping, and executable dual-delivery state-machine code. The workspace-hub SOP runbook is now hardened and test-covered.
 4. Public-facing claims need continued provenance checks against repo evidence before promotion into brochure copy.
 5. No outbound contact is authorized by this batch.
 
@@ -53,7 +53,15 @@ Because #2346 is already `status:plan-approved`, this batch implemented one boun
   - `tmpdir/data/mudmat_structures.json`
   - optional `tmpdir/data/prospect_env.json`
 - Added TDD coverage in `scripts/gtm/tests/test_prospect_adapter.py` for canonical heavy-lift CSV + mudmat materialization.
-- Updated `docs/gtm/intake/IMPLEMENTATION-STATUS.md` so the remaining #2346 gap list reflects that demos 3/4/5 have workspace-hub materialization support.
+- Hardened the public-safe #2346 SOP at `docs/gtm/prospect-demo-sop.md` with:
+  - no-outbound-outreach boundary,
+  - 48-hour decision tree,
+  - F1-F5 refuse-vs-fix matrix,
+  - `private-log/fallback-applied.json` sidecar schema,
+  - email-first/no-private-URL-on-email-failure delivery invariant,
+  - logical-path-only rule for public artifacts.
+- Added `scripts/gtm/tests/test_prospect_demo_sop.py` to enforce the SOP contract and catch local/proprietary path leakage.
+- Updated `docs/gtm/intake/IMPLEMENTATION-STATUS.md` so the remaining #2346 gap list reflects that demos 3/4/5 have workspace-hub materialization support and the SOP artifact slice is done.
 
 This does not send any outreach, does not publish a private URL, and does not claim #2346 complete.
 
@@ -61,6 +69,6 @@ This does not send any outreach, does not publish a private URL, and does not cl
 
 - Implement `run_demo()` subprocess dispatch and output discovery.
 - Patch the separate `digitalmodel` demo scripts to accept prospect data-directory/environment/branding flags.
-- Build branded report wrapper and SOP runbook.
-- Implement dual-delivery state machine only after explicit approval for delivery mechanics; no email or message sending in this batch.
+- Build branded report wrapper.
+- Implement executable dual-delivery state machine only after explicit approval for delivery mechanics; no email or message sending in this batch.
 - Re-run public-facing legal/provenance checks before any brochure/report leaves the repo.

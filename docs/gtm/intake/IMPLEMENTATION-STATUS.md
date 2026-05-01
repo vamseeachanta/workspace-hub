@@ -84,11 +84,16 @@ Future work on #2346 will need to land, in roughly this order:
   `robots.txt` and `vercel.json` updates per plan v3 Claude M1.
   Partial-failure semantics + retry + compensating actions per plan section
   "Dual Delivery State Machine" (v3 Codex M4).
-- **SOP runbook**: `docs/gtm/prospect-demo-sop.md` — the 48hr decision-tree
-  runbook per plan section F, plus the refuse-vs-fix matrix for the 5
-  authorized fallbacks F1-F5 (plan v2/Q7).
-- **Fallback sidecar**: wire the `private-log/fallback-applied.json` path
-  (gitignored; test-asserted never-ships) per plan v3 Codex M5.
+- **SOP runbook — done (workspace-hub artifact slice)**:
+  `docs/gtm/prospect-demo-sop.md` now contains the 48-hour decision tree,
+  no-outbound-outreach boundary, public-safe/logical-path rule, F1-F5
+  refuse-vs-fix matrix, fallback sidecar schema, email-first delivery state
+  machine, gated-URL guardrails, canonical-vessel usage rules, and
+  post-deploy verification steps. `scripts/gtm/tests/test_prospect_demo_sop.py`
+  validates the runbook contract and path-leakage guardrails.
+- **Fallback sidecar**: schema and never-ships placement are documented in
+  `docs/gtm/prospect-demo-sop.md`; code wiring of the runtime
+  `private-log/fallback-applied.json` writer/packager exclusion remains open.
 - **E2E regression suite**: golden-image test that runs all 5 demos on
   canonical fixtures within the <10 min PR-runtime budget using
   `--from-cache`, outputs routed to the gitignored test-only sink at
