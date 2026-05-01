@@ -4,6 +4,11 @@
 > Chronological record of all wiki operations.
 > Format: ## [YYYY-MM-DD] operation | Title
 
+## [2026-05-01] ingest | Woodfibre LNG corpus pointer (ACMA project 31522)
+- Processed: metadata-only scout artifacts for issue #2544
+- Pages updated: wiki/sources/woodfibre-corpus-pointer.md, wiki/index.md
+- Notes: Pointer/scout subset only; no document abstracts, quotes, figures, or full-text extraction. Follow-up extraction remains blocked on dedicated plan + `docs/governance/woodfibre-extraction-clearance-2026.md`.
+
 ## [2026-04-28 19:24 UTC] batch-ingest | Batch 1 (2 records)
 - Domain: lng-projects
 - Records: 2
