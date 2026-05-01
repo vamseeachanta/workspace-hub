@@ -73,6 +73,16 @@ git branch --show-current
 git rev-parse --short HEAD
 ```
 
+## Mobile / Telegram control-plane mode
+
+When the user is operating from Telegram or another lightweight chat surface, keep orchestration terse and action-oriented:
+
+1. Offer numbered/lettered choices for the next control-plane action, then execute the selected option immediately.
+2. For recovery/status sweeps, inspect live machine state, tmux/processes/cron, GitHub auth/queue, and durable artifact paths before recommending new launches.
+3. If existing provider/autofeed activity is saturated or overlapping, pause the feeder first and reconcile current lanes before starting more work.
+4. Return a compact dashboard: host, workspace, repo/branch/head, git cleanliness, gateway/cron state, active-ish provider counts, key artifact paths, and the recommended next choice.
+5. Avoid GitHub mutations, process kills, destructive git operations, and new long-running fan-out during reconciliation unless the user explicitly approves that action.
+
 ## Lane routing policy
 
 1. **Keep approvals on ace-linux-1**

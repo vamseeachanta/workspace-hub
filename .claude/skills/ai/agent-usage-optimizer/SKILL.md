@@ -301,9 +301,10 @@ Do NOT auto-label broad or ambiguous items just because the provider is underuse
 ## Practical dispatch rules from the scorecard
 
 For current workspace-hub-style ecosystems, these rules proved reusable:
-- Codex: push bounded implementation, tests, refactors, and crisp execution-ready issues first
-- Claude: reserve for adversarial review, governance, orchestration, and long-context strategy
-- Gemini: use for batched research/recon/risk-analysis packets; do not rely on Gemini telemetry as exact weekly headroom if the quota source is only estimated
+- Refresh AI provider usage/capacity about every 6 hours and use that telemetry to plan the next work wave; avoid hard-and-fast provider exclusion rules when reliable capacity exists.
+- Codex: push bounded implementation, tests, refactors, and crisp execution-ready issues first when quota is visible.
+- Claude: use for frontier execution, adversarial review, governance, orchestration, long-context strategy, and control-plane synthesis.
+- Gemini: because the account is lower-budget, default it to cross-reviews, adversarial reviews, batched research/recon, and risk-analysis packets rather than main work; if fresh telemetry shows reliable capacity, delegate suitable bounded review/recon work instead of rigidly excluding it. Do not rely on Gemini telemetry as exact weekly headroom if the quota source is only estimated.
 
 ## Sub-Skills
 

@@ -3,40 +3,32 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-04-28T07:02:50Z"
-  source_hash: "5290395ea72a5dbd4e0a96795fbbf6b1"
+  generated: "2026-05-01T07:03:45Z"
+  source_hash: "23fb800c7d94399d3a2212bd364e6825"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 18
+      entry_count: 10
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 99
+      memory_file_count: 100
 
 hermes_insights:
   environment_facts:
-    - "DEFAULT MODEL (2026-04-25): openai-codex/gpt-5.5 via chatgpt backend; smart_model_routing disabled. ace-linux-2 needs login shell (`bash -lc`) for Hermes/Codex PATH. Codex CLI 0.125 may hang at `Reading additional input from stdin...`; Hermes pattern: terminal(background=true) then `process close`."
-    - "workspace-hub contains Claude orchestrator session logs at logs/orchestrator/claude/session_*.jsonl, useful for session corpus and prompt-pattern analysis."
-    - "Hermes smart_model_routing is disabled in workspace-hub because cheap-model Gemini routing bypassed explicit Codex intent and hit Gemini 429 quota."
-    - "Gmail access is configured via Gmail API OAuth for all three accounts using ~/.gmail-ace/credentials.json, ~/.gmail-personal/credentials.json, ~/.gmail-skestates/credentials.json plus shared ~/.gmail-mcp/oauth-env.json. Himalaya config currently covers ace and personal only."
-    - "digitalmodel repo has a working local virtualenv at /mnt/local-analysis/workspace-hub/digitalmodel/.venv. When `uv run pytest` fails due to pyproject dependency resolution conflict (`assetutilities` vs `deepdiff`), use `PYTHONPATH=src ./.venv/bin/python -m pytest ...` from the digitalmodel repo to run tests against the installed environment."
-    - "Elements ingest /mnt/ace mapping: qgis → digitalmodel; Woodfibre 31522 → acma-projects; casa_grande_77017 → assethold; staging uses `_from_elements` without dates; client_projects is a real repo bucket, not a misc category."
+    - "Business Brain: Plan AI provider dispatch from fresh capacity telemetry about every 6h, not fixed rules. Default main execution capacity is Claude Max ($200/mo) + Codex ($200/mo). Gemini is USD $20 and usually for cross/adversarial reviews, but if reliable capacity exists, delegate suitable work rather than rigidly excluding it. Target state: capacity-aware next-work planning. Hermes on ace-linux-1 remains the control surface; ace-linux-2 is overflow after repo/tool/auth checks."
+    - "ace-linux-1 Telegram/Hermes setup: Telegram Desktop installed from `tsetup.6.7.8.tar.xz` at `/home/vamsee/.local/share/Telegram/Telegram`; helper script at `/home/vamsee/Downloads/install-telegram-desktop.sh`; `@AceEngineerBot` gateway is allowlist-only via `TELEGRAM_ALLOWED_USERS` in `/home/vamsee/.hermes/.env`; handoff artifact path is `/mnt/local-analysis/workspace-hub/docs/session-handoffs/2026-04-30-telegram-hermes-mobile-access-handoff.md`."
+    - "Provider capacity note as of 2026-04-30 18:59 CDT: Claude weekly capacity had ~40% remaining with ~36 hours to reset; prioritize appropriate Claude/Codex throughput from fresh telemetry."
   conventions:
     - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
-    - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."
+    - "Elements→/mnt/ace ingest conventions: canonical layout is /mnt/ace/<repo-name>/<domain>/; `client_projects` is a real repo bucket; Woodfibre uses repo bucket `acma-projects` (not `acma_projects`) with project code 31522; `qgis` is reusable digitalmodel workflow/data; `casa_grande_77017` belongs under `assethold`; staging folders use `_from_elements/` without dates."
   project_knowledge:
-    - "In workspace-hub, scripts/enforcement/require-plan-approval.sh only recognizes .planning/plan-approved/*.md markers newer than .planning/STATE.md; a stale marker can block commits even when the GitHub issue is already status:plan-approved."
+    - "Telegram/Hermes mobile bot branding chosen: “AceEng Bot” with username “AceEngBot” preferred; fallback names include AceEngineerBot, AceEngAIBot, AceEngineerAIBot, AceOpsBot."
+    - "Telegram/Hermes mobile bot actual username created: @AceEngineerBot / t.me/AceEngineerBot. Initial token was pasted into chat and should be treated as compromised; rotate via @BotFather before configuring Hermes."
+    - "Codex is also on a USD $200 membership with roughly 85% usage left; quota reset time reported as April 5 at 12 PM."
   user_preferences:
     - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation."
-    - "User wants continuous autonomous GitHub throughput: keep issues planned, adversarially reviewed, and user-approved so overnight planning/implementation can run and next-day review/QA has ready artifacts."
-    - "Adversarial review at BOTH stages: plan review AND code/artifact review. All agents: Claude, Codex, Gemini."
-    - "Vamsee: P.E., 23yr exp. ACE Engineer consulting. $120K/yr retainer. OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python. GTM: offshore 10-50 engineers."
-    - "Prefers numbered/lettered choices and clickable GitHub issue/PR links for #NNNN references."
-    - "For overnight batches, prefers Claude-only staged pacing and preserving Codex for interactive/daytime work."
-    - "User wants all reviews to be adversarial reviews by default for maximum productivity and impact."
-    - "User approves sensible direct execution. GitHub: latest status:* wins, proactive follow-ups, quick safety audits, parallel work, and direct plan-approved transitions/local markers when explicitly approving batches. Travel-planning issues should include realistic seasonal photos plus destination/stay links and scenery caveats."
-    - "Post-reboot recovery priority: salvage current work first, research/restart ongoing work second, set off future work last."
+    - "Prefers numbered/lettered choices, tables where helpful, one-by-one execution, clickable GitHub links for #NNNN. Vamsee: P.E., 23yr exp; ACE Engineer consulting; target $120K/yr retainers; domains OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python; GTM offshore 10-50 engineers. Wants continuous autonomous GitHub throughput with Claude/Codex/Gemini adversarial plan/code reviews; GitHub latest status:* wins; direct execution, proactive follow-ups, safety audits, parallel work, and direct plan-approved transitions/local markers when explicitly approving batches. Expects completed engineering-calculation work to show cross-review evidence and create quality/deferred-scope follow-up GH issues as needed. Hard gates should evolve into evidence-threshold gates once metrics prove safe. Weekly GTM targets should be set interactively then executed by agents. Session exits need GH evidence, handoff artifact, fresh-session copy/paste prompt, worktree verification, and next priorities. Post-reboot triage order: salvage current work, research/restart ongoing work, then set off future work."
 
 claude_memory_index:
   files:
@@ -226,6 +218,8 @@ claude_memory_index:
       topic: "issue 2460 approval binding"
     - file: "feedback_codex_sandbox_no_execution.md"
       topic: "codex sandbox no execution"
+    - file: "feedback_lane_result_path_outside_sandbox.md"
+      topic: "lane result path outside sandbox"
     - file: "feedback_html_refresh.md"
       topic: "html refresh"
     - file: "feedback_codex_sustained_major_loop.md"
@@ -242,4 +236,4 @@ claude_memory_index:
 shared_conventions:
   # These conventions from Hermes should be honored by all agents
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
-  - "Non-interactive Claude Code overnight runs may stall or become read-only unless permissions are preconfigured. For unattended execution, prefer stdin redirection (`< /dev/null`) and enable write permissions via `.claude/settings*.json` or `--dangerously-skip-permissions` only with explicit user approval."
+  - "Elements→/mnt/ace ingest conventions: canonical layout is /mnt/ace/<repo-name>/<domain>/; `client_projects` is a real repo bucket; Woodfibre uses repo bucket `acma-projects` (not `acma_projects`) with project code 31522; `qgis` is reusable digitalmodel workflow/data; `casa_grande_77017` belongs under `assethold`; staging folders use `_from_elements/` without dates."

@@ -61,3 +61,5 @@ shown:
     tips: [gsd-stats, cc-chrome]
   - date: 2026-04-29
     tips: [eco-insights, cc-desktop-server]
+  - date: 2026-04-30
+    tips: [cc-simplify, cc-fork]

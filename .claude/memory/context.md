@@ -20,8 +20,8 @@
 - `/mnt/local-analysis/workspace-hub/` — the real git repo mount
 - `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
-- `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
-  - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
+- `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent *verified: 2026-05-01*
+- Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root *verified: 2026-05-01*
 - `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent
 - `worldenergydata/` — energy data sub-repo
 
@@ -36,7 +36,7 @@
 Memory travels with the repo via git. No Hermes needed on Windows.
 
 1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
-2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory
+2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory *verified: 2026-05-01*
    (if present), injects it into `agents.md` via template, regenerates `context.md`,
    snapshots Claude auto-memory, mirrors topic files, commits and pushes.
    Runs on both Linux (cron) and Windows (Task Scheduler).

@@ -30,6 +30,16 @@ cat skills/documentation/mkdocs/SKILL.md
 
 Brief description of the topic.
 
+## Repo Markdown Save-and-Open Workflow
+
+When a user asks to save an answer or evidence packet in a repository Markdown file:
+
+1. Locate or clone the target repository; if a previous partial clone is corrupt, create a clean shallow clone in a clearly named local repo directory.
+2. Save the Markdown near the source evidence when there is an obvious domain folder; use a descriptive filename rather than a temporary session name.
+3. Include relative links to source documents when possible, plus enough quoted evidence for the file to stand alone.
+4. Verify with `wc -l` and `git status --short -- <file>` so the user knows the exact path and tracked/untracked state.
+5. Open the file with VS Code using `code -g "$FILE:1"` when available; fall back to `codium -g` or report the saved path if no editor CLI exists.
+
 ## Prerequisites
 
 - Requirement 1

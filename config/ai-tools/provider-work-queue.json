@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-04-30T01:20:07.347901Z",
+  "generated_at": "2026-05-01T09:20:47.335387Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-04-30T01:20:05.588044Z",
+  "scorecard_generated_at": "2026-05-01T09:20:37.865648Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 7,
-      "total_candidates": 158,
+      "execution_ready_count": 9,
+      "total_candidates": 163,
       "top_issues": [
         {
           "number": 2540,
@@ -38,17 +38,19 @@
           ]
         },
         {
-          "number": 2555,
-          "title": "feat(gtm): vessel capability charts for contractor brochure",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2555",
+          "number": 2571,
+          "title": "feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2571",
           "labels": [
+            "enhancement",
             "priority:high",
-            "cat:business",
-            "cat:strategy",
-            "domain:gtm",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:visualization",
+            "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-29T23:15:03Z",
+          "updatedAt": "2026-05-01T02:34:25Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -109,31 +111,6 @@
           ]
         },
         {
-          "number": 2515,
-          "title": "feat(digitalmodel): generate offshore cable umbilical pipeline cross-section reports",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2515",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "domain:pipeline",
-            "domain:marine",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-29T02:28:01Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2541,
           "title": "feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2541",
@@ -182,17 +159,45 @@
           ]
         },
         {
-          "number": 2431,
-          "title": "Compliance alert: W17 \u2014 20% (critical)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
+          "number": 2566,
+          "title": "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2566",
           "labels": [
-            "priority:high",
-            "priority:critical",
-            "compliance-alert"
+            "enhancement",
+            "priority:medium",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:naval-architecture",
+            "status:plan-approved"
           ],
-          "updatedAt": "2026-04-26T11:45:09Z",
-          "execution_ready": false,
-          "priority_rank": 0,
+          "updatedAt": "2026-05-01T00:40:05Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2567,
+          "title": "feat(naval-arch): standards-backed steering gear and rudder-stock design checks",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2567",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:naval-architecture",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-01T00:41:52Z",
+          "execution_ready": true,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -208,8 +213,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 16,
-      "total_candidates": 40,
+      "execution_ready_count": 12,
+      "total_candidates": 35,
       "top_issues": [
         {
           "number": 2269,
@@ -239,31 +244,6 @@
           ]
         },
         {
-          "number": 2289,
-          "title": "Plan rollback/recovery for enforcement bypasses detected after commit or push",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2289",
-          "labels": [
-            "priority:high",
-            "cat:harness",
-            "domain:workflow",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T06:01:36Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2346,
           "title": "feat(gtm): prospect-data customized-demo pipeline \u2014 48hr turnaround + pre-staged vessel templates",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2346",
@@ -275,7 +255,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-28T06:07:51Z",
+          "updatedAt": "2026-04-30T05:36:46Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -339,32 +319,6 @@
           ]
         },
         {
-          "number": 2369,
-          "title": "feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2369",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:knowledge-management",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T05:20:10Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2373,
           "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
@@ -406,6 +360,59 @@
           "updatedAt": "2026-04-28T09:19:15Z",
           "execution_ready": true,
           "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2462,
+          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "domain:repo-organization",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-01T04:02:38Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2270,
+          "title": "feat(blender): standardize headless baseline workflow and smoke render validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2270",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:documentation",
+            "status:working",
+            "machine:dev-secondary",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T06:13:53Z",
+          "execution_ready": true,
+          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
           "provider_priority": "highest",

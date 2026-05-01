@@ -4,7 +4,7 @@
 > **Complexity:** T2
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2554
-> **Review artifacts:** r1 post-fill review at `scripts/review/results/2026-04-30-plan-2554-{claude,codex,gemini,disagreement}.md` returned MAJOR; clean rerun required at `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md` before `status:plan-review`.
+> **Review artifacts:** r1 post-fill review at `scripts/review/results/2026-04-30-plan-2554-{claude,codex,gemini,disagreement}.md` returned MAJOR; clean rerun required at `scripts/review/results/2026-05-01-plan-2554-r3-{claude,codex,gemini,disagreement}.md` before `status:plan-review`.
 > **Self-reference slug:** `2026-04-29-issue-2554-vessel-contractor-outreach-matrix`
 
 ---
@@ -18,7 +18,7 @@
 - **Found:** `docs/gtm/capability-summary.md`, `docs/gtm/capability-map.md`, `docs/gtm/marine-terminal-engineering-scope.md`, `docs/gtm/fowt-engineering-scope.md` — capability framing already split by service line and adjacent segments. The contractor matrix should reference these via path, not re-author scope text.
 - **Found:** Issue #1669 body (Apr 2) — pre-existing tier seed list (Tier-1 majors: Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema, Boskalis, Van Oord, DEME; Tier-2 specialists: DOF Subsea, Solstad, Bourbon, Sapura, EMAS/Ezra, Seaway7; Tier-3 niche: Helix, Superior Energy, DeepOcean, Gulf Offshore). **Implication:** the matrix takes #1669's tier list as the starting set and must reconcile (drop, retier, add) using the criteria below; #1669 has no evidence URLs attached to most names.
 - **Found:** Issue #1799 body — pipelay barge spec collection target (Allseas Lorelay, Subsea 7 Seven Navica, Saipem Castorone, McDermott DB101, Sapura Constructor, Van Oord Stork, Boskalis lay barges). **Implication:** vessel-spec data anchors the "relevant fleet angle" column for ~7 contractors and is also a public-source seed for the matrix. #1799 itself is a separate data-collection issue — the matrix references its outputs without duplicating spec rows.
-- **Demo artifact boundary:** `docs/gtm/outreach-candidate-briefs-2026-04-28.md` provides the Demo 3/4/5 positioning language used by this matrix. Exact `digitalmodel/examples/demos/gtm/output/demo_03|04|05_*.html` proof paths are not present on GitHub `main` for this repo, so the public matrix must not cite those local output paths as proof. If another checkout has generated demo outputs, treat them as separate implementation evidence that must be committed or linked before send-ready claims.
+- **Demo artifact boundary:** `docs/gtm/outreach-candidate-briefs-2026-04-28.md` provides the Demo 3/4/5 positioning language used by this matrix. The Demo 3/4/5 proof HTMLs live in the sibling Tier-1 `digitalmodel` repository, not as duplicated files in workspace-hub. The public workspace-hub matrix may cite Demo 3/4/5 only as ecosystem positioning/proof anchors with the sibling-repo boundary stated; it must not imply the HTMLs are absent ecosystem-wide, and it must not present workspace-hub-local paths as proof unless those files are mirrored or linked explicitly.
 - **Found:** `docs/gtm/intake/prospect-schema.json` (Draft-07 validated per #2346) — defines the YAML intake shape used to produce 48-hour custom demo reruns. **Implication:** the matrix `outreach priority` column should flag which contractors would be worth pre-staging an intake YAML for once their interest is confirmed.
 - **Resolved gap:** Before the #2554 lane there was no single artifact merging (a) #1669 tier list, (b) public fleet evidence, (c) #1799 vessel-spec coverage, (d) per-target pain-point hypotheses, and (e) demo-anchor mapping. The current scaffold now provides that matrix at `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`.
 - **Gap:** No automated public/private boundary check exists for GTM matrices. `scripts/legal/legal-sanity-scan.sh --diff-only` exists per `docs/BUSINESS_BRAIN.md` §"Legal Sanity Gates", but `--diff-only` can false-pass after files are committed. This plan therefore requires a targeted committed-artifact scan recorded at `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md`.
@@ -29,7 +29,7 @@ Not applicable. `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` �
 
 ### LLM Wiki pages consulted
 
-- No wiki pages are direct inputs to this matrix. The matrix consumes public corporate fleet/project disclosures and demo-concept anchors from existing GTM briefs; missing local demo-output files are not treated as proof paths for promotion. Wiki promotion of any contractor-specific synthesis is out of scope until a public-source-only methodology layer is approved separately (out-of-scope: repo-public legal/privacy scan is current for this matrix; separate public-source-only wiki synthesis remains out of scope).
+- Document-intelligence routing checked: `docs/document-intelligence/README.md` and `docs/document-intelligence/data-intelligence-map.md` exist but do not add a direct input corpus for this contractor matrix. No wiki pages are direct inputs to this matrix. The matrix consumes public corporate fleet/project disclosures and demo/concept anchors from existing GTM briefs plus sibling-repo demo proof boundaries; missing workspace-hub-local demo-output mirrors are not treated as proof paths for promotion. Wiki promotion of any contractor-specific synthesis is out of scope until a public-source-only methodology layer is approved separately (out-of-scope: repo-public legal/privacy scan is current for this matrix; separate public-source-only wiki synthesis remains out of scope).
 
 ### Documents consulted
 
@@ -67,7 +67,7 @@ Not applicable. `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` �
 - EXISTS: `docs/gtm/outreach-candidate-briefs-2026-04-28.md`
 - EXISTS: `docs/gtm/capability-summary.md`, `docs/gtm/capability-map.md`
 - EXISTS: `docs/plans/_template-issue-plan.md`, `docs/plans/README.md`
-- GitHub-main boundary: exact `digitalmodel/examples/demos/gtm/output/demo_03|04|05_*.html` report paths are not present on `main`; treat Demo 3/4/5 row values as positioning anchors from the GTM briefs unless/until a committed proof path is restored.
+- Cross-repo demo boundary: Demo 3/4/5 HTML proof outputs are committed in the sibling `digitalmodel` repo, while workspace-hub stores the GTM matrix and briefs. Treat Demo 3/4/5 row values as ecosystem positioning/proof anchors with that sibling-repo boundary; do not overstate them as workspace-hub-local proof files.
 - EXISTS after #2554/#2560 work: `docs/reports/gtm/` and `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`.
 - EXISTS: `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` (this file).
 
@@ -92,10 +92,10 @@ Not applicable. `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` �
 | Summary | `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md` |
 | Existing reused | `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` (no edits) |
 | Existing reused | `docs/gtm/outreach-candidate-briefs-2026-04-28.md` (cross-linked) |
-| Required r2 review | `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md` |
+| Required r3 review | `scripts/review/results/2026-05-01-plan-2554-r3-{claude,codex,gemini,disagreement}.md` |
 | Legal/privacy validation | `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md` generated by `uv run python scripts/validation/validate_gtm_2554_matrix.py --write-artifact` |
 | Validation script | `scripts/validation/validate_gtm_2554_matrix.py` | Repo-public structural/legal/count gate used by this plan; not a semantic substitute for reviewer spot-checks |
-| Demo proof boundary | Do not cite `digitalmodel/examples/demos/gtm/output/demo_0[345]_*.html` as public proof unless those exact paths exist on GitHub `main` or are restored in a follow-up. |
+| Demo proof boundary | Demo 3/4/5 HTML outputs belong to the sibling `digitalmodel` repo; cite them only with explicit sibling-repo provenance/boundary, not as workspace-hub-local proof files. |
 
 ---
 
@@ -125,14 +125,14 @@ function build_contractor_matrix(seed_list, public_evidence_corpus, demo_anchors
             can_say_now: [],                              # ACE-claim envelope
             cannot_claim_yet: [],                         # adjacent-claim guard
             outreach_priority: null,                      # High / Medium / Low / Defer
-            private_route: null                           # never inline; private pointer omitted from public artifact
+            private_route: omitted-public-artifact        # never inline private contact/route details in public repo
         }
         if corporate_root_evidence is empty:
             mark candidate outreach_priority = Defer and exclude from live_countable_targets
         if candidate has no public deep_link_evidence and no explicit official-site/access-boundary note:
             mark candidate not_send_ready and keep / downgrade below High until evidence is filled
-        if candidate is High and private_route is null:
-            mark candidate high_priority_but_no_send_route and keep private detail outside repo
+        if candidate is High and private_route != 'omitted-public-artifact':
+            mark candidate invalid_public_route_state and keep private detail outside repo
         if candidate is explicitly tagged wind-only and FOWT worked example is not shipped:
             exclude candidate from live_countable_targets unless it also has non-wind vessel/operator evidence
         if candidate has individual contact (name, title, email, phone, individual LinkedIn):
@@ -162,7 +162,7 @@ function build_contractor_matrix(seed_list, public_evidence_corpus, demo_anchors
 
 | Required before promotion | Path | Gate |
 |---|---|---|
-| r2 review artifacts | `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md` | Fresh independent adversarial review artifacts required before `status:plan-review`; produced by the follow-on remediation owner using `scripts/review/plan-review-fanout.sh` or a documented provider fallback |
+| r3 review artifacts | `scripts/review/results/2026-05-01-plan-2554-r3-{claude,codex,gemini,disagreement}.md` | Fresh independent adversarial review artifacts required before `status:plan-review`; `disagreement` is the canonical synthesis emitted by `scripts/review/plan-review-fanout.sh`; any provider fallback must be documented in the artifact body |
 
 No production-code paths are touched. No edits to `digitalmodel/`, `assetutilities/`, or other Tier-1 repos. No edits to `docs/gtm/` (existing GTM corpus stays as-is and is referenced by path).
 
@@ -175,8 +175,8 @@ Because the deliverable is a research artifact rather than executable code, the 
 | Check | What it verifies | How to execute |
 |---|---|---|
 | `live_countable_targets ≥ 20` | Acceptance criterion #1 in #2554; excludes legacy/deprecated, `Defer`, explicitly non-counted partner-shape rows, and rows explicitly tagged wind-only pending FOWT | Run `uv run python scripts/validation/validate_gtm_2554_matrix.py --write-artifact`; the script parses target blocks, verifies required row fields, derives live/countable rows, compares scaffold/summary count claims, rewrites the legal-scan inventory with PASS/FAIL status, and fails if live_countable < 20 or contact/deny-list hits exist. |
-| `each_live_target has public evidence` | Acceptance criterion #2 at scaffold-review depth | validator confirms each counted row has at least one allowed public URL in `corporate_root_evidence:` and a populated `deep_link_evidence:` field; High-priority rows must additionally have official-source or explicitly bounded `deep_link_evidence:` / `pain_point_evidence:` that does not overclaim. |
-| `each live High-priority target has a deep-link backlog slot` | Corporate-root vs deep-link distinction is explicit | per-target field `deep_link_evidence:` present; High-priority rows may not be `PENDING`, while Defer/non-counted rows may remain `PENDING` with explicit exclusion status |
+| `each_live_target has public evidence` | Acceptance criterion #2 at scaffold-review depth | validator confirms each counted row has at least one allowed public URL in `corporate_root_evidence:` and `deep_link_evidence:` that is not `PENDING` and is either an allowed public URL or explicit bounded official-site/no-public-proof/access-boundary text. High-priority rows must additionally have bounded `pain_point_evidence:` that does not overclaim. |
+| `each live High-priority target has a deep-link backlog slot` | Corporate-root vs deep-link distinction is explicit | per-target field `deep_link_evidence:` present and bounded for every live/countable target; Defer/non-counted rows may remain `PENDING` with explicit exclusion status |
 | `each live target has pain-point evidence traceability` | Hypotheses are attributable, not freehand | per-target field `pain_point_evidence:` present |
 | `no individual contact details inline` | Acceptance criterion #3 in #2554 + Legal Sanity Gate | Targeted committed-artifact scan recorded at `docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md`; do not rely on `--diff-only` after commit. |
 | `each High-priority target has ≥1 demo anchor` | Outreach-readiness check (matrix usable for #2556) | per-target field `demo_anchor:` non-empty for `outreach_priority: High` |
@@ -197,7 +197,7 @@ These checks replace the standard `pytest` lines that would appear for an engine
 - [ ] Every live countable target has at least one allowed public evidence URL in `corporate_root_evidence:` and a populated `deep_link_evidence:` field containing official-domain evidence or explicit bounded language such as `no-stable-official-page-verified` / `no-public-proof-found` / access-boundary notes. Reviewer spot-check confirms the evidence is company/corporate-root or explicitly bounded. Every High-priority row has `pain_point_evidence:` populated with either public official evidence or explicit bounded language; corporate roots alone are not sufficient for High-priority outreach-fit claims.
 - [ ] No individual contact details (named persons, direct emails, phone numbers, individual LinkedIn URLs) appear inline in the public artifact. The scaffold carries an explicit "private contact data routes outside this repo" note in its header; the committed-artifact legal/privacy scan records zero deny-list/contact-pattern hits, and manual reviewer spot-check is required because regexes cannot prove semantic absence of all names/titles.
 - [ ] Each `outreach_priority: High` target maps to at least one GTM demo concept (Demo 3, 4, or 5 as the immediate set; 6, 7 if/when shipped/restored) under `demo_anchor:`. This is an internal positioning anchor, not proof that local Demo 3/4/5 output files are present.
-- [ ] Review-routing contract is explicit: `status:plan-review` requires non-empty, independent r2 artifacts at `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini}.md` plus a synthesis at `...-r2-synthesis.md`; those artifacts must cite the exact content commit SHA under review. The synthesis should cite the parent/content commit reviewed; if the synthesis artifact itself is committed later, the issue comment must state both the reviewed content SHA and the artifact-archive SHA. During the r2 run these artifacts may not exist yet; promotion is allowed only after they are archived. All substantive verdicts must be `APPROVE` or `MINOR`, and the r2 synthesis must explicitly disposition every MINOR finding as addressed, accepted-with-boundary, or deferred outside #2554 scope with rationale. If a provider CLI fails, the synthesis must document the failure and either rerun via a working route or keep #2554 blocked; no automatic 2-of-3 downgrade is authorized. `UNAVAILABLE`, zero-byte, self-bootstrap, or stale-path artifacts document failure but do not satisfy promotion.
+- [ ] Review-routing contract is explicit: `status:plan-review` requires non-empty, independent r3 artifacts at `scripts/review/results/2026-05-01-plan-2554-r3-{claude,codex,gemini,disagreement}.md`; `disagreement` is the canonical synthesis emitted by the fanout runner. The prompt/envelope must inject the content commit SHA when provider sandboxes cannot discover it; if a provider cannot cite the SHA, the synthesis must record the reviewed artifact paths/date and keep promotion blocked unless an explicit reviewer fallback is accepted. The synthesis should cite the parent/content commit reviewed; if the synthesis artifact itself is committed later, the issue comment must state both the reviewed content SHA and the artifact-archive SHA. During the r2 run these artifacts may not exist yet; promotion is allowed only after they are archived. All substantive verdicts must be `APPROVE` or `MINOR`, and the r2 synthesis must explicitly disposition every MINOR finding as addressed, accepted-with-boundary, or deferred outside #2554 scope with rationale. If a provider CLI fails, the synthesis must document the failure and either rerun via a working route or keep #2554 blocked; no automatic 2-of-3 downgrade is authorized. `UNAVAILABLE`, zero-byte, self-bootstrap, or stale-path artifacts document failure but do not satisfy promotion.
 - [ ] Each live target carries a `pain_point_evidence:` slot that either cites a public source path / URL or explicitly says the current statement is an inference from demo coverage pending deeper public verification.
 - [ ] Live-countable and High-priority counts are reproducible and consistent across artifacts: `uv run python scripts/validation/validate_gtm_2554_matrix.py --write-artifact` must pass; the generated `Semantic live/countable vessel/operator target count` must match the lane summary live-countable integer, and the generated High count must match the scaffold Summary Counts bullet and lane-summary High count. Any mismatch is a blocker for `status:plan-review` and must be reconciled before promotion. Historical note: the 2026-04-29 next-wave review found a prior body/summary divergence; current patched artifacts record 20 live-countable targets and 12 High-priority targets.
 - [ ] Plan Index row exists in `docs/plans/README.md` reflecting the current plan status (`draft` until adversarial review lands, `plan-review` once it does).
@@ -229,9 +229,9 @@ Historical review results are retained for traceability; they are not approval e
 | #2560 stale dependency | Summary states #2560 is CLOSED/status:done; remaining blocker is r2 review | Lane summary + README row |
 | Provider CLI/regression risk | r2 synthesis must document provider failure and keep blocked unless rerun via working route | AC #5 |
 
-**Current draft state:** PATCHED AFTER R1; PENDING CLEAN RERUN REVIEW. This draft incorporates the r1 blocker-removal edits: explicit r2 artifact family, no self-bootstrap review credit, semantic live-count validation, High-priority evidence/boundary requirements, targeted committed-artifact legal/privacy scan, corrected local artifact claims, and authoritative blocked status.
+**Current draft state:** PATCHED AFTER R2 MAJOR; PENDING CLEAN R3 RERUN REVIEW. This draft incorporates the r1 blocker-removal edits: explicit r2 artifact family, no self-bootstrap review credit, semantic live-count validation, High-priority evidence/boundary requirements, targeted committed-artifact legal/privacy scan, corrected local artifact claims, and authoritative blocked status.
 
-**Promotion condition:** #2554 may move from `status:blocked` to `status:plan-review` only after a fresh rerun adversarial review writes non-empty independent artifacts at `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini}.md`, writes `scripts/review/results/2026-04-30-plan-2554-r2-synthesis.md`, and the synthesis records no unresolved MAJOR findings. Until then, #2556 remains blocked/no-send unless the owner explicitly waives #2554 and separately approves send.
+**Promotion condition:** #2554 may move from `status:blocked` to `status:plan-review` only after a fresh rerun adversarial review writes non-empty independent artifacts at `scripts/review/results/2026-05-01-plan-2554-r3-{claude,codex,gemini,disagreement}.md`, and the disagreement/synthesis artifact records no unresolved MAJOR findings. Until then, #2556 remains blocked/no-send unless the owner explicitly waives #2554 and separately approves send.
 
 ---
 

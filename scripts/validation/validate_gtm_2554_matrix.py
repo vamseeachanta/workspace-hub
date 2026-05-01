@@ -19,6 +19,7 @@ DISALLOWED_EVIDENCE_HOSTS = {"github.com", "linkedin.com", "wikipedia.org", "fac
 SCAFFOLD = ROOT / "docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md"
 PLAN = ROOT / "docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md"
 SUMMARY = ROOT / "docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md"
+README = ROOT / "docs/plans/README.md"
 SCAN = ROOT / "docs/reports/gtm/legal-scans/2026-04-30-issue-2554-public-matrix-scan.md"
 DENY = ROOT / ".legal-deny-list.yaml"
 
@@ -159,13 +160,24 @@ def evidence_urls_are_allowed(text: str) -> bool:
     return True
 
 
-def high_deep_link_is_bounded(text: str) -> bool:
+def deep_link_is_bounded(text: str) -> bool:
     lower = text.lower()
-    if "pending" in lower:
+    if not text.strip() or "pending" in lower:
         return False
-    if "no-public-proof-found" in lower or "access-boundary" in lower or "official-site" in lower:
+    if "no-public-proof-found" in lower or "access-boundary" in lower or "official-site" in lower or "no-stable-official-page-verified" in lower:
         return True
-    return evidence_urls_are_allowed(text) and "official" in lower
+    return evidence_urls_are_allowed(text) and ("official" in lower or "http" in lower)
+
+
+def high_pain_point_is_bounded(text: str, corporate_root: str) -> bool:
+    lower = text.lower()
+    if not text.strip() or "pending" in lower:
+        return False
+    if text.strip() == corporate_root.strip():
+        return False
+    if "no-public-proof-found" in lower or "official" in lower or "access-boundary" in lower or "internal only" in lower:
+        return True
+    return evidence_urls_are_allowed(text)
 
 def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hits: list[tuple[str, str]], contact_hits: list[tuple[str, str, str]]) -> list[str]:
     errors: list[str] = []
@@ -190,10 +202,10 @@ def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hi
         fields = row["fields"]
         if row["counted"] and not evidence_urls_are_allowed(str(fields["corporate_root_evidence"])):
             errors.append(f"target {row['target']} counted row lacks allowed public corporate_root_evidence URL")
-        if row["counted"] and not str(fields["deep_link_evidence"]).strip():
-            errors.append(f"target {row['target']} counted row lacks populated deep_link_evidence or explicit boundary")
-        if row["priority"] == "High" and not high_deep_link_is_bounded(str(fields["deep_link_evidence"])):
-            errors.append(f"target {row['target']} High row lacks official-domain deep_link_evidence or bounded no-public-proof/access note")
+        if row["counted"] and not deep_link_is_bounded(str(fields["deep_link_evidence"])):
+            errors.append(f"target {row['target']} counted row lacks bounded/allowed deep_link_evidence")
+        if row["priority"] == "High" and not high_pain_point_is_bounded(str(fields["pain_point_evidence"]), str(fields["corporate_root_evidence"])):
+            errors.append(f"target {row['target']} High row lacks bounded pain_point_evidence distinct from corporate_root_evidence")
         if row["priority"] == "High" and not str(fields["private_route"]).lower().startswith("omitted-public-artifact"):
             errors.append(f"target {row['target']} High row must keep private_route omitted-public-artifact")
     return errors
@@ -219,6 +231,7 @@ Scope:
 - `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`
 - `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`
 - `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md`
+- `docs/plans/README.md`
 
 ## Why this exists
 
@@ -251,7 +264,7 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 ## Promotion note
 
-This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts, comparing count claims across artifacts, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
+This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts and unbounded `PENDING` deep-link fields for live rows, comparing count claims across artifacts, checking the plan index for conflict-marker leakage, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
 """
 
 
@@ -262,8 +275,11 @@ def main() -> int:
     scaffold = SCAFFOLD.read_text()
     summary = SUMMARY.read_text()
     rows = parse_rows(scaffold)
-    deny_hits, contact_hits = scan_contacts([PLAN, SCAFFOLD, SUMMARY])
+    deny_hits, contact_hits = scan_contacts([PLAN, SCAFFOLD, SUMMARY, README])
     errors = validate(rows, scaffold, summary, deny_hits, contact_hits)
+    readme_text = README.read_text()
+    if any(marker in readme_text for marker in ("<<<<<<<", "=======", ">>>>>>>")):
+        errors.append("docs/plans/README.md contains merge-conflict markers")
     output = render_scan(rows, deny_hits, contact_hits, errors)
     if args.write_artifact:
         SCAN.write_text(output)

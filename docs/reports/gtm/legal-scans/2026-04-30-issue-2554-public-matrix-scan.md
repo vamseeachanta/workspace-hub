@@ -7,6 +7,7 @@ Scope:
 - `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`
 - `docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md`
 - `docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md`
+- `docs/plans/README.md`
 
 ## Why this exists
 
@@ -62,4 +63,4 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 ## Promotion note
 
-This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts, comparing count claims across artifacts, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
+This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts and unbounded `PENDING` deep-link fields for live rows, comparing count claims across artifacts, checking the plan index for conflict-marker leakage, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.

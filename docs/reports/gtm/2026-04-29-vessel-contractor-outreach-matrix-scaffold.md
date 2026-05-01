@@ -3,7 +3,7 @@
 > **Issue:** [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) — feat(gtm): weekly vessel contractor outreach matrix for April target
 > **Parent campaign:** [#1669](https://github.com/vamseeachanta/workspace-hub/issues/1669) — vessel installation contractor outreach
 > **GTM umbrella:** [#2016](https://github.com/vamseeachanta/workspace-hub/issues/2016) — client conversion pipeline
-> **Demo positioning anchors:** Demo 3 (deepwater mudmat installation), Demo 4 (shallow-water S-lay), Demo 5 (deepwater rigid-jumper installation) — concept anchors only until public proof outputs are restored or replaced
+> **Demo positioning anchors:** Demo 3 (deepwater mudmat installation), Demo 4 (shallow-water S-lay), Demo 5 (deepwater rigid-jumper installation) — ecosystem proof/positioning anchors; generated HTML proof lives in sibling `digitalmodel`, not duplicated in this workspace-hub report
 > **Authoring lane:** Claude planning/research worker, ace-linux-1, 2026-04-29
 > **Status:** **evidence-filled blocker-removal snapshot — still not a send-ready list.** Per-target evidence is split into `corporate_root_evidence` vs. `deep_link_evidence`, and `pain_point_evidence` is carried explicitly. The 12 High-priority rows now have official deep-link evidence or explicit `no-public-proof-found` boundaries from #2560; contact routing, final review, and owner send approval remain required before #2556 can consume this matrix.
 
@@ -58,7 +58,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **corporate_root_evidence.** https://www.subsea7.com/ (corporate root)
 - **deep_link_evidence.** https://www.subsea7.com/en/our-business/assets.html — official assets/fleet section; https://www.subsea7.com/en/media/datasheets.html — official datasheets index; https://www.subsea7.com/en/our-business/subsea-and-conventional.html — official Subsea and Conventional service line. Fetch note 2026-04-30: official URLs are discoverable but returned challenge/access-denied in this environment, so use as official-domain anchors only until browser-verified by a human before send.
 - **pain_point_evidence.** no-public-proof-found — retain hypothesis as internal only until Subsea7 official page content is human-verified beyond the access challenge.
-- **can_say_now.** "ACE has a reusable deepwater-mudmat and rigid-jumper screening workflow concept suitable for auditable HTML reporting once a client-safe proof artifact is selected." Source boundary: exact public demo-output paths are not present on GitHub `main`; do not cite generated local demo files as public proof until restored or replaced.
+- **can_say_now.** "ACE has a reusable deepwater-mudmat and rigid-jumper screening workflow concept suitable for auditable HTML reporting once a client-safe proof artifact is selected." Source boundary: demo HTML proof lives in sibling `digitalmodel`; cite only with explicit sibling-repo provenance, not as workspace-hub-local proof.
 - **cannot_claim_yet.** Vessel-specific RAOs; full DP envelope at landing; named-Subsea7-project case studies (we hold no such public license).
 - **outreach_priority.** **High** — Tier-1 fit + named-vessel anchor in our shipped demo input.
 - **private_route.** omitted-public-artifact (details intentionally absent from this public repo).

@@ -52,6 +52,7 @@
 - [x11vnc vs TigerVNC for headless](feedback_x11vnc_vs_tigervnc_headless.md) — x11vnc is a screen mirror and crashloops on headless hosts (no GUI session to attach to); use TigerVNC `vncserver :N` instead — verified 2026-04-27 ace-linux-2 (67,189 crashloops in 4 days)
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` (in-kernel) refuses dirty NTFS volumes; use `ntfs-3g` (FUSE) which auto-replays journal; drop `default_permissions` and pass explicit `uid`/`gid` for ownership
 - [Wikimedia thumb width quirk](feedback_wikimedia_thumb_width_quirk.md) — query `imageinfo` API for canonical `thumburl`; never hand-construct width segment; main-session re-verify (subagent verification was wrong twice on 2026-04-27)
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md

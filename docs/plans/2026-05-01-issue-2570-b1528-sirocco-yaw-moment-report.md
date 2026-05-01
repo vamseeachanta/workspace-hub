@@ -1,6 +1,6 @@
 # Plan for #2570: B1528 SIROCCO yaw-moment input and interactive static report
 
-> **Status:** plan-review
+> **Status:** completed
 > **Complexity:** T3
 > **Date:** 2026-05-01
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2570
@@ -138,7 +138,7 @@ render detailed markdown/HTML report with assumptions, formulas, sources, caveat
 | Codex | MAJOR -> RESOLVED | Replace loose "model-equivalent" tests with deterministic expectations per selected model; verify package data and temp-dir report outputs. |
 | Gemini | MAJOR -> RESOLVED | Make #2569 an explicit blocker; treat #2566 as validation/hardening, not execution authority; define interactive artifact placement. |
 
-**Overall result:** PASS after revision — major findings resolved in plan text; implementation remains blocked until user approval.
+**Overall result:** PASS after revision — major findings resolved in plan text; implementation completed after user approval.
 
 Revisions made based on review:
 - Added #2569 as a hard blocker for source values and benchmark evidence.
@@ -159,3 +159,28 @@ Revisions made based on review:
 
 ## Complexity: T3
 **T3** — project-specific engineering calculation with packaged input, regression checks, provenance, interactive visualization, and report generation.
+
+
+---
+
+## Implementation closeout
+
+Completed 2026-05-01.
+
+Delivered in `vamseeachanta/digitalmodel`:
+
+- `src/digitalmodel/naval_architecture/b1528_sirocco_yaw_report.py`
+- `src/digitalmodel/naval_architecture/data/b1528_sirocco_yaw_moment.yml`
+- `tests/naval_architecture/test_b1528_sirocco_yaw_moment.py`
+- `docs/domains/marine-engineering/b1528-sirocco-yaw-moment-report.md`
+- `outputs/b1528_sirocco/b1528_sirocco_yaw_moment_report.html`
+- CSV/JSON/provenance/manifest outputs under `outputs/b1528_sirocco/`
+- `scripts/review/results/2026-05-01-implementation-2570-hermes.md`
+
+Validation:
+
+- `UV_NO_SYNC=1 PYTHONPATH=src uv run --no-sync pytest tests/naval_architecture/test_b1528_sirocco_yaw_moment.py -q -p no:randomly -p no:cov -p no:benchmark` — `6 passed`
+- `UV_NO_SYNC=1 PYTHONPATH=src uv run --no-sync --with ruff ruff check ...` — `All checks passed!`
+- Smoke generation wrote `84` rows and CSV/JSON/provenance/markdown/HTML/manifest.
+
+Adversarial implementation review verdict: `APPROVE` after one MINOR caveat consistency fix.

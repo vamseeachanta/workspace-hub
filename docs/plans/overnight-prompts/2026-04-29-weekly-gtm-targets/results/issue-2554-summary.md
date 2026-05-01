@@ -15,7 +15,7 @@
 
 ## What is intentionally NOT done
 
-- **Adversarial review wave.** Original overnight lane could not run provider fanout. Post-#2560 r1 review artifacts exist at `scripts/review/results/2026-04-30-plan-2554-{claude,codex,gemini,disagreement}.md` and returned MAJOR; the remaining next action is a clean rerun archived as `scripts/review/results/2026-04-30-plan-2554-r2-{claude,codex,gemini,synthesis}.md`.
+- **Adversarial review wave.** Original overnight lane could not run provider fanout. Post-#2560 r1 review artifacts exist at `scripts/review/results/2026-04-30-plan-2554-{claude,codex,gemini,disagreement}.md` and returned MAJOR; the remaining next action is a clean rerun archived as `scripts/review/results/2026-05-01-plan-2554-r3-{claude,codex,gemini,disagreement}.md`; `disagreement` is the fanout synthesis artifact.
 - **`status:plan-review` label.** Not applied — #2554 remains `status:blocked` until the clean rerun artifacts are archived and show no unresolved MAJOR findings.
 - **`status:plan-approved` label.** Not applied — explicitly forbidden by the prompt and the planning skill v3.1.0 (no self-approval).
 - **Deep-link URL fabrication.** Avoided. Evidence URLs are official corporate-domain roots or official deep links / explicit access-boundary notes. #2560 closed the High-priority evidence-fill lane; remaining Medium/Low/Defer rows stay bounded and no send is authorized.
@@ -41,8 +41,8 @@
 
 ## Exact next action
 
-**Option A (recommended) — evidence-fill, then re-review.**
-Rerun live adversarial review against `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md` after the blocker-remediation patch. Apply `status:plan-review` only if no remaining MAJOR findings block promotion.
+**Option A (recommended) — r3 blocker patch, then clean re-review.**
+Patch the fresh r2 MAJOR findings (demo sibling-repo boundary, sentinel-aware `private_route` wording, non-High evidence-depth validator, fanout `disagreement` artifact contract, document-intelligence retrieval citation, and plan-index/lane-summary drift). Then rerun live adversarial review against `docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md`. Apply `status:plan-review` only if no remaining MAJOR findings block promotion.
 
 **Option B — post a progress comment on #2554 first.**
 Recommended comment body (verbatim, ready to paste):
@@ -64,7 +64,7 @@ Not yet done (intentionally, per the planning-only lane scope):
 - Evidence-fill #2560 is closed; #2561/#2562 remain follow-up enrichment lanes before broader send-readiness. No sends authorized.
 - No labels mutated; no emails sent.
 
-Recommended next action: run `scripts/review/plan-review-fanout.sh` against the plan file above, then return for user approval.
+Recommended next action: commit the r3 blocker patch, run `scripts/review/plan-review-fanout.sh` against the plan file above, archive artifacts as `2026-05-01-plan-2554-r3-*`, and return for user approval only if the disagreement/synthesis artifact has no unresolved MAJOR findings.
 ```
 
 **Option C — user-confirm scope toggles before review.**

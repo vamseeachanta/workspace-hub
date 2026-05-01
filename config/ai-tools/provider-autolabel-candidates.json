@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-04-30T01:20:07.559824Z",
+  "generated_at": "2026-05-01T09:20:55.202702Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 7,
+  "eligible_count": 8,
   "applied": [],
   "candidates": [
     {
@@ -38,17 +38,19 @@
       "eligible": true
     },
     {
-      "number": 2555,
-      "title": "feat(gtm): vessel capability charts for contractor brochure",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2555",
+      "number": 2571,
+      "title": "feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2571",
       "labels": [
+        "enhancement",
         "priority:high",
-        "cat:business",
-        "cat:strategy",
-        "domain:gtm",
+        "cat:engineering-calculations",
+        "domain:hydrodynamics",
+        "domain:visualization",
+        "domain:naval-architecture",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-29T23:15:03Z",
+      "updatedAt": "2026-05-01T02:34:25Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -136,40 +138,6 @@
       "eligible": true
     },
     {
-      "number": 2515,
-      "title": "feat(digitalmodel): generate offshore cable umbilical pipeline cross-section reports",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2515",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering",
-        "domain:pipeline",
-        "domain:marine",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-04-29T02:28:01Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 2541,
       "title": "feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2541",
@@ -214,6 +182,74 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-04-29T14:30:53Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2566,
+      "title": "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2566",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:engineering-calculations",
+        "domain:hydrodynamics",
+        "domain:naval-architecture",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-01T00:40:05Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2567,
+      "title": "feat(naval-arch): standards-backed steering gear and rudder-stock design checks",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2567",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:engineering-calculations",
+        "domain:hydrodynamics",
+        "domain:naval-architecture",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-01T00:41:52Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -289,36 +325,6 @@
         "priority-labeled",
         "strong-gemini-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2431,
-      "title": "Compliance alert: W17 \u2014 20% (critical)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
-      "labels": [
-        "priority:high",
-        "priority:critical",
-        "compliance-alert"
-      ],
-      "updatedAt": "2026-04-26T11:45:09Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": false
     }

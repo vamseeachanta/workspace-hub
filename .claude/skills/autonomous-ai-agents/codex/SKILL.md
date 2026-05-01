@@ -36,7 +36,8 @@ terminal(command="cd $(mktemp -d) && git init && codex exec 'Build a snake game 
 
 ```
 # Robust background pattern: redirect stdin so Codex doesn't hang waiting for extra input
-terminal(command="codex exec --full-auto 'Refactor the auth module' < /dev/null 2>&1 | tee /tmp/codex-auth.log", workdir="~/project", background=true, notify_on_complete=true)
+# Prefer --sandbox workspace-write; older notes/examples may use deprecated --full-auto.
+terminal(command="codex exec --sandbox workspace-write 'Refactor the auth module' < /dev/null 2>&1 | tee /tmp/codex-auth.log", workdir="~/project", background=true, notify_on_complete=true)
 # Returns session_id
 
 # Monitor progress
@@ -59,7 +60,8 @@ Critical learned behavior:
 | Flag | Effect |
 |------|--------|
 | `exec "prompt"` | One-shot execution, exits when done |
-| `--full-auto` | Sandboxed but auto-approves file changes in workspace |
+| `--sandbox workspace-write` | Auto-approves changes inside the workspace sandbox; preferred current flag for build lanes |
+| `--full-auto` | Deprecated legacy alias for workspace-write style automation; avoid in new prompts |
 | `--yolo` | No sandbox, no approvals (fastest, most dangerous) |
 
 ## PR Reviews
@@ -111,7 +113,7 @@ terminal(command="gh pr comment 86 --body '<review>'", workdir="~/project")
 1. **Always use `pty=true`** — Codex is an interactive terminal app and hangs without a PTY
 2. **Git repo required** — Codex won't run outside a git directory. Use `mktemp -d && git init` for scratch
 3. **Use `exec` for one-shots** — `codex exec "prompt"` runs and exits cleanly
-4. **`--full-auto` for building** — auto-approves changes within the sandbox
-5. **Background for long tasks** — use `background=true` and monitor with `process` tool
+4. **`--sandbox workspace-write` for building** — auto-approves changes within the workspace sandbox; `--full-auto` is deprecated and should only appear in legacy command transcripts
+5. **Background for long tasks** — use `background=true` and monitor with `process` tool plus PID/`ps` checks when launching through shell wrappers
 6. **Don't interfere** — monitor with `poll`/`log`, be patient with long-running tasks
 7. **Parallel is fine** — run multiple Codex processes at once for batch work

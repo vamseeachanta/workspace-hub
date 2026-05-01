@@ -183,6 +183,10 @@ Issues WITHOUT engineering-critical labels:
 
 ## Pitfalls & Gotchas (from historical session data)
 
+### Engineering calculation plan hardening
+
+When planning or executing engineering-calculation issues, especially in `digitalmodel`, apply the checklist in `references/engineering-calculation-plan-hardening.md` before moving to `status:plan-review` and again before implementation closeout. Key lessons: split equal/opposite physical quantities into explicit fields, define force-line lever arms geometrically, name exact output artifacts/charts, add non-tautological sign and identity tests, verify public imports outside pytest path injection, include upstream-helper regression slices, record engineering-registry retrieval evidence, explicitly decide whether `/mnt/ace`/wiki promotion is required before coding, and during implementation honor YAML-configured artifact names/chart subsets, reject empty sweeps early, preserve subprocess environments, and pin physical sign conventions in code/YAML/docs/tests.
+
 ### Agents Skipping the Workflow
 
 **What happened:** 120+ engineering commits in 14 days, 542 commits since Mar 24, only 1 review artifact. The existing enforcement scripts (cross-review gate, review router, pre-push hook) all default to WARNING mode. Nobody blocked anything.

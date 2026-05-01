@@ -1,0 +1,91 @@
+---
+name: worktree-branch-sync-hygiene
+version: 1.0.0
+category: workspace-hub
+description: Class-level branch, worktree, dirty-main, stash, sync, and hook hygiene for workspace-hub style multi-repo work.
+tags: [git, worktree, sync, branch-hygiene]
+---
+
+# Worktree Branch Sync Hygiene
+
+## When to Use
+Use when promoting work from dirty main/worktrees, cleaning blocked branches, reconciling sync churn, handling pre-push/hook drift, or preserving tags/changes during cleanup.
+
+## Class-Level Workflow
+1. Inventory dirty state, untracked files, stashes, branches, worktrees, and remotes before moving anything.
+2. Preserve recoverability with tags/stashes/patch files before branch cleanup.
+3. Separate narrow fix promotion from broad sync/root churn.
+4. Verify hook paths and real installed hook shape, not just intended config.
+5. After sync, re-check for concurrent writer blocks before declaring clean.
+6. After docs-only or handoff commits from a clean isolated worktree, re-check for hook-generated dirt before declaring exit clean. Workspace-hub hooks can update generated files such as `scripts/testing/coverage-results.json` even when the pushed commit is docs-only; restore unintended generated dirt, then verify `HEAD == origin/main` and `git status --short` is empty.
+7. If a merge/push happened before context compaction or tool output was truncated, re-verify `origin/main`, integration worktree cleanliness, dirty-root preservation, exact validation counts, and any nonzero legal/security check before giving a final report. See `references/post-compaction-merge-verification.md`.
+
+## Consolidated Session Learnings
+
+The `references/` directory contains archived narrow skills absorbed during the 2026-04-29 umbrella consolidation pass. Use the subsections below as the class-level index, then open the named reference when a case-specific recipe is needed.
+## Absorbed Narrow Skills (2026-04-29)
+
+### `post-compaction-merge-verification`
+
+- Session reference: `references/post-compaction-merge-verification.md`.
+- Preserved insight: When a merge/push happened before compaction or tool output was truncated, final reports must re-check `origin/main`, integration worktree cleanliness, dirty-root preservation, validation counts, and legal/security scan status from fresh commands.
+
+### `blocked-branch-preserve-tag-cleanup`
+
+- Former skill demoted to `references/blocked-branch-preserve-tag-cleanup.md`.
+- Preserved insight: Safely clean stale local branches that cannot be merged by preserving them with local tags before deletion
+
+### `clean-worktree-integration-from-dirty-main`
+
+- Former skill demoted to `references/clean-worktree-integration-from-dirty-main.md`.
+- Preserved insight: Land validated issue work from isolated worktrees when the main checkout is dirty by creating a fresh integration worktree, cherry-picking only implementation commits, re-running combined validation, and preparing push/closeout artifacts.
+
+### `dirty-main-narrow-fix-promotion-with-stash-recovery`
+
+- Former skill demoted to `references/dirty-main-narrow-fix-promotion-with-stash-recovery.md`.
+- Preserved insight: Promote a narrow fix from a feature/worktree into workspace-hub main when main is dirty; verify label taxonomy before issue creation and recover safely when stash reapply conflicts.
+
+### `full-branch-cleanup-and-worktree-hygiene`
+
+- Former skill demoted to `references/full-branch-cleanup-and-worktree-hygiene.md`.
+- Preserved insight: Track all dirty/untracked workspace-hub changes, merge stale branches into main, clean remote/local branches, and remove stale worktrees while preserving tracked nested gitlinks.
+
+### `learned-git-worktree-hook-path-and-real-hook-shape-review`
+
+- Former skill demoted to `references/learned-git-worktree-hook-path-and-real-hook-shape-review.md`.
+- Preserved insight: Catch hook-installation and governance bugs that only appear in linked git worktrees or against the real generated hook shape, not simplified test fixtures.
+
+### `live-writer-branch-cleanup-guard`
+
+- Former skill demoted to `references/live-writer-branch-cleanup-guard.md`.
+- Preserved insight: Guardrails for multi-repo sync and branch cleanup when workspace-hub or another shared repo has active writer sessions, worktree-backed branches, or unrelated-history branches.
+
+### `repo-sync-deleted-remote-branch-and-unrelated-history-recovery`
+
+- Former skill demoted to `references/repo-sync-deleted-remote-branch-and-unrelated-history-recovery.md`.
+- Preserved insight: Recover multi-repo sync failures caused by deleted upstream branches, stale git index locks, and local branches with unrelated history to the remote default branch.
+
+### `workspace-hub-sync-concurrent-writer-blocks`
+
+- Former skill demoted to `references/workspace-hub-sync-concurrent-writer-blocks.md`.
+- Preserved insight: Handle repository_sync cleanup when workspace-hub root is being mutated by concurrent Claude/Codex/Gemini sessions.
+
+### `workspace-hub-sync-root-churn-catchup`
+
+- Former skill demoted to `references/workspace-hub-sync-root-churn-catchup.md`.
+- Preserved insight: Catch up workspace-hub root changes that continue to appear during repo sync because live review/agent processes keep writing files after commits
+
+### `worktree-pre-push-bypass-for-tier1-checks`
+
+- Former skill demoted to `references/worktree-pre-push-bypass-for-tier1-checks.md`.
+- Preserved insight: Handle workspace-hub integration-branch pushes from isolated git worktrees when the pre-push hook incorrectly assumes sibling tier-1 repos exist under the worktree path.
+
+### `interactive-issue-execution-worktree-guardrails`
+
+- Former skill demoted to `references/interactive-issue-execution-worktree-guardrails.md`.
+- Preserved insight: Execute approved GitHub issues in isolated worktrees with interactive Claude Code/Codex runs, while containing agent drift and salvaging progress when provider/runtime problems occur.
+
+### `session-start-dirty-state-triage-with-background-agents`
+
+- Former skill demoted to `references/session-start-dirty-state-triage-with-background-agents.md`.
+- Preserved insight: Distinguish real implementation dirt from generated session-state churn when resuming a repo with active overnight/background agents.

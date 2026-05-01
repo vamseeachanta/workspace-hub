@@ -1,10 +1,10 @@
 # Plan for #2552: External contributor and unsolicited paid-help response runbook
 
-> **Status:** plan-review (batch2 canonical Claude artifact restored; T1 deferred-review approval candidate, but full cross-provider fanout remains blocked by Codex timeout and Gemini stale-workspace findings)
+> **Status:** plan-review (2026-04-30 reviewer blockers patched in plan text; T1 deferred-review approval candidate only if user explicitly accepts single-author evidence, otherwise requires fresh cross-provider re-review with no MAJOR)
 > **Complexity:** T1
 > **Date:** 2026-04-29
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2552
-> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2552-claude.md` (canonicalized from single-author Claude review), `scripts/review/results/2026-04-29-plan-2552-codex.md` (UNAVAILABLE timeout), `scripts/review/results/2026-04-29-plan-2552-gemini.md` (MAJOR but appears stale-workspace/false-negative on files present in this checkout), `scripts/review/results/2026-04-29-plan-2552-disagreement.md`.
+> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2552-claude.md` (canonicalized from single-author Claude review), `scripts/review/results/2026-04-29-plan-2552-codex.md` (UNAVAILABLE timeout), `scripts/review/results/2026-04-29-plan-2552-gemini.md` (MAJOR but appears stale-workspace/false-negative on files present in this checkout), `scripts/review/results/2026-04-29-plan-2552-disagreement.md`, `scripts/review/results/2026-04-30-plan-2552-{codex,gemini}-final.md` (MAJOR; patched by this revision; requires fresh rerun or explicit user waiver).
 
 ---
 
@@ -80,7 +80,7 @@ aceengineer-website-orphan-path-verification-2026-04-20.md
 
 ## Deliverable
 
-A `docs/security/external-contributor-runbook.md` file that covers all four external-interaction scenarios with decision criteria, response templates, and a lightweight collaborator/paid-pilot intake path, plus a one-line cross-reference in `docs/governance/TRUST-ARCHITECTURE.md`.
+A `docs/security/external-contributor-runbook.md` file that covers all four external-interaction scenarios with decision criteria, response templates, and a lightweight collaborator/paid-pilot intake path, plus a one-line cross-reference in `docs/governance/TRUST-ARCHITECTURE.md` and a public-facing pointer in the repository `README.md` so legitimate contributors can discover the off-GitHub contact path while interaction limits are active.
 
 ---
 
@@ -97,7 +97,8 @@ Trivial — see Files to Change. No algorithmic logic; this is a pure documentat
 | Create | `docs/security/external-contributor-runbook.md` | main runbook with decision tree + templates |
 | Create | `tests/security/test_runbook_external_contributor.py` | structural lint tests — file existence, scenario coverage, template presence (incl. `HIDE_CHECKLIST`), TRUST-ARCHITECTURE cross-reference |
 | Modify | `docs/governance/TRUST-ARCHITECTURE.md` | add one-line cross-reference under a new "External Interaction Policy" pointer |
-| Update | `docs/plans/README.md` | add this plan to index (executor step) |
+| Modify | `README.md` | add a concise public-facing external-contributor pointer that names the concrete off-GitHub route `https://aceengineer.com/#contact` while public repos are under `collaborators_only` interaction limits |
+| Update | `docs/plans/README.md` | add this plan to index as a one-time process artifact; do not create a permanent CI test that hard-codes this historical plan row |
 
 ---
 
@@ -109,7 +110,7 @@ The runbook must cover these four scenarios (from issue AC):
 
 2. **Suspected spam / bot comment** — automated scraper / generic solicitation. Decision: hide immediately via GitHub UI, report if it recurs.
 
-3. **Legitimate external contributor request** — someone with a genuine patch or proposal, but not a collaborator. Decision: route through a "Contributor Interest" template asking them to describe scope + sign off on the project's CLA/license posture. Do NOT grant `write` access until reviewed; use fork-and-PR path instead. **Caveat (mandatory in runbook):** while public repos are under the `collaborators_only` interaction limit (currently active through 2026-10-29 — see [#2550](https://github.com/vamseeachanta/workspace-hub/issues/2550) for renewal codification and `docs/handoffs/github-collaborator-only-lockdown-2026-04-29.md` for the lockdown handoff), non-collaborators cannot comment on issues, open issues, or open PRs against the public repos at all. Scenario 3 actions therefore require either a temporary lift of the interaction limit or a prior collaborator invitation; the runbook must instruct the operator to make that choice consciously rather than following the default fork-and-PR pattern.
+3. **Legitimate external contributor request** — someone with a genuine patch or proposal, but not a collaborator. Decision: route through a "Contributor Interest" template asking them to describe scope + sign off on the project's CLA/license posture. Do NOT grant `write` access until reviewed; use fork-and-PR path instead. **Caveat (mandatory in runbook):** while public repos are under the `collaborators_only` interaction limit (currently active through 2026-10-29 — see [#2550](https://github.com/vamseeachanta/workspace-hub/issues/2550) for renewal codification and `docs/handoffs/github-collaborator-only-lockdown-2026-04-29.md` for the lockdown handoff), non-collaborators cannot comment on issues, open issues, or open PRs against the public repos at all. Scenario 3 actions therefore require either a temporary lift of the interaction limit, a prior collaborator invitation, or an off-GitHub contact route published from `README.md`; the runbook must instruct the operator to make that choice consciously rather than following the default fork-and-PR pattern.
 
 4. **Paid external execution request** — structured proposal to implement a scoped issue. Decision: requires (a) scope definition, (b) NDA/confidentiality acknowledgement for private-context repos, (c) payment approval from owner, (d) fork + PR-only access (no direct push), (e) PR review gate held by owner before merge.
 
@@ -128,6 +129,7 @@ The runbook must cover these four scenarios (from issue AC):
 | `test_runbook_covers_four_scenarios` | document contains all 4 scenario headers | file content | headings matching "unsolicited", "spam", "legitimate contributor", "paid" (case-insensitive) |
 | `test_runbook_contains_templates` | templates section present | file content | `DECLINE_TEMPLATE`, `CONTRIBUTOR_INTEREST_TEMPLATE`, AND `HIDE_CHECKLIST` strings all present (no template silently omitted) |
 | `test_trust_architecture_crossref` | TRUST-ARCHITECTURE.md references the runbook | file content | `external-contributor-runbook` present in TRUST-ARCHITECTURE.md |
+| `test_readme_external_contributor_pointer` | repository README publishes a discoverable off-GitHub contact-path pointer while interaction limits are active | file content | `external-contributor-runbook` or `external contributor` plus the concrete URL `https://aceengineer.com/#contact` present in `README.md` |
 
 These are structural lint tests (`grep`-level), runnable as `pytest` with `pathlib` + `re`. Appropriate for a T1 documentation issue.
 
@@ -139,10 +141,12 @@ These are structural lint tests (`grep`-level), runnable as `pytest` with `pathl
 - [ ] Runbook includes `DECLINE_TEMPLATE`, `CONTRIBUTOR_INTEREST_TEMPLATE`, AND `HIDE_CHECKLIST` copy-paste blocks (none of the three may be silently omitted)
 - [ ] Runbook references [#2546](https://github.com/vamseeachanta/workspace-hub/issues/2546), [#2401](https://github.com/vamseeachanta/workspace-hub/issues/2401), AND [#2550](https://github.com/vamseeachanta/workspace-hub/issues/2550) — #2546/#2401 as the triggering example, #2550 as the sibling renewal-enforcement counterpart (per issue AC + single-author review F4)
 - [ ] Runbook references [#2401](https://github.com/vamseeachanta/workspace-hub/issues/2401) by issue number for the example scenario; does NOT name the individual external commenter inline (defensive — per single-author review L1)
-- [ ] Runbook Scenario 3 carries an explicit caveat: while `collaborators_only` interaction limits are active (currently through 2026-10-29 — see [#2550](https://github.com/vamseeachanta/workspace-hub/issues/2550)), Scenario 3 fork-and-PR actions require temporary lift of the limit or prior collaborator invitation (per single-author review F5)
+- [ ] Runbook Scenario 3 carries an explicit caveat: while `collaborators_only` interaction limits are active (currently through 2026-10-29 — see [#2550](https://github.com/vamseeachanta/workspace-hub/issues/2550)), Scenario 3 fork-and-PR actions require temporary lift of the limit, prior collaborator invitation, or a README-published off-GitHub contact route (per single-author review F5 plus 2026-04-30 re-review)
 - [ ] Runbook preserves public-repo security posture: no collaborator access without explicit owner approval
 - [ ] `docs/governance/TRUST-ARCHITECTURE.md` has a one-line cross-reference to the runbook
-- [ ] All 4 structural tests pass: `uv run pytest tests/security/test_runbook_external_contributor.py -v`
+- [ ] `README.md` has a concise public-facing pointer for legitimate external contributors, including the concrete off-GitHub contact route `https://aceengineer.com/#contact` or a link to the runbook plus that route, so Scenario 3 is discoverable even while `collaborators_only` is active
+- [ ] Permanent structural tests do NOT hard-code the historical `docs/plans/README.md` row for this plan; plan-index verification is a one-time execution check only
+- [ ] All 5 structural tests pass: `uv run pytest tests/security/test_runbook_external_contributor.py -v`
 - [ ] No regression: `uv run pytest tests/` passes (run from repo root; the repo IS `workspace-hub`, so `workspace-hub/tests/` would resolve to a non-existent nested path)
 - [ ] Plan listed in `docs/plans/README.md` index (process artifact, paired with Files-to-Change `docs/plans/README.md` row; per single-author review L3)
 
@@ -158,10 +162,10 @@ These are structural lint tests (`grep`-level), runnable as `pytest` with `pathl
 | Codex | UNAVAILABLE (2026-04-30 batch2 fanout) | `scripts/review/results/2026-04-29-plan-2552-codex.md` timed out / stdin-hang and contributed no substantive signal. |
 | Gemini | MAJOR (2026-04-30 batch2 fanout; likely stale workspace) | `scripts/review/results/2026-04-29-plan-2552-gemini.md` reports missing `docs/handoffs/...` and missing autofeed artifact, but both exist in this isolated checkout. Treat as invalid stale-workspace evidence; do not count as approval evidence, but also do not treat the false file-existence findings as substantive plan blockers. |
 
-**Overall result:** SINGLE-AUTHOR MINOR PATCHED — T1 deferred-review approval candidate if the user accepts single-author evidence; full cross-provider approval remains blocked by Codex unavailable + Gemini stale-workspace result. The user has two paths:
+**Overall result:** SINGLE-AUTHOR MINOR PATCHED plus 2026-04-30 reviewer blocker patch — T1 deferred-review approval candidate if the user explicitly accepts single-author evidence; full cross-provider approval remains blocked until fresh Codex/Gemini reruns return no MAJOR. The user has two paths:
 
 1. **T1 deferred-review path** (faster): user approves on the strength of this single-author Claude review + the F1–F6/L1/L3 patches landed in this revision. T1 documentation issue eligibility is precedent-supported. No fanout required.
-2. **Full cross-AI fanout** (slower, higher confidence): user runs `scripts/review/plan-review-fanout.sh docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md` from an unsandboxed terminal session (codex-cli must be pinned to 0.123.0 to avoid the 0.124.0 stdin-hang regression); after Codex+Gemini return MINOR-or-better, user approves.
+2. **Full cross-AI fanout** (slower, higher confidence): rerun Codex/Gemini against this exact revised artifact (prefer EOF-safe stdin-file prompts for Codex because older lanes showed stdin stalls); after Codex+Gemini return MINOR-or-better, user approves.
 
 The plan remains at `status:plan-review` — no self-promotion, no `.planning/plan-approved/2552.md` marker created by this lane.
 
@@ -171,7 +175,9 @@ The plan remains at `status:plan-review` — no self-promotion, no `.planning/pl
 
 - **Risk:** Scenario 1 default (hide, don't reply) may be wrong if the external commenter has already been seen by others. Recommendation is hide-not-reply for the default case; explicit reply templates are provided for edge cases where engagement is warranted. Flag for user during approval.
 - **Resolved (was Open — now closed per single-author review F6, 2026-04-29):** Runbook will live at `docs/security/external-contributor-runbook.md`. Rationale: (a) issue title says `docs(security):`, (b) `docs/security/` taxonomy already exists and is the discoverability target for anyone investigating the interaction-limit setup that triggered this work, (c) one-line policy artifacts do not warrant promoting a new `docs/ops/runbooks/` taxonomy. The Files-to-Change table commits to `docs/security/`; downstream batch agents must NOT relocate.
-- **Open:** Does the paid-pilot intake path require a formal NDA template? Out of scope for this runbook — the runbook records the intake *requirements* (NDA/confidentiality acknowledgement, payment approval, etc.) but does not draft the NDA itself. Flag for follow-up if the user wants a template.
+- **Decision:** The paid-pilot intake path does not include a formal NDA template in this tranche. The runbook records intake *requirements* (NDA/confidentiality acknowledgement, payment approval, etc.) and leaves actual NDA drafting to a follow-up legal/template issue if requested.
+- **Decision:** The repository `README.md` must publish a concise off-GitHub contact pointer for legitimate external contributors. The concrete route for this plan is `https://aceengineer.com/#contact` (verified 200 on 2026-04-30); do not use `https://aceengineer.com/contact` because that path returned 404 during plan hardening.
+- **Decision:** Do not create a permanent CI test for the `docs/plans/README.md` historical plan row. Verify the plan index once during execution, but keep durable tests focused on the runbook, governance cross-reference, README discoverability, and template/scenario coverage.
 
 ---
 
