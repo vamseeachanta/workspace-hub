@@ -1,0 +1,9 @@
+timestamp	host	label	governor	threads	load	workload	wall_ms
+2026-05-01T10:48:09Z	ace-linux-1	baseline-perf-governor	performance	32	3.25	cpu_single	489
+2026-05-01T10:48:09Z	ace-linux-1	baseline-perf-governor	performance	32	3.25	cpu_multi	1363
+2026-05-01T10:48:09Z	ace-linux-1	baseline-perf-governor	performance	32	3.25	git_status	155707
+2026-05-01T10:48:09Z	ace-linux-1	baseline-perf-governor	performance	32	3.25	git_log	50
+2026-05-01T10:50:47Z	ace-linux-1	numa0-pinned	performance	16	3.98	cpu_single	537
+2026-05-01T10:50:47Z	ace-linux-1	numa0-pinned	performance	16	3.98	cpu_multi	1422
+2026-05-01T10:50:47Z	ace-linux-1	numa0-pinned	performance	16	3.98	git_status	169312
+2026-05-01T10:50:47Z	ace-linux-1	numa0-pinned	performance	16	3.98	git_log	2012
