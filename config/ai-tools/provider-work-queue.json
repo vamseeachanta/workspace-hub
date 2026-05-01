@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-01T13:20:11.301354Z",
+  "generated_at": "2026-05-01T18:33:57.219754Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-05-01T13:20:09.430067Z",
+  "scorecard_generated_at": "2026-05-01T18:33:55.480833Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 8,
-      "total_candidates": 163,
+      "total_candidates": 162,
       "top_issues": [
         {
           "number": 2540,
@@ -213,7 +213,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 12,
-      "total_candidates": 35,
+      "total_candidates": 36,
       "top_issues": [
         {
           "number": 2269,
