@@ -1,7 +1,3 @@
-2026-05-01T05:40:43-05:00|/tmp/cpupower-performance.service|19404
-2026-05-01T05:47:53-05:00|/mnt/local-analysis/workspace-hub/scripts/benchmarks/perf-bench.sh|19405
-2026-05-01T05:53:39-05:00|/mnt/local-analysis/workspace-hub/docs/runbooks/local-perf-tuning.md|19406
-2026-05-01T05:54:25-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/local-perf-tuning/SKILL.md|19407
 2026-05-01T06:00:56-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/perf-tuning/SKILL.md|19408
 2026-05-01T06:01:23-05:00|/mnt/local-analysis/workspace-hub/.claude/skills/operations/devops/perf-tuning/SKILL.md|19409
 2026-05-01T06:16:19-05:00|/mnt/local-analysis/workspace-hub/docs/runbooks/perf-tuning.md|19410
@@ -48,3 +44,7 @@
 2026-05-01T15:03:30-05:00|/mnt/local-analysis/workspace-hub/aceengineer-website/tests/js/demo-links.test.js|19451
 2026-05-01T15:04:18-05:00|/mnt/local-analysis/workspace-hub/aceengineer-website/sitemap.xml|19452
 2026-05-01T15:05:26-05:00|/mnt/local-analysis/workspace-hub/docs/gtm/triage-2026-05-01.md|19453
+2026-05-01T15:15:09-05:00|/mnt/local-analysis/workspace-hub/docs/gtm/sendable-bundles/2026-05-01/proof/record-tour.sh|19454
+2026-05-01T15:15:54-05:00|/mnt/local-analysis/workspace-hub/docs/gtm/sendable-bundles/2026-05-01/proof/.gitignore|19455
+2026-05-01T15:15:59-05:00|/mnt/local-analysis/workspace-hub/docs/gtm/sendable-bundles/2026-05-01/README.md|19456
+2026-05-01T15:16:27-05:00|/mnt/local-analysis/workspace-hub/docs/gtm/sendable-bundles/2026-05-01/proof/.gitignore|19457
