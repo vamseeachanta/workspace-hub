@@ -22,13 +22,24 @@ WATCH_PREFIX="${STATE_SIZE_WATCH_PATH:-.claude/state/session-signals/}"
 ZERO_OID="0000000000000000000000000000000000000000"
 
 FAIL=0
+SAW_VALID_REF=0
 
-while read -r local_ref local_sha remote_ref remote_sha; do
-    [[ -z "$local_sha" ]] && continue
+is_oid() {
+    [[ "${1:-}" =~ ^[0-9a-fA-F]{40}$ ]]
+}
+
+check_push_ref() {
+    local local_ref="${1:-}"
+    local local_sha="${2:-}"
+    local remote_ref="${3:-}"
+    local remote_sha="${4:-}"
+
+    [[ -z "$local_sha" ]] && return 0
+    is_oid "$local_sha" || return 2
     # Branch deletion has local_sha == ZERO_OID — nothing to inspect
-    [[ "$local_sha" == "$ZERO_OID" ]] && continue
+    [[ "$local_sha" == "$ZERO_OID" ]] && return 0
 
-    if [[ "$remote_sha" == "$ZERO_OID" ]]; then
+    if [[ "$remote_sha" == "$ZERO_OID" ]] || ! is_oid "$remote_sha"; then
         # New branch — inspect the full commit reachable from local that is not
         # yet on any remote. Falls back to just $local_sha if no other refs.
         range_args=("$local_sha" "--not" "--remotes")
@@ -51,6 +62,36 @@ while read -r local_ref local_sha remote_ref remote_sha; do
           | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' 2>/dev/null \
           | awk '$1 == "blob" { $1=""; sub(/^ /, ""); print }'
     )
+}
+
+infer_current_push_ref() {
+    local local_ref local_sha remote_ref remote_sha upstream
+
+    local_sha="$(git rev-parse HEAD 2>/dev/null || true)"
+    is_oid "$local_sha" || return 0
+
+    local_ref="$(git symbolic-ref -q HEAD 2>/dev/null || echo HEAD)"
+    upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
+    if [[ -n "$upstream" ]]; then
+        remote_ref="$upstream"
+        remote_sha="$(git rev-parse "$upstream" 2>/dev/null || echo "$ZERO_OID")"
+    else
+        remote_ref=""
+        remote_sha="$ZERO_OID"
+    fi
+
+    check_push_ref "$local_ref" "$local_sha" "$remote_ref" "$remote_sha"
+}
+
+while read -r local_ref local_sha remote_ref remote_sha _extra; do
+    if is_oid "$local_sha"; then
+        SAW_VALID_REF=1
+        check_push_ref "$local_ref" "$local_sha" "$remote_ref" "$remote_sha"
+    fi
 done
+
+if (( SAW_VALID_REF == 0 )); then
+    infer_current_push_ref
+fi
 
 exit $FAIL
