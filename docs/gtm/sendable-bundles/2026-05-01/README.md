@@ -11,7 +11,7 @@ This bundle ties together the artifacts shipped in the 2026-05-01 GTM session in
 
 **The shareable URL** for any audience: <https://www.aceengineer.com/outreach/>
 
-That single page links the two audience-specific briefs, the 5 demos, and the capability-summary PDF download. You can also send any of the deeper links below.
+That single page links the two audience-specific briefs, the 6 demos, and the capability-summary PDF download. You can also send any of the deeper links below.
 
 ---
 
@@ -21,12 +21,13 @@ That single page links the two audience-specific briefs, the 5 demos, and the ca
 - Vessel installation contractors → <https://www.aceengineer.com/outreach/vessel-contractor-brochure.html>
 - FOWT mooring screening → <https://www.aceengineer.com/outreach/fowt-mooring-screening.html>
 
-### Five overnight parametric demos
+### Six engineering demos (5 overnight parametric runs + 1 template)
 - DNV freespan / VIV (Demo 1) → <https://www.aceengineer.com/demos/freespan.html>
 - Pipeline wall thickness multi-code (Demo 2) → <https://www.aceengineer.com/demos/wall-thickness.html>
 - Deepwater mudmat installation (Demo 3) → <https://www.aceengineer.com/demos/mudmat.html>
 - Shallow water pipelay (Demo 4) → <https://www.aceengineer.com/demos/pipelay.html>
-- Subsea jumper lift — Ballymore (Demo 5) → <https://www.aceengineer.com/demos/jumper-installation.html>
+- Subsea jumper lift — Ballymore worked example (Demo 5) → <https://www.aceengineer.com/demos/jumper-installation.html>
+- Mooring & station-keeping screening template (Demo 6, illustrative until project run) → <https://www.aceengineer.com/demos/mooring.html>
 
 ### One-page summary (PDF, attachable)
 - <https://www.aceengineer.com/assets/capability-summary-v1.pdf>
@@ -68,13 +69,15 @@ AceEngineer
 
 Hello [name],
 
-I run AceEngineer; we do pre-FEED and early-FEED mooring screening for floating offshore wind. Crucially we position screening-tier — concept ranking, stiffness, frequency-domain response, installation/operability flags — and we hand off to OpenFAST/WEIS partners for full IEC coupled work. That boundary keeps the engagement honest.
+I run AceEngineer; we built an OC4-DeepCwind worked example to show the shape of an ACE screening-tier FOWT mooring deliverable — concept ranking, quasi-static stiffness, frequency-domain response trends, installation and operability flags. Page values are illustrative public-reference; we run on your project inputs in 48 hours. We position screening-tier explicitly and hand off to OpenFAST / WEIS partners for full IEC coupled work — that boundary keeps the engagement honest.
 
-The OC4-DeepCwind worked example is here: <https://www.aceengineer.com/outreach/fowt-mooring-screening.html>
+The OC4-DeepCwind worked example: <https://www.aceengineer.com/outreach/fowt-mooring-screening.html>
 
-For technical-buyer context, the related installation demos:
+The mooring-screening demo template (catenary / taut / hybrid concept comparison): <https://www.aceengineer.com/demos/mooring.html>
+
+For technical-buyer context, the closest installation demos:
 - Mudmat installation (180 parametric cases): <https://www.aceengineer.com/demos/mudmat.html>
-- Subsea jumper lift: <https://www.aceengineer.com/demos/jumper-installation.html>
+- Subsea jumper lift (Ballymore worked example): <https://www.aceengineer.com/demos/jumper-installation.html>
 
 Capability summary PDF: <https://www.aceengineer.com/assets/capability-summary-v1.pdf>
 
@@ -85,13 +88,13 @@ AceEngineer
 
 ### Audience C — generic offshore operator / EPC
 
-**Subject:** Five overnight engineering demos — sendable directly
+**Subject:** Six engineering demos — sendable directly
 
 Hello [name],
 
 We ship parametric installation engineering on overnight turnarounds. Easiest entry point is the outreach hub: <https://www.aceengineer.com/outreach/>
 
-It links five demos (freespan/VIV screening, multi-code wall thickness, mudmat installation, shallow-water pipelay, subsea jumper lift), two audience briefs, and a 1-page capability summary.
+It links six demos (freespan/VIV screening, multi-code wall thickness, mudmat installation, shallow-water pipelay, subsea jumper lift, and a mooring-screening template), two audience briefs, and a 1-page capability summary.
 
 Pick whichever demo is closest to your current question and we'll re-run it parametrically on your data inside 48 hours.
 
@@ -127,10 +130,16 @@ Each page is held for 3 seconds — readable at a glance without dragging the pr
 
 | Asset | Issue closed | Commit |
 |---|---|---|
-| Outreach hub `/outreach/` index | (this bundle) | (this commit) |
+| Outreach hub `/outreach/` index | (this bundle) | aceengineer-website [`e069d11`](https://github.com/vamseeachanta/aceengineer-website/commit/e069d11) |
 | 5 demo pages — embedded GIF + CTA | [#2422](https://github.com/vamseeachanta/workspace-hub/issues/2422) | aceengineer-website [`20f5e59`](https://github.com/vamseeachanta/aceengineer-website/commit/20f5e59) |
 | Vessel-contractor brochure | [#2556](https://github.com/vamseeachanta/workspace-hub/issues/2556) | aceengineer-website [`a79b462`](https://github.com/vamseeachanta/aceengineer-website/commit/a79b462) |
 | FOWT mooring screening worked example | [#2561](https://github.com/vamseeachanta/workspace-hub/issues/2561) | aceengineer-website [`f3b0914`](https://github.com/vamseeachanta/aceengineer-website/commit/f3b0914) |
 | Vessel-contractor matrix (internal target list) | [#2554](https://github.com/vamseeachanta/workspace-hub/issues/2554) + [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562) | workspace-hub [`434afb7c1`](https://github.com/vamseeachanta/workspace-hub/commit/434afb7c1) |
+| 2 methodology pages (compliance-dashboard, cross-review) + 6th demo (mooring template) + sitemap expansion | [#2030](https://github.com/vamseeachanta/workspace-hub/issues/2030) + [#2115](https://github.com/vamseeachanta/workspace-hub/issues/2115) | aceengineer-website [`f5186ca`](https://github.com/vamseeachanta/aceengineer-website/commit/f5186ca) |
+| Adversarial-review P0 remediation (dead /contact link, Demo 6 hub card, sitemap drift, brochure case-count inflation, FOWT disclaimer-first) | (this commit) | aceengineer-website [`5f45587`](https://github.com/vamseeachanta/aceengineer-website/commit/5f45587) |
+
+> **Caveat — known unmet acceptance criteria** (Adv-C F2 finding): #2556's acceptance criteria 3 (send-tracker artifact) and 4 (legal/evidence sanity review) were not addressed in the original closing commit. A follow-up issue is filed to track these. The brochure itself ships as designed; the missing items are operational, not deliverable defects.
+>
+> **Caveat — matrix evidence URLs** (Adv-C F1 finding): of 26 contractor rows, 14 carried URLs that returned HTTP 404/000 at review time. URL repairs ship in a follow-up document `vessel-contractor-matrix-url-repairs-2026-05-01.md`. Until those are merged into the matrix, treat individual evidence URLs as candidates rather than verified — pre-send verification of any row you actually use.
 
 Triage source: [`docs/gtm/triage-2026-05-01.md`](../../triage-2026-05-01.md)
