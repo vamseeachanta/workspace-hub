@@ -1,8 +1,8 @@
 ---
 domain: naval-architecture
 created: 2026-04-07 10:35 UTC
-last_updated: 2026-04-30
-page_count: 56
+last_updated: 2026-05-01
+page_count: 61
 source_count: 43
 ---
 
@@ -20,6 +20,12 @@ source_count: 43
 | [Ship Design Process](concepts/ship-design.md) | Concept page | 2026-04-07 |
 | [Ship Structural Design](concepts/ship-structures.md) | Concept page | 2026-04-07 |
 | [Ship Stability](concepts/stability.md) | Concept page | 2026-04-07 |
+
+## Standards
+
+| Page | Summary | Last Updated |
+|------|---------|-------------|
+| [Steering Gear / Rudder Stock Rule Crosswalk](standards/steering-gear-rudder-stock-rule-crosswalk.md) | Working crosswalk separating SOLAS functional requirements, DNV class-rule candidates, and ABS/IACS source gaps for issue #2567. | 2026-05-01 |
 
 ## Sources
 
@@ -94,3 +100,12 @@ No entity pages yet.
 | [USCG NVIC 7-89](sources/uscg-nvic-7-89-maneuvering-information.md) | source | Operational maneuvering information: Pilot Card, Wheelhouse Poster, Maneuvering Booklet. | 2026-04-30 |
 | [OrcaFlex manoeuvring/current/wind loads](sources/orcaflex-manoeuvring-current-wind-loads.md) | source | Manoeuvring load, current/wind yaw moment, Munk-term double-counting cautions. | 2026-04-30 |
 | [OCIMF yaw moment coefficient figures](sources/ocimf-yaw-moment-coefficient-figures.md) | source | Current/wind yaw coefficient curve families requiring future digitization if needed. | 2026-04-30 |
+
+## Issue #2567 Steering Gear / Rudder Stock Source-Intelligence Pack
+
+| Page | Type | Summary | Last Updated |
+|------|------|---------|-------------|
+| [Steering Gear Design Checks](concepts/steering-gear-design-checks.md) | concept | Boundary page separating steering-gear machinery/design checks from the preliminary #2565 torque envelope. | 2026-05-01 |
+| [Rudder Stock Design Checks](concepts/rudder-stock-design-checks.md) | concept | Boundary page separating rudder-stock scantling concepts from preliminary holding-torque calculations. | 2026-05-01 |
+| [Issue #2567 Steering Gear / Rudder Stock Source Map](comparisons/issue-2567-steering-gear-rudder-stock-source-map.md) | comparison | Candidate-source inventory covering SOLAS, DNV TS414, ABS portal anchors, IACS portal anchors, and explicit source gaps. | 2026-05-01 |
+| [Steering Gear / Rudder Stock Rule Crosswalk](standards/steering-gear-rudder-stock-rule-crosswalk.md) | standards | Conservative crosswalk marking SOLAS and DNV rows as partial and ABS/IACS rows as source-gap or out-of-scope. | 2026-05-01 |
