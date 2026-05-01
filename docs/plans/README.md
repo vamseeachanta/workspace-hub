@@ -375,3 +375,9 @@ Add one row per plan:
 - Batch execution agents must only act on issues marked `status:plan-approved`
 - If a plan is revised materially, update the row and mark the older version `superseded`
 - Never self-approve a plan — the user or a designated operator must approve
+
+
+
+| [#2569](https://github.com/vamseeachanta/workspace-hub/issues/2569) | B1528 SIROCCO rudder source pack and benchmark extraction | [Plan](2026-05-01-issue-2569-b1528-sirocco-source-pack.md) | plan-review | T2 | 2026-05-01 |
+| [#2570](https://github.com/vamseeachanta/workspace-hub/issues/2570) | B1528 SIROCCO yaw-moment input and interactive static report | [Plan](2026-05-01-issue-2570-b1528-sirocco-yaw-moment-report.md) | plan-review | T3 | 2026-05-01 |
+| [#2571](https://github.com/vamseeachanta/workspace-hub/issues/2571) | B1528 SIROCCO time-trace benchmark report with rudder inflow feedback | [Plan](2026-05-01-issue-2571-b1528-sirocco-time-trace-report.md) | plan-review | T3 | 2026-05-01 |
