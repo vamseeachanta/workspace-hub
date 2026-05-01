@@ -1,0 +1,920 @@
+title: B1528 SIROCCO turning/track benchmark evidence
+issue: https://github.com/vamseeachanta/workspace-hub/issues/2569
+source_documents:
+- path: github://vamseeachanta/acma-projects/B1528/ref/SIROCCO breakaway notes.docx
+  local_extraction: /tmp/b1528/sirocco_breakaway_notes.docx
+  status: narrative_extraction
+- path: github://vamseeachanta/acma-projects/B1528/ref/ECDIS Mar 26 Midnight LT.docx
+  local_extraction: /tmp/b1528/ecdis_mar26.docx
+  status: context_only
+data_quality:
+  classification: narrative_benchmark_not_instrumented_validation_dataset
+  limitations:
+  - VDR/Rosepoint points are extracted from narrative notes, not original telemetry export.
+  - No x/y coordinates are available in this source pack.
+  - Tug contact, current, propulsion, anchor, and bank effects are present, so points are benchmark context rather than isolated
+    rudder-only validation.
+vdr_timeline_points:
+- source_paragraph_index: 115
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '071630'
+  seconds_utc: 26190
+  heading_deg: 253.2
+  sog_kn: 2.4
+- source_paragraph_index: 116
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 071830
+  seconds_utc: 26310
+  heading_deg: 251.3
+  sog_kn: 3.6
+- source_paragraph_index: 117
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 071930
+  seconds_utc: 26370
+  heading_deg: 267.5
+  sog_kn: 4.1
+- source_paragraph_index: 118
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072030'
+  seconds_utc: 26430
+  heading_deg: 304.1
+  sog_kn: 4.0
+- source_paragraph_index: 119
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072050'
+  seconds_utc: 26450
+  heading_deg: 316.2
+  sog_kn: 3.5
+- source_paragraph_index: 120
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072200'
+  seconds_utc: 26520
+  heading_deg: 343.1
+  sog_kn: 1.7
+- source_paragraph_index: 121
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072230'
+  seconds_utc: 26550
+  heading_deg: 349.7
+  sog_kn: 1.2
+- source_paragraph_index: 122
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072300'
+  seconds_utc: 26580
+  heading_deg: 353.5
+  sog_kn: 0.9
+- source_paragraph_index: 123
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072330'
+  seconds_utc: 26610
+  heading_deg: 355.2
+  sog_kn: 0.9
+  cog_deg: 156.1
+- source_paragraph_index: 124
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072400'
+  seconds_utc: 26640
+  heading_deg: 356.2
+  sog_kn: 0.9
+  cog_deg: 149.8
+- source_paragraph_index: 125
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072430'
+  seconds_utc: 26670
+  heading_deg: 356.9
+  sog_kn: 1.0
+  cog_deg: 147.4
+- source_paragraph_index: 126
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072500'
+  seconds_utc: 26700
+  heading_deg: 357.7
+  sog_kn: 0.9
+  cog_deg: 146.0
+- source_paragraph_index: 127
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072530'
+  seconds_utc: 26730
+  heading_deg: 358.8
+  sog_kn: 0.8
+  cog_deg: 147.7
+- source_paragraph_index: 128
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072600'
+  seconds_utc: 26760
+  heading_deg: 0.2
+  sog_kn: 0.8
+  cog_deg: 147.1
+- source_paragraph_index: 129
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072630'
+  seconds_utc: 26790
+  heading_deg: 1.5
+  sog_kn: 0.8
+  cog_deg: 143.7
+- source_paragraph_index: 130
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072700'
+  seconds_utc: 26820
+  heading_deg: 2.6
+  sog_kn: 0.7
+  cog_deg: 137.6
+- source_paragraph_index: 131
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '072730'
+  seconds_utc: 26850
+  heading_deg: 2.6
+  sog_kn: 0.8
+  cog_deg: 132.9
+- source_paragraph_index: 132
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 072800
+  seconds_utc: 26880
+  heading_deg: 1.1
+  sog_kn: 0.9
+  cog_deg: 130.3
+- source_paragraph_index: 133
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 072830
+  seconds_utc: 26910
+  heading_deg: 358.8
+  sog_kn: 0.9
+  cog_deg: 132.2
+- source_paragraph_index: 134
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 072900
+  seconds_utc: 26940
+  heading_deg: 356.2
+  sog_kn: 0.9
+  cog_deg: 136.8
+- source_paragraph_index: 135
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 072930
+  seconds_utc: 26970
+  heading_deg: 353.8
+  sog_kn: 0.8
+  cog_deg: 141.8
+- source_paragraph_index: 136
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073000'
+  seconds_utc: 27000
+  heading_deg: 351.6
+  sog_kn: 0.7
+  cog_deg: 148.7
+- source_paragraph_index: 137
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073030'
+  seconds_utc: 27030
+  heading_deg: 349.4
+  sog_kn: 0.7
+  cog_deg: 155.4
+- source_paragraph_index: 138
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073100'
+  seconds_utc: 27060
+  heading_deg: 347.7
+  sog_kn: 0.7
+  cog_deg: 164.0
+- source_paragraph_index: 139
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073130'
+  seconds_utc: 27090
+  heading_deg: 346.4
+  sog_kn: 0.7
+  cog_deg: 172.5
+- source_paragraph_index: 140
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073200'
+  seconds_utc: 27120
+  heading_deg: 345.5
+  sog_kn: 0.7
+  cog_deg: 180.3
+- source_paragraph_index: 141
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073230'
+  seconds_utc: 27150
+  heading_deg: 345.3
+  sog_kn: 0.8
+  cog_deg: 186.0
+- source_paragraph_index: 142
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073300'
+  seconds_utc: 27180
+  heading_deg: 345.4
+  sog_kn: 0.8
+  cog_deg: 188.2
+- source_paragraph_index: 143
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073330'
+  seconds_utc: 27210
+  heading_deg: 345.7
+  sog_kn: 0.8
+  cog_deg: 189.7
+- source_paragraph_index: 144
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073400'
+  seconds_utc: 27240
+  heading_deg: 345.9
+  sog_kn: 0.8
+  cog_deg: 187.4
+- source_paragraph_index: 145
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073430'
+  seconds_utc: 27270
+  heading_deg: 346.0
+  sog_kn: 0.8
+  cog_deg: 183.5
+- source_paragraph_index: 146
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073500'
+  seconds_utc: 27300
+  heading_deg: 346.0
+  sog_kn: 0.8
+  cog_deg: 180.5
+- source_paragraph_index: 147
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073530'
+  seconds_utc: 27330
+  heading_deg: 345.7
+  sog_kn: 0.9
+  cog_deg: 179.0
+- source_paragraph_index: 148
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073600'
+  seconds_utc: 27360
+  heading_deg: 344.9
+  sog_kn: 0.9
+  cog_deg: 177.0
+- source_paragraph_index: 149
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073630'
+  seconds_utc: 27390
+  heading_deg: 343.9
+  sog_kn: 0.8
+  cog_deg: 177.4
+- source_paragraph_index: 150
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073700'
+  seconds_utc: 27420
+  heading_deg: 342.7
+  sog_kn: 0.7
+  cog_deg: 182.8
+- source_paragraph_index: 151
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '073730'
+  seconds_utc: 27450
+  heading_deg: 342.8
+  sog_kn: 0.5
+  cog_deg: 205.6
+- source_paragraph_index: 152
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 073800
+  seconds_utc: 27480
+  heading_deg: 344.1
+  sog_kn: 0.4
+  cog_deg: 231.5
+- source_paragraph_index: 153
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 073830
+  seconds_utc: 27510
+  heading_deg: 345.5
+  sog_kn: 0.4
+  cog_deg: 252.4
+- source_paragraph_index: 154
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 073900
+  seconds_utc: 27540
+  heading_deg: 346.5
+  sog_kn: 0.3
+  cog_deg: 264.1
+- source_paragraph_index: 155
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 073930
+  seconds_utc: 27570
+  heading_deg: 347.0
+  sog_kn: 0.2
+  cog_deg: 274.6
+- source_paragraph_index: 156
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074000'
+  seconds_utc: 27600
+  heading_deg: 347.2
+  sog_kn: 0.2
+  cog_deg: 287.4
+- source_paragraph_index: 157
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074030'
+  seconds_utc: 27630
+  heading_deg: 346.8
+  sog_kn: 0.1
+  cog_deg: 299.8
+- source_paragraph_index: 158
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074100'
+  seconds_utc: 27660
+  heading_deg: 345.9
+  sog_kn: 0.1
+  cog_deg: 309.9
+  engine_order_rpm: 0
+  engine_actual_rpm: 0
+- source_paragraph_index: 159
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074131'
+  seconds_utc: 27691
+  heading_deg: 344.7
+  sog_kn: 0.1
+  cog_deg: 309.1
+  engine_order_rpm: 45
+  engine_actual_rpm: 21
+- source_paragraph_index: 160
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074200'
+  seconds_utc: 27720
+  heading_deg: 344.5
+  sog_kn: 0.4
+  cog_deg: 288.7
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 40
+- source_paragraph_index: 161
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074230'
+  seconds_utc: 27750
+  heading_deg: 346.7
+  sog_kn: 0.6
+  cog_deg: 283.7
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 46
+- source_paragraph_index: 162
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074300'
+  seconds_utc: 27780
+  heading_deg: 350.8
+  sog_kn: 0.8
+  cog_deg: 288.5
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 43
+- source_paragraph_index: 163
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074330'
+  seconds_utc: 27810
+  heading_deg: 356.7
+  sog_kn: 0.9
+  cog_deg: 296.8
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 41
+- source_paragraph_index: 164
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074400'
+  seconds_utc: 27840
+  heading_deg: 3.9
+  sog_kn: 0.8
+  cog_deg: 310.8
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 40
+- source_paragraph_index: 165
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074500'
+  seconds_utc: 27900
+  heading_deg: 20.6
+  sog_kn: 0.6
+  cog_deg: 23.0
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 40
+- source_paragraph_index: 166
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074530'
+  seconds_utc: 27930
+  heading_deg: 29.3
+  sog_kn: 1.0
+  cog_deg: 57.9
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 40
+- source_paragraph_index: 167
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074600'
+  seconds_utc: 27960
+  heading_deg: 37.5
+  sog_kn: 1.4
+  cog_deg: 80.2
+  rudder_demand_deg: 29.0
+  rudder_actual_deg: 28.0
+  engine_order_rpm: 40
+  engine_actual_rpm: 40
+- source_paragraph_index: 168
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074620'
+  seconds_utc: 27980
+  heading_deg: 41.9
+  sog_kn: 1.8
+  cog_deg: 91.3
+  rudder_demand_deg: -18.0
+  rudder_actual_deg: -7.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 46
+- source_paragraph_index: 169
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074630'
+  seconds_utc: 27990
+  heading_deg: 43.7
+  sog_kn: 2.0
+  cog_deg: 95.3
+  engine_order_rpm: 48
+  engine_actual_rpm: 47
+- source_paragraph_index: 170
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074700'
+  seconds_utc: 28020
+  heading_deg: 44.87
+  sog_kn: 2.9
+  cog_deg: 107.5
+  rudder_demand_deg: -35.0
+  rudder_actual_deg: -35.0
+  engine_order_rpm: 408
+  engine_actual_rpm: 47
+- source_paragraph_index: 171
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '074730'
+  seconds_utc: 28050
+  heading_deg: 39.0
+  sog_kn: 3.7
+  cog_deg: 112.6
+  rudder_demand_deg: -36.0
+  rudder_actual_deg: -35.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 48
+- source_paragraph_index: 172
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 074800
+  seconds_utc: 28080
+  heading_deg: 27.0
+  sog_kn: 4.1
+  cog_deg: 112.2
+  rudder_demand_deg: -36.0
+  rudder_actual_deg: -35.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 48
+- source_paragraph_index: 173
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 074830
+  seconds_utc: 28110
+  heading_deg: 11.3
+  sog_kn: 3.8
+  cog_deg: 108.4
+  rudder_demand_deg: -36.0
+  rudder_actual_deg: -35.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 47
+- source_paragraph_index: 174
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 074900
+  seconds_utc: 28140
+  heading_deg: 356.5
+  sog_kn: 2.9
+  cog_deg: 104.3
+  rudder_demand_deg: -36.0
+  rudder_actual_deg: -35.0
+  engine_order_rpm: 80
+  engine_actual_rpm: 57
+- source_paragraph_index: 175
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 074930
+  seconds_utc: 28170
+  heading_deg: 343.6
+  sog_kn: 1.9
+  cog_deg: 100.3
+  rudder_demand_deg: -36.0
+  rudder_actual_deg: -35.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 66
+- source_paragraph_index: 176
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075000'
+  seconds_utc: 28200
+  heading_deg: 342.9
+  sog_kn: 0.2
+  cog_deg: 181.2
+  rudder_demand_deg: -35.0
+  rudder_actual_deg: -34.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 67
+- source_paragraph_index: 177
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075030'
+  seconds_utc: 28230
+  heading_deg: 338.3
+  sog_kn: 0.4
+  cog_deg: 341.4
+  rudder_demand_deg: -35.0
+  rudder_actual_deg: -34.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 78
+- source_paragraph_index: 178
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075100'
+  seconds_utc: 28260
+  heading_deg: 331.5
+  sog_kn: 0.9
+  cog_deg: 336.6
+  rudder_demand_deg: -35.0
+  rudder_actual_deg: -34.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 83
+- source_paragraph_index: 179
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075130'
+  seconds_utc: 28290
+  heading_deg: 321.2
+  sog_kn: 1.4
+  cog_deg: 331.1
+  rudder_demand_deg: -35.0
+  rudder_actual_deg: -34.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 83
+- source_paragraph_index: 180
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075145'
+  seconds_utc: 28305
+  heading_deg: 317.2
+  sog_kn: 1.9
+  cog_deg: 326.9
+  rudder_demand_deg: 31.0
+  rudder_actual_deg: 30.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 83
+- source_paragraph_index: 181
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075200'
+  seconds_utc: 28320
+  heading_deg: 312.2
+  sog_kn: 1.9
+  cog_deg: 294.7
+  rudder_demand_deg: 31.0
+  rudder_actual_deg: 30.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 81
+- source_paragraph_index: 182
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075230'
+  seconds_utc: 28350
+  heading_deg: 313.0
+  sog_kn: 2.9
+  cog_deg: 265.9
+  rudder_demand_deg: 30.0
+  rudder_actual_deg: 29.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 79
+- source_paragraph_index: 183
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075300'
+  seconds_utc: 28380
+  heading_deg: 320.6
+  sog_kn: 3.6
+  cog_deg: 262.3
+  rudder_demand_deg: 30.0
+  rudder_actual_deg: 29.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 77
+- source_paragraph_index: 184
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075330'
+  seconds_utc: 28410
+  heading_deg: 333.3
+  sog_kn: 3.6
+  cog_deg: 268.2
+  rudder_demand_deg: 30.0
+  rudder_actual_deg: 29.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 76
+- source_paragraph_index: 185
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075400'
+  seconds_utc: 28440
+  heading_deg: 349.9
+  sog_kn: 3.3
+  cog_deg: 280.5
+  rudder_demand_deg: 28.0
+  rudder_actual_deg: 27.0
+  engine_order_rpm: 83
+  engine_actual_rpm: 77
+- source_paragraph_index: 186
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075410'
+  seconds_utc: 28450
+  heading_deg: 355.5
+  sog_kn: 3.0
+  cog_deg: 287.3
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 65
+  engine_actual_rpm: 66
+- source_paragraph_index: 187
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075430'
+  seconds_utc: 28470
+  heading_deg: 3.4
+  sog_kn: 2.0
+  cog_deg: 311.5
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 48
+- source_paragraph_index: 188
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075500'
+  seconds_utc: 28500
+  heading_deg: 9.8
+  sog_kn: 1.2
+  cog_deg: 5.6
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 46
+- source_paragraph_index: 189
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075530'
+  seconds_utc: 28530
+  heading_deg: 11.7
+  sog_kn: 1.4
+  cog_deg: 56.0
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 65
+  engine_actual_rpm: 58
+- source_paragraph_index: 190
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075600'
+  seconds_utc: 28560
+  heading_deg: 8.4
+  sog_kn: 1.9
+  cog_deg: 75.6
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 65
+  engine_actual_rpm: 66
+- source_paragraph_index: 191
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075630'
+  seconds_utc: 28590
+  heading_deg: 0.6
+  sog_kn: 2.1
+  cog_deg: 78.9
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 65
+  engine_actual_rpm: 65
+- source_paragraph_index: 192
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075700'
+  seconds_utc: 28620
+  heading_deg: 350.6
+  sog_kn: 1.9
+  cog_deg: 74.5
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 48
+  engine_actual_rpm: 51
+- source_paragraph_index: 193
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075711'
+  seconds_utc: 28631
+  heading_deg: 347.1
+  sog_kn: 1.7
+  cog_deg: 73.0
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 0
+  engine_actual_rpm: 24
+- source_paragraph_index: 194
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: '075730'
+  seconds_utc: 28650
+  heading_deg: 340.9
+  sog_kn: 1.3
+  cog_deg: 73.5
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 0
+  engine_actual_rpm: 0
+- source_paragraph_index: 195
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 075800
+  seconds_utc: 28680
+  heading_deg: 333.9
+  sog_kn: 0.6
+  cog_deg: 90.8
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 0
+  engine_actual_rpm: 0
+- source_paragraph_index: 196
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 075830
+  seconds_utc: 28710
+  heading_deg: 329.1
+  sog_kn: 0.4
+  cog_deg: 156.9
+  rudder_demand_deg: -30.0
+  rudder_actual_deg: -29.0
+  engine_order_rpm: 0
+  engine_actual_rpm: 0
+- source_paragraph_index: 197
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 075900
+  seconds_utc: 28740
+  heading_deg: 326.7
+  sog_kn: 0.7
+  cog_deg: 194.6
+  rudder_demand_deg: -1.0
+  rudder_actual_deg: -1.0
+  engine_order_rpm: 0
+  engine_actual_rpm: 0
+- source_paragraph_index: 198
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_utc: 075930
+  seconds_utc: 28770
+  heading_deg: 326.7
+  sog_kn: 1.0
+  cog_deg: 202.0
+  rudder_demand_deg: -1.0
+  rudder_actual_deg: -1.0
+  engine_order_rpm: 0
+  engine_actual_rpm: 0
+rosepoint_salvage_video_points:
+- source_paragraph_index: 202
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:16:15
+  seconds_local: 8175
+  description: Savanah arrives at bow of Sirocco, Sirocco is 90 deg to river current and moving at 2.76 mph, water depth in
+    this area is shown as 102 ft
+  speed_mph: 2.76
+- source_paragraph_index: 203
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:18:28
+  seconds_local: 8308
+  description: Savanah is at port bow, South Carolina arrives at port bow of Sirocco, Sirocco is 90 deg to river current and
+    moving at 4.03 mph
+  speed_mph: 4.03
+- source_paragraph_index: 204
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:19:00
+  seconds_local: 8340
+  description: Savanah is at port bow, South Carolina at port bow, Sirocco is moving at 4.26 mph 90 deg to river current,
+    Sirocco is at the upriver end of Ergon dock
+  speed_mph: 4.26
+- source_paragraph_index: 205
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:19:20
+  seconds_local: 8360
+  description: Savanah is at port bow, South Carolina at port bow, Sirocco is moving at 4.6 mph but heading is starting to
+    reduce
+  speed_mph: 4.6
+- source_paragraph_index: 206
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:19:40
+  seconds_local: 8380
+  description: Savanah is at port bow, South Carolina at port bow, Sirocco (AIS antenna so really the stern) is moving at
+    4.95 mph, heading is reduced to about 85 deg
+  speed_mph: 4.95
+- source_paragraph_index: 207
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:20:00
+  seconds_local: 8400
+  description: Savanah is at port bow, South Carolina at port bow, Sirocco AIS antenna is moving 5.06 mph, heading is now
+    70 deg
+  speed_mph: 5.06
+  heading_relative_to_river_deg: 70.0
+- source_paragraph_index: 208
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:20:20
+  seconds_local: 8420
+  description: Savanah is at port bow, South Carolina at port bow, Sirocco AIS antenna is moving 4.83 mph , heading is now
+    45 deg to river current
+  speed_mph: 4.83
+  heading_relative_to_river_deg: 45.0
+- source_paragraph_index: 209
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:20:38
+  seconds_local: 8438
+  description: Savanah leaves port bow and moves toward port stern of Sirocco, South Carolina at port bow, Sirocco AIS antenna
+    is moving 4.37 mph, heading is now 30 deg to river current
+  speed_mph: 4.37
+  heading_relative_to_river_deg: 30.0
+- source_paragraph_index: 210
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:21:00
+  seconds_local: 8460
+  description: South Carolina at port bow, Savanah nearing port side stern of Sirocco, Sirocco AIS antenna is moving 3.68
+    mph, heading is now 25 deg to river current
+  speed_mph: 3.68
+  heading_relative_to_river_deg: 25.0
+- source_paragraph_index: 211
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:21:40
+  seconds_local: 8500
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 2.42 mph,
+    heading is now 10 deg to river current
+  speed_mph: 2.42
+  heading_relative_to_river_deg: 10.0
+- source_paragraph_index: 212
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:22:00
+  seconds_local: 8520
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.96 mph,
+    heading is now almost parallel with river current
+  speed_mph: 1.96
+- source_paragraph_index: 213
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:22:20
+  seconds_local: 8540
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.50 mph,
+    heading is now parallel with river current, Sirocco is parallel to Ergon dock face with its stern at downriver end of
+    dock
+  speed_mph: 1.5
+- source_paragraph_index: 214
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:22:40
+  seconds_local: 8560
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.27 mph,
+    heading is now parallel with river current, water depth is 60 to 70 ft in vicinity of bow of Sirocco
+  speed_mph: 1.27
+- source_paragraph_index: 215
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:23:00
+  seconds_local: 8580
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.04 mph,
+    heading is now just past parallel with river current such that current is now starting to impinge on port bow, water depth
+    is 60 to 70 ft in vicinity of bow of Sirocco
+  speed_mph: 1.04
+- source_paragraph_index: 216
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:23:20
+  seconds_local: 8600
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.04 mph,
+    heading is now just past parallel with river current such that current is now starting to impinge on port bow, water depth
+    is 60 to 70 ft in vicinity of bow of Sirocco
+  speed_mph: 1.04
+- source_paragraph_index: 217
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:23:40
+  seconds_local: 8620
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.04 mph,
+    heading is now just past parallel with river current such that current is impinging on port bow, water depth is 60 to
+    70 ft in vicinity of bow of Sirocco, Sirocco continues to slip downriver but very slowly
+  speed_mph: 1.04
+- source_paragraph_index: 218
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:24:40
+  seconds_local: 8680
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.04 mph,
+    heading is now just past parallel with river current such that current is impinging on port bow, water depth is 60 to
+    70 ft in vicinity of bow of Sirocco, Sirocco continues to slip downriver but very slowly
+  speed_mph: 1.04
+- source_paragraph_index: 219
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:25:40
+  seconds_local: 8740
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.04 mph,
+    heading is now just past parallel with river current such that current is impinging on port bow, water depth is 60 to
+    70 ft in vicinity of bow of Sirocco, Sirocco continues to slip downriver but very slowly
+  speed_mph: 1.04
+- source_paragraph_index: 220
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:26:40
+  seconds_local: 8800
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 1.04 mph,
+    heading is now just past parallel with river current such that current is impinging on port bow, water depth is 60 to
+    70 ft in vicinity of bow of Sirocco, Sirocco continues to slip downriver but very slowly
+  speed_mph: 1.04
+- source_paragraph_index: 221
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:27:04
+  seconds_local: 8824
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 0.92 mph,
+    bow heading has now changed 10 deg to starboard, heading is now past parallel with river current such that current is
+    impinging on port bow, water depth is more than 70 ft in vicinity of bow of Sirocco, Sirocco is now moving across the
+    river
+  speed_mph: 0.92
+  heading_relative_to_river_deg: 10.0
+- source_paragraph_index: 222
+  source_line_basis: docx paragraph index including empty paragraphs
+  time_local: 02:27:31
+  seconds_local: 8851
+  description: South Carolina at port bow, Savanah at port side of stern of Sirocco, Sirocco AIS antenna is moving 0.92 mph,
+    bow heading has now changed to 15 deg to starboard, heading is now past parallel with river current such that current
+    is impinging on port bow, water depth is more than 70 ft in vicinity of bow of Sirocco, Sirocco is now moving across the
+    river
+  speed_mph: 0.92
