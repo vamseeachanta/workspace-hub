@@ -32,6 +32,9 @@ URLS=(
 )
 
 i=0
+# Chrome stderr goes to a log file (not /dev/null) so failures are debuggable.
+CHROME_LOG="${WORK_TMP}/chrome.log"
+
 for url in "${URLS[@]}"; do
   out=$(printf "%s/frame_%02d.png" "${FRAMES_DIR}" "${i}")
   echo "[${i}] ${url}"
@@ -43,12 +46,27 @@ for url in "${URLS[@]}"; do
     --window-size="${WIN_W},${WIN_H}" \
     --virtual-time-budget=8000 \
     --screenshot="${out}" \
-    "${url}" 2>/dev/null
+    "${url}" 2>>"${CHROME_LOG}"
+  # Per-URL validation: refuse to silently encode a tour with missing pages.
+  if [ ! -s "${out}" ]; then
+    echo "ERROR: chrome produced empty/missing screenshot for ${url}" >&2
+    echo "       see ${CHROME_LOG} for diagnostic output" >&2
+    exit 1
+  fi
   i=$((i + 1))
 done
 
+# Post-loop assertion: frame count must equal URL count exactly.
+expected_frames=${#URLS[@]}
+actual_frames=$(ls "${FRAMES_DIR}"/*.png 2>/dev/null | wc -l)
+if [ "${actual_frames}" -ne "${expected_frames}" ]; then
+  echo "ERROR: expected ${expected_frames} frames, got ${actual_frames}" >&2
+  echo "       see ${CHROME_LOG} for diagnostic output" >&2
+  exit 1
+fi
+
 echo
-echo "Captured $(ls "${FRAMES_DIR}"/*.png | wc -l) frames."
+echo "Captured ${actual_frames} frames (expected ${expected_frames}, all non-empty)."
 
 # Build a concat list (each frame held HOLD_S seconds)
 CONCAT="${WORK_TMP}/concat.txt"
