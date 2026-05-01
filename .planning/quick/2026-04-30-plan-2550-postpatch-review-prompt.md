@@ -1,3 +1,48 @@
+# Fresh Post-Patch Adversarial Plan Re-Review — Issue #2550
+
+You are an independent adversarial reviewer for a GitHub issue plan in `/mnt/local-analysis/workspace-hub`.
+
+## Issue
+- Number: #2550
+- Title: chore(security): codify public repo interaction-limit renewal in scheduled tasks
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2550
+- Current label state verified immediately before this prompt: open `status:plan-review`.
+- Approval marker state verified immediately before this prompt: `.planning/plan-approved/2550.md` absent.
+
+## Review scope and rules
+This is a fresh re-review AFTER local plan hardening. Do not rely on older issue text, default branch content, or stale review artifacts. Use ONLY the embedded current plan text below plus the prior-blocker summary for context.
+
+Be adversarial. Do not rubber-stamp. The goal is to decide whether this CURRENT plan is approval-ready.
+
+Verdict meanings:
+- APPROVE: no critical/high blockers; plan can move to plan-approved.
+- MINOR: only non-blocking improvements; plan can move to plan-approved with notes.
+- MAJOR: any blocker that must be fixed before approval.
+- UNAVAILABLE: only if you cannot actually review.
+
+## Prior blockers being re-tested
+Prior final Gemini review verdict was MAJOR with blockers: unresolved requirements/open questions; missing jq dependency or unclear gh --jq usage; missing logs/security/ directory creation before log redirection; Hermes cron decommission step unactionable without explicit instructions/access. The plan has since been patched to address those issues. Review the CURRENT plan text only.
+
+## Specific questions
+1. Are all prior MAJOR blockers now substantively resolved in the current plan text?
+2. Are there any new or remaining MAJOR approval blockers?
+3. Are acceptance criteria and verification commands concrete enough for a worker to execute without guessing?
+4. Does the plan avoid inappropriate approval/label mutation before evidence exists?
+5. Does the plan preserve the issue scope without leaking follow-up work into this tranche?
+
+## Required output format
+Start with exactly one line:
+`Verdict: APPROVE|MINOR|MAJOR|UNAVAILABLE`
+
+Then include:
+- Summary: 2-5 bullets.
+- Findings: severity-ranked list. For each finding include Severity, Evidence from plan text, Impact, Required fix.
+- Prior blocker resolution: bullet checklist of each prior blocker and whether resolved.
+- Approval recommendation: one of `approval-ready`, `approval-ready-with-minor-notes`, `not-approval-ready`, or `review-unavailable`.
+
+## Current plan text under review
+
+```markdown
 # Plan for #2550: Codify public repo interaction-limit renewal in scheduled tasks
 
 > **Status:** plan-review (2026-04-30 reviewer blockers patched in plan text; NOT approval-ready until fresh Codex/Gemini re-review returns no MAJOR or the user explicitly waives cross-provider evidence)
@@ -12,7 +57,7 @@
 
 ### Existing repo code
 
-- Found: `config/scheduled-tasks/schedule-tasks.yaml` — canonical task registry. Schema: `id`, `label`, `schedule` (cron string), `machines` (list), `requires` (capability list), `prefer` (machine hint), `command` (shell), `log`, `is_claude_task`, `description`. No entry for interaction-limit renewal exists. Because issue #2550 requires parser/report-formatting coverage, this plan explicitly requires `jq` as a scheduled-task capability instead of relying on ambiguous `gh --jq` behavior through a stubbed `gh`.
+- Found: `config/scheduled-tasks/schedule-tasks.yaml` — canonical task registry. Schema: `id`, `label`, `schedule` (cron string), `machines` (list), `requires` (capability list), `prefer` (machine hint), `command` (shell), `log`, `is_claude_task`, `description`. No entry for interaction-limit renewal exists.
 - Found: `scripts/security/secrets-scan.sh` — closest script pattern. Uses `set -euo pipefail`, `SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"`, `REPO_ROOT`, CLI arg parsing (`--repo`), structured header comment, exit 0/1. This is the pattern for `renew-interaction-limits.sh`.
 - Found: `docs/ops/scheduled-tasks.md` — human-readable inventory of all scheduled tasks. Table format: `| Time | ID | Description | Log |`. Needs a new row after implementation.
 - Gap: `scripts/security/renew-interaction-limits.sh` — does not exist.
@@ -102,19 +147,12 @@ A `scripts/security/renew-interaction-limits.sh` script with dry-run mode, full-
 ## Pseudocode
 
 ```
-renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
+renew-interaction-limits.sh [--dry-run | --check]
 
   OWNER = "vamseeachanta"
-  AUTH_PREFLIGHT:
-    gh auth status must succeed for the account/token that will run scheduled tasks
-    gh api repos/$OWNER/workspace-hub --jq '.permissions.admin or .permissions.maintain or .permissions.push' must confirm sufficient repo administration capability for interaction-limit GET/PUT
-    if auth/scope check fails: write FAIL report and exit 1 before touching any repo
-
-  PUBLIC_REPOS = gh repo list $OWNER --limit 1000 --json name,isPrivate,isArchived | jq
-                 | keep all isPrivate=false repos, preserving isArchived for reporting
-                 | fail closed if stderr/stdout indicates an unsupported gh flag or JSON parse failure
-  ACTIVE_PUBLIC_REPOS = PUBLIC_REPOS where isArchived=false
-  ARCHIVED_PUBLIC_REPOS = PUBLIC_REPOS where isArchived=true
+  PUBLIC_REPOS = gh repo list $OWNER --json name,isPrivate,isArchived --paginate
+                 | filter isPrivate=false AND isArchived=false
+                 | extract name list
 
   # Fail-closed empty-list guard (resolves F3 from
   # docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-review-2550-20260429-1246.md):
@@ -126,32 +164,20 @@ renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
   mkdir -p "$REPO_ROOT/logs/security"
   REPORT_PATH="$REPO_ROOT/logs/security/interaction-limit-renewal-$(date -u +%Y%m%dT%H%M%SZ).md"
 
-  for each repo in ACTIVE_PUBLIC_REPOS:
-    if --dry-run:
-      current = gh api repos/$OWNER/$repo/interaction-limits OR 404 or empty 200 => {limit: "unset", expires_at: null}
+  for each repo in PUBLIC_REPOS:
+    if --dry-run or --check:
+      current = gh api repos/$OWNER/$repo/interaction-limits OR 404 => {limit: "unset", expires_at: null}
       print "DRY-RUN | $repo | current limit=$(current.limit) | expires=$(current.expires_at)"
-      continue
-    if --check:
-      current = gh api repos/$OWNER/$repo/interaction-limits OR 404 or empty 200 => {limit: "unset", expires_at: null}
-      print "CHECK | $repo | current limit=$(current.limit) | expires=$(current.expires_at)"
-      continue
     else:
       gh api -X PUT repos/$OWNER/$repo/interaction-limits
              -f limit=collaborators_only -f expiry=six_months
-
-  for each repo in ARCHIVED_PUBLIC_REPOS:
-    archived_current = gh api repos/$OWNER/$repo/interaction-limits OR 404 => {limit: "unset", expires_at: null}
-    print "ARCHIVED-SKIPPED | $repo | current limit=$(archived_current.limit) | expires=$(archived_current.expires_at) | remediation=unarchive-or-accept-expiry-risk"
-    if archived_current.limit != "collaborators_only":
-      FAIL_COUNT++
-      print "FAIL: archived public repo $repo is not collaborators_only; manual owner action required"
 
   # Dry-run is report-only by design: no PUT and no compliance failure.
   # Use --check or live mode for non-zero compliance verification.
   if --dry-run:
     write local report to REPORT_PATH referencing #2546 and exit 0
 
-  for each repo in ACTIVE_PUBLIC_REPOS:
+  for each repo in PUBLIC_REPOS:
     verify = gh api repos/$OWNER/$repo/interaction-limits OR 404 => {limit: "unset", expires_at: null}
     if verify.limit != "collaborators_only":
       print "FAIL: $repo not collaborators_only after renewal"
@@ -161,9 +187,7 @@ renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
 
   write local verification report to REPORT_PATH referencing #2546
   if FAIL_COUNT > 0: exit 1
-  if --post-comment ISSUE is set:
-    gh issue comment ISSUE --body-file REPORT_PATH
-  exit 0
+  else: exit 0
 ```
 
 ---
@@ -175,9 +199,9 @@ renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
 | Create | `scripts/security/renew-interaction-limits.sh` | main renewal script with dry-run + verification + fail-closed empty-list guard |
 | Create | `tests/security/test_renew_interaction_limits.py` | pytest wrapper tests that execute the real Bash script with a stubbed `gh` on `$PATH`; do NOT rely on Python mocks of Bash child-process internals |
 | Create | `tests/security/test_renew_interaction_limits.bats` | bats integration test using a stubbed `gh` in `$PATH` (live-invocation coverage; resolves F2 mock-vs-live divergence per `feedback_mock_vs_live_invocation_divergence.md`) |
-| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add `github-interaction-limit-renewal` task entry pinned to `machines: [ace-linux-1]` (single runner — avoids double-PUT race); the scheduled command must pre-create `logs/security/` *before* any shell/task log redirection, e.g. `mkdir -p logs/security && scripts/security/renew-interaction-limits.sh ...` |
+| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | add `github-interaction-limit-renewal` task entry pinned to `machines: [ace-linux-1]` (single runner — avoids double-PUT race) |
 | Modify | `docs/ops/scheduled-tasks.md` | add row to task schedule table |
-| Decommission | Hermes cron `d9b2d1c2270d` (`renew-github-collaborator-only-interaction-limits`) | retire local-only renewal during implementation after manual `--dry-run`, live, and follow-up `--check` verification succeed; record removal in a follow-up handoff under `docs/handoffs/` |
+| Decommission | Hermes cron `d9b2d1c2270d` (`renew-github-collaborator-only-interaction-limits`) | retire local-only renewal once the canonical task is verified live for one cycle (resolves F1 — eliminates the dual-renewal-path race documented in `docs/handoffs/github-collaborator-only-lockdown-2026-04-29.md`); record removal in a follow-up handoff under `docs/handoffs/` |
 | Update | `docs/plans/README.md` | add this plan to index (executor step) |
 
 ---
@@ -191,16 +215,15 @@ renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
 | `test_dry_run_does_not_call_put` | `--dry-run` calls GET only, no PUT | `--dry-run`, mocked gh responses | stdout contains "DRY-RUN", no PUT call made |
 | `test_all_compliant_exits_zero` | all repos return `collaborators_only` after renewal | mocked PUT success + GET returns `collaborators_only` | exit code 0, no FAIL lines |
 | `test_noncompliant_repo_exits_nonzero` | one repo fails verification | mocked GET returns `limit=null` for one repo | exit code 1, "FAIL" in stdout for that repo |
-| `test_report_includes_all_public_repos` | all public repos appear in output/report while active and archived repos have different actions | stubbed `gh repo list` returning public/private/archived repos | active public repo names in renewal/check output; archived public repo names appear as `ARCHIVED-SKIPPED`; private repos absent |
+| `test_report_includes_all_public_repos` | all non-archived public repos appear in output while archived repos are skipped | stubbed `gh repo list` returning public/private/archived repos | non-archived public repo names in stdout; archived/private absent |
 
 **Bats integration tests** (`tests/security/test_renew_interaction_limits.bats` — invokes the actual Bash script with a stubbed `gh` in `$PATH`; resolves F2 by exercising real `set -euo pipefail`, real shell quoting, real flag parsing):
 
 | Test name | What it verifies | Mechanism | Expected result |
 |---|---|---|---|
 | `test_dry_run_live_call_pattern` | live `bash renew-interaction-limits.sh --dry-run` invokes only GET, no PUT | stub `gh` writes invoked args to `/tmp/gh-trace`; assert no PUT lines | `gh-trace` contains only `api repos/.../interaction-limits` GETs |
-| `test_malformed_gh_json_propagates_parse_failure` | malformed `gh repo list` JSON does not silently exit 0 when parsed through the real `jq` binary | stub `gh` returns invalid JSON to stdout; real `jq` remains on `$PATH`; run script | exit code != 0; stderr mentions JSON parse failure |
+| `test_malformed_gh_json_propagates_parse_failure` | malformed `gh` JSON does not silently exit 0 when parsed through `gh --jq` / shell parsing (no standalone `jq` binary required) | stub `gh` returns invalid JSON; run script | exit code != 0; stderr mentions JSON parse failure |
 | `test_empty_repo_list_fails_closed` | empty `gh repo list` does not produce a "0 failures" success (resolves F3) | stub `gh repo list` returns `[]`; run script | exit code 1; stderr mentions empty-repo-list condition |
-| `test_gh_repo_list_uses_supported_flags` | implementation does not use unsupported `gh repo list --paginate` and propagates unsupported-flag errors | stub `gh` exits nonzero if argv contains `--paginate`; run `--dry-run` | script uses supported `gh repo list --limit 1000 --json ...` and exits 0 with fixture data; test fails if `--paginate` is present |
 
 ---
 
@@ -211,18 +234,17 @@ renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
 - [ ] `scripts/security/renew-interaction-limits.sh` (live mode) exits 0 when all public repos confirm `collaborators_only`
 - [ ] Script exits 1 when any public repo does not report `collaborators_only` after renewal attempt
 - [ ] When `gh repo list` returns empty/null (auth, network, or API failure), script exits 1 with explicit error message — verified by `test_empty_repo_list_fails_closed` (resolves F3)
-- [ ] Repository discovery keeps every public repo in the report; live PUT renewal targets non-archived public repos, while archived public repos are reported as `ARCHIVED-SKIPPED` with current interaction-limit status and cause exit 1 if they are not already `collaborators_only` (prevents silently dropping previously protected archived repos such as `aceengineercode`).
+- [ ] Repository discovery filters to non-private AND non-archived repositories before any PUT call; archived public repositories are skipped to avoid GitHub 403 failures.
 - [ ] Dry-run and verification GET calls handle GitHub `404 Not Found` as an explicit `unset` interaction-limit state rather than crashing under `set -euo pipefail`.
 - [ ] All pytest unit tests pass: `uv run pytest tests/security/test_renew_interaction_limits.py -v`
 - [ ] All bats integration tests pass: `bats tests/security/test_renew_interaction_limits.bats` (resolves F2 — live invocation against stubbed `gh`)
 - [ ] No regression: `uv run pytest tests/` passes (run from repo root; avoid non-existent nested `workspace-hub/tests/` path)
-- [ ] `config/scheduled-tasks/schedule-tasks.yaml` contains a `github-interaction-limit-renewal` task entry with the full canonical schema: `id`, `label`, `schedule`, `machines: [ace-linux-1]` (single runner — see operational note below for why dual-machine fan-out is rejected), `requires: [bash, gh, jq]`, `command`, `log`, `is_claude_task: false`, and `description` (resolves F4 schema completeness + F6 single-machine race). The implementation must parse repo-list JSON through the real `jq` binary so malformed JSON failure is exercised by `test_malformed_gh_json_propagates_parse_failure`.
+- [ ] `config/scheduled-tasks/schedule-tasks.yaml` contains a `github-interaction-limit-renewal` task entry with the full canonical schema: `id`, `label`, `schedule`, `machines: [ace-linux-1]` (single runner — see operational note below for why dual-machine fan-out is rejected), `requires: [bash, gh]`, `command`, `log`, `is_claude_task: false`, and `description` (resolves F4 schema completeness + F6 single-machine race). The implementation must use `gh --jq` or shell parsing rather than requiring a standalone `jq` binary; if standalone `jq` is introduced, this AC must change to `requires: [bash, gh, jq]`.
 - [ ] Scheduled cadence is `0 2 1 1,6,11 *` — fires at 02:00 UTC on the 1st of January, June, and November (max gap 153 days < 183-day `six_months` expiry; min gap 61 days due to month-boundary spacing — over-renewal is safe and idempotent) (resolves F7 concrete cron syntax)
 - [ ] `docs/ops/scheduled-tasks.md` table row added (Time / ID / Description / Log columns populated to match existing rows)
-- [ ] `docs/plans/README.md` index row for #2550 is present and still points at this plan file; implementation closeout does not leave the plan index stale
-- [ ] Script creates `logs/security/` before writing reports/reports-internal logs, and the scheduled-task `command` also pre-creates `logs/security/` before invoking the script (for example, `mkdir -p logs/security && scripts/security/renew-interaction-limits.sh ...`) so scheduler-managed log handling is not dependent on an in-script directory creation that may happen too late
-- [ ] Script writes a local dated verification report under `logs/security/` referencing [#2546](https://github.com/vamseeachanta/workspace-hub/issues/2546); live scheduled execution also passes `--post-comment 2546` so the same report is posted back to the root lockdown issue, satisfying #2550's issue-comment reporting requirement. Dry-run/check modes do not post comments unless `--post-comment` is explicitly supplied.
-- [ ] During implementation, after manual `--dry-run`, live, and follow-up `--check` verification all succeed, remove the Hermes cron `d9b2d1c2270d` from ace-linux-1 with `hermes cron remove d9b2d1c2270d` (or pause/remove via the Hermes UI if CLI access is unavailable), then verify removal with `hermes cron list --json | jq -e 'map(select(.id == "d9b2d1c2270d")) | length == 0'`. Record the cutover in a new `docs/handoffs/` artifact citing this plan, the verification log path, the removal command/output, and the post-removal cron-list proof. If the implementing environment cannot access Hermes cron state, stop closeout and open a named blocker/follow-up issue rather than closing #2550 with the Hermes-local job still active.
+- [ ] Script creates `logs/security/` before writing reports/logs so failure redirection cannot fail due to a missing directory
+- [ ] Script writes a local dated verification report under `logs/security/` referencing [#2546](https://github.com/vamseeachanta/workspace-hub/issues/2546); automatic GitHub issue comments are explicitly out of scope for this tranche unless the user separately requests them
+- [ ] After the new `github-interaction-limit-renewal` task fires successfully on its first scheduled run AND a follow-up `--check` cycle confirms expected behavior, remove the Hermes cron `d9b2d1c2270d` from ace-linux-1 with `hermes cron remove d9b2d1c2270d` (or pause/remove via the Hermes UI if CLI access is unavailable) and record the cutover in a new `docs/handoffs/` artifact citing this plan and the verification log path (resolves F1 dual-renewal-path race)
 
 ---
 
@@ -238,10 +260,10 @@ renew-interaction-limits.sh [--dry-run | --check] [--post-comment ISSUE]
 
 **Overall result:** NEEDS FRESH RE-REVIEW after 2026-04-30 hardening. The plan is not approval-ready while the latest Codex/Gemini final verdicts are MAJOR. This revision addresses the dry-run contradiction, report-delivery decision, `jq`/dependency ambiguity, missing log-directory guard, and Hermes-cron cutover specificity; approval should wait for a clean rerun or explicit user override.
 
-**Provider-coverage honesty note:** Current provider evidence is mixed and not approval-ready: Claude produced an earlier single-author review, Codex produced fresh MAJOR findings on 2026-04-30, and Gemini was unavailable in the latest fanout due CLI/runtime errors. This plan does NOT self-approve; the `status:plan-review` GitHub label remains until the user explicitly flips it after no-MAJOR evidence or a named waiver.
+**Provider-coverage honesty note:** Only the Claude review artifact exists today. Codex and Gemini have not produced verdicts on this plan. Per `feedback_never_offer_to_self_label_plan_approved.md`, this plan does NOT self-approve; the `status:plan-review` GitHub label remains until the user explicitly flips it.
 
 Revisions made based on review:
-- Pseudocode: dropped `[--output FILE]` flag (F5); switched brittle `--limit 100` to supported `--limit 1000` plus a real-CLI flag-regression test (addressing the rejected `gh repo list --paginate` finding); inserted fail-closed empty-list guard (F3).
+- Pseudocode: dropped `[--output FILE]` flag (F5); switched `--limit 100` → `--paginate` (F8); inserted fail-closed empty-list guard (F3).
 - Files to Change: added `tests/security/test_renew_interaction_limits.bats` row (F2); added Decommission row for Hermes cron `d9b2d1c2270d` (F1).
 - TDD Test List: split into pytest unit table + bats integration table; added `test_dry_run_live_call_pattern`, `test_malformed_gh_json_propagates_parse_failure`, `test_empty_repo_list_fails_closed` (F2 + F3), and clarified that parsing must use `gh --jq`/shell parsing unless `jq` is explicitly added to scheduled-task requirements.
 - Acceptance Criteria: enumerated full `schedule-tasks.yaml` schema including `id`, `label`, `log`, `is_claude_task: false`, and `machines: [ace-linux-1]` (F4 + F6); replaced `0 2 1 */5 *` with `0 2 1 1,6,11 *` and documented max/min gaps (F7); added empty-list-fail AC (F3); added Hermes cron decommission AC (F1).
@@ -252,12 +274,11 @@ Revisions made based on review:
 
 ## Risks and Open Questions
 
-- **Resolved (F8):** `gh repo list` pagination — pseudocode now uses the supported `gh repo list --limit 1000 --json ...` form and adds a regression test that fails if an implementation uses unsupported `gh repo list --paginate`. Original verified counts: 10 public + 17 private = 27 total as of 2026-04-29, so `--limit 1000` is deliberately conservative for this owner without relying on an unsupported flag.
+- **Resolved (F8):** `gh repo list` pagination — pseudocode now uses `--paginate` instead of `--limit 100`, removing the >100-repo brittleness class entirely (cost: zero — one-flag change). Original verified counts: 10 public + 17 private = 27 total as of 2026-04-29.
 - **Risk:** GitHub API returns 405 for private repos (confirmed in #2546 comment). Script must skip private repos before calling PUT, not after a 405. The filter on `isPrivate=false` handles this.
-- **Operational gap / cutover (F1):** Until the Hermes cron `d9b2d1c2270d` is removed, two renewal paths run concurrently every ~150 days. Cutover sequence inside this implementation tranche: (a) install new task; (b) execute one manual `--dry-run` cycle and verify it reports the expected repo set without PUT calls; (c) execute one manual live cycle and verify all public repos confirm `collaborators_only` with refreshed expiry; (d) execute a follow-up manual `--check` cycle; (e) remove the Hermes cron with `hermes cron remove d9b2d1c2270d`; (f) record the removal in a new `docs/handoffs/` artifact. This cutover is intentionally not deferred to the first future scheduled run; the schedule entry remains validated by config/docs review plus the manual invocation evidence.
-- **Decision:** The script uses the real `jq` binary for repo-list JSON parsing and scheduled-task metadata must declare `requires: [bash, gh, jq]`; this makes malformed-JSON tests exercise a real parser rather than a stubbed `gh --jq` path.
-- **Decision:** The script prepares a local dated verification report referencing #2546 and live scheduled execution posts that report as an issue comment to #2546 via `--post-comment 2546`. Dry-run/check modes remain local-report-only unless explicitly given `--post-comment`.
-- **Decision:** Archived public repos are not PUT-renewed, but they are included in every report as `ARCHIVED-SKIPPED` and checked for current `collaborators_only`; if an archived public repo is not protected, the script exits 1 with a manual-remediation note instead of silently dropping it.
+- **Operational gap / cutover (F1):** Until the Hermes cron `d9b2d1c2270d` is removed, two renewal paths run concurrently every ~150 days. Cutover sequence: (a) install new task; (b) execute one `--dry-run` cycle and verify it reports the expected repo set without PUT calls; (c) execute one live cycle and verify all public repos confirm `collaborators_only` with refreshed expiry; (d) execute a follow-up `--check` cycle; (e) only then remove the Hermes cron with `hermes cron remove d9b2d1c2270d` and record the removal in a new `docs/handoffs/` artifact. Until step (e) completes, both paths racing is bounded-safe (idempotent PUTs to the same `limit=collaborators_only`/`expiry=six_months`) but is exactly the dual-source-of-truth anti-pattern this issue exists to retire.
+- **Decision:** Failure visibility is local-log/report only for this bounded tranche. `scripts/notify.sh` integration is a useful follow-up if the first cycle shows silent-failure risk, but it is not required for approval of this issue.
+- **Decision:** The script prepares a local dated verification report referencing #2546. It does not post GitHub issue comments automatically in this tranche.
 - **Decision:** Do not create `tests/security/__init__.py` or `tests/security/conftest.py` unless pytest collection fails without them; the initial implementation should keep the new test directory minimal.
 
 ---
@@ -265,3 +286,5 @@ Revisions made based on review:
 ## Complexity: T2
 
 New script with argument parsing, multiple files, TDD required, config entry, and docs update. More than one file modified/created; full workflow applies.
+
+```

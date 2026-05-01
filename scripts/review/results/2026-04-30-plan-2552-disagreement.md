@@ -1,0 +1,57 @@
+# Disagreement report — plan #2552 (2026-04-30)
+
+## Verdicts
+
+| Provider | Verdict |
+|---|---|
+| codex-final | UNKNOWN |
+| codex | MAJOR |
+| codex-postpatch | UNKNOWN |
+| codex-rerun | UNKNOWN |
+| gemini-final | UNKNOWN |
+| gemini | UNAVAILABLE (gemini CLI failed, rc=1: [WARN] Skipping unreadable directory: /tmp/snap-private-tmp (EACCES: permission denied, scandir '/tmp/snap-private-tmp') [WARN] Skipping unreadable directory: /tmp/systemd-private-384f6636782f40648bb07a1bce9c9cef-ModemManager.service-hqDDIK (EACCES: permission denied, scandir '/tmp/systemd-private-384f6636782f40648bb07a1bce9c9cef-ModemManager.service-hqDDIK') [WARN] Skipping unreadable directory: ) |
+| gemini-postpatch | UNKNOWN |
+| gemini-rerun | UNKNOWN |
+
+## Findings unique to each provider
+
+A finding is 'unique to X' if its text appears in X's artifact but not
+verbatim in any other provider's artifact.
+
+### codex-final
+
+(no findings unique to this provider)
+
+### codex
+
+- The plan body under review is not verified at its claimed path. The inline plan says `Status: plan-review ... T2`, includes `README.md` in Files to Change, and lists 8 structural tests. The GitHub `main` copy of `docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md` still says `Complexity: T1`, omits `README.md` from the deliverable/files table, and lists only 4 structural tests. Because local shell retrieval failed, I cannot verify that the actual checkout file matches the inline reviewed text. Implementing from the path could use stale instructions.
+- The plan’s own approval gate is still unresolved. The inline header says it is “not approval-ready until fresh cross-provider re-review returns no MAJOR or the user explicitly waives remaining cross-provider evidence.” The cited artifacts `scripts/review/results/2026-04-30-plan-2552-codex-final.md` and `scripts/review/results/2026-04-30-plan-2552-gemini-final.md` both have `Verdict: MAJOR`. No clean rerun or explicit waiver is cited. This blocks approval and implementation.
+- The TDD list does not test the paid-execution requirements that issue #2552 explicitly asks for. Issue #2552 Scope requires “paid-pilot intake requirements: scope, NDA/confidentiality, repo access level, payment approval, and PR review gate.” The plan’s TDD list only checks broad scenario headings and one owner-approval/no-write-access rule; it does not assert NDA/confidentiality acknowledgement, payment approval, fork/PR-only access, or owner-held PR review gate. With TDD mandatory, this leaves correctness-critical runbook content unguarded.
+- The required `CONTRIBUTOR_INTEREST_TEMPLATE` is internally inconsistent with the plan’s own lockdown caveat. The template requirement says it should direct contributors to “fork + PR + contact,” while Scenario 3 says that under active `collaborators_only` limits, non-collaborators cannot comment, open issues, or open PRs, so actions require temporary lift, collaborator invitation, or the README-published off-GitHub route. The template requirement can produce an impossible instruction unless it is explicitly conditional on the interaction-limit state.
+- The planned username-deny-list test risks reintroducing the very identifier the runbook is supposed to avoid. The plan’s `test_runbook_issue_references_and_no_username` expects a “denied-list fixture for the individual username absent,” while issue #2546 and `docs/handoffs/github-collaborator-only-lockdown-2026-04-29.md` both name `Baijack-star`. The plan does not specify how the durable test will avoid hardcoding that username in public test code while still enforcing absence from the runbook.
+- The plan overclaims its standards basis. Resource Intelligence says `docs/standards/HARD-STOP-POLICY.md` requires user approval and blocks fresh MAJOR findings, but that policy’s Scope says it applies to engineering-critical labels and explicitly says non-critical documentation issues proceed without those gates unless requested. The stricter gate may still be required by `AGENTS.md` and `docs/plans/README.md`, but the cited standard is not the right authority for this documentation issue.
+
+### codex-postpatch
+
+(no findings unique to this provider)
+
+### codex-rerun
+
+(no findings unique to this provider)
+
+### gemini-final
+
+(no findings unique to this provider)
+
+### gemini
+
+- (none)
+
+### gemini-postpatch
+
+(no findings unique to this provider)
+
+### gemini-rerun
+
+(no findings unique to this provider)
+

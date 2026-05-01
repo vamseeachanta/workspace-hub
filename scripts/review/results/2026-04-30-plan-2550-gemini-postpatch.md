@@ -1,0 +1,33 @@
+# Post-Patch Plan Re-Review — Issue #2550 — Gemini
+
+- Date: 2026-04-30
+- Prompt: `.planning/quick/2026-04-30-plan-2550-postpatch-review-prompt.md`
+- Raw output: `.planning/quick/2026-04-30-plan-2550-gemini-postpatch.raw`
+- Source plan reviewed: `docs/plans/2026-04-29-issue-2550-interaction-limit-renewal-scheduled-task.md`
+
+## Raw provider output
+
+Warning: 256-color support not detected. Using a terminal with at least 256-color support is recommended for a better visual experience.
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Ripgrep is not available. Falling back to GrepTool.
+Verdict: MINOR
+
+- Summary:
+  - All prior MAJOR blockers (unresolved decisions, `jq` dependency ambiguity, missing log directory creation, and Hermes cron cutover instructions) have been successfully resolved in this revision.
+  - The plan correctly handles 404s as "unset" limits, correctly enforces an empty list failure guard, and properly filters out archived and private repositories.
+  - There is a minor redundancy in the testing strategy: proposing both Pytest and Bats to test the same Bash script by stubbing `gh` on the `$PATH`. One integration test framework is typically sufficient.
+
+- Findings:
+  1. **Severity:** MINOR
+     **Evidence:** The plan requires both "Pytest wrapper tests" (`tests/security/test_renew_interaction_limits.py`) and "Bats integration tests" (`tests/security/test_renew_interaction_limits.bats`) which both state they "execute the real Bash script with a stubbed `gh` on `$PATH`".
+     **Impact:** Duplicative test coverage using two different frameworks to accomplish the exact same black-box execution of a Bash script, unnecessarily increasing test maintenance burden.
+     **Required fix:** Consider consolidating integration tests into a single framework (either Bats OR Pytest, though Bats is generally more idiomatic for asserting Bash script behavior with stubbed CLI dependencies). This is a non-blocking suggestion.
+
+- Prior blocker resolution:
+  - [x] Unresolved requirements/open questions: Resolved. Open questions converted to explicit decisions (e.g., report-only, no GitHub issue comments, local log generation).
+  - [x] Missing `jq` dependency or unclear `gh --jq` usage: Resolved. AC explicitly mandates `gh --jq` or shell parsing, and specifies the schema update required if a standalone `jq` binary is introduced.
+  - [x] Missing `logs/security/` directory creation: Resolved. Pseudocode and AC now include `mkdir -p "$REPO_ROOT/logs/security"` before report generation.
+  - [x] Hermes cron decommission step unactionable: Resolved. Explicit CLI command (`hermes cron remove d9b2d1c2270d`) and UI fallback added to the AC and documentation.
+
+- Approval recommendation: approval-ready-with-minor-notes

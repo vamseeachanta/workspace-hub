@@ -1,0 +1,29 @@
+# Post-Patch Plan Re-Review — Issue #2552 — Gemini
+
+- Date: 2026-04-30
+- Prompt: `.planning/quick/2026-04-30-plan-2552-postpatch-review-prompt.md`
+- Raw output: `.planning/quick/2026-04-30-plan-2552-gemini-postpatch.raw`
+- Source plan reviewed: `docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md`
+
+## Raw provider output
+
+Warning: 256-color support not detected. Using a terminal with at least 256-color support is recommended for a better visual experience.
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Ripgrep is not available. Falling back to GrepTool.
+Verdict: APPROVE
+
+- **Summary:**
+  - The plan successfully addresses the prior MAJOR blockers: the permanent CI test for the plan index has been explicitly prohibited, and the README modification for an off-GitHub contact path has been added to the deliverables, ACs, and tests.
+  - Acceptance criteria and verification commands (`uv run pytest`) are concrete, measurable, and executable without guessing.
+  - The plan strictly adheres to its scope, properly deferring complex legal artifact creation (like NDAs) to future issues.
+  - Label mutation and approval state are correctly handled, with the plan explicitly avoiding self-promotion.
+
+- **Findings:**
+  - (No MAJOR or MINOR findings. The plan is sound and ready for execution.)
+
+- **Prior blocker resolution:**
+  - [x] **Permanent CI test should not enforce a historical docs/plans/README.md plan-index row:** Resolved. The "Files to Change" table and the Acceptance Criteria explicitly instruct not to create a permanent CI test for this one-time process artifact.
+  - [x] **Missing public-facing off-GitHub contact path in README/CONTRIBUTING:** Resolved. Added to "Files to Change", Acceptance Criteria, and a specific TDD test (`test_readme_external_contributor_pointer`) ensures the `README.md` publishes a discoverable pointer.
+
+- **Approval recommendation:** `approval-ready`
