@@ -40,7 +40,16 @@
 |---|---|---|---|---|---|---|
 | 1 | 2026-05-02T11:36Z | engineering-standards/API; asset-management; engineering gap audit; naval-architecture topical | 4 | #2586 #2587 #2588 #2589 | r1 Claude internal: 1 MINOR + 3 MAJOR→revised; Codex+Gemini UNAVAILABLE (#2479 + sandbox) | **status:plan-review** for all 4 — pending user approval |
 | 2 | 2026-05-02T12:53Z | DNV standards; ASME standards; maritime-law topical; online-resource-registry refresh | 4 | #2590 #2591 #2592 #2593 | r1 Claude internal: 4 MAJOR→revised (3+4+2+3 MAJOR / 10+5+5+5 MINOR); Codex+Gemini UNAVAILABLE | **status:plan-review** for all 4 — pending user approval |
-| 3 | scheduled | ABS standards; ISO offshore 19900-series; **erratum plan for #2471 over-citation across W1+W2**; engineering/mooring sub-domain backfill | — | — | — | queued |
+| 3 | 2026-05-02T13:23Z | ABS standards; ISO 19900-series; **#2471 erratum plan**; engineering riser sub-domain expansion | 4 | #2594 #2595 #2596 #2597 | r1 Claude internal: 2 MINOR + 2 MAJOR→revised (improved over W2 — pre-empting #2471 in prompts cut MAJOR rate in half) | **status:plan-review** for all 4 |
+| 4 | scheduled | NACE corrosion (8 PDFs); BSI subset (75 PDFs); marine-engineering wiki audit (19200 files); engineering pipeline sub-domain expansion | — | — | — | queued |
+
+## Wave 3 outcome notes
+
+- **#2471 finding pre-empted** — folding the W2 systemic finding into W3 planner prompts cut MAJOR rate from 4/4 (W2) to 2/4 (W3). Transferable lesson: when a systemic flaw surfaces, propagate to the next wave's planner prompts immediately.
+- **W3-C erratum plan as a pattern** — when a defect is too big to retroactively edit committed-and-pushed plans, an erratum plan is the right shape. Forward-amend, preserve git blame, add a test to prevent recurrence.
+- **W3-B caught a real source-quality issue**: every on-disk ISO 19900-series PDF is a draft (DIS/FDIS/CD), not published. The plan added a `revision_source` contract to surface this in frontmatter.
+- **W3-A flagged W1-A inheritance-blocker** transparently — agent didn't pretend the over-citation didn't exist; instead, called it out for the user to address via #2596 erratum.
+- **Auto-sync push-race** continues to be reliable — third occurrence this session.
 
 ## Wave 2 outcome notes
 
