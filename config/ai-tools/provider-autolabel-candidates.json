@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-02T07:06:42.844035Z",
+  "generated_at": "2026-05-02T13:22:37.461571Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 4,
+  "eligible_count": 5,
   "applied": [],
   "candidates": [
     {
@@ -15,7 +15,7 @@
         "domain:knowledge-management",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-04-29T14:30:46Z",
+      "updatedAt": "2026-05-02T12:00:17Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -49,7 +49,7 @@
         "domain:semiconductor",
         "domain:chip-design"
       ],
-      "updatedAt": "2026-04-29T09:59:49Z",
+      "updatedAt": "2026-05-02T11:29:33Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -57,6 +57,38 @@
       "provider_priority": "high",
       "provider_status": "needs_cleanup",
       "work_type": [
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2559,
+      "title": "feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2559",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-02T12:00:20Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
         "implementation",
         "strategy"
       ],
@@ -82,7 +114,7 @@
         "domain:naval-architecture",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-01T00:40:05Z",
+      "updatedAt": "2026-05-02T12:00:26Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -116,7 +148,7 @@
         "domain:naval-architecture",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-01T00:41:59Z",
+      "updatedAt": "2026-05-02T12:00:23Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -235,7 +267,7 @@
         "priority:critical",
         "compliance-alert"
       ],
-      "updatedAt": "2026-05-01T11:45:51Z",
+      "updatedAt": "2026-05-02T11:49:38Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

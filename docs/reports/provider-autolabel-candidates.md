@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-05-02T07:06:42.844035Z
+Generated: 2026-05-02T13:22:37.461571Z
 Apply mode: False
 Threshold: 0.9
 
@@ -8,6 +8,7 @@ Threshold: 0.9
 |---|---|---:|---|---|
 | #2540 epic(llm-wiki): overnight Elements corpus planning wave after #2536 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2510 feat(cad): build Python layout/CAD automation demo for chip/package geometries | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2559 feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2566 test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2568 feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |

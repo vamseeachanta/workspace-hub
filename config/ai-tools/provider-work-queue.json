@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-02T07:06:42.724129Z",
+  "generated_at": "2026-05-02T13:22:37.339369Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-05-02T07:06:41.150845Z",
+  "scorecard_generated_at": "2026-05-02T13:22:35.833676Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 5,
-      "total_candidates": 164,
+      "total_candidates": 166,
       "top_issues": [
         {
           "number": 2540,
@@ -24,7 +24,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-29T14:30:46Z",
+          "updatedAt": "2026-05-02T12:00:17Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -35,32 +35,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 2229,
-          "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "status:working",
-            "machine:licensed-win-1",
-            "agent:claude",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T06:09:41Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation"
           ]
         },
         {
@@ -75,7 +49,7 @@
             "domain:semiconductor",
             "domain:chip-design"
           ],
-          "updatedAt": "2026-04-29T09:59:49Z",
+          "updatedAt": "2026-05-02T11:29:33Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -83,6 +57,29 @@
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2559,
+          "title": "feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2559",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-02T12:00:20Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -99,7 +96,7 @@
             "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-01T00:40:05Z",
+          "updatedAt": "2026-05-02T12:00:26Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -124,7 +121,7 @@
             "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-01T00:41:59Z",
+          "updatedAt": "2026-05-02T12:00:23Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -169,7 +166,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-01T11:45:51Z",
+          "updatedAt": "2026-05-02T11:49:38Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -213,8 +210,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 12,
-      "total_candidates": 34,
+      "execution_ready_count": 11,
+      "total_candidates": 32,
       "top_issues": [
         {
           "number": 2269,
@@ -371,29 +368,6 @@
           ]
         },
         {
-          "number": 2227,
-          "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-02T02:35:20Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2270,
           "title": "feat(blender): standardize headless baseline workflow and smoke render validation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2270",
@@ -408,6 +382,33 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-04-28T06:13:53Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2272,
+          "title": "test(portability): add repeatable OpenFOAM and Blender smoke verification",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2272",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness",
+            "status:working",
+            "machine:multi",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T06:08:52Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",

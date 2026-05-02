@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-02T07:06:42.724129Z
+Generated: 2026-05-02T13:22:37.339369Z
 Current week: 2026-W18
 Recommended provider order: gemini, codex, claude
 
@@ -10,13 +10,13 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 5
-- Total routed candidates: 164
+- Total routed candidates: 166
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2540 epic(llm-wiki): overnight Elements corpus planning wave after #2536 | yes | strategy/workflow/architecture language | priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
-| #2229 feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live | yes | existing claude agent label | enhancement, priority:medium, cat:harness, status:working, machine:licensed-win-1, agent:claude |
 | #2510 feat(cad): build Python layout/CAD automation demo for chip/package geometries | yes | strategy/workflow/architecture language | priority:medium, cat:engineering, cat:tooling, status:plan-approved, domain:semiconductor, domain:chip-design |
+| #2559 feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, status:plan-approved |
 | #2566 test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
 | #2568 feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
 | #2431 Compliance alert: W17 — 20% (critical) | no | strategy/workflow/architecture language | priority:high, priority:critical, compliance-alert |
@@ -26,8 +26,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 12
-- Total routed candidates: 34
+- Execution-ready candidates: 11
+- Total routed candidates: 32
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -37,8 +37,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2368 feat(knowledge): generate faceted portal pages for large LLM-wiki domains | yes | existing codex agent label | enhancement, priority:high, cat:documentation, domain:knowledge-management, status:working, agent:codex |
 | #2373 feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:knowledge-management, status:working, agent:codex |
 | #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:working, agent:codex |
-| #2227 feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis | yes | existing codex agent label | enhancement, priority:medium, cat:documentation, agent:codex, status:plan-approved |
 | #2270 feat(blender): standardize headless baseline workflow and smoke render validation | yes | existing codex agent label | enhancement, priority:medium, cat:engineering, cat:documentation, status:working, machine:dev-secondary |
+| #2272 test(portability): add repeatable OpenFOAM and Blender smoke verification | yes | existing codex agent label | enhancement, priority:medium, cat:engineering, cat:harness, status:working, machine:multi |
 
 ## gemini
 
