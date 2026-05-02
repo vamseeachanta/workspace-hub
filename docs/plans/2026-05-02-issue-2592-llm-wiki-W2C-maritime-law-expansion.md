@@ -1,10 +1,10 @@
 # Plan for W2-C: feat(llm-wiki) — maritime-law wiki topical expansion (IMO conventions + 10 core concepts)
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2592
-> **Review artifacts:** scripts/review/results/2026-05-02-plan-W2C-maritime-law-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-02-plan-2592-claude-internal.md (Codex/Gemini UNAVAILABLE — see Adversarial Review Summary)
 
 ---
 
@@ -24,13 +24,13 @@ Inventory by subdirectory (verified `find … -name "*.md" | sort` 2026-05-02):
 
 Key shape observations:
 
-- The 6 existing convention pages currently sit under `concepts/` despite carrying `code_id`-able identity (CLC-1992, LLMC-1996, OPA-90, etc.). Per #2471 routing principle and the constraint stated by the task, **IMO/national-statute conventions are standards-pages, not concept pages** — they belong under `wiki/standards/<code-id>.md`. This plan does NOT relocate the 6 existing convention pages (out of scope; flagged as Open Question for a follow-up); new IMO conventions added by this plan WILL land in `wiki/standards/` with proper `code_id`/`publisher`/`revision` frontmatter.
+- The 6 existing convention pages currently sit under `concepts/` despite carrying `code_id`-able identity (CLC-1992, LLMC-1996, OPA-90, etc.). Per the constraint stated by the task, IMO/national-statute conventions ARE standards-tier identity. **However, project memory `project_wiki_standards_path_decision.md` explicitly excludes maritime-law from the `wiki/standards/` routing principle** ("The principle applies to: marine-engineering, engineering, naval-architecture. **Maritime-law, personal, health-reports are out of scope.**"). This plan therefore **defaults to routing the 4 new IMO/ILO pages under `wiki/concepts/` with additive `code_id`/`publisher`/`consolidated_edition` frontmatter** (a schema-additive change, not a path extension). The original `wiki/standards/<code-id>.md` routing is preserved as Open Question #1 option (a) for explicit user override during plan-review. This plan does NOT relocate the 6 existing convention pages (out of scope; flagged as Open Question for a follow-up).
 - The frontmatter in 5 of the 6 existing convention pages uses singular `source:` (deprecated) where `CLAUDE.md` recommends plural `sources:`. Outside this plan's scope.
 - The 6 existing convention pages are **descriptive shells** (Summary table + 1–3 sentence Details), not concept-abstraction pages. There are NO concept-abstraction pages for general average, salvage, limitation of liability (only the LLMC convention page), port-state control, flag-state jurisdiction, charterparties, bills of lading, or marine insurance.
 
 ### Standards
 
-Maritime-law standards-page production is **bootstrapping from zero**. Per `.claude/rules/calc-citation-contract.md`, calc-module citations need wiki pages with `code_id`/`publisher`/`revision` frontmatter; maritime-law wiki has no such pages today. The plan introduces 4 new standards pages under `wiki/standards/` (the first ever in this wiki).
+Maritime-law standards-tier page production is **bootstrapping from zero**. Per `.claude/rules/calc-citation-contract.md`, calc-module citations need wiki pages with `code_id`/`publisher`/`revision` frontmatter; maritime-law wiki has no such pages today. **Default routing per Open Question #1**: the plan introduces 4 new IMO/ILO pages under `wiki/concepts/` (since memory excludes maritime-law from the `wiki/standards/` routing principle), each carrying additive `code_id`/`publisher`/`consolidated_edition` frontmatter. **Note on `consolidated_edition` vs `revision`**: IMO conventions are amended via amendments adopted at MSC/MEPC sessions, not by publisher revisions; the field is therefore named `consolidated_edition` (or `revision: <consolidated-edition-year>` if the user picks the standards/ option). This is a maritime-law-specific frontmatter convention NOT covered by #2471's calc-citation contract — calc-module resolvability is deferred until amendment-set matching semantics are decided (separate issue).
 
 | Standard | Status | Source |
 |---|---|---|
@@ -56,11 +56,11 @@ Maritime-law standards-page production is **bootstrapping from zero**. Per `.cla
 ### Documents consulted
 
 - `docs/plans/_template-issue-plan.md` — followed structure verbatim; retrieval contract requires ≥3 distinct sources with embedded evidence.
-- `docs/plans/2026-05-02-issue-2589-llm-wiki-W1D-naval-architecture-expansion.md` — W1-D precedent; this plan mirrors its shape (10 new pages, frontmatter contract, see-also test, word-count cap, single index/log update). Differences: maritime-law gets MIXED concepts + standards (per #2471 routing for IMO conventions); naval-arch was concepts-only.
-- `.claude/rules/calc-citation-contract.md` — concept pages do not emit `Citation` instances (citations are calc-module artifacts); the 4 new standards pages WILL carry `code_id`/`publisher`/`revision` frontmatter so future calc-module citations (e.g., a marine-insurance calc) can resolve them via the resolver in #2481/#2482.
+- `docs/plans/2026-05-02-issue-2589-llm-wiki-W1D-naval-architecture-expansion.md` — W1-D precedent; this plan mirrors its shape (10 new pages, frontmatter contract, see-also test, word-count cap, single index/log update). Differences: maritime-law remains all-`concepts/` per memory exclusion (default), with 4 IMO/ILO pages carrying additive standards-tier frontmatter (`code_id`/`publisher`/`consolidated_edition`); naval-arch was concepts-only.
+- `.claude/rules/calc-citation-contract.md` — concept pages do not emit `Citation` instances (citations are calc-module artifacts); the 4 new IMO/ILO pages WILL carry forward-adoptable `code_id`/`publisher`/`consolidated_edition` frontmatter, but are **explicitly NOT calc-resolvable in v1** (amendment-set matching semantics deferred to a separate issue — see Risks).
 - `.claude/rules/coding-style.md` — single-site edits; verify each new file added to `index.md` does not delete adjacent rows.
 - Memory `feedback_plan_past_tense_artifact_claims.md` — this plan uses **future tense throughout** for all proposed pages.
-- Memory `project_wiki_standards_path_decision.md` — `wiki/standards/<code-id>.md` is the sanctioned routing for codified standards. Note: that memory states **#2471 is CSA-Z276-only** — the routing principle generalizes, the codification plan does not. This plan extends the principle to IMO conventions (a forward extension; flagged as Open Question for sanction).
+- Memory `project_wiki_standards_path_decision.md` — `wiki/standards/<code-id>.md` is the sanctioned routing for codified standards in marine-engineering, engineering, naval-architecture. **Memory verbatim: "The principle applies to: marine-engineering, engineering, naval-architecture. Maritime-law, personal, health-reports are out of scope."** This plan therefore defaults to `concepts/` with additive frontmatter; `standards/` routing is only available as Open Question #1 option (a) pending explicit user override and a separate maritime-law sanction issue.
 - #2540 — OPEN, "epic(llm-wiki): overnight Elements corpus planning wave after #2536" — wave epic; this plan is W2-C under that wave (maritime-law domain).
 - #2589 — OPEN, "feat(llm-wiki): naval-architecture wiki topical expansion — 10 core concept pages (W1-D)" — sibling W1 plan, same shape.
 - #2471 — CLOSED, "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract" — sanctioned `wiki/standards/<code-id>.md` routing principle.
@@ -90,10 +90,10 @@ Coverage matrix vs. canonical Mandaraka-Sheppard + Schoenbaum + IMO-active-conve
 | **Bills of lading / Hague-Visby / Hamburg / Rotterdam Rules** | partial — referenced in `eurasian-dream-2002.md` body | concept | **NEW** `concepts/bills-of-lading.md` |
 | **Marine insurance** (P&I clubs, IG, hull, MIA 1906) | gap | concept | **NEW** `concepts/marine-insurance.md` |
 | **Collisions (COLREGs application + civil liability)** | gap | concept | **NEW** `concepts/collisions-and-colregs.md` |
-| **MARPOL 73/78** | partial — body reference only in `mv-wakashio-2020.md` | standards | **NEW** `standards/marpol-73-78.md` |
-| **SOLAS 1974** | gap | standards | **NEW** `standards/solas-1974.md` |
-| **MLC 2006** | partial — body reference only in `mv-wakashio-2020.md` | standards | **NEW** `standards/mlc-2006.md` |
-| **ISM Code** | partial — referenced in pre-existing case bodies | standards | **NEW** `standards/ism-code.md` |
+| **MARPOL 73/78** | partial — body reference only in `mv-wakashio-2020.md` | standards-tier (default-routed to `concepts/`) | **NEW** `concepts/marpol-73-78.md` (default) — `standards/marpol-73-78.md` if Open Q#1 option (a) |
+| **SOLAS 1974** | gap | standards-tier (default-routed to `concepts/`) | **NEW** `concepts/solas-1974.md` (default) — `standards/solas-1974.md` if Open Q#1 option (a) |
+| **MLC 2006** | partial — body reference only in `mv-wakashio-2020.md` | standards-tier (default-routed to `concepts/`) | **NEW** `concepts/mlc-2006.md` (default) — `standards/mlc-2006.md` if Open Q#1 option (a) |
+| **ISM Code** | partial — referenced in pre-existing case bodies | standards-tier embedded-in-SOLAS (default-routed to `concepts/`) | **NEW** `concepts/ism-code.md` (default) — see ISM-as-embedded-in-SOLAS note in Risks |
 | **ISPS Code** | gap | standards | not in this batch — defer to W3 |
 | **COLREGs 1972** | gap | standards | not in this batch — defer (concept page covers application surface) |
 | **CLC / Bunker / HNS / Athens / LLMC / OPA-90** | covered (existing pages) | concept→standards (relocation) | **OUT OF SCOPE** — relocation flagged Open Question |
@@ -101,23 +101,9 @@ Coverage matrix vs. canonical Mandaraka-Sheppard + Schoenbaum + IMO-active-conve
 | **Arbitration (LMAA, ICC, SMA)** | gap | concept | not in this batch — defer to W3 |
 | **Classification societies' role in regulatory regime** | gap | entity | reserved for naval-architecture batch (#2589) |
 
-**Top-10 selected** for this expansion (foundational + cross-linkable, citable canonical reference, 6 concept pages + 4 standards pages):
+**Top-10 selected** for this expansion (foundational + cross-linkable, citable canonical reference, 6 doctrine-concept pages + 4 IMO/ILO standards-tier pages):
 
-Concepts (legal doctrine, 6 pages):
-1. `concepts/general-average.md`
-2. `concepts/salvage.md`
-3. `concepts/limitation-of-liability.md`
-4. `concepts/port-state-control.md`
-5. `concepts/flag-state-jurisdiction.md`
-6. `concepts/marine-insurance.md`
-
-Concepts (regulatory + commercial-shipping doctrine, 2 more pages — selecting bills-of-lading and charterparties as the most cross-linkable to existing case-law entities `eurasian-dream-2002.md` and `mv-ever-given-2021.md`; deferring `imo-regulatory-framework.md`, `collisions-and-colregs.md`, `charterparties.md` selection rationale below):
-
-Wait — to stay strictly at 10 with the 4 standards pages in, I need exactly 6 concept pages. Adjusting selection:
-
-Final top-10:
-
-**Concepts (6):**
+**Doctrine-concept pages (6):**
 1. `concepts/general-average.md`
 2. `concepts/salvage.md`
 3. `concepts/limitation-of-liability.md`
@@ -125,13 +111,13 @@ Final top-10:
 5. `concepts/flag-state-jurisdiction.md`
 6. `concepts/charterparties.md` (selected over marine-insurance and bills-of-lading because charterparty doctrine subsumes both via incorporation clauses; bills-of-lading + marine-insurance deferred to W3)
 
-**Standards (4):**
-7. `standards/marpol-73-78.md`
-8. `standards/solas-1974.md`
-9. `standards/mlc-2006.md`
-10. `standards/ism-code.md`
+**IMO/ILO standards-tier pages (4)** — default-routed to `concepts/` per Open Question #1 default; rename to `standards/` only if user picks option (a):
+7. `concepts/marpol-73-78.md`
+8. `concepts/solas-1974.md`
+9. `concepts/mlc-2006.md`
+10. `concepts/ism-code.md`
 
-Selection rationale: each concept page is foundational (named in BOTH Mandaraka-Sheppard and Schoenbaum chapter lists) and has ≥1 existing case entity to cross-link from (general-average → ever-given; salvage → ever-given; limitation → prestige + llmc-1996; port-state-control → wakashio + erika; flag-state-jurisdiction → prestige; charterparties → eurasian-dream + msc-flaminia). Each standards page has either an active IMO/ILO website citation OR a /mnt/ace acma-codes corpus reference for the publisher/revision metadata.
+Selection rationale: each doctrine-concept page is foundational (named in BOTH Mandaraka-Sheppard and Schoenbaum chapter lists) and has ≥1 existing case entity to cross-link from (general-average → ever-given; salvage → ever-given; limitation → prestige + llmc-1996; port-state-control → wakashio + erika; flag-state-jurisdiction → prestige; charterparties → eurasian-dream + msc-flaminia). Each standards-tier page has either an active IMO/ILO website citation OR a /mnt/ace acma-codes corpus reference for the publisher/edition metadata.
 
 ### Evidence (embedded verification)
 
@@ -152,10 +138,11 @@ Selection rationale: each concept page is foundational (named in BOTH Mandaraka-
 - EXISTS: `knowledge/wikis/maritime-law/wiki/entities/{amoco-cadiz-1978,deepwater-horizon-2010,eurasian-dream-2002,msc-flaminia-2012,mv-erika-1999,mv-ever-given-2021,mv-prestige-2002,mv-wakashio-2020,sea-empress-1996,torrey-canyon-1967}.md` (10 entity case-law pages)
 - EXISTS: `knowledge/wikis/maritime-law/wiki/sources/{maritime-law-cases,maritime-liability-conventions}.md`
 - EXISTS: `knowledge/wikis/maritime-law/CLAUDE.md` (schema declared)
-- MISSING (this plan creates): `wiki/concepts/{general-average,salvage,limitation-of-liability,port-state-control,flag-state-jurisdiction,charterparties}.md`
-- MISSING (this plan creates): `wiki/standards/{marpol-73-78,solas-1974,mlc-2006,ism-code}.md`
-- MISSING (this plan creates): `wiki/standards/` directory itself (does not exist today)
+- MISSING (this plan creates): `wiki/concepts/{general-average,salvage,limitation-of-liability,port-state-control,flag-state-jurisdiction,charterparties}.md` (6 doctrine-concept pages)
+- MISSING (this plan creates, default routing): `wiki/concepts/{marpol-73-78,solas-1974,mlc-2006,ism-code}.md` (4 IMO/ILO standards-tier pages with additive frontmatter)
+- MISSING (this plan creates IF Open Q#1 option (a) chosen): `wiki/standards/{marpol-73-78,solas-1974,mlc-2006,ism-code}.md` AND `wiki/standards/` directory itself (does not exist today)
 - MISSING (this plan creates): `tests/knowledge/test_maritime_law_expansion.py`
+- MISSING (precondition IF Open Q#1 option (a) chosen): `knowledge/wikis/maritime-law/CLAUDE.md` schema update declaring `wiki/standards/` directory + `code_id`/`publisher`/`consolidated_edition` extra-fields contract; mirrors naval-architecture's CLAUDE.md schema
 
 **Line excerpts** (from `concepts/llmc-1996.md` lines 1–10 — frontmatter pattern this plan must reproduce; note this is the legacy 5-field `source:` shape; new concept pages will use the 6-field `sources:` shape per `CLAUDE.md`):
 
@@ -169,24 +156,26 @@ last_updated: 2026-04-07
 ---
 ```
 
-**Standards-frontmatter target shape** (per `.claude/rules/calc-citation-contract.md` + #2471 routing — this is the contract the 4 new standards pages will carry):
+**Standards-tier frontmatter target shape** (default routing = `concepts/`; the 4 new IMO/ILO pages will carry additive `code_id`/`publisher`/`consolidated_edition` frontmatter):
 
 ```
 ---
 title: "MARPOL 73/78 — International Convention for the Prevention of Pollution from Ships"
-code_id: MARPOL-73-78
+code_id: marpol-73-78
 publisher: IMO
-revision: "Consolidated Edition 2022 (incl. 2020 sulphur cap MARPOL Annex VI)"
-tags: [maritime-law, standards, imo, marpol, pollution]
+consolidated_edition: "2022 (consolidated through MEPC amendments adopted by 2026-05-02)"
+tags: [maritime-law, standards-tier, imo, marpol, pollution]
 added: 2026-05-02
 last_updated: 2026-05-02
 sources:
   - maritime-liability-conventions
 see_also:
-  - ../concepts/environmental-liability.md
-  - ../concepts/port-state-control.md
+  - ./environmental-liability.md
+  - ./port-state-control.md
 ---
 ```
+
+**Note on `consolidated_edition` field semantics**: this is a maritime-law-specific frontmatter convention NOT covered by #2471's calc-citation contract. IMO conventions are amended via amendments adopted at MSC/MEPC sessions, not by publisher revisions, so the field describes the consolidated-edition cutoff rather than a single revision number. **Calc-resolvability is explicitly deferred** — these 4 pages carry forward-adoptable identity but a calc emitting `Citation(code_id="marpol-73-78", revision="...")` will NOT resolve until amendment-set matching semantics are decided in a separate issue. For ISM Code: it is embedded in SOLAS Ch IX, so its `consolidated_edition` rides on the SOLAS amendment chain — flagged in Risks. For MLC 2006: ILO publisher (not IMO), amended via Special Tripartite Committee — `publisher: ILO` and `consolidated_edition` describes STC amendment cutoff.
 
 **Gap proofs**:
 
@@ -215,19 +204,19 @@ see_also:
 |---|---|
 | This plan | `docs/plans/2026-05-02-issue-2592-llm-wiki-W2C-maritime-law-expansion.md` |
 | Tests | `tests/knowledge/test_maritime_law_expansion.py` |
-| Implementation (10 wiki pages) | `knowledge/wikis/maritime-law/wiki/concepts/*.md` (6) + `knowledge/wikis/maritime-law/wiki/standards/*.md` (4) |
+| Implementation (10 wiki pages) | `knowledge/wikis/maritime-law/wiki/concepts/*.md` (10 — default routing) OR 6 in `concepts/` + 4 in `standards/` (Open Q#1 option (a)) |
 | Index update | `knowledge/wikis/maritime-law/wiki/index.md` |
 | Log update | `knowledge/wikis/maritime-law/wiki/log.md` |
-| New directory | `knowledge/wikis/maritime-law/wiki/standards/` (created by this plan; first standards page in this wiki) |
-| Plan review — Claude | `scripts/review/results/2026-05-02-plan-W2C-maritime-law-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-05-02-plan-W2C-maritime-law-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-05-02-plan-W2C-maritime-law-gemini.md` |
+| Schema precondition (Open Q#1 option (a) ONLY) | `knowledge/wikis/maritime-law/CLAUDE.md` (declare `wiki/standards/` + extra-fields) AND new directory `knowledge/wikis/maritime-law/wiki/standards/` |
+| Plan review — Claude (internal, single-author) | `scripts/review/results/2026-05-02-plan-2592-claude-internal.md` |
+| Plan review — Codex | UNAVAILABLE — codex-cli 0.124.0 stdin-hang regression (#2479) |
+| Plan review — Gemini | UNAVAILABLE — gemini sandbox path resolution failure |
 
 ---
 
 ## Deliverable
 
-Ten new pages will exist under `knowledge/wikis/maritime-law/wiki/` — 6 concept pages (legal doctrine: general average, salvage, limitation of liability, port-state control, flag-state jurisdiction, charterparties) and 4 standards pages under a newly-created `wiki/standards/` directory (MARPOL-73-78, SOLAS-1974, MLC-2006, ISM-Code) — each carrying `CLAUDE.md`-compliant frontmatter, with the 4 standards pages additionally carrying `code_id`/`publisher`/`revision` per #2471 routing, ≥1 case-law citation OR convention reference per concept page, and ≥2 `see_also` cross-links per page. `index.md` will list every new page; `log.md` will carry the audit entry.
+Ten new pages will exist under `knowledge/wikis/maritime-law/wiki/` — 6 doctrine-concept pages (general average, salvage, limitation of liability, port-state control, flag-state jurisdiction, charterparties) and 4 IMO/ILO standards-tier pages (MARPOL-73-78, SOLAS-1974, MLC-2006, ISM-Code). **Default routing per Open Question #1**: all 10 pages land under `wiki/concepts/`, with the 4 IMO/ILO pages carrying additive `code_id`/`publisher`/`consolidated_edition` frontmatter. (If Open Q#1 option (a) is chosen by user during plan-review, the 4 IMO/ILO pages relocate to a newly-created `wiki/standards/` directory and `knowledge/wikis/maritime-law/CLAUDE.md` is updated as a precondition.) Each page carries `CLAUDE.md`-compliant frontmatter, ≥1 case-law citation OR convention reference per doctrine-concept page, and ≥2 `see_also` cross-links per page. `index.md` will list every new page; `log.md` will carry the audit entry.
 
 ---
 
@@ -251,38 +240,38 @@ function author_concept_page(slug, scope_summary):
     forbid: copying convention article text verbatim (cite by reference only)
     enforce: word count ≤ 400 per page (concept summary, not chapter copy)
 
-# Per-STANDARDS-page authoring contract (applies to 4 standards pages):
-function author_standards_page(slug, code_id, publisher, revision):
+# Per-STANDARDS-TIER-page authoring contract (applies to 4 IMO/ILO pages — default routed under concepts/):
+function author_standards_tier_page(slug, code_id, publisher, consolidated_edition):
     write frontmatter:
         title: human-readable
-        code_id: <CANONICAL-ID>      # e.g., MARPOL-73-78, SOLAS-1974, MLC-2006, ISM-Code
+        code_id: <canonical-lowercase-id>      # e.g., marpol-73-78, solas-1974, mlc-2006, ism-code
         publisher: IMO | ILO
-        revision: <consolidated edition / amendment year>
-        tags: [maritime-law, standards, <publisher-tag>, <topic-tag>]
+        consolidated_edition: <consolidated edition / amendment cutoff>
+        tags: [maritime-law, standards-tier, <publisher-tag>, <topic-tag>]
         added: 2026-05-02
         last_updated: 2026-05-02
         sources: [maritime-liability-conventions]
-        see_also: [≥2 sibling-page paths — concepts/ pages preferred]
+        see_also: [≥2 sibling-page paths — doctrine concepts/ pages preferred]
     section "Scope" — 1 paragraph: what the convention regulates, geographic/sector scope, entry-into-force date
     section "Structure" — bulleted list of annexes/chapters BY NAME ONLY (no clause text)
     section "Key Mechanisms" — 3–5 bullets naming the mechanisms (e.g., MARPOL Annex VI sulphur cap; ISM Designated Person Ashore; MLC seafarers' employment agreement) WITHOUT restating thresholds, formulas, or article text
-    section "Cross-References" — to concept pages and case-law entities
+    section "Cross-References" — to doctrine-concept pages and case-law entities
     section "Citation Source" — IMO/ILO canonical URL + /mnt/ace corpus path (reference only, no extraction)
     forbid: any verbatim convention article text (#2482)
     forbid: enumerating specific numerical thresholds (e.g., "0.5% sulphur" is fine as a named cap; reproducing the regulation's prose is not)
     enforce: word count ≤ 400 per page
 
 function update_index(index_path, new_pages):
-    add a new "Standards" section to the index AFTER the "Conventions (Concepts)" section
-    insert each new concept page into "Concepts (Cross-cutting)" table (alphabetical by title)
-    insert each new standards page into a NEW "Standards" table
+    add a new "Standards-tier (IMO/ILO)" sub-section to the index after the existing "Conventions (Concepts)" section
+    insert each new doctrine-concept page into "Concepts (Cross-cutting)" table (alphabetical by title)
+    insert each new IMO/ILO standards-tier page into the new sub-section
     bump page_count from 20 → 30 in frontmatter
     update last_updated to 2026-05-02
 
 function append_log(log_path):
-    append "[2026-05-02] expand | maritime-law W2-C — 10 core pages (6 concepts + 4 standards)"
+    append "[2026-05-02] expand | maritime-law W2-C — 10 core pages (6 doctrine-concepts + 4 IMO/ILO standards-tier)"
         - Pages added: <list>
-        - Notes: covers Mandaraka-Sheppard + Schoenbaum + IMO-active-conventions core curriculum gaps; first standards-page tier in this wiki.
+        - Notes: covers Mandaraka-Sheppard + Schoenbaum + IMO-active-conventions core curriculum gaps; first standards-tier identity in this wiki (default routed under concepts/ per memory exclusion).
 ```
 
 ---
@@ -297,13 +286,15 @@ function append_log(log_path):
 | Create | `knowledge/wikis/maritime-law/wiki/concepts/port-state-control.md` | Paris MoU, Tokyo MoU, USCG inspection regime; cross-link `mv-wakashio-2020.md`, `mv-erika-1999.md` |
 | Create | `knowledge/wikis/maritime-law/wiki/concepts/flag-state-jurisdiction.md` | UNCLOS Art 91/94 nationality + jurisdiction; cross-link `mv-prestige-2002.md` |
 | Create | `knowledge/wikis/maritime-law/wiki/concepts/charterparties.md` | Voyage / time / bareboat; NYPE, GENCON, Shellvoy; cross-link `eurasian-dream-2002.md`, `msc-flaminia-2012.md` |
-| Create | `knowledge/wikis/maritime-law/wiki/standards/marpol-73-78.md` | Six annexes incl. 2020 sulphur cap; first standards page in this wiki |
-| Create | `knowledge/wikis/maritime-law/wiki/standards/solas-1974.md` | SOLAS chapter overview; ISM is Ch IX |
-| Create | `knowledge/wikis/maritime-law/wiki/standards/mlc-2006.md` | ILO seafarers' bill of rights |
-| Create | `knowledge/wikis/maritime-law/wiki/standards/ism-code.md` | Safety Management System; Designated Person Ashore |
-| Modify | `knowledge/wikis/maritime-law/wiki/index.md` | Add 6 concept rows + new "Standards" table with 4 rows; bump `page_count` 20 → 30; update `last_updated` |
+| Create (default) | `knowledge/wikis/maritime-law/wiki/concepts/marpol-73-78.md` | Six annexes incl. 2020 sulphur cap; additive `code_id`/`publisher`/`consolidated_edition` frontmatter |
+| Create (default) | `knowledge/wikis/maritime-law/wiki/concepts/solas-1974.md` | SOLAS chapter overview; ISM is Ch IX |
+| Create (default) | `knowledge/wikis/maritime-law/wiki/concepts/mlc-2006.md` | ILO seafarers' bill of rights; `publisher: ILO` |
+| Create (default) | `knowledge/wikis/maritime-law/wiki/concepts/ism-code.md` | Safety Management System; Designated Person Ashore; embedded-in-SOLAS Ch IX (see Risks) |
+| Precondition (Open Q#1 option (a) ONLY) | `knowledge/wikis/maritime-law/CLAUDE.md` | Update schema to declare `wiki/standards/` directory + `code_id`/`publisher`/`consolidated_edition` extra-fields contract; mirrors naval-architecture's CLAUDE.md schema |
+| Create (Open Q#1 option (a) ONLY) | `knowledge/wikis/maritime-law/wiki/standards/{marpol-73-78,solas-1974,mlc-2006,ism-code}.md` | Relocate the 4 IMO/ILO pages from `concepts/` to a newly-created `wiki/standards/` directory |
+| Modify | `knowledge/wikis/maritime-law/wiki/index.md` | Add 6 doctrine-concept rows + 4 IMO/ILO standards-tier rows; bump `page_count` 20 → 32 (on-disk count post-plan); update `last_updated` |
 | Modify | `knowledge/wikis/maritime-law/wiki/log.md` | Append expansion log entry |
-| Create | `tests/knowledge/test_maritime_law_expansion.py` | TDD: frontmatter, see-also resolves, IMO-conv pages have `code_id`/`publisher`/`revision`, concept pages have ≥1 case-law citation OR convention reference, no PDF extraction, word count ≤400 |
+| Create | `tests/knowledge/test_maritime_law_expansion.py` | TDD: frontmatter, see-also resolves, IMO/ILO pages have `code_id`/`publisher`/`consolidated_edition`, doctrine-concept pages have ≥1 case-law citation OR convention reference, no PDF extraction, word count ≤400 |
 | Update | `docs/plans/README.md` | Add this plan to plan index |
 
 ---
@@ -313,72 +304,87 @@ function append_log(log_path):
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | `test_all_ten_pages_exist` | Each of the 10 new files is on disk | path list | all 10 `Path.exists()` is True |
-| `test_standards_directory_created` | `wiki/standards/` directory exists | `Path.is_dir()` | True |
-| `test_concept_frontmatter_required_fields` | Every new concept page has `title`, `tags`, `added`, `last_updated` per `CLAUDE.md` schema | parse YAML frontmatter | all 4 keys present, non-empty |
-| `test_standards_frontmatter_code_id` | Every new standards page has `code_id`, `publisher`, `revision` per #2471 + calc-citation contract | parse YAML | all 3 keys present, non-empty |
-| `test_standards_code_id_canonical` | `code_id` matches `^[A-Z][A-Z0-9-]+$` and is one of the canonical IMO/ILO short codes | regex per page | match per page |
+| `test_standards_directory_created` | `wiki/standards/` directory exists (Open Q#1 option (a) ONLY; skipped under default routing) | `Path.is_dir()` | True if option (a), test skipped under default |
+| `test_concept_frontmatter_required_fields` | Every new doctrine-concept page has `title`, `tags`, `added`, `last_updated` per `CLAUDE.md` schema | parse YAML frontmatter | all 4 keys present, non-empty |
+| `test_standards_tier_frontmatter_fields` | Every new IMO/ILO page has `code_id`, `publisher`, `consolidated_edition` (additive frontmatter; not calc-citation-contract-bound) | parse YAML | all 3 keys present, non-empty |
+| `test_code_id_canonical_lowercase` | `code_id` matches `^[a-z][a-z0-9-]+$` (lowercase per `project_wiki_standards_path_decision.md`: "lowercase, hyphen-separated") and ∈ {marpol-73-78, solas-1974, mlc-2006, ism-code} | regex + set membership | match per page |
 | `test_frontmatter_see_also_min_two` | Each page lists ≥2 entries in `see_also` | parse YAML | `len(see_also) >= 2` |
 | `test_see_also_paths_resolve` | Every `see_also` entry points to a real file on disk | parse YAML, `Path.exists()` per entry | 100% resolve |
-| `test_concept_has_case_or_convention_ref` | Each concept page body contains ≥1 link to either an entity case page (`../entities/*.md`) OR a convention page (`./*-convention-*.md`, `./clc-1992.md`, `./opa-90.md`, `./llmc-1996.md`) OR an inline case citation matching `r'\b\(\d{4}\)\b'` (court-year pattern) | regex search of body | ≥1 match per concept page |
+| `test_concept_has_case_or_convention_ref` | Each doctrine-concept page body contains ≥1 link to either an entity case page (`../entities/*.md`) OR a convention page (`./*-convention-*.md`, `./clc-1992.md`, `./opa-90.md`, `./llmc-1996.md`) OR an inline case citation matching `r'\b\(\d{4}\)\b'` (court-year pattern) | regex search of body | ≥1 match per page |
 | `test_word_count_under_400` | Concept summary discipline (no chapter copy per #2482) | count words | each page < 400 words |
-| `test_no_verbatim_convention_text` | No new standards page contains a paragraph >80 words AND >5 commas (heuristic for copy-pasted regulatory prose) | heuristic scan | no flagged paragraph |
-| `test_index_links_resolve` | Every relative link in `index.md` Concepts + Standards tables resolves | walk markdown links | 100% resolve |
-| `test_index_page_count_bumped` | `index.md` frontmatter `page_count` updated to ≥30 | parse YAML | `page_count >= 30` |
-| `test_index_has_standards_section` | `index.md` body contains a `## Standards` heading after the existing Conventions section | grep | match present |
+| `test_no_quoted_convention_prose_without_citation` | No new IMO/ILO page contains a quoted-prose block (text inside `>` blockquote OR text inside straight-double-quotes spanning >10 words) without a citation marker on the same or adjacent line (citation-form lint, replacing the rejected length+comma heuristic) | regex scan: blockquote / quoted span ≥10 words; require citation token within ±2 lines | no unmatched quoted prose |
+| `test_index_links_resolve` | Every relative link in `index.md` Concepts + Standards-tier tables resolves | walk markdown links | 100% resolve |
+| `test_index_page_count_matches_on_disk` | `index.md` frontmatter `page_count` equals on-disk markdown count under `wiki/` (32 post-plan: 22 existing + 10 new); replaces the `≥30` non-discriminating bound | parse YAML; `len(glob('wiki/**/*.md'))` | exact equality |
+| `test_index_has_standards_tier_section` | `index.md` body contains a `## Standards-tier` (or `## Standards` if option (a)) heading after existing Conventions section | grep | match present |
 | `test_log_entry_appended` | `log.md` contains a 2026-05-02 expand entry | grep | match present |
-| `test_no_pdf_extraction_markers` | New pages contain no copy-paste markers (e.g., very long single paragraphs > 80 words, or "Page N of M" stamps) | heuristic | no flagged paragraphs |
+| `test_no_pdf_extraction_markers` | New pages contain no copy-paste markers (e.g., literal "Page N of M" stamps, OCR artifacts like multiple consecutive isolated digits, or character-encoding garbage) | heuristic | no flagged paragraphs |
 
 ---
 
 ## Acceptance Criteria
 
 - [ ] All 10 new wiki pages will exist with valid frontmatter (`title`, `tags`, `added=2026-05-02`, `last_updated=2026-05-02`).
-- [ ] The 4 new standards pages will additionally carry `code_id`, `publisher`, `revision` frontmatter per #2471 routing and `.claude/rules/calc-citation-contract.md`.
-- [ ] `wiki/standards/` directory will be created (does not exist today).
-- [ ] Each new concept page will cite ≥1 case (cross-link to existing `entities/*.md` OR inline `(YYYY)` citation) OR a named convention.
-- [ ] Each new standards page will cite the IMO/ILO canonical URL AND a /mnt/ace corpus path reference (no extraction).
+- [ ] The 4 new IMO/ILO standards-tier pages will additionally carry `code_id` (lowercase-hyphenated), `publisher`, `consolidated_edition` frontmatter (additive maritime-law-specific convention; not calc-citation-contract-bound in v1).
+- [ ] Default routing: all 10 pages live under `wiki/concepts/`. (Open Q#1 option (a) ONLY: `wiki/standards/` directory created and CLAUDE.md schema updated.)
+- [ ] Each new doctrine-concept page will cite ≥1 case (cross-link to existing `entities/*.md` OR inline `(YYYY)` citation) OR a named convention.
+- [ ] Each new IMO/ILO standards-tier page will cite the IMO/ILO canonical URL AND a /mnt/ace corpus path reference (no extraction).
 - [ ] Each new page will list ≥2 `see_also` cross-links that resolve to real files.
-- [ ] No new page will restate convention article text verbatim (#2482 deny-list).
+- [ ] No new page will contain quoted convention prose ≥10 words without a citation marker (#2482 deny-list).
 - [ ] Each new page will be ≤400 words (concept-summary discipline).
-- [ ] `index.md` will contain a new `## Standards` section listing all 4 standards pages and the existing Concepts table will list 6 new rows.
-- [ ] `index.md` frontmatter `page_count` will read ≥30; `last_updated` will read `2026-05-02`.
+- [ ] `index.md` will contain a new `## Standards-tier` (or `## Standards` if option (a)) section listing all 4 IMO/ILO pages and the existing Concepts table will list 6 new rows.
+- [ ] `index.md` frontmatter `page_count` will equal exactly 32 (on-disk count post-plan: 22 existing + 10 new); `last_updated` will read `2026-05-02`.
 - [ ] `log.md` will carry a `[2026-05-02] expand | maritime-law W2-C` entry.
 - [ ] `tests/knowledge/test_maritime_law_expansion.py` will pass: `uv run pytest tests/knowledge/test_maritime_law_expansion.py -v`.
 - [ ] No regression in existing knowledge tests: `uv run pytest tests/knowledge/ -v`.
-- [ ] Review artifacts will be posted under `scripts/review/results/2026-05-02-plan-W2C-maritime-law-{claude,codex,gemini}.md`.
+- [ ] Review artifact for Claude (single-author internal): `scripts/review/results/2026-05-02-plan-2592-claude-internal.md` (Codex/Gemini UNAVAILABLE — see Adversarial Review Summary).
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | TBD | TBD |
-| Codex | TBD | TBD |
-| Gemini | TBD | TBD |
+| Claude (internal) | MAJOR → revised | 2 MAJOR (wiki/standards/ routing contradicts memory for maritime-law; IMO revision-field semantics) + 5 MINOR — all addressed inline; default routing changed to concepts/ |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** TBD
+**Overall result:** PASS-after-revision (2 MAJOR + 5 MINOR applied 2026-05-02)
+
+**Revisions made based on review:**
+- MAJOR-1: Re-framed Open Question #1 with verbatim memory quote excluding maritime-law from `wiki/standards/` routing; added third option (default = `concepts/` with additive frontmatter) and made it the plan default; added precondition step to update maritime-law CLAUDE.md schema if user picks `standards/` routing; added Risks entry that `standards/` choice pre-empts aces-#4 Phase 1.
+- MAJOR-2: Renamed `revision` field to `consolidated_edition` and documented as a maritime-law-specific frontmatter convention NOT covered by #2471's calc-citation contract; explicitly deferred calc-resolvability; addressed ISM-as-embedded-in-SOLAS and MLC-as-ILO-publisher in Risks.
+- MINOR-1: Replaced placeholder review-artifact paths in header and Artifact Map with `scripts/review/results/2026-05-02-plan-2592-claude-internal.md`; marked Codex/Gemini UNAVAILABLE inline.
+- MINOR-2: Removed mid-draft self-correction text from top-10 selection; presented 6 doctrine-concepts + 4 IMO/ILO standards-tier cleanly with rationale.
+- MINOR-3: Switched `code_id` regex to lowercase `^[a-z][a-z0-9-]+$` and renamed canonical IDs to lowercase (`marpol-73-78`, `solas-1974`, `mlc-2006`, `ism-code`) per `project_wiki_standards_path_decision.md`.
+- MINOR-4: Replaced length+comma heuristic with citation-form lint that flags quoted prose ≥10 words missing a citation marker.
+- MINOR-5: Changed `page_count` AC + test from `≥30` non-discriminating bound to exact `== 32` (on-disk count post-plan).
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk: jurisdictional bias.** Maritime-law doctrine is not uniform across US admiralty (Schoenbaum), UK admiralty (Mandaraka-Sheppard, Aleka), and continental-Europe codified systems (e.g., French Code des transports, German HGB). The 6 concept pages WILL flag the jurisdictional split explicitly in the "Doctrine" section and avoid privileging US or UK doctrine as default. Plan adopts UK/Commonwealth-leaning vocabulary as primary (Mandaraka-Sheppard) with US parenthetical on first occurrence — same convention as #2589.
-- **Risk: convention-lifecycle drift.** IMO conventions are amended frequently — MARPOL Annex VI (sulphur cap), SOLAS (cyber-resilience amendments coming Jan 2026), MLC (recent amendments via STC). Standards pages will cite the consolidated-edition revision year in `revision:` frontmatter and link to the IMO `listofconventions.aspx` page rather than embedding numerical thresholds — so a page does not silently go stale when the next amendment lands. Tests will not lock numerical values; they will lock structural shape.
-- **Risk: IP boundary on case-law summaries.** Quoting judgment text triggers copyright concerns even for old cases. Concept pages will refer to cases by court+year+name only, with cross-link to the existing entity page (which already summarizes the case in our voice) — no judgment-text reproduction. The `test_no_verbatim_convention_text` heuristic catches the analogous risk for convention text.
-- **Risk: standards routing not yet sanctioned for IMO conventions.** Memory `project_wiki_standards_path_decision.md` notes #2471 is **CSA-Z276-only**; the routing principle generalizes but the codification plan does not. This plan EXTENDS the principle to IMO conventions as a forward-adoption call. If Open Question #1 below resolves "no", the 4 standards pages will be re-homed to `concepts/`.
+- **Risk: jurisdictional bias.** Maritime-law doctrine is not uniform across US admiralty (Schoenbaum), UK admiralty (Mandaraka-Sheppard, Aleka), and continental-Europe codified systems (e.g., French Code des transports, German HGB). The 6 doctrine-concept pages WILL flag the jurisdictional split explicitly in the "Doctrine" section and avoid privileging US or UK doctrine as default. Plan adopts UK/Commonwealth-leaning vocabulary as primary (Mandaraka-Sheppard) with US parenthetical on first occurrence — same convention as #2589.
+- **Risk: convention-lifecycle drift.** IMO conventions are amended frequently — MARPOL Annex VI (sulphur cap), SOLAS (cyber-resilience amendments coming Jan 2026), MLC (recent amendments via STC). IMO/ILO pages will cite the consolidated-edition cutoff in `consolidated_edition:` frontmatter and link to the IMO `listofconventions.aspx` page rather than embedding numerical thresholds. Tests will not lock numerical values; they will lock structural shape.
+- **Risk: IP boundary on case-law summaries.** Quoting judgment text triggers copyright concerns even for old cases. Doctrine-concept pages will refer to cases by court+year+name only, with cross-link to the existing entity page (which already summarizes the case in our voice). The `test_no_quoted_convention_prose_without_citation` lint catches the analogous risk for convention text.
+- **Risk: routing memory exclusion.** Memory `project_wiki_standards_path_decision.md` verbatim: "The principle applies to: marine-engineering, engineering, naval-architecture. **Maritime-law, personal, health-reports are out of scope.**" Plan therefore defaults the 4 IMO/ILO pages to `wiki/concepts/` with additive frontmatter. If user picks Open Question #1 option (a) (`wiki/standards/`), this **pre-empts aces-#4 Phase 1 audit** (cradle-to-grave standards canonical home decision) — flag for user before approval; the maritime-law decision should not bind aces-#4's larger scope.
+- **Risk: calc-citation contract gap for IMO/ILO.** IMO conventions are amended via MSC/MEPC amendments, MLC via ILO STC, ISM via SOLAS amendment chain — none publish a single "revision" matching the calc-citation contract semantic. The `consolidated_edition` field is a maritime-law-specific frontmatter convention; calc resolvers will NOT match against it in v1. Calc-resolvability for maritime-law standards-tier pages is deferred to a separate issue with amendment-set matching semantics.
+- **Risk: ISM-as-embedded-in-SOLAS coupling.** ISM Code is embedded in SOLAS Ch IX, not a standalone publication. Treating it as a standalone page decouples it from the SOLAS amendment chain it actually rides on. This plan creates `ism-code.md` as a pointer page that explicitly states `embedded_in: solas-1974` in frontmatter and refers to SOLAS for `consolidated_edition` semantics; if user prefers to fold ISM content into a sub-section of `solas-1974.md`, flag during plan-review.
+- **Risk: MLC-as-ILO-publisher distinct cadence.** MLC 2006 is ILO (not IMO), amended via Special Tripartite Committee on its own cadence (most recent amendments adopted 2022, in force 2024). Plan sets `publisher: ILO` and `consolidated_edition: "as amended through STC 2022 amendments (in force 2024)"` for `mlc-2006.md`; tests do not assume `publisher: IMO` uniformly across the 4 pages.
 - **Risk: relocation churn.** The 6 existing convention pages (CLC, Bunker, HNS, Athens, LLMC, OPA-90) sit in `concepts/` despite carrying `code_id`-able identity. They are NOT relocated by this plan; this preserves URL stability for the case-law entity pages that link to them. A follow-up issue should cover the relocation as a separate atomic change (Open Question #2).
-- **Risk: page-count regenerator drift.** `index.md` frontmatter says `page_count: 20` but on-disk count is 22 (index.md + overview.md not catalogued). After this plan: on-disk = 32, catalogued count = 30 (10 new pages added). Same shape as #2589 finding m2.
+- **Risk: page-count regenerator drift.** `index.md` frontmatter says `page_count: 20` but on-disk count is 22 (index.md + overview.md not catalogued). After this plan: on-disk = 32. Test now requires exact match (`page_count == 32`) per MINOR-5 fix.
 
-- **Open #1: standards routing sanction.** Should `wiki/standards/<code-id>.md` be sanctioned for IMO/ILO conventions in the maritime-law wiki, or should this plan be re-homed to `concepts/standards-<code-id>.md`? Current plan assumes YES based on #2471 routing principle generalization; flagged for explicit user sanction.
-- **Open #2: existing convention page relocation.** Should the 6 pre-existing convention pages (CLC, Bunker, HNS, Athens, LLMC, OPA-90) be relocated from `concepts/` to `standards/` in a follow-up issue, given they carry standards-page identity? Not in scope of this plan.
-- **Open #3: foreign-language conventions.** Should multilingual convention text (e.g., Rotterdam Rules French/Spanish authoritative versions) be cross-linked from the standards page or limited to the English IMO consolidation? Current plan: **English IMO consolidation only**, with a "Authoritative texts" line naming the official languages without linking. Flagged for user feedback.
+- **Open #1: routing for the 4 IMO/ILO pages — three options.**
+  - **(a)** Override the memory exclusion and route to `wiki/standards/<code-id>.md`. Requires precondition: update `knowledge/wikis/maritime-law/CLAUDE.md` schema to declare the directory + extra-fields (mirrors naval-architecture). **NOTE: pre-empts aces-#4 Phase 1 cradle-to-grave standards-canonical-home audit.**
+  - **(b)** Route to `wiki/concepts/standards-<code-id>.md` (slug-prefix convention).
+  - **(c) [DEFAULT]** Route to `wiki/concepts/<code-id>.md` with additive `code_id`/`publisher`/`consolidated_edition` frontmatter (schema-additive, not path-extension). No CLAUDE.md change needed; aces-#4 audit not pre-empted; calc-resolvability deferred to a separate issue.
+- **Open #2: existing convention page relocation.** Should the 6 pre-existing convention pages (CLC, Bunker, HNS, Athens, LLMC, OPA-90) be migrated to a different routing in a follow-up issue, given they carry standards-tier identity? Not in scope of this plan.
+- **Open #3: foreign-language conventions.** Should multilingual convention text (e.g., Rotterdam Rules French/Spanish authoritative versions) be cross-linked from the IMO/ILO page or limited to the English IMO consolidation? Current plan: **English IMO consolidation only**, with a "Authoritative texts" line naming the official languages without linking. Flagged for user feedback.
 - **Open #4: 11th candidate.** `concepts/imo-regulatory-framework.md` was deferred to keep batch size at 10. Should it ship in this batch (making it 11) or in W3?
 
 ---
 
 ## Complexity: T2
 
-**T2** — 10 new wiki pages (6 concepts + 4 standards) + new directory creation + 2 modified registry files + 1 new test module. Multi-file, TDD required, but no new code logic / no calc-citation emission / no calc-module touch. Risk is concentrated in (a) jurisdictional vocabulary discipline, (b) standards-page frontmatter contract per #2471, (c) word-count + verbatim-text heuristics — all addressable with regex tests. Not T3 because there is no new module / no calc / no migration / no schema change beyond the additive `code_id` frontmatter on 4 pages.
+**T2** — 10 new wiki pages (6 doctrine-concepts + 4 IMO/ILO standards-tier) + 2 modified registry files + 1 new test module under default routing (Open Q#1 option (c)). Multi-file, TDD required, but no new code logic / no calc-citation emission / no calc-module touch. Risk is concentrated in (a) jurisdictional vocabulary discipline, (b) additive `code_id`/`publisher`/`consolidated_edition` frontmatter for 4 IMO/ILO pages, (c) citation-form lint for quoted prose — all addressable with regex tests. Not T3 because there is no new module / no calc / no migration / no schema change to CLAUDE.md (under default routing). If user picks Open Q#1 option (a), complexity bumps to T2+ due to CLAUDE.md schema precondition + new directory creation.

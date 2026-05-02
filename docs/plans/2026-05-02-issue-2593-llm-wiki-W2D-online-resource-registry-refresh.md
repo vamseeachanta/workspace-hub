@@ -1,10 +1,10 @@
 # Plan: audit(data) — online-resource-registry refresh + 2025-2026 standards-revision sweep (W2-D)
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2593
-> **Review artifacts:** scripts/review/results/2026-05-02-plan-W2D-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-02-plan-2593-claude-internal.md | (codex unavailable per #2479) | (gemini unavailable per sandbox path resolution failure)
 
 ---
 
@@ -143,9 +143,9 @@ Last targeted edit was #2302 — the bounded-patch precedent W2-D follows.
 | Proposed patch (deliverable B, NOT applied to registry) | `data/document-index/online-resource-registry.proposed-patch.yaml` |
 | Audit-time test | `tests/data/test_online_resource_registry.py` |
 | Index update | `docs/plans/README.md` |
-| Plan review — Claude | `scripts/review/results/2026-05-02-plan-W2D-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-05-02-plan-W2D-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-05-02-plan-W2D-gemini.md` |
+| Plan review — Claude (internal r1) | `scripts/review/results/2026-05-02-plan-2593-claude-internal.md` |
+| Plan review — Codex | n/a — codex-cli 0.124.0 stdin-hang (#2479) |
+| Plan review — Gemini | n/a — sandbox path resolution failure |
 
 ---
 
@@ -186,11 +186,36 @@ function audit_online_resource_registry():
         if candidate.url not in [e.url for e in registry["entries"]]:
             missing_entries.append(candidate)
 
-    # 3. W1 cross-reference pass
-    for plan in [#2586, #2587, #2589]:
-        for standards_page in plan.proposed_pages:
-            if standards_page.publisher_url not in registry:
-                missing_entries.append((standards_page, "referenced by W1 plan"))
+    # 3. W1 cross-reference pass — explicit URL list, code_id keyed
+    # Replaces hand-wavy `standards_page.publisher_url` lookup with an explicit
+    # enumeration of the publisher URLs the W1-A/B/D plans introduce. Match is
+    # by `code_id` (when registry has the field) OR by canonical URL string;
+    # URL-only match is a known false-negative path (see M3 fix note below).
+    w1_publisher_urls = [
+        # W1-A (#2586) — API standards proposed wiki pages, canonical URLs from plan body lines 114-115 + standards table
+        ("API-RP-2A-WSD",  "https://store.accuristech.com/standards/api-rp-2a-wsd-r2025"),
+        ("API-STD-2RD",    "https://www.worldoil.com/news/2025/10/23/api-strengthens-offshore-safety-standards-with-new-updates/"),
+        ("API-RP-2SK",     "https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2sk"),  # registry HAS this URL but it points to announcements portal, not the document — flag as URL-mismatch
+        ("API-RP-2GEO",    "https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2geo"),
+        ("API-RP-2MET",    "https://www.api.org/products-and-services/standards/important-standards-announcements/standard-2met"),
+        ("API-RP-16Q",     "https://www.api.org/products-and-services/standards/important-standards-announcements/standard-16q"),
+        ("API-RP-17B",     "https://www.api.org/products-and-services/standards/important-standards-announcements/standard-17b"),
+        ("API-RP-1111",    "https://www.api.org/products-and-services/standards/important-standards-announcements/standard-1111"),
+        # W1-B (#2587) — asset-management scaffold (no specific publisher URLs proposed; placeholder for plan amendment)
+        # W1-D (#2589) — naval-architecture concept pages cite ITTC, SNAME, ABS rules
+        ("ITTC-RP-7.5",    "https://ittc.info/about-ittc/recommended-procedures/"),
+        ("SNAME-T&R",      "https://www.sname.org/pubs/journals"),
+        ("ABS-Rules-MOU",  "https://ww2.eagle.org/en/rules-and-resources/rules-and-guides.html"),
+    ]
+    for code_id, publisher_url in w1_publisher_urls:
+        # primary: match by code_id when registry entry has it; fall back to URL string-match
+        registry_match = find_by_code_id(registry, code_id) or find_by_url(registry, publisher_url)
+        if registry_match is None:
+            missing_entries.append((code_id, publisher_url, "referenced by W1 plan, absent from registry"))
+        elif registry_match.url != publisher_url:
+            # URL-mismatch class — registry has an entry for this code_id but at the wrong URL
+            # (e.g., announcements portal instead of the document itself)
+            stale_entries.append((registry_match.id, registry_match.url, publisher_url, "URL-mismatch vs W1-proposed canonical"))
 
     # 4. Schema-gap pass (single output)
     schema_gaps.append("no `revision` field on any entry")
@@ -227,21 +252,21 @@ Explicitly NOT modified by this plan: `data/document-index/online-resource-regis
 | `test_no_duplicate_ids` | every `id` is unique | registry entries | no duplicates |
 | `test_every_url_well_formed` | every `url` parses as a URL | registry entries | `urllib.parse.urlparse` succeeds, scheme in `{http, https}` |
 | `test_revision_field_parseable_when_present` | when `revision` is added by patch, it parses to a date or matches a known publisher pattern (e.g., `R2025`, `22nd Edition`) | proposed-patch entries | regex match against publisher-revision grammar |
-| `test_url_resolves_sample` | sample of 10 entries (deterministic, seeded by hash) returns 200 OR 3xx via WebFetch at audit-time | 10 sampled entries | unverifiable URLs flagged as `flaky`, NOT `missing` (per Risks below) |
-| `test_proposed_patch_has_required_fields` | every patch entry has `id`, `url`, `name`, `type`, `domain`, `revision`, `last_verified`, `code_id` (when applicable) | patch yaml | required fields present |
+| `test_url_resolves_sample` (audit-only — `@pytest.mark.audit`) | sample of 10 entries (deterministic, seeded by hash) — returns 200/3xx → `verified`; 503/timeout/DNS-fail → `pytest.skip(...)` AND audit-report annotates entry as `verification_status: flaky`; 4xx → `pytest.fail()` (genuine missing) | 10 sampled entries | binary semantics: pass=200/3xx, skip=503/timeout/DNS-fail (with audit-report annotation), fail=4xx |
+| `test_proposed_patch_has_required_fields` | every patch entry has `id`, `url`, `name`, `type`, `domain`, `revision`, `last_checked`, `code_id` (when applicable) | patch yaml | required fields present |
 | `test_no_legacy_entry_older_than_5_years_without_annotation` | acceptance criterion enforcement | merged-view registry | every entry whose `revision` parses to >5 years old has `superseded_or_legacy: true` |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All new tests pass: `uv run pytest tests/data/test_online_resource_registry.py -v` (excluding `test_frontmatter_total_entries_matches_body` which is allowed to fail and is documented as the rationale for fixing frontmatter in a follow-up PR).
-- [ ] No regression: `uv run pytest tests/data/` passes (existing `test_build_online_resource_registry.py` continues to pass).
-- [ ] Audit report at `docs/audits/2026-05-02-online-resource-registry-refresh.md` identifies **≥10 stale entries OR ≥5 missing high-value entries** (whichever bound is reached first; need not satisfy both).
+- [ ] All non-audit tests pass: `uv run pytest tests/data/test_online_resource_registry.py -v -m "not audit"` (the `-m "not audit"` selector excludes `test_url_resolves_sample` from default runs; that test executes only on explicit opt-in via `uv run pytest tests/data/test_online_resource_registry.py -v -m audit`). The marker is registered in `pytest.ini` (or `pyproject.toml [tool.pytest.ini_options]`) so unknown-marker warnings don't surface; the marker registration is part of this plan's deliverable. `test_frontmatter_total_entries_matches_body` is excluded from the green run via `xfail` once the follow-up issue (per MINOR-3 fix) is filed; until then the plan defers writing it.
+- [ ] No regression: `uv run pytest tests/data/ -m "not audit"` passes (existing `test_build_online_resource_registry.py` continues to pass; `-m "not audit"` keeps live-network tests out of default CI).
+- [ ] Audit report at `docs/audits/2026-05-02-online-resource-registry-refresh.md` identifies **≥10 stale entries (with revision-string evidence beyond what §Resource Intel already names) OR ≥5 missing high-value entries beyond the 4 already enumerated in §Resource Intel** (i.e., ≥5 *new* findings) — whichever bound is reached first; need not satisfy both. The "beyond §Resource Intel" qualifier prevents the criterion being satisfied by transcribing the plan itself.
 - [ ] Proposed-patch file `data/document-index/online-resource-registry.proposed-patch.yaml` parses against the existing registry validators when notionally merged (validated via `scripts/data/build-online-resource-registry.py --dry-run` if that flag exists, or a temp-file merge in the test).
-- [ ] No proposed-patch entry has a `revision` parseable to >5 years before 2026-05-02 without an explicit `superseded_or_legacy: true` annotation.
-- [ ] `docs/plans/README.md` updated with this plan.
-- [ ] Review artifacts posted to `scripts/review/results/2026-05-02-plan-W2D-{claude,codex,gemini}.md`.
+- [ ] No proposed-patch entry has a `revision` parseable to >5 years before 2026-05-02 without an explicit `superseded_or_legacy: true` annotation. Patch entries use `last_checked` (the existing schema field) — NOT a new `last_verified` field.
+- [ ] `docs/plans/README.md` updated with this plan. Insertion text is specified in §"Plan Index Entry" below.
+- [ ] Review artifacts posted to `scripts/review/results/2026-05-02-plan-2593-{claude-internal}.md` (codex/gemini channels unavailable this batch — see Adversarial Review Summary).
 
 ---
 
@@ -249,14 +274,23 @@ Explicitly NOT modified by this plan: `data/document-index/online-resource-regis
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | (pending) | (filled after review) |
-| Codex | (pending) | (filled after review) |
-| Gemini | (pending) | (filled after review) |
+| Claude (internal) | MAJOR → revised | 3 MAJOR (split-brain field naming; live-network test in default pytest run; hand-wavy cross-link pseudocode) + 5 MINOR — all addressed inline |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** PASS / FAIL (re-draft required) — to be filled.
+**Overall result:** PASS-after-revision (3 MAJOR + 5 MINOR applied 2026-05-02)
 
-Revisions made based on review:
-- (none yet — initial draft)
+**Revisions made based on review:**
+- M1: dropped `last_verified` from patch schema; reused existing `last_checked` field everywhere (TDD list, Acceptance Criteria, Risks). Dropped `superseded_by` from required-fields list; kept it in §"Risks and Open Questions" only as a forward-prep field with a no-consumer note pending a follow-up issue.
+- M2: added `@pytest.mark.audit` marker for `test_url_resolves_sample` plus `pytest.ini` marker registration; defined explicit pass(200/3xx) / skip(503/timeout/DNS-fail with audit-report annotation) / fail(4xx) semantics; tightened Acceptance Criterion row 1 to `uv run pytest tests/data/test_online_resource_registry.py -v -m "not audit"`. Chose marker-based opt-out over `tests/audits/` directory split for minimal pytest-config churn; both surfaces remain consistent.
+- M3: replaced abstract `standards_page.publisher_url` reference in pseudocode step 3 with explicit ≤11-row table of W1-A/W1-D publisher URLs keyed by `code_id`; added URL-mismatch class for entries that exist in registry but point at the wrong URL (e.g., API RP 2SK announcements portal vs. the document URL); flagged interaction with M1's `code_id` schema gap.
+- m1: review-artifact paths normalized to `scripts/review/results/2026-05-02-plan-2593-*.md` matching dir convention.
+- m2: replaced "Codex/Gemini pending" placeholders with `UNAVAILABLE` rows + cited regression IDs; explicitly authorized single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`.
+- m3: documented that `test_frontmatter_total_entries_matches_body` will be `pytest.xfail`-decorated only after the follow-up issue exists; until then the plan defers writing the test. No forward-promise `xfail` lands.
+- m4: tightened Acceptance Criterion row 3 to require `≥5 NEW missing entries beyond the 4 in §Resource Intel` (or `≥10 stale entries with revision-string evidence`), preventing the criterion from being satisfied by transcribing the plan itself.
+- m5: added §"Plan Index Entry" with the exact insertion text and target heading for `docs/plans/README.md`, reducing race-conflict risk with parallel W-N plan-landings.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
@@ -266,7 +300,8 @@ Revisions made based on review:
 - **Risk:** Revision-string format drifts across publishers (e.g., API uses `22nd Edition (R2025)`, DNV uses `2021-08`, ISO uses `:2013`). **Mitigation:** the `revision` field is free-text, and `test_revision_field_parseable_when_present` uses a permissive regex (date-like OR `Nth Edition` OR `(R\d{4})` OR `:YYYY`). Strict normalization is deferred to a follow-up.
 - **Risk:** Entries used by build pipelines (`scripts/data/generate-domain-resource-views.py`, `scripts/document-intelligence/cross-reference-registries.py`) may break if reformatted. **Mitigation:** patch is a *sidecar*, not applied; the implementation issue that consumes the patch will run those scripts before/after as a regression check.
 - **Risk:** The 247-vs-248 frontmatter drift may indicate a deeper construction bug. **Mitigation:** audit report records it as a finding; W2-D does not attempt to fix it (out of scope).
-- **Risk:** `last_verified` is a NEW field; existing tooling does not consume it. **Mitigation:** `last_verified` is added only to patch-introduced entries; existing entries continue to use `last_checked`. A follow-up issue will harmonize the two field names.
+- **Risk:** Schema-evolution drift if a NEW timestamp field is introduced alongside the existing `last_checked`. **Mitigation (resolved by r1 review):** the patch schema reuses the existing `last_checked` field — no new timestamp field is introduced. This eliminates the split-brain that would otherwise force every consumer (`scripts/data/generate-domain-resource-views.py`, `scripts/document-intelligence/cross-reference-registries.py`, `tests/data/test_build_online_resource_registry.py`) to know about both names.
+- **Risk:** `superseded_by` is a forward-prep field with no current consumer. **Mitigation:** `superseded_by` is NOT in the patch schema's required-fields list; it remains a §Resource Intel-identified gap pending a follow-up issue. The audit report will recommend it; the patch will not introduce it. No consumer reads it today; no existing entry sets it; introducing it speculatively repeats the M1 split-brain pattern in miniature.
 - **Open:** Should the registry be split per-publisher (`API.yaml`, `DNV.yaml`, `ISO.yaml`, …) for review-friendliness, or kept monolithic? **Defer to user during plan-approval.** W2-D assumes monolithic for now.
 - **Open:** Should `code_id` be added to standards-portal entries to link to `standards-transfer-ledger.yaml` per #2471 routing? **Defer to user.** W2-D will recommend it in the audit report but not require it in the patch.
 
@@ -275,3 +310,15 @@ Revisions made based on review:
 ## Complexity: T2
 
 **T2** — bounded delta on a 248-entry registry, three new files (audit report, proposed-patch sidecar, audit-time test), one updated index file, no modification of the registry yaml itself, ≥3 distinct sources cited, requires multi-publisher web-search verification but no production-pipeline changes. Not T1 because there are multiple test cases and a new directory (`docs/audits/`); not T3 because there is no schema migration of existing entries, no breaking change to consumers, and the patch is bounded to ≤20 entries.
+
+---
+
+## Plan Index Entry
+
+The implementation will add the following row under the §"2026-05 (May)" wave-2 section of `docs/plans/README.md`, in alphanumeric order with the sibling W-N plans landing the same day (W2-A/B/C if present, then W2-D):
+
+```markdown
+- [#2593 — W2-D online-resource-registry refresh + 2025-2026 standards-revision sweep](2026-05-02-issue-2593-llm-wiki-W2D-online-resource-registry-refresh.md) — audit + ≤20-entry proposed patch sidecar; registry yaml NOT modified by this plan
+```
+
+Insertion target: **the line immediately following the most recent W2-* sibling row** (or, if W2-D is the first W2 plan to land, immediately under the W2 wave subheading). Implementing agents must `git pull --rebase` before writing this row to mitigate the parallel-W-N-landing race called out in memory `feedback_multi_agent_commit_serialization.md`.
