@@ -1,0 +1,8 @@
+fixture_id: legitimate-recruiter-role
+sender: recruiter@example.org
+subject: Contract naval architecture role
+body: >
+  A client is seeking offshore structural experience for a six-month contract.
+  Rate, location, and contact details are included.
+expected_classification: actionable
+

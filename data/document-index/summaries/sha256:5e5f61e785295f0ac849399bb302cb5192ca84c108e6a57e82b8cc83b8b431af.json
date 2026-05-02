@@ -1,0 +1,20 @@
+{
+  "path": "/mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf",
+  "sha256": "sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af",
+  "source": "acma_codes",
+  "title": "OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities",
+  "discipline": "marine",
+  "domain": "marine",
+  "summary": "OCR preview identifies the source as OCIMF's first-edition 2009 Tandem Mooring and Offloading Guidelines for Conventional Tankers at F(P)SO Facilities, issued by the Oil Companies International Marine Forum. The visible table of contents covers scope, purpose, applicable codes and standards, FPSO/FSO offloading philosophy, subsea mooring arrangements, basis of design, tandem mooring configuration, and equipment including single/dual hawser systems, chafe chain, fairlead, weak link, hawser handling, storage, and retirement.",
+  "text_preview": "Se\n\nOil Companies International Marine Forum\n\nTandem Mooring &\nOffloading Guidelines for\nConventional Tankers\n\nat F(P)SO Facilities\n\nFirst Edition - 2009\n\nTandem Mooring & Offloading Guidelines for Conventional Tankers at F(P)SO Facilities\n\nIssued by the\n\nOil Companies International Marine Forum\n\n29 Queen Anns Gate\n\nLondon\n\nSW1H 9BU\n\nUnited Kingdom\n\nFirst Published 2009\n\nISBN 978 1 905331 62 8\n\neBook ISBN 978 1 905331 925\n\n© Oil Companies International Marine Forum, Bermuda\n\nBritish Library Cataloguing in Publication Data\n\nA catalogue record for this book is available from the British Library.\n\nThe Oil Companies International Marine Forum (OCIMF)\n\nis a voluntary association of oil companies having an interest in the shipment and terminalling of crude oil and\noil products. OCIMF is organised to represent its membership before, and to consult with, the International\nMaritime Organization and other governmental bodies on matters relating to the shipment and terminalling\nof crude oil and oil products, including marine pollution and safety.\n\nTerms of Use\n\nThe advice and information given in this ‘Tandem Mooring and Offloading Guidelines for Conventional\nTankers at F(P)SO Facilities' is ",
+  "extraction_method": "ocr_tesseract_first_pages",
+  "issue": 2521,
+  "downstream_issue": 2227,
+  "ready_for_2227": true,
+  "blocker": null,
+  "provenance": {
+    "source_of_record": "/mnt/ace/acma-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for Conventional Tankers at FPSO Facilities.pdf",
+    "raw_pdf_committed_to_git": false,
+    "ocr_scope": "first 3 pages only; temporary render images deleted after OCR"
+  }
+}

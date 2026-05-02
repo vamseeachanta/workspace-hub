@@ -1,0 +1,9 @@
+tag	source	destination	status	source_files	source_bytes	dest_files	dest_bytes	missing_files	size_mismatches	extra_files
+doris-62092-sesa	62092  SESA FLNG Terminal Project	/mnt/ace/doris/62092_sesa/_from_elements	PASS	418	1465267463	418	1465267463	0	0	0
+assethold-casa-grande-77017	casa_grande_77017	/mnt/ace/assethold/casa-grande-77017/_from_elements	PASS	3	16703705	3	16703705	0	0	0
+doris-codes-specs	Codes and Specs	/mnt/ace/doris/codes/_from_elements/codes-doris	PASS	35197	26411658490	35197	26411658490	0	0	0
+doris-university	Doris University	/mnt/ace/doris/training/_from_elements	PASS	564	11060962662	564	11060962662	0	0	0
+digitalmodel-qgis	qgis	/mnt/ace/digitalmodel/tools/qgis/_from_elements	PASS	3	398492107	3	398492107	0	0	0
+digitalmodel-riser-toolbox	Riser Toolbox	/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements	PASS	8	510241677	8	510241677	0	0	0
+digitalmodel-suction-pile-sizing	Suction Pile Sizing	/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements	PASS	4	235464	4	235464	0	0	0
+acma-projects-31522-woodfibre	Woodfibre	/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements	PASS	5364	1879405139855	5364	1879405139855	0	0	0

@@ -1,0 +1,16 @@
+{
+  "issue": 2555,
+  "chart_id": "C3",
+  "title": "Crane-Utilisation Margin Map",
+  "headline": "Mudmat-L-200te at 1500 m: Large CSV at 20.6% crane utilisation vs Medium CSV at 71.5% \u2014 same GO decision, different margin.",
+  "data_inputs": [
+    "digitalmodel/examples/demos/gtm/results/structure_comparison_matrix.json",
+    "digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json"
+  ],
+  "disclosure": "Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.",
+  "assets": {
+    "png": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.brochure.png",
+    "svg": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.print.svg",
+    "pdf": "docs/reports/gtm/assets/c3-crane-utilisation-margin-map.1page.pdf"
+  }
+}

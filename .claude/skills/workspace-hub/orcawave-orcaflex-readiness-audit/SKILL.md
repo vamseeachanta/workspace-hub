@@ -130,6 +130,11 @@ Typical missing pages / weakly synthesized topics:
 - hull-registry / structure-registry readiness page
 - case-study pages for risers, jumpers, semisubs, turret mooring, and installation families
 
+Specific wiki drift found in the April 2026 readiness review:
+- `knowledge/wikis/engineering/wiki/workflows/orcawave-to-orcaflex-pipeline.md` may still describe the handoff as `.owr -> RAO extraction`; the current dev-primary bridge is xlsx sidecar -> `RAOData` -> `DiffractionResults` -> OrcaFlex export.
+- The engineering wiki has seed pages for OrcaFlex, OrcaWave, Diffraction Analysis System, and OrcaWave-to-OrcaFlex Pipeline, but it lacks operator-ready pages for the canonical spec contract and structure readiness matrix.
+- Recommended wiki synthesis pages: `Canonical Spec Contract: OrcaWave vs OrcaFlex`, `DiffractionSpec Canonical Contract`, `ProjectInputSpec Canonical Contract`, `Semantic Equivalence Taxonomy for Marine Solver Inputs`, `RAODatabase Provenance and xlsx Sidecar Workflow`, `Structure Readiness Matrix`, and case studies for turret-moored FPSO, PLET-to-PLEM rigid jumper, lazy/steep-wave riser, L03 ship benchmark, CALM/SPM, and semi-sub/FOWT.
+
 So always report wiki findings in two layers:
 1. raw/source breadth exists
 2. operator-ready synthesis does not yet exist
@@ -144,3 +149,18 @@ For user-facing readiness reviews, produce:
 5. which structure families should be added next
 6. LLM-wiki coverage vs synthesis gaps
 7. a ranked next-step issue list
+
+## Recently discovered issue anchors for canonical-spec proof
+
+When auditing current work, include these newer proof-expansion issues if present:
+- `#2454` — flagship generic-track OrcaFlex mooring case / turret-moored FPSO semantic proof
+- `#2455` — rigid jumper family / PLET-to-PLEM semantic proof
+- `#2456` — lazy-wave / steep-wave riser semantic proof
+- `#2457` — OrcaWave L03 ship benchmark explicit roundtrip proof
+
+Use these alongside the older foundation issues. The practical order is usually:
+1. `#1652` + `#1788` for real OrcaFlex `.sim` fixture/report/snapshot proof
+2. `#2454`, `#2455`, `#2456` for OrcaFlex family-level semantic proof
+3. `#2457` for named OrcaWave flagship proof
+4. `#1586` for queue traceability/repeatability
+5. `#1637`, `#1591`, `#1594` for scalable sweeps, hull registry, and standards-driven DLC campaigns

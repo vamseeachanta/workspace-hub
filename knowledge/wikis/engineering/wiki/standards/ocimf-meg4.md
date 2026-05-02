@@ -1,10 +1,13 @@
 ---
 title: "OCIMF MEG4 — Mooring Equipment Guidelines"
+code_id: OCIMF-MEG4
+publisher: OCIMF
+revision: 4th-Edition-2018
 tags: [standard, ocimf, mooring, meg4, hmpe, snap-back, mooring-equipment]
 sources:
   - mooring-failures-seed
 added: 2026-04-09
-last_updated: 2026-04-09
+last_updated: 2026-04-24
 ---
 
 # OCIMF MEG4 — Mooring Equipment Guidelines

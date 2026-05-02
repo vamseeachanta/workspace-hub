@@ -33,23 +33,25 @@ Tracks progress against the approved plan at
   included.
 - `scripts/gtm/prospect_adapter.py` — interface + two validation gates:
   `load_and_validate()` (schema + cross-field checks) plus partial
-  `materialize_demo_inputs()` support for demos 4 and 5. Demo_04 writes
-  `pipelay_vessels.json`, `pipelines.json`, and optional
-  `prospect_env.json`; demo_05 writes `csv_hlv_vessels.json`,
-  `rigid_jumpers.json`, and optional `prospect_env.json` into
-  `tmpdir/data/`. Canonical references are now shape-checked
-  (`pipelay` vs `csv_hlv`) before materialization so the wrong vessel family
-  cannot be silently inlined. `run_demo()` remains stubbed and other demos
-  still raise NotImplementedError. Argparse CLI with `--demo` and
+  `materialize_demo_inputs()` support for demos 3, 4, and 5. Demo_03 writes
+  `csv_hlv_vessels.json`, `mudmat_structures.json`, and optional
+  `prospect_env.json`; demo_04 writes `pipelay_vessels.json`,
+  `pipelines.json`, and optional `prospect_env.json`; demo_05 writes
+  `csv_hlv_vessels.json`, `rigid_jumpers.json`, and optional
+  `prospect_env.json` into `tmpdir/data/`. Canonical references are now
+  shape-checked (`pipelay` vs `csv_hlv`) before materialization so the wrong
+  vessel family cannot be silently inlined. `run_demo()` remains stubbed and
+  demos 1/2 still raise NotImplementedError. Argparse CLI with `--demo` and
   `--dry-run`. Type hints throughout; no `Any`.
 - `scripts/gtm/tests/test_prospect_adapter.py` — 13 tests: happy paths
   (demo_05 + canonical Seven Borealis, demo_05 + canonical PLSV,
   demo_04 + canonical pipelay barge), negative validation for wrong-shape
   canonical refs, malformed YAML rejection, Q6 demo_01 + vessel rejection,
-  Q6 demo_03 missing vessel rejection, demo_04 materialization of pipelay
-  vessel / pipeline / environment override files, demo_05 materialization of
-  csv_hlv vessel / rigid-jumper files, and stub NotImplementedError wiring
-  for unimplemented demos and `run_demo()`.
+  Q6 demo_03 missing vessel rejection, demo_03 materialization of csv_hlv
+  vessel / mudmat / environment override files, demo_04 materialization of
+  pipelay vessel / pipeline / environment override files, demo_05
+  materialization of csv_hlv vessel / rigid-jumper files, and stub
+  NotImplementedError wiring for `run_demo()`.
 - `jsonschema>=4.26` added to workspace-hub `[project.optional-dependencies].dev`.
 
 ## Not done (follow-up work)
@@ -60,13 +62,12 @@ Future work on #2346 will need to land, in roughly this order:
   and `plsv.yaml` now exist under `docs/gtm/intake/canonical-vessels/` with
   the required disclaimer + citation blocks. Remaining work shifts to
   materialization, demo dispatch, and delivery/reporting layers.
-- **`materialize_demo_inputs` per-demo logic**: fill in the remaining stub.
-  Demos 4 and 5 now materialize their required files. Remaining work is to
-  add equivalent support for demo_03 (`csv_hlv_vessels.json` + mudmat
-  structure shaping) and any additional structure-body shaping needed beyond
-  the current demo_04 pipeline and demo_05 rigid-jumper paths. Honor
-  `vessel.source == canonical_ref` by loading the referenced YAML and
-  inlining its body.
+- **`materialize_demo_inputs` per-demo logic — workspace-hub layer done for
+  vessel-bearing demos**: demos 3, 4, and 5 now materialize their required
+  vessel/structure/environment JSON files from prospect YAML into `tmpdir/data/`.
+  Remaining adapter materialization work is limited to deciding whether demos
+  1 and 2 need prospect-specific pipeline/freespan input overrides despite the
+  approved Q6 contract forbidding vessel data for those demos.
 - **`run_demo` subprocess dispatch**: subprocess-launch
   `digitalmodel/examples/demos/gtm/demo_0{N}_*.py` with the new
   `--prospect-data-dir` / `--prospect-env` / `--brand-header` /
@@ -83,11 +84,16 @@ Future work on #2346 will need to land, in roughly this order:
   `robots.txt` and `vercel.json` updates per plan v3 Claude M1.
   Partial-failure semantics + retry + compensating actions per plan section
   "Dual Delivery State Machine" (v3 Codex M4).
-- **SOP runbook**: `docs/gtm/prospect-demo-sop.md` — the 48hr decision-tree
-  runbook per plan section F, plus the refuse-vs-fix matrix for the 5
-  authorized fallbacks F1-F5 (plan v2/Q7).
-- **Fallback sidecar**: wire the `private-log/fallback-applied.json` path
-  (gitignored; test-asserted never-ships) per plan v3 Codex M5.
+- **SOP runbook — done (workspace-hub artifact slice)**:
+  `docs/gtm/prospect-demo-sop.md` now contains the 48-hour decision tree,
+  no-outbound-outreach boundary, public-safe/logical-path rule, F1-F5
+  refuse-vs-fix matrix, fallback sidecar schema, email-first delivery state
+  machine, gated-URL guardrails, canonical-vessel usage rules, and
+  post-deploy verification steps. `scripts/gtm/tests/test_prospect_demo_sop.py`
+  validates the runbook contract and path-leakage guardrails.
+- **Fallback sidecar**: schema and never-ships placement are documented in
+  `docs/gtm/prospect-demo-sop.md`; code wiring of the runtime
+  `private-log/fallback-applied.json` writer/packager exclusion remains open.
 - **E2E regression suite**: golden-image test that runs all 5 demos on
   canonical fixtures within the <10 min PR-runtime budget using
   `--from-cache`, outputs routed to the gitignored test-only sink at

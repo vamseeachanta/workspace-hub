@@ -64,6 +64,17 @@ def _import_audit():
     return mod
 
 
+def _import_disposition_report():
+    """Import the issue-scoped #2488 disposition helper."""
+    report_path = REPO_ROOT / "scripts" / "skills" / "issue_2488_disposition_report.py"
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("issue_2488_disposition_report", report_path)
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["issue_2488_disposition_report"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
 # ---------------------------------------------------------------------------
 # Tests: Inventory scope
 # ---------------------------------------------------------------------------
@@ -84,6 +95,142 @@ class TestInventoryScope:
         assert "good-skill" in names
         assert "old-skill" not in names
         assert "fork-skill" not in names
+
+
+    def test_surfaces_active_filesystem_only_skills_without_archive_aliases(self, tmp_path: Path) -> None:
+        skills_dir = tmp_path / "skills"
+        tracked = _write_skill(skills_dir, "domain/tracked-skill", "tracked-skill")
+        orphan = _write_skill(skills_dir, "personal-tools/loss-risk", "loss-risk")
+        archived = _write_skill(skills_dir, "email/_archived/old-skill", "old-skill")
+
+        audit = _import_audit()
+        policy = audit._load_policy(REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml")
+        inventory = audit.build_inventory(skills_dir)
+        trust = {"trusted": True, "reason": "test manifest", "evidence": {}}
+        findings = audit._detect_filesystem_inventory_findings(
+            inventory,
+            policy,
+            skills_dir=skills_dir,
+            tracked_skill_paths={str(tracked.relative_to(skills_dir))},
+            trust=trust,
+        )
+
+        assert [f["classification"] for f in findings] == ["filesystem-only-active"]
+        finding = findings[0]
+        assert finding["family"] == "filesystem-inventory"
+        assert finding["severity"] == "high"
+        assert finding["paths"] == [str(orphan.relative_to(skills_dir))]
+        assert str(archived.relative_to(skills_dir)) not in finding["paths"]
+        assert finding["recommended_action"] == "Disposition as promote_after_review, archive_intentionally, ignore_with_rationale, or delete_after_backup before local filesystem state is lost."
+
+    def test_untrusted_git_inventory_suppresses_authoritative_filesystem_findings(self, tmp_path: Path) -> None:
+        skills_dir = tmp_path / "skills"
+        _write_skill(skills_dir, "domain/loss-risk", "loss-risk")
+
+        audit = _import_audit()
+        policy = audit._load_policy(REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml")
+        inventory = audit.build_inventory(skills_dir)
+        trust = {"trusted": False, "reason": "git ls-files returned zero while filesystem has skills", "evidence": {"tracked_count": 0}}
+        findings = audit._detect_filesystem_inventory_findings(
+            inventory,
+            policy,
+            skills_dir=skills_dir,
+            tracked_skill_paths=set(),
+            trust=trust,
+        )
+
+        assert findings == []
+
+
+    def test_inventory_summary_paths_counts_and_mirrors_are_schema_stable(self, tmp_path: Path) -> None:
+        repo = tmp_path / "repo"
+        skills_dir = repo / ".claude" / "skills"
+        tracked = _write_skill(skills_dir, "domain/tracked-skill", "tracked-skill")
+        orphan = _write_skill(skills_dir, "domain/loss-risk", "loss-risk")
+        _write_skill(skills_dir, "_archive/old-skill", "old-skill")
+
+        audit = _import_audit()
+        policy = audit._load_policy(REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml")
+        trust = {"trusted": True, "reason": "test", "evidence": {"skills_dir": ".claude/skills"}}
+        summary = audit.build_inventory_summary(
+            skills_dir,
+            policy,
+            tracked_skill_paths={str(tracked.relative_to(skills_dir)), "domain/missing-skill/SKILL.md"},
+            trust=trust,
+        )
+
+        assert set(summary["counts"]) == {
+            "tracked_total",
+            "tracked_active",
+            "filesystem_total",
+            "filesystem_active",
+            "filesystem_only_total",
+            "filesystem_only_active",
+            "missing_tracked_total",
+            "missing_tracked_active",
+            "filesystem_only_archived_total",
+        }
+        assert summary["counts"]["filesystem_only_active"] == 1
+        assert summary["counts"]["missing_tracked_active"] == 1
+        assert summary["paths"]["filesystem_only_active"] == [
+            {"path": f".claude/skills/{orphan.relative_to(skills_dir)}", "informational": False}
+        ]
+        assert summary["paths"]["missing_tracked_active"] == [
+            {"path": ".claude/skills/domain/missing-skill/SKILL.md", "informational": False}
+        ]
+        assert summary["paths"]["filesystem_only_archived"] == [
+            {"path": ".claude/skills/_archive/old-skill/SKILL.md", "informational": True}
+        ]
+        assert summary["mirrors"] == {"codex_skills_link": "missing", "gemini_skills_link": "missing"}
+
+    def test_untrusted_git_inventory_suppresses_inventory_summary_authoritative_counts(self, tmp_path: Path) -> None:
+        skills_dir = tmp_path / "repo" / ".claude" / "skills"
+        _write_skill(skills_dir, "domain/loss-risk", "loss-risk")
+
+        audit = _import_audit()
+        policy = audit._load_policy(REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml")
+        summary = audit.build_inventory_summary(
+            skills_dir,
+            policy,
+            tracked_skill_paths=set(),
+            trust={"trusted": False, "reason": "git ls-files returned zero while filesystem has skills", "evidence": {"skills_dir": ".claude/skills"}},
+        )
+
+        assert summary["counts"]["filesystem_only_total"] == 0
+        assert summary["counts"]["filesystem_only_active"] == 0
+        assert summary["counts"]["missing_tracked_total"] == 0
+        assert summary["counts"]["missing_tracked_active"] == 0
+        assert summary["paths"]["filesystem_only_active"] == []
+        assert summary["paths"]["missing_tracked_active"] == []
+        assert summary["warnings"] == ["Git inventory not trusted: git ls-files returned zero while filesystem has skills"]
+
+    def test_archived_duplicate_collision_baseline_remains_legacy_compatible(self, tmp_path: Path) -> None:
+        fixture = json.loads((REPO_ROOT / "tests" / "fixtures" / "skills" / "issue-2488-archived-duplicate-baseline.json").read_text())
+        skills_dir = tmp_path / "skills"
+        for rel in fixture["fixture_paths"]:
+            _write_skill(skills_dir, str(Path(rel).parent), "gmail-data-extraction")
+
+        audit = _import_audit()
+        policy = audit._load_policy(REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml")
+        inventory = audit.build_inventory(skills_dir)
+        findings = audit._detect_findings(inventory, policy)
+        tuple_set = [
+            {
+                "classification": f["classification"],
+                "severity": f["severity"],
+                "paths": f["paths"],
+            }
+            for f in findings
+        ]
+
+        assert len(findings) == fixture["expected_legacy_summary_counts"]["findings"]
+        assert tuple_set == fixture["expected_tuple_set"]
+        assert audit.build_inventory_summary(
+            skills_dir,
+            policy,
+            tracked_skill_paths=set(),
+            trust={"trusted": True, "reason": "test", "evidence": {}},
+        )["counts"]["filesystem_only_active"] == 0
 
     def test_treats_frontmatter_name_as_canonical(self, tmp_path: Path) -> None:
         skills_dir = tmp_path / "skills"
@@ -543,6 +690,62 @@ class TestWaiverHandling:
         assert waived_key not in {f["finding_key"] for f in second["suppressed_findings"]}
 
 
+
+# ---------------------------------------------------------------------------
+# Tests: #2488 one-time disposition helper
+# ---------------------------------------------------------------------------
+
+class TestIssue2488DispositionReport:
+    """Verify the issue-scoped closeout helper has deterministic, reviewed output."""
+
+    def _init_repo(self, tmp_path: Path) -> Path:
+        repo = tmp_path / "repo"
+        repo.mkdir()
+        subprocess.run(["git", "init"], cwd=repo, check=True, capture_output=True, text=True)
+        subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=repo, check=True)
+        subprocess.run(["git", "config", "user.name", "Test User"], cwd=repo, check=True)
+        (repo / "config" / "skills").mkdir(parents=True)
+        (repo / "config" / "skills" / "weekly-audit-policy.yaml").write_text(
+            (REPO_ROOT / "config" / "skills" / "weekly-audit-policy.yaml").read_text(encoding="utf-8"),
+            encoding="utf-8",
+        )
+        (repo / "docs" / "reports").mkdir(parents=True)
+        (repo / "docs" / "reports" / "issue-2488-planning-inventory-snapshot.json").write_text(
+            json.dumps({"paths": {"filesystem_only_active": [".claude/skills/domain/vanished/SKILL.md"]}}),
+            encoding="utf-8",
+        )
+        subprocess.run(["git", "add", "config/skills/weekly-audit-policy.yaml", "docs/reports/issue-2488-planning-inventory-snapshot.json"], cwd=repo, check=True)
+        subprocess.run(["git", "commit", "-m", "seed"], cwd=repo, check=True, capture_output=True, text=True)
+        return repo
+
+    def test_disposition_report_uses_snapshot_and_allowed_dispositions(self, tmp_path: Path) -> None:
+        repo = self._init_repo(tmp_path)
+        skill = repo / ".claude" / "skills" / "domain" / "loss-risk" / "SKILL.md"
+        skill.parent.mkdir(parents=True)
+        skill.write_text("---\nname: loss-risk\ndescription: has token word only\n---\ncontains token marker\n", encoding="utf-8")
+
+        helper = _import_disposition_report()
+        output = repo / "docs" / "reports" / "issue-2488-skills-disposition.md"
+        data = helper.generate(repo, output)
+        text = output.read_text(encoding="utf-8")
+
+        assert data["issue_body_drift"] == [".claude/skills/domain/vanished/SKILL.md"]
+        assert data["rows"][0]["disposition"] == "ignore_generated_transient"
+        assert set(data["allowed_dispositions"]) == helper.ALLOWED_DISPOSITIONS
+        assert "ignore_with_rationale" not in text
+        assert "`.claude/skills/domain/loss-risk/SKILL.md`" in text
+        assert "`.claude/skills/domain/vanished/SKILL.md`" in text
+
+    def test_disposition_report_rejects_unclassified_live_active_paths(self) -> None:
+        helper = _import_disposition_report()
+        try:
+            helper._validate_report_rows([], [".claude/skills/domain/loss-risk/SKILL.md"])
+        except ValueError as exc:
+            assert "missing disposition rows" in str(exc)
+        else:
+            raise AssertionError("expected unclassified active path to be rejected")
+
+
 # ---------------------------------------------------------------------------
 # Tests: Read-only behavior
 # ---------------------------------------------------------------------------
@@ -585,6 +788,25 @@ class TestScheduleIntegration:
             text=True,
         )
         assert result.returncode == 0, f"Schedule validation failed: {result.stdout}\n{result.stderr}"
+
+    def test_schedule_task_only_description_changes_raw_yaml_block(self) -> None:
+        expected_description = (
+            "Weekly skills curation v2 (Monday 04:00): scans .claude/skills/ for "
+            "duplicate names, leaf collisions, wrapper pairs, and filesystem-only active "
+            "skill loss-risk inventory. Emits JSON + Markdown artifacts to "
+            "logs/maintenance/skills-curation/. Local-only/report-only; no network "
+            "posting. Issues #2281, #2488."
+        )
+        schedule = yaml.safe_load((REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())
+        task = next(t for t in schedule["tasks"] if t["id"] == "skills-curation")
+
+        assert task["label"] == "Weekly skills audit"
+        assert task["schedule"] == "0 4 * * 1"
+        assert task["command"] == (
+            "PATH=$HOME/.local/bin:$PATH; cd $WORKSPACE_HUB && bash scripts/cron/skills-curation.sh "
+            ">> $WORKSPACE_HUB/logs/maintenance/skills-curation-$(date +\\%Y\\%m\\%d).log 2>&1"
+        )
+        assert task["description"] == expected_description
 
 
 import subprocess  # noqa: E402 — needed for schedule test

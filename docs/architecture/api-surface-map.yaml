@@ -1,11 +1,11 @@
 summary:
-  total_packages: 31
-  total_modules: 1655
-  total_classes: 2371
-  total_functions: 2222
-  total_loc: 355823
-  public_api_classes: 2221
-  public_api_functions: 1556
+  total_packages: 32
+  total_modules: 1673
+  total_classes: 2403
+  total_functions: 2326
+  total_loc: 361852
+  public_api_classes: 2250
+  public_api_functions: 1612
 packages:
 - name: ansys
   modules: 15
@@ -349,6 +349,22 @@ packages:
   - total_current_demand
   has_all: true
   has_tests: true
+- name: citations
+  modules: 3
+  classes: 5
+  functions: 4
+  loc: 170
+  public_classes:
+  - Citation
+  - CitationResolutionError
+  - CitationValidationError
+  - CitedValue
+  - MooringCondition
+  public_functions:
+  - get_mooring_safety_factor
+  - validate_citation
+  has_all: true
+  has_tests: true
 - name: data_models
   modules: 2
   classes: 0
@@ -448,19 +464,22 @@ packages:
   has_all: false
   has_tests: true
 - name: drilling_riser
-  modules: 5
+  modules: 6
   classes: 0
-  functions: 13
-  loc: 380
+  functions: 22
+  loc: 542
   public_classes: []
   public_functions:
   - annular_clearance_mm
+  - compute_riser_string_weight_kn
   - effective_tension
   - minimum_riser_id_required
   - minimum_slip_ring_tension
   - modal_damping_equivalent
+  - normalize_riser_component_record
   - operability_fraction
   - rayleigh_damping_coefficients
+  - register_riser_components
   - significant_wave_height_limit
   - spacing_requirement_m
   - structural_damping_ratio
@@ -562,38 +581,69 @@ packages:
   has_all: true
   has_tests: true
 - name: field_development
-  modules: 15
-  classes: 11
-  functions: 30
-  loc: 2554
+  modules: 20
+  classes: 22
+  functions: 67
+  loc: 4548
   public_classes:
   - AnalogueMatch
   - CAPEXEstimate
+  - ConceptComparison
   - ConceptOption
+  - ConceptPrediction
   - ConceptSelectionResult
+  - CostEstimates
+  - DeclineType
+  - EconomicsInput
+  - EconomicsResult
+  - EvaluationMetrics
+  - FieldDevelopmentResult
+  - FieldDevelopmentSpec
+  - FiscalRegime
   - FpsoSpreadSchematic
   - GoMField
   - HostType
   - OPEXEstimate
   - PlatformSchematic
   - SubseaFieldCatalog
+  - SubseaProject
   - SubseaTiebackSchematic
   public_functions:
   - add_depth_label
   - add_field_name_label
   - add_north_arrow
   - add_scale_bar
+  - build_economics_schedule
+  - carbon_sensitivity
+  - compare_concepts
   - compute_water_column_height
+  - concept_benchmark_bands
+  - concept_probability_matrix
   - concept_selection
+  - concept_selection_with_benchmarks
   - draw_seabed_line
+  - duration_stats_by_concept_type
+  - equipment_stats_by_concept
   - estimate_capex
   - estimate_opex
+  - evaluate_economics
+  - evaluate_field_development
+  - flowline_trends_by_depth
   - generate_field_schematic
+  - layout_distribution
+  - load_projects
   - make_fpso_patch
   - make_platform_patch
   - make_template_patch
   - make_well_symbol
+  - predict_concept_type
   - render_figure
+  - schedule_distributions
+  - subsea_architecture_stats
+  - tieback_stats_segmented
+  - timeline_duration_stats
+  - validate_against_cases
+  - vessel_type_to_host_type
   has_all: true
   has_tests: true
 - name: geotechnical
@@ -678,10 +728,10 @@ packages:
   has_all: true
   has_tests: true
 - name: hydrodynamics
-  modules: 176
+  modules: 177
   classes: 296
-  functions: 396
-  loc: 44285
+  functions: 403
+  loc: 44617
   public_classes:
   - AH1ParseResult
   - AQWAAnalysisType
@@ -1021,6 +1071,7 @@ packages:
   - compute_radii_of_gyration
   - compute_rao
   - compute_rao_manual
+  - compute_response_spectrum
   - compute_stability
   - compute_vertex_quadrics
   - convergence_summary
@@ -1112,8 +1163,10 @@ packages:
   - main
   - merge_tris_to_quads
   - mesh_build
+  - motion_exceedance
   - ocimf_current_cmd
   - ocimf_wind_cmd
+  - operability_analysis
   - operability_chart
   - optimal_contraction_vertex
   - panel_mesh_to_pyvista
@@ -1181,10 +1234,13 @@ packages:
   - scan_orcaflex_vessels
   - setLogging
   - setup_hull_analysis
+  - significant_amplitude
   - soding_forces
+  - spectral_moments
   - spectrum_cmd
   - status
   - strip_theory_speed_correction
+  - summarize_semantic_equivalence
   - sweep_to_dataframe
   - tonnes_to_kg
   - update_deep
@@ -1790,14 +1846,16 @@ packages:
   has_all: false
   has_tests: true
 - name: naval_architecture
-  modules: 23
-  classes: 6
-  functions: 123
-  loc: 24942
+  modules: 24
+  classes: 8
+  functions: 145
+  loc: 25639
   public_classes:
   - FourQuadrantPropeller
   - GyradiusResult
   - PlatformType
+  - RigHullEstimate
+  - RigHullValidation
   - StabilityCriteria
   - StabilityResult
   - WindHeelResult
@@ -1808,6 +1866,7 @@ packages:
   - block_coefficient
   - bulbous_bow_resistance
   - buoyant_force
+  - capacity_plan
   - check_beam_draft_ratio
   - check_displacement_lwl_ratio
   - check_draft_depth_ratio
@@ -1819,6 +1878,7 @@ packages:
   - check_min_freeboard
   - check_propeller_immersion
   - check_section_modulus
+  - classify_rig_hull_geometry
   - coeff_c1
   - coeff_c12
   - coeff_c13
@@ -1846,6 +1906,8 @@ packages:
   - effective_power
   - encounter_frequency
   - estimate_inertia_from_gyradius
+  - estimate_rig_hull_dimensions
+  - estimate_vessel_hydrostatics
   - exponent_m1
   - find_module
   - find_ship_data
@@ -1861,12 +1923,15 @@ packages:
   - get_curves_of_form
   - get_ship
   - gm_from_inclining_experiment
+  - gyradius_for_fleet_vessel
   - gyradius_for_platform_type
   - gyradius_from_inertia
   - gz_area_under_curve
   - gz_from_cross_curves
   - gz_with_tcg_correction
   - half_angle_of_entrance
+  - hull_hydrostatics
+  - hull_weight_groups
   - interpolate_gz
   - interpolate_water_density
   - is_directionally_stable
@@ -1888,10 +1953,15 @@ packages:
   - natural_pitch_period
   - natural_roll_period
   - nomoto_steady_yaw_rate
+  - normalize_drilling_rig_record
+  - normalize_fleet_record
   - prismatic_coefficient
   - query_knowledge
   - reference_velocity
+  - register_drilling_rigs
+  - register_fleet_vessels
   - reynolds_number
+  - rig_type_to_hull_form
   - rudder_lift_coefficient
   - rudder_normal_force
   - run_compliance_checks
@@ -1901,12 +1971,16 @@ packages:
   - simple_heave_rao
   - simpsons_first_rule
   - speed_in_turn
+  - stability_curve_estimate
   - steady_turning_radius
   - submerged_bg_after_weight_shift
   - submerged_volume
+  - summarize_drilling_rig_hull_validation
   - total_resistance
   - transom_resistance
   - transverse_cg_after_weight_shift
+  - validate_drilling_rig_fleet
+  - validate_drilling_rig_hull_form
   - validate_vessel_entry
   - vertical_cg_after_weight_change
   - wageningen_kq
@@ -2309,10 +2383,10 @@ packages:
   has_all: false
   has_tests: true
 - name: solvers
-  modules: 310
-  classes: 481
-  functions: 255
-  loc: 56784
+  modules: 315
+  classes: 491
+  functions: 275
+  loc: 58775
   public_classes:
   - AdvancedMemoryOptimizer
   - AllVars
@@ -2402,6 +2476,8 @@ packages:
   - DataExtractionError
   - DataParsingError
   - DesignCheckData
+  - DetectedModelType
+  - DetectionResult
   - Dimensions
   - DomainBuilder
   - DomainConfig
@@ -2614,6 +2690,7 @@ packages:
   - OrcaFlexPostProcess
   - OrcaFlexTimeTraceProcessor
   - OrcaFlexViewCapture
+  - OrcaFlexYAMLValidator
   - OrcaWaveOrchestrator
   - OrcaflexAnalysis
   - OrcaflexExampleDownloader
@@ -2632,6 +2709,7 @@ packages:
   - ParallelConfig
   - ParallelIOProcessor
   - ParameterRange
+  - ParameterSweep
   - ParametricSpecGenerator
   - ParametricStudy
   - PathResolver
@@ -2641,6 +2719,7 @@ packages:
   - PipelineData
   - PipelineRenderer
   - PipelineSchematicGenerator
+  - PostGenerationValidator
   - PostProcessConfig
   - PretensionAnalyzer
   - PretensionData
@@ -2746,6 +2825,7 @@ packages:
   - ValidationLevel
   - ValidationResult
   - ValidationStatus
+  - ValidationWarning
   - ValidatorInterface
   - VarDataBuilder
   - VariableData
@@ -2764,6 +2844,7 @@ packages:
   - Water
   - WaveLoadingSetup
   - WaveTheory
+  - WaveTrain
   - WaveType
   - Waves
   - WeakReferenceCache
@@ -2785,6 +2866,7 @@ packages:
   - add_output_arguments
   - aggregate_results
   - analyze_orcina_site
+  - apply_dotted_override
   - benchmark_hybrid_model
   - benchmark_memory_optimizations
   - box_cmd
@@ -2825,6 +2907,7 @@ packages:
   - debug_enhanced
   - demonstrate_optimizer
   - detect_format
+  - detect_model_type
   - download_all_examples
   - example_basic_import_export
   - example_batch_conversion
@@ -2924,8 +3007,10 @@ packages:
   - setup_cmd
   - setup_logging
   - test
+  - upgrade_spec
   - validate_directory
   - validate_file_format
+  - validate_orcaflex_yaml
   - validate_spec
   - verify_blender_installation
   - verify_deployment
@@ -2988,10 +3073,10 @@ packages:
   has_all: true
   has_tests: true
 - name: structural
-  modules: 191
-  classes: 249
-  functions: 264
-  loc: 38620
+  modules: 192
+  classes: 250
+  functions: 269
+  loc: 39044
   public_classes:
   - APIRP
   - API_RP_16Q
@@ -3034,6 +3119,7 @@ packages:
   - DamageState
   - DecomFlag
   - DecomFlagSeverity
+  - DeploymentTransientResult
   - DesignCode
   - DesignCodeReport
   - DesignFactors
@@ -3272,6 +3358,7 @@ packages:
   - export_to_excel
   - extractData
   - extractPlotData
+  - failure_probability
   - fatigue_assessment
   - fileList
   - fit_stress_strain_data
@@ -3305,6 +3392,7 @@ packages:
   - marginal_field_lifecycle_score
   - member_checks
   - mm_to_inch
+  - monte_carlo_fatigue
   - mooring_chain
   - mph_to_fps
   - narrow_band_damage
@@ -3339,6 +3427,7 @@ packages:
   - rainflow_with_means
   - recommend_stroud_chute
   - register_code
+  - reliability_index
   - report
   - run_analysis
   - run_sweep
@@ -3350,9 +3439,11 @@ packages:
   - score_tieback_accommodation
   - scr_touchdown
   - sectionProperties
+  - sensitivity_analysis
   - setLogging
   - setup_logging
   - setup_yaml
+  - simulate_deployment_transient
   - solvePolynomialEquation
   - solve_frame
   - solve_nonlinear_stress
@@ -3802,14 +3893,16 @@ packages:
   has_all: false
   has_tests: true
 - name: well
-  modules: 7
-  classes: 11
+  modules: 8
+  classes: 14
   functions: 6
-  loc: 1323
+  loc: 1582
   public_classes:
   - AnisotropicVmeEnvelope
   - ApiEllipseEnvelope
   - BourgoineYoungROP
+  - CasingString
+  - CostBreakdown
   - DysfunctionDetector
   - DysfunctionEvent
   - DysfunctionType
@@ -3817,6 +3910,7 @@ packages:
   - RopPrediction
   - TubularGeometry
   - WarrenROP
+  - WellDesign
   - WellboreHydraulics
   public_functions:
   - compute_hoop_stress
@@ -4066,6 +4160,8 @@ packages:
 dependency_graph:
   data_systems:
   - asset_integrity
+  field_development:
+  - benchmarks
   hydrodynamics:
   - marine_ops
   - orcawave
@@ -4079,6 +4175,8 @@ dependency_graph:
   - hydrodynamics
   - subsea
   - visualization
+  naval_architecture:
+  - hydrodynamics
   orcawave:
   - hydrodynamics
   solvers:

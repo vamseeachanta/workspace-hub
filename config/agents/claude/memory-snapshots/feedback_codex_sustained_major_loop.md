@@ -6,7 +6,9 @@ originSessionId: e04329da-9917-4fcf-a605-7fed457336e0
 ---
 When three adversarial reviewers disagree across multiple revisions in this specific pattern — **Codex sustains MAJOR, Claude + Gemini converge to MINOR by revision 2-3** — stop auto-cycling after revision 3 or 4 and surface the consensus-vs-minority decision to the user.
 
-**Why:** Observed in #2045 (24-rereview loop) and #2289 (6-revision policy-plan cycle, 2026-04-21). In both, Codex's findings were concrete and fixable each round but kept shifting targets — fixing v-n's Codex MAJOR produced new v-(n+1) Codex MAJORs, often on unrelated edges of the plan's policy surface. Claude and Gemini settled to MINOR early (typically by v2-v3). Auto-cycling past revision 3 burns ~30-60 min per cycle without reducing finding severity.
+**Why:** Observed in #2045 (24-rereview loop), #2289 (6-revision policy-plan cycle, 2026-04-21), and #2460 (r1→r16, 2026-04-22/23: Codex MAJOR×8 consecutive before dropping to MINOR then APPROVE). In all three, Codex's findings were concrete and fixable each round but kept shifting targets — fixing v-n's Codex MAJOR produced new v-(n+1) Codex MAJORs, often on unrelated edges of the plan's policy surface. Claude and Gemini settled to MINOR early (typically by v2-v3). Auto-cycling past revision 3 burns ~30-60 min per cycle without reducing finding severity.
+
+**Meta-lesson (2026-04-23):** The #2460 run violated rule #3 of this file (the "don't do one more more cycle" commitment) despite the rule existing at session start. Prose-level memory alone does not self-enforce mid-flow when the user is engaged and the next revision feels "close". Promote this rule toward Level-2 enforcement per `.claude/rules/patterns.md` — a script that counts per-provider MAJOR streaks in review artifacts and blocks re-dispatch after 3 consecutive would be auditable and would fire whether or not the operator recalls the rule.
 
 **How to apply:**
 1. Track per-provider verdicts across revisions. If Codex has been MAJOR for 3+ consecutive while Claude+Gemini are MINOR by v3, declare the pattern.

@@ -25,7 +25,7 @@
 | 02:30 daily | agent-radar | Agent capability radar HTML | `/tmp/agent-radar.log` |
 | 03:15 Sun | ai-tools-status | AI CLI version audit | `.claude/state/learning-reports/cron.log` |
 | 03:30 Sun | model-ids | Model ID refresh | `.claude/state/learning-reports/cron.log` |
-| 04:00 Mon | skills-curation | Deterministic weekly skills audit (JSON + Markdown) | `logs/maintenance/skills-curation-*.log` |
+| 04:00 Mon | skills-curation | Weekly skills curation v2: duplicate names, leaf collisions, wrapper pairs, and filesystem-only active skill loss-risk inventory (local-only JSON + Markdown artifacts) | `logs/maintenance/skills-curation-*.log` |
 | 04:30 Mon | weekly-hermes-parity-review | Hermes cross-machine parity review | `logs/weekly-parity/cron-*.log` |
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
@@ -36,8 +36,14 @@
 
 | Time | ID | Description | Log |
 |------|-----|-------------|-----|
-| 01:15 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
+| 01:45 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
 | */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+
+## Skills Curation v2 Contract
+
+The `skills-curation` scheduled task remains the single periodic path for skill ecosystem housekeeping. Its default cron invocation is local-only: it writes deterministic JSON and Markdown artifacts under `logs/maintenance/skills-curation/`, does not call `gh`, does not require network access, and does not mutate `.claude/skills` or `.claude/state/skill-usage-report/`. In v2 it also reports tracked-vs-filesystem inventory, including active filesystem-only `SKILL.md` files that are at risk of loss until dispositioned.
+
+Optional manual operator support may render `github-update-payload.md` in the same audit output directory with `--render-github-payload`; that file is a local payload only and is not posted automatically.
 
 ## Comprehensive Learning Sub-Steps (02:00)
 
@@ -76,7 +82,7 @@ crontab -l
 
 ## Audit Notes (2026-04-01)
 
-- `harness-update` added to ace-linux-2 (was ace-linux-1 only) — updates GStack, Hermes, Superpowers, GSD daily at 01:15
+- `harness-update` added to ace-linux-2 (was ace-linux-1 only) — updates GStack, Hermes, Superpowers, GSD daily at 01:45
 - Hermes config templates added to `config/agents/hermes/` — synced via `sync-agent-configs.sh`
 - ace-linux-2 NVIDIA kernel module missing for 6.17.0-20 — tracked in #1581
 - Hermes install on ace-linux-2 — tracked in #1582

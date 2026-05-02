@@ -1,0 +1,5 @@
+layer,z_m,temperature_C,normalized_stress,warpage_style_um
+solder_zone,6e-05,27.3733,0.272727,0.159014
+substrate,0.00052,45.5689,0,1.37812
+die,0.001045,66.3356,0.609091,2.76949
+mold,0.001495,84.1356,0.181818,3.96209

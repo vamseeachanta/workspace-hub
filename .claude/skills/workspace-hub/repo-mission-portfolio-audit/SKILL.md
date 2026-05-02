@@ -59,7 +59,39 @@ Record:
 - source used for the summary
 - documentation completeness gaps
 
+## Execution pattern after the audit recommendation
+
+Use this when the user accepts the audit recommendation and asks to "execute the recommended next moves" or similar.
+
+1. Re-check live GitHub state before acting:
+   - search for an already-open portfolio mission/objective issue to avoid duplicates
+   - view the recommended parent/related issues and record state/title/labels
+   - if a related child issue is already implemented on a branch, check for an existing PR before creating one
+2. If no suitable portfolio-wide issue exists, create one with a class-level title such as `feat(repo-portfolio): review and revise mission/objective statements across active repos`.
+3. The new issue body should include:
+   - Tier-1/Tier-2/Tier-3 starting inventory from `docs/BUSINESS_BRAIN.md`
+   - deliverables for a canonical portfolio mission artifact, classification, source evidence, routing rules, and overlap/conflict notes
+   - related links to the umbrella/structure/routing issues already found
+   - explicit planning-gate language: issue -> resource intel -> plan -> adversarial review -> plan-review -> user approval -> plan-approved -> implementation
+4. Immediately draft the repo-tracked plan under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md` and update `docs/plans/README.md` if the repo uses that index.
+5. Commit and push the draft plan/index update, then comment on:
+   - the new portfolio issue with plan path + commit + current gate state
+   - parent/related umbrella issues with the new issue link and scope boundary
+   - any still-open child issue with PR/branch evidence if you touched its routing state
+6. Do **not** add `status:plan-review` until adversarial review has actually run and the plan summary is populated. Draft-planned means draft only.
+
 ## Required synthesis
+
+Before recommending new issue creation, explicitly distinguish **repo mission/objective review** from adjacent but different work classes:
+- **routing/indexing/code-placement** issues answer "where should future work land and be retrieved?"
+- **mission/objective** issues answer "what is this repo for, what work belongs here, and should the repo remain active, archival, merged, or no-new-issues?"
+
+When live GitHub already has a routing/indexing issue family (for example a contract issue plus per-repo routing child issues), do not treat that as complete portfolio mission review. Instead:
+1. Verify the live state of the related issues with `gh issue view/list` rather than relying on stale plan/report text.
+2. Identify which children are closed, which remain open/working, and whether any freshness report is stale relative to closed issues.
+3. Recommend extending an existing umbrella issue when it reasonably owns mission/objective review; otherwise recommend a new portfolio-wide issue titled at the mission/objective class level.
+4. For a mission/objective issue, require each repo to be classified as active product/library, client vertical, business/admin support, archive/reference, or deprecated/no-new-issues.
+5. Require each repo's output to include both "work belongs here when..." and "work does not belong here when..." rules, plus duplicate/boundary checks between similar repos.
 
 Produce these outputs:
 

@@ -108,6 +108,10 @@ Use subprocess monitoring with watch patterns like:
 - `GitHub comment URL`
 - `issue was closed`
 
+After launching a multi-session wave, immediately produce an operator-facing launch report before ending the turn. Include: batch root, README/summary path, one row per lane with issue number, Hermes process session ID, OS PID, worktree/workdir, prompt path, log path, and max turns/budget if applicable, plus the result/artifact directory and copy/paste monitoring commands. Verify current status with `process poll` or `ps -p ...`; do not rely only on a successful launch command.
+
+Remember that unattended `claude -p` logs may remain 0 bytes until output flush/completion. Treat PID liveness and expected artifact creation as primary health signals, and include that caveat in the report so zero-byte logs are not mistaken for failed launches. If a context compaction/handoff happens after launch, poll the preserved Hermes process IDs first and complete the report rather than relaunching duplicate sessions.
+
 After a watch hit, still wait for the process to exit and then inspect:
 - final process output
 - `gh issue view <n>`

@@ -57,3 +57,4 @@ If the user asked for "4 at a time," dropping to 3 serially changes throughput a
 - Do not use delegated children for repo writes you need to persist.
 - Be explicit about paths, issue numbers, and output schema because child summaries are compressed.
 - If the task is data-gathering-heavy rather than reasoning-heavy, prefer `execute_code` instead of more subagents.
+- Treat subagent timeouts as recoverable orchestration failures, not task failure. If one or more read-only lanes time out, immediately continue in the parent with direct `gh`/git/search/read-file grounding for the missing facts, then record which lanes timed out in the handoff. Do not let a timed-out research lane block obvious safe closeout actions that have been independently verified in the parent session.

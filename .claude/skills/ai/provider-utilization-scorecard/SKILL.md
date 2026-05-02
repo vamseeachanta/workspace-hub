@@ -93,3 +93,65 @@ After the scorecard exists, the next high-value layer is routing automation:
 - if Codex utilization is low, surface bounded implementation/test/refactor work
 - if Gemini utilization is low, surface research/recon/risk-scan batches
 - if Claude utilization is low and quota is trustworthy, route adversarial review and long-context synthesis there
+
+## Weekly credit-burn operating model
+
+When the user asks to maximize provider credits across Claude/Codex/Gemini, convert the scorecard into an executable package pipeline, not just a narrative report.
+
+Target burn curve for providers with real weekly quotas:
+- Day 1: 18% cumulative
+- Day 2: 36% cumulative
+- Day 3: 54% cumulative
+- Day 4: 72% cumulative
+- Day 5: 90% cumulative
+- Days 6-7: preserve the final 10% for failures, review, CI repair, and closeout
+
+For providers with daily caps instead of true weekly front-loadable quotas, do not claim 90% weekly by day 5 if the math is impossible. Example: Gemini at 1000/day can only reach 5/7 = 71.4% of a seven-day total by day 5. Manage those as daily burn targets instead: use roughly 80-90% of each day’s capacity with a small reserve.
+
+## Always-ready package queues
+
+To keep feature/issue work continuously executable as long as AI credits remain, maintain four queues:
+
+1. Recon-ready Gemini packages
+   - target inventory: 10-15 packages
+   - package size: 5-6 related research/recon/source tasks per session
+   - focus: raw data, standards/source discovery, competitor/GTM scans, wiki gap discovery, issue expansion
+
+2. Plan-review packages
+   - target inventory: 10+ issues in or near plan-review
+   - focus: feeding the approval pipeline before implementation capacity runs dry
+
+3. Plan-approved Codex implementation packages
+   - target inventory: 8-12 approved packages
+   - focus: bounded implementation, tests, calculation modules, parametric outputs, CI/harness repair, static-site/GTM slices
+   - if Codex utilization is low, this queue is usually the bottleneck, not Codex capacity
+
+4. Implementation-review / closeout packages
+   - target inventory: 5-8 packages
+   - focus: adversarial implementation review, CI evidence, closeout comments, future-issue extraction
+
+## Value-chain routing model
+
+For the recurring ACE/workspace-hub pipeline, route work by value-chain stage:
+
+- raw data -> llm-wiki: Gemini for source discovery and gap scans; Claude for contracts/review; Codex for promotion pipeline/checkers/tests
+- llm-wiki -> calculation code: Claude for semantic contracts and plan review; Codex for TDD implementation; Gemini for standards/source cross-checks
+- calculation code -> parametric outputs: Codex for generators, reports, dashboards, and tests; Claude for acceptance review; Gemini for benchmark/reference scans
+- parametric outputs -> website/GTM: Gemini for prospect/company research; Codex for page/data/CTA implementation; Claude for narrative synthesis and final GTM review
+- control-plane enablers: Codex for review-runner/harness fixes, Claude for governance/review, Gemini for audit/recon only
+
+## Package lifecycle gate
+
+Every provider package should follow:
+GitHub issue -> resource intelligence -> canonical plan -> adversarial plan review -> user approval -> status:plan-approved -> implementation -> adversarial implementation review -> closeout.
+
+Never dispatch implementation from status:plan-review. A package is execution-ready only when it has a GitHub issue, canonical plan under docs/plans, plan review artifacts, explicit approval, status:plan-approved, an agent/provider label, and clear closeout criteria.
+
+## Dispatch rule
+
+Use this loop after refreshing the scorecard:
+- If Codex is below the burn line, dispatch the next status:plan-approved implementation/test/refactor package.
+- If Gemini daily use is below target, dispatch the next 5-6 task recon/research batch.
+- If Claude has review backlog, dispatch plan or implementation review packages.
+- If no approved implementation work exists, pause coding and spend Claude/Gemini on refilling the plan-review and approval pipeline.
+- If a provider is ahead of target, reserve it for reviews, failures, and closeout.

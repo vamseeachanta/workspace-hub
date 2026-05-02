@@ -122,10 +122,10 @@ These stage configs tell agents which files to create:
 | `stage-12-tdd-eval.yaml` | `ac-test-matrix.md` | `ac-test-matrix.yaml` |
 | `stage-13-agent-cross-review.yaml` | `ac-test-matrix.md` | `ac-test-matrix.yaml` |
 
-These scripts parse the files:
+Current governance/review tooling parses the files:
 
-| Script | Reads | Must update |
-|--------|-------|-------------|
-| `exit_stage.py` | `ac-test-matrix.md` | Accept `.yaml` (fallback to `.md` for legacy) |
-| `verify-gate-evidence.py` | `ac-test-matrix.md` | Accept `.yaml` (fallback to `.md`) |
-| `generate-html-review.py` | `ac-test-matrix.md`, `test-results.md` | Accept `.yaml` |
+| Current surface | Reads | Must support |
+|-----------------|-------|--------------|
+| Governance checkpoint validation | `ac-test-matrix.md` | Accept `.yaml` (fallback to `.md` for legacy) |
+| Gate-evidence validation | `ac-test-matrix.md` | Accept `.yaml` (fallback to `.md`) |
+| Cross-review report generation | `ac-test-matrix.md`, `test-results.md` | Accept `.yaml` |

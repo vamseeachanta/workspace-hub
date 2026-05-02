@@ -76,6 +76,37 @@ def test_classify_read_target_treats_hidden_repo_paths_as_repo_not_symbolic(tmp_
     assert exists is False
 
 
+def test_classify_read_target_marks_generated_site_examples_as_non_repo_artifact(tmp_path: Path) -> None:
+    examples = [
+        "content/demos/index.html",
+        "build.js",
+        "vercel.json",
+        "package.json",
+        "examples/demos/gtm/output/demo_02_wall_thickness_report.html",
+    ]
+
+    for example in examples:
+        normalized, scope, exists = module.classify_read_target(example, tmp_path)
+
+        assert normalized == example
+        assert scope == "non_repo_artifact"
+        assert exists is False
+
+
+def test_classify_read_target_keeps_transient_worktree_and_tmp_paths_in_external_lane(tmp_path: Path) -> None:
+    examples = [
+        "/mnt/local-analysis/worktrees/workspace-hub-2151/docs/modules/ai/readiness-evidence-bundle.schema.yaml",
+        "/tmp/pending-queue-snapshot.txt",
+    ]
+
+    for example in examples:
+        normalized, scope, exists = module.classify_read_target(example, tmp_path)
+
+        assert normalized == example
+        assert scope == "external"
+        assert exists is False
+
+
 def test_classify_read_target_uses_repo_alias_for_absolute_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
@@ -206,6 +237,41 @@ def test_summarize_raw_provider_treats_skill_view_reads_as_symbolic(tmp_path: Pa
 
     assert summary["top_symbolic_reads"][0]["name"] == "gh-work-planning"
     assert summary["top_missing_repo_reads"] == []
+
+
+def test_summarize_raw_provider_excludes_non_repo_artifact_reads_from_missing_repo_counts(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_dir = repo_root / "logs" / "orchestrator" / "codex"
+    logs_dir.mkdir(parents=True)
+    records = [
+        {"hook": "post", "tool": "Read", "file": "content/demos/index.html", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "content/demos/index.html", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "build.js", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "github://vamseeachanta/workspace-hub/issues/2249", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "digitalmodel/specs/module-registry.yaml", "repo": "workspace-hub"},
+    ]
+    (logs_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+    )
+
+    summary = module.summarize_raw_provider("codex", logs_dir, repo_root)
+
+    assert summary["missing_repo_reads"] == 3
+    assert summary["top_missing_repo_reads"] == [{"path": "docs/missing.md", "count": 3}]
+    assert summary["non_repo_artifact_read_total"] == 3
+    assert summary["top_non_repo_artifact_reads"] == [
+        {"path": "content/demos/index.html", "count": 2},
+        {"path": "build.js", "count": 1},
+    ]
+    assert summary["top_symbolic_reads"] == [
+        {"name": "github://vamseeachanta/workspace-hub/issues/2249", "count": 1}
+    ]
+    assert summary["top_sibling_repo_reads"] == [
+        {"path": "digitalmodel/specs/module-registry.yaml", "count": 1}
+    ]
 
 
 def test_build_provider_audit_handles_missing_provider_dirs(tmp_path: Path) -> None:
@@ -1509,3 +1575,134 @@ def test_render_markdown_mentions_symbolic_reads_and_remediation_hints() -> None
     assert "highest-density known migration debt" in markdown.lower()
     assert "remediation hints for stale repo reads" in markdown.lower()
     assert "docs/governance/SESSION-GOVERNANCE.md" in markdown
+
+
+
+
+def test_render_markdown_includes_top_non_repo_artifact_reads_section() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
+            "recent_activity_since_previous_audit": {"status": "no_prior_audit"},
+            "corpus_change_since_previous_audit": {"status": "no_prior_audit"},
+            "recent_activity_windows": {"status": "unavailable"},
+        },
+        "providers": {
+            "codex": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 2,
+                "python3_bash_calls": 0,
+                "uv_python_bash_calls": 0,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [],
+                "top_sibling_repo_reads": [],
+                "top_non_repo_artifact_reads": [
+                    {"path": "content/demos/index.html", "count": 2},
+                    {"path": "build.js", "count": 1},
+                ],
+                "top_bash_command_families": [],
+                "top_missing_repo_reads": [],
+                "missing_repo_read_remediation_hints": [],
+                "top_missing_external_reads": [],
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "### codex top non-repo artifact reads" in markdown
+    assert "- `content/demos/index.html` — 2" in markdown
+    assert "- `build.js` — 1" in markdown
+
+
+
+def test_summarize_claude_precomputed_exposes_non_repo_artifact_schema_defaults(tmp_path: Path) -> None:
+    payload = {
+        "sessions_analyzed": 1,
+        "post_records": 10,
+        "missing_repo_read_total": 2,
+        "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 2}],
+    }
+    path = tmp_path / "claude-audit.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    summary = module.summarize_claude_precomputed(path)
+
+    assert summary["top_non_repo_artifact_reads"] == []
+    assert summary["non_repo_artifact_read_total"] == 0
+    assert summary["top_sibling_repo_reads"] == []
+    assert summary["sibling_repo_read_total"] == 0
+
+
+def test_build_corpus_change_summary_reports_positive_growth_gap_against_event_time_counts() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 18, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 3, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["post_record_delta"] == 8
+    assert row["event_time_post_records_since_previous_audit"] == 3
+    assert row["reconciliation_gap_post_records"] == 5
+    assert row["status"] == "positive_corpus_growth_beyond_recent_activity"
+    assert row["interpretation"].startswith("Snapshot grew more than recent event-time activity")
+
+
+def test_build_corpus_change_summary_reports_zero_gap_as_aligned() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 13, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 3, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["reconciliation_gap_post_records"] == 0
+    assert row["status"] == "aligned"
+
+
+def test_build_corpus_change_summary_reports_pruned_or_rebuilt_when_gap_is_negative() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 12, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 5, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["reconciliation_gap_post_records"] == -3
+    assert row["status"] == "corpus_pruned_or_rebuilt"
+
+
+def test_json_summary_exposes_recent_and_corpus_scope_notes(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    logs_root.mkdir(parents=True)
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {}}),
+        encoding="utf-8",
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["executive_summary"]["recent_activity_since_previous_audit"]["scope_note"] == (
+        "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records."
+    )
+    assert audit["executive_summary"]["corpus_change_since_previous_audit"]["scope_note"] == (
+        "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity."
+    )

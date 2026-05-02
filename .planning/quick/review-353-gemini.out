@@ -1,0 +1,24 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "grep_search", "invoke_agent", "read_file"?
+Error executing tool read_file: File not found.
+[LocalAgentExecutor] Blocked call: Unauthorized tool call: 'run_shell_command' is not available to this agent.
+I do not have access to file modification or shell execution tools in this environment to run the tasks automatically. However, based on the pending artifacts in your workspace, here is the command sequence to execute the pending implementation diffs and the commit script:
+
+```bash
+# 1. Apply Issue 1839 (Governance Hooks) and its next slice
+patch -p1 < issue-1839-impl.diff
+patch -p1 < issue-1839-next-slice-impl.diff
+
+# 2. Apply Terminal 2 (Economics Facade) and Issue 1858 (Workflow Integration)
+patch -p1 < terminal-2-impl.diff
+patch -p1 < issue-1858-impl.diff
+
+# 3. Execute the Issue 2403 commit builder (modifies the worktree index directly)
+python3 .tmp-build-commit.py
+
+# 4. Run tests to verify the integrations
+uv run pytest tests/work-queue/test_session_governor.py
+uv run pytest tests/field_development/test_economics.py
+uv run pytest tests/field_development/test_workflow.py
+```

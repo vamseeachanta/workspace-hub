@@ -1,0 +1,14 @@
+[batch-ingest] Loading metadata from: .planning/intel/elements-to-llm-wiki/batches/engineering-standards.jsonl
+[batch-ingest] Loaded 1 records
+  Progress: 1/1 (100%) — created=1 skipped=0 errors=0
+  [batch 1] Wrote 1 entries to index.md and log.md
+
+[batch-ingest] Complete
+  Total records:    1
+  Created:          1
+  Repaired:         0
+  Skipped (done):   0
+  Errors:           0
+  Batches flushed:  1
+  Checkpoint file:  knowledge/wikis/engineering-standards/.checkpoint.jsonl
+  Sources dir:      knowledge/wikis/engineering-standards/wiki/sources

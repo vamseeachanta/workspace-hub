@@ -1,0 +1,9 @@
+order	bucket	parent_target	retained_staging	staging_file_count	staging_bytes	missing_in_parent	size_mismatches	not_hardlinked	readiness_status
+1	digitalmodel-suction-pile-sizing	/mnt/ace/digitalmodel/references/suction-pile-sizing	/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements	4	235464	0	0	0	READY_AFTER_RETENTION
+2	assethold-casa-grande-77017	/mnt/ace/assethold/casa-grande-77017	/mnt/ace/assethold/casa-grande-77017/_from_elements	3	16703705	0	0	0	READY_AFTER_RETENTION
+3	digitalmodel-qgis	/mnt/ace/digitalmodel/tools/qgis	/mnt/ace/digitalmodel/tools/qgis/_from_elements	3	398492107	0	0	0	READY_AFTER_RETENTION
+4	digitalmodel-riser-toolbox	/mnt/ace/digitalmodel/references/riser-toolbox	/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements	8	510241677	0	0	0	READY_AFTER_RETENTION
+5	doris-62092-sesa	/mnt/ace/doris/62092_sesa	/mnt/ace/doris/62092_sesa/_from_elements	418	1465267463	0	0	0	READY_AFTER_RETENTION
+6	doris-university	/mnt/ace/doris/training	/mnt/ace/doris/training/_from_elements	564	11060962662	0	0	0	READY_AFTER_RETENTION
+7	doris-codes-specs	/mnt/ace/doris/codes	/mnt/ace/doris/codes/_from_elements/codes-doris	35197	26411658490	0	0	0	READY_AFTER_RETENTION
+8	acma-projects-31522-woodfibre	/mnt/ace/acma-projects/31522-woodfibre-lng	/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements	5364	1879405139855	0	0	0	READY_AFTER_RETENTION

@@ -19,6 +19,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 PACKAGE = REPO_ROOT / "docs" / "reports" / "2026-04-20-issue-2408-workspace-hub-readiness-package.md"
 CONTRACT = REPO_ROOT / "docs" / "standards" / "MODEL_RELEASE_READINESS_CONTRACT.md"
 PLAYBOOK = REPO_ROOT / "docs" / "standards" / "MODEL_RELEASE_UPGRADE_PLAYBOOK.md"
+PLAN = REPO_ROOT / "docs" / "plans" / "2026-04-20-issue-2408-workspace-hub-model-release-readiness-contract-and-upgrade-playbook.md"
 AGENTS = REPO_ROOT / "AGENTS.md"
 CONTROL_PLANE = REPO_ROOT / "docs" / "standards" / "CONTROL_PLANE_CONTRACT.md"
 CODING_STYLE = REPO_ROOT / ".claude" / "rules" / "coding-style.md"
@@ -49,6 +50,29 @@ def test_package_states_tier1_and_normalization_out_of_scope():
     )
     assert "provider-entrypoint" in text or "provider entrypoint" in text, (
         "package must explicitly defer provider-entrypoint-shape normalization"
+    )
+
+
+def test_package_validation_evidence_avoids_stale_fixed_test_counts():
+    text = _read(PACKAGE)
+    assert not re.search(r"\b\d+\s+tests?,\s+all passing\b", text), (
+        "durable package validation evidence must not embed a fixed test count; "
+        "the closeout comment carries current run evidence"
+    )
+
+
+def test_plan_artifact_matches_approved_strict_canonical_scope():
+    text = _read(PLAN)
+    assert "> **Status:** plan-approved" in text, (
+        "approved implementation plan must not retain stale draft status"
+    )
+    assert "PENDING" not in text, (
+        "approved implementation plan must summarize review outcome rather than "
+        "retain stale pending review placeholders"
+    )
+    assert "live root provider entry surfaces (`CLAUDE.md`, `GEMINI.md`) are updated" not in text, (
+        "plan must not require provider-entrypoint normalization in #2408; "
+        "those surfaces are audit-only for the strict canonical-doc strategy"
     )
 
 

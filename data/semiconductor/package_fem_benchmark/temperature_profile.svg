@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360">
+<rect width="720" height="360" fill="#ffffff"/>
+<text x="80" y="30" font-size="18" font-family="Arial">Through-thickness temperature estimate</text>
+<line x1="80" y1="280" x2="640" y2="280" stroke="#222"/>
+<line x1="80" y1="80" x2="80" y2="280" stroke="#222"/>
+<polyline fill="none" stroke="#e03131" stroke-width="3" points="80.000,280.000 266.667,215.888 453.333,142.718 640.000,80.000"/>
+<text x="80" y="320" font-size="13" font-family="Arial">27.37 C to 84.14 C; analytical sanity profile, not production validation</text>
+</svg>

@@ -62,6 +62,16 @@ Live-use recovery rule:
 - If the worktree exists and is clean, reuse it.
 - Only remove/recreate it if the checkout is incomplete or dirty in a way you cannot trust.
 
+Corrupt-worktree fallback learned in live use:
+- A timed-out `git worktree add` can leave a target directory and branch behind while the git metadata under `.git/worktrees/<name>` is missing/corrupt. Symptom: `fatal: not a git repository: .../.git/worktrees/<name>` when running `git worktree list` or `git status` inside the target.
+- Recovery sequence:
+  1. Confirm the target directory exists and the branch exists: `test -d <path>` and `git branch --list <branch>`.
+  2. Remove the broken target directory: `rm -rf <path>`.
+  3. Delete the leftover branch if it only came from the failed worktree attempt: `git branch -D <branch>`.
+  4. If repeated `git worktree add` is slow/risky in a very large repo, use an isolated shared clone instead: `git clone --shared --branch main <repo-url> <path>`.
+  5. In the clone, create/commit the local `.planning/plan-approved/<issue>.md` marker before launching the worker.
+- Treat the shared clone as equivalent isolation for a single issue lane: still use absolute prompt/log paths, a dedicated branch before push, and the same owned/read-only/forbidden path contract.
+
 ### 3. Add local plan-approved markers inside each worktree
 If local hooks enforce `.planning/plan-approved/<issue>.md`, create and commit the marker in the exact worktree that will perform writes.
 
@@ -86,8 +96,8 @@ For each stream, post a concise comment describing:
 - whether another stream is running in parallel
 
 ### 5. Launch Claude directly in each worktree
+### 5. Launch Claude directly in each worktree
 Use the committed stream prompt file as the positional prompt argument, not stdin.
-Prefer an absolute prompt-file path when launching unattended runs, even if the file lives inside the worktree.
 
 Example:
 ```bash
@@ -100,6 +110,44 @@ claude -p \
   --max-turns 80 \
   "$PROMPT" </dev/null | tee .claude-stream-335.log
 ```
+
+Critical launch guardrail learned in live overnight runs:
+- when launching from worktrees, use **absolute paths** for both the prompt file and the log file in the shell command, even if the process `workdir` is already set to the target worktree
+- create the log directory with an absolute path too when the worktree is nested or when `tee` writes outside the immediate cwd assumptions
+- if you use a relative path like `.planning/quick/stream.md` and the shell reports `No such file or directory` even though the file exists, relaunch with `/absolute/path/to/.planning/quick/stream.md`
+- similarly, a lane can complete successfully while `tee` exits non-zero because the target log path was relative/nonexistent; treat that as launcher/logging failure first, not task failure
+
+Safer pattern:
+```bash
+PROMPT=$(< /absolute/path/to/worktree/.planning/quick/stream.md)
+mkdir -p /absolute/path/to/worktree/logs
+claude -p \
+  --permission-mode acceptEdits \
+  --no-session-persistence \
+  --output-format text \
+  --max-turns 80 \
+  "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/stream.log
+```
+
+Important launch hardening learned in live use:
+- Prefer absolute paths for both the prompt file and the log file when launching unattended background Claude runs from worktrees.
+- A relative prompt read like `.planning/quick/foo.md` can fail with `No such file or directory` even when the file exists in the worktree, especially when the launcher shell/session context is not exactly what you expect.
+- Safer pattern:
+```bash
+PROMPT=$(< /absolute/path/to/worktree/.planning/quick/stream-335.md)
+claude -p ... "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/stream-335.log
+```
+- After launch, immediately poll the tracked process once. If it exits instantly with a missing-prompt error, relaunch with absolute paths rather than debugging the worktree contents first.
+
+Critical launch detail learned in live overnight use:
+- When launching from background shell commands inside worktrees, prefer **absolute prompt-file paths** in the `PROMPT=$(< ...)` substitution instead of relative paths like `.planning/quick/...`.
+- We observed a failure mode where the prompt file definitely existed in the target worktree, but the background shell still errored with `No such file or directory` when using the relative path. Re-launching with the absolute path to the same file succeeded immediately.
+- Recommended pattern:
+```bash
+PROMPT=$(< /absolute/path/to/worktree/.planning/quick/issue-335-prompt.md)
+claude -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-turns 80 "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/issue-335.log
+```
+- After launch, poll the process once. If it exits quickly with a missing-prompt error, retry immediately with absolute prompt and log paths before assuming the worktree or prompt generation failed.
 
 Worktree-local prompt pattern:
 ```bash
@@ -125,6 +173,31 @@ If a later stream shares a file/path with an active stream, keep it queued.
 Typical pattern:
 - Wave 1: run streams A and B in parallel because they are disjoint
 - Wave 2: run stream C only after A finishes because A and C both own `src/.../__init__.py`
+
+### 6.5 Log-path guard for nested repos and deep worktrees
+When launching unattended Claude runs with `tee`, create the exact target log directory using an absolute path before the run starts.
+
+Observed failure mode:
+- the worker command used `mkdir -p logs && ... | tee /abs/path/to/logs/run.log`
+- in a nested repo/deep worktree, the absolute `.../logs/` directory did not already exist even though relative `logs/` did
+- `tee` failed with `No such file or directory`, the overall process exited non-zero, but the Claude run itself still completed substantial work
+
+Safe launch pattern:
+```bash
+mkdir -p /abs/path/to/worktree/logs
+PROMPT=$(< /abs/path/to/prompt.md)
+claude -p \
+  --permission-mode acceptEdits \
+  --no-session-persistence \
+  --output-format text \
+  --max-turns 80 \
+  "$PROMPT" </dev/null | tee /abs/path/to/worktree/logs/run.log
+```
+
+Operational rule:
+- treat `tee`/log-path failures separately from task success
+- if the process exits non-zero but the terminal output or GitHub comment shows the task completed, classify it as a launcher/logging failure first, not an implementation failure
+- after any non-zero exit, inspect the worktree state and issue comments before rerunning the lane
 
 ## Handoff template
 
@@ -158,12 +231,27 @@ Required checks per issue:
 - local `.planning/plan-approved/<issue>.md` marker exists in the exact worktree/checkouts that will write
 - issue is not already satisfied by an existing branch/commit/worktree outcome
 - owned paths are still disjoint from the other selected streams
+- if the issue is a prerequisite contract for child issues, verify the contract's exact locked fields on `origin/main` before launching children; do not trust child `status:plan-approved` labels when local plans still contain stale prerequisite/deferred-path language
 
 Practical lesson from live use:
 - an issue can remain in your approved pool assumptions while already being CLOSED or already effectively implemented on its dedicated branch/worktree
 - in that case, do not waste a write-capable lane on reimplementation; instead run the stream in verification-first mode and post a proof comment if appropriate
 - when selecting 4 parallel lanes, expect some approved issues to collapse into `already done / verify only` outcomes rather than producing fresh diffs
+- after a prerequisite contract lands, run a read-only child-plan reconciliation wave before implementation; classify each child as `READY_NOW`, `READY_AFTER_PATCH`, or `BLOCKED`, and patch stale plan assumptions such as conditional operator-map host paths, deferred registry filenames, or scorecard-as-authority language before launching write lanes
 
+### Dispatcher/executor drift and sandbox-scope check
+
+A background Claude lane can exit 0 without touching the intended isolated clone when the spawned session is sandboxed to a different root. The worker may correctly detect a concurrent completion and refuse duplicate work, but the dispatcher must still verify where the real commit landed.
+
+Before treating a lane as landed:
+- read the worker log for `duplicate-parallel-completion`, sandbox denial, or "no files changed" language
+- verify the claimed commit with `git show --stat --name-only <sha>`
+- verify which branch contains it: `git branch -a --contains <sha>`
+- verify whether it reached `origin/main`: `git merge-base --is-ancestor <sha> origin/main; echo $?`
+- if it landed on an integration branch rather than `main`, cherry-pick the validated commit(s) into a clean main-line clone/worktree, re-run targeted tests there, then push `HEAD:main`
+- if the contract was missing an exact decision needed by children, make a tiny follow-up commit that locks the decision and updates the test to assert it before starting child work
+
+For future isolated-clone dispatches, ensure the worker's allowed/sandbox directories include the intended clone path (for Claude Code, use the equivalent of `--add-dir` when available) or launch directly from a scope-compatible checkout. Otherwise the prompt may name a path the worker cannot write.
 ## Post-run recovery when Claude exits on max-turns
 
 If a background Claude worker exits with `Error: Reached max turns (...)`, do not treat the run as a total failure.
@@ -212,6 +300,25 @@ If a worker stalls:
 3. if intended changes are already present, run the planned tests manually
 4. commit/push yourself if the code is sound
 5. post the GitHub summary manually
+
+## Nested-repo / cross-repo target guard
+
+When a workspace-hub issue asks for changes in a tier-1 repo such as `digitalmodel`, do not assume a workspace-hub worktree contains the nested repo or that the worker will write to the intended git repository.
+
+Before launching write-capable workers:
+- verify the actual target repo root with `git -C <target> rev-parse --show-toplevel`
+- verify the active branch in the target repo, not just in workspace-hub
+- if the target repo is a separate checkout/submodule/nested repo, create the implementation branch/worktree in that target repo directly
+- include the target repo's absolute path in the prompt and validation commands
+- after worker completion, run `git status --short`, `git log --oneline -3`, and `git diff --stat origin/main...HEAD` in the target repo, not the parent workspace
+
+Clean PR branch guard:
+- before creating a PR, inspect `gh pr view` or `git log origin/main..HEAD` to ensure the branch contains only the intended commits
+- if a PR accidentally includes an unrelated prior commit, close it immediately with an explanatory comment
+- create a clean branch from `origin/main`, cherry-pick only the validated intended commit(s), re-run targeted tests on the clean branch, push, and open a replacement PR
+- post correction comments to the tracking issues with the clean PR URL and superseded PR URL
+
+This prevents a successful implementation wave from producing a polluted PR when the active target repo branch already had unrelated pending work.
 
 ## When not to use this pattern
 - shared-file changes without a clean serialization plan

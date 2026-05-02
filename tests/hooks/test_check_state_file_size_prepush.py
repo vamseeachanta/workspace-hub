@@ -131,3 +131,18 @@ def test_prepush_threshold_env_override(tmp_path):
     r = _run_prepush(repo, stdin, env_extra={"STATE_SIZE_BLOCK_MB": "10"})
     assert r.returncode == 1
     assert "BLOCKED" in r.stderr
+
+
+def test_prepush_blocks_when_invoked_from_claude_pretooluse_json(tmp_path):
+    """Claude PreToolUse sends JSON rather than native git pre-push stdin.
+
+    The settings hook is still useful only if the script falls back to scanning
+    the current branch range when stdin does not contain a git pre-push ref line.
+    """
+    repo, _ = _make_repo_with_remote(tmp_path)
+    _commit_state_file(
+        repo, ".claude/state/session-signals/cost-tracking.jsonl", 80, "oversized"
+    )
+    r = _run_prepush(repo, '{"tool_name":"Bash","tool_input":{"command":"git push"}}\n')
+    assert r.returncode == 1, r.stderr
+    assert "BLOCKED" in r.stderr

@@ -143,6 +143,18 @@ elif [[ "$FILE_OR_DIFF" == *".."* ]]; then
   git diff "$FILE_OR_DIFF" > "$CONTENT_FILE" 2>/dev/null || { echo "ERROR: Invalid git range" >&2; exit 1; }
   SOURCE_NAME="git-diff-$(sanitize_source_name "${FILE_OR_DIFF//../-}")"
 else
+  # Guard: if the arg looks like a file path but does not exist, fail loudly
+  # instead of silently treating the literal path string as review content.
+  # Symptom this prevents: result files named ...-inline-content-plan-*.md
+  # with a single-line "content" equal to the path string (#2479 batch).
+  if [[ "$FILE_OR_DIFF" == */* ]] \
+     || [[ "$FILE_OR_DIFF" =~ \.(md|yaml|yml|json|txt|sh|py|js|ts)$ ]]; then
+    echo "ERROR: argument looks like a file path but does not exist: $FILE_OR_DIFF" >&2
+    echo "       cwd: $(pwd)" >&2
+    echo "       If this is a path, check for typos or wrong working directory." >&2
+    echo "       If this is literal inline content, wrap it so it does not look like a path." >&2
+    exit 1
+  fi
   # Inline content — write to temp file
   CONTENT_FILE="$(mktemp)"
   CLEANUP_FILES+=("$CONTENT_FILE")

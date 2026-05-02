@@ -1,9 +1,9 @@
 ---
 domain: naval-architecture
 created: 2026-04-07 10:35 UTC
-last_updated: 2026-04-07
-page_count: 45
-source_count: 36
+last_updated: 2026-05-01
+page_count: 61
+source_count: 43
 ---
 
 # Knowledge Index: Naval Architecture
@@ -20,6 +20,12 @@ source_count: 36
 | [Ship Design Process](concepts/ship-design.md) | Concept page | 2026-04-07 |
 | [Ship Structural Design](concepts/ship-structures.md) | Concept page | 2026-04-07 |
 | [Ship Stability](concepts/stability.md) | Concept page | 2026-04-07 |
+
+## Standards
+
+| Page | Summary | Last Updated |
+|------|---------|-------------|
+| [Steering Gear / Rudder Stock Rule Crosswalk](standards/steering-gear-rudder-stock-rule-crosswalk.md) | Working crosswalk separating SOLAS functional requirements, DNV class-rule candidates, and ABS/IACS source gaps for issue #2567. | 2026-05-01 |
 
 ## Sources
 
@@ -75,3 +81,31 @@ No entity pages yet.
 | Online portals | 5 |
 | Additional resources | 5 |
 | Ship plans collection | 1 (110 plans) |
+
+
+## Issue #2564 Yaw Moment / Maneuvering Knowledge Pack
+
+| Page | Type | Summary | Last Updated |
+|------|------|---------|-------------|
+| [Maneuvering Coordinate Conventions](concepts/maneuvering-coordinate-conventions.md) | concept | Axes, yaw DOF, drift/yaw variables, and rudder sign convention for maneuvering calculations. | 2026-04-30 |
+| [Rudder Force Modeling](concepts/rudder-force-modeling.md) | concept | Rudder geometry, lift/drag/normal-force definitions, speed/angle/stall limits, hull/propeller caveats. | 2026-04-30 |
+| [Yaw Moment Rudder Sweep](concepts/yaw-moment-rudder-sweep.md) | concept | Knowledge anchor for #2564 preliminary `M_z = F_N * lever arm` sweep workflow. | 2026-04-30 |
+| [Maneuvering Validation Metrics](concepts/maneuvering-validation-metrics.md) | concept | Turning circle, zig-zag, spiral-loop, IMO/USCG/ABS validation metrics for future simulation. | 2026-04-30 |
+| [Environmental Yaw Moment Coefficients](concepts/environmental-yaw-moment-coefficients.md) | concept | OCIMF/OrcaFlex current/wind yaw moments and double-counting cautions. | 2026-04-30 |
+| [Yaw Moment Source Extraction — 2026-04-30](comparisons/yaw-moment-source-extraction-2026-04-30.md) | comparison | Preservation page for all /mnt/ace source-review findings used to harden #2564. | 2026-04-30 |
+| [ShipMo3D maneuvering report](sources/mctaggart-shipmo3d-maneuvering-2007.md) | source | Hull maneuvering forces, rudder force assembly, propeller-rudder interaction, validation. | 2026-04-30 |
+| [ABS Guide for Vessel Maneuverability](sources/abs-vessel-maneuverability-guide-2017.md) | source | Reduced 3-DOF equations, linear rudder inputs, and ABS maneuverability ratings. | 2026-04-30 |
+| [IMO MSC/Circ.1053](sources/imo-msc-circ-1053-manoeuvrability-explanatory-notes.md) | source | Yaw-rate/rudder-angle relation, spiral loop, standard-condition caveats. | 2026-04-30 |
+| [USCG NVIC 6-95](sources/uscg-nvic-6-95-maneuvering-standards.md) | source | IMO maneuvering criteria and USCG standards context. | 2026-04-30 |
+| [USCG NVIC 7-89](sources/uscg-nvic-7-89-maneuvering-information.md) | source | Operational maneuvering information: Pilot Card, Wheelhouse Poster, Maneuvering Booklet. | 2026-04-30 |
+| [OrcaFlex manoeuvring/current/wind loads](sources/orcaflex-manoeuvring-current-wind-loads.md) | source | Manoeuvring load, current/wind yaw moment, Munk-term double-counting cautions. | 2026-04-30 |
+| [OCIMF yaw moment coefficient figures](sources/ocimf-yaw-moment-coefficient-figures.md) | source | Current/wind yaw coefficient curve families requiring future digitization if needed. | 2026-04-30 |
+
+## Issue #2567 Steering Gear / Rudder Stock Source-Intelligence Pack
+
+| Page | Type | Summary | Last Updated |
+|------|------|---------|-------------|
+| [Steering Gear Design Checks](concepts/steering-gear-design-checks.md) | concept | Boundary page separating steering-gear machinery/design checks from the preliminary #2565 torque envelope. | 2026-05-01 |
+| [Rudder Stock Design Checks](concepts/rudder-stock-design-checks.md) | concept | Boundary page separating rudder-stock scantling concepts from preliminary holding-torque calculations. | 2026-05-01 |
+| [Issue #2567 Steering Gear / Rudder Stock Source Map](comparisons/issue-2567-steering-gear-rudder-stock-source-map.md) | comparison | Candidate-source inventory covering SOLAS, DNV TS414, ABS portal anchors, IACS portal anchors, and explicit source gaps. | 2026-05-01 |
+| [Steering Gear / Rudder Stock Rule Crosswalk](standards/steering-gear-rudder-stock-rule-crosswalk.md) | standards | Conservative crosswalk marking SOLAS and DNV rows as partial and ABS/IACS rows as source-gap or out-of-scope. | 2026-05-01 |

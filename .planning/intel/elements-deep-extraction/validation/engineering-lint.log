@@ -1,0 +1,22 @@
+=== Wiki Lint: engineering ===
+
+Found 10 issue(s):
+
+  [WARNING] orphan: Page 'elements-qgis-flowline-dem-deep-extraction.md' has no inbound links from other wiki pages
+  [WARNING] frontmatter: 'sources/agent-equivalence-architecture-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/ai-agent-guidelines-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/ai-development-ecosystem-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/baseline-testing-standards-doc.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/closed-engineering-issues.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/compound-engineering-methodology.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/mooring-failures-seed.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/research-outputs.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/skills-metadata.md' missing recommended field 'sources'
+
+Summary:
+  Orphan pages:     1
+  Empty pages:      0
+  Index issues:     0
+  Log issues:       0
+  Frontmatter:      9
+  Link density:     5.3 avg per page

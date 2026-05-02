@@ -19,6 +19,30 @@ Primary anchors:
 
 ## High-signal legacy path redirects
 
+## 2026-04-24 Provider Session Transfer
+
+Source: `docs/reports/provider-session-ecosystem-audit.md` generated after refreshing
+Codex, Hermes, and Gemini session exports.
+
+Provider-specific interpretation:
+- Claude still has the highest known migration debt. Redirect legacy
+  `scripts/work-queue/*` gate/transition reads to the governance hooks, current
+  review workflow, and `.planning/` evidence surfaces below.
+- Gemini still reads deleted local queue files and the removed `scripts/agents/*`
+  wrapper tree. Treat those as stale compatibility references; do not recreate
+  the wrapper tree without a live integration requirement.
+- Codex drift is mostly workspace-root reads for files that actually belong to
+  nested repos such as `worldenergydata/`, `assethold/`, or website content
+  roots. Before marking a Codex missing read as a deleted file, check whether
+  the session ran from `workspace-hub` while the task belonged in a sub-repo.
+- Hermes drift is dominated by ephemeral worktree paths and client-project
+  paths. Treat `.claude/worktrees/*`, `.worktrees/*`, `/mnt/local-analysis/worktrees/*`,
+  and `/tmp/*` reads as session-local unless the same canonical artifact exists
+  under the repo root.
+- All providers should continue using `uv run ... python` on Linux. Bare
+  `python3` remains visible in Hermes, Gemini, and Codex session corpora and is
+  a prompt/config hygiene signal.
+
 ### 1. Legacy work-queue gate / transition scripts
 
 Historical paths:

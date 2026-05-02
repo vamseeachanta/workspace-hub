@@ -1,30 +1,30 @@
 {
-  "generated_at": "2026-04-24T01:20:16.499005Z",
-  "current_week": "2026-W17",
-  "scorecard_generated_at": "2026-04-24T01:20:12.453083Z",
+  "generated_at": "2026-05-01T18:33:57.219754Z",
+  "current_week": "2026-W18",
+  "scorecard_generated_at": "2026-05-01T18:33:55.480833Z",
   "recommended_provider_order": [
-    "codex",
     "gemini",
+    "codex",
     "claude"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 13,
-      "total_candidates": 167,
+      "execution_ready_count": 8,
+      "total_candidates": 162,
       "top_issues": [
         {
-          "number": 2348,
-          "title": "triage: promote #1707/#1708/#1709 from review-backlog \u2014 live scanner has ToS/rate-limit exposure",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2348",
+          "number": 2540,
+          "title": "epic(llm-wiki): overnight Elements corpus planning wave after #2536",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2540",
           "labels": [
-            "bug",
             "priority:high",
-            "domain:gtm",
+            "cat:data-pipeline",
+            "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T09:07:12Z",
+          "updatedAt": "2026-04-29T14:30:46Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -38,113 +38,16 @@
           ]
         },
         {
-          "number": 2408,
-          "title": "feat(release-readiness): workspace-hub-only model-release readiness contract and upgrade playbook",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2408",
+          "number": 2490,
+          "title": "chore(ci-health): digitalmodel Quality Gates coverage gate blocker (split from #2441)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2490",
           "labels": [
             "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:release-management",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T14:24:39Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2433,
-          "title": "chore(ci-health): worldenergydata main CI \u2014 22+ collection errors blocking 5 Dependabot PRs (#329-#333)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2433",
-          "labels": [
-            "priority:high",
+            "priority:medium",
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T10:45:03Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2438,
-          "title": "fix(aceengineer-website): resolve canonical brand identity + ship real logo asset",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2438",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:skills",
-            "domain:frontend-design",
-            "status:plan-approved",
-            "claude:design"
-          ],
-          "updatedAt": "2026-04-24T01:18:22Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2461,
-          "title": "chore(assetutilities): canonical routing surfaces and source-hygiene cleanup for tier-1 issue work",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2461",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "cat:maintenance",
-            "domain:repo-organization",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T08:22:38Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2324,
-          "title": "chore(memory): curate MEMORY.md index before 200-line truncation \u2014 consolidate stale project_* and feedback_*",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2324",
-          "labels": [
-            "priority:medium",
-            "cat:maintenance",
-            "domain:memory",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T03:32:04Z",
+          "updatedAt": "2026-04-29T10:02:17Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -158,18 +61,41 @@
           ]
         },
         {
-          "number": 2403,
-          "title": "feat(doc-intel): embeddings model-selection spike \u2014 BGE-M3 / Voyage / text-embedding-3-large",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2403",
+          "number": 2510,
+          "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
           "labels": [
-            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:tooling",
+            "status:plan-approved",
+            "domain:semiconductor",
+            "domain:chip-design"
+          ],
+          "updatedAt": "2026-04-29T09:59:49Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2541,
+          "title": "feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2541",
+          "labels": [
             "priority:medium",
             "cat:data-pipeline",
-            "cat:research",
-            "domain:document-intelligence",
+            "domain:marine",
+            "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T15:29:28Z",
+          "updatedAt": "2026-04-29T14:31:03Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -183,17 +109,92 @@
           ]
         },
         {
-          "number": 2424,
-          "title": "chore(ci-health): cross-repo CI audit \u2014 6 of 7 ecosystem repos have red main CI",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2424",
+          "number": 2544,
+          "title": "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2544",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-29T14:30:53Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2566,
+          "title": "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2566",
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:infrastructure",
-            "maintenance",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-22T03:06:47Z",
+          "updatedAt": "2026-05-01T00:40:05Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2567,
+          "title": "feat(naval-arch): standards-backed steering gear and rudder-stock design checks",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2567",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:naval-architecture",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-01T00:41:52Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2568,
+          "title": "feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2568",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:naval-architecture",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-01T00:41:59Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -211,55 +212,161 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 7,
-      "total_candidates": 31,
+      "execution_ready_count": 12,
+      "total_candidates": 36,
       "top_issues": [
         {
-          "number": 2455,
-          "title": "feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2455",
+          "number": 2269,
+          "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
           "labels": [
             "enhancement",
             "priority:high",
             "cat:engineering",
-            "domain:marine",
-            "machine:dev-primary",
+            "cat:documentation",
+            "status:working",
+            "machine:dev-secondary",
+            "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T21:41:52Z",
+          "updatedAt": "2026-04-28T06:12:10Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
+            "implementation",
+            "strategy"
           ]
         },
         {
-          "number": 2456,
-          "title": "feat(canonical-spec): extend OrcaFlex semantic proof to lazy/steep-wave riser variants",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2456",
+          "number": 2346,
+          "title": "feat(gtm): prospect-data customized-demo pipeline \u2014 48hr turnaround + pre-staged vessel templates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2346",
           "labels": [
-            "enhancement",
             "priority:high",
             "cat:engineering",
-            "domain:marine",
-            "machine:dev-primary",
+            "domain:gtm",
+            "status:working",
+            "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T21:41:53Z",
+          "updatedAt": "2026-04-30T05:36:46Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
+        {
+          "number": 2364,
+          "title": "feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2364",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "domain:knowledge-management",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T09:17:37Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2368,
+          "title": "feat(knowledge): generate faceted portal pages for large LLM-wiki domains",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2368",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "domain:knowledge-management",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T09:17:06Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2373,
+          "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge-management",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T09:18:01Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2402,
+          "title": "feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2402",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:document-intelligence",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T09:19:15Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
           ]
         },
         {
@@ -272,13 +379,15 @@
             "cat:engineering",
             "cat:documentation",
             "domain:repo-organization",
+            "status:working",
+            "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T08:37:56Z",
+          "updatedAt": "2026-05-01T04:02:38Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
@@ -287,118 +396,30 @@
           ]
         },
         {
-          "number": 2452,
-          "title": "follow-up(ci): worldenergydata lint job still fails after #2433 collection fix \u2014 flake8 debt in src/worldenergydata/**",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2452",
-          "labels": [
-            "priority:medium",
-            "cat:infrastructure",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T23:23:18Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2457,
-          "title": "feat(canonical-spec): promote L03 ship benchmark to explicit OrcaWave roundtrip proof case",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2457",
+          "number": 2270,
+          "title": "feat(blender): standardize headless baseline workflow and smoke render validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2270",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "domain:marine",
-            "machine:dev-primary",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T21:41:54Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2458,
-          "title": "feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2458",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "domain:marine",
-            "machine:dev-primary",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T08:22:32Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2464,
-          "title": "chore(workspace-hub): split curated tier-1 routing index from raw inventory and clean routing noise",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2464",
-          "labels": [
-            "enhancement",
-            "priority:medium",
             "cat:documentation",
-            "cat:harness",
-            "domain:repo-organization",
+            "status:working",
+            "machine:dev-secondary",
+            "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-23T08:22:43Z",
+          "updatedAt": "2026-04-28T06:13:53Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2195,
-          "title": "test(reporting): add publication recovery state-machine transition suite for staged/gated/recoverable flows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2195",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-11T09:53:14Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
+            "implementation",
+            "strategy"
           ]
         }
       ]
@@ -406,30 +427,9 @@
     "gemini": {
       "provider": "gemini",
       "routing_priority": "highest",
-      "execution_ready_count": 1,
+      "execution_ready_count": 0,
       "total_candidates": 2,
       "top_issues": [
-        {
-          "number": 2346,
-          "title": "feat(gtm): prospect-data customized-demo pipeline \u2014 48hr turnaround + pre-staged vessel templates",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2346",
-          "labels": [
-            "priority:high",
-            "cat:engineering",
-            "domain:gtm",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-23T10:50:30Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
-          ]
-        },
         {
           "number": 2295,
           "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
@@ -443,6 +443,26 @@
           "updatedAt": "2026-04-16T02:54:39Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
+        {
+          "number": 2501,
+          "title": "chore(planning): #2105 governance-lock \u2014 handoff vs live-state discrepancy",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2501",
+          "labels": [
+            "priority:medium",
+            "cat:documentation",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-26T17:57:48Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",

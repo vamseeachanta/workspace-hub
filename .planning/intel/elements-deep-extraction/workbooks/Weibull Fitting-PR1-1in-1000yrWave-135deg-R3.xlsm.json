@@ -1,0 +1,1651 @@
+{
+  "path": "/mnt/ace/digitalmodel/references/riser-toolbox/orcaflex tools/weibul statistics/Weibull Fitting-PR1-1in-1000yrWave-135deg-R3.xlsm",
+  "name": "Weibull Fitting-PR1-1in-1000yrWave-135deg-R3.xlsm",
+  "size": 2316102,
+  "sheets": [
+    {
+      "title": "Stress_Weibull_Using(X-T)",
+      "max_row": 1026,
+      "max_column": 161,
+      "non_empty_cells": 1576,
+      "formula_cells": 827,
+      "labels": [
+        {
+          "cell": "B1",
+          "value": "1000YRPWAVE_135deg_r1"
+        },
+        {
+          "cell": "D1",
+          "value": "1000YRPWAVE_135deg_r2"
+        },
+        {
+          "cell": "F1",
+          "value": "1000YRPWAVE_135deg_r3"
+        },
+        {
+          "cell": "H1",
+          "value": "1000YRPWAVE_135deg_r4"
+        },
+        {
+          "cell": "J1",
+          "value": "1000YRPWAVE_135deg_r5"
+        },
+        {
+          "cell": "L1",
+          "value": "1000YRPWAVE_180deg_r1"
+        },
+        {
+          "cell": "N1",
+          "value": "1000YRPWAVE_180deg_r2"
+        },
+        {
+          "cell": "P1",
+          "value": "1000YRPWAVE_180deg_r3"
+        },
+        {
+          "cell": "R1",
+          "value": "1000YRPWAVE_180deg_r4"
+        },
+        {
+          "cell": "T1",
+          "value": "1000YRPWAVE_180deg_r5"
+        },
+        {
+          "cell": "V1",
+          "value": "1000YRPWAVE_225deg_r1"
+        },
+        {
+          "cell": "X1",
+          "value": "1000YRPWAVE_225deg_r2"
+        },
+        {
+          "cell": "Z1",
+          "value": "1000YRPWAVE_225deg_r3"
+        },
+        {
+          "cell": "AB1",
+          "value": "1000YRPWAVE_225deg_r4"
+        },
+        {
+          "cell": "AD1",
+          "value": "1000YRPWAVE_225deg_r5"
+        },
+        {
+          "cell": "A2",
+          "value": "total peaks no"
+        },
+        {
+          "cell": "C2",
+          "value": "962"
+        },
+        {
+          "cell": "E2",
+          "value": "943"
+        },
+        {
+          "cell": "G2",
+          "value": "938"
+        },
+        {
+          "cell": "I2",
+          "value": "919"
+        },
+        {
+          "cell": "K2",
+          "value": "949"
+        },
+        {
+          "cell": "M2",
+          "value": "937"
+        },
+        {
+          "cell": "O2",
+          "value": "936"
+        },
+        {
+          "cell": "Q2",
+          "value": "914"
+        },
+        {
+          "cell": "S2",
+          "value": "945"
+        },
+        {
+          "cell": "U2",
+          "value": "947"
+        },
+        {
+          "cell": "W2",
+          "value": "866"
+        },
+        {
+          "cell": "Y2",
+          "value": "869"
+        },
+        {
+          "cell": "AA2",
+          "value": "831"
+        },
+        {
+          "cell": "AC2",
+          "value": "871"
+        },
+        {
+          "cell": "AE2",
+          "value": "869"
+        },
+        {
+          "cell": "A3",
+          "value": "5% peaks no"
+        },
+        {
+          "cell": "C3",
+          "value": "48"
+        },
+        {
+          "cell": "E3",
+          "value": "47"
+        },
+        {
+          "cell": "G3",
+          "value": "46"
+        },
+        {
+          "cell": "I3",
+          "value": "45"
+        },
+        {
+          "cell": "K3",
+          "value": "47"
+        },
+        {
+          "cell": "M3",
+          "value": "46"
+        },
+        {
+          "cell": "O3",
+          "value": "46"
+        },
+        {
+          "cell": "Q3",
+          "value": "45"
+        },
+        {
+          "cell": "S3",
+          "value": "47"
+        },
+        {
+          "cell": "U3",
+          "value": "47"
+        },
+        {
+          "cell": "W3",
+          "value": "43"
+        },
+        {
+          "cell": "Y3",
+          "value": "43"
+        },
+        {
+          "cell": "AA3",
+          "value": "41"
+        },
+        {
+          "cell": "AC3",
+          "value": "43"
+        },
+        {
+          "cell": "AE3",
+          "value": "43"
+        },
+        {
+          "cell": "A4",
+          "value": "max"
+        },
+        {
+          "cell": "A5",
+          "value": "diff mean"
+        },
+        {
+          "cell": "A6",
+          "value": "diff STDV"
+        },
+        {
+          "cell": "A11",
+          "value": "mean"
+        },
+        {
+          "cell": "A12",
+          "value": "T"
+        },
+        {
+          "cell": "A13",
+          "value": "\u03b2 Guess"
+        },
+        {
+          "cell": "A14",
+          "value": "\u03b1 estimate"
+        },
+        {
+          "cell": "A15",
+          "value": "\u03b2 estimate"
+        },
+        {
+          "cell": "C15",
+          "value": "0.8381210324654315"
+        },
+        {
+          "cell": "E15",
+          "value": "0.4855014286466944"
+        },
+        {
+          "cell": "G15",
+          "value": "0.4577097970586012"
+        },
+        {
+          "cell": "I15",
+          "value": "0.8444684005648881"
+        },
+        {
+          "cell": "K15",
+          "value": "0.39730431551872436"
+        },
+        {
+          "cell": "M15",
+          "value": "0.4248923916611894"
+        },
+        {
+          "cell": "O15",
+          "value": "0.4944078179051075"
+        },
+        {
+          "cell": "Q15",
+          "value": "0.8186210991651736"
+        },
+        {
+          "cell": "S15",
+          "value": "0.4976969830634313"
+        },
+        {
+          "cell": "U15",
+          "value": "0.442460996950624"
+        },
+        {
+          "cell": "W15",
+          "value": "0.3801266789219698"
+        },
+        {
+          "cell": "Y15",
+          "value": "0.739650429454162"
+        },
+        {
+          "cell": "AA15",
+          "value": "0.8995498764852949"
+        },
+        {
+          "cell": "AC15",
+          "value": "0.7610844236652236"
+        },
+        {
+          "cell": "AE15",
+          "value": "0.739650429454162"
+        },
+        {
+          "cell": "A16",
+          "value": "Goal"
+        },
+        {
+          "cell": "A17",
+          "value": "Weibull-P50"
+        },
+        {
+          "cell": "B20",
+          "value": "3257"
+        },
+        {
+          "cell": "D20",
+          "value": "4757.2"
+        },
+        {
+          "cell": "F20",
+          "value": "4513.6"
+        },
+        {
+          "cell": "H20",
+          "value": "2617"
+        },
+        {
+          "cell": "J20",
+          "value": "6310.8"
+        },
+        {
+          "cell": "L20",
+          "value": "3759"
+        },
+        {
+          "cell": "N20",
+          "value": "2014.6"
+        },
+        {
+          "cell": "P20",
+          "value": "9458"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "C5",
+          "value": "=AVERAGE(C20:C67)"
+        },
+        {
+          "cell": "E5",
+          "value": "=AVERAGE(E20:E66)"
+        },
+        {
+          "cell": "G5",
+          "value": "=AVERAGE(G20:G65)"
+        },
+        {
+          "cell": "I5",
+          "value": "=AVERAGE(I20:I64)"
+        },
+        {
+          "cell": "K5",
+          "value": "=AVERAGE(K20:K66)"
+        },
+        {
+          "cell": "M5",
+          "value": "=AVERAGE(M20:M65)"
+        },
+        {
+          "cell": "O5",
+          "value": "=AVERAGE(O20:O65)"
+        },
+        {
+          "cell": "Q5",
+          "value": "=AVERAGE(Q20:Q64)"
+        },
+        {
+          "cell": "S5",
+          "value": "=AVERAGE(S20:S66)"
+        },
+        {
+          "cell": "U5",
+          "value": "=AVERAGE(U20:U66)"
+        },
+        {
+          "cell": "W5",
+          "value": "=AVERAGE(W20:W62)"
+        },
+        {
+          "cell": "Y5",
+          "value": "=AVERAGE(Y20:Y62)"
+        },
+        {
+          "cell": "AA5",
+          "value": "=AVERAGE(AA20:AA60)"
+        },
+        {
+          "cell": "AC5",
+          "value": "=AVERAGE(AC20:AC62)"
+        },
+        {
+          "cell": "AE5",
+          "value": "=AVERAGE(AE20:AE62)"
+        },
+        {
+          "cell": "C6",
+          "value": "=_xlfn.STDEV.P(C20:C67)"
+        },
+        {
+          "cell": "E6",
+          "value": "=_xlfn.STDEV.P(E20:E66)"
+        },
+        {
+          "cell": "G6",
+          "value": "=_xlfn.STDEV.P(G20:G65)"
+        },
+        {
+          "cell": "I6",
+          "value": "=_xlfn.STDEV.P(I20:I64)"
+        },
+        {
+          "cell": "K6",
+          "value": "=_xlfn.STDEV.P(K20:K66)"
+        }
+      ]
+    },
+    {
+      "title": "Stress_SortedPeaks",
+      "max_row": 1026,
+      "max_column": 161,
+      "non_empty_cells": 27640,
+      "formula_cells": 66,
+      "labels": [
+        {
+          "cell": "B1",
+          "value": "1000YRPWAVE_135deg_r1"
+        },
+        {
+          "cell": "D1",
+          "value": "1000YRPWAVE_135deg_r2"
+        },
+        {
+          "cell": "F1",
+          "value": "1000YRPWAVE_135deg_r3"
+        },
+        {
+          "cell": "H1",
+          "value": "1000YRPWAVE_135deg_r4"
+        },
+        {
+          "cell": "J1",
+          "value": "1000YRPWAVE_135deg_r5"
+        },
+        {
+          "cell": "L1",
+          "value": "1000YRPWAVE_180deg_r1"
+        },
+        {
+          "cell": "N1",
+          "value": "1000YRPWAVE_180deg_r2"
+        },
+        {
+          "cell": "P1",
+          "value": "1000YRPWAVE_180deg_r3"
+        },
+        {
+          "cell": "R1",
+          "value": "1000YRPWAVE_180deg_r4"
+        },
+        {
+          "cell": "T1",
+          "value": "1000YRPWAVE_180deg_r5"
+        },
+        {
+          "cell": "V1",
+          "value": "1000YRPWAVE_225deg_r1"
+        },
+        {
+          "cell": "X1",
+          "value": "1000YRPWAVE_225deg_r2"
+        },
+        {
+          "cell": "Z1",
+          "value": "1000YRPWAVE_225deg_r3"
+        },
+        {
+          "cell": "AB1",
+          "value": "1000YRPWAVE_225deg_r4"
+        },
+        {
+          "cell": "AD1",
+          "value": "1000YRPWAVE_225deg_r5"
+        },
+        {
+          "cell": "A2",
+          "value": "total peaks no"
+        },
+        {
+          "cell": "C2",
+          "value": "962"
+        },
+        {
+          "cell": "E2",
+          "value": "943"
+        },
+        {
+          "cell": "G2",
+          "value": "938"
+        },
+        {
+          "cell": "I2",
+          "value": "919"
+        },
+        {
+          "cell": "K2",
+          "value": "949"
+        },
+        {
+          "cell": "M2",
+          "value": "937"
+        },
+        {
+          "cell": "O2",
+          "value": "936"
+        },
+        {
+          "cell": "Q2",
+          "value": "914"
+        },
+        {
+          "cell": "S2",
+          "value": "945"
+        },
+        {
+          "cell": "U2",
+          "value": "947"
+        },
+        {
+          "cell": "W2",
+          "value": "866"
+        },
+        {
+          "cell": "Y2",
+          "value": "869"
+        },
+        {
+          "cell": "AA2",
+          "value": "831"
+        },
+        {
+          "cell": "AC2",
+          "value": "871"
+        },
+        {
+          "cell": "AE2",
+          "value": "869"
+        },
+        {
+          "cell": "A3",
+          "value": "5% peaks no"
+        },
+        {
+          "cell": "C3",
+          "value": "48"
+        },
+        {
+          "cell": "E3",
+          "value": "47"
+        },
+        {
+          "cell": "G3",
+          "value": "46"
+        },
+        {
+          "cell": "I3",
+          "value": "45"
+        },
+        {
+          "cell": "K3",
+          "value": "47"
+        },
+        {
+          "cell": "M3",
+          "value": "46"
+        },
+        {
+          "cell": "O3",
+          "value": "46"
+        },
+        {
+          "cell": "Q3",
+          "value": "45"
+        },
+        {
+          "cell": "S3",
+          "value": "47"
+        },
+        {
+          "cell": "U3",
+          "value": "47"
+        },
+        {
+          "cell": "W3",
+          "value": "43"
+        },
+        {
+          "cell": "Y3",
+          "value": "43"
+        },
+        {
+          "cell": "AA3",
+          "value": "41"
+        },
+        {
+          "cell": "AC3",
+          "value": "43"
+        },
+        {
+          "cell": "AE3",
+          "value": "43"
+        },
+        {
+          "cell": "A4",
+          "value": "max"
+        },
+        {
+          "cell": "C4",
+          "value": "106.43292501022535"
+        },
+        {
+          "cell": "E4",
+          "value": "122.02369571547557"
+        },
+        {
+          "cell": "G4",
+          "value": "120.40691904999588"
+        },
+        {
+          "cell": "I4",
+          "value": "103.82689279328606"
+        },
+        {
+          "cell": "K4",
+          "value": "116.2751064689922"
+        },
+        {
+          "cell": "M4",
+          "value": "107.04725207131852"
+        },
+        {
+          "cell": "O4",
+          "value": "122.26789534461957"
+        },
+        {
+          "cell": "Q4",
+          "value": "102.40926630318646"
+        },
+        {
+          "cell": "S4",
+          "value": "104.61871758124435"
+        },
+        {
+          "cell": "U4",
+          "value": "111.3652563396027"
+        },
+        {
+          "cell": "W4",
+          "value": "110.61406610231768"
+        },
+        {
+          "cell": "Y4",
+          "value": "94.6533670743796"
+        },
+        {
+          "cell": "AA4",
+          "value": "101.08479812863494"
+        },
+        {
+          "cell": "AC4",
+          "value": "103.27334160643974"
+        },
+        {
+          "cell": "AE4",
+          "value": "94.6533670743796"
+        },
+        {
+          "cell": "A5",
+          "value": "mean"
+        },
+        {
+          "cell": "C5",
+          "value": "42.82401279135137"
+        },
+        {
+          "cell": "E5",
+          "value": "29.30760042221123"
+        },
+        {
+          "cell": "G5",
+          "value": "27.430244157753183"
+        },
+        {
+          "cell": "I5",
+          "value": "44.93273982836853"
+        },
+        {
+          "cell": "K5",
+          "value": "24.454279958511663"
+        },
+        {
+          "cell": "M5",
+          "value": "24.671288820962154"
+        },
+        {
+          "cell": "O5",
+          "value": "28.485810155605186"
+        },
+        {
+          "cell": "Q5",
+          "value": "40.21633787815494"
+        },
+        {
+          "cell": "S5",
+          "value": "27.00747180161397"
+        },
+        {
+          "cell": "U5",
+          "value": "25.557735640624678"
+        },
+        {
+          "cell": "W5",
+          "value": "23.560451347184305"
+        },
+        {
+          "cell": "Y5",
+          "value": "35.74191517899707"
+        },
+        {
+          "cell": "AA5",
+          "value": "44.11139291356502"
+        },
+        {
+          "cell": "AC5",
+          "value": "37.73009107084359"
+        },
+        {
+          "cell": "AE5",
+          "value": "35.74191517899707"
+        },
+        {
+          "cell": "A6",
+          "value": "STDV"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "C11",
+          "value": "=AVERAGE(C10,E10,G10,I10,K10)"
+        },
+        {
+          "cell": "M11",
+          "value": "=AVERAGE(M10,O10,Q10,S10,U10)"
+        },
+        {
+          "cell": "W11",
+          "value": "=AVERAGE(W10,Y10,AA10,AC10,AE10)"
+        },
+        {
+          "cell": "C13",
+          "value": "=LN(C5^2+C6^2)-2*LN(C5)"
+        },
+        {
+          "cell": "E13",
+          "value": "=LN(E5^2+E6^2)-2*LN(E5)"
+        },
+        {
+          "cell": "G13",
+          "value": "=LN(G5^2+G6^2)-2*LN(G5)"
+        },
+        {
+          "cell": "I13",
+          "value": "=LN(I5^2+I6^2)-2*LN(I5)"
+        },
+        {
+          "cell": "K13",
+          "value": "=LN(K5^2+K6^2)-2*LN(K5)"
+        },
+        {
+          "cell": "M13",
+          "value": "=LN(M5^2+M6^2)-2*LN(M5)"
+        },
+        {
+          "cell": "O13",
+          "value": "=LN(O5^2+O6^2)-2*LN(O5)"
+        },
+        {
+          "cell": "Q13",
+          "value": "=LN(Q5^2+Q6^2)-2*LN(Q5)"
+        },
+        {
+          "cell": "S13",
+          "value": "=LN(S5^2+S6^2)-2*LN(S5)"
+        },
+        {
+          "cell": "U13",
+          "value": "=LN(U5^2+U6^2)-2*LN(U5)"
+        },
+        {
+          "cell": "W13",
+          "value": "=LN(W5^2+W6^2)-2*LN(W5)"
+        },
+        {
+          "cell": "Y13",
+          "value": "=LN(Y5^2+Y6^2)-2*LN(Y5)"
+        },
+        {
+          "cell": "AA13",
+          "value": "=LN(AA5^2+AA6^2)-2*LN(AA5)"
+        },
+        {
+          "cell": "AC13",
+          "value": "=LN(AC5^2+AC6^2)-2*LN(AC5)"
+        },
+        {
+          "cell": "AE13",
+          "value": "=LN(AE5^2+AE6^2)-2*LN(AE5)"
+        },
+        {
+          "cell": "C14",
+          "value": "=C5/EXP(GAMMALN(1+1/C15))"
+        },
+        {
+          "cell": "E14",
+          "value": "=E5/EXP(GAMMALN(1+1/E15))"
+        }
+      ]
+    },
+    {
+      "title": "Tension_Weibull_Using(X-T)",
+      "max_row": 1050,
+      "max_column": 161,
+      "non_empty_cells": 1421,
+      "formula_cells": 742,
+      "labels": [
+        {
+          "cell": "B1",
+          "value": "1000YRPWAVE_135deg_r1"
+        },
+        {
+          "cell": "D1",
+          "value": "1000YRPWAVE_135deg_r2"
+        },
+        {
+          "cell": "F1",
+          "value": "1000YRPWAVE_135deg_r3"
+        },
+        {
+          "cell": "H1",
+          "value": "1000YRPWAVE_135deg_r4"
+        },
+        {
+          "cell": "J1",
+          "value": "1000YRPWAVE_135deg_r5"
+        },
+        {
+          "cell": "L1",
+          "value": "1000YRPWAVE_180deg_r1"
+        },
+        {
+          "cell": "N1",
+          "value": "1000YRPWAVE_180deg_r2"
+        },
+        {
+          "cell": "P1",
+          "value": "1000YRPWAVE_180deg_r3"
+        },
+        {
+          "cell": "R1",
+          "value": "1000YRPWAVE_180deg_r4"
+        },
+        {
+          "cell": "T1",
+          "value": "1000YRPWAVE_180deg_r5"
+        },
+        {
+          "cell": "V1",
+          "value": "1000YRPWAVE_225deg_r1"
+        },
+        {
+          "cell": "X1",
+          "value": "1000YRPWAVE_225deg_r2"
+        },
+        {
+          "cell": "Z1",
+          "value": "1000YRPWAVE_225deg_r3"
+        },
+        {
+          "cell": "AB1",
+          "value": "1000YRPWAVE_225deg_r4"
+        },
+        {
+          "cell": "AD1",
+          "value": "1000YRPWAVE_225deg_r5"
+        },
+        {
+          "cell": "A2",
+          "value": "total peaks no"
+        },
+        {
+          "cell": "C2",
+          "value": "878"
+        },
+        {
+          "cell": "E2",
+          "value": "864"
+        },
+        {
+          "cell": "G2",
+          "value": "831"
+        },
+        {
+          "cell": "I2",
+          "value": "856"
+        },
+        {
+          "cell": "K2",
+          "value": "829"
+        },
+        {
+          "cell": "M2",
+          "value": "799"
+        },
+        {
+          "cell": "O2",
+          "value": "796"
+        },
+        {
+          "cell": "Q2",
+          "value": "817"
+        },
+        {
+          "cell": "S2",
+          "value": "815"
+        },
+        {
+          "cell": "U2",
+          "value": "811"
+        },
+        {
+          "cell": "W2",
+          "value": "740"
+        },
+        {
+          "cell": "Y2",
+          "value": "748"
+        },
+        {
+          "cell": "AA2",
+          "value": "727"
+        },
+        {
+          "cell": "AC2",
+          "value": "748"
+        },
+        {
+          "cell": "AE2",
+          "value": "748"
+        },
+        {
+          "cell": "A3",
+          "value": "5% peaks no"
+        },
+        {
+          "cell": "C3",
+          "value": "43"
+        },
+        {
+          "cell": "E3",
+          "value": "43"
+        },
+        {
+          "cell": "G3",
+          "value": "41"
+        },
+        {
+          "cell": "I3",
+          "value": "42"
+        },
+        {
+          "cell": "K3",
+          "value": "41"
+        },
+        {
+          "cell": "M3",
+          "value": "39"
+        },
+        {
+          "cell": "O3",
+          "value": "39"
+        },
+        {
+          "cell": "Q3",
+          "value": "40"
+        },
+        {
+          "cell": "S3",
+          "value": "40"
+        },
+        {
+          "cell": "U3",
+          "value": "40"
+        },
+        {
+          "cell": "W3",
+          "value": "37"
+        },
+        {
+          "cell": "Y3",
+          "value": "37"
+        },
+        {
+          "cell": "AA3",
+          "value": "36"
+        },
+        {
+          "cell": "AC3",
+          "value": "37"
+        },
+        {
+          "cell": "AE3",
+          "value": "37"
+        },
+        {
+          "cell": "A4",
+          "value": "min"
+        },
+        {
+          "cell": "A5",
+          "value": "diff mean"
+        },
+        {
+          "cell": "A6",
+          "value": "diff STDV"
+        },
+        {
+          "cell": "A11",
+          "value": "mean"
+        },
+        {
+          "cell": "A12",
+          "value": "T"
+        },
+        {
+          "cell": "A13",
+          "value": "\u03b2 Guess"
+        },
+        {
+          "cell": "A14",
+          "value": "\u03b1 estimate"
+        },
+        {
+          "cell": "A15",
+          "value": "\u03b2 estimate"
+        },
+        {
+          "cell": "C15",
+          "value": "1.0906713720039853"
+        },
+        {
+          "cell": "E15",
+          "value": "1.0868668181827632"
+        },
+        {
+          "cell": "G15",
+          "value": "1.1964844396108214"
+        },
+        {
+          "cell": "I15",
+          "value": "1.127332126883528"
+        },
+        {
+          "cell": "K15",
+          "value": "1.2093935413939345"
+        },
+        {
+          "cell": "M15",
+          "value": "1.1872572655156781"
+        },
+        {
+          "cell": "O15",
+          "value": "1.1332846665486644"
+        },
+        {
+          "cell": "Q15",
+          "value": "1.1278939157331997"
+        },
+        {
+          "cell": "S15",
+          "value": "1.1634645154675096"
+        },
+        {
+          "cell": "U15",
+          "value": "1.0923187956552942"
+        },
+        {
+          "cell": "W15",
+          "value": "1.1861072024610804"
+        },
+        {
+          "cell": "Y15",
+          "value": "1.0818103813040618"
+        },
+        {
+          "cell": "AA15",
+          "value": "1.1593762304965547"
+        },
+        {
+          "cell": "AC15",
+          "value": "1.0407029807070924"
+        },
+        {
+          "cell": "AE15",
+          "value": "1.0818103813040618"
+        },
+        {
+          "cell": "A16",
+          "value": "Goal"
+        },
+        {
+          "cell": "A17",
+          "value": "Weibull-P50"
+        },
+        {
+          "cell": "C18",
+          "value": "-36.08498584537641"
+        },
+        {
+          "cell": "E18",
+          "value": "-31.790212194520553"
+        },
+        {
+          "cell": "G18",
+          "value": "-51.23838422007835"
+        },
+        {
+          "cell": "I18",
+          "value": "-31.44932594743774"
+        },
+        {
+          "cell": "K18",
+          "value": "-29.581455017521016"
+        },
+        {
+          "cell": "M18",
+          "value": "-30.844970901105114"
+        },
+        {
+          "cell": "O18",
+          "value": "-25.15058679551204"
+        },
+        {
+          "cell": "Q18",
+          "value": "-19.661139608640095"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "C5",
+          "value": "=AVERAGE(C20:C62)"
+        },
+        {
+          "cell": "E5",
+          "value": "=AVERAGE(E20:E62)"
+        },
+        {
+          "cell": "G5",
+          "value": "=AVERAGE(G20:G60)"
+        },
+        {
+          "cell": "I5",
+          "value": "=AVERAGE(I20:I61)"
+        },
+        {
+          "cell": "K5",
+          "value": "=AVERAGE(K20:K60)"
+        },
+        {
+          "cell": "M5",
+          "value": "=AVERAGE(M20:M58)"
+        },
+        {
+          "cell": "O5",
+          "value": "=AVERAGE(O20:O58)"
+        },
+        {
+          "cell": "Q5",
+          "value": "=AVERAGE(Q20:Q59)"
+        },
+        {
+          "cell": "S5",
+          "value": "=AVERAGE(S20:S59)"
+        },
+        {
+          "cell": "U5",
+          "value": "=AVERAGE(U20:U59)"
+        },
+        {
+          "cell": "W5",
+          "value": "=AVERAGE(W20:W56)"
+        },
+        {
+          "cell": "Y5",
+          "value": "=AVERAGE(Y20:Y56)"
+        },
+        {
+          "cell": "AA5",
+          "value": "=AVERAGE(AA20:AA55)"
+        },
+        {
+          "cell": "AC5",
+          "value": "=AVERAGE(AC20:AC56)"
+        },
+        {
+          "cell": "AE5",
+          "value": "=AVERAGE(AE20:AE56)"
+        },
+        {
+          "cell": "C6",
+          "value": "=_xlfn.STDEV.P(C20:C62)"
+        },
+        {
+          "cell": "E6",
+          "value": "=_xlfn.STDEV.P(E20:E62)"
+        },
+        {
+          "cell": "G6",
+          "value": "=_xlfn.STDEV.P(G20:G60)"
+        },
+        {
+          "cell": "I6",
+          "value": "=_xlfn.STDEV.P(I20:I61)"
+        },
+        {
+          "cell": "K6",
+          "value": "=_xlfn.STDEV.P(K20:K60)"
+        }
+      ]
+    },
+    {
+      "title": "Tension_SortedPeaks",
+      "max_row": 1050,
+      "max_column": 161,
+      "non_empty_cells": 24258,
+      "formula_cells": 63,
+      "labels": [
+        {
+          "cell": "B1",
+          "value": "1000YRPWAVE_135deg_r1"
+        },
+        {
+          "cell": "D1",
+          "value": "1000YRPWAVE_135deg_r2"
+        },
+        {
+          "cell": "F1",
+          "value": "1000YRPWAVE_135deg_r3"
+        },
+        {
+          "cell": "H1",
+          "value": "1000YRPWAVE_135deg_r4"
+        },
+        {
+          "cell": "J1",
+          "value": "1000YRPWAVE_135deg_r5"
+        },
+        {
+          "cell": "L1",
+          "value": "1000YRPWAVE_180deg_r1"
+        },
+        {
+          "cell": "N1",
+          "value": "1000YRPWAVE_180deg_r2"
+        },
+        {
+          "cell": "P1",
+          "value": "1000YRPWAVE_180deg_r3"
+        },
+        {
+          "cell": "R1",
+          "value": "1000YRPWAVE_180deg_r4"
+        },
+        {
+          "cell": "T1",
+          "value": "1000YRPWAVE_180deg_r5"
+        },
+        {
+          "cell": "V1",
+          "value": "1000YRPWAVE_225deg_r1"
+        },
+        {
+          "cell": "X1",
+          "value": "1000YRPWAVE_225deg_r2"
+        },
+        {
+          "cell": "Z1",
+          "value": "1000YRPWAVE_225deg_r3"
+        },
+        {
+          "cell": "AB1",
+          "value": "1000YRPWAVE_225deg_r4"
+        },
+        {
+          "cell": "AD1",
+          "value": "1000YRPWAVE_225deg_r5"
+        },
+        {
+          "cell": "A2",
+          "value": "total peaks no"
+        },
+        {
+          "cell": "C2",
+          "value": "878"
+        },
+        {
+          "cell": "E2",
+          "value": "864"
+        },
+        {
+          "cell": "G2",
+          "value": "831"
+        },
+        {
+          "cell": "I2",
+          "value": "856"
+        },
+        {
+          "cell": "K2",
+          "value": "829"
+        },
+        {
+          "cell": "M2",
+          "value": "799"
+        },
+        {
+          "cell": "O2",
+          "value": "796"
+        },
+        {
+          "cell": "Q2",
+          "value": "817"
+        },
+        {
+          "cell": "S2",
+          "value": "815"
+        },
+        {
+          "cell": "U2",
+          "value": "811"
+        },
+        {
+          "cell": "W2",
+          "value": "740"
+        },
+        {
+          "cell": "Y2",
+          "value": "748"
+        },
+        {
+          "cell": "AA2",
+          "value": "727"
+        },
+        {
+          "cell": "AC2",
+          "value": "748"
+        },
+        {
+          "cell": "AE2",
+          "value": "748"
+        },
+        {
+          "cell": "A3",
+          "value": "5% peaks no"
+        },
+        {
+          "cell": "C3",
+          "value": "43"
+        },
+        {
+          "cell": "E3",
+          "value": "43"
+        },
+        {
+          "cell": "G3",
+          "value": "41"
+        },
+        {
+          "cell": "I3",
+          "value": "42"
+        },
+        {
+          "cell": "K3",
+          "value": "41"
+        },
+        {
+          "cell": "M3",
+          "value": "39"
+        },
+        {
+          "cell": "O3",
+          "value": "39"
+        },
+        {
+          "cell": "Q3",
+          "value": "40"
+        },
+        {
+          "cell": "S3",
+          "value": "40"
+        },
+        {
+          "cell": "U3",
+          "value": "40"
+        },
+        {
+          "cell": "W3",
+          "value": "37"
+        },
+        {
+          "cell": "Y3",
+          "value": "37"
+        },
+        {
+          "cell": "AA3",
+          "value": "36"
+        },
+        {
+          "cell": "AC3",
+          "value": "37"
+        },
+        {
+          "cell": "AE3",
+          "value": "37"
+        },
+        {
+          "cell": "A4",
+          "value": "min"
+        },
+        {
+          "cell": "C4",
+          "value": "-135.6442413330078"
+        },
+        {
+          "cell": "E4",
+          "value": "-144.09754943847656"
+        },
+        {
+          "cell": "G4",
+          "value": "-145.201904296875"
+        },
+        {
+          "cell": "I4",
+          "value": "-134.18777465820312"
+        },
+        {
+          "cell": "K4",
+          "value": "-139.52210998535156"
+        },
+        {
+          "cell": "M4",
+          "value": "-133.5594940185547"
+        },
+        {
+          "cell": "O4",
+          "value": "-142.48463439941406"
+        },
+        {
+          "cell": "Q4",
+          "value": "-134.02667236328125"
+        },
+        {
+          "cell": "S4",
+          "value": "-135.52235412597656"
+        },
+        {
+          "cell": "U4",
+          "value": "-136.06919860839844"
+        },
+        {
+          "cell": "W4",
+          "value": "-136.99281311035156"
+        },
+        {
+          "cell": "Y4",
+          "value": "-123.97602081298828"
+        },
+        {
+          "cell": "AA4",
+          "value": "-130.9453125"
+        },
+        {
+          "cell": "AC4",
+          "value": "-130.75791931152344"
+        },
+        {
+          "cell": "AE4",
+          "value": "-123.97602081298828"
+        },
+        {
+          "cell": "A5",
+          "value": "mean"
+        },
+        {
+          "cell": "C5",
+          "value": "-43.29630534593449"
+        },
+        {
+          "cell": "E5",
+          "value": "-44.371787520342096"
+        },
+        {
+          "cell": "G5",
+          "value": "-56.0488166809082"
+        },
+        {
+          "cell": "I5",
+          "value": "-41.70892759860449"
+        },
+        {
+          "cell": "K5",
+          "value": "-38.97540816083187"
+        },
+        {
+          "cell": "M5",
+          "value": "-39.46659853901618"
+        },
+        {
+          "cell": "O5",
+          "value": "-39.16583670102633"
+        },
+        {
+          "cell": "Q5",
+          "value": "-33.69262765049935"
+        },
+        {
+          "cell": "S5",
+          "value": "-48.15673134326935"
+        },
+        {
+          "cell": "U5",
+          "value": "-46.70639019012451"
+        },
+        {
+          "cell": "W5",
+          "value": "-35.235282632144724"
+        },
+        {
+          "cell": "Y5",
+          "value": "-23.126582795502365"
+        },
+        {
+          "cell": "AA5",
+          "value": "-43.776701428824"
+        },
+        {
+          "cell": "AC5",
+          "value": "-33.08656932856586"
+        },
+        {
+          "cell": "AE5",
+          "value": "-23.126582795502365"
+        },
+        {
+          "cell": "A6",
+          "value": "STDV"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "C11",
+          "value": "=AVERAGE(C10,E10,G10,I10,K10)"
+        },
+        {
+          "cell": "M11",
+          "value": "=AVERAGE(M10,O10,Q10,S10,U10)"
+        },
+        {
+          "cell": "W11",
+          "value": "=AVERAGE(W10,Y10,AA10,AC10,AE10)"
+        },
+        {
+          "cell": "C13",
+          "value": "=LN((-C5)^2+C6^2)-2*LN(-C5)"
+        },
+        {
+          "cell": "E13",
+          "value": "=LN((-E5)^2+E6^2)-2*LN(-E5)"
+        },
+        {
+          "cell": "G13",
+          "value": "=LN((-G5)^2+G6^2)-2*LN(-G5)"
+        },
+        {
+          "cell": "I13",
+          "value": "=LN((-I5)^2+I6^2)-2*LN(-I5)"
+        },
+        {
+          "cell": "K13",
+          "value": "=LN((-K5)^2+K6^2)-2*LN(-K5)"
+        },
+        {
+          "cell": "M13",
+          "value": "=LN((-M5)^2+M6^2)-2*LN(-M5)"
+        },
+        {
+          "cell": "O13",
+          "value": "=LN((-O5)^2+O6^2)-2*LN(-O5)"
+        },
+        {
+          "cell": "Q13",
+          "value": "=LN((-Q5)^2+Q6^2)-2*LN(-Q5)"
+        },
+        {
+          "cell": "S13",
+          "value": "=LN((-S5)^2+S6^2)-2*LN(-S5)"
+        },
+        {
+          "cell": "U13",
+          "value": "=LN((-U5)^2+U6^2)-2*LN(-U5)"
+        },
+        {
+          "cell": "W13",
+          "value": "=LN((-W5)^2+W6^2)-2*LN(-W5)"
+        },
+        {
+          "cell": "Y13",
+          "value": "=LN((-Y5)^2+Y6^2)-2*LN(-Y5)"
+        },
+        {
+          "cell": "AA13",
+          "value": "=LN((-AA5)^2+AA6^2)-2*LN(-AA5)"
+        },
+        {
+          "cell": "AC13",
+          "value": "=LN((-AC5)^2+AC6^2)-2*LN(-AC5)"
+        },
+        {
+          "cell": "AE13",
+          "value": "=LN((-AE5)^2+AE6^2)-2*LN(-AE5)"
+        },
+        {
+          "cell": "C14",
+          "value": "=(-C5)/EXP(GAMMALN(1+1/C15))"
+        },
+        {
+          "cell": "E14",
+          "value": "=(-E5)/EXP(GAMMALN(1+1/E15))"
+        }
+      ]
+    }
+  ]
+}

@@ -70,12 +70,12 @@ git diff main...HEAD > /tmp/diff-for-review.txt
 Use `codex exec` and `gemini exec` via background PTY processes:
 
 ```bash
-# Codex review
-cd /path/to/repo && codex exec "$(cat /tmp/review-prompt.md)" 2>&1 | tee /tmp/codex-review.txt
+# Codex review — prefer stdin for large/markdown-heavy prompts
+cd /path/to/repo && codex exec -C /path/to/repo - < /path/to/repo/.planning/quick/review-prompt.md 2>&1 | tee /tmp/codex-review.txt
 # Run with: terminal(command=..., pty=true, background=true, timeout=300)
 
 # Gemini review (only if three-provider trigger met)
-cd /path/to/repo && gemini exec "$(cat /tmp/review-prompt.md)" 2>&1 | tee /tmp/gemini-review.txt
+cd /path/to/repo && gemini exec "$(cat /path/to/repo/.planning/quick/review-prompt.md)" 2>&1 | tee /tmp/gemini-review.txt
 # Run with: terminal(command=..., pty=true, background=true, timeout=300)
 ```
 
@@ -122,6 +122,8 @@ Deduplicate across providers. Structure as:
 ```bash
 gh issue comment NNNN --body-file /tmp/consolidated-review.md
 ```
+
+For GTM/business-critical plan-review closeout, see `references/gtm-plan-review-closeout-2026-04-29.md` for a worked pattern covering live review replacement of `UNAVAILABLE` placeholders, owner-decision packets, numeric-claim verification, and concurrent-git closeout.
 
 ## Post-Review: Acting on MAJOR Verdicts
 
@@ -183,6 +185,8 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
    - Keep the full context in a separate workspace file if needed, but do not force the entire issue history/diff corpus into argv.
    - Save the compact prompt as its own artifact (for example `.planning/quick/review-<issue>-implementation-compact-prompt.md`) so the recovery path is reproducible.
    - Prefer compact self-contained prompts over retrying the same oversized command.
+   - Codex-specific recovery: if `codex exec "$(cat prompt.md)"` exits 0 but the tee/raw artifact is empty or contains no verdict, treat it as a failed dispatch, not a successful review. Retry with stdin: `codex exec -C /path/to/repo - < /path/to/repo/.planning/quick/review-prompt.md 2>&1 | tee ...`.
+   - Always validate the raw artifact after each provider run by checking both non-zero length and a verdict/findings marker; process exit code alone is insufficient.
 
 3. **Gemini capacity limits** — `gemini-3.1-pro-preview` can hit 429 MODEL_CAPACITY_EXHAUSTED errors. Gemini CLI retries automatically but may take longer. Allow extra timeout.
    - In large parallel review waves, Gemini may fail repeatedly and never produce a usable verdict.
@@ -252,6 +256,12 @@ Then post a concise GitHub issue comment summarizing verdicts, shared blockers, 
 - include the concrete failure reason (for example model capacity exhaustion) and point to the raw CLI log path
 - treat the plan review wave as incomplete unless repo policy explicitly allows reduced-provider review for that run
 This avoids ambiguous "pending" review state, preserves evidence for governance audits, and makes it clear the blocker was provider availability rather than missing execution.
+
+22. **Claude CLI review can fail silently or exhaust turns** — `claude -p` may time out with an empty tee file, or exit with `Error: Reached max turns` before producing a usable verdict. Treat both as failed dispatches, not review evidence. Retry with a compact prompt that lists exact files, known review state, required output format, and owner-decision questions; increase `--max-turns` enough for the review. Save only the successful substantive output as the canonical Claude artifact.
+
+23. **GTM numeric claims need source-file calculation, not prose review** — For brochure/outreach plan reviews, force at least one lane to compute headline numbers from source JSON/report files. A 2026-04-29 review caught a `108 cases` caption that should have been `156` by summing the matrix; text-only reviewers had missed it. Mark each number as either verified-now or render-time recompute-required.
+
+24. **Concurrent background agents can make broad git status/add unusable** — In active workspace-hub sessions, global `git status` or broad `git add -A` can hang behind other agents/VS Code git operations and can stage unrelated work. For review closeout, use scoped verification and staging: `git diff -- <target-files>`, `git ls-files <target-files>`, `git add <target-files>`, and `git diff --cached --name-only`. Commit only the intended review artifacts and plan patches.
 
 ## Post-Review: Batch Follow-Up Issue Creation from Findings
 

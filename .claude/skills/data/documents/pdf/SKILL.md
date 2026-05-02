@@ -95,6 +95,24 @@ preservation, and batch viability. Based on WRK-1302 (243 PDFs) and WRK-1303 (6 
 - Creating new PDFs with reportlab
 - Extracting tables from structured PDFs
 
+## Showing PDF Evidence to the User
+
+When a user asks to "open" or "show" a PDF, prefer direct display, but verify rendering:
+
+1. Try opening the PDF in the browser/viewer using its absolute `file://` path.
+2. If the browser PDF viewer renders blank or cannot show the page, convert the relevant page(s) to images with Poppler and return `MEDIA:` links:
+
+```bash
+mkdir -p /tmp/pdf-pages
+pdftoppm -f 1 -l 1 -png -singlefile "$PDF" /tmp/pdf-pages/document_page_01
+pdftoppm -f "$PAGE" -l "$PAGE" -png -singlefile "$PDF" /tmp/pdf-pages/document_page_${PAGE}
+file /tmp/pdf-pages/document_page_01.png /tmp/pdf-pages/document_page_${PAGE}.png
+```
+
+3. For evidence questions, render both the cover/first page and the controlling clause page so the user can visually verify document identity and operative text.
+4. If visual inspection is needed, run image analysis on the rendered page and confirm the visible section/page before reporting.
+
+
 ## Version History
 
 - **1.2.2** (2026-01-04): Fixed P2 issue - added `parents=True` to all `mkdir()` calls to handle nested output paths; prevents FileNotFoundError when creating directories with non-existent parent paths

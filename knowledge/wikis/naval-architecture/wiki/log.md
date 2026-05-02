@@ -13,3 +13,15 @@
 - 1 ship plans collection summary (110 plans from maritime.org)
 - 6 concept pages created: stability, hydrostatics, resistance-propulsion, ship-structures, ship-design, seakeeping
 - Pages created: 36 sources + 6 concepts + index + log + overview = 45 total
+
+## [2026-04-30] ingest | #2564 yaw moment / rudder maneuvering raw-reference pack
+- Processed: /mnt/ace SNAME, USNA, Bertram, ShipMo3D, ABS, IMO, USCG, OrcaFlex, and OCIMF yaw/maneuvering references.
+- Pages created: concepts/maneuvering-coordinate-conventions.md, concepts/rudder-force-modeling.md, concepts/yaw-moment-rudder-sweep.md, concepts/maneuvering-validation-metrics.md, concepts/environmental-yaw-moment-coefficients.md, comparisons/yaw-moment-source-extraction-2026-04-30.md, sources/mctaggart-shipmo3d-maneuvering-2007.md, sources/abs-vessel-maneuverability-guide-2017.md, sources/imo-msc-circ-1053-manoeuvrability-explanatory-notes.md, sources/uscg-nvic-6-95-maneuvering-standards.md, sources/uscg-nvic-7-89-maneuvering-information.md, sources/orcaflex-manoeuvring-current-wind-loads.md, sources/ocimf-yaw-moment-coefficient-figures.md.
+- Pages updated: sources/practical-ship-hydrodynamics.md, sources/usna-en400-—-principles-of-ship-performance-course-notes.md, sources/principles-of-naval-architecture-second-revision-volume-i.md, index.md.
+- Notes: Created a compact but source-located knowledge pack for implementing #2564 after plan approval; no raw PDFs were copied into git.
+
+## [2026-05-01] ingest | #2567 steering gear / rudder stock source-intelligence package
+- Processed: SOLAS 2020 local PDF extract, DNV TS414 steering gear local PDF extract, online-resource-registry portal anchors for DNV/ABS/IACS, standards-transfer-ledger, and wave-4 inventory metadata.
+- Pages created: comparisons/issue-2567-steering-gear-rudder-stock-source-map.md, concepts/steering-gear-design-checks.md, concepts/rudder-stock-design-checks.md, standards/steering-gear-rudder-stock-rule-crosswalk.md.
+- Pages updated: index.md.
+- Notes: Created source map, concept boundaries, and standards crosswalk for #2567 without implementing formulas or claiming compliance.

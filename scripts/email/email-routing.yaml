@@ -85,8 +85,9 @@ rules:
   "partneresi.com":                 "sabithaandkrishnaestates/docs/email/vendor"
 
   # ==== CRE Market Data (Ace inbox) ====
-  # KEEP these — extract structured CRE listing data (per #1991, #2017)
+  # KEEP these — extract structured CRE listing data (per #1991, #2017, #2423)
   # Do NOT unsubscribe or delete; data feeds assethold CRE market analysis
+  # Gmail-side: filter "CRE" routes these via claude-in-chrome session 2026-04-24
   "sandsig.com":                    "assethold/data/cre-listings"
   "marcusmillichap.com":            "assethold/data/cre-listings"
   "skylineseven.ccsend.com":        "assethold/data/cre-listings"
@@ -94,6 +95,25 @@ rules:
   "email.loopnet.com":              "assethold/data/cre-listings"
   "ten-x.ccsend.com":               "assethold/data/cre-listings"
   "c.costarmail.com":               "assethold/data/cre-listings"
+  # --- Added 2026-04-24 from inbox keyword scan (cap rate, absolute NNN, etc.) ---
+  "cushwake.com":                   "assethold/data/cre-listings"
+  "cbre.com":                       "assethold/data/cre-listings"
+  "colliers.com":                   "assethold/data/cre-listings"
+  "jll.com":                        "assethold/data/cre-listings"
+  "newmark.com":                    "assethold/data/cre-listings"
+  "avisonyoung.com":                "assethold/data/cre-listings"
+  "kiddermathews.com":              "assethold/data/cre-listings"
+  "naiglobal.com":                  "assethold/data/cre-listings"
+  "lee-associates.com":             "assethold/data/cre-listings"
+  "ccsend.com":                     "assethold/data/cre-listings"  # Constant Contact (CRE blast platform — catches multi-broker sends)
+  "costarmail.com":                 "assethold/data/cre-listings"  # CoStar (catches all subdomains)
+  # --- Display-name match handled by Gmail filter (not yaml-routable) ---
+  # "Cafiero Team", "Chez Eider", "Eddy Nevarez", "John Chua", "Randy Blankstein"
+  # "Sands Investment", "Marcus & Millichap"
+  # Plus content-keyword catch-all: "absolute NNN", "offering memorandum",
+  # "sale leaseback", "ground lease", "1031 exchange"
+  # --- Discovered missed in 2026-04-24 sweep (add to next session) ---
+  # Seth Equities (broker; domain TBD — appeared as JUST LISTED hotel listing)
 
   # ==== Personal ====
   "linkedin.com":                   "achantas-data/docs/email/career-networking"

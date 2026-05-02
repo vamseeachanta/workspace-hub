@@ -447,6 +447,11 @@ For non-trivial changes, run a review pass focused on:
 - shell safety / state handling / regression risk
 - adequacy of tests
 - whether discovered extra work should become future issues instead of expanding scope
+- artifact/output contract drift across every emitted surface, not just the primary code path
+
+For report, audit, inventory, or generated-artifact work, the adversarial review must challenge JSON summaries, Markdown sections, helper scripts, closeout reports, fixture/dry-run modes, and untrusted/partial-state behavior. If a safety condition suppresses authoritative findings, verify summaries and generated artifacts are suppressed or clearly marked too; do not accept a green test suite that only covers the primary findings list while secondary outputs can still mislead closeout.
+
+For generated engineering/scientific artifacts, add a model-to-artifact consistency challenge: do not rely on string-presence tests or report claims alone. Verify the numerical/physical model used in analytical summaries is the same model emitted into solver decks, CSV/JSON profiles, plots, and reports. Add at least one regression assertion at an interface/boundary/representative point that would fail if the artifact uses a simplified or stale formula (for example cumulative layer resistance vs linear-thickness interpolation, load magnitude in a solver card vs reported power, or boundary-condition value vs report text).
 
 Classify the result explicitly:
 - `PASS` -> no material objections remain
@@ -524,6 +529,10 @@ Keep the issue open when:
 - validation or review evidence is missing
 - a blocker was identified without a resolved reroute path
 
+After close/push, verify and repair status labels explicitly. Auto-closing through a `Closes #NNNN` commit can leave stale workflow labels such as `status:plan-approved` on a closed issue. Read the final issue labels, remove conflicting `status:*` labels, and apply the terminal label used by the repo (for workspace-hub, usually `status:done`) before reporting final gate state.
+
+For generated inventory/report closeouts, preserve authoritative input snapshots rather than overwriting them with a simplified helper fixture. If a helper needs planning-time paths, parse the existing snapshot schema (for example `paths.filesystem_only_active`) and add tests for that schema. Treat accidental snapshot shrinkage as artifact drift: restore the snapshot, update the helper adapter, rerun targeted tests, regenerate only the intended closeout report, and then commit.
+
 ### 8. Multi-agent closeout/integration reporting
 When delegated or hybrid execution was used, append a compact integration block to the final closeout comment:
 - `Execution mode:` delegated or hybrid
@@ -565,17 +574,61 @@ Use a compact pattern:
 7. close issue with specifics
 8. create follow-up issues for deferred hardening or broader adoption work
 
+### Inventory/report prerequisite slices in nested repos
+For approved umbrella/decomposition issues where the first executable slice is a durable inventory or evidence artifact, do not jump directly to source remediation.
+Use this pattern:
+1. Confirm the parent issue is `status:plan-approved` and the local approval marker exists in the executing checkout.
+2. Post an execution-start comment that explicitly limits the first pass to the inventory/report artifact and says source remediation remains in child issues.
+3. In the nested target repo, run the exact failing command from the approved plan and capture raw output to a transient path (for example `/tmp/...`). Treat a non-zero exit as expected when inventorying known debt.
+4. Generate a checked-in report under the nested repo with: exact command provenance, exit code, parsed finding count, grouped rule-family counts, dominant outlier classification, non-outlier counts, representative findings, and an explicit note that `/tmp` raw output is transient/non-durable.
+5. Add deterministic assertions for the report content (parent issue link, child owner, exact command, total/outlier counts, and cleanup guidance) before committing.
+6. Commit and push the nested-repo artifact separately from workspace-hub governance/review artifacts; verify both nested `HEAD` and `origin/main` match.
+7. Run a compact adversarial implementation review on the report slice. If reviewers find metadata/table issues, patch the report, commit/push a follow-up, and record the review artifacts in workspace-hub.
+8. Post progress comments to both the parent umbrella and the relevant child issue, making clear which prerequisite is complete and what remains open.
+
+Common pitfalls:
+- Table grouping code may accidentally mix file paths and directory areas; define module-area tables as directory paths only.
+- UTC regeneration timestamps can cross the local session date; distinguish inventory capture date from report regeneration timestamp.
+- Do not close the parent umbrella after a prerequisite inventory lands; keep closure tied to the child issues and final proof gate.
+
 ### Verify-and-close issues
 Some issues are best solved by verification rather than code changes.
 If evidence shows the requested state already exists, comment with proof and close.
 
+### Approved umbrella/decomposition issues
+Some approved issues are umbrella/decomposition parents, not direct source-remediation tickets. When the approved plan explicitly splits implementation into child issues:
+1. Do not close the parent just because the first prerequisite lands.
+2. Pick the smallest approved parent-owned slice (often durable inventory, coordination artifacts, or proof scaffolding) before child source remediation.
+3. If the implementation artifact lives in a nested repo, commit/push it in that nested repo and record review/coordination artifacts in the parent orchestration repo separately.
+4. Post progress to both the parent umbrella and the relevant child issue so ownership stays visible.
+5. Keep source remediation inside the child issue boundaries; do not mix a pathological outlier child with a safe-rule cleanup child.
+6. After landing a prerequisite artifact, run adversarial implementation review on that artifact. If reviewers return MINOR metadata/reporting findings, fix them in a follow-up commit before calling the prerequisite complete.
+7. Parent closeout remains blocked until every child stream and the final proof owner satisfy the approved acceptance criteria.
+
+For lint-inventory prerequisites, a reusable TDD/documentation pattern is:
+- generate a durable inventory report with exact command provenance, exit code, parsed finding counts, outlier classification, non-outlier counts, transient `/tmp` warning, and cleanup guidance
+- add a small test that asserts the report preserves the key provenance/decomposition strings
+- run the exact inventory command and the focused report test
+- record implementation-review artifacts in the orchestration repo if the report itself lands in a nested repo
+
+## Git pitfalls
+When an approved parent issue has become an umbrella/decomposition contract and child issues own the source-level remediation:
+1. Do not drift into child source edits from the parent pass, even if the failing command is easy to inspect.
+2. Run the parent pre-check against the live nested/target repo state: clean `main`, exact approved command, current counts, and presence/absence of the durable inventory artifact.
+3. If the parent deliverable is an inventory/provenance artifact, use TDD against that artifact: write a failing test that locks the required command provenance, expected-red baseline, grouped counts, outlier classification, child issue ownership, and transient-vs-durable evidence warning; then make the minimal doc/report change to pass.
+4. Re-run the exact failing command after the doc/test change to prove source-remediation scope was not silently absorbed and the baseline remains the expected child-owned red state.
+5. Post the parent update without closing the umbrella unless all child completion/green-gate acceptance criteria are actually satisfied; also post a child-boundary note when the artifact belongs to a child issue.
+6. If unrelated local dirt blocks a clean-main start, preserve it with narrow temporary stashes rather than doing branch cleanup or mixing it into the issue execution.
+
 ## Git pitfalls
 
 If push fails due to remote mismatch after a valid local commit:
-- pull --rebase
-- push again
+- first verify whether the remote actually advanced despite the error: `git fetch origin <branch> && git rev-parse HEAD origin/<branch>`
+- if `HEAD == origin/<branch>`, treat the push as landed and do not retry/pull unnecessarily
+- if GitHub rejects with `cannot lock ref ... is at <new-sha> but expected <old-sha>`, that can still mean the push landed while another process updated the local remote-tracking ref; immediately fetch and compare `HEAD` vs `origin/<branch>` before retrying
+- if the remote is genuinely ahead or divergent, inspect the new remote commits, then `git pull --rebase` only when it is safe for the current scope, and push again
 
-If unrelated edits block the push, stash them temporarily, finish the current issue push, then restore.
+If unrelated edits block the push, stash them temporarily when safe. If stash silently fails or branch switching is blocked by unrelated dirt, use a clean temporary worktree from the target branch to make docs-only/closeout commits; record that the original checkout remains dirty so the next operator does not assume a clean `main` state.
 
 ## Artifact hygiene
 

@@ -1,0 +1,151 @@
+{
+  "artifact_hashes": {
+    "../../../docs/reports/semiconductor-package-fem-benchmark.md": "6f30e33990bb1c0ba819bdfd4fa00a69bdc7335b263be723aff9c4a159db3aab",
+    "README.md": "5856860a7069b0b25e8f6c9352a84279cbc4effbde171747c2a7a78b963545eb",
+    "mesh_summary.csv": "8b263214470fc745b5140a30f26d1b6f81af2ddd324f322ff2487d6297287aff",
+    "package_stackup.svg": "48ea068c9b4c9ee8b98673ab10d9a8e80101c3a713b24b4c5a3d919e543ce091",
+    "package_thermal.inp": "2e997c2830ecf4030c7063dc7b1d1c72ea729f9560d73121acfb4056912277ab",
+    "package_thermomechanical.inp": "b64ee26c03a2a6d82fb35adbe07c385c61ba2b43e8c2f1cb852821631a36f730",
+    "result_profiles.csv": "7f2ca0761b6e150d49a80a9389e0d67b7ab6ea5e74c1836f29eaab8f0c30ca42",
+    "stress_warpage_estimates.svg": "59ad2e0a7eb731033278bc886999ce3b357a3a4260318fbce7c170edf1a041b3",
+    "temperature_profile.svg": "4db35b4c973ba76173bf80b98de9742b7792bd1da4bef6889e63382d0d974711"
+  },
+  "benchmark": "semiconductor_package_fem",
+  "geometry": {
+    "area_m2": 0.0001,
+    "length_m": 0.01,
+    "total_thickness_m": 0.00182,
+    "width_m": 0.01
+  },
+  "layers": [
+    {
+      "E_Pa": 35000000000.0,
+      "cte_per_K": 2.2e-05,
+      "elements": 16,
+      "k_W_m_K": 50.0,
+      "layer": "solder_zone",
+      "material_id": "solder",
+      "thickness_m": 0.00012,
+      "z_max_m": 0.00012,
+      "z_min_m": 0.0
+    },
+    {
+      "E_Pa": 22000000000.0,
+      "cte_per_K": 1.6e-05,
+      "elements": 32,
+      "k_W_m_K": 0.3,
+      "layer": "substrate",
+      "material_id": "fr4",
+      "thickness_m": 0.0008,
+      "z_max_m": 0.00092,
+      "z_min_m": 0.00012
+    },
+    {
+      "E_Pa": 130000000000.0,
+      "cte_per_K": 2.6e-06,
+      "elements": 16,
+      "k_W_m_K": 130.0,
+      "layer": "die",
+      "material_id": "silicon",
+      "thickness_m": 0.00025,
+      "z_max_m": 0.00117,
+      "z_min_m": 0.00092
+    },
+    {
+      "E_Pa": 18000000000.0,
+      "cte_per_K": 1.2e-05,
+      "elements": 32,
+      "k_W_m_K": 0.7,
+      "layer": "mold",
+      "material_id": "mold",
+      "thickness_m": 0.00065,
+      "z_max_m": 0.00182,
+      "z_min_m": 0.00117
+    }
+  ],
+  "limitations": [
+    "Educational portfolio benchmark only; not production-certified.",
+    "Not JEDEC-compliant, not IPC-compliant, not validated to JEDEC, and not for production signoff.",
+    "Material constants are representative public/handbook-style approximations, not proprietary package data."
+  ],
+  "loads": {
+    "ambient_C": 25.0,
+    "junction_C": 85.0,
+    "power_W": 2.0
+  },
+  "materials": {
+    "fr4": {
+      "E_Pa": 22000000000.0,
+      "cte_per_K": 1.6e-05,
+      "k_W_m_K": 0.3,
+      "name": "FR-4 substrate (representative)",
+      "nu": 0.28,
+      "source": "Representative open engineering handbook value",
+      "source_note": "Educational FR-4 approximation; not a vendor datasheet or IPC requirement."
+    },
+    "mold": {
+      "E_Pa": 18000000000.0,
+      "cte_per_K": 1.2e-05,
+      "k_W_m_K": 0.7,
+      "name": "Epoxy mold compound (representative)",
+      "nu": 0.35,
+      "source": "Representative open engineering handbook value",
+      "source_note": "Educational mold-compound approximation; not proprietary package data."
+    },
+    "silicon": {
+      "E_Pa": 130000000000.0,
+      "cte_per_K": 2.6e-06,
+      "k_W_m_K": 130.0,
+      "name": "Silicon die (representative)",
+      "nu": 0.28,
+      "source": "Representative open engineering handbook value",
+      "source_note": "Educational silicon approximation for portfolio benchmark only."
+    },
+    "solder": {
+      "E_Pa": 35000000000.0,
+      "cte_per_K": 2.2e-05,
+      "k_W_m_K": 50.0,
+      "name": "Solder zone (lumped representative)",
+      "nu": 0.36,
+      "source": "Representative open engineering handbook value",
+      "source_note": "Lumped interconnect/support layer for benchmark simplification."
+    }
+  },
+  "mesh": {
+    "aspect_ratio_proxy": 20.833333333333332,
+    "element_count": 96,
+    "node_count": 175,
+    "nx": 4,
+    "ny": 4,
+    "z_divisions": 6
+  },
+  "sanity_checks": {
+    "delta_T_K": 71.99122344322345,
+    "formula_notes": [
+      "R_layer = thickness / (k * area)",
+      "delta_T = power_W * sum(R_layer)",
+      "free_strain = abs(CTE_layer - CTE_substrate) * delta_T",
+      "warpage_style_um = max_free_strain * length_m * 1e6 / 2"
+    ],
+    "max_free_strain": 0.0009646823941391941,
+    "thermal_resistance_K_per_W": 35.99561172161172,
+    "warpage_style_um": 4.823411970695971
+  },
+  "schema_version": "1.0.0",
+  "solver_status": {
+    "decks": {
+      "thermal": {
+        "reason": "no_solver_requested",
+        "status": "skipped"
+      },
+      "thermomechanical": {
+        "reason": "no_solver_requested",
+        "status": "skipped"
+      }
+    },
+    "reason": "no_solver_requested",
+    "status": "skipped",
+    "versions": []
+  },
+  "units": "SI"
+}

@@ -1,0 +1,24 @@
+=== Wiki Lint: marine-engineering ===
+
+Found 12 issue(s):
+
+  [WARNING] orphan: Page 'mark-prentice-r5-mooring-chain-hardness-limit.md' has no inbound links from other wiki pages
+  [WARNING] frontmatter: 'sources/001.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/001gs.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/002on.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/003.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/004.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/004a.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/004b.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/005.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/005es.md' missing recommended field 'sources'
+  [WARNING] frontmatter: 'sources/006a.md' missing recommended field 'sources'
+  [INFO] frontmatter: ... and 19157 more frontmatter issues (showing first 10)
+
+Summary:
+  Orphan pages:     1
+  Empty pages:      0
+  Index issues:     0
+  Log issues:       0
+  Frontmatter:      19167
+  Link density:     1.1 avg per page

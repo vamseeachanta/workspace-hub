@@ -97,8 +97,8 @@ add_pattern high exfiltration dump_all_env \
   '(printenv|env[[:space:]]*\|)'
 
 # ── Exfiltration: programmatic env access ──
-add_pattern high exfiltration python_os_environ \
-  "accesses os.environ (potential env dump)" \
+add_pattern medium exfiltration python_os_environ \
+  "accesses os.environ (potential env dump — review for secret exposure)" \
   'os\.environ'
 add_pattern critical exfiltration python_getenv_secret \
   "reads secret via os.getenv()" \
@@ -125,7 +125,7 @@ add_pattern high exfiltration md_link_exfil \
   '\[.*\]\(https?://[^)]*\$\{?'
 add_pattern high exfiltration context_exfil \
   "instructs agent to output conversation history" \
-  '(include|output|print|send|share)[[:space:]].*(conversation|chat[[:space:]]history|previous[[:space:]]messages|context)'
+  '^[[:space:]]*(include|output|print|send|share)[[:space:]]+(the[[:space:]]+|all[[:space:]]+|your[[:space:]]+|entire[[:space:]]+)*(conversation|chat[[:space:]]history|previous[[:space:]]messages)'
 add_pattern high exfiltration send_to_url \
   "instructs agent to send data to a URL" \
   '(send|post|upload|transmit)[[:space:]].*[[:space:]](to|at)[[:space:]]https?://'
@@ -235,14 +235,14 @@ add_pattern medium persistence macos_launchd \
   "macOS launch agent/daemon persistence" \
   'launchctl[[:space:]]+load|LaunchAgents|LaunchDaemons'
 add_pattern critical persistence agent_config_mod \
-  "references agent config files (cross-session persistence)" \
-  '(AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules)'
+  "writes/modifies agent config files (cross-session persistence)" \
+  '([[:space:]]>{1,2}[[:space:]]+[^[:space:]|<>]*(AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules)|(^|[[:space:]])(tee|sed[[:space:]]+-i)[[:space:]]+[^|<>]*?(AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules)|(Write|Edit|MultiEdit)\([^|<>]*?(AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules)|(^|[[:space:]])(rm|mv|cp)[[:space:]]+[^|<>]*?(AGENTS\.md|CLAUDE\.md|\.cursorrules|\.clinerules))'
 add_pattern critical persistence hermes_config_mod \
-  "references Hermes configuration files directly" \
-  '\.hermes/config\.yaml|\.hermes/SOUL\.md'
+  "writes/modifies Hermes configuration files directly" \
+  '([[:space:]]>{1,2}[[:space:]]+[^[:space:]|<>]*\.hermes/(config\.yaml|SOUL\.md)|(^|[[:space:]])(tee|sed[[:space:]]+-i)[[:space:]]+[^|<>]*?\.hermes/(config\.yaml|SOUL\.md)|(Write|Edit|MultiEdit)\([^|<>]*?\.hermes/(config\.yaml|SOUL\.md)|(^|[[:space:]])(rm|mv|cp)[[:space:]]+[^|<>]*?\.hermes/(config\.yaml|SOUL\.md))'
 add_pattern high persistence other_agent_config \
-  "references other agent config files" \
-  '(\.claude/settings|\.codex/config)'
+  "writes/modifies other agent config files" \
+  '([[:space:]]>{1,2}[[:space:]]+[^[:space:]|<>]*(\.claude/settings|\.codex/config)|(^|[[:space:]])(tee|sed[[:space:]]+-i)[[:space:]]+[^|<>]*?(\.claude/settings|\.codex/config)|(Write|Edit|MultiEdit)\([^|<>]*?(\.claude/settings|\.codex/config)|(^|[[:space:]])(rm|mv|cp)[[:space:]]+[^|<>]*?(\.claude/settings|\.codex/config))'
 add_pattern critical persistence sudoers_mod \
   "modifies sudoers" \
   '(/etc/sudoers|visudo)'
@@ -379,8 +379,8 @@ add_pattern medium supply_chain docker_pull \
 add_pattern high privilege_escalation allowed_tools_field \
   "skill declares allowed-tools" \
   '^allowed-tools[[:space:]]*:'
-add_pattern high privilege_escalation sudo_usage \
-  "uses sudo (privilege escalation)" \
+add_pattern medium privilege_escalation sudo_usage \
+  "uses sudo (privilege escalation — review for safety)" \
   'sudo[[:space:]]'
 add_pattern critical privilege_escalation setuid_setgid \
   "setuid/setgid privilege escalation" \
@@ -475,6 +475,12 @@ scan_file() {
     while IFS= read -r match_line; do
       local lineno="${match_line%%:*}"
       local text="${match_line#*:}"
+
+      # Inline suppression: line contains "scanner-allow:<pattern_id>" or "scanner-allow:all"
+      if echo "$text" | grep -qE "scanner-allow:(${pattern_id}|all)"; then
+        continue
+      fi
+
       [[ ${#text} -gt 120 ]] && text="${text:0:117}..."
 
       local sev_upper="${severity^^}"

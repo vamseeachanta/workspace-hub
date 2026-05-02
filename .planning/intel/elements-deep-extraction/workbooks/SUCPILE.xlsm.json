@@ -1,0 +1,558 @@
+{
+  "path": "/mnt/ace/digitalmodel/references/suction-pile-sizing/SUCPILE.xlsm",
+  "name": "SUCPILE.xlsm",
+  "size": 53804,
+  "sheets": [
+    {
+      "title": "Sheet1",
+      "max_row": 92,
+      "max_column": 20,
+      "non_empty_cells": 1287,
+      "formula_cells": 466,
+      "labels": [
+        {
+          "cell": "B1",
+          "value": "Dia"
+        },
+        {
+          "cell": "C1",
+          "value": "(ft)"
+        },
+        {
+          "cell": "D1",
+          "value": "14"
+        },
+        {
+          "cell": "F1",
+          "value": "Pile forces:"
+        },
+        {
+          "cell": "J1",
+          "value": "From bottom of pile:"
+        },
+        {
+          "cell": "A2",
+          "value": "Input Data"
+        },
+        {
+          "cell": "B2",
+          "value": "Pile length"
+        },
+        {
+          "cell": "C2",
+          "value": "(ft)"
+        },
+        {
+          "cell": "D2",
+          "value": "60"
+        },
+        {
+          "cell": "F2",
+          "value": "Lateral force"
+        },
+        {
+          "cell": "G2",
+          "value": "(kips)"
+        },
+        {
+          "cell": "H2",
+          "value": "100"
+        },
+        {
+          "cell": "J2",
+          "value": "Pivot pt"
+        },
+        {
+          "cell": "K2",
+          "value": "(ft)"
+        },
+        {
+          "cell": "L2",
+          "value": "13.259765625"
+        },
+        {
+          "cell": "B3",
+          "value": "Soil values"
+        },
+        {
+          "cell": "C3",
+          "value": "(count)"
+        },
+        {
+          "cell": "D3",
+          "value": "20"
+        },
+        {
+          "cell": "F3",
+          "value": "Vertical force"
+        },
+        {
+          "cell": "G3",
+          "value": "(kips)"
+        },
+        {
+          "cell": "H3",
+          "value": "0"
+        },
+        {
+          "cell": "J3",
+          "value": "Angle"
+        },
+        {
+          "cell": "K3",
+          "value": "(deg)"
+        },
+        {
+          "cell": "L3",
+          "value": "1.5270996093749998"
+        },
+        {
+          "cell": "B4",
+          "value": "Density"
+        },
+        {
+          "cell": "C4",
+          "value": "(pcf)"
+        },
+        {
+          "cell": "D4",
+          "value": "20"
+        },
+        {
+          "cell": "F4",
+          "value": "\u2026from bottom"
+        },
+        {
+          "cell": "G4",
+          "value": "(ft)"
+        },
+        {
+          "cell": "B5",
+          "value": "eta 50"
+        },
+        {
+          "cell": "C5",
+          "value": "(in/in)"
+        },
+        {
+          "cell": "D5",
+          "value": "0.02"
+        },
+        {
+          "cell": "B6",
+          "value": "Pile depth"
+        },
+        {
+          "cell": "C6",
+          "value": "(ft)"
+        },
+        {
+          "cell": "F6",
+          "value": "Eff. Pile wgt"
+        },
+        {
+          "cell": "G6",
+          "value": "(kips)"
+        },
+        {
+          "cell": "H6",
+          "value": "0"
+        },
+        {
+          "cell": "F7",
+          "value": "Eff. Pile cg above base"
+        },
+        {
+          "cell": "G7",
+          "value": "(ft)"
+        },
+        {
+          "cell": "H7",
+          "value": "0"
+        },
+        {
+          "cell": "B9",
+          "value": "x"
+        },
+        {
+          "cell": "D9",
+          "value": "su"
+        },
+        {
+          "cell": "F9",
+          "value": "P ultimate"
+        },
+        {
+          "cell": "H9",
+          "value": "Xr"
+        },
+        {
+          "cell": "B10",
+          "value": "(ft)"
+        },
+        {
+          "cell": "D10",
+          "value": "(psf)"
+        },
+        {
+          "cell": "F10",
+          "value": "(psf)"
+        },
+        {
+          "cell": "H10",
+          "value": "(ft)"
+        },
+        {
+          "cell": "A11",
+          "value": "1"
+        },
+        {
+          "cell": "B11",
+          "value": "0"
+        },
+        {
+          "cell": "D11",
+          "value": "63"
+        },
+        {
+          "cell": "F11",
+          "value": "209"
+        },
+        {
+          "cell": "H11",
+          "value": "16.98876404494382"
+        },
+        {
+          "cell": "F12",
+          "value": "349.2142857142857"
+        },
+        {
+          "cell": "H12",
+          "value": "25.885196374622357"
+        },
+        {
+          "cell": "F13",
+          "value": "503.35714285714283"
+        },
+        {
+          "cell": "H13",
+          "value": "33.79172610556348"
+        },
+        {
+          "cell": "F14",
+          "value": "671.4285714285714"
+        },
+        {
+          "cell": "H14",
+          "value": "40.86486486486487"
+        },
+        {
+          "cell": "F15",
+          "value": "853.4285714285714"
+        },
+        {
+          "cell": "H15",
+          "value": "47.229781771501926"
+        },
+        {
+          "cell": "F16",
+          "value": "1049.357142857143"
+        },
+        {
+          "cell": "H16",
+          "value": "52.987775061124694"
+        },
+        {
+          "cell": "F17",
+          "value": "1259.2142857142858"
+        },
+        {
+          "cell": "H17",
+          "value": "58.22170361726954"
+        },
+        {
+          "cell": "F18",
+          "value": "1483"
+        },
+        {
+          "cell": "H18",
+          "value": "62.99999999999999"
+        },
+        {
+          "cell": "F19",
+          "value": "1720.7142857142858"
+        },
+        {
+          "cell": "H19",
+          "value": "67.37967914438504"
+        },
+        {
+          "cell": "F20",
+          "value": "1972.357142857143"
+        },
+        {
+          "cell": "H20",
+          "value": "71.40862422997947"
+        },
+        {
+          "cell": "F21",
+          "value": "2237.9285714285716"
+        },
+        {
+          "cell": "H21",
+          "value": "75.12734452122409"
+        },
+        {
+          "cell": "F22",
+          "value": "2517.4285714285716"
+        },
+        {
+          "cell": "H22",
+          "value": "78.5703422053232"
+        },
+        {
+          "cell": "F23",
+          "value": "2810.857142857143"
+        },
+        {
+          "cell": "H23",
+          "value": "81.76718606782768"
+        },
+        {
+          "cell": "F24",
+          "value": "3118.214285714286"
+        },
+        {
+          "cell": "H24",
+          "value": "84.7433628318584"
+        },
+        {
+          "cell": "F25",
+          "value": "3439.5"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "H4",
+          "value": "=D2"
+        },
+        {
+          "cell": "D6",
+          "value": "=D2-2"
+        },
+        {
+          "cell": "A12",
+          "value": "=1+A11"
+        },
+        {
+          "cell": "B12",
+          "value": "=B11+5"
+        },
+        {
+          "cell": "D12",
+          "value": "=(D$30-D$11)/(A$30-1)*(A12-1)+D$11"
+        },
+        {
+          "cell": "A13",
+          "value": "=1+A12"
+        },
+        {
+          "cell": "B13",
+          "value": "=B12+5"
+        },
+        {
+          "cell": "D13",
+          "value": "=(D$30-D$11)/(A$30-1)*(A13-1)+D$11"
+        },
+        {
+          "cell": "A14",
+          "value": "=1+A13"
+        },
+        {
+          "cell": "B14",
+          "value": "=B13+5"
+        },
+        {
+          "cell": "D14",
+          "value": "=(D$30-D$11)/(A$30-1)*(A14-1)+D$11"
+        },
+        {
+          "cell": "A15",
+          "value": "=1+A14"
+        },
+        {
+          "cell": "B15",
+          "value": "=B14+5"
+        },
+        {
+          "cell": "D15",
+          "value": "=(D$30-D$11)/(A$30-1)*(A15-1)+D$11"
+        },
+        {
+          "cell": "A16",
+          "value": "=1+A15"
+        },
+        {
+          "cell": "B16",
+          "value": "=B15+5"
+        },
+        {
+          "cell": "D16",
+          "value": "=(D$30-D$11)/(A$30-1)*(A16-1)+D$11"
+        },
+        {
+          "cell": "A17",
+          "value": "=1+A16"
+        },
+        {
+          "cell": "B17",
+          "value": "=B16+5"
+        },
+        {
+          "cell": "D17",
+          "value": "=(D$30-D$11)/(A$30-1)*(A17-1)+D$11"
+        }
+      ]
+    },
+    {
+      "title": "wall evaluation",
+      "max_row": 13,
+      "max_column": 5,
+      "non_empty_cells": 30,
+      "formula_cells": 9,
+      "labels": [
+        {
+          "cell": "A1",
+          "value": "Max moment w/o soils consideration:"
+        },
+        {
+          "cell": "A2",
+          "value": "OD"
+        },
+        {
+          "cell": "B2",
+          "value": "(ft) ="
+        },
+        {
+          "cell": "A3",
+          "value": "Wall"
+        },
+        {
+          "cell": "B3",
+          "value": "(in) ="
+        },
+        {
+          "cell": "C3",
+          "value": "1.5"
+        },
+        {
+          "cell": "A4",
+          "value": "Force"
+        },
+        {
+          "cell": "B4",
+          "value": "(kips) ="
+        },
+        {
+          "cell": "A5",
+          "value": "Moment arm"
+        },
+        {
+          "cell": "B5",
+          "value": "(ft) ="
+        },
+        {
+          "cell": "A7",
+          "value": "Moment"
+        },
+        {
+          "cell": "B7",
+          "value": "(ft-kips) ="
+        },
+        {
+          "cell": "D7",
+          "value": "(in-#) ="
+        },
+        {
+          "cell": "A9",
+          "value": "Moment of inertia"
+        },
+        {
+          "cell": "B9",
+          "value": "(in^4) ="
+        },
+        {
+          "cell": "A10",
+          "value": "Section Modulus"
+        },
+        {
+          "cell": "B10",
+          "value": "(in^3) ="
+        },
+        {
+          "cell": "A12",
+          "value": "Bending Stress"
+        },
+        {
+          "cell": "B12",
+          "value": "(psi) ="
+        },
+        {
+          "cell": "A13",
+          "value": "Max deflection"
+        },
+        {
+          "cell": "B13",
+          "value": "(in) ="
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "C2",
+          "value": "=Sheet1!D1"
+        },
+        {
+          "cell": "C4",
+          "value": "=Sheet1!H2"
+        },
+        {
+          "cell": "C5",
+          "value": "=Sheet1!H4-Sheet1!L2"
+        },
+        {
+          "cell": "C7",
+          "value": "=C5*C4"
+        },
+        {
+          "cell": "E7",
+          "value": "=C7*12*1000"
+        },
+        {
+          "cell": "C9",
+          "value": "=PI()/64*((C2*12)^4-(C2*12-2*C3)^4)"
+        },
+        {
+          "cell": "C10",
+          "value": "=C9/(C2*12/2)"
+        },
+        {
+          "cell": "C12",
+          "value": "=E7/C10"
+        },
+        {
+          "cell": "C13",
+          "value": "=C4*1000*(C5*12)^3/3/29500000/C9+C5*12*SIN(Sheet1!L3/180*PI())"
+        }
+      ]
+    },
+    {
+      "title": "Sheet3",
+      "max_row": 1,
+      "max_column": 1,
+      "non_empty_cells": 0,
+      "formula_cells": 0,
+      "labels": [],
+      "formulas_sample": []
+    }
+  ]
+}

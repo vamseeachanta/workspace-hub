@@ -1,9 +1,9 @@
 ---
 domain: marine-engineering
 created: 2026-04-07 02:15 UTC
-last_updated: 2026-04-23
-page_count: 19186
-source_count: 19160
+last_updated: 2026-04-28
+page_count: 19197
+source_count: 19166
 ---
 
 # Knowledge Index: Marine Engineering
@@ -45,6 +45,9 @@ source_count: 19160
 | [[Mooring Line Failure]](concepts/mooring-line-failure.md) | HMPE failures, snap-back, 10+ terminal incidents | 2026-04-07 |
 | [[Process Safety]](concepts/process-safety.md) | HAZOP, SIS, SIS, flare, relief — protection layers | 2026-04-07 |
 | [[Sour Service]](concepts/sour-service.md) | H2S environments — SSC, HIC, SOHIC, NACE MR0175 | 2026-04-07 |
+| [[Subsea Cable and Umbilical Cross-Sections]](concepts/subsea-cable-umbilical-cross-sections.md) | Offshore wind cable, O&G umbilical, pipeline, and flexible-pipe cross-section taxonomy | 2026-04-26 |
+| [[Suction Pile Preliminary Sizing with API p-y/t-z Curves]](concepts/suction-pile-preliminary-sizing-api-py-tz.md) | Preliminary suction pile sizing pattern using API p-y/t-z curves, rigid-body rotation, and Newton iteration | 2026-04-28 |
+| [[Riser Extreme Statistics from OrcaFlex Workbooks]](concepts/riser-extreme-statistics-orcaflex-workbooks.md) | Legacy OrcaFlex workbook pattern for stress/tension envelope extraction and Weibull/Gumbel-style extreme statistics | 2026-04-28 |
 
 ## Sources
 
@@ -55,11 +58,16 @@ source_count: 19160
 | [[LNG2026 TP04]](sources/lng2026-tp04-shipping-marine-port-operations.md) | Public programme evidence for LNG shipping, marine, bunkering, STS, and terminal infrastructure topics | Programme Session | Web | 2026-04-23 |
 | [[Mooring Failures]](sources/mooring-failures-lng-terminals.md) | LNG Terminal Mooring Failures (Woodside, MAIB, NOPSEMA) | Incident Compilation | 68 KB YAML | 2026-04-07 |
 | [[Piping Components]](sources/piping-components-ebook.md) | Piping Components for O&G (HardHatEngineer) | Reference Guide | 3.6 MB | 2026-04-07 |
+| [[Subsea Cable, Umbilical, and Pipeline Cross-Section Reconnaissance]](sources/offshore-cable-umbilical-cross-section-recon-2026-04-26.md) | First-pass external source synthesis for offshore wind cables, O&G umbilicals, rigid pipelines, and cross-section modeling gaps | Web/PDF recon | Web | 2026-04-26 |
+| [[Elements Suction Pile Sizing Deep Extraction]](sources/elements-suction-pile-sizing-deep-extraction.md) | First-pass extraction of Doris suction pile sizing PDF/workbooks and API p-y/t-z methodology | Elements deep extraction | Link-only | 2026-04-28 |
+| [[Elements Riser Toolbox Deep Extraction]](sources/elements-riser-toolbox-deep-extraction.md) | First-pass extraction of OrcaFlex riser statistics workbooks for stress/tension envelopes and extreme fitting | Elements deep extraction | Link-only | 2026-04-28 |
 | [[RB122]](sources/rb122-float-equipment.md) | Float Equipment (Halliburton) | Product Catalog | 691 KB | 2026-04-07 |
 
 ## Comparisons
 
-_No query outputs filed yet._
+| Page | Summary | Last Updated |
+|------|---------|-------------|
+| [[Offshore Wind and Oil & Gas Cross-Section Assessment]](comparisons/offshore-wind-oil-gas-cross-section-assessment.md) | Prioritized comparison of offshore wind cable, O&G umbilical, rigid pipeline, and flexible-pipe cross-section modeling needs | 2026-04-26 |
 
 ## Topics Covered
 
@@ -71,6 +79,7 @@ _No query outputs filed yet._
 - **Mooring Engineering**: long-period swell resonance, HMPE failures, LNG terminal incidents
 - **LNG Marine Terminals**: berth/jetty engineering, ship/shore transfer interface, bunkering, STS, and terminal operability
 - **Pipeline Integrity**: DNV RP-F101, API 579, corrosion assessment, fitness-for-service
+- **Subsea Cross-Sections**: offshore wind array/export cables, O&G umbilicals, rigid pipelines, flexible-pipe layer taxonomy
 - **Piping**: flanges, gaskets, fittings, pressure ratings
 - **Process Systems**: separators, compressors, process safety, sour service
 - **VIV & Riser Fatigue**: OrcaFlex VIV, wake interference, S-N curves, design fatigue factors
@@ -21608,4 +21617,6 @@ _No query outputs filed yet._
 | [[SIGTTO LNG Operations in Port Areas]](sources/sigtto-lng-operations-port-areas.md) | Society of International Gas Tanker and Terminal Operators guidance on LNG operations in port areas.... | 2026-04-16 |
 | [[SIGTTO Liquefied Gas Handling Principles on Ships and in Terminals]](sources/sigtto-liquefied-gas-handling-principles.md) | SIGTTO comprehensive reference for liquefied gas handling on ships and terminals. Covers cargo conta... | 2026-04-16 |
 | [[SIGTTO Mooring at Single Point Moorings]](sources/sigtto-mooring-single-point-moorings.md) | SIGTTO guidance on mooring operations at single point moorings (SPMs) for gas carriers. Covers appro... | 2026-04-16 |
+| [[Elements ingest catalog — digitalmodel-suction-pile-sizing]](sources/elements-digitalmodel-suction-pile-sizing.md) | Suction pile sizing reference corpus from the Elements drive; small, high-value offshore foundation... | 2026-04-28 |
+| [[Elements ingest catalog — digitalmodel-riser-toolbox]](sources/elements-digitalmodel-riser-toolbox.md) | Riser Toolbox reference corpus from the Elements drive; small, high-value riser/offshore methodology... | 2026-04-28 |
 

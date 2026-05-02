@@ -118,6 +118,16 @@ The workspace-hub contains a large-scale intelligence ecosystem spanning domain 
 | **Design code registry** | [data/design-codes/code-registry.yaml](../data/design-codes/code-registry.yaml) | ~30 engineering codes |
 | **Weekly intelligence review** | [WEEKLY_ECOSYSTEM_...](modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md) | Operational health review |
 
+<!-- tier1-routing-block: begin; see docs/plans/2026-04-22-issue-2464 -->
+### Tier-1 Routing
+
+- [Tier-1 Routing Index](ROUTING_INDEX.md) (`docs/ROUTING_INDEX.md`) is the curated issue-type -> repo -> path map for workspace-hub, digitalmodel, assetutilities, and aceengineer-website.
+- [Intelligence accessibility registry](../data/document-index/intelligence-accessibility-registry.yaml) records major intelligence surfaces and machine-reachability metadata.
+- [Tier-1 indexing scorecard](reports/2026-04-22-tier-1-indexing-scorecard.md) is local attestation for the current cleanup wave, not canonical routing authority.
+- [Data intelligence map](document-intelligence/data-intelligence-map.md) remains the broader document-intelligence reading map.
+- `docs/CONTENT_INDEX.md` is raw inventory only, not a curated routing surface.
+<!-- tier1-routing-block: end -->
+
 For architecture and reading order, start at the [intelligence landing page](document-intelligence/README.md).
 
 ## Core Modules

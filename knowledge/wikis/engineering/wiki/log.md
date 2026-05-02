@@ -3,6 +3,23 @@
 > Chronological record of all wiki operations.
 > Format: ## [YYYY-MM-DD] operation | Title
 
+## [2026-04-28] deep-extraction | Elements QGIS flowline/DEM corpus (#2536)
+- Pages created: `sources/elements-qgis-flowline-dem-deep-extraction.md`, `workflows/qgis-flowline-dem-preprocessing.md`.
+- Extraction artifacts: `.planning/intel/elements-deep-extraction/gis/dem-stats.json`, `gis/dxf-entity-summary.json`, `gis/qgis-files.json`.
+- Notes: Raw GIS/CAD files remain link-only in `/mnt/ace/digitalmodel/tools/qgis`; `.tif` suffix was found to contain ASCII-grid style DEM content.
+
+## [2026-04-26] add | Canonical Spec Semantic Equivalence Contract + Fixture Expansion Cookbook (#2476)
+- Pages created:
+  - `concepts/canonical-spec-semantic-equivalence.md` — defines semantic equivalence dimensions for canonical `spec.yml` -> native OrcaWave/OrcaFlex YAML; nine dimensions plus reverse-parser equivalence and anti-pattern catalogue
+  - `workflows/orcawave-orcaflex-fixture-expansion-cookbook.md` — procedure for adding new structure-family fixtures with formatting-robust assertions; references licensed-proof boundary
+- Pages updated:
+  - `workflows/orcawave-to-orcaflex-pipeline.md` — added Proof Boundary section distinguishing semantic equivalence (CI) from licensed load/run (paid machine); cross-linked to new contract and cookbook
+  - `index.md` — added rows for new concept and workflow; bumped page_count 77 -> 79; bumped concept count 31 -> 32; bumped workflow count 3 -> 4
+- Scope: docs-only; no `digitalmodel/` source or test files were touched
+- Downstream consumers: #2472, #2473, #2474, #2475 (next-wave semantic-proof issues); #2455, #2456, #2457 are first-wave (CLOSED)
+- Source intel: `docs/handoffs/2026-04-23-orcawave-orcaflex-semantic-proof-exit-handoff.md` listed six llm-wiki gaps; this issue closes gaps #1 (contract) and #6 (cookbook); gaps #2-#5 remain in scope of #2472-#2475
+- Plan: `docs/plans/2026-04-23-issue-2476-llm-wiki-semantic-equivalence-contract.md`
+
 ## [2026-04-17] ingest | HN CadQuery Discussion (Python parametric CAD)
 - Processed: https://news.ycombinator.com/item?id=47772725 (180 points, 47 comments, submitted by gregsadetsky)
 - Pages created: sources/2026-04-17-hn-cadquery.md, entities/cadquery.md
@@ -65,3 +82,15 @@
 - Total pages: 52 (25 concepts, 13 entities, 8 sources, 4 standards, 2 workflows)
 - Index, overview updated with complete inventory
 - Notes: Issue #2034 seed complete. 5+ source classes ingested, 52 pages total. Incremental ingest workflow documented in CLAUDE.md and SOURCE_INVENTORY.md.
+
+## [2026-04-28 19:24 UTC] batch-ingest | Batch 1 (2 records)
+- Domain: engineering
+- Records: 2
+- Titles (sample): Elements ingest catalog — digitalmodel-q, Elements ingest catalog — doris-universi
+- Pages created: wiki/sources/<slug>.md for each record
+- Index updated: wiki/index.md
+
+## [2026-04-29] ingest | Doris University metadata-first tranche 1 (#2542)
+- Pages created: 7 source pointers and 8 curated concept shells.
+- Standards resolver: `engineering-standards/wiki/standards/api-17e.md` public-metadata-only stub.
+- Source of record: `/mnt/ace/doris/training`; no raw training decks, figures, full text, OCR output, or standards excerpts copied.

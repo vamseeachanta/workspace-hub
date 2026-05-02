@@ -411,6 +411,32 @@ For shell exporters, prefer subprocess tests over string-only tests.
    - pass stdin JSON containing `session_id`, `tool_name`, and `tool_input`
    - verify both `.claude/state/sessions/session_YYYYMMDD.jsonl` and `logs/orchestrator/claude/session_YYYYMMDD.jsonl` receive the new field without breaking existing fields
 
+## Operator closeout workflow for audit-refresh tasks
+When the user asks to review provider work / strengthen the repository ecosystem, the reusable closeout pattern is:
+
+1. Regenerate the audit and run the targeted provider-audit tests.
+2. Read the current `executive_summary.provider_interpretation_summary`, especially `watchlist`, `followup_issue_drafts`, and `issue_posting_readiness`.
+3. Before creating any new GitHub issue from a ready draft, run targeted `gh issue list --state all --search ...` queries for the draft's provider, primary issue, key stale path families, and generic terms like `provider-session` / `migration debt`.
+4. If existing open issues cover the finding, do not create duplicates. Add a concise audit-refresh comment to the most relevant umbrella/remediation issues with:
+   - generated audit timestamp and artifact paths
+   - current provider priority metrics
+   - exact verification commands and pass/fail results
+   - recommendation to reconcile issue mapping before opening more tickets
+5. Commit only durable regenerated artifacts such as `analysis/provider-session-ecosystem-audit.json` and `docs/reports/provider-session-ecosystem-audit.md`. Leave transient `.claude/state/*` session/correction churn uncommitted unless the task explicitly asks to preserve it.
+6. If `git add` or `git commit` fails on `.git/index.lock`, first check for live git/gh processes with `ps`; if none are active, remove the stale lock and retry.
+7. Verify `origin/main` matches `HEAD` after push, then report commit SHA, tests, issue comments, and any intentionally uncommitted transient state.
+
+## Drift-classification expansion pattern
+When provider audits show large `missing_repo_reads` for Codex/Hermes, first classify the path drift before creating remediation work. The #2333 pattern that worked:
+
+1. Sample top missing reads and separate true actionable repo drift from benign/generated/cross-repo noise.
+2. Add narrow taxonomy buckets before changing urgency policy. For generated/static-site paths, use a `non_repo_artifact` bucket for attested examples such as `content/demos/`, `content/partials/`, `examples/demos/gtm/output/`, `build.js`, `vercel.json`, and root `package.json` when they are absent from the repo.
+3. Preserve precedence: existing repo files remain `repo`, known sibling workspace repos remain `sibling_repo`, absolute external/transient paths remain external/transient; only missing repo-relative attested artifacts become `non_repo_artifact`.
+4. Exclude non-repo artifacts from actionable `missing_repo_reads`, `top_missing_repo_reads`, and remediation hints, but expose them separately in JSON/Markdown as `top_non_repo_artifact_reads` and `non_repo_artifact_read_total` so noise reduction remains auditable.
+5. Keep schema parity for raw providers and fallback/precomputed summaries by adding empty/default values for new fields.
+6. Add tests for classifier precedence, summary exclusion, markdown rendering, fallback schema defaults, positive/zero/negative corpus reconciliation gaps, and JSON scope notes before regenerating artifacts.
+7. Re-run the provider audit wrapper after tests, but if the only subsequent changes are timestamp/recent-activity churn from re-running the wrapper after commit/review, restore generated artifacts to the committed verified snapshot rather than creating noisy follow-up commits.
+
 ## Verification checklist
 After any exporter/audit change:
 1. Run targeted tests for the changed exporter and provider audit.

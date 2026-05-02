@@ -12,6 +12,10 @@ if (( BASH_VERSINFO[0] < 4 )); then
     return 1 2>/dev/null || exit 1
 fi
 
+# Deterministic PATH for cron/non-interactive shells. Keep caller PATH at the end.
+PATH="/usr/local/bin:/usr/bin:/bin:${PATH:-}"
+export PATH
+
 # Portable SHA-256: prefer sha256sum (Linux coreutils), fall back to shasum (macOS)
 _sha256() {
     if command -v sha256sum >/dev/null 2>&1; then
@@ -22,6 +26,84 @@ _sha256() {
         echo "Error: neither sha256sum nor shasum found" >&2
         return 1 2>/dev/null || exit 1
     fi
+}
+
+_git_dir() {
+    git rev-parse --git-dir 2>/dev/null
+}
+
+_default_branch() {
+    local ref
+    ref="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null || true)"
+    if [ -n "$ref" ]; then
+        printf '%s\n' "${ref#origin/}"
+        return 0
+    fi
+    if git show-ref --verify --quiet refs/remotes/origin/main; then
+        printf 'main\n'; return 0
+    fi
+    if git show-ref --verify --quiet refs/remotes/origin/master; then
+        printf 'master\n'; return 0
+    fi
+    git branch --show-current 2>/dev/null || printf 'main\n'
+}
+
+_has_git_lock() {
+    local git_dir
+    git_dir="$(_git_dir)" || return 0
+    [ -e "$git_dir/index.lock" ] || [ -e "$git_dir/HEAD.lock" ] || [ -d "$git_dir/rebase-merge" ] || [ -d "$git_dir/rebase-apply" ] || [ -e "$git_dir/MERGE_HEAD" ]
+}
+
+_quick_status_dirty() {
+    # Large-repo-safe: do not enumerate untracked files by default.
+    [ -n "$(git -c status.showUntrackedFiles=no status --porcelain --untracked-files=no)" ]
+}
+
+_bounded_status_probe() {
+    # Probe status without letting huge worktrees stall the whole sync cycle.
+    if command -v timeout >/dev/null 2>&1; then
+        timeout 10s git -c status.showUntrackedFiles=no status --short --branch --untracked-files=no >/dev/null 2>&1 || true
+    else
+        git -c status.showUntrackedFiles=no status --short --branch --untracked-files=no >/dev/null 2>&1 || true
+    fi
+}
+
+_create_recovery_backup() {
+    local repo="$1" date_str="$2" git_dir backup_dir backup_file status_file
+    git_dir="$(_git_dir)" || return 1
+    backup_dir="$git_dir/recovery-backups"
+    mkdir -p "$backup_dir"
+    backup_file="$backup_dir/${repo}-${date_str}-$(date +%H%M%S).patch"
+    status_file="$backup_file.status"
+    git -c status.showUntrackedFiles=no status --short --branch --untracked-files=no > "$status_file" 2>/dev/null || true
+    {
+        printf '# Recovery backup for %s at %s\n' "$repo" "$(date -Is)"
+        printf '# This file is stored under .git/recovery-backups and is not committed.\n'
+        git diff --binary HEAD 2>/dev/null || true
+        git diff --binary --cached HEAD 2>/dev/null || true
+    } > "$backup_file"
+}
+
+_safe_ff_only_pull() {
+    local branch default_branch
+    branch="$(git branch --show-current 2>/dev/null || true)"
+    default_branch="$(_default_branch)"
+
+    git fetch origin --prune >/dev/null 2>&1 || return 1
+
+    # If this is the default branch, pull the matching remote default explicitly.
+    if [ -n "$branch" ] && [ "$branch" = "$default_branch" ]; then
+        git pull --ff-only origin "$default_branch" >/dev/null 2>&1
+        return $?
+    fi
+
+    # Non-default branches: only update if an upstream is configured.
+    if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+        git pull --ff-only >/dev/null 2>&1
+        return $?
+    fi
+
+    return 0
 }
 
 _auto_sync_one() {
@@ -41,29 +123,37 @@ _auto_sync_one() {
     cd "$repo_path" || { echo "$repo|false|false|false|error-cd" > "$result_file"; return 1; }
 
     if [ "$dry_run" = "true" ]; then
+        _bounded_status_probe
         echo "$repo|dry-run|dry-run|dry-run|dry-run" > "$result_file"; return 0
     fi
 
-    # Pull first (rebase + autostash) so local branch is up-to-date before committing
-    if ! git pull --rebase --autostash 2>/dev/null; then
-        # Abort any in-progress rebase to leave repo in a clean state
-        git rebase --abort 2>/dev/null || true
-        echo "$repo|false|false|false|warn-pull-failed" > "$result_file"; return 0
+    if _has_git_lock; then
+        echo "$repo|false|false|false|warn-git-lock" > "$result_file"; return 0
     fi
 
-    git add -A 2>/dev/null
-
-    if [ -n "$(git status --porcelain)" ]; then
-        staged=true
-        if git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
-            committed=true
-        else
-            echo "$repo|$staged|false|false|commit-failed" > "$result_file"; return 0
+    if _quick_status_dirty; then
+        _create_recovery_backup "$repo" "$date_str" || true
+        git add -u 2>/dev/null
+        if _quick_status_dirty; then
+            staged=true
+            if git commit -m "chore(sync): auto-sync $date_str" 2>/dev/null; then
+                committed=true
+            else
+                echo "$repo|$staged|false|false|commit-failed" > "$result_file"; return 0
+            fi
         fi
     fi
 
+    # Update only after local tracked changes are committed; use fast-forward-only.
+    if ! _safe_ff_only_pull; then
+        echo "$repo|$staged|$committed|false|warn-pull-failed" > "$result_file"; return 0
+    fi
+
     local push_out
-    if push_out=$(git push 2>&1); then
+    if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 \
+       && [ -z "$(git log @{u}.. 2>/dev/null)" ]; then
+        pushed=false
+    elif push_out=$(git push 2>&1); then
         pushed=true
     elif echo "$push_out" | grep -Eiq "archived|read[- ]only"; then
         status="skipped-readonly"
@@ -83,29 +173,35 @@ _auto_sync_hub() {
         return 0
     fi
 
-    # Clear stale index lock that parallel Phase 1 workers may leave behind
-    rm -f "$WORKSPACE_ROOT/.git/index.lock" 2>/dev/null || true
-
-    # Pull first (rebase + autostash) so local branch is up-to-date before committing
-    if ! git pull --rebase --autostash 2>/dev/null; then
-        git rebase --abort 2>/dev/null || true
-        echo -e "${YELLOW}⚠ workspace-hub: pull failed, skipping commit/push${NC}"; return 1
+    # Do not remove locks automatically; a lock may indicate an active Git/Claude writer.
+    if _has_git_lock; then
+        echo -e "${YELLOW}⚠ workspace-hub: git lock or in-progress merge/rebase detected, skipping commit/push${NC}"; return 1
     fi
 
-    git add -A 2>/dev/null
-
-    if [ -z "$(git status --porcelain)" ]; then
-        echo -e "${YELLOW}⊘ workspace-hub: nothing to commit${NC}"; return 0
+    if _quick_status_dirty; then
+        _create_recovery_backup "workspace-hub" "$date_str" || true
+        git add -u 2>/dev/null
     fi
 
-    local commit_err
-    if commit_err=$(git -c core.hooksPath=/dev/null commit -m "chore(sync): auto-sync $date_str" 2>&1); then
-        echo -e "${GREEN}✓ workspace-hub: committed${NC}"
+    if [ -z "$(git -c status.showUntrackedFiles=no status --porcelain --untracked-files=no)" ]; then
+        echo -e "${YELLOW}⊘ workspace-hub: no tracked changes to commit${NC}"
     else
-        echo -e "${RED}✗ workspace-hub: commit failed — $commit_err${NC}"; return 1
+        local commit_err
+        if commit_err=$(git commit -m "chore(sync): auto-sync $date_str" 2>&1); then
+            echo -e "${GREEN}✓ workspace-hub: committed${NC}"
+        else
+            echo -e "${RED}✗ workspace-hub: commit failed — $commit_err${NC}"; return 1
+        fi
     fi
 
-    if git push 2>/dev/null; then
+    if ! _safe_ff_only_pull; then
+        echo -e "${YELLOW}⚠ workspace-hub: fast-forward-only pull failed, skipping push${NC}"; return 1
+    fi
+
+    if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 \
+       && [ -z "$(git log @{u}.. 2>/dev/null)" ]; then
+        echo -e "${YELLOW}⊘ workspace-hub: nothing to push${NC}"
+    elif git push 2>/dev/null; then
         echo -e "${GREEN}✓ workspace-hub: pushed${NC}"
     else
         echo -e "${RED}✗ workspace-hub: push failed${NC}"; return 1

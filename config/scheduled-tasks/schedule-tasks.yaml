@@ -185,9 +185,11 @@ tasks:
     log: logs/maintenance/skills-curation-*.log
     is_claude_task: false
     description: >-
-      Weekly deterministic skills audit (Monday 04:00); scans .claude/skills/
-      for duplicate names, leaf collisions, wrapper pairs. Emits JSON + Markdown
-      artifacts to logs/maintenance/skills-curation/. Read-only in v1. Issue #2281.
+      Weekly skills curation v2 (Monday 04:00): scans .claude/skills/ for
+      duplicate names, leaf collisions, wrapper pairs, and filesystem-only active
+      skill loss-risk inventory. Emits JSON + Markdown artifacts to
+      logs/maintenance/skills-curation/. Local-only/report-only; no network
+      posting. Issues #2281, #2488.
 
   - id: provider-session-ecosystem-audit
     label: Provider session ecosystem audit refresh
@@ -619,3 +621,22 @@ tasks:
       (248 URL validation). Creates GitHub issues on conformance failures
       (label: conformance) or dead links (label: registry-health).
       Issues #2206, #1614, #2105.
+
+  - id: tier1-indexing-freshness
+    label: Daily tier-1 indexing freshness audit
+    schedule: "30 6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, git]
+    prefer: dev-primary
+    command: >-
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/tier1-indexing-freshness.sh
+      >> $WORKSPACE_HUB/logs/freshness/tier-1-indexing-freshness-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/freshness/tier-1-indexing-freshness-*.log
+    is_claude_task: false
+    description: >-
+      Daily 06:30 UTC — local audit of tier-1 routing/indexing surfaces against
+      docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md. Refreshes
+      docs/reports/tier-1-indexing-freshness-latest.md and a dated snapshot;
+      emits a #2291 cron-health evidence line. Three-level exit (0/1/2).
+      Contract: docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md. Issue #2465.

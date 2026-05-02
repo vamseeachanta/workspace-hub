@@ -7,6 +7,19 @@ from typing import Sequence
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PatternEntry = tuple[str, re.Pattern[str]]
 
+STAGE_TRANSITION_SCRIPT_PATHS: tuple[str, ...] = (
+    "scripts/work-queue/start_stage.py",
+    "scripts/work-queue/exit_stage.py",
+    "scripts/work-queue/verify_checklist.py",
+)
+
+STAGE_TRANSITION_SCRIPT_PATTERNS: list[PatternEntry] = [
+    (
+        "deleted stage-transition script",
+        re.compile(r"(?:scripts/work-queue/)?(?:start_stage|exit_stage|verify_checklist)\.py"),
+    ),
+]
+
 CORE_BANNED_STALE_REFERENCE_PATTERNS: list[PatternEntry] = [
     ("deleted new-spec helper", re.compile(r"scripts/work-queue/new-spec\.sh")),
     ("deleted parse-session-logs helper", re.compile(r"scripts/work-queue/parse-session-logs\.sh")),

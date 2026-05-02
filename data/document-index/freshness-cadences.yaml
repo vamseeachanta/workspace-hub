@@ -1,9 +1,55 @@
 # Freshness Cadences and Staleness Signals
-# Issue: #2105 — Define expected update frequencies per asset type
+# Issue: #2105 — governance lock for intelligence freshness vocabulary
 # Created: 2026-04-16
+# Updated: 2026-04-28
 # Purpose: Support weekly review (#2089) with freshness expectations
 
-schema_version: "1.0.0"
+schema_version: "1.1.0"
+canonical_artifact: "data/document-index/freshness-cadences.yaml"
+derived_human_matrix: "docs/document-intelligence/freshness-cadence-matrix.md"
+governance_contract: "docs/document-intelligence/freshness-governance-contract.md"
+
+status_vocabulary:
+  - FRESH
+  - MODERATE
+  - STALE
+
+cadence_vocabulary:
+  - nightly
+  - weekly
+  - monthly
+  - quarterly
+  - on-demand
+
+legacy_cadence_aliases:
+  daily: nightly
+
+source_of_truth_precedence:
+  - scanner_output_for_measured_age
+  - freshness_cadences_yaml_for_expected_cadence_and_threshold
+  - intelligence_accessibility_registry_for_asset_metadata
+  - freshness_cadence_matrix_for_human_review
+
+registry_field_contract:
+  freshness_cadence:
+    action: "keep"
+    allowed_values:
+      - nightly
+      - weekly
+      - monthly
+      - quarterly
+      - on-demand
+    notes: "Legacy daily values are normalized to nightly for scheduled once-per-day runs."
+  freshness_source:
+    action: "keep"
+    notes: "Command, timestamp source, or human-readable evidence source for freshness checks."
+  staleness_status:
+    action: "do-not-persist"
+    allowed_values:
+      - FRESH
+      - MODERATE
+      - STALE
+    notes: "Computed by scanners/review runs; do not store as static registry metadata."
 
 # Cadence definitions: how often each asset type should be updated
 # staleness_days: after this many days without update, flag as stale
@@ -83,6 +129,20 @@ cadences:
     staleness_days: 60
     check_method: "file_mtime"
     notes: "Navigation index for the intelligence architecture"
+
+  # L4 — Tier-1 routing/indexing freshness audit (#2465)
+  - asset_type: "tier-1-indexing-freshness"
+    path: "docs/reports/tier-1-indexing-freshness-latest.md"
+    layer: L4
+    expected_cadence: "nightly"
+    staleness_days: 2
+    check_method: "in_body_generated_timestamp"
+    notes: >-
+      Refreshed once per day by scripts/cron/tier1-indexing-freshness.sh (#2465);
+      #2105 normalizes legacy "daily" wording to "nightly". Staleness check reads
+      in-body 'Generated:' timestamp, NOT filesystem mtime, since mtime is
+      unreliable after git clone. Contract:
+      docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md.
 
 # Staleness signals — what to look for during weekly review
 signals:

@@ -40,6 +40,12 @@ KNOWN_REPO_NAMES = {
     for repo_name in (machine.raw.get("repos", []) or [])
     if str(repo_name).strip()
 }
+NON_REPO_ARTIFACT_EXACT_PATHS = {"build.js", "vercel.json", "package.json"}
+NON_REPO_ARTIFACT_PREFIXES = (
+    "content/demos/",
+    "content/partials/",
+    "examples/demos/gtm/output/",
+)
 
 LEGACY_REMEDIATION_RULES = [
     {
@@ -210,11 +216,25 @@ def normalize_repo_alias(text: str, repo_root: Path) -> str:
     return WORKSTATION_RESOLVER.rewrite_workspace_path(text, current_repo_root=repo_root)
 
 
+def is_non_repo_artifact_path(text: str) -> bool:
+    """Return true for attested generated-site/adjacent-project paths.
+
+    These paths are repo-relative strings observed in provider logs, but they are
+    not actionable workspace-hub stale-path debt and should not inflate missing
+    repo read counts.
+    """
+    return text in NON_REPO_ARTIFACT_EXACT_PATHS or any(
+        text.startswith(prefix) for prefix in NON_REPO_ARTIFACT_PREFIXES
+    )
+
+
 def classify_repo_relative_target(text: str, repo_root: Path) -> tuple[str, str, bool]:
     candidate = repo_root / text
     first_component = text.split("/", 1)[0]
     if first_component in KNOWN_REPO_NAMES and first_component != repo_root.name and not safe_exists(candidate):
         return text, "sibling_repo", False
+    if is_non_repo_artifact_path(text) and not safe_exists(candidate):
+        return text, "non_repo_artifact", False
     return text, "repo", safe_exists(candidate)
 
 
@@ -306,6 +326,7 @@ def compute_activity_window(
     tool_counts: Counter[str] = Counter()
     missing_repo_reads: Counter[str] = Counter()
     sibling_repo_reads: Counter[str] = Counter()
+    non_repo_artifact_reads: Counter[str] = Counter()
     recent_reads: Counter[str] = Counter()
     recent_writes: Counter[str] = Counter()
     recent_edits: Counter[str] = Counter()
@@ -341,6 +362,8 @@ def compute_activity_window(
                 missing_repo_reads[normalized] += 1
             elif scope == "sibling_repo":
                 sibling_repo_reads[normalized] += 1
+            elif scope == "non_repo_artifact":
+                non_repo_artifact_reads[normalized] += 1
         elif tool == "Write" and file_target:
             recent_writes[str(file_target)] += 1
         elif tool == "Edit" and file_target:
@@ -352,6 +375,8 @@ def compute_activity_window(
         "top_tools": top_items(tool_counts, 5, "tool"),
         "top_missing_repo_reads": top_items(missing_repo_reads, 5, "path"),
         "top_sibling_repo_reads": top_items(sibling_repo_reads, 5, "path"),
+        "top_non_repo_artifact_reads": top_items(non_repo_artifact_reads, 5, "path"),
+        "non_repo_artifact_read_total": sum(non_repo_artifact_reads.values()),
         "top_reads": top_items(recent_reads, 5, "path"),
         "top_writes": top_items(recent_writes, 5, "path"),
         "top_edits": top_items(recent_edits, 5, "path"),
@@ -377,6 +402,7 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
     read_counts: Counter[str] = Counter()
     missing_repo_reads: Counter[str] = Counter()
     sibling_repo_reads: Counter[str] = Counter()
+    non_repo_artifact_reads: Counter[str] = Counter()
     missing_external_reads: Counter[str] = Counter()
     symbolic_reads: Counter[str] = Counter()
     blank_reads = 0
@@ -441,6 +467,8 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
             missing_repo_reads[normalized] += 1
         elif scope == "sibling_repo":
             sibling_repo_reads[normalized] += 1
+        elif scope == "non_repo_artifact":
+            non_repo_artifact_reads[normalized] += 1
         elif scope == "external":
             missing_external_reads[normalized] += 1
 
@@ -462,6 +490,8 @@ def summarize_raw_provider(provider: str, logs_dir: Path, repo_root: Path) -> di
         "top_missing_repo_reads": top_missing_repo_reads,
         "top_sibling_repo_reads": top_items(sibling_repo_reads, 10, "path"),
         "sibling_repo_read_total": sum(sibling_repo_reads.values()),
+        "top_non_repo_artifact_reads": top_items(non_repo_artifact_reads, 10, "path"),
+        "non_repo_artifact_read_total": sum(non_repo_artifact_reads.values()),
         "missing_repo_read_remediation_hints": build_missing_read_remediation_hints(top_missing_repo_reads),
         "top_missing_external_reads": top_items(missing_external_reads, 10, "path"),
         "top_symbolic_reads": top_items(symbolic_reads, 10, "name"),
@@ -502,6 +532,10 @@ def summarize_claude_precomputed(path: Path) -> dict:
         "top_repos": payload.get("repo_distribution", []),
         "top_reads": payload.get("top_reads", []),
         "top_missing_repo_reads": top_missing_repo_reads,
+        "top_sibling_repo_reads": payload.get("top_sibling_repo_reads", []),
+        "sibling_repo_read_total": payload.get("sibling_repo_read_total", 0),
+        "top_non_repo_artifact_reads": payload.get("top_non_repo_artifact_reads", []),
+        "non_repo_artifact_read_total": payload.get("non_repo_artifact_read_total", 0),
         "missing_repo_read_remediation_hints": build_missing_read_remediation_hints(top_missing_repo_reads),
         "top_missing_external_reads": payload.get("top_missing_external_reads", []),
         "limitations": [
@@ -2350,6 +2384,7 @@ def render_markdown(audit: dict) -> str:
         emit_rows(f"{provider} top reads", summary.get("top_reads", []), "path")
         emit_rows(f"{provider} top symbolic reads", summary.get("top_symbolic_reads", []), "name")
         emit_rows(f"{provider} top sibling-repo reads", summary.get("top_sibling_repo_reads", []), "path")
+        emit_rows(f"{provider} top non-repo artifact reads", summary.get("top_non_repo_artifact_reads", []), "path")
         emit_rows(f"{provider} top Bash command families", summary.get("top_bash_command_families", []), "prefix")
         recent_provider = recent_activity.get("providers", {}).get(provider, {}) if recent_status == "ok" else {}
         if recent_provider:
@@ -2379,6 +2414,11 @@ def render_markdown(audit: dict) -> str:
                 recent_provider.get("top_sibling_repo_reads", []),
                 "path",
             )
+            emit_rows(
+                f"{provider} recent top non-repo artifact reads",
+                recent_provider.get("top_non_repo_artifact_reads", []),
+                "path",
+            )
         corpus_provider = corpus_change.get("providers", {}).get(provider, {}) if corpus_status == "ok" else {}
         if corpus_provider:
             lines.append(f"### {provider} corpus change since previous audit")
@@ -2402,6 +2442,7 @@ def render_markdown(audit: dict) -> str:
             lines.append("")
         emit_rows(f"{provider} top missing repo reads", summary.get("top_missing_repo_reads", []), "path")
         emit_rows(f"{provider} top sibling-repo reads", summary.get("top_sibling_repo_reads", []), "path")
+        emit_rows(f"{provider} top non-repo artifact reads", summary.get("top_non_repo_artifact_reads", []), "path")
         emit_remediation_hints(
             f"{provider} remediation hints for stale repo reads",
             summary.get("missing_repo_read_remediation_hints", []),

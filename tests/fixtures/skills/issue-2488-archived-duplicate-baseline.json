@@ -1,0 +1,20 @@
+{
+  "description": "#2488 regression fixture: legacy duplicate inventory still includes nested _archived skills for duplicate analysis while #2488 active loss-risk inventory excludes _archived as an archive alias.",
+  "fixture_paths": [
+    "email/_archived/account-a/gmail-data-extraction/SKILL.md",
+    "email/_archived/account-b/gmail-data-extraction/SKILL.md"
+  ],
+  "expected_legacy_summary_counts": {
+    "findings": 1
+  },
+  "expected_tuple_set": [
+    {
+      "classification": "exact-duplicate",
+      "severity": "high",
+      "paths": [
+        "email/_archived/account-a/gmail-data-extraction/SKILL.md",
+        "email/_archived/account-b/gmail-data-extraction/SKILL.md"
+      ]
+    }
+  ]
+}

@@ -104,7 +104,7 @@ providers:
   hermes:
     display_name: "Hermes Agent"
     model_ids:
-      primary: "gpt-5.4"
+      primary: "gpt-5.5"
     context_window:
       primary: 200000
     strengths:

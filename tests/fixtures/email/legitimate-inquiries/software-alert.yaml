@@ -1,0 +1,8 @@
+fixture_id: legitimate-software-alert
+sender: alerts@example.com
+subject: Deployment notification
+body: >
+  A deployment completed successfully. The message includes commit reference,
+  environment, and status details.
+expected_classification: archive
+

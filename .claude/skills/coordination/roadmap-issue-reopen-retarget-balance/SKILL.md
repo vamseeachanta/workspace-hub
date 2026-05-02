@@ -123,10 +123,12 @@ Keep one canonical roadmap anchor while still allowing genuinely new scoped exec
 18. After the proof-standard lane passes, apply the same artifact/test pattern to the first flagship family issue before broadening further.
    Recommended family-proof pattern:
    - identify one authoritative canonical spec, one native monolithic reference, and one generated modular reference set
+   - when multiple candidate fixtures exist, prefer a model-library case that already has the full trio (canonical spec + monolithic native + modular generated references) over a bare template-only case; this gives a stronger bounded proof path and cleaner issue evidence
    - derive a bounded family-specific metadata JSON under `tests/fixtures/reporting/`
    - add family-specific fixture integration and snapshot tests using the shared helper modules rather than creating a parallel testing architecture
    - prefer the highest-leverage flagship case first (e.g. a generic-track FPSO/turret model) so the proof pattern is exercised on the most failure-prone family before rolling out to simpler follow-ons
-   - verify the expanded proof set with one focused pytest command that includes both the original proof-standard tests and the new family-specific tests
+   - once the first family path works, generalize helper modules to support named fixtures (`generate_fixture_report`, `load_fixture_metadata`, fixture-specific path helpers) instead of cloning one-off helper code per family
+   - generate the family snapshot baseline from live deterministic code, then run one focused pytest command that includes both the original proof-standard tests and the new family-specific tests
 19. Verify final state.
    - roadmap issue open
    - replacement epic closed if superseded

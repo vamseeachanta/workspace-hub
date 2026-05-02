@@ -1,0 +1,14 @@
+## df /mnt/ace
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/sda1      ext4  7.3T  6.4T  539G  93% /mnt/ace
+
+## stat filesystems
+/mnt/ace type=ext2/ext3 block_size=4096 total_blocks=1937817963 free_blocks=238921234
+
+## staging/parent device ids
+/mnt/ace/digitalmodel/references/suction-pile-sizing	dev=2049 inode=137494551 mode=directory
+/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements	dev=2049 inode=137494552 mode=directory
+/mnt/ace/assethold/casa-grande-77017	dev=2049 inode=129434108 mode=directory
+/mnt/ace/assethold/casa-grande-77017/_from_elements	dev=2049 inode=129434109 mode=directory
+/mnt/ace/acma-projects/31522-woodfibre-lng	dev=2049 inode=7864322 mode=directory
+/mnt/ace/acma-projects/31522-woodfibre-lng/_from_elements	dev=2049 inode=7864323 mode=directory

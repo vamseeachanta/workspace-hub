@@ -223,6 +223,22 @@ Exclude by default:
 - local approval-marker commits (`chore(planning): approve issue #...`) unless they are intentionally meant to be tracked in the final landing branch
 - unrelated docs/planning/session artifacts
 
+### Dirty/diverged main with a valid local commit
+
+If the active main checkout already contains a valid local implementation commit but cannot push because `origin/main` advanced and the checkout also has unrelated dirty/untracked files:
+1. Do **not** rebase/reset/stash the dirty main checkout just to land the issue.
+2. Record both SHAs:
+   - local equivalent implementation commit (`git rev-parse HEAD` or the specific commit SHA)
+   - current remote base (`git ls-remote origin refs/heads/main` or `origin/main` after fetch)
+3. Create a temporary clean worktree directly from `origin/main`:
+   - `git worktree add /tmp/<repo>-<issue>-push origin/main`
+4. Cherry-pick only the scoped implementation/review commit(s) into that clean worktree.
+5. Validate in the clean worktree, then push `HEAD:main` from there.
+6. Treat the new remote commit SHA as canonical; the dirty main commit is only an equivalent local patch unless/until reconciled later.
+7. After successful remote verification, remove the temporary worktree and explicitly report that the original checkout may still be dirty/diverged with an equivalent local commit.
+
+This avoids destructive cleanup of unrelated session state while still producing a clean, auditable landing commit on top of the current remote branch.
+
 ## Validation standard
 
 Before declaring integration-ready, verify:

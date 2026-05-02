@@ -17,21 +17,39 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WS_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
-SKILLS_ROOT="${WS_HUB}/.claude/skills"
+DEFAULT_WS_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
+WS_HUB="${WORKSPACE_HUB_ROOT:-$DEFAULT_WS_HUB}"
+SKILLS_ROOT="${WORKSPACE_HUB_SKILLS_ROOT:-${WS_HUB}/.claude/skills}"
+REPO_MANIFEST="${WORKSPACE_HUB_SKILL_REPO_MANIFEST:-${SCRIPT_DIR}/skill-propagation-repos.txt}"
 
 # ---------------------------------------------------------------------------
 # CLI flags
 # ---------------------------------------------------------------------------
 MODE="dry-run"  # dry-run | apply | diff
+REPORT_FILE=""
 
-for arg in "$@"; do
+while [[ $# -gt 0 ]]; do
+  arg="$1"
   case "$arg" in
-    --apply)  MODE="apply" ;;
-    --diff)   MODE="diff" ;;
+    --apply)  MODE="apply"; shift ;;
+    --diff)   MODE="diff"; shift ;;
+    --report-file=*) REPORT_FILE="${arg#--report-file=}" ;;
+    --report-file)
+      shift
+      if [[ $# -eq 0 ]]; then
+        echo "error: --report-file requires a path" >&2
+        exit 1
+      fi
+      REPORT_FILE="$1"
+      shift
+      ;;
+    --report-file=)
+      echo "error: --report-file requires a path" >&2
+      exit 1
+      ;;
     --help|-h)
       cat <<'USAGE'
-Usage: bash scripts/skills/merge-submodule-skills.sh [--apply|--diff]
+Usage: bash scripts/skills/merge-submodule-skills.sh [--apply|--diff] [--report-file PATH]
 
 Modes:
   (default)   Dry-run listing what would be merged
@@ -39,6 +57,7 @@ Modes:
   --diff      Show content diffs for conflicts
 
 Options:
+  --report-file PATH  Write a machine-readable YAML propagation report
   --help, -h  Show this help message
 USAGE
       exit 0
@@ -48,6 +67,9 @@ USAGE
       exit 1
       ;;
   esac
+  if [[ "$arg" == --report-file=* ]]; then
+    shift
+  fi
 done
 
 # ---------------------------------------------------------------------------
@@ -75,6 +97,13 @@ declare -i merged=0
 declare -i conflicts=0
 declare -i errors=0
 declare -i unmapped_count=0
+declare -i skipped_repo_count=0
+declare -i dirty_repo_count=0
+declare -i skipped_skill_count=0
+
+declare -a report_actions=()
+declare -a report_skipped_repos=()
+declare -a report_skipped_skills=()
 
 # ---------------------------------------------------------------------------
 # Shared/template directories to skip (propagated infrastructure, not skills)
@@ -243,6 +272,94 @@ skill_file() {
 }
 
 # ---------------------------------------------------------------------------
+# YAML report helpers
+# ---------------------------------------------------------------------------
+yaml_escape() {
+  local value="$1"
+  value="${value//\'/\'\'}"
+  printf "'%s'" "$value"
+}
+
+add_action() {
+  local repo="$1" skill="$2" action="$3" reason="$4" source_path="$5" target_path="$6"
+  report_actions+=("${repo}|${skill}|${action}|${reason}|${source_path}|${target_path}")
+}
+
+add_skipped_repo() {
+  local repo="$1" path="$2" reason="$3"
+  skipped_repo_count+=1
+  report_skipped_repos+=("${repo}|${path}|${reason}")
+}
+
+add_skipped_skill() {
+  local repo="$1" path="$2" reason="$3"
+  skipped_skill_count+=1
+  report_skipped_skills+=("${repo}|${path}|${reason}")
+}
+
+write_report() {
+  [[ -n "$REPORT_FILE" ]] || return 0
+  mkdir -p "$(dirname "$REPORT_FILE")"
+  {
+    printf "generated_at: %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    printf "mode: %s\n" "$(yaml_escape "$MODE")"
+    printf "source: %s\n" "$(yaml_escape "workspace submodule skills")"
+    printf "workspace: %s\n" "$(yaml_escape "$WS_HUB")"
+    printf "manifest: %s\n" "$(yaml_escape "$REPO_MANIFEST")"
+    echo "actions:"
+    if [[ ${#report_actions[@]} -eq 0 ]]; then
+      echo "  []"
+    else
+      local entry repo skill action reason source_path target_path
+      for entry in "${report_actions[@]}"; do
+        IFS='|' read -r repo skill action reason source_path target_path <<<"$entry"
+        echo "  - repo: $(yaml_escape "$repo")"
+        echo "    skill: $(yaml_escape "$skill")"
+        echo "    action: $(yaml_escape "$action")"
+        echo "    reason: $(yaml_escape "$reason")"
+        echo "    source_path: $(yaml_escape "$source_path")"
+        echo "    target_path: $(yaml_escape "$target_path")"
+      done
+    fi
+    echo "skipped_repos:"
+    if [[ ${#report_skipped_repos[@]} -eq 0 ]]; then
+      echo "  []"
+    else
+      local entry repo path reason
+      for entry in "${report_skipped_repos[@]}"; do
+        IFS='|' read -r repo path reason <<<"$entry"
+        echo "  - repo: $(yaml_escape "$repo")"
+        echo "    path: $(yaml_escape "$path")"
+        echo "    reason: $(yaml_escape "$reason")"
+      done
+    fi
+    echo "skipped_skills:"
+    if [[ ${#report_skipped_skills[@]} -eq 0 ]]; then
+      echo "  []"
+    else
+      local entry repo path reason
+      for entry in "${report_skipped_skills[@]}"; do
+        IFS='|' read -r repo path reason <<<"$entry"
+        echo "  - repo: $(yaml_escape "$repo")"
+        echo "    path: $(yaml_escape "$path")"
+        echo "    reason: $(yaml_escape "$reason")"
+      done
+    fi
+    echo "summary:"
+    printf "  total_unique: %d\n" "$total_unique"
+    printf "  already_exists: %d\n" "$already_exists"
+    printf "  would_merge: %d\n" "$would_merge"
+    printf "  merged: %d\n" "$merged"
+    printf "  unmapped: %d\n" "$unmapped_count"
+    printf "  skipped_repos: %d\n" "$skipped_repo_count"
+    printf "  dirty_repos: %d\n" "$dirty_repo_count"
+    printf "  skipped_skills: %d\n" "$skipped_skill_count"
+    printf "  conflicts: %d\n" "$conflicts"
+    printf "  errors: %d\n" "$errors"
+  } >"$REPORT_FILE"
+}
+
+# ---------------------------------------------------------------------------
 # Check if a skill already exists in workspace-hub's centralized directory
 # Arguments: $1=target_dir (relative)  $2=skill_name
 # Returns: 0 if exists, 1 if not
@@ -258,48 +375,78 @@ hub_skill_exists() {
 # ---------------------------------------------------------------------------
 discover_submodules() {
   local submodules=()
-  for dir in "${WS_HUB}"/*/; do
-    local name
-    name="$(basename "$dir")"
-    # Skip non-submodule directories
-    case "$name" in
-      _archive|_temp|config|coordination|data|docker|docs|examples|\
-      flow-nexus|logs|modules|monitoring-dashboard|node_modules|\
-      reports|ruv-swarm|scripts|skills|specs|src|templates|tests)
-        continue ;;
-    esac
-    if [[ -d "${dir}.claude/skills" ]]; then
-      submodules+=("$name")
-    fi
-  done
+  if [[ -f "$REPO_MANIFEST" ]]; then
+    local line
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      line="${line%%#*}"
+      line="${line#"${line%%[![:space:]]*}"}"
+      line="${line%"${line##*[![:space:]]}"}"
+      [[ -n "$line" ]] || continue
+      submodules+=("$line")
+    done <"$REPO_MANIFEST"
+  else
+    for dir in "${WS_HUB}"/*/; do
+      local name
+      name="$(basename "$dir")"
+      # Skip non-submodule directories
+      case "$name" in
+        _archive|_temp|config|coordination|data|docker|docs|examples|\
+        flow-nexus|logs|modules|monitoring-dashboard|node_modules|\
+        reports|ruv-swarm|scripts|skills|specs|src|templates|tests)
+          continue ;;
+      esac
+      if [[ -d "${dir}.claude/skills" ]]; then
+        submodules+=("$name")
+      fi
+    done
+  fi
   printf '%s\n' "${submodules[@]}" | sort
 }
 
 # ---------------------------------------------------------------------------
-# Enumerate unique (non-shared) skill directories in a submodule
-# Arguments: $1=submodule_name
-# Returns: space-separated skill directory names
+# Check whether a repo has uncommitted changes. Untracked files count because
+# propagation should not overwrite or reason about a moving source tree.
 # ---------------------------------------------------------------------------
-enumerate_skills() {
+repo_is_dirty() {
+  local repo_dir="$1"
+  [[ -d "${repo_dir}/.git" ]] || return 1
+  [[ -n "$(git -C "$repo_dir" status --porcelain 2>/dev/null || true)" ]]
+}
+
+# ---------------------------------------------------------------------------
+# Enumerate unique skill directories in a submodule, including nested trees.
+# Arguments: $1=submodule_name
+# Emits tab-separated records:
+#   SKILL <relative_skill_dir> <skill_name>
+#   SKIP  <relative_skipped_dir> <reason>
+# ---------------------------------------------------------------------------
+enumerate_skill_records() {
   local submodule="$1"
   local skills_dir="${WS_HUB}/${submodule}/.claude/skills"
   [[ -d "$skills_dir" ]] || return 0
 
-  for skill_dir in "${skills_dir}"/*/; do
-    [[ -d "$skill_dir" ]] || continue
-    local skill_name
-    skill_name="$(basename "$skill_dir")"
+  local skipped_roots="|"
+  while IFS= read -r skill_dir; do
+    [[ "$skill_dir" != "$skills_dir" ]] || continue
+    local rel_path first_component skill_name skip_root
+    rel_path="${skill_dir#"$skills_dir"/}"
+    first_component="${rel_path%%/*}"
 
-    # Skip shared/template directories
-    if echo "$skill_name" | grep -qE "^(${SKIP_DIRS})$"; then
+    if echo "$first_component" | grep -qE "^(${SKIP_DIRS})$"; then
+      skip_root="${skills_dir}/${first_component}"
+      if [[ "$skipped_roots" != *"|${skip_root}|"* ]]; then
+        skipped_roots+="${skip_root}|"
+        printf 'SKIP\t%s\tmatched shared/template skip pattern: %s\n' \
+          "$first_component" "$first_component"
+      fi
       continue
     fi
 
-    # Only include directories that contain a skill file
     if has_skill_file "$skill_dir"; then
-      echo "$skill_name"
+      skill_name="$(basename "$skill_dir")"
+      printf 'SKILL\t%s\t%s\n' "$rel_path" "$skill_name"
     fi
-  done
+  done < <(find "$skills_dir" -type d | sort)
 }
 
 # ---------------------------------------------------------------------------
@@ -321,19 +468,48 @@ if [[ ${#submodules[@]} -eq 0 ]]; then
 fi
 
 for submodule in "${submodules[@]}"; do
-  # Enumerate unique skills for this submodule
-  mapfile -t skills < <(enumerate_skills "$submodule")
+  skills_dir="${WS_HUB}/${submodule}/.claude/skills"
 
-  if [[ ${#skills[@]} -eq 0 ]]; then
+  if [[ ! -d "$skills_dir" ]]; then
+    add_skipped_repo "$submodule" "$skills_dir" "expected repo missing .claude/skills directory"
+    printf "${C_YELLOW}%s${C_RESET}: skipped, missing .claude/skills directory\n" "$submodule"
+    continue
+  fi
+
+  if repo_is_dirty "${WS_HUB}/${submodule}"; then
+    dirty_repo_count+=1
+    add_skipped_repo "$submodule" "$skills_dir" "repo has uncommitted changes"
+    printf "${C_YELLOW}%s${C_RESET}: skipped, repo has uncommitted changes\n" "$submodule"
+    continue
+  fi
+
+  # Enumerate unique skills for this submodule
+  records=()
+  while IFS= read -r record; do
+    records+=("$record")
+  done < <(enumerate_skill_records "$submodule")
+
+  skill_records=()
+  for record in "${records[@]}"; do
+    IFS=$'\t' read -r record_type rel_path reason_or_name <<<"$record"
+    if [[ "$record_type" == "SKIP" ]]; then
+      add_skipped_skill "$submodule" "${skills_dir}/${rel_path}" "$reason_or_name"
+    elif [[ "$record_type" == "SKILL" ]]; then
+      skill_records+=("${rel_path}"$'\t'"${reason_or_name}")
+    fi
+  done
+
+  if [[ ${#skill_records[@]} -eq 0 ]]; then
     continue
   fi
 
   printf "${C_CYAN}${C_BOLD}%s${C_RESET} (%d unique skills):\n" \
-    "$submodule" "${#skills[@]}"
+    "$submodule" "${#skill_records[@]}"
 
-  for skill_name in "${skills[@]}"; do
+  for skill_record in "${skill_records[@]}"; do
+    IFS=$'\t' read -r skill_rel_path skill_name <<<"$skill_record"
     total_unique+=1
-    src_dir="${WS_HUB}/${submodule}/.claude/skills/${skill_name}"
+    src_dir="${skills_dir}/${skill_rel_path}"
     src_file="$(skill_file "$src_dir")"
 
     # Route the skill
@@ -343,6 +519,7 @@ for submodule in "${submodules[@]}"; do
       # Unmapped skill
       unmapped_count+=1
       unmapped_list+=("${submodule}/${skill_name}")
+      add_action "$submodule" "$skill_name" "skip" "no route mapping for skill" "$src_dir" ""
       printf "  %-45s ${C_DIM}-> unmapped (manual review)${C_RESET}\n" \
         "$skill_name"
       continue
@@ -353,6 +530,7 @@ for submodule in "${submodules[@]}"; do
     if hub_skill_exists "$target_dir" "$skill_name"; then
       # Already exists in workspace-hub
       already_exists+=1
+      add_action "$submodule" "$skill_name" "skip" "already exists in workspace-hub" "$src_dir" "$target_path"
       printf "  %-45s -> ${C_DIM}%s/${C_RESET} ${C_GREEN}(exists)${C_RESET}\n" \
         "$skill_name" "$target_dir"
 
@@ -377,6 +555,7 @@ for submodule in "${submodules[@]}"; do
     else
       # New skill to merge
       would_merge+=1
+      add_action "$submodule" "$skill_name" "create" "skill does not exist in workspace-hub" "$src_dir" "$target_path"
       printf "  %-45s -> ${C_BOLD}%s/${C_RESET} ${C_YELLOW}(NEW)${C_RESET}\n" \
         "$skill_name" "$target_dir"
 
@@ -429,6 +608,8 @@ printf " Total unique skills:   %d\n" "$total_unique"
 printf " Already in hub:        ${C_GREEN}%d${C_RESET}\n" "$already_exists"
 printf " Would be merged:       ${C_YELLOW}%d${C_RESET}\n" "$would_merge"
 printf " Unmapped:              ${C_DIM}%d${C_RESET}\n" "$unmapped_count"
+printf " Skipped repos:         ${C_DIM}%d${C_RESET}\n" "$skipped_repo_count"
+printf " Skipped skill dirs:    ${C_DIM}%d${C_RESET}\n" "$skipped_skill_count"
 
 if [[ "$MODE" == "apply" ]]; then
   printf " Merged (copied):       ${C_GREEN}%d${C_RESET}\n" "$merged"
@@ -442,6 +623,11 @@ if (( errors > 0 )); then
   printf " Errors:                ${C_RED}%d${C_RESET}\n" "$errors"
 fi
 echo ""
+
+if [[ -n "$REPORT_FILE" ]]; then
+  write_report
+  printf "Wrote propagation report: %s\n" "$REPORT_FILE"
+fi
 
 case "$MODE" in
   dry-run)

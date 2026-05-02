@@ -1,0 +1,1570 @@
+{
+  "path": "/mnt/ace/digitalmodel/references/riser-toolbox/orcaflex tools/gumbel statistics/_PR1-11in-EnvelopeExtraction.xlsm",
+  "name": "_PR1-11in-EnvelopeExtraction.xlsm",
+  "size": 4153808,
+  "sheets": [
+    {
+      "title": "Post-Process",
+      "max_row": 1788,
+      "max_column": 21,
+      "non_empty_cells": 2030,
+      "formula_cells": 938,
+      "labels": [
+        {
+          "cell": "O1",
+          "value": "PR1"
+        },
+        {
+          "cell": "A3",
+          "value": "Sheet"
+        },
+        {
+          "cell": "B3",
+          "value": "Label"
+        },
+        {
+          "cell": "D3",
+          "value": "Output"
+        },
+        {
+          "cell": "F3",
+          "value": "Object"
+        },
+        {
+          "cell": "G3",
+          "value": "Additional"
+        },
+        {
+          "cell": "H3",
+          "value": "Simulation"
+        },
+        {
+          "cell": "A4",
+          "value": "Name"
+        },
+        {
+          "cell": "B4",
+          "value": "Cell"
+        },
+        {
+          "cell": "C4",
+          "value": "Label"
+        },
+        {
+          "cell": "D4",
+          "value": "Cell"
+        },
+        {
+          "cell": "E4",
+          "value": "Command"
+        },
+        {
+          "cell": "F4",
+          "value": "Name"
+        },
+        {
+          "cell": "G4",
+          "value": "Data"
+        },
+        {
+          "cell": "H4",
+          "value": "Period"
+        },
+        {
+          "cell": "I4",
+          "value": "Variable"
+        },
+        {
+          "cell": "K5",
+          "value": "1"
+        },
+        {
+          "cell": "Q5",
+          "value": "1"
+        },
+        {
+          "cell": "R5",
+          "value": "0"
+        },
+        {
+          "cell": "S5",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A6",
+          "value": "Stress"
+        },
+        {
+          "cell": "D6",
+          "value": "A5"
+        },
+        {
+          "cell": "E6",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F6",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G6",
+          "value": "ArcLength"
+        },
+        {
+          "cell": "H6",
+          "value": "100 to 10600"
+        },
+        {
+          "cell": "I6",
+          "value": "API RP 2RD Stress"
+        },
+        {
+          "cell": "Q6",
+          "value": "2"
+        },
+        {
+          "cell": "R6",
+          "value": "0"
+        },
+        {
+          "cell": "S6",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A7",
+          "value": "Tension"
+        },
+        {
+          "cell": "D7",
+          "value": "A5"
+        },
+        {
+          "cell": "E7",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F7",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G7",
+          "value": "ArcLength"
+        },
+        {
+          "cell": "H7",
+          "value": "100 to 10600"
+        },
+        {
+          "cell": "I7",
+          "value": "Effective Tension"
+        },
+        {
+          "cell": "Q7",
+          "value": "3"
+        },
+        {
+          "cell": "R7",
+          "value": "0"
+        },
+        {
+          "cell": "S7",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A8",
+          "value": "Stress"
+        },
+        {
+          "cell": "E8",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F8",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G8",
+          "value": "Max"
+        },
+        {
+          "cell": "H8",
+          "value": "100 to 10600"
+        },
+        {
+          "cell": "I8",
+          "value": "API RP 2RD Stress"
+        },
+        {
+          "cell": "Q8",
+          "value": "4"
+        },
+        {
+          "cell": "R8",
+          "value": "0"
+        },
+        {
+          "cell": "S8",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A9",
+          "value": "Tension"
+        },
+        {
+          "cell": "E9",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F9",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G9",
+          "value": "Min"
+        },
+        {
+          "cell": "H9",
+          "value": "100 to 10600"
+        },
+        {
+          "cell": "I9",
+          "value": "Effective Tension"
+        },
+        {
+          "cell": "Q9",
+          "value": "5"
+        },
+        {
+          "cell": "R9",
+          "value": "0"
+        },
+        {
+          "cell": "S9",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "K10",
+          "value": "2"
+        },
+        {
+          "cell": "S10",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A11",
+          "value": "Stress"
+        },
+        {
+          "cell": "E11",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F11",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G11",
+          "value": "Max"
+        },
+        {
+          "cell": "H11",
+          "value": "100 to 10600"
+        },
+        {
+          "cell": "I11",
+          "value": "API RP 2RD Stress"
+        },
+        {
+          "cell": "S11",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A12",
+          "value": "Tension"
+        },
+        {
+          "cell": "E12",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F12",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G12",
+          "value": "Min"
+        },
+        {
+          "cell": "H12",
+          "value": "100 to 10600"
+        },
+        {
+          "cell": "I12",
+          "value": "Effective Tension"
+        },
+        {
+          "cell": "S12",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "S13",
+          "value": "1000YRPWAVE"
+        },
+        {
+          "cell": "A14",
+          "value": "Stress"
+        },
+        {
+          "cell": "E14",
+          "value": "Range Graph"
+        },
+        {
+          "cell": "F14",
+          "value": "PR-1"
+        },
+        {
+          "cell": "G14",
+          "value": "Max"
+        },
+        {
+          "cell": "H14",
+          "value": "100 to 10600"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "E5",
+          "value": "=\"load \" & LEFT(L5,LEN(L5)) & \".sim\""
+        },
+        {
+          "cell": "L5",
+          "value": "=INDEX($O$5:$O$164, K5)"
+        },
+        {
+          "cell": "O5",
+          "value": "=O$1&\"_\"&S5&\"_\"&TEXT(R5,\"000\")&\"deg_r\"&Q5"
+        },
+        {
+          "cell": "O6",
+          "value": "=O$1&\"_\"&S6&\"_\"&TEXT(R6,\"000\")&\"deg_r\"&Q6"
+        },
+        {
+          "cell": "O7",
+          "value": "=O$1&\"_\"&S7&\"_\"&TEXT(R7,\"000\")&\"deg_r\"&Q7"
+        },
+        {
+          "cell": "B8",
+          "value": "=UPPER(IF(K5<26,CHAR(97+K5),IF(K5<52,\"a\"&CHAR(97+K5-26),IF(K5<78,\"b\"&CHAR(97+K5-52),IF(K5<104,\"c\"&CHAR(97+K5-78),IF(K5<130,\"d\"&CHAR(97+K5-104),IF(K5<156,\"e\"&CHAR(97+K5-130),\"f\"&CHAR(97+K5-156))))))))&\"4\""
+        },
+        {
+          "cell": "C8",
+          "value": "=RIGHT(L5,LEN(L5)-LEN($O$1)-1)"
+        },
+        {
+          "cell": "D8",
+          "value": "=UPPER(IF(K5<26,CHAR(97+K5),IF(K5<52,\"a\"&CHAR(97+K5-26),IF(K5<78,\"b\"&CHAR(97+K5-52),IF(K5<104,\"c\"&CHAR(97+K5-78),IF(K5<130,\"d\"&CHAR(97+K5-104),IF(K5<156,\"e\"&CHAR(97+K5-130),\"f\"&CHAR(97+K5-156))))))))&\"5\""
+        },
+        {
+          "cell": "O8",
+          "value": "=O$1&\"_\"&S8&\"_\"&TEXT(R8,\"000\")&\"deg_r\"&Q8"
+        },
+        {
+          "cell": "B9",
+          "value": "=UPPER(IF(K5<26,CHAR(97+K5),IF(K5<52,\"a\"&CHAR(97+K5-26),IF(K5<78,\"b\"&CHAR(97+K5-52),IF(K5<104,\"c\"&CHAR(97+K5-78),IF(K5<130,\"d\"&CHAR(97+K5-104),IF(K5<156,\"e\"&CHAR(97+K5-130),\"f\"&CHAR(97+K5-156))))))))&\"4\""
+        },
+        {
+          "cell": "C9",
+          "value": "=RIGHT(L5,LEN(L5)-LEN($O$1)-1)"
+        },
+        {
+          "cell": "D9",
+          "value": "=UPPER(IF(K5<26,CHAR(97+K5),IF(K5<52,\"a\"&CHAR(97+K5-26),IF(K5<78,\"b\"&CHAR(97+K5-52),IF(K5<104,\"c\"&CHAR(97+K5-78),IF(K5<130,\"d\"&CHAR(97+K5-104),IF(K5<156,\"e\"&CHAR(97+K5-130),\"f\"&CHAR(97+K5-156))))))))&\"5\""
+        },
+        {
+          "cell": "O9",
+          "value": "=O$1&\"_\"&S9&\"_\"&TEXT(R9,\"000\")&\"deg_r\"&Q9"
+        },
+        {
+          "cell": "E10",
+          "value": "=\"load \" & LEFT(L10,LEN(L10)) & \".sim\""
+        },
+        {
+          "cell": "L10",
+          "value": "=INDEX($O$5:$O$164, K10)"
+        },
+        {
+          "cell": "O10",
+          "value": "=O$1&\"_\"&S10&\"_\"&TEXT(R10,\"000\")&\"deg_r\"&Q10"
+        },
+        {
+          "cell": "Q10",
+          "value": "=Q5"
+        },
+        {
+          "cell": "R10",
+          "value": "=R5+45"
+        },
+        {
+          "cell": "B11",
+          "value": "=UPPER(IF(K10<26,CHAR(97+K10),IF(K10<52,\"a\"&CHAR(97+K10-26),IF(K10<78,\"b\"&CHAR(97+K10-52),IF(K10<104,\"c\"&CHAR(97+K10-78),IF(K10<130,\"d\"&CHAR(97+K10-104),IF(K10<156,\"e\"&CHAR(97+K10-130),\"f\"&CHAR(97+K10-156))))))))&\"4\""
+        },
+        {
+          "cell": "C11",
+          "value": "=RIGHT(L10,LEN(L10)-LEN($O$1)-1)"
+        }
+      ]
+    },
+    {
+      "title": "Stress",
+      "max_row": 1805,
+      "max_column": 81,
+      "non_empty_cells": 146204,
+      "formula_cells": 240,
+      "labels": [
+        {
+          "cell": "A1",
+          "value": "Max (kips/ft^2)"
+        },
+        {
+          "cell": "A2",
+          "value": "Max (ksi)"
+        },
+        {
+          "cell": "A3",
+          "value": "Arc Len"
+        },
+        {
+          "cell": "B4",
+          "value": "1000YRPWAVE_000deg_r1"
+        },
+        {
+          "cell": "C4",
+          "value": "1000YRPWAVE_000deg_r2"
+        },
+        {
+          "cell": "D4",
+          "value": "1000YRPWAVE_000deg_r3"
+        },
+        {
+          "cell": "E4",
+          "value": "1000YRPWAVE_000deg_r4"
+        },
+        {
+          "cell": "F4",
+          "value": "1000YRPWAVE_000deg_r5"
+        },
+        {
+          "cell": "G4",
+          "value": "1000YRPWAVE_045deg_r1"
+        },
+        {
+          "cell": "H4",
+          "value": "1000YRPWAVE_045deg_r2"
+        },
+        {
+          "cell": "I4",
+          "value": "1000YRPWAVE_045deg_r3"
+        },
+        {
+          "cell": "J4",
+          "value": "1000YRPWAVE_045deg_r4"
+        },
+        {
+          "cell": "K4",
+          "value": "1000YRPWAVE_045deg_r5"
+        },
+        {
+          "cell": "L4",
+          "value": "1000YRPWAVE_090deg_r1"
+        },
+        {
+          "cell": "M4",
+          "value": "1000YRPWAVE_090deg_r2"
+        },
+        {
+          "cell": "N4",
+          "value": "1000YRPWAVE_090deg_r3"
+        },
+        {
+          "cell": "O4",
+          "value": "1000YRPWAVE_090deg_r4"
+        },
+        {
+          "cell": "P4",
+          "value": "1000YRPWAVE_090deg_r5"
+        },
+        {
+          "cell": "Q4",
+          "value": "1000YRPWAVE_135deg_r1"
+        },
+        {
+          "cell": "R4",
+          "value": "1000YRPWAVE_135deg_r2"
+        },
+        {
+          "cell": "S4",
+          "value": "1000YRPWAVE_135deg_r3"
+        },
+        {
+          "cell": "T4",
+          "value": "1000YRPWAVE_135deg_r4"
+        },
+        {
+          "cell": "U4",
+          "value": "1000YRPWAVE_135deg_r5"
+        },
+        {
+          "cell": "V4",
+          "value": "1000YRPWAVE_180deg_r1"
+        },
+        {
+          "cell": "W4",
+          "value": "1000YRPWAVE_180deg_r2"
+        },
+        {
+          "cell": "X4",
+          "value": "1000YRPWAVE_180deg_r3"
+        },
+        {
+          "cell": "Y4",
+          "value": "1000YRPWAVE_180deg_r4"
+        },
+        {
+          "cell": "Z4",
+          "value": "1000YRPWAVE_180deg_r5"
+        },
+        {
+          "cell": "AA4",
+          "value": "1000YRPWAVE_225deg_r1"
+        },
+        {
+          "cell": "AB4",
+          "value": "1000YRPWAVE_225deg_r2"
+        },
+        {
+          "cell": "AC4",
+          "value": "1000YRPWAVE_225deg_r3"
+        },
+        {
+          "cell": "AD4",
+          "value": "1000YRPWAVE_225deg_r4"
+        },
+        {
+          "cell": "AE4",
+          "value": "1000YRPWAVE_225deg_r5"
+        },
+        {
+          "cell": "AF4",
+          "value": "1000YRPWAVE_270deg_r1"
+        },
+        {
+          "cell": "AG4",
+          "value": "1000YRPWAVE_270deg_r2"
+        },
+        {
+          "cell": "AH4",
+          "value": "1000YRPWAVE_270deg_r3"
+        },
+        {
+          "cell": "AI4",
+          "value": "1000YRPWAVE_270deg_r4"
+        },
+        {
+          "cell": "AJ4",
+          "value": "1000YRPWAVE_270deg_r5"
+        },
+        {
+          "cell": "AK4",
+          "value": "1000YRPWAVE_315deg_r1"
+        },
+        {
+          "cell": "AL4",
+          "value": "1000YRPWAVE_315deg_r2"
+        },
+        {
+          "cell": "AM4",
+          "value": "1000YRPWAVE_315deg_r3"
+        },
+        {
+          "cell": "AN4",
+          "value": "1000YRPWAVE_315deg_r4"
+        },
+        {
+          "cell": "AO4",
+          "value": "1000YRPWAVE_315deg_r5"
+        },
+        {
+          "cell": "AP4",
+          "value": "1000YRPWIND_000deg_r1"
+        },
+        {
+          "cell": "AQ4",
+          "value": "1000YRPWIND_000deg_r2"
+        },
+        {
+          "cell": "AR4",
+          "value": "1000YRPWIND_000deg_r3"
+        },
+        {
+          "cell": "AS4",
+          "value": "1000YRPWIND_000deg_r4"
+        },
+        {
+          "cell": "AT4",
+          "value": "1000YRPWIND_000deg_r5"
+        },
+        {
+          "cell": "AU4",
+          "value": "1000YRPWIND_045deg_r1"
+        },
+        {
+          "cell": "AV4",
+          "value": "1000YRPWIND_045deg_r2"
+        },
+        {
+          "cell": "AW4",
+          "value": "1000YRPWIND_045deg_r3"
+        },
+        {
+          "cell": "AX4",
+          "value": "1000YRPWIND_045deg_r4"
+        },
+        {
+          "cell": "AY4",
+          "value": "1000YRPWIND_045deg_r5"
+        },
+        {
+          "cell": "AZ4",
+          "value": "1000YRPWIND_090deg_r1"
+        },
+        {
+          "cell": "BA4",
+          "value": "1000YRPWIND_090deg_r2"
+        },
+        {
+          "cell": "BB4",
+          "value": "1000YRPWIND_090deg_r3"
+        },
+        {
+          "cell": "BC4",
+          "value": "1000YRPWIND_090deg_r4"
+        },
+        {
+          "cell": "BD4",
+          "value": "1000YRPWIND_090deg_r5"
+        },
+        {
+          "cell": "BE4",
+          "value": "1000YRPWIND_135deg_r1"
+        },
+        {
+          "cell": "BF4",
+          "value": "1000YRPWIND_135deg_r2"
+        },
+        {
+          "cell": "BG4",
+          "value": "1000YRPWIND_135deg_r3"
+        },
+        {
+          "cell": "BH4",
+          "value": "1000YRPWIND_135deg_r4"
+        },
+        {
+          "cell": "BI4",
+          "value": "1000YRPWIND_135deg_r5"
+        },
+        {
+          "cell": "BJ4",
+          "value": "1000YRPWIND_180deg_r1"
+        },
+        {
+          "cell": "BK4",
+          "value": "1000YRPWIND_180deg_r2"
+        },
+        {
+          "cell": "BL4",
+          "value": "1000YRPWIND_180deg_r3"
+        },
+        {
+          "cell": "BM4",
+          "value": "1000YRPWIND_180deg_r4"
+        },
+        {
+          "cell": "BN4",
+          "value": "1000YRPWIND_180deg_r5"
+        },
+        {
+          "cell": "BO4",
+          "value": "1000YRPWIND_225deg_r1"
+        },
+        {
+          "cell": "BP4",
+          "value": "1000YRPWIND_225deg_r2"
+        },
+        {
+          "cell": "BQ4",
+          "value": "1000YRPWIND_225deg_r3"
+        },
+        {
+          "cell": "BR4",
+          "value": "1000YRPWIND_225deg_r4"
+        },
+        {
+          "cell": "BS4",
+          "value": "1000YRPWIND_225deg_r5"
+        },
+        {
+          "cell": "BT4",
+          "value": "1000YRPWIND_270deg_r1"
+        },
+        {
+          "cell": "BU4",
+          "value": "1000YRPWIND_270deg_r2"
+        },
+        {
+          "cell": "BV4",
+          "value": "1000YRPWIND_270deg_r3"
+        },
+        {
+          "cell": "BW4",
+          "value": "1000YRPWIND_270deg_r4"
+        },
+        {
+          "cell": "BX4",
+          "value": "1000YRPWIND_270deg_r5"
+        },
+        {
+          "cell": "BY4",
+          "value": "1000YRPWIND_315deg_r1"
+        },
+        {
+          "cell": "BZ4",
+          "value": "1000YRPWIND_315deg_r2"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "B1",
+          "value": "=MAX(B996:B1606)"
+        },
+        {
+          "cell": "C1",
+          "value": "=MAX(C996:C1606)"
+        },
+        {
+          "cell": "D1",
+          "value": "=MAX(D996:D1606)"
+        },
+        {
+          "cell": "E1",
+          "value": "=MAX(E996:E1606)"
+        },
+        {
+          "cell": "F1",
+          "value": "=MAX(F996:F1606)"
+        },
+        {
+          "cell": "G1",
+          "value": "=MAX(G996:G1606)"
+        },
+        {
+          "cell": "H1",
+          "value": "=MAX(H996:H1606)"
+        },
+        {
+          "cell": "I1",
+          "value": "=MAX(I996:I1606)"
+        },
+        {
+          "cell": "J1",
+          "value": "=MAX(J996:J1606)"
+        },
+        {
+          "cell": "K1",
+          "value": "=MAX(K996:K1606)"
+        },
+        {
+          "cell": "L1",
+          "value": "=MAX(L996:L1606)"
+        },
+        {
+          "cell": "M1",
+          "value": "=MAX(M996:M1606)"
+        },
+        {
+          "cell": "N1",
+          "value": "=MAX(N996:N1606)"
+        },
+        {
+          "cell": "O1",
+          "value": "=MAX(O996:O1606)"
+        },
+        {
+          "cell": "P1",
+          "value": "=MAX(P996:P1606)"
+        },
+        {
+          "cell": "Q1",
+          "value": "=MAX(Q996:Q1606)"
+        },
+        {
+          "cell": "R1",
+          "value": "=MAX(R996:R1606)"
+        },
+        {
+          "cell": "S1",
+          "value": "=MAX(S996:S1606)"
+        },
+        {
+          "cell": "T1",
+          "value": "=MAX(T996:T1606)"
+        },
+        {
+          "cell": "U1",
+          "value": "=MAX(U996:U1606)"
+        }
+      ]
+    },
+    {
+      "title": "Tension",
+      "max_row": 1805,
+      "max_column": 81,
+      "non_empty_cells": 146123,
+      "formula_cells": 160,
+      "labels": [
+        {
+          "cell": "A2",
+          "value": "Min (kips)"
+        },
+        {
+          "cell": "A3",
+          "value": "Arc Len"
+        },
+        {
+          "cell": "B4",
+          "value": "1000YRPWAVE_000deg_r1"
+        },
+        {
+          "cell": "C4",
+          "value": "1000YRPWAVE_000deg_r2"
+        },
+        {
+          "cell": "D4",
+          "value": "1000YRPWAVE_000deg_r3"
+        },
+        {
+          "cell": "E4",
+          "value": "1000YRPWAVE_000deg_r4"
+        },
+        {
+          "cell": "F4",
+          "value": "1000YRPWAVE_000deg_r5"
+        },
+        {
+          "cell": "G4",
+          "value": "1000YRPWAVE_045deg_r1"
+        },
+        {
+          "cell": "H4",
+          "value": "1000YRPWAVE_045deg_r2"
+        },
+        {
+          "cell": "I4",
+          "value": "1000YRPWAVE_045deg_r3"
+        },
+        {
+          "cell": "J4",
+          "value": "1000YRPWAVE_045deg_r4"
+        },
+        {
+          "cell": "K4",
+          "value": "1000YRPWAVE_045deg_r5"
+        },
+        {
+          "cell": "L4",
+          "value": "1000YRPWAVE_090deg_r1"
+        },
+        {
+          "cell": "M4",
+          "value": "1000YRPWAVE_090deg_r2"
+        },
+        {
+          "cell": "N4",
+          "value": "1000YRPWAVE_090deg_r3"
+        },
+        {
+          "cell": "O4",
+          "value": "1000YRPWAVE_090deg_r4"
+        },
+        {
+          "cell": "P4",
+          "value": "1000YRPWAVE_090deg_r5"
+        },
+        {
+          "cell": "Q4",
+          "value": "1000YRPWAVE_135deg_r1"
+        },
+        {
+          "cell": "R4",
+          "value": "1000YRPWAVE_135deg_r2"
+        },
+        {
+          "cell": "S4",
+          "value": "1000YRPWAVE_135deg_r3"
+        },
+        {
+          "cell": "T4",
+          "value": "1000YRPWAVE_135deg_r4"
+        },
+        {
+          "cell": "U4",
+          "value": "1000YRPWAVE_135deg_r5"
+        },
+        {
+          "cell": "V4",
+          "value": "1000YRPWAVE_180deg_r1"
+        },
+        {
+          "cell": "W4",
+          "value": "1000YRPWAVE_180deg_r2"
+        },
+        {
+          "cell": "X4",
+          "value": "1000YRPWAVE_180deg_r3"
+        },
+        {
+          "cell": "Y4",
+          "value": "1000YRPWAVE_180deg_r4"
+        },
+        {
+          "cell": "Z4",
+          "value": "1000YRPWAVE_180deg_r5"
+        },
+        {
+          "cell": "AA4",
+          "value": "1000YRPWAVE_225deg_r1"
+        },
+        {
+          "cell": "AB4",
+          "value": "1000YRPWAVE_225deg_r2"
+        },
+        {
+          "cell": "AC4",
+          "value": "1000YRPWAVE_225deg_r3"
+        },
+        {
+          "cell": "AD4",
+          "value": "1000YRPWAVE_225deg_r4"
+        },
+        {
+          "cell": "AE4",
+          "value": "1000YRPWAVE_225deg_r5"
+        },
+        {
+          "cell": "AF4",
+          "value": "1000YRPWAVE_270deg_r1"
+        },
+        {
+          "cell": "AG4",
+          "value": "1000YRPWAVE_270deg_r2"
+        },
+        {
+          "cell": "AH4",
+          "value": "1000YRPWAVE_270deg_r3"
+        },
+        {
+          "cell": "AI4",
+          "value": "1000YRPWAVE_270deg_r4"
+        },
+        {
+          "cell": "AJ4",
+          "value": "1000YRPWAVE_270deg_r5"
+        },
+        {
+          "cell": "AK4",
+          "value": "1000YRPWAVE_315deg_r1"
+        },
+        {
+          "cell": "AL4",
+          "value": "1000YRPWAVE_315deg_r2"
+        },
+        {
+          "cell": "AM4",
+          "value": "1000YRPWAVE_315deg_r3"
+        },
+        {
+          "cell": "AN4",
+          "value": "1000YRPWAVE_315deg_r4"
+        },
+        {
+          "cell": "AO4",
+          "value": "1000YRPWAVE_315deg_r5"
+        },
+        {
+          "cell": "AP4",
+          "value": "1000YRPWIND_000deg_r1"
+        },
+        {
+          "cell": "AQ4",
+          "value": "1000YRPWIND_000deg_r2"
+        },
+        {
+          "cell": "AR4",
+          "value": "1000YRPWIND_000deg_r3"
+        },
+        {
+          "cell": "AS4",
+          "value": "1000YRPWIND_000deg_r4"
+        },
+        {
+          "cell": "AT4",
+          "value": "1000YRPWIND_000deg_r5"
+        },
+        {
+          "cell": "AU4",
+          "value": "1000YRPWIND_045deg_r1"
+        },
+        {
+          "cell": "AV4",
+          "value": "1000YRPWIND_045deg_r2"
+        },
+        {
+          "cell": "AW4",
+          "value": "1000YRPWIND_045deg_r3"
+        },
+        {
+          "cell": "AX4",
+          "value": "1000YRPWIND_045deg_r4"
+        },
+        {
+          "cell": "AY4",
+          "value": "1000YRPWIND_045deg_r5"
+        },
+        {
+          "cell": "AZ4",
+          "value": "1000YRPWIND_090deg_r1"
+        },
+        {
+          "cell": "BA4",
+          "value": "1000YRPWIND_090deg_r2"
+        },
+        {
+          "cell": "BB4",
+          "value": "1000YRPWIND_090deg_r3"
+        },
+        {
+          "cell": "BC4",
+          "value": "1000YRPWIND_090deg_r4"
+        },
+        {
+          "cell": "BD4",
+          "value": "1000YRPWIND_090deg_r5"
+        },
+        {
+          "cell": "BE4",
+          "value": "1000YRPWIND_135deg_r1"
+        },
+        {
+          "cell": "BF4",
+          "value": "1000YRPWIND_135deg_r2"
+        },
+        {
+          "cell": "BG4",
+          "value": "1000YRPWIND_135deg_r3"
+        },
+        {
+          "cell": "BH4",
+          "value": "1000YRPWIND_135deg_r4"
+        },
+        {
+          "cell": "BI4",
+          "value": "1000YRPWIND_135deg_r5"
+        },
+        {
+          "cell": "BJ4",
+          "value": "1000YRPWIND_180deg_r1"
+        },
+        {
+          "cell": "BK4",
+          "value": "1000YRPWIND_180deg_r2"
+        },
+        {
+          "cell": "BL4",
+          "value": "1000YRPWIND_180deg_r3"
+        },
+        {
+          "cell": "BM4",
+          "value": "1000YRPWIND_180deg_r4"
+        },
+        {
+          "cell": "BN4",
+          "value": "1000YRPWIND_180deg_r5"
+        },
+        {
+          "cell": "BO4",
+          "value": "1000YRPWIND_225deg_r1"
+        },
+        {
+          "cell": "BP4",
+          "value": "1000YRPWIND_225deg_r2"
+        },
+        {
+          "cell": "BQ4",
+          "value": "1000YRPWIND_225deg_r3"
+        },
+        {
+          "cell": "BR4",
+          "value": "1000YRPWIND_225deg_r4"
+        },
+        {
+          "cell": "BS4",
+          "value": "1000YRPWIND_225deg_r5"
+        },
+        {
+          "cell": "BT4",
+          "value": "1000YRPWIND_270deg_r1"
+        },
+        {
+          "cell": "BU4",
+          "value": "1000YRPWIND_270deg_r2"
+        },
+        {
+          "cell": "BV4",
+          "value": "1000YRPWIND_270deg_r3"
+        },
+        {
+          "cell": "BW4",
+          "value": "1000YRPWIND_270deg_r4"
+        },
+        {
+          "cell": "BX4",
+          "value": "1000YRPWIND_270deg_r5"
+        },
+        {
+          "cell": "BY4",
+          "value": "1000YRPWIND_315deg_r1"
+        },
+        {
+          "cell": "BZ4",
+          "value": "1000YRPWIND_315deg_r2"
+        },
+        {
+          "cell": "CA4",
+          "value": "1000YRPWIND_315deg_r3"
+        }
+      ],
+      "formulas_sample": [
+        {
+          "cell": "B2",
+          "value": "=MIN(B996:B1606)"
+        },
+        {
+          "cell": "C2",
+          "value": "=MIN(C996:C1606)"
+        },
+        {
+          "cell": "D2",
+          "value": "=MIN(D996:D1606)"
+        },
+        {
+          "cell": "E2",
+          "value": "=MIN(E996:E1606)"
+        },
+        {
+          "cell": "F2",
+          "value": "=MIN(F996:F1606)"
+        },
+        {
+          "cell": "G2",
+          "value": "=MIN(G996:G1606)"
+        },
+        {
+          "cell": "H2",
+          "value": "=MIN(H996:H1606)"
+        },
+        {
+          "cell": "I2",
+          "value": "=MIN(I996:I1606)"
+        },
+        {
+          "cell": "J2",
+          "value": "=MIN(J996:J1606)"
+        },
+        {
+          "cell": "K2",
+          "value": "=MIN(K996:K1606)"
+        },
+        {
+          "cell": "L2",
+          "value": "=MIN(L996:L1606)"
+        },
+        {
+          "cell": "M2",
+          "value": "=MIN(M996:M1606)"
+        },
+        {
+          "cell": "N2",
+          "value": "=MIN(N996:N1606)"
+        },
+        {
+          "cell": "O2",
+          "value": "=MIN(O996:O1606)"
+        },
+        {
+          "cell": "P2",
+          "value": "=MIN(P996:P1606)"
+        },
+        {
+          "cell": "Q2",
+          "value": "=MIN(Q996:Q1606)"
+        },
+        {
+          "cell": "R2",
+          "value": "=MIN(R996:R1606)"
+        },
+        {
+          "cell": "S2",
+          "value": "=MIN(S996:S1606)"
+        },
+        {
+          "cell": "T2",
+          "value": "=MIN(T996:T1606)"
+        },
+        {
+          "cell": "U2",
+          "value": "=MIN(U996:U1606)"
+        }
+      ]
+    },
+    {
+      "title": "__$Orcina_Hidden_Sheet$__",
+      "max_row": 53,
+      "max_column": 9,
+      "non_empty_cells": 128,
+      "formula_cells": 0,
+      "labels": [
+        {
+          "cell": "A1",
+          "value": "Duplicate - Script file name"
+        },
+        {
+          "cell": "B1",
+          "value": "Script_P47_fatigue.txt"
+        },
+        {
+          "cell": "C1",
+          "value": "ArcLength"
+        },
+        {
+          "cell": "D1",
+          "value": "23.14"
+        },
+        {
+          "cell": "E1",
+          "value": "Version"
+        },
+        {
+          "cell": "F1",
+          "value": "9.6c"
+        },
+        {
+          "cell": "A2",
+          "value": "Duplicate - Sheet base name"
+        },
+        {
+          "cell": "B2",
+          "value": "Results"
+        },
+        {
+          "cell": "C2",
+          "value": "BatchName"
+        },
+        {
+          "cell": "E2",
+          "value": "Requires"
+        },
+        {
+          "cell": "F2",
+          "value": "9.3c1"
+        },
+        {
+          "cell": "H2",
+          "value": "IgnoreErrors"
+        },
+        {
+          "cell": "I2",
+          "value": "False"
+        },
+        {
+          "cell": "A3",
+          "value": "Duplicate - Xoffset"
+        },
+        {
+          "cell": "B3",
+          "value": "1"
+        },
+        {
+          "cell": "C3",
+          "value": "OverwriteLabels"
+        },
+        {
+          "cell": "D3",
+          "value": "True"
+        },
+        {
+          "cell": "H3",
+          "value": "ContainsDependencies"
+        },
+        {
+          "cell": "I3",
+          "value": "False"
+        },
+        {
+          "cell": "A4",
+          "value": "Duplicate - Yoffset"
+        },
+        {
+          "cell": "B4",
+          "value": "0"
+        },
+        {
+          "cell": "C4",
+          "value": "ClearanceLineindex"
+        },
+        {
+          "cell": "D4",
+          "value": "65500"
+        },
+        {
+          "cell": "H4",
+          "value": "InstructionsSheetIndex"
+        },
+        {
+          "cell": "I4",
+          "value": "1"
+        },
+        {
+          "cell": "A5",
+          "value": "Duplicate - Different sheets"
+        },
+        {
+          "cell": "B5",
+          "value": "1"
+        },
+        {
+          "cell": "C5",
+          "value": "Command"
+        },
+        {
+          "cell": "D5",
+          "value": "15"
+        },
+        {
+          "cell": "A6",
+          "value": "Duplicate - Specified Files"
+        },
+        {
+          "cell": "B6",
+          "value": "1"
+        },
+        {
+          "cell": "C6",
+          "value": "Position.X"
+        },
+        {
+          "cell": "D6",
+          "value": "0"
+        },
+        {
+          "cell": "A7",
+          "value": "Duplicate - Number of Files"
+        },
+        {
+          "cell": "B7",
+          "value": "0"
+        },
+        {
+          "cell": "C7",
+          "value": "Position.Y"
+        },
+        {
+          "cell": "D7",
+          "value": "0"
+        },
+        {
+          "cell": "A8",
+          "value": "Duplicate - Duplicate Labels"
+        },
+        {
+          "cell": "B8",
+          "value": "True"
+        },
+        {
+          "cell": "C8",
+          "value": "Position.Z (Global)"
+        },
+        {
+          "cell": "D8",
+          "value": "0"
+        },
+        {
+          "cell": "A9",
+          "value": "Duplicate - Sheet name method"
+        },
+        {
+          "cell": "B9",
+          "value": "0"
+        },
+        {
+          "cell": "C9",
+          "value": "FileName"
+        },
+        {
+          "cell": "D9",
+          "value": "Case01.sim"
+        },
+        {
+          "cell": "C10",
+          "value": "FromArcLength"
+        },
+        {
+          "cell": "D10",
+          "value": "6000"
+        },
+        {
+          "cell": "C11",
+          "value": "GetDataIndex"
+        },
+        {
+          "cell": "D11",
+          "value": "1"
+        },
+        {
+          "cell": "C12",
+          "value": "InsertMethod"
+        },
+        {
+          "cell": "D12",
+          "value": "0"
+        },
+        {
+          "cell": "C13",
+          "value": "Label"
+        },
+        {
+          "cell": "C14",
+          "value": "LabelCell"
+        },
+        {
+          "cell": "D14",
+          "value": "M4"
+        },
+        {
+          "cell": "C15",
+          "value": "LinePosition"
+        },
+        {
+          "cell": "D15",
+          "value": "4"
+        },
+        {
+          "cell": "C16",
+          "value": "NodeNumber"
+        },
+        {
+          "cell": "D16",
+          "value": "1"
+        },
+        {
+          "cell": "C17",
+          "value": "ObjectIndex"
+        },
+        {
+          "cell": "D17",
+          "value": "8"
+        },
+        {
+          "cell": "C18",
+          "value": "OutputCell"
+        },
+        {
+          "cell": "D18",
+          "value": "N4"
+        },
+        {
+          "cell": "C19",
+          "value": "Position.Z (Local)"
+        },
+        {
+          "cell": "D19",
+          "value": "0"
+        },
+        {
+          "cell": "C20",
+          "value": "Period"
+        },
+        {
+          "cell": "D20",
+          "value": "5"
+        },
+        {
+          "cell": "C21",
+          "value": "Radius"
+        },
+        {
+          "cell": "D21",
+          "value": "0"
+        },
+        {
+          "cell": "C22",
+          "value": "ArcLengthRange"
+        },
+        {
+          "cell": "D22",
+          "value": "4"
+        },
+        {
+          "cell": "C23",
+          "value": "SubObject"
+        },
+        {
+          "cell": "D23",
+          "value": "0"
+        },
+        {
+          "cell": "C24",
+          "value": "ResultsSheetName"
+        },
+        {
+          "cell": "D24",
+          "value": "TDP"
+        },
+        {
+          "cell": "C25",
+          "value": "SpecifiedPeriodFrom"
+        },
+        {
+          "cell": "D25",
+          "value": "0"
+        },
+        {
+          "cell": "C26",
+          "value": "SpecifiedPeriodTo"
+        },
+        {
+          "cell": "D26",
+          "value": "3600"
+        },
+        {
+          "cell": "C27",
+          "value": "Theta"
+        },
+        {
+          "cell": "D27",
+          "value": "0"
+        }
+      ],
+      "formulas_sample": []
+    }
+  ]
+}

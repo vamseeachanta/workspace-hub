@@ -81,7 +81,7 @@ for arg in sys.argv[1:]:
     path = pathlib.Path(arg)
     with path.open('rb') as fh:
         data = tomllib.load(fh)
-    if data.get('model') != 'gpt-5.4':
+    if data.get('model') != 'gpt-5.5':
         raise SystemExit(1)
     if data.get('model_reasoning_effort') != 'medium':
         raise SystemExit(1)
@@ -110,7 +110,7 @@ EOF
 {}
 EOF
     cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [status_line]
@@ -136,7 +136,7 @@ suppress_unstable_features_warning = true
 [features]
 js_repl = true
 guardian_approval = true
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [[features.providers]]
@@ -148,7 +148,7 @@ suppress_unstable_features_warning = true
 
 [features]
 js_repl = true
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 EOF
 
@@ -335,7 +335,7 @@ run_invalid_template_atomicity_test() {
     make_workspace "$ws_root"
     mkdir -p "$home_root" "$tmp_area"
     cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [status_line]

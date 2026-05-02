@@ -11,14 +11,23 @@
 #   claude  — path reference: `claude -p "@<prompt> — review plan at <path>..."`
 #             Claude resolves @-sigils natively; passing by path keeps token
 #             budget tight and the plan fresh on disk.
-#   codex   — INLINE: `codex exec --no-interactive "<prompt>\n--- PLAN ---\n<body>"`
+#   codex   — INLINE: `codex exec "<prompt>\n--- PLAN ---\n<body>" </dev/null`
 #             Codex drops context when given a path-only argument and falls
-#             back to GitHub MCP lookups, producing false MAJORs.
+#             back to GitHub MCP lookups, producing false MAJORs. The
+#             `--no-interactive` flag that this invocation previously used
+#             was removed in codex-cli 0.124.0 (unknown argument, rc=2);
+#             `codex exec` is already non-interactive by definition, so
+#             dropping the flag is correct. See the fresh issue filed after
+#             the 2026-04-23 batch regression (supersedes #2406 closure).
+#             Stdin is closed with `</dev/null` to prevent codex from
+#             waiting on an inherited pipe when invoked from orchestrators.
 #   gemini  — INLINE, and invoked from cwd=/tmp to dodge a local
 #             .gemini/agents/*.md permissionMode validation bug in the repo.
 #
-# Environment knobs (for tests):
+# Environment knobs (for tests/noninteractive runs):
 #   PLAN_REVIEW_RESULTS_DIR — overrides the default results dir (superseded by --output-dir).
+#   PLAN_REVIEW_PROVIDER_TIMEOUT_SEC — per-provider timeout in seconds (default: 600).
+#   GEMINI_CLI_TRUST_WORKSPACE — defaults to true for noninteractive Gemini runs.
 
 set -euo pipefail
 
@@ -46,7 +55,15 @@ while (( $# > 0 )); do
     -h|--help)      usage; exit 0 ;;
     --)             shift; break ;;
     -*)             echo "unknown flag: $1" >&2; usage; exit 2 ;;
-    *)              [[ -z "$PLAN_FILE" ]] && PLAN_FILE="$1" || { echo "unexpected positional arg: $1" >&2; exit 2; }; shift ;;
+    *)
+      if [[ -z "$PLAN_FILE" ]]; then
+        PLAN_FILE="$1"
+      else
+        echo "unexpected positional arg: $1" >&2
+        exit 2
+      fi
+      shift
+      ;;
   esac
 done
 
@@ -63,30 +80,91 @@ mkdir -p "$OUTPUT_DIR"
 # ── Per-provider invocation ──────────────────────────────────────────────
 # Writes to $OUTPUT_DIR/$TODAY-plan-$ISSUE_NUM-<provider>.md. On CLI failure,
 # writes an UNAVAILABLE-verdict stub instead (graceful degradation).
+error_excerpt() {
+  local err="$1"
+  head -c 400 "$err" 2>/dev/null | tr '\n' ' ' | tr -d '\000-\010\013\014\016-\037\177' | sed 's/"/\\"/g'
+}
+
+write_unavailable() {
+  local prov="$1" rc="$2" reason="$3" out="$4"
+  {
+    echo "## Verdict"
+    echo "UNAVAILABLE (${prov} CLI failed, rc=${rc}: ${reason})"
+    echo ""
+    echo "## Retrieval"
+    echo "(none — invocation failed before the provider could return a usable review)"
+    echo ""
+    echo "## Findings"
+    echo "(none)"
+    echo ""
+    echo "## Blockers"
+    echo "(none — this provider contributed no signal to the review)"
+  } > "$out"
+}
+
+normalize_provider_output() {
+  local prov="$1" rc="$2" out="$3" err="$4"
+
+  if (( rc != 0 )); then
+    local reason
+    reason="$(error_excerpt "$err")"
+    [[ -n "$reason" ]] || reason="no stderr captured"
+    write_unavailable "$prov" "$rc" "$reason" "$out"
+    rm -f "$err"
+    return 0
+  fi
+
+  # Some CLIs stream the substantive review to stderr/session output while
+  # leaving stdout empty. Promote stderr only after a successful provider exit
+  # and only when it contains the minimum structured review sections.
+  if [[ ! -s "$out" && -s "$err" ]] && grep -q '^## Verdict' "$err" && grep -q '^## Findings' "$err" && grep -q '^## Blockers' "$err"; then
+    mv "$err" "$out"
+    return 0
+  fi
+
+  if [[ ! -s "$out" ]]; then
+    local reason
+    reason="empty provider output"
+    if [[ -s "$err" ]]; then
+      reason="$(error_excerpt "$err")"
+    fi
+    write_unavailable "$prov" "0" "$reason" "$out"
+  fi
+  rm -f "$err"
+}
+
 invoke_provider() {
   local prov="$1"
   local out="$OUTPUT_DIR/${TODAY}-plan-${ISSUE_NUM}-${prov}.md"
   local err="${out}.err"
   local rc=0
+  local timeout_s="${PLAN_REVIEW_PROVIDER_TIMEOUT_SEC:-600}"
 
   case "$prov" in
     claude)
       # Path reference — no inline body.
-      claude -p "@$PROMPT_FILE — review the plan at $PLAN_FILE. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS." \
+      timeout -k 5s "${timeout_s}s" \
+        claude -p "@$PROMPT_FILE — review the plan at $PLAN_FILE. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS." \
         > "$out" 2>"$err" || rc=$?
       ;;
     codex)
       local combined
       combined="$(printf '%s\n\n--- PLAN (%s) ---\n%s' \
         "$(cat "$PROMPT_FILE")" "$PLAN_FILE" "$(cat "$PLAN_FILE")")"
-      codex exec --no-interactive "$combined" > "$out" 2>"$err" || rc=$?
+      # Keep prompt delivery in argv and close stdin. The sibling
+      # submit-to-codex.sh regression tests document that `codex exec -` can
+      # hang in installed Codex versions, while argv + </dev/null avoids
+      # inherited-pipe stalls.
+      timeout -k 5s "${timeout_s}s" codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
       ;;
     gemini)
       local combined
       combined="$(printf '%s\n\n--- PLAN (%s) ---\n%s' \
         "$(cat "$PROMPT_FILE")" "$PLAN_FILE" "$(cat "$PLAN_FILE")")"
       # cwd=/tmp dodges the .gemini/agents/*.md permissionMode validation bug.
-      ( cd /tmp && gemini -p "$combined" ) > "$out" 2>"$err" || rc=$?
+      # GEMINI_CLI_TRUST_WORKSPACE avoids noninteractive rc=55 trust prompts.
+      ( cd /tmp && GEMINI_CLI_TRUST_WORKSPACE="${GEMINI_CLI_TRUST_WORKSPACE:-true}" \
+          timeout -k 5s "${timeout_s}s" gemini -p "$combined" ) > "$out" 2>"$err" || rc=$?
       ;;
     *)
       echo "unknown provider: $prov" >&2
@@ -94,29 +172,19 @@ invoke_provider() {
       ;;
   esac
 
-  if (( rc != 0 )); then
-    local reason
-    reason="$(head -c 200 "$err" 2>/dev/null | tr '\n' ' ' | sed 's/"/\\"/g')"
-    {
-      echo "## Verdict"
-      echo "UNAVAILABLE (${prov} CLI failed, rc=${rc}: ${reason})"
-      echo ""
-      echo "## Retrieval"
-      echo "(none — invocation failed before the provider could read the plan)"
-      echo ""
-      echo "## Findings"
-      echo "(none)"
-      echo ""
-      echo "## Blockers"
-      echo "(none — this provider contributed no signal to the review)"
-    } > "$out"
-  fi
-  rm -f "$err"
+  normalize_provider_output "$prov" "$rc" "$out" "$err"
 }
 
 # ── Parallel fan-out ─────────────────────────────────────────────────────
 IFS=',' read -ra PROV_LIST <<< "$PROVIDERS"
 pids=()
+cleanup_provider_jobs() {
+  local pid
+  for pid in "${pids[@]}"; do
+    kill "$pid" 2>/dev/null || true
+  done
+}
+trap cleanup_provider_jobs INT TERM EXIT
 for prov in "${PROV_LIST[@]}"; do
   invoke_provider "$prov" &
   pids+=($!)
@@ -124,6 +192,8 @@ done
 for pid in "${pids[@]}"; do
   wait "$pid" || true
 done
+pids=()
+trap - INT TERM EXIT
 
 # ── Disagreement report (stub — fleshed out in next TDD batch) ───────────
 DISAGREEMENT_FILE="$OUTPUT_DIR/${TODAY}-plan-${ISSUE_NUM}-disagreement.md"

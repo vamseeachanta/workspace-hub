@@ -9,7 +9,7 @@
 ## Engineering-Critical Labels
 `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, `cat:data-pipeline`
 ## Workflow
-- GSD framework: `/gsd:help` for commands, `/gsd:new-project` to initialize; tasks as GitHub issues
+- Tasks tracked as GitHub issues via GSD framework; no local work-queue. Use `/gsd:help` for commands, `/gsd:new-project` to initialize
 ## Commands
 - Python: `uv run` always — never bare `python3`
 - Git: commit to `main` + push; branch only for multi-session work

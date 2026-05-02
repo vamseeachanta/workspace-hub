@@ -51,15 +51,25 @@ Typical examples:
 
 Embed live issue evidence for those follow-ups in the plan, not just prose references.
 
-### 4. Prefer deterministic workflow inspection over brittle pytest tests for YAML structure
+### 4. Prefer deterministic workflow verification over brittle pytest tests for YAML structure
 Do not create pytest files just to parse workflow YAML unless the repo explicitly wants that.
-Instead, use deterministic inspection commands in the TDD/acceptance contract.
-Example pattern:
-- verify both flake8 commands now target the intended paths
-- verify smoke step still appears before lint/mypy
-- verify smoke command remains single-line / shell-neutral
 
-This is usually less brittle than workflow-specific pytest tests.
+Default pattern:
+- start with deterministic inspection commands while drafting the plan
+- if adversarial review keeps flagging ad hoc inspection as too weak, promote the contract to a persisted verifier script such as `scripts/ci/verify_<workflow>.py`
+
+The persisted verifier should check only the bounded workflow contract, for example:
+- both flake8 commands target the intended paths
+- smoke step still appears before lint/mypy
+- smoke command remains single-line / shell-neutral
+- the exact targeted mypy tranche is still present
+
+If you choose the persisted-script route, make the plan explicit about:
+- what current-main red state the verifier would catch
+- whether the script is only a local verification artifact or also wired into CI/pre-commit later
+- why that enforcement level is sufficient for the bounded tranche
+
+This is usually less brittle than workflow-specific pytest tests and stronger than one-off inline inspection snippets.
 
 ### 5. Make local validation truly isolated
 If the repo injects global pytest addopts (coverage gates, junit, etc.), local TDD commands can fail for unrelated reasons.
@@ -67,11 +77,19 @@ Use:
 - `uv run python -m pytest ... --noconftest -o addopts=`
 for isolated red/green checks.
 
-If local mypy needs extra stubs only for the targeted verification, use:
-- `uv run --with types-PyYAML mypy ...`
-or the equivalent needed package.
+If the workflow runs only unit-marked tests, make the plan require the affected tests to carry the correct marker, e.g.:
+- `pytestmark = pytest.mark.unit`
+Otherwise the local red/green test can pass while the workflow silently skips it.
 
-Do not claim a local validation path is reproducible unless the local command includes the same extra dependency assumptions the plan relies on.
+If local mypy needs extra stubs only for the targeted verification, use:
+- `uv run --with types-PyYAML mypy ... --follow-imports=silent`
+or the equivalent needed package/flags actually proven locally.
+
+If flake8 is not directly spawnable under `uv run flake8 ...`, prefer the reproducible form:
+- `uv run --with flake8 python -m flake8 ...`
+Record the exact command that reproduced the blocker and the exact command expected to go green.
+
+Do not claim a local validation path is reproducible unless the local command includes the same extra dependency assumptions and flags the plan relies on.
 
 ### 6. Be honest about review artifacts
 Empty review files are invalid artifacts, not completed reviews.
@@ -89,6 +107,44 @@ A good bounded post-smoke CI plan should require:
 - exact local validation commands
 - explicit recording of the next exposed failure surface after the blocker-removal tranche
 - explicit linkage to follow-up issues for excluded broad debt
+- explicit statement of any temporary gate narrowing tradeoff (for example, targeted mypy files instead of broad `src/`) and where re-expansion debt is tracked
+- explicit note on likely next blocker after the current tranche (for example coverage thresholds) so "not fully green yet" is disclosed up front
+- an explicit CI-parity note distinguishing isolated local red/green commands from the real workflow invocation
+- at least one attested real-workflow command/result for the likely next blocker, not just a hypothetical warning
+
+### CI-parity hardening rule
+If you use isolated local pytest commands such as `--noconftest -o addopts=` for TDD, the plan must also say what real workflow command will still run in CI and what divergence remains. Do not let review readers infer equivalence when there is none.
+
+Required pattern:
+1. keep isolated local commands for bounded red/green work
+2. separately capture the real workflow command shape (markers, conftest/addopts, coverage thresholds)
+3. state explicitly that local green does not imply CI green when the workflow still enforces broader coverage or different discovery behavior
+
+Example of useful attested next-blocker evidence:
+- `pytest tests/unit/ --cov=src --cov=. --cov-report=term-missing --cov-fail-under=80 --verbose -m unit`
+- result: fails on coverage threshold even after the current lint/type tranche
+
+This evidence should be folded into the plan so the success contract reads as:
+- remove the current first blocker(s)
+- expose/record the next real blocker
+- do not imply end-to-end green if the real workflow still predictably fails at coverage
+
+### Persisted verifier enforcement rule
+If adversarial review rejects ad hoc YAML inspection and pushes you toward a persisted verifier script (for example `scripts/ci/verify_<workflow>.py`), the plan must specify the verifier's enforcement level.
+
+Do not stop at "we will add a verifier script." Also say one of:
+- local-only verification artifact for this tranche, with rationale
+- wired into CI in the same issue
+- wired into pre-commit in the same issue
+- deferred enforcement, with an explicit follow-up issue
+
+Also define the verifier's concrete red state on current main. Example assertions:
+- wrong flake8 target scope
+- smoke step ordered after lint/mypy
+- shell-specific multiline smoke command reintroduced
+- mypy target widened/narrowed away from the approved tranche
+
+Without this, review will correctly treat the verifier as under-specified.
 
 ## Reusable command patterns
 
