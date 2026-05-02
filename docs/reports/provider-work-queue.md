@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-01T18:33:57.219754Z
+Generated: 2026-05-02T00:50:16.652383Z
 Current week: 2026-W18
 Recommended provider order: gemini, codex, claude
 
@@ -10,24 +10,24 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 8
-- Total routed candidates: 162
+- Total routed candidates: 164
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2540 epic(llm-wiki): overnight Elements corpus planning wave after #2536 | yes | strategy/workflow/architecture language | priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2490 chore(ci-health): digitalmodel Quality Gates coverage gate blocker (split from #2441) | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:infrastructure, status:plan-approved |
 | #2510 feat(cad): build Python layout/CAD automation demo for chip/package geometries | yes | strategy/workflow/architecture language | priority:medium, cat:engineering, cat:tooling, status:plan-approved, domain:semiconductor, domain:chip-design |
-| #2541 feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements | yes | strategy/workflow/architecture language | priority:medium, cat:data-pipeline, domain:marine, domain:knowledge-management, status:plan-approved |
 | #2544 feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates | yes | strategy/workflow/architecture language | priority:medium, cat:data-pipeline, domain:marine, domain:knowledge-management, status:plan-approved |
 | #2566 test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
 | #2567 feat(naval-arch): standards-backed steering gear and rudder-stock design checks | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
 | #2568 feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
+| #2574 fix(digitalmodel-ci): Quality Gates blocked by missing `seaborn` and hardcoded absolute paths | yes | strategy/workflow/architecture language | status:plan-approved |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 12
-- Total routed candidates: 36
+- Total routed candidates: 34
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

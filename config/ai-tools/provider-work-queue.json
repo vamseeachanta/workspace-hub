@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-01T18:33:57.219754Z",
+  "generated_at": "2026-05-02T00:50:16.652383Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-05-01T18:33:55.480833Z",
+  "scorecard_generated_at": "2026-05-02T00:50:14.725211Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 8,
-      "total_candidates": 162,
+      "total_candidates": 164,
       "top_issues": [
         {
           "number": 2540,
@@ -47,7 +47,7 @@
             "cat:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-29T10:02:17Z",
+          "updatedAt": "2026-05-01T20:59:33Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -85,30 +85,6 @@
           ]
         },
         {
-          "number": 2541,
-          "title": "feat(llm-wiki): plan curated SESA LNG corpus extraction from Elements",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2541",
-          "labels": [
-            "priority:medium",
-            "cat:data-pipeline",
-            "domain:marine",
-            "domain:knowledge-management",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-29T14:31:03Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2544,
           "title": "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2544",
@@ -119,7 +95,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-29T14:30:53Z",
+          "updatedAt": "2026-05-01T20:59:44Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -169,7 +145,7 @@
             "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-01T00:41:52Z",
+          "updatedAt": "2026-05-01T21:10:32Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -206,6 +182,26 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2574,
+          "title": "fix(digitalmodel-ci): Quality Gates blocked by missing `seaborn` and hardcoded absolute paths",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2574",
+          "labels": [
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-01T20:30:04Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -213,7 +209,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 12,
-      "total_candidates": 36,
+      "total_candidates": 34,
       "top_issues": [
         {
           "number": 2269,
