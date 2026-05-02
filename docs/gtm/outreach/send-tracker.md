@@ -51,8 +51,8 @@ Run this before clicking send on any of the matrix rows. Failing any item = do N
 
 Matrix rows that are documented as **not send-ready** until follow-up work lands. Pulling these into actual outbound without the noted upgrade is operationally dishonest.
 
-- **Row 14 Bourbon / Gulf Offshore** — narrative split deferred (matrix §3b). Do not send until Bourbon row is split from Gulf Offshore row OR Gulf Offshore row is dropped.
-- **Row 17 Otto Candies** — Kelly Ann Candies sold to Aqueos in early 2026; vessel substitution pending (matrix §3b).
+- ~~**Row 14 Bourbon / Gulf Offshore** — narrative split deferred~~ → ✅ **RESOLVED 2026-05-01** in commit [`a29148192`]: Row 14 retitled "Bourbon Offshore (post-SPP)"; "Gulf Offshore" reference dropped (research confirmed GulfMark absorbed into Tidewater Row 18 since 2018-11-15). Matrix §3b documents.
+- ~~**Row 17 Otto Candies** — Kelly Ann Candies sold to Aqueos~~ → ✅ **RESOLVED 2026-05-01** in commits [`a29148192`] (vessel substitution) + [`c435869b3`] (P2→P1 promotion): Sub-Sea Candies (340 ft DP2 MPSV, ex-Harvey Sub-Sea) replaces Kelly Ann; Otto Candies promoted to P1 to join the GoM P1 block (#15 + #16 + #17) per #2562. Matrix Row 17 + §1 sequence row 9 + §3b RESOLVED documents.
 - WAF rows (1, 2, 3, 4, 15, 19, 24): URL works in real browsers but probe-fails. Pre-send rule = human reviewer clicks the link. Document the click date in a "last verified" annotation if you want to send the same row twice in a quarter.
 
 ## Aggregate metrics (filled in weekly)

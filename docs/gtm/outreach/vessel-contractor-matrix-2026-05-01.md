@@ -83,10 +83,12 @@ campaign-narrative alignment with `docs/gtm/email-outreach-templates.md`.
    lead with Demo 4 catenary-screening because S-lay is their public hook.
 8. **McDermott (#4)** — GoM deepwater pipelay overlap with our portfolio
    narrative; Demo 2 multi-code reconciliation is the clean entry.
-9. **Otto Candies (#17)** — promoted from P2 to P1 on 2026-05-01 after the
-   Harvey Gulf 4-MPSV acquisition (2024) brought Sub-Sea Candies (340' DP2,
-   250-MT AHC crane) into the fleet, making the MPSV roster peer to
-   Hornbeck on capability. Joins the GoM P1 block (#15 + #16 + #17) per
+9. **Otto Candies (#17)** — promoted from P2 to P1 on 2026-05-01. The 2026
+   trigger was the Kelly Ann Candies divestiture to Aqueos Corp (early 2026),
+   which forced a fleet-roster re-look; the underlying capability shift was
+   the Harvey Gulf 4-MPSV acquisition (2024) which brought Sub-Sea Candies
+   (340' DP2, 250-MT AHC crane) into the fleet, making the MPSV roster peer
+   to Hornbeck on capability. Joins the GoM P1 block (#15 + #16 + #17) per
    #2562 GoM expansion lane. D3 mudmat + D5 jumper land cleanly.
 
 **Sequencing logic.** Send the first wave to (1)–(4) before the rest because
@@ -252,9 +254,10 @@ Plus **niche extension for capability-map gaps (8):**
   supply) in the row narrative; Hornbeck / Chouest / Otto Candies are
   countable install contractors with MPSV capability.
 - [x] Each High-priority GoM target maps to Demo 3, Demo 5, or a clearly stated
-  no-demo-gap → Hornbeck (#15) → D3+D5; Chouest (#16) → D5+D1; LNG terminal
-  GoM rows (#22 Cheniere, #23 Venture Global) explicitly carry no-demo-gap
-  flags routed to the §2 berth-operability gap.
+  no-demo-gap → Hornbeck (#15) → D3+D5; Chouest (#16) → D5+D1; **Otto Candies
+  (#17) → D3+D5 (promoted P2→P1 on 2026-05-01 per `c435869b3`, joining the GoM
+  P1 block per #2562)**; LNG terminal GoM rows (#22 Cheniere, #23 Venture Global)
+  explicitly carry no-demo-gap flags routed to the §2 berth-operability gap.
 - [x] Public artifact avoids individual contact details and private route
   disclosures → confirmed; no PII anywhere.
 
