@@ -1,6 +1,6 @@
 # Plan for LLM-Wiki Completeness W3-B: Bounded ISO 19900-Series Offshore-Structures Summary Promotion
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** _not yet filed — this plan file is the deliverable; issue creation is downstream of plan-review (per `feedback_never_offer_to_self_label_plan_approved.md`, no self-approval, no pre-authorization)_
@@ -48,7 +48,7 @@
 ### LLM Wiki pages consulted
 
 - `knowledge/wikis/engineering-standards/wiki/standards/api-17e.md` — only existing engineering-standards code page; sets metadata-only frontmatter style this plan replicates eight times.
-- `knowledge/wikis/engineering-standards/wiki/index.md` — currently `page_count: 5`, `source_count: 5` (all 5 are *sources*; `wiki/standards/` contains 1 file, `api-17e.md`). Per the W1-A and W2-A plans both still in plan-review, `page_count` arithmetic must be computed from **present-tense** state, not assumed-merged state. Present-tense floor before this plan: 5 sources + 1 standards page (`api-17e`) = 6. After this plan ships standalone: 6 + 8 new ISO pages = 14. If W1-A and W2-A both land first, the count becomes 14 + 10 (API) + 10 (DNV) = 34; the implementation step MUST recompute against live state at write-time, not hardcode.
+- `knowledge/wikis/engineering-standards/wiki/index.md` — currently `page_count: 5`, `source_count: 5` (the `page_count: 5` field tracks `source_count` and is itself stale; live `find knowledge/wikis/engineering-standards/wiki -name "*.md" | wc -l` returns **9** markdown files — 1 index + 5 sources + 1 standards (`api-17e.md`) + 2 other top-level pages). Per the W1-A and W2-A plans both still in plan-review, `page_count` arithmetic must be computed from **present-tense live** state, not assumed-merged state. Present-tense floor before this plan: 9 (live count). After this plan ships standalone: 9 + 9 new ISO pages = 18 (the implementation step's index update MUST also correct the stale `page_count: 5` value to the live count). If W1-A and W2-A both land first, recompute live at write-time; the implementation step MUST recompute against live state at write-time, not hardcode.
 - `knowledge/wikis/engineering-standards/CLAUDE.md` — defines the standards-page extra fields (`code_id`, `publisher`, `revision` required at L0 prose); the new pages will all comply. The schema's example values (`csa-z276`, `api-17j`, `ocimf-meg4`) confirm lowercase-kebab convention.
 - `knowledge/wikis/engineering/wiki/standards/` — verified 2026-05-02 via the W1-C audit findings: contains 9 files (DNV ×5, API ×1, OCIMF ×2, TEMPLATE ×1) — **NO ISO 19900-series page exists in the engineering wiki either**. This plan is the first ISO 19900-series promotion across BOTH wiki domains; cross-wiki collision risk is zero.
 
@@ -246,8 +246,9 @@ The test file uses a parametrized fixture iterating over the 9 page paths. Citat
 | Create | `knowledge/wikis/engineering-standards/wiki/standards/iso-19903.md` | Bounded summary for ISO 19903:2019 — Fixed concrete (no on-disk draft; ISO portal-only; included for series completeness) |
 | Create | `knowledge/wikis/engineering-standards/wiki/standards/iso-19904-1.md` | Bounded summary for ISO 19904-1:2019 — Floating offshore (1 internal hit; included for series completeness — floating is a major calc surface) |
 | Create | `knowledge/wikis/engineering-standards/wiki/standards/iso-19905-1.md` | Bounded summary for ISO 19905-1:2023 — MODU site assessment (1 internal hit; multiple drafts on disk; included because BSEE study cited in resource intel relies on this code) |
-| Modify | `knowledge/wikis/engineering-standards/wiki/index.md` | Append "## Standards" section + 9 new rows; bump `page_count` arithmetically against live state at write-time (do NOT hardcode against assumed-merged W1-A or W2-A counts) |
-| Modify | `data/document-index/standards-transfer-ledger.yaml` | Add 9 new ledger rows (`ISO-19900`, `ISO-19901-1`, `ISO-19901-2`, `ISO-19901-4`, `ISO-19901-7`, `ISO-19902`, `ISO-19903`, `ISO-19904-1`, `ISO-19905-1`) so all wiki pages map to a real ledger ID |
+| Modify | `knowledge/wikis/engineering-standards/wiki/index.md` | Append "## Standards" section + 9 new rows; correct the stale `page_count: 5` to the live count and bump arithmetically against live state at write-time (do NOT hardcode against assumed-merged W1-A or W2-A counts) |
+| Modify | `knowledge/wikis/engineering-standards/CLAUDE.md` | Add `revision_source` (required when `revision != "public-metadata-required-before-citation-use"`) and `verified_on` (required) to the "Standards page extra fields" schema table — formalizes the de-facto convention used by `api-17e.md` so future W4 plans cannot drop the field on the grounds that the schema doesn't require it (per r1 review MINOR-2) |
+| Modify | `data/document-index/standards-transfer-ledger.yaml` | Add 9 new ledger rows (`iso-19900`, `iso-19901-1`, `iso-19901-2`, `iso-19901-4`, `iso-19901-7`, `iso-19902`, `iso-19903`, `iso-19904-1`, `iso-19905-1`) so all wiki pages map to a real ledger ID. **Casing rule (per r1 review MINOR-5):** ledger `id:` values match wiki `code_id` byte-for-byte (lowercase-kebab; e.g., `iso-19901-7`, NOT `ISO-19901-7`). `test_ledger_alignment` does byte-for-byte equality; no case-insensitive comparison. Implementation step MUST verify W2-A (DNV) and W1-A (API) ledger casing for parity at write-time; if those plans landed with uppercase IDs, raise as a follow-up unifying decision before this plan writes. |
 | Create | `tests/knowledge/test_engineering_standards_iso_19900_series_pages.py` | Test contract: frontmatter, no-raw-text, citation resolvability, ledger alignment, cross-wiki uniqueness |
 | Update | `docs/plans/README.md` | Add this plan to the index |
 
@@ -270,12 +271,18 @@ All tests in `tests/knowledge/test_engineering_standards_iso_19900_series_pages.
 | `test_body_structure_is_whitelisted_only` | positive-shape: body contains only the four allowed structural sections | page body | top-level `##` headings exactly subset of `{"Scope", "Why this page exists", "Where to find the full text", "Cross-references"}` |
 | `test_links_only_pointer_to_canonical_url` | the page mentions the ISO portal canonical URL | page body | regex `iso\.org/standard/\d+\.html` present in "Where to find" section (every page; portal is canonical even when on-disk draft exists) |
 | `test_citation_schema_resolvable` | downstream resolver — actually reads the wiki page (W2-A P2-5 pattern) | invoke `_read_frontmatter` (or registry-level `Citation` resolver) per page | resolver returns matching `code_id`/`publisher`/`revision`; `CitationResolutionError` not raised |
-| `test_ledger_alignment` | every page's `code_id` resolves to a row in `standards-transfer-ledger.yaml` | wiki frontmatter `code_id` | matching `id:` row found in ledger YAML |
+| `test_ledger_alignment` | every page's `code_id` resolves to a row in `standards-transfer-ledger.yaml` (per r1 review MINOR-5: byte-for-byte equality, NOT case-insensitive) | wiki frontmatter `code_id` | matching `id:` row found in ledger YAML; equality is exact-string (lowercase-kebab on both sides) |
 | `test_index_lists_all_nine` | wiki index updated | `index.md` contents | each of 9 page links present in "## Standards" section |
 | `test_cross_wiki_code_id_uniqueness` | inherited from W2-A | scan all `knowledge/wikis/*/wiki/standards/*.md` | no `code_id` value duplicated across wiki domains for any ISO code (since `engineering/wiki/standards/` has zero ISO entries today, expected to pass trivially; test exists to catch future regressions) |
 | `test_umbrella_cross_reference` | series-cohesion check — every part page back-references the umbrella | each page (8 parts) | body contains `[[iso-19900]]` link; the umbrella page itself is exempted |
+| `test_cross_reference_budget_bounded` | enforces the "umbrella + ≤2 normative siblings" budget committed in Risks (per r1 review MINOR-3) | each part page (8 parts) | count of `[[iso-...]]` wiki-link occurrences in body (excluding the page's own `code_id`) is `≤ 3` (umbrella + ≤2). The umbrella page `iso-19900.md` is exempted (it lists every part) |
 
-`RAW_TELLTALE_PHRASES` will be a narrowly-scoped list (≤15 entries) drawn from ISO publication front-matter conventions — e.g. `"© ISO 20"` (matches any year 2000-2099), `"All rights reserved"`, `"Reproduction or use in any form"`, `"International Organization for Standardization"`, `"Case postale 56"`, `"CH-1211 Geneva"`, `"www.iso.org"` (when followed by copyright prose, not as a bare URL — see Risks for distinguisher), `"Reference number ISO"`, `"INTERNATIONAL STANDARD ISO"` — phrases that appear only if raw cover/copyright pages were copied. The list will exclude the standard's title and code identifier (which are required). The ISO-specific list will NOT overlap with the OCIMF, API, or DNV denylists.
+`RAW_TELLTALE_PHRASES` will be a narrowly-scoped list (≤20 entries) drawn from ISO publication front-matter conventions AND ISO working-draft conventions (per r1 review MINOR-4 — the on-disk 19905-1 corpus contains `.doc`/`.docx` working drafts that carry track-changes annotations and ballot-comment sheets which the published-cover denylist does not catch):
+
+- **Published-edition cover/copyright telltales:** `"© ISO 20"` (matches any year 2000-2099), `"All rights reserved"`, `"Reproduction or use in any form"`, `"International Organization for Standardization"`, `"Case postale 56"`, `"CH-1211 Geneva"`, `"www.iso.org"` (when adjacent to copyright prose, not as a bare URL — see Risks for distinguisher), `"Reference number ISO"`, `"INTERNATIONAL STANDARD ISO"`.
+- **Working-draft / ballot / committee telltales** (added per r1 MINOR-4): `"FDIS ballot"`, `"DIS comment"`, `"ISO/TC 67"` (the technical committee for petroleum/natural-gas industries; appears in cover sheets of every working draft in the corpus), `"ISO/TC 67/SC 7"` (the offshore-structures sub-committee), `"Editing committee"`, `"track changes"`.
+
+The list excludes the standard's title and code identifier (which are required). The ISO-specific list will NOT overlap with the OCIMF, API, or DNV denylists. Shingle-match check is documented as a planned W2-B follow-up (inherited from W2-A risk register) and is the durable answer to the partial-denylist class of risks.
 
 ---
 
@@ -301,19 +308,22 @@ All tests in `tests/knowledge/test_engineering_standards_iso_19900_series_pages.
 
 ## Adversarial Review Summary
 
-<!-- This section is filled in after Step 4 (adversarial review) completes. Plan is in draft status; review has not yet been performed. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | TBD | TBD — to be filled at plan-review handoff |
+| Claude (internal) | MINOR | 5 MINOR — addressed inline; #2471 corrected framing adopted; draft-vs-published revision_source contract retained |
 | Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
-| Gemini | UNAVAILABLE | gemini CLI cwd=/tmp sandbox cannot resolve repo paths |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** TBD (plan currently in draft)
+**Overall result:** PASS-with-revisions (5 MINOR fixes applied 2026-05-02)
 
-**Revisions made based on review:** none yet — plan in draft.
+**Revisions made based on review:**
+- MINOR-1: corrected resource-intel page-count arithmetic (live `find` floor = 9, not 6); index-update item now also corrects the stale `page_count: 5` value.
+- MINOR-2: added `Modify | knowledge/wikis/engineering-standards/CLAUDE.md` line item to formalize `revision_source` and `verified_on` in the Standards page extra-fields schema.
+- MINOR-3: added `test_cross_reference_budget_bounded` parametrized test enforcing the umbrella + ≤2 normative-siblings cap (≤3 `[[iso-...]]` links per part page).
+- MINOR-4: extended `RAW_TELLTALE_PHRASES` denylist with working-draft / ballot / committee telltales (`"FDIS ballot"`, `"DIS comment"`, `"ISO/TC 67"`, `"ISO/TC 67/SC 7"`, `"Editing committee"`, `"track changes"`) for the `.doc`/`.docx` 19905-1 working-draft corpus.
+- MINOR-5: added byte-for-byte ledger-ID casing rule (lowercase-kebab `iso-19901-7`, not `ISO-19901-7`); rewrote Files-to-Change ledger row IDs in lowercase; updated `test_ledger_alignment` to assert exact-string equality.
 
-**Provenance:** Single-author Claude planning per memory `feedback_permission_gate_blocks_cross_review.md`. r0 (initial draft).
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 

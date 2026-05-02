@@ -1,6 +1,6 @@
 # Plan for W3-D: feat(llm-wiki): engineering wiki riser sub-domain topical expansion — 8 core concept pages
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2597 (sibling to #2589 W1-D, #2588 W1-C, #2592 W2-C, #2593 W2-D under the #2540 Elements wave)
@@ -31,12 +31,12 @@ Wiki target tree: `knowledge/wikis/engineering/wiki/` — 105 markdown files on 
   - `digitalmodel/tests/test_catenary_riser_summary.py`, `digitalmodel/tests/drilling_riser/`, `digitalmodel/tests/orcaflex/test_riser_config.py`, `digitalmodel/tests/subsea/catenary_riser/`.
   - `digitalmodel/.github/workflows/catenary-riser-tests.yml` (CI runs catenary-riser tests).
   - `digitalmodel/docs/domains/risers/{risers.md, damping.md, _installation.md}` and `digitalmodel/docs/domains/riser_analysis/stackup_schematic/`.
-  - All these are calc-side modules with zero current cross-references back into `knowledge/wikis/engineering/wiki/concepts/` (verified via grep — see Evidence). The new concept pages will make those modules reachable from the wiki.
+  - All these are calc-side modules with zero current cross-references back into `knowledge/wikis/engineering/wiki/concepts/` (verified via grep — see Evidence). The new concept pages will make those modules reachable from the wiki (concept pages will themselves not edit calc-side files; that is calc-side follow-up work under the citation-contract rule).
 - Gap: every riser configuration topology (free-hanging catenary, lazy-wave, steep-wave, lazy-S, pliant-wave, hybrid riser tower) lacks a dedicated concept page; SCR design considerations (touchdown-point migration, soil-riser interaction trench, departure-angle envelope) are scattered across `viv-riser-fatigue.md` only; TTR-specific topics (top-tension envelope, tensioner stroke, taper joint, stress joint, keel joint) are uncovered; flexible-riser annulus integrity and bend-stiffener fatigue are uncovered; drilling-riser air-gap / weak-point / disconnect topics are uncovered despite the `frontierdeepwater/Engineering/risers/Airgap/` corpus and the `digitalmodel/drilling_riser/operability.py` module; J-tube / I-tube pull-in transitions are uncovered; riser global-design load-case taxonomy (extreme, fatigue, accidental, installation) is uncovered.
 
 ### Standards
 
-This plan creates **concept pages**, not standards pages. Per `.claude/rules/calc-citation-contract.md`, only calc modules emit `Citation` instances; concept pages name standards bodies and titles by reference but do not enumerate clauses, thresholds, or formulas. Future standards-page promotion (when a calc module imports a constant from one of these standards) will follow the #2471-sanctioned `wiki/standards/<code-id>.md` routing principle, using the precedent set by `dnv-rp-c203.md`, `dnv-os-f201.md` (parallel sibling W3-B per prompt — currently planned, not yet codified at the time of writing), and `api-579-ffs.md`. Standards-page production is therefore **out of scope for this plan**.
+This plan will create **concept pages**, not standards pages. Per `.claude/rules/calc-citation-contract.md`, only calc modules emit `Citation` instances; concept pages name standards bodies and titles by reference but do not enumerate clauses, thresholds, or formulas. Future standards-page promotion (when a calc module imports a constant from one of these standards) will follow the #2471-sanctioned `wiki/standards/<code-id>.md` routing principle, using the precedent set by `dnv-rp-c203.md`, `dnv-os-f201.md` (parallel sibling W3-B per prompt — currently planned, not yet codified at the time of writing), and `api-579-ffs.md`. Standards-page production is therefore **out of scope for this plan**.
 
 | Standard | Status | Source |
 |---|---|---|
@@ -49,7 +49,8 @@ This plan creates **concept pages**, not standards pages. Per `.claude/rules/cal
 | DNV-RP-F204 (Riser Fatigue) | referenced — already cited by `concepts/viv-riser-fatigue.md` | https://www.dnv.com/ |
 | ISO 13628-2 (Petroleum and natural gas industries — Subsea production systems — Part 2: Unbonded flexible pipe systems for subsea and marine applications) | referenced | https://www.iso.org/standard/41322.html |
 | ISO 13628-7 (Petroleum and natural gas industries — Subsea production systems — Part 7: Completion/workover riser systems) | referenced | https://www.iso.org/ |
-| ISO 19901-7 (Stationkeeping — also covers riser-vessel interface in revised editions) | cross-link to W3-B sibling plan; reference only | W3-B plan artifact (sibling) |
+| ISO 13624-1 (Petroleum and natural gas industries — Drilling and production equipment — Part 1: Design and operation of marine drilling riser equipment) | referenced (correct ISO part for marine drilling riser; replaces the prior plan's mis-attribution of ISO 19901-7 to riser scope) | https://www.iso.org/standard/41927.html |
+| ISO 19901-7 (Petroleum and natural gas industries — Specific requirements for offshore structures — Part 7: Stationkeeping systems for floating offshore structures and mobile offshore units) | referenced for **mooring/stationkeeping context only** (not riser scope); included here because riser-vessel interface boundary depends on the stationkeeping reference frame. **Correction relative to prompt framing:** the prompt's claim that "W3-B handles ISO 19901-7 family" mis-locates 19901-7 in the riser substrate; ISO 19901-7 is stationkeeping-scope. New riser-design pages will cite 19901-7 only as a boundary/reference-frame pointer (e.g., "vessel offset envelope per ISO 19901-7"), not as a riser standard. | https://www.iso.org/standard/77017.html |
 
 ### LLM Wiki pages consulted
 
@@ -73,7 +74,7 @@ This plan creates **concept pages**, not standards pages. Per `.claude/rules/cal
 - #2589 — OPEN, "feat(llm-wiki): naval-architecture wiki topical expansion (W1-D)" — sibling shape; same wave; non-overlapping wiki target.
 - #2592 — OPEN, "feat(llm-wiki): maritime-law wiki topical expansion (W2-C)" — sibling.
 - #2593 — OPEN, "audit(data): online-resource-registry refresh (W2-D)" — sibling.
-- /mnt/ace inventory: 32 directories under `/mnt/ace/2H/` including `2100 BLK31 SLOR Design`, `31057 ENI Riser and Subsea Structures Analysis`, `31098 Grupo-R Piklis-1DL Drilling Riser Analysis`, `31242 Shell Prelude Riserless Completion`, `31305 Drilling Risers Wellheads and Conductors`, `31381 Riser Market Study`, `31519 FMOG Marlin TTR Life Extension`, `31584 Drilling Riser IM`, `3425 Repsol Suriname Drilling Riser Analysis`, `3824 BP Macondo Containment Riser Analysis`. Plus `/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements/`, `/mnt/ace/digitalmodel/docs/risers/literature/{Catenary Curve.pdf, RP-F105.pdf}`, `/mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/`, `/mnt/ace/frontierdeepwater/Engineering/risers/Airgap/`, `/mnt/ace/client_projects/energy_drilling_riser/{Diverter and riser man.pdf, NOV riser man.pdf}`, `/mnt/ace/aceengineer-admin/Experience/{FDAS_Check_RiserAnalysis.pdf, 2016-11_FDAS_MooringRiserAnalysis.pdf}`, `/mnt/ace/client_projects/energy_integrity/0191 KBR MC518 Riser FFS`, `/mnt/ace/client_projects/energy_integrity/0183 KBR Riser FFS`. Plan does NOT extract from these PDFs (per #2482 deny-list); concept pages will cite them by reference.
+- /mnt/ace inventory: 32 directories under `/mnt/ace/2H/` including `2100 BLK31 SLOR Design`, `31057 ENI Riser and Subsea Structures Analysis`, `31098 Grupo-R Piklis-1DL Drilling Riser Analysis`, `31242 Shell Prelude Riserless Completion`, `31305 Drilling Risers Wellheads and Conductors`, `31381 Riser Market Study`, `31519 FMOG Marlin TTR Life Extension`, `31584 Drilling Riser IM`, `3425 Repsol Suriname Drilling Riser Analysis`, `3824 BP Macondo Containment Riser Analysis`. Plus `/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements/`, `/mnt/ace/digitalmodel/docs/risers/literature/{Catenary Curve.pdf, RP-F105.pdf}`, `/mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/`, `/mnt/ace/frontierdeepwater/Engineering/risers/Airgap/`, `/mnt/ace/client_projects/energy_drilling_riser/{Diverter and riser man.pdf, NOV riser man.pdf}`, `/mnt/ace/aceengineer-admin/Experience/{FDAS_Check_RiserAnalysis.pdf, 2016-11_FDAS_MooringRiserAnalysis.pdf}`, `/mnt/ace/client_projects/energy_integrity/0191 KBR MC518 Riser FFS`, `/mnt/ace/client_projects/energy_integrity/0183 KBR Riser FFS`. Plan will NOT extract from these PDFs (per #2482 deny-list); concept pages will cite them by reference.
 - WebSearch — "API RP 17B flexible pipe technical content": API RP 17B (4th edition, Mar 2014, errata Aug 2017) covers unbonded flexible pipe configurations (free-hanging catenary, lazy-wave, steep-wave, lazy-S, steep-S, pliant-wave, Chinese lantern, S- and tethered-S), end-fittings, ancillary components (bend stiffener, bend restrictor, buoyancy modules, tether clamp, mid-water arch), failure modes (annulus flooding, tensile-armour buckling/birdcaging, pressure-armour fatigue, polymer-sheath ageing, bend-stiffener fatigue), and design loads. Companion document API RP 17J (4th ed.) is the unbonded-flexible-pipe specification.
 - WebSearch — "DNV-OS-F201 riser standards table of contents": DNV-OS-F201 "Dynamic Risers" (current edition Aug 2010 with later amendments) covers metallic-riser design philosophy (LRFD + WSD), design loads, global analysis methods (regular-wave/irregular-wave/Morison/diffraction), strength criteria (ULS, ALS, FLS, SLS), riser materials, fabrication, installation, operation, and decommissioning. Sibling DNV-OS-F101 (Submarine Pipeline Systems) is pipeline-scope and is **explicitly excluded** from this plan.
 - digitalmodel cross-refs: `digitalmodel/src/digitalmodel/drilling_riser/operability.py` implements drilling-riser operability envelopes (top tension, weather window, recoil); `damping.py` covers riser structural and hydrodynamic damping; `stackup.py` builds the riser joint stackup; `tool_passage.py` covers tool passage / drift diameter. `digitalmodel/tests/orcaflex/test_riser_config.py` exercises the OrcaFlex riser model bridge.
@@ -170,7 +171,7 @@ This confirms: VIV is dense (57 hits) but every other riser concept is either ze
 
 **digitalmodel cross-ref baseline** (zero-cross-ref claim verification — `grep -rE "knowledge/wikis/engineering" digitalmodel/src/ digitalmodel/scripts/ digitalmodel/tests/ 2>&1 | wc -l`):
 
-- Result: 0 — confirms calc-side modules do not yet reference back into the engineering wiki. Adding these concept pages does not by itself create a cross-ref; that is calc-side work for a follow-up issue under the citation-contract rule.
+- Result: 0 — confirms calc-side modules do not yet reference back into the engineering wiki. Adding these concept pages will not by itself create a cross-ref; that will remain calc-side work for a follow-up issue under the citation-contract rule.
 
 **Gap proofs**:
 
@@ -238,9 +239,18 @@ function author_concept_page(slug, scope_summary):
          re-cover free-span pipeline VIV — that lives on free-span-viv-fatigue.md)
     section "Key Concepts" — 5–10 bulleted definitions, each ≤1 line
     section "Standards / References" — ≥1 bullet NAMING API RP 17B/17J/16Q/2RD,
-        DNV-OS-F201, DNV-RP-F202, DNV-RP-F204, ISO 13628-2/-7, or ISO 19901-7,
+        DNV-OS-F201, DNV-RP-F202, DNV-RP-F204, ISO 13628-2/-7, ISO 13624,
+        or ISO 19901-7,
         with stable URL — but MUST NOT enumerate specific thresholds, formulas,
         or code clauses (those belong on wiki/standards/<code-id>.md per #2471)
+    canonical forward-reference marker for not-yet-codified standards:
+        for any standards body that does NOT yet have a wiki/standards/<code-id>.md
+        page on disk (verified via Path.exists() at write-time), the citation MUST
+        be paired with an HTML comment in the canonical form
+        `<!-- TODO(W3-B): replace external URL with [[../standards/<code-id>]] when standards page lands -->`
+        immediately after the citation line. For already-codified standards
+        (e.g., DNV-RP-C203, DNV-RP-F105 — present on disk today), use a
+        relative wikilink `[[../standards/<code-id>]]` instead and emit no marker.
     section "Cross-References" — wiki-style [[link]] entries to ≥2 existing
         engineering-wiki pages (must include viv-riser-fatigue.md from at least
         one of the 8 new pages to cross-stitch the cluster)
@@ -251,9 +261,14 @@ function author_concept_page(slug, scope_summary):
 
 function update_index(index_path, new_pages):
     insert each new concept page into "Concepts" table (alphabetical by title)
-    bump page_count from 82 → 90 in frontmatter
-    bump concepts-table heading "## Concepts (32 pages)" → "## Concepts (40 pages)"
-    leave entities/sources/standards/workflows untouched (no new entries)
+    re-derive page_count at execution time:
+        new_page_count = current page_count (read from frontmatter at execution) + 8
+        # parallel-plan tolerant: if #2559 (or other plan) bumped page_count first,
+        # this still yields the correct value
+    re-derive concepts-table heading at execution time:
+        new_heading_count = current concepts-table row count + 8
+        rewrite "## Concepts (<old> pages)" → "## Concepts (<new> pages)"
+    leave entities/sources/standards/workflows untouched (no new entries from this plan)
 
 function append_log(log_path):
     append "[2026-05-02] expand | engineering W3-D — 8 riser sub-domain concept pages"
@@ -277,8 +292,8 @@ function append_log(log_path):
 | Create | `knowledge/wikis/engineering/wiki/concepts/drilling-riser-system.md` | Drilling-riser system: slip/telescopic joint, LMRP/BOP, air-gap, weak-point disconnect, recoil; references API RP 16Q + digitalmodel `drilling_riser/operability.py`, `damping.py` |
 | Create | `knowledge/wikis/engineering/wiki/concepts/riser-global-analysis-load-cases.md` | Load-case taxonomy: extreme/strength (ULS), accidental (ALS), fatigue (FLS — wave + VIV + slugging + 1st/2nd-order), serviceability (SLS), installation; references DNV-OS-F201 + API RP 2RD |
 | Create | `knowledge/wikis/engineering/wiki/concepts/riser-soil-interaction.md` | Touchdown trench, soil stiffness models (linear, non-linear, Aubeny-Biscontin), trench-formation timescale, P-y-equivalent vertical for SCR; cross-links to viv-riser-fatigue.md TDP and pile-capacity-alpha-method.md soil framing |
-| Modify | `knowledge/wikis/engineering/wiki/concepts/viv-riser-fatigue.md` | Add ≤3-line "Related design pages" pointer block to the new SCR / TTR / configurations / load-cases pages so reverse traversal works (per W1-D review M2 pattern) |
-| Modify | `knowledge/wikis/engineering/wiki/index.md` | Add 8 new concept rows alphabetically into Concepts table; update "## Concepts (32 pages)" heading → "(40 pages)"; bump frontmatter `page_count: 82` → `page_count: 90` |
+| Modify | `knowledge/wikis/engineering/wiki/concepts/viv-riser-fatigue.md` | Add ≤3-line "Related design pages" pointer block to the new SCR / TTR / configurations / load-cases pages so reverse traversal works (per W1-D review M2 pattern). **Maintenance:** the existing page contains 2 `pipeline\|flowline` mentions (verified 2026-05-02 via `grep -ic "pipeline\|flowline"`); reviewers of the new pages should evaluate whether those existing mentions are material to VIV-fatigue scope; if not, remove them in the same PR for boundary consistency with the section-dominance test. |
+| Modify | `knowledge/wikis/engineering/wiki/index.md` | Add 8 new concept rows alphabetically into Concepts table; **re-derive at execution time** the Concepts heading row-count and the frontmatter `page_count` (current+8) — do not hard-code `(40 pages)` / `90` because parallel plans (e.g., #2559 OCIMF) may shift the baseline before this plan executes |
 | Modify | `knowledge/wikis/engineering/wiki/log.md` | Append `[2026-05-02] expand | engineering W3-D — 8 riser sub-domain concept pages` entry |
 | Create | `tests/knowledge/test_engineering_riser_expansion.py` | TDD frontmatter / cross-link / standards-citation / index-resolves / scope-discipline / past-tense-drift checks |
 | Update | `docs/plans/README.md` | Add this plan to plan index |
@@ -295,15 +310,18 @@ function append_log(log_path):
 | `test_at_least_one_standards_reference` | Page body cites ≥1 of API RP 17B / 17J / 16Q / 2RD, DNV-OS-F201 / RP-F202 / RP-F204, ISO 13628-2 / 13628-7 / 19901-7 (NAME ONLY — no thresholds per W1-D-revised pattern) | regex search of body text | match found per page |
 | `test_at_least_two_cross_links` | Each page contains ≥2 `[[wikilink]]`-style or relative-markdown cross-references to engineering-wiki pages that exist on disk | parse markdown links + wikilinks | ≥2 resolvable refs per page |
 | `test_at_least_one_cross_link_to_existing_riser_page` | At least one of the 8 new pages links back to `viv-riser-fatigue.md` (cluster cross-stitch) | grep across 8 new pages | ≥1 page has the link |
-| `test_no_scope_creep_into_pipeline_mooring_umbilical` | New page bodies do not own pipeline/mooring/umbilical scope. Allowed: parenthetical mention or "Out of scope" callout. Forbidden: H2/H3 sections titled with those words OR > 3 occurrences of any of `pipeline`, `mooring`, `umbilical` per page. | regex per page | each forbidden word ≤3 occurrences per page; no matching H2/H3 |
+| `test_no_scope_creep_into_pipeline_mooring_umbilical` | New page bodies do not own pipeline/mooring/umbilical scope. **Section-dominance check:** tokenise the page into top-level (H2) sections; for each section, count `pipeline\|mooring\|umbilical` keyword hits vs. `riser\|SCR\|TTR\|flexible riser\|hybrid tower\|drilling riser` keyword hits. Fail if any section's non-riser keyword count exceeds the riser keyword count. **Whitelist:** sections titled `## Scope` or `## Out of Scope` are exempt (boundary callouts are encouraged). The legacy per-page total-count cap is **dropped** because legitimate adjacency (riser-pipeline tie-in via PLET/PLEM, riser-mooring shared-pollution, SLOR-bundled umbilical) requires honest mention. | tokenise H2 sections; per-section keyword ratio | every non-whitelisted section has riser-keyword count ≥ non-riser-keyword count |
+| `test_riser_topic_dominance_positive` | Each new page contains ≥3 occurrences of `riser` OR a riser-typology subterm (`SCR`, `TTR`, `flexible riser`, `hybrid tower`, `drilling riser`) in body text — proves riser is the dominant topic and complements the section-dominance test by guarding against synonym-attack false negatives (e.g., re-covering `mooring` under "tendon fatigue" or `pipeline VIV` under "spanned-section VIV"). | regex count per page | ≥3 hits per page |
 | `test_word_count_under_400` | Concept-summary discipline (no chapter copy per #2482) | count words | each page < 400 words |
 | `test_no_pdf_extraction_markers` | New pages contain no copy-paste markers (e.g. "Page N of M" stamps, very long single paragraphs > 80 words) | heuristic | no flagged paragraphs |
 | `test_index_links_resolve` | Every relative link in `index.md` Concepts table resolves on disk | walk markdown links | 100% resolve |
-| `test_index_page_count_bumped` | `index.md` frontmatter `page_count` updated to ≥90 AND Concepts heading reads `## Concepts (40 pages)` | parse YAML + grep | both conditions met |
+| `test_index_page_count_bumped` | `index.md` frontmatter `page_count` updated to **≥90** (floor, not equality, to absorb any parallel-plan arithmetic shift — e.g., #2559 OCIMF tandem promotion landing in flight); Concepts table heading is `## Concepts (N pages)` where N matches the actual concepts-table row count after insertion (re-derived at execution time). | parse YAML + count rows | `page_count ≥ 90`; heading number == row count |
 | `test_log_entry_appended` | `log.md` contains a 2026-05-02 expand entry naming W3-D | grep | match present |
 | `test_no_past_tense_artifact_drift` | No new page contains future-work claimed-as-done phrasing. Heuristic: scan for "we added", "we created", "this page was", "completed", "delivered" outside of the explicit "## Cross-References" / link-text region | regex | zero matches |
 | `test_viv_page_pointer_block_added` | `concepts/viv-riser-fatigue.md` gains a "Related design pages" pointer block listing ≥4 of the 8 new pages | grep | match present, ≥4 links |
-| `test_no_redundant_viv_content_in_new_pages` | New pages MUST NOT re-introduce S-N curve tables, DFF tables, wake-interference S/D tables, or rainflow-counting prose — those live only on `viv-riser-fatigue.md` / `sn-curve-fatigue-definitions.md` | regex match for known phrases | zero matches per new page |
+| `test_no_redundant_viv_content_in_new_pages` | New pages MUST NOT re-introduce S-N curve tables, DFF tables, wake-interference S/D tables, or rainflow-counting prose — those live only on `viv-riser-fatigue.md` / `sn-curve-fatigue-definitions.md`. Keyword list extended to cover synonym-attack: `Strouhal`, `lock-in`, `mode-shape participation`, `Iwan-Blevins`. Also caps occurrences of the noun `fatigue` to ≤5 per page (canonical fatigue page is `viv-riser-fatigue.md`; design-state pages should reference fatigue in passing only). | regex match for known phrases + fatigue-noun cap | zero matches per new page; `fatigue` ≤5 |
+| `test_forward_reference_markers_present` | For every external standards-body URL appearing in a new page where the corresponding `wiki/standards/<code-id>.md` page does NOT exist on disk, the citation line MUST be paired with the canonical HTML comment `<!-- TODO(W3-B): replace external URL with [[../standards/<code-id>]] when standards page lands -->`. Conversely, if the standards page DOES exist on disk, the new page MUST use the relative wikilink `[[../standards/<code-id>]]` and NOT the external URL. Test enumerates all `https://` URLs whose hostname is `api.org`, `dnv.com`, or `iso.org` and asserts the marker / wikilink invariant. | regex enumerate URLs + Path.exists() + marker check | every URL satisfies the invariant |
+| `test_forward_reference_marker_count_emit` | Test emits a count and file-list of pending `TODO(W3-B):` markers across the 8 new pages so a future plan reviewing W3-B's promotion can run the test, get the deletion checklist, and discharge the markers deterministically. (Test does not fail on count > 0; it asserts count is recorded in test output for downstream tooling.) | grep across 8 new pages | count + file list emitted |
 
 ---
 
@@ -315,28 +333,39 @@ function append_log(log_path):
 - [ ] At least one of the 8 new pages will cross-link to `concepts/viv-riser-fatigue.md` (cluster stitch).
 - [ ] `concepts/viv-riser-fatigue.md` will be updated to add a "Related design pages" pointer block listing ≥4 of the new pages.
 - [ ] No new page will overlap with `viv-riser-fatigue.md` VIV-fatigue mechanics scope (no S-N tables, no DFF tables, no wake-interference S/D tables, no rainflow prose).
-- [ ] No new page will broaden scope into pipelines, mooring, or umbilicals (per prompt scope; tested via word-count cap).
-- [ ] `index.md` Concepts table will list 8 new rows (alphabetical); table heading will read `## Concepts (40 pages)`.
-- [ ] `index.md` frontmatter `page_count` will read ≥90.
+- [ ] No new page will broaden scope into pipelines, mooring, or umbilicals (enforced via section-dominance keyword-ratio test + positive riser-topic-dominance test; legitimate adjacency is preserved by H2 `## Scope` / `## Out of Scope` whitelisting, not by a per-page word cap).
+- [ ] `index.md` Concepts table will list 8 new rows (alphabetical); table heading will read `## Concepts (N pages)` where N == actual row count after insertion (re-derived at execution time, not hard-coded, to absorb parallel-plan arithmetic shift).
+- [ ] `index.md` frontmatter `page_count` will read **≥90** (floor; equality holds only if no parallel plan bumped the count first).
 - [ ] `log.md` will carry a `[2026-05-02] expand | engineering W3-D` entry.
 - [ ] `tests/knowledge/test_engineering_riser_expansion.py` will pass: `uv run pytest tests/knowledge/test_engineering_riser_expansion.py -v`.
 - [ ] No regression in existing knowledge tests: `uv run pytest tests/knowledge/ -v`.
 - [ ] Each new page will be ≤400 words (concept-summary discipline per #2482 deny-list).
+- [ ] No calc-module is expected to cite these new concept pages as standards-resolution targets until W3-B (or an equivalent follow-up) lands codified `wiki/standards/dnv-os-f201.md`, `wiki/standards/iso-19901-7.md`, `wiki/standards/iso-13624.md`, etc.; per `.claude/rules/calc-citation-contract.md`, calc-side citations continue to require direct standards-page resolution and these concept pages do NOT serve as transitive resolution targets.
+- [ ] Every external standards-body URL on a new page is paired with either (a) the canonical HTML comment `<!-- TODO(W3-B): replace external URL with [[../standards/<code-id>]] when standards page lands -->` for not-yet-codified standards, or (b) a relative `[[../standards/<code-id>]]` wikilink for already-codified standards (DNV-RP-C203, DNV-RP-F105, etc.).
 - [ ] Review artifacts will be posted under `scripts/review/results/2026-05-02-plan-W3D-engineering-riser-{claude,codex,gemini}.md`.
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | TBD | TBD |
-| Codex | TBD | TBD (note: codex-cli 0.124.0 stdin-hang regression #2479 may force UNAVAILABLE; fallback to single-author Claude r3 per memory `feedback_permission_gate_blocks_cross_review.md`) |
-| Gemini | TBD | TBD (note: Gemini sandbox overlay-blindness risk per memory `feedback_gemini_sandbox_overlay_blindness.md`) |
+| Claude (internal) | MAJOR → revised | 2 MAJOR + 5 MINOR — all addressed inline |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** PENDING
+**Overall result:** PASS-after-revision (2 MAJOR + 5 MINOR fixes applied 2026-05-02)
+
+**Revisions made based on review:**
+- (P1-1) Replaced per-page count cap on `pipeline\|mooring\|umbilical` with section-dominance keyword-ratio test (riser vs. non-riser keyword count per H2 section, with `## Scope` / `## Out of Scope` whitelisted) plus paired positive `test_riser_topic_dominance_positive` (≥3 riser-typology hits per page).
+- (P1-2) Defined canonical forward-reference HTML-comment marker `<!-- TODO(W3-B): replace external URL with [[../standards/<code-id>]] when standards page lands -->`; added TDD tests `test_forward_reference_markers_present` and `test_forward_reference_marker_count_emit`; added explicit calc-citation deferral acceptance bullet stating these concept pages are NOT transitive resolution targets.
+- (P2-1) Added maintenance note in Files-to-Change for `viv-riser-fatigue.md` flagging the existing 2 `pipeline\|flowline` mentions for reviewer evaluation in the same PR.
+- (P2-2) Switched present-tense Resource Intelligence verbs to future tense ("This plan will create", "Plan will NOT extract", "Adding these concept pages will not by itself create a cross-ref") for tense-discipline consistency.
+- (P2-3) Extended `test_no_redundant_viv_content_in_new_pages` keyword list with `Strouhal`, `lock-in`, `mode-shape participation`, `Iwan-Blevins`; added per-page cap of ≤5 `fatigue` occurrences.
+- (P2-4) Corrected ISO standards table: added ISO 13624-1 (correct part for marine drilling riser) and re-scoped ISO 19901-7 row to stationkeeping-only with explicit correction-of-prompt-framing note.
+- (P2-5) Replaced literal `82 → 90` and `(32 pages) → (40 pages)` arithmetic with re-derive-at-execution-time pattern in Pseudocode, Files-to-Change, Acceptance Criteria, and `test_index_page_count_bumped`; added Risk-section paragraph on parallel-plan arithmetic interaction (e.g., #2559 OCIMF tandem promotion).
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
@@ -345,12 +374,14 @@ function append_log(log_path):
 - **Risk: terminology drift.** "SCR" can mean "Steel Catenary Riser" (offshore) or "Silicon Controlled Rectifier" (electrical). Pages will spell out "Steel Catenary Riser (SCR)" on first occurrence per page. Similar disambiguation for TTR (Top-Tensioned Riser, not Total-Tank-Recirculation) and SLOR (Single-Line Offset Riser).
 - **Risk: cross-link explosion.** With 8 new pages plus the existing `viv-riser-fatigue.md`, a fully-meshed cross-link graph would imply 8×8=64 directed links. The Pseudocode caps each page at ≥2 cross-links and the boundary-page pattern (`riser-configurations.md` is the hub) keeps the typical link-count to 3–5 per page. Tests do not enforce an upper bound but reviewers should flag any page with >8 cross-links as over-linked.
 - **Risk: false-gap from terminology mismatch.** `viv-riser-fatigue.md` already discusses touchdown point and soil interaction in passing. The new `riser-soil-interaction.md` and `steel-catenary-riser-design.md` will explicitly cite the existing page in Scope and state the boundary (existing page = VIV-fatigue mechanics; new pages = design-state physics + soil model selection). The TDD test `test_no_redundant_viv_content_in_new_pages` enforces this.
-- **Risk: scope creep into pipeline / mooring / umbilical.** Risers share VIV physics with pipelines, share fatigue physics with mooring, and share installation transitions with umbilicals. The TDD test `test_no_scope_creep_into_pipeline_mooring_umbilical` enforces a per-page cap of ≤3 occurrences for each of those words, blocking accidental sub-domain bleed.
+- **Risk: scope creep into pipeline / mooring / umbilical.** Risers share VIV physics with pipelines, share fatigue physics with mooring, and share installation transitions with umbilicals. The TDD test `test_no_scope_creep_into_pipeline_mooring_umbilical` uses a **section-dominance keyword-ratio check** (riser-keyword count ≥ non-riser-keyword count per H2 section, with `## Scope` / `## Out of Scope` whitelisted), and a paired positive-presence test `test_riser_topic_dominance_positive` (≥3 riser-typology hits per page) blocks synonym-attack false negatives. The earlier per-page absolute cap was rejected because legitimate adjacency (riser-pipeline tie-in via PLET/PLEM, SLOR-attached umbilical, riser-mooring interface) cannot be described honestly under a count threshold.
 - **Risk: no formal seed YAML for engineering wiki.** Unlike `naval-architecture-resources.yaml`, the engineering wiki has no seed file driving `index.md` regeneration. This plan therefore edits `index.md` directly (additive insert into Concepts table, in alphabetical position). If a seed-based regenerator lands later, the seed file should pick up these 8 entries from disk by directory walk; until then, the manual edit is the single source of truth. Reviewers should flag any future plan that introduces a seed file as needing migration of these 8 entries.
 - **Risk: digitalmodel cross-ref deferred.** Adding these concept pages does NOT create calc-side `Citation` instances. Calc-side adoption (e.g., `digitalmodel/drilling_riser/operability.py` adding a citation to the new `drilling-riser-system.md`) is a separate follow-up issue under `.claude/rules/calc-citation-contract.md`. This plan's Acceptance Criteria do not require any calc-module change.
 - **Risk: parallel work collision with #2588 W1-C audit.** If the audit's prioritized child-issue list orders the riser bucket differently or sub-divides it, this plan may need re-sequencing. Mitigation: this plan is **independent** of W1-C; if W1-C closes with a competing prioritization, the user can pause this plan at `status:plan-review` and re-draft. No work is wasted because the 8 concept pages are foundational regardless of order.
-- **Risk: ISO 19901-7 W3-B sibling not yet a standards page.** The prompt cites W3-B as path-sanction for ISO 19901-7. At the time of writing, no `wiki/standards/iso-19901-7.md` exists in the engineering wiki. New pages will cite ISO 19901-7 by title and URL only and add a forward-reference comment to the W3-B sibling plan; if/when W3-B promotes that standards page, a follow-up edit will rewrite the references to relative `../standards/` links.
+- **Risk: forward-reference debt for not-yet-codified standards (DNV-OS-F201, ISO 19901-7, ISO 13624, API RP 17B/17J/16Q/2RD, DNV-RP-F202, DNV-RP-F204, ISO 13628-2/-7).** None of these standards have a `wiki/standards/<code-id>.md` on disk at the time of writing. New pages will cite each by title and URL only, paired with the **canonical HTML comment marker** `<!-- TODO(W3-B): replace external URL with [[../standards/<code-id>]] when standards page lands -->` defined in Pseudocode. The TDD tests `test_forward_reference_markers_present` and `test_forward_reference_marker_count_emit` enforce the marker invariant and emit a deletion checklist, so a future plan reviewing W3-B promotion (or any equivalent codification follow-up) can run the test to discharge markers deterministically. The marker is intentionally distinct from arbitrary forward-reference prose so that grep-based cleanup is unambiguous. **W3-B may never land**; if it doesn't, the markers persist as well-typed debt rather than dangling prose, and a different follow-up plan can codify each standard independently. Calc-side citation to these new concept pages is explicitly NOT a supported pattern (see Acceptance Criteria) — calc modules continue to cite via direct `wiki/standards/<code-id>.md` resolution per `calc-citation-contract.md`.
 - **Risk: 9th and 10th canonical topics deferred.** `concepts/riser-installation-methods.md` (reel-lay, J-lay top-down, S-lay-with-stinger, A&R) and `concepts/composite-riser-design.md` (DNV-RP-F202) are deferred to a follow-up batch to keep this plan at exactly 8 pages.
+
+- **Risk: parallel-plan arithmetic interaction with #2559 OCIMF tandem mooring promotion (and any other in-flight engineering-wiki plan).** This plan literally states `page_count: 82 → 90` and `## Concepts (32 pages) → (40 pages)`. If #2559 (or another concurrent plan) lands between this plan's approval and execution, it will modify `index.md` (e.g., promoting `ocimf-tandem-mooring.md` into the standards table moves a different counter, but any addition to any catalog table changes `page_count`). At execution time, the implementer will **re-derive both numbers from the on-disk state** — read current `page_count`, add 8, and re-count concepts-table rows after insertion — rather than committing the literal `90` / `40 pages` figures. The TDD test `test_index_page_count_bumped` already uses a `≥90` floor (not equality), but the Concepts heading literal `(40 pages)` should also be re-derived; reviewers should not block PR review on the exact heading number if a parallel plan landed first.
 
 - **Open: should `concepts/riser-installation-methods.md` ship in this batch (making it 9 pages) or in a follow-up?** Current plan defers to follow-up. Reviewer may flip the decision.
 - **Open: should this plan also touch `concepts/cathodic-protection-design.md` to add a riser-CP mention?** Risers carry CP systems, but the existing CP page is generic enough that no edit is strictly required. Current plan leaves it untouched. Reviewer may flag if CP-on-riser is sufficiently specialized to warrant a callout.

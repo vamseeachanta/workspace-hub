@@ -1,9 +1,9 @@
 # Plan for LLM-Wiki Completeness W3-A: Bounded ABS Code Body Summary Promotion
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
-> **Issue:** _not yet filed — this plan is the deliverable; issue creation is downstream of plan-review per `feedback_never_offer_to_self_label_plan_approved.md`_
+> **Issue:** [#2594](https://github.com/vamseeachanta/workspace-hub/issues/2594) (OPEN)
 > **Parent epic:** [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540) — overnight Elements corpus planning wave
 > **Sibling precedent (W1-A, API):** [#2586](https://github.com/vamseeachanta/workspace-hub/issues/2586) (OPEN) — the bounded-promotion pattern this plan inherits. **INHERITANCE BLOCKER (flagged here, not silently inherited):** the W1-A plan header still reads `Path sanction: #2471 — wiki/standards/<code-id>.md routing` and the W1-A test list cites `#2471` as the source of `code_id` (lines 9 and 225 in `docs/plans/2026-05-02-issue-2586-llm-wiki-W1A-engineering-standards-api.md`). Per memory `project_wiki_standards_path_decision.md`, [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) is **CSA-Z276-only** (verified 2026-04-25 from the issue body — see Evidence). The W1-A over-cite is preserved here as a defect to flag in W3-A's adversarial review and to track via a follow-up correction issue against W1-A; this W3-A plan does NOT inherit the over-cite.
 > **Sibling precedent (W2-A, DNV):** [#2590](https://github.com/vamseeachanta/workspace-hub/issues/2590) (OPEN) — the **revised** W2-A plan adopts the corrected #2471 framing (local sanction = `engineering-standards/CLAUDE.md` directory schema; #2471 cited only as historical origin of the frontmatter triple). This W3-A plan adopts the W2-A revised framing verbatim.
@@ -28,7 +28,7 @@
 
 ### Standards
 
-The 8-10 priority ABS documents biased toward floating production, offshore standards, subsea, materials/welding, and survey:
+The **10** priority ABS documents biased toward floating production, offshore standards, subsea, materials/welding, and survey (10 chosen to match W1-A/W2-A T2 sizing precedent):
 
 | Standard | Status | Source |
 |---|---|---|
@@ -219,15 +219,15 @@ code_id: abs-<doc-number-or-slug>      # lowercase-kebab; matches engineering-st
 publisher: ABS                          # canonical short name; full form "American Bureau of Shipping" tracked in publisher_full
 publisher_full: "American Bureau of Shipping"
 revision: "<YYYY>"                      # ABS revision convention is year-based (e.g., "2014", "2018")
-revision_source: "<URL or '/mnt/ace path' or 'publisher catalog pointer'>"
-verified_on: 2026-05-02
-public_url: <eagle.org canonical URL when known>
+revision_source: "<URL or '/mnt/ace path' or 'publisher catalog pointer'>"   # OPTIONAL — may be omitted when source isn't verifiable; not in CLAUDE.md schema, not asserted by any test (per r1 F6)
+verified_on: 2026-05-02                                                     # OPTIONAL — may be omitted; if present use this exact key (not `verified_date`)
+public_url: <eagle.org canonical URL when known>                            # OPTIONAL — may be omitted when no canonical public URL exists
 sources:
   - <one or more /mnt/ace/... paths — pointer only, never quoted>
 extraction_policy: metadata-only
 raw_copy_allowed: false
 abs_doc_number: <"GUI-115" | "GN-239" | "Rules Part 1 Offshore" | ...>
-abs_part_section: <"Part 3" | "Pt. 3 / Sec. 4" | null>     # for multi-part rule books only; see Risks
+abs_part_section: <"Part 3" | "Pt. 3 / Sec. 4">     # ONLY on the three abs-rules-*.md pages; OMIT this key entirely on Guide/GN pages (do NOT set to null — YAML `null` makes the key present and would fail test_part_section_only_on_multipart_rules)
 ---
 
 # <Full ABS document name>
@@ -288,7 +288,7 @@ All tests in a single file `tests/knowledge/test_engineering_standards_abs.py`. 
 | `test_frontmatter_has_abs_doc_number` | ABS-specific traceability | YAML frontmatter | `abs_doc_number` non-empty (e.g. `"GUI-115"`, `"GN-239"`, `"Rules Part 1 Offshore"`) |
 | `test_part_section_only_on_multipart_rules` | multi-part rule-book bridge | YAML frontmatter | only the three `abs-rules-*.md` pages carry `abs_part_section`; the seven Guide / GN pages do NOT (Guide pages are single-document, Part-numbering is a Rules-only artifact) |
 | `test_no_raw_pdf_text_bleed_through` | denylist guard (narrow ABS-specific phrase set; see Risks) | page body | none of `RAW_TELLTALE_PHRASES` present |
-| `test_body_word_count_bounded` | strict `<500` word ceiling matching W1-A and W2-A (per W2-A P3-4 fix) | page body | `0 < word_count < 500` strict on both bounds; word-count constant imported from W1-A's test file (`tests/knowledge/test_engineering_standards_api_pages.py`) at implementation time, NOT redefined |
+| `test_body_word_count_bounded` | strict `<500` word ceiling matching W1-A and W2-A (per W2-A P3-4 fix) | page body | `0 < word_count < 500` strict on both bounds; word-count constant imported from W1-A's test file (`tests/knowledge/test_engineering_standards_api_pages.py`) when present; if W1-A not yet landed, define `MAX_BODY_WORDS = 500` locally with a `# TODO: migrate to shared constant once W1-A lands` comment |
 | `test_body_structure_is_whitelisted_only` | positive-shape: body contains only the four allowed sections | page body | top-level `##` headings exactly a subset of `{"Scope", "Why this page exists", "Where to find the full text", "Cross-references"}` |
 | `test_links_only_pointer_to_mnt_ace` | the page mentions the raw path but does not embed clause text | page body | regex `/mnt/ace/O&G-Standards/ABS/` present in a "Where to find" section |
 | `test_citation_schema_resolvable` | downstream resolver — actually reads the wiki page (per W2-A P2-5 fix) | invoke the resolver function (`_read_frontmatter` from `digitalmodel/src/digitalmodel/citations/schema.py` or registry-level resolution) for each new page | resolver returns matching `code_id`/`publisher`/`revision`; `CitationResolutionError` not raised; constructor-only validation alone is hollow and is replaced by file-reading assertion |
@@ -310,6 +310,7 @@ All tests in a single file `tests/knowledge/test_engineering_standards_abs.py`. 
 - [ ] Citation downstream-resolution check (single canonical revision string per page; the page's frontmatter `revision` and the `Citation(...)` argument MUST match verbatim, since `validate_citation` does literal-equality on the revision string per `digitalmodel/src/digitalmodel/citations/schema.py`):
   - For each page where a real publisher revision is asserted in frontmatter, `python -c "from digitalmodel.citations.schema import Citation; Citation(code_id='<id>', publisher='ABS', revision='<frontmatter-revision-verbatim>', section='<placeholder>', wiki_path='knowledge/wikis/engineering-standards/wiki/standards/<id>.md')"` succeeds without error. Concrete example: `abs-gui-115-fatigue-offshore.md` will use `revision: "2014"` in BOTH frontmatter AND the `Citation(...)` call.
   - Pages whose revision cannot be pinned to a verifiable publisher edition at write-time MUST set `revision: "public-metadata-required-before-citation-use"` in frontmatter AND be excluded from this resolution check (`pytest.mark.skip(reason="stub-only, revision pending")`). The `abs-gui-002-fpso.md` (1994 — pre-internet edition; revision date confirmed via `INDEX.md`) IS pinned to `revision: "1994"`; the `abs-rules-coc-part1-offshore.md` and `abs-rules-offshore-installations.md` are pinned to `"2014"`.
+  - **Revision-discipline-for-Rules pages (NEW per r1 F5):** Because `validate_citation` does literal-equality on the `revision` string and ABS Rules books receive annual notice updates (5 corrigenda PDFs in `Notices/`), calc-callers MUST cite the **unamended base year** (`"2014"` or `"2016"`) verbatim and rely on the page's `sources` frontmatter to enumerate applicable corrigenda/notices. Frontmatter `revision` for the three `abs-rules-*.md` pages is therefore restricted to a 4-digit year string with NO notice/amendment suffix. A follow-up issue against `digitalmodel/src/digitalmodel/citations/schema.py` MAY be filed to add an optional `revision_amendments: list[str]` field; that change is OUT OF SCOPE for W3-A.
 - [ ] Ledger alignment: every page's `code_id` resolves to a row in `data/document-index/standards-transfer-ledger.yaml` (8 new rows added by this plan; 2 already exist as `ABS-GUI-00` / `ABS-GUI-002`). The ID-form mapping rule: ledger uses uppercase-with-hyphens (`ABS-GUI-115-2014`), wiki uses lowercase-kebab title-form (`abs-gui-115-fatigue-offshore`). The test resolves via a per-page `ledger_id` frontmatter key on each wiki page, asserted to exist as a row `id:` in the ledger.
 - [ ] `knowledge/wikis/engineering-standards/wiki/index.md` lists all 10 new pages under a "## Standards" section. **Arithmetic AC:** `page_count` after this plan = (current `page_count` at implementation time) + 10. The test reads the prior value from git history (parent commit) and asserts the new value equals `prior + 10`.
 - [ ] No file under `knowledge/wikis/engineering-standards/wiki/sources/` is modified by this plan.
@@ -322,22 +323,30 @@ All tests in a single file `tests/knowledge/test_engineering_standards_abs.py`. 
 
 ## Adversarial Review Summary
 
-<!-- To be populated during plan-review per `.claude/skills/coordination/issue-planning-mode/SKILL.md`. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | _pending_ | _to be produced by main session_ |
+| Claude (internal) | MINOR | 6 MINOR — addressed inline; #2471 over-citation NOT present (corrected framing adopted from W2-A revision) |
 | Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
-| Gemini | UNAVAILABLE | gemini CLI cwd=/tmp sandbox cannot resolve repo paths |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** _pending r1 single-author review_
+**Overall result:** PASS-with-revisions (6 MINOR fixes applied 2026-05-02)
+
+**Revisions made based on review:**
+- F1: Replaced stale "_not yet filed_" header with live link to [#2594](https://github.com/vamseeachanta/workspace-hub/issues/2594) (OPEN).
+- F2: Added fallback for `MAX_BODY_WORDS` constant when W1-A test file is absent at implementation time.
+- F3: Resolved "8-10" header drift to fixed **10** with W1-A/W2-A T2 sizing rationale.
+- F4: Resolved `abs_part_section` null-vs-absent contradiction — key OMITTED entirely on Guide/GN pages (not set to YAML `null`); pseudocode and Risks updated.
+- F5: Added revision-discipline-for-Rules sub-section to AC — `revision` string restricted to 4-digit base year; corrigenda enumerated via `sources` only; schema-extension follow-up flagged OUT OF SCOPE.
+- F6: Demoted `revision_source` / `verified_on` / `public_url` pseudocode fields to OPTIONAL with explicit "may be omitted" comments and key-name pinning.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk:** Copyright leakage. ABS publishes from Spring TX HQ (1701 City Plaza Drive) and Houston, with cover-page strings "American Bureau of Shipping" and "© ABS". If a future contributor pastes scope text from the PDF, the denylist may miss novel phrases. **Mitigation (inherited from W1-A/W2-A):** word-count ceiling `<500` (strict, matches W1-A) + positive-shape structural test + `extraction_policy: metadata-only` frontmatter + `raw_copy_allowed: false` + cross-review on every revision touching `wiki/standards/abs-*.md`. Reviewers should specifically watch for "American Bureau of Shipping" and "© ABS" cover-page phrases as the highest-leak-risk strings. **Honesty caveat:** denylist alone is necessary-but-not-sufficient; manual inspection required.
-- **Risk (NEW for ABS — multi-part rule-book numbering mismatch):** ABS uses `Pt.X / Sec.Y / §Z` clause-numbering inside its Rules books (e.g., "Steel Vessels Rules Part 3, Chapter 2, Section 4"). The `Citation` schema is single-document-per-`code_id` and does not natively express "Part 3 of Steel Vessels Rules". **Mitigation:** introduce a frontmatter `abs_part_section` field on the three `abs-rules-*.md` pages (covers Part 1 Offshore, Part 1 Conditions of Classification, Part 3 Steel Vessels). The field is null on the seven Guide / GN pages. Calc citations using ABS rule books MUST set `Citation.section` to a string like `"Pt.3 Ch.2 Sec.4"`; this is a `Citation.section`-string convention, NOT a schema change. Tracked here for W3-A; if calc-callers ever need richer rule-book navigation (e.g. `Citation` with `part`, `chapter`, `section` as separate fields), file a follow-up against `digitalmodel/src/digitalmodel/citations/schema.py`.
+- **Risk (NEW for ABS — multi-part rule-book numbering mismatch):** ABS uses `Pt.X / Sec.Y / §Z` clause-numbering inside its Rules books (e.g., "Steel Vessels Rules Part 3, Chapter 2, Section 4"). The `Citation` schema is single-document-per-`code_id` and does not natively express "Part 3 of Steel Vessels Rules". **Mitigation:** introduce a frontmatter `abs_part_section` field on the three `abs-rules-*.md` pages (covers Part 1 Offshore, Part 1 Conditions of Classification, Part 3 Steel Vessels). The key is **omitted entirely** on the seven Guide / GN pages (do NOT set to `null` — YAML `null` makes the key present and would fail `test_part_section_only_on_multipart_rules`). Calc citations using ABS rule books MUST set `Citation.section` to a string like `"Pt.3 Ch.2 Sec.4"`; this is a `Citation.section`-string convention, NOT a schema change. Tracked here for W3-A; if calc-callers ever need richer rule-book navigation (e.g. `Citation` with `part`, `chapter`, `section` as separate fields), file a follow-up against `digitalmodel/src/digitalmodel/citations/schema.py`.
 - **Risk:** Corpus-vs-recognized-canon mismatch. The 29 PDFs on disk under `/mnt/ace/O&G-Standards/ABS/` cover 17 Guidance Notes / 5 Notices / 7 Rules — but DO NOT include several recognized-canonical ABS offshore documents (MODU Rules, FPI Guide, Subsea Production Systems Guide, MOU). The W3-A scope is **bounded to documents on disk**, NOT the recognized canon. **Mitigation:** the priority 10 are explicitly drawn from the 29-document on-disk corpus. MODU/FPI/Subsea/MOU are deferred to a W3-B follow-up that uses publisher-portal pointers from eagle.org without a `/mnt/ace` source. The plan does NOT silently substitute a recognized-canonical name onto a different on-disk PDF. Disambiguation rule: every priority page's `sources` frontmatter MUST list at least one verifiable `/mnt/ace/...` path, asserted by `test_links_only_pointer_to_mnt_ace`.
 - **Risk (NEW for ABS — multi-edition revision selection):** GUI-115 has FOUR editions on disk (2003, 2010, 2014) plus a Commentary. Choosing the "current" revision is ambiguous without eagle.org verification. **Mitigation:** W3-A frontmatter pins to **2014** (the latest on-disk edition); `supersedes: ["GUI-115-2003", "GUI-115-2010"]` documents the lineage; the Commentary is referenced in prose only (NOT promoted as a separate page — Commentaries are not standards). Contributor verifying against eagle.org may bump to a newer edition during implementation; the test suite asserts `revision` is non-empty and matches the year regex, NOT a specific year.
 - **Risk:** Cross-wiki duplication — INVERSE of W2-A. Where W2-A faced 5x pre-existing engineering-domain DNV pages, W3-A faces ZERO pre-existing ABS pages anywhere (`ls knowledge/wikis/*/wiki/standards/abs-*` returns no matches). The 5x-collision risk does NOT apply to W3-A. **Mitigation:** AC explicitly asserts "no `engineering/wiki/standards/abs-*.md` exists at implementation time" — re-scope the plan if a future contributor preempts this by creating one; the `test_code_id_unique_across_wiki_domains` test guards against silent drift.
