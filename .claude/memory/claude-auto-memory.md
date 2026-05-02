@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-04-30
+> Last captured: 2026-05-02
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -52,12 +52,20 @@
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` tools bind to main session; subagents can't drive Chrome; partition: main=browser, subagents=research
 - [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive (any volume) has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome; stay on archive+filter surface
 - [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures up to 50 frames w/ click indicators; audit/skill-authoring/compliance artifact; start_recording → export to `docs/sessions/`
-- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's default `docs/superpowers/specs/` path is silently gitignored (workspace-hub `.gitignore:438`); write durable specs to `docs/governance/` instead *verified: 2026-05-02*
+- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's default `docs/superpowers/specs/` path is silently gitignored (workspace-hub `.gitignore:438`); write durable specs to `docs/governance/` instead
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — when Hermes runs "remove unrelated files" cleanup loops on main, parallel commits get reverted within minutes; preflight `pgrep -af 'git (rebase|stash push|commit|merge|reset|checkout)'` and use a worktree+feature-branch if active
 - [git switch --discard-changes](feedback_git_switch_discard_changes_pattern.md) — use `git switch --discard-changes` (not `git checkout`) when `.claude/state/` is dirty; plain checkout aborts silently and downstream cp+commit lands on the wrong branch (recurred 2x in 2026-04-25 wave-3/wave-5 contamination)
 - [x11vnc vs TigerVNC for headless](feedback_x11vnc_vs_tigervnc_headless.md) — x11vnc is a screen mirror and crashloops on headless hosts (no GUI session to attach to); use TigerVNC `vncserver :N` instead — verified 2026-04-27 ace-linux-2 (67,189 crashloops in 4 days)
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` (in-kernel) refuses dirty NTFS volumes; use `ntfs-3g` (FUSE) which auto-replays journal; drop `default_permissions` and pass explicit `uid`/`gid` for ownership
+- [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g-created symlinks as raw `IntxLNK` blobs; corrupts git type-tracked symlinks; verified 2026-05-01 on workspace-hub `/dev/sdc1`; stay on ntfs-3g for any volume hosting a git repo
 - [Wikimedia thumb width quirk](feedback_wikimedia_thumb_width_quirk.md) — query `imageinfo` API for canonical `thumburl`; never hand-construct width segment; main-session re-verify (subagent verification was wrong twice on 2026-04-27)
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner
+- [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects only sparse repo (368K tracked, ~6% on disk); `git sparse-checkout add <path>` for missing files, never `disable` (hung 22min on 2026-04-30 materializing ~329K files)
+- [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — agent regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 password-hashing comments; for workspace-hub paths, trust the hardened pre-commit hook
+- [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions can land half-resolved files; pull produces double-nested conflict markers; `git checkout --ours` if HEAD is clean
+- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iteration; partial-deleted worktree's `.git` gitlink loss is recoverable via parent-repo `.git/worktrees/<name>/HEAD` registry entry
+- [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle create` from parent repo fails on unreachable orphans; bundle from inside worktree where HEAD points at the SHA; tag-on-origin for cross-machine durability
+- [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans only `commit --no-verify`; push --no-verify allowed for codex-branch preservation pushes when tier-1 hook blocks
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -82,7 +90,7 @@
 - [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily, posts to repo-readiness issue
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
 - [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
-- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24 *verified: 2026-05-01*
+- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24
 - [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser automation only for interactive UI tasks
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing principle sanctioned across eng/marine/naval wikis; **#2471 is CSA-Z276-only** (verified 2026-04-25), referenced codification plan does not exist; general offshore/marine substrate now scoped to aceengineer-strategy aces-#4

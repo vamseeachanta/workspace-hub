@@ -6,22 +6,23 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-04-30)
+## Synced from Hermes Memory (2026-05-02)
 
 ### Environment Facts
 
 - `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
-- Business Brain: AI provider credits are no longer the bottleneck; harness/plan-prep/execution throughput is. Claude Max is $200/mo, Gemini is ~$20/mo, and weekly limits should be deliberately spent on useful planning/review/execution work even if credits run out for up to ~2 days before reset. Hermes on ace-linux-1 is the primary AI-agent control surface for approvals/decisions/GitHub mutations and continuous lane reconciliation; ace-linux-2 is overflow worker capacity after repo/tool/auth checks.
+- Business Brain: Plan AI provider dispatch from fresh capacity telemetry about every 6h, not fixed rules. Default main execution capacity is Claude Max ($200/mo) + Codex ($200/mo). Gemini is USD $20 and usually for cross/adversarial reviews, but if reliable capacity exists, delegate suitable work rather than rigidly excluding it. Target state: capacity-aware next-work planning. Hermes on ace-linux-1 remains the control surface; ace-linux-2 is overflow after repo/tool/auth checks.
 - Elements→/mnt/ace ingest conventions: canonical layout is /mnt/ace/<repo-name>/<domain>/; `client_projects` is a real repo bucket; Woodfibre uses repo bucket `acma-projects` (not `acma_projects`) with project code 31522; `qgis` is reusable digitalmodel workflow/data; `casa_grande_77017` belongs under `assethold`; staging folders use `_from_elements/` without dates.
 - Telegram/Hermes mobile bot branding chosen: “AceEng Bot” with username “AceEngBot” preferred; fallback names include AceEngineerBot, AceEngAIBot, AceEngineerAIBot, AceOpsBot.
 - Telegram/Hermes mobile bot actual username created: @AceEngineerBot / t.me/AceEngineerBot. Initial token was pasted into chat and should be treated as compromised; rotate via @BotFather before configuring Hermes.
 - Codex is also on a USD $200 membership with roughly 85% usage left; quota reset time reported as April 5 at 12 PM.
+- ace-linux-1 Telegram/Hermes setup: Telegram Desktop installed from `tsetup.6.7.8.tar.xz` at `/home/vamsee/.local/share/Telegram/Telegram`; helper script at `/home/vamsee/Downloads/install-telegram-desktop.sh`; `@AceEngineerBot` gateway is allowlist-only via `TELEGRAM_ALLOWED_USERS` in `/home/vamsee/.hermes/.env`; handoff artifact path is `/mnt/local-analysis/workspace-hub/docs/session-handoffs/2026-04-30-telegram-hermes-mobile-access-handoff.md`.
+- Provider capacity note as of 2026-04-30 18:59 CDT: Claude weekly capacity had ~40% remaining with ~36 hours to reset; prioritize appropriate Claude/Codex throughput from fresh telemetry.
 
 ### User Profile
 
 - User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation.
-- Prefers numbered/lettered choices, tables where helpful, one-by-one execution, clickable GitHub links for #NNNN. Vamsee: P.E., 23yr exp; ACE Engineer consulting; target $120K/yr retainers; domains OrcaFlex/mooring/riser/FEA/cathodic/API 579/Python; GTM offshore 10-50 engineers. Wants continuous autonomous GitHub throughput with Claude/Codex/Gemini adversarial plan/code reviews; GitHub latest status:* wins; direct execution, proactive follow-ups, safety audits, parallel work, and direct plan-approved transitions/local markers when explicitly approving batches. Hard gates should evolve into evidence-threshold gates once metrics prove safe, so user focuses on idea origination, GTM throughput, and customer/prospect artifacts. Weekly GTM targets should be set interactively then executed by agents. Session exits need GH evidence, handoff artifact, fresh-session copy/paste prompt, worktree verification, and next priorities.
-- User prefers post-reboot recovery triage in this order: salvage current work first, research/restart ongoing work second, then set off future work.
+- Issue closeout needs transactional same-window push to origin, branch/worktree disposition, worktree cleanup/removal or explicit preservation, and clean-state proof before/with closure; closing first and cleaning later is unacceptable.
 
 
 <!-- BRIDGE:END -->
@@ -66,13 +67,13 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo *verified: 2026-05-02*
+- Plans live in `.planning/` within each repo
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-05-02*
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 
