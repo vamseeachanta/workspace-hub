@@ -38,4 +38,17 @@
 
 | Cycle | Started | Areas | Plans drafted | Issues opened | Reviews | Status |
 |---|---|---|---|---|---|---|
-| 1 | 2026-05-02 | TBD | 0 | 0 | — | dispatching |
+| 1 | 2026-05-02T11:36Z | engineering-standards/API; asset-management; engineering gap audit; naval-architecture topical | 4 | #2586 #2587 #2588 #2589 | r1 Claude internal: 1 MINOR + 3 MAJOR→revised; Codex+Gemini UNAVAILABLE (#2479 + sandbox) | **status:plan-review** for all 4 — pending user approval |
+| 2 | TBD | DNV standards; ASME standards; maritime-law topical; online-resource-registry refresh | — | — | — | scheduled |
+
+## Wave 1 outcome notes
+
+- **Cross-review tooling failed**: `plan-review-fanout.sh --providers=claude,gemini` killed after 90s when Gemini's `cwd=/tmp` sandbox couldn't resolve `/mnt/local-analysis/workspace-hub/...` paths and Claude reviews produced 0 bytes. Errors archived at `scripts/review/results/.failed-fanout-2026-05-02/`. Fallback per memory `feedback_permission_gate_blocks_cross_review.md`: single-author Claude internal subagent reviewers, transparent provenance recorded in each plan's Adversarial Review Summary section.
+- **Branch redirection finding**: a hook or parallel session checked `agent-dispatch/2026-05-02-whats-next` between session start and first commit. First commit landed on that branch; FF-merged to `main`. Worth flagging as a parallel-session hazard.
+- **Auto-sync pusher beat manual `git push`** on revision commit (`dc89cbe68`) — confirmed memory `feedback_autosync_silent_pusher.md` still operative.
+- **Substance of MAJOR findings was real, not nit-picking**:
+  - #2587 M1: IAM Competency Framework genuinely doesn't fit the #2471 standards-page contract (no `code_id` / no revisions)
+  - #2588 M1: plan claimed zero `digitalmodel` cross-refs but `registry.py:30` wires `dnv-os-e301.md` — false claim caught
+  - #2589 M1: three new pages duplicated existing `resistance-propulsion.md` content — wiki-rot anti-pattern
+- **Verified Codex blocker still active 2026-05-02** — fanout-driven Codex calls hung with no output. Confirms #2479 is not yet fixed.
+
