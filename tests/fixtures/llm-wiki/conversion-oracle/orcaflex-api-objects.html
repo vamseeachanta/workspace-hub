@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><title>API Objects | OrcaFlex</title></head>
+<body>
+<h1>OrcaFlex API Objects</h1>
+<p>The OrcFxAPI provides Python access to OrcaFlex model objects.</p>
+<h2>Model Object</h2>
+<p>The top-level model object:</p>
+<pre>import OrcFxAPI
+model = OrcFxAPI.Model()
+model.LoadData('model.dat')</pre>
+<h2>Object Access</h2>
+<ul>
+<li>Lines: model['Line1']</li>
+<li>Vessels: model['Vessel1']</li>
+<li>Environment: model.environment</li>
+</ul>
+<h2>Running Simulation</h2>
+<pre>model.RunSimulation()
+line = model['Line1']
+tension = line.TimeHistory('Effective tension', OrcFxAPI.oeEndA)</pre>
+</body></html>

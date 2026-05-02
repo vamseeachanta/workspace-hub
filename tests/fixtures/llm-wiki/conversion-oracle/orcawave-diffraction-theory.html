@@ -1,0 +1,24 @@
+<!DOCTYPE html><html><head><title>Diffraction Theory | OrcaWave</title></head>
+<body>
+<h1>Diffraction Theory</h1>
+<p>OrcaWave solves the linear diffraction and radiation problem using a boundary element method.</p>
+<h2>Boundary Value Problem</h2>
+<p>The fluid domain satisfies the Laplace equation with boundary conditions on the body surface,
+the free surface, and the seabed.</p>
+<h3>Solution Components</h3>
+<ul>
+<li>Incident wave potential</li>
+<li>Diffraction potential</li>
+<li>Radiation potentials (one per DOF)</li>
+</ul>
+<h2>Panel Method</h2>
+<p>The body surface is discretised into panels. Each panel has a source distribution.</p>
+<h3>Panel Requirements</h3>
+<table>
+<tr><th>Panel type</th><th>Nodes</th><th>Integration</th></tr>
+<tr><td>Quadrilateral</td><td>4</td><td>Gaussian</td></tr>
+<tr><td>Triangular</td><td>3</td><td>Gaussian</td></tr>
+</table>
+<h4>Mesh Quality</h4>
+<p>Panel aspect ratio should be less than 3:1 for accurate results.</p>
+</body></html>

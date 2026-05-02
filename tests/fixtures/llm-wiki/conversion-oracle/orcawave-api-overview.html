@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><title>API Overview | OrcaWave</title></head>
+<body>
+<h1>OrcaWave API</h1>
+<p>The OrcaWave API allows scripted control of OrcaWave analyses.</p>
+<h2>Loading a Model</h2>
+<pre>import OrcaWaveAPI
+model = OrcaWaveAPI.Model('vessel.dat')
+model.Run()</pre>
+<h2>Accessing Results</h2>
+<p>RAOs are accessed via the <a href="APIReference.htm">RAO result object</a>.</p>
+<pre>rao = model.GetRAO('Surge', heading=0.0)
+amplitudes = rao.Amplitude
+periods = rao.Period</pre>
+<h3>Exporting to OrcaFlex</h3>
+<p>Use the <a href="ExportMethod.htm">export method</a> to write OrcaFlex-compatible files:</p>
+<pre>model.ExportToOrcaFlex('vessel_rao.yml')</pre>
+</body></html>
