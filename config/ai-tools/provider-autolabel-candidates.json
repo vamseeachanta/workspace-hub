@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-02T00:50:16.767437Z",
+  "generated_at": "2026-05-02T05:20:08.450552Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 7,
+  "eligible_count": 4,
   "applied": [],
   "candidates": [
     {
@@ -18,38 +18,6 @@
       "updatedAt": "2026-04-29T14:30:46Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2490,
-      "title": "chore(ci-health): digitalmodel Quality Gates coverage gate blocker (split from #2441)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2490",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:infrastructure",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-01T20:59:33Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -103,39 +71,6 @@
       "eligible": true
     },
     {
-      "number": 2544,
-      "title": "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2544",
-      "labels": [
-        "priority:medium",
-        "cat:data-pipeline",
-        "domain:marine",
-        "domain:knowledge-management",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-01T20:59:44Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 2566,
       "title": "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2566",
@@ -148,40 +83,6 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-05-01T00:40:05Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2567,
-      "title": "feat(naval-arch): standards-backed steering gear and rudder-stock design checks",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2567",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering-calculations",
-        "domain:hydrodynamics",
-        "domain:naval-architecture",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-01T21:10:32Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -238,34 +139,6 @@
       "eligible": true
     },
     {
-      "number": 2574,
-      "title": "fix(digitalmodel-ci): Quality Gates blocked by missing `seaborn` and hardcoded absolute paths",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2574",
-      "labels": [
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-01T20:30:04Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
@@ -319,6 +192,101 @@
         "priority-labeled",
         "strong-gemini-language-match",
         "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2431,
+      "title": "Compliance alert: W17 \u2014 20% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
+      "labels": [
+        "priority:high",
+        "priority:critical",
+        "compliance-alert"
+      ],
+      "updatedAt": "2026-04-26T11:45:09Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2517,
+      "title": "Compliance alert: W18 \u2014 42% (high)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
+      "labels": [
+        "priority:high",
+        "priority:medium",
+        "priority:critical",
+        "compliance-alert"
+      ],
+      "updatedAt": "2026-05-01T11:45:51Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2519,
+      "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
+      "labels": [
+        "enhancement",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "priority:critical",
+        "domain:ai-orchestration",
+        "domain:workstations",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-27T18:57:43Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
       ],
       "eligible": false
     }

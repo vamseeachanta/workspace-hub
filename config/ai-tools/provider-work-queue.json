@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-02T00:50:16.652383Z",
+  "generated_at": "2026-05-02T05:20:08.005335Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-05-02T00:50:14.725211Z",
+  "scorecard_generated_at": "2026-05-02T05:20:06.389413Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 8,
+      "execution_ready_count": 5,
       "total_candidates": 164,
       "top_issues": [
         {
@@ -38,26 +38,29 @@
           ]
         },
         {
-          "number": 2490,
-          "title": "chore(ci-health): digitalmodel Quality Gates coverage gate blocker (split from #2441)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2490",
+          "number": 2229,
+          "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:infrastructure",
+            "cat:harness",
+            "status:working",
+            "machine:licensed-win-1",
+            "agent:claude",
+            "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-01T20:59:33Z",
+          "updatedAt": "2026-04-28T06:09:41Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
+          "routing_reason": "existing claude agent label",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
+            "implementation"
           ]
         },
         {
@@ -85,30 +88,6 @@
           ]
         },
         {
-          "number": 2544,
-          "title": "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2544",
-          "labels": [
-            "priority:medium",
-            "cat:data-pipeline",
-            "domain:marine",
-            "domain:knowledge-management",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-01T20:59:44Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2566,
           "title": "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2566",
@@ -121,31 +100,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-01T00:40:05Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2567,
-          "title": "feat(naval-arch): standards-backed steering gear and rudder-stock design checks",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2567",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering-calculations",
-            "domain:hydrodynamics",
-            "domain:naval-architecture",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-01T21:10:32Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -184,15 +138,66 @@
           ]
         },
         {
-          "number": 2574,
-          "title": "fix(digitalmodel-ci): Quality Gates blocked by missing `seaborn` and hardcoded absolute paths",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2574",
+          "number": 2431,
+          "title": "Compliance alert: W17 \u2014 20% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
           "labels": [
-            "status:plan-approved"
+            "priority:high",
+            "priority:critical",
+            "compliance-alert"
           ],
-          "updatedAt": "2026-05-01T20:30:04Z",
-          "execution_ready": true,
-          "priority_rank": 4,
+          "updatedAt": "2026-04-26T11:45:09Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2517,
+          "title": "Compliance alert: W18 \u2014 42% (high)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
+          "labels": [
+            "priority:high",
+            "priority:medium",
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-05-01T11:45:51Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2519,
+          "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
+          "labels": [
+            "enhancement",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "priority:critical",
+            "domain:ai-orchestration",
+            "domain:workstations",
+            "domain:agent-cost-tracking"
+          ],
+          "updatedAt": "2026-04-27T18:57:43Z",
+          "execution_ready": false,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -250,7 +255,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-30T05:36:46Z",
+          "updatedAt": "2026-05-02T04:09:36Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -366,22 +371,19 @@
           ]
         },
         {
-          "number": 2462,
-          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462",
+          "number": 2227,
+          "title": "feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2227",
           "labels": [
             "enhancement",
-            "priority:high",
-            "cat:engineering",
+            "priority:medium",
             "cat:documentation",
-            "domain:repo-organization",
-            "status:working",
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-01T04:02:38Z",
+          "updatedAt": "2026-05-02T02:35:20Z",
           "execution_ready": true,
-          "priority_rank": 1,
+          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
           "provider_priority": "highest",

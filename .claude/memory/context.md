@@ -22,7 +22,7 @@
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
 - `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent *verified: 2026-05-01*
 - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root *verified: 2026-05-01*
-- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent
+- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *verified: 2026-05-02*
 - `worldenergydata/` — energy data sub-repo
 
 ## Windows Path Conventions
@@ -51,6 +51,6 @@ Git IS the sync mechanism.
 ## Legal Compliance
 
 - `.legal-deny-list.yaml` — 15 client name patterns, repo root
-- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents
+- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents *verified: 2026-05-02*
 - Catalogs (`dde-*`, `conference-*`) are excluded from scanning
 - MANDATORY for all document-intelligence and resource work
