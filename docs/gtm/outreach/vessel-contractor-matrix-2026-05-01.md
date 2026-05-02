@@ -42,10 +42,10 @@ prospects_total: 26
 | 11 | Seaway7 (Subsea7 renewables JV) | offshore wind installation | 2 | Europe + Asia-Pacific FOWT | Seaway Strashnov, Alfa Lift — purpose-built foundation/turbine installation | Wind foundation install operability; FOWT mooring-concept screening before IEC DLC commitment | https://www.seaway7.com/our-fleet/ | company researched only | P2 | FOWT-mooring |
 | 12 | Cal Dive / Helix Energy Solutions | construction + IMR + well-intervention | 3 | GoM-focused + global | Q4000, Q5000, Q7000 — well-intervention and light-construction vessels; GoM deepwater shelf coverage | Quick-turn freespan screening on shorter tieback routes (D1); wall-thickness for revamp lines (D2) | https://helixesg.com/our-assets/q4000/ | company researched only | P2 | subsea-installation |
 | 13 | DeepOcean Group | IMR + survey + light-construction | 3 | North Sea + Brazil + GoM | Edda Flora, Volantis — IMR and light-construction CSV fleet | 48-hour screening for smaller tieback projects (D1, D5); operability windows for IMR campaigns (D3) | https://www.deepoceangroup.com/what-we-do/assets-vessels | company researched only | P3 | subsea-installation, inspection |
-| 14 | Gulf Offshore (Bourbon-related historical brand) | OSV / construction support | 3 | GoM + North Sea + WAfrica | Various PSV/CSV — light construction support; smaller-project quick-turn analysis | Quick-turn wall-thickness screening (D2); freespan candidates on shorter routes (D1) | https://www.bourbonoffshore.com/en (Bourbon component repaired; Gulf Offshore historical brand needs disambiguation per #2578) | company researched only | P3 | subsea-installation |
+| 14 | Bourbon Offshore (post-SPP) | OSV / subsea / IMR (PSV / AHTS / MPSV) | 3 | global (WAfrica, Mediterranean, Asia-Pacific, North Sea) | Bourbon Evolution 800 series, Bourbon Trieste, Bourbon Enterprise — MPSVs for subsea construction and IMR; PSV / AHTS legs cover marine logistics | Quick-turn wall-thickness screening for tieback projects (D2); subsea installation operability windows on smaller MPSVs (D3) | https://www.bourbonoffshore.com/en (deep MPSV link: https://www.bourbonoffshore.com/en/services/subsea/our-fleet/MPSV) | company researched only | P3 | subsea-installation, IMR |
 | 15 | Hornbeck Offshore Services | OSV / MPSV (GoM-focused) | 2 | GoM-primary + Latin America | HOS Achiever and HOS Iron Horse — high-spec MPSVs for GoM deepwater intervention; HOS fleet pages list deck space and crane | GoM deepwater installation screening with vessel-class go/no-go (D3); jumper installation tolerance under realistic Hs (D5) | https://hornbeckoffshore.com/fleet/fleet-overview | fleet known, no contacts | P1 | subsea-installation |
 | 16 | Edison Chouest Offshore | OSV / MPSV / subsea-support (GoM) | 2 | GoM-primary + Brazil + WAfrica | Island Performer-class MPSVs (250t+ AHC cranes), C-Resolution, C-Endeavor — GoM Big Three OSV operator with MPSV/subsea capability | Tender-stage vessel-vs-jumper screening for GoM deepwater (D5); freespan walkdowns for shelf assets (D1) | https://chouest.com/subsea.html | company researched only | P1 | subsea-installation |
-| 17 | Otto Candies LLC | OSV / MPSV (GoM) | 3 | GoM-primary | Ross Candies, Kelly Ann Candies — MPSV / subsea-support fleet with crane capability for GoM intervention | Quick-turn 48hr screening for GoM jumper / mudmat operations (D3, D5); operator-side fleet capability sheet | https://ottocandies.com/fleets/ | company researched only | P2 | subsea-installation |
+| 17 | Otto Candies LLC | OSV / MPSV (GoM) | 3 | GoM-primary | Ross Candies (309' DP2, 150-MT crane, 25'×23' moonpool), Sub-Sea Candies (340' DP2, 250-MT AHC crane, 24'×24' moonpool) — MPSV / subsea-support fleet with crane capability for GoM intervention | Quick-turn 48hr screening for GoM jumper / mudmat operations (D3, D5); operator-side fleet capability sheet | https://ottocandies.com/fleets/ (per-vessel deep link: https://ottocandies.com/fleets/m-v-sub-sea-imr/) | company researched only | P2 | subsea-installation |
 | 18 | Tidewater Inc. | OSV (PSV/AHTS) — world's largest fleet | 2 | global (GoM, WAfrica, Asia-Pacific) | ~217 vessel fleet post-Swire/GulfMark; PSV/AHTS support to construction campaigns | Operability-screening companion artifacts for charter/tender bids; partner-shape (vessel supply, not direct install contractor) | https://www.tdw.com/services-fleet/tidewater-marine/fleet/ | company researched only | P3 | subsea-installation |
 | 19 | Cadeler A/S | offshore wind installation (WTIV / FIV) | 2 | Europe + Asia-Pacific (US East Coast pipeline) | Wind Maker, Wind Mover — next-gen WTIVs purpose-built for 15MW+ turbines | FOWT installation logistics before coupled analysis; foundation-install windows (no shipped demo — gap) | https://www.cadeler.com/vessels | company researched only | P3 | FOWT-mooring |
 | 20 | Jan De Nul Group | dredging + offshore wind installation + heavy-lift | 2 | Europe + Asia + GoM-pipeline | Voltaire (3,000t crane WTIV), Les Alizés (5,000t HLV) — heavy-lift and FOWT installation | Foundation install screening; FOWT mooring transfer from O&G workflow | https://www.jandenul.com/fleet | company researched only | P3 | FOWT-mooring, heavy-lift-construction |
@@ -121,7 +121,8 @@ what to upgrade before sending outreach that links the evidence.
 
 | # | Company | Evidence weakness | Upgrade plan |
 |---|---|---|---|
-| 14 | Gulf Offshore | Bourbon corporate fleet page used as proxy; "Gulf Offshore" historic brand link uncertain post-Bourbon restructuring (2019 admin) | Verify current operating entity and fleet listing before sending; consider re-classing to "Bourbon" or dropping if entity is dormant |
+| 14 | Bourbon Offshore (post-SPP) | RESOLVED 2026-05-01 — entity disambiguated; "Gulf Offshore" reference dropped (was a documentation conflation; legacy GulfMark Offshore is now part of Tidewater Row 18 since 2018-11-15 merger). Bourbon Offshore retained as Row 14, post-SPP acquisition (2020-01-10), with verified deep-link evidence URL. | None — see narrative-edit report `vessel-contractor-matrix-narrative-edits-2026-05-01.md` §1 |
+| 17 | Otto Candies | RESOLVED 2026-05-01 — Kelly Ann Candies (sold to Aqueos in early 2026) replaced with Sub-Sea Candies (340' DP2 MPSV, ex-Harvey Sub-Sea, current Otto Candies fleet member). Pair with Ross Candies for two-vessel narrative. Re-verify fleet listing each outreach quarter — 4-vessel Harvey Gulf acquisition (2024) and Kelly Ann divestiture (2026) indicate active fleet churn. | Per-vessel deep link: https://ottocandies.com/fleets/m-v-sub-sea-imr/ |
 | 18 | Tidewater | Fleet count (217) cited from public investor decks but rapidly changing post-Swire and GulfMark integrations | Pull latest 10-K or company press release before any vessel-count claim |
 | 21 | Van Oord | Equipment page is corporate-root; need a fleet/vessel deep link with named WTIV specs | Replace evidence URL with a named-vessel deep link (Aeolus or Boreas project page) before send |
 | 23 | Venture Global | Project pages are marketing-grade — engineering specifics on berth/mooring are not public | Acceptable for prospect-research scope; outreach must rely on public LNG-industry context, not site-specific data |
@@ -160,8 +161,8 @@ Two rows need matrix-content edits beyond the URL fix:
 
 | Row | Issue | Recommended edit |
 |---|---|---|
-| 14 Bourbon / Gulf Offshore | "Gulf Offshore" is a separate UK-North Sea OSV operator, not a Bourbon brand. Matrix narrative conflates them. | Split into Row 14a (Bourbon Offshore, post-SPP, evidence URL repaired) + Row 14b (Gulf Offshore, fresh research needed); OR drop Gulf Offshore reference. Tracked in #2578. |
-| 17 Otto Candies | "Kelly Ann Candies" was sold to Aqueos Corp in early 2026; Otto Candies removed it from their fleet listing. Matrix-cited vessel name is no longer evidence-supported. | Replace "Kelly Ann Candies" with another DSV-class vessel from Otto's current listing — candidates: Sub-Sea Candies, Blue-Sea Candies, or Cade Candies (IMR/SOV). |
+| 14 Bourbon Offshore | ✅ RESOLVED 2026-05-01: "Gulf Offshore" reference dropped (was a documentation conflation — research confirmed GulfMark Offshore was acquired by Tidewater 2018-11-15 and operates under Tidewater brand only, already represented as Row 18). Row 14 retitled "Bourbon Offshore (post-SPP)" with verified deep-link evidence. | (resolved) |
+| 17 Otto Candies | ✅ RESOLVED 2026-05-01: "Kelly Ann Candies" (sold to Aqueos Corp early 2026) replaced with "Sub-Sea Candies" (340' DP2 MPSV, ex-Harvey Sub-Sea per the 4-vessel 2024 Harvey Gulf acquisition). Per-vessel deep link verified HTTP 200. | (resolved) |
 
 Repair details: see [`vessel-contractor-matrix-url-repairs-2026-05-01.md`](vessel-contractor-matrix-url-repairs-2026-05-01.md).
 
@@ -180,7 +181,7 @@ and pulls 14 names directly from the Tier table in
 
 - **Tier 1 (6):** Subsea7, TechnipFMC, Saipem, McDermott, Allseas, Heerema
 - **Tier 2 (5):** DOF, Solstad, Boskalis, DEME, Seaway7
-- **Tier 3 (3):** Cal Dive/Helix, DeepOcean, Gulf Offshore
+- **Tier 3 (3):** Cal Dive/Helix, DeepOcean, Bourbon Offshore (post-SPP)
 
 Plus **#2562 GoM expansion (4):** Hornbeck, Edison Chouest, Otto Candies,
 Tidewater — all four candidates from the issue, classified per the issue's
@@ -207,7 +208,7 @@ Plus **niche extension for capability-map gaps (8):**
 
 - **Cal Dive** in templates.md → "Helix Energy Solutions (Q-class)" in matrix
   (per §3 evidence note — Cal Dive brand is historical).
-- **Bourbon/Gulf Offshore** in templates.md → flagged as evidence-weak
+- **Bourbon/Gulf Offshore** in templates.md → split + resolved 2026-05-01: Bourbon Offshore retained as Row 14 (retitled "Bourbon Offshore (post-SPP)"); "Gulf Offshore" reference dropped (legacy GulfMark brand absorbed into Tidewater Row 18 since 2018-11-15)
   pending entity verification (§3).
 
 ### Total counts
