@@ -188,29 +188,44 @@ Sources for Row 17:
 
 ---
 
-## §3 — Cross-check questions for human reviewer
+## §3 — Cross-check questions — RESOLVED 2026-05-01
 
-Business-judgment questions to answer before merging this narrative:
+All four business-judgment questions answered by human reviewer 2026-05-01.
+Decisions logged below for the audit trail.
 
-1. **Bourbon priority.** Should Bourbon Offshore stay in the matrix at P3, or
-   is its overlap with Tidewater (Row 18) and DOF (Row 7) on the PSV / AHTS
-   side enough to push it below the cut-line? The retitle keeps the
-   prospect-count at 26, but the unique-Tier-3 demo-fit story is thinner
-   than the original ambiguous row implied.
-2. **Aqueos as a new prospect.** Aqueos Corp has been growing its DSV
-   fleet via the Kelly Ann acquisition. It is a US-GoM-focused subsea
-   intervention operator — does it warrant a new matrix row (Row 27, Tier 3)
-   on its own? Out of scope for this narrative-edit pass, but a clean
-   follow-up.
-3. **Otto Candies tier review.** With the Harvey Gulf 4-MPSV acquisition
-   (2024) and continued fleet refresh, Otto Candies' MPSV roster is now
-   competitive with Hornbeck (Row 15, P1) on capability. Is Row 17's current
-   P2 priority correct, or should it move to P1 alongside Hornbeck and
-   Edison Chouest in the GoM block per #2562?
-4. **Helix charter reference.** Ross Candies has a documented historical
-   charter to Helix Robotics Solutions (per the 2020 letter). Worth noting
-   in outreach copy as third-party validation, or keep evidence to vendor
-   marketing only?
+1. **Bourbon priority** → ✅ **KEEP at P3.** Decision rationale: Bourbon's
+   WAfrica + Mediterranean geographic spread is differentiated from
+   Tidewater's GoM-heavy footprint; P3 is already the lowest priority
+   so dropping doesn't free outreach capacity, just reduces optionality.
+   Status: no matrix change needed (Row 14 already P3 post-retitle).
+
+2. **Aqueos as a new prospect** → ⏸ **DEFER to next quarterly refresh.**
+   Decision rationale: matrix is past acceptance threshold at 26 rows;
+   spot-adding a 27th row mid-cycle would burn ~30 min of research with
+   no clear gating event. Aqueos will resurface in the next quarterly
+   matrix recheck (per `sanity-review-log.md` cadence) if their fleet /
+   strategy still warrants. Status: no matrix change.
+
+3. **Otto Candies tier review** → ✅ **MOVE from P2 to P1.** Decision
+   rationale: the Harvey Gulf 4-MPSV acquisition (2024) materially changed
+   Otto's positioning — Sub-Sea Candies (340' DP2, 250-MT AHC crane) is
+   peer to Hornbeck's HOS-Achiever class. P2 reflected pre-acquisition
+   state; P1 reflects current. Otto Candies now joins the GoM P1 block
+   (Hornbeck + Edison Chouest + Otto Candies) per #2562. Status: ✅ MERGED
+   — Row 17 priority column updated to P1; §1 Tier 1 Priority Sequence
+   gains item 9 with rationale.
+
+4. **Helix charter reference** → ✅ **KEEP INTERNAL — do not cite in
+   outreach.** Decision rationale: cold outbound to Otto Candies is aimed
+   at Otto's business-development surface, not at Helix or Helix-adjacent
+   buyers. Citing Helix's historical Ross Candies charter would be useful
+   in outreach if we were pitching Helix on Otto Candies — different
+   audience. The Helix LTR stays in matrix sources for our internal
+   context only. Status: no outreach copy change; no matrix change.
+
+**Net matrix changes from this resolution pass:** 1 row priority shift
+(Row 17 P2→P1) + 1 §1 priority-sequence row added (item 9 Otto Candies).
+Prospect count remains 26.
 
 ---
 
