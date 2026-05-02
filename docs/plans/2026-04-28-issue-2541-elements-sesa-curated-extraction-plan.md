@@ -1,11 +1,11 @@
 # Plan for #2541: Curated SESA LNG corpus extraction from Elements
 
-> **Status:** plan-review
+> **Status:** plan-review (2026-05-02 nightly batch 2 patch: fresh Codex/Claude MAJOR findings reconciled into canonical plan body; still requires owner clearance and fresh/valid review evidence before approval)
 > **Complexity:** T2
 > **Date:** 2026-04-28
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2541
 > **Umbrella:** https://github.com/vamseeachanta/workspace-hub/issues/2540
-> **Review artifacts:** scripts/review/results/2026-04-28-plan-2541-claude.md | …-codex.md | …-gemini.md (to be created during adversarial review)
+> **Review artifacts:** `scripts/review/results/2026-04-29-plan-2541-2544-codex.md`; `scripts/review/results/2026-04-29-plan-2541-2544-gemini.md`; `scripts/review/results/2026-04-29-plan-2541-2544-rereview-synthesis.md`; `scripts/review/results/2026-05-02-plan-2541-{codex,claude}.md` (nightly batch 2 fresh re-review attempts)
 
 ---
 
@@ -13,7 +13,7 @@
 
 ### Existing repo code
 - Found: `scripts/knowledge/llm_wiki.py` — current wiki-maintenance CLI (used by #2535/#2536). The first SESA tranche should reuse the same `status`/`lint` validators rather than introduce a parallel pipeline.
-- Found: `.planning/intel/elements-deep-extraction/extract-first-pass.py` — first-pass extraction harness from #2536. Reusable shape; needs (i) page-batched `pdftotext` for >50 MB PDFs, (ii) `pandoc` branch for `.docx` and `pptx`, (iii) UTF-8 preservation check.
+- Found: `.planning/intel/elements-deep-extraction/extract-first-pass.py` — first-pass extraction harness from #2536, but fresh 2026-05-02 review verified it is currently an ~80-line XLSM/QGIS-metadata extractor, not evidence of PDF/PPTX/DOCX extraction support. Future implementation must add explicit parser branches/tests before relying on it.
 - Found: `knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md` — auto-generated metadata-first source page from #2535 lists 418 files, 1.46 GB, content-kind histogram pdf 187 / .xlsx 77 / .docx 59 / .doc 21 / .dwg 18.
 - Gap: there is no canonical-path-selection helper. The extractor in #2536 ran on the suction-pile / riser-toolbox / QGIS corpora where dedup wasn't a concern. SESA needs a path-canonicalization pass (Old/, JWhipple/, dated transmittal folders, format-triplets) before extraction.
 - Gap: no SESA-side concept/comparison/standards pages exist yet under `knowledge/wikis/lng-projects/wiki/`.
@@ -60,14 +60,14 @@ These standards are explicitly **excluded from the SESA tranche** — extraction
 **File existence** (verified 2026-04-28 via Glob/Grep — `/mnt/ace` is read-only sandboxed for this terminal so byte-existence is via the candidate TSV, not a live `ls`):
 - EXISTS: `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` — 347 rows where `bucket=doris-62092-sesa`
 - EXISTS: `.planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md` (46 lines)
-- EXISTS: `knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md` (46 lines, frontmatter complete)
+- EXISTS: `knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md` (45 lines per 2026-05-02 `wc -l`, frontmatter complete; prior 46-line claim was stale)
 - EXISTS (new — this plan creates): `.planning/intel/elements-overnight-wave/sesa-candidate-dossier.md`
 - EXISTS (new — this plan creates): `.planning/intel/elements-overnight-wave/sesa-first-tranche.tsv` (header + 20 rows)
 - MISSING (future implementation phase will create): `scripts/knowledge/elements_canonical_paths.py`, `scripts/knowledge/elements_extract_sesa.py`
-- MISSING (future implementation phase will create): SESA-specific wiki pages under `knowledge/wikis/lng-projects/wiki/{sources,concepts,comparisons}/`
+- MISSING (future implementation phase will create): SESA-specific wiki pages and, where absent, directories under `knowledge/wikis/lng-projects/wiki/{sources,entities,concepts,comparisons,standards}/`
 
 **Gap proofs:**
-- No `knowledge/wikis/lng-projects/wiki/concepts/*.md` or `knowledge/wikis/lng-projects/wiki/entities/*.md` exist yet (Glob returned only `wiki/index.md`, `wiki/overview.md`, `wiki/log.md`, two `wiki/sources/*.md`).
+- No `knowledge/wikis/lng-projects/wiki/concepts/*.md`, `wiki/entities/*.md`, `wiki/comparisons/*.md`, or `wiki/standards/*.md` exist yet (fresh review observed only `wiki/index.md`, `wiki/overview.md`, `wiki/log.md`, and `wiki/sources/*.md`).
 - No `extract-first-pass.py` SESA branch (the existing script targeted suction-pile/riser-toolbox/QGIS only per `elements-deep-extraction-report.md` lines 9-13).
 
 > Distinct sources above: 12 (issue body + 11 others). Retrieval contract minimum (3) is met.
@@ -131,17 +131,20 @@ function extract_sesa_first_tranche(tranche_tsv, output_root):
         ensure absolute_path is read-only-accessed
         case row.extraction_method:
           pdftotext-layout:
+            require pdftotext or pdfminer.six; if unavailable, emit explicit missing-parser error and skip writing wiki output
             if bytes > 50_000_000:
               extract page-batched (50 pages/batch)
             else:
               extract whole-document
           pandoc-to-markdown:
-            convert .docx → .md, preserve UTF-8
+            require pandoc; convert .docx/.doc where licensed → .md, preserve UTF-8, otherwise emit explicit missing-parser error
           python-pptx-text:
-            extract slide text + speaker notes
-        validate UTF-8 round-trip (no '?' or '�' replacement chars)
-        write extracted text to .planning/intel/elements-deep-extraction/sesa/<slug>.txt
-        emit a wiki source page at row.target_wiki_page with frontmatter linking back to /mnt/ace path
+            require python-pptx; extract slide text + speaker notes, otherwise emit explicit missing-parser error
+        validate UTF-8 round-trip (no '?' or '�' replacement chars) in process/temp space only
+        do NOT persist raw extracted text, copied source documents, tables, clauses, screenshots, or full-body snippets under .planning/, knowledge/, or git
+        emit only clearance-allowed structured metadata and authored wiki summaries at row.target_wiki_page with frontmatter linking back to /mnt/ace path
+    ensure target directories exist before writing pages:
+      knowledge/wikis/lng-projects/wiki/{sources,entities,concepts,comparisons,standards}
     update knowledge/wikis/lng-projects/wiki/index.md
     append entry to knowledge/wikis/lng-projects/wiki/log.md
     run llm_wiki.py status --wiki lng-projects
@@ -176,10 +179,15 @@ The implementation phase that follows approval of this plan must satisfy:
 | test_canonical_path_excludes_jwhipple | JWhipple personal copies excluded | path containing `/JWhipple/` | excluded |
 | test_canonical_path_picks_latest_dated_folder | Among dated transmittal folders, picks newest | three paths dated 2025-12-18, 19-Dec-25, 2026-01-06 | path with 2026-01-06 |
 | test_canonical_path_picks_pdf_over_doc | Among format-triplet, picks .pdf | trio of `.doc`/`.docx`/`.pdf` same artifact | the .pdf path |
-| test_extract_pdf_utf8_roundtrip | Extracted text preserves Spanish accents | input PDF with "Estudios de referencia" | exact string in output (no `?`/`�`) |
-| test_extract_large_pdf_page_batched | >50 MB PDF extracts page-batched without OOM | GSM-AO-G-ITE-10046 (99.6 MB) | full text in N batches |
+| test_clearance_required_before_wiki_write | no extraction or wiki publication proceeds without owner clearance | missing `docs/governance/sesa-extraction-clearance-2026.md` and no clearance issue comment | command exits non-zero before reading source bodies |
+| test_extract_pdf_utf8_roundtrip_in_temp_only | temporary extraction preserves Spanish accents without persisting raw text | input PDF with "Estudios de referencia" | exact string validated in memory/temp space; no `.txt` raw dump remains in repo |
+| test_extract_pdf_missing_parser_fails_explicitly | no silent success when pdftotext/pdfminer is unavailable | monkeypatched PATH/import failure | non-zero or skip with named missing-parser reason; no wiki output |
+| test_extract_large_pdf_page_batched | >50 MB PDF extracts page-batched without OOM | GSM-AO-G-ITE-10046 (99.6 MB) | bounded structured fields/summary generated in N batches; no full text persisted |
+| test_extract_pptx_requires_python_pptx | prevents plan from claiming PPTX support without dependency coverage | PPTX fixture + missing python-pptx simulation | explicit missing-parser reason or extracted bounded slide text |
+| test_extract_docx_requires_pandoc_or_supported_fallback | prevents plan from claiming DOCX support without dependency coverage | DOCX fixture + missing pandoc simulation | explicit missing-parser reason or extracted bounded text |
 | test_extract_emits_wiki_source_page | Wiki source page is created with required frontmatter | a tranche row | `wiki/sources/elements-sesa-*.md` with `title`, `tags`, `added`, `last_updated`, `sources` |
-| test_no_raw_data_copied | No file under `/mnt/ace/doris/62092_sesa/` is copied into the repo tree | extraction completes | git diff shows no binary additions |
+| test_no_raw_data_or_full_text_persisted | No file under `/mnt/ace/doris/62092_sesa/` and no full extracted body text is copied into the repo tree | extraction completes | git diff shows no binary additions, no raw `.txt` dumps, and no copied tables/clauses/screenshots |
+| test_vendor_tbe_rows_metadata_only_without_clearance | vendor/TBE rows are metadata-only unless row-level clearance says otherwise | tranche rows tagged subsea-valves-TBE | output contains only allowed file metadata and deferral reason |
 | test_lint_passes | `llm_wiki.py lint --wiki lng-projects` returns 0 | new wiki pages | exit 0 |
 | test_status_passes | `llm_wiki.py status --wiki lng-projects` returns 0 | new wiki pages | exit 0 |
 
@@ -192,7 +200,11 @@ The implementation phase that follows approval of this plan must satisfy:
 - [ ] Every tranche row has priority, theme, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, risk_note (9 columns).
 - [ ] Plan explicitly preserves the link-only raw-data policy from `elements-doris-62092-sesa.md` and the #2534 retention boundary.
 - [ ] Standards (DNV-ST-F101, API 6DSS, ASME B16.5, ASTM A351/A182/A276) are excluded from the tranche with a documented reason.
-- [ ] Vendor brochure redistribution policy is flagged as an open question for plan review (not silently resolved).
+- [ ] Target wiki directories `sources`, `entities`, `concepts`, `comparisons`, and `standards` are created or verified before page generation; no code assumes absent directories already exist.
+- [ ] Extraction parser support is proven by tests for PDF, PPTX, and DOCX/text branches, including explicit missing-parser behavior; the current XLSM/QGIS-only `extract-first-pass.py` is not treated as sufficient evidence.
+- [ ] Date/path ordering tests include lexicographically inverted mixed-date examples so string sorting cannot accidentally satisfy chronological order.
+- [ ] Vendor/TBE rows are metadata-only unless row-level clearance explicitly authorizes more; body text, tables, specifications, quoted clauses, equipment details, and screenshots/images are prohibited by default.
+- [ ] No extraction, source page publication, concept page publication, comparison page publication, quote, or snippet is emitted until SESA citeability is confirmed via `docs/governance/sesa-extraction-clearance-2026.md` or an owner issue comment on #2541 covering every selected row and allowed extraction level.
 - [ ] Plan stays at `status:plan-review`; no self-approval; no `status:plan-approved` label applied by this terminal.
 - [ ] Adversarial review (Claude + Codex + Gemini) is invoked on this plan before user approval.
 - [ ] After user approval, a separate issue+plan ships the implementation phase per `Pseudocode` above.
@@ -203,11 +215,11 @@ The implementation phase that follows approval of this plan must satisfy:
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | (pending) | TBD |
-| Codex | (pending) | TBD |
-| Gemini | (pending) | TBD |
+| Claude | MAJOR (2026-05-02 fresh attempt) | `scripts/review/results/2026-05-02-plan-2541-claude.md` found stale line-count evidence, current extractor is XLSM/QGIS-only, missing wiki target directories, parser-fallback mismatch, and weak date-ordering tests. This revision patches those defects but needs rerun. |
+| Codex | MAJOR (2026-05-02 fresh attempt) | `scripts/review/results/2026-05-02-plan-2541-codex.md` found unresolved extraction/provenance/TDD gaps; this revision makes parser support, directory creation, and clearance gating explicit. |
+| Gemini | MAJOR initial; rerun unavailable/pending | Initial Gemini finding blocked raw `.txt` dumps and extraction without citeability clearance. The current plan body now explicitly hard-blocks extraction/publication before clearance and prohibits raw/full-text persistence; Gemini rerun prompt/evidence still needed. |
 
-**Overall result:** (pending — invoked after this terminal commits)
+**Overall result:** BLOCKED-CANDIDATE, not approval-ready today. The fresh MAJOR findings have been patched into the canonical plan body, but #2541 still needs (a) valid fresh review evidence on the patched text and (b) an explicit user/data-owner decision on SESA citeability/allowed extraction level before any approval should be considered.
 
 ---
 
@@ -215,12 +227,12 @@ The implementation phase that follows approval of this plan must satisfy:
 
 - **Risk** — 99.6 MB GSM-AO-G-ITE-10046 PDF may exceed memory for whole-document `pdftotext`. **Mitigation:** page-batched extraction documented in pseudocode; first 5 batches landed before continuing rest of tranche.
 - **Risk** — bilingual UTF-8 may break in some `pdftotext` builds. **Mitigation:** UTF-8 round-trip validator in TDD.
-- **Risk** — vendor brochures (PIETRO, RMT VALVOMECCANICA) may carry NDA markings. **Mitigation:** flagged as an open plan-review question; first-tranche extraction targets header/spec metadata only; full body extraction deferred until policy is set.
+- **Risk** — vendor brochures (PIETRO, RMT VALVOMECCANICA) may carry NDA markings. **Mitigation:** vendor/TBE rows are metadata-only by default; body text, tables, specifications, quoted clauses, equipment details, and screenshots/images remain prohibited unless row-level clearance explicitly allows them.
 - **Risk** — the `Rev JRA` markup overlays are inline annotations that pdftotext may interleave with body text. **Mitigation:** pdfminer.six layout-mode fallback documented; fallback is per-file and surfaces in the TDD `test_extract_pdf_utf8_roundtrip` regression set.
 - **Risk** — DORIS internal numbering convention may already be documented in a private wiki, in which case the planned concept page would duplicate. **Mitigation:** open question — plan reviewer to confirm before implementation phase scopes a `concepts/doris-document-numbering.md` page.
 - **Risk** — the candidate TSV is a snapshot from #2535 metadata indexing; if `/mnt/ace/doris/62092_sesa` mutates between plan-approval and implementation start, the canonical-path selection must be re-validated. **Mitigation:** implementation phase rebuilds canonical paths from a fresh candidate scan as its first step.
 - **Open** — Are LYOS / MKII / Hilli the three competing FLNG vessel candidates? Affects whether free-span pages are `entities/` or `comparisons/`.
-- **Open** — Is SESA project information freely citeable inside the workspace-hub wiki? Affects vendor-text policy.
+- **Open / approval blocker** — Is SESA project information citeable inside the workspace-hub wiki, and at what extraction level per row? This is not an executor choice. Required before extraction/publication: `docs/governance/sesa-extraction-clearance-2026.md` or an issue comment on #2541 from the responsible project/data owner.
 - **Open** — Should `Rev JRA` markup PDFs be merged into the base-rev source page or kept as separate review pages?
 
 ---
