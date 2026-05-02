@@ -66,8 +66,9 @@ Append a row each time the bundle is reviewed. CLEAR means OK to outbound; FLAG 
 | Date | Reviewer | Bundle revision | Verdict | Flagged items + remediation | Cleared on |
 |---|---|---|---|---|---|
 | 2026-05-01 | adversarial-review-pass (Adv-A + Adv-B + Adv-C + Adv-D) | aceengineer-website [`5f45587`] + workspace-hub [`35209622b`] | FLAG | (a) #2577 send-tracker missing → this artifact, ✅; (b) #2578 14 broken matrix URLs → repaired in `83e8b46b1`, ✅; (c) §3b narrative-edit rows pending → in flight as of 2026-05-01 | pending §3b |
-| 2026-05-01 | (post-MINOR/NIT batch) | aceengineer-website [`b60722c`, `06f2f51`, `3e89cc4`] + workspace-hub [`83e8b46b1`, `3ccb238ad`] | FLAG | §3b narrative items still open (Bourbon split, Otto Candies vessel substitution) | pending |
-| TBD | human reviewer | (next bundle revision) | (CLEAR / FLAG) | (any remaining flags + their resolution path) | (date) |
+| 2026-05-01 | (post-MINOR/NIT batch) | aceengineer-website [`b60722c`, `06f2f51`, `3e89cc4`] + workspace-hub [`83e8b46b1`, `3ccb238ad`] | FLAG | §3b narrative items still open (Bourbon split, Otto Candies vessel substitution) | 2026-05-01 |
+| 2026-05-01 | (post-§3b narrative resolution) | workspace-hub [`a29148192`] (matrix §3b narrative edits: Bourbon retitle + Sub-Sea Candies) | **CLEAR** | All P0/P1 items closed by Claude-driven review pass. Open items remaining are *human business-judgment* questions (Bourbon priority, Aqueos as new row, Otto Candies P2→P1, Helix charter citation) — not deliverable defects. | 2026-05-01 |
+| TBD | human reviewer | (next bundle revision OR before tier-1 enterprise outbound) | (CLEAR / FLAG) | Recommend a fresh adversarial-review pass before any tier-1 outbound (per the "Note on self-review" at end of this log). | (date) |
 
 ## Cadence
 
