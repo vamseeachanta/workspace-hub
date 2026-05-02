@@ -39,7 +39,16 @@
 | Cycle | Started | Areas | Plans drafted | Issues opened | Reviews | Status |
 |---|---|---|---|---|---|---|
 | 1 | 2026-05-02T11:36Z | engineering-standards/API; asset-management; engineering gap audit; naval-architecture topical | 4 | #2586 #2587 #2588 #2589 | r1 Claude internal: 1 MINOR + 3 MAJOR→revised; Codex+Gemini UNAVAILABLE (#2479 + sandbox) | **status:plan-review** for all 4 — pending user approval |
-| 2 | TBD | DNV standards; ASME standards; maritime-law topical; online-resource-registry refresh | — | — | — | scheduled |
+| 2 | 2026-05-02T12:53Z | DNV standards; ASME standards; maritime-law topical; online-resource-registry refresh | 4 | #2590 #2591 #2592 #2593 | r1 Claude internal: 4 MAJOR→revised (3+4+2+3 MAJOR / 10+5+5+5 MINOR); Codex+Gemini UNAVAILABLE | **status:plan-review** for all 4 — pending user approval |
+| 3 | scheduled | ABS standards; ISO offshore 19900-series; **erratum plan for #2471 over-citation across W1+W2**; engineering/mooring sub-domain backfill | — | — | — | queued |
+
+## Wave 2 outcome notes
+
+- **All 4 W2 plans returned MAJOR on r1** — 12 MAJOR + 25 MINOR total, all addressed inline. Pattern is consistent with W1; first-draft plans need real revisions.
+- **Systemic finding surfaced**: memory `project_wiki_standards_path_decision.md` says **#2471 sanction is CSA-Z276-only** AND the **routing principle generalizes only to marine-engineering / engineering / naval-architecture**, NOT maritime-law / personal / health-reports. This affects the previously-committed W1-A (#2586), W1-B (#2587), and the original-draft W2-A (#2590) / W2-B (#2591) / W2-C (#2592). All revised W2 plans now re-anchor citations; W1 plans still carry the over-citation.
+- **W3-C is an erratum plan** to retrofit the #2471 correction across W1-A/W1-B atomically rather than post-comment edits.
+- **W2-D's test-url-resolves was reaching live network in default pytest** — pattern fix saved as transferable lesson: audit-time tests live in `tests/audits/` or behind `@pytest.mark.audit`, not co-located with build-time tests.
+- **Auto-sync pusher confirmed twice this session** — push-rejected race resolved by waiting + verifying origin alignment, not retrying. Memory `feedback_autosync_silent_pusher.md` remains operative.
 
 ## Wave 1 outcome notes
 
