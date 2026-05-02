@@ -1,6 +1,6 @@
 # Plan for #2588: audit(llm-wiki) — engineering wiki gap audit + prioritized backfill sequence (W1-C)
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2588
@@ -11,10 +11,10 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `knowledge/wikis/engineering/wiki/` — 105 wiki output files across 5 subdirs (`concepts/` 42, `entities/` 23, `sources/` 23, `standards/` 9, `workflows/` 5) plus 4 root files.
+- Found: `knowledge/wikis/engineering/wiki/` — 102 files across 5 subdirs (concepts=42, entities=23, sources=23, standards=9, workflows=5) plus 4 root files (total 106).
 - Found: `knowledge/wikis/engineering/raw/papers/` — single flat directory holding 520 files (no nested subdirs at depth 2+); a heterogeneous mix of feedback notes, project notes, agent/process docs, and a small slice of engineering content.
 - Gap: no coverage-gap detector script will exist until #2392 ships (`scripts/knowledge/detect_wiki_gaps.py`); this audit is a one-time manual precursor that the future detector will subsume.
-- Gap: no internal `digitalmodel/` Python module will be found citing `knowledge/wikis/engineering/...` paths — engineering wiki is not yet wired into calc citations (see Citation contract `.claude/rules/calc-citation-contract.md`).
+- Partial-wiring state: ONE engineering wiki path (`knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md`) IS already wired into the citation contract via `digitalmodel/src/digitalmodel/citations/registry.py` (referenced from `digitalmodel/tests/citations/test_schema.py`); all other 105 wiki files are unreferenced from `digitalmodel/` Python code. The existing wired path serves as the prioritization anchor — entries falling within the same calc-adjacent surface (mooring/riser/fatigue standards consumed by `orcaflex/mooring_design.py` and siblings) are higher priority than orphan domains. (See citation contract `.claude/rules/calc-citation-contract.md`.)
 
 ### Standards
 | Standard | Status | Source |
@@ -37,13 +37,13 @@
 - Issue #2373 — `feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion`, OPEN; some priority entries from this audit (DNV-OS-F101, API RP 17-series, ISO 19900) may align with Batch Pack 4 scope.
 - Issue #2392 — `feat(knowledge): wiki coverage-gap detector`, OPEN; produces `scripts/knowledge/detect_wiki_gaps.py` and per-domain `docs/reports/wiki-coverage-gaps/<domain>.yaml`. This audit is the manual precursor that proves the detector's eventual output shape.
 - `.claude/rules/calc-citation-contract.md` — defines fail-closed citation contract; informs prioritization (subdirs that calcs would cite first = higher priority).
-- SUT (Society for Underwater Technology) public taxonomy: structural design / dynamic loading / construction & QA / materials technology / control engineering / fluid dynamics / reliability / hydro-mechanics / heat transfer / corrosion / soil mechanics / production flow management — used to validate that the priority order tracks an external authoritative discipline taxonomy and is not biased by repo idiosyncrasy.
+- ISO 19900-series offshore-structures standards taxonomy (ISO 19900 general / 19901 specific provisions / 19902 fixed steel / 19903 fixed concrete / 19904 floating / 19905-1 site-specific assessment of jack-ups) — used as the verifiable external taxonomy anchor for priority rationale. Each ISO part defines a discipline scope (structural integrity, environmental loading, materials, fatigue, etc.); priority entries cite a specific part number rather than a generic English noun.
 
 ### Gaps identified
 - The directory structure of `knowledge/wikis/engineering/raw/` does NOT mirror `wiki/` (concepts/entities/sources/standards/workflows). Raw is a flat `papers/` dump of 520 files. A naive subdir-vs-subdir diff is impossible; the audit must classify each raw file by *destination wiki section* (or `out-of-scope` if the file is process/agent content that does not belong in the engineering wiki at all).
-- Of 520 raw files, only ~14 (~2.7%) are domain-engineering by filename heuristic; ~56 are `feedback_*` files that are user-memory shards (NOT engineering-wiki source material per `.claude/rules/calc-citation-contract.md` deny-list rationale); ~88 are ALL_CAPS dev/process docs; ~9 are JSON workflow specs (e.g., `sd15_txt2img.json` — image-generation, out of engineering scope); ~16 are YAMLs of mixed nature.
+- Of 520 raw files, only 12 (~2.3%) are domain-engineering by filename heuristic; ~56 are `feedback_*` files that are user-memory shards (NOT engineering-wiki source material per `.claude/rules/calc-citation-contract.md` deny-list rationale); ~88 are ALL_CAPS dev/process docs; ~9 are JSON workflow specs (e.g., `sd15_txt2img.json` — image-generation, out of engineering scope); ~16 are YAMLs of mixed nature.
 - The 4–5x raw-vs-wiki mismatch is therefore largely a **misclassification artifact** (raw includes content that belongs in `agents/.claude/memory`, `data/document-index/`, or other wikis), not a backfill deficit in the engineering domain.
-- True engineering-content gaps DO exist within the actual wiki output — e.g., `standards/` has only 9 codes; the SUT taxonomy and citation contract imply the standards count for a complete engineering practice surface is closer to 40–60.
+- True engineering-content gaps DO exist within the actual wiki output — e.g., `standards/` has only 9 codes; the ISO 19900-series taxonomy and citation contract imply the standards count for a complete engineering practice surface is closer to 40–60.
 
 ### Evidence (embedded verification)
 
@@ -71,22 +71,23 @@ knowledge/wikis/engineering/raw/papers
 ```
 (only one subdir — no further nesting)
 
-**Raw filename-prefix bucketing** (verified 2026-05-02):
-- `feedback_*.md`: 56 files (process/memory — out of engineering wiki scope)
-- ALL_CAPS_FILES: 88 (dev/process docs — mostly out of scope)
-- `claude/codex/gemini/agent/ai-/llm-/skill-/hermes/gsd-` prefix: 34 (agent/process — out of scope)
-- `plan-/review-/audit-/sweep-/stage-/prompt-/approval-/adversarial-/artifact-` prefix: 25 (process — out of scope)
-- `2026-*` dated rollups: 9 (overnight synthesis — out of scope)
-- `*.json` (e.g., ComfyUI/SDXL workflow files): 9 (out of engineering scope)
-- `*.yaml/*.yml`: 16 (mixed — must classify case-by-case)
-- Total accounted-for-as-out-of-scope: ~237/520 (~46%)
-- Domain-engineering candidates by name match against `mooring|riser|pipeline|structural|fatigue|subsea|umbilical|cathodic|cfd|hydrodynamic|wave-theory|free-span|viv|seakeeping|fea|orcaflex|orcawave|aqwa|api-|dnv-|ocimf|csa-|naval|offshore`: ~14 files.
+**Raw filename-prefix bucketing** (verified 2026-05-02; explicit commands shown for re-verification):
+- `feedback_*.md`: 56 files (process/memory — out of engineering wiki scope) — `ls papers/ | grep -c '^feedback_'`
+- ALL_CAPS_FILES: 88 (dev/process docs — mostly out of scope) — `ls papers/ | grep -cE '^[A-Z_]+\.(md|yml|yaml|json)$'`
+- `claude/codex/gemini/agent/ai-/llm-/skill-/hermes/gsd-` prefix: 34 (agent/process — out of scope) — `ls papers/ | grep -ciE '^(claude|codex|gemini|agent|ai-|llm-|skill-|hermes|gsd-)'` (case-insensitive `-i` required)
+- `plan-/review-/audit-/sweep-/stage-/prompt-/approval-/adversarial-/artifact-` prefix: 25 (process — out of scope) — `ls papers/ | grep -cE '^(plan-|review-|audit-|sweep-|stage-|prompt-|approval-|adversarial-|artifact-)'`
+- `2026-*` dated rollups: 9 (overnight synthesis — out of scope) — `ls papers/ | grep -c '^2026-'`
+- `*.json` (e.g., ComfyUI/SDXL workflow files): 9 (out of engineering scope) — `ls papers/ | grep -c '\.json$'`
+- `*.yaml/*.yml`: 16 (mixed — must classify case-by-case) — `ls papers/ | grep -cE '\.(yaml|yml)$'`
+- **Out-of-scope union (deduplicated, mutually exclusive):** computed via single union regex `ls papers/ | grep -ciE '^(feedback_|[A-Z_]+\.(md|yml|yaml|json)$|claude|codex|gemini|agent|ai-|llm-|skill-|hermes|gsd-|plan-|review-|audit-|sweep-|stage-|prompt-|approval-|adversarial-|artifact-|2026-)|\.(json|yaml|yml)$' | sort -u` — execution time recompute the deduplicated total to replace the naive sum (raw additive sum 237/520 ≈ 46% double-counts files matching multiple buckets, e.g., `CLAUDE.md` matches both ALLCAPS and the agent-prefix bucket). The audit deliverable MUST report the deduplicated union count, not the additive sum.
+- Domain-engineering candidates by name match against `mooring|riser|pipeline|structural|fatigue|subsea|umbilical|cathodic|cfd|hydrodynamic|wave-theory|free-span|viv|seakeeping|fea|orcaflex|orcawave|aqwa|api-|dnv-|ocimf|csa-|naval|offshore`: 12 files.
 
-**Internal cross-reference scan** (verified 2026-05-02 via `grep -rl "knowledge/wikis/engineering" digitalmodel/ src/digitalmodel/citations/ src/digitalmodel/orcaflex/`):
+**Internal cross-reference scan** (verified 2026-05-02 via `grep -rl "knowledge/wikis/engineering" /mnt/local-analysis/workspace-hub/digitalmodel/`):
 ```
-(empty — no current Python module cites engineering wiki paths)
+digitalmodel/src/digitalmodel/citations/registry.py
+digitalmodel/tests/citations/test_schema.py
 ```
-Implication: prioritization cannot rely on existing `digitalmodel`-side reference density (count is zero everywhere). Must use the citation-contract intent (which standards calcs *would* cite) instead.
+ONE wiki path is wired: `registry.py` declares `"wiki_path": "knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md"` for the DNV-OS-E301 citation template; the schema test asserts on it. All other 105 wiki files are unreferenced from `digitalmodel/` Python code. Implication: prioritization is anchored on the existing wired path — entries falling within the same calc-adjacent surface (mooring/riser/fatigue standards consumed by `orcaflex/mooring_design.py` and siblings) are higher priority than orphan domains. Where citations don't yet exist, fall back to citation-contract intent (which standards calcs *would* cite).
 
 **Existing wiki/standards inventory** (verified 2026-05-02 via `ls`):
 ```
@@ -104,9 +105,9 @@ dnv-rp-f101.md  dnv-rp-f105.md  ocimf-meg4.md   ocimf-tandem-mooring.md  TEMPLAT
 
 **Gap proofs** (verified 2026-05-02):
 - `find knowledge/wikis/engineering/raw -maxdepth 4 -type d` returned only `raw` and `raw/papers` → confirms no nested subdir taxonomy on raw side.
-- `grep -rl "knowledge/wikis/engineering" digitalmodel/ 2>/dev/null` returned empty → confirms no current digitalmodel cross-refs to engineering wiki.
+- `grep -rl "knowledge/wikis/engineering" /mnt/local-analysis/workspace-hub/digitalmodel/ 2>/dev/null` returned `digitalmodel/src/digitalmodel/citations/registry.py` and `digitalmodel/tests/citations/test_schema.py` → confirms ONE wiki path (`dnv-os-e301.md`) is wired into the citation contract; remaining 105 wiki files are unreferenced.
 
-<!-- Source count: (1) issue body / wave prompt, (2) prior plan #2392 wiki-gap-detector, (3) prior plan #2378 marine-wiki-chunked-index, (4) prior plan #2363 wiki-refs-reverse-lookup, (5) `.claude/rules/calc-citation-contract.md`, (6) SUT public taxonomy. Total = 6 distinct sources (≥3 required). -->
+<!-- Source count: (1) issue body / wave prompt, (2) prior plan #2392 wiki-gap-detector, (3) prior plan #2378 marine-wiki-chunked-index, (4) prior plan #2363 wiki-refs-reverse-lookup, (5) `.claude/rules/calc-citation-contract.md`, (6) ISO 19900-series offshore-structures TOC. Total = 6 distinct sources (≥3 required). -->
 
 ---
 
@@ -140,7 +141,7 @@ audit_report_structure:
          columns = [prefix_bucket, file_count, classification, destination]
          rows = one per filename-prefix bucket above + "domain-engineering candidates"
        table_B_wiki_inventory:
-         columns = [subdir, file_count, top_5_files_by_name, taxonomy_completeness_estimate]
+         columns = [subdir, file_count, first_5_files_alphabetical_at_audit_time, taxonomy_completeness_estimate]
          rows = concepts | entities | sources | standards | workflows | root
     3. Gap audit table:
        columns = [logical_subdir, raw_count, wiki_count, ratio, priority, rationale_one_line]
@@ -150,7 +151,7 @@ audit_report_structure:
          - title (suggested child issue title)
          - target_path (one wiki page, e.g., wiki/standards/dnv-os-f101.md)
          - priority (P1|P2|P3)
-         - rationale (1 line; cites SUT taxonomy or citation-contract intent)
+         - rationale (1 line; MUST reference one of: ISO 19900-series part number, the literal string `citation-contract` / `citation contract` / `would cite`, or a ratio expression like `raw/wiki` or `\d+:\d+`)
          - candidate_source(s) on raw side (or "external — DNV/API/ISO doc")
     5. Deprecation pass:
        list of raw filename-prefix patterns recommended for archival to
@@ -165,8 +166,12 @@ test_audit_artifact:
     assert gap-audit table row count >= 8
     assert prioritized backfill list length in [8,10]
     assert each priority entry has fields {title, target_path, priority, rationale, candidate_sources}
+    assert each priority entry's rationale matches one of the required anchors:
+        - ISO 19900-series part number (regex: `19900|19901|19902|19903|19904|19905-1`)
+        - literal `citation-contract` / `citation contract` / `would cite`
+        - ratio expression matching `raw/wiki` or `\d+\s*:\s*\d+`
     assert each cited subdir has a verifiable file_count that matches a live `find` result
-        within ±5% tolerance (corpus may drift between draft and execution)
+        within absolute ±2 files tolerance (replaces ±5% — at 520 files, 5% would mask 26-file deletions)
 ```
 
 ---
@@ -194,8 +199,9 @@ NO modifications to `knowledge/wikis/engineering/**` of any kind. This plan is a
 | `test_audit_gap_table_min_rows` | gap-audit table has actionable depth | parsed markdown | row count ≥ 8 |
 | `test_audit_priority_list_size` | prioritized backfill has 8–10 entries | parsed markdown | `8 <= len(priority_entries) <= 10` |
 | `test_audit_priority_entry_schema` | each entry has required fields | parsed markdown | each entry has `title`, `target_path`, `priority` ∈ {P1,P2,P3}, `rationale`, `candidate_sources` |
-| `test_audit_file_counts_verifiable` | cited counts match live `find` | `find knowledge/wikis/engineering/wiki/<sub> -type f` | every cited count within ±5% of live count |
-| `test_audit_no_wiki_writes` | this plan does not modify wiki/ | `git diff --name-only HEAD~1 -- knowledge/wikis/engineering/wiki/` | empty |
+| `test_audit_rationales_cite_required_anchors` | each priority rationale references a verifiable anchor | parsed markdown rationale strings | each rationale matches at least one of: ISO 19900-series regex (`19900|19901|19902|19903|19904|19905-1`), literal `citation-contract` / `citation contract` / `would cite`, or ratio regex (`raw/wiki` or `\d+\s*:\s*\d+`) |
+| `test_audit_file_counts_verifiable` | cited counts match live `find` | `find knowledge/wikis/engineering/wiki/<sub> -type f` | every cited count within absolute ±2 files of live count |
+| `test_audit_no_wiki_writes` | this plan does not modify wiki/ | `git diff --name-only $(git merge-base HEAD origin/main) -- knowledge/wikis/engineering/wiki/` | empty |
 
 ---
 
@@ -205,7 +211,7 @@ NO modifications to `knowledge/wikis/engineering/**` of any kind. This plan is a
 - [ ] No regression: `uv run pytest tests/knowledge/` passes
 - [ ] Audit table covers every top-level subdir of `wiki/` (concepts, entities, sources, standards, workflows, root) AND every prefix bucket of `raw/papers/` identified in this plan's evidence section.
 - [ ] Prioritized backfill list contains 8–10 entries, each mapping to a single follow-up issue path (e.g., `docs/plans/<future-date>-issue-<NNNN>-<slug>.md` placeholder).
-- [ ] Each priority entry's rationale references one of: (a) SUT taxonomy discipline, (b) citation-contract intent (which calc would cite this), (c) raw-vs-wiki ratio.
+- [ ] Each priority entry's rationale references one of: (a) ISO 19900-series part number (19900 / 19901 / 19902 / 19903 / 19904 / 19905-1), (b) citation-contract intent (literal `citation-contract` / `citation contract` / `would cite`), (c) raw-vs-wiki ratio expression (`raw/wiki` or `\d+:\d+`). Enforced by `test_audit_rationales_cite_required_anchors`.
 - [ ] Deprecation pass section names ≥3 raw filename-prefix patterns recommended for relocation out of engineering wiki scope.
 - [ ] No file under `knowledge/wikis/engineering/wiki/` is created or modified by this plan's execution commit.
 - [ ] Review artifacts posted to `scripts/review/results/`.
@@ -215,28 +221,37 @@ NO modifications to `knowledge/wikis/engineering/**` of any kind. This plan is a
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | — |
-| Codex | pending | — |
-| Gemini | pending | — |
+| Claude (internal) | MAJOR → revised | 3 MAJOR (false zero-citations claim; rationale-anchor test missing; SUT taxonomy unattributed) + 7 MINOR — all addressed inline |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479); fanout dispatch hung; killed at 2026-05-02T12:21Z |
+| Gemini | UNAVAILABLE | gemini CLI cwd=/tmp sandbox cannot resolve repo paths; err logged to scripts/review/results/.failed-fanout-2026-05-02/ |
 
-**Overall result:** pending
+**Overall result:** PASS-after-revision (3 MAJOR + 7 MINOR fixes applied 2026-05-02)
 
-Revisions made based on review:
-- (none yet)
+**Revisions made based on review:**
+- MAJOR-1: corrected the false "zero digitalmodel cross-refs" claim; embedded actual grep results showing `registry.py` + `test_schema.py` wire `dnv-os-e301.md`; reframed as prioritization anchor.
+- MAJOR-2: added `test_audit_rationales_cite_required_anchors` test asserting each rationale matches ISO 19900 / citation-contract literal / ratio regex.
+- MAJOR-3: replaced unverifiable SUT taxonomy with ISO 19900-series (19900/19901/19902/19903/19904/19905-1) as the verifiable external anchor.
+- MINOR-1: wrote literal `grep -ciE` command (with `-i` flag explicit) for the 34-count agent-prefix bucket.
+- MINOR-2: corrected "~14 files" to "12 files" for domain-engineering candidates.
+- MINOR-3: reconciled 105/106 — line 14 now reads "102 files across 5 subdirs … plus 4 root files (total 106)".
+- MINOR-4: replaced ±5% drift tolerance with absolute ±2 files in pseudocode and TDD test.
+- MINOR-5: replaced `HEAD~1` with `$(git merge-base HEAD origin/main)` in `test_audit_no_wiki_writes`.
+- MINOR-6: replaced "top_5_files_by_name" with "first_5_files_alphabetical_at_audit_time" in pseudocode table_B.
+- MINOR-7: documented that 237/520 additive sum double-counts; deliverable MUST report deduplicated union via single union-regex command.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round-1 MAJOR; round-2 verdict pending user re-review.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk:** Subdir naming conventions differ between raw (single flat `papers/` directory) and wiki (5 typed subdirs). A naive subdir-name diff will produce false-mismatch noise; this plan addresses by classifying raw files by *destination* (concepts/entities/standards/workflows/sources/out-of-scope) using filename-prefix buckets, not by mirror-subdir matching.
-- **Risk:** Priority bias toward visible work. The auditor may over-weight standards (visible, easy to enumerate) and under-weight concepts (harder to scope but core to citation contract). Mitigation: priority rationale must cite SUT taxonomy or citation-contract intent — not just raw count.
+- **Risk:** Priority bias toward visible work. The auditor may over-weight standards (visible, easy to enumerate) and under-weight concepts (harder to scope but core to citation contract). Mitigation: priority rationale must cite ISO 19900-series part number, citation-contract literal, or a verifiable raw-vs-wiki ratio — not just raw count. Enforced by `test_audit_rationales_cite_required_anchors`.
 - **Risk:** Count-based heuristic ignores depth-of-content. A single 4-page mooring-failure-physics page can outweigh ten thin standards stubs. Mitigation: priority list is *recommendation*; final scope-per-child-issue happens in each child plan, not here.
 - **Risk:** Filename-prefix bucketing is heuristic and will misclassify some files. The audit must explicitly disclose its bucketing rules and acknowledge that final classification happens at child-issue time.
-- **Risk:** Drift — `raw/papers/` and `wiki/*/` file counts will change between this plan's draft and execution date. The TDD test uses ±5% tolerance to accept reasonable drift; if drift exceeds tolerance, audit re-run is required before child-issue dispatch.
+- **Risk:** Drift — `raw/papers/` and `wiki/*/` file counts will change between this plan's draft and execution date. The TDD test uses absolute ±2 files tolerance (revised from ±5% per review MINOR-4 — at 520 files, 5% would mask 26-file deletions); if drift exceeds tolerance, audit re-run is required before child-issue dispatch.
 - **Open:** Should the audit include an explicit deprecation pass (which raw subdirs/prefixes should be archived to `agents/memory/` or moved to `data/document-index/` rather than promoted to wiki)? **Proposed default: YES** — the 46% out-of-scope ratio is too high to ignore; deprecation recommendations are a section of the deliverable.
 - **Open:** Should priority list include cross-domain concepts (e.g., `marine-engineering` overlap pages like wave theory) or stay strictly engineering-discipline-only? Flag for user during approval.
 - **Open:** Should this audit's output be re-run automatically once #2392's `detect_wiki_gaps.py` ships, to validate the script's output against this manual baseline? **Proposed: YES** — adds a regression check for the future detector. Out of scope for this plan, captured as a follow-up.

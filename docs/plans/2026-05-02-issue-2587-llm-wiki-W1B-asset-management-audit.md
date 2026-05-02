@@ -1,11 +1,11 @@
 # Plan: LLM-Wiki Completeness Audit (Wave 1-B) — Asset-Management Topical Scaffold + Scope Boundary
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2587
 > **Parent epic:** https://github.com/vamseeachanta/workspace-hub/issues/2540 (Elements corpus planning wave)
-> **Review artifacts:** scripts/review/results/2026-05-02-plan-W1-asset-management-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-02-plan-2587-claude-internal.md | Codex UNAVAILABLE (#2479) | Gemini UNAVAILABLE (sandbox sparse-overlay blindness)
 
 ---
 
@@ -23,13 +23,22 @@
 | Standard | Status | Source / Notes |
 |---|---|---|
 | ISO 55000 family (55000/55001/55002) | gap (no wiki page) | Will be added under `wiki/standards/iso-55000.md` (and 55001, 55002) per #2471-sanctioned `wiki/standards/<code-id>.md` routing. |
+| ISO 31000:2018 (Risk management — Guidelines) | gap | `wiki/standards/iso-31000.md` — parent risk-management methodology cross-referenced by ISO 55001 §6; load-bearing for ALARP / RBI / SCE-classification concept pages. |
 | API RP 580 (RBI methodology) | gap | `wiki/standards/api-rp-580.md` |
 | API RP 581 (RBI quantitative) | gap | `wiki/standards/api-rp-581.md` |
 | API 579-1 / ASME FFS-1 (fitness-for-service) | gap | `wiki/standards/api-579-1.md` |
 | DNV-RP-G101 (RBI for offshore topsides) | gap | `wiki/standards/dnv-rp-g101.md` |
 | NORSOK Z-008 (risk-based maintenance) | gap | `wiki/standards/norsok-z-008.md` |
 | HSE Safety Case Regs (UK SCR15) | gap | `wiki/standards/hse-scr-2015.md` |
-| IAM Competency Framework | gap | `wiki/standards/iam-competency-framework.md` (treating IAM CF as a publisher-issued reference doc) |
+
+**Deferred sub-list — out-of-scope for W1-B (deferred to follow-up issue, TBD):**
+
+| Standard | Status | Source / Notes |
+|---|---|---|
+| PAS 55-1/-2:2008 (BSI) | deferred | Superseded by ISO 55001 in 2014 but still cited in pre-2014 contracts and audit reports; deferred to follow-up issue (TBD). |
+| BS EN 16646:2014 (Maintenance — Maintenance within physical asset management) | deferred | CEN bridge between EN-13306 maintenance vocabulary and ISO 55000; deferred to follow-up issue (TBD). |
+
+**Note (per r1 review M1):** The IAM Competency Framework v3.0 is a **competency curriculum**, not a code-with-revision under #2471 contract. It is intentionally NOT scaffolded under `wiki/standards/`; it is captured as a concept page only at `wiki/concepts/iam-competency-model.md`.
 
 ### LLM Wiki pages consulted
 
@@ -117,25 +126,25 @@ Property-address-keyed top-level dir confirms portfolio/real-estate framing — 
 | This plan | docs/plans/2026-05-02-issue-2587-llm-wiki-W1B-asset-management-audit.md |
 | Tests | tests/knowledge/test_asset_management_wiki.py |
 | Wiki concept pages (new ×8) | knowledge/wikis/asset-management/wiki/concepts/*.md |
-| Wiki standards pages (new ×8) | knowledge/wikis/asset-management/wiki/standards/*.md |
+| Wiki standards pages (new ×10) | knowledge/wikis/asset-management/wiki/standards/*.md |
 | Wiki index (modify) | knowledge/wikis/asset-management/wiki/index.md |
 | Wiki overview (modify) | knowledge/wikis/asset-management/wiki/overview.md |
-| Plan review — Claude | scripts/review/results/2026-05-02-plan-W1-asset-management-claude.md |
-| Plan review — Codex | scripts/review/results/2026-05-02-plan-W1-asset-management-codex.md |
-| Plan review — Gemini | scripts/review/results/2026-05-02-plan-W1-asset-management-gemini.md |
+| Plan review — Claude | scripts/review/results/2026-05-02-plan-2587-claude-internal.md |
+| Plan review — Codex | UNAVAILABLE (codex-cli 0.124.0 stdin-hang regression — #2479) |
+| Plan review — Gemini | UNAVAILABLE (gemini sandbox cwd=/tmp cannot resolve repo paths; sparse-overlay blindness) |
 
 ---
 
 ## Deliverable
 
-A topically-scaffolded engineering-asset-management wiki at `knowledge/wikis/asset-management/wiki/` with ~12 concept pages, 8 standards pages, an updated index carrying an explicit scope-boundary disclaimer (engineering vs. financial), and a pytest suite that will assert frontmatter compliance, scope-section presence, cross-link minimum, and the scope-boundary statement on every new page.
+A topically-scaffolded engineering-asset-management wiki at `knowledge/wikis/asset-management/wiki/` with ~12 concept pages, 10 standards pages, an updated index carrying an explicit scope-boundary disclaimer (engineering vs. financial), and a pytest suite that will assert frontmatter compliance, scope-section presence, cross-link minimum, and the scope-boundary statement on every new page.
 
 ---
 
 ## Pseudocode
 
 ```
-# Topical-scaffold execution (per page, 12 concept pages + 8 standards pages):
+# Topical-scaffold execution (per page, 12 concept pages + 10 standards pages):
 for topic in TOPIC_SKELETON:
     page = open(f"wiki/concepts/{topic.slug}.md")
     write_yaml_frontmatter(
@@ -197,10 +206,10 @@ assert engineering_vs_financial_disclaimer_in("wiki/index.md")
 | Action | Path | Reason |
 |---|---|---|
 | Create | knowledge/wikis/asset-management/wiki/concepts/asset-register.md | Foundations |
-| Create | knowledge/wikis/asset-management/wiki/concepts/asset-lifecycle.md | Foundations |
+| Create | knowledge/wikis/asset-management/wiki/concepts/asset-lifecycle.md | Foundations — **canonical authority for asset-lifecycle topic** (per r1 review m4); `iso-55000-family-overview.md` references this page rather than re-stating the lifecycle definition. |
 | Create | knowledge/wikis/asset-management/wiki/concepts/performance-standards.md | Foundations |
 | Create | knowledge/wikis/asset-management/wiki/concepts/safety-critical-element-classification.md | Foundations |
-| Create | knowledge/wikis/asset-management/wiki/concepts/iso-55000-family-overview.md | Standards backbone |
+| Create | knowledge/wikis/asset-management/wiki/concepts/iso-55000-family-overview.md | Standards backbone — defers asset-lifecycle definition to `asset-lifecycle.md` (canonical) per r1 review m4. |
 | Create | knowledge/wikis/asset-management/wiki/concepts/iam-competency-model.md | Standards backbone |
 | Create | knowledge/wikis/asset-management/wiki/concepts/alarp.md | Decision frameworks |
 | Create | knowledge/wikis/asset-management/wiki/concepts/risk-based-inspection.md | Decision frameworks |
@@ -211,17 +220,29 @@ assert engineering_vs_financial_disclaimer_in("wiki/index.md")
 | Create | knowledge/wikis/asset-management/wiki/standards/iso-55000.md | #2471-routed standards page |
 | Create | knowledge/wikis/asset-management/wiki/standards/iso-55001.md | #2471-routed standards page |
 | Create | knowledge/wikis/asset-management/wiki/standards/iso-55002.md | #2471-routed standards page |
+| Create | knowledge/wikis/asset-management/wiki/standards/iso-31000.md | #2471-routed standards page (parent risk-management methodology referenced by ISO 55001 §6) |
 | Create | knowledge/wikis/asset-management/wiki/standards/api-rp-580.md | #2471-routed standards page |
 | Create | knowledge/wikis/asset-management/wiki/standards/api-rp-581.md | #2471-routed standards page |
 | Create | knowledge/wikis/asset-management/wiki/standards/dnv-rp-g101.md | #2471-routed standards page |
 | Create | knowledge/wikis/asset-management/wiki/standards/norsok-z-008.md | #2471-routed standards page |
 | Create | knowledge/wikis/asset-management/wiki/standards/api-579-1.md | #2471-routed standards page |
+| Create | knowledge/wikis/asset-management/wiki/standards/hse-scr-2015.md | #2471-routed standards page |
 | Modify | knowledge/wikis/asset-management/wiki/index.md | Add scope-boundary block + regenerate Concepts/Standards tables |
 | Modify | knowledge/wikis/asset-management/wiki/overview.md | Replace placeholder with engineering-scope synthesis + scope-boundary pointer |
 | Create | tests/knowledge/test_asset_management_wiki.py | TDD assertion suite |
 | Update | docs/plans/README.md | Index this plan |
 
 > Manual-review checkbox: each of the 12 concept pages will be marked `manual-review: pending` in frontmatter and will require human expert tick-off before `manual-review: approved`. Topical curation is not validated by lint alone.
+
+**Bidirectional cross-link enumeration (per r1 review m2)** — the following engineering-wiki concept pages will gain bidirectional cross-links to corresponding new asset-management pages, with rows added to `knowledge/wikis/cross-links.md`:
+
+| Engineering-wiki concept page | Asset-management page (new) | Cross-link rationale |
+|---|---|---|
+| `engineering/wiki/concepts/pipeline-integrity-assessment.md` | `asset-management/wiki/concepts/integrity-management-cycle.md` | Pipeline integrity is a sub-domain of integrity-management cycle. |
+| `engineering/wiki/concepts/cathodic-protection-design.md` | `asset-management/wiki/concepts/integrity-management-cycle.md` | CP is a maintenance-side input to the integrity-management cycle. |
+| `engineering/wiki/concepts/viv-riser-fatigue.md` | `asset-management/wiki/concepts/fitness-for-service.md` | VIV-driven fatigue is FFS Level-3 input. |
+| (engineering-wiki RBI peer if present) | `asset-management/wiki/concepts/risk-based-inspection.md` | Methodology shared; AM page is the canonical home, engineering-wiki page links inbound. |
+| (reliability/RAM peer if present) | `asset-management/wiki/concepts/ram-analysis.md` | Reliability/availability/maintainability vocabulary shared. |
 
 ---
 
@@ -235,8 +256,10 @@ assert engineering_vs_financial_disclaimer_in("wiki/index.md")
 | test_every_new_page_has_at_least_one_cross_link | Each page has ≥1 markdown link to another page in this wiki OR to `cross-links.md` | glob result | pass |
 | test_index_has_scope_boundary_block | `index.md` contains a `## Scope boundary` heading | index.md | pass |
 | test_scope_boundary_disclaimer_text | `index.md` contains the literal phrase "engineering / integrity asset management" AND "NOT … financial / portfolio" | index.md | pass |
-| test_no_vendor_derivative_citation_in_concept_pages | No concept page links to `wiki/sources/` (deny-list per #2482) | glob result | pass |
+| test_no_vendor_derivative_citation_in_concept_pages | No concept page links to `wiki/sources/` AND no concept-page body contains `casa-grande` or `assethold` slug-tokens (deny-list per #2482; strengthened per r1 review m5) | glob result | pass |
 | test_concept_pages_link_to_standards_pages | At least 8 of 12 concept pages link to a `wiki/standards/<code-id>.md` page | glob result | pass |
+| test_all_internal_links_resolve | Every concept-page link to a `wiki/standards/...md` target resolves to an existing file (per r1 review m3 — converts shape-test to content-test) | glob result | pass |
+| test_asset_management_appears_in_cross_links_md | `knowledge/wikis/cross-links.md` carries ≥1 row sourced from or targeting `knowledge/wikis/asset-management/` (per r1 review m2 — makes "Risk — term overlap" mitigation load-bearing) | cross-links.md | pass |
 | test_manual_review_flag_present | Each of the 12 concept pages has `manual-review:` field in frontmatter | glob result | pass |
 | test_index_table_count_matches_filesystem | `index.md` Concepts and Standards table row counts equal filesystem counts | index.md vs glob | pass |
 
@@ -248,37 +271,47 @@ assert engineering_vs_financial_disclaimer_in("wiki/index.md")
 - [ ] No regression: `uv run pytest tests/knowledge/ -v` passes (other domain wikis still green)
 - [ ] `index.md` carries an explicit scope-boundary block distinguishing engineering vs. financial-portfolio asset management
 - [ ] No concept page cites `wiki/sources/*` (vendor-derivative deny-list per #2482) — verified by automated test
-- [ ] All 8 standards pages carry `code_id`, `publisher`, `revision` frontmatter per #2471 sanction
+- [ ] All 10 standards pages carry `code_id`, `publisher`, `revision` frontmatter per #2471 sanction (ISO 55000/55001/55002, ISO 31000, API RP 580, API RP 581, API 579-1, DNV-RP-G101, NORSOK Z-008, HSE SCR15)
 - [ ] Each of the 12 concept pages carries a `manual-review: pending` marker; topic-curation expert review tracked separately on the issue (per-page checkbox)
-- [ ] Per-page manual-review checkbox checklist appears on the GitHub issue (12 boxes for concepts, 8 for standards)
-- [ ] Plan-review artifacts (Claude / Codex / Gemini) committed under `scripts/review/results/`
+- [ ] Per-page manual-review checkbox checklist appears on the GitHub issue (12 boxes for concepts, 10 for standards)
+- [ ] Plan-review artifact (Claude single-author) committed under `scripts/review/results/2026-05-02-plan-2587-claude-internal.md`; Codex/Gemini reviews UNAVAILABLE for this round (codex-cli #2479 stdin-hang regression; Gemini sandbox sparse-overlay blindness)
 - [ ] Wiki log entry appended to `wiki/log.md` recording the W1-B scaffold operation
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | TBD | TBD |
-| Codex | TBD | TBD |
-| Gemini | TBD | TBD |
+| Claude (internal) | MAJOR → revised | 3 MAJOR (IAM CF misrouted; HSE SCR15 dropped; ISO 31000/PAS 55/BS EN 16646 missing) + 6 MINOR — all addressed inline |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479); fanout dispatch hung; killed at 2026-05-02T12:21Z |
+| Gemini | UNAVAILABLE | gemini CLI cwd=/tmp sandbox cannot resolve repo paths; err logged to scripts/review/results/.failed-fanout-2026-05-02/ |
 
-**Overall result:** TBD
+**Overall result:** PASS-after-revision (3 MAJOR + 6 MINOR fixes applied 2026-05-02)
+
+**Revisions made based on review:**
+- M1 — Removed `iam-competency-framework.md` from Standards table and Files-to-Change; IAM CF retained as concept page only at `wiki/concepts/iam-competency-model.md`.
+- M2 — Added `Create | knowledge/wikis/asset-management/wiki/standards/hse-scr-2015.md` row to Files-to-Change; reconciled standards-page count across Standards table, Files-to-Change, and Acceptance Criteria.
+- M3 — Added `wiki/standards/iso-31000.md` to Standards table and Files-to-Change as first-class W1-B page; added PAS 55 and BS EN 16646 to a clearly-labeled deferred sub-list with follow-up issue annotation; updated Western-bias risk-register entry.
+- m1 — Replaced placeholder Codex/Gemini review-artifact paths in Artifact Map with `UNAVAILABLE` annotations citing #2479 and Gemini sandbox failure.
+- m2 — Enumerated five engineering-wiki concept pages requiring bidirectional cross-links and added `test_asset_management_appears_in_cross_links_md` to TDD list.
+- m3 — Added `test_all_internal_links_resolve` to convert link-shape test to link-content test.
+- m4 — Marked `asset-lifecycle.md` as canonical authority for the lifecycle topic; `iso-55000-family-overview.md` references it.
+- m5 — Strengthened `test_no_vendor_derivative_citation_in_concept_pages` to deny `casa-grande` and `assethold` slug-tokens in concept-page bodies.
+- m6 — Converted Open Questions into a single follow-up-issue placeholder with explicit "if user approves with proposed defaults, file follow-up issue" acknowledgement.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round-1 MAJOR; round-2 verdict pending pre-approval re-review by user. Codex/Gemini sustained-MAJOR loop NOT triggered (this is r1).
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk — scope creep into financial assethold:** the only existing source page in this wiki is the Casa Grande financial-portfolio corpus. Without an explicit scope-boundary block in `index.md`, future ingest agents will mis-route financial material here. Mitigation: scope-boundary test is load-bearing in the acceptance criteria.
-- **Risk — Western-standards-only topic-list bias:** the proposed standards backbone (ISO/API/DNV/NORSOK/HSE/IAM) over-indexes on UK-North-Sea + US-Gulf practice. Asset-integrity regimes in Brazil (ANP), Australia (NOPSEMA), and West Africa diverge. Mitigation: capture as Open Question; add jurisdiction-coverage tracker as a follow-up issue rather than blocking W1-B.
+- **Risk — Western-standards-only topic-list bias:** the proposed standards backbone (ISO/API/DNV/NORSOK/HSE) over-indexes on UK-North-Sea + US-Gulf practice. Asset-integrity regimes in Brazil (ANP), Australia (NOPSEMA), and West Africa diverge. **Western canon is also incomplete in W1-B (PAS 55, BS EN 16646 deferred to follow-up issue).** Mitigation: capture as Open Question; add jurisdiction-coverage tracker as a follow-up issue rather than blocking W1-B.
 - **Risk — term overlap with reliability engineering:** RAM analysis, RBI, life extension, and FFS all have peer pages in reliability/integrity adjacent wikis. Without inbound `cross-links.md` hooks, this wiki will fragment from peers. Mitigation: every concept page carries a `cross_links` frontmatter list, and the post-scaffold step appends to `knowledge/wikis/cross-links.md`.
 - **Risk — vendor-derivative deny-list violation:** without a test, an ingest agent could later cite a vendor whitepaper from a concept page. Mitigation: `test_no_vendor_derivative_citation_in_concept_pages` is in the TDD suite.
 - **Risk — `manual-review: pending` markers ship perpetually:** if no human expert ticks the boxes, the wiki appears scaffolded but is unverified. Mitigation: the issue carries explicit per-page reviewer checkboxes; closing the issue requires all boxes ticked.
-- **Open — performance management page placement:** "performance management" can mean (a) engineering performance standards under SCR15, (b) HR/operations performance management, or (c) AM-system performance per ISO 55001 §9. The scaffold proposes (a) under `concepts/performance-standards.md` and treats (c) as a sub-section of `iso-55000-family-overview.md`. Should (b) get a stub page that hard-redirects to a future HR/operations wiki? **Flag for user during plan approval.**
-- **Open — ISO 55000 family granularity:** three separate standards pages (55000, 55001, 55002) vs. one composite page? The plan proposes three for citation cleanliness; user may prefer one. **Flag for user during plan approval.**
+- **Open — deferred decisions tracked to single follow-up issue (per r1 review m6):** if user approves with proposed defaults, file follow-up issue capturing the two deferred decisions — (1) "performance management" page placement: scaffold proposes (a) `concepts/performance-standards.md` for engineering performance standards under SCR15, (c) AM-system performance as sub-section of `iso-55000-family-overview.md`; (b) HR/operations performance management deferred (stub-redirect to future HR wiki?). (2) ISO 55000 family granularity: scaffold proposes three separate pages (55000, 55001, 55002) for citation cleanliness; user may prefer one composite. **Both decisions captured in follow-up issue (TBD) on plan-approval.**
 
 ---
 
