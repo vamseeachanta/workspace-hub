@@ -35,7 +35,7 @@ Produce safe, bounded, approval-ready planning artifacts for the four remaining 
 ├── README.md                          # this file
 ├── master-plan.md                     # legacy contention map (pre-existing)
 ├── morning-synthesis.template.md      # synthesis template (copy-on-write)
-├── prompts/                           # one prompt per stream (slug-based)
+├── streams/                           # one prompt per stream (slug-based)
 │   ├── sesa-lng.md
 │   ├── doris-university.md
 │   ├── doris-codes.md
@@ -59,7 +59,7 @@ Produce safe, bounded, approval-ready planning artifacts for the four remaining 
 └── terminal-4-woodfibre.md
 ```
 
-The `terminal-N-*.md` flat-layout prompts predate this README and reflect the launched workers. The `prompts/<slug>.md` files in this canonical layout are the durable reference; both forms point at the same write contract.
+The `terminal-N-*.md` flat-layout prompts predate this README and reflect the launched workers. The `streams/<slug>.md` files in this canonical layout are the durable reference; both forms point at the same write contract. (The directory was originally proposed as `prompts/` — renamed to `streams/` because `.gitignore:427` excludes `prompts/` globally as transient agent dispatch artifacts.)
 
 ## Status (snapshot)
 

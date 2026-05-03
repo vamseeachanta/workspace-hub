@@ -10,13 +10,15 @@ docs/plans/overnight-prompts/
 └── YYYY-MM-DD-<wave-slug>/
     ├── README.md                      # wave-level index + boundaries
     ├── morning-synthesis.template.md  # copy-on-write synthesis template
-    ├── prompts/<stream-slug>.md       # one prompt per stream
+    ├── streams/<stream-slug>.md       # one prompt per stream
     ├── child-issue-drafts/<stream-slug>.md  # markdown stubs (NOT auto-filed)
     ├── results/<stream-result>.md     # per-stream wave results
     └── logs/<stream>.log              # worker logs
 ```
 
-Older waves use a flat `terminal-N-*.md` layout. New waves should use the structured `prompts/<slug>.md` + `child-issue-drafts/<slug>.md` layout.
+Older waves use a flat `terminal-N-*.md` layout. New waves should use the structured `streams/<slug>.md` + `child-issue-drafts/<slug>.md` layout.
+
+> **Naming note:** earlier drafts used `prompts/` for the per-stream prompt directory. That name conflicts with `.gitignore:427` (`prompts/` excluded globally as transient agent dispatch artifacts). The canonical name is `streams/`.
 
 ## Universal rules
 
@@ -48,7 +50,7 @@ Waves not listed here exist as flat-layout subdirs; consult their internal `READ
 
 1. Create `YYYY-MM-DD-<slug>/` with the canonical layout above.
 2. Author `README.md` declaring umbrella issue, boundaries, streams (one row per stream with corpus + size).
-3. Author one `prompts/<stream-slug>.md` per stream with explicit allowed / forbidden paths and unique output artifact paths.
+3. Author one `streams/<stream-slug>.md` per stream with explicit allowed / forbidden paths and unique output artifact paths.
 4. Author one `child-issue-drafts/<stream-slug>.md` per stream as a markdown stub for the user to file (do NOT auto-file).
 5. Author `morning-synthesis.template.md` with stream review, approval-readiness, blocked items, next-execution recommendation.
 6. Add a row to the Waves table above.
