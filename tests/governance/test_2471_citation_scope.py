@@ -164,3 +164,96 @@ def test_allowlist_catches_bypass_paraphrases(tmp_path: Path):
     )
     failures = _scan_plan(p)
     assert len(failures) == 2, f"expected 2 failures; got {failures}"
+
+
+# ---------------------------------------------------------------------------
+# #2615 W5-D extension — out-of-principle wiki/standards/ routing requires a
+# sanction-issue citation.
+#
+# Per memory ``project_wiki_standards_path_decision.md`` plus #2615 sanction:
+#   - In-principle wikis (no sanction citation required):
+#       {marine-engineering, engineering, naval-architecture}
+#       PLUS {engineering-standards, asset-management} — formally sanctioned
+#       2026-05-03 via #2615 (W5-D umbrella).
+#   - Any other wiki (e.g. lng-projects, acma-projects, maritime-law,
+#     personal, health-reports) cited with the ``wiki/standards/<code-id>.md``
+#     routing must accompany an explicit sanction-issue ``#NNNN`` reference
+#     anywhere in the same plan file.
+# ---------------------------------------------------------------------------
+
+import re
+
+IN_PRINCIPLE_WIKIS: frozenset[str] = frozenset(
+    {
+        # Memory-sanctioned (project_wiki_standards_path_decision.md, 2026-04-23):
+        "marine-engineering",
+        "engineering",
+        "naval-architecture",
+        # #2615-sanctioned (W5-D, 2026-05-03):
+        "engineering-standards",
+        "asset-management",
+    }
+)
+
+_STANDARDS_ROUTING_RE = re.compile(
+    r"knowledge/wikis/(?P<wiki>[a-z0-9-]+)/wiki/standards/[a-z0-9_.-]+\.md"
+)
+_ISSUE_NUMBER_RE = re.compile(r"#\d{3,5}")
+
+
+def _scan_out_of_principle_routing(path: Path) -> list[tuple[int, str, str]]:
+    """Return (line_number, line, wiki) tuples for out-of-principle routing
+    citations that lack a sanction-issue reference anywhere in the plan.
+
+    Skips lines inside fenced code blocks (``` or ~~~) — same fence-skip
+    semantics as ``_scan_plan`` above.
+    """
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    plan_has_sanction_token = bool(_ISSUE_NUMBER_RE.search(text))
+    failures: list[tuple[int, str, str]] = []
+    in_fence = False
+    for i, line in enumerate(lines):
+        stripped = line.lstrip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        for m in _STANDARDS_ROUTING_RE.finditer(line):
+            wiki = m.group("wiki")
+            if wiki in IN_PRINCIPLE_WIKIS:
+                continue
+            if plan_has_sanction_token:
+                # An explicit sanction-issue #NNNN citation in the plan is
+                # sufficient per #2615 contract — ALL plans authored to date
+                # carry header-level issue references, so this rarely fires
+                # in practice; the contract still flags plans that omit it.
+                continue
+            failures.append((i + 1, line, wiki))
+    return failures
+
+
+def test_out_of_principle_wiki_routing_requires_sanction_citation():
+    """Any plan citing ``wiki/standards/<code-id>.md`` for a wiki outside the
+    in-principle set must explicitly cite a sanction-issue ``#NNNN`` reference.
+
+    Sanctioned via #2615 (W5-D umbrella, 2026-05-03). In-principle wikis are
+    {marine-engineering, engineering, naval-architecture, engineering-standards,
+    asset-management}; the latter two were formally codified by #2615.
+    """
+    plans = sorted(REPO_ROOT.glob("docs/plans/*.md"))
+    assert plans, "no plans found under docs/plans/*.md"
+    all_failures: list[str] = []
+    for plan in plans:
+        for lineno, line, wiki in _scan_out_of_principle_routing(plan):
+            all_failures.append(
+                f"{plan.relative_to(REPO_ROOT)}:{lineno} [wiki={wiki}]\n"
+                f"  line: {line.strip()}"
+            )
+    if all_failures:
+        joined = "\n\n".join(all_failures)
+        pytest.fail(
+            "Out-of-principle wiki/standards/ routing without sanction-issue "
+            f"citation (per #2615 W5-D contract):\n\n{joined}"
+        )
