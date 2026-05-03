@@ -15,3 +15,11 @@
 - 6 conventions migrated to concept pages
 - Plus environmental-liability concept page (cross-cutting)
 - Pages created: 6 convention concepts + 1 environmental-liability concept + overview
+
+## [2026-05-02] expand | maritime-law W2-C — 10 core pages (6 doctrine-concepts + 4 IMO/ILO standards-tier)
+- Issue: #2592 (W2-C, parent wave #2540)
+- Plan: docs/plans/2026-05-02-issue-2592-llm-wiki-W2C-maritime-law-expansion.md
+- Doctrine-concept pages added: general-average, salvage, limitation-of-liability, port-state-control, flag-state-jurisdiction, charterparties
+- IMO/ILO standards-tier pages added (routed under concepts/ per memory exclusion): marpol-73-78, solas-1974, mlc-2006, ism-code
+- Notes: covers Mandaraka-Sheppard + Schoenbaum + IMO-active-conventions core curriculum gaps; first standards-tier identity in this wiki, default routed under concepts/ since maritime-law is out of scope of the wiki/standards/ routing principle (project_wiki_standards_path_decision.md). IMO/ILO pages carry additive code_id/publisher/consolidated_edition frontmatter; calc-resolvability is deferred pending amendment-set matching semantics.
+- Page count: 22 -> 32 (10 new pages).

@@ -4,6 +4,13 @@
 > Chronological record of all wiki operations.
 > Format: ## [YYYY-MM-DD] operation | Title
 
+## [2026-05-03] expand | lng-projects W5-C — 8 concept pages
+- Issue: #2612
+- Plan: docs/plans/2026-05-03-issue-2612-llm-wiki-W5C-lng-projects-expansion.md
+- Pages added: wiki/concepts/lng-project-lifecycle.md, wiki/concepts/lng-liquefaction-processes.md, wiki/concepts/lng-storage-tanks.md, wiki/concepts/lng-marine-transfer-systems.md, wiki/concepts/lng-process-safety.md, wiki/concepts/lng-project-shapes.md, wiki/concepts/lng-boil-off-gas-management.md, wiki/concepts/lng-regulatory-framework.md
+- Index updated: wiki/index.md (page_count 3 → 11; Concepts table populated with 8 new rows)
+- Notes: covers the canonical LNG industry topical skeleton; excludes #2541 (SESA) and #2544 (Woodfibre) source-page reservations; no `wiki/standards/` content authored — lng-projects is outside the routing-principle scope per memory `project_wiki_standards_path_decision.md` and was NOT extended by the #2615 W5-D umbrella sanction.
+
 ## [2026-05-01] ingest | Woodfibre LNG corpus pointer (ACMA project 31522)
 - Processed: metadata-only scout artifacts for issue #2544
 - Pages updated: wiki/sources/woodfibre-corpus-pointer.md, wiki/index.md
