@@ -1,8 +1,8 @@
 ---
 domain: engineering
 created: 2026-04-08 16:07 UTC
-last_updated: 2026-05-02
-page_count: 83
+last_updated: 2026-05-03
+page_count: 103
 source_count: 16
 ---
 
@@ -11,7 +11,7 @@ source_count: 16
 *Repo engineering methodology — how the workspace-hub ecosystem is built and operated.*
 *Updated by LLM during ingest operations.*
 
-## Concepts (32 pages)
+## Concepts (52 pages)
 
 | Page | Summary | Last Updated |
 |------|---------|-------------|
@@ -39,8 +39,28 @@ source_count: 16
 | [Multi-Agent Parity](concepts/multi-agent-parity.md) | All agents share equal knowledge via git-tracked files | 2026-04-08 |
 | [Orchestrator-Worker Separation](concepts/orchestrator-worker-separation.md) | Coordinator + isolated workers beats single-agent context overload | 2026-04-08 |
 | [Pile Capacity Alpha Method](concepts/pile-capacity-alpha-method.md) | API RP 2GEO alpha method for axial pile capacity in clay | 2026-04-08 |
+| [Pipeline Coatings](concepts/pipeline-coatings.md) | Anti-corrosion, thermal insulation, concrete weight, FJC | 2026-05-03 |
+| [Pipeline End-Expansion and Spool Design](concepts/pipeline-end-expansion-spool-design.md) | End-expansion budget, spools, mid-line tees, PLETs/PLEMs | 2026-05-03 |
+| [Pipeline Installation Methods](concepts/pipeline-installation-methods.md) | S-lay, J-lay, reel-lay, tow methods for offshore pipelines | 2026-05-03 |
 | [Pipeline Integrity Assessment](concepts/pipeline-integrity-assessment.md) | DNV-RP-F101 and API 579 fitness-for-service methods | 2026-04-08 |
+| [Pipeline Lateral Buckling](concepts/pipeline-lateral-buckling.md) | Controlled HT/HP lateral buckling — DNV-RP-F110 relief | 2026-05-03 |
+| [Pipeline On-Bottom Stability](concepts/pipeline-on-bottom-stability.md) | DNV-RP-F109 — wave/current lateral & vertical stability | 2026-05-03 |
+| [Pipeline Route Selection](concepts/pipeline-route-selection.md) | Geohazard avoidance, asset crossings, corridor engineering | 2026-05-03 |
+| [Pipeline Soil Interaction](concepts/pipeline-soil-interaction.md) | Axial/lateral/vertical pipe-soil resistance at the seabed | 2026-05-03 |
+| [Pipeline Trawl Impact Protection](concepts/pipeline-trawl-impact-protection.md) | Fishing-gear impact, hooking, pull-over, dropped objects | 2026-05-03 |
+| [Pipeline Upheaval Buckling](concepts/pipeline-upheaval-buckling.md) | Vertical-plane buckling of buried/trenched HT/HP pipelines | 2026-05-03 |
+| [Pipeline Walking](concepts/pipeline-walking.md) | Cumulative axial displacement under thermal cycling | 2026-05-03 |
 | [Python Type Safety](concepts/python-type-safety.md) | mypy strict mode, NamedTuple patterns, Optional narrowing | 2026-04-08 |
+| [Riser Composite Design](concepts/riser-composite-design.md) | FRP layered architecture, hybrid metallic-composite end fittings | 2026-05-03 |
+| [Riser Configurations — Topology](concepts/riser-configurations.md) | Topology hub: free-hanging, lazy-wave, steep-wave, hybrid | 2026-05-03 |
+| [Riser Drilling System](concepts/riser-drilling-system.md) | Marine drilling riser stack, slip-joint, LMRP, BOP, FLS | 2026-05-03 |
+| [Riser Flexible (Unbonded) Design](concepts/riser-flexible-design.md) | Unbonded flexible-pipe layers, end-fittings, ancillaries | 2026-05-03 |
+| [Riser Global-Analysis Load Cases](concepts/riser-global-analysis-load-cases.md) | FLS/ULS/ALS taxonomy crosscutting all riser types | 2026-05-03 |
+| [Riser Hybrid Tower / SLOR](concepts/riser-hybrid-tower.md) | Vertical rigid bundle to surface buoy — SLOR / bundled tower | 2026-05-03 |
+| [Riser Installation Methods](concepts/riser-installation-methods.md) | Lay, pull-up, splash-zone protection, tie-in to host | 2026-05-03 |
+| [Riser Soil Interaction](concepts/riser-soil-interaction.md) | Touchdown-point soil stiffness, trench evolution, SCR fatigue | 2026-05-03 |
+| [Riser Steel Catenary (SCR) Design](concepts/riser-steel-catenary-design.md) | Hang-off geometry, TDP migration, FLS sensitivity | 2026-05-03 |
+| [Riser Top-Tensioned (TTR) Design](concepts/riser-top-tensioned-design.md) | TLP/spar dry-tree riser — top tensioner, stress joints | 2026-05-03 |
 | [Seakeeping and 6-DOF Ship Dynamics](concepts/seakeeping-6dof.md) | 6DOF equations of motion, RAO-based operability, motion criteria | 2026-04-09 |
 | [Shell Scripting Patterns](concepts/shell-scripting-patterns.md) | Atomic writes, flock, idempotency, shellcheck, portability | 2026-04-08 |
 | [S-N Curve Fatigue Definitions](concepts/sn-curve-fatigue-definitions.md) | S-N curves, DNV-RP-C203 weld categories, Miner's rule | 2026-04-08 |
