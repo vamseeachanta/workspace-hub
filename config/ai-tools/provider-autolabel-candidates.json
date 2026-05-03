@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-02T19:34:08.671006Z",
+  "generated_at": "2026-05-02T21:20:07.309170Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 5,
@@ -80,7 +80,7 @@
         "cat:documentation",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-02T12:00:20Z",
+      "updatedAt": "2026-05-02T21:17:40Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
