@@ -503,7 +503,7 @@ run_doc_drift() {
     echo "WARNING: check_doc_drift.py not found — skipping" >&2
     return 0
   fi
-  uv run --no-project python "$drift_script" 2>&1 || true
+  uv run --no-project --python 3.11 --with pyyaml python "$drift_script" 2>&1 || true
   return 0
 }
 
@@ -545,7 +545,7 @@ run_config_drift() {
     echo "WARNING: check_config_drift.py not found — skipping" >&2
     return 0
   fi
-  uv run --no-project python "$drift_script" 2>&1
+  uv run --no-project --python 3.11 --with pyyaml python "$drift_script" 2>&1
 }
 
 if $OPT_CONFIG_DRIFT; then
