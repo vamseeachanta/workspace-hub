@@ -5,6 +5,8 @@
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2592
 > **Review artifacts:** scripts/review/results/2026-05-02-plan-2592-claude-internal.md (Codex/Gemini UNAVAILABLE — see Adversarial Review Summary)
+>
+> _This plan was amended on 2026-05-02 (W3-C erratum, #2596). Three residual lines (L66/L81/L128) used #2471 as a generalized routing-principle citation; #2471 is CSA-Z276-specific per memory `project_wiki_standards_path_decision.md`. Maritime-law concept-page placement under `wiki/concepts/` is unchanged._
 
 ---
 
@@ -63,7 +65,7 @@ Maritime-law standards-tier page production is **bootstrapping from zero**. Per 
 - Memory `project_wiki_standards_path_decision.md` — `wiki/standards/<code-id>.md` is the sanctioned routing for codified standards in marine-engineering, engineering, naval-architecture. **Memory verbatim: "The principle applies to: marine-engineering, engineering, naval-architecture. Maritime-law, personal, health-reports are out of scope."** This plan therefore defaults to `concepts/` with additive frontmatter; `standards/` routing is only available as Open Question #1 option (a) pending explicit user override and a separate maritime-law sanction issue.
 - #2540 — OPEN, "epic(llm-wiki): overnight Elements corpus planning wave after #2536" — wave epic; this plan is W2-C under that wave (maritime-law domain).
 - #2589 — OPEN, "feat(llm-wiki): naval-architecture wiki topical expansion — 10 core concept pages (W1-D)" — sibling W1 plan, same shape.
-- #2471 — CLOSED, "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract" — sanctioned `wiki/standards/<code-id>.md` routing principle.
+- #2471 — CLOSED, "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract" — sanctioned `wiki/standards/<code-id>.md` routing **for CSA-Z276 specifically** per memory `project_wiki_standards_path_decision.md`; **does NOT generalize** to maritime-law publishers (IMO/ILO). Cited here only as historical origin of the `code_id`/`publisher`/`revision` frontmatter triple via the calc-citation-contract. (Amended 2026-05-02 per W3-C erratum.)
 - GH issue search `maritime-law in:title --state open` returns only `#51 — WRK-1126: Add maritime law domain: skill, data, public cases, liabilities` (the original migration ticket; CLOSED-class work). **No parallel maritime-law content issue is open** — confirms no overlap risk.
 - `find /mnt/ace -maxdepth 3 -type d -iname "*maritime*" -o -iname "*law*"` returns:
   - `/mnt/ace/acma-codes/IMO/` (full IMO PDF corpus — SOLAS, MARPOL, ISM, ISPS, Polar Code, BWM, COLREGs subdirs visible)
@@ -78,7 +80,7 @@ Maritime-law standards-tier page production is **bootstrapping from zero**. Per 
 
 Coverage matrix vs. canonical Mandaraka-Sheppard + Schoenbaum + IMO-active-conventions curriculum:
 
-| Canonical topic | Existing wiki status | Page tier (per #2471) | Action |
+| Canonical topic | Existing wiki status | Page tier (per local wiki schema; #2471 NOT applicable — CSA-Z276-specific) | Action |
 |---|---|---|---|
 | **IMO regulatory framework** (IMO + MSC + MEPC + LEG committees) | gap (no entity page) | concept | **NEW** `concepts/imo-regulatory-framework.md` |
 | **Port-state control / Paris MoU** | gap | concept | **NEW** `concepts/port-state-control.md` |
@@ -125,7 +127,7 @@ Selection rationale: each doctrine-concept page is foundational (named in BOTH M
 
 - `#2540` — OPEN — "epic(llm-wiki): overnight Elements corpus planning wave after #2536" — parent wave epic.
 - `#2589` — OPEN — "feat(llm-wiki): naval-architecture wiki topical expansion — 10 core concept pages (W1-D)" — sibling W1 precedent.
-- `#2471` — CLOSED — "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract" — sanctions `wiki/standards/<code-id>.md` routing principle.
+- `#2471` — CLOSED — "feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract" — sanctions the path-routing decision **for CSA-Z276 specifically**; the principle does NOT generalize across publishers. (Amended 2026-05-02 per W3-C erratum.)
 
 **Parallel-work check** (`gh issue list --search "maritime-law in:title" --state open`):
 

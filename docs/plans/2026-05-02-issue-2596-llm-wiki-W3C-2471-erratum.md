@@ -133,7 +133,7 @@ Source count: **6 distinct sources** consulted (issue body of #2471; calc-citati
 
 ## Deliverable
 
-A trio of forward-amendment commits to W1-A (#2586), W1-B (#2587), and W2-C (#2592) plan files that re-anchor every #2471 path-sanction citation to the correct local authority (engineering-standards `CLAUDE.md` directory schema for W1-A; **asset-management `CLAUDE.md` directory schema for W1-B** per r1 review MAJOR-3; concept-page reanchor for W2-C per r1 review MAJOR-1), preserving git blame via in-place edits and adding a minimal regression test (with **inverted allowlist polarity** per r1 review MAJOR-2) that future plans cannot reintroduce the same over-citation.
+A trio of forward-amendment commits to W1-A (#2586), W1-B (#2587), and W2-C (#2592) plan files that re-anchor every #2471 path-sanction citation (CSA-Z276-specific per memory `project_wiki_standards_path_decision.md`; does NOT generalize) to the correct local authority (engineering-standards `CLAUDE.md` directory schema for W1-A; **asset-management `CLAUDE.md` directory schema for W1-B** per r1 review MAJOR-3; concept-page reanchor for W2-C per r1 review MAJOR-1), preserving git blame via in-place edits and adding a minimal regression test (with **inverted allowlist polarity** per r1 review MAJOR-2) that future plans cannot reintroduce the same over-citation.
 
 ---
 
@@ -204,7 +204,7 @@ Post a single comment to each of #2586, #2587, and #2592 with text:
 | Modify | `docs/plans/2026-05-02-issue-2587-llm-wiki-W1B-asset-management-audit.md` | Same as W1-A pattern, re-anchored to `knowledge/wikis/asset-management/CLAUDE.md` directory schema (per r1 review MAJOR-3 — local sanctioning authority exists; no OPEN QUESTION needed). |
 | Modify | `docs/plans/2026-05-02-issue-2592-llm-wiki-W2C-maritime-law-expansion.md` | Forward-amend 3 residual over-citation lines (L66/L81/L128) to scope-explicit phrasing (per r1 review MAJOR-1 — these lines retain the same defective surface form W1-A/B exhibit). |
 | Modify | `docs/plans/README.md` | Append amendment notes to #2586, #2587, #2592 rows; add W3-C row. |
-| Create | `tests/governance/test_2471_citation_scope.py` | Regression test enforcing #2471-citation allowlist (per r1 review MAJOR-2 — inverted polarity from blocklist to allowlist) across all `docs/plans/2026-05-02-*.md`. Path under `tests/governance/` per r1 review MINOR-2 (closer to artifact under test than `tests/docs/`). |
+| Create | `tests/governance/test_2471_citation_scope.py` | Regression test enforcing the #2471 calc-citation-contract scope: every #2471 mention in plan prose must appear within ±3 lines of a CSA-Z276 / scoped strictly / does NOT generalize / frontmatter / code_id / publisher / revision / calc-citation-contract token (allowlist polarity per r1 review MAJOR-2). Scans `docs/plans/2026-05-02-*.md`. Path under `tests/governance/` per r1 review MINOR-2 (closer to artifact under test than `tests/docs/`). |
 | Comment | GitHub issue #2586 | Announce amendment with link to W3-C plan. |
 | Comment | GitHub issue #2587 | Announce amendment with re-anchored local-CLAUDE.md sanction. |
 | Comment | GitHub issue #2592 | Announce W2-C residual-line amendment. |
@@ -303,7 +303,7 @@ This allowlist polarity catches all the bypasses the r1 review identified:
 
 **Revisions made based on review:**
 - MAJOR-1: Extended erratum scope to include W2-C (#2592); added L66/L81/L128 amendment table; added `test_w2c_amendment_landed` to TDD list and acceptance criteria.
-- MAJOR-2: Inverted regression-test polarity from blocklist to allowlist (proximity-based scope-token check around every `#2471` mention); added explicit bypass-form coverage and a new `test_allowlist_catches_bypass_paraphrases` test.
+- MAJOR-2: Inverted regression-test polarity from blocklist to allowlist (proximity-based scope-token check around every `#2471` mention; the allowlist enforces that every #2471 reference appears within ±3 lines of CSA-Z276 / scoped strictly / does NOT generalize / frontmatter / code_id / publisher / revision / calc-citation-contract); added explicit bypass-form coverage and a new `test_allowlist_catches_bypass_paraphrases` test.
 - MAJOR-3: Replaced W1-B OPEN-QUESTION framing with local-CLAUDE.md re-anchor (`knowledge/wikis/asset-management/CLAUDE.md` L23 + L42-49 sanctions `wiki/standards/<code-id>.md` routing locally); removed false blocker for W1-B's 10 standards pages.
 - MINOR-1 + MINOR-5: Reconciled over-citation count to 13 in both Resource-Intel paragraph and Per-File table preamble.
 - MINOR-2: Moved test to `tests/governance/test_2471_citation_scope.py` (co-located with other plan-linting tests).

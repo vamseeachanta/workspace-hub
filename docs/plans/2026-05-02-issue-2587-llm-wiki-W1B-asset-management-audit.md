@@ -6,6 +6,8 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2587
 > **Parent epic:** https://github.com/vamseeachanta/workspace-hub/issues/2540 (Elements corpus planning wave)
 > **Review artifacts:** scripts/review/results/2026-05-02-plan-2587-claude-internal.md | Codex UNAVAILABLE (#2479) | Gemini UNAVAILABLE (sandbox sparse-overlay blindness)
+>
+> _This plan was amended on 2026-05-02 (W3-C erratum, #2596). Original draft cited #2471 as a generalized path-sanction for asset-management standards pages. Per memory `project_wiki_standards_path_decision.md`, #2471 is scoped strictly to CSA-Z276; the asset-management wiki's own local sanctioning authority is `knowledge/wikis/asset-management/CLAUDE.md` directory schema (L23 + L42-49). Path-sanction citations have been re-anchored to that local authority + calc-citation-contract rule 2; frontmatter-contract citations to #2471 are unchanged._
 
 ---
 
@@ -22,7 +24,7 @@
 
 | Standard | Status | Source / Notes |
 |---|---|---|
-| ISO 55000 family (55000/55001/55002) | gap (no wiki page) | Will be added under `wiki/standards/iso-55000.md` (and 55001, 55002) per #2471-sanctioned `wiki/standards/<code-id>.md` routing. |
+| ISO 55000 family (55000/55001/55002) | gap (no wiki page) | Will be added under `wiki/standards/iso-55000.md` (and 55001, 55002) per local sanctioning authority `knowledge/wikis/asset-management/CLAUDE.md` directory schema (L23 + L42-49). Frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2. #2471 is CSA-Z276-specific per memory `project_wiki_standards_path_decision.md` and does NOT generalize as a path-routing rule; cited here only as historical origin of the frontmatter triple. (Amended 2026-05-02 per W3-C erratum.) |
 | ISO 31000:2018 (Risk management — Guidelines) | gap | `wiki/standards/iso-31000.md` — parent risk-management methodology cross-referenced by ISO 55001 §6; load-bearing for ALARP / RBI / SCE-classification concept pages. |
 | API RP 580 (RBI methodology) | gap | `wiki/standards/api-rp-580.md` |
 | API RP 581 (RBI quantitative) | gap | `wiki/standards/api-rp-581.md` |
@@ -54,10 +56,10 @@
 - `docs/plans/2026-04-12-issue-2227-ocimf-tandem-csa-z276-wiki-promotion.md` — pattern reference for standards-page promotion plans (same wave-of-work shape).
 - `docs/plans/2026-04-19-claude-llm-wiki-roadmap-review-prompt.md` — broader llm-wiki roadmap context.
 - `docs/plans/2026-04-20-issue-2392-wiki-coverage-gap-detector.md` — coverage-gap detector tooling that can later score this wiki's growth.
-- `.claude/rules/calc-citation-contract.md` — vendor-derivative deny-list (#2482) + `wiki/standards/` routing rule (#2471) — both load-bearing.
+- `.claude/rules/calc-citation-contract.md` — vendor-derivative deny-list (#2482) + frontmatter contract (#2471 — origin of `code_id`/`publisher`/`revision` triple, scoped strictly to CSA-Z276 for path-routing). Local `wiki/standards/<code-id>.md` routing for the asset-management wiki is sanctioned via `knowledge/wikis/asset-management/CLAUDE.md` directory schema. (Amended 2026-05-02 per W3-C erratum: removed the false claim that #2471 is the routing-rule sanction; #2471 is CSA-Z276-specific.)
 - Issue **#2540** (parent epic) — Elements-wave is metadata/source-summary only; this plan deliberately does NOT consume the Casa-Grande corpus (it is financial-scope; out of bounds here).
 - Issue **#2482** (CLOSED) — vendor-derivative deny-list; `wiki/sources/` pages are NOT to be cited from concept/standards pages; concept pages must point to the publisher-issued standards page or methodology page.
-- Issue **#2471** (CLOSED) — sanctioned `wiki/standards/<code-id>.md` routing for code-identified pages (`code_id`, `publisher`, `revision` frontmatter required).
+- Issue **#2471** (CLOSED) — sanctioned the `code_id`/`publisher`/`revision` frontmatter triple via the calc-citation-contract; the path-routing decision was scoped strictly to CSA-Z276 per memory `project_wiki_standards_path_decision.md`. The `wiki/standards/<code-id>.md` routing for the asset-management wiki is sanctioned locally via `knowledge/wikis/asset-management/CLAUDE.md` directory schema. (Corrected 2026-05-02 per W3-C erratum.)
 
 ### External sources (≥3 distinct, with URLs to be cited inline in concept pages)
 
@@ -217,16 +219,16 @@ assert engineering_vs_financial_disclaimer_in("wiki/index.md")
 | Create | knowledge/wikis/asset-management/wiki/concepts/fitness-for-service.md | Decision frameworks |
 | Create | knowledge/wikis/asset-management/wiki/concepts/life-extension.md | Operating practices |
 | Create | knowledge/wikis/asset-management/wiki/concepts/integrity-management-cycle.md | Operating practices (covers anomaly management as sub-section) |
-| Create | knowledge/wikis/asset-management/wiki/standards/iso-55000.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/iso-55001.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/iso-55002.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/iso-31000.md | #2471-routed standards page (parent risk-management methodology referenced by ISO 55001 §6) |
-| Create | knowledge/wikis/asset-management/wiki/standards/api-rp-580.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/api-rp-581.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/dnv-rp-g101.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/norsok-z-008.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/api-579-1.md | #2471-routed standards page |
-| Create | knowledge/wikis/asset-management/wiki/standards/hse-scr-2015.md | #2471-routed standards page |
+| Create | knowledge/wikis/asset-management/wiki/standards/iso-55000.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/iso-55001.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/iso-55002.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/iso-31000.md | Standards page (parent risk-management methodology referenced by ISO 55001 §6; path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter per calc-citation-contract rule 2). |
+| Create | knowledge/wikis/asset-management/wiki/standards/api-rp-580.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/api-rp-581.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/dnv-rp-g101.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/norsok-z-008.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/api-579-1.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
+| Create | knowledge/wikis/asset-management/wiki/standards/hse-scr-2015.md | Standards page (path placement per `knowledge/wikis/asset-management/CLAUDE.md` directory schema; frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 — `code_id`/`publisher`/`revision`). |
 | Modify | knowledge/wikis/asset-management/wiki/index.md | Add scope-boundary block + regenerate Concepts/Standards tables |
 | Modify | knowledge/wikis/asset-management/wiki/overview.md | Replace placeholder with engineering-scope synthesis + scope-boundary pointer |
 | Create | tests/knowledge/test_asset_management_wiki.py | TDD assertion suite |

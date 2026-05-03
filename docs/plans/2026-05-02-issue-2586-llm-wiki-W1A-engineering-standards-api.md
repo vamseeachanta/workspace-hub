@@ -6,9 +6,11 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2586
 > **Parent epic:** [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540) — overnight Elements corpus planning wave
 > **Sibling precedent:** [#2559](https://github.com/vamseeachanta/workspace-hub/issues/2559) (OCIMF Tandem) — bounded preview pattern this plan inherits
-> **Path sanction:** [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) (CLOSED) — `wiki/standards/<code-id>.md` routing
+> **Path sanction (API):** Local sanctioning authority is `knowledge/wikis/engineering-standards/CLAUDE.md` directory schema (defines `wiki/standards/<code-id>.md` routing for engineering-standards domain). Frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 (`code_id`/`publisher`/`revision`). **Note:** [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) (CLOSED) codified the path-routing decision **for CSA-Z276 specifically** (verified per memory `project_wiki_standards_path_decision.md`); it is NOT a general-standards path sanction and is cited here only as the historical origin of the frontmatter triple. **(Amended 2026-05-02 per W3-C erratum.)**
 > **Governance reference:** [#2482](https://github.com/vamseeachanta/workspace-hub/issues/2482) — vendor-derivative deny-list (raw text MUST stay in `/mnt/ace`)
 > **Review artifacts:** scripts/review/results/2026-05-02-plan-API-W1-claude.md | …-codex.md | …-gemini.md (to be produced by main session)
+>
+> _This plan was amended on 2026-05-02 (W3-C erratum, #2596) to correct an over-citation of #2471 as a generalized path-sanction. The frontmatter-contract citations to #2471 are unchanged; the path-sanction has been re-anchored to the local engineering-standards `CLAUDE.md` schema._
 
 ---
 
@@ -58,7 +60,7 @@
 ### Project memory consulted
 
 - `feedback_plan_past_tense_artifact_claims.md` — this plan describes proposed work in future tense; no work has been performed.
-- `project_wiki_standards_path_decision.md` — `wiki/standards/<code-id>.md` is the sanctioned path; #2471 codified it for CSA Z276 and the principle now generalizes.
+- `project_wiki_standards_path_decision.md` — #2471 codified the path-routing decision **for CSA Z276 specifically**; per memory the routing principle generalizes only to {marine-engineering, engineering, naval-architecture} via each wiki's local CLAUDE.md schema, not via #2471 itself. (Amended 2026-05-02 per W3-C erratum.)
 - `feedback_naive_secret_scan_false_positive_cascade.md` — relevant because the test suite below uses regex denylists; this plan keeps phrase lists narrowly scoped.
 
 ### Gaps identified

@@ -242,7 +242,9 @@ function author_concept_page(slug, scope_summary):
         DNV-OS-F201, DNV-RP-F202, DNV-RP-F204, ISO 13628-2/-7, ISO 13624,
         or ISO 19901-7,
         with stable URL — but MUST NOT enumerate specific thresholds, formulas,
-        or code clauses (those belong on wiki/standards/<code-id>.md per #2471)
+        or code clauses (those belong on wiki/standards/<code-id>.md per the
+        engineering wiki's local CLAUDE.md directory schema; #2471 is CSA-Z276-specific
+        per memory project_wiki_standards_path_decision.md and does NOT generalize)
     canonical forward-reference marker for not-yet-codified standards:
         for any standards body that does NOT yet have a wiki/standards/<code-id>.md
         page on disk (verified via Path.exists() at write-time), the citation MUST
