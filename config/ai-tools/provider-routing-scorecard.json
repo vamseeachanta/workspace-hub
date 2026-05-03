@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-03T05:20:13.281942Z",
+  "generated_at": "2026-05-03T07:57:17.477166Z",
   "current_week": "2026-W18",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-03T05:20:12.176925Z",
+    "utilization_generated_at": "2026-05-03T07:57:17.357273Z",
     "audit_generated_at": "2026-04-24T15:25:36Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 21.4,
+      "reported_utilization_pct": 21.6,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
       "sessions_current_week": 182,
-      "post_records_current_week": 8719,
+      "post_records_current_week": 8807,
       "audit_post_records": 89108,
       "missing_repo_reads": 8454,
       "python3_per_1k_records": 8.53,
@@ -30,11 +30,11 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 5609
+          "count": 5650
         },
         {
           "tool": "Read",
-          "count": 1450
+          "count": 1462
         },
         {
           "tool": "unknown",
@@ -42,7 +42,7 @@
         },
         {
           "tool": "Edit",
-          "count": 478
+          "count": 508
         },
         {
           "tool": "Write",
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 0.4,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 210,
-      "post_records_current_week": 8192,
+      "sessions_current_week": 214,
+      "post_records_current_week": 8210,
       "audit_post_records": 20144,
       "missing_repo_reads": 463,
       "python3_per_1k_records": 17.92,
@@ -84,11 +84,11 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 6213
+          "count": 6229
         },
         {
           "tool": "Read",
-          "count": 1557
+          "count": 1559
         },
         {
           "tool": "Grep",
@@ -125,8 +125,8 @@
       "reported_utilization_pct": 0.2,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 5,
-      "post_records_current_week": 6,
+      "sessions_current_week": 6,
+      "post_records_current_week": 7,
       "audit_post_records": 6173,
       "missing_repo_reads": 603,
       "python3_per_1k_records": 47.14,
@@ -135,7 +135,7 @@
       "top_tools": [
         {
           "tool": "Browser",
-          "count": 6
+          "count": 7
         }
       ],
       "preferred_work": [

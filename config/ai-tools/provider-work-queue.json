@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-03T05:20:15.709798Z",
+  "generated_at": "2026-05-03T07:57:19.094897Z",
   "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-05-03T05:20:13.281942Z",
+  "scorecard_generated_at": "2026-05-03T07:57:17.477166Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -380,7 +380,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-28T06:13:53Z",
+          "updatedAt": "2026-05-03T06:22:53Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -407,7 +407,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-28T06:08:52Z",
+          "updatedAt": "2026-05-03T06:25:51Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
