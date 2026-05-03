@@ -1,8 +1,8 @@
 ---
 domain: engineering-standards
 created: 2026-04-28 19:24 UTC
-last_updated: 2026-05-02
-page_count: 36
+last_updated: 2026-05-03
+page_count: 69
 source_count: 5
 ---
 
@@ -70,3 +70,30 @@ _No query outputs filed yet._
 | [[ASME PCC-1]](standards/asme-pcc-1.md) | Guidelines for pressure-boundary bolted-flange-joint assembly (2000 on-disk). | 2026-05-02 |
 | [[ASME B16.5]](standards/asme-b16-5.md) | Pipe Flanges and Flanged Fittings NPS 1/2–24 (2013 on-disk). | 2026-05-02 |
 | [[ASME B16.34]](standards/asme-b16-34.md) | Valves — flanged, threaded, and welding end (1996 on-disk). | 2026-05-02 |
+| [[ABS Rules Part 1 Offshore]](standards/abs-rules-offshore-installations.md) | Building & Classing Offshore Installations Part 1 (2014). | 2026-05-02 |
+| [[ABS Rules CoC Part 1 Offshore]](standards/abs-rules-coc-part1-offshore.md) | Conditions of Classification, Part 1 Offshore (2014). | 2026-05-02 |
+| [[ABS Rules Steel Vessels Part 3]](standards/abs-rules-steel-vessels-part3.md) | Building & Classing Steel Vessels Part 3 hull (2016). | 2026-05-02 |
+| [[ABS GUI-002 FPSO]](standards/abs-gui-002-fpso.md) | Building & Classing Floating Production Storage Systems (1994). | 2026-05-02 |
+| [[ABS GUI-101 FPSO DLA]](standards/abs-gui-101-fpso-dla.md) | FPSO Dynamic Loading Approach Guide (revision pending). | 2026-05-02 |
+| [[ABS GUI-115 Fatigue Offshore]](standards/abs-gui-115-fatigue-offshore.md) | Fatigue Assessment of Offshore Structures (2014). | 2026-05-02 |
+| [[ABS GUI-123 Offshore Risers]](standards/abs-gui-123-offshore-risers.md) | Guide for Offshore Risers (2008). | 2026-05-02 |
+| [[ABS GN-239 Cathodic Protection Offshore]](standards/abs-gn-239-cathodic-protection-offshore.md) | Cathodic Protection of Offshore Structures (2018). | 2026-05-02 |
+| [[BS EN ISO 13628-2]](standards/bs-13628-2-flexible-pipe-subsea.md) | BSI-published flexible pipe systems for subsea (unbonded); 2001 ed., Corrigendum 1; superseded_by iso-13628-2 (jurisdictional re-publication). | 2026-05-03 |
+| [[BS EN ISO 13628-3]](standards/bs-13628-3-tfl-systems.md) | BSI-published Through-Flowline (TFL) Systems; 2001 ed., Corrigenda 1+2; superseded_by iso-13628-3 (jurisdictional re-publication). | 2026-05-03 |
+| [[BS EN ISO 13628-5]](standards/bs-13628-5-subsea-umbilicals.md) | BSI-published subsea umbilicals; 2002 ed.; superseded_by iso-13628-5 (jurisdictional re-publication). | 2026-05-03 |
+| [[BS EN ISO 13628-8]](standards/bs-13628-8-rov-interfaces.md) | BSI-published ROV interfaces on subsea production systems; 2002 ed.; superseded_by iso-13628-8 (jurisdictional re-publication). | 2026-05-03 |
+| [[BS EN ISO 13533]](standards/bs-13533-drill-through-equipment.md) | BSI-published drill-through equipment (BOPs); 2002 ed.; superseded_by iso-13533 (jurisdictional re-publication). | 2026-05-03 |
+| [[BS EN ISO 13625]](standards/bs-13625-marine-drilling-riser-couplings.md) | BSI-published marine drilling riser couplings; 2002 ed.; superseded_by iso-13625 (jurisdictional re-publication). | 2026-05-03 |
+| [[BS EN ISO 13703]](standards/bs-13703-offshore-platform-piping.md) | BSI-published design & installation of piping systems on offshore production platforms; 2001 ed.; superseded_by iso-13703-3 (current ISO multi-part 2023 cycle). | 2026-05-03 |
+| [[BS EN ISO 13626]](standards/bs-13626-drilling-well-servicing-structures.md) | BSI-published drilling and well-servicing structures; 2004 ed.; superseded_by iso-13626 (jurisdictional re-publication). | 2026-05-03 |
+| [[AMPP/NACE MR 0175 Pt 1]](standards/ampp-mr-0175-pt1.md) | Sour-service materials selection — general principles (2009 2nd Ed; ISO 15156-1 jointly). | 2026-05-03 |
+| [[AMPP/NACE MR 0175 Pt 2]](standards/ampp-mr-0175-pt2.md) | Sour-service materials selection — carbon and low-alloy steels (2009 2nd Ed; ISO 15156-2 jointly). | 2026-05-03 |
+| [[AMPP/NACE MR 0175 Pt 3]](standards/ampp-mr-0175-pt3.md) | Sour-service materials selection — corrosion-resistant alloys (2009 2nd Ed; ISO 15156-3 jointly). | 2026-05-03 |
+| [[AMPP/NACE MR 0175 (1995)]](standards/ampp-mr-0175-1995.md) | Sour-service materials — superseded historical 1995 single-document edition. | 2026-05-03 |
+| [[AMPP/NACE TM 0177-96]](standards/ampp-tm-0177.md) | Sulfide stress cracking laboratory test methods (1996 on-disk; current is 2016). | 2026-05-03 |
+| [[NORSOK N-001]](standards/norsok-n-001.md) | Structural design (Norwegian shelf); 7th Ed (2010); ISO-19900 parallel-mirror. | 2026-05-03 |
+| [[NORSOK N-004]](standards/norsok-n-004.md) | Design of steel structures; 2nd Ed (2004); cited 7x in digitalmodel/fatigue/; ISO-19902 parallel-mirror. | 2026-05-03 |
+| [[NORSOK M-001]](standards/norsok-m-001.md) | Materials selection; 4th Ed (2004); ISO-21457 parallel-mirror. | 2026-05-03 |
+| [[NORSOK M-501]](standards/norsok-m-501.md) | Surface preparation and protective coating; 5th Ed (2004); ISO-12944 partial-overlap. | 2026-05-03 |
+| [[NORSOK M-710]](standards/norsok-m-710.md) | Qualification of non-metallic sealing materials and manufacturers; 2013; ISO-23936-2 partial-overlap. | 2026-05-03 |
+| [[NORSOK D-SR-022]](standards/norsok-d-sr-022.md) | BOP, Diverter and Drilling Riser System; 1994; designation-withdrawn (lifecycle: designation-withdrawn). | 2026-05-03 |
