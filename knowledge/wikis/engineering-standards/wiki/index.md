@@ -1,8 +1,8 @@
 ---
 domain: engineering-standards
 created: 2026-04-28 19:24 UTC
-last_updated: 2026-05-03
-page_count: 69
+last_updated: 2026-05-02
+page_count: 80
 source_count: 5
 ---
 
@@ -97,3 +97,17 @@ _No query outputs filed yet._
 | [[NORSOK M-501]](standards/norsok-m-501.md) | Surface preparation and protective coating; 5th Ed (2004); ISO-12944 partial-overlap. | 2026-05-03 |
 | [[NORSOK M-710]](standards/norsok-m-710.md) | Qualification of non-metallic sealing materials and manufacturers; 2013; ISO-23936-2 partial-overlap. | 2026-05-03 |
 | [[NORSOK D-SR-022]](standards/norsok-d-sr-022.md) | BOP, Diverter and Drilling Riser System; 1994; designation-withdrawn (lifecycle: designation-withdrawn). | 2026-05-03 |
+| [[AWS D1.1/D1.1M]](standards/aws-d1-1.md) | Structural Welding Code — Steel; multi-edition umbrella covering 2006/2008/2009/2010 (revision pinned to 2010); current publisher edition 2025. | 2026-05-03 |
+| [[AWS D1.2]](standards/aws-d1-2.md) | Structural Welding Code — Aluminum; 2003 on-disk; current publisher edition 2014. | 2026-05-03 |
+| [[AWS A2.4]](standards/aws-a2-4.md) | Standard Symbols for Welding, Brazing, and Nondestructive Examination; 2007 on-disk; current publisher edition 2020. | 2026-05-03 |
+| [[AWS A5.5]](standards/aws-a5-5.md) | Specification for Low-Alloy Steel Electrodes for SMAW; 1996 ANSI-approved (verified via PyMuPDF cover page). | 2026-05-03 |
+| [[AWS A5.10]](standards/aws-a5-10.md) | Specification for Bare Aluminum and Aluminum-Alloy Welding Electrodes and Rods; 1999 on-disk. | 2026-05-03 |
+| [[AWS A5-series Filler Metal Overview]](standards/aws-filler-metal-overview.md) | Series-level overview of the AWS A5 filler-metal specification family; revision placeholder (per-document revisions on individual pages). | 2026-05-03 |
+| [[ISO 19900]](standards/iso-19900.md) | General requirements for offshore structures; series umbrella; 2019 published edition. | 2026-05-02 |
+| [[ISO 19901-1]](standards/iso-19901-1.md) | Metocean design and operating considerations; 2015 published edition (on-disk drafts only). | 2026-05-02 |
+| [[ISO 19901-2]](standards/iso-19901-2.md) | Seismic design procedures and criteria; 2017 published edition (on-disk FDIS only). | 2026-05-02 |
+| [[ISO 19901-4]](standards/iso-19901-4.md) | Geotechnical and foundation design considerations; 2016 published edition (on-disk DIS responses only). | 2026-05-02 |
+| [[ISO 19901-7]](standards/iso-19901-7.md) | Stationkeeping for floating offshore structures; 2013 published edition; cited 34x in workspace. | 2026-05-02 |
+| [[ISO 19902]](standards/iso-19902.md) | Fixed steel offshore structures; 2019 published edition; cited 66x in workspace. | 2026-05-02 |
+| [[ISO 19903]](standards/iso-19903.md) | Fixed concrete offshore structures; 2019 published edition (no on-disk draft). | 2026-05-02 |
+| [[ISO 19904-1]](standards/iso-19904-1.md) | Floating offshore structures, ship-shaped/semi/spar; 2019 published edition (no on-disk draft). | 2026-05-02 |
