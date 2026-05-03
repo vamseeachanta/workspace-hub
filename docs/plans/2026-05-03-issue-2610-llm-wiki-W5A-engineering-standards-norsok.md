@@ -1,9 +1,9 @@
 # Plan for LLM-Wiki Completeness W5-A: Bounded NORSOK Norwegian-Sector Standards Summary Promotion
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-03
-> **Issue:** _not yet filed_ (issue creation is downstream of plan-review per `feedback_never_offer_to_self_label_plan_approved.md`; expected title and labels in Open Questions)
+> **Issue:** _not yet filed_ (issue creation is downstream of plan-review per `feedback_never_offer_to_self_label_plan_approved.md`; expected title and labels in Open Questions). **Filename `issue-2610` is provisional** — the actual GitHub issue number is reconciled at `gh issue create` time; if it differs, this filename and all internal cross-refs will be renamed at that point. Same convention as W4-A/W4-B.
 > **Parent epic:** [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540) (CLOSED) — overnight Elements corpus planning wave; this W5 packet is a continuation under the same bounded-summary contract.
 > **Sibling precedent (W1-A, API):** [#2586](https://github.com/vamseeachanta/workspace-hub/issues/2586) (OPEN) — original bounded-promotion pattern. NOTE: W1-A header originally over-cited `#2471` as path-sanction; the W3-C erratum [#2596](https://github.com/vamseeachanta/workspace-hub/issues/2596) (OPEN) tracks the forward-amendment. W5-A does NOT inherit that over-cite.
 > **Sibling precedent (W1-B, asset management):** [#2587](https://github.com/vamseeachanta/workspace-hub/issues/2587) (OPEN) — flagged NORSOK Z-008 (risk-based maintenance) as a target. **W5-A delivers the on-disk member of that target list** but the on-disk corpus does NOT contain Z-008 itself; see Risks for the corpus-vs-W1B-target-list mismatch.
@@ -14,7 +14,7 @@
 > **Citation contract:** `.claude/rules/calc-citation-contract.md` rule 2 — every standards-derived constant in a calc module must resolve to a wiki page with `code_id`/`publisher`/`revision` frontmatter.
 > **Governance reference:** [#2482](https://github.com/vamseeachanta/workspace-hub/issues/2482) (CLOSED) — vendor-derivative deny-list (raw text MUST stay in `/mnt/ace`). [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540) — bulk-extraction prohibition.
 > **Calc-citation pilot (epic-level):** [#2481](https://github.com/vamseeachanta/workspace-hub/issues/2481) (CLOSED) — DNV-OS-E301 mooring safety factors pilot. W5-A does NOT extend the pilot to NORSOK code; that is a downstream consumer concern.
-> **Review artifact (planned):** `scripts/review/results/2026-05-03-plan-W5A-claude-internal.md` (single-author Claude r1 to be produced as part of plan-review per `feedback_permission_gate_blocks_cross_review.md`). Codex/Gemini UNAVAILABLE per memory (codex-cli 0.124.0 stdin-hang #2479; Gemini sandbox cwd=/tmp blocks workspace-hub overlay reads).
+> **Review artifact (planned):** `scripts/review/results/2026-05-03-plan-2610-claude-internal.md` (single-author Claude r1 to be produced as part of plan-review per `feedback_permission_gate_blocks_cross_review.md`). Codex/Gemini UNAVAILABLE per memory (codex-cli 0.124.0 stdin-hang #2479; Gemini sandbox cwd=/tmp blocks workspace-hub overlay reads).
 
 ---
 
@@ -179,7 +179,7 @@ before CSA coverage is promoted from ACMA/standards metadata into LLM-wiki conte
 | Standards-ledger update | `data/document-index/standards-transfer-ledger.yaml` (add 6 new rows) |
 | Test contract | `tests/knowledge/test_engineering_standards_norsok.py` |
 | Plans-index update | `docs/plans/README.md` |
-| Plan review — Claude (r1, single-author) | `scripts/review/results/2026-05-03-plan-W5A-claude-internal.md` |
+| Plan review — Claude (r1, single-author) | `scripts/review/results/2026-05-03-plan-2610-claude-internal.md` |
 | Plan review — Codex | UNAVAILABLE (codex-cli 0.124.0 stdin-hang #2479) |
 | Plan review — Gemini | UNAVAILABLE (sandbox cwd=/tmp blocks workspace-hub overlay reads) |
 
@@ -207,6 +207,8 @@ publisher: "Standards Norway"              # current canonical publisher (standa
 publisher_full: "Standards Norway (NORSOK)"
 legacy_publisher: "NORSOK Steering Committee"  # historical pre-2002 stewardship; preserved for traceability
 revision: "2nd-Ed-2004"                    # on-disk edition; publisher-current may be later
+publisher_current_revision: "2nd-Ed-2004"  # NEW per r1 P2-5; publisher-current as of verified_on; pin or "designation-withdrawn"
+lifecycle_status: "in-force-mirror"         # NEW per r1 P2-5; one of {"in-force-mirror", "in-force-shelf-specific", "designation-withdrawn", "superseded-by-edition"}
 revision_source: "<URL or '/mnt/ace path'>"  # OPTIONAL
 verified_on: 2026-05-03                     # OPTIONAL
 public_url: https://standard.no/en/sectors/petroleum/norsok-standards/
@@ -221,10 +223,14 @@ ledger_id: NORSOK-N-004-2004                # bridge to standards-transfer-ledge
 supersedes: ["norsok-n-004-1998-internal"]  # OPTIONAL — the on-disk 1st Ed 1998 is bundled into this umbrella
                                             # rather than getting its own page; this key documents the lineage
                                             # WITHIN the umbrella
-superseded_by:                              # NEW W5-A-specific (inherited from W4-B); empty array if standard
-                                            # remains in force; populated when content has migrated to ISO or
-                                            # the NORSOK designation has been withdrawn
-  - { code: "ISO 19902", relationship: "partial-overlap", note: "ISO 19902 covers fixed steel offshore structures; some N-004 content is mirrored, some retained NORSOK-specific" }
+iso_relationship:                           # RENAMED from `superseded_by` per r1 review P1-2: NORSOK→ISO is
+                                            # mostly parallel/mirror, NOT supersession. The rename ends the
+                                            # misleading-by-construction key name. `relationship` enum widened
+                                            # to {"full-replacement", "partial-overlap", "parallel-mirror",
+                                            # "withdrawn-no-replacement"}. Empty array if no ISO counterpart.
+                                            # For true supersession (only D-SR-022 designation-withdrawn case),
+                                            # the entries describe the migration targets.
+  - { code: "ISO 19902", relationship: "parallel-mirror", note: "ISO 19902 covers fixed steel offshore structures; mirror committee with NORSOK N-004; both remain in force on Norwegian shelf — NORSOK retains shelf-specific provisions" }
 iso_equivalent: "ISO 19902"                # OPTIONAL; only when joint or mirror committee exists
 cross_links:
   - []
@@ -243,9 +249,7 @@ Resolver target for digitalmodel `Citation` instances per
 - Raw PDF: <absolute /mnt/ace/... path> (read-only, vendor-derivative; do not copy into git per #2482)
 - Publisher catalog: https://standard.no/en/sectors/petroleum/norsok-standards/ (most NORSOK standards are free-to-download from Standards Norway since 2002)
 - Internal callers: <relative path(s) under digitalmodel/src/ that cite this code, or "no live caller; future-needed">
-
-## Lifecycle status
-On-disk edition is `<year>`. Publisher-current edition is `<year>` (or "designation withdrawn" for D-SR-022). Calc-callers MUST verify against the publisher-current edition before use; this wiki page reflects the on-disk corpus only.
+- Lifecycle: see frontmatter `revision`, `publisher_current_revision`, `lifecycle_status`, `iso_relationship` (single source-of-truth surface per r1 P2-5; calc-callers MUST verify against publisher-current edition before use)
 
 ## Cross-references
 - [[norsok-m-001]] (materials selection companion)
@@ -282,20 +286,28 @@ All tests in a single file `tests/knowledge/test_engineering_standards_norsok.py
 | `test_page_exists` | each of the 6 standards files is present | filename in `EXPECTED_PAGES` | file resolves under `wiki/standards/` |
 | `test_frontmatter_has_code_id` | required key per `.claude/rules/calc-citation-contract.md` rule 2 | YAML frontmatter | `code_id` non-empty, lowercase-kebab; filename stem equals `code_id` verbatim (e.g., `norsok-n-004.md` ↔ `norsok-n-004`) |
 | `test_frontmatter_has_publisher_standards_norway` | publisher discipline | YAML frontmatter | `publisher == "Standards Norway"`; if present, `publisher_full == "Standards Norway (NORSOK)"` |
-| `test_frontmatter_has_revision` | revision presence per calc-citation-contract rule 2 | YAML frontmatter | `revision` non-empty string; matches NORSOK regex `^(\d+(st\|nd\|rd\|th)-Ed-\d{4}\|\d{4}\|public-metadata-required-before-citation-use\|designation-withdrawn-\d{4})$` |
+| `test_frontmatter_has_revision` | revision presence per calc-citation-contract rule 2 | YAML frontmatter | `revision` non-empty string; matches NORSOK regex (see fenced-block below the table — pipes are pipe-alternation, not table syntax) |
 | `test_frontmatter_has_extraction_policy_metadata_only` | bounds enforcement | YAML frontmatter | `extraction_policy == "metadata-only"` and `raw_copy_allowed is False` |
-| `test_frontmatter_has_norsok_series_letter` | NORSOK-specific traceability | YAML frontmatter | `norsok_series` ∈ {`D`, `M`, `N`, `Z`, `S`, `U`, `R`, `L`, `H`, `I`, `J`, `P`}; matches first letter of `norsok_doc_number` |
+| `test_frontmatter_has_norsok_series_letter` | NORSOK-specific traceability | YAML frontmatter | `norsok_series` ∈ {`D`, `M`, `N`} for W5-A (tightened per r1 P2-3 to match the on-disk corpus letters; W5-B will widen to add `Z` for Z-008 and any other publisher-portal-pointer-only codes); matches first letter of `norsok_doc_number` |
 | `test_frontmatter_has_norsok_doc_number` | NORSOK-specific traceability | YAML frontmatter | `norsok_doc_number` non-empty (e.g. `"N-004"`, `"D-SR-022"`) |
 | `test_no_raw_pdf_text_bleed_through` | denylist guard (narrow NORSOK-specific phrase set; **body-only scan** — frontmatter excluded) | page body after second `---` | none of `RAW_TELLTALE_PHRASES` present |
 | `test_body_word_count_bounded` | strict `<500` word ceiling matching W1-A/W2-A/W3-A/W4-A/W4-B | page body | `0 < word_count < 500` strict on both bounds |
-| `test_body_structure_is_whitelisted_only` | positive-shape: body contains only allowed sections | page body | top-level `##` headings exactly a subset of `{"Scope", "Why this page exists", "Where to find the full text", "Lifecycle status", "Cross-references"}` (note: NEW "Lifecycle status" allowed for NORSOK pages) |
+| `test_body_structure_is_whitelisted_only` | positive-shape: body contains only allowed sections | page body | top-level `##` headings exactly a subset of `{"Scope", "Why this page exists", "Where to find the full text", "Cross-references"}` (matches W4-A precedent shape; the per-r1-P2-5 decision moves lifecycle data into frontmatter only — no body "Lifecycle status" section to avoid frontmatter↔body drift) |
 | `test_links_only_pointer_to_mnt_ace` | mentions raw path but does not embed clause text | page body | regex `/mnt/ace/O&G-Standards/Norsok/` present in a "Where to find" section |
 | `test_citation_schema_resolvable` | downstream resolver actually reads the wiki page | invoke resolver function from `digitalmodel/src/digitalmodel/citations/schema.py` for each NORSOK page | resolver returns matching `code_id`/`publisher`/`revision`; `CitationResolutionError` not raised |
 | `test_ledger_alignment` | every page's `ledger_id` resolves to a row in `standards-transfer-ledger.yaml` | wiki frontmatter `ledger_id` | matching `id:` row found in ledger YAML |
 | `test_code_id_unique_across_wiki_domains` | inherited from W2-A/W3-A/W4-A/W4-B AC | every `code_id` in `knowledge/wikis/*/wiki/standards/*.md` | no duplicates |
 | `test_index_lists_all_pages` | wiki index updated | `index.md` contents | each new page link present in the "## Standards" section |
-| `test_superseded_by_pointer_resolves` | NEW W5-A test (inherited from W4-B BSI plan); only on pages where `superseded_by` is non-empty | YAML frontmatter | each `superseded_by` entry's `code` field resolves to either (a) a wiki-internal page under `knowledge/wikis/*/wiki/standards/<code>.md` OR (b) a `publisher_catalog_url` field on the parent page pointing to a public catalog. The test accepts either fallback |
+| `test_iso_relationship_pointer_resolves` | NEW W5-A test (renamed from `test_superseded_by_pointer_resolves` per r1 P1-2; W4-B's `superseded_by` test inheritance lives in W4-B's plan, not here); only on pages where `iso_relationship` is non-empty | YAML frontmatter | each `iso_relationship` entry's `code` field resolves to either (a) a wiki-internal page under `knowledge/wikis/*/wiki/standards/<code>.md` OR (b) a `publisher_catalog_url` field on the parent page pointing to a public catalog. The test accepts either fallback. `relationship` field MUST be one of `{"full-replacement", "partial-overlap", "parallel-mirror", "withdrawn-no-replacement"}` |
 | `test_iso_equivalent_optional_field_well_formed` | ISO joint-committee discipline | YAML frontmatter | when `iso_equivalent` present, value matches `^ISO \d{4,5}(-\d+)?$` regex |
+
+**Revision regex (literal, per r1 P2-2 — pipes are pipe-alternation, NOT Markdown-table syntax):**
+
+```python
+REVISION_PATTERN = r"^(\d+(st|nd|rd|th)-Ed-\d{4}|\d{4}|public-metadata-required-before-citation-use|designation-withdrawn-\d{4})$"
+```
+
+The implementer MUST transcribe this fenced-code regex verbatim into the test file (no `\|` escapes — those would only appear if the regex were embedded in a Markdown table cell, which it is not here).
 
 **Scope rule (inherited from W4-A MAJOR-3):** the no-raw-text test scans **page body only** (Markdown content after the closing `---` frontmatter delimiter). Frontmatter is explicitly EXCLUDED from the scan. Test implementation MUST split the file at the second `---` line and scan only the post-frontmatter portion.
 
@@ -342,34 +354,39 @@ The denylist will NOT overlap with OCIMF, API, DNV, ABS, NACE, or BSI denylists 
   - `norsok-m-501.md` page MUST use `revision: "5th-Ed-2004"`.
   - `norsok-m-710.md` page MUST use `revision: "2013"`.
   - `norsok-d-sr-022.md` page MUST use `revision: "designation-withdrawn-1994"` (the 1994 PDF is the only edition; the SR-prefixed designation was withdrawn when content migrated to NORSOK D-001/D-002/D-010 series).
-- [ ] **Lifecycle discipline (NEW for W5-A):** every NORSOK page body includes a "## Lifecycle status" section that explicitly states (a) the on-disk edition year, (b) the publisher-current edition year (or "designation withdrawn"), (c) whether content has migrated to ISO. This is unique to NORSOK because of the high rate of ISO-supersession.
+- [ ] **Lifecycle discipline (NEW for W5-A):** every NORSOK page carries the lifecycle data in **frontmatter only** (per r1 P2-5: pick one source-of-truth surface to avoid frontmatter↔body drift). Frontmatter `iso_relationship` array + a new `lifecycle_status` scalar key (values: `"in-force-mirror"`, `"in-force-shelf-specific"`, `"designation-withdrawn"`, `"superseded-by-edition"`) capture (a) the on-disk edition year (already in `revision`), (b) the publisher-current edition year (in a new `publisher_current_revision` key), (c) the ISO relationship (already in `iso_relationship`). The body section is renamed to "## Where to find the full text" with a single bullet linking to the frontmatter; the standalone "## Lifecycle status" body section is REMOVED to keep `test_body_structure_is_whitelisted_only` aligned with the W4-A precedent shape.
 - [ ] Ledger alignment: every page's `ledger_id` (frontmatter key) resolves to a row `id:` in `data/document-index/standards-transfer-ledger.yaml` (6 new rows added by this plan).
 - [ ] `knowledge/wikis/engineering-standards/wiki/index.md` lists all 6 new pages under a "## Standards" section. **Arithmetic AC:** the implementation MUST first reconcile the current `page_count` against the actual on-disk count (`find knowledge/wikis/engineering-standards/wiki -name "*.md" | wc -l` returns 9; the index claims 5 — a pre-existing drift). After reconciliation, apply `+6`. Final `page_count = (reconciled-current) + 6`.
 - [ ] No file under `knowledge/wikis/engineering-standards/wiki/sources/` is modified by this plan.
 - [ ] No file under `knowledge/wikis/engineering/wiki/standards/` is modified — verified there are NO pre-existing NORSOK pages anywhere (cross-checked by `find knowledge/wikis -name "norsok-*.md"` returning empty).
 - [ ] **`code_id` uniqueness across wiki domains:** test asserts no `code_id` duplicated across `knowledge/wikis/*/wiki/standards/*.md`. Vacuous for NORSOK today (no other pages exist) but guards future drift.
-- [ ] **`superseded_by` resolvability (NEW W5-A AC):** for every page with non-empty `superseded_by` array, every entry's `code` field must resolve via either (a) a wiki-internal page (preferred when ISO equivalent has its own wiki page) OR (b) a `publisher_catalog_url` pointer to an ISO/Standards Norway catalog page. The test accepts either fallback.
-- [ ] Plan review artifact present at `scripts/review/results/2026-05-03-plan-W5A-claude-internal.md` (single-author Claude review). Codex/Gemini UNAVAILABLE per memory.
+- [ ] **`iso_relationship` resolvability (NEW W5-A AC; renamed from `superseded_by` per r1 P1-2):** for every page with non-empty `iso_relationship` array, every entry's `code` field must resolve via either (a) a wiki-internal page (preferred when ISO equivalent has its own wiki page) OR (b) a `publisher_catalog_url` pointer to an ISO/Standards Norway catalog page. The test accepts either fallback. The `relationship` field on each entry must be one of `{"full-replacement", "partial-overlap", "parallel-mirror", "withdrawn-no-replacement"}`.
+- [ ] Plan review artifact present at `scripts/review/results/2026-05-03-plan-2610-claude-internal.md` (single-author Claude review). Codex/Gemini UNAVAILABLE per memory.
 - [ ] Adversarial review explicitly addresses: (a) the corpus-vs-citation-frequency mismatch (M-506 cited 5× but NOT on disk; deferred to W5-B), (b) the corpus-vs-W1B-target mismatch (Z-008 flagged in #2587 but NOT on disk; deferred to W5-B), (c) the on-disk editions all being older than publisher-current editions, (d) the D-SR-022 designation-withdrawn status and `superseded_by` migration target accuracy, (e) the multi-edition umbrella-vs-per-edition-page decision.
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | TBD | r1 review pending |
+| Claude (internal) | MAJOR → revised | 2 MAJOR + 5 MINOR — all addressed inline; allowlist test PASS |
 | Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
-| Gemini | UNAVAILABLE | gemini sandbox cwd=/tmp blocks workspace-hub overlay |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** TBD (single-author r1 to be produced)
+**Overall result:** PASS-after-revision (2 MAJOR + 5 MINOR fixes applied 2026-05-03)
 
-Revisions made based on review:
-- (none yet — draft state)
+**Revisions made based on review:**
+- P1-1 (D-SR-022 successor mapping): replaced wrong "ISO 13533" successor claim with multi-entry mapping (NORSOK D-001/D-002/D-010 + API Spec 16A/16D/RP 16Q + ISO 13624-1 publisher-catalog fallback); each successor flagged for individual on-disk verification at implementation time.
+- P1-2 (`superseded_by` field rename): renamed to `iso_relationship` across Pseudocode + test contract + AC; widened `relationship` enum to include `parallel-mirror`; preserves W4-B's `superseded_by` test inheritance because that lives in W4-B's plan/test, not here.
+- P2-1 (umbrella-vs-per-edition fallback): added explicit deferral order to Risk #4 (split N-004 first, then drop M-501 4th Ed, then N-001 4th Ed) so the 6-8 page cap stays satisfied.
+- P2-2 (regex pipe escaping): moved `REVISION_PATTERN` regex into a fenced Python code block so the pipe-alternation transcribes verbatim into the test file.
+- P2-3 (`norsok_series` enum tightening): tightened to `{D, M, N}` for W5-A; widening to add `Z` etc. is documented as a W5-B follow-up.
+- P2-4 (provisional issue number): plan header explicitly notes `2610` is provisional and will be reconciled at `gh issue create` time.
+- P2-5 (Lifecycle frontmatter↔body drift): removed standalone "## Lifecycle status" body section; lifecycle data lives in frontmatter only (`revision`, `publisher_current_revision`, `lifecycle_status`, `iso_relationship`); body "Where to find" section gains a single bullet pointing to the frontmatter as the source-of-truth surface.
+- P3-1 (review file naming): reconciled all internal references to use `scripts/review/results/2026-05-03-plan-2610-claude-internal.md` (matches the precedent set by `2026-05-02-plan-2541-claude.md` and the review-prompt path).
 
-**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1 pending.
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
@@ -379,12 +396,14 @@ Revisions made based on review:
 - **Risk (corpus-vs-W1B-target mismatch):** W1-B (#2587) flagged NORSOK Z-008 as a target for asset-management. Z-008 is NOT on disk. W5-A explicitly does NOT promote Z-008. **Mitigation:** Z-008 is deferred to W5-B (publisher-portal pointer); the W5-A plan body explicitly documents this scope decision so a downstream W1-B implementer cannot assume Z-008 is now resolvable.
 - **Risk:** Copyright leakage. NORSOK publishes via Standards Norway from Lysaker, Norway with cover-page strings "Standards Norway", "NORSOK Standard", "© Standards Norway", "Strandveien 18", "Postboks 242", "N-1326 Lysaker". **Mitigation (inherited from W4-A/W4-B):** word-count ceiling `<500` strict + positive-shape structural test + `extraction_policy: metadata-only` + `raw_copy_allowed: false` + cross-review on every revision touching `wiki/standards/norsok-*.md`. **Honesty caveat:** denylist alone is necessary-but-not-sufficient.
 - **Risk (multi-edition umbrella discipline):** N-001 (4th + 7th editions on disk), N-004 (1st + 2nd editions on disk), and M-501 (4th + 5th editions on disk) each have two on-disk editions. W5-A proposes a SINGLE umbrella page per code (with the `revision` frontmatter pinned to the current edition and the superseded edition listed in `sources` for traceability). **Alternative considered and rejected:** 6 separate pages (one per edition × 3 codes = 6, plus 3 single-edition pages = 9 total) would bloat scope and inflate page count beyond the 6-8 cap. Reviewer SHOULD challenge this if per-edition-citation granularity is required by an actual `digitalmodel/` consumer (none exist today — verified by grep).
-- **Risk (NORSOK D-SR-022 designation withdrawn):** D-SR-022 (1994) is a pre-2002 "draft for revision" series document. The SR-prefixed designation was withdrawn when content migrated to NORSOK D-001 (well design and well-control), D-002 (system requirements drilling/well facilities), D-010 (well integrity in drilling and well operations), and the BOP-specific content is now covered by ISO 13533 (drill-through equipment — also on-disk per W4-B BSI plan). **Mitigation:** the page's `revision: "designation-withdrawn-1994"` and `superseded_by` array explicitly list D-001, D-002, D-010, ISO 13533. Page is promoted for historical-traceability value only — calc-callers MUST NOT cite D-SR-022 for new work.
+  - **Fallback path if reviewer requires per-edition split (NEW per r1 P2-1):** if the reviewer mandates per-edition pages for the multi-edition codes, the page count would jump to 9 (3 codes × 2 editions = 6 + 3 single-edition pages = 9), which exceeds the 6-8 cap. Resolution order: (a) split N-004 first (cited 7× in `digitalmodel/fatigue/`, so per-edition citation granularity has the strongest live-caller justification), giving 7 pages — within cap; (b) if N-001 also requires split, drop the M-501 1999 4th Ed superseded edition from W5-A scope and defer it to W5-B (single-edition lifecycle precedent applied), giving 8 pages — at cap; (c) if all three codes require split, defer the entire W5-A and re-scope as W5-A1/W5-A2 in a follow-up plan. The defer order is N-001 4th Ed → M-501 4th Ed → N-004 1st Ed (drop oldest superseded editions first, preserve current editions and high-citation codes).
+- **Risk (NORSOK D-SR-022 designation withdrawn):** D-SR-022 (1994) is a pre-2002 "draft for revision" series document. The SR-prefixed designation was withdrawn when content migrated to NORSOK D-001 (well design and well-control), D-002 (system requirements drilling/well facilities), D-010 (well integrity in drilling and well operations). The BOP/diverter/riser scope does NOT have a single clean ISO successor — the lineage requires multiple targets across distinct equipment classes: BOP stack design / pressure-control = API Spec 16A (well-control equipment) and API Spec 16D (BOP control systems); drilling riser = API RP 16Q / ISO 13624-1; diverter / rotating control devices = API Spec 16C and API Spec 16RCD. (NOTE: ISO 13533 — "Drill-through equipment" — was originally proposed as the equivalent in W5-A r1 draft but is the WRONG equivalent: 13533 covers the equipment train BELOW the diverter/BOP stack, NOT BOP/diverter/riser; r1 review caught this and corrected.) **Mitigation:** the page's `revision: "designation-withdrawn-1994"` and `iso_relationship` (formerly `superseded_by`; see Risk #6 rename) array explicitly list D-001, D-002, D-010 as the NORSOK-internal successors and API Spec 16A / API Spec 16D / API RP 16Q (with ISO 13624-1 as `publisher_catalog_url` fallback) as the international-standard successors. **Each cited successor's on-disk presence MUST be verified individually at implementation time** — do NOT propagate W4-B plan claims without `find /mnt/ace -iname "*<code>*"` confirmation. Page is promoted for historical-traceability value only — calc-callers MUST NOT cite D-SR-022 for new work.
 - **Risk (ISO-supersession lineage accuracy):** The `superseded_by` claims for each page are based on industry knowledge and the Standards Norway publisher portal, not on a verified per-clause supersession map. Several NORSOK standards retain Norwegian-shelf-specific provisions that are NOT in the ISO-equivalent. **Mitigation:** every `superseded_by` entry carries a `relationship` field with values `{"full-replacement", "partial-overlap", "withdrawn-no-replacement"}` and a free-text `note` field explaining the relationship. Reviewers SHOULD spot-check at least 2 of the 6 pages against the publisher catalog before approval.
-- **Risk (NORSOK lifecycle is not "supersession by ISO"):** Per Standards Norway (May 2026 web evidence), NORSOK standards are revised in parallel with ISO via mirror committees, NOT "superseded by ISO". The "superseded by ISO" framing in some industry sources is imprecise. **Mitigation:** the page body's "Lifecycle status" section uses the more accurate phrasing "content mirrored in ISO XXXXX" or "ISO XXXXX is the international counterpart"; only D-SR-022 (designation withdrawn) and edition-replacements (e.g. N-004 1998 → 2004) use literal "superseded" language.
+- **Risk (NORSOK lifecycle is not "supersession by ISO"):** Per Standards Norway (May 2026 web evidence), NORSOK standards are revised in parallel with ISO via mirror committees, NOT "superseded by ISO". The "superseded by ISO" framing in some industry sources is imprecise. **Mitigation (structural — addresses r1 P1-2):** the frontmatter field is named `iso_relationship` (NOT `superseded_by`) so the structurally-load-bearing key matches the parallel-mirror reality. The `relationship` enum is widened to `{"full-replacement", "partial-overlap", "parallel-mirror", "withdrawn-no-replacement"}`. Only D-SR-022 (designation-withdrawn) carries `relationship: "withdrawn-no-replacement"` against its NORSOK-internal D-001/D-002/D-010 successors and `parallel-mirror`/`partial-overlap` against the API Spec 16A/16D/RP 16Q targets. The W4-B `superseded_by` test inheritance is preserved by name in the test file (`test_superseded_by_pointer_resolves` is renamed to `test_iso_relationship_pointer_resolves`); the BS-EN-ISO genuine-supersession case in W4-B remains undisturbed because that pattern lives in W4-B's plan and test file, not W5-A's. **Mitigation (prose):** the page body's "Lifecycle status" section also uses the accurate phrasing "content mirrored in ISO XXXXX" or "ISO XXXXX is the international counterpart"; only D-SR-022 (designation withdrawn) and edition-replacements (e.g. N-004 1998 → 2004) use literal "superseded" language.
 - **Risk (on-disk edition vs. publisher-current edition gap):** All 6 promoted standards have on-disk editions OLDER than the publisher-current revisions (e.g., M-501 5th Ed 2004 on disk; publisher-current is later). **Mitigation:** every page body MUST include a "Lifecycle status" section pointing to `https://standard.no/` with explicit prose. **AC** records this as the "edition gap discipline" — every NORSOK page must acknowledge the gap.
 - **Risk:** Ledger-form / wiki-form ID divergence. Ledger uses uppercase-with-hyphens (`NORSOK-N-004-2004`); wiki uses lowercase-kebab (`norsok-n-004`). **Mitigation:** add a `ledger_id` frontmatter key on each wiki page; `test_ledger_alignment` checks `frontmatter['ledger_id']` exists in the ledger, NOT `code_id`. Same pattern as W3-A/W4-A/W4-B.
-- **Risk (cross-author confusion — `superseded_by` cardinality):** A NORSOK standard MAY have multiple ISO equivalents covering different parts (e.g., N-004 maps to ISO 19902 for jacket structures and ISO 19904-1 for floating structures). The `superseded_by` array supports multiple entries, but the reviewer MAY argue for a single `superseded_by` per page to keep test logic simple. **Decision:** array-of-entries with `relationship` field per entry is the chosen design; matches W4-B's BS-EN-ISO multi-target pattern.
+- **Risk (cross-author confusion — `iso_relationship` cardinality):** A NORSOK standard MAY have multiple ISO equivalents covering different parts (e.g., N-004 maps to ISO 19902 for jacket structures and ISO 19904-1 for floating structures). The `iso_relationship` array supports multiple entries, but the reviewer MAY argue for a single entry per page to keep test logic simple. **Decision:** array-of-entries with `relationship` field per entry is the chosen design; matches W4-B's BS-EN-ISO multi-target pattern (the W4-B field is `superseded_by` because BS-EN-ISO IS true supersession; W5-A renames to `iso_relationship` per r1 P1-2 because NORSOK→ISO is parallel-mirror).
+- **Risk (`norsok_series` enum scope — addresses r1 P2-3):** the on-disk W5-A corpus uses series letters `D, M, N` only. W5-A tightens `test_frontmatter_has_norsok_series_letter` to that exact set so an accidental typo (e.g., `Z-008` slipped into a W5-A page) trips the test as an early-warning. **Decision:** `{D, M, N}` for W5-A; widen to add `Z` (Z-008, Z-013) and any other publisher-portal letters in W5-B when those land. The forward-flexible widening is a one-line test edit — cost of tightening now is zero, benefit is early-warning on scope creep.
 
 - **Open:** **Should cancelled-and-not-superseded NORSOK standards be promoted at all?** The 1994 D-SR-022 is the only on-disk member of this category (designation withdrawn; partial migration to D-001/D-002/D-010 + ISO 13533 but no clean 1:1 successor). **W5-A default:** YES — promote with `revision: "designation-withdrawn-1994"` and prominent `superseded_by` array, because (a) historical-traceability value (legacy citations in older `digitalmodel/` work might exist; verified zero structured calls today but prose comments may exist), (b) the on-disk PDF will not vanish from `/mnt/ace`, so a resolver target should exist if a calc-caller surfaces it, (c) excluding D-SR-022 reduces the page count to 5 which is still within the 6-8 cap but loses the lifecycle-discipline test case. **Reviewer MUST confirm.** If rejected, scope drops to 5 pages.
 - **Open:** Issue title and labels. Proposed title: `feat(llm-wiki): bounded NORSOK Norwegian-sector standards summary promotion (W5-A)`. Proposed labels: `priority:medium`, `cat:documentation`, `domain:knowledge-management`, `domain:standards`. Issue filing is downstream of plan-review approval per `feedback_never_offer_to_self_label_plan_approved.md`.

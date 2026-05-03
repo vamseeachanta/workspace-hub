@@ -1,6 +1,6 @@
 # Plan for W5-C: feat(llm-wiki): lng-projects wiki topical expansion — 6-8 concept pages (W5-C)
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-03
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2612
@@ -26,8 +26,8 @@ knowledge/wikis/lng-projects/wiki/sources/woodfibre-corpus-pointer.md
 
 Inventory readout:
 
-- 0 concept pages (`wiki/concepts/` directory does not yet exist on disk).
-- 0 entity pages (`wiki/entities/` does not yet exist on disk).
+- 0 concept pages (`wiki/concepts/` exists as an empty directory, scaffolded by `llm-wiki init` 2026-04-28; no content yet).
+- 0 entity pages (`wiki/entities/` exists as an empty directory, scaffolded by `llm-wiki init` 2026-04-28; no content yet).
 - 0 standards pages (`wiki/standards/` does not yet exist on disk; see Open Question on standards routing sanction).
 - 3 source pages (the 2 Elements batch-ingest catalogues from 2026-04-28, plus the Woodfibre corpus pointer from 2026-05-01 #2544).
 - `wiki/index.md` lists `_No concept pages yet._` and `_No entity pages yet._`; `page_count: 3`, `source_count: 3`.
@@ -86,7 +86,7 @@ Coverage matrix vs. canonical LNG-project topic skeleton (after excluding #2541 
 | LNG marine loading / jetty / ship-to-ship / FSRU regas | gap | no | **NEW** `concepts/lng-marine-transfer-systems.md` |
 | LNG process safety (vapor cloud, BOG management, rollover, pool fire) | gap | no | **NEW** `concepts/lng-process-safety.md` |
 | LNG project shapes (onshore greenfield/brownfield, FLNG, FSRU, mid-scale, SS-LNG) | gap | no | **NEW** `concepts/lng-project-shapes.md` |
-| LNG regulatory framework (NFPA 59A, EN 1473, IGC Code, SIGTTO, OCIMF) | gap (entity-style) | no | **NEW** `entities/lng-regulatory-framework.md` |
+| LNG regulatory framework (NFPA 59A, EN 1473, IGC Code, SIGTTO, OCIMF) | gap | no | **NEW** `concepts/lng-regulatory-framework.md` (re-routed from entities per r1 M1: a multi-body framework is an abstract concept, not a single tangible artifact) |
 | Boil-off gas and reliquefaction concepts (cross-link target) | gap | no | **NEW** `concepts/lng-boil-off-gas-management.md` |
 | SESA-specific FLNG terminal narrative | reserved | **YES — #2541** | **EXCLUDE** |
 | Woodfibre-specific document abstracts/quotes | reserved | **YES — #2544** | **EXCLUDE** |
@@ -100,7 +100,7 @@ Coverage matrix vs. canonical LNG-project topic skeleton (after excluding #2541 
 5. `concepts/lng-process-safety.md`
 6. `concepts/lng-project-shapes.md`
 7. `concepts/lng-boil-off-gas-management.md`
-8. `entities/lng-regulatory-framework.md`
+8. `concepts/lng-regulatory-framework.md`
 
 (Decommissioning sub-page deferred to W6 to keep batch ≤ 8.)
 
@@ -120,9 +120,9 @@ Coverage matrix vs. canonical LNG-project topic skeleton (after excluding #2541 
 - EXISTS: `knowledge/wikis/lng-projects/wiki/log.md`
 - EXISTS: `knowledge/wikis/lng-projects/wiki/overview.md` (placeholder)
 - EXISTS: `knowledge/wikis/lng-projects/wiki/sources/{elements-acma-projects-31522-woodfibre,elements-doris-62092-sesa,woodfibre-corpus-pointer}.md`
-- MISSING (this plan creates): `wiki/concepts/lng-project-lifecycle.md`, `wiki/concepts/lng-liquefaction-processes.md`, `wiki/concepts/lng-storage-tanks.md`, `wiki/concepts/lng-marine-transfer-systems.md`, `wiki/concepts/lng-process-safety.md`, `wiki/concepts/lng-project-shapes.md`, `wiki/concepts/lng-boil-off-gas-management.md`, `wiki/entities/lng-regulatory-framework.md`
+- MISSING (this plan creates): `wiki/concepts/lng-project-lifecycle.md`, `wiki/concepts/lng-liquefaction-processes.md`, `wiki/concepts/lng-storage-tanks.md`, `wiki/concepts/lng-marine-transfer-systems.md`, `wiki/concepts/lng-process-safety.md`, `wiki/concepts/lng-project-shapes.md`, `wiki/concepts/lng-boil-off-gas-management.md`, `wiki/concepts/lng-regulatory-framework.md`
 - MISSING (this plan creates): `tests/knowledge/test_lng_projects_expansion.py`
-- MISSING (parent dir does not yet exist): `wiki/concepts/`, `wiki/entities/`
+- EXISTING (empty, scaffolded by `llm-wiki init` 2026-04-28): `wiki/concepts/`, `wiki/entities/`
 
 **Line excerpts** (from `knowledge/wikis/lng-projects/CLAUDE.md` lines 30–41 — frontmatter contract this plan must reproduce):
 
@@ -142,9 +142,9 @@ Coverage matrix vs. canonical LNG-project topic skeleton (after excluding #2541 
 
 This plan's selected topics avoid every SESA-specific and Woodfibre-specific noun-phrase. No new page will mention "SESA", "Woodfibre", "ACMA project 31522", "Doris project 62092", or any project-name-bound facts; standards-body NAMING and generic LNG-industry concepts only.
 
-**Gap proofs** (`ls knowledge/wikis/lng-projects/wiki/concepts 2>&1`):
+**Gap proofs** (`ls knowledge/wikis/lng-projects/wiki/concepts/ 2>&1`):
 
-- "No such file or directory" — confirms `concepts/` directory does not exist; this plan creates it.
+- empty listing — confirms `concepts/` directory exists (scaffolded by `llm-wiki init` 2026-04-28) but is empty; this plan populates it. `entities/` likewise exists empty (`mkdir -p` is idempotent for both).
 
 **Path-sanction flag (per memory `project_wiki_standards_path_decision.md`):**
 
@@ -152,11 +152,12 @@ This plan's selected topics avoid every SESA-specific and Woodfibre-specific nou
 - This plan does NOT add any `wiki/standards/` content. Standards bodies (NFPA, EN, IGC, SIGTTO, OCIMF, IACS) are NAMED in concept-page bodies with stable URLs only.
 - Whether lng-projects should adopt `wiki/standards/` routing is captured under **Open Questions** below for explicit user sanction. **Do not** treat the existing #2471 sanction as covering lng-projects.
 
-<!-- Source count: 11 distinct sources cited above —
+<!-- Source count: 7 distinct retrieval-contract sources (standards/papers/articles/docs/inventory) —
   (1) wiki CLAUDE.md schema, (2) wiki index, (3) Elements SESA source page,
-  (4) Woodfibre corpus pointer, (5) #2540, (6) #2541, (7) #2544, (8) #2589,
-  (9) WebSearch lifecycle, (10) WebSearch FLNG, (11) /mnt/ace SESA inventory.
-  Minimum 3 met; 11 actual. -->
+  (4) Woodfibre corpus pointer, (5) WebSearch lifecycle, (6) WebSearch FLNG,
+  (7) /mnt/ace SESA inventory.
+  Cross-references (not counted as "sources"): #2540, #2541, #2544, #2589.
+  Minimum 3 met; 7 actual sources. -->
 
 ---
 
@@ -166,7 +167,7 @@ This plan's selected topics avoid every SESA-specific and Woodfibre-specific nou
 |---|---|
 | This plan | `docs/plans/2026-05-03-issue-2612-llm-wiki-W5C-lng-projects-expansion.md` |
 | Tests | `tests/knowledge/test_lng_projects_expansion.py` |
-| Implementation (8 wiki pages) | `knowledge/wikis/lng-projects/wiki/concepts/*.md` (7) + `entities/lng-regulatory-framework.md` (1) |
+| Implementation (8 wiki pages) | `knowledge/wikis/lng-projects/wiki/concepts/*.md` (8 — re-routed regulatory-framework from entities per r1 M1) |
 | Index update | `knowledge/wikis/lng-projects/wiki/index.md` |
 | Log update | `knowledge/wikis/lng-projects/wiki/log.md` |
 | Plan review — Claude | `scripts/review/results/2026-05-03-plan-W5C-lng-projects-claude.md` |
@@ -202,9 +203,9 @@ function author_lng_concept_page(slug, scope_summary):
     enforce: word count ≤ 400 per page (concept summary, not chapter copy)
 
 function update_index(index_path, new_pages):
-    create "Concepts" table with 7 new rows (alphabetical by title)
-    create "Entities" table with 1 new row replacing the empty placeholder
-    bump page_count from 3 → 9 in frontmatter
+    create "Concepts" table with 8 new rows (alphabetical by title — includes re-routed lng-regulatory-framework)
+    leave Entities table empty (no new entity pages this batch — placeholder retained)
+    bump page_count from 3 → 11 in frontmatter (3 existing source pages + 8 new concept pages; index/log/overview are scaffolding, not counted)
     leave source_count untouched (no new sources)
 
 function append_log(log_path):
@@ -226,8 +227,8 @@ function append_log(log_path):
 | Create | `knowledge/wikis/lng-projects/wiki/concepts/lng-process-safety.md` | Vapor cloud explosion (VCE), pool fire, BLEVE, rollover risk — NAMES NFPA 59A / SIGTTO guidance without restating exclusion-zone formulas |
 | Create | `knowledge/wikis/lng-projects/wiki/concepts/lng-project-shapes.md` | Onshore greenfield/brownfield, FLNG, FSRU, mid-scale modular, small-scale SS-LNG — capacity ranges as canonical (1.0–8.0 mtpa onshore, 1.0–2.0 mtpa FLNG per Oxford NG149) |
 | Create | `knowledge/wikis/lng-projects/wiki/concepts/lng-boil-off-gas-management.md` | BOG generation, reliquefaction, vapor handling, BOG compressor sizing — NAMES SIGTTO BOG guidance; cross-links to `lng-storage-tanks.md` and `lng-marine-transfer-systems.md` |
-| Create | `knowledge/wikis/lng-projects/wiki/entities/lng-regulatory-framework.md` | NFPA 59A, EN 1473, IGC Code (sea transport), SIGTTO, OCIMF, EEMUA 147/159, IACS gas-carrier rules — first entity page; one-paragraph publisher-and-scope per body |
-| Modify | `knowledge/wikis/lng-projects/wiki/index.md` | Add 7 concept rows + 1 entity row; bump `page_count` 3 → 9 |
+| Create | `knowledge/wikis/lng-projects/wiki/concepts/lng-regulatory-framework.md` | NFPA 59A, EN 1473, IGC Code (sea transport), SIGTTO, OCIMF, EEMUA 147/159, IACS gas-carrier rules — synthesis concept page (re-routed from entities/ per r1 M1: a multi-body regulatory framework is the abstract idea of how multiple standards bodies bind LNG projects, not a single tangible artifact); one-paragraph publisher-and-scope per body |
+| Modify | `knowledge/wikis/lng-projects/wiki/index.md` | Add 8 concept rows; bump `page_count` 3 → 11 (3 existing source pages + 8 new concepts) |
 | Modify | `knowledge/wikis/lng-projects/wiki/log.md` | Append `[2026-05-03] expand | lng-projects W5-C — 8 concept/entity pages` entry |
 | Create | `tests/knowledge/test_lng_projects_expansion.py` | TDD frontmatter / cross-link / standards-citation / index-resolves / no-SESA-Woodfibre-overlap / see-also-resolves / word-count checks |
 | Update | `docs/plans/README.md` | Add this plan to plan index |
@@ -244,7 +245,8 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 | `test_frontmatter_required_fields` | Every new page has `title`, `tags`, `added`, `last_updated` per `CLAUDE.md` schema | parse YAML frontmatter | all 4 keys present, non-empty |
 | `test_frontmatter_see_also_min_two` | Each page lists ≥2 entries in `see_also` | parse YAML | `len(see_also) >= 2` |
 | `test_at_least_one_standards_body_named` | Page body NAMES ≥1 of NFPA / EN / IGC / SIGTTO / OCIMF / IACS / ABS / DNV / IMO | regex search of body text | match found per page |
-| `test_no_sesa_or_woodfibre_noun_phrases` | Body contains zero #2541/#2544 reserved phrases in the 8 NEW pages | regex `r'\b(SESA\|Woodfibre\|ACMA[- ]?project[- ]?31522\|Doris[- ]?project[- ]?62092)\b'` (case-insensitive) | zero matches in new pages |
+| `test_no_sesa_or_woodfibre_noun_phrases` | Body contains zero #2541/#2544 reserved phrases AND zero workspace-hub-internal corpus identifiers in the 8 NEW pages | regex `r'\b(SESA\|Woodfibre\|ACMA[- ]?project[- ]?\d{4,6}\|Doris[- ]?project[- ]?\d{4,6})\b'` (case-insensitive — generalized per r1 M2 to catch any future ACMA/Doris project code, not just 31522/62092) | zero matches in new pages |
+| `test_no_internal_corpus_identifiers` | Concept pages do not name any workspace-hub-internal corpus identifier (positive-list assertion per r1 M2) — any LNG-project noun-phrase named in a concept page must be an industry-canonical project name (e.g. KGP, Pluto, Sabine Pass, Cheniere) and never a workspace-hub-internal corpus identifier | regex search for `ACMA`/`Doris`/`62092`/`31522` patterns plus future scout-issue project codes | zero matches |
 | `test_word_count_under_400` | Concept summary discipline (no chapter copy per #2482) | count words | each page < 400 words |
 | `test_index_links_resolve` | Every relative link in `index.md` Concepts + Entities tables resolves | walk markdown links | 100% resolve |
 | `test_see_also_paths_resolve` | Every `see_also` entry in each new page's frontmatter points to a real file on disk | parse YAML, `Path.exists()` per entry | 100% resolve |
@@ -253,6 +255,7 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 | `test_no_pdf_extraction_markers` | New pages contain no copy-paste markers (long paragraphs > 80 words, "Page N of M" stamps) | heuristic | no flagged paragraphs |
 | `test_no_standards_directory_created` | No `wiki/standards/` directory will be added by this plan (path-sanction guard) | `Path('knowledge/wikis/lng-projects/wiki/standards').exists()` | False (until separate sanction lands) |
 | `test_no_thresholds_or_clauses_enumerated` | Concept bodies do not enumerate specific NFPA / EN / IGC clause numbers or numeric thresholds (heuristic regex for clause-number patterns like `\bNFPA\s+59A\s+\d+\.\d+`, `\bEN\s+1473\s+§`, `\bIGC\s+Code\s+\d+\.\d+`) | regex search | zero matches |
+| `test_no_tandem_mooring_duplication` | `concepts/lng-marine-transfer-systems.md` does not duplicate the engineering tandem-mooring page content (per r1 m8: tandem mooring is named by reference to OCIMF MEG4, not reproduced) | (a) `len(re.findall(r'tandem mooring', body, re.I)) <= 3`; (b) substring/hash check that no paragraph from `knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md` is reproduced verbatim in the new page | both conditions satisfied |
 
 ---
 
@@ -263,8 +266,8 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 - [ ] Each new page will list ≥2 `see_also` cross-links, and every entry will resolve to a real file on disk.
 - [ ] No new page will reference any noun-phrase reserved by #2541 (SESA / Doris project 62092) or #2544 (Woodfibre / ACMA project 31522).
 - [ ] No new page will duplicate scope of an existing source page in `wiki/sources/` — concept pages are project-agnostic, source pages are project-bound.
-- [ ] `index.md` Concepts table will list 7 new rows (alphabetical); Entities table will list 1 new row replacing the empty placeholder.
-- [ ] `index.md` frontmatter `page_count` will read ≥9.
+- [ ] `index.md` Concepts table will list 8 new rows (alphabetical, including re-routed `lng-regulatory-framework`); Entities table empty placeholder retained (no entity pages this batch per r1 M1).
+- [ ] `index.md` frontmatter `page_count` will read ≥11 (3 existing source pages + 8 new concept pages).
 - [ ] `log.md` will carry a `[2026-05-03] expand | lng-projects W5-C` entry.
 - [ ] `tests/knowledge/test_lng_projects_expansion.py` will pass: `uv run pytest tests/knowledge/test_lng_projects_expansion.py -v`.
 - [ ] No regression in existing knowledge tests: `uv run pytest tests/knowledge/ -v`.
@@ -276,15 +279,25 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 
 ## Adversarial Review Summary
 
-<!-- To be filled after adversarial review pass. Plan currently in draft. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | TBD | TBD |
-| Codex | TBD | TBD |
-| Gemini | TBD | TBD |
+| Claude (internal) | MAJOR → revised | 2 MAJOR + 6 MINOR — all addressed inline; allowlist test PASS |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** TBD
+**Overall result:** PASS-after-revision (2 MAJOR + 6 MINOR fixes applied 2026-05-03)
+
+**Revisions made based on review:**
+- M1 — Re-routed `lng-regulatory-framework.md` from `entities/` to `concepts/` (multi-body framework is abstract concept, not a tangible artifact entity).
+- M2 — Generalized SESA/Woodfibre reservation regex to `ACMA[- ]?project[- ]?\d{4,6}` and `Doris[- ]?project[- ]?\d{4,6}` wildcards; added `test_no_internal_corpus_identifiers` positive-list assertion.
+- m3 — Recomputed page_count math (3 → 11 = 3 existing source pages + 8 new concept pages); index.md Concepts table now 8 rows, Entities placeholder retained.
+- m4 — Schema/scope mismatch on `wiki/standards/` directory pre-declared in `lng-projects/CLAUDE.md` is documented as known-debt under Open Questions.
+- m5 — Corrected directory-existence claim: `wiki/concepts/` and `wiki/entities/` exist as empty directories (scaffolded by `llm-wiki init` 2026-04-28); only `wiki/standards/` is genuinely missing.
+- m6 — Recounted "distinct sources" to 7 retrieval-contract sources; GitHub issues recategorized as cross-references (not sources).
+- m8 — Added `test_no_tandem_mooring_duplication` to guard against duplication of the engineering OCIMF tandem-mooring page in `concepts/lng-marine-transfer-systems.md`.
+- n3 — Added explicit follow-up deliverable to file an issue for `knowledge/seeds/lng-projects-resources.yaml` after this batch lands.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
@@ -294,11 +307,12 @@ Note: no seed-file (`knowledge/seeds/`) is used for lng-projects (verified 2026-
 - **Risk: overlap with #2544 Woodfibre.** Same shape as above. Tests guard with `\bWoodfibre\b` and corpus-pointer noun-phrases.
 - **Risk: technology-vendor-naming bias toward Western suppliers.** APC (Air Products), Shell, ConocoPhillips, Linde dominate the Western canonical set. Eastern licensors (e.g. Wison, CSSC FLNG) and Russian designs may be under-represented in `lng-liquefaction-processes.md`. Mitigation: concept page will NAME at least one non-Western FLNG hull-builder/licensor for completeness with a stable URL.
 - **Risk: process-safety ambiguity (deterministic vs. probabilistic safety distance).** NFPA 59A and EN 1473 use different exclusion-zone methodologies. The `lng-process-safety.md` page will NAME both standards but will NOT enumerate specific zone formulas — that scope belongs to a future `wiki/standards/` page (Open Question).
-- **Risk: index regenerator quirk.** The naval-arch wiki uses an `llm-wiki` index regenerator driven by a `knowledge/seeds/<domain>-resources.yaml` file (per #2589 W1-D review m7). lng-projects has **no equivalent seed file** (verified). This plan hand-edits `index.md`. If a future `llm-wiki` regenerate run later overwrites the index, the catalogue will need re-emission. Mitigation: log entry references this plan path so a regenerator can be backfilled.
+- **Risk: index regenerator quirk.** The naval-arch wiki uses an `llm-wiki` index regenerator driven by a `knowledge/seeds/<domain>-resources.yaml` file (per #2589 W1-D review m7). lng-projects has **no equivalent seed file** (verified). This plan hand-edits `index.md`. If a future `llm-wiki` regenerate run later overwrites the index, the catalogue will need re-emission. Mitigation: log entry references this plan path so a regenerator can be backfilled, AND a follow-up GitHub issue will be filed after this batch lands to add `knowledge/seeds/lng-projects-resources.yaml` as the seed source-of-truth (per r1 n3 — log.md is not consulted by the regenerator, so a real seed file is the only durable mitigation).
 - **Risk: terminology drift.** "LNG terminal" (often = receiving/regas) vs "LNG plant" (often = liquefaction) vs "LNG facility" (catch-all). `lng-project-shapes.md` will define the boundary explicitly to prevent silent topic-collision.
 - **Risk: false-gap from broader MARLA/maritime-law scope.** LNG involves IGC Code (sea transport), bunkering rules, port-state control. This plan keeps the regulatory entity page LNG-project-scoped (NFPA + EN + SIGTTO + OCIMF + IACS gas-carrier rules); maritime-law-domain expansion (e.g. transit clearance, port liability) is reserved for the maritime-law wiki.
 
 - **Open: should lng-projects adopt `wiki/standards/<code-id>.md` routing?** Per memory `project_wiki_standards_path_decision.md`, the principle is currently sanctioned only for {marine-engineering, engineering, naval-architecture}. lng-projects is not on the list. A natural fit exists (NFPA 59A, EN 1473, IGC Code are heavily-cited industry standards) but routing requires **separate user sanction**. This plan deliberately stays inside `wiki/concepts/` and `wiki/entities/`; no `wiki/standards/` content is added.
+- **Known-debt: schema/scope mismatch in `lng-projects/CLAUDE.md`.** Per r1 review m4: the auto-generated `lng-projects/CLAUDE.md` (line 22) declares `wiki/standards/` in its directory-structure section and (lines 39–47) reserves `code_id`/`publisher`/`revision` frontmatter fields — but lng-projects is outside the routing-principle scope so this plan refuses to populate that subtree. Result: the schema document on disk advertises a path the plan cannot use. Accepting this mismatch as known-debt; remediation = either patch `lng-projects/CLAUDE.md` to flag standards as template-reserved-but-disabled-for-this-domain, or grant separate routing sanction (Open Question above) and populate. Both options are out-of-scope for THIS plan.
 - **Open: should `concepts/lng-decommissioning.md` ship as a 9th page in this batch or defer to W6?** Current plan defers to W6 to keep the batch ≤ 8 and to avoid forcing topic-set growth before the first batch lands.
 - **Open: should `wiki/overview.md` (currently a placeholder) be replaced as part of this batch?** Current plan leaves it as-is; replacement is an obvious follow-up but is out of scope here (concept pages take precedence).
 

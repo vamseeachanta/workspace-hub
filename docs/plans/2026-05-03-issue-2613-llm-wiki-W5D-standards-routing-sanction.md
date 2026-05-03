@@ -1,6 +1,6 @@
 # Plan for LLM-Wiki Completeness W5-D: Formally Sanction `wiki/standards/<code-id>.md` Routing for Out-of-Principle Wikis
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T1
 > **Date:** 2026-05-03
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2613
@@ -148,13 +148,20 @@ function test_out_of_principle_wiki_routing_requires_sanction_citation():
         "engineering",
         "naval-architecture",
     }
-    # Sanctioned-via-issue allowlist (codified by umbrella sanction issue post-approval;
-    # for now the test runs in soft-warning mode only — see "Acceptance Criteria" rationale
-    # for why the test is added in disabled / xfail mode in this plan and only becomes
-    # enforcing after the umbrella sanction issue lands the codifying CLAUDE.md edits).
+    # Sanctioned-via-issue allowlist (codified by umbrella sanction issue post-approval).
+    # Per Open Question §"test enforcement timing" the test will land hard-enforcing in the
+    # SAME umbrella PR that lands the codifying CLAUDE.md edits, so the test cannot fail
+    # spuriously. xfail mode is NOT used. The `<umbrella-issue-number>` token below is a
+    # SHAPE-ONLY placeholder that the umbrella PR will substitute for the real issue number
+    # once it is created.
+    #
+    # Note: the contract enforces presence of ANY `#<NNNN>` reference within ±5 lines of
+    # the wiki/standards/ citation (see has_proximate_token call below) — the specific
+    # umbrella-issue-number is curated by reviewer at PR time, not hard-coded into the
+    # contract. This decouples the test from later sanction-issue migrations.
     SANCTIONED_VIA_ISSUE = {
-        "engineering-standards": "<umbrella-issue-number>",
-        "asset-management":      "<umbrella-issue-number>",
+        "engineering-standards": "<umbrella-issue-number>",  # shape-only placeholder
+        "asset-management":      "<umbrella-issue-number>",  # shape-only placeholder
         # lng-projects, acma-projects: TBD, conditional on umbrella-issue user decision
     }
     # Out-of-scope wikis must never appear with wiki/standards/<code-id>.md routing in plans.
@@ -171,9 +178,13 @@ function test_out_of_principle_wiki_routing_requires_sanction_citation():
             if wiki in OUT_OF_SCOPE_WIKIS:
                 FAIL(f"{plan_path}: cites wiki/standards/ routing for OUT-OF-SCOPE wiki '{wiki}'.")
             if wiki in SANCTIONED_VIA_ISSUE:
-                # require sanction-issue citation within ±5 lines of this match
-                if not has_proximate_token(plan_path, match, f"#{SANCTIONED_VIA_ISSUE[wiki]}"):
-                    FAIL(f"{plan_path}: cites wiki/standards/ routing for '{wiki}' without sanction-issue citation.")
+                # Require ANY `#<NNNN>` reference within ±5 lines of this match.
+                # Shape-only on issue-number axis: catches the high-value defect
+                # (out-of-principle wiki cited without sanction-issue context) while
+                # tolerating sanction-issue migration without test edits. Provenance
+                # of the specific umbrella issue is human-curated at PR review time.
+                if not has_proximate_issue_token(plan_path, match, pattern=r"#\d+"):
+                    FAIL(f"{plan_path}: cites wiki/standards/ routing for '{wiki}' without ANY sanction-issue citation within ±5 lines.")
                 continue
             FAIL(f"{plan_path}: cites wiki/standards/ routing for unsanctioned wiki '{wiki}'.")
 ```
@@ -230,25 +241,30 @@ The test the umbrella sanction issue will add to `tests/governance/test_2471_cit
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | (pending) | — |
-| Codex | (pending or UNAVAILABLE per #2479) | — |
-| Gemini | (pending or UNAVAILABLE per sandbox-path-resolution) | — |
+| Claude (internal) | MINOR | 4 MINOR — addressed inline; allowlist test PASS |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** (pending review)
+**Overall result:** PASS-with-revisions (4 MINOR fixes applied 2026-05-03)
 
-Revisions made based on review:
-- (none yet)
+**Revisions made based on review:**
+- MINOR-1: Resolved xfail vs hard-enforce contradiction; pseudocode comment now reflects hard-enforcing recommendation, atomic with umbrella PR.
+- MINOR-2: Generalized test contract to require ANY `#<NNNN>` within ±5 lines (decoupled from specific umbrella issue number); placeholder explicitly marked shape-only.
+- MINOR-3: Added reviewer-friendly acknowledgment that umbrella bundles codify ({engineering-standards, asset-management}) + user-decision ({lng-projects, acma-projects}) evidentiary types; documented 2-issue-split alternative.
+- MINOR-4: Added explicit trade-off acknowledgment that aces-#4 prose callout is mitigation-by-prose, not durable contract; named CI-fetch-and-fail follow-on as out-of-scope T1 promotion.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk: proliferation of sanction issues.** If user chooses one-issue-per-wiki rather than umbrella, this plan spawns up to 4 sanction issues ({engineering-standards, asset-management, lng-projects, acma-projects}). **Mitigation:** the recommendation in Open Questions § defaults to ONE umbrella issue with per-wiki sub-bullets in the issue body for review-friendliness; reviewer-friendly granularity without GH-issue noise.
-- **Risk: aces-#4 cross-repo-reference brittleness.** Memory says aces-#4 (aceengineer-strategy issues/4) holds the canonical-home decision for the marine-domain general substrate. If aces-#4 Phase 1 supersedes `wiki/standards/<code-id>.md` with a different routing (e.g., promoting to a higher-level subtree), every `Sanctioned-by` reference in workspace-hub CLAUDE.md files becomes stale. **Mitigation:** this plan explicitly **excludes marine-engineering** from its sanction list (defers entirely to aces-#4 Phase 1); the umbrella issue body must include a `Reconcile-with: aces-#4 Phase 1 outcome` callout so the codification doesn't silently drift.
+- **Risk: aces-#4 cross-repo-reference brittleness.** Memory says aces-#4 (aceengineer-strategy issues/4) holds the canonical-home decision for the marine-domain general substrate. If aces-#4 Phase 1 supersedes `wiki/standards/<code-id>.md` with a different routing (e.g., promoting to a higher-level subtree), every `Sanctioned-by` reference in workspace-hub CLAUDE.md files becomes stale. **Mitigation:** this plan explicitly **excludes marine-engineering** from its sanction list (defers entirely to aces-#4 Phase 1); the umbrella issue body must include a `Reconcile-with: aces-#4 Phase 1 outcome` callout so the codification doesn't silently drift. **Trade-off acknowledgment:** the prose callout is the trade-off, NOT the contract — it depends on a human reading the umbrella issue, noticing aces-#4 has progressed, and manually reconciling. Durable cross-repo reconcile tooling (e.g., a CI check that fetches aces-#4 status via gh API and fails the test suite if Phase 1 has completed without a corresponding workspace-hub reconcile commit) is **out of scope for T1** and would be a follow-on enforcement-tier promotion.
 - **Risk: user-bandwidth on decisions.** The plan asks the user to decide formal sanction for 4 wikis ({engineering-standards, asset-management}: codify; {lng-projects, acma-projects}: case-by-case) plus reaffirm 3 out-of-scope ({maritime-law, personal, health-reports}). **Mitigation:** the per-wiki matrix presents each row as a clear action verb (affirm / codify / user-decision / reaffirm) with one-line rationale; the user can scan in <2 minutes and approve umbrella vs. per-wiki granularity.
 - **Risk: the test extension may false-positive on plan prose that incidentally types a `wiki/standards/<X>.md` path inside a code fence.** **Mitigation:** the existing test already skips fenced code blocks; the new test uses identical fence-skip logic.
 - **Risk: this plan changes nothing on disk yet, but the umbrella sanction issue will eventually need to add `Sanctioned-by: #<self>` to CLAUDE.md files.** That kind of self-referential update is straightforward but creates a chicken-and-egg ordering: the issue number must exist before the CLAUDE.md edit. **Mitigation:** umbrella-issue-implementation order is (1) open issue, get number; (2) edit CLAUDE.md files referencing that number; (3) push commit referencing the issue number. Standard pattern.
-- **Open Question (recommend ONE umbrella):** should there be ONE umbrella sanction issue covering all out-of-principle wikis, or one issue per wiki? **Recommendation:** ONE umbrella, with per-wiki sub-bullets in the issue body. Rationale: (a) review-friendliness — a single issue avoids review-cycle multiplication; (b) the decisions are coupled (the principle is a single conceptual extension, not 4 independent ones); (c) per-wiki granularity is recoverable later via in-issue checkboxes if needed. **Flag for user during plan-approval review.**
+- **Open Question (recommend ONE umbrella):** should there be ONE umbrella sanction issue covering all out-of-principle wikis, or one issue per wiki? **Recommendation:** ONE umbrella, with per-wiki sub-bullets in the issue body. Rationale: (a) review-friendliness — a single issue avoids review-cycle multiplication; (b) the decisions are coupled (the principle is a single conceptual extension, not 4 independent ones); (c) per-wiki granularity is recoverable later via in-issue checkboxes if needed. **Reviewer-friendly acknowledgment:** the umbrella bundles two distinct evidentiary types — **codify** ({engineering-standards, asset-management}, already W3-C-re-anchored, decision = rubber-stamp) and **user-decision** ({lng-projects, acma-projects}, auto-init schema, no precedent, requires de-novo user assent). Approval of the umbrella issue equals approval of all 4 codify+conditional sub-decisions; granular reversal of any one wiki's decision after approval requires a follow-up issue with a partial-revert commit, NOT a partial reopen of the umbrella. If granular per-issue commit traceability matters more than review-cycle count, prefer a 2-issue split (one for codify, one for user-decision). **Flag for user during plan-approval review.**
 - **Open Question (lng-projects sanction status):** lng-projects has auto-generated CLAUDE.md but is NOT in the memory's enumerated principle list and was not touched by W3-C. Should the umbrella sanction issue formally sanction it (codify), or leave it ambiguous? **Recommendation:** codify under the umbrella, since the `llm-wiki init`-generated schema declares the routing and there is no countervailing evidence; user approval gates this decision.
 - **Open Question (acma-projects sanction status):** same as lng-projects. **Recommendation:** codify under the umbrella, conditional on user assent.
 - **Open Question (engineering wiki special status):** memory's principle scope includes "engineering" but `knowledge/wikis/engineering/CLAUDE.md` references `wiki/{concepts,entities,sources,standards,workflows}/` (with `workflows` — a non-standard subdir absent from other wikis). This is consistent with the principle but worth noting; the umbrella issue does NOT touch engineering's CLAUDE.md (it's already in-principle).
