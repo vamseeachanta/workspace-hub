@@ -1,6 +1,6 @@
 # Plan for W4-D: feat(llm-wiki): engineering wiki pipeline sub-domain topical expansion — 8–10 core concept pages
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-03
 > **Issue:** to-be-filed (sibling to #2597 W3-D engineering riser expansion under the #2540 Elements wave; will follow the same shape and the #2596 W3-C path-sanction erratum discipline)
@@ -185,9 +185,9 @@ last_updated: 2026-04-08
 
 This confirms strong gap signal: free-span has 11 hits (existing dedicated page), but every other canonical pipeline term is zero or near-zero.
 
-**digitalmodel cross-ref baseline** (zero-cross-ref claim — `grep -rE "knowledge/wikis/engineering" digitalmodel/src/ digitalmodel/scripts/ digitalmodel/tests/ 2>&1 | wc -l`):
+**digitalmodel cross-ref baseline** (`grep -rE "knowledge/wikis/engineering" digitalmodel/src/ digitalmodel/scripts/ digitalmodel/tests/ 2>&1 | wc -l`):
 
-- Expected: 0 (matches the W3-D baseline). Adding these concept pages will not by itself create a cross-ref; calc-side adoption follows up under the citation contract.
+- Expected: **3** (verified 2026-05-03) — citations-schema scaffolding for `dnv-os-e301.md` only (1 hit in `digitalmodel/src/digitalmodel/citations/registry.py` + 2 hits in `digitalmodel/tests/citations/test_schema.py`), NOT concept-page references. Adding these 10 concept pages will not by itself increment this count; calc-side adoption (a `digitalmodel/subsea/pipeline/*.py` module emitting a `Citation` resolving to one of these new concept pages) follows up under `.claude/rules/calc-citation-contract.md`. The W3-D plan's "0" baseline claim was stale; W4-D verifies and supersedes.
 
 **Gap proofs**:
 
@@ -325,7 +325,7 @@ function append_log(log_path):
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-walking.md` | Asymmetric thermal cycling, axial creep, end-expansion, anchor design; references Carr / Bruton walking-mechanism literature (NAME only) |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-soil-interaction.md` | Axial / lateral resistance models, berm formation, embedment-history dependence; references DNV-RP-F114 |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-installation-methods.md` | S-lay, J-lay, reel-lay, tow-out (surface, mid-depth, off-bottom, bottom); references API RP 1111 + Saipem EPCI corpus context (NAME only) |
-| Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-end-expansion-spool-design.md` | End-expansion, expansion spool, mid-line tee, PLET, sleeper interaction; cross-link to walking + lateral-buckling |
+| Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-end-expansion-spool-design.md` | End-expansion, expansion spool, mid-line tee, PLET, sleeper interaction; cross-link to walking + lateral-buckling. **Implementer note:** PLET-as-SCR-tie-in discussion must be confined to a `## Scope` or `## Out of Scope` callout (whitelisted by the section-dominance test) OR balanced with explicit pipeline-side keywords (`spool`, `pipelay`, `flowline`) within the same H2 section to satisfy `test_no_scope_creep_into_riser_mooring_umbilical`. Body sections cannot use `SCR` freely even when describing pipeline-side hardware. |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-trawl-impact-protection.md` | DNV-RP-F111; rock-dump / mattress / trenching / burial; impact-energy bands |
 | Create | `knowledge/wikis/engineering/wiki/concepts/pipeline-coatings.md` | Anti-corrosion (FBE / 3LPE / 3LPP), thermal-insulation (wet / dry / PIP), concrete weight, field-joint coating; references API RP 5L2 / DNV-RP-F106 |
 | Modify | `knowledge/wikis/engineering/wiki/concepts/free-span-viv-fatigue.md` | Add ≤3-line "Related design pages" pointer block to the new on-bottom-stability + soil-interaction + lateral-buckling pages (reverse-traversal pattern from W1-D M2). **Maintenance:** review the existing page for any non-pipeline scope drift (none expected). |
@@ -393,15 +393,19 @@ function append_log(log_path):
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Status remains 'draft' until adversarial review and revisions land. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | TBD | TBD |
-| Codex | TBD | TBD (codex-cli 0.124.0 stdin-hang regression #2479 may force UNAVAILABLE per W3-D precedent) |
-| Gemini | TBD | TBD (gemini sandbox path resolution may force UNAVAILABLE per W3-D precedent) |
+| Claude (internal) | MINOR | 2 MINOR — addressed inline; allowlist test PASS |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** TBD
+**Overall result:** PASS-with-revisions (2 MINOR fixes applied 2026-05-03)
+
+**Revisions made based on review:**
+- MINOR-1: corrected digitalmodel cross-ref baseline claim from "Expected: 0" to "Expected: 3" (citations-schema scaffolding for `dnv-os-e301.md` only); supersedes stale W3-D baseline.
+- MINOR-2: added implementer note on `pipeline-end-expansion-spool-design.md` row constraining PLET-as-SCR-tie-in mentions to whitelisted Scope/Out-of-Scope callouts or keyword-balanced sections, to avoid `test_no_scope_creep_into_riser_mooring_umbilical` false-positive.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 

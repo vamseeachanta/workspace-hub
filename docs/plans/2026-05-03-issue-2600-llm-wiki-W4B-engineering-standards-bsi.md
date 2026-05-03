@@ -1,6 +1,6 @@
 # Plan for LLM-Wiki Completeness W4-B: Bounded BSI Offshore-Petroleum Subset Summary Promotion
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-03
 > **Issue:** _not yet filed_ (issue creation is downstream of plan-review per `feedback_never_offer_to_self_label_plan_approved.md`; expected title and labels in Open Questions)
@@ -111,7 +111,7 @@ BS_13628_Pt_8_(2002)_Remotely_Operated_Vehicle.pdf
 BS_13678_(2000)_Evaluation_&_testing_of_threat_compounds_for_use_with_casing_tubing_&_line_pipe.PDF   # NOT 13xxx-offshore subset; BS 13678 is downhole compounds
 BS_13703_(2001)_Design_&_installation_of_piping_systems_on_offshore_production_platforms.pdf
 ```
-11 total. The 8 priority pages cover 9 of the 11 (the duplicate BS 13628 Pt 3 corrigendum file collapses into one wiki page; BS 13535 and BS 13678 are deferred). Total counts: `find /mnt/ace/O&G-Standards/BSI -name "BS_13*" -type f | wc -l` = **11**; `find /mnt/ace/O&G-Standards/BSI -name "BS_*" -type f | wc -l` = **49** (the directory listing shows 76 entries because some filenames lack the `BS_` prefix or are non-PDF — e.g. `bs4360.doc`).
+11 total. The 8 priority pages cover 9 of the 11 (the duplicate BS 13628 Pt 3 corrigendum file collapses into one wiki page; BS 13535 and BS 13678 are deferred). Total counts (case-sensitive `BS_*` matching): `find /mnt/ace/O&G-Standards/BSI -name "BS_13*" -type f | wc -l` = **11**; `find /mnt/ace/O&G-Standards/BSI -name "BS_*" -type f | wc -l` = **49**. The full directory listing returns **76** entries (75 PDFs + 1 .doc); the gap between 49 and 76 is files whose names lack the case-sensitive `BS_` prefix (e.g. `bs4360.doc`) or use different separators — these are NOT in W4-B priority scope. The two `find` runs above answer different questions (case-sensitive prefix glob vs full directory enumeration) and the 76-vs-49 reconciliation is naming-convention only, not a missing-file gap.
 
 **BSI ledger rows present** (`grep -B0 -A6 "BSI\|^- id: BS" data/document-index/standards-transfer-ledger.yaml`):
 ```
@@ -137,8 +137,6 @@ Plus the Standards-page extra-fields table (`code_id`, `publisher`, `revision` a
 - BS EN ISO 13703 (offshore platform piping) — confirmed superseded by BS EN ISO 13703-3:2023 (Oil and gas industries, lower carbon energy — piping). Per ISO catalog <https://www.iso.org/standard/79569.html>. The 2001 BS form on disk is therefore a historical edition.
 - BS EN ISO 13533 (drill-through equipment) — present in ISO catalog. Status reported as historic by BSI in some jurisdictions; current ISO equivalent retained.
 - **`superseded_by` semantic:** for W4-B, the field expresses "the canonical current ISO / EN ISO code that supersedes the BS-prefixed historical form". Where the BS form IS the EN ISO adoption (e.g., BS 13628-2 ⇒ BS EN ISO 13628-2), the `superseded_by` value should be `iso-13628-2` (the unprefixed ISO code-id) and a free-text note clarifies "BSI-published form of the ISO standard, not technically superseded — the BS prefix is jurisdictional re-publication".
-
-<!-- Distinct sources counted: existing repo code (1), engineering-standards CLAUDE.md (2), W3-A precedent plan (3), W2-A revised plan (4), standards ledger (5), W3-C erratum issue body (6), `/mnt/ace/.../BSI/` directory listing (7), W3-A test contract (8), project memory (9), BSI Knowledge web (10), ISO catalog web (11), tests/governance allowlist (12). 12 ≥ 3. -->
 
 ---
 
@@ -178,7 +176,7 @@ The work is templated 8x repetition. Each new wiki page will follow the W3-A ske
 ```yaml
 ---
 title: "<Full BS document name> — bounded summary"
-tags: ["bsi", "british-standards", "standards", "<discipline-tag>", "metadata-only"]
+tags: ["bsi", "standards", "<discipline-tag>", "metadata-only"]   # single-publisher-token convention per W3-A — m3 fix from r1 review
 added: 2026-05-03
 last_updated: 2026-05-03
 domain: engineering-standards
@@ -238,6 +236,7 @@ The test file will use a parametrized fixture iterating over the 8 page paths.
 | Create | `knowledge/wikis/engineering-standards/wiki/standards/bs-13625-marine-drilling-riser-couplings.md` | BSI-published form of ISO 13625 (marine drilling riser couplings). `superseded_by: iso-13625`. |
 | Create | `knowledge/wikis/engineering-standards/wiki/standards/bs-13703-offshore-platform-piping.md` | BSI-published form of ISO 13703 (offshore-platform piping design & installation). `superseded_by: iso-13703-3` (the 2023 multi-part revision is the current ISO form; the 2001 BS form on disk is an older edition). |
 | Create | `knowledge/wikis/engineering-standards/wiki/standards/bs-13626-drilling-well-servicing-structures.md` | BSI-published form of ISO 13626 (drilling and well-servicing structures). `superseded_by: iso-13626`. |
+| Modify | `knowledge/wikis/engineering-standards/CLAUDE.md` | **NEW from r1 review M2** — extend the Standards-page extra-fields table to document the W4-B-introduced fields (`superseded_by`, `superseded_by_note`, `bs_doc_number`, `revision_amendments_note`, `publisher_full`, `ledger_id`, `publisher_catalog_url`). Without this the new fields are an undocumented schema fork; the documented `supersedes` field expresses the inverse direction (what this page replaces) — `superseded_by` is the opposite-polarity field needed for the BSI-jurisdictional-re-publication case. |
 | Modify | `knowledge/wikis/engineering-standards/wiki/index.md` | Append "## Standards" rows for all 8; bump `page_count` per arithmetic AC (current + 8). |
 | Modify | `data/document-index/standards-transfer-ledger.yaml` | Add 8 new rows with `id: BS-EN-ISO-13628-2` etc. (uppercase ledger form vs lowercase wiki form bridged via `ledger_id` frontmatter key, per W3-A pattern). |
 | Create | `tests/knowledge/test_engineering_standards_bsi.py` | Test contract — inherits W3-A's 14 tests verbatim plus NEW `test_superseded_by_pointer_resolves`. |
@@ -258,7 +257,8 @@ All tests in a single file `tests/knowledge/test_engineering_standards_bsi.py`. 
 | `test_frontmatter_has_extraction_policy_metadata_only` | bounds enforcement | YAML frontmatter | `extraction_policy == "metadata-only"` and `raw_copy_allowed is False` |
 | `test_frontmatter_has_jurisdiction_uk` | NEW for W4-B — every BS page is UK-published | YAML frontmatter | `jurisdiction == "UK"` |
 | `test_frontmatter_has_bs_doc_number` | BSI-specific traceability | YAML frontmatter | `bs_doc_number` non-empty, starts with `"BS "` (e.g., `"BS EN ISO 13628-2"`, `"BS EN ISO 13533"`) |
-| **`test_superseded_by_pointer_resolves`** | **NEW for W4-B — every BS page's `superseded_by` must point to a valid ISO/EN code-id** | YAML frontmatter | `superseded_by` non-empty, lowercase-kebab, starts with `"iso-"` OR `"en-iso-"`; AND value satisfies one of: (a) wiki page at `knowledge/wikis/*/wiki/standards/<superseded_by>.md` exists, OR (b) `publisher_catalog_url` frontmatter key is present and is a non-empty URL string. The OR is necessary because ISO counterpart wiki pages may not yet exist (W3-B may close that gap) |
+| **`test_superseded_by_pointer_resolves`** | **NEW for W4-B — every BS page's `superseded_by` must point to a valid ISO/EN code-id** | YAML frontmatter | `superseded_by` non-empty, lowercase-kebab, starts with `"iso-"` OR `"en-iso-"`; AND value satisfies one of: (a) wiki page at `knowledge/wikis/*/wiki/standards/<superseded_by>.md` exists, OR (b) **(STRENGTHENED per r1 review M3)** `publisher_catalog_url` frontmatter key is present, the URL host is `bsigroup.com` OR `iso.org` OR `knowledge.bsigroup.com`, AND the URL contains the numeric code extracted from the `superseded_by` value (e.g., `superseded_by: iso-13628-2` → URL must contain the substring `13628`). Plain "non-empty URL" is NOT sufficient. The OR is necessary because ISO counterpart wiki pages may not yet exist (W3-B may close that gap). If neither (a) nor the strengthened (b) is achievable for a given page, the test marks that page parametrization `xfail` with `reason="W3-B ISO 13xxx pages not yet present; pointer resolution structural-only"` so the weakness is explicit, not silent. |
+| **`test_frontmatter_has_superseded_by_note_when_bs_en_iso`** | **NEW for W4-B per r1 review M4 — machine-enforce the BS-EN-ISO classification distinction** | YAML frontmatter | if `bs_doc_number` starts with `"BS EN ISO"`, then `superseded_by_note` is present AND its value contains either the substring `"jurisdictional re-publication"` OR `"not technically superseded"`. This is the load-bearing field distinguishing "BSI-published form of the ISO standard" from "obsolete prior edition" — must not be human-review-only. |
 | `test_no_raw_pdf_text_bleed_through` | denylist guard (BSI-specific phrase set) | page body | none of `RAW_TELLTALE_PHRASES` present |
 | `test_body_word_count_bounded` | strict `<500` ceiling matching W1-A / W2-A / W3-A | page body | `0 < word_count < 500` strict on both bounds; constant imported from W3-A's test file when present, else `MAX_BODY_WORDS = 500` locally |
 | `test_body_structure_is_whitelisted_only` | positive-shape | page body | top-level `##` headings ⊆ `{"Scope", "Why this page exists", "Where to find the full text", "Cross-references"}` |
@@ -278,14 +278,16 @@ All tests in a single file `tests/knowledge/test_engineering_standards_bsi.py`. 
 - [ ] `uv run pytest tests/knowledge/test_engineering_standards_bsi.py -v` passes (all parametrized cases green).
 - [ ] No regression: `uv run pytest tests/knowledge/ -v` passes.
 - [ ] `uv run pytest tests/governance/test_2471_citation_scope.py -v` passes — the W4-B plan stays within the W3-C erratum allowlist (every #2471 mention is adjacent to a CSA-Z276 / W3-C erratum / over-citation / scope token).
+- [ ] **PLANS_GLOB regression-coverage AC (NEW from r1 review M1):** before W4-B implementation lands, `tests/governance/test_2471_citation_scope.py` MUST be updated so the regression net actually scans 2026-05-03 plans. Resolution options (any one): (a) generalize `PLANS_GLOB` to `docs/plans/2026-05-0[2-9]-*.md` (or `docs/plans/2026-05-*.md`), OR (b) add an explicit per-plan test (`test_w4b_scope_compliance` matching the existing `test_w1a_amendment_landed` / `test_w1b_amendment_landed` / `test_w2c_amendment_landed` precedents) pinning this plan path. Without this update the W4-B `#2471`-discipline AC above is vacuous because the test glob is hard-coded to `2026-05-02-*.md`.
 - [ ] No raw-PDF clause text is committed: `git diff origin/main...HEAD -- knowledge/wikis/engineering-standards/wiki/standards/bs-*.md` contains zero matches for `RAW_TELLTALE_PHRASES`.
 - [ ] Frontmatter for every new page validates against the engineering-standards `CLAUDE.md` schema (`code_id`, `publisher`, `revision` populated; `code_id` lowercase-kebab; filename stem equals `code_id` verbatim).
 - [ ] Frontmatter for every new page carries `jurisdiction: UK`, `superseded_by: <iso-code-id>`, and `bs_doc_number` (W4-B-specific contract).
-- [ ] **`superseded_by` pointer-resolution AC (NEW for W4-B):** for each of the 8 pages, EITHER the target ISO wiki page exists at `knowledge/wikis/*/wiki/standards/<superseded_by>.md` OR the page carries a `publisher_catalog_url` frontmatter key with a verifiable BSI / ISO catalog URL. The test enforces the OR; AC enforces the presence of at least one of the two anchors.
-- [ ] Citation downstream-resolution check (per W3-A AC inheritance — literal-equality on the revision string): for each page where a real publisher revision is asserted, `Citation(code_id=..., publisher='BSI', revision=<frontmatter-revision-verbatim>, ...)` succeeds without `CitationResolutionError`. Pages whose ISO supersession is unverifiable at write-time MUST set `revision: "public-metadata-required-before-citation-use"` and be excluded from this check via `pytest.mark.skip`.
+- [ ] **`superseded_by_note` AC (NEW from r1 review M4):** for every page where `bs_doc_number` starts with `"BS EN ISO"`, the `superseded_by_note` frontmatter field is present and contains either the substring `"jurisdictional re-publication"` OR `"not technically superseded"`. Enforced by `test_frontmatter_has_superseded_by_note_when_bs_en_iso` — NOT delegated to human review.
+- [ ] **`superseded_by` pointer-resolution AC (NEW for W4-B, STRENGTHENED per r1 review M3):** for each of the 8 pages, EITHER (a) the target ISO wiki page exists at `knowledge/wikis/*/wiki/standards/<superseded_by>.md` OR (b) the page carries a `publisher_catalog_url` frontmatter key whose URL host is `bsigroup.com` / `knowledge.bsigroup.com` / `iso.org` AND whose URL string contains the numeric code from the `superseded_by` value. Plain "non-empty URL" is NOT sufficient. The test enforces the strengthened OR; AC enforces the presence of at least one of the two anchors.
+- [ ] Citation downstream-resolution check (per W3-A AC inheritance — literal-equality on the revision string): for each page where a real publisher revision is asserted, `Citation(code_id=..., publisher='BSI', revision=<frontmatter-revision-verbatim>, ...)` succeeds without `CitationResolutionError`. Pages whose ISO supersession is unverifiable at write-time MUST set `revision: "public-metadata-required-before-citation-use"` and be excluded from this check via `pytest.mark.skip`. **m4 from r1 review:** in practice, all 8 W4-B priority pages have on-disk-confirmed revision years (2001 / 2002 / 2004) drawn from the BSI PDF filenames, so this placeholder fallback is defensive-only and SHOULD NOT trigger for any page in this batch. The clause is retained as a safety net for downstream W4-x batches where on-disk evidence may be weaker.
 - [ ] **Revision-discipline-for-BS-EN-ISO pages (W3-A inheritance):** `revision` is a 4-digit base year string with NO corrigendum/amendment suffix. Corrigenda enumerated via `revision_amendments_note` (free text) and via the `sources` frontmatter list (one path per corrigendum PDF on disk). Example: `bs-13628-3-tfl-systems.md` uses `revision: "2001"` and `revision_amendments_note: "Corrigendum 1 (2001); Corrigenda 1+2 (later)"` plus two `sources` entries.
 - [ ] Ledger alignment: every page's `ledger_id` frontmatter resolves to a row in `data/document-index/standards-transfer-ledger.yaml` (8 new rows added by this plan; existing `BS-7608` row is unaffected). Ledger-form / wiki-form ID divergence bridged via `ledger_id` per W3-A pattern.
-- [ ] `knowledge/wikis/engineering-standards/wiki/index.md` lists all 8 new pages under "## Standards". **Arithmetic AC:** `page_count` after this plan = (current `page_count` at implementation time) + 8.
+- [ ] `knowledge/wikis/engineering-standards/wiki/index.md` lists all 8 new pages under "## Standards". **Arithmetic AC:** `page_count` after this plan = (current `page_count` at implementation time) + 8. **Implementer note (m1 from r1 review):** the current value is 5 at plan-time (2026-05-02), but W4-A/W4-C/W4-D and W3-A may land before W4-B; the implementer MUST read the live `page_count` at write-time and add 8 — do NOT assume `5 + 8 = 13`.
 - [ ] No file under `knowledge/wikis/engineering-standards/wiki/sources/` is modified.
 - [ ] No file under `knowledge/wikis/engineering/wiki/standards/` is modified — verified there are NO pre-existing BS pages anywhere; if a future contributor preempts W4-B, this plan MUST be re-scoped before merge.
 - [ ] `code_id` uniqueness across wiki domains: the test asserts no duplicates across `knowledge/wikis/*/wiki/standards/*.md` (vacuous-but-protective for BS today).
@@ -296,18 +298,27 @@ All tests in a single file `tests/knowledge/test_engineering_standards_bsi.py`. 
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | _pending_ | _to be filled in r1_ |
+| Claude (internal) | MAJOR -> revised | 4 MAJOR + 6 MINOR — all addressed inline |
 | Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
 | Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** _pending_
+**Overall result:** PASS-after-revision (4 MAJOR + 6 MINOR fixes applied 2026-05-03)
 
-Revisions made based on review:
-- _to be filled in_
+**Revisions made based on review:**
+- M1 — added explicit AC requiring `tests/governance/test_2471_citation_scope.py` `PLANS_GLOB` generalization (or per-plan W4-B test) so the regression net actually scans 2026-05-03 plans; without this the #2471-discipline AC was vacuous.
+- M2 — added Files-to-Change row for `knowledge/wikis/engineering-standards/CLAUDE.md` to document the W4-B-introduced frontmatter fields (`superseded_by`, `superseded_by_note`, `bs_doc_number`, `revision_amendments_note`, `publisher_full`, `ledger_id`, `publisher_catalog_url`) — closes the schema-fork against the existing inverse-direction `supersedes` field.
+- M3 — strengthened `test_superseded_by_pointer_resolves` clause (b) from "non-empty URL" to "URL host is `bsigroup.com` / `knowledge.bsigroup.com` / `iso.org` AND URL contains numeric code from `superseded_by`"; added documented `xfail` fallback when neither (a) nor (b) is achievable.
+- M4 — promoted `superseded_by_note` from human-review-only to a machine-enforced contract via new `test_frontmatter_has_superseded_by_note_when_bs_en_iso` test plus matching AC; the BS-EN-ISO-vs-superseded distinction is no longer hidden behind reviewer attention.
+- m1 — left arithmetic AC unchanged but added explicit reminder that implementer reads current `page_count` at write-time (not assume `5+8`).
+- m2 — clarified the 76-vs-49 file-count reconciliation prose (case-sensitive `BS_*` glob vs full directory listing).
+- m3 — collapsed `tags` to single-publisher token: `["bsi", "standards", ...]` (drop `"british-standards"` to match W3-A precedent).
+- m4 — annotated the `revision: "public-metadata-required-before-citation-use"` placeholder as defensive-only paste-through; in practice all 8 W4-B pages have on-disk-confirmed revision years.
+- m5 — removed the meta-prose `<!-- Distinct sources counted: ... -->` HTML comment.
+- m6 — corrected the T2-justification phrasing from "≥16 parametrized assertions × 8 pages ≈ 128 effective test cases" to "16 distinct test functions × 8 page params = 128 pytest invocations".
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
@@ -331,4 +342,4 @@ Revisions made based on review:
 
 ## Complexity: T2
 
-**T2** — multi-file documentation work (8 new wiki pages + 1 test file + 1 index update + 1 ledger update + 1 docs/plans/README.md update = 12 files), no new code modules, but a real test contract (≥16 parametrized assertions × 8 pages ≈ 128 effective test cases). Implementation is templated repetition; design risk is concentrated in (a) the BS-EN-ISO-vs-superseded distinction (every page classified correctly), (b) the new `superseded_by` resolution test (must accept either wiki-internal link or publisher-catalog URL), (c) duplicate-PDF collapse for BS 13628 Pt 3, and (d) staying within the W3-C erratum #2471 allowlist proximity. Matches W3-A T2 sizing (8 pages vs W3-A's 10 pages — slight reduction to absorb the `superseded_by` complexity without spilling into T3).
+**T2** — multi-file documentation work (8 new wiki pages + 1 test file + 1 index update + 1 ledger update + 1 engineering-standards/CLAUDE.md schema-extension update + 1 docs/plans/README.md update = 13 files), no new code modules, but a real test contract (16 distinct parametrized test functions × 8 page parameters = 128 pytest invocations — m6 phrasing fix from r1 review). Implementation is templated repetition; design risk is concentrated in (a) the BS-EN-ISO-vs-superseded distinction (every page classified correctly), (b) the new `superseded_by` resolution test (must accept either wiki-internal link or publisher-catalog URL), (c) duplicate-PDF collapse for BS 13628 Pt 3, and (d) staying within the W3-C erratum #2471 allowlist proximity. Matches W3-A T2 sizing (8 pages vs W3-A's 10 pages — slight reduction to absorb the `superseded_by` complexity without spilling into T3).

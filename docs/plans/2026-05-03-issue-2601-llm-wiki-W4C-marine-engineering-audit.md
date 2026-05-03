@@ -1,6 +1,6 @@
 # Plan: audit(llm-wiki) — marine-engineering wiki gap audit + prioritized backfill sequence (W4-C)
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-03
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2601
@@ -54,8 +54,8 @@
 - Issue #2010 — OPEN — career-learnings seed migration (pipeline integrity, OrcaFlex VIV, FEA, CFD, energy-economics).
 - Issue #2044 — OPEN — engineering wiki cross-link discovery with domain wikis.
 - `.claude/rules/calc-citation-contract.md` — citations must point at `wiki/standards/<code-id>.md` with #2471 frontmatter. Marine-engineering currently cannot satisfy this rule for any code (no standards subdir exists); creating the directory is a prerequisite for any marine-domain calc citation.
-- ITTC Recommended Procedures TOC (`https://ittc.info/`) — used as the verifiable external practitioner taxonomy. ITTC Specialist Committees define marine-hydrodynamics sub-disciplines: Ocean Engineering, Stability in Waves, Manoeuvring, Seakeeping, Resistance, Propulsion, CFD/Numerical, Cavitation, Ice (each is a falsifiable English-named anchor with an ITTC procedure number, e.g., 7.5-02-07-03.x).
-- SNAME Offshore Section practitioner reference (`https://www.sname.org/SNAME/Sections/`) — second taxonomy anchor; SNAME Offshore Symposium proceedings are already 1,632 files in the source set, so SNAME taxonomy is a natural mapping target.
+- ITTC Recommended Procedures index (`https://ittc.info/downloads/quality-systems-manual/recommended-procedures-and-guidelines/`) — used as the verifiable external practitioner taxonomy. ITTC Specialist Committees define marine-hydrodynamics sub-disciplines: Ocean Engineering, Stability in Waves, Manoeuvring, Seakeeping, Resistance, Propulsion, CFD/Numerical, Cavitation, Ice (each is a falsifiable English-named anchor with an ITTC procedure number, e.g., 7.5-02-07-03.x). The recommended-procedures index URL — not the homepage — is the surface that exposes the 7.5-XX-XX-XX tree to downstream agents fetching the anchor.
+- SNAME Offshore Symposium practitioner reference — second taxonomy anchor; the literal-string `SNAME Offshore Section` is locally falsifiable from the source-stub histogram (1,632 Offshore Symposium TPC files in `wiki/sources/` as `14tp`/`13tp`/`11tp` prefix buckets) and from the conference-proceedings file `sname` prefix (68 files). NOTE: `https://www.sname.org/SNAME/Sections/` reaches a member-login wall for public WebFetch; the audit relies on the locally-observable file-count signal plus the literal-string TDD assertion rather than that URL.
 
 ### Gaps identified
 - The wiki **schema-vs-disk delta**: `CLAUDE.md` declares 7 expected child paths but only 5 exist (`comparisons/concepts/entities/sources/visualizations/`). `standards/` and proper population of `comparisons/` + `visualizations/` are both absent. This is the single largest structural gap.
@@ -328,6 +328,7 @@ NO modifications to `knowledge/wikis/marine-engineering/**` of any kind. This pl
 - [ ] Each priority entry's rationale references one of: (a) ITTC procedure family (regex `7\.5-0[0-9]-[0-9]{2}-[0-9]{2}`), (b) literal `SNAME Offshore Section`, (c) citation-contract intent (literal `citation-contract` / `citation contract` / `would cite`), (d) literal `CLAUDE.md schema gap`. Enforced by `test_audit_rationales_cite_required_anchors`.
 - [ ] Deprecation/consolidation section names ≥3 actions on the 19,166 source stubs (mapping to #2372 aliasing, #2378 chunking, future-deduplication, etc.).
 - [ ] No file under `knowledge/wikis/marine-engineering/` is created or modified by this plan's execution commit.
+- [ ] `docs/audits/` may pre-exist (created by sibling W1-C plan #2588 if it lands first); this plan only creates `docs/audits/2026-05-03-marine-engineering-wiki-gap-audit.md` and does not modify any other file in `docs/audits/`.
 - [ ] Review artifacts posted to `scripts/review/results/`.
 - [ ] Plan-level outcome (audit report) will be the single input for a future child-issue wave; no child issues will be opened by this plan.
 
@@ -337,15 +338,20 @@ NO modifications to `knowledge/wikis/marine-engineering/**` of any kind. This pl
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | TBD | pending |
-| Codex | TBD | pending; codex-cli 0.124.0 stdin-hang regression (#2479) may force fallback |
-| Gemini | TBD | pending; sandbox overlay-blindness risk (per memory `feedback_gemini_sandbox_overlay_blindness`) |
+| Claude (internal) | MINOR | 5 MINOR — addressed inline; allowlist test PASS |
+| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
+| Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** TBD — plan is in `draft`; review fan-out runs after this draft is committed.
+**Overall result:** PASS-with-revisions (5 MINOR fixes applied 2026-05-03)
 
-**Revisions made based on review:** N/A — none yet.
+**Revisions made based on review:**
+- MINOR-1: replaced bare `https://ittc.info/` anchor with the recommended-procedures index URL that actually exposes the 7.5-XX-XX-XX tree.
+- MINOR-2: dropped login-walled `https://www.sname.org/SNAME/Sections/` URL; rely on locally-observable Offshore Symposium TPC file-count (1,632) plus literal-string TDD assertion.
+- MINOR-3: added acceptance criterion clarifying `docs/audits/` may pre-exist (created by sibling W1-C #2588) and this plan only creates its own deliverable file.
+- MINOR-4: appended aggregate-drift note (~18 cells × ±5 = ±90 files) to the drift-risk entry; instructs verifying ingest-cron quiescence before audit landing.
+- MINOR-5: replaced placeholder TBD review-summary table with completed verdict / unavailable-provider rationale / single-author provenance.
 
-**Provenance:** TBD after fan-out.
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
@@ -354,7 +360,7 @@ NO modifications to `knowledge/wikis/marine-engineering/**` of any kind. This pl
 - **Risk (subdir false-mismatch):** mapping the 19,166 source stubs to ITTC sub-disciplines via filename heuristics will misclassify a non-trivial fraction (conference papers span multiple disciplines and filename like `omae2008-57873` carries no domain signal). Mitigation: priority rationale must cite an ITTC procedure number or SNAME literal — not a filename count alone. Enforced by `test_audit_rationales_cite_required_anchors`.
 - **Risk (depth-of-content blindness):** a single curated 4-page concept like `long-period-swell-resonance.md` outweighs hundreds of empty source stubs in actual knowledge value; pure file-count distribution underweights this. Mitigation: gap audit must distinguish *curated* counts (entities + concepts + comparisons = 30) from *stub* counts (sources = 19,166) and only treat curated counts as the meaningful denominator for sub-discipline coverage.
 - **Risk (sample-bias from giant subdir):** the OMAE-32% / OTC-27% / Offshore-Symposium-8.5% sources distribution is itself a *publication-venue* bias, not a *discipline* bias; OMAE alone covers seakeeping + manoeuvring + structures + offshore-engineering. Filename-prefix buckets will not surface discipline-mix without paper-level sampling. Mitigation: audit explicitly disclaims "venue ≠ discipline" and uses ITTC families as the discipline taxonomy, not venue prefixes.
-- **Risk (drift):** the 19,166 sources/ count is the result of an in-flight ingest pipeline; if `wiki-ingest-cron.sh` fires between this plan's draft and execution, counts will move. The TDD test uses ±5 files absolute (≈0.026% at 19K scale, equivalent rigor to W1-C's ±2 at 520-file scale). If drift exceeds tolerance, audit re-run is required.
+- **Risk (drift):** the 19,166 sources/ count is the result of an in-flight ingest pipeline; if `wiki-ingest-cron.sh` fires between this plan's draft and execution, counts will move. The TDD test uses ±5 files absolute (≈0.026% at 19K scale, equivalent rigor to W1-C's ±2 at 520-file scale). Aggregate drift across ~18 cited cells (6 wiki subdirs + ≥8 prefix buckets + 4 raw subdirs) = ±90 files at the test boundary; ingest cron typically lands batches large enough to exceed this in a single pass — verify cron quiescence before audit landing. If drift exceeds tolerance, audit re-run is required.
 - **Risk (taxonomy attribution):** ITTC procedures evolve; citing a specific procedure number that has been renumbered would break the rationale anchor. Mitigation: cite ITTC sub-discipline *family* (e.g., `7.5-02-07` covers Ocean Engineering), not a fully qualified leaf number where revisions are frequent. Alternative literal anchor `SNAME Offshore Section` is independent of ITTC and serves as a fallback.
 - **Risk (#2522 dependency inversion):** #2522 (CSA Z276 promotion) targets `wiki/standards/` which does not exist; if this audit is reviewed before #2522, the priority list must surface the missing-directory finding ahead of any standards-content priority. Mitigation: P1 priority is explicitly "create `wiki/standards/` directory and seed with TEMPLATE.md" — a structural action, not a content action.
 - **Open:** Should the audit propose a deprecation pass on the 19,166 source stubs? **Proposed default: YES, recommendation-only.** The audit will name buckets best resolved by #2372 (source-title aliasing) vs #2378 (chunking) vs future-deduplication; it will NOT recommend deletions in this audit, only consolidation sequencing. Final classification happens at child-issue time.

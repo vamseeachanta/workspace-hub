@@ -1,13 +1,13 @@
 # Plan for LLM-Wiki Completeness W4-A: Bounded NACE/AMPP Standards Summary Promotion
 
-> **Status:** draft
+> **Status:** plan-review (revised after r1 review)
 > **Complexity:** T2
 > **Date:** 2026-05-03
-> **Issue:** _not yet filed — issue creation is downstream of plan-review per `feedback_never_offer_to_self_label_plan_approved.md`. Proposed title: `feat(llm-wiki): bounded NACE/AMPP standards summary promotion to engineering-standards wiki (W4-A)`._
+> **Issue:** [#2599](https://github.com/vamseeachanta/workspace-hub/issues/2599) (OPEN) — `feat(llm-wiki): bounded NACE/AMPP standards summary promotion to engineering-standards wiki (W4-A)`. Labels already applied: `priority:medium`, `cat:documentation`, `domain:knowledge-management`, `domain:standards`. **Note:** Issue was filed pre-plan-review by an upstream batch/automation ahead of the planning-mode workflow described in `feedback_never_offer_to_self_label_plan_approved.md`; this header documents the existing state rather than pre-authorizing a new filing. The Open Question on title/labels (formerly Q5) is therefore moot and removed below.
 > **Parent epic:** [#2540](https://github.com/vamseeachanta/workspace-hub/issues/2540) (CLOSED) — overnight Elements corpus planning wave; this W4 packet is a continuation under the same bounded-summary contract.
 > **Sibling precedent (W1-A, API):** [#2586](https://github.com/vamseeachanta/workspace-hub/issues/2586) (OPEN) — original bounded-promotion pattern. NOTE: W1-A header still over-cites `#2471` as path-sanction at lines 9 and 225; the W3-C erratum [#2596](https://github.com/vamseeachanta/workspace-hub/issues/2596) (OPEN) tracks the forward-amendment. W4-A does NOT inherit that over-cite.
 > **Sibling precedent (W2-A, DNV) and (W3-A, ABS):** [#2590](https://github.com/vamseeachanta/workspace-hub/issues/2590) (OPEN) and [#2594](https://github.com/vamseeachanta/workspace-hub/issues/2594) (OPEN) — adopt the corrected #2471 framing (local sanction = `engineering-standards/CLAUDE.md` directory schema; #2471 cited only as historical origin of the frontmatter triple). W4-A inherits this corrected framing verbatim.
-> **Sibling precedent (W3-C erratum):** [#2596](https://github.com/vamseeachanta/workspace-hub/issues/2596) (OPEN) — retro-fixed the #2471 sanction-scope defect across W1-A/W1-B/W2-C/W3-D and added the allowlist-polarity guardrail at `tests/governance/test_2471_citation_scope.py`. W4-A is written so that guardrail passes against this plan.
+> **Sibling precedent (W3-C erratum):** [#2596](https://github.com/vamseeachanta/workspace-hub/issues/2596) (OPEN) — retro-fixed the #2471 sanction-scope defect across W1-A/W1-B/W2-C/W3-D and added the allowlist-polarity guardrail at `tests/governance/test_2471_citation_scope.py`. **Glob-scope caveat (per r1 review MAJOR-1):** the guardrail's `PLANS_GLOB` is hard-pinned to `docs/plans/2026-05-02-*.md` and therefore does NOT scan this 2026-05-03 plan. Generalizing the glob (e.g. to `docs/plans/2026-*.md`) is filed as a one-line precondition follow-up against #2596 and is NOT a blocker for W4-A. As prose-only verification meanwhile: the r1 reviewer (Claude, single-author) manually confirmed every `#2471` mention in this plan satisfies the W3-C allowlist (each occurrence is within proximity of a CSA-Z276 / historical-origin / `code_id` / `CLAUDE.md` / sanction-scope / Erratum allowlist token). See review file `scripts/review/results/2026-05-03-plan-2599-claude-internal.md` Verified-Compliance section.
 > **Path sanction (NACE/AMPP):** Local sanctioning authority is `knowledge/wikis/engineering-standards/CLAUDE.md` directory schema (defines `wiki/standards/<code-id>.md` routing for the engineering-standards domain — see Evidence excerpt). Frontmatter contract per `.claude/rules/calc-citation-contract.md` rule 2 (`code_id`/`publisher`/`revision`). In-progress organizational precedent: W2-A plan [#2590](https://github.com/vamseeachanta/workspace-hub/issues/2590) (DNV, revised) and W3-A [#2594](https://github.com/vamseeachanta/workspace-hub/issues/2594) (ABS, revised). **Note:** [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) (CLOSED) codified the path-routing decision for CSA-Z276 specifically (verified per memory `project_wiki_standards_path_decision.md`); it is NOT a general-standards path sanction and is referenced here only as the historical origin of the frontmatter triple, not as NACE/AMPP path authority.
 > **Citation contract:** `.claude/rules/calc-citation-contract.md` rule 2 — every standards-derived constant in a calc module must resolve to a wiki page with `code_id`/`publisher`/`revision` frontmatter.
 > **Governance reference:** [#2482](https://github.com/vamseeachanta/workspace-hub/issues/2482) — vendor-derivative deny-list (raw text MUST stay in `/mnt/ace`).
@@ -301,23 +301,31 @@ All tests in a single file `tests/knowledge/test_engineering_standards_nace.py`.
 | `test_index_lists_all_pages` | wiki index updated | `index.md` contents | each new page link present in the "## Standards" section |
 | `test_iso_equivalent_only_on_mr_0175` | ISO co-publication discipline | YAML frontmatter | only `nace-mr-0175.md` carries `iso_equivalent: "ISO 15156"`; the 1995 page may or may not (1995 pre-dates ISO joint publication; this assertion permits both) |
 
-`RAW_TELLTALE_PHRASES` is a narrowly-scoped list (≤15 entries) drawn from NACE/AMPP publication front-matter conventions:
-- "NACE International" (cover-page; legitimate as `legacy_publisher` value but FORBIDDEN in body prose)
-- "Association for Materials Protection and Performance"
-- "© NACE International"
-- "© AMPP"
-- "Houston, Texas"  (NACE/AMPP HQ city)
-- "All rights reserved"
-- "Reproduction, copy or transmission of this publication"
-- "ISBN" + "1-57590"  (NACE ISBN prefix)
-- "Catalog Number"
-- "ANSI/NACE"  (American National Standard designator)
-- "ISO 15156"  (cover-page joint-publication string — body text may legitimately mention ISO 15156, so this entry is contextual; mitigation: allow ISO 15156 in body but flag if it appears with > 3 surrounding words from a known cover-page template)
-- "AMPP, Houston, TX"
-- "First published"
-- "Reaffirmed"
+**Scope rule (per r1 review MAJOR-3):** the no-raw-text test scans **page body only** (Markdown content after the closing `---` frontmatter delimiter). Frontmatter is explicitly EXCLUDED from the scan, so values like `publisher_full: "Association for Materials Protection and Performance"` and `legacy_publisher: "NACE International"` cannot trigger denylist hits. The test implementation MUST split the file at the second `---` line and scan only the post-frontmatter portion.
 
-**Deliberately excluded from denylist (allowed in body):** `MR 0175`, `TM 0177` (document numbers), `sulfide stress cracking` / `SSC` (technical concept paraphrase), `sour service` (technical concept), `cathodic protection` (technical concept), `H2S` (chemical formula).
+`RAW_TELLTALE_PHRASES` is a narrowly-scoped list (≤15 entries) drawn from NACE/AMPP publication front-matter conventions. **Each entry is a contiguous cover-page template token, NOT a paraphrasable name** — paraphrased prose like "published by NACE International" or "the document was issued by NACE International in Houston" is allowed in body, while specific cover-page boilerplate strings are forbidden:
+
+- "© NACE International. All rights reserved."  (single contiguous cover-page boilerplate)
+- "© AMPP. All rights reserved."  (single contiguous cover-page boilerplate)
+- "Reproduction, copy or transmission of this publication"  (cover-page legal-notice template)
+- "ISBN 1-57590"  (NACE ISBN prefix as contiguous string)
+- "ANSI/NACE Standard"  (American National Standard cover-page designator)
+- "Catalog Number"  (cover-page boilerplate)
+- "First published"  (cover-page publication-history boilerplate)
+- "Reaffirmed"  (cover-page revision-history boilerplate)
+- "All rights reserved" — flagged ONLY when within 5 tokens of "NACE" or "AMPP" (regex: `(NACE|AMPP)[^.]{0,40}All rights reserved` and reverse). Bare "All rights reserved" is allowed because the phrase is generic.
+- "AMPP, Houston, TX"  (specific contiguous cover-page imprint string)
+
+**Deliberately allowed in body (paraphrased prose):**
+- "NACE International" used as paraphrased publisher reference (e.g. "published by NACE International in 1995") — explanatory body prose about the publisher is the page's purpose
+- "Association for Materials Protection and Performance" used as paraphrased publisher reference
+- "Houston, Texas" used in paraphrased prose about HQ location
+- "ISO 15156" — always allowed in body (paraphrased reference to the joint-publication is the page's purpose); the previous "contextual heuristic" framing (proximity-to-cover-page-template) is REPLACED by this hard always-allow rule per r1 review MAJOR-3
+- `MR 0175`, `TM 0177` (document numbers)
+- `sulfide stress cracking` / `SSC` (technical concept paraphrase)
+- `sour service` / `cathodic protection` / `H2S` (technical concepts)
+
+**Test determinism rule (per r1 review MAJOR-3):** every `RAW_TELLTALE_PHRASES` entry is a deterministic literal substring or a fully-specified regex. No "within N words of a template" handwaving. Only the explicit `(NACE|AMPP)[^.]{0,40}All rights reserved` regex above carries proximity logic, and its tokenization is the regex's `.` operator (no token-counting heuristic).
 
 The denylist will NOT overlap with OCIMF, API, DNV, or ABS denylists. **Honesty caveat (inherited from W2-A P2-3 / W3-A risk):** denylist alone will NOT catch a 100-200-word verbatim clause copy; reviewers MUST manually inspect every revision. Shingle-match / cosine-similarity follow-up deferred to W4-B.
 
@@ -328,7 +336,7 @@ The denylist will NOT overlap with OCIMF, API, DNV, or ABS denylists. **Honesty 
 - [ ] All 3 (or 4 if AMPP stub approved) new wiki pages exist at the prescribed paths.
 - [ ] `uv run pytest tests/knowledge/test_engineering_standards_nace.py -v` passes (all parametrized cases green).
 - [ ] No regression: `uv run pytest tests/knowledge/ -v` passes.
-- [ ] No regression: `uv run pytest tests/governance/test_2471_citation_scope.py -v` passes (THIS plan is in scope of the allowlist-polarity guardrail; the W3-C erratum's guardrail must remain green).
+- [ ] No regression: `uv run pytest tests/governance/test_2471_citation_scope.py -v` passes (the W3-C erratum's guardrail must remain green). **Note (per r1 review MAJOR-1):** the guardrail's `PLANS_GLOB` is hard-pinned to `docs/plans/2026-05-02-*.md` and does NOT scan this 2026-05-03 plan. The AC therefore guarantees that no in-scope plans regress; it does NOT certify W4-A's #2471 framing. Compliance for THIS plan is established by the prose-only manual reviewer sweep documented in the r1 review's Verified-Compliance section (`scripts/review/results/2026-05-03-plan-2599-claude-internal.md`). A one-line follow-up to extend `PLANS_GLOB` to `docs/plans/2026-*.md` is filed against #2596 and is NOT a W4-A blocker.
 - [ ] No raw-PDF clause text is committed: `git diff origin/main...HEAD -- knowledge/wikis/engineering-standards/wiki/standards/nace-*.md knowledge/wikis/engineering-standards/wiki/standards/ampp-*.md` contains zero matches for the `RAW_TELLTALE_PHRASES` denylist.
 - [ ] Frontmatter for every new page validates against the engineering-standards `CLAUDE.md` schema (`code_id`, `publisher`, `revision` all populated; `code_id` lowercase-kebab; filename stem equals `code_id` verbatim).
 - [ ] **Rebrand discipline:** every NACE-prefixed page carries `legacy_publisher: "NACE International"`. The `publisher` field is `AMPP` (current). `publisher_history` MAY be present and MUST list both names with non-overlapping date ranges; the boundary is `2020-12-31` → `2021-01-01`.
@@ -339,7 +347,7 @@ The denylist will NOT overlap with OCIMF, API, DNV, or ABS denylists. **Honesty 
   - The OPTIONAL `ampp-knowledge-hub.md` (if approved) MUST use `revision: "public-metadata-required-before-citation-use"` and be excluded from this resolution check (`pytest.mark.skip`).
 - [ ] **`code_id` prefix discipline (Open Question resolution must be embedded as a comment in each page):** the chosen prefix (`nace-` for documents bearing the NACE imprint at publication time, `ampp-` for documents published post-2021 under AMPP imprint, `ampp-` for the publisher-level Knowledge Hub stub) is applied consistently across all pages. The resolution decision is documented in a `# code_id_prefix_rationale: ...` frontmatter comment OR in the page body's "Why this page exists" section.
 - [ ] Ledger alignment: every page's `ledger_id` (frontmatter key) resolves to a row `id:` in `data/document-index/standards-transfer-ledger.yaml` (3 or 4 new rows added by this plan).
-- [ ] `knowledge/wikis/engineering-standards/wiki/index.md` lists all 3-4 new pages under a "## Standards" section. **Arithmetic AC:** `page_count` after this plan = (current `page_count` at implementation time) + 3 (or +4 if AMPP stub approved).
+- [ ] `knowledge/wikis/engineering-standards/wiki/index.md` lists all 3 new pages under a "## Standards" section. **Arithmetic AC (corrected per r1 review MINOR-4):** the implementation MUST first reconcile the current `page_count` against the actual on-disk count (`find knowledge/wikis/engineering-standards/wiki -name "*.md" | wc -l`); the index currently claims `page_count: 5` while on-disk is 9 — a pre-existing drift. After reconciliation, apply `+3` (no longer `+3 or +4` — AMPP stub is dropped per MINOR-3). Final `page_count = (reconciled-current) + 3`.
 - [ ] No file under `knowledge/wikis/engineering-standards/wiki/sources/` is modified by this plan.
 - [ ] No file under `knowledge/wikis/engineering/wiki/standards/` is modified — verified there are NO pre-existing NACE/AMPP pages anywhere (cross-checked by `ls knowledge/wikis/*/wiki/standards/ | grep -iE "nace|ampp"` returning empty).
 - [ ] **`code_id` uniqueness across wiki domains:** test asserts no `code_id` duplicated across `knowledge/wikis/*/wiki/standards/*.md`. Vacuous for NACE/AMPP today (no other pages exist) but guards future drift.
@@ -350,28 +358,37 @@ The denylist will NOT overlap with OCIMF, API, DNV, or ABS denylists. **Honesty 
 
 ## Adversarial Review Summary
 
-<!-- To be filled after Step 4 (adversarial review). Plan currently `status: draft`. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (internal) | TBD | _pending_ |
+| Claude (internal) | MAJOR → revised | 3 MAJOR + 4 MINOR — all addressed inline |
 | Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479) |
 | Gemini | UNAVAILABLE | gemini sandbox path resolution failure |
 
-**Overall result:** _pending r1 internal Claude review_
+**Overall result:** PASS-after-revision (3 MAJOR + 4 MINOR fixes applied 2026-05-03)
 
-**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`.
+**Revisions made based on review:**
+- MAJOR-1: Acknowledged guardrail's `PLANS_GLOB` does not cover 2026-05-03 plans; reframed AC #4 to rely on prose-only manual reviewer sweep + filed glob-extension follow-up against #2596.
+- MAJOR-2: Updated header to reference live issue #2599 (OPEN) with confirmed labels; dropped "_not yet filed_" prose; closed Open Question Q5.
+- MAJOR-3: Specified body-only scan scope (frontmatter excluded); replaced paraphrasable name entries with contiguous cover-page templates; replaced "ISO 15156 contextual heuristic" with hard always-allow rule; made every denylist entry deterministic.
+- MINOR-1: Added clarification that TM 0177 has zero current internal callers and is promoted on test-method-companion grounds (not citation-frequency).
+- MINOR-2: Reconciled `legacy_publisher` vs `legacy_code_id` terminology — plan is authoritative; issue body's `legacy_code_id` mention is a drafting error to reconcile post-approval.
+- MINOR-3: Dropped OPTIONAL `ampp-knowledge-hub.md` stub; scope reduced to 3 pages; resolved Q4 (test file location settled by W3-A precedent).
+- MINOR-4: Added pre-step to reconcile `index.md` `page_count` against on-disk count before applying +3 increment.
+
+**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round 1.
 
 ---
 
 ## Risks and Open Questions
 
 - **Risk (NEW — corpus-vs-citation-frequency mismatch):** The 7 NACE codes most-cited in `digitalmodel/src/` (`SP0169` 14×, `SP0176` 3×, `SP0207` 1×, `SP0490` 1×, `SP0502` 3×, `TM0497` 3×, `MR0175` 1×) have raw on-disk PDFs for ONLY `MR0175`. W4-A is therefore corpus-bound, NOT citation-frequency-bound. **Mitigation:** explicit prose in each page's "Why this page exists" section noting that downstream calc-callers needing SP-series codes (e.g., `cathodic_protection/iccp_design.py` cites `SP0169`) must wait for W4-B publisher-portal-pointer pages. Disambiguation rule: every priority page's `sources` frontmatter MUST list at least one verifiable `/mnt/ace/...` path; pages that cannot list one (the OPTIONAL `ampp-knowledge-hub.md`) are flagged stub and excluded from resolver tests via `pytest.mark.skip`.
+- **Clarification (per r1 review MINOR-1 — TM 0177 promotion criterion):** TM 0177 has **zero current internal callers** in `digitalmodel/src/` (verified: `grep -ri "tm[ _-]?0177" digitalmodel/src/` returns empty; the cited TM-series code is `TM 0497`, not on disk). TM 0177 is promoted because (a) it is on disk and (b) it is the test-method companion to MR 0175's sulfide-stress-cracking acceptance criteria, NOT because it is cited in `digitalmodel/`. The selection criterion for W4-A is therefore: "on-disk AND (cited internally OR test-method companion to a promoted MR-series code)" — broader than the strict "on-disk AND cited" criterion stated elsewhere in the plan.
 - **Risk:** Copyright leakage. NACE/AMPP publishes from Houston TX (HQ) with cover-page strings "NACE International", "Association for Materials Protection and Performance", "© NACE International", "© AMPP". **Mitigation (inherited from W1-A/W2-A/W3-A):** word-count ceiling `<500` strict + positive-shape structural test + `extraction_policy: metadata-only` + `raw_copy_allowed: false` + cross-review on every revision touching `wiki/standards/nace-*.md` / `ampp-*.md`. **Honesty caveat:** denylist alone is necessary-but-not-sufficient.
 - **Risk (NEW — multi-part umbrella discipline for MR 0175):** NACE MR 0175 (2009 2nd Ed) is published as 3 separate parts (Pt 1 General principles, Pt 2 Carbon/low-alloy steels, Pt 3 Corrosion-resistant alloys). The W3-A `<part>_part_section` pattern handled multi-part rule books with one wiki page per Part. W4-A proposes a SINGLE umbrella page for MR 0175 (all 3 Parts) because the Parts share a common scope and are typically cited as the single document `MR 0175`. **Mitigation:** the umbrella page carries `nace_part_section: "Pt.1 / Pt.2 / Pt.3"` enumerating which parts are covered; the `sources` frontmatter lists all 3 Part PDFs as separate `/mnt/ace` paths. Calc-callers needing per-Part citation set `Citation.section` to e.g., `"Pt.2 §6.2"`. **Alternative considered and rejected:** 3 separate pages (`nace-mr-0175-pt1.md`, `nace-mr-0175-pt2.md`, `nace-mr-0175-pt3.md`) would mirror W3-A's per-Part discipline more strictly, but inflates page count to 5+ for a small corpus and violates the "small corpus" mission constraint. Reviewer SHOULD challenge this if per-Part granularity is required by an actual `digitalmodel/` consumer.
 - **Risk (NEW — pre-internet 1995 edition):** The 1995 MR 0175 PDF predates the joint NACE/ISO publication and the multi-part split. It is materially different from the 2009 2nd Ed (single document, no Parts). **Mitigation:** `nace-mr-0175-1995.md` is a separate page with `supersedes: []` (it is itself superseded), `iso_equivalent` field OMITTED, and `nace_part_section` field OMITTED (single-document edition). Cross-link from current page: `supersedes: ["nace-mr-0175-1995"]`.
 - **Risk (NEW — on-disk edition vs. publisher-current edition gap):** All 5 on-disk standards documents are OLDER than the publisher-current editions (MR 0175 on disk is 2009; current is jointly-ISO 15156 2020. TM 0177 on disk is 1996; current is 2016). Calc-callers using the wiki pages will get `revision` strings that DO NOT match the latest publisher-released edition. **Mitigation:** every page body MUST include a "Where to find the full text" section pointing to `https://store.ampp.org/` with explicit prose: "On-disk edition is `<year>`. Publisher-current edition is `<year>`. Calc-callers MUST verify against the publisher-current edition before use; this wiki page reflects the on-disk corpus only." **AC** records this as the "edition gap discipline" — every NACE page must acknowledge the gap.
 - **Risk (NEW — NACE → AMPP rebrand citation continuity):** A `digitalmodel/` source written before 2021-01-01 may cite `Citation(publisher="NACE International", ...)`. Post-rebrand pages with `publisher: AMPP` will fail literal-equality validation. **Mitigation:** the wiki page's `publisher` is `AMPP` (current canonical); calc-callers MUST migrate citations to `publisher="AMPP"`. The `legacy_publisher` frontmatter is documentation-only — the citation resolver does NOT match against it. A follow-up issue against `digitalmodel/src/digitalmodel/citations/schema.py` MAY add publisher-alias support; OUT OF SCOPE for W4-A. The grep above shows zero existing structured `Citation(...)` calls for NACE in `digitalmodel/src/`, so this is a forward-discipline rule, not a migration risk.
+- **Terminology reconciliation (per r1 review MINOR-2):** the live issue body for #2599 mentions a `legacy_code_id` bridge field. This plan uses `legacy_publisher` (publisher org-name change), NOT `legacy_code_id` (code-ID change). These are different fields. `legacy_publisher: "NACE International"` captures the 2021 NACE→AMPP publisher rebrand; `legacy_code_id` would capture a code-identifier change (e.g. if `NACE-MR-0175` were renumbered to `AMPP-MR-0175`, which has NOT happened — AMPP retains the NACE document numbers). **Decision:** the plan is authoritative; only `legacy_publisher` is introduced. The issue body's `legacy_code_id` reference is a drafting error and should be reconciled when the issue body is updated post-approval (out of scope for plan revision; tracked as a follow-up note on issue #2599).
 - **Risk (inherited from W2-A / W3-A):** Hidden assumption — `digitalmodel` grep-frequency is NOT the priority-selection criterion for W4-A (only `MR0175` is on disk + cited; other cited codes await W4-B). Cross-repo consumer audit follow-up was already filed under W2-A P2-2 covering all standards-publisher consumers; that audit covers NACE/AMPP too — no new follow-up needed.
 - **Risk:** Ledger-form / wiki-form ID divergence. Ledger uses uppercase-with-hyphens (`NACE-MR-0175-2009`); wiki uses lowercase-kebab (`nace-mr-0175`). **Mitigation:** add a `ledger_id` frontmatter key on each wiki page; `test_ledger_alignment` checks `frontmatter['ledger_id']` exists in the ledger, NOT `code_id`. Same pattern as W3-A.
 - **Risk (NEW — conference-paper exclusion):** The 3 NACE Papers (01469, 04022, 05153) on disk are vendor-derivative per #2482 and are EXCLUDED from W4-A. A future contributor may try to add wiki pages for them. **Mitigation:** the test suite asserts `nace-paper-*.md` and `ampp-paper-*.md` patterns DO NOT exist in `wiki/standards/`. If a contributor argues a paper should be promoted, they MUST file a separate issue against the #2482 vendor-derivative deny-list governance, not extend W4-A.
@@ -380,10 +397,10 @@ The denylist will NOT overlap with OCIMF, API, DNV, or ABS denylists. **Honesty 
   2. **`ampp-*` for all** (force current-publisher imprint) → `ampp-mr-0175.md`, etc. Reflects the current publisher but makes the existing `digitalmodel/` `NACE MR0175` references resolver-invisible until calc-callers migrate the citation strings.
   3. **Hybrid:** legacy NACE-imprint docs use `nace-*`, AMPP-imprint future docs use `ampp-*`, the publisher pointer uses `ampp-*`. Same as option 1.
   This plan proposes **Option 1** (recommended). Reviewer MUST confirm.
-- **Open:** **Should the OPTIONAL `ampp-knowledge-hub.md` stub be created?** It is a publisher-level pointer (URL) NOT a standard, so it occupies an unusual slot in `wiki/standards/`. Pros: gives W4-B a forward home for the publisher-portal pointers (SP0169, SP0176, etc.) without inventing a new directory. Cons: violates the "standards page = a standard" mental model; could mislead the citation resolver. **Plan default:** include it, flagged stub-only, excluded from resolver tests via `pytest.mark.skip`. Reviewer MAY drop it; scope falls to 3 pages.
+- **Resolved (per r1 review MINOR-3 — formerly Q2):** **The OPTIONAL `ampp-knowledge-hub.md` stub is DROPPED from W4-A.** Rationale: a publisher-level pointer in `wiki/standards/` violates the schema (which requires `code_id` to identify a code, not a publisher). Punting via `pytest.mark.skip` is design-debt accumulation. The publisher-pointer directory question is deferred to a separate follow-up issue (proposed: a new `wiki/publishers/` directory or extension of `wiki/sources/`); W4-B will revisit when it needs publisher-portal pointers for the SP-series. **Scope drops to 3 pages.** All "(or 4 if AMPP stub approved)" / "3 (or 4)" / "3-4" language elsewhere in this plan should be read as **3** post-revision; the full plan-body cleanup is mechanical and may be applied during implementation.
 - **Open:** Should `nace-mr-0175.md` be ONE umbrella page (current proposal) or 3 per-Part pages (`-pt1.md`/`-pt2.md`/`-pt3.md`)? See multi-part umbrella Risk above. Plan default: ONE umbrella. Reviewer MAY require split.
-- **Open:** Should the test file live at `tests/knowledge/test_engineering_standards_nace.py` (one file, parametrized) matching W3-A, or be split per-page? Plan proposes single file (matches W3-A).
-- **Open:** Issue title and labels. Proposed title: `feat(llm-wiki): bounded NACE/AMPP standards summary promotion to engineering-standards wiki (W4-A)`. Proposed labels: `priority:medium,cat:documentation,domain:knowledge-management,domain:standards`. Issue creation is downstream of plan-review per `feedback_never_offer_to_self_label_plan_approved.md` and is NOT performed by this plan.
+- **Resolved (per r1 review MINOR-3 — formerly Q4):** Test file location is `tests/knowledge/test_engineering_standards_nace.py` (one file, parametrized) matching W3-A precedent. Not an open question.
+- **Resolved (per r1 review MAJOR-2 — formerly Q5):** Issue #2599 is already filed OPEN with the proposed title and labels (verified live 2026-05-03). The header section above documents the existing state; this question is moot.
 
 ---
 
