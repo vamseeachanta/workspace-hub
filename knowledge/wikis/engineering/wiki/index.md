@@ -1,8 +1,8 @@
 ---
 domain: engineering
 created: 2026-04-08 16:07 UTC
-last_updated: 2026-04-29
-page_count: 82
+last_updated: 2026-05-02
+page_count: 83
 source_count: 16
 ---
 
@@ -98,7 +98,7 @@ source_count: 16
 | [HN CadQuery Discussion](sources/2026-04-17-hn-cadquery.md) | 180-point HN thread — CadQuery Python parametric CAD, B-rep vs mesh, LLM codegen signals | hn-discussion | 2026-04-17 |
 | [Elements QGIS Flowline/DEM Deep Extraction](sources/elements-qgis-flowline-dem-deep-extraction.md) | First-pass extraction of Elements QGIS flowline alignment, UTM Zone 15N projection, DEM grid stats, and DXF entity counts | elements-deep-extraction | 2026-04-28 |
 
-## Standards (7 pages)
+## Standards (8 pages)
 
 | Page | Summary | Last Updated |
 |------|---------|-------------|
@@ -109,6 +109,7 @@ source_count: 16
 | [DNV-RP-F101](standards/dnv-rp-f101.md) | Corroded pipeline assessment — Part A/B | 2026-04-08 |
 | [DNV-RP-F105](standards/dnv-rp-f105.md) | Free spanning pipelines — VIV screening, fatigue, clean-room implementation | 2026-04-09 |
 | [OCIMF MEG4](standards/ocimf-meg4.md) | Mooring equipment guidelines — HMPE, snap-back zones, mooring deck safety | 2026-04-09 |
+| [OCIMF Tandem Mooring](standards/ocimf-tandem-mooring.md) | First-edition 2009 — tandem mooring & offloading at F(P)SO facilities | 2026-05-02 |
 
 ## Workflows (4 pages)
 

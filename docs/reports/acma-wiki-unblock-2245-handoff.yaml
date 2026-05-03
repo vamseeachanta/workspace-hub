@@ -1,7 +1,11 @@
 issue: 2245
 downstream_issue: 2227
 generated_from: .planning/intel/ocimf-tandem-2521/extract_ocimf_tandem_preview.py
-ready_for_2227: false
+# Rollup now means "OCIMF target ready" — CSA targets formally split to #2522
+# (#2522 body: "This issue does not block #2227 closure"). Per-target rows below
+# retain authoritative per-standard readiness. See plan
+# docs/plans/2026-05-02-issue-2559-ocimf-tandem-wiki-source-promotion.md §Path (a).
+ready_for_2227: true
 targets:
 - standard_id: OCIMF-TANDEM-MOORING
   title: OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at

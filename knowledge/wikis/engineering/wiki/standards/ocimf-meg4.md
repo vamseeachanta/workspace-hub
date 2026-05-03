@@ -37,6 +37,7 @@ OCIMF published "The Hazards of Snap-back" based on the Zarga incident, document
 | DNV-OS-E301 | Position mooring for floating offshore units |
 | API RP 2SK (4th Ed, 2024) | Stationkeeping systems for floating structures |
 | PIANC WG 186 (2025) | Mooring of large ships at quay walls |
+| OCIMF-TANDEM-MOORING | Tandem mooring & offloading at F(P)SO facilities — see [[ocimf-tandem-mooring]] |
 
 ## Cross-References
 

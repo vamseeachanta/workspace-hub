@@ -3,6 +3,14 @@
 > Chronological record of all wiki operations.
 > Format: ## [YYYY-MM-DD] operation | Title
 
+## [2026-05-02] ingest | OCIMF-TANDEM-MOORING promotion (#2227)
+- Pages created: `standards/ocimf-tandem-mooring.md` — first-edition 2009 OCIMF Tandem Mooring & Offloading Guidelines for Conventional Tankers at F(P)SO Facilities; grounded in `data/document-index/summaries/sha256:5e5f...json` (#2521 OCR preview, first 3 pages).
+- Pages updated: `standards/ocimf-meg4.md` (added one row to `## Related Standards` table linking to tandem page); `index.md` (Standards section bumped 7→8 pages, page_count 82→83, last_updated 2026-05-02, tandem row added); `concepts/mooring-line-failure-physics.md` (inbound `[OCIMF-TANDEM-MOORING]` related-standard link added).
+- Gate-input update: `docs/reports/acma-wiki-unblock-2245-handoff.yaml` top-level `ready_for_2227` flipped false→true with inline comment documenting rollup-semantics shift (CSA scope formally split to #2522 on 2026-04-23; per-target rows unchanged).
+- Source: `data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json` (528-char `summary`, ~1.5KB `text_preview`).
+- Issue: #2559 executes the v5 Branch A contract from #2227 (CLOSED 2026-05-02 by user override); plan at `docs/plans/2026-05-02-issue-2559-ocimf-tandem-wiki-source-promotion.md` SHA `5a8655272`.
+- Out of scope: CSA Z276.1-20 + Z276.18 promotion (→ #2522); raw OCIMF PDF ingestion; full-text OCR.
+
 ## [2026-04-28] deep-extraction | Elements QGIS flowline/DEM corpus (#2536)
 - Pages created: `sources/elements-qgis-flowline-dem-deep-extraction.md`, `workflows/qgis-flowline-dem-preprocessing.md`.
 - Extraction artifacts: `.planning/intel/elements-deep-extraction/gis/dem-stats.json`, `gis/dxf-entity-summary.json`, `gis/qgis-files.json`.
