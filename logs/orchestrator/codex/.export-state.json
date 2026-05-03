@@ -38227,6 +38227,48 @@
       ],
       "native_session_file": "/home/vamsee/.codex/sessions/2026/05/02/rollout-2026-05-02T00-42-48-019de735-fcb0-72e2-a5c4-0cbaed61b7d8.jsonl",
       "session_id": "019de735-fcb0-72e2-a5c4-0cbaed61b7d8"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-03-55-019dec6f-ae8e-7df3-b408-d911b09ce96a.jsonl": {
+      "exported_tool_call_ids": [
+        "call_42OGM3pfmpjfWaRgNcTWFj6v",
+        "call_Rs4zHUBtVadJ3OqSfZgKFN82",
+        "call_YUKNDjfXdUQcF91naqV60WB8",
+        "call_aMzJ82jWfj91gP4U1Asyoq7J",
+        "call_uzdG2km7lAMIyt3iUIdFo8Pt"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-03-55-019dec6f-ae8e-7df3-b408-d911b09ce96a.jsonl",
+      "session_id": "019dec6f-ae8e-7df3-b408-d911b09ce96a"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-06-11-019dec71-c33c-7bf1-89af-a08ec80cc7ed.jsonl": {
+      "exported_tool_call_ids": [
+        "call_RaP0QE74Kze2ok7GO7R22Z4P",
+        "call_VFCTHtPglxoG2yVlONRiDPLb",
+        "call_dVsrRjF8dfAOxDoHQ2Vvr5NK",
+        "call_f2lSbD8mAcHLBvGXaxuZvaQ8"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-06-11-019dec71-c33c-7bf1-89af-a08ec80cc7ed.jsonl",
+      "session_id": "019dec71-c33c-7bf1-89af-a08ec80cc7ed"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-07-57-019dec73-61cf-7fd1-828c-97b48f537bb0.jsonl": {
+      "exported_tool_call_ids": [
+        "call_BGiWqFVPCBxwt0fDWsTyECwZ",
+        "call_GJik6blAtVa5pvYdC4UiceCF",
+        "call_O77sYLmQgDLJaM010UAqKliC",
+        "call_S1BlWdCLtHCsF8lqllP1RAWp",
+        "call_hRQFwc77axS1ZWwbdzf7CjBd"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-07-57-019dec73-61cf-7fd1-828c-97b48f537bb0.jsonl",
+      "session_id": "019dec73-61cf-7fd1-828c-97b48f537bb0"
+    },
+    "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-10-17-019dec75-8283-7362-bb92-575cd507ec50.jsonl": {
+      "exported_tool_call_ids": [
+        "call_2UqxRrsDAIGjxTzvBKWpLNKV",
+        "call_skiXBnGoYQIulGfAuADW42Ws",
+        "call_v9XZmbTfiQ3rOcP48JO6tK0y",
+        "call_zh66WGXLXU9YfPZjKHebuAjm"
+      ],
+      "native_session_file": "/home/vamsee/.codex/sessions/2026/05/03/rollout-2026-05-03T01-10-17-019dec75-8283-7362-bb92-575cd507ec50.jsonl",
+      "session_id": "019dec75-8283-7362-bb92-575cd507ec50"
     }
   }
 }

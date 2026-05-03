@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-03T01:45:48.787974Z
+Generated: 2026-05-03T05:20:15.709798Z
 Current week: 2026-W18
 Recommended provider order: gemini, codex, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 5
-- Total routed candidates: 166
+- Execution-ready candidates: 1
+- Total routed candidates: 167
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2540 epic(llm-wiki): overnight Elements corpus planning wave after #2536 | yes | strategy/workflow/architecture language | priority:high, cat:data-pipeline, domain:knowledge-management, status:plan-approved |
 | #2510 feat(cad): build Python layout/CAD automation demo for chip/package geometries | yes | strategy/workflow/architecture language | priority:medium, cat:engineering, cat:tooling, status:plan-approved, domain:semiconductor, domain:chip-design |
-| #2559 feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:documentation, status:plan-approved |
-| #2566 test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
-| #2568 feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:engineering-calculations, domain:hydrodynamics, domain:naval-architecture, status:plan-approved |
 | #2431 Compliance alert: W17 — 20% (critical) | no | strategy/workflow/architecture language | priority:high, priority:critical, compliance-alert |
 | #2517 Compliance alert: W18 — 42% (high) | no | strategy/workflow/architecture language | priority:high, priority:medium, priority:critical, compliance-alert |
 | #2519 feat(hermes): orchestrate AI provider usage and workstation dispatch | no | strategy/workflow/architecture language | enhancement, cat:ai-orchestration, cat:harness, priority:critical, domain:ai-orchestration, domain:workstations |
+| #2520 fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation | no | strategy/workflow/architecture language | bug, cat:ai-orchestration, cat:harness, priority:critical, domain:ai-orchestration, domain:workstations |
+| #2291 fix(cron-health): harden failure detection and align task evidence contracts | no | strategy/workflow/architecture language | bug, priority:high, cat:operations, cat:harness |
+| #2301 bug(hermes): classify and recover from openai-codex transport/challenge failures | no | strategy/workflow/architecture language | bug, priority:high, cat:ai-orchestration, cat:harness |
+| #2363 feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages | no | strategy/workflow/architecture language | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence |
 
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 11
-- Total routed candidates: 32
+- Execution-ready candidates: 12
+- Total routed candidates: 31
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

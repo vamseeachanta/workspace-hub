@@ -1,42 +1,10 @@
 {
-  "generated_at": "2026-05-03T01:45:48.923868Z",
+  "generated_at": "2026-05-03T05:20:16.984884Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 5,
+  "eligible_count": 1,
   "applied": [],
   "candidates": [
-    {
-      "number": 2540,
-      "title": "epic(llm-wiki): overnight Elements corpus planning wave after #2536",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2540",
-      "labels": [
-        "priority:high",
-        "cat:data-pipeline",
-        "domain:knowledge-management",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-02T12:00:17Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
     {
       "number": 2510,
       "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
@@ -49,7 +17,7 @@
         "domain:semiconductor",
         "domain:chip-design"
       ],
-      "updatedAt": "2026-05-02T11:29:33Z",
+      "updatedAt": "2026-05-03T04:15:17Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -57,106 +25,6 @@
       "provider_priority": "high",
       "provider_status": "needs_cleanup",
       "work_type": [
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2559,
-      "title": "feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2559",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-02T21:17:40Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2566,
-      "title": "test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2566",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering-calculations",
-        "domain:hydrodynamics",
-        "domain:naval-architecture",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-02T12:00:26Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2568,
-      "title": "feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2568",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:engineering-calculations",
-        "domain:hydrodynamics",
-        "domain:naval-architecture",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-02T12:00:23Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
         "implementation",
         "strategy"
       ],
@@ -304,6 +172,133 @@
       "updatedAt": "2026-04-27T18:57:43Z",
       "execution_ready": false,
       "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2520,
+      "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
+      "labels": [
+        "bug",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "priority:critical",
+        "domain:ai-orchestration",
+        "domain:workstations",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-27T17:45:28Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2291,
+      "title": "fix(cron-health): harden failure detection and align task evidence contracts",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:operations",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-16T10:39:33Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2301,
+      "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-16T14:37:26Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2363,
+      "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:data-pipeline",
+        "domain:document-intelligence"
+      ],
+      "updatedAt": "2026-04-26T21:54:20Z",
+      "execution_ready": false,
+      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",

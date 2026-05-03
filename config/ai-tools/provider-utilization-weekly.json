@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-03T01:45:47.060088Z",
+  "generated_at": "2026-05-03T05:20:12.176925Z",
   "current_week": "2026-W18",
   "report_weeks": 8,
   "subscriptions": {
@@ -959,23 +959,23 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W18",
-        "sessions": 181,
-        "post_records": 8012,
-        "activity_utilization_pct": 19.7,
+        "sessions": 182,
+        "post_records": 8719,
+        "activity_utilization_pct": 21.4,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 19.7,
+        "reported_utilization_pct": 21.4,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-05-03T01:45:44Z",
+        "quota_snapshot_ts": "2026-05-03T05:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 5061
+            "count": 5609
           },
           {
             "tool": "Read",
-            "count": 1387
+            "count": 1450
           },
           {
             "tool": "unknown",
@@ -983,15 +983,15 @@
           },
           {
             "tool": "Edit",
-            "count": 425
+            "count": 478
           },
           {
             "tool": "Write",
-            "count": 291
+            "count": 316
           }
         ],
         "first_ts": "2026-04-27T01:17:11Z",
-        "last_ts": "2026-05-02T21:17:40Z",
+        "last_ts": "2026-05-03T05:20:00Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -1005,7 +1005,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-05-03T01:45:44Z",
+        "quota_snapshot_ts": "2026-05-03T05:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -1043,7 +1043,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-05-03T01:45:44Z",
+        "quota_snapshot_ts": "2026-05-03T05:20:02Z",
         "top_tools": [
           {
             "tool": "Browser",

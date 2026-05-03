@@ -1,9 +1,9 @@
-run_at: "2026-05-02T07:03:04Z"
-total_duration_s: 116
+run_at: "2026-05-03T07:04:03Z"
+total_duration_s: 115
 all_healthy: true
 repos:
   assethold: {status: pass, passed: 0, failed: 0, duration_s: 4}
-  assetutilities: {status: pass, passed: 0, failed: 0, duration_s: 12}
-  digitalmodel: {status: pass, passed: 0, failed: 0, duration_s: 32}
+  assetutilities: {status: pass, passed: 0, failed: 0, duration_s: 14}
+  digitalmodel: {status: pass, passed: 0, failed: 0, duration_s: 14}
   OGManufacturing: {status: pass, passed: 0, failed: 0, duration_s: 0}
-  worldenergydata: {status: pass, passed: 0, failed: 0, duration_s: 65}
+  worldenergydata: {status: pass, passed: 0, failed: 0, duration_s: 80}

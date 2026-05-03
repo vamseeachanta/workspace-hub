@@ -60,6 +60,9 @@
 - [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iteration; partial-deleted worktree's `.git` gitlink loss is recoverable via parent-repo `.git/worktrees/<name>/HEAD` registry entry
 - [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle create` from parent repo fails on unreachable orphans; bundle from inside worktree where HEAD points at the SHA; tag-on-origin for cross-machine durability
 - [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans only `commit --no-verify`; push --no-verify allowed for codex-branch preservation pushes when tier-1 hook blocks
+- [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — two concurrent /whats-next sessions on the same machine produce healthy non-colliding plan work; wip-label gates same-issue collision, auto-sync arbitrates push contention; cross-validate before filing follow-ups
+- [Worktree isolation too slow on large repo](feedback_worktree_isolation_large_repo_cost.md) — Agent `isolation: worktree` triggers 33,325-file checkout that times out 60% of the time on workspace-hub; default to write-only-shared, reserve worktree-isolation for agents that must commit/push themselves
+- [QG --maxfail undercounts](feedback_qg_maxfail_undercounts.md) — digitalmodel Quality Gates runs `pytest --maxfail=20`; reported "20 failed" was the ceiling, true count is 244+ (verified 2026-05-02 on `60d59565`); never trust QG artifact failure count without local repro
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md

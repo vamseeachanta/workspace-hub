@@ -68,7 +68,7 @@ Context parity = compute parity. Zero waste everywhere.
 
 GSD is the sole workflow system since 2026-03-25.
 - Plans live in `.planning/` within each repo
-- Long-duration plans live in `docs/plans/`
+- Long-duration plans live in `docs/plans/` *verified: 2026-05-03*
 - Use `/gsd:*` commands for task management
 
 ## Skill System (Hermes)
