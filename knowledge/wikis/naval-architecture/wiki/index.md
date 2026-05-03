@@ -1,8 +1,8 @@
 ---
 domain: naval-architecture
 created: 2026-04-07 10:35 UTC
-last_updated: 2026-05-01
-page_count: 61
+last_updated: 2026-05-02
+page_count: 71
 source_count: 43
 ---
 
@@ -14,12 +14,21 @@ source_count: 43
 
 | Page | Summary | Last Updated |
 |------|---------|-------------|
+| [Damage Stability](concepts/damage-stability.md) | SOLAS subdivision and probabilistic damage-stability concepts. | 2026-05-02 |
+| [Hull-Form Geometry](concepts/hull-form-geometry.md) | Lines plan, sectional-area curve, and hull-form coefficients. | 2026-05-02 |
+| [Intact Stability Criteria](concepts/intact-stability-criteria.md) | IMO IS Code criteria categories named without thresholds. | 2026-05-02 |
+| [Marine Propulsors](concepts/marine-propulsors.md) | FPP, CPP, podded, azimuth, waterjet, and other propulsor types. | 2026-05-02 |
+| [Propeller Theory](concepts/propeller-theory.md) | Open-water KT/KQ/J characteristics and hull-propeller interaction. | 2026-05-02 |
 | [Ship Hydrostatics](concepts/hydrostatics.md) | Concept page | 2026-04-07 |
-| [Ship Resistance and Propulsion](concepts/resistance-propulsion.md) | Concept page | 2026-04-07 |
+| [Ship Resistance Components](concepts/ship-resistance-components.md) | Frictional, wave-making, form, appendage, and air resistance. | 2026-05-02 |
+| [Ship Resistance and Propulsion](concepts/resistance-propulsion.md) | Index/router for the resistance-and-propulsion topic family. | 2026-05-02 |
+| [Ship Structural Strength](concepts/ship-structural-strength.md) | Hull-girder strength concepts; IACS UR S referenced by name. | 2026-05-02 |
+| [Ship Weights and Loading](concepts/ship-weights-and-loading.md) | Lightship/deadweight breakdown and longitudinal weight distribution. | 2026-05-02 |
 | [Seakeeping and Ship Motions](concepts/seakeeping.md) | Concept page | 2026-04-07 |
 | [Ship Design Process](concepts/ship-design.md) | Concept page | 2026-04-07 |
 | [Ship Structural Design](concepts/ship-structures.md) | Concept page | 2026-04-07 |
-| [Ship Stability](concepts/stability.md) | Concept page | 2026-04-07 |
+| [Ship Stability](concepts/stability.md) | GZ-curve mechanics; defers criteria detail to sibling pages. | 2026-05-02 |
+| [Wave Theory and Spectra](concepts/wave-theory-and-spectra.md) | Linear-wave theory and JONSWAP/PM/ITTC spectral families. | 2026-05-02 |
 
 ## Standards
 
@@ -70,7 +79,9 @@ source_count: 43
 
 ## Entities
 
-No entity pages yet.
+| Page | Summary | Last Updated |
+|------|---------|-------------|
+| [Classification Societies](entities/classification-societies.md) | Directory of the 12 IACS member classification societies. | 2026-05-02 |
 
 ## Source Breakdown
 

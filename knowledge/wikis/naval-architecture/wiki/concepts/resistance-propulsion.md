@@ -1,37 +1,27 @@
 ---
 title: "Ship Resistance and Propulsion"
-tags: ["resistance", "propulsion", "propeller", "Froude", "ITTC", "thrust"]
+tags: ["resistance", "propulsion", "router"]
 sources:
   - naval-architecture-resources
 added: 2026-04-07
-last_updated: 2026-04-07
+last_updated: 2026-05-02
+see_also:
+  - concepts/ship-resistance-components.md
+  - concepts/marine-propulsors.md
+  - concepts/propeller-theory.md
 ---
 
 # Ship Resistance and Propulsion
 
-Power requirements and propulsive systems for marine vessels.
+Index/router page for the resistance-and-propulsion topic family. Detailed material has been split into the three child pages listed below; this page exists to preserve incoming links and to direct readers to the right sub-topic.
 
-## Resistance Components
+## Sub-topic pages
 
-- **Frictional resistance (Rf)** — viscous drag based on wetted surface area (ITTC 1957 line)
-- **Residuary resistance (Rr)** — wave-making + form resistance
-- **Air resistance** — superstructure wind drag
-- **Appendage resistance** — rudder, bilge keel, shaft brackets
-- **Froude number regime** — resistance behavior varies with Fn
-
-## Propulsion Systems
-
-- **Propeller theory** — momentum + blade element theories
-- **Propeller open water characteristics** — KT, KQ, eta vs J curves
-- **Propeller-hull interaction** — wake fraction, thrust deduction
-- **Controllable pitch vs fixed pitch** — operational flexibility vs simplicity
-- **Azimuth thrusters** — 360-degree maneuverability
-- **Waterjets** — high-speed vessel propulsion
-- **Podded propulsion** — electric motors in external pods
-- **Rudder-propellers / pod drives** — combined propulsion and steering
-
+- **[Ship Resistance Components](ship-resistance-components.md)** — frictional / wave-making / form / appendage / air decomposition; ITTC scaling; Froude and Reynolds regimes.
+- **[Marine Propulsors](marine-propulsors.md)** — fixed-pitch, controllable-pitch, podded, azimuth, waterjet, contra-rotating, cycloidal, Kort-ducted, energy-saving devices.
+- **[Propeller Theory](propeller-theory.md)** — momentum and blade-element theories, KT / KQ / J open-water characteristics, hull-propeller interaction (wake, thrust deduction, hull efficiency).
 
 ## Cross-References
 
 - See also: [[marine-engineering wiki]] (../../marine-engineering/wiki/overview.md)
-- **Cross-wiki (engineering)**: [CFD Offshore Hydrodynamics](../../../engineering/wiki/concepts/cfd-offshore-hydrodynamics.md) — CFD for resistance prediction, propeller-hull interaction, and wake analysis
+- **Cross-wiki (engineering)**: [CFD Offshore Hydrodynamics](../../../engineering/wiki/concepts/cfd-offshore-hydrodynamics.md) — CFD for resistance prediction, propeller-hull interaction, and wake analysis.

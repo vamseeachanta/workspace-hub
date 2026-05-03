@@ -25,3 +25,8 @@
 - Pages created: comparisons/issue-2567-steering-gear-rudder-stock-source-map.md, concepts/steering-gear-design-checks.md, concepts/rudder-stock-design-checks.md, standards/steering-gear-rudder-stock-rule-crosswalk.md.
 - Pages updated: index.md.
 - Notes: Created source map, concept boundaries, and standards crosswalk for #2567 without implementing formulas or claiming compliance.
+
+## [2026-05-02] expand | naval-arch W1-D — 10 core concept pages (#2589)
+- Pages created: concepts/hull-form-geometry.md, concepts/intact-stability-criteria.md, concepts/damage-stability.md, concepts/ship-resistance-components.md, concepts/marine-propulsors.md, concepts/propeller-theory.md, concepts/wave-theory-and-spectra.md, concepts/ship-structural-strength.md, concepts/ship-weights-and-loading.md, entities/classification-societies.md.
+- Pages updated: concepts/resistance-propulsion.md (reduced to index/router per W1-D MAJOR-1), concepts/stability.md (criteria detail moved to sibling pages per W1-D MAJOR-2), index.md (concepts table + first entity row + page_count 61 -> 71).
+- Notes: Covers Tupper-5e + PNA core curriculum gaps; excludes #2566/#2568 reservations (no new mention of turning circle, tactical diameter, advance, transfer, or Nomoto in any new page). Standards bodies named only; no thresholds or clauses enumerated (deferred to wiki/standards/<code-id>.md per the in-principle naval-architecture routing).
