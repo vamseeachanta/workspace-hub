@@ -1,10 +1,10 @@
 # Plan for #2588: audit(llm-wiki) — engineering wiki gap audit + prioritized backfill sequence (W1-C)
 
-> **Status:** plan-review (revised after r1 review)
+> **Status:** plan-review (rev-2 — addresses Gemini r1 MAJOR)
 > **Complexity:** T2
 > **Date:** 2026-05-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2588
-> **Review artifacts:** scripts/review/results/2026-05-02-plan-2588-claude.md | ...-codex.md | ...-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-02-plan-2588-claude-internal.md | ...-codex.md | ...-gemini.md
 
 ---
 
@@ -48,7 +48,7 @@
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-05-02 via `gh issue view`):
-- `#2540` — OPEN — `epic(llm-wiki): overnight Elements corpus planning wave after #2536`
+- `#2540` — CLOSED — `epic(llm-wiki): overnight Elements corpus planning wave after #2536` (closed after this plan was authored; gap-audit work proceeds independently of the parent epic's lifecycle)
 - `#2368` — OPEN — `feat(knowledge): generate faceted portal pages for large LLM-wiki domains`
 - `#2373` — OPEN — `feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion`
 - `#2392` — OPEN — `feat(knowledge): wiki coverage-gap detector — inventory × wiki diff per discipline`
@@ -79,7 +79,7 @@ knowledge/wikis/engineering/raw/papers
 - `2026-*` dated rollups: 9 (overnight synthesis — out of scope) — `ls papers/ | grep -c '^2026-'`
 - `*.json` (e.g., ComfyUI/SDXL workflow files): 9 (out of engineering scope) — `ls papers/ | grep -c '\.json$'`
 - `*.yaml/*.yml`: 16 (mixed — must classify case-by-case) — `ls papers/ | grep -cE '\.(yaml|yml)$'`
-- **Out-of-scope union (deduplicated, mutually exclusive):** computed via single union regex `ls papers/ | grep -ciE '^(feedback_|[A-Z_]+\.(md|yml|yaml|json)$|claude|codex|gemini|agent|ai-|llm-|skill-|hermes|gsd-|plan-|review-|audit-|sweep-|stage-|prompt-|approval-|adversarial-|artifact-|2026-)|\.(json|yaml|yml)$' | sort -u` — execution time recompute the deduplicated total to replace the naive sum (raw additive sum 237/520 ≈ 46% double-counts files matching multiple buckets, e.g., `CLAUDE.md` matches both ALLCAPS and the agent-prefix bucket). The audit deliverable MUST report the deduplicated union count, not the additive sum.
+- **Out-of-scope union (deduplicated, mutually exclusive):** computed via single union regex `ls papers/ | grep -ciE '^(feedback_|[A-Z_]+\.(md|yml|yaml|json)$|claude|codex|gemini|agent|ai-|llm-|skill-|hermes|gsd-|plan-|review-|audit-|sweep-|stage-|prompt-|approval-|adversarial-|artifact-|2026-)|\.json$' | sort -u` — execution time recompute the deduplicated total to replace the naive sum (raw additive sum 237/520 ≈ 46% double-counts files matching multiple buckets, e.g., `CLAUDE.md` matches both ALLCAPS and the agent-prefix bucket). The audit deliverable MUST report the deduplicated union count, not the additive sum. **Note (rev-2):** the trailing `\.json$` is uniformly out-of-scope (ComfyUI/SDXL workflow JSON), but `\.(yaml|yml)$` was REMOVED from this union per Gemini r1 MAJOR-2 — yaml/yml files are mixed (16 total, see bucket above) and must be classified case-by-case in a separate "needs-manual-classification" bucket; blanket-filtering them contradicts the Evidence intent.
 - Domain-engineering candidates by name match against `mooring|riser|pipeline|structural|fatigue|subsea|umbilical|cathodic|cfd|hydrodynamic|wave-theory|free-span|viv|seakeeping|fea|orcaflex|orcawave|aqwa|api-|dnv-|ocimf|csa-|naval|offshore`: 12 files.
 
 **Internal cross-reference scan** (verified 2026-05-02 via `grep -rl "knowledge/wikis/engineering" /mnt/local-analysis/workspace-hub/digitalmodel/`):
@@ -118,7 +118,7 @@ dnv-rp-f101.md  dnv-rp-f105.md  ocimf-meg4.md   ocimf-tandem-mooring.md  TEMPLAT
 | This plan | `docs/plans/2026-05-02-issue-2588-llm-wiki-W1C-engineering-gap-audit.md` |
 | Audit report (deliverable) | `docs/audits/2026-05-02-engineering-wiki-gap-audit.md` |
 | Tests | `tests/knowledge/test_engineering_wiki_gap_audit_artifact.py` |
-| Plan review — Claude | `scripts/review/results/2026-05-02-plan-2588-claude.md` |
+| Plan review — Claude (internal) | `scripts/review/results/2026-05-02-plan-2588-claude-internal.md` |
 | Plan review — Codex | `scripts/review/results/2026-05-02-plan-2588-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-05-02-plan-2588-gemini.md` |
 | Index update | `docs/plans/README.md` |
@@ -170,8 +170,12 @@ test_audit_artifact:
         - ISO 19900-series part number (regex: `19900|19901|19902|19903|19904|19905-1`)
         - literal `citation-contract` / `citation contract` / `would cite`
         - ratio expression matching `raw/wiki` or `\d+\s*:\s*\d+`
-    assert each cited subdir has a verifiable file_count that matches a live `find` result
-        within absolute ±2 files tolerance (replaces ±5% — at 520 files, 5% would mask 26-file deletions)
+    assert internal self-consistency only (rev-2; replaces live-find compare per Gemini r1 MAJOR-1):
+        - sum of per-subdir counts in table_B equals reported total wiki file count
+        - sum of per-prefix-bucket counts in table_A is consistent with reported raw total
+          (allowing for documented bucket overlap noted in Evidence)
+        - NO live `find` invocation; the audit is a point-in-time snapshot and cannot
+          assert against future repo state without breaking CI when child issues add files
 ```
 
 ---
@@ -200,7 +204,7 @@ NO modifications to `knowledge/wikis/engineering/**` of any kind. This plan is a
 | `test_audit_priority_list_size` | prioritized backfill has 8–10 entries | parsed markdown | `8 <= len(priority_entries) <= 10` |
 | `test_audit_priority_entry_schema` | each entry has required fields | parsed markdown | each entry has `title`, `target_path`, `priority` ∈ {P1,P2,P3}, `rationale`, `candidate_sources` |
 | `test_audit_rationales_cite_required_anchors` | each priority rationale references a verifiable anchor | parsed markdown rationale strings | each rationale matches at least one of: ISO 19900-series regex (`19900|19901|19902|19903|19904|19905-1`), literal `citation-contract` / `citation contract` / `would cite`, or ratio regex (`raw/wiki` or `\d+\s*:\s*\d+`) |
-| `test_audit_file_counts_verifiable` | cited counts match live `find` | `find knowledge/wikis/engineering/wiki/<sub> -type f` | every cited count within absolute ±2 files of live count |
+| `test_audit_counts_internally_consistent` | cited counts in audit tables sum correctly across rows (no live `find`) | parsed markdown tables | sum of per-subdir counts in table_B equals reported total wiki file count; analogous self-consistency for table_A bucket counts vs. reported raw total. **Rev-2 change:** the prior `test_audit_file_counts_verifiable` (which compared static counts to live `find` with ±2 tolerance) was REPLACED per Gemini r1 MAJOR-1 — point-in-time audits cannot assert against future repo state, since adding 3+ wiki files in any child issue would permanently fail CI |
 | `test_audit_no_wiki_writes` | this plan does not modify wiki/ | `git diff --name-only $(git merge-base HEAD origin/main) -- knowledge/wikis/engineering/wiki/` | empty |
 
 ---
@@ -221,27 +225,34 @@ NO modifications to `knowledge/wikis/engineering/**` of any kind. This plan is a
 
 ## Adversarial Review Summary
 
-| Provider | Verdict | Key findings |
-|---|---|---|
-| Claude (internal) | MAJOR → revised | 3 MAJOR (false zero-citations claim; rationale-anchor test missing; SUT taxonomy unattributed) + 7 MINOR — all addressed inline |
-| Codex | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479); fanout dispatch hung; killed at 2026-05-02T12:21Z |
-| Gemini | UNAVAILABLE | gemini CLI cwd=/tmp sandbox cannot resolve repo paths; err logged to scripts/review/results/.failed-fanout-2026-05-02/ |
+| Provider | Round | Verdict | Key findings |
+|---|---|---|---|
+| Claude (internal) | r0 (pre-r1) | MAJOR → revised | 3 MAJOR (false zero-citations claim; rationale-anchor test missing; SUT taxonomy unattributed) + 7 MINOR — all addressed inline |
+| Codex | r0 (pre-r1) | UNAVAILABLE | codex-cli 0.124.0 stdin-hang regression (#2479); fanout dispatch hung; killed at 2026-05-02T12:21Z |
+| Gemini | r0 (pre-r1) | UNAVAILABLE | gemini CLI cwd=/tmp sandbox cannot resolve repo paths; err logged to scripts/review/results/.failed-fanout-2026-05-02/ |
+| Gemini | r1 | MAJOR → revised | 4 findings: (1) TDD test_audit_file_counts_verifiable will permanently fail CI once child issues add 3+ files; (2) out-of-scope union regex blanket-filters yaml/yml contradicting "case-by-case" intent; (3) Evidence section claims #2540 OPEN but it is CLOSED; (4) review-artifact path naming mismatch (`...-claude.md` vs actual `...-claude-internal.md`) — finding 4 is a naming false-positive (the file exists under the internal-suffix name); findings 1–3 are real and addressed in rev-2 |
 
-**Overall result:** PASS-after-revision (3 MAJOR + 7 MINOR fixes applied 2026-05-02)
+**Overall result (rev-2):** PASS-after-revision — r0 fixes carried forward; rev-2 addresses Gemini r1 (3 real MAJOR + 1 naming-FP). Pending user re-review for promotion to `status:plan-approved`.
 
-**Revisions made based on review:**
+**Revisions made based on r0 review (Claude internal):**
 - MAJOR-1: corrected the false "zero digitalmodel cross-refs" claim; embedded actual grep results showing `registry.py` + `test_schema.py` wire `dnv-os-e301.md`; reframed as prioritization anchor.
 - MAJOR-2: added `test_audit_rationales_cite_required_anchors` test asserting each rationale matches ISO 19900 / citation-contract literal / ratio regex.
 - MAJOR-3: replaced unverifiable SUT taxonomy with ISO 19900-series (19900/19901/19902/19903/19904/19905-1) as the verifiable external anchor.
-- MINOR-1: wrote literal `grep -ciE` command (with `-i` flag explicit) for the 34-count agent-prefix bucket.
-- MINOR-2: corrected "~14 files" to "12 files" for domain-engineering candidates.
-- MINOR-3: reconciled 105/106 — line 14 now reads "102 files across 5 subdirs … plus 4 root files (total 106)".
-- MINOR-4: replaced ±5% drift tolerance with absolute ±2 files in pseudocode and TDD test.
-- MINOR-5: replaced `HEAD~1` with `$(git merge-base HEAD origin/main)` in `test_audit_no_wiki_writes`.
-- MINOR-6: replaced "top_5_files_by_name" with "first_5_files_alphabetical_at_audit_time" in pseudocode table_B.
-- MINOR-7: documented that 237/520 additive sum double-counts; deliverable MUST report deduplicated union via single union-regex command.
+- MINOR-1 through MINOR-7: see Revision History below for the full r0 fix list.
 
-**Provenance:** Single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. Round-1 MAJOR; round-2 verdict pending user re-review.
+**Revisions made based on r1 review (Gemini MAJOR):** see `## Revision History` section below.
+
+**Provenance:** r0 = single-author Claude review per memory `feedback_permission_gate_blocks_cross_review.md`. r1 = Gemini cross-review at `scripts/review/results/2026-05-02-plan-2588-gemini.md`. r2 = pending user re-review.
+
+---
+
+## Revision History
+
+| Revision | Date | Trigger | Changes |
+|---|---|---|---|
+| rev-0 | 2026-05-02 | initial draft | original plan emitted |
+| rev-1 | 2026-05-02 | Claude internal r0 review (3 MAJOR + 7 MINOR) | corrected false zero-citations claim; added rationale-anchor test; replaced SUT taxonomy with ISO 19900-series; 7 MINOR fixes (literal `grep -ciE`, "12 files" correction, 105/106 reconciliation, ±2 absolute tolerance, `merge-base` substitution, "first_5_alphabetical" rename, deduplicated union documentation) |
+| rev-2 | 2026-05-02 | Gemini r1 review (MAJOR — 3 real findings + 1 naming-FP) | (a) replaced `test_audit_file_counts_verifiable` (live `find` ±2 compare) with `test_audit_counts_internally_consistent` — the prior test would permanently fail CI once child issues add 3+ files [Gemini r1 MAJOR-1]; (b) removed `\.(yaml|yml)$` from out-of-scope union regex — yaml/yml is mixed and must be classified case-by-case per Evidence intent; kept `\.json$` which IS uniformly out-of-scope [Gemini r1 MAJOR-2]; (c) updated #2540 status from OPEN to CLOSED in Evidence with one-line acknowledgment that this plan was authored before parent epic closed and the audit work proceeds independently [Gemini r1 MAJOR-3]; (d) corrected review-artifact header + Artifact Map cell from `2026-05-02-plan-2588-claude.md` to actual filename `2026-05-02-plan-2588-claude-internal.md` [Gemini r1 finding 4 — naming false-positive; the file exists under the internal-suffix name]; (e) updated Risks section drift mitigation to reflect the test-design change |
 
 ---
 
@@ -251,7 +262,7 @@ NO modifications to `knowledge/wikis/engineering/**` of any kind. This plan is a
 - **Risk:** Priority bias toward visible work. The auditor may over-weight standards (visible, easy to enumerate) and under-weight concepts (harder to scope but core to citation contract). Mitigation: priority rationale must cite ISO 19900-series part number, citation-contract literal, or a verifiable raw-vs-wiki ratio — not just raw count. Enforced by `test_audit_rationales_cite_required_anchors`.
 - **Risk:** Count-based heuristic ignores depth-of-content. A single 4-page mooring-failure-physics page can outweigh ten thin standards stubs. Mitigation: priority list is *recommendation*; final scope-per-child-issue happens in each child plan, not here.
 - **Risk:** Filename-prefix bucketing is heuristic and will misclassify some files. The audit must explicitly disclose its bucketing rules and acknowledge that final classification happens at child-issue time.
-- **Risk:** Drift — `raw/papers/` and `wiki/*/` file counts will change between this plan's draft and execution date. The TDD test uses absolute ±2 files tolerance (revised from ±5% per review MINOR-4 — at 520 files, 5% would mask 26-file deletions); if drift exceeds tolerance, audit re-run is required before child-issue dispatch.
+- **Risk:** Drift — `raw/papers/` and `wiki/*/` file counts will change between this plan's draft and execution date. **Rev-2 mitigation (per Gemini r1 MAJOR-1):** the TDD test no longer compares static counts to live `find` (that approach would permanently break CI as soon as child issues add 3+ wiki files); instead it asserts internal self-consistency of the audit's own tables. If repo drift exceeds the audit's stated assumptions before child-issue dispatch, the operator re-runs the audit manually and re-commits the report — drift detection is procedural, not test-enforced.
 - **Open:** Should the audit include an explicit deprecation pass (which raw subdirs/prefixes should be archived to `agents/memory/` or moved to `data/document-index/` rather than promoted to wiki)? **Proposed default: YES** — the 46% out-of-scope ratio is too high to ignore; deprecation recommendations are a section of the deliverable.
 - **Open:** Should priority list include cross-domain concepts (e.g., `marine-engineering` overlap pages like wave theory) or stay strictly engineering-discipline-only? Flag for user during approval.
 - **Open:** Should this audit's output be re-run automatically once #2392's `detect_wiki_gaps.py` ships, to validate the script's output against this manual baseline? **Proposed: YES** — adds a regression check for the future detector. Out of scope for this plan, captured as a follow-up.
