@@ -489,8 +489,17 @@ data/document-index/index.jsonl.pre-merge-bak
 knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_cc-23-6h-flowback-calculator-4.py
 
 # Ignore large domain wikis but track small engineering wiki and cross-links index
+# 2026-05-03: engineering-standards/ added to exception list under Tier B approval —
+#   W1-A/W2-A/W2-B/W3-A/W3-B/W4-A/W4-B/W5-A/W5-B promotion plans all commit standards pages here.
+# 2026-05-03: asset-management/ + naval-architecture/ + maritime-law/ + lng-projects/ added —
+#   W1-B/W1-D/W2-C/W3-D/W4-D/W5-C plans all commit topical pages there.
 /knowledge/wikis/*
 !/knowledge/wikis/engineering/
+!/knowledge/wikis/engineering-standards/
+!/knowledge/wikis/asset-management/
+!/knowledge/wikis/naval-architecture/
+!/knowledge/wikis/maritime-law/
+!/knowledge/wikis/lng-projects/
 !/knowledge/wikis/cross-links.md
 assethold-worktrees/
 
