@@ -1,0 +1,209 @@
+# Online Resource Registry — Proposed Patch (W2-D, #2593)
+#
+# Status: PROPOSED — NOT applied to data/document-index/online-resource-registry.yaml.
+# This sidecar enumerates ≤20 entries the implementation issue that follows W2-D will consume.
+#
+# Audit: docs/audits/2026-05-03-online-resource-registry-refresh.md
+# Plan:  docs/plans/2026-05-02-issue-2593-llm-wiki-W2D-online-resource-registry-refresh.md
+# Snapshot date: 2026-05-03
+#
+# Schema notes (per W2-D plan + r1 review fixes):
+# - REQUIRED fields per patch entry: id, url, name, type, domain, last_checked, revision
+# - OPTIONAL fields: code_id (links to standards-transfer-ledger.yaml when applicable),
+#                    superseded_or_legacy (true when revision parses to >5 years before snapshot),
+#                    notes, source_catalog, relevance_score, local_backup_path, download_status
+# - DO NOT introduce a `last_verified` field (W2-D MAJOR-1 fix: reuse existing `last_checked`).
+# - DO NOT introduce `superseded_by` here (W2-D risk: forward-prep field with no consumer; defer).
+# - Permissive `revision` grammar: date-like (YYYY-MM, YYYY-MM-DD), `Nth Edition`, `(R\d{4})`, or `:YYYY`.
+#
+# patch_action semantics (NEW field; sidecar-only, not propagated to live registry):
+# - `add`     — new entry to be appended to the registry on patch application
+# - `update`  — existing registry entry to be modified (id must match a current entry)
+#
+# Patch entries are grouped: (1) W1 cross-reference fixes, (2) high-value 2025-2026 revisions,
+# (3) calc-citation-contract anchors. All ≤20 entries combined.
+
+patch_metadata:
+  patch_date: '2026-05-03'
+  source_audit: docs/audits/2026-05-03-online-resource-registry-refresh.md
+  source_plan: docs/plans/2026-05-02-issue-2593-llm-wiki-W2D-online-resource-registry-refresh.md
+  source_issue: 'https://github.com/vamseeachanta/workspace-hub/issues/2593'
+  entry_count: 14
+  applied: false  # will flip to true when implementation issue lands the patch
+  registry_target: data/document-index/online-resource-registry.yaml
+
+entries:
+
+# -- Group 1: W1 cross-reference fixes (4 entries) --
+
+- id: api_rp_2a_wsd_r2025
+  url: https://store.accuristech.com/standards/api-rp-2a-wsd-r2025
+  name: API RP 2A-WSD 22nd Edition (R2025 reaffirmation) — Planning, Designing and Constructing Fixed Offshore Platforms (Working Stress Design)
+  type: standard_portal
+  domain: structural
+  revision: '22nd Edition (R2025)'
+  code_id: API-RP-2A-WSD
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'W1-A (#2586) target. Reaffirmed 2025; 22nd Edition originally Nov 2014. Cited 68 times in digitalmodel/src/. Source: api.org publications catalog 2025 + accuristech.com.'
+  patch_action: add
+
+- id: api_rp_2sk_replacement
+  url: https://www.api.org/products-and-services/standards
+  name: API RP 2SK — Station Keeping Design and Analysis (3rd Ed, 2005; Addendum 1, 2007)
+  type: standard_portal
+  domain: marine
+  revision: '3rd Edition (2005); Addendum 1 (2007)'
+  code_id: API-RP-2SK
+  superseded_or_legacy: true  # 2005 Edition is >5 years from 2026-05-03
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'Replaces dead URL on existing entry api_org_products_and_services_standards_important_standards__839ba5 (announcements URL is 404 as of 2026-05-03). Cited 66 times in digitalmodel/src/. Patch action UPDATE proposed for the existing entry; this row is the replacement record. W1-A (#2586) target.'
+  patch_action: update
+
+- id: ittc_recommended_procedures
+  url: https://ittc.info/about-ittc/recommended-procedures/
+  name: ITTC Recommended Procedures and Guidelines (7.5 series)
+  type: standard_portal
+  domain: naval_architecture
+  revision: '2024 conference cycle'
+  code_id: ITTC-RP-7.5
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'W1-D (#2589) target. International Towing Tank Conference recommended procedures; canonical reference for naval-architecture concept pages. Public PDFs available without auth.'
+  patch_action: add
+
+- id: abs_rules_and_guides
+  url: https://ww2.eagle.org/en/rules-and-resources/rules-and-guides.html
+  name: ABS Rules and Guides Library
+  type: standard_portal
+  domain: naval_architecture
+  revision: '2024 catalog'
+  code_id: ABS-Rules-MOU
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'W1-D (#2589) target. American Bureau of Shipping rules and guides for MOUs, MODUs, and offshore installations. Free PDF downloads.'
+  patch_action: add
+
+# -- Group 2: High-value 2025-2026 revisions (5 entries) --
+
+- id: dnv_st_f101
+  url: https://www.dnv.com/energy/standards-guidelines/dnv-st-f101-submarine-pipeline-systems/
+  name: DNV-ST-F101 Submarine Pipeline Systems (renamed from DNV-OS-F101)
+  type: standard_portal
+  domain: pipeline
+  revision: '2021-08 (Amended 2021-12)'
+  code_id: DNV-ST-F101
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'W2-D §Resource Intel-enumerated. Renamed from DNV-OS-F101 in DNV 2021 portfolio rebrand. Verified live 2026-05-03 — current edition 2021-08 amended 2021-12. Replaces orcaflex-domain dnv_com_rules_standards_7b3848 generic landing.'
+  patch_action: add
+
+- id: marpol_annex_vi_2026_eca
+  url: https://www.imo.org/en/MediaCentre/MeetingSummaries/Pages/Preview-MEPC-84.aspx
+  name: MARPOL Annex VI — 2026 ECA Amendments (Canadian Arctic, Norwegian Sea, NE Atlantic)
+  type: standard_portal
+  domain: regulatory
+  revision: '2026-03-01 entry-into-force; MEPC 84 (April 2026)'
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'W2-D §Resource Intel-enumerated. Canadian Arctic + Norwegian Sea ECA effective 2026-03-01; NE Atlantic ECA expected MEPC 84 April 2026; 0.10% m/m sulphur enforcement 2027-03-01. Registry has only IMO GISIS portal — no Annex VI document anchor.'
+  patch_action: add
+
+- id: iso_19901_7
+  url: https://www.iso.org/standard/59298.html
+  name: ISO 19901-7 — Stationkeeping systems for floating offshore structures and mobile offshore units
+  type: standard_portal
+  domain: marine
+  revision: ':2013 (FDIS revision in progress 2025-2026)'
+  code_id: ISO-19901-7
+  superseded_or_legacy: true  # 2013 revision is >5 years from 2026-05-03 snapshot
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'W2-D §Resource Intel-enumerated. Confirmed 2018; FDIS revision progressing toward 2025-2026 republication. Note: iso.org spot-checked 2026-05-03 returned 403 Cloudflare-class block; URL is correct. Companion to API RP 2SK.'
+  patch_action: add
+
+- id: dnv_rp_c203_fatigue
+  url: https://www.dnv.com/energy/standards-guidelines/dnv-rp-c203-fatigue-design-of-offshore-steel-structures/
+  name: DNV-RP-C203 Fatigue Design of Offshore Steel Structures
+  type: standard_portal
+  domain: structural
+  revision: '2021-09'
+  code_id: DNV-RP-C203
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'NEW high-value entry (W2-D audit Section 5.2 row 5). Cited by digitalmodel orcaflex fatigue modules; no prior registry entry.'
+  patch_action: add
+
+- id: imo_mepc_391_81
+  url: https://www.imo.org/en/OurWork/Environment/Pages/Lifecycle-GHG-intensity-of-marine-fuels.aspx
+  name: IMO MEPC.391(81) — Guidelines on Lifecycle GHG Intensity of Marine Fuels
+  type: standard_portal
+  domain: regulatory
+  revision: 'Adopted 2025-03 (MEPC 81)'
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'NEW high-value entry (W2-D audit Section 5.2 row 9). Required for IMO Net-Zero Framework compliance taking effect 2027.'
+  patch_action: add
+
+# -- Group 3: Calc-citation-contract anchors (5 entries) --
+
+- id: dnv_os_e301_position_mooring
+  url: https://www.dnv.com/energy/standards-guidelines/dnv-os-e301-position-mooring/
+  name: DNV-OS-E301 Position Mooring
+  type: standard_portal
+  domain: marine
+  revision: '2024-07'
+  code_id: DNV-OS-E301
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'NEW high-value entry (W2-D audit Section 5.2 row 6). Pilot-cited standard in .claude/rules/calc-citation-contract.md; wiki page knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md exists; this registry entry closes the citation chain.'
+  patch_action: add
+
+- id: ocimf_meg4_meg5
+  url: https://www.ocimf.org/document-libraries
+  name: OCIMF MEG4 / MEG5 — Mooring Equipment Guidelines
+  type: standard_portal
+  domain: marine
+  revision: '4th Edition (2018); MEG5 transition cycle 2025-2026'
+  code_id: OCIMF-MEG
+  superseded_or_legacy: true  # MEG4 (2018) is >5 years from 2026-05-03; flagged pending MEG5 release
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'NEW high-value entry (W2-D audit Section 5.2 row 7). Wiki page knowledge/wikis/engineering/wiki/standards/ocimf-tandem-mooring.md added per #2559 chain; registry has no OCIMF anchor today.'
+  patch_action: add
+
+- id: api_rp_2t_tlp
+  url: https://www.api.org/products-and-services/standards
+  name: API RP 2T — Planning, Designing, and Constructing Tension Leg Platforms
+  type: standard_portal
+  domain: structural
+  revision: '4th Edition (2025 announced)'
+  code_id: API-RP-2T
+  last_checked: '2026-05-03'
+  relevance_score: 4
+  notes: 'NEW high-value entry (W2-D audit Section 5.2 row 8). TLP design reference; cited in digitalmodel TLP modules. URL points at API standards landing pending publication.'
+  patch_action: add
+
+- id: sname_tr_journals
+  url: https://www.sname.org/pubs/journals
+  name: SNAME Technical & Research Bulletins and Journals
+  type: professional_body
+  domain: naval_architecture
+  revision: '2025 catalog'
+  code_id: SNAME-TR
+  last_checked: '2026-05-03'
+  relevance_score: 4
+  notes: 'W1-D (#2589) target. Society of Naval Architects and Marine Engineers — bulletin and journal library. Member-portal-walled for full text but bibliographic metadata is public.'
+  patch_action: add
+
+- id: api_addenda_errata_refresh
+  url: https://www.api.org/products-and-services/standards/addenda-and-errata
+  name: API Standards Addenda and Errata Portal
+  type: standard_portal
+  domain: oil_and_gas
+  revision: 'Updated 2026-04 (audit-recheck)'
+  last_checked: '2026-05-03'
+  relevance_score: 5
+  notes: 'UPDATE existing entry api_addenda_errata. Live URL confirmed; revision field added (free-text). Domain reclassified subsea→oil_and_gas to reflect cross-domain coverage (API STD 620, API Spec Q1, etc.).'
+  patch_action: update
