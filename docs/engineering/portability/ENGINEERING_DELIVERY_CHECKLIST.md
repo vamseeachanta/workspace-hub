@@ -63,6 +63,7 @@ This checklist applies to work on **any** execution host (dev-secondary, license
 - [ ] Known limitations, gotchas, or non-obvious solver behaviors
 - [ ] Cross-references to related issues and upstream research docs
 - [ ] For OpenFOAM baseline work, link the canonical workflow doc `openfoam-v2312-baseline-workflow.md`
+- [ ] For Blender baseline work, link the canonical workflow doc `blender-headless-baseline-workflow.md` and validator `scripts/blender/verify-blender-baseline.sh`
 
 **Placement rules:**
 - If the doc describes a general capability → `docs/engineering/` or `docs/research/` in `workspace-hub`
