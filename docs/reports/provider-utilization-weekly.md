@@ -1,16 +1,25 @@
 # Provider utilization weekly report
 
-Generated: 2026-05-03T09:20:04.857674Z
-Current week: 2026-W18
+Generated: 2026-05-04T04:00:10.778362Z
+Current week: 2026-W19
 Total monthly spend tracked: $260.0/mo
 
 Quota-based utilization is preferred when available; otherwise the report falls back to activity-vs-recent-peak based on exported session logs.
 
-## 2026-W18 (current)
+## 2026-W19 (current)
 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
-| claude | 182 | 8807 | 21.6% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| claude | 7 | 273 | 0.7% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 0 | 0 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl |
+| gemini | 0 | 0 | 0.0% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W18
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 185 | 10761 | 26.5% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
 | codex | 214 | 8210 | 0.4% | quota | 0.4% | week_messages/weekly_limit from history.jsonl |
 | gemini | 6 | 7 | 0.2% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
 | hermes | 638 | 22543 | 33.9% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
@@ -42,44 +51,9 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 | gemini | 9 | 22 | 0.7% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 556 | 39056 | 58.8% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
-## 2026-W14
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-| codex | 29 | 554 | 6.7% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-| gemini | 7 | 124 | 4.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-| hermes | 533 | 35180 | 52.9% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
-## 2026-W13
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 4 | 7532 | 18.5% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 13 | 1122 | 5.6% | quota | 5.6% | week_messages/weekly_limit from history.jsonl |
-| gemini | 5 | 94 | 3.0% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
-## 2026-W12
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 8 | 17070 | 42.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 14 | 443 | 0.5% | quota | 0.5% | week_messages/weekly_limit from history.jsonl |
-| gemini | 0 | 0 | 0.0% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
-## 2026-W11
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 8 | 40684 | 100.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 198 | 3328 | 34.5% | quota | 34.5% | week_messages/weekly_limit from history.jsonl |
-| gemini | 30 | 241 | 7.8% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
 ## Current-week underutilization alerts
 
-- codex at 0.4% (quota)
-- gemini at 0.2% (activity_vs_recent_peak)
+- claude at 0.7% (activity_vs_recent_peak)
+- codex at 0.0% (quota)
+- gemini at 0.0% (activity_vs_recent_peak)
 
