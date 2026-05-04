@@ -57,7 +57,10 @@ def test_review_gate_succeeds_without_uv_on_path():
     if platform.system() == "Darwin":
         pytest.skip("macOS BSD date does not support +%3N; ms-precision path requires python3 fallback only")
 
-    assert SCRIPT.exists() and os.access(SCRIPT, os.X_OK), f"Script missing or not executable: {SCRIPT}"
+    # Note: invoke via `bash <script>` (not `./<script>`), so executable bit is
+    # not required. GitHub's actions/checkout@v4 does not preserve +x on script
+    # files, and other workflow steps already chmod +x before direct invocation.
+    assert SCRIPT.exists(), f"Script missing: {SCRIPT}"
 
     LATENCY_LOG.parent.mkdir(parents=True, exist_ok=True)
     pre_lines = LATENCY_LOG.read_text().splitlines() if LATENCY_LOG.exists() else []
