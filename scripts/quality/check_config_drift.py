@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["pyyaml>=6.0"]
+# ///
 """check_config_drift.py — Agent harness file drift detector (WRK-1094).
 
 Checks that CLAUDE.md, AGENTS.md, CODEX.md, GEMINI.md in each repo:
