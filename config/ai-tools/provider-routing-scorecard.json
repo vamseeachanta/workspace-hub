@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-04T05:20:05.877033Z",
+  "generated_at": "2026-05-04T14:51:18.658308Z",
   "current_week": "2026-W19",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-04T05:20:05.637278Z",
+    "utilization_generated_at": "2026-05-04T14:51:18.549395Z",
     "audit_generated_at": "2026-04-24T15:25:36Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 0.7,
+      "reported_utilization_pct": 1.0,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 7,
-      "post_records_current_week": 278,
+      "sessions_current_week": 10,
+      "post_records_current_week": 410,
       "audit_post_records": 89108,
       "missing_repo_reads": 8454,
       "python3_per_1k_records": 8.53,
@@ -30,19 +30,19 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 196
+          "count": 293
         },
         {
           "tool": "Read",
-          "count": 42
+          "count": 60
         },
         {
           "tool": "Edit",
-          "count": 16
+          "count": 25
         },
         {
           "tool": "Write",
-          "count": 11
+          "count": 19
         },
         {
           "tool": "Agent",
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 3,
+      "post_records_current_week": 61,
       "audit_post_records": 20144,
       "missing_repo_reads": 463,
       "python3_per_1k_records": 17.92,
@@ -83,36 +83,16 @@
       "top_migration_hint": null,
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 16853
+          "tool": "Read",
+          "count": 47
         },
         {
-          "tool": "Read",
-          "count": 1730
+          "tool": "Bash",
+          "count": 10
         },
         {
           "tool": "Grep",
-          "count": 887
-        },
-        {
-          "tool": "update_plan",
-          "count": 398
-        },
-        {
-          "tool": "list_mcp_resources",
-          "count": 149
-        },
-        {
-          "tool": "list_mcp_resource_templates",
-          "count": 17
-        },
-        {
-          "tool": "_create_branch",
-          "count": 16
-        },
-        {
-          "tool": "_fetch_commit",
-          "count": 14
+          "count": 4
         }
       ],
       "preferred_work": [

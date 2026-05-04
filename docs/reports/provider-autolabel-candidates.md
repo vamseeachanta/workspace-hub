@@ -1,15 +1,15 @@
 # Provider autolabel candidates
 
-Generated: 2026-05-04T05:20:07.943631Z
+Generated: 2026-05-04T14:51:20.650813Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
 | #2523 feat(workstations): add reusable Hermes preflight readiness checker | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #2479 fix(review): Codex stdin-hang regression post-#2406 closure (size-dependent) | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2533 feat(repo-portfolio): review and revise mission/objective statements across active repos | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2563 Set up Telegram mobile access for Hermes AI control | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2552 docs(security): external contributor and unsolicited paid-help response runbook | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2627 wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix) | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |

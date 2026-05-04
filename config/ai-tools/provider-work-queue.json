@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-04T05:20:07.810030Z",
+  "generated_at": "2026-05-04T14:51:20.537669Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-04T05:20:05.877033Z",
+  "scorecard_generated_at": "2026-05-04T14:51:18.658308Z",
   "recommended_provider_order": [
     "codex",
     "gemini",
@@ -14,30 +14,6 @@
       "execution_ready_count": 5,
       "total_candidates": 164,
       "top_issues": [
-        {
-          "number": 2479,
-          "title": "fix(review): Codex stdin-hang regression post-#2406 closure (size-dependent)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2479",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:knowledge-management",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-03T19:36:37Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 2533,
           "title": "feat(repo-portfolio): review and revise mission/objective statements across active repos",
@@ -76,6 +52,31 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-03T12:47:12Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2628,
+          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:harness",
+            "domain:testing",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-04T09:03:49Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",

@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-04T05:20:07.810030Z
+Generated: 2026-05-04T14:51:20.537669Z
 Current week: 2026-W19
 Recommended provider order: codex, gemini, claude
 
@@ -14,9 +14,9 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2479 fix(review): Codex stdin-hang regression post-#2406 closure (size-dependent) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, domain:knowledge-management, status:plan-approved |
 | #2533 feat(repo-portfolio): review and revise mission/objective statements across active repos | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:repo-organization, status:plan-approved |
 | #2563 Set up Telegram mobile access for Hermes AI control | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, domain:integrations, domain:notification |
+| #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:testing, status:plan-approved |
 | #2552 docs(security): external contributor and unsolicited paid-help response runbook | yes | strategy/workflow/architecture language | documentation, priority:medium, cat:documentation, domain:security, status:plan-approved |
 | #2627 wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix) | yes | strategy/workflow/architecture language | cat:engineering, status:plan-approved, llm-wiki, tracker, domain:digitalmodel, status:needs-plan |
 | #2431 Compliance alert: W17 — 20% (critical) | no | strategy/workflow/architecture language | priority:high, priority:critical, compliance-alert |

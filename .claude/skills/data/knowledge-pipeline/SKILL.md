@@ -126,6 +126,11 @@ bash scripts/knowledge/tests/test-knowledge-scripts.sh
 - issue-update logic drifts from actual GitHub issue format
 - learning scripts assume artifact locations that have moved
 - docs/superpowers describes a pipeline no longer matching the code
+- wiki health reports under `knowledge/wikis/health-reports/` may be ignored by the repo-level `/knowledge/wikis/*` gitignore rule; when the task explicitly asks to commit generated health reports, stage them with `git add -f knowledge/wikis/health-reports/<report-date>.{md,json}` and verify with `git status --short`
+
+## Cron / Dirty-Workspace Pattern
+
+When a scheduled job asks to run a knowledge script and commit generated artifacts, first check the live worktree state. If the current checkout is on a feature branch or has unrelated dirty files, create a temporary clean worktree from `origin/main`, run the script there, commit to `main`, push, then remove the temporary worktree. This avoids mixing generated reports with unrelated in-progress work while still satisfying direct-to-main cron tasks.
 
 ## Troubleshooting Checklist
 
