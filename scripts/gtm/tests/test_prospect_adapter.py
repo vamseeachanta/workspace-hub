@@ -29,9 +29,11 @@ from gtm.prospect_adapter import (  # noqa: E402  — sys.path tweak above
     DemoInputBundle,
     ProspectIntakeError,
     ProspectInput,
+    exclude_private_fallback_sidecars,
     load_and_validate,
     materialize_demo_inputs,
     run_demo,
+    write_fallback_sidecar,
 )
 
 
@@ -447,3 +449,80 @@ def test_run_demo_is_a_wired_stub(tmp_path: Path) -> None:
     )
     with pytest.raises(NotImplementedError, match=r"run_demo"):
         run_demo(bundle, demo_id=5)
+
+
+def test_write_fallback_sidecar_writes_private_json_record(tmp_path: Path) -> None:
+    sidecar = write_fallback_sidecar(
+        root_dir=tmp_path,
+        prospect_id="demo-05-acme",
+        fallback_code="F2",
+        failure_mode="missing vessel particulars; closest canonical used",
+        field_substituted="vessel",
+        canonical_source="docs/gtm/intake/canonical-vessels/seven-borealis.yaml",
+        pre_authorization="explicit",
+        engineer="nightly-batch-4",
+        timestamp_utc="2026-05-04T06:47:05Z",
+    )
+
+    assert sidecar == tmp_path / "private-log" / "fallback-applied.json"
+    payload = json.loads(sidecar.read_text(encoding="utf-8"))
+    assert payload == {
+        "prospect_id": "demo-05-acme",
+        "timestamp_utc": "2026-05-04T06:47:05Z",
+        "fallback_code": "F2",
+        "failure_mode": "missing vessel particulars; closest canonical used",
+        "field_substituted": "vessel",
+        "canonical_source": "docs/gtm/intake/canonical-vessels/seven-borealis.yaml",
+        "pre_authorization": "explicit",
+        "engineer": "nightly-batch-4",
+    }
+    assert not payload["canonical_source"].startswith("/")
+
+
+@pytest.mark.parametrize("fallback_code", ["F0", "F6", "manual"])
+def test_write_fallback_sidecar_rejects_unknown_fallback_codes(
+    tmp_path: Path,
+    fallback_code: str,
+) -> None:
+    with pytest.raises(ProspectIntakeError, match="fallback_code"):
+        write_fallback_sidecar(
+            root_dir=tmp_path,
+            prospect_id="demo-05-acme",
+            fallback_code=fallback_code,
+            failure_mode="invalid code smoke test",
+            field_substituted=None,
+            canonical_source=None,
+            pre_authorization="none",
+            engineer="nightly-batch-4",
+            timestamp_utc="2026-05-04T06:47:05Z",
+        )
+
+
+def test_exclude_private_fallback_sidecars_removes_email_and_url_leak_candidates(
+    tmp_path: Path,
+) -> None:
+    public_html = tmp_path / "output" / "report.html"
+    public_pdf = tmp_path / "output" / "report.pdf"
+    sidecar = tmp_path / "private-log" / "fallback-applied.json"
+
+    filtered = exclude_private_fallback_sidecars([public_html, sidecar, public_pdf])
+
+    assert filtered == [public_html, public_pdf]
+
+
+def test_gitignore_covers_2346_private_and_generated_prospect_paths() -> None:
+    from subprocess import run
+
+    patterns = [
+        "docs/gtm/intake/received/sample.yaml",
+        "docs/gtm/intake/logos/prospect.svg",
+        "digitalmodel/examples/demos/gtm/private-log/fallback-applied.json",
+        "digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/report.html",
+    ]
+    for pattern in patterns:
+        result = run(
+            ["git", "check-ignore", "--quiet", pattern],
+            cwd=REPO_ROOT,
+            check=False,
+        )
+        assert result.returncode == 0, pattern

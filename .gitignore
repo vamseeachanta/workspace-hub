@@ -512,3 +512,11 @@ logs/ecosystem-sync/
 
 # markdown-QA runtime artifacts (#2126)
 **/.artifacts/
+
+# #2346 prospect-demo intake/runtime privacy guards
+# Received prospect YAMLs, logos, fallback audit sidecars, and generated
+# prospect outputs are runtime-only; publish only sanitized, reviewed bundles.
+docs/gtm/intake/received/
+docs/gtm/intake/logos/
+digitalmodel/examples/demos/gtm/private-log/
+digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/

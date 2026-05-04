@@ -20,6 +20,7 @@ import json
 import sys
 from copy import deepcopy
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal, Mapping
 
@@ -33,6 +34,10 @@ CANONICAL_DIR = REPO_ROOT / "docs" / "gtm" / "intake" / "canonical-vessels"
 
 DEMO_IDS = ("demo_01", "demo_02", "demo_03", "demo_04", "demo_05")
 DemoId = Literal["demo_01", "demo_02", "demo_03", "demo_04", "demo_05"]
+FallbackCode = Literal["F1", "F2", "F3", "F4", "F5"]
+PreAuthorization = Literal["explicit", "implicit_allowlist", "none"]
+FALLBACK_CODES = ("F1", "F2", "F3", "F4", "F5")
+PRE_AUTHORIZATION_VALUES = ("explicit", "implicit_allowlist", "none")
 
 # Per plan section C constants — which vessel shape each demo expects.
 # None means the demo does not take a vessel block at all (Q6 forbidding
@@ -56,6 +61,82 @@ DEMO_TO_STRUCTURE_KINDS: Mapping[DemoId, tuple[str, ...]] = {
 
 class ProspectIntakeError(ValueError):
     """Raised when an intake YAML fails schema or cross-field validation."""
+
+
+def _utc_now_iso() -> str:
+    """Return an ISO-8601 UTC timestamp with a trailing Z."""
+    return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _reject_absolute_metadata_path(value: str | None, field_name: str) -> None:
+    """Reject local/proprietary absolute paths in public-adjacent metadata."""
+    if value and Path(value).is_absolute():
+        raise ProspectIntakeError(
+            f"{field_name} must be a logical repo path, not an absolute local path: {value}"
+        )
+
+
+def write_fallback_sidecar(
+    *,
+    root_dir: Path,
+    prospect_id: str,
+    fallback_code: str,
+    failure_mode: str,
+    field_substituted: str | None,
+    canonical_source: str | None,
+    pre_authorization: str,
+    engineer: str,
+    timestamp_utc: str | None = None,
+) -> Path:
+    """Write the private fallback-audit sidecar for #2346.
+
+    The sidecar is intentionally placed under ``private-log/`` and is not a
+    deliverable. Inputs are kept to logical IDs/paths so no workstation or
+    proprietary project paths leak into audit metadata.
+    """
+    if fallback_code not in FALLBACK_CODES:
+        raise ProspectIntakeError(
+            f"fallback_code must be one of {list(FALLBACK_CODES)!r}, got {fallback_code!r}"
+        )
+    if pre_authorization not in PRE_AUTHORIZATION_VALUES:
+        raise ProspectIntakeError(
+            "pre_authorization must be one of "
+            f"{list(PRE_AUTHORIZATION_VALUES)!r}, got {pre_authorization!r}"
+        )
+    if not prospect_id:
+        raise ProspectIntakeError("prospect_id is required for fallback sidecar")
+    if not failure_mode:
+        raise ProspectIntakeError("failure_mode is required for fallback sidecar")
+    if not engineer:
+        raise ProspectIntakeError("engineer is required for fallback sidecar")
+    _reject_absolute_metadata_path(canonical_source, "canonical_source")
+    _reject_absolute_metadata_path(field_substituted, "field_substituted")
+
+    sidecar_path = Path(root_dir) / "private-log" / "fallback-applied.json"
+    sidecar_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "prospect_id": prospect_id,
+        "timestamp_utc": timestamp_utc or _utc_now_iso(),
+        "fallback_code": fallback_code,
+        "failure_mode": failure_mode,
+        "field_substituted": field_substituted,
+        "canonical_source": canonical_source,
+        "pre_authorization": pre_authorization,
+        "engineer": engineer,
+    }
+    sidecar_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    return sidecar_path
+
+
+def exclude_private_fallback_sidecars(paths: list[Path]) -> list[Path]:
+    """Remove private fallback sidecars from email or gated-URL file lists."""
+    public_paths: list[Path] = []
+    for path in paths:
+        parts = set(Path(path).parts)
+        if "private-log" in parts or Path(path).name == "fallback-applied.json":
+            continue
+        public_paths.append(path)
+    return public_paths
 
 
 @dataclass(frozen=True)

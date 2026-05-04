@@ -91,9 +91,16 @@ Future work on #2346 will need to land, in roughly this order:
   machine, gated-URL guardrails, canonical-vessel usage rules, and
   post-deploy verification steps. `scripts/gtm/tests/test_prospect_demo_sop.py`
   validates the runbook contract and path-leakage guardrails.
-- **Fallback sidecar**: schema and never-ships placement are documented in
-  `docs/gtm/prospect-demo-sop.md`; code wiring of the runtime
-  `private-log/fallback-applied.json` writer/packager exclusion remains open.
+- **Fallback sidecar — workspace-hub writer done**: schema and never-ships
+  placement are documented in `docs/gtm/prospect-demo-sop.md`;
+  `scripts/gtm/prospect_adapter.py::write_fallback_sidecar()` now writes
+  `private-log/fallback-applied.json`, validates F1-F5/pre-authorization
+  enums, rejects absolute local metadata paths, and
+  `exclude_private_fallback_sidecars()` removes the sidecar from email/URL
+  file lists. `.gitignore` now covers received intake YAMLs, prospect logos,
+  private fallback logs, and generated prospect-output fixtures. Remaining
+  work is to call the writer from the future fallback decision path and
+  delivery state machine.
 - **E2E regression suite**: golden-image test that runs all 5 demos on
   canonical fixtures within the <10 min PR-runtime budget using
   `--from-cache`, outputs routed to the gitignored test-only sink at
