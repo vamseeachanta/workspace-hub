@@ -82,9 +82,9 @@ These standards are explicitly **excluded from the SESA tranche** — extraction
 | Candidate dossier | `.planning/intel/elements-overnight-wave/sesa-candidate-dossier.md` |
 | First-tranche TSV (≤20 artifacts) | `.planning/intel/elements-overnight-wave/sesa-first-tranche.tsv` |
 | Terminal-1 result summary | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-1-sesa.md` |
-| Plan review — Claude | `scripts/review/results/2026-04-28-plan-2541-claude.md` (created during adversarial review) |
-| Plan review — Codex | `scripts/review/results/2026-04-28-plan-2541-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-04-28-plan-2541-gemini.md` |
+| Plan review — historical Codex/Gemini | `scripts/review/results/2026-04-29-plan-2541-2544-{codex,gemini}.md`; `scripts/review/results/2026-04-29-plan-2541-2544-{codex,gemini}-rereview.md` |
+| Plan review — fresh 2026-05-02 | `scripts/review/results/2026-05-02-plan-2541-{codex,claude}.md` (Codex MAJOR; Claude unavailable/stale per later audit) |
+| Plan review — nightly batch 2 rerun | `scripts/review/results/2026-05-04-plan-2541-{claude,codex,gemini,disagreement}.md` (Codex MAJOR; Gemini UNAVAILABLE; Claude MINOR with approval-readiness caveat) |
 | Implementation script (future) | `scripts/knowledge/elements_extract_sesa.py` |
 | Canonical-path helper (future) | `scripts/knowledge/elements_canonical_paths.py` |
 | Wiki source pages (future) | `knowledge/wikis/lng-projects/wiki/sources/elements-sesa-*.md` (≤20) |
@@ -125,10 +125,18 @@ A bounded, approval-ready plan + dossier + 20-artifact tranche TSV that lets a f
 ```
 function extract_sesa_first_tranche(tranche_tsv, output_root):
     rows = read_tsv(tranche_tsv)                      # ≤20 rows
+    clearance = load_clearance_or_fail_before_source_body_access(
+        "docs/governance/sesa-extraction-clearance-2026.md", issue_comment="#2541"
+    )                                                 # covers every selected row and allowed extraction level
+    require clearance covers every row before opening any source document
+    reject rows whose clearance_level is absent or below their requested extraction_method
     canonical_paths = canonicalize(rows)              # exclude Old/ JWhipple/ format-triplet duplicates
     for row in canonical_paths:
         ensure absolute_path is under /mnt/ace/doris/62092_sesa
         ensure absolute_path is read-only-accessed
+        if row.theme == "subsea-valves-tbe" and clearance says metadata-only:
+          emit only metadata/deferral reason; do not run pdftotext/pandoc/python-pptx
+          continue
         case row.extraction_method:
           pdftotext-layout:
             require pdftotext or pdfminer.six; if unavailable, emit explicit missing-parser error and skip writing wiki output
@@ -147,8 +155,8 @@ function extract_sesa_first_tranche(tranche_tsv, output_root):
       knowledge/wikis/lng-projects/wiki/{sources,entities,concepts,comparisons,standards}
     update knowledge/wikis/lng-projects/wiki/index.md
     append entry to knowledge/wikis/lng-projects/wiki/log.md
-    run llm_wiki.py status --wiki lng-projects
-    run llm_wiki.py lint --wiki lng-projects
+    run scripts/knowledge/llm_wiki.py status lng-projects
+    run scripts/knowledge/llm_wiki.py lint lng-projects
     run pytest scripts/knowledge/tests/test_llm_wiki.py
 ```
 
@@ -197,13 +205,14 @@ The implementation phase that follows approval of this plan must satisfy:
 
 - [ ] Dossier covers reference-studies, free-span/metocean, material-specs, subsea-valves-TBE, logistics/deliverables themes (5 themes, all present in tranche TSV).
 - [ ] Tranche TSV has ≤20 rows + 1 header (verified 21 lines).
-- [ ] Every tranche row has priority, theme, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, risk_note (9 columns).
+- [ ] Every executable tranche row has priority, theme, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, risk_note, clearance_level, owner_approval_ref, and allowed_content_classes. The current 9-column `sesa-first-tranche.tsv` is planning input only and must be expanded before implementation; without these clearance columns it is not execution authority.
 - [ ] Plan explicitly preserves the link-only raw-data policy from `elements-doris-62092-sesa.md` and the #2534 retention boundary.
 - [ ] Standards (DNV-ST-F101, API 6DSS, ASME B16.5, ASTM A351/A182/A276) are excluded from the tranche with a documented reason.
 - [ ] Target wiki directories `sources`, `entities`, `concepts`, `comparisons`, and `standards` are created or verified before page generation; no code assumes absent directories already exist.
 - [ ] Extraction parser support is proven by tests for PDF, PPTX, and DOCX/text branches, including explicit missing-parser behavior; the current XLSM/QGIS-only `extract-first-pass.py` is not treated as sufficient evidence.
 - [ ] Date/path ordering tests include lexicographically inverted mixed-date examples so string sorting cannot accidentally satisfy chronological order.
 - [ ] Vendor/TBE rows are metadata-only unless row-level clearance explicitly authorizes more; body text, tables, specifications, quoted clauses, equipment details, and screenshots/images are prohibited by default.
+- [ ] The `GSM-AO-L-MCA-10025-0000-A.docx` / `GSM-AO-L-MCA-10025-0000-A Free Span Calculation MKII.pdf` pair is reconciled before execution: either remove the DOCX extraction row under the PDF-over-DOCX canonicalization rule, or explicitly mark it as non-extracted provenance/metadata input with no parser branch.
 - [ ] No extraction, source page publication, concept page publication, comparison page publication, quote, or snippet is emitted until SESA citeability is confirmed via `docs/governance/sesa-extraction-clearance-2026.md` or an owner issue comment on #2541 covering every selected row and allowed extraction level.
 - [ ] Plan stays at `status:plan-review`; no self-approval; no `status:plan-approved` label applied by this terminal.
 - [ ] Adversarial review (Claude + Codex + Gemini) is invoked on this plan before user approval.
@@ -215,9 +224,9 @@ The implementation phase that follows approval of this plan must satisfy:
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR (2026-05-02 fresh attempt) | `scripts/review/results/2026-05-02-plan-2541-claude.md` found stale line-count evidence, current extractor is XLSM/QGIS-only, missing wiki target directories, parser-fallback mismatch, and weak date-ordering tests. This revision patches those defects but needs rerun. |
-| Codex | MAJOR (2026-05-02 fresh attempt) | `scripts/review/results/2026-05-02-plan-2541-codex.md` found unresolved extraction/provenance/TDD gaps; this revision makes parser support, directory creation, and clearance gating explicit. |
-| Gemini | MAJOR initial; rerun unavailable/pending | Initial Gemini finding blocked raw `.txt` dumps and extraction without citeability clearance. The current plan body now explicitly hard-blocks extraction/publication before clearance and prohibits raw/full-text persistence; Gemini rerun prompt/evidence still needed. |
+| Claude | MINOR (2026-05-04 rerun) | `scripts/review/results/2026-05-04-plan-2541-claude.md` found no hard blockers for the planning artifact but still blocked approval-readiness on valid post-patch review evidence/Gemini availability; also noted artifact-map drift, vendor/TBE ambiguity, and wrong `llm_wiki.py --wiki` pseudocode. This revision patches concrete plan-text findings. |
+| Codex | MAJOR (2026-05-04 rerun) | `scripts/review/results/2026-05-04-plan-2541-codex.md` found approval blocked by missing row-level clearance, weak review gate, DOCX/PDF tranche contradiction, missing clearance columns, vendor brochure extraction_method ambiguity, and clearance gate appearing after source-body access. This revision patches the plan; rerun required. |
+| Gemini | UNAVAILABLE (2026-05-04 rerun) | `scripts/review/results/2026-05-04-plan-2541-gemini.md` records CLI/sandbox failure. This is not approval evidence. |
 
 **Overall result:** BLOCKED-CANDIDATE, not approval-ready today. The fresh MAJOR findings have been patched into the canonical plan body, but #2541 still needs (a) valid fresh review evidence on the patched text and (b) an explicit user/data-owner decision on SESA citeability/allowed extraction level before any approval should be considered.
 
@@ -255,6 +264,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 - **No SESA extraction, source page publication, concept page publication, comparison page publication, or quote/snippet emission may occur until SESA citeability is confirmed and recorded.**
 - Required clearance record: `docs/governance/sesa-extraction-clearance-2026.md` or an issue comment on #2541 from the responsible project/data owner explicitly allowing the named tranche rows and extraction level.
 - The clearance record must include: approver name/role, approval date, allowed extraction level per row, prohibited content classes, and whether vendor/TBE material is allowed.
+- The tranche TSV must carry `clearance_level`, `owner_approval_ref`, and `allowed_content_classes` before implementation. Until those columns exist, the TSV is a selection/dossier artifact only and cannot drive parser execution.
 
 ### No persisted full-text intermediates
 - Replace any earlier instruction to write extracted text such as `.planning/intel/elements-deep-extraction/sesa/<slug>.txt`.
@@ -263,6 +273,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 
 ### Vendor/TBE brochure policy
 - Vendor/TBE rows are excluded from tranche-1 extraction unless row-level clearance explicitly allows them.
+- Any vendor/TBE row still listed with `pdftotext-layout` in the current 9-column TSV must be treated as `metadata-only-pending-clearance` until the expanded clearance columns authorize body extraction.
 - Default allowed fields are limited to file path, file name, byte size, document type, vendor name if visible in the file name/metadata, and a one-sentence non-technical reason for deferral.
 - Prohibited by default: body text, tables, specifications, quoted clauses, equipment details, and screenshots/images.
 

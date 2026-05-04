@@ -1,6 +1,6 @@
 # Plan for #2510: Python layout/CAD automation demo for chip/package geometries
 
-> **Status:** plan-review — r14 MAJOR findings patched (3 P1 in-place); r15 adversarial review pending
+> **Status:** plan-review — 2026-05-04 Codex r15 MAJOR findings patched in plan text; fresh rerun required before approval
 > **Complexity:** T2
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2510
@@ -108,7 +108,7 @@ print(getattr(opts, "gds2_write_timestamps", None)) # False
 PY
 ```
 
-Finding: use `from gdsfactory.read import import_gds`; write deterministic GDS with `save_layout_options()` / `gds2_write_timestamps=False` passed to `Component.write_gds(save_options=...)`.
+Finding: use `from gdsfactory.read import import_gds`; write deterministic GDS with `save_layout_options()` / `gds2_write_timestamps=False` passed to `Component.write_gds(save_options=..., with_metadata=False, no_empty_cells=True)` and assert the output directory contains no unmanifested GDSFactory sidecar/metadata files.
 
 **External anchor proof:**
 
@@ -219,7 +219,8 @@ function write_exchange_artifact(geometry, output_dir):
         (from gdsfactory.gpdk import get_generic_pdk; get_generic_pdk().activate())
         because gdsfactory 9.40.2 raises ValueError on add_polygon without an active PDK
     create a GDSFactory Component from deterministic rectangles/polygons/layers/labels
-    write chip_package_demo.gds
+    write chip_package_demo.gds via Component.write_gds(save_options=opts, with_metadata=False, no_empty_cells=True)
+    assert no unmanifested sidecar files are emitted in output_dir
     record writer package/version and active PDK name (e.g., "generic") in metadata
 
 function import_exchange_artifact(gds_path):
@@ -231,7 +232,9 @@ function import_exchange_artifact(gds_path):
 
 function write_metadata_initial(geometry, artifacts):
     write layout_metadata.json with parameters, layers, bboxes, counts, invariants, writer mode, and an empty artifact_hashes placeholder
-    write geometry_summary.csv with deterministic row order and LF endings
+    write geometry_summary.csv with required columns in this exact order:
+      layer,datatype,layer_name,shape_role,shape_name,net_name,xmin_um,ymin_um,xmax_um,ymax_um,width_um,height_um,area_um2,centroid_x_um,centroid_y_um
+    sort rows by (layer, datatype, shape_role, shape_name, net_name, xmin_um, ymin_um)
 
 function render_report(metadata, artifacts):
     summarize relevance to semiconductor layout/package CAD roles
@@ -269,9 +272,10 @@ function finalize_metadata_and_manifest(output_dir, report_path):
 | `test_geometry_invariants_for_die_pads_and_substrate` | die is inside substrate; all bumps/pads are inside die/substrate bounds; counts/pitch deterministic | default geometry | invariant booleans true, expected counts/bboxes |
 | `test_metadata_extracts_layers_bboxes_ports_counts_and_final_hashes` | JSON metadata captures layers, polygons/rectangles, bbox, area, pads/ports/nets, writer/reader versions, and final artifact hashes | generated full CLI output | deterministic metadata keys/numeric values; `layout_metadata.json["artifact_hashes"]` matches `artifact_manifest.sha256` for every final artifact except `layout_metadata.json` and `artifact_manifest.sha256`; the manifest itself contains the final `layout_metadata.json` hash |
 | `test_gds_export_import_roundtrip_preserves_core_invariants` | real GDS export/import exists and read-back metadata preserves layer counts and bbox invariants, and the CLI fails closed on invariant mismatch | generated `chip_package_demo.gds` plus monkeypatched mismatch path | `gds_readback_metadata.json` with bbox tolerance, contract-matched per-layer counts (exact for generated simple rectangles; documented bounded ranges only for intentionally fracturable geometry), non-zero CLI exit on required invariant mismatch, and reader object `reader: {"package": "gdsfactory", "version": actual_imported_version}` where the version is asserted against the pinned runtime |
-| `test_cli_regenerates_artifacts_manifest_and_report` | CLI writes SVG, CSV, JSON, real `.gds`, read-back JSON, manifest, and report | temp output/report paths | files exist, manifest validates, report links resolve via `Path(report.parent / svg_link).exists()` |
+| `test_cli_regenerates_artifacts_manifest_and_report` | CLI writes SVG, CSV, JSON, real `.gds`, read-back JSON, manifest, and report | temp output/report paths | files exist; manifest validates; report links resolve via `Path(report.parent / svg_link).exists()`; no unmanifested GDSFactory sidecar/metadata files are left in `--output` |
 | `test_cli_rejects_report_outside_output_without_partial_artifacts` | `--report` must resolve under `--output` and fail before writes otherwise | temp output path plus report path outside output | non-zero exit, clear error, and no generated partial artifacts in output |
-| `test_outputs_are_deterministic_across_runs` | repeat runs produce identical deterministic artifact hashes under the pinned GDS timestamp policy | two temp dirs | equal content hashes for manifest-covered artifacts and byte-identical `artifact_manifest.sha256` text |
+| `test_geometry_summary_csv_schema_and_sort_order` | CSV contract is deterministic and reviewable | generated `geometry_summary.csv` | exact columns `layer,datatype,layer_name,shape_role,shape_name,net_name,xmin_um,ymin_um,xmax_um,ymax_um,width_um,height_um,area_um2,centroid_x_um,centroid_y_um`; rows sorted by `(layer, datatype, shape_role, shape_name, net_name, xmin_um, ymin_um)`; no package/version metadata in CSV |
+| `test_outputs_are_deterministic_across_runs` | repeat runs produce identical deterministic artifact hashes under the pinned GDS timestamp policy and no same-process kfactory name-conflict noise | two temp dirs generated in the same Python process with captured stderr | equal content hashes for manifest-covered artifacts and byte-identical `artifact_manifest.sha256` text; second run emits no `Name conflict`/cell-registry stderr; if needed implementation resets/uniquely scopes GDSFactory/kfactory cell names before each generation |
 | `test_missing_open_layout_dependency_blocks_rather_than_fakes_gds` | missing GDSFactory/open reader is treated as execution blocker, not a passing fake artifact | monkeypatch the lazy import helper to raise `ModuleNotFoundError` | clear RuntimeError/blocker message that includes the pinned `uv run --python 3.11 --with ...` invocation; no fake `.gds` produced |
 | `test_csv_manifest_and_report_use_lf_line_endings` | cross-platform determinism for CSV/manifest/report text artifacts | generated CSV/manifest/report bytes | no `\r` bytes; explicit `\n` line endings |
 | `test_report_and_metadata_have_role_relevance_and_no_signoff_overclaims` | portfolio report maps demo to chip/package CAD roles and report/metadata avoid positive compliance/tapeout claims | generated report plus `layout_metadata.json` | case-insensitive **word-boundary regex** scan over report+metadata rejects bare and compound forbidden tokens: `tapeout`, `tape-out`, `tape out`, `signoff`, `sign-off`, `sign off`, `production tapeout`, `production-tapeout`, `tapeout-ready`, `tapeout ready`, `signoff-ready`, `ready for signoff`, `signoff complete`, `manufacturing release`, `JEDEC compliant`, `meets JEDEC`, `IPC compliant`, `DRC clean`, `LVS clean`, `PDK-qualified`, `foundry signoff`, `PDK DRC`, and `PDK LVS`. Word-boundary regex is mandatory so that legitimate compound identifiers such as `signoff_disclaimer` (a section heading) or `tapeout_context` (a glossary entry) do **not** false-positive — only token boundaries `(?<!\w)tapeout(?!\w)` style match. The canonical limitation sentence must use non-claim wording such as `not a foundry or PDK signoff flow and not evidence for manufacturing release`; per #2481-style avoidance and the `feedback_naive_secret_scan_false_positive_cascade` semantics, the disclaimer wording itself must be exempted by being inside a known-disclaimer block that the test allowlists, or rephrased so that none of the bare tokens appear at all. |
@@ -329,8 +333,11 @@ function finalize_metadata_and_manifest(output_dir, report_path):
 | Codex r13 | MAJOR | Required README row synchronization, current GitHub plan-review comment refresh, current-wave sustained-MAJOR wording, and recognition that canonical unsuffixed artifacts still represent the latest failed wave until r14 replaces them. |
 | Gemini r13 | MAJOR | Reported missing semiconductor baseline files from sandbox glob results; local verification in this worktree confirms the cited files exist, so this is classified as provider retrieval/sandbox defect rather than a substantive missing-file blocker. |
 | Claude r14 | MAJOR | 3 P1 + 3 P2 + 2 P3: missing PDK-activation step in execution contract (runtime `ValueError: No active PDK` on first `add_polygon`), forbidden-phrase test enumeration coverage hole vs its own AC (bare `tapeout`/`signoff`/`production tapeout` not blocked), and duplicate r13 rows in this Adversarial Review Summary table; secondary findings on `with_metadata` sidecar leakage, kfactory stderr noise on second-run, label-vs-body drift, helper PDK contract, and CSV column schema. Artifact: `scripts/review/results/2026-05-02-plan-2510-claude-r14.md`. |
+| Claude r15 | MINOR | `scripts/review/results/2026-05-04-plan-2510-claude.md` found no approval-blocking CAD defects but flagged residual review-state/traceability cleanup. |
+| Codex r15 | MAJOR | `scripts/review/results/2026-05-04-plan-2510-codex.md` found stale README row, unpinned `Component.write_gds(... with_metadata/no_empty_cells ...)`, missing same-process kfactory stderr contract, and missing `geometry_summary.csv` schema/sort key. This revision patches those concrete plan findings; rerun required. |
+| Gemini r15 | UNAVAILABLE | `scripts/review/results/2026-05-04-plan-2510-gemini.md` was 0 bytes due runner timeout; replaced/treated as UNAVAILABLE, not evidence. |
 
-**Overall result:** r14 returned Claude MAJOR with 3 P1 + 3 P2 + 2 P3 findings (Codex/Gemini r14 not yet available at patch time). This revision patches the three r14 P1 blockers in place: PDK activation step added to the execution contract, forbidden-phrase test enumeration extended to cover bare `tapeout`/`signoff`/`production tapeout` variants, and duplicate r13 rows in this table collapsed to a single canonical row per provider. The plan is queued for r15 adversarial review. r13 history: Codex/Gemini MAJOR (state-sync) and Claude UNAVAILABLE; Gemini r13 missing-file claims classified as sandbox/retrieval defects because local verification confirms all cited baseline files exist at the current worktree HEAD.
+**Overall result:** r15 Codex returned MAJOR after r14 patches. This revision patches the concrete r15 blockers in place: README row status, full `write_gds(... with_metadata=False, no_empty_cells=True)` invocation plus no-sidecar test, same-process kfactory stderr/cell-registry determinism contract, and exact `geometry_summary.csv` schema/sort key. The plan remains `status:plan-review` and is not approval-ready until a fresh post-patch rerun returns no MAJOR findings.
 
 Revisions made based on reviews so far:
 - Required real open-tool GDS generation/read-back rather than pure JSON fallback; removed remaining fake-layout acceptance ambiguity.
@@ -360,6 +367,7 @@ Revisions made based on reviews so far:
 - Patched r13 state-sync findings: refreshed the #2510 README row, archived r13 canonicals, updated sustained-MAJOR wording to the current wave, and classified Gemini r13 missing-file claims as retrieval-defect evidence because local shell probes confirm the cited files exist in this worktree.
 - Patched r13 findings: synchronized this plan/header and README row to r13-patched/r14-pending state; archived r13 provider evidence; replaced stale wave-specific sustained-MAJOR wording with current-wave wording; and recorded local verification that Gemini r13 missing-file findings conflict with actual worktree files and are treated as provider retrieval/sandbox defects, not plan blockers.
 - Patched r14 P1 findings: added explicit PDK activation step (`from gdsfactory.gpdk import get_generic_pdk; get_generic_pdk().activate()` — verified via 2026-05-01 live probe against `gdsfactory==9.40.2`) to §CLI and Dependency Contract and §Pseudocode `write_exchange_artifact`, expanded `_load_gdsfactory()` return contract to include `pdk_name`/activation side effect with the active PDK name (`generic`) recorded in `layout_metadata.json` for determinism provenance; extended forbidden-phrase test enumeration to add bare `tapeout`/`signoff`/`tape-out`/`sign-off`/`tape out`/`sign off`/`production tapeout`/`production-tapeout`/`ready for signoff`/`signoff complete`/`manufacturing release` (case-insensitive, word-boundary regex so legitimate compound tokens like `signoff_disclaimer` still pass); collapsed duplicate r13 rows in the Adversarial Review Summary table to a single canonical row per provider matching the actual run-log evidence.
+- Patched r15 findings: synchronized README traceability, pinned the full deterministic `Component.write_gds(save_options=opts, with_metadata=False, no_empty_cells=True)` invocation, required no unmanifested sidecar files, added same-process no-`Name conflict` stderr/cell-registry determinism coverage, and specified the exact `geometry_summary.csv` columns and sort key.
 
 ---
 
@@ -392,13 +400,13 @@ Before asking for user approval:
 Execution must make deterministic artifacts falsifiable:
 
 - Sort all layers, geometry records, labels/ports, file-list manifest entries, and JSON keys.
-- Use LF line endings for CSV/manifest/report-generated tables. `geometry_summary.csv` must contain only deterministic geometry rows/columns; package versions and other per-process metadata belong in `layout_metadata.json` and the report, not in CSV headers/comments.
+- Use LF line endings for CSV/manifest/report-generated tables. `geometry_summary.csv` must contain only deterministic geometry rows/columns; package versions and other per-process metadata belong in `layout_metadata.json` and the report, not in CSV headers/comments. Required columns, in order: `layer,datatype,layer_name,shape_role,shape_name,net_name,xmin_um,ymin_um,xmax_um,ymax_um,width_um,height_um,area_um2,centroid_x_um,centroid_y_um`; required row sort key: `(layer, datatype, shape_role, shape_name, net_name, xmin_um, ymin_um)`.
 - Do not serialize wall-clock timestamps into checked-in metadata, SVG, CSV, GDS read-back JSON, or manifest-covered files.
 - Use explicit stable color/style maps for SVG; do not depend on Python hash iteration order.
 - Manifest entries must be relative to the manifest file parent directory, not absolute and not repo-root-only. Canonical validation is `cd data/semiconductor/layout_cad_demo && sha256sum -c artifact_manifest.sha256`; for pytest temp dirs, the same relative-to-manifest rule applies and the report must be inside the output directory for deterministic manifest paths unless a future plan introduces an explicit `--manifest-root`.
 
-- The two-run byte-diff probe for `chip_package_demo.gds` is satisfied by `test_outputs_are_deterministic_across_runs`: generate the same default design into two temp dirs using the pinned dependency set and assert equal SHA256 for the `.gds`, equal manifest-covered artifact hashes, and byte-identical `artifact_manifest.sha256` before accepting the deterministic manifest.
-- GDS bytes must be deterministic using the probed `gdsfactory==9.40.2` / kfactory path: construct/passthrough `kfactory.utilities.save_layout_options()` where `gds2_write_timestamps=False`, then pass it as `save_options` to `Component.write_gds(...)`. This zeroes GDSII timestamp fields rather than writing wall-clock time. If regenerated `.gds` hashes still differ, #2510 must stop as blocked and create/record a follow-up rather than closing with a manifest that fails regeneration.
+- The two-run byte-diff probe for `chip_package_demo.gds` is satisfied by `test_outputs_are_deterministic_across_runs`: generate the same default design into two temp dirs in the same Python process using the pinned dependency set, assert clean stderr on the second generation (no `Name conflict`/cell-registry warnings), assert equal SHA256 for the `.gds`, equal manifest-covered artifact hashes, and byte-identical `artifact_manifest.sha256` before accepting the deterministic manifest.
+- GDS bytes must be deterministic using the probed `gdsfactory==9.40.2` / kfactory path: construct/passthrough `kfactory.utilities.save_layout_options()` where `gds2_write_timestamps=False`, then pass it as `save_options` to `Component.write_gds(save_options=opts, with_metadata=False, no_empty_cells=True)`. This zeroes GDSII timestamp fields and prevents untracked metadata sidecars/empty-cell drift. If regenerated `.gds` hashes still differ or sidecar files appear, #2510 must stop as blocked and create/record a follow-up rather than closing with a manifest that fails regeneration.
 
 ---
 
