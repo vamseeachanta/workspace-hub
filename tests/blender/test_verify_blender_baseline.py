@@ -109,6 +109,9 @@ def test_repo_tracks_smoke_script_manifest_and_workflow_doc() -> None:
     assert "Blender headless baseline workflow" in workflow
     assert "dev-secondary" in workflow
     assert "latest-verdict.yaml" in workflow
+    assert "<scene-name>_frame-<NNNN>.png" in workflow
+    assert "CLI-Anything" in workflow
+    assert "convenience-only" in workflow
 
 
 def test_engineering_checklist_references_blender_baseline_bundle() -> None:

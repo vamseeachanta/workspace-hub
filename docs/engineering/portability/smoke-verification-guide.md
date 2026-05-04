@@ -39,6 +39,14 @@ The runner writes per-tool verdicts plus a consolidated verdict:
 
 The consolidated verdict includes `overall_verdict`, `machine`, and a `tools` list with each tool's status, version, and verdict file path.
 
+## Pass/fail semantics and common failure categories
+
+- `PASS`: every selected per-tool validator exited successfully and wrote a parseable verdict with `overall_verdict: PASS`.
+- `FAIL`: at least one selected tool ran but reported a failed tool verdict; classify this as `tool-status-failure` and inspect that tool's `error_summary`.
+- `missing-validator`: the unified runner cannot find or execute the configured OpenFOAM or Blender validator script.
+- `verdict-parse-failure`: a validator ran but did not produce the expected verdict file/fields, so the runner cannot trust the result.
+- Environment failures such as missing OpenFOAM/Blender binaries should be reported in the per-tool verdict and propagated into the consolidated report.
+
 ## Drift detection
 
 Re-run the verifier on the canonical engineering host and compare the new `consolidated-verdict.yaml` to the last known-good baseline. Treat these as drift signals:

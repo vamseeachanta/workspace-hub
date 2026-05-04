@@ -121,3 +121,8 @@ def test_smoke_verification_guide_documents_reports_and_drift_detection() -> Non
     assert "OpenFOAM" in text
     assert "Blender" in text
     assert "drift" in text.lower()
+    assert "PASS" in text
+    assert "FAIL" in text
+    assert "missing-validator" in text
+    assert "tool-status-failure" in text
+    assert "verdict-parse-failure" in text
