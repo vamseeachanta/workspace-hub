@@ -91,3 +91,7 @@ Level 1 Screening
 
 - [DNV-RP-F101: Corroded Pipelines](dnv-rp-f101.md) -- specialized pipeline corrosion assessment
 - [Pipeline Integrity Assessment](../concepts/pipeline-integrity-assessment.md) -- broader integrity management context
+
+## Cross-References
+
+- **Cross-wiki (asset-management)**: [API 579-1 / ASME FFS-1 — Fitness-for-Service](../../../asset-management/wiki/standards/api-579-1.md) -- similar slugs (80%); similar titles (94%); shared tags: api, asme, fitness-for-service, integrity, standard; shared entities: API, API 579, ASME, FFS, FFS-1

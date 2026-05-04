@@ -32,3 +32,4 @@ Cumulative axial displacement ("walking") of high-temperature subsea pipelines u
 - **Related concept**: [[pipeline-lateral-buckling]] — companion HT/HP failure mode.
 - **Related concept**: [[pipeline-soil-interaction]] — axial resistance governs walking rate.
 - **Related concept**: [[pipeline-integrity-assessment]] — long-term consequence on tie-in fitness-for-service.
+- **Cross-wiki (marine-engineering)**: [Pipeline Integrity Assessment](../../../marine-engineering/wiki/entities/pipeline-integrity.md) -- similar slugs (71%); similar titles (53%); shared tags: pipeline; shared keywords: concept, cross-references, key, pipeline, related; shared entities: API, DNV

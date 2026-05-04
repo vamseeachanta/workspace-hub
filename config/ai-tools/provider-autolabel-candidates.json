@@ -1,30 +1,65 @@
 {
-  "generated_at": "2026-05-03T09:20:06.994246Z",
+  "generated_at": "2026-05-04T14:51:20.650813Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 1,
+  "eligible_count": 5,
   "applied": [],
   "candidates": [
     {
-      "number": 2510,
-      "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
+      "number": 2523,
+      "title": "feat(workstations): add reusable Hermes preflight readiness checker",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2523",
       "labels": [
-        "priority:medium",
-        "cat:engineering",
-        "cat:tooling",
-        "status:plan-approved",
-        "domain:semiconductor",
-        "domain:chip-design"
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "domain:ai-orchestration",
+        "domain:workstations",
+        "domain:agent-cost-tracking",
+        "status:plan-approved"
       ],
-      "updatedAt": "2026-05-03T04:15:17Z",
+      "updatedAt": "2026-05-03T19:30:33Z",
       "execution_ready": true,
-      "priority_rank": 2,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2533,
+      "title": "feat(repo-portfolio): review and revise mission/objective statements across active repos",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2533",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:documentation",
+        "domain:repo-organization",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-03T19:27:15Z",
+      "execution_ready": true,
+      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
+        "research",
         "implementation",
         "strategy"
       ],
@@ -37,6 +72,141 @@
         "provider-high-priority"
       ],
       "eligible": true
+    },
+    {
+      "number": 2563,
+      "title": "Set up Telegram mobile access for Hermes AI control",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "domain:integrations",
+        "domain:notification",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-03T12:47:12Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2628,
+      "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "cat:harness",
+        "domain:testing",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-04T09:03:49Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2552,
+      "title": "docs(security): external contributor and unsolicited paid-help response runbook",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
+      "labels": [
+        "documentation",
+        "priority:medium",
+        "cat:documentation",
+        "domain:security",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-03T21:15:07Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2627,
+      "title": "wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2627",
+      "labels": [
+        "cat:engineering",
+        "status:plan-approved",
+        "llm-wiki",
+        "tracker",
+        "domain:digitalmodel",
+        "status:needs-plan"
+      ],
+      "updatedAt": "2026-05-04T03:06:11Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
     },
     {
       "number": 2295,
@@ -110,7 +280,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -135,13 +305,13 @@
         "priority:critical",
         "compliance-alert"
       ],
-      "updatedAt": "2026-05-02T11:49:38Z",
+      "updatedAt": "2026-05-03T11:45:05Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",
@@ -175,134 +345,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2520,
-      "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
-      "labels": [
-        "bug",
-        "cat:ai-orchestration",
-        "cat:harness",
-        "priority:critical",
-        "domain:ai-orchestration",
-        "domain:workstations",
-        "domain:agent-cost-tracking"
-      ],
-      "updatedAt": "2026-04-27T17:45:28Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2291,
-      "title": "fix(cron-health): harden failure detection and align task evidence contracts",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:operations",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-16T10:39:33Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2301,
-      "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:harness"
-      ],
-      "updatedAt": "2026-04-16T14:37:26Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2363,
-      "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data-pipeline",
-        "domain:document-intelligence"
-      ],
-      "updatedAt": "2026-04-26T21:54:20Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation",

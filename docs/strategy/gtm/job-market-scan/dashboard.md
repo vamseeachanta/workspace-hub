@@ -1,99 +1,100 @@
 # GTM Job Market Scan — Dashboard
 
-> Auto-generated: 2026-04-20
+> Auto-generated: 2026-05-04
 > Related: GitHub issues #1669, #1670, #1671
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Total job postings found | **587** |
-| Unique companies | **314** |
+| Total job postings found | **664** |
+| Unique companies | **333** |
 | Keywords searched | 22 |
-| Sources queried | linkedin, career_page |
+| Sources queried | linkedin, indeed, career_page |
 
 ## Results by Source
 
 | Source | Count |
 |--------|-------|
-| linkedin | 547 |
-| career_page | 40 |
+| linkedin | 604 |
+| indeed | 32 |
+| career_page | 28 |
 
 ## Results by Keyword Tier
 
 | Tier | Description | Count |
 |------|-------------|-------|
-| Tier 1 | Elite niche (OrcaFlex, riser, mooring, hydro) | 24 |
-| Tier 2 | Strong niche (cathodic, subsea, pipeline, API 579) | 174 |
-| Tier 3 | Broader fit (FEA, structural, corrosion, DNV) | 136 |
-| Tier 4 | Manufacturing / wide net (ANSYS, aerospace) | 213 |
+| Tier 1 | Elite niche (OrcaFlex, riser, mooring, hydro) | 48 |
+| Tier 2 | Strong niche (cathodic, subsea, pipeline, API 579) | 167 |
+| Tier 3 | Broader fit (FEA, structural, corrosion, DNV) | 173 |
+| Tier 4 | Manufacturing / wide net (ANSYS, aerospace) | 248 |
 
 ## Top Companies by Posting Volume
 
 | Rank | Company | Postings | Priority Target? |
 |------|---------|----------|------------------|
-| 1 | WSP in the U.S. | 24 |  |
-| 2 | Oceaneering | 20 | ✅ YES |
-| 3 | ABS | 13 | ✅ YES |
-| 4 | Worley | 9 | ✅ YES |
-| 5 | Jacobs | 8 |  |
-| 6 | Siemens Energy | 7 | ✅ YES |
-| 7 | Layton Construction | 7 |  |
-| 8 | Seatrium | 7 |  |
-| 9 | Insight Global | 7 |  |
-| 10 | GE Vernova | 7 | ✅ YES |
-| 11 | TechnipFMC | 6 | ✅ YES |
-| 12 | Global Technical Talent, an Inc. 5000 Company | 6 |  |
-| 13 | Jobs via Dice | 6 |  |
-| 14 | Azuria Water Solutions | 6 |  |
-| 15 | Zachry Group | 5 |  |
-| 16 | Consigli Construction Co., Inc. | 5 |  |
-| 17 | Relativity Space | 5 |  |
-| 18 | Honeywell | 5 |  |
-| 19 | Hadron Energy, Inc. | 5 |  |
-| 20 | Helix Energy Solutions Group | 4 |  |
-| 21 | Mammoet | 4 |  |
-| 22 | American Bureau of Shipping (ABS) | 4 | ✅ YES |
-| 23 | Blue Origin | 4 |  |
-| 24 | Acuren | 4 |  |
-| 25 | HDR | 4 |  |
-| 26 | Trackhouse Entertainment Group | 4 |  |
-| 27 | McDermott International, Ltd | 4 | ✅ YES |
-| 28 | Tata Technologies | 4 |  |
-| 29 | Energy Sciences | 4 |  |
-| 30 | LHH | 4 |  |
+| 1 | Deloitte | 49 |  |
+| 2 | Jobs via Dice | 14 |  |
+| 3 | American Bureau of Shipping (ABS) | 13 | ✅ YES |
+| 4 | ABS | 13 | ✅ YES |
+| 5 | Blue Origin | 11 |  |
+| 6 | Rheem Manufacturing | 8 |  |
+| 7 | ExxonMobil | 7 | ✅ YES |
+| 8 | Vestas | 7 |  |
+| 9 | BrandSafway | 7 |  |
+| 10 | Gilead Sciences | 6 |  |
+| 11 | Acuren | 6 |  |
+| 12 | Insight Global | 6 |  |
+| 13 | Baker Hughes | 6 |  |
+| 14 | Relativity Space | 6 |  |
+| 15 | WSP in the U.S. | 6 |  |
+| 16 | Tesla | 6 |  |
+| 17 | GE Vernova | 6 | ✅ YES |
+| 18 | Bechtel Corporation | 5 |  |
+| 19 | Resource Innovations | 5 |  |
+| 20 | Stealth Startup | 5 |  |
+| 21 | Tallgrass | 5 |  |
+| 22 | Pentangle Tech Services | P5 Group | 4 |  |
+| 23 | Halliburton | 4 |  |
+| 24 | DeepOcean US | 4 |  |
+| 25 | Altrad Sparrows – Americas | 4 |  |
+| 26 | Saronic Technologies | 4 |  |
+| 27 | Core Group Resources | 4 |  |
+| 28 | Raytheon | 4 |  |
+| 29 | LaBella Associates | 4 |  |
+| 30 | Boeing | 4 |  |
 
 ## Top 20 Highest-Scoring Job Postings
 
 | Score | Title | Company | Location | Source | Keyword |
 |-------|-------|---------|----------|--------|---------|
-| 150 | Senior Engineer, or Above, Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 150 | SDS Senior Engineer | TechnipFMC | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Senior Umbilical Engineer | Worley | Houston, TX | linkedin | riser engineer offshore |
-| 130 | Vessel Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Subsea Sr Project Engineer (installations) | McDermott International, Ltd | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | SDS Senior Engineer | TechnipFMC | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Senior Umbilical Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Senior Engineer, or Above, Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
-| 130 | SDS Senior Engineer | TechnipFMC | Houston, TX | linkedin | integrity engineer offshore |
-| 130 | Senior Umbilical Engineer | Worley | Houston, TX | linkedin | integrity engineer offshore |
-| 125 | Sr Engineer Process | Zachry Group | Houston, TX | linkedin | riser engineer offshore |
-| 120 | Umbilicals / Flowlines Engineer / Specialist III | Global Edge Group | Spring, TX | linkedin | riser engineer offshore |
-| 120 | Engineering Career Acceleration Program (ECAP) | Siemens Energy | Raleigh, NC | linkedin | riser engineer offshore |
-| 120 | Engineering Career Acceleration Program (ECAP) | Siemens Energy | Richland, MS | linkedin | riser engineer offshore |
-| 120 | Engineering Process Controller | Oceaneering | Chesapeake, VA | linkedin | riser engineer offshore |
-| 120 | Engineering Consultant - Metallurgy | Stress Engineering Services, I | Mason, OH | linkedin | pipeline engineer offshore |
-| 120 | Engineering Consultant - Metallurgy | Stress Engineering Services, I | Mason, OH | linkedin | integrity engineer offshore |
-| 115 | Marine Surveyor - Equipment and Materials Certification 1 1 | Bureau Veritas North America | Houston, TX | linkedin | pipeline engineer offshore |
-| 115 | Principal Engineer, Mechanical | Cameron LNG | Hackberry, LA | linkedin | API 579 fitness for service |
-| 115 | Marine Surveyor - Equipment and Materials Certification 1 1 | Bureau Veritas North America | Houston, TX | linkedin | naval architect Houston |
+| 150 | Engineer, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
+| 135 | Decommissioning Engineer | ExxonMobil | Houston, TX | linkedin | riser engineer offshore |
+| 135 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
+| 135 | Pipeline Controller | Chevron | Houston, TX | indeed | hydrodynamic analyst offshore |
+| 130 | Senior Project Engineer, Pipeline | Venture Global LNG | Houston, TX | linkedin | subsea engineer |
+| 130 | Engineer, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
+| 130 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
+| 125 | Principal Well Engineer - Drilling Engineering & Well Delive | Halliburton | Houston, TX | linkedin | riser engineer offshore |
+| 120 | Graduate Engineer | 2H Offshore | Houston, TX | linkedin | OrcaFlex engineer |
+| 120 | Director Systems Engineering (ServiceNow SME) | Jobs via Dice | Coppell, TX | linkedin | riser engineer offshore |
+| 120 | Sr Infra Svc Del Analyst | Health Care Service Corporatio | Richardson, TX | linkedin | hydrodynamic analyst offshore |
+| 115 | BPO Project Engineer | ExxonMobil | Greater Houston | linkedin | pipeline engineer offshore |
+| 115 | Design Engineer III | Oceaneering | Houston, TX | linkedin | pipeline engineer offshore |
+| 115 | Senior Mechanical Integrity Engineer - Baton Rouge, LA | ExxonMobil | Baton Rouge, LA | linkedin | API 579 fitness for service |
+| 115 | Decommissioning Engineer | ExxonMobil | Houston, TX | linkedin | integrity engineer offshore |
+| 115 | Engineer II | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
+| 115 | Lead Civil Structural Engineer - New Nuclear Plant Projects | GE Vernova |  | career_page | career_page_scan |
+| 115 | Lead Piping Analysis Engineer (Remote Eligible US base) | GE Vernova |  | career_page | career_page_scan |
+| 110 | Senior Naval Architect - Clearance Required with Security Cl | Cydecor, Inc. | Washington, DC | linkedin | OrcaFlex engineer |
 
 ## Seniority Breakdown
 
 | Level | Count | Consulting Fit |
 |-------|-------|----------------|
-| Senior | 123 | ★★★★★ Best — they need experience NOW |
-| Mid | 452 | ★★★☆☆ Good — can pitch senior-level delivery |
+| Senior | 179 | ★★★★★ Best — they need experience NOW |
+| Mid | 473 | ★★★☆☆ Good — can pitch senior-level delivery |
 | Junior | 12 | ★☆☆☆☆ Low — they want cheap labor |
 
 ---

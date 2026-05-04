@@ -33,3 +33,4 @@ Subsea pipeline external coating systems: anti-corrosion barrier, thermal insula
 - **Related concept**: [[cathodic-protection-design]] — coating + CP form the dual barrier.
 - **Related concept**: [[pipeline-installation-methods]] — reel-lay strain capacity drives coating choice.
 - **Related concept**: [[pipeline-integrity-assessment]] — coating breakdown drives downstream integrity work.
+- **Cross-wiki (marine-engineering)**: [Pipeline Integrity Assessment](../../../marine-engineering/wiki/entities/pipeline-integrity.md) -- similar slugs (69%); similar titles (57%); shared tags: pipeline; shared keywords: concept, cross-references, key, pipeline, related; shared entities: API, DNV
