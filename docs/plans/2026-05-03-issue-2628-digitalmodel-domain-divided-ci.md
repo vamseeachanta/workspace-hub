@@ -1,13 +1,13 @@
 # Plan for #2628: digitalmodel domain-divided CI architecture
 
-> **Status:** plan-review — r1 adversarial review pending
+> **Status:** plan-approved — r1 questions resolved by user 2026-05-04 (5 decisions locked); execution-ready under Phase 1
 > **Complexity:** T3
-> **Date:** 2026-05-03
+> **Date:** 2026-05-03 (r0) | amended 2026-05-04 (r1-decisions)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2628
 > **Parent / context:** #2614 (cluster fixes that surfaced masking) | #2616 (full-mask-removal sweep) | #2129 (issue-state drift / quality-gates audit umbrella)
 > **Triage artifact:** `/tmp/mystery-tests-2616.md` (200-failure landscape across 53 files)
-> **Review artifacts (TBD):** `scripts/review/results/2026-05-03-plan-2628-claude.md` | `...-codex.md` (subject to #2479 codex-cli 0.124.0 stdin-hang) | `...-gemini.md`
-> **DO NOT pre-authorize execution** — per `feedback_never_offer_to_self_label_plan_approved`, execution requires user-applied `status:plan-approved` after r1 review and amendments.
+> **Locked decisions (2026-05-04, vamseeachanta):** D1=keep `misc` (transitional, force-migrate by Phase 5) | D2=silent in Phase 2 (no PR comments) | D3=2-week cutover overlap (Phase 3→4) | D4=remove `pytest.ini --maxfail=50` atomically with `.claude/quality-gates.yaml` refactor in Phase 2 | D5=Cluster A polluter bisect (no autouse purge fixture)
+> **Review artifacts:** plan-r0 user-reviewed 2026-05-04; cross-provider r1 (claude+gemini) is post-Phase-1-landing optional
 
 ---
 
@@ -169,7 +169,7 @@ Rationale for the +1 over the upper estimate:
 - The umbrella's "hydrodynamics-diffraction" + "hydrodynamics-passing-ship" split (2 sub-domains under one parent) is sound; this plan adopts it and adds a third (`hydrodynamics-other` for aqwa/bemrosetta/capytaine/hull_library/parametric_hull_analysis/rao_analysis — ~1120 test_ declarations not yet sub-split).
 - The umbrella's "infrastructure-core" (heavy deps) is split from "infrastructure-other" (the rest of `tests/infrastructure/`) — Cluster D in #2616 is concentrated in `tests/infrastructure/core/`; isolating its 51-error blast radius is the explicit win this whole architecture is designed to deliver.
 - The umbrella's "solver-smoke" + "orcaflex-solver" + "orcaflex" 3-way split is preserved; aggregating would defeat the OrcFxAPI license-windows-only isolation.
-- "misc" exists in the umbrella as a catch-all; this plan keeps it but flags it as a smell — domains in "misc" should migrate to a real domain in a follow-up.
+- "misc" exists in the umbrella as a catch-all; this plan keeps it but flags it as a smell — domains in "misc" should migrate to a real domain in a follow-up. **DECISION-LOCKED D1 (2026-05-04):** keep as transitional bucket for Phase 1-4; force-migrate every entry to a real domain by end of Phase 5; delete the `misc` domain entry from `.claude/quality-gates.yaml` and `tests/DOMAINS.md` once empty.
 
 The 16 domains are listed in §Sub-task A below. Open question for r1: should `cathodic_protection` (its own root) and `specialized/cathodic_protection` (under specialized) be one domain or two? Plan answer: **one** (`cathodic-protection`), since they share an engineering scope; the implementer maps both roots to one domain in `DOMAINS.md`.
 
@@ -193,7 +193,7 @@ The implementer creates this file verbatim. Copy-paste-ready:
 | `asset-integrity` | `tests/asset_integrity` | 308 | numpy, pandas, pyyaml, loguru | clean (no #2616 hits) |
 | `cathodic-protection` | `tests/cathodic_protection`, `tests/specialized/cathodic_protection` | 206 (root) + ~50 (under specialized) | numpy, scipy, pandas, pyyaml | `pytest.ini` `norecursedirs` excludes `tests/specialized/cathodic_protection`; this domain MUST drop that exclusion or move to `[skipif]` (decision: drop on first PR) |
 | `citations` | `tests/citations` | 14 | pyyaml, pydantic | `digitalmodel.citations` package; #2471 frontmatter contract |
-| `contracts` | `tests/contracts` | 17 | (assetutilities sibling repo on path) | Cluster A in #2616 — sys.modules pollution from upstream tests; needs autouse purge fixture per #2616 recommendation |
+| `contracts` | `tests/contracts` | 17 | (assetutilities sibling repo on path) | Cluster A in #2616 — sys.modules pollution from upstream tests; **DECISION-LOCKED D5 (2026-05-04):** polluter bisect (NOT autouse purge fixture) — fix the source pollution rather than mask its symptom in `tests/contracts/conftest.py` |
 | `field-development` | `tests/field_development` | 476 | numpy, pandas, pyyaml, loguru, pint, scipy, openpyxl | Cluster B in #2616 — `worldenergydata` import gap in 4 sibling classes; one-file `@skipif` fix needed |
 | `hydrodynamics-diffraction` | `tests/hydrodynamics/diffraction` | 1365 | numpy, scipy, matplotlib, pandas, plotly, pyyaml, loguru, gmsh | post-#2614 clean; was the wave that surfaced #2616 |
 | `hydrodynamics-passing-ship` | `tests/hydrodynamics/passing_ship` | 235 | numpy, scipy, matplotlib, pandas, click | Cluster C in #2616 — `capsys` × `-p no:capture` regression; fix is to drop `-p no:capture` from this domain's command (other domains keep it if perf-sensitive) |
@@ -1150,22 +1150,13 @@ The implementer reads `tests/conftest.py:1-93` and partitions each piece into on
 | `hydrodynamics/hull_library/test_hull_library_expansion.py` | `tests/hydrodynamics/hull_library/conftest.py` (extend existing if present, else create) |
 | 2 specialized/cathodic_protection/test_*.py | `tests/cathodic_protection/conftest.py` (new — but: this exclusion was for "shared state issue"; consider replacing with a `pytest.mark.flaky` skip-if-running-with-others guard rather than collect_ignore) |
 
-### Open: contracts conftest gets autouse sys.modules purge fixture
+### Resolved: Cluster A is bisect, not autouse purge
 
-Per #2616 Cluster A recommendation (option b): add an autouse fixture in `tests/contracts/conftest.py`:
+**DECISION-LOCKED D5 (2026-05-04):** Cluster A ([#2623](https://github.com/vamseeachanta/workspace-hub/issues/2623)) is fixed by **polluter bisect** in `tests/contracts/`'s own domain workstream — NOT by adding an autouse purge fixture in `tests/contracts/conftest.py`.
 
-```python
-@pytest.fixture(autouse=True)
-def _purge_assetutilities_mocks():
-    """Cluster A guard: purge MagicMock entries that upstream tests
-    leaked into sys.modules under the assetutilities namespace.
-    See workspace-hub #2616 mystery-tests sweep, Cluster A."""
-    yield  # let the test run
-    # No-op on teardown for the polluter detection; the cleanup
-    # is to PRE-purge in the next run. Move purge to setup phase:
-```
+Rationale: per-domain CI runs `contracts` in isolation, but the polluter is in some upstream test (likely an `import unittest.mock; sys.modules[...] = MagicMock()` or `@patch.dict('sys.modules', ...)` without proper teardown elsewhere in the suite). Per-domain isolation reduces *cross-domain* pollution risk but doesn't fix *within-domain* pollution. Since `contracts` only has 17 tests and pollution is reproducible under `-p no:randomly`, bisect is cheap. Defensive autouse fixtures spread the band-aid across N domain conftests rather than fixing the source.
 
-(The implementer revises to put the purge in setup, not teardown — table here is illustrative; the real pattern is `for k in list(sys.modules): if k.startswith("assetutilities") and isinstance(sys.modules[k], MagicMock): del sys.modules[k]` BEFORE yield.)
+Phase 5 conftest extraction therefore does NOT add the autouse fixture; the contracts domain conftest remains minimal until #2623's bisect lands.
 
 This sub-task lands incrementally — one PR per domain — and is **explicitly Phase 5** so the migration doesn't co-occur with the gate-cutover.
 
@@ -1336,11 +1327,12 @@ Lands together: **A + F + G**.
 Lands together: **B + C**.
 
 - B: `.claude/quality-gates.yaml` v2 written, but the old `quality-gates.yml` workflow continues to read it via the existing CLI. This requires the YAML to be backward-readable; if the new structure breaks the CLI, B is split into B1 (yaml refactor that the old CLI still tolerates by ignoring unknown keys) and B2 (CLI upgrade in Phase 4). **Plan recommendation:** preserve the original file as `.claude/quality-gates.yaml.legacy` for the duration of Phase 2-3 and have the OLD workflow read the legacy file, while the NEW workflow reads the v2 file. Two configs in parallel during shadow mode.
-- C: new workflow file lands but is initially configured with `if: false` on the `aggregate` job's failure-block step (so it's informational-only). Shadow runs accumulate for 1-2 weeks of PR activity.
+- **DECISION-LOCKED D4 (2026-05-04): atomic with `pytest.ini --maxfail=50` removal.** B's commit MUST also delete the `--maxfail=50` token from `digitalmodel/pytest.ini`'s `addopts` line in the same commit. Both masking layers come out together; partial removal would create the worst signal ("we removed the cap but failures still don't surface; why?"). Add a TDD assertion: grep `pytest.ini` for `--maxfail` should return zero hits.
+- C: new workflow file lands but is initially configured with `if: false` on the `aggregate` job's failure-block step (so it's informational-only). **DECISION-LOCKED D2 (2026-05-04): SILENT in Phase 2 — no PR comments from the new workflow.** Evidence-only comments start in Phase 3 when the workflow becomes informationally visible. Shadow runs accumulate for **2 weeks** of PR activity (DECISION-LOCKED D3 (2026-05-04); revised up from "1-2 weeks" — 2 weeks gives ~30-40 PRs of cross-domain validation coverage at typical workspace-hub cadence).
 
 **Risk:** Touching `.github/workflows/` mid-PR can break in-flight CI on every other open PR — mitigation: file the new workflow only (B's YAML edit lands separately and only touches `.claude/`). Verify the OLD workflow CONTINUES to read `.claude/quality-gates.yaml`; if the old CLI rejects the v2 schema, defer B to Phase 4 and ship C alone with a hard-coded matrix in the workflow file (not reading from YAML).
 
-**Acceptance gate to enter Phase 3:** new workflow has run on ≥10 PRs in shadow-mode without exceeding 5-min wall-time at the 90th percentile; aggregator results match expected per-domain status of #2616 cluster trends.
+**Acceptance gate to enter Phase 3:** new workflow has run on ≥10 PRs in shadow-mode without exceeding 5-min wall-time at the 90th percentile; aggregator results match expected per-domain status of #2616 cluster trends. **D3-locked overlap window: 2 weeks** (revised from r0's "1-2 weeks"); if the ≥10-PR threshold is hit before 2 weeks, hold for the full window; if 2 weeks elapse with <10 PRs, extend the overlap until the PR-count gate is met.
 
 ### Phase 3 — Touched-domain detection ON for PRs
 
