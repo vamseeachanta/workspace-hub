@@ -55,6 +55,15 @@ jobs:
           python3 -m pytest tests/test_deduplication_fix.py \
             -v --tb=short --noconftest
 
+      # CI smoke tests for #2532 regression guards (workspace_hub importability,
+      # review-gate uv-decoupling). Runs on feature/** and PR pushes so a
+      # regression is caught at push-time, not only at PR-open via enforcement-gate.
+      - name: Run CI smoke tests
+        env:
+          PYTHONPATH: src
+        run: |
+          python3 -m pytest tests/ci_smoke/ -v --tb=short
+
       - name: Generate test summary
         if: always()
         run: |

@@ -30,6 +30,21 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
+      # PYTHONPATH=src is REQUIRED for `from workspace_hub...` imports because:
+      #   1. src/workspace_hub/ has NO __init__.py — it's an intentional PEP 420
+      #      implicit namespace package (see commit 2694b2865).
+      #   2. pyproject.toml [tool.setuptools.packages.find] include = ["src*"]
+      #      installs the literal `src` package, NOT `workspace_hub`.
+      # The smoke step below catches a regression of either assumption with a
+      # precise error before the deep import traceback fires. Issue #2532.
+      - name: Smoke — workspace_hub importable (PEP 420 + PYTHONPATH=src)
+        env:
+          PYTHONPATH: src
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install pytest pyyaml
+          python3 -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
+
       - name: Check newly introduced stage prompt drift
         env:
           PYTHONPATH: src
