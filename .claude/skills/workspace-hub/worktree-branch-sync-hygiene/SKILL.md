@@ -30,7 +30,8 @@ Use when promoting work from dirty main/worktrees, cleaning blocked branches, re
 16. For shared-root rebase recovery, use a read-only subagent to audit ownership/reflog/PR merge state before taking any destructive action. If the PR is already landed and the root is merely stale/behind, fast-forward under the closeout lock; write the recovery log from a clean isolated worktree; push the docs-only closeout commit; remove the temporary branch/worktree; then produce clean proof. See `references/subagent-assisted-rebase-recovery-closeout.md`.
 17. If PRs are merged and branches are zero-unique/contained but local Git operations hang (`git status`, `git diff`, `git worktree list`, or per-worktree clean checks), stop deletion and preserve evidence outside the repo rather than adding more ledger commits. Treat remote landed state and local cleanup state separately; zero-unique containment is not enough to remove a worktree whose dirt/index cannot be inspected. See `references/git-hang-closeout-preservation.md`.
 18. When stale files/branches/unmerged commits/worktrees exist after issue closure, treat it as a process failure requiring evidence-based RCA and durable correction. Do not just clean; document why closure and cleanup diverged, preserve or remove each worktree in the same window as push/merge evidence, and do not stash/delete root dirt while active Claude/Hermes/Codex sessions have CWD in the repo unless explicitly approved. See `references/transactional-closeout-race-and-active-root-sessions.md`.
-19. When broad Git commands hang during closeout and active root sessions exist, switch to bounded non-mutating probes, remove only independently proven safe zero-unique clean worktrees under the closeout lock, and report `remote landed/synced` separately from `local checkout clean`. A synced remote plus dirty live-owned root is an incomplete closeout blocker, not clean completion. See `references/active-root-closeout-blocker-bounded-probes.md`. 
+19. When broad Git commands hang during closeout and active root sessions exist, switch to bounded non-mutating probes, remove only independently proven safe zero-unique clean worktrees under the closeout lock, and report `remote landed/synced` separately from `local checkout clean`. A synced remote plus dirty live-owned root is an incomplete closeout blocker, not clean completion. See `references/active-root-closeout-blocker-bounded-probes.md`.
+20. Do not use `ACTIVE_ROOT_CWD_COUNT == 0` as the only safety condition on a live Hermes control-plane checkout; passive shells/TUIs/viewers can keep CWD under root indefinitely. Classify active root processes into Git writers, artifact writers/owners, passive control sessions, and unknown owners. If `HEAD` and `origin/main` diverge while root is dirty, inspect local-only and remote-only commits and do not auto-merge/rebase/stash from the live root. See `references/root-session-wait-and-divergence-gate.md`.
 
 ## Consolidated Session Learnings
 
@@ -86,6 +87,11 @@ The `references/` directory contains archived narrow skills absorbed during the 
 
 - Session reference: `references/active-root-closeout-blocker-bounded-probes.md`.
 - Preserved insight: When closeout state has synced remote but dirty live-owned root and broad Git commands hang, use bounded probes, remove only independently proven safe worktrees under lock, and report synced-vs-clean as separate truths; do not call the issue closeout complete.
+
+### `root-session-wait-and-divergence-gate`
+
+- Session reference: `references/root-session-wait-and-divergence-gate.md`.
+- Preserved insight: Waiting for active root sessions requires process classification, not only a zero CWD count; if local auto-sync and remote session-signal commits diverge while root is dirty, inspect both sides and avoid live-root merge/rebase/stash until ownership is safe.
 
 ### `blocked-branch-preserve-tag-cleanup`
 
