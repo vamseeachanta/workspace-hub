@@ -25,6 +25,7 @@
 - [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents touching shared index files race on git lock; serialize the commit phase or use worktrees
 - [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mock tests pass what live CLIs reject; always do a live repro before close
 - [Attestation enables contradiction detection](feedback_attestation_enables_contradiction_detection.md) — #2405 unlocks plan-vs-live-state defect finding, not just Class-B silencing
+- [Subagent Write phantom](feedback_subagent_write_phantom.md) — subagent reports Write success while file doesn't land on disk; main session must independently `ls` before believing
 - [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve in chat, never pre-authorize downstream agents via handoff-prompt language; user-in-loop gate is load-bearing across session boundaries
 - [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; do NOT draft replies to generic/drive-by recruiter outreach even in active job-search context
 - [Email cross-noise](feedback_email_cross_noise.md) — third parties using user's Gmail by mistake; standard unsubscribe fails; mitigate with sender-domain DELETE in routing config
@@ -63,6 +64,10 @@
 - [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — two concurrent /whats-next sessions on the same machine produce healthy non-colliding plan work; wip-label gates same-issue collision, auto-sync arbitrates push contention; cross-validate before filing follow-ups
 - [Worktree isolation too slow on large repo](feedback_worktree_isolation_large_repo_cost.md) — Agent `isolation: worktree` triggers 33,325-file checkout that times out 60% of the time on workspace-hub; default to write-only-shared, reserve worktree-isolation for agents that must commit/push themselves
 - [QG --maxfail undercounts](feedback_qg_maxfail_undercounts.md) — digitalmodel Quality Gates runs `pytest --maxfail=20`; reported "20 failed" was the ceiling, true count is 244+ (verified 2026-05-02 on `60d59565`); never trust QG artifact failure count without local repro
+- [Desktop Agent-Mode embeds CLI](feedback_claude_desktop_agent_mode_embeds_cli.md) — Claude Desktop spawns a child `claude` CLI from `~/.config/Claude/claude-code/<v>/`; upgrade via `apt upgrade claude-desktop`, not system `claude`
+- [`python -m build` no `--isolation` flag](feedback_python_m_build_no_isolation_flag.md) — isolation is the DEFAULT; `--no-isolation` is the opt-out; remove the flag to restore isolation, don't add `--isolation`
+- [Cross-repo Closes at squash](feedback_cross_repo_closes_at_squash.md) — `Closes vamseeachanta/<repo>#NNNN` fires for ALL refs in a squash-merge body; multi-issue batches auto-close cleanly
+- [Comma-joined Closes fires once on direct push](feedback_closes_trailer_fires_once.md) — `Closes #X, #Y` in ONE commit body pushed directly to main only auto-closes the FIRST ref; verify and follow up with explicit `gh issue close`
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -86,6 +91,7 @@
 - [TX Franchise 2026](project_tx_franchise_2026.md) — DONE; both C-Corps filed, C-Corps ineligible for passive entity
 - [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily, posts to repo-readiness issue
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
+- [digitalmodel uv compile-bytecode](project_digitalmodel_uv_compile_bytecode.md) — flipping both `compile-bytecode` settings to `false` resolved silent uv-sync finalize stall; if hang returns first verify the flag drift
 - [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
 - [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24
 - [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser automation only for interactive UI tasks
@@ -104,3 +110,4 @@
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data
+- [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
