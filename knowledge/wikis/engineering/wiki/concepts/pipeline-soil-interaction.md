@@ -32,3 +32,4 @@ Models for axial, lateral, and vertical pipe-soil resistance at the as-laid pipe
 - **Related concept**: [[pipeline-lateral-buckling]] — lateral resistance controls wavelength.
 - **Related concept**: [[pipeline-upheaval-buckling]] — uplift resistance from cover soil.
 - **Related concept**: [[pipeline-walking]] — axial resistance governs walking rate.
+- **Cross-wiki (marine-engineering)**: [Pipeline Integrity Assessment](../../../marine-engineering/wiki/entities/pipeline-integrity.md) -- similar slugs (70%); similar titles (59%); shared tags: pipeline; shared keywords: concept, cross-references, key, pipeline, related; shared entities: DNV

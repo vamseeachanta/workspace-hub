@@ -36,3 +36,5 @@ API RP 2SK critical finding: mean wave drift forces and low-frequency vessel mot
 - **Related entity**: [Mooring Analysis System](../entities/mooring-analysis-system.md)
 - **Related standard**: [OCIMF MEG4](../standards/ocimf-meg4.md)
 - **Related standard**: [DNV-RP-C205](../standards/dnv-rp-c205.md)
+- **Cross-wiki (engineering-standards)**: [DNV-OS-E301 Position Mooring — bounded summary](../../../engineering-standards/wiki/standards/dnv-os-e301.md) -- similar slugs (100%); similar titles (74%); shared tags: dnv, mooring; shared keywords: cross-references, dnv-os-e301, mooring, position; shared entities: DNV, DNV-OS-E301
+- **Cross-wiki (engineering-standards)**: [DNV-OS-F201 Dynamic Risers — bounded summary](../../../engineering-standards/wiki/standards/dnv-os-f201.md) -- similar slugs (82%); shared tags: dnv; shared entities: DNV

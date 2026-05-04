@@ -150,3 +150,9 @@ Wind profiles follow a logarithmic or power-law variation with height.
 - [Pipeline Integrity Assessment](../concepts/pipeline-integrity-assessment.md) -- subsea pipeline loading from waves and currents
 - **Cross-wiki (marine-engineering)**: [Long-Period Swell & Resonance](../../../marine-engineering/wiki/concepts/long-period-swell-resonance.md) — wave spectra and second-order drift forces relevant to long-period swell-induced mooring loads
 - **Cross-wiki (naval-architecture)**: [Seakeeping and Ship Motions](../../../naval-architecture/wiki/concepts/seakeeping.md) — wave spectra (JONSWAP, Pierson-Moskowitz) and RAO computation for vessel motions
+
+## Cross-References
+
+- **Cross-wiki (engineering-standards)**: [DNV-RP-C205 Environmental Conditions and Environmental Loads — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-c205.md) -- similar slugs (100%); similar titles (74%); shared tags: dnv; shared entities: DNV, DNV-RP-C205
+- **Cross-wiki (engineering-standards)**: [DNV-RP-C203 Fatigue Design of Offshore Steel Structures — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-c203.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV, DNV-RP-C203
+- **Cross-wiki (engineering-standards)**: [DNV-RP-H103 Modelling and Analysis of Marine Operations — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-h103.md) -- similar slugs (73%); shared tags: dnv; shared entities: DNV

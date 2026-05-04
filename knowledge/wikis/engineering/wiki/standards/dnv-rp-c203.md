@@ -114,3 +114,11 @@ where:
 - [VIV Riser Fatigue](../concepts/viv-riser-fatigue.md) -- fatigue from vortex-induced vibrations in risers
 - [DNV-RP-C205: Environmental Conditions and Loads](dnv-rp-c205.md) -- wave and current loading that drives fatigue
 - **Cross-wiki (naval-architecture)**: [Ship Structural Design](../../../naval-architecture/wiki/concepts/ship-structures.md) — S-N curve fatigue methodology applies to ship hull structural details under classification rules
+
+## Cross-References
+
+- **Cross-wiki (engineering-standards)**: [DNV-RP-C203 Fatigue Design of Offshore Steel Structures — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-c203.md) -- similar slugs (100%); similar titles (52%); shared tags: dnv, fatigue; shared keywords: design, dnv-rp-c203, fatigue, full, of; shared entities: DNV, DNV-RP-C203
+- **Cross-wiki (asset-management)**: [DNV-RP-G101 — Risk-Based Inspection of Offshore Topsides Static Mechanical Equipment](../../../asset-management/wiki/standards/dnv-rp-g101.md) -- similar slugs (73%); shared tags: dnv, offshore, standard; shared entities: DNV
+- **Cross-wiki (engineering-standards)**: [DNV-RP-C205 Environmental Conditions and Environmental Loads — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-c205.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV, DNV-RP-C205
+- **Cross-wiki (engineering-standards)**: [DNV-RP-H103 Modelling and Analysis of Marine Operations — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-h103.md) -- similar slugs (82%); shared tags: dnv; shared entities: DNV
+- **Cross-wiki (engineering-standards)**: [DNV-RP-B401 Cathodic Protection Design — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-b401.md) -- similar slugs (73%); shared tags: dnv; shared entities: DNV

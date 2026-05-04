@@ -86,3 +86,9 @@ Compare to MAOP --> Fit for service? --> Yes: Continue operation
 ## Cross-References
 
 - **Cross-wiki (marine-engineering)**: [Pipeline Integrity Assessment](../../../marine-engineering/wiki/entities/pipeline-integrity.md) -- shared tags: corrosion, dnv, fitness-for-service, integrity, pipeline; shared keywords: api, asme, assessment, ffs-1, key
+- **Cross-wiki (engineering-standards)**: [DNV-RP-F101 Corroded Pipelines — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-f101.md) -- similar slugs (100%); similar titles (76%); shared tags: corrosion, dnv; shared keywords: corroded, cross-references, dnv-rp-f101, full, pipelines; shared entities: DNV, DNV-RP-F101, RP-F101
+- **Cross-wiki (engineering-standards)**: [DNV-RP-F105 Free Spanning Pipelines — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-f105.md) -- similar slugs (91%); similar titles (55%); shared tags: dnv; shared entities: DNV, RP-F101
+- **Cross-wiki (engineering-standards)**: [DNV-RP-F109 On-bottom Stability of Pipelines — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-f109.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV, RP-F101
+- **Cross-wiki (asset-management)**: [DNV-RP-G101 — Risk-Based Inspection of Offshore Topsides Static Mechanical Equipment](../../../asset-management/wiki/standards/dnv-rp-g101.md) -- similar slugs (91%); shared tags: dnv, standard; shared entities: API, DNV
+- **Cross-wiki (engineering-standards)**: [DNV-ST-F101 Submarine Pipeline Systems — bounded summary](../../../engineering-standards/wiki/standards/dnv-st-f101.md) -- similar slugs (82%); similar titles (51%); shared tags: dnv; shared entities: DNV, DNV-ST-F101
+- **Cross-wiki (engineering-standards)**: [DNV-RP-B401 Cathodic Protection Design — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-b401.md) -- similar slugs (82%); shared tags: corrosion, dnv; shared entities: DNV
