@@ -1,0 +1,243 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/session-governor-check.sh'",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/session-logger.sh' pre",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/plan-approval-gate.sh'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/config-protection-pretooluse.sh'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-prompt-guard.js'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/skill-content-pretooluse.sh'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/cross-review-gate.sh'",
+            "timeout": 15
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/check-state-file-size-precommit.sh'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(git push*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/check-state-file-size-prepush.sh'",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-read-guard.js'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-workflow-guard.js'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-validate-commit.sh'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/error-loop-tracker.sh'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/capture-corrections.sh\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-context-monitor.js'",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-phase-boundary.sh'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/session-logger.sh' post",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-read-injection-scanner.js'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-check-update.js'",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-start.sh\" 2>/dev/null || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/daily-learning-tip.sh\" 2>/dev/null || true",
+            "timeout": 3,
+            "statusMessage": "Daily learning tip"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/mnt/local-analysis/workspace-hub/.codex/hooks/gsd-session-state.sh'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
+            "timeout": 10,
+            "statusMessage": "Capturing session signals"
+          },
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Emitting session quality signals"
+          },
+          {
+            "type": "command",
+            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-stop.sh\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking for skill creation opportunities"
+          },
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/session-review.sh\" 2>/dev/null || true",
+            "timeout": 30,
+            "statusMessage": "Extracting session review signals"
+          }
+        ]
+      }
+    ]
+  }
+}
