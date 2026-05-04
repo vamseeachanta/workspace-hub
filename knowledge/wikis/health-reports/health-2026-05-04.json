@@ -1,0 +1,321 @@
+{
+  "generated_at": "2026-05-04 15:02 UTC",
+  "wikis_checked": 9,
+  "total_pages": 19450,
+  "total_issues": 3,
+  "domain_results": [
+    {
+      "domain": "acma-projects",
+      "status": "healthy",
+      "page_count": 7,
+      "source_count": 2,
+      "entity_count": 1,
+      "concept_count": 1,
+      "link_density": 2.14,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "asset-management",
+      "status": "healthy",
+      "page_count": 16,
+      "source_count": 1,
+      "entity_count": 0,
+      "concept_count": 12,
+      "link_density": 5.54,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "engineering",
+      "status": "healthy",
+      "page_count": 111,
+      "source_count": 23,
+      "entity_count": 23,
+      "concept_count": 62,
+      "link_density": 4.38,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "engineering-standards",
+      "status": "healthy",
+      "page_count": 8,
+      "source_count": 5,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 1.95,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "lng-projects",
+      "status": "healthy",
+      "page_count": 14,
+      "source_count": 3,
+      "entity_count": 0,
+      "concept_count": 8,
+      "link_density": 2.07,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "marine-engineering",
+      "status": "healthy",
+      "page_count": 19193,
+      "source_count": 19164,
+      "entity_count": 13,
+      "concept_count": 13,
+      "link_density": 1.13,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "maritime-law",
+      "status": "healthy",
+      "page_count": 32,
+      "source_count": 2,
+      "entity_count": 10,
+      "concept_count": 17,
+      "link_density": 3.28,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "naval-architecture",
+      "status": "healthy",
+      "page_count": 69,
+      "source_count": 43,
+      "entity_count": 1,
+      "concept_count": 22,
+      "link_density": 1.57,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "personal",
+      "status": "missing",
+      "page_count": 0,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 0.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "missing",
+          "message": "wiki/ directory not found"
+        },
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "missing": 1,
+        "index": 1,
+        "log": 1
+      }
+    }
+  ],
+  "cross_link_suggestions": [
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/index.md",
+      "mentions": "incident",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/elba-island-mooring-incident.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/log.md",
+      "mentions": "wiki",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/llm-wiki-tool.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/overview.md",
+      "mentions": "analysis",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/diffraction-analysis-system.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/overview.md",
+      "mentions": "compliance",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/compliance-dashboard.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/overview.md",
+      "mentions": "digitalmodel",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/digitalmodel.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/overview.md",
+      "mentions": "wiki",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/llm-wiki-tool.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/entities/b1528-sirocco-breakaway.md",
+      "mentions": "incident",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/elba-island-mooring-incident.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/entities/b1528-sirocco-breakaway.md",
+      "mentions": "naval",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/naval-architecture-skill.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/entities/b1528-sirocco-breakaway.md",
+      "mentions": "architecture",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/naval-architecture-skill.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md",
+      "mentions": "code",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/claude-code.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md",
+      "mentions": "incident",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/elba-island-mooring-incident.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/concepts/b1528-sirocco-rudder-yaw-moment-inputs.md",
+      "mentions": "ever",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-ever-given-2021.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/sources/b1528-rudder-force-yaw-moments-workbook.md",
+      "mentions": "naval",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/naval-architecture-skill.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/sources/b1528-rudder-force-yaw-moments-workbook.md",
+      "mentions": "architecture",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/naval-architecture-skill.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/sources/b1528-rudder-force-yaw-moments-workbook.md",
+      "mentions": "ever",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-ever-given-2021.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/sources/b1528-sirocco-breakaway-notes.md",
+      "mentions": "incident",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/elba-island-mooring-incident.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/sources/b1528-sirocco-breakaway-notes.md",
+      "mentions": "naval",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/naval-architecture-skill.md"
+    },
+    {
+      "from_wiki": "acma-projects",
+      "from_page": "knowledge/wikis/acma-projects/wiki/sources/b1528-sirocco-breakaway-notes.md",
+      "mentions": "architecture",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/naval-architecture-skill.md"
+    },
+    {
+      "from_wiki": "asset-management",
+      "from_page": "knowledge/wikis/asset-management/wiki/index.md",
+      "mentions": "analysis",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/diffraction-analysis-system.md"
+    },
+    {
+      "from_wiki": "asset-management",
+      "from_page": "knowledge/wikis/asset-management/wiki/index.md",
+      "mentions": "code",
+      "links_to_wiki": "engineering",
+      "links_to_page": "knowledge/wikis/engineering/wiki/entities/claude-code.md"
+    }
+  ],
+  "knowledge_gaps": [
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/mooring-failures-lng-terminals.md",
+      "missing_concept": "lng-carrier-mooring"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/dnv-rp-b401-cathodic-protection.md",
+      "missing_concept": "anode"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/dnv-rp-b401-cathodic-protection.md",
+      "missing_concept": "offshore-structure"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/dnv-rp-b401-cathodic-protection.md",
+      "missing_concept": "design-current-density"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/dnv-rp-b401-cathodic-protection.md",
+      "missing_concept": "dnvgl-os-e201"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/dnv-rp-b401-cathodic-protection.md",
+      "missing_concept": "norsok-m-503"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/dnv-rp-b401-cathodic-protection.md",
+      "missing_concept": "iso-15589"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "float-collar"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "float-shoe"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "cementing-plug"
+    }
+  ]
+}
