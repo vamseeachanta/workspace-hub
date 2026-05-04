@@ -1,5 +1,7 @@
 # Plan for #2479: fix(review): Codex stdin-hang regression post-#2406 closure (size-dependent)
 
+> **Superseded 2026-05-02 by `docs/plans/2026-05-02-issue-2479-codex-version-guard.md` — main absorbed wrapper-half via #2518; `fix/codex-stdin-hang` is now stale and must not be merged.**
+
 > **Status:** draft
 > **Complexity:** T2
 > **Date:** 2026-04-26

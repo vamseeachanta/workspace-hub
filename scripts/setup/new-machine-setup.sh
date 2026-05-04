@@ -174,6 +174,19 @@ else
   log "Windows: npm global bin already on PATH via Git Bash — no action needed."
 fi
 
+# ── Step 5b: Codex CLI pin (#2479) ────────────────────────────────────────────
+step "5b. Codex CLI pin"
+if command -v npm &>/dev/null; then
+  if [[ "$DRY_RUN" == "true" ]]; then
+    dry "PATH=\"${NPM_GLOBAL:-${HOME}/.npm-global}/bin:\$PATH\" bash scripts/install/pin-codex.sh"
+  else
+    PATH="${NPM_GLOBAL:-${HOME}/.npm-global}/bin:$PATH" bash "${WORKSPACE_HUB}/scripts/install/pin-codex.sh" || \
+      log "WARN: Codex pin failed — run manually: bash scripts/install/pin-codex.sh"
+  fi
+else
+  log "WARN: npm not found — skipping Codex pin"
+fi
+
 # ── Step 6: Crontab ───────────────────────────────────────────────────────────
 step "6. Crontab"
 if [[ "$NO_CRON" == "true" ]]; then

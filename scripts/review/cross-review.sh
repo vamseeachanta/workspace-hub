@@ -336,6 +336,19 @@ submit_review() {
       else
         "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       fi
+      # Incompatible Codex version (exit 7) → graceful UNAVAILABLE, no Opus fallback.
+      if [[ $codex_exit -eq 7 ]] || grep -q "^# CODEX_INCOMPATIBLE_VERSION" "$result_file" 2>/dev/null; then
+        echo "    WARNING: Codex version incompatible — marking Codex unavailable without Opus fallback" >&2
+        CODEX_NO_OUTPUT=true
+        CODEX_FALLBACK_ALLOWED=true
+        preserve_raw_result "$result_file"
+        {
+          echo "# Codex unavailable: INCOMPATIBLE_VERSION"
+          sed -n '1,20p' "${result_file%.md}.raw.md" 2>/dev/null || true
+        } > "$result_file"
+        echo "    Result: ${result_file}"
+        return
+      fi
       # Quota exhaustion (exit 3) → automatic Opus fallback
       if [[ $codex_exit -eq 3 ]] || grep -q "^# CODEX_QUOTA_EXHAUSTED" "$result_file" 2>/dev/null; then
         echo "    INFO: Codex quota exhausted — falling back to Claude Opus (${CODEX_OPUS_MODEL})" >&2

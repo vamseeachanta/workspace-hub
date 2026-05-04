@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Mock codex CLI — captures argv + pwd + stdin, emits canned review.
 set -u
+if [[ "${1:-}" == "--version" ]]; then
+  echo "${PLAN_REVIEW_CODEX_VERSION:-codex-cli 0.123.0}"
+  exit 0
+fi
 [[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
 capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/codex.capture"
 {

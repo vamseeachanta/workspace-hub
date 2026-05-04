@@ -472,6 +472,30 @@ test_partial_stderr_timeout_becomes_unavailable_stub() {
   rm -rf "$td"
 }
 
+
+test_fanout_codex_unavailable_on_bad_version() {
+  run_test "codex bad-version guard emits UNAVAILABLE without invoking codex exec"
+
+  local td; td="$(mktemp -d)"
+  PLAN_REVIEW_CODEX_VERSION="codex-cli 0.128.0" run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art cap
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  cap="$td/captures/codex.capture"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing after bad-version guard"
+  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "bad version did not produce UNAVAILABLE artifact" "$(head -20 "$codex_art")"
+  elif ! grep -qF 'INCOMPATIBLE' "$codex_art"; then
+    fail "UNAVAILABLE artifact missing INCOMPATIBLE reason" "$(head -20 "$codex_art")"
+  elif [[ -f "$cap" ]] && grep -qF 'ARGV: exec' "$cap"; then
+    fail "codex exec was invoked despite bad-version guard" "$(head -5 "$cap")"
+  else
+    pass "bad-version guard wrote UNAVAILABLE and skipped codex exec"
+  fi
+  rm -rf "$td"
+}
+
 # --- Runner ---
 
 test_extracts_issue_num_from_filename
@@ -488,6 +512,7 @@ test_codex_stderr_review_is_promoted_to_artifact
 test_empty_provider_output_becomes_unavailable_stub
 test_provider_timeout_becomes_unavailable_stub
 test_partial_stderr_timeout_becomes_unavailable_stub
+test_fanout_codex_unavailable_on_bad_version
 test_disagreement_report_captures_unique_finding
 test_two_fixture_plumbing
 

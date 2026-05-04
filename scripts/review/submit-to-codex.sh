@@ -96,6 +96,20 @@ if ! command -v "$CODEX_BIN" &>/dev/null && [[ ! -x "$CODEX_BIN" ]]; then
   exit 2
 fi
 
+# #2479: fast-fail known-bad Codex CLI versions before burning review timeout.
+# shellcheck source=/dev/null
+source "${SCRIPT_DIR}/lib/codex-version-guard.sh"
+guard_rc=0
+guard_msg="$(codex_version_guard_check)" || guard_rc=$?
+if [[ "$guard_rc" -eq 3 ]]; then
+  echo "# CODEX_INCOMPATIBLE_VERSION"
+  echo "# ${guard_msg}"
+  echo "# Action: bash scripts/install/pin-codex.sh (or set CODEX_VERSION_GUARD_CEILING=<verified-good> after upstream fix validation)"
+  exit 7
+elif [[ "$guard_rc" -ne 0 ]]; then
+  echo "# Codex version guard probe failed: ${guard_msg}" >&2
+fi
+
 if [[ -n "$COMMIT_SHA" ]]; then
   if [[ ! "$COMMIT_SHA" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
     echo "ERROR: invalid commit SHA: $COMMIT_SHA" >&2

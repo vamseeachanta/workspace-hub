@@ -154,8 +154,19 @@ invoke_provider() {
       # Keep prompt delivery in argv and close stdin. The sibling
       # submit-to-codex.sh regression tests document that `codex exec -` can
       # hang in installed Codex versions, while argv + </dev/null avoids
-      # inherited-pipe stalls.
-      timeout -k 5s "${timeout_s}s" codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
+      # inherited-pipe stalls. #2479 adds a version guard so known-bad Codex
+      # installs produce an immediate UNAVAILABLE artifact instead of waiting
+      # for provider timeout.
+      # shellcheck source=/dev/null
+      source "$SCRIPT_DIR/lib/codex-version-guard.sh"
+      local guard_msg guard_rc=0
+      guard_msg="$(codex_version_guard_check)" || guard_rc=$?
+      if [[ "$guard_rc" -eq 3 ]]; then
+        printf '%s\n' "$guard_msg" > "$err"
+        rc=3
+      else
+        timeout -k 5s "${timeout_s}s" codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
+      fi
       ;;
     gemini)
       local combined

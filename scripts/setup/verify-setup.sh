@@ -84,9 +84,26 @@ fi
 # ── 4. Other AI CLIs ─────────────────────────────────────────────────────────
 echo ""
 echo "--- AI CLIs (non-critical)"
+PIN_ENV="${WORKSPACE_HUB}/scripts/install/codex-pin.env"
+if [[ -f "$PIN_ENV" ]]; then
+  # shellcheck source=/dev/null
+  source "$PIN_ENV"
+else
+  CODEX_PIN_VERSION="0.123.0"
+fi
 for cli in codex gemini; do
   if command -v "$cli" &>/dev/null; then
-    _pass "${cli} CLI found"
+    if [[ "$cli" == "codex" ]]; then
+      CODEX_VER_RAW="$($cli --version 2>/dev/null | head -1 || true)"
+      CODEX_VER="$(printf '%s' "$CODEX_VER_RAW" | awk '{print $NF}')"
+      if [[ "$CODEX_VER" == "${CODEX_PIN_VERSION:-0.123.0}" ]]; then
+        _pass "codex CLI found at pinned version ${CODEX_VER}"
+      else
+        _warn "codex CLI version drift: ${CODEX_VER:-unknown} (expected ${CODEX_PIN_VERSION:-0.123.0}; run scripts/install/pin-codex.sh)"
+      fi
+    else
+      _pass "${cli} CLI found"
+    fi
   else
     _warn "${cli} CLI not found (optional — install if needed)"
   fi
