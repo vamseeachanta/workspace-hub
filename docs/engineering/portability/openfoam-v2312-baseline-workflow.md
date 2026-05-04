@@ -35,11 +35,13 @@ bash scripts/openfoam/verify-openfoam-baseline.sh --benchmark pitzDaily
 - `scripts/openfoam/verify-openfoam-baseline.sh`
   - resolves bootstrap path
   - verifies fork/version
+  - exports the selected path as `OPENFOAM_BASHRC_RESOLVED`
   - invokes the delegated tutorial runner
-  - owns the final normalized YAML verdict using embedded Python normalization (`uv run python` when available, `python3` fallback for portability)
-  - filters `damBreak` out of the canonical baseline output
+  - owns the final normalized YAML verdict using embedded Python normalization via `uv run python`
+  - fails fast with `uv-missing` instead of falling back to bare `python3`
 - `scripts/openfoam/run-openfoam-tutorials.sh`
   - remains the execution engine
+  - accepts `--skip-bootstrap` from the wrapper and trusts the prepared OpenFOAM environment
   - runs selected tutorial commands
   - emits raw tutorial rows for wrapper normalization
 

@@ -62,8 +62,8 @@ def test_verify_script_fails_when_bashrc_missing(tmp_path: Path) -> None:
     assert verdict["tutorials"] == []
 
 
-def test_verify_script_writes_failure_verdict_without_uv(tmp_path: Path) -> None:
-    verdict_path = tmp_path / "no-uv.yaml"
+def test_verify_script_fails_fast_when_uv_missing(tmp_path: Path) -> None:
+    verdict_path = tmp_path / "uv-missing.yaml"
 
     result = _run_verify(
         "--verdict",
@@ -75,9 +75,12 @@ def test_verify_script_writes_failure_verdict_without_uv(tmp_path: Path) -> None
     )
 
     assert result.returncode != 0
+    assert "uv-missing" in result.stderr
     assert verdict_path.exists()
     verdict = yaml.safe_load(verdict_path.read_text())
-    assert verdict["error_summary"] == "missing-bashrc"
+    assert verdict["overall_verdict"] == "FAIL"
+    assert verdict["error_summary"] == "uv-missing"
+    assert "uv is required" in verdict["error_message"]
 
 
 def test_verify_script_rejects_invalid_benchmark_value(tmp_path: Path) -> None:
@@ -230,6 +233,8 @@ def test_verify_script_normalizes_final_yaml_contract(tmp_path: Path) -> None:
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
         f"echo ran > {runner_marker}\n"
+        "[[ \" $* \" == *\" --skip-bootstrap \"* ]]\n"
+        "test \"$OPENFOAM_BASHRC_RESOLVED\" = \"$OPENFOAM_BASHRC\"\n"
         f"cat > {raw_verdict} <<'YAML'\n"
         "generated_at: 2026-04-21T00:00:00Z\n"
         "machine: dev-secondary\n"
@@ -278,6 +283,34 @@ def test_verify_script_normalizes_final_yaml_contract(tmp_path: Path) -> None:
     assert verdict["tutorials"] == [
         {"name": "cavity", "status": "PASS", "time_directories": 11}
     ]
+
+
+def test_runner_skip_bootstrap_does_not_source_bashrc(tmp_path: Path) -> None:
+    result = subprocess.run(
+        [
+            "bash",
+            str(RUNNER_SCRIPT),
+            "--skip-bootstrap",
+            "--tutorials",
+            "unsupported",
+            "--verdict",
+            str(tmp_path / "raw.yaml"),
+        ],
+        cwd=REPO_ROOT,
+        env={
+            **os.environ,
+            "OPENFOAM_BASHRC": str(tmp_path / "missing-bashrc"),
+            "WM_PROJECT_DIR": str(tmp_path / "openfoam2312"),
+            "WM_PROJECT_VERSION": "v2312",
+        },
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+    assert result.returncode == 2
+    assert "unsupported tutorial 'unsupported'" in result.stderr
+    assert "OpenFOAM bashrc not found" not in result.stderr
 
 
 def test_verify_script_prefers_first_supported_bashrc_path(tmp_path: Path) -> None:
@@ -361,6 +394,8 @@ def test_pytest_harness_covers_validator_contract() -> None:
     contents = Path(__file__).read_text()
     assert "@pytest.mark.openfoam" in contents
     assert "test_verify_script_fails_when_bashrc_missing" in contents
+    assert "test_verify_script_fails_fast_when_uv_missing" in contents
+    assert "test_runner_skip_bootstrap_does_not_source_bashrc" in contents
     assert "test_verify_script_rejects_invalid_benchmark_value" in contents
 
 
