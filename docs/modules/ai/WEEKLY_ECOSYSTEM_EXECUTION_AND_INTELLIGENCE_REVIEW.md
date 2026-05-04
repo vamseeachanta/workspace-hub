@@ -56,6 +56,11 @@ Each weekly run should answer five questions:
 
 ## Suggested Weekly Checklist
 
+### 0. Issue Hygiene Gate
+- [ ] Run `uv run scripts/knowledge/review-open-issues.py --audit --audit-format markdown` before opening new follow-on issues.
+- [ ] Review the generated `refresh / merge / close / verify` recommendations for stale analysis artifacts, duplicate issue clusters, stale issue premises, and parent/child drift.
+- [ ] Prefer refreshing, merging, closing, or verifying existing issue state before creating overlapping weekly-review tickets.
+
 ### A. Settings and Routing
 - [ ] Review Hermes default model and route mapping
 - [ ] Review provider fallbacks and quota-sensitive paths
