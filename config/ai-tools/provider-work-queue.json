@@ -1,39 +1,163 @@
 {
-  "generated_at": "2026-05-03T09:20:06.859693Z",
-  "current_week": "2026-W18",
-  "scorecard_generated_at": "2026-05-03T09:20:04.983066Z",
+  "generated_at": "2026-05-04T02:25:26.680270Z",
+  "current_week": "2026-W19",
+  "scorecard_generated_at": "2026-05-04T02:25:24.864539Z",
   "recommended_provider_order": [
-    "gemini",
     "codex",
+    "gemini",
     "claude"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 1,
-      "total_candidates": 167,
+      "execution_ready_count": 6,
+      "total_candidates": 162,
       "top_issues": [
         {
-          "number": 2510,
-          "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
+          "number": 2479,
+          "title": "fix(review): Codex stdin-hang regression post-#2406 closure (size-dependent)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2479",
           "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "cat:tooling",
-            "status:plan-approved",
-            "domain:semiconductor",
-            "domain:chip-design"
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:knowledge-management",
+            "status:plan-approved"
           ],
-          "updatedAt": "2026-05-03T04:15:17Z",
+          "updatedAt": "2026-05-03T19:36:37Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2532,
+          "title": "fix(ci): repair PR review/stage-prompt guard environment failures",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2532",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:review",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-03T19:31:45Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2533,
+          "title": "feat(repo-portfolio): review and revise mission/objective statements across active repos",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2533",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-03T19:27:15Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2563,
+          "title": "Set up Telegram mobile access for Hermes AI control",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "domain:integrations",
+            "domain:notification",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-03T12:47:12Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2229,
+          "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "status:working",
+            "machine:licensed-win-1",
+            "agent:claude",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T06:09:41Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2552,
+          "title": "docs(security): external contributor and unsolicited paid-help response runbook",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
+          "labels": [
+            "documentation",
+            "priority:medium",
+            "cat:documentation",
+            "domain:security",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-03T21:15:07Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -53,7 +177,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -70,134 +194,13 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-02T11:49:38Z",
+          "updatedAt": "2026-05-03T11:45:05Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2519,
-          "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "priority:critical",
-            "domain:ai-orchestration",
-            "domain:workstations",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-27T18:57:43Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2520,
-          "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
-          "labels": [
-            "bug",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "priority:critical",
-            "domain:ai-orchestration",
-            "domain:workstations",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-27T17:45:28Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2291,
-          "title": "fix(cron-health): harden failure detection and align task evidence contracts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T10:39:33Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2301,
-          "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T14:37:26Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2363,
-          "title": "feat(doc-intel): materialize wiki_refs reverse lookup from doc_key to citing wiki pages",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2363",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:document-intelligence"
-          ],
-          "updatedAt": "2026-04-26T21:54:20Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
+          "provider_status": "underused",
           "work_type": [
             "research",
             "implementation",
@@ -209,8 +212,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 12,
-      "total_candidates": 31,
+      "execution_ready_count": 13,
+      "total_candidates": 36,
       "top_issues": [
         {
           "number": 2269,
@@ -367,6 +370,32 @@
           ]
         },
         {
+          "number": 2523,
+          "title": "feat(workstations): add reusable Hermes preflight readiness checker",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2523",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:ai-orchestration",
+            "domain:workstations",
+            "domain:agent-cost-tracking",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-03T19:30:33Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 2270,
           "title": "feat(blender): standardize headless baseline workflow and smoke render validation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2270",
@@ -381,33 +410,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-03T06:22:53Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2272,
-          "title": "test(portability): add repeatable OpenFOAM and Blender smoke verification",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2272",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness",
-            "status:working",
-            "machine:multi",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-03T06:25:51Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
