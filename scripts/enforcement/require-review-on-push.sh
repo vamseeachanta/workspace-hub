@@ -12,11 +12,34 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 TODAY="$(date +%Y-%m-%d)"
-START_MS="$(uv run --no-project python - <<'PY'
-import time
-print(int(time.time() * 1000))
-PY
-)"
+
+# Tracks whether the latency timer fell back to seconds-resolution (set by _ms_now).
+# Tagged into the JSONL telemetry as "_precision":"seconds" so the audit cron can
+# flag degraded measurements instead of silently treating them as ms. Issue #2532.
+_MS_PRECISION="ms"
+
+# _ms_now — portable millisecond-precision timestamp.
+# Prefers GNU date (CI ubuntu, most Linux dev machines), falls back to python3
+# (macOS dev machines where BSD date does not support %3N), final fallback to
+# seconds*1000 with a stderr warning + JSONL precision tag for the audit cron.
+# Decoupled from `uv` per #2532 so the pre-push hook works on any machine.
+_ms_now() {
+  local _candidate
+  _candidate="$(date +%s%3N 2>/dev/null)"
+  if [[ "$_candidate" =~ ^[0-9]+$ ]]; then
+    echo "$_candidate"
+    return
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    python3 -c 'import time; print(int(time.time() * 1000))'
+    return
+  fi
+  echo "[review-gate] warning: ms-precision timestamp unavailable (no GNU date, no python3); latency telemetry degraded to seconds resolution" >&2
+  _MS_PRECISION="seconds"
+  echo $(( $(date +%s) * 1000 ))
+}
+
+START_MS="$(_ms_now)"
 
 # --- Arguments ---
 LOCAL_OID="${1:-HEAD}"
@@ -134,16 +157,19 @@ log_latency() {
   local latency_dir="${REPO_ROOT}/logs/hooks"
   local latency_file="${latency_dir}/review-gate-latency.jsonl"
   mkdir -p "$latency_dir"
-  local end_ms latency_ms branch timestamp
-  end_ms="$(uv run --no-project python - <<'PY'
-import time
-print(int(time.time() * 1000))
-PY
-)"
+  local end_ms latency_ms branch timestamp precision_field
+  end_ms="$(_ms_now)"
   latency_ms=$((end_ms - START_MS))
   branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown')"
   timestamp="$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')"
-  echo "{\"timestamp\":\"${timestamp}\",\"branch\":\"${branch}\",\"strict\":$( [[ \"${REVIEW_GATE_STRICT:-}\" == \"1\" ]] && echo true || echo false ),\"verdict\":\"${verdict}\",\"latency_ms\":${latency_ms}}" >> "$latency_file"
+  # Tag JSONL with "_precision":"seconds" if either timer call hit the seconds-
+  # resolution fallback. Audit cron can then exclude or flag those entries.
+  if [[ "${_MS_PRECISION}" == "seconds" ]]; then
+    precision_field=",\"_precision\":\"seconds\""
+  else
+    precision_field=""
+  fi
+  echo "{\"timestamp\":\"${timestamp}\",\"branch\":\"${branch}\",\"strict\":$( [[ \"${REVIEW_GATE_STRICT:-}\" == \"1\" ]] && echo true || echo false ),\"verdict\":\"${verdict}\",\"latency_ms\":${latency_ms}${precision_field}}" >> "$latency_file"
 }
 
 log_bypass() {
