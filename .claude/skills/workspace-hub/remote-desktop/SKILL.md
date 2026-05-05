@@ -13,9 +13,13 @@ Connect to dev-secondary graphical desktop from dev-primary via VNC over SSH tun
 
 ## Quick Start
 
+Use the live repo script name:
+
 ```bash
-bash scripts/operations/connection/vnc-dev-secondary.sh
+bash scripts/operations/connection/vnc-ace-linux-2.sh
 ```
+
+Historical docs/audits may mention `vnc-dev-secondary.sh`; verify the actual script path with `find scripts/operations/connection -maxdepth 1 -type f -iname '*vnc*'` before telling the user what to run.
 
 Script is fully self-contained: detects display+auth, auto-starts x11vnc if needed, opens tunnel, launches viewer.
 
@@ -73,3 +77,7 @@ Note: systemd service uses GDM auth path — update if user session display chan
 - `SetDesktopSize failed: 1` — harmless; physical display ignores client resize requests
 - `End of stream` immediately — x11vnc not running; rerun the script
 - `Connection refused` — SSH tunnel failed or nothing on port 5900
+
+## References
+
+- `references/ace-linux-2-vnc-live-check-2026-05-05.md` — live SSH/VNC verification commands, observed listener state, and safe alternate-port tunnel probe.
