@@ -67,3 +67,5 @@ shown:
     tips: [gsd-plant-seed, cc-doctor]
   - date: 2026-05-03
     tips: [cc-mobile, cc-batch]
+  - date: 2026-05-05
+    tips: [cc-context, cc-pr-comments]
