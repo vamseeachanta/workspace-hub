@@ -1,5 +1,3 @@
-2026-05-04T22:26:08-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/tests/unit/cli/test_capability_drift.py|20280
-2026-05-04T22:27:12-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/tests/unit/cli/test_capability_drift.py|20281
 2026-05-04T22:28:42-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/docs/COMMANDS.md|20282
 2026-05-04T22:32:15-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/docs/CLI.md|20283
 2026-05-04T22:32:54-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/examples/llm_classification_demo.py|20284
@@ -48,3 +46,5 @@
 2026-05-05T09:51:47-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-05-fowt-linkedin-recon-handoff.md|20327
 2026-05-05T09:51:59-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_webfetch_first_for_linkedin.md|20328
 2026-05-05T09:52:10-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md|20329
+2026-05-05T14:39:22-05:00|/mnt/local-analysis/workspace-hub/.gitignore|20330
+2026-05-05T14:49:01-05:00|/mnt/local-analysis/workspace-hub/worldenergydata/.planning/llm-wiki-migration-status.md|20331
