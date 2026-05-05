@@ -22,8 +22,8 @@
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
 - `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
   - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
-- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent
-- `worldenergydata/` — energy data sub-repo
+- `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent *verified: 2026-05-05*
+- `worldenergydata/` — energy data sub-repo *verified: 2026-05-05*
 
 ## Windows Path Conventions
 

@@ -71,6 +71,7 @@
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
+- [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready to send, BSEE fix landed, open issues
 > project_cfd_openfoam_storage.md
 - [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209 children; 2026-04-19 amendments landed; follow-ons #2360/#2361/#2362
 - [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+
@@ -111,3 +112,4 @@
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data
 - [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
+- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present

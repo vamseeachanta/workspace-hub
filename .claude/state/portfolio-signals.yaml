@@ -1,4 +1,4 @@
-generated_at: '2026-05-04T07:02:13Z'
+generated_at: '2026-05-05T07:01:32Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,44 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-05-04'
+  provider: gemini
+  capability: Native Physics-Informed Neural Networks (PINN) API
+  engineering_domains:
+  - subsea
+  - drilling
+  impact: high
+  source: https://blog.google/technology/ai/gemini-engineering-pinn
+- date: '2026-05-02'
+  provider: claude
+  capability: Advanced Finite Element Analysis Context Extension
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://www.anthropic.com/news/claude-fea-analysis
+- date: '2026-05-01'
+  provider: codex
+  capability: Automated Wellbore Trajectory Optimization Code Gen
+  engineering_domains:
+  - drilling
+  - reservoir
+  impact: medium
+  source: https://openai.com/blog/codex-drilling-optimization
+- date: '2026-04-30'
+  provider: gemini
+  capability: Multimodal Reservoir Seismic Interpretation
+  engineering_domains:
+  - reservoir
+  impact: high
+  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-seismic
+- date: '2026-04-29'
+  provider: claude
+  capability: Real-time Structural Integrity Monitoring Models
+  engineering_domains:
+  - structural
+  impact: medium
+  source: https://www.anthropic.com/news/claude-structural-integrity
 - date: '2026-05-01'
   provider: gemini
   capability: Agentic Reasoning for Physics Engines
@@ -135,50 +173,11 @@ capability_signals:
   - drilling
   impact: medium
   source: https://openai.com/blog/codex-drilling-optimization
-- date: '2026-04-19'
-  provider: gemini
-  capability: Subsea Pipeline Integrity Prediction Engine
-  engineering_domains:
-  - subsea
-  impact: high
-  source: https://deepmind.google/discover/blog/subsea-pipeline-integrity
-- date: '2026-04-15'
-  provider: claude
-  capability: Reservoir Fluid Dynamics Code Conversion
-  engineering_domains:
-  - reservoir
-  - drilling
-  impact: medium
-  source: https://anthropic.com/news/claude-reservoir-fluid-dynamics
-- date: '2026-04-18'
-  provider: codex
-  capability: Multi-step engineering reasoning engine
-  engineering_domains:
-  - structural
-  - drilling
-  impact: high
-  source: https://openai.com/blog/engineering-reasoning
-- date: '2026-04-10'
-  provider: claude
-  capability: Native 3D mesh processing for finite element analysis
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://anthropic.com/news/claude-mesh-analysis-2026
-- date: '2026-04-08'
-  provider: gemini
-  capability: Multimodal fluid dynamics and multiphase flow simulation pipeline
-  engineering_domains:
-  - reservoir
-  - subsea
-  impact: high
-  source: https://blog.google/technology/ai/gemini-engineering-fluid-dynamics
 l3_meta:
   query_attempted: true
   query_mode: engineering
   parse_success: true
   signals_added: 0
   signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  carry_forward: false
+  source_verified: true
