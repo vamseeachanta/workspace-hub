@@ -520,3 +520,8 @@ docs/gtm/intake/received/
 docs/gtm/intake/logos/
 digitalmodel/examples/demos/gtm/private-log/
 digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/
+
+# Vendor-derivative PDFs — must live under /mnt/ace, never in any git repo
+# Per llm-wiki spinout 2026-05-05 (worldenergydata/docs/plans/2026-05-05-llm-wiki-spinout-migration-plan.md §9a)
+knowledge/wikis/**/raw/papers/*.pdf
+wikis/**/raw/papers/*.pdf
