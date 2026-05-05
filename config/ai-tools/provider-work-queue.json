@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-05-04T14:51:20.537669Z",
+  "generated_at": "2026-05-04T21:20:07.246364Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-04T14:51:18.658308Z",
+  "scorecard_generated_at": "2026-05-04T21:20:05.547047Z",
   "recommended_provider_order": [
-    "codex",
     "gemini",
+    "codex",
     "claude"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 5,
+      "execution_ready_count": 4,
       "total_candidates": 164,
       "top_issues": [
         {
@@ -114,31 +114,6 @@
           ]
         },
         {
-          "number": 2627,
-          "title": "wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2627",
-          "labels": [
-            "cat:engineering",
-            "status:plan-approved",
-            "llm-wiki",
-            "tracker",
-            "domain:digitalmodel",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-05-04T03:06:11Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2431,
           "title": "Compliance alert: W17 \u2014 20% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
@@ -197,6 +172,32 @@
             "domain:agent-cost-tracking"
           ],
           "updatedAt": "2026-04-27T18:57:43Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2520,
+          "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
+          "labels": [
+            "bug",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "priority:critical",
+            "domain:ai-orchestration",
+            "domain:workstations",
+            "domain:agent-cost-tracking"
+          ],
+          "updatedAt": "2026-04-27T17:45:28Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",

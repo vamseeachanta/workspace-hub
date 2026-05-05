@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-04T14:51:20.650813Z",
+  "generated_at": "2026-05-04T21:20:07.370016Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 5,
@@ -176,39 +176,6 @@
       "eligible": true
     },
     {
-      "number": 2627,
-      "title": "wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2627",
-      "labels": [
-        "cat:engineering",
-        "status:plan-approved",
-        "llm-wiki",
-        "tracker",
-        "domain:digitalmodel",
-        "status:needs-plan"
-      ],
-      "updatedAt": "2026-05-04T03:06:11Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 2295,
       "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
@@ -340,6 +307,40 @@
         "domain:agent-cost-tracking"
       ],
       "updatedAt": "2026-04-27T18:57:43Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2520,
+      "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
+      "labels": [
+        "bug",
+        "cat:ai-orchestration",
+        "cat:harness",
+        "priority:critical",
+        "domain:ai-orchestration",
+        "domain:workstations",
+        "domain:agent-cost-tracking"
+      ],
+      "updatedAt": "2026-04-27T17:45:28Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

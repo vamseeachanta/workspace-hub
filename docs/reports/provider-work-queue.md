@@ -1,15 +1,15 @@
 # Provider work queue
 
-Generated: 2026-05-04T14:51:20.537669Z
+Generated: 2026-05-04T21:20:07.246364Z
 Current week: 2026-W19
-Recommended provider order: codex, gemini, claude
+Recommended provider order: gemini, codex, claude
 
 Execution-ready means the issue already carries `status:plan-approved` or an explicit agent label.
 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 5
+- Execution-ready candidates: 4
 - Total routed candidates: 164
 
 | Issue | Ready | Why routed here | Labels |
@@ -18,10 +18,10 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2563 Set up Telegram mobile access for Hermes AI control | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, domain:integrations, domain:notification |
 | #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:testing, status:plan-approved |
 | #2552 docs(security): external contributor and unsolicited paid-help response runbook | yes | strategy/workflow/architecture language | documentation, priority:medium, cat:documentation, domain:security, status:plan-approved |
-| #2627 wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix) | yes | strategy/workflow/architecture language | cat:engineering, status:plan-approved, llm-wiki, tracker, domain:digitalmodel, status:needs-plan |
 | #2431 Compliance alert: W17 — 20% (critical) | no | strategy/workflow/architecture language | priority:high, priority:critical, compliance-alert |
 | #2517 Compliance alert: W18 — 42% (high) | no | strategy/workflow/architecture language | priority:high, priority:medium, priority:critical, compliance-alert |
 | #2519 feat(hermes): orchestrate AI provider usage and workstation dispatch | no | strategy/workflow/architecture language | enhancement, cat:ai-orchestration, cat:harness, priority:critical, domain:ai-orchestration, domain:workstations |
+| #2520 fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation | no | strategy/workflow/architecture language | bug, cat:ai-orchestration, cat:harness, priority:critical, domain:ai-orchestration, domain:workstations |
 
 ## codex
 
