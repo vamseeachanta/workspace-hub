@@ -187,15 +187,15 @@ EIA / spill / marine mammal protection deemed **out of scope** for digitalmodel 
 
 ## 8. Issue Index
 
-This section is back-filled after Phase 4 completes.
+Filed 2026-05-04 against `vamseeachanta/digitalmodel`.
 
-| # | Title | Repo | Status |
+| # | Title | Priority | Link |
 |---|---|---|---|
-| TBD | Wiki standards page family for FOWT (IEC 61400-3-2, DNV-ST-0119, DNV-RP-0286, DNV-ST-0126, API-RP-2SIM) | digitalmodel | filed |
-| TBD | FOWT coupled aero-hydro response analysis facade | digitalmodel | filed |
-| TBD | FOWT watch-circle envelope check vs dynamic-cable curvature | digitalmodel | filed |
-| TBD | Safety Case / MAH ALARP framework module | digitalmodel | filed |
-| TBD | W2W motion-compensated gangway operability module | digitalmodel | filed |
+| [#574](https://github.com/vamseeachanta/digitalmodel/issues/574) | Wiki standards-page family for FOWT (IEC 61400-3-2, DNV-ST-0119, DNV-RP-0286, DNV-ST-0126, DNV-ST-0358, DNV-RP-0360, API RP 2SIM) | high | filed |
+| [#575](https://github.com/vamseeachanta/digitalmodel/issues/575) | FOWT coupled aero-hydro response Python facade | medium | filed |
+| [#576](https://github.com/vamseeachanta/digitalmodel/issues/576) | FOWT watch-circle envelope check vs dynamic-cable curvature (DNV-RP-0360) | medium | filed |
+| [#577](https://github.com/vamseeachanta/digitalmodel/issues/577) | Safety Case / MAH ALARP framework module (NORSOK Z-013, UK HSE SCR-2015) | medium | filed |
+| [#578](https://github.com/vamseeachanta/digitalmodel/issues/578) | W2W motion-compensated gangway operability module (DNV-ST-0358) | low | filed |
 
 ---
 
