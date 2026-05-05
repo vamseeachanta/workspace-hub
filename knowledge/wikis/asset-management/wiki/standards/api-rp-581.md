@@ -33,3 +33,8 @@ Per #2482, the API portal is the citation target. Do NOT cite `wiki/sources/` de
 ## Cross-references
 
 - Sister standards: [API RP 580](./api-rp-580.md), [API 579-1](./api-579-1.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering-standards)**: [API RP 16Q — Drilling riser systems (bounded summary)](../../../engineering-standards/wiki/standards/api-rp-16q.md) -- similar slugs (80%); shared tags: api; shared keywords: api, cross-references, rp, scope, where; shared entities: API
+- **Cross-wiki (engineering-standards)**: [API RP 17B — Flexible pipe (bounded summary)](../../../engineering-standards/wiki/standards/api-rp-17b.md) -- similar slugs (80%); shared tags: api; shared keywords: api, cross-references, rp, scope, where; shared entities: API

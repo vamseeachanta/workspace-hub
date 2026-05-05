@@ -36,3 +36,7 @@ This page is a citation resolver for downstream calc modules under the calc-cita
 - [[dnv-rp-c203]] — fatigue methodology applied to riser welds
 - [[dnv-rp-c205]] — environmental loads input
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-OS-E301 — Position Mooring](../../../engineering/wiki/standards/dnv-os-e301.md) -- similar slugs (82%); shared tags: dnv; shared entities: DNV, DNV-OS-F201

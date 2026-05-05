@@ -49,3 +49,7 @@ This page is the citation resolver target for downstream coating-and-corrosion-a
 - [[norsok-m-710]] — non-metallic sealing materials qualification companion
 - [[dnv-rp-b401]] — cathodic-protection design counterpart (immersed service)
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (asset-management)**: [NORSOK Z-008 — Risk-based maintenance and consequence classification](../../../asset-management/wiki/standards/norsok-z-008.md) -- similar slugs (75%); shared tags: norsok; shared keywords: and, cross-references, norsok, scope, where; shared entities: NORSOK

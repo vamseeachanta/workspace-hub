@@ -37,3 +37,7 @@ This page is the citation resolver target for the calc-citation pilot in `digita
 - [[dnv-rp-c205]] — environmental loads input to position mooring response
 - [[dnv-os-f201]] — dynamic risers companion offshore standard
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-OS-E301 — Position Mooring](../../../engineering/wiki/standards/dnv-os-e301.md) -- similar slugs (100%); similar titles (74%); shared tags: dnv, mooring; shared entities: DNV, DNV-OS-E301

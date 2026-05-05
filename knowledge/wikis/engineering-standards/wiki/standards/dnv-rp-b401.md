@@ -34,3 +34,9 @@ This page is a citation resolver for downstream calc modules under the calc-cita
 - [[dnv-st-f101]] — pipeline systems reference RP-B401 for external corrosion control
 - [[dnv-rp-f101]] — corroded-pipeline assessment complements CP-design
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-RP-F101: Corroded Pipelines](../../../engineering/wiki/standards/dnv-rp-f101.md) -- similar slugs (82%); shared tags: corrosion, dnv; shared entities: DNV, DNV-RP-B401
+- **Cross-wiki (engineering)**: [DNV-RP-C203: Fatigue Design](../../../engineering/wiki/standards/dnv-rp-c203.md) -- similar slugs (73%); shared tags: dnv; shared entities: DNV, DNV-RP-B401
+- **Cross-wiki (asset-management)**: [DNV-RP-G101 — Risk-Based Inspection of Offshore Topsides Static Mechanical Equipment](../../../asset-management/wiki/standards/dnv-rp-g101.md) -- similar slugs (82%); shared tags: dnv; shared entities: DNV

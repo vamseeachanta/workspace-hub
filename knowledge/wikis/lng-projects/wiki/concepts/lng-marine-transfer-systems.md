@@ -34,3 +34,5 @@ This page surveys the marine-side transfer interfaces between LNG carriers, jett
 
 - [LNG Project Shapes](./lng-project-shapes.md) — how the transfer interface differs by project shape
 - [LNG Regulatory Framework](./lng-regulatory-framework.md) — standards bodies governing marine transfer
+- **Cross-wiki (marine-engineering)**: [LNG Transfer System Envelope](../../../marine-engineering/wiki/concepts/lng-transfer-system-envelope.md) -- similar slugs (69%); similar titles (69%); shared tags: transfer; shared keywords: and, cross-references, lng, mooring, not; shared entities: FSRU, LNG, SIGTTO
+- **Cross-wiki (marine-engineering)**: [LNG Marine Terminal Engineering](../../../marine-engineering/wiki/concepts/lng-marine-terminal-engineering.md) -- similar slugs (55%); similar titles (55%); shared tags: jetty; shared entities: FSRU, LNG, SIGTTO, STS

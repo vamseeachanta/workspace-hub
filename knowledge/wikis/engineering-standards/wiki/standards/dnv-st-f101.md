@@ -37,3 +37,8 @@ This page is a citation resolver for downstream calc modules under the calc-cita
 - [[dnv-rp-f105]] — free spanning pipelines
 - [[dnv-rp-f109]] — on-bottom stability
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-RP-F101: Corroded Pipelines](../../../engineering/wiki/standards/dnv-rp-f101.md) -- similar slugs (82%); similar titles (51%); shared tags: dnv; shared entities: DNV, DNV-ST-F101
+- **Cross-wiki (engineering)**: [DNV-RP-F105 — Free Spanning Pipelines](../../../engineering/wiki/standards/dnv-rp-f105.md) -- similar slugs (73%); shared tags: dnv; shared entities: DNV, DNV-ST-F101

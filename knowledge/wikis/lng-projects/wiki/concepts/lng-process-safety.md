@@ -35,3 +35,4 @@ This page summarizes canonical LNG release and consequence categories used in pr
 
 - [LNG Storage Tanks](./lng-storage-tanks.md) — containment systems whose design is driven by these consequence categories
 - [LNG Regulatory Framework](./lng-regulatory-framework.md) — standards bodies that codify safety distances
+- **Cross-wiki (marine-engineering)**: [Process Safety](../../../marine-engineering/wiki/concepts/process-safety.md) -- similar slugs (88%); similar titles (88%); shared tags: safety; shared keywords: cross-references, explosion, fire, key, process

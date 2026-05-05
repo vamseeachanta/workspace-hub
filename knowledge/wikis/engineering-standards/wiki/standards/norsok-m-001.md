@@ -46,3 +46,7 @@ This page is the citation resolver target for materials-selection-aware calc mod
 - [[norsok-m-501]] — surface preparation and protective coating companion in the materials series
 - [[norsok-m-710]] — non-metallic sealing materials qualification companion
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (asset-management)**: [NORSOK Z-008 — Risk-based maintenance and consequence classification](../../../asset-management/wiki/standards/norsok-z-008.md) -- similar slugs (83%); shared tags: norsok; shared keywords: cross-references, norsok, scope, where; shared entities: NORSOK

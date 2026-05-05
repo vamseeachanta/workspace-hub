@@ -188,3 +188,4 @@ This concept page suggests follow-on pages for:
 - [Mooring Failures at LNG Terminals](../sources/mooring-failures-lng-terminals.md)
 - **Cross-wiki (engineering)**: [DNV-OS-E301](../../../engineering/wiki/standards/dnv-os-e301.md) — stationkeeping and mooring-system design basis
 - **Cross-wiki (engineering)**: [OrcaFlex Solver](../../../engineering/wiki/entities/orcaflex-solver.md) — likely tool for berth-motion and mooring-load studies
+- **Cross-wiki (lng-projects)**: [LNG Marine Transfer Systems](../../../lng-projects/wiki/concepts/lng-marine-transfer-systems.md) -- similar slugs (55%); similar titles (55%); shared tags: jetty; shared entities: FSRU, LNG, SIGTTO, STS

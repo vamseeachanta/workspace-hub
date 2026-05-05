@@ -36,3 +36,10 @@ This page is a citation resolver for downstream calc modules under the calc-cita
 - [[dnv-os-e301]] — position mooring fatigue uses T-N curves with parallel methodology
 - [[dnv-os-f201]] — dynamic risers fatigue per RP-C203
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-RP-C203: Fatigue Design](../../../engineering/wiki/standards/dnv-rp-c203.md) -- similar slugs (100%); similar titles (52%); shared tags: dnv, fatigue; shared keywords: cross-references, design, dnv-rp-c203, fatigue, full; shared entities: DNV, DNV-RP-C203
+- **Cross-wiki (engineering)**: [DNV-RP-C205: Environmental Conditions and Loads](../../../engineering/wiki/standards/dnv-rp-c205.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV, DNV-RP-C203
+- **Cross-wiki (asset-management)**: [DNV-RP-G101 — Risk-Based Inspection of Offshore Topsides Static Mechanical Equipment](../../../asset-management/wiki/standards/dnv-rp-g101.md) -- similar slugs (73%); shared tags: dnv; shared keywords: cross-references, of, offshore, scope, where; shared entities: DNV
+- **Cross-wiki (engineering)**: [DNV-RP-F105 — Free Spanning Pipelines](../../../engineering/wiki/standards/dnv-rp-f105.md) -- similar slugs (73%); shared tags: dnv, fatigue; shared entities: DNV, DNV-RP-C203

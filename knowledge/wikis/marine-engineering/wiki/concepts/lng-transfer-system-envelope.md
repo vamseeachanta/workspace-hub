@@ -108,3 +108,4 @@ Transfer-envelope checks apply differently across terminal types:
 - [LNG2026 TP04: Shipping, Marine and Port Operations](../sources/lng2026-tp04-shipping-marine-port-operations.md)
 - [SIGTTO LNG Operations in Port Areas](../sources/sigtto-lng-operations-port-areas.md)
 - [Mooring Failures at LNG Terminals](../sources/mooring-failures-lng-terminals.md)
+- **Cross-wiki (lng-projects)**: [LNG Marine Transfer Systems](../../../lng-projects/wiki/concepts/lng-marine-transfer-systems.md) -- similar slugs (69%); similar titles (69%); shared tags: transfer; shared keywords: and, cross-references, lng, mooring, not; shared entities: FSRU, LNG, SIGTTO

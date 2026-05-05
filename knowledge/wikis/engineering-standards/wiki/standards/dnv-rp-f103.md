@@ -83,3 +83,8 @@ A digitalmodel emit of a standards-derived constant (e.g., a Table 5-1 current d
 - Tests: `digitalmodel/tests/marine_ops/marine_engineering/test_cathodic_protection_dnv.py`
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
 - Issue: [vamseeachanta/workspace-hub#2627](https://github.com/vamseeachanta/workspace-hub/issues/2627) (creation), [vamseeachanta/workspace-hub#2609](https://github.com/vamseeachanta/workspace-hub/issues/2609) R3 cluster (downstream consumer)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-RP-F101: Corroded Pipelines](../../../engineering/wiki/standards/dnv-rp-f101.md) -- similar slugs (91%); shared tags: corrosion, dnv; shared keywords: by, cross-references, full, key, other; shared entities: DNV, DNV-RP-F101, DNV-ST-F101
+- **Cross-wiki (engineering)**: [DNV-RP-F105 — Free Spanning Pipelines](../../../engineering/wiki/standards/dnv-rp-f105.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV, DNV-RP-F101, DNV-ST-F101

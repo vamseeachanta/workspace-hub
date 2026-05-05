@@ -33,3 +33,9 @@ Per #2482, cite Standards Norway (https://standard.no/no/Nettbutikk/produktkatal
 ## Cross-references
 
 - Sister standards: [DNV-RP-G101](./dnv-rp-g101.md), [HSE SCR 2015](./hse-scr-2015.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering-standards)**: [NORSOK M-001 Materials Selection — bounded summary](../../../engineering-standards/wiki/standards/norsok-m-001.md) -- similar slugs (83%); shared tags: norsok; shared keywords: cross-references, norsok, scope, where; shared entities: NORSOK
+- **Cross-wiki (engineering-standards)**: [NORSOK N-001 Structural Design — bounded summary](../../../engineering-standards/wiki/standards/norsok-n-001.md) -- similar slugs (83%); shared tags: norsok; shared keywords: cross-references, norsok, scope, where; shared entities: NORSOK
+- **Cross-wiki (engineering-standards)**: [NORSOK M-501 Surface Preparation and Protective Coating — bounded summary](../../../engineering-standards/wiki/standards/norsok-m-501.md) -- similar slugs (75%); shared tags: norsok; shared keywords: and, cross-references, norsok, scope, where; shared entities: NORSOK

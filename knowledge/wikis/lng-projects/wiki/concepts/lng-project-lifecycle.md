@@ -34,3 +34,4 @@ This page summarizes the canonical phase taxonomy used by LNG project developers
 
 - [LNG Project Shapes](./lng-project-shapes.md) — onshore vs. FLNG vs. FSRU phase-duration differences
 - [LNG Regulatory Framework](./lng-regulatory-framework.md) — standards bodies that gate each phase
+- **Cross-wiki (asset-management)**: [Asset Lifecycle](../../../asset-management/wiki/concepts/asset-lifecycle.md) -- similar slugs (67%); similar titles (67%); shared tags: lifecycle

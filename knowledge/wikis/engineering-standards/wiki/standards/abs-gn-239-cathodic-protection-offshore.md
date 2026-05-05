@@ -34,3 +34,7 @@ Resolver target for downstream `digitalmodel` `Citation` instances per `.claude/
 - [[dnv-rp-b401]] — DNV cathodic-protection-design counterpart
 - [[abs-rules-offshore-installations]] — offshore rule book referenced for CP scope
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (marine-engineering)**: [Cathodic Protection System](../../../marine-engineering/wiki/concepts/cathodic-protection-system.md) -- similar slugs (68%); similar titles (52%); shared tags: offshore; shared entities: ABS, DNV

@@ -48,3 +48,7 @@ This page is the citation resolver target for downstream calc modules under the 
 - [[norsok-n-004]] — design of steel structures companion code (jacket and topside detail design)
 - [[norsok-m-001]] — materials selection companion (load-bearing material classes feed back into N-001)
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (asset-management)**: [NORSOK Z-008 — Risk-based maintenance and consequence classification](../../../asset-management/wiki/standards/norsok-z-008.md) -- similar slugs (83%); shared tags: norsok; shared keywords: cross-references, norsok, scope, where; shared entities: NORSOK

@@ -36,3 +36,8 @@ This page is a citation resolver for downstream calc modules under the calc-cita
 - [[dnv-rp-f109]] — on-bottom pipeline stability uses RP-C205 wave-current loads
 - [[dnv-rp-c203]] — fatigue stress histories driven by RP-C205 wave climate
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-RP-C205: Environmental Conditions and Loads](../../../engineering/wiki/standards/dnv-rp-c205.md) -- similar slugs (100%); similar titles (74%); shared tags: dnv; shared entities: DNV, DNV-RP-C205
+- **Cross-wiki (engineering)**: [DNV-RP-C203: Fatigue Design](../../../engineering/wiki/standards/dnv-rp-c203.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV, DNV-RP-C205

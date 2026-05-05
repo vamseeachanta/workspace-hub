@@ -40,3 +40,4 @@ This page summarizes linear surface-wave theory and the standard spectral famili
 
 - [Seakeeping and Ship Motions](seakeeping.md) — RAO-based response evaluation that consumes these spectra.
 - [Ship Hydrostatics](hydrostatics.md) — restoring properties used in linear-response models.
+- **Cross-wiki (engineering)**: [Wave Theory for Offshore Engineering](../../../engineering/wiki/concepts/wave-theory-offshore.md) -- similar slugs (65%); shared tags: jonswap, pierson-moskowitz, spectra, wave-theory; shared keywords: cross-references, jonswap, spectra, spectrum, statistics; shared entities: JONSWAP

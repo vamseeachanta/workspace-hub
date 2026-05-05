@@ -57,3 +57,4 @@ Uses rectifiers to apply external DC current via inert anodes (mixed metal oxide
 - **Cross-wiki (engineering)**: [Cathodic Protection Design](../../../engineering/wiki/concepts/cathodic-protection-design.md) — detailed CP design with anode sizing equations, material selection, ICCP vs sacrificial comparison, and CIPS verification
 - **Career seed**: CAREER-engineering-cathodic-protection (DNV RP-F103, ABS rules, anode mass sizing)
 - **Cross-wiki (engineering)**: [Diffraction Analysis System](../../../engineering/wiki/entities/diffraction-analysis-system.md) -- similar slugs (57%); similar titles (57%)
+- **Cross-wiki (engineering-standards)**: [ABS GN-239 Cathodic Protection of Offshore Structures — bounded summary](../../../engineering-standards/wiki/standards/abs-gn-239-cathodic-protection-offshore.md) -- similar slugs (68%); similar titles (52%); shared tags: offshore; shared entities: ABS, DNV

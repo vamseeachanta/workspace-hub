@@ -39,3 +39,7 @@ The asset lifecycle is the end-to-end span of phases an asset passes through: co
 ## Open questions / gaps
 
 - Decommissioning page is not yet scaffolded; deferred to follow-up.
+
+## Cross-References
+
+- **Cross-wiki (lng-projects)**: [LNG Project Lifecycle](../../../lng-projects/wiki/concepts/lng-project-lifecycle.md) -- similar slugs (67%); similar titles (67%); shared tags: lifecycle

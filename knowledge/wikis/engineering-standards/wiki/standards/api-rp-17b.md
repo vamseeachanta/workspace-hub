@@ -46,3 +46,8 @@ analysis paths resolve citations against this page's frontmatter
 - [[api-spec-17j]] — companion specification for unbonded flexible pipe
 - [[api-17e]] — subsea umbilicals stub
 - [Calc citation contract](../../../../../.claude/rules/calc-citation-contract.md)
+
+## Cross-References
+
+- **Cross-wiki (asset-management)**: [API RP 581 — Risk-Based Inspection Methodology (Quantitative)](../../../asset-management/wiki/standards/api-rp-581.md) -- similar slugs (80%); shared tags: api; shared keywords: api, cross-references, rp, scope, where; shared entities: API
+- **Cross-wiki (asset-management)**: [API RP 580 — Risk-Based Inspection](../../../asset-management/wiki/standards/api-rp-580.md) -- similar slugs (70%); shared tags: api; shared keywords: api, cross-references, rp, scope, where; shared entities: API

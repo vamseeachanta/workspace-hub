@@ -51,3 +51,6 @@ API 579-1/ASME FFS-1.
 - **Related entity**: [[anode]]
 - **Cross-wiki (engineering)**: [Pipeline Integrity Assessment](../../../engineering/wiki/concepts/pipeline-integrity-assessment.md) — detailed DNV-RP-F101 and API 579 methodology with partial safety factors and practical guidance
 - **Cross-wiki (engineering)**: [DNV-RP-F101: Corroded Pipelines](../../../engineering/wiki/standards/dnv-rp-f101.md) -- shared tags: corrosion, dnv, fitness-for-service, integrity, pipeline; shared keywords: api, asme, assessment, ffs-1, key
+- **Cross-wiki (engineering)**: [Pipeline Soil Interaction](../../../engineering/wiki/concepts/pipeline-soil-interaction.md) -- similar slugs (70%); similar titles (59%); shared tags: pipeline; shared keywords: concept, cross-references, cross-wiki, key, pipeline; shared entities: DNV
+- **Cross-wiki (engineering)**: [Pipeline Walking](../../../engineering/wiki/concepts/pipeline-walking.md) -- similar slugs (71%); similar titles (53%); shared tags: pipeline; shared keywords: concept, cross-references, cross-wiki, key, pipeline; shared entities: API, DNV
+- **Cross-wiki (engineering)**: [Pipeline Coatings](../../../engineering/wiki/concepts/pipeline-coatings.md) -- similar slugs (69%); similar titles (57%); shared tags: pipeline; shared keywords: concept, cross-references, cross-wiki, key, pipeline; shared entities: API, DNV

@@ -38,3 +38,4 @@ mitigating fire, explosion, toxic release, and loss of containment in processing
 - **Cross-wiki (engineering)**: [Energy Field Economics](../../../engineering/wiki/concepts/energy-field-economics.md) — safety systems are significant capex and opex items in field development economics
 - **Cross-wiki (maritime-law)**: [Deepwater Horizon](../../../maritime-law/wiki/entities/deepwater-horizon-2010.md) — Deepwater Horizon as a landmark process safety failure case with $62B+ liability
 - **Cross-wiki (engineering)**: [Python Type Safety](../../../engineering/wiki/concepts/python-type-safety.md) -- similar slugs (62%); similar titles (62%)
+- **Cross-wiki (lng-projects)**: [LNG Process Safety](../../../lng-projects/wiki/concepts/lng-process-safety.md) -- similar slugs (88%); similar titles (88%); shared tags: safety; shared keywords: cross-references, explosion, fire, key, process

@@ -33,3 +33,14 @@ Per #2482, cite DNV directly (https://www.dnv.com/oilgas/download/dnv-rp-g101-ri
 ## Cross-references
 
 - Sister standards: [API RP 580](./api-rp-580.md), [NORSOK Z-008](./norsok-z-008.md)
+
+## Cross-References
+
+- **Cross-wiki (engineering)**: [DNV-RP-C203: Fatigue Design](../../../engineering/wiki/standards/dnv-rp-c203.md) -- similar slugs (73%); shared tags: dnv, offshore, standard; shared entities: DNV, DNV-RP-G101
+- **Cross-wiki (engineering)**: [DNV-RP-F101: Corroded Pipelines](../../../engineering/wiki/standards/dnv-rp-f101.md) -- similar slugs (91%); shared tags: dnv, standard; shared entities: API, DNV, DNV-RP-G101
+- **Cross-wiki (engineering)**: [DNV-RP-F105 — Free Spanning Pipelines](../../../engineering/wiki/standards/dnv-rp-f105.md) -- similar slugs (82%); shared tags: dnv, standard; shared entities: DNV, DNV-RP-G101
+- **Cross-wiki (engineering-standards)**: [DNV-RP-F101 Corroded Pipelines — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-f101.md) -- similar slugs (91%); shared tags: dnv; shared entities: DNV
+- **Cross-wiki (engineering-standards)**: [DNV-RP-H103 Modelling and Analysis of Marine Operations — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-h103.md) -- similar slugs (82%); shared tags: dnv; shared keywords: cross-references, of, scope, where; shared entities: DNV
+- **Cross-wiki (engineering-standards)**: [DNV-RP-C203 Fatigue Design of Offshore Steel Structures — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-c203.md) -- similar slugs (73%); shared tags: dnv; shared keywords: cross-references, of, offshore, scope, where; shared entities: DNV
+- **Cross-wiki (engineering-standards)**: [DNV-RP-B401 Cathodic Protection Design — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-b401.md) -- similar slugs (82%); shared tags: dnv; shared entities: DNV
+- **Cross-wiki (engineering-standards)**: [DNV-RP-F109 On-bottom Stability of Pipelines — bounded summary](../../../engineering-standards/wiki/standards/dnv-rp-f109.md) -- similar slugs (82%); shared tags: dnv; shared keywords: cross-references, of, scope, where; shared entities: DNV
