@@ -23,6 +23,18 @@ Use when a workspace spans multiple machines, multiple repos, scheduled jobs, an
 
 ## Core Approach
 
+### 0. Build the basic machine/repo/mount/tool matrix first
+Before designing automation, provider routing, solver queues, or issue waves, establish the first-principles baseline:
+
+- machines and roles;
+- repos that should exist on each machine vs repos actually observed;
+- local storage, remote mounts, rawdata stores, knowledge stores, and llm-wiki access;
+- AI CLIs and auth/runtime availability on each machine;
+- engineering/simulation tools present or explicitly absent;
+- drift between registry/config and observed live state.
+
+Use `references/baseline-inventory-first.md` for the recommended matrix, probe commands, and workspace-hub examples. If the user asks what a machine should be ready to do, answer this baseline first; do not jump straight to downstream automation.
+
 ### 1. Identify control-plane docs first
 Read these first if present:
 - `AGENTS.md`
