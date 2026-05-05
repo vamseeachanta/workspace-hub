@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-05T05:20:07.844573Z",
+  "generated_at": "2026-05-05T09:20:07.782089Z",
   "current_week": "2026-W19",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-05T05:20:07.732238Z",
+    "utilization_generated_at": "2026-05-05T09:20:07.669221Z",
     "audit_generated_at": "2026-04-24T15:25:36Z"
   },
   "recommended_provider_order": [
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 1.1,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 3,
-      "post_records_current_week": 61,
+      "sessions_current_week": 7,
+      "post_records_current_week": 716,
       "audit_post_records": 20144,
       "missing_repo_reads": 463,
       "python3_per_1k_records": 17.92,
@@ -83,16 +83,24 @@
       "top_migration_hint": null,
       "top_tools": [
         {
-          "tool": "Read",
-          "count": 47
+          "tool": "Bash",
+          "count": 648
         },
         {
-          "tool": "Bash",
-          "count": 10
+          "tool": "Read",
+          "count": 56
         },
         {
           "tool": "Grep",
           "count": 4
+        },
+        {
+          "tool": "update_plan",
+          "count": 4
+        },
+        {
+          "tool": "_update_issue",
+          "count": 2
         }
       ],
       "preferred_work": [
@@ -117,8 +125,8 @@
       "reported_utilization_pct": 0.0,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 1,
+      "post_records_current_week": 1,
       "audit_post_records": 6173,
       "missing_repo_reads": 603,
       "python3_per_1k_records": 47.14,
@@ -126,36 +134,8 @@
       "top_migration_hint": "legacy_local_work_queue_items",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 2288
-        },
-        {
-          "tool": "Read",
-          "count": 2181
-        },
-        {
-          "tool": "Grep",
-          "count": 655
-        },
-        {
-          "tool": "Write",
-          "count": 535
-        },
-        {
-          "tool": "Edit",
-          "count": 394
-        },
-        {
           "tool": "Browser",
-          "count": 106
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 9
-        },
-        {
-          "tool": "generalist",
-          "count": 3
+          "count": 1
         }
       ],
       "preferred_work": [
