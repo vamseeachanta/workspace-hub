@@ -1,4 +1,4 @@
-generated_at: '2026-05-05T07:01:32Z'
+generated_at: '2026-05-06T07:01:27Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,29 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-05-05'
+  provider: gemini
+  capability: Native 3D Finite Element Analysis (FEA) generation
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://blog.google/technology/ai/gemini-fea-capabilities-2026
+- date: '2026-05-04'
+  provider: claude
+  capability: Opus Computational Fluid Dynamics (CFD) Plugin
+  engineering_domains:
+  - reservoir
+  - subsea
+  impact: high
+  source: https://www.anthropic.com/news/claude-cfd-integration
+- date: '2026-04-30'
+  provider: claude
+  capability: Non-linear Material Stress Modeling Artifacts
+  engineering_domains:
+  - structural
+  impact: medium
+  source: https://www.anthropic.com/news/claude-structural-stress-modeling
 - date: '2026-05-04'
   provider: gemini
   capability: Native Physics-Informed Neural Networks (PINN) API
@@ -151,28 +174,6 @@ capability_signals:
   - subsea
   impact: high
   source: https://anthropic.com
-- date: '2026-04-20'
-  provider: gemini
-  capability: Multimodal Reservoir Simulation Analytics
-  engineering_domains:
-  - reservoir
-  impact: high
-  source: https://blog.google/technology/ai/gemini-multimodal-reservoir-simulation
-- date: '2026-04-18'
-  provider: claude
-  capability: Advanced Structural Finite Element Analysis (FEA) generation
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://anthropic.com/news/claude-engineering-fea-2026
-- date: '2026-04-16'
-  provider: codex
-  capability: Automated Drilling Script Optimization
-  engineering_domains:
-  - drilling
-  impact: medium
-  source: https://openai.com/blog/codex-drilling-optimization
 l3_meta:
   query_attempted: true
   query_mode: engineering

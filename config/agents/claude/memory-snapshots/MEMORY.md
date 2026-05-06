@@ -68,10 +68,14 @@
 - [`python -m build` no `--isolation` flag](feedback_python_m_build_no_isolation_flag.md) — isolation is the DEFAULT; `--no-isolation` is the opt-out; remove the flag to restore isolation, don't add `--isolation`
 - [Cross-repo Closes at squash](feedback_cross_repo_closes_at_squash.md) — `Closes vamseeachanta/<repo>#NNNN` fires for ALL refs in a squash-merge body; multi-issue batches auto-close cleanly
 - [Comma-joined Closes fires once on direct push](feedback_closes_trailer_fires_once.md) — `Closes #X, #Y` in ONE commit body pushed directly to main only auto-closes the FIRST ref; verify and follow up with explicit `gh issue close`
+- [WebFetch first for LinkedIn recon](feedback_webfetch_first_for_linkedin.md) — public LinkedIn posts return full content via og:description; skip the chrome browser unless WebFetch returns a "log in to view" gate
+- [Credential-issuer copy-paste leak](feedback_credential_issuer_copy_paste_leak.md) — never commit raw "save this token" output (BotFather, AWS, Stripe, OAuth); commit only a pointer to a secret manager. Recovery: revoke first, delete branch local+origin (no archive tag), then `git reflog expire --expire=now --expire-unreachable=now --all && git gc --prune=now --aggressive`
+- [PDF e-signature style default](feedback_pdf_esignature_style_default.md) — for PDF signing (paychecks, admin), default to typed cursive (Z003 chancery) + "Electronically signed" + date; avoid bitmap signature images (filename-mislabel risk)
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
 - [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready to send, BSEE fix landed, open issues
+- [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250+ datasets surveyed 2026-05-05, top 12 candidates curated in repo's SOURCES_kaggle.md; gate ingest on downstream consumer
 > project_cfd_openfoam_storage.md
 - [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209 children; 2026-04-19 amendments landed; follow-ons #2360/#2361/#2362
 - [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+
@@ -98,15 +102,17 @@
 - [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser automation only for interactive UI tasks
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing principle sanctioned across eng/marine/naval wikis; **#2471 is CSA-Z276-only** (verified 2026-04-25), referenced codification plan does not exist; general offshore/marine substrate now scoped to aceengineer-strategy aces-#4
-- [llm-wiki stays embedded](project_llm_wiki_stays_embedded.md) — 2026-04-23 #2398 CLOSED; no spinout; triggers: 200MB, external consumer, cadence conflict, CI >5min, date 2026-10-23
+- [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
 - [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
 - [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
+- [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; sibling repo `/mnt/local-analysis/kaggle-rogii-2026/`; team-merging open
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing
 
 ## References
 > ai-orchestration.md, network_machines.md
+- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — modern Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI

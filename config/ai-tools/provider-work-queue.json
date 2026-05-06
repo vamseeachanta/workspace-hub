@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-06T01:20:07.126642Z",
+  "generated_at": "2026-05-06T05:20:07.756142Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-06T01:20:05.502077Z",
+  "scorecard_generated_at": "2026-05-06T05:20:05.953041Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 5,
-      "total_candidates": 165,
+      "total_candidates": 164,
       "top_issues": [
         {
           "number": 2533,
@@ -216,7 +216,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 8,
-      "total_candidates": 32,
+      "total_candidates": 33,
       "top_issues": [
         {
           "number": 2269,
@@ -257,7 +257,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-02T04:09:36Z",
+          "updatedAt": "2026-05-06T03:01:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -361,7 +361,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-04T13:31:58Z",
+          "updatedAt": "2026-05-06T02:58:17Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
