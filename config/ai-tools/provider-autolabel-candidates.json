@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-05T13:20:08.116252Z",
+  "generated_at": "2026-05-06T05:20:07.879033Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 5,
+  "eligible_count": 6,
   "applied": [],
   "candidates": [
     {
@@ -22,6 +22,39 @@
       "updatedAt": "2026-05-03T19:30:33Z",
       "execution_ready": true,
       "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2550,
+      "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:operations",
+        "domain:automation",
+        "domain:security",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-03T21:18:30Z",
+      "execution_ready": true,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
@@ -205,6 +238,33 @@
       "eligible": false
     },
     {
+      "number": 2498,
+      "title": "chore(harness): #2364 plan branch drift recovery decision needed",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
+      "labels": [
+        "priority:medium",
+        "cat:harness"
+      ],
+      "updatedAt": "2026-04-26T17:57:44Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 2501,
       "title": "chore(planning): #2105 governance-lock \u2014 handoff vs live-state discrepancy",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2501",
@@ -307,40 +367,6 @@
         "domain:agent-cost-tracking"
       ],
       "updatedAt": "2026-04-27T18:57:43Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2520,
-      "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
-      "labels": [
-        "bug",
-        "cat:ai-orchestration",
-        "cat:harness",
-        "priority:critical",
-        "domain:ai-orchestration",
-        "domain:workstations",
-        "domain:agent-cost-tracking"
-      ],
-      "updatedAt": "2026-04-27T17:45:28Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

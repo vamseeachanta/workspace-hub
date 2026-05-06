@@ -1,212 +1,307 @@
 # Tier-1 Indexing Freshness Audit — Latest
 
-Generated: 2026-05-05T03:37:40-05:00
-Generated UTC: 2026-05-05T08:37:40Z
-
-Working directory: `/mnt/local-analysis/workspace-hub`
-
-Baseline authority: `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
-
-Required canonical routing surfaces per tier-1 repo:
-
-- `AGENTS.md`
-- `README.md`
-- `docs/README.md`
-- `docs/maps/<repo>-operator-map.md`
-- `docs/registry/module-routing.yaml`
-
-Raw/generated inventory such as `docs/CONTENT_INDEX.md` remains discovery-only and is not treated as trusted routing authority. Legacy product-doc reference patterns are not used or recommended as routing surfaces.
+Date/time: 2026-05-06T03:33:30-05:00
+Scope: `workspace-hub`, `digitalmodel`, `assetutilities`, `aceengineer-website` under `/mnt/local-analysis/workspace-hub`.
+Mode: scheduled local-only audit; no cron jobs created; legacy `.agent-os` patterns are reported only as stale residue, not recommended as routing surfaces.
 
 ## Executive Summary
 
-Portfolio status: **red**
+Per-repo status: workspace-hub: RED, digitalmodel: YELLOW, assetutilities: YELLOW, aceengineer-website: RED.
+Freshness delta: **material drift detected**. The timestamp and current evidence were refreshed. Compared with the latest recalled prior audit, the major status colors are unchanged, but `aceengineer-website` no longer shows stale legacy product-doc references in the inspected canonical surfaces; legacy residue still exists elsewhere in broader docs/content.
 
-No material drift detected since the prior freshness pass: the report timestamp was refreshed, no new cron jobs were scheduled, and the current gaps/noise remain consistent with the prior known state.
+The 2026-04-22 scorecard assumption of **partial readiness only** still holds, but the detailed assumptions remain revised: `digitalmodel` and `assetutilities` now have current repo-local operator maps and `docs/registry/module-routing.yaml`; `workspace-hub` and `aceengineer-website` remain the main red surfaces because current canonical routing/registry surfaces are still incomplete.
 
-The 2026-04-22 tier-1 indexing scorecard assumptions **still hold directionally, with targeted revisions**: `workspace-hub` remains the strongest control-plane repo but still has routing/index hygiene gaps; `digitalmodel` and `assetutilities` have materially improved canonical surfaces; `aceengineer-website` remains incomplete until its canonical machine-readable registry exists.
+## Status Table
 
-## Per-Repo Status
+| Repo | Status | Exact broken or missing surfaces | Concise next actions |
+|---|---:|---|---|
+| `workspace-hub` | RED | missing: `docs/maps/workspace-hub-operator-map.md`, `docs/registry/module-routing.yaml`; broken links: `docs/README.md -> ../.agent-os/product/decisions.md`, `docs/README.md -> ../.agent-os/product/mission.md`, `docs/README.md -> ../.agent-os/product/roadmap.md`, `docs/README.md -> ../.agent-os/product/tech-stack.md`; stale legacy refs in canonical surfaces | Create/refresh repo-local operator map and canonical registry; replace stale docs entry-point links; reduce root/index/cache noise. |
+| `digitalmodel` | YELLOW | broken links: `digitalmodel/README.md -> specs/data-needs.yaml` | Fix README broken registry/data-needs link; clean runtime cache from trusted paths; review untracked test artifact. |
+| `assetutilities` | YELLOW | none in required canonical surfaces | Clean runtime/cache artifacts under trusted paths and keep operator map + module-routing registry synchronized. |
+| `aceengineer-website` | RED | missing: `docs/registry/module-routing.yaml` | Add canonical module-routing registry; keep docs entry/operator map free of legacy routing patterns; clean cache artifacts. |
 
-| Repo | Status | Summary |
-| --- | --- | --- |
-| `workspace-hub` | **red** | missing `docs/maps/workspace-hub-operator-map.md`, `docs/registry/module-routing.yaml`; 4 broken active reference(s); 5 active legacy-residue line(s); 4 tracked / 0 untracked cache-runtime-noise item(s); 5 tracked root/index noise item(s) |
-| `digitalmodel` | **yellow** | 2 broken active reference(s); 1 tracked / 0 untracked cache-runtime-noise item(s) |
-| `assetutilities` | **green** | required canonical surfaces present; no broken active canonical links or trusted-path backup/cache/runtime noise detected |
-| `aceengineer-website` | **red** | missing `docs/registry/module-routing.yaml`; 2 active legacy-residue line(s) |
+## Per-Repo Findings
 
-## Exact Findings
+### workspace-hub — RED
 
-### `workspace-hub` — red
-
-Present canonical surfaces:
+**Present canonical surfaces**
 - `AGENTS.md`
 - `README.md`
 - `docs/README.md`
 
-Missing canonical surfaces:
+**Missing canonical surfaces**
 - `docs/maps/workspace-hub-operator-map.md`
 - `docs/registry/module-routing.yaml`
 
-Machine-readable registry references:
-- `specs/module-registry.yaml` (tracked; non-canonical/supplementary)
+**Broken/stale references in inspected canonical surfaces**
+- `docs/README.md -> ../.agent-os/product/decisions.md`
+- `docs/README.md -> ../.agent-os/product/mission.md`
+- `docs/README.md -> ../.agent-os/product/roadmap.md`
+- `docs/README.md -> ../.agent-os/product/tech-stack.md`
+- Stale legacy product-doc references detected (reported as residue only):
+  - `docs/README.md:263: ├── .agent-os/              # Agent OS configuration`
+  - `docs/README.md:299: - [Mission & Vision](../.agent-os/product/mission.md)`
+  - `docs/README.md:300: - [Technical Stack](../.agent-os/product/tech-stack.md)`
+  - `docs/README.md:301: - [Development Roadmap](../.agent-os/product/roadmap.md)`
+  - `docs/README.md:302: - [Product Decisions](../.agent-os/product/decisions.md)`
 
-Broken/stale references in active canonical surfaces:
-- broken: `docs/README.md:299 -> ../.agent-os/product/mission.md`
-- broken: `docs/README.md:300 -> ../.agent-os/product/tech-stack.md`
-- broken: `docs/README.md:301 -> ../.agent-os/product/roadmap.md`
-- broken: `docs/README.md:302 -> ../.agent-os/product/decisions.md`
-- stale legacy residue: `docs/README.md:263 contains retired product-doc/legacy residue`
-- stale legacy residue: `docs/README.md:299 contains retired product-doc/legacy residue`
-- stale legacy residue: `docs/README.md:300 contains retired product-doc/legacy residue`
-- stale legacy residue: `docs/README.md:301 contains retired product-doc/legacy residue`
-- stale legacy residue: `docs/README.md:302 contains retired product-doc/legacy residue`
+**Registry references**
+- `docs/registry/module-routing.yaml`: missing
+- Historical `specs/module-registry.yaml`: present; not treated as canonical for this audit.
 
-Noise/hygiene drift:
-- tracked runtime/temp artifact: 4
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-woodfibre.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-doris-codes.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-doris-university.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-1-sesa.pid`
-- tracked workspace root/index noise weakening routing trust:
-  - `**Complexity:**`
-  - `**Date:**`
-  - `**Issue:**`
-  - `**Review`
-  - `**Status:**`
+**Trusted-path noise**
+- `scripts/ai/__pycache__`
+- `scripts/ai/tests/__pycache__`
+- `scripts/analysis/__pycache__`
+- `scripts/animations/__pycache__`
+- `scripts/animations/scenes/__pycache__`
+- `scripts/automation/__pycache__`
+- `scripts/calculations/__pycache__`
+- `scripts/ci_health/__pycache__`
+- `scripts/cron/__pycache__`
+- `scripts/cron/tests/__pycache__`
+- `scripts/data/dagster-eval/__pycache__`
+- `scripts/data/doc_intelligence/__pycache__`
+- `scripts/data/doc_intelligence/parsers/__pycache__`
+- `scripts/data/doc_intelligence/promoters/__pycache__`
+- `scripts/data/doc_intelligence/tests/__pycache__`
+- `scripts/data/document-index/__pycache__`
+- `scripts/data/document-index/tests/__pycache__`
+- `scripts/data/llm-wiki/__pycache__`
+- `scripts/data/llm-wiki/tests/__pycache__`
+- `src/__pycache__`
+- ... 61 additional noise paths omitted from this compact report.
 
-Concise next actions:
-1. Add/restore `docs/maps/workspace-hub-operator-map.md` and `docs/registry/module-routing.yaml`.
-2. Replace or retire active broken legacy navigation in `docs/README.md` with current canonical routing surfaces.
-3. Remove or quarantine tracked root report-fragment files and tracked runtime artifacts from trusted scan paths.
+**Root/runtime/index noise**
+- `.baseline-cache`
+- `.benchmarks`
+- `.cache`
+- `.mypy_cache`
+- `.pytest_cache`
+- `.ruff_cache`
+- `.swarm`
+- `.sync-reports`
+- `.worktrees`
+- `MEMORY.md`
+- `ace_cfp_sending_kit_2026-04-09.md`
+- `daily_gmail_action_digest_2026-04-09.md`
+- `dist`
+- `docs-reorg-assessment.md`
+- `draft_ace_api_cfp_note.md`
+- `draft_skestates_1099_followup_email.md`
+- `draft_skestates_hoa_transfer_email.md`
+- `draft_skestates_pest_exteriors_followup.md`
+- `final_skestates_1099_followup_email.md`
+- `final_skestates_hoa_transfer_email.md`
+- `final_skestates_pest_exteriors_followup.md`
+- `generated`
+- `gmail_copy_paste_packet_2026-04-09.md`
+- `gmail_operator_packet_2026-04-09.md`
+- `gmail_presend_checklist_2026-04-09.md`
+- ... 14 additional root-noise paths omitted.
 
-2026-04-22 scorecard assumption check:
-- **Still holds.** It remains the richest control-plane repo, but missing map/registry surfaces plus root/index hygiene issues still limit deterministic routing trust.
+**Git status notes (pre-existing/local)**
+- `M config/ai-tools/agent-capability-radar.html`
+- ` M knowledge/wikis/asset-management/wiki/standards/api-579-1.md`
+- ` M knowledge/wikis/asset-management/wiki/standards/dnv-rp-g101.md`
+- ` M knowledge/wikis/asset-management/wiki/standards/iso-55001.md`
+- ` M knowledge/wikis/cross-links.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/api-rp-16q.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/api-rp-17b.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/dnv-rp-b401.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/dnv-rp-f103.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/dnv-rp-f105.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/dnv-rp-h103.md`
+- ` M knowledge/wikis/engineering-standards/wiki/standards/iso-19900.md`
 
-### `digitalmodel` — yellow
+### digitalmodel — YELLOW
 
-Present canonical surfaces:
+**Present canonical surfaces**
 - `AGENTS.md`
 - `README.md`
 - `docs/README.md`
 - `docs/maps/digitalmodel-operator-map.md`
 - `docs/registry/module-routing.yaml`
 
-Missing canonical surfaces:
+**Missing canonical surfaces**
 - None detected.
 
-Machine-readable registry references:
-- `docs/registry/module-routing.yaml` (tracked; canonical)
+**Broken/stale references in inspected canonical surfaces**
+- `digitalmodel/README.md -> specs/data-needs.yaml`
 
-Broken/stale references in active canonical surfaces:
-- broken: `README.md:73 -> specs/data-needs.yaml`
-- broken: `docs/maps/digitalmodel-operator-map.md:9 -> `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md``
+**Registry references**
+- `docs/registry/module-routing.yaml`: present
+- Historical `specs/module-registry.yaml`: not present; not treated as canonical for this audit.
 
-Noise/hygiene drift:
-- tracked runtime/temp artifact: 1
-  - `tests/workflows/integration/conftest.py.tmp.142657.1759122346612`
+**Trusted-path noise**
+- `digitalmodel/src/digitalmodel/infrastructure/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_configs/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/benchmarks/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/config/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/fatigue/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/marine/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/marine/ship/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/pipeline_solvers/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/structural/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/structural/buckling/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/structural/elements/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/structural/fea/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/structural/stress/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/structural/utils/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/base_solvers/viv/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/calculations/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/common/__pycache__`
+- `digitalmodel/src/digitalmodel/infrastructure/config/__pycache__`
+- ... 62 additional noise paths omitted from this compact report.
 
-Concise next actions:
-1. Repair or retire the broken `README.md` reference to the missing data-needs file.
-2. Repair or retire the operator-map reference to the missing specialized operator map, or create that map if still intended.
-3. Remove the tracked temporary test artifact and keep cache/runtime noise out of trusted scan paths.
+**Root/runtime/index noise**
+- `digitalmodel/.benchmarks`
+- `digitalmodel/.mypy_cache`
+- `digitalmodel/.pytest_cache`
+- `digitalmodel/.ruff_cache`
+- `digitalmodel/.swarm`
+- `digitalmodel/build`
+- `digitalmodel/dist`
+- `digitalmodel/logs`
+- `digitalmodel/reports`
 
-2026-04-22 scorecard assumption check:
-- **Needs positive revision, but not green.** Required repo-wide routing surfaces are present; remaining issues are localized broken-link/map-reference cleanup plus cache/temp hygiene.
+**Git status notes (pre-existing/local)**
+- `?? .planning/plan-approved/509.md`
+- `?? .planning/plan-approved/512.md`
+- `?? .planning/plan-approved/514.md`
+- `?? .planning/plan-approved/517.md`
+- `?? .planning/plan-approved/518.md`
+- `?? .planning/plan-approved/519.md`
+- `?? .planning/plan-approved/522.md`
+- `?? .planning/plan-approved/523.md`
+- `?? .planning/plan-approved/529.md`
+- `?? .planning/plan-approved/530.md`
+- `?? .planning/plan-approved/531.md`
+- `?? .planning/plan-approved/534.md`
+- ... 8 additional status lines omitted.
 
-### `assetutilities` — green
+### assetutilities — YELLOW
 
-Present canonical surfaces:
+**Present canonical surfaces**
 - `AGENTS.md`
 - `README.md`
 - `docs/README.md`
 - `docs/maps/assetutilities-operator-map.md`
 - `docs/registry/module-routing.yaml`
 
-Missing canonical surfaces:
+**Missing canonical surfaces**
 - None detected.
 
-Machine-readable registry references:
-- `docs/registry/module-routing.yaml` (tracked; canonical)
+**Broken/stale references in inspected canonical surfaces**
+- No broken local Markdown links detected in required canonical surfaces.
 
-Broken/stale references in active canonical surfaces:
-- None detected.
-- Resolved wildcard routing patterns checked as present:
-  - `README.md:19 -> `docs/sub_*``
-  - `docs/README.md:13 -> `tests/unit/test_common_*.py``
-  - `docs/README.md:16 -> `src/assetutilities/common/data*.py``
-  - `docs/README.md:17 -> `src/assetutilities/common/visualization*.py``
-  - `docs/README.md:17 -> `tests/unit/test_visualization*.py``
-  - `docs/README.md:42 -> `tests/modules/**/results/``
-  - `docs/maps/assetutilities-operator-map.md:12 -> `tests/unit/test_common_*.py``
-  - `docs/maps/assetutilities-operator-map.md:16 -> `tests/unit/test_traceability*.py``
+**Registry references**
+- `docs/registry/module-routing.yaml`: present
+- Historical `specs/module-registry.yaml`: not present; not treated as canonical for this audit.
 
-Noise/hygiene drift:
-- No backup/cache/runtime noise detected under trusted scan paths in this pass.
+**Trusted-path noise**
+- `assetutilities/src/assetutilities/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/cli/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/commands/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/commands/cli_components/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/commands/context/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/commands/docs/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/commands/specs/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/commands/templates/__pycache__`
+- `assetutilities/src/assetutilities/agent_os/integration/__pycache__`
+- `assetutilities/src/assetutilities/calculations/__pycache__`
+- `assetutilities/src/assetutilities/common/__pycache__`
+- `assetutilities/src/assetutilities/common/download_data/__pycache__`
+- `assetutilities/src/assetutilities/common/readers/__pycache__`
+- `assetutilities/src/assetutilities/common/visualization/__pycache__`
+- `assetutilities/src/assetutilities/common/webscraping/__pycache__`
+- `assetutilities/src/assetutilities/constants/__pycache__`
+- `assetutilities/src/assetutilities/devtools/__pycache__`
+- `assetutilities/src/assetutilities/modules/__pycache__`
+- `assetutilities/src/assetutilities/modules/csv_utilities/__pycache__`
+- `assetutilities/src/assetutilities/modules/data_exploration/__pycache__`
+- ... 40 additional noise paths omitted from this compact report.
 
-Concise next actions:
-1. Keep required canonical routing surfaces synchronized.
-2. Continue keeping cache/runtime noise out of trusted scan paths.
-3. Continue verifying wildcard routing patterns resolve as modules/tests evolve.
+**Root/runtime/index noise**
+- `assetutilities/.agent-runtime`
+- `assetutilities/.ai`
+- `assetutilities/.benchmarks`
+- `assetutilities/.command-backups`
+- `assetutilities/.common`
+- `assetutilities/.common-commands`
+- `assetutilities/.mypy_cache`
+- `assetutilities/.pytest_cache`
+- `assetutilities/.ruff_cache`
+- `assetutilities/.slash-commands`
+- `assetutilities/.swarm`
+- `assetutilities/.sync-reports`
+- `assetutilities/build`
+- `assetutilities/dist`
+- `assetutilities/logs`
+- `assetutilities/reports`
 
-2026-04-22 scorecard assumption check:
-- **Needs positive revision.** Required canonical surfaces are present, wildcard routing references resolve, and no trusted-path backup/cache/runtime noise was detected in this pass.
+**Git status notes (pre-existing/local)**
+- `?? docs/plans/2026-05-05-issue-19-monthly-branch-and-multiuser-merge.md`
+- `?? docs/plans/2026-05-05-issue-28-loguru-migration.md`
+- `?? docs/plans/2026-05-05-issue-29-engine-registry-pattern.md`
+- `?? docs/plans/2026-05-05-issue-30-ai-agents-config.md`
+- `?? docs/plans/2026-05-05-issue-31-acma-source-files-sync-vs-copy.md`
+- `?? docs/plans/2026-05-05-issue-32-environment-poetry-vs-uv.md`
+- `?? docs/plans/2026-05-05-issue-33-consolidate-data-linux.md`
+- `?? docs/plans/2026-05-05-issue-35-consolidate-repos.md`
+- `?? docs/plans/2026-05-05-issue-36-consolidate-hardware.md`
+- `?? docs/plans/2026-05-05-issue-37-scalability-process-people.md`
+- `?? docs/plans/2026-05-05-issue-38-knowledge-management-obsidian.md`
+- `?? docs/plans/2026-05-05-issue-39-email-cleanup.md`
+- ... 8 additional status lines omitted.
 
-### `aceengineer-website` — red
+### aceengineer-website — RED
 
-Present canonical surfaces:
+**Present canonical surfaces**
 - `AGENTS.md`
 - `README.md`
 - `docs/README.md`
 - `docs/maps/aceengineer-website-operator-map.md`
 
-Missing canonical surfaces:
+**Missing canonical surfaces**
 - `docs/registry/module-routing.yaml`
 
-Machine-readable registry references:
-- None detected.
+**Broken/stale references in inspected canonical surfaces**
+- No broken local Markdown links detected in required canonical surfaces.
+- Broader noncanonical docs/content still contain legacy `.agent-os` residue (examples: `docs/AI_AGENT_ORCHESTRATION.md`, `docs/modules/README.md`, `content/blog/PHASE_2_TIER_1_COVERAGE_EXPANSION.md`), but those are not treated as current canonical routing surfaces.
 
-Broken/stale references in active canonical surfaces:
-- stale legacy residue: `docs/README.md:32 contains retired product-doc/legacy residue`
-- stale legacy residue: `docs/maps/aceengineer-website-operator-map.md:29 contains retired product-doc/legacy residue`
-- Resolved wildcard routing patterns checked as present:
-  - `AGENTS.md:20 -> `content/*.html``
-  - `AGENTS.md:23 -> `tests/js/*calculator*.test.js``
-  - `README.md:24 -> `content/**``
-  - `README.md:28 -> `content/**``
-  - `README.md:107 -> `content/**``
-  - `docs/maps/aceengineer-website-operator-map.md:11 -> `content/*.html``
-  - `docs/maps/aceengineer-website-operator-map.md:15 -> `tests/js/*calculator*.test.js``
+**Registry references**
+- `docs/registry/module-routing.yaml`: missing
+- Historical `specs/module-registry.yaml`: not present; not treated as canonical for this audit.
 
-Noise/hygiene drift:
-- No backup/cache/runtime noise detected under trusted scan paths in this pass.
+**Trusted-path noise**
+- `aceengineer-website/scripts/__pycache__`
+- `aceengineer-website/tests/__pycache__`
+- `aceengineer-website/tests/python/__pycache__`
 
-Concise next actions:
-1. Add `docs/registry/module-routing.yaml` as the canonical machine-readable routing registry.
-2. Keep human-readable routing surfaces synchronized with site source paths.
-3. Qualify or clean historical legacy residue outside canonical surfaces so broad search cannot confuse workers.
+**Root/runtime/index noise**
+- `aceengineer-website/.benchmarks`
+- `aceengineer-website/.pytest_cache`
+- `aceengineer-website/dist`
+- `aceengineer-website/logs`
+- `aceengineer-website/reports`
 
-2026-04-22 scorecard assumption check:
-- **Still holds with stricter registry interpretation.** Human-readable routing is present, but the repo remains incomplete until the canonical registry exists.
+## 2026-04-22 Scorecard Assumption Check
 
-## 2026-04-22 Scorecard Assumptions
+- Baseline verdict still valid: **partial readiness only**; do not treat tier-1 routing as fully green.
+- Detailed assumptions need the same revision noted in the latest prior audit: `digitalmodel` and `assetutilities` are stronger than the original 2026-04-22 snapshot because they now expose repo-wide `docs/maps/<repo>-operator-map.md` and `docs/registry/module-routing.yaml`.
+- `workspace-hub` remains below the desired control-plane standard: missing repo-local operator map and canonical module-routing registry, with root/index/runtime noise that weakens routing trust.
+- `aceengineer-website` remains below the desired durable routing standard: operator map exists, but canonical registry is absent; no stale legacy product-doc links were detected in the inspected canonical surfaces during this run.
+- Runtime/cache noise across trusted paths remains a recurring hygiene issue; it does not change repo mission assumptions but does weaken retrieval trust.
 
-Status: **still hold directionally, with targeted positive revisions**
+## Concise Next Actions
 
-- **Still holds:** overall tier-1 readiness is partial; the portfolio is not green for deterministic code placement/retrieval.
-- **Still holds:** `workspace-hub` remains control-plane rich but needs curated operator-map/registry completion and root/index cleanup.
-- **Needs positive revision:** `digitalmodel` now has the required docs entry point, operator map, and canonical registry; it is yellow for localized cleanup.
-- **Needs positive revision:** `assetutilities` has required canonical surfaces, resolving wildcard references, and no detected trusted-path backup/cache/runtime noise in this pass.
-- **Needs stricter registry interpretation:** `aceengineer-website` remains red until `docs/registry/module-routing.yaml` exists.
+1. `workspace-hub`: add `docs/maps/workspace-hub-operator-map.md` and `docs/registry/module-routing.yaml`; then replace stale docs entry-point links and split curated routing from raw inventory/noise.
+2. `aceengineer-website`: add `docs/registry/module-routing.yaml`; keep `docs/README.md` and `docs/maps/aceengineer-website-operator-map.md` free of legacy routing patterns, and clean broader noncanonical legacy residue opportunistically.
+3. `digitalmodel`: fix the broken `README.md` local link(s), clean `__pycache__` from docs/src/scripts/tests, and decide whether the untracked naval-architecture test belongs in the repo.
+4. `assetutilities`: clean `__pycache__` and other runtime folders from trusted paths; keep `docs/maps/assetutilities-operator-map.md` and `docs/registry/module-routing.yaml` in sync with source/test movement.
 
-## Next Actions by Priority
+No new cron jobs were scheduled by this audit.
 
-1. **P0 — `workspace-hub`:** add/restore missing canonical operator map and registry; remove active broken legacy navigation and tracked root report-fragment noise.
-2. **P0 — `aceengineer-website`:** add the canonical `docs/registry/module-routing.yaml`.
-3. **P1 — `digitalmodel`:** fix the broken README/operator-map references and remove the tracked temporary test artifact/cache noise.
-4. **P2 — `assetutilities`:** maintain current green routing state and keep cache/runtime noise out of trusted scan paths.
-
-## Run Notes
-
-- No new cron jobs were scheduled.
-- This pass updated only the local latest report path requested by the scheduled job.
-- The audit intentionally treats broad raw inventories as discovery-only and uses only current canonical routing surfaces for status.

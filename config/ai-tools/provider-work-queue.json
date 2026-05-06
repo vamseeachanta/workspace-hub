@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-05T13:20:07.991680Z",
+  "generated_at": "2026-05-06T05:20:07.756142Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-05T13:20:05.840675Z",
+  "scorecard_generated_at": "2026-05-06T05:20:05.953041Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 4,
+      "execution_ready_count": 5,
       "total_candidates": 164,
       "top_issues": [
         {
@@ -87,6 +87,32 @@
             "research",
             "implementation",
             "strategy"
+          ]
+        },
+        {
+          "number": 2229,
+          "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "status:working",
+            "machine:licensed-win-1",
+            "agent:claude",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T06:09:41Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
           ]
         },
         {
@@ -183,40 +209,14 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2520,
-          "title": "fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2520",
-          "labels": [
-            "bug",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "priority:critical",
-            "domain:ai-orchestration",
-            "domain:workstations",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-27T17:45:28Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 11,
-      "total_candidates": 34,
+      "execution_ready_count": 8,
+      "total_candidates": 33,
       "top_issues": [
         {
           "number": 2269,
@@ -257,7 +257,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-02T04:09:36Z",
+          "updatedAt": "2026-05-06T03:01:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -266,84 +266,6 @@
           "provider_status": "underused",
           "work_type": [
             "research"
-          ]
-        },
-        {
-          "number": 2364,
-          "title": "feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata into thin wiki domains",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2364",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "domain:knowledge-management",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T09:17:37Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2368,
-          "title": "feat(knowledge): generate faceted portal pages for large LLM-wiki domains",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2368",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "domain:knowledge-management",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T09:17:06Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2373,
-          "title": "feat(knowledge): execute Batch Pack 4 for non-ACMA standards summary promotion",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2373",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:knowledge-management",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T09:18:01Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
@@ -424,6 +346,81 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2458,
+          "title": "feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2458",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "status:working",
+            "machine:dev-primary",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-06T02:58:17Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2550,
+          "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "domain:automation",
+            "domain:security",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-03T21:18:30Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2327,
+          "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
+          "labels": [
+            "priority:low",
+            "cat:engineering",
+            "cat:research",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-04-28T07:30:09Z",
+          "execution_ready": true,
+          "priority_rank": 3,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -431,7 +428,7 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 2,
+      "total_candidates": 3,
       "top_issues": [
         {
           "number": 2295,
@@ -446,6 +443,25 @@
           "updatedAt": "2026-04-16T02:54:39Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "gemini",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
+        {
+          "number": 2498,
+          "title": "chore(harness): #2364 plan branch drift recovery decision needed",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
+          "labels": [
+            "priority:medium",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-26T17:57:44Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "gemini",
           "routing_reason": "research/triage/audit language",
           "provider_priority": "highest",

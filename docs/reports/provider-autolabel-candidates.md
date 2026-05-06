@@ -1,19 +1,20 @@
 # Provider autolabel candidates
 
-Generated: 2026-05-05T13:20:08.116252Z
+Generated: 2026-05-06T05:20:07.879033Z
 Apply mode: False
 Threshold: 0.9
 
 | Issue | Target label | Confidence | Eligible | Reasons |
 |---|---|---:|---|---|
 | #2523 feat(workstations): add reusable Hermes preflight readiness checker | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2533 feat(repo-portfolio): review and revise mission/objective statements across active repos | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2563 Set up Telegram mobile access for Hermes AI control | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2552 docs(security): external contributor and unsolicited paid-help response runbook | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
+| #2498 chore(harness): #2364 plan branch drift recovery decision needed | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2431 Compliance alert: W17 — 20% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2517 Compliance alert: W18 — 42% (high) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2519 feat(hermes): orchestrate AI provider usage and workstation dispatch | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2520 fix(workstations): repair and gate ace-linux-2 GitHub auth before delegation | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
