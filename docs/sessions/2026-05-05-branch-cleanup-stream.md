@@ -22,7 +22,7 @@ Every branch listed has a clear next-action. No "unknown WIP" remains in the eco
 | Worktrees removed | 14 |
 | Local branches deleted | 39 |
 | Remote stale refs deleted | 4 |
-| Recovery tags placed (`archive/closed-*`) | 19 |
+| Recovery tags placed (`archive/closed-*`) | 13 |
 | PRs opened | 2 (digitalmodel#585, #586) |
 | PRs closed with explanation | 1 (worldenergydata#340) |
 | Issue comments posted | 4 (workspace-hub#2458, #2346; worldenergydata#340; digitalmodel#504) |
@@ -62,7 +62,7 @@ These show up across multiple branches, worth keeping in mind:
 
 ## Recovery Tags Available
 
-19 archive tags placed across repos for branches that were deleted:
+13 archive tags placed across repos for branches that were deleted:
 
 ```
 digitalmodel:
