@@ -42,3 +42,4 @@ This page is a citation resolver for downstream calc modules under the calc-cita
 
 - **Cross-wiki (engineering)**: [DNV-RP-F105 — Free Spanning Pipelines](../../../engineering/wiki/standards/dnv-rp-f105.md) -- similar slugs (100%); similar titles (78%); shared tags: dnv, viv; shared keywords: cross-references, dnv-rp-f105, free, pipelines, scope; shared entities: DNV, DNV-RP-F105, VIV
 - **Cross-wiki (engineering)**: [DNV-RP-F101: Corroded Pipelines](../../../engineering/wiki/standards/dnv-rp-f101.md) -- similar slugs (91%); similar titles (55%); shared tags: dnv; shared entities: DNV, DNV-RP-F105, RP-F101
+- **Cross-wiki (asset-management)**: [DNV-RP-G101 — Risk-Based Inspection of Offshore Topsides Static Mechanical Equipment](../../../asset-management/wiki/standards/dnv-rp-g101.md) -- similar slugs (82%); shared tags: dnv; shared keywords: cross-references, cross-wiki, engineering, scope, where; shared entities: DNV, DNV-RP-F101, DNV-RP-F105

@@ -51,3 +51,4 @@ intentionally a stub when revision is not yet pinnable.
 
 - **Cross-wiki (asset-management)**: [API RP 581 — Risk-Based Inspection Methodology (Quantitative)](../../../asset-management/wiki/standards/api-rp-581.md) -- similar slugs (80%); shared tags: api; shared keywords: api, cross-references, rp, scope, where; shared entities: API
 - **Cross-wiki (asset-management)**: [API RP 580 — Risk-Based Inspection](../../../asset-management/wiki/standards/api-rp-580.md) -- similar slugs (70%); shared tags: api; shared keywords: api, cross-references, rp, scope, where; shared entities: API
+- **Cross-wiki (asset-management)**: [API 579-1 / ASME FFS-1 — Fitness-for-Service](../../../asset-management/wiki/standards/api-579-1.md) -- similar slugs (63%); shared tags: api; shared keywords: api, cross-references, cross-wiki, scope, where; shared entities: API, RP 580, RP 581
