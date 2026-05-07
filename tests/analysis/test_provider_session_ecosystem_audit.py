@@ -1511,6 +1511,35 @@ def test_build_missing_read_remediation_hints_covers_top_stale_path_families() -
 
 
 
+def test_build_missing_read_remediation_hints_covers_spinout_worktree_and_nested_repo_drift() -> None:
+    hints = module.build_missing_read_remediation_hints(
+        [
+            {"path": "knowledge/wikis/engineering/wiki/index.md", "count": 6},
+            {"path": ".claude/worktrees/ecosystem-sync/docs/plans/plan.md", "count": 5},
+            {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
+            {"path": "sitemap.xml", "count": 3},
+        ]
+    )
+
+    by_rule = {hint["rule_id"]: hint for hint in hints}
+
+    assert by_rule["llm_wiki_spinout_path_drift"]["matched_paths"] == [
+        {"path": "knowledge/wikis/engineering/wiki/index.md", "count": 6}
+    ]
+    assert "llm-wiki/wikis/" in by_rule["llm_wiki_spinout_path_drift"]["canonical_targets"]
+    assert by_rule["session_local_worktree_path_drift"]["matched_paths"] == [
+        {"path": ".claude/worktrees/ecosystem-sync/docs/plans/plan.md", "count": 5}
+    ]
+    assert "main repo branch/worktree" in by_rule["session_local_worktree_path_drift"]["canonical_targets"]
+    assert by_rule["nested_repo_context_drift"]["matched_paths"] == [
+        {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
+        {"path": "sitemap.xml", "count": 3},
+    ]
+    assert "worldenergydata/src/worldenergydata/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+    assert "aceengineer-website/sitemap.xml" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+
+
+
 def test_render_markdown_mentions_symbolic_reads_and_remediation_hints() -> None:
     audit = {
         "generated_at": "2026-04-10T00:00:00Z",

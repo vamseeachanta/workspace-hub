@@ -40,6 +40,27 @@ doc.add_paragraph("Hello, World!")
 doc.save("output.docx")
 ```
 
+### Fallback: inspect `.docx` without `python-docx`
+
+If `python-docx` is unavailable but the task is read-only inspection, treat `.docx` as a ZIP archive and extract Word XML text directly instead of stopping:
+
+```python
+from pathlib import Path
+from zipfile import ZipFile
+import re
+import xml.etree.ElementTree as ET
+
+path = Path("document.docx")
+with ZipFile(path) as zf:
+    xml = zf.read("word/document.xml")
+root = ET.fromstring(xml)
+ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+texts = [node.text or "" for node in root.findall(".//w:t", ns)]
+print(re.sub(r"\n{3,}", "\n\n", "\n".join(texts)))
+```
+
+Use this for content discovery and comparison only; use a real DOCX library or office converter for preserving layout, images, tables, comments, tracked changes, and styles.
+
 ## When to Use
 
 - Extracting text and tables from Word documents

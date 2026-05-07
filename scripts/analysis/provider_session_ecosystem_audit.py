@@ -140,6 +140,57 @@ LEGACY_REMEDIATION_RULES = [
         "guidance": "Local queue item files are compatibility surfaces, not canonical work tracking; prefer the GitHub issue and .planning artifact instead.",
         "reference_doc": "docs/ops/legacy-claude-reference-map.md",
     },
+    {
+        "rule_id": "llm_wiki_spinout_path_drift",
+        "patterns": [
+            "knowledge/wikis/",
+            "knowledge/seeds/",
+        ],
+        "canonical_targets": [
+            "llm-wiki/wikis/",
+            "llm-wiki/docs/",
+            "docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md",
+            "docs/sessions/2026-05-07-nest-llm-wiki-kaggle-into-hub.md",
+        ],
+        "guidance": "The LLM-wiki artifact store moved out of workspace-hub/knowledge into the llm-wiki repository; redirect wiki-content reads to llm-wiki and keep control-plane work in workspace-hub.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "session_local_worktree_path_drift",
+        "patterns": [
+            ".claude/worktrees/",
+            ".worktrees/",
+            "/mnt/local-analysis/worktrees/",
+            "/tmp/",
+        ],
+        "canonical_targets": [
+            "main repo branch/worktree",
+            "docs/plans/",
+            ".planning/",
+            "GitHub issues",
+        ],
+        "guidance": "Provider logs sometimes retain ephemeral worktree or temp paths; treat these as session-local and re-resolve the durable artifact from the main repo, .planning, or GitHub issue evidence before acting.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
+    {
+        "rule_id": "nested_repo_context_drift",
+        "patterns": [
+            "src/worldenergydata/",
+            "tests/unit/cost/",
+            "docs/plans/2026-04-21-issue-334-annual-operator-disclosures-dataset.md",
+            "src/assethold/",
+            "sitemap.xml",
+        ],
+        "canonical_targets": [
+            "worldenergydata/src/worldenergydata/",
+            "worldenergydata/tests/unit/cost/",
+            "worldenergydata/docs/plans/",
+            "assethold/src/assethold/",
+            "aceengineer-website/sitemap.xml",
+        ],
+        "guidance": "Codex/Hermes sessions may run from workspace-hub while inspecting nested tier-1 repos; prepend the owning repo root before treating these reads as missing workspace-hub files.",
+        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+    },
 ]
 
 

@@ -161,6 +161,50 @@ Use now:
 Interpretation:
 - Session startup behavior is now split across project policy, helper scripts, and hooks rather than one canonical legacy skill file.
 
+### 7. LLM-wiki spinout path drift
+
+Historical paths:
+- `knowledge/wikis/*`
+- `knowledge/seeds/*`
+- `knowledge/wikis/engineering/CLAUDE.md`
+- `knowledge/wikis/engineering/wiki/index.md`
+- `knowledge/wikis/marine-engineering/wiki/index.md`
+
+Use now:
+- `llm-wiki/wikis/*`
+- `llm-wiki/docs/*`
+- `docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md`
+- `docs/sessions/2026-05-07-nest-llm-wiki-kaggle-into-hub.md`
+
+Interpretation:
+- The LLM-wiki artifact store moved out of `workspace-hub/knowledge` into the `llm-wiki` repo.
+- Wiki-content work belongs in `vamseeachanta/llm-wiki`; workspace-hub keeps control-plane, pipeline, and governance work.
+- Do not recreate or edit old `workspace-hub/knowledge/wikis` content unless a spinout cleanup issue explicitly authorizes it.
+
+### 8. Session-local worktree and nested repo path drift
+
+Historical/log-only paths:
+- `.claude/worktrees/*`
+- `.worktrees/*`
+- `/mnt/local-analysis/worktrees/*`
+- `/tmp/*`
+
+Use now:
+- the durable artifact on the main repo branch/worktree
+- `docs/plans/*`
+- `.planning/*`
+- GitHub issue evidence
+
+Nested tier-1 repo examples seen in Codex/Hermes logs:
+- `src/worldenergydata/*` -> `worldenergydata/src/worldenergydata/*`
+- `tests/unit/cost/*` -> `worldenergydata/tests/unit/cost/*`
+- `src/assethold/*` -> `assethold/src/assethold/*`
+- `sitemap.xml` -> `aceengineer-website/sitemap.xml`
+
+Interpretation:
+- Provider sessions may run from `workspace-hub` while inspecting a nested repo or a disposable worktree.
+- Prepend the owning repo root and re-resolve durable evidence before classifying a read as missing or before recreating files.
+
 ## Anti-patterns
 
 Do not:

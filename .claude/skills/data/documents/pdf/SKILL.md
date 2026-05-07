@@ -85,6 +85,7 @@ preservation, and batch viability. Based on WRK-1302 (243 PDFs) and WRK-1303 (6 
 
 - **Batch PDF processing** - Use pdftotext (poppler) via subprocess for bulk extraction
 - **Converting PDFs to Markdown** - Use OpenAI Codex for intelligent conversion (single docs)
+- **Creating polished PDFs from Markdown/HTML when other PDF stacks are missing** - Use Chrome headless with `--no-pdf-header-footer`; see `references/chrome-headless-markdown-pdf.md`
 - Extracting text and metadata from PDF files
 - Merging multiple PDFs into a single document
 - Splitting large PDFs into individual pages

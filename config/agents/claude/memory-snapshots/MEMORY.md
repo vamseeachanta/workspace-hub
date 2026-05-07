@@ -74,6 +74,7 @@
 - [Parallel gh issue create reverses numbers](feedback_parallel_gh_issue_create_reverses_numbers.md) — `gh issue create &` in parallel assigns numbers in apparent reverse arrival order; never bake cross-refs at create time, audit titles by `--json` immediately after batch
 - [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
 - [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
+- [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
