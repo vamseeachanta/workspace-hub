@@ -12,7 +12,7 @@ User is participating in the Kaggle [ROGII - Wellbore Geology Prediction](https:
 
 Repo and storage:
 - GitHub: <https://github.com/vamseeachanta/kaggle-rogii-2026> (PUBLIC since 2026-05-06 per user direction; competitors can see the roadmap and decisions).
-- Local repo: `/mnt/local-analysis/kaggle-rogii-2026/` (sibling to workspace-hub, not nested). Standalone git project.
+- Local repo: `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (nested in workspace-hub for navigation/consistency since 2026-05-07; independent .git, gitignored from hub root, agent-context firewalled by per-repo `.claude/` + `CLAUDE.md`).
 - Data: `/mnt/ace/kaggle-rogii-2026/data/raw/` — gitignored, ~1.33 GB, 2,327 files. `data/{raw,interim,processed}` in the repo are symlinks. Reproducible via `scripts/download_data.sh` after `scripts/bootstrap_data_dir.sh`.
 - Kaggle CLI auth: OAuth via `kaggle auth login` (lands at `~/.kaggle/credentials.json`, not the legacy `kaggle.json`).
 

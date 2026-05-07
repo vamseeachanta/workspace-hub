@@ -519,3 +519,8 @@ digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/
 # Per llm-wiki spinout 2026-05-05 (worldenergydata/docs/plans/2026-05-05-llm-wiki-spinout-migration-plan.md §9a)
 knowledge/wikis/**/raw/papers/*.pdf
 wikis/**/raw/papers/*.pdf
+
+# Nested independent repos — each has its own .git, do not track from hub
+# Moved 2026-05-07 from /mnt/local-analysis/{llm-wiki,kaggle-rogii-2026}
+/llm-wiki/
+/kaggle-rogii-2026/

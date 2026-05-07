@@ -108,7 +108,7 @@
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
 - [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
 - [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
-- [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; sibling repo `/mnt/local-analysis/kaggle-rogii-2026/`; team-merging open
+- [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; nested in workspace-hub at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (independent .git, gitignored from hub); team-merging open
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing
