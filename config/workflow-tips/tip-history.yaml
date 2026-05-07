@@ -69,3 +69,5 @@ shown:
     tips: [cc-mobile, cc-batch]
   - date: 2026-05-05
     tips: [cc-context, cc-pr-comments]
+  - date: 2026-05-07
+    tips: [cc-worktree, gsd-note]

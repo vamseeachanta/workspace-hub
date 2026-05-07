@@ -243,9 +243,14 @@ search_files("similar_pattern", path="src/", file_glob="*.py")
 # Run the specific regression test
 pytest tests/test_module.py::test_regression -v
 
+# Run the directly owning test module(s) for changed source files
+pytest tests/path/test_owned_module.py -q --tb=short
+
 # Run full suite — no regressions
 pytest tests/ -q
 ```
+
+**Targeted verification discipline:** Avoid relying on broad `-k` expressions as the only signal; they can select hundreds of loosely related tests and surface unrelated/flaky debt. First map each changed source file to its owning focused test module and run that exact module or test. If the owning targeted test fails, stop and debug or revert that specific dirty change before committing it as part of a broad cleanup/sync batch.
 
 ### 4. If Fix Doesn't Work — The Rule of Three
 
