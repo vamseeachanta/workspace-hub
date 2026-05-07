@@ -111,6 +111,22 @@ Recommended WIP cap:
 - 1 verification issue
 - no more than 4 active items total
 
+## Approval-state audit before execution waves
+
+When a portfolio has many issues labeled `status:plan-approved`, do not treat the label-only pool as executable. Before launching multiagent workers, run an approval-state audit across the scoped repos.
+
+Minimum checks per issue:
+- live GitHub state includes `status:plan-approved`
+- live GitHub state does **not** also include `status:plan-review`
+- canonical plan file exists under `docs/plans/` with the issue number in the filename
+- local approval marker exists under `.planning/plan-approved/<issue>.md`
+- issue is not already `status:working`; if it is, run implementation-state audit instead of assigning a new worker
+- local repo branch and dirty-worktree count are known; dirty clones require isolated clean worktrees before execution
+
+Report the audit under `docs/reports/YYYY-MM-DD-tier1-approval-state-audit.md`, then update any Kanban/portfolio report to point at the completed audit and summarize counts. Classify issues as executable candidates, governance drift, label conflict, implementation-state audit needed, or dirty-clone risk.
+
+See `references/tier1-approval-state-audit.md` for the reusable command sketch and report checklist.
+
 ## Tie-breakers
 If issues are close, prefer the one that:
 1. reduces future Claude usage
