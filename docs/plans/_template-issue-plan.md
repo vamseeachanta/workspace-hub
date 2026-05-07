@@ -89,6 +89,20 @@
 **Gap proofs** (`ls path-not-existing 2>&1 | head -3` or `grep -c X path`):
 - `ls scripts/knowledge/*gap*` → "No such file or directory" → confirms tool does not exist.
 
+**Reproduction proofs** (verify-against-repo-state, per Step 1.5 of `issue-planning-mode`):
+<!-- MANDATORY when the issue alleges a runtime failure (failing test, broken import,
+     missing method, incorrect output, regression). Skip-allowed for documentation /
+     governance issues; mark "N/A — <reason>" so reviewers know the skip was intentional.
+     Empirical: 4 of 6 plans (2026-05-06 wave) drifted from reality without this step. -->
+
+```
+$ <exact command run, e.g., uv run pytest path::test -xvs>
+<verbatim tail of output, ~10-40 lines, showing the actual failure mode>
+```
+
+- Reproduced at: YYYY-MM-DDTHH:MM:SSZ
+- Failure mode observed matches issue claim: YES / NO — <if NO, plan must address the actual failure mode, not the claimed one>
+
 <!-- Verification: count distinct sources above (across all sub-sections).
      Minimum 3 required (issue body + 2 others). Current count: ___ -->
 

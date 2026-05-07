@@ -32,6 +32,36 @@ Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
 2. Classify complexity: T1 (trivial), T2 (standard), T3 (complex)
 3. Search existing code, standards, documents, and prior plans before writing
 
+### Step 1.5: Reproduce the alleged failure (verify-against-repo-state)
+
+**Mandatory before drafting** when the issue alleges any of: a failing test, a broken import, a missing method, an incorrect numeric output, a regression, or a "this used to work" claim. Capture the output verbatim and cite it in the plan's `Reproduction Evidence` section.
+
+```bash
+# Test failures: run the specific failing case, not the suite
+uv run pytest <repo>/tests/path/to/test_module.py::TestClass::test_case -xvs 2>&1 | tail -40
+
+# Import / module breakage: try the import directly
+cd <repo> && uv run python -c "from <module.path> import <name>; print(<name>)"
+
+# Missing method / attribute: instantiate and call
+cd <repo> && uv run python -c "from <module> import Cls; Cls().<method>()"
+
+# Numeric / output regression: run the calc and compare against issue's claimed value
+cd <repo> && uv run python -m <module>.<entrypoint> <args>
+```
+
+**Rationale (empirical RED data, 2026-05-06 session):** of 6 plans drafted from issue-body + grep alone, 4 (67%) diverged from reality. Concrete drift cases:
+
+- `digitalmodel#559` — issue described `>` → `>=` as a one-character fix. The fixture was genuinely not diagonally dominant for rotational rows 3/4; `>=` only shifts the failure site, doesn't eliminate it.
+- `worldenergydata#278` — issue alleged 4 broken `__init__.py` files in `modules/*`. Reality: 3 of 4 were healthy; the actual breakage was an absolute-path symlink in a different file the issue never named.
+- `worldenergydata#270` — already fixed in a commit weeks before the plan was drafted; reproduction would have caught this in 30 seconds.
+
+**Required output in the plan:** under `Resource Intelligence Summary > Evidence`, a `Reproduction proofs` sub-block citing the exact command, timestamp, and tail of output. The reproduction is the load-bearing artifact — without it, the plan is a guess about what the issue body claims, not a fix for what is actually broken.
+
+**Skip-allowed only when:** issue is documentation-only, governance-only (e.g., index updates, README typos), or otherwise has no runtime claim to verify. Mark `Reproduction proofs: N/A — <reason>` so reviewers know the skip was intentional, not forgotten.
+
+**Reviewers must reject** any plan whose `Resource Intelligence Summary` describes a runtime failure but has no reproduction citation. This is a MAJOR finding by default.
+
 ### Step 2: Draft Plan
 
 Copy template and fill all sections:
