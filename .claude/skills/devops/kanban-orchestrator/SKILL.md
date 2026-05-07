@@ -133,6 +133,8 @@ Tell them what you created in plain prose:
 
 ## Common patterns
 
+**GitHub-label-derived portfolio board:** When the work already exists as GitHub issues across multiple repos, do not create a separate manual Kanban queue first. Build a label-derived board/dashboard view, classify by plan-gate labels and local approval evidence, and use it to choose the next small execution/governance/planning batches. See `references/github-label-derived-portfolio-board.md` for the proven collection, lane, artifact, and verification pattern.
+
 **Fan-out + fan-in (research → synthesize):** N `researcher` tasks with no parents, one `analyst` task with all of them as parents.
 
 **Pipeline with gates:** `pm → backend-eng → reviewer`. Each stage's `parents=[previous_task]`. Reviewer blocks or completes; if reviewer blocks, the operator unblocks with feedback and respawns.

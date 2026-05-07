@@ -17,6 +17,7 @@ Use when auditing, curating, deduplicating, archiving, or consolidating skills i
 3. Prefer patching the skill(s) loaded or used during the session before creating anything new; then prefer an existing class-level umbrella plus `references/`, `templates/`, or `scripts/` support files over one-session-one-skill micro-entries.
 4. Archive, never delete, agent-created skills being absorbed.
 5. Preserve narrow experiential details as references/templates/scripts under the umbrella.
+6. Watch for duplicate-resolution drift: if `skill_view` and `skill_manage` appear to resolve the same skill name to different paths or content, treat it as a collision. Patch the best-resolved umbrella, add a reference note if useful, and explicitly report the overlap so the curator can reconcile shadowed copies.
 
 ## Consolidated Session Learnings
 
