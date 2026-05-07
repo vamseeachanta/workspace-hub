@@ -1,0 +1,268 @@
+{
+  "generated_at": "2026-04-07 11:41 UTC",
+  "wikis_checked": 4,
+  "total_pages": 19234,
+  "total_issues": 3,
+  "domain_results": [
+    {
+      "domain": "marine-demo",
+      "status": "has_issues",
+      "page_count": 0,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 0.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "index": 1,
+        "log": 1
+      }
+    },
+    {
+      "domain": "marine-engineering",
+      "status": "healthy",
+      "page_count": 19167,
+      "source_count": 19149,
+      "entity_count": 8,
+      "concept_count": 7,
+      "link_density": 1.12,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "maritime-law",
+      "status": "healthy",
+      "page_count": 22,
+      "source_count": 2,
+      "entity_count": 10,
+      "concept_count": 7,
+      "link_density": 2.32,
+      "issues": [],
+      "issue_summary": {}
+    },
+    {
+      "domain": "naval-architecture",
+      "status": "has_issues",
+      "page_count": 45,
+      "source_count": 36,
+      "entity_count": 0,
+      "concept_count": 6,
+      "link_density": 0.93,
+      "issues": [
+        {
+          "severity": "warning",
+          "category": "cross-refs",
+          "message": "Low link density (0.9 avg/page)"
+        }
+      ],
+      "issue_summary": {
+        "cross-refs": 1
+      }
+    }
+  ],
+  "cross_link_suggestions": [
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "amoco",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/amoco-cadiz-1978.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "1978",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/amoco-cadiz-1978.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "deepwater",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/deepwater-horizon-2010.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "horizon",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/deepwater-horizon-2010.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "2010",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/deepwater-horizon-2010.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "2002",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/eurasian-dream-2002.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "2012",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/msc-flaminia-2012.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "1999",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-erika-1999.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "ever",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-ever-given-2021.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "2021",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-ever-given-2021.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "2020",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-wakashio-2020.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "1996",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/sea-empress-1996.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "canyon",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/torrey-canyon-1967.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/index.md",
+      "mentions": "1967",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/torrey-canyon-1967.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/log.md",
+      "mentions": "1978",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/amoco-cadiz-1978.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/log.md",
+      "mentions": "2010",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/deepwater-horizon-2010.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/log.md",
+      "mentions": "2012",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/msc-flaminia-2012.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/log.md",
+      "mentions": "2020",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-wakashio-2020.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/concepts/mooring-line-failure.md",
+      "mentions": "ever",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-ever-given-2021.md"
+    },
+    {
+      "from_wiki": "marine-engineering",
+      "from_page": "knowledge/wikis/marine-engineering/wiki/concepts/mooring-line-failure.md",
+      "mentions": "2021",
+      "links_to_wiki": "maritime-law",
+      "links_to_page": "knowledge/wikis/maritime-law/wiki/entities/mv-ever-given-2021.md"
+    }
+  ],
+  "knowledge_gaps": [
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "pipe-fitting"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "flange"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "gasket"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "piping-class"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "pressure-rating"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "dnvgl-os-e201"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/piping-components-ebook.md",
+      "missing_concept": "api-5l"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "float-collar"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "float-shoe"
+    },
+    {
+      "wiki": "marine-engineering",
+      "source_page": "knowledge/wikis/marine-engineering/wiki/sources/rb122-float-equipment.md",
+      "missing_concept": "cementing-plug"
+    }
+  ]
+}
