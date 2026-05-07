@@ -51,6 +51,8 @@ environment is active. Kill the server after verification is complete.
 ### Layer 2 — Generic DOM Structure Checks
 Run via `mcp__claude-in-chrome__javascript_tool`:
 
+For static local collateral where browser/MCP verification is unnecessary or unavailable, use Python stdlib `html.parser` for basic title/link/content checks instead of depending on BeautifulSoup; many worktree/agent environments do not have `bs4` installed.
+
 | Check | Selector / Test | Pass Condition |
 |-------|----------------|----------------|
 | Title present | `document.title` | Non-empty string |

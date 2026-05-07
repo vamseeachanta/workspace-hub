@@ -87,6 +87,8 @@ Two cross-demo aggregation files:
 - **Fallback**: PDF via print-friendly CSS (`@media print` in same HTML)
 - Both from same Python script
 - **Same-day client pack**: when existing GTM HTML exists and the user needs PDFs immediately, generate a branded PDF pack directly from those HTML reports with headless Chrome, add a pack index, visible caveats, and a PDF-only ZIP for email. See `references/client-pdf-packaging.md`.
+- **Pipeline-company brochure pack**: for pipeline/subsea prospects, package wall thickness multi-code screening, rigid jumper freespan/VIV screening, and optional rigid jumper installation/vessel suitability into a concise HTML+PDF+email bundle. See `references/pipeline-company-brochure-pack.md`.
+- **Field-development consulting outreach**: when drafting email to a field development / subsea engineering consulting company, start from `templates/field-development-consulting-outreach.md`; lead with concrete analysis-pack deliverables, low-risk pilot framing, and a 30-minute review ask.
 
 ### HTML Template Requirements
 - digitalmodel branding (header, colors)
@@ -110,6 +112,11 @@ Two cross-demo aggregation files:
 
 ## Pitfalls
 
+- **Result filenames drift from demo names**: don't infer result filenames from script names. For rigid jumper/freespan VIV, the verified output is `results/demo_01_freespan_results.json` (not `demo_01_freespan_viv_results.json`). Open the JSON metadata before declaring a result missing.
+- **Pipeline prospect collateral has a proven triad**: wall thickness multi-code screening (Demo 2), rigid jumper freespan/VIV screening (Demo 1), and optional rigid jumper installation/vessel suitability (Demo 5). See `references/pipeline-company-brochure-pack.md`.
+- **Smaller installation vessel owner wedge**: for regional CSV/MPSV/ROV-support owners and light-construction contractors, lead with vessel suitability rather than pipeline design: "one vessel data sheet + one representative jumper/mudmat/pipelay scope → client-ready GO/NO_GO envelope." Use practical tender-support language (capability envelope, limiting criterion, governing phase, crane/tensioner/deck-space bottlenecks) and keep PII outside Git. Reference pattern: `aceengineer-strategy/pipeline/proposals/small-installation-vessel-owners-gtm-2026-05-07.md`.
+- **Outreach logs must be PII-safe**: document sent emails in `aceengineer-strategy/pipeline/conversations.md` using role/company descriptors only; keep names and direct contact details out of Git.
+- **Prospect email language**: use low-risk pilot / fixed-fee starter / 30-minute review language with concrete deliverables; avoid desperation or "survival pricing" framing. For field-development engineering consulting companies, emphasize early-phase option screening, subsea pipeline wall thickness, rigid jumper freespan/VIV, and vessel/installation suitability as reusable client-ready packs; use `templates/field-development-consulting-outreach.md` rather than drafting from scratch.
 - **Don't let missing data block everything**: Create representative/generic databases, spin GH issues for real data, build demos with what you have. Swap real data in later.
 - **Vessel suitability has two layers**: separate raw/reference intake and GTM packaging from deeper engineering implementation. Add a traceability index for the actual reference corpus reviewed, then create/link a GTM issue for scoring/report output rather than overloading the engineering anchor issue. See `references/vessel-suitability-reference-intake.md`.
 - **Access operability is not the same as vessel specs**: CTV/SOV workability infographics belong in a separate access-operability dataset with source caveats, not merged into CSV/HLV or pipelay vessel databases. See `references/ctv-access-operability-reference-flow.md`.

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T13:20:07.554225Z",
+  "generated_at": "2026-05-07T17:20:08.121173Z",
   "current_week": "2026-W19",
   "report_weeks": 8,
   "subscriptions": {
@@ -976,19 +976,19 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W19",
-        "sessions": 32,
-        "post_records": 2008,
-        "activity_utilization_pct": 4.9,
+        "sessions": 34,
+        "post_records": 2014,
+        "activity_utilization_pct": 5.0,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 4.9,
+        "reported_utilization_pct": 5.0,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-05-07T13:20:01Z",
+        "quota_snapshot_ts": "2026-05-07T17:20:01Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 873
+            "count": 877
           },
           {
             "tool": "unknown",
@@ -996,7 +996,7 @@
           },
           {
             "tool": "Read",
-            "count": 141
+            "count": 143
           },
           {
             "tool": "Edit",
@@ -1008,7 +1008,7 @@
           }
         ],
         "first_ts": "2026-05-04T02:36:25Z",
-        "last_ts": "2026-05-07T09:09:59Z",
+        "last_ts": "2026-05-07T14:46:06Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -1022,7 +1022,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-05-07T13:20:01Z",
+        "quota_snapshot_ts": "2026-05-07T17:20:01Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -1060,7 +1060,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-05-07T13:20:01Z",
+        "quota_snapshot_ts": "2026-05-07T17:20:01Z",
         "top_tools": [
           {
             "tool": "Browser",
@@ -1114,9 +1114,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 4.9,
+      "reported_utilization_pct": 5.0,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 4.9% (activity_vs_recent_peak)"
+      "message": "claude at 5.0% (activity_vs_recent_peak)"
     },
     {
       "provider": "codex",

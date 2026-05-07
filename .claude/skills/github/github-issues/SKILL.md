@@ -24,15 +24,11 @@ Create, search, triage, and manage GitHub issues. Each section shows `gh` first,
 ```bash
 if command -v gh &>/dev/null && gh auth status &>/dev/null; then
   AUTH="gh"
+elif [ -n "${GITHUB_TOKEN:-}" ]; then
+  AUTH="curl"
 else
-  AUTH="git"
-  if [ -z "$GITHUB_TOKEN" ]; then
-    if [ -f ~/.hermes/.env ] && grep -q "^GITHUB_TOKEN=" ~/.hermes/.env; then
-      GITHUB_TOKEN=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | head -1 | cut -d= -f2 | tr -d '\n\r')
-    elif grep -q "github.com" ~/.git-credentials 2>/dev/null; then
-      GITHUB_TOKEN=$(grep "github.com" ~/.git-credentials 2>/dev/null | head -1 | sed 's|https://[^:]*:\([^@]*\)@.*|\1|')
-    fi
-  fi
+  echo "Authenticate with gh or export GITHUB_TOKEN explicitly before using curl fallbacks." >&2
+  exit 1
 fi
 
 REMOTE_URL=$(git remote get-url origin)
@@ -40,6 +36,8 @@ OWNER_REPO=$(echo "$REMOTE_URL" | sed -E 's|.*github\.com[:/]||; s|\.git$||')
 OWNER=$(echo "$OWNER_REPO" | cut -d/ -f1)
 REPO=$(echo "$OWNER_REPO" | cut -d/ -f2)
 ```
+
+Do not scrape tokens from local Hermes environment files, Git credential stores, or shell history in reusable issue scripts. Prefer `gh` authentication; use REST fallbacks only when `GITHUB_TOKEN` is already explicitly present in the environment.
 
 ---
 
@@ -302,6 +300,15 @@ Quick triage update:
 EOF
 
 gh issue comment 42 --body-file /tmp/issue-comment.md
+```
+
+If `gh issue comment` returns a transient GitHub 5xx/504 timeout, treat success as unknown rather than blindly resubmitting. First query recent comments for a unique marker from the body; only retry if the marker is absent.
+
+```bash
+MARKER='unique marker from your comment'
+if ! gh issue view 42 --comments --json comments --jq '.comments[-10:][].body' | grep -F "$MARKER" >/dev/null; then
+  gh issue comment 42 --body-file /tmp/issue-comment.md
+fi
 ```
 
 **With curl:**
