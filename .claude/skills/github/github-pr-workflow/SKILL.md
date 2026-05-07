@@ -39,19 +39,16 @@ Otherwise prefer:
 # Determine which method to use throughout this workflow
 if command -v gh &>/dev/null && gh auth status &>/dev/null; then
   AUTH="gh"
+elif [ -n "${GITHUB_TOKEN:-}" ]; then
+  AUTH="curl"
 else
-  AUTH="git"
-  # Ensure we have a token for API calls
-  if [ -z "$GITHUB_TOKEN" ]; then
-    if [ -f ~/.hermes/.env ] && grep -q "^GITHUB_TOKEN=" ~/.hermes/.env; then
-      GITHUB_TOKEN=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | head -1 | cut -d= -f2 | tr -d '\n\r')
-    elif grep -q "github.com" ~/.git-credentials 2>/dev/null; then
-      GITHUB_TOKEN=$(grep "github.com" ~/.git-credentials 2>/dev/null | head -1 | sed 's|https://[^:]*:\([^@]*\)@.*|\1|')
-    fi
-  fi
+  echo "Authenticate with gh or export GITHUB_TOKEN explicitly before using REST fallbacks." >&2
+  exit 1
 fi
 echo "Using: $AUTH"
 ```
+
+Do not scrape tokens from local Hermes environment files, Git credential stores, or shell history in reusable PR scripts. Prefer `gh` authentication; use REST fallbacks only when `GITHUB_TOKEN` is already explicitly present in the environment.
 
 ### Extracting Owner/Repo from the Git Remote
 
@@ -372,7 +369,7 @@ git push -u origin HEAD
 
 | Action | gh | git + curl |
 |--------|-----|-----------|
-| List my PRs | `gh pr list --author @me` | `curl -s -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/$OWNER/$REPO/pulls?state=open"` |
+| List my PRs | `gh pr list --author @me` | Use the REST-auth pattern from earlier sections with an explicitly exported token, then request `https://api.github.com/repos/$OWNER/$REPO/pulls?state=open`. |
 | View PR diff | `gh pr diff` | `git diff main...HEAD` (local) or `curl -H "Accept: application/vnd.github.diff" ...` |
 | Add comment | `gh pr comment N --body "..."` | `curl -X POST .../issues/N/comments -d '{"body":"..."}'` |
 | Request review | `gh pr edit N --add-reviewer user` | `curl -X POST .../pulls/N/requested_reviewers -d '{"reviewers":["user"]}'` |
