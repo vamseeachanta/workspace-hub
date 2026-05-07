@@ -40,6 +40,17 @@ docling = [
 [project.scripts]
 ace = "src.ace.cli:main"
 
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "jsonschema>=4.21",
+    "pytest-socket",
+    "zss==1.2.0",
+    "scipy>=1.11",
+    "PyYAML>=6.0",
+]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["src*"]

@@ -109,6 +109,7 @@ Two cross-demo aggregation files:
 ## Pitfalls
 
 - **Don't let missing data block everything**: Create representative/generic databases, spin GH issues for real data, build demos with what you have. Swap real data in later.
+- **Vessel suitability has two layers**: separate raw/reference intake and GTM packaging from deeper engineering implementation. Add a traceability index for the actual reference corpus reviewed, then create/link a GTM issue for scoring/report output rather than overloading the engineering anchor issue. See `references/vessel-suitability-reference-intake.md`.
 - **Vessel data is always the hardest to get**: Crane curves, RAOs need public spec sheets or industry databases. Pipeline data is easy (API 5L tables).
 - **Senior engineers spot-check numbers**: If wall thickness or safety factors look wrong, the entire demo loses credibility. Use real code formulas.
 - **Email attachment gotcha**: Some corporate email servers block .html files. Zip it or host on a link. PDF fallback covers this.

@@ -46,13 +46,12 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          pip install pytest pytest-cov pyyaml
+          uv sync --group dev
 
       - name: Run Python tests
         run: |
           # Hub-level Python tests (no PYTHONPATH manipulation needed)
-          python3 -m pytest tests/test_deduplication_fix.py \
+          uv run python -m pytest tests/test_deduplication_fix.py \
             -v --tb=short --noconftest
 
       # CI smoke tests for #2532 regression guards (workspace_hub importability,
@@ -62,7 +61,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          python3 -m pytest tests/ci_smoke/ -v --tb=short
+          uv run python -m pytest tests/ci_smoke/ -v --tb=short
 
       - name: Generate test summary
         if: always()

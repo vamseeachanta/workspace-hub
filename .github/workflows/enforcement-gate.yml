@@ -41,9 +41,8 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          python3 -m pip install --upgrade pip
-          pip install pytest pyyaml
-          python3 -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
+          uv sync --group dev
+          uv run python -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
 
       - name: Check newly introduced stage prompt drift
         env:
