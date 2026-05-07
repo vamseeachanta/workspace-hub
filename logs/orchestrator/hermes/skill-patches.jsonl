@@ -405,3 +405,7 @@
 {"ts":"2026-05-06T06:16:29Z","agent":"hermes","action":"create","skill_path":".claude/skills/research/llm-wiki/references/public-spinout-scorecard-portal-closeout.md","commit":"068f79e5f0c76014f6c9b75a3c916705f459a3dc"}
 {"ts":"2026-05-06T06:16:29Z","agent":"hermes","action":"create","skill_path":".claude/skills/research/llm-wiki/references/yaw-moment-raw-reference-ingestion.md","commit":"068f79e5f0c76014f6c9b75a3c916705f459a3dc"}
 {"ts":"2026-05-06T06:16:29Z","agent":"hermes","action":"modify","skill_path":".claude/skills/workspace-hub/worktree-branch-sync-hygiene/SKILL.md","commit":"068f79e5f0c76014f6c9b75a3c916705f459a3dc"}
+{"ts":"2026-05-07T02:56:53Z","agent":"claude","action":"modify","skill_path":".claude/skills/coordination/issue-planning-mode/SKILL.md","commit":"97d5fdbb6137c589d495fc151c24fd7c968795cc"}
+{"ts":"2026-05-07T02:57:09Z","agent":"claude","action":"modify","skill_path":".claude/skills/github/issue-portfolio-triage/SKILL.md","commit":"9a841ffc51fa407f5d464fd7f8f345567e4fae54"}
+{"ts":"2026-05-07T02:57:09Z","agent":"claude","action":"create","skill_path":".claude/skills/github/issue-portfolio-triage/references/tier1-approval-state-audit.md","commit":"9a841ffc51fa407f5d464fd7f8f345567e4fae54"}
+{"ts":"2026-05-07T02:57:09Z","agent":"claude","action":"create","skill_path":".claude/skills/github/issue-portfolio-triage/references/tier1-kanban-portfolio-review-2026-05-06.md","commit":"9a841ffc51fa407f5d464fd7f8f345567e4fae54"}

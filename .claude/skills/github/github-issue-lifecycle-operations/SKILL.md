@@ -2,7 +2,7 @@
 name: github-issue-lifecycle-operations
 version: 1.0.0
 category: github
-description: Class-level GitHub issue lifecycle operations: issue creation, planning/execution routing, labels, evidence fields, roadmap anchors, closeout races, and visual planning.
+description: "Class-level GitHub issue lifecycle operations: issue creation, planning/execution routing, labels, evidence fields, roadmap anchors, closeout races, and visual planning."
 tags: [github, issues, planning, closeout]
 ---
 

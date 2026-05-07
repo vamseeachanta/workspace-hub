@@ -52,6 +52,7 @@ Each repository's mission, and its position on the autonomy ladder (see Section 
 | **worldenergydata** | Global energy market data aggregation, analysis, and interactive reporting from public sources (BSEE, EIA, IEA) with standardised energy units and attribution | L2 |
 | **assethold** | Daily multi-signal stock recommendations (RSI, SMA, insider filings, portfolio weight) for long-term holdings, with interactive Plotly dashboards and Fidelity integration | L2–L3 |
 | **aceengineer-website** | Professional company presence and engineering portfolio at www.aceengineer.com | L1–L2 |
+| **aceengineer-strategy** | GTM strategy, conference pipeline, prospect targeting, and business-development execution system for AceEngineer growth loops | L2 |
 | **workspace-hub** | Central orchestration hub: WRK queue management, AI agent coordination, session management, nightly learning pipeline, and cross-repo synchronisation | L3 |
 
 The ecosystem is operating at **Level 2–3 overall** — automated pipelines exist, AI agents

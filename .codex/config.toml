@@ -158,9 +158,3 @@ config_file = "agents/gsd-user-profiler.toml"
 [agents.gsd-verifier]
 description = "Verifies phase goal achievement through goal-backward analysis. Checks codebase delivers what phase promised, not just that tasks completed. Creates VERIFICATION.md report."
 config_file = "agents/gsd-verifier.toml"
-
-
-# GSD Hooks
-# Codex 0.124+ schema: hooks is a map keyed by event name; each value is an array of hook tables.
-[[hooks.SessionStart]]
-command = "node .claude/hooks/gsd-check-update.js"

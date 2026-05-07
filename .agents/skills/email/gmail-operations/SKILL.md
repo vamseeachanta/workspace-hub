@@ -2,7 +2,7 @@
 name: gmail-operations
 version: 1.0.0
 category: email
-description: Class-level Gmail and email operations: multi-account setup, OAuth, triage, extraction, archiving, attachments, unsubscribe, and touchbase workflows.
+description: "Class-level Gmail and email operations: multi-account setup, OAuth, triage, extraction, archiving, attachments, unsubscribe, and touchbase workflows."
 tags: [gmail, email, triage, extraction]
 ---
 
