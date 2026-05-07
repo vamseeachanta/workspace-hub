@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-05-07T09:20:09.178800Z
+Generated: 2026-05-07T13:20:07.678858Z
 Current week: 2026-W19
 Recommended provider order: gemini, codex, claude
 
@@ -13,10 +13,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Current-week reported utilization: 4.9%
 - Quota basis: unavailable (unavailable)
 - Current-week sessions / post records: 32 / 2008
-- Audit post records: 89108
-- Missing repo reads: 8454
-- Python3 per 1k records: 8.53
-- Migration debt per 1k records: 19.52
+- Audit post records: 104285
+- Missing repo reads: 8818
+- Python3 per 1k records: 8.82
+- Migration debt per 1k records: 16.68
 
 ### Preferred work
 - adversarial plan review
@@ -42,10 +42,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Current-week reported utilization: 2.5%
 - Quota basis: quota (history.jsonl)
 - Current-week sessions / post records: 11 / 1154
-- Audit post records: 20144
-- Missing repo reads: 463
-- Python3 per 1k records: 17.92
-- Migration debt per 1k records: 0.0
+- Audit post records: 30827
+- Missing repo reads: 730
+- Python3 per 1k records: 11.84
+- Migration debt per 1k records: 2.3
 
 ### Preferred work
 - bounded implementation
@@ -65,13 +65,13 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: underused
 - Priority: highest
-- Current-week reported utilization: 0.0%
+- Current-week reported utilization: 0.1%
 - Quota basis: estimated_daily_quota (estimated)
-- Current-week sessions / post records: 1 / 1
-- Audit post records: 6173
-- Missing repo reads: 603
-- Python3 per 1k records: 47.14
-- Migration debt per 1k records: 13.93
+- Current-week sessions / post records: 2 / 2
+- Audit post records: 6185
+- Missing repo reads: 604
+- Python3 per 1k records: 47.05
+- Migration debt per 1k records: 13.9
 
 ### Preferred work
 - batched research/recon
