@@ -86,6 +86,7 @@ Two cross-demo aggregation files:
 - **Primary**: Interactive HTML with embedded Plotly (single .html file, works offline)
 - **Fallback**: PDF via print-friendly CSS (`@media print` in same HTML)
 - Both from same Python script
+- **Same-day client pack**: when existing GTM HTML exists and the user needs PDFs immediately, generate a branded PDF pack directly from those HTML reports with headless Chrome, add a pack index, visible caveats, and a PDF-only ZIP for email. See `references/client-pdf-packaging.md`.
 
 ### HTML Template Requirements
 - digitalmodel branding (header, colors)
@@ -112,6 +113,7 @@ Two cross-demo aggregation files:
 - **Don't let missing data block everything**: Create representative/generic databases, spin GH issues for real data, build demos with what you have. Swap real data in later.
 - **Vessel suitability has two layers**: separate raw/reference intake and GTM packaging from deeper engineering implementation. Add a traceability index for the actual reference corpus reviewed, then create/link a GTM issue for scoring/report output rather than overloading the engineering anchor issue. See `references/vessel-suitability-reference-intake.md`.
 - **Access operability is not the same as vessel specs**: CTV/SOV workability infographics belong in a separate access-operability dataset with source caveats, not merged into CSV/HLV or pipelay vessel databases. See `references/ctv-access-operability-reference-flow.md`.
+- **PDF generation needs artifact verification**: headless Chrome can exit successfully while assets/JS render poorly or files are absent; always check non-zero PDF sizes and, when available, `pdfinfo`/`pdftotext` before reporting. See `references/client-pdf-packaging.md`.
 - **Vessel data is always the hardest to get**: Crane curves, RAOs need public spec sheets or industry databases. Pipeline data is easy (API 5L tables).
 - **Senior engineers spot-check numbers**: If wall thickness or safety factors look wrong, the entire demo loses credibility. Use real code formulas.
 - **Email attachment gotcha**: Some corporate email servers block .html files. Zip it or host on a link. PDF fallback covers this.
