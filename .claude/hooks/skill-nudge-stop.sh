@@ -28,9 +28,9 @@ fi
 
 # Check if any skill files were created/modified in this session
 # Use git to detect skill file changes since session start
-SKILL_CHANGES=$(git -C "$WS" diff --name-only HEAD 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md' || echo 0)
-SKILL_STAGED=$(git -C "$WS" diff --cached --name-only 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md' || echo 0)
-SKILL_UNTRACKED=$(git -C "$WS" ls-files --others --exclude-standard 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md' || echo 0)
+SKILL_CHANGES=$(git -C "$WS" diff --name-only HEAD 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md')
+SKILL_STAGED=$(git -C "$WS" diff --cached --name-only 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md')
+SKILL_UNTRACKED=$(git -C "$WS" ls-files --others --exclude-standard 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md')
 
 TOTAL_SKILL_CHANGES=$(( SKILL_CHANGES + SKILL_STAGED + SKILL_UNTRACKED ))
 
