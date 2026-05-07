@@ -71,6 +71,9 @@
 - [WebFetch first for LinkedIn recon](feedback_webfetch_first_for_linkedin.md) — public LinkedIn posts return full content via og:description; skip the chrome browser unless WebFetch returns a "log in to view" gate
 - [Credential-issuer copy-paste leak](feedback_credential_issuer_copy_paste_leak.md) — never commit raw "save this token" output (BotFather, AWS, Stripe, OAuth); commit only a pointer to a secret manager. Recovery: revoke first, delete branch local+origin (no archive tag), then `git reflog expire --expire=now --expire-unreachable=now --all && git gc --prune=now --aggressive`
 - [PDF e-signature style default](feedback_pdf_esignature_style_default.md) — for PDF signing (paychecks, admin), default to typed cursive (Z003 chancery) + "Electronically signed" + date; avoid bitmap signature images (filename-mislabel risk)
+- [Parallel gh issue create reverses numbers](feedback_parallel_gh_issue_create_reverses_numbers.md) — `gh issue create &` in parallel assigns numbers in apparent reverse arrival order; never bake cross-refs at create time, audit titles by `--json` immediately after batch
+- [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
+- [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -114,6 +117,7 @@
 > ai-orchestration.md, network_machines.md
 - [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — modern Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
+- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data

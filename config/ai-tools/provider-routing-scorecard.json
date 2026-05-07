@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-06T05:20:05.953041Z",
+  "generated_at": "2026-05-07T05:20:06.635089Z",
   "current_week": "2026-W19",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-06T05:20:05.837130Z",
+    "utilization_generated_at": "2026-05-07T05:20:06.514490Z",
     "audit_generated_at": "2026-04-24T15:25:36Z"
   },
   "recommended_provider_order": [
@@ -17,11 +17,11 @@
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 3.6,
+      "reported_utilization_pct": 4.8,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 23,
-      "post_records_current_week": 1446,
+      "sessions_current_week": 32,
+      "post_records_current_week": 1971,
       "audit_post_records": 89108,
       "missing_repo_reads": 8454,
       "python3_per_1k_records": 8.53,
@@ -30,23 +30,23 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 702
+          "count": 860
         },
         {
           "tool": "unknown",
-          "count": 537
+          "count": 794
         },
         {
           "tool": "Read",
-          "count": 102
-        },
-        {
-          "tool": "Write",
-          "count": 44
+          "count": 131
         },
         {
           "tool": "Edit",
-          "count": 40
+          "count": 96
+        },
+        {
+          "tool": "Write",
+          "count": 68
         }
       ],
       "preferred_work": [
@@ -71,11 +71,11 @@
       "provider": "codex",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 1.4,
+      "reported_utilization_pct": 2.5,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
       "sessions_current_week": 7,
-      "post_records_current_week": 716,
+      "post_records_current_week": 821,
       "audit_post_records": 20144,
       "missing_repo_reads": 463,
       "python3_per_1k_records": 17.92,
@@ -84,7 +84,7 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 648
+          "count": 752
         },
         {
           "tool": "Read",
@@ -99,7 +99,7 @@
           "count": 4
         },
         {
-          "tool": "_update_issue",
+          "tool": "_add_comment_to_issue",
           "count": 2
         }
       ],

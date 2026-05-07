@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-06T05:20:07.756142Z",
+  "generated_at": "2026-05-07T05:20:08.217330Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-06T05:20:05.953041Z",
+  "scorecard_generated_at": "2026-05-07T05:20:06.635089Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 5,
-      "total_candidates": 164,
+      "total_candidates": 166,
       "top_issues": [
         {
           "number": 2533,
@@ -215,8 +215,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 8,
-      "total_candidates": 33,
+      "execution_ready_count": 6,
+      "total_candidates": 31,
       "top_issues": [
         {
           "number": 2269,
@@ -243,29 +243,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 2346,
-          "title": "feat(gtm): prospect-data customized-demo pipeline \u2014 48hr turnaround + pre-staged vessel templates",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2346",
-          "labels": [
-            "priority:high",
-            "cat:engineering",
-            "domain:gtm",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-06T03:01:13Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
           ]
         },
         {
@@ -348,32 +325,6 @@
           ]
         },
         {
-          "number": 2458,
-          "title": "feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2458",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "domain:marine",
-            "status:working",
-            "machine:dev-primary",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-06T02:58:17Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2550,
           "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
@@ -420,6 +371,52 @@
             "research",
             "implementation",
             "strategy"
+          ]
+        },
+        {
+          "number": 2472,
+          "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "updatedAt": "2026-04-24T01:33:05Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2474,
+          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "updatedAt": "2026-04-26T21:54:09Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
           ]
         }
       ]

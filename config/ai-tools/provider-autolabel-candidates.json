@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-06T05:20:07.879033Z",
+  "generated_at": "2026-05-07T05:20:08.342814Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -233,6 +233,68 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2472,
+      "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "machine:dev-primary"
+      ],
+      "updatedAt": "2026-04-24T01:33:05Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2474,
+      "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "machine:dev-primary"
+      ],
+      "updatedAt": "2026-04-26T21:54:09Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false

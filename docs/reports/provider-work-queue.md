@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-06T05:20:07.756142Z
+Generated: 2026-05-07T05:20:08.217330Z
 Current week: 2026-W19
 Recommended provider order: gemini, codex, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 5
-- Total routed candidates: 164
+- Total routed candidates: 166
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -26,19 +26,19 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 8
-- Total routed candidates: 33
+- Execution-ready candidates: 6
+- Total routed candidates: 31
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | existing codex agent label | enhancement, priority:high, cat:engineering, cat:documentation, status:working, machine:dev-secondary |
-| #2346 feat(gtm): prospect-data customized-demo pipeline — 48hr turnaround + pre-staged vessel templates | yes | existing codex agent label | priority:high, cat:engineering, domain:gtm, status:working, agent:codex, status:plan-approved |
 | #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:working, agent:codex |
 | #2523 feat(workstations): add reusable Hermes preflight readiness checker | yes | implementation/test/fix language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:ai-orchestration, domain:workstations |
 | #2403 feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | yes | existing codex agent label | enhancement, priority:medium, cat:data-pipeline, cat:research, domain:document-intelligence, status:working |
-| #2458 feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness | yes | existing codex agent label | enhancement, priority:medium, cat:engineering, domain:marine, status:working, machine:dev-primary |
 | #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | yes | implementation/test/fix language | enhancement, priority:medium, cat:operations, domain:automation, domain:security, status:plan-approved |
 | #2327 digitalmodel: CadQuery spike for parametric offshore geometry generation | yes | existing codex agent label | priority:low, cat:engineering, cat:research, status:working, agent:codex, status:plan-approved |
+| #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
+| #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 
 ## gemini
 
