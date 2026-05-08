@@ -11,8 +11,9 @@ Use when a prospect conversation is about offshore intervention, abandonment, de
 
 1. **Keep prospect PII out of Git**
    - Public profile URLs supplied by the user may be referenced.
+   - User-supplied public profile role history may be captured as planning context when it materially changes positioning; label it as user-supplied and recheck immediately before send if using role-specific language.
    - Do not store private email, phone, CRM export rows, or scraped contact details in repo files.
-   - If LinkedIn is authwalled, record that role/company was not verified and avoid personalization claims.
+   - If LinkedIn is authwalled and the user has not supplied role context, record that role/company was not verified and avoid personalization claims.
 
 2. **Ground capability across repos before writing copy**
    - In `worldenergydata`, inspect readiness for public intervention/abandonment, wellbore, marine-safety, HSE, incident, and safety-analysis inputs.
