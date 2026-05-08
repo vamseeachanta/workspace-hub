@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-08T13:20:08.805432Z
+Generated: 2026-05-08T17:20:06.723260Z
 Current week: 2026-W19
 Recommended provider order: gemini, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 6
+- Execution-ready candidates: 7
 - Total routed candidates: 166
 
 | Issue | Ready | Why routed here | Labels |
@@ -18,10 +18,10 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2563 Set up Telegram mobile access for Hermes AI control | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, domain:integrations, domain:notification |
 | #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:testing, status:plan-approved |
 | #2656 chore(repo-structure): normalize workspace-hub folder/file structure | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:repo-organization, status:plan-approved |
+| #2657 chore(provider-session): remediate Hermes llm-wiki spinout path drift | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:harness, status:plan-approved |
 | #2229 feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live | yes | existing claude agent label | enhancement, priority:medium, cat:harness, status:working, machine:licensed-win-1, agent:claude |
 | #2552 docs(security): external contributor and unsolicited paid-help response runbook | yes | strategy/workflow/architecture language | documentation, priority:medium, cat:documentation, domain:security, status:plan-approved |
 | #2431 Compliance alert: W17 — 20% (critical) | no | strategy/workflow/architecture language | priority:high, priority:critical, compliance-alert |
-| #2517 Compliance alert: W18 — 42% (high) | no | strategy/workflow/architecture language | priority:high, priority:medium, priority:critical, compliance-alert |
 
 ## codex
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-08T13:20:08.805432Z",
+  "generated_at": "2026-05-08T17:20:06.723260Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-08T13:20:06.972427Z",
+  "scorecard_generated_at": "2026-05-08T17:20:04.955138Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 6,
+      "execution_ready_count": 7,
       "total_candidates": 166,
       "top_issues": [
         {
@@ -115,6 +115,30 @@
           ]
         },
         {
+          "number": 2657,
+          "title": "chore(provider-session): remediate Hermes llm-wiki spinout path drift",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2657",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "cat:harness",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-08T15:03:05Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2229,
           "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
@@ -174,29 +198,6 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-04-26T11:45:09Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2517,
-          "title": "Compliance alert: W18 \u2014 42% (high)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
-          "labels": [
-            "priority:high",
-            "priority:medium",
-            "priority:critical",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-05-03T11:45:05Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
