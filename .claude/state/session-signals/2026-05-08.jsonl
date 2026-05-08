@@ -1,0 +1,2 @@
+{"session_id":"cf534e70-b4c8-49eb-9f0f-03eb3d5b7d7a","transcript_path":"/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/cf534e70-b4c8-49eb-9f0f-03eb3d5b7d7a.jsonl","cwd":"/mnt/local-analysis/workspace-hub","permission_mode":"bypassPermissions","hook_event_name":"Stop","stop_hook_active":false}
+{"ts":"2026-05-08T06:38:46Z","event":"session_tool_summary","session_id":"cf534e70-b4c8-49eb-9f0f-03eb3d5b7d7a","wrk":"none","tool_calls":2,"edits":0,"reads":0}

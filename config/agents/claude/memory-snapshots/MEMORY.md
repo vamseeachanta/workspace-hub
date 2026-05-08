@@ -42,6 +42,7 @@
 - [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync also resolves push contention by quietly pushing local-ahead commits; wait+verify after `[rejected]` instead of retrying
 - [Gemini trust-env blocks reviews](feedback_gemini_trust_env_blocks_reviews.md) — Gemini CLI exits 55 in headless without `GEMINI_CLI_TRUST_WORKSPACE=true`; wrapper masked the real stderr; durable fix landed in submit-to-gemini.sh 2026-04-24
 - [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` directory name poisons every Python dotted-path reference below it; recurred 3x in 2026-04-24 agent-drafted plans; grep plans for `llm-wiki\.` as a P1 smell
+- [llm-wiki concept pages need public references](feedback_llm_wiki_concept_pages_need_public_references.md) — gap-fill concept pages from external posts must ground on textbooks/DOIs/public manuals; LinkedIn-only sourcing fails day-one lint
 - [Gmail override-filters silent defeat](feedback_gmail_override_filters_silent_defeat.md) — Inbox "Override filters for important" silently nullifies Skip-Inbox; flip to "Don't override" before installing filters (2026-04-24 ace sweep)
 - [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread state machines for actionable ~20% residue
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` tools bind to main session; subagents can't drive Chrome; partition: main=browser, subagents=research
@@ -75,6 +76,7 @@
 - [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
 - [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
+- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/`
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -107,6 +109,8 @@
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing principle sanctioned across eng/marine/naval wikis; **#2471 is CSA-Z276-only** (verified 2026-04-25), referenced codification plan does not exist; general offshore/marine substrate now scoped to aceengineer-strategy aces-#4
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
+- [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve/uplift/add via public + legally-sanitized private sources; coverage gaps are first-class defects
+- [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest pattern; first-run 2026-05-07 (Sherwood naval-arch + Rötzer wave-shoaling)
 - [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
 - [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
 - [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; nested in workspace-hub at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (independent .git, gitignored from hub); team-merging open
@@ -124,3 +128,4 @@
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data
 - [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
 - [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present
+- [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (research preview, 2026-05-06); NOT in Claude Code CLI or Claude.ai; auto vs review-before-apply policy

@@ -2,8 +2,8 @@
 name: Per-repo metadata is the firewall, not directory location
 description: When evaluating whether to nest or sibling a repo, the firewall mechanisms that prevent license bleed, ToS violations, and agent-context leakage are per-repo metadata (LICENSE, .gitignore, .claude/, .git), not file-system distance. Don't conflate "different directory" with "different boundary."
 type: feedback
+originSessionId: eb5d9f9b-67bd-4730-86fd-59b396905f3c
 ---
-
 When a user proposes nesting a repo with different license/lifecycle/ecosystem boundaries inside workspace-hub, do not reflexively cite "structural costs" as a blocker. Verify which mechanisms actually enforce the boundary before arguing the boundary requires sibling layout.
 
 **Why:** On 2026-05-07 I argued three turns against nesting llm-wiki and kaggle-rogii-2026 into workspace-hub on grounds of license contamination, Kaggle ToS exposure, and CLAUDE.md context leak. The user pushed back each time. On the third pushback I actually verified the repos and discovered each had its own LICENSE file (license travels with the repo, not the directory), gitignored its dataset (data redistribution risk is the gitignore + backup-exclude posture, not the file-system path), and could be given a per-repo `.claude/` directory to scope agent memory away from hub private state. The "structural costs" were conditional on layout assumptions that don't hold once the per-repo metadata mechanisms are in place. The user's "fresh and doesn't hurt" framing was correct; my structural arguments were too strong.

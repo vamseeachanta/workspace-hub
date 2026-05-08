@@ -6,6 +6,8 @@ originSessionId: ec40ba65-385e-48da-98c7-8cf5a6f30e44
 ---
 User is participating in the Kaggle [ROGII - Wellbore Geology Prediction](https://www.kaggle.com/competitions/rogii-wellbore-geology-prediction) competition (Kaggle username `aceengineer`, separate from GitHub `vamseeachanta`). Open to team merging.
 
+**RESUMING A NEW SESSION:** read `kaggle-rogii-2026/docs/plans/WAY-FORWARD.md` first, then `PLANNING-ROADMAP.md`, then this memory file. The way-forward doc is the durable handoff written 2026-05-07 at session exit. Project state at exit: 8 plans drafted across 3 repos; 1 approved (#3 Phase 0.5 linear extrap); 6 awaiting user approval; Wave 1 (research-and-data gating) and Wave 2 (T1 unblockers) plans complete; Wave 3 (modeling tail) plans deferred until Wave 1 lands.
+
 **Why:** $50k prize pool with strong domain fit (digitalmodel/wellbore expertise). Kicked off 2026-05-05 with the user direction "we will participate in this competition." Three months to first podium attempt.
 
 **How to apply:**

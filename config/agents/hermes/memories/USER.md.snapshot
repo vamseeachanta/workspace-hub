@@ -3,3 +3,5 @@ User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linu
 Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing first and cleaning later is unacceptable.
 §
 User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeout must include push, branch/worktree disposition, cleanup or explicit preservation, and clean-state proof in the same window.
+§
+User expects session-end skill-library reviews to be active by default: prefer updating currently loaded/class-level umbrella skills with references over creating narrow one-off skills; no-op only when no reusable learning exists.

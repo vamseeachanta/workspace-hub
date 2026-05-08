@@ -35,3 +35,5 @@ llm-wiki content lives at https://github.com/vamseeachanta/llm-wiki (public, MIT
 - Iron Law on `commit --no-verify` still holds; cleanup PR (workspace-hub#2649) used `push --no-verify` per `feedback_pre_push_hook_no_verify_for_preservation.md` precedent
 
 **Supersedes:** `project_llm_wiki_stays_embedded.md` (delete after Step 7 confirmation).
+
+**Layout amendment 2026-05-07:** Local-disk path changed from `/mnt/local-analysis/llm-wiki/` to `/mnt/local-analysis/workspace-hub/llm-wiki/` (nested for navigation consistency). Repo remains independently licensed (MIT + CC-BY-4.0), independently published to vamseeachanta/llm-wiki, with its own `.git`. Agent-context firewall: per-repo `.claude/` (gitignored, scopes Claude Code memory namespace away from workspace-hub private state) + per-repo `CLAUDE.md` documenting the boundary. The architectural spinout (separate license, separate publish target, separate governance) is unchanged — only the disk location moved.
