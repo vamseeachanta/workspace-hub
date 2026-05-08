@@ -159,6 +159,8 @@ Format as markdown table:
 |------|-------|-------------|--------|
 ```
 
+When an issue number is part of the sync/commit request, include a clickable GitHub issue hyperlink in the final report. Resolve it live with `gh issue view <number> --json url --jq .url` so the link is grounded in the current repository, not memory.
+
 ## Important Notes
 
 - **Never force-push** or `reset --hard` without explicit user approval
@@ -173,6 +175,8 @@ Format as markdown table:
 - For branch-merging across many repos, merge into each repo's actual default branch (`main` or `master`) detected from GitHub / `origin/HEAD`; do not assume `main`.
 - For large batch merges, use a temporary worktree checked out from the default branch (prefer `origin/<default>` if available) so merges are isolated from the user's current working tree and local dirty state.
 - Workspace-hub can mutate state during commit/push hooks (`.claude/state/*`, logs, generated reports). After a commit or failed push, always re-run `git status` and re-fetch before retrying; apparent ref-lock push failures may be stale-expectation races rather than true divergence.
+- Session-learning commits can generate a tracked skill ledger update after the primary commit (for example `logs/orchestrator/hermes/skill-patches.jsonl`). Treat that as intentional repo-ecosystem metadata: inspect it, commit it separately, and only then declare the worktree clean.
+- Before pushing after a merge/commit sequence, fetch and compare `HEAD` with `origin/<branch>`. Some workspace-hub hooks or concurrent syncs can leave the remote-tracking ref already equal to `HEAD`; if `HEAD == origin/<branch>` and ahead/behind is `0/0`, report "push not needed" instead of pushing blindly.
 - New-branch pushes in workspace-hub may trigger expensive pre-push checks across tier-1 repos and can time out. If the user has approved sensible commands and the goal is repo hygiene/sync rather than validation, `git push --no-verify` may be necessary after verifying local/remote state.
 - Archived/read-only repos can still be committed locally for preservation, but push/merge to remote will fail; report them explicitly as blocked rather than retrying.
 - In huge repos, do not run broad `git status --porcelain -uall`, full `du`, or full checkout/pull loops as the first recovery move. Start with no-untracked status and ahead/behind probes, then follow `references/large-repo-partial-checkout-recovery.md`.
