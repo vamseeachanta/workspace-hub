@@ -131,6 +131,16 @@ Before finishing, verify:
 
 If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately.
 
+### 9a. Exit handoff for provider-transfer sessions
+See `references/2026-05-08-exit-closeout-pattern.md` for a concrete closeout example including the remote ref-lock push anomaly.
+
+When the user says "document and prepare to exit" after provider-session transfer work, produce a concise durable handoff before final response:
+1. Write `docs/handoffs/session-YYYY-MM-DD-provider-session-learning-transfer-exit.md` with scope completed, durable artifact paths, pushed commits, known dirty-state exceptions or preservation rationale, issue handles, and explicit note if no external send/action occurred.
+2. Inspect `git status --short --branch`, `git rev-parse HEAD`, and `git rev-parse origin/main` before writing the final handoff so the report reflects live state, not pre-compaction memory.
+3. Preserve and commit intentional session artifacts discovered during exit prep instead of silently discarding them; if a dirty/untracked artifact is unrelated or evidence-preserving, name it in the handoff and final response.
+4. Run `git diff --check`, commit the handoff plus intentional artifacts, push, then verify `HEAD == origin/main`, ahead/behind is `0/0`, and the working tree is clean before declaring exit-ready.
+5. If `git push` emits a remote ref-lock rejection but a fetch/remote check shows `origin/main` already equals local `HEAD`, record the verified landed state and do not churn with redundant retries.
+
 ### 10. Convert the top actionable transfer into the next planning gate when asked
 If the user asks for the next logical step after a provider-learning transfer, do not automatically rerun the audit. Prefer converting the highest-priority concrete remediation issue into the next gate:
 1. Pick the most actionable child issue, not the broad parent, using the refreshed report and issue state. Example: a concrete stale-reference cleanup child beats the parent migration-debt backlog.

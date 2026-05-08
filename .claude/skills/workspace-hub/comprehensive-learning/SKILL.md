@@ -137,6 +137,10 @@ Script: `scripts/cron/comprehensive-learning-nightly.sh`
 - `/insights`, `/reflect`, `/knowledge`, `/improve`: individual pipeline stages
 - `scripts/planning/` — ensemble planning outputs harvested by Planning Quality Loop
 
+## Exit-Handoff Boundary
+
+When the user asks to "document and prepare to exit," do **not** run the heavyweight comprehensive-learning pipeline in-session. Instead, create or update the task-specific durable handoff/report, verify commit/push/clean-state evidence, and leave deeper insights/reflect/knowledge/improve processing to the nightly pipeline. The exit response should be concise: handoff path, pushed commit(s), known dirty-state exceptions, external-action status, and remaining next steps.
+
 ## Iron Law
 
 > No learning pipeline phase (/insights, /reflect, /knowledge, /improve) shall run standalone during an active work session — learning is deferred to the nightly pipeline, always.

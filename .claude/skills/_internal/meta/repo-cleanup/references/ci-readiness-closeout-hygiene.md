@@ -56,3 +56,5 @@ Use after a multi-repo CI/test repair stream, especially when implementation pat
 - A remote-rejected push can still have landed if another process advanced `origin/main` to the same commit; always `git fetch` and compare `HEAD`, `origin/main`, and ahead/behind before retrying.
 - `.claude/state/*` and session-signal JSONL are usually live session churn, not durable evidence. Restore/remove them after durable artifacts are safely committed.
 - In parent/nested repo layouts, root `workspace-hub` must not stage nested repo files; run repo-local commands from each repo root.
+- Deleted quick-review files may survive as `.fuse_hidden*` while provider/review processes still hold file descriptors. Use `lsof +D <dir>` to identify holders, wait for valid runs to finish, and only terminate clearly stalled/disposable processes before removing the released FUSE-hidden files.
+- Concurrent automation can create or commit related artifacts while closeout is running. Re-fetch/re-status after each commit/push, classify any new dirt as task-owned vs unrelated, and never stage unrelated skill/session churn just to make the tree clean.

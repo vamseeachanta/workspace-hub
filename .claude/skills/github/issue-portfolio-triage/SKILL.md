@@ -125,7 +125,9 @@ Minimum checks per issue:
 
 Report the audit under `docs/reports/YYYY-MM-DD-tier1-approval-state-audit.md`, then update any Kanban/portfolio report to point at the completed audit and summarize counts. Classify issues as executable candidates, governance drift, label conflict, implementation-state audit needed, or dirty-clone risk.
 
-See `references/tier1-approval-state-audit.md` for the reusable command sketch and report checklist.
+Before calling the audit complete, verify durable landing: run `git diff --check`, secret-scan the report diff, confirm the report is tracked/committed/synced (or explicitly identify the commit that concurrent automation created), and separate unrelated dirty-state churn from the audit deliverable.
+
+See `references/tier1-approval-state-audit.md` for the reusable command sketch, report checklist, and session-learned pitfalls.
 
 ## Tie-breakers
 If issues are close, prefer the one that:

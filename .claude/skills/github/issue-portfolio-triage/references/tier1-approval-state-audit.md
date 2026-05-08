@@ -50,3 +50,9 @@ If a Kanban/portfolio report exists, update its action item to point at the comp
 
 ## Guardrail
 Do not launch multiagent execution from a label-only approval pool. Require plan + marker + no conflict + non-working + clean isolated worktree.
+
+## Session-learned pitfalls
+- **Separate broad approval pool from the requested wave.** A live audit may find many fully-evidenced executable issues, but if the user asked for a specific wave (for example repo-structure normalization across tier-1 repos), classify and recommend within that wave separately from the global candidate pool.
+- **Governance drift is not executable.** Treat live `status:plan-approved` issues missing local plan files or `.planning/plan-approved/<issue>.md` markers as reconciliation work, not implementation work.
+- **Verify durable report landing before calling the audit complete.** After writing `docs/reports/YYYY-MM-DD-tier1-approval-state-audit.md`, run `git status --short`, `git diff --check`, and confirm whether the report is tracked/committed/synced. Concurrent automation may commit the report while the session is still active, or may introduce unrelated dirty skill/session files; classify those separately and do not stage unrelated churn.
+- **Do not leak auth output.** `gh auth status` can print masked token lines; keep raw logs out of durable reports and summarize auth success without copying credential-looking strings.
