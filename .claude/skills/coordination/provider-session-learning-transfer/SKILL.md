@@ -111,18 +111,27 @@ Good transfer targets:
 
 Before creating new follow-up issues, search existing open and closed issues for the audit's primary issue keys and provider names. Prefer commenting/updating an existing open issue over duplicating it. For closed issues, reopen only when fresh recent broken-path evidence exists; if the refreshed audit shows zero recent missing reads or improving drift, leave the issue closed and add a monitoring/transfer comment instead. Create a new issue only when no exact open operational anchor exists.
 
-### 8. Verify the transfer
+### 8. Pre-close adversarial review gate
+Before committing, pushing, posting final closeout comments, or treating the transfer as complete, run the applicable adversarial review gate from `docs/standards/AI_REVIEW_ROUTING_POLICY.md` and `software-development/multi-provider-adversarial-review`.
+
+Minimums:
+- Use three-agent review by default for meaningful transfer, governance, standards, skill, hook, harness, file-structure, or test-suite work.
+- Use a scaled sanity-check prompt only for low-risk transfer reports, audit refreshes, or narrative documentation with semantic repo impact; do not skip the gate.
+- Record reviewer verdicts and the durable evidence path or issue/PR comment URL before the transfer can be marked complete.
+- The authoring agent/provider does not count as an independent reviewer.
+
+### 9. Verify the transfer
 Before finishing, verify:
 - refreshed audit files are updated
 - target repo files are modified in the intended locations
 - GitHub comment/edit succeeded
 - transferred learnings are framed as next-session execution guidance, not just retrospective commentary
+- adversarial review evidence exists for the transfer with provider verdicts, artifact paths/comment URLs, and any reviewer waiver/unavailability noted
 - exact transfer artifact paths are clean after commit/push, even if unrelated session-generated repo dirt remains elsewhere
-- adversarial review evidence exists for the transfer according to repo workflow policy. For low-risk docs/report/skill-transfer work, use a scaled high-level sanity-check prompt rather than skipping review; for harness, file-structure, test-suite, policy, or workflow-impacting changes, use a thorough review prompt.
 
 If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately.
 
-### 9. Convert the top actionable transfer into the next planning gate when asked
+### 10. Convert the top actionable transfer into the next planning gate when asked
 If the user asks for the next logical step after a provider-learning transfer, do not automatically rerun the audit. Prefer converting the highest-priority concrete remediation issue into the next gate:
 1. Pick the most actionable child issue, not the broad parent, using the refreshed report and issue state. Example: a concrete stale-reference cleanup child beats the parent migration-debt backlog.
 2. Read the canonical plan and latest transfer bundle.

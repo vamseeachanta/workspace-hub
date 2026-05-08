@@ -27,12 +27,18 @@ Before finishing, check all four surfaces:
 
 ## Required handoff contents
 Document explicitly:
-- current local plan status (`draft`, `plan-review`, etc.)
-- latest valid provider verdicts
+- current local plan status (`draft`, `plan-review`, `plan-approved`, etc.)
+- latest valid provider verdicts when reviews are in scope
 - whether the issue is honestly approval-ready or still revision-required
 - whether GitHub / local marker / README disagree
 - the exact contradiction if drift exists
+- current repo state: branch, `HEAD` vs upstream, dirty/untracked exceptions, and which repos are clean/synced
+- what was and was not externally performed during exit: commits, pushes, GitHub comments, issue labels, closures, emails/messages
+- remaining active task disposition, including which item should resume first and which are pending
+- next-session first checks, especially live issue label revalidation and any approval-marker/test-baseline gaps
 - that the next session must reconcile approval-vs-review drift before implementation or further advancement
+
+When the user says “document and prepare to exit,” provide a concise exit report that names the durable handoff location, pushed/unpushed state, dirty-state exceptions, no-external-action confirmation unless approved, and the next actions. Do not silently commit/push/close during exit unless the user explicitly asks for that transaction.
 
 ## Recommended wording pattern
 - "Live issue shows `status:plan-approved`, but latest valid review evidence still returns MAJOR findings."

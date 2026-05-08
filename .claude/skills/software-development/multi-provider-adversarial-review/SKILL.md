@@ -1,7 +1,7 @@
 ---
 name: multi-provider-adversarial-review
 description: Dispatch parallel adversarial reviews to Codex and Gemini CLIs for plans or code artifacts. Use when the AI Review Routing Policy requires two- or three-provider review — architecture-heavy, security-affecting, cross-module, or high-stakes changes.
-version: 1.1.0
+version: 1.1.1
 author: Hermes Agent
 license: MIT
 metadata:
@@ -15,10 +15,15 @@ metadata:
 ## When to Use
 
 Per [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md):
-- **Two-provider** (Codex or other required second reviewer): default for non-trivial plans, code, harness, file-structure, test-suite, docs/report, skill-transfer, governance, and workflow changes
-- **Three-provider** (Codex + Gemini/Claude as required): architecture-heavy, security-affecting, cross-module, high-stakes, ambiguous requirements, or context-saturated
+- **Three-agent adversarial review is the default** for non-trivial plans, code, harness, file-structure, test-suite, docs/report, skill-transfer, governance, and workflow changes. Claude/orchestrator frames and synthesizes; Codex and Gemini (or explicit substitutes when unavailable) provide independent adversarial review.
+- **Reduction to two-provider or single sanity-check review is allowed only under the policy reduction rules**: explicit user scoping, provider unavailability/quota with evidence, or purely clerical changes with an explicit waiver note.
 
-Do **not** skip adversarial review merely because a change is "docs-only", "skill-only", "harness-only", or "workflow/report-only" when it is meaningful to the repo ecosystem. Scale the prompt depth instead: use a high-level sanity-check prompt for low-risk documentation/transfer changes, and a thorough diff/design prompt for code, tests, harness, file structure, and policy-sensitive work.
+Do **not** skip adversarial review merely because a change is "docs-only", "skill-only", "harness-only", or "workflow/report-only" when it is meaningful to the repo ecosystem. Scale the prompt depth instead:
+- **Thorough review**: harness, file-structure, test-suite, policy, governance, enforcement hooks/scripts, workflow-impacting changes, and changes to this review skill itself.
+- **Scaled sanity-check review**: low-risk transfer reports, audit refreshes, and narrative documentation with semantic repo impact.
+- **Clerical waiver**: typo-only, formatting-only, generated timestamp-only, or mechanically regenerated artifacts with no semantic/policy/workflow impact may waive one reviewer under the policy, but must record the waiver reason.
+
+The agent/provider that authored the change does **not** count as an independent adversarial reviewer. Record reviewer verdicts (`APPROVE`, `MINOR`, `MAJOR`) and durable artifact paths or issue/PR comment URLs before treating a review gate as satisfied.
 
 ## Two Review Checkpoints
 
@@ -151,7 +156,7 @@ When commits were pushed without review (e.g., overnight batch runs), dispatch r
 1. **Audit**: `git log --oneline --since="..." | grep -vE '^(docs|chore|test|ci|style)'` to find unreviewed feature/fix commits
 2. **Group by work stream**: cluster commits by issue number into 2-4 review batches
 3. **Embed code in prompts**: Read files via `terminal("cat ...")` (NOT read_file which may cache). Truncate to ~20K chars per prompt. Codex sandbox CANNOT read mounted volumes.
-4. **Write prompts to workspace**: Use `terminal("python3 -c \"...open().write()...\"")` to write prompt files to the repo dir where `$(cat .planning/quick/review-X.md)` works in real shell.
+4. **Write prompts to workspace**: Use `terminal("uv run python -c \"...open().write()...\"")` to write prompt files to the repo dir where `$(cat .planning/quick/review-X.md)` works in real shell.
 5. **Dispatch parallel**: `codex exec "$(cat .planning/quick/review-X.md)"` via `terminal(background=true, pty=true)`
 6. **Consolidate**: Save to `scripts/review/results/TIMESTAMP-retroactive-review-codex.md` with tabular findings
 7. **Create follow-up issues**: One issue per CRITICAL/HIGH finding (create labels first!)
@@ -167,7 +172,7 @@ This catches real bugs even after the fact — the 2026-04-02 retroactive review
 
 **The fix**: Write prompt files via `terminal()` using Python:
 ```bash
-terminal("cd /mnt/local-analysis/workspace-hub && python3 -c \"
+terminal("cd /mnt/local-analysis/workspace-hub && uv run python -c \"
 content = '''... your prompt ...'''
 with open('.planning/quick/review-prompt.md', 'w') as f:
     f.write(content)
@@ -226,7 +231,7 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 
 14. **git commit captures staged content, not working tree** — If you `git add` files, then overwrite them with `write_file` (to sandbox), `git commit` captures the OLD staged content. The fix: write via `execute_code` to the real filesystem, THEN `git add`, THEN `git commit`. If you discover this after committing, `git commit --amend` after re-adding the correct files.
 
-15. **execute_code /tmp/ is NOT real /tmp/** — Files written by `execute_code` (including its `write_file()` and `terminal()`) to `/tmp/` exist only in the sandbox overlay. A subsequent `terminal()` call (which runs in the real shell) cannot see them. This caused the first Codex dispatch attempt to fail with "No such file or directory" when `$(cat /tmp/review-prompt.md)` was used. The fix: write review prompt files to the workspace directory via `terminal("python3 -c '...'")` so both Hermes tools and real shell commands can see them. Clean up afterward (`rm .planning/quick/review-*.md`).
+15. **execute_code /tmp/ is NOT real /tmp/** — Files written by `execute_code` (including its `write_file()` and `terminal()`) to `/tmp/` exist only in the sandbox overlay. A subsequent `terminal()` call (which runs in the real shell) cannot see them. This caused the first Codex dispatch attempt to fail with "No such file or directory" when `$(cat /tmp/review-prompt.md)` was used. The fix: write review prompt files to the workspace directory via `terminal("uv run python -c '...'")` so both Hermes tools and real shell commands can see them. Clean up afterward (`rm .planning/quick/review-*.md`).
 
 16. **Full end-to-end after implementation** — After implementing and getting adversarial review, the next logical step is always: (a) verify the wiring works (run the new script, regenerate crontab, etc.), (b) create follow-up issues for deployment to other machines and for items deferred during review (supply chain hardening, simulated breakage testing, active push notifications), (c) document everything in a closing comment on the parent issue.
 
@@ -270,7 +275,7 @@ This avoids ambiguous "pending" review state, preserves evidence for governance 
 When review findings produce multiple follow-up issues (common with retroactive reviews across multiple streams), create them efficiently:
 
 1. **Create labels first** — `gh issue create` silently fails if ANY label doesn't exist. Check `gh label list | grep <name>` and create missing labels with `gh label create "<name>" --description "..." --color "<hex>"` BEFORE creating issues.
-2. **Write body files via `terminal("python3 -c '...open().write()...'")`** — avoids both sandbox overlay and shell escaping issues.
+2. **Write body files via `terminal("uv run python -c '...open().write()...'")`** — avoids both sandbox overlay and shell escaping issues.
 3. **Loop in `execute_code`** — create all issues in one script, collecting URLs.
 4. **Comment on parent issue** — link all child issues with a consolidated summary using `gh issue comment <parent> --body-file`.
 
