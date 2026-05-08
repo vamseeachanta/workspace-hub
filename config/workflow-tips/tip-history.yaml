@@ -71,3 +71,5 @@ shown:
     tips: [cc-context, cc-pr-comments]
   - date: 2026-05-07
     tips: [cc-worktree, gsd-note]
+  - date: 2026-05-08
+    tips: [gsd-workstreams, eco-capability-map]

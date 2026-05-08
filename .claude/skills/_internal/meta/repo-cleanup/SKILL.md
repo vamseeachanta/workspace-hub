@@ -44,6 +44,13 @@ see_also:
 - Need to consolidate prototype code and test outputs
 - Preparing for a clean commit or release
 - After major refactoring work
+- Closing out multi-repo CI/test repair streams where only provider telemetry, skill/audit evidence, quick review logs, or session-state churn remains
+
+## Closeout Hygiene Pattern
+
+After CI/test repair work is merged, run a repo-scoped evidence sweep before declaring completion: inventory every dirty path, classify it as durable evidence / tracked recurring telemetry / disposable session churn, secret-scan candidate durable files, stage narrowly, commit/push durable evidence, remove or restore disposable quick artifacts, and capture branch + ahead/behind + clean-status proof for every target repo.
+
+See `references/ci-readiness-closeout-hygiene.md` for the detailed multi-repo checklist and pitfalls.
 
 ## Related Skills
 
