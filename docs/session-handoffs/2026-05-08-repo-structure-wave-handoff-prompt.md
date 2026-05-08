@@ -119,7 +119,7 @@ Important current-session facts not to lose:
 
 ## Local handoff file status
 
-This handoff is intentionally a local docs/session handoff artifact. Do not assume it has been committed or pushed unless the fresh session verifies that explicitly.
+This handoff was prepared as a docs/session handoff artifact. Fresh sessions must still verify whether it is committed/pushed before relying on it, because final exit cleanup may occur after this prompt was drafted.
 
 ## Quick verification commands for next session
 
