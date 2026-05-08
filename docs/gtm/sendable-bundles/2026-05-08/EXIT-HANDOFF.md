@@ -28,29 +28,22 @@ Key files:
 
 ## Git / push state
 
-Current known bundle commit before this handoff note:
+Relevant committed/pushed state as of exit closeout:
 
-- `4c21780f9 docs: preserve session learning and GTM collateral`
+- `4c21780f9 docs: preserve session learning and GTM collateral` — committed the sendable GTM collateral bundle, including the flowchart PDF/HTML and follow-up Markdown.
+- `4bea88215 docs: update repo sync closeout guidance` — committed this `EXIT-HANDOFF.md` and a small repo-sync skill closeout-guidance update.
+- `9b3966f76 docs: record issue 2657 approval state` — committed generated issue #2657 approval marker/state and skill ledger update.
+- `8bbe4ac6d docs: record issue 2657 approval sync` — committed the docs/plans README approval-state sync.
 
-Latest repository commit at the time of exit check:
+Final verified branch state:
 
-- `e84d06684 chore: record session learning skill ledger`
-
-Branch state at exit check:
-
-- `main...origin/main` with no ahead/behind shown.
+- `main...origin/main`
+- `HEAD == origin/main == 8bbe4ac6d157634b1411bdc3e6a849ac27b6c537`
+- no ahead/behind shown.
 
 ## Known dirty-state exception
 
-One unrelated tracked skill file is modified and intentionally not included in this GTM handoff unless separately approved/reviewed:
-
-- `.claude/skills/workspace-hub/repo-sync/SKILL.md`
-
-Observed diff adds repo-sync guidance about:
-
-- including grounded GitHub issue hyperlinks in sync reports when issue numbers are part of a request;
-- handling session-learning commits / skill ledger updates;
-- avoiding blind pushes when `HEAD == origin/<branch>` and ahead/behind is `0/0`.
+None at final closeout check; the working tree was clean after committing/pushing the handoff note, repo-sync closeout guidance, and generated plan/skill ledger state.
 
 ## External action status
 
