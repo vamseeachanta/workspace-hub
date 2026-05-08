@@ -194,10 +194,23 @@ LEGACY_REMEDIATION_RULES = [
 ]
 
 
+def matches_remediation_pattern(path: str, pattern: str) -> bool:
+    """Return whether a missing-read path matches a remediation pattern.
+
+    Directory-like patterns are intentionally prefix matches. Singleton file
+    patterns are exact matches so adjacent artifacts such as ``sitemap.xml.gz``
+    or backup files are not routed to a sibling repository by accident.
+    """
+
+    if pattern.endswith("/"):
+        return path.startswith(pattern)
+    return path == pattern
+
+
 def match_remediation_rule(path: str) -> dict | None:
     for rule in LEGACY_REMEDIATION_RULES:
         for pattern in rule["patterns"]:
-            if path == pattern or path.startswith(pattern):
+            if matches_remediation_pattern(path, pattern):
                 return rule
     return None
 

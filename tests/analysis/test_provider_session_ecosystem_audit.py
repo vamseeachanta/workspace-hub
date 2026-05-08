@@ -1517,7 +1517,15 @@ def test_build_missing_read_remediation_hints_covers_spinout_worktree_and_nested
             {"path": "knowledge/wikis/engineering/wiki/index.md", "count": 6},
             {"path": ".claude/worktrees/ecosystem-sync/docs/plans/plan.md", "count": 5},
             {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
+            {"path": "tests/unit/cost/test_proxy_comparison.py", "count": 3},
+            {"path": "src/assethold/signals/watchlist.py", "count": 2},
             {"path": "sitemap.xml", "count": 3},
+            {"path": "sitemap.xml.gz", "count": 99},
+            {"path": "sitemap.xml.template", "count": 98},
+            {
+                "path": "docs/plans/2026-04-21-issue-334-annual-operator-disclosures-dataset.md.bak",
+                "count": 97,
+            },
         ]
     )
 
@@ -1533,9 +1541,13 @@ def test_build_missing_read_remediation_hints_covers_spinout_worktree_and_nested
     assert "main repo branch/worktree" in by_rule["session_local_worktree_path_drift"]["canonical_targets"]
     assert by_rule["nested_repo_context_drift"]["matched_paths"] == [
         {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
+        {"path": "tests/unit/cost/test_proxy_comparison.py", "count": 3},
         {"path": "sitemap.xml", "count": 3},
+        {"path": "src/assethold/signals/watchlist.py", "count": 2},
     ]
     assert "worldenergydata/src/worldenergydata/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+    assert "worldenergydata/tests/unit/cost/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+    assert "assethold/src/assethold/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
     assert "aceengineer-website/sitemap.xml" in by_rule["nested_repo_context_drift"]["canonical_targets"]
 
 
