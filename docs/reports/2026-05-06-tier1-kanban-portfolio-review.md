@@ -9,6 +9,7 @@
 - Planning gaps remain material: **967 open issues have no `status:plan-*` label**, primarily workspace-hub and digitalmodel. These need triage/decomposition before execution under the hard gate.
 - Agent routing is only partially applied: workspace-hub has `agent:*` labels, but digitalmodel / assetutilities / worldenergydata / assethold / aceengineer-website currently show no agent labels on the scoped open issue sets.
 - Post-snapshot update: the two conflicting `status:plan-review` + `status:plan-approved` labels identified in the initial board (`assetutilities#72`, `assethold#7`) were audited and reconciled on 2026-05-06; both now retain `status:plan-approved` only.
+- 2026-05-08 live approval-state audit completed: see [`2026-05-08-tier1-approval-state-audit.md`](2026-05-08-tier1-approval-state-audit.md). The repo-structure execution wave should start with `assetutilities#78`; `digitalmodel#596` remains plan-review, and `workspace-hub#2656`, `worldenergydata#394`, `assethold#49`, `aceengineer-website#13`, and `aceengineer-strategy#19` need approval-marker/plan reconciliation before implementation workers launch.
 
 ## Repo-level board metrics
 
