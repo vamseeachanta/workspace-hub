@@ -118,6 +118,7 @@ Before finishing, verify:
 - GitHub comment/edit succeeded
 - transferred learnings are framed as next-session execution guidance, not just retrospective commentary
 - exact transfer artifact paths are clean after commit/push, even if unrelated session-generated repo dirt remains elsewhere
+- adversarial review evidence exists for the transfer according to repo workflow policy. For low-risk docs/report/skill-transfer work, use a scaled high-level sanity-check prompt rather than skipping review; for harness, file-structure, test-suite, policy, or workflow-impacting changes, use a thorough review prompt.
 
 If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately.
 

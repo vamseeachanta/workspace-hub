@@ -15,8 +15,10 @@ metadata:
 ## When to Use
 
 Per [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md):
-- **Two-provider** (Codex): default for non-trivial plans and code
-- **Three-provider** (Codex + Gemini): architecture-heavy, security-affecting, cross-module, high-stakes, ambiguous requirements, or context-saturated
+- **Two-provider** (Codex or other required second reviewer): default for non-trivial plans, code, harness, file-structure, test-suite, docs/report, skill-transfer, governance, and workflow changes
+- **Three-provider** (Codex + Gemini/Claude as required): architecture-heavy, security-affecting, cross-module, high-stakes, ambiguous requirements, or context-saturated
+
+Do **not** skip adversarial review merely because a change is "docs-only", "skill-only", "harness-only", or "workflow/report-only" when it is meaningful to the repo ecosystem. Scale the prompt depth instead: use a high-level sanity-check prompt for low-risk documentation/transfer changes, and a thorough diff/design prompt for code, tests, harness, file structure, and policy-sensitive work.
 
 ## Two Review Checkpoints
 
