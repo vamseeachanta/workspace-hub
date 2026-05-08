@@ -150,6 +150,8 @@ If the user asks for the next logical step after a provider-learning transfer, d
 5. Post a GitHub approval-gate comment via `--body-file`, add `status:plan-review`, and remove stale conflicting status labels.
 6. Commit/push the exact plan-status changes, then verify both live GitHub labels/comments and remote `origin/main`.
 
+Provider-review unavailability details and the #2657 Codex/Gemini handling pattern are captured in `references/2026-05-08-plan-review-provider-unavailability.md`. Use that reference when review fanout partially fails during a provider-learning transfer.
+
 Pitfall: workspace-hub often has concurrent writers and background git/status processes. If `.git/index.lock` appears, inspect live git processes first, remove only stale locks, and re-run `git status`. If `git push` reports a remote ref-lock rejection but `git ls-remote origin refs/heads/main` already equals local `HEAD`, treat the push as effectively landed after verification instead of retrying blindly.
 
 ## Heuristics that worked well

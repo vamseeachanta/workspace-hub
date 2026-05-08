@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-08T09:20:08.753571Z",
+  "generated_at": "2026-05-08T13:20:08.805432Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-08T09:20:06.921663Z",
+  "scorecard_generated_at": "2026-05-08T13:20:06.972427Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 5,
-      "total_candidates": 165,
+      "execution_ready_count": 6,
+      "total_candidates": 166,
       "top_issues": [
         {
           "number": 2533,
@@ -77,6 +77,31 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-04T09:03:49Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2656,
+          "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:harness",
+            "domain:repo-organization",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-08T11:04:04Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -183,32 +208,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2519,
-          "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "priority:critical",
-            "domain:ai-orchestration",
-            "domain:workstations",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-04-27T18:57:43Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
@@ -216,7 +215,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 6,
-      "total_candidates": 32,
+      "total_candidates": 31,
       "top_issues": [
         {
           "number": 2269,

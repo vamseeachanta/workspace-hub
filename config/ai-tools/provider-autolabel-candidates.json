@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-08T09:20:08.893864Z",
+  "generated_at": "2026-05-08T13:20:08.932243Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 6,
+  "eligible_count": 7,
   "applied": [],
   "candidates": [
     {
@@ -154,6 +154,40 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-05-04T09:03:49Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2656,
+      "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:engineering",
+        "cat:harness",
+        "domain:repo-organization",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-08T11:04:04Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -395,40 +429,6 @@
         "compliance-alert"
       ],
       "updatedAt": "2026-05-03T11:45:05Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2519,
-      "title": "feat(hermes): orchestrate AI provider usage and workstation dispatch",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2519",
-      "labels": [
-        "enhancement",
-        "cat:ai-orchestration",
-        "cat:harness",
-        "priority:critical",
-        "domain:ai-orchestration",
-        "domain:workstations",
-        "domain:agent-cost-tracking"
-      ],
-      "updatedAt": "2026-04-27T18:57:43Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

@@ -67,6 +67,9 @@ Do not use this as a substitute for the full planning route.
 - Run independent plan review via Claude + Codex + Gemini.
 - Compare verdicts, synthesize findings, revise plan, and re-review if changes are material.
 - Review gate: no silent downgrade of major concerns.
+- After every material plan patch, refresh the synthesis artifact and scan the plan for stale review wording before posting: old verdicts, old round numbers, mutable runner outputs (for example `claude.md`), conditional language contradicted by newer acceptance criteria, and stale occurrence counts.
+- If a provider is unavailable after a documented workaround/retry, save a concise Markdown stub with the raw failure excerpt and classify it as `UNAVAILABLE`; do not cite raw `.err` files or treat unavailable providers as approval signals.
+- When preserving round-numbered review artifacts, verify the cited round is the highest-numbered non-empty artifact at posting time.
 - Mark residual risk and whether plan is ready for approval.
 
 6. GitHub posting cadence
@@ -87,6 +90,7 @@ Do not use this as a substitute for the full planning route.
 
 8. Approval gate
 - Before stopping: save the plan, update planning index if used, ensure follow-up issues are created or called out, post final plan comment, add `status:plan-review`, remove stale conflicting labels.
+- If context or tool-call budget is running low, prioritize transactional posting/label/commit verification over additional polish; do not leave the plan in an unposted draft state after review is already complete unless a blocker is explicit.
 - Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and explicit approval request.
 - Hard stop: do not implement while awaiting approval.
 - On approve: move to `status:plan-approved` and hand off execution package.

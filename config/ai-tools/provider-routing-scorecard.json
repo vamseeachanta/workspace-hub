@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-08T09:20:06.921663Z",
+  "generated_at": "2026-05-08T13:20:06.972427Z",
   "current_week": "2026-W19",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-08T09:20:06.798958Z",
-    "audit_generated_at": "2026-05-07T09:37:54Z"
+    "utilization_generated_at": "2026-05-08T13:20:06.845629Z",
+    "audit_generated_at": "2026-05-08T11:03:24Z"
   },
   "recommended_provider_order": [
     "gemini",
@@ -20,17 +20,17 @@
       "reported_utilization_pct": 5.1,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 39,
-      "post_records_current_week": 2060,
-      "audit_post_records": 104285,
-      "missing_repo_reads": 8818,
-      "python3_per_1k_records": 8.82,
-      "migration_debt_per_1k_records": 16.68,
+      "sessions_current_week": 41,
+      "post_records_current_week": 2089,
+      "audit_post_records": 104337,
+      "missing_repo_reads": 8819,
+      "python3_per_1k_records": 8.87,
+      "migration_debt_per_1k_records": 16.67,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 898
+          "count": 912
         },
         {
           "tool": "unknown",
@@ -38,7 +38,7 @@
         },
         {
           "tool": "Read",
-          "count": 161
+          "count": 173
         },
         {
           "tool": "Edit",
@@ -76,9 +76,9 @@
       "quota_source": "history.jsonl",
       "sessions_current_week": 13,
       "post_records_current_week": 1202,
-      "audit_post_records": 30827,
+      "audit_post_records": 30875,
       "missing_repo_reads": 730,
-      "python3_per_1k_records": 11.84,
+      "python3_per_1k_records": 11.82,
       "migration_debt_per_1k_records": 2.3,
       "top_migration_hint": "nested_repo_context_drift",
       "top_tools": [

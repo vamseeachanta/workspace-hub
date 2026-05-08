@@ -1,0 +1,52 @@
+I have enough evidence. Drafting the adversarial review.
+
+`★ Insight ─────────────────────────────────────`
+- The plan went through three Claude review rounds and a substantive revision; the structural defects (empty-artifact citation, fabricated registry rows, prose-only historical marker, weak RED-first gate) have been addressed at the right anchor points. What remains are textual residues: the revision touched the new sections but left adjacent legacy phrasing in older sections that now contradicts the new anchors. This is a common "patch-without-reread" failure mode in plan revisions.
+- The codex-manual.err evidence is concrete and load-bearing for the Codex UNAVAILABLE verdict: pinned 0.123.0 returns a server-side 400 against `gpt-5.5`, so the downgrade workaround for the 0.124 stdin-hang regression doesn't recover Codex review either. This is the rare case where a documented Codex unavailability is *not* a process gap — both 0.123 and 0.124+ are blocked, for different reasons.
+- The plan's binding of "review of record" to a round-numbered filename (`claude-round3.md`) is a sensible answer to the runner truncating `claude.md`, but it creates a new failure mode the plan doesn't gate: after a future re-fanout, a non-empty `claude-round4.md` could exist while plan body still cites `round3.md`, with no acceptance check that catches the lag.
+`─────────────────────────────────────────────────`
+
+## Verdict
+MINOR
+
+## Retrieval
+
+- Read `docs/plans/2026-05-08-issue-2657-hermes-llm-wiki-spinout-path-drift.md` end-to-end (350 lines).
+- Read `scripts/review/plan-review-prompt.md` (the stance contract this review is bound to).
+- Read `scripts/review/results/2026-05-08-plan-2657-claude-round3.md` (52 lines, non-empty) to verify the cited prior-review verdict and identify which of its findings the revision addressed.
+- Read `scripts/review/results/2026-05-08-plan-2657-codex-manual.err` lines 1-428 to verify the Codex unavailability rationale; confirmed `OpenAI Codex v0.123.0` returns server-side 400 `"'gpt-5.5' model requires a newer version of Codex"` (lines 426-427).
+- Read `scripts/review/results/2026-05-08-plan-2657-disagreement.md` (33 lines).
+- Confirmed `scripts/review/results/2026-05-08-plan-2657-claude.md` and `…-codex-manual.md` are 1 line each (essentially empty per Read tool).
+- Verified file existence for 25 plan-cited paths via `[ -e ]` loop: all 22 non-focal paths EXIST; the 3 focal `knowledge/wikis/...` paths MISSING as the plan claims.
+- Verified `scripts/analysis/provider_session_ecosystem_audit.py:144` contains `"rule_id": "llm_wiki_spinout_path_drift"`.
+- Verified `tests/analysis/test_provider_session_ecosystem_audit.py:459` defines `test_build_corpus_change_summary_separates_snapshot_and_event_time_deltas` and lines 1517-1537 contain the cited assertions.
+- Ran `uv run --no-project pytest tests/analysis/test_provider_session_ecosystem_audit.py -q` — confirmed `49 passed in 0.52s` baseline.
+- Ran `git grep -l` for each focal path: actual counts at HEAD `a6caea1df` are **73 / 42 / 46** vs the plan's **62 / 35 / 41** (lines 127-129).
+- Ran `grep` for `total_count: 225` in `analysis/provider-session-ecosystem-audit.json` — matched, consistent with plan line 45.
+- Read `data/document-index/intelligence-accessibility-registry.yaml` for `asset_key:` rows: present rows are `wiki-engineering`, `wiki-marine-engineering`, `wiki-maritime-law`, `wiki-naval-architecture`, `wiki-personal`, `wiki-cross-links`, `knowledge-seeds`. No `wiki-acma-projects`, `wiki-asset-management`, `wiki-engineering-standards`, `wiki-lng-projects`, `wiki-health-reports`, or `tests/fixtures/llm-wiki` row. Verified plan's claim that those four moved-domain rows must NOT be fabricated.
+- Read `knowledge/wikis/README.md` end-to-end to verify the moved-set list (8 domains + cross-links + seeds + `tests/fixtures/llm-wiki/`).
+- Read `docs/document-intelligence/README.md` lines 28-34 to verify the active knowledge-assets table currently presents `knowledge/wikis/<domain>/wiki/index.md` for engineering, marine-engineering, maritime-law, naval-architecture, personal, plus `knowledge/wikis/cross-links.md` and `knowledge/seeds/`.
+- Read `docs/standards/CONTROL_PLANE_CONTRACT.md` lines 18-35, 54-63 — adapter rules and reading order verified as the plan claims.
+- Read `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` lines 45-66, 87-99 — L3/L5/L6 layer roles verified.
+- Read `docs/plans/README.md` lines 40-58 — the cat:documentation/cat:harness retrieval bundle requirements verified.
+- Confirmed `tests/fixtures/llm-wiki/` directory does NOT exist on disk (`ls tests/fixtures` shows no `llm-wiki/`).
+
+## Findings
+
+1. **Internal contradiction on regeneration mandate (round3 finding #5 not actually closed).** Plan §Scope Boundaries → "In scope after user approval" line 207 reads "Regenerate `analysis/provider-session-ecosystem-audit.json` and `docs/reports/provider-session-ecosystem-audit.md` **only if implementation changes audit output**". Plan §Pseudocode line 249-250 reads "run exactly: scripts/cron/provider-session-ecosystem-audit.sh because structured rule fields affect JSON/report serialization". Plan §Acceptance Criteria line 307 reads "Audit outputs **are regenerated** after the structured rule contract patch". The AC and Pseudocode mandate regeneration; the Scope Boundary still reads it as conditional. The revision summary at line 401 explicitly claims this was fixed ("Replaced conditional generated-output language with mandatory regeneration"), but line 207 still carries the conditional. An implementer following Scope Boundaries can decline to regenerate and claim "audit output unchanged" while structured fields silently affect serialization.
+
+2. **Stale occurrence inventory used as scope-decision evidence.** Plan §Evidence (lines 127-129) tables the focal-path occurrence inventory as "verified 2026-05-08 after first review wave" with counts 62 / 35 / 41. Live `git grep -l` at HEAD `a6caea1df` returns 73 / 42 / 46. The inventory under-reports by 11 / 7 / 5 files. The plan's per-surface inclusion test at line 65 and §Files to Change row classifications partly hinge on which surfaces are "active current-authority" vs "historical/evidence"; new surfaces added since 2026-05-08 fanout-wave-1 are not classified. Quoting the inventory as the basis for "broader architecture/doc-intelligence references...read-only inventory only" (line 63) lets implementers skip surfaces that didn't exist at inventory time.
+
+3. **AC #4 binds success to a moved-set entry that does not appear in any active surface.** Plan §AC line 303 says: "moved set is `acma-projects`, ..., `cross-links.md`, `knowledge/seeds/`, and `tests/fixtures/llm-wiki/`. ... no longer present any moved-set workspace-hub paths as current authority unless they use the structured historical-reference marker". Verified: `tests/fixtures/llm-wiki/` directory does not exist; registry has no row for it; `docs/document-intelligence/README.md` knowledge-assets table does not reference it. The TDD test at line 290 (`test_llm_wiki_spinout_current_authority_scan_uses_full_moved_set`) also pins this path. Either (a) the gate is vacuously satisfied for fixtures (no surface presents the path, so no marker is needed) — which makes the test assertion testable but the AC unfalsifiable for that path — or (b) there's a fixtures-referencing surface the plan has not enumerated. Recommend either drop fixtures from the moved-aux gate or enumerate the surface(s) where the path appears.
+
+4. **AC #7 escape hatch (round3 finding #5b) is unchanged.** Plan §AC line 306 retains the clause: "No broad ... behavior changes are made under #2657 ... unless a specific line passes the per-surface inclusion test and has matching verification." The round3 review's finding #5 flagged this as a judgment-call gray zone needing either an enumerated allowlist or a closeout-evidence requirement listing every line accepted under the clause. The §Adversarial Review Summary "Revisions made based on review" list at lines 391-401 does not include a fix for this finding. The escape hatch survived.
+
+5. **Round-N artifact binding has no machine-checkable freshness gate.** Plan §header line 8 introduces the convention `claude-round3.md` is the cited artifact; `claude.md` is mutable runner output. AC #10 at line 308 says "the plan summary cites preserved non-empty per-provider artifacts where available (`*-roundN.md` for Claude...)". After a future re-fanout, the runner writes to `claude.md`; the user must manually `cp` to e.g. `claude-round4.md` (per line 8). Nothing in the plan checks that the cited round number matches the highest-numbered non-empty Claude artifact at the path before posting. A reviewer reading the plan body next week could be reading round-3 findings while round-4 already exists with different verdicts. Recommend either a closeout-evidence step ("verify cited round-N is the highest-numbered non-empty Claude artifact at posting time") or a script-level gate.
+
+6. **§Files to Change row vs §Artifact Map drift for the Claude review artifact.** §Artifact Map line 184 correctly lists `scripts/review/results/2026-05-08-plan-2657-claude-round3.md` as the "Plan review — Claude preserved per-provider artifact". §Files to Change line 268 still lists `scripts/review/results/2026-05-08-plan-2657-claude.md` as the "Generated/review evidence" row, with no row for `claude-round3.md`. Same artifact, two different paths in two adjacent tables. Verified `claude.md` is 1 line (effectively empty) per Read tool. Either (a) §Files to Change should reference the round-numbered preserved artifact path or list both, or (b) the row should explicitly note that the row enumerates *runner write targets* (current behavior) and the Artifact Map enumerates *citation sources* — they should not silently disagree.
+
+## Blockers
+
+(none — all findings are MINOR. Plan can proceed to user approval if findings 1, 4, and 6 are tightened; findings 2, 3, 5 are recommended cleanups but do not block correctness of the implementation step.)
+
+Plan was reviewed against: file existence (25 paths), line-anchored citations (CONTROL_PLANE_CONTRACT.md, durable-vs-transient.md, plans/README.md, audit script, audit tests), 49-test baseline, registry asset-key inventory, focal-path occurrence counts at HEAD, audit JSON `total_count: 225`, Codex `gpt-5.5`/0.123.0 incompatibility error, and round3 review finding closure. The above six findings are the residuals; everything else verified.
