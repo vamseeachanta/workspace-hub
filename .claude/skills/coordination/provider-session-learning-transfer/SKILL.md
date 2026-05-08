@@ -109,6 +109,8 @@ Good transfer targets:
 - issue comment on the active filing/execution issue
 - handoff prompt source file
 
+Before creating new follow-up issues, search existing open and closed issues for the audit's primary issue keys and provider names. Prefer commenting/updating an existing open issue over duplicating it. For closed issues, reopen only when fresh recent broken-path evidence exists; if the refreshed audit shows zero recent missing reads or improving drift, leave the issue closed and add a monitoring/transfer comment instead. Create a new issue only when no exact open operational anchor exists.
+
 ### 8. Verify the transfer
 Before finishing, verify:
 - refreshed audit files are updated

@@ -1,47 +1,47 @@
 {
-  "generated_at": "2026-05-07T09:37:54Z",
+  "generated_at": "2026-05-08T11:03:24Z",
   "repo_root": "/mnt/local-analysis/workspace-hub",
   "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
   "providers": {
     "claude": {
       "source": "raw_logs",
-      "sessions": 50,
+      "sessions": 51,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 614,
-      "post_records": 104285,
+      "unique_runtime_sessions": 620,
+      "post_records": 104337,
       "prompt_reads": 280,
       "blank_reads": 0,
-      "missing_repo_reads": 8818,
-      "python3_bash_calls": 920,
+      "missing_repo_reads": 8819,
+      "python3_bash_calls": 925,
       "uv_python_bash_calls": 6157,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 58337
+          "count": 58362
         },
         {
           "tool": "Read",
-          "count": 19488
+          "count": 19508
         },
         {
           "tool": "Edit",
-          "count": 8771
+          "count": 8772
         },
         {
           "tool": "Write",
-          "count": 7934
+          "count": 7935
         },
         {
           "tool": "Grep",
-          "count": 2547
+          "count": 2549
         },
         {
           "tool": "unknown",
-          "count": 1743
+          "count": 1745
         },
         {
           "tool": "Agent",
-          "count": 1228
+          "count": 1229
         },
         {
           "tool": "ToolSearch",
@@ -51,7 +51,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 99701
+          "count": 99753
         },
         {
           "repo": "digitalmodel",
@@ -93,11 +93,11 @@
         },
         {
           "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md",
-          "count": 179
+          "count": 180
         },
         {
           "path": "docs/plans/README.md",
-          "count": 168
+          "count": 169
         },
         {
           "path": "docs/plans/_template-issue-plan.md",
@@ -357,37 +357,37 @@
       "top_bash_command_families": [
         {
           "prefix": "ls",
-          "count": 9166,
-          "share_of_bash_calls": 15.71,
+          "count": 9177,
+          "share_of_bash_calls": 15.72,
           "example_command": "ls /mnt/local-analysis/workspace-hub/.claude/work-queue/working/ | grep 686"
         },
         {
           "prefix": "grep",
-          "count": 7108,
+          "count": 7110,
           "share_of_bash_calls": 12.18,
           "example_command": "# Check if submit-to-gemini.sh and submit-to-codex.sh exist and where they write logs\ngrep -n \"orchestrator\\|gemini\\|codex\" /mnt/local-analysis/worksp"
         },
         {
           "prefix": "uv run",
-          "count": 6055,
+          "count": 6058,
           "share_of_bash_calls": 10.38,
           "example_command": "uv run --no-project python scripts/work-queue/verify-gate-evidence.py WRK-683 2>&1 | tail -20"
         },
         {
           "prefix": "cat",
           "count": 5191,
-          "share_of_bash_calls": 8.9,
+          "share_of_bash_calls": 8.89,
           "example_command": "cat .claude/work-queue/pending/WRK-683.md | head -20"
         },
         {
           "prefix": "find",
-          "count": 3990,
+          "count": 3992,
           "share_of_bash_calls": 6.84,
           "example_command": "find .claude/work-queue -name \"WRK-683*\" 2>/dev/null && git diff --stat HEAD 2>/dev/null | head -20"
         },
         {
           "prefix": "gh",
-          "count": 3066,
+          "count": 3067,
           "share_of_bash_calls": 5.26,
           "example_command": "gh repo view vamseeachanta/aceengineer-strategy --json visibility -q '.visibility' 2>/dev/null"
         },
@@ -405,15 +405,15 @@
         }
       ],
       "special_counts": {},
-      "python3_per_1k_records": 8.82,
-      "uv_python_per_1k_records": 59.04
+      "python3_per_1k_records": 8.87,
+      "uv_python_per_1k_records": 59.01
     },
     "codex": {
       "source": "raw_logs",
-      "sessions": 65,
+      "sessions": 66,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 942,
-      "post_records": 30827,
+      "unique_runtime_sessions": 944,
+      "post_records": 30875,
       "prompt_reads": 35,
       "blank_reads": 0,
       "missing_repo_reads": 730,
@@ -422,7 +422,7 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 24465
+          "count": 24513
         },
         {
           "tool": "Read",
@@ -456,7 +456,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 30827
+          "count": 30875
         }
       ],
       "top_reads": [
@@ -701,20 +701,20 @@
       "top_bash_command_families": [
         {
           "prefix": "sed",
-          "count": 5829,
+          "count": 5842,
           "share_of_bash_calls": 23.83,
           "example_command": "sed -n '230,340p' src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py"
         },
         {
           "prefix": "rg",
-          "count": 2245,
-          "share_of_bash_calls": 9.18,
+          "count": 2253,
+          "share_of_bash_calls": 9.19,
           "example_command": "rg -n \"class ParquetStore|def save\\(\" -S src/worldenergydata/vessel_fleet -g '*.py'"
         },
         {
           "prefix": "nl",
           "count": 1441,
-          "share_of_bash_calls": 5.89,
+          "share_of_bash_calls": 5.88,
           "example_command": "nl -ba src/digitalmodel/marine_ops/artificial_lift/dynacard/diagnostics.py | sed -n '270,300p'"
         },
         {
@@ -725,32 +725,32 @@
         },
         {
           "prefix": "find",
-          "count": 727,
-          "share_of_bash_calls": 2.97,
+          "count": 735,
+          "share_of_bash_calls": 3.0,
           "example_command": "find worldenergydata/src/worldenergydata -maxdepth 1 -type f -name '*.py' | sed -n '1,20p'"
         },
         {
           "prefix": "ls",
-          "count": 651,
+          "count": 652,
           "share_of_bash_calls": 2.66,
           "example_command": "ls digitalmodel/artificial_lift/dynacard"
         },
         {
           "prefix": "git status",
           "count": 636,
-          "share_of_bash_calls": 2.6,
+          "share_of_bash_calls": 2.59,
           "example_command": "git status --short"
         },
         {
           "prefix": "bash",
           "count": 518,
-          "share_of_bash_calls": 2.12,
+          "share_of_bash_calls": 2.11,
           "example_command": "bash -n .claude/statusline-command.sh && echo OK"
         }
       ],
       "special_counts": {
-        "exec_command": 18633,
-        "write_stdin": 5832,
+        "exec_command": 18676,
+        "write_stdin": 5837,
         "update_plan": 408,
         "request_user_input": 5,
         "list_mcp_resources": 193,
@@ -825,88 +825,88 @@
         "create_goal": 1,
         "update_goal": 1
       },
-      "python3_per_1k_records": 11.84,
-      "uv_python_per_1k_records": 21.28
+      "python3_per_1k_records": 11.82,
+      "uv_python_per_1k_records": 21.25
     },
     "hermes": {
       "source": "raw_logs",
       "sessions": 39,
-      "correction_sessions": 36,
-      "unique_runtime_sessions": 2802,
-      "post_records": 188802,
+      "correction_sessions": 37,
+      "unique_runtime_sessions": 2928,
+      "post_records": 192069,
       "prompt_reads": 1754,
-      "blank_reads": 39,
+      "blank_reads": 63,
       "missing_repo_reads": 1240,
       "python3_bash_calls": 2716,
-      "uv_python_bash_calls": 2756,
+      "uv_python_bash_calls": 2868,
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 79831
+          "count": 80964
         },
         {
           "tool": "Read",
-          "count": 39289
+          "count": 40567
         },
         {
           "tool": "Grep",
-          "count": 27367
+          "count": 27870
         },
         {
           "tool": "Write",
-          "count": 22536
+          "count": 22745
         },
         {
           "tool": "Edit",
-          "count": 16158
+          "count": 16284
         },
         {
           "tool": "Task",
-          "count": 1941
+          "count": 1952
         },
         {
           "tool": "Browser",
-          "count": 741
+          "count": 745
         },
         {
           "tool": "ToolSearch",
-          "count": 460
+          "count": 463
         }
       ],
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 188802
+          "count": 192069
         }
       ],
       "top_reads": [
         {
           "path": "docs/plans/README.md",
-          "count": 512
+          "count": 527
         },
         {
           "path": "scripts/analysis/provider_session_ecosystem_audit.py",
-          "count": 424
+          "count": 430
         },
         {
           "path": "docs/reports/provider-session-ecosystem-audit.md",
-          "count": 296
+          "count": 303
         },
         {
           "path": "tests/analysis/test_provider_session_ecosystem_audit.py",
-          "count": 288
+          "count": 295
         },
         {
           "path": "config/scheduled-tasks/schedule-tasks.yaml",
-          "count": 261
+          "count": 263
+        },
+        {
+          "path": "docs/plans/_template-issue-plan.md",
+          "count": 251
         },
         {
           "path": "analysis/provider-session-ecosystem-audit.json",
           "count": 248
-        },
-        {
-          "path": "docs/plans/_template-issue-plan.md",
-          "count": 233
         },
         {
           "path": "docs/modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md",
@@ -981,6 +981,10 @@
           "count": 6
         },
         {
+          "path": "digitalmodel/docs/plans/README.md",
+          "count": 5
+        },
+        {
           "path": "worldenergydata/.planning/quick/codex-review.txt",
           "count": 4
         },
@@ -999,13 +1003,9 @@
         {
           "path": "digitalmodel/.claude/skills/orcaflex-batch-manager/SKILL.md",
           "count": 3
-        },
-        {
-          "path": "digitalmodel/.claude/skills/converted-agents/orcaflex/SKILL.md",
-          "count": 3
         }
       ],
-      "sibling_repo_read_total": 86,
+      "sibling_repo_read_total": 93,
       "top_non_repo_artifact_reads": [],
       "non_repo_artifact_read_total": 0,
       "missing_repo_read_remediation_hints": [
@@ -1119,35 +1119,35 @@
       "top_symbolic_reads": [
         {
           "name": "github/github-issues",
-          "count": 654
+          "count": 661
         },
         {
           "name": "coordination/issue-planning-mode",
-          "count": 555
+          "count": 581
         },
         {
           "name": "coordination/gh-work-planning",
-          "count": 407
+          "count": 440
         },
         {
           "name": "software-development/gh-work-execution",
-          "count": 321
+          "count": 322
         },
         {
           "name": "github-issues",
-          "count": 296
+          "count": 312
         },
         {
           "name": "coordination/session-start-routine",
           "count": 278
         },
         {
-          "name": "software-development/multi-provider-adversarial-review",
-          "count": 191
+          "name": "coordination/provider-session-ecosystem-audit",
+          "count": 216
         },
         {
-          "name": "coordination/provider-session-ecosystem-audit",
-          "count": 176
+          "name": "software-development/multi-provider-adversarial-review",
+          "count": 193
         },
         {
           "name": "autonomous-ai-agents/claude-code",
@@ -1161,67 +1161,67 @@
       "top_bash_command_families": [
         {
           "prefix": "gh",
-          "count": 16020,
-          "share_of_bash_calls": 20.07,
+          "count": 16158,
+          "share_of_bash_calls": 19.96,
           "example_command": "gh auth status"
         },
         {
           "prefix": "uv run",
-          "count": 4845,
-          "share_of_bash_calls": 6.07,
+          "count": 4937,
+          "share_of_bash_calls": 6.1,
           "example_command": "cd /mnt/local-analysis/workspace-hub && uv run --no-project python -c \"\nimport yaml\nwith open('data/document-index/standards-transfer-ledger.yaml', 'r') as f:\n    data = yaml.safe_load(f)\nfrom collections import Counter\ndomains = Counter(s.get('domain','MISSING') for s in data['standards'])\nfor d, c in sorted(domains.items(), key=lambda x: -x[1]):\n    print(f'{d}: {c}')\n\""
         },
         {
           "prefix": "set",
-          "count": 3926,
-          "share_of_bash_calls": 4.92,
+          "count": 4044,
+          "share_of_bash_calls": 4.99,
           "example_command": "set -e\ncd /mnt/local-analysis/workspace-hub\nif ! gh label list --repo vamseeachanta/workspace-hub --limit 200 | grep -q '^status:plan-approved\\b'; then\n  gh label create 'status:plan-approved' --repo vamseeachanta/workspace-hub --description 'Plan approved by user \u2014 ready for batch execution' --color '2EA44F'\nfi\ngh issue edit 2062 --repo vamseeachanta/workspace-hub \\\n  --title 'drilling rig fleet adapter \u2014 drillship and semi-sub hull form validation (~138 rigs with geometry)' \\\n  --body-file /tm"
         },
         {
           "prefix": "git status",
-          "count": 3264,
-          "share_of_bash_calls": 4.09,
+          "count": 3354,
+          "share_of_bash_calls": 4.14,
           "example_command": "cd /mnt/local-analysis/workspace-hub && git status --short 2>/dev/null | head -20"
         },
         {
           "prefix": "bash",
-          "count": 2589,
-          "share_of_bash_calls": 3.24,
+          "count": 2594,
+          "share_of_bash_calls": 3.2,
           "example_command": "bash scripts/cron/tests/test_gsd_researcher_nightly.sh"
         },
         {
           "prefix": "git add",
-          "count": 2441,
-          "share_of_bash_calls": 3.06,
+          "count": 2446,
+          "share_of_bash_calls": 3.02,
           "example_command": "cd /mnt/local-analysis/workspace-hub && git add -A && git status --short | head -20"
         },
         {
           "prefix": "git",
-          "count": 1602,
-          "share_of_bash_calls": 2.01,
+          "count": 1651,
+          "share_of_bash_calls": 2.04,
           "example_command": "git remote -v | sed -n '1,4p'"
         },
         {
           "prefix": "find",
-          "count": 1558,
-          "share_of_bash_calls": 1.95,
+          "count": 1564,
+          "share_of_bash_calls": 1.93,
           "example_command": "cd /mnt/local-analysis/workspace-hub && find . -name \"SKILL.md\" -not -path \"./_archive/*\" 2>/dev/null | head -60"
         }
       ],
       "special_counts": {
-        "memory_add": 378,
+        "memory_add": 379,
         "memory_replace": 368,
         "memory_remove": 49,
         "skill_create": 391,
-        "skill_patch": 1672,
+        "skill_patch": 1708,
         "skill_view": 2,
         "skill_delete": 1,
         "skill_edit": 26,
-        "skill_write_file": 90,
+        "skill_write_file": 106,
         "memory_list": 1
       },
-      "python3_per_1k_records": 14.39,
-      "uv_python_per_1k_records": 14.6
+      "python3_per_1k_records": 14.14,
+      "uv_python_per_1k_records": 14.93
     },
     "gemini": {
       "source": "raw_logs",
@@ -1609,7 +1609,7 @@
         {
           "provider": "claude",
           "known_migration_debt_reads": 1739,
-          "known_migration_debt_per_1k_records": 16.68,
+          "known_migration_debt_per_1k_records": 16.67,
           "known_migration_debt_rule_count": 4,
           "top_migration_rule_id": "legacy_work_queue_transition",
           "top_migration_rule_reads": 1015,
@@ -1645,7 +1645,7 @@
         {
           "provider": "hermes",
           "known_migration_debt_reads": 292,
-          "known_migration_debt_per_1k_records": 1.55,
+          "known_migration_debt_per_1k_records": 1.52,
           "known_migration_debt_rule_count": 2,
           "top_migration_rule_id": "llm_wiki_spinout_path_drift",
           "top_migration_rule_reads": 225,
@@ -1663,57 +1663,59 @@
       "providers": [
         {
           "provider": "claude",
-          "urgency_score": 60.0,
-          "urgency_tier": "next_up",
-          "activity_status": "idle",
-          "activity_trend": "decreasing",
+          "urgency_score": 80.0,
+          "urgency_tier": "urgent_now",
+          "activity_status": "active",
+          "activity_trend": "increasing",
           "corpus_status": "aligned",
           "debt_status": "high_debt",
           "debt_trend": "stable",
           "python_hygiene_status": "uv_preferred",
           "python_hygiene_trend": "stable",
-          "drift_trend": "stable",
-          "last_24h_post_records": 553,
-          "last_24h_sessions": 10,
-          "last_7d_post_records": 9082,
-          "last_7d_sessions": 101,
+          "drift_trend": "improving",
+          "last_24h_post_records": 52,
+          "last_24h_sessions": 6,
+          "last_7d_post_records": 7986,
+          "last_7d_sessions": 56,
           "activity_window_profile": "sustained_background",
           "health_status": "red",
           "health_reasons": [
+            "urgent action tier",
             "high migration debt",
-            "7d sustained activity"
+            "7d sustained activity",
+            "currently active"
           ],
-          "health_summary": "red: high migration debt; 7d sustained activity",
-          "recent_post_records": 0,
-          "recent_sessions": 0,
+          "health_summary": "red: urgent action tier; high migration debt; 7d sustained activity; currently active",
+          "recent_post_records": 52,
+          "recent_sessions": 6,
           "known_migration_debt_reads": 1739,
-          "known_migration_debt_per_1k_records": 16.68,
-          "missing_repo_reads_per_1k_records": 84.56,
+          "known_migration_debt_per_1k_records": 16.67,
+          "missing_repo_reads_per_1k_records": 84.52,
           "primary_issue": "legacy_work_queue_transition",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
           "urgency_rank": 1,
           "previous_urgency_rank": 1,
           "urgency_rank_delta": 0,
           "urgency_rank_direction": "stable",
-          "urgency_score_delta": -20.0,
-          "urgency_movement_summary": "rank unchanged at #1; urgency 60.00 (-20.00 vs previous audit); recent activity cooled"
+          "urgency_score_delta": 20.0,
+          "urgency_movement_summary": "rank unchanged at #1; urgency 80.00 (+20.00 vs previous audit); recent activity increased; path drift improved"
         },
         {
           "provider": "gemini",
           "urgency_score": 47.72,
           "urgency_tier": "next_up",
           "activity_status": "idle",
-          "activity_trend": "decreasing",
+          "activity_trend": "stable",
           "corpus_status": "aligned",
           "debt_status": "high_debt",
           "debt_trend": "stable",
           "python_hygiene_status": "python3_heavy",
           "python_hygiene_trend": "stable",
           "drift_trend": "stable",
-          "last_24h_post_records": 1,
-          "last_24h_sessions": 1,
-          "last_7d_post_records": 5,
-          "last_7d_sessions": 5,
+          "last_24h_post_records": 0,
+          "last_24h_sessions": 0,
+          "last_7d_post_records": 4,
+          "last_7d_sessions": 4,
           "activity_window_profile": "light_recent",
           "health_status": "red",
           "health_reasons": [
@@ -1732,100 +1734,100 @@
           "previous_urgency_rank": 2,
           "urgency_rank_delta": 0,
           "urgency_rank_direction": "stable",
-          "urgency_score_delta": -28.0,
-          "urgency_movement_summary": "rank unchanged at #2; urgency 47.72 (-28.00 vs previous audit); recent activity cooled"
+          "urgency_score_delta": 0.0,
+          "urgency_movement_summary": "rank unchanged at #2; urgency 47.72 (+0.00 vs previous audit)"
         },
         {
           "provider": "hermes",
-          "urgency_score": 13.49,
-          "urgency_tier": "investigate",
-          "activity_status": "idle",
-          "activity_trend": "decreasing",
-          "corpus_status": "aligned",
+          "urgency_score": 41.4,
+          "urgency_tier": "next_up",
+          "activity_status": "active",
+          "activity_trend": "increasing",
+          "corpus_status": "positive_corpus_growth_beyond_recent_activity",
           "debt_status": "moderate_debt",
-          "debt_trend": "worsening",
+          "debt_trend": "improving",
           "python_hygiene_status": "mixed",
           "python_hygiene_trend": "stable",
-          "drift_trend": "stable",
-          "last_24h_post_records": 744,
-          "last_24h_sessions": 37,
-          "last_7d_post_records": 9503,
-          "last_7d_sessions": 415,
+          "drift_trend": "improving",
+          "last_24h_post_records": 828,
+          "last_24h_sessions": 36,
+          "last_7d_post_records": 9083,
+          "last_7d_sessions": 403,
           "activity_window_profile": "sustained_background",
-          "health_status": "yellow",
+          "health_status": "red",
           "health_reasons": [
             "moderate migration debt",
-            "migration debt worsening",
-            "7d sustained activity"
+            "corpus anomaly needs interpretation",
+            "7d sustained activity",
+            "currently active"
           ],
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity",
-          "recent_post_records": 0,
-          "recent_sessions": 0,
+          "health_summary": "red: moderate migration debt; corpus anomaly needs interpretation; 7d sustained activity; currently active",
+          "recent_post_records": 1857,
+          "recent_sessions": 70,
           "known_migration_debt_reads": 292,
-          "known_migration_debt_per_1k_records": 1.55,
-          "missing_repo_reads_per_1k_records": 6.57,
+          "known_migration_debt_per_1k_records": 1.52,
+          "missing_repo_reads_per_1k_records": 6.46,
           "primary_issue": "llm_wiki_spinout_path_drift",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
           "urgency_rank": 3,
-          "previous_urgency_rank": 4,
-          "urgency_rank_delta": 1,
-          "urgency_rank_direction": "up",
-          "urgency_score_delta": -20.79,
-          "urgency_movement_summary": "moved up 1 slot to #3; urgency 13.49 (-20.79 vs previous audit); recent activity cooled; migration debt worsened"
+          "previous_urgency_rank": 3,
+          "urgency_rank_delta": 0,
+          "urgency_rank_direction": "stable",
+          "urgency_score_delta": 27.91,
+          "urgency_movement_summary": "rank unchanged at #3; urgency 41.40 (+27.91 vs previous audit); recent activity increased; migration debt improved; path drift improved; corpus grew faster than event-time activity"
         },
         {
           "provider": "codex",
-          "urgency_score": 11.32,
+          "urgency_score": 26.12,
           "urgency_tier": "investigate",
-          "activity_status": "idle",
-          "activity_trend": "decreasing",
+          "activity_status": "quiet",
+          "activity_trend": "increasing",
           "corpus_status": "aligned",
           "debt_status": "moderate_debt",
-          "debt_trend": "worsening",
+          "debt_trend": "stable",
           "python_hygiene_status": "mixed",
           "python_hygiene_trend": "stable",
-          "drift_trend": "stable",
-          "last_24h_post_records": 333,
-          "last_24h_sessions": 4,
-          "last_7d_post_records": 1944,
-          "last_7d_sessions": 64,
+          "drift_trend": "improving",
+          "last_24h_post_records": 48,
+          "last_24h_sessions": 2,
+          "last_7d_post_records": 1455,
+          "last_7d_sessions": 27,
           "activity_window_profile": "sustained_background",
           "health_status": "yellow",
           "health_reasons": [
             "moderate migration debt",
-            "migration debt worsening",
             "7d sustained activity"
           ],
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity",
-          "recent_post_records": 0,
-          "recent_sessions": 0,
+          "health_summary": "yellow: moderate migration debt; 7d sustained activity",
+          "recent_post_records": 48,
+          "recent_sessions": 2,
           "known_migration_debt_reads": 71,
           "known_migration_debt_per_1k_records": 2.3,
-          "missing_repo_reads_per_1k_records": 23.68,
+          "missing_repo_reads_per_1k_records": 23.64,
           "primary_issue": "nested_repo_context_drift",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
           "urgency_rank": 4,
-          "previous_urgency_rank": 3,
-          "urgency_rank_delta": -1,
-          "urgency_rank_direction": "down",
-          "urgency_score_delta": -29.68,
-          "urgency_movement_summary": "moved down 1 slot to #4; urgency 11.32 (-29.68 vs previous audit); recent activity cooled; migration debt worsened"
+          "previous_urgency_rank": 4,
+          "urgency_rank_delta": 0,
+          "urgency_rank_direction": "stable",
+          "urgency_score_delta": 14.8,
+          "urgency_movement_summary": "rank unchanged at #4; urgency 26.12 (+14.80 vs previous audit); recent activity increased; path drift improved"
         }
       ],
-      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 60.0, issue: legacy_work_queue_transition), then address gemini (urgency 47.72, issue: legacy_local_work_queue_items).",
+      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 80.0, issue: legacy_work_queue_transition), then address gemini (urgency 47.72, issue: legacy_local_work_queue_items).",
       "recommended_actions": [
         {
           "provider": "claude",
-          "urgency_tier": "next_up",
-          "urgency_score": 60.0,
+          "urgency_tier": "urgent_now",
+          "urgency_score": 80.0,
           "urgency_rank": 1,
           "previous_urgency_rank": 1,
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
-          "urgency_score_delta": -20.0,
-          "urgency_movement_summary": "rank unchanged at #1; urgency 60.00 (-20.00 vs previous audit); recent activity cooled",
+          "urgency_score_delta": 20.0,
+          "urgency_movement_summary": "rank unchanged at #1; urgency 80.00 (+20.00 vs previous audit); recent activity increased; path drift improved",
           "health_status": "red",
-          "health_summary": "red: high migration debt; 7d sustained activity",
+          "health_summary": "red: urgent action tier; high migration debt; 7d sustained activity; currently active",
           "primary_issue": "legacy_work_queue_transition",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
@@ -1837,8 +1839,8 @@
           "previous_urgency_rank": 2,
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
-          "urgency_score_delta": -28.0,
-          "urgency_movement_summary": "rank unchanged at #2; urgency 47.72 (-28.00 vs previous audit); recent activity cooled",
+          "urgency_score_delta": 0.0,
+          "urgency_movement_summary": "rank unchanged at #2; urgency 47.72 (+0.00 vs previous audit)",
           "health_status": "red",
           "health_summary": "red: high migration debt; python3-heavy command hygiene",
           "primary_issue": "legacy_local_work_queue_items",
@@ -1846,62 +1848,41 @@
         },
         {
           "provider": "hermes",
-          "urgency_tier": "investigate",
-          "urgency_score": 13.49,
+          "urgency_tier": "next_up",
+          "urgency_score": 41.4,
           "urgency_rank": 3,
-          "previous_urgency_rank": 4,
-          "urgency_rank_direction": "up",
-          "urgency_rank_delta": 1,
-          "urgency_score_delta": -20.79,
-          "urgency_movement_summary": "moved up 1 slot to #3; urgency 13.49 (-20.79 vs previous audit); recent activity cooled; migration debt worsened",
-          "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity",
+          "previous_urgency_rank": 3,
+          "urgency_rank_direction": "stable",
+          "urgency_rank_delta": 0,
+          "urgency_score_delta": 27.91,
+          "urgency_movement_summary": "rank unchanged at #3; urgency 41.40 (+27.91 vs previous audit); recent activity increased; migration debt improved; path drift improved; corpus grew faster than event-time activity",
+          "health_status": "red",
+          "health_summary": "red: moderate migration debt; corpus anomaly needs interpretation; 7d sustained activity; currently active",
           "primary_issue": "llm_wiki_spinout_path_drift",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
         {
           "provider": "codex",
           "urgency_tier": "investigate",
-          "urgency_score": 11.32,
+          "urgency_score": 26.12,
           "urgency_rank": 4,
-          "previous_urgency_rank": 3,
-          "urgency_rank_direction": "down",
-          "urgency_rank_delta": -1,
-          "urgency_score_delta": -29.68,
-          "urgency_movement_summary": "moved down 1 slot to #4; urgency 11.32 (-29.68 vs previous audit); recent activity cooled; migration debt worsened",
+          "previous_urgency_rank": 4,
+          "urgency_rank_direction": "stable",
+          "urgency_rank_delta": 0,
+          "urgency_score_delta": 14.8,
+          "urgency_movement_summary": "rank unchanged at #4; urgency 26.12 (+14.80 vs previous audit); recent activity increased; path drift improved",
           "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity",
+          "health_summary": "yellow: moderate migration debt; 7d sustained activity",
           "primary_issue": "nested_repo_context_drift",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         }
       ],
-      "rank_movements": [
-        {
-          "provider": "hermes",
-          "urgency_rank": 3,
-          "previous_urgency_rank": 4,
-          "urgency_rank_direction": "up",
-          "urgency_rank_delta": 1,
-          "urgency_score": 13.49,
-          "urgency_score_delta": -20.79,
-          "summary": "moved up 1 slot to #3; urgency 13.49 (-20.79 vs previous audit); recent activity cooled; migration debt worsened"
-        },
-        {
-          "provider": "codex",
-          "urgency_rank": 4,
-          "previous_urgency_rank": 3,
-          "urgency_rank_direction": "down",
-          "urgency_rank_delta": -1,
-          "urgency_score": 11.32,
-          "urgency_score_delta": -29.68,
-          "summary": "moved down 1 slot to #4; urgency 11.32 (-29.68 vs previous audit); recent activity cooled; migration debt worsened"
-        }
-      ],
+      "rank_movements": [],
       "health_overview": [
         {
           "provider": "claude",
           "health_status": "red",
-          "health_summary": "red: high migration debt; 7d sustained activity"
+          "health_summary": "red: urgent action tier; high migration debt; 7d sustained activity; currently active"
         },
         {
           "provider": "gemini",
@@ -1910,23 +1891,23 @@
         },
         {
           "provider": "hermes",
-          "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity"
+          "health_status": "red",
+          "health_summary": "red: moderate migration debt; corpus anomaly needs interpretation; 7d sustained activity; currently active"
         },
         {
           "provider": "codex",
           "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity"
+          "health_summary": "yellow: moderate migration debt; 7d sustained activity"
         }
       ],
       "watchlist": [
         {
           "provider": "claude",
-          "trigger_level": "act_this_week",
-          "trigger_reason": "red health due to legacy_work_queue_transition",
-          "suggested_followup": "Prioritize this week on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
+          "trigger_level": "page",
+          "trigger_reason": "urgent-now provider with legacy_work_queue_transition",
+          "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
           "health_status": "red",
-          "urgency_tier": "next_up",
+          "urgency_tier": "urgent_now",
           "primary_issue": "legacy_work_queue_transition"
         },
         {
@@ -1939,6 +1920,15 @@
           "primary_issue": "legacy_local_work_queue_items"
         },
         {
+          "provider": "hermes",
+          "trigger_level": "act_this_week",
+          "trigger_reason": "red health due to llm_wiki_spinout_path_drift; corpus anomaly present",
+          "suggested_followup": "Prioritize this week on hermes: prioritize legacy-path redirect cleanup and prompt/doc updates",
+          "health_status": "red",
+          "urgency_tier": "next_up",
+          "primary_issue": "llm_wiki_spinout_path_drift"
+        },
+        {
           "provider": "codex",
           "trigger_level": "investigate",
           "trigger_reason": "yellow health with sustained 7d activity and nested_repo_context_drift",
@@ -1946,37 +1936,40 @@
           "health_status": "yellow",
           "urgency_tier": "investigate",
           "primary_issue": "nested_repo_context_drift"
-        },
-        {
-          "provider": "hermes",
-          "trigger_level": "investigate",
-          "trigger_reason": "yellow health with sustained 7d activity and llm_wiki_spinout_path_drift",
-          "suggested_followup": "Sample current traces on hermes and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup",
-          "health_status": "yellow",
-          "urgency_tier": "investigate",
-          "primary_issue": "llm_wiki_spinout_path_drift"
         }
       ],
       "change_alerts": [
         {
+          "provider": "claude",
+          "change_type": "trigger_escalated",
+          "previous_trigger_level": "act_this_week",
+          "current_trigger_level": "page",
+          "previous_health_status": "red",
+          "current_health_status": "red",
+          "previous_urgency_rank": 1,
+          "current_urgency_rank": 1,
+          "summary": "claude trigger escalated from act_this_week to page",
+          "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates"
+        },
+        {
           "provider": "hermes",
-          "change_type": "urgency_rank_improved_priority",
+          "change_type": "trigger_escalated",
           "previous_trigger_level": "investigate",
-          "current_trigger_level": "investigate",
+          "current_trigger_level": "act_this_week",
           "previous_health_status": "yellow",
-          "current_health_status": "yellow",
-          "previous_urgency_rank": 4,
+          "current_health_status": "red",
+          "previous_urgency_rank": 3,
           "current_urgency_rank": 3,
-          "summary": "hermes moved up from rank #4 to #3",
-          "suggested_followup": "Sample current traces on hermes and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup"
+          "summary": "hermes trigger escalated from investigate to act_this_week",
+          "suggested_followup": "Prioritize this week on hermes: prioritize legacy-path redirect cleanup and prompt/doc updates"
         }
       ],
       "remediation_playbooks": [
         {
           "provider": "claude",
           "primary_issue": "legacy_work_queue_transition",
-          "trigger_level": "act_this_week",
-          "severity": "high",
+          "trigger_level": "page",
+          "severity": "critical",
           "inspect_paths": [
             "scripts/work-queue/verify-gate-evidence.py",
             "scripts/work-queue/start_stage.py",
@@ -2031,8 +2024,8 @@
         {
           "provider": "hermes",
           "primary_issue": "llm_wiki_spinout_path_drift",
-          "trigger_level": "investigate",
-          "severity": "medium",
+          "trigger_level": "act_this_week",
+          "severity": "high",
           "inspect_paths": [
             "knowledge/wikis/engineering/wiki/index.md",
             "knowledge/wikis/engineering/wiki/log.md",
@@ -2087,25 +2080,25 @@
       "followup_issue_drafts": [
         {
           "provider": "claude",
-          "title": "[high] claude: remediate legacy_work_queue_transition",
-          "severity": "high",
+          "title": "[critical] claude: remediate legacy_work_queue_transition",
+          "severity": "critical",
           "owner_team": "governance-maintainers",
           "preferred_fix_lane": "governance-docs",
-          "body": "Summary: Provider `claude` is currently at trigger level `act_this_week` with health `red` and urgency tier `next_up`.\nPrimary issue: legacy_work_queue_transition\nOwner team: governance-maintainers\nPreferred fix lane: governance-docs\nOwner surface: docs/governance/SESSION-GOVERNANCE.md\nWatchlist trigger: red health due to legacy_work_queue_transition\nSuggested follow-up: Prioritize this week on claude: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- scripts/work-queue/verify-gate-evidence.py\n- scripts/work-queue/start_stage.py\n- scripts/work-queue/exit_stage.py\nCanonical targets:\n- docs/governance/SESSION-GOVERNANCE.md\n- docs/governance/TRUST-ARCHITECTURE.md\n- scripts/workflow/governance-checkpoints.yaml\n- .claude/hooks/plan-approval-gate.sh\n- .claude/hooks/session-governor-check.sh\n- scripts/review/cross-review.sh\nFirst steps:\n- Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
-          "draft_key": "2e53b5a2c9be9f43",
+          "body": "Summary: Provider `claude` is currently at trigger level `page` with health `red` and urgency tier `urgent_now`.\nPrimary issue: legacy_work_queue_transition\nOwner team: governance-maintainers\nPreferred fix lane: governance-docs\nOwner surface: docs/governance/SESSION-GOVERNANCE.md\nWatchlist trigger: urgent-now provider with legacy_work_queue_transition\nSuggested follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- scripts/work-queue/verify-gate-evidence.py\n- scripts/work-queue/start_stage.py\n- scripts/work-queue/exit_stage.py\nCanonical targets:\n- docs/governance/SESSION-GOVERNANCE.md\n- docs/governance/TRUST-ARCHITECTURE.md\n- scripts/workflow/governance-checkpoints.yaml\n- .claude/hooks/plan-approval-gate.sh\n- .claude/hooks/session-governor-check.sh\n- scripts/review/cross-review.sh\nFirst steps:\n- Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
+          "draft_key": "994837d89d1977de",
           "dedupe_scope": "claude:legacy_work_queue_transition:governance-docs",
-          "linkage_key": "claude:legacy_work_queue_transition:high:governance-docs",
+          "linkage_key": "claude:legacy_work_queue_transition:critical:governance-docs",
           "linkage_aliases": [
-            "[high] claude: remediate legacy_work_queue_transition",
+            "[critical] claude: remediate legacy_work_queue_transition",
             "claude: remediate legacy_work_queue_transition",
-            "claude:legacy_work_queue_transition:high:governance-docs",
+            "claude:legacy_work_queue_transition:critical:governance-docs",
             "claude:legacy_work_queue_transition:governance-docs",
-            "[critical] claude: remediate legacy_work_queue_transition"
+            "[high] claude: remediate legacy_work_queue_transition"
           ],
           "duplicate_of_previous_draft_key": null,
           "draft_state": "changed",
-          "previous_title": "[critical] claude: remediate legacy_work_queue_transition",
-          "previous_severity": "critical",
+          "previous_title": "[high] claude: remediate legacy_work_queue_transition",
+          "previous_severity": "high",
           "previous_owner_team": "governance-maintainers",
           "minimum_evidence_present": true,
           "should_open_issue": true,
@@ -2127,14 +2120,41 @@
             "[high] gemini: remediate legacy_local_work_queue_items",
             "gemini: remediate legacy_local_work_queue_items",
             "gemini:legacy_local_work_queue_items:high:planning-workflow",
-            "gemini:legacy_local_work_queue_items:planning-workflow",
-            "[critical] gemini: remediate legacy_local_work_queue_items"
+            "gemini:legacy_local_work_queue_items:planning-workflow"
+          ],
+          "duplicate_of_previous_draft_key": "44f0d2d9243d957f",
+          "draft_state": "unchanged",
+          "previous_title": "[high] gemini: remediate legacy_local_work_queue_items",
+          "previous_severity": "high",
+          "previous_owner_team": "planning-ops",
+          "minimum_evidence_present": true,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+          "evidence_gaps": []
+        },
+        {
+          "provider": "hermes",
+          "title": "[high] hermes: remediate llm_wiki_spinout_path_drift",
+          "severity": "high",
+          "owner_team": "audit-operators",
+          "preferred_fix_lane": "monitoring",
+          "body": "Summary: Provider `hermes` is currently at trigger level `act_this_week` with health `red` and urgency tier `next_up`.\nPrimary issue: llm_wiki_spinout_path_drift\nOwner team: audit-operators\nPreferred fix lane: monitoring\nOwner surface: docs/reports/provider-session-ecosystem-audit.md\nWatchlist trigger: red health due to llm_wiki_spinout_path_drift; corpus anomaly present\nSuggested follow-up: Prioritize this week on hermes: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: The LLM-wiki artifact store moved out of workspace-hub/knowledge into the llm-wiki repository; redirect wiki-content reads to llm-wiki and keep control-plane work in workspace-hub.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- knowledge/wikis/engineering/wiki/index.md\n- knowledge/wikis/engineering/wiki/log.md\n- knowledge/wikis/marine-engineering/wiki/index.md\nCanonical targets:\n- llm-wiki/wikis/\n- llm-wiki/docs/\n- docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md\n- docs/sessions/2026-05-07-nest-llm-wiki-kaggle-into-hub.md\nFirst steps:\n- Inspect the top matched stale paths for llm_wiki_spinout_path_drift and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
+          "draft_key": "123e4430b62af18b",
+          "dedupe_scope": "hermes:llm_wiki_spinout_path_drift:monitoring",
+          "linkage_key": "hermes:llm_wiki_spinout_path_drift:high:monitoring",
+          "linkage_aliases": [
+            "[high] hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes:llm_wiki_spinout_path_drift:high:monitoring",
+            "hermes:llm_wiki_spinout_path_drift:monitoring",
+            "[medium] hermes: remediate llm_wiki_spinout_path_drift"
           ],
           "duplicate_of_previous_draft_key": null,
           "draft_state": "changed",
-          "previous_title": "[critical] gemini: remediate legacy_local_work_queue_items",
-          "previous_severity": "critical",
-          "previous_owner_team": "planning-ops",
+          "previous_title": "[medium] hermes: remediate llm_wiki_spinout_path_drift",
+          "previous_severity": "medium",
+          "previous_owner_team": "audit-operators",
           "minimum_evidence_present": true,
           "should_open_issue": true,
           "issue_open_reason": "changed actionable draft with minimum evidence present",
@@ -2155,55 +2175,24 @@
             "[medium] codex: remediate nested_repo_context_drift",
             "codex: remediate nested_repo_context_drift",
             "codex:nested_repo_context_drift:medium:monitoring",
-            "codex:nested_repo_context_drift:monitoring",
-            "[high] codex: remediate unmapped path drift",
-            "codex: remediate unmapped path drift"
+            "codex:nested_repo_context_drift:monitoring"
           ],
-          "duplicate_of_previous_draft_key": null,
-          "draft_state": "changed",
-          "previous_title": "[high] codex: remediate unmapped path drift",
-          "previous_severity": "high",
-          "previous_owner_team": "drift-triage",
-          "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
-          "evidence_gaps": []
-        },
-        {
-          "provider": "hermes",
-          "title": "[medium] hermes: remediate llm_wiki_spinout_path_drift",
-          "severity": "medium",
-          "owner_team": "audit-operators",
-          "preferred_fix_lane": "monitoring",
-          "body": "Summary: Provider `hermes` is currently at trigger level `investigate` with health `yellow` and urgency tier `investigate`.\nPrimary issue: llm_wiki_spinout_path_drift\nOwner team: audit-operators\nPreferred fix lane: monitoring\nOwner surface: docs/reports/provider-session-ecosystem-audit.md\nWatchlist trigger: yellow health with sustained 7d activity and llm_wiki_spinout_path_drift\nSuggested follow-up: Sample current traces on hermes and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup\nGuidance: The LLM-wiki artifact store moved out of workspace-hub/knowledge into the llm-wiki repository; redirect wiki-content reads to llm-wiki and keep control-plane work in workspace-hub.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- knowledge/wikis/engineering/wiki/index.md\n- knowledge/wikis/engineering/wiki/log.md\n- knowledge/wikis/marine-engineering/wiki/index.md\nCanonical targets:\n- llm-wiki/wikis/\n- llm-wiki/docs/\n- docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md\n- docs/sessions/2026-05-07-nest-llm-wiki-kaggle-into-hub.md\nFirst steps:\n- Inspect the top matched stale paths for llm_wiki_spinout_path_drift and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
-          "draft_key": "6c6c1a1f9fb9711e",
-          "dedupe_scope": "hermes:llm_wiki_spinout_path_drift:monitoring",
-          "linkage_key": "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-          "linkage_aliases": [
-            "[medium] hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-            "hermes:llm_wiki_spinout_path_drift:monitoring",
-            "[medium] hermes: remediate unmapped path drift",
-            "hermes: remediate unmapped path drift"
-          ],
-          "duplicate_of_previous_draft_key": null,
-          "draft_state": "changed",
-          "previous_title": "[medium] hermes: remediate unmapped path drift",
+          "duplicate_of_previous_draft_key": "c98daa2aa3ea0bc0",
+          "draft_state": "unchanged",
+          "previous_title": "[medium] codex: remediate nested_repo_context_drift",
           "previous_severity": "medium",
-          "previous_owner_team": "drift-triage",
+          "previous_owner_team": "audit-operators",
           "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
           "evidence_gaps": []
         }
       ],
       "issue_posting_readiness": [
         {
           "provider": "claude",
-          "severity": "high",
+          "severity": "critical",
           "draft_state": "changed",
           "posting_status": "ready",
           "minimum_evidence_present": true,
@@ -2211,13 +2200,13 @@
           "issue_open_reason": "changed actionable draft with minimum evidence present",
           "blocker_reason": null,
           "evidence_gaps": [],
-          "linkage_key": "claude:legacy_work_queue_transition:high:governance-docs",
+          "linkage_key": "claude:legacy_work_queue_transition:critical:governance-docs",
           "linkage_aliases": [
-            "[high] claude: remediate legacy_work_queue_transition",
+            "[critical] claude: remediate legacy_work_queue_transition",
             "claude: remediate legacy_work_queue_transition",
-            "claude:legacy_work_queue_transition:high:governance-docs",
+            "claude:legacy_work_queue_transition:critical:governance-docs",
             "claude:legacy_work_queue_transition:governance-docs",
-            "[critical] claude: remediate legacy_work_queue_transition"
+            "[high] claude: remediate legacy_work_queue_transition"
           ],
           "linked_issue_number": null,
           "linked_issue_url": null,
@@ -2233,6 +2222,34 @@
         {
           "provider": "gemini",
           "severity": "high",
+          "draft_state": "unchanged",
+          "posting_status": "blocked",
+          "minimum_evidence_present": true,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+          "evidence_gaps": [],
+          "linkage_key": "gemini:legacy_local_work_queue_items:high:planning-workflow",
+          "linkage_aliases": [
+            "[high] gemini: remediate legacy_local_work_queue_items",
+            "gemini: remediate legacy_local_work_queue_items",
+            "gemini:legacy_local_work_queue_items:high:planning-workflow",
+            "gemini:legacy_local_work_queue_items:planning-workflow"
+          ],
+          "linked_issue_number": null,
+          "linked_issue_url": null,
+          "linked_issue_state": null,
+          "matched_on": "none",
+          "linked_issue_match_reason": "no linked issue match found",
+          "linkage_confidence": "none",
+          "should_open_issue_final": true,
+          "final_posting_status": "ready",
+          "final_open_reason": "unchanged draft has no linked issue; safe to open once",
+          "final_blocker_reason": null
+        },
+        {
+          "provider": "hermes",
+          "severity": "high",
           "draft_state": "changed",
           "posting_status": "ready",
           "minimum_evidence_present": true,
@@ -2240,13 +2257,13 @@
           "issue_open_reason": "changed actionable draft with minimum evidence present",
           "blocker_reason": null,
           "evidence_gaps": [],
-          "linkage_key": "gemini:legacy_local_work_queue_items:high:planning-workflow",
+          "linkage_key": "hermes:llm_wiki_spinout_path_drift:high:monitoring",
           "linkage_aliases": [
-            "[high] gemini: remediate legacy_local_work_queue_items",
-            "gemini: remediate legacy_local_work_queue_items",
-            "gemini:legacy_local_work_queue_items:high:planning-workflow",
-            "gemini:legacy_local_work_queue_items:planning-workflow",
-            "[critical] gemini: remediate legacy_local_work_queue_items"
+            "[high] hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes:llm_wiki_spinout_path_drift:high:monitoring",
+            "hermes:llm_wiki_spinout_path_drift:monitoring",
+            "[medium] hermes: remediate llm_wiki_spinout_path_drift"
           ],
           "linked_issue_number": null,
           "linked_issue_url": null,
@@ -2262,21 +2279,19 @@
         {
           "provider": "codex",
           "severity": "medium",
-          "draft_state": "changed",
-          "posting_status": "ready",
+          "draft_state": "unchanged",
+          "posting_status": "blocked",
           "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
           "evidence_gaps": [],
           "linkage_key": "codex:nested_repo_context_drift:medium:monitoring",
           "linkage_aliases": [
             "[medium] codex: remediate nested_repo_context_drift",
             "codex: remediate nested_repo_context_drift",
             "codex:nested_repo_context_drift:medium:monitoring",
-            "codex:nested_repo_context_drift:monitoring",
-            "[high] codex: remediate unmapped path drift",
-            "codex: remediate unmapped path drift"
+            "codex:nested_repo_context_drift:monitoring"
           ],
           "linked_issue_number": null,
           "linked_issue_url": null,
@@ -2286,57 +2301,27 @@
           "linkage_confidence": "none",
           "should_open_issue_final": true,
           "final_posting_status": "ready",
-          "final_open_reason": "changed actionable draft with no linked issue found",
-          "final_blocker_reason": null
-        },
-        {
-          "provider": "hermes",
-          "severity": "medium",
-          "draft_state": "changed",
-          "posting_status": "ready",
-          "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
-          "evidence_gaps": [],
-          "linkage_key": "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-          "linkage_aliases": [
-            "[medium] hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-            "hermes:llm_wiki_spinout_path_drift:monitoring",
-            "[medium] hermes: remediate unmapped path drift",
-            "hermes: remediate unmapped path drift"
-          ],
-          "linked_issue_number": null,
-          "linked_issue_url": null,
-          "linked_issue_state": null,
-          "matched_on": "none",
-          "linked_issue_match_reason": "no linked issue match found",
-          "linkage_confidence": "none",
-          "should_open_issue_final": true,
-          "final_posting_status": "ready",
-          "final_open_reason": "changed actionable draft with no linked issue found",
+          "final_open_reason": "unchanged draft has no linked issue; safe to open once",
           "final_blocker_reason": null
         }
       ],
       "cleared_followup_issue_drafts": []
     },
     "executive_actions": {
-      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 60.0, issue: legacy_work_queue_transition), then address gemini (urgency 47.72, issue: legacy_local_work_queue_items).",
+      "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 80.0, issue: legacy_work_queue_transition), then address gemini (urgency 47.72, issue: legacy_local_work_queue_items).",
       "recommended_actions": [
         {
           "provider": "claude",
-          "urgency_tier": "next_up",
-          "urgency_score": 60.0,
+          "urgency_tier": "urgent_now",
+          "urgency_score": 80.0,
           "urgency_rank": 1,
           "previous_urgency_rank": 1,
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
-          "urgency_score_delta": -20.0,
-          "urgency_movement_summary": "rank unchanged at #1; urgency 60.00 (-20.00 vs previous audit); recent activity cooled",
+          "urgency_score_delta": 20.0,
+          "urgency_movement_summary": "rank unchanged at #1; urgency 80.00 (+20.00 vs previous audit); recent activity increased; path drift improved",
           "health_status": "red",
-          "health_summary": "red: high migration debt; 7d sustained activity",
+          "health_summary": "red: urgent action tier; high migration debt; 7d sustained activity; currently active",
           "primary_issue": "legacy_work_queue_transition",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
@@ -2348,8 +2333,8 @@
           "previous_urgency_rank": 2,
           "urgency_rank_direction": "stable",
           "urgency_rank_delta": 0,
-          "urgency_score_delta": -28.0,
-          "urgency_movement_summary": "rank unchanged at #2; urgency 47.72 (-28.00 vs previous audit); recent activity cooled",
+          "urgency_score_delta": 0.0,
+          "urgency_movement_summary": "rank unchanged at #2; urgency 47.72 (+0.00 vs previous audit)",
           "health_status": "red",
           "health_summary": "red: high migration debt; python3-heavy command hygiene",
           "primary_issue": "legacy_local_work_queue_items",
@@ -2357,62 +2342,41 @@
         },
         {
           "provider": "hermes",
-          "urgency_tier": "investigate",
-          "urgency_score": 13.49,
+          "urgency_tier": "next_up",
+          "urgency_score": 41.4,
           "urgency_rank": 3,
-          "previous_urgency_rank": 4,
-          "urgency_rank_direction": "up",
-          "urgency_rank_delta": 1,
-          "urgency_score_delta": -20.79,
-          "urgency_movement_summary": "moved up 1 slot to #3; urgency 13.49 (-20.79 vs previous audit); recent activity cooled; migration debt worsened",
-          "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity",
+          "previous_urgency_rank": 3,
+          "urgency_rank_direction": "stable",
+          "urgency_rank_delta": 0,
+          "urgency_score_delta": 27.91,
+          "urgency_movement_summary": "rank unchanged at #3; urgency 41.40 (+27.91 vs previous audit); recent activity increased; migration debt improved; path drift improved; corpus grew faster than event-time activity",
+          "health_status": "red",
+          "health_summary": "red: moderate migration debt; corpus anomaly needs interpretation; 7d sustained activity; currently active",
           "primary_issue": "llm_wiki_spinout_path_drift",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         },
         {
           "provider": "codex",
           "urgency_tier": "investigate",
-          "urgency_score": 11.32,
+          "urgency_score": 26.12,
           "urgency_rank": 4,
-          "previous_urgency_rank": 3,
-          "urgency_rank_direction": "down",
-          "urgency_rank_delta": -1,
-          "urgency_score_delta": -29.68,
-          "urgency_movement_summary": "moved down 1 slot to #4; urgency 11.32 (-29.68 vs previous audit); recent activity cooled; migration debt worsened",
+          "previous_urgency_rank": 4,
+          "urgency_rank_direction": "stable",
+          "urgency_rank_delta": 0,
+          "urgency_score_delta": 14.8,
+          "urgency_movement_summary": "rank unchanged at #4; urgency 26.12 (+14.80 vs previous audit); recent activity increased; path drift improved",
           "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity",
+          "health_summary": "yellow: moderate migration debt; 7d sustained activity",
           "primary_issue": "nested_repo_context_drift",
           "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates"
         }
       ],
-      "rank_movements": [
-        {
-          "provider": "hermes",
-          "urgency_rank": 3,
-          "previous_urgency_rank": 4,
-          "urgency_rank_direction": "up",
-          "urgency_rank_delta": 1,
-          "urgency_score": 13.49,
-          "urgency_score_delta": -20.79,
-          "summary": "moved up 1 slot to #3; urgency 13.49 (-20.79 vs previous audit); recent activity cooled; migration debt worsened"
-        },
-        {
-          "provider": "codex",
-          "urgency_rank": 4,
-          "previous_urgency_rank": 3,
-          "urgency_rank_direction": "down",
-          "urgency_rank_delta": -1,
-          "urgency_score": 11.32,
-          "urgency_score_delta": -29.68,
-          "summary": "moved down 1 slot to #4; urgency 11.32 (-29.68 vs previous audit); recent activity cooled; migration debt worsened"
-        }
-      ],
+      "rank_movements": [],
       "health_overview": [
         {
           "provider": "claude",
           "health_status": "red",
-          "health_summary": "red: high migration debt; 7d sustained activity"
+          "health_summary": "red: urgent action tier; high migration debt; 7d sustained activity; currently active"
         },
         {
           "provider": "gemini",
@@ -2421,23 +2385,23 @@
         },
         {
           "provider": "hermes",
-          "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity"
+          "health_status": "red",
+          "health_summary": "red: moderate migration debt; corpus anomaly needs interpretation; 7d sustained activity; currently active"
         },
         {
           "provider": "codex",
           "health_status": "yellow",
-          "health_summary": "yellow: moderate migration debt; migration debt worsening; 7d sustained activity"
+          "health_summary": "yellow: moderate migration debt; 7d sustained activity"
         }
       ],
       "watchlist": [
         {
           "provider": "claude",
-          "trigger_level": "act_this_week",
-          "trigger_reason": "red health due to legacy_work_queue_transition",
-          "suggested_followup": "Prioritize this week on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
+          "trigger_level": "page",
+          "trigger_reason": "urgent-now provider with legacy_work_queue_transition",
+          "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
           "health_status": "red",
-          "urgency_tier": "next_up",
+          "urgency_tier": "urgent_now",
           "primary_issue": "legacy_work_queue_transition"
         },
         {
@@ -2450,6 +2414,15 @@
           "primary_issue": "legacy_local_work_queue_items"
         },
         {
+          "provider": "hermes",
+          "trigger_level": "act_this_week",
+          "trigger_reason": "red health due to llm_wiki_spinout_path_drift; corpus anomaly present",
+          "suggested_followup": "Prioritize this week on hermes: prioritize legacy-path redirect cleanup and prompt/doc updates",
+          "health_status": "red",
+          "urgency_tier": "next_up",
+          "primary_issue": "llm_wiki_spinout_path_drift"
+        },
+        {
           "provider": "codex",
           "trigger_level": "investigate",
           "trigger_reason": "yellow health with sustained 7d activity and nested_repo_context_drift",
@@ -2457,37 +2430,40 @@
           "health_status": "yellow",
           "urgency_tier": "investigate",
           "primary_issue": "nested_repo_context_drift"
-        },
-        {
-          "provider": "hermes",
-          "trigger_level": "investigate",
-          "trigger_reason": "yellow health with sustained 7d activity and llm_wiki_spinout_path_drift",
-          "suggested_followup": "Sample current traces on hermes and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup",
-          "health_status": "yellow",
-          "urgency_tier": "investigate",
-          "primary_issue": "llm_wiki_spinout_path_drift"
         }
       ],
       "change_alerts": [
         {
+          "provider": "claude",
+          "change_type": "trigger_escalated",
+          "previous_trigger_level": "act_this_week",
+          "current_trigger_level": "page",
+          "previous_health_status": "red",
+          "current_health_status": "red",
+          "previous_urgency_rank": 1,
+          "current_urgency_rank": 1,
+          "summary": "claude trigger escalated from act_this_week to page",
+          "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates"
+        },
+        {
           "provider": "hermes",
-          "change_type": "urgency_rank_improved_priority",
+          "change_type": "trigger_escalated",
           "previous_trigger_level": "investigate",
-          "current_trigger_level": "investigate",
+          "current_trigger_level": "act_this_week",
           "previous_health_status": "yellow",
-          "current_health_status": "yellow",
-          "previous_urgency_rank": 4,
+          "current_health_status": "red",
+          "previous_urgency_rank": 3,
           "current_urgency_rank": 3,
-          "summary": "hermes moved up from rank #4 to #3",
-          "suggested_followup": "Sample current traces on hermes and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup"
+          "summary": "hermes trigger escalated from investigate to act_this_week",
+          "suggested_followup": "Prioritize this week on hermes: prioritize legacy-path redirect cleanup and prompt/doc updates"
         }
       ],
       "remediation_playbooks": [
         {
           "provider": "claude",
           "primary_issue": "legacy_work_queue_transition",
-          "trigger_level": "act_this_week",
-          "severity": "high",
+          "trigger_level": "page",
+          "severity": "critical",
           "inspect_paths": [
             "scripts/work-queue/verify-gate-evidence.py",
             "scripts/work-queue/start_stage.py",
@@ -2542,8 +2518,8 @@
         {
           "provider": "hermes",
           "primary_issue": "llm_wiki_spinout_path_drift",
-          "trigger_level": "investigate",
-          "severity": "medium",
+          "trigger_level": "act_this_week",
+          "severity": "high",
           "inspect_paths": [
             "knowledge/wikis/engineering/wiki/index.md",
             "knowledge/wikis/engineering/wiki/log.md",
@@ -2598,25 +2574,25 @@
       "followup_issue_drafts": [
         {
           "provider": "claude",
-          "title": "[high] claude: remediate legacy_work_queue_transition",
-          "severity": "high",
+          "title": "[critical] claude: remediate legacy_work_queue_transition",
+          "severity": "critical",
           "owner_team": "governance-maintainers",
           "preferred_fix_lane": "governance-docs",
-          "body": "Summary: Provider `claude` is currently at trigger level `act_this_week` with health `red` and urgency tier `next_up`.\nPrimary issue: legacy_work_queue_transition\nOwner team: governance-maintainers\nPreferred fix lane: governance-docs\nOwner surface: docs/governance/SESSION-GOVERNANCE.md\nWatchlist trigger: red health due to legacy_work_queue_transition\nSuggested follow-up: Prioritize this week on claude: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- scripts/work-queue/verify-gate-evidence.py\n- scripts/work-queue/start_stage.py\n- scripts/work-queue/exit_stage.py\nCanonical targets:\n- docs/governance/SESSION-GOVERNANCE.md\n- docs/governance/TRUST-ARCHITECTURE.md\n- scripts/workflow/governance-checkpoints.yaml\n- .claude/hooks/plan-approval-gate.sh\n- .claude/hooks/session-governor-check.sh\n- scripts/review/cross-review.sh\nFirst steps:\n- Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
-          "draft_key": "2e53b5a2c9be9f43",
+          "body": "Summary: Provider `claude` is currently at trigger level `page` with health `red` and urgency tier `urgent_now`.\nPrimary issue: legacy_work_queue_transition\nOwner team: governance-maintainers\nPreferred fix lane: governance-docs\nOwner surface: docs/governance/SESSION-GOVERNANCE.md\nWatchlist trigger: urgent-now provider with legacy_work_queue_transition\nSuggested follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- scripts/work-queue/verify-gate-evidence.py\n- scripts/work-queue/start_stage.py\n- scripts/work-queue/exit_stage.py\nCanonical targets:\n- docs/governance/SESSION-GOVERNANCE.md\n- docs/governance/TRUST-ARCHITECTURE.md\n- scripts/workflow/governance-checkpoints.yaml\n- .claude/hooks/plan-approval-gate.sh\n- .claude/hooks/session-governor-check.sh\n- scripts/review/cross-review.sh\nFirst steps:\n- Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
+          "draft_key": "994837d89d1977de",
           "dedupe_scope": "claude:legacy_work_queue_transition:governance-docs",
-          "linkage_key": "claude:legacy_work_queue_transition:high:governance-docs",
+          "linkage_key": "claude:legacy_work_queue_transition:critical:governance-docs",
           "linkage_aliases": [
-            "[high] claude: remediate legacy_work_queue_transition",
+            "[critical] claude: remediate legacy_work_queue_transition",
             "claude: remediate legacy_work_queue_transition",
-            "claude:legacy_work_queue_transition:high:governance-docs",
+            "claude:legacy_work_queue_transition:critical:governance-docs",
             "claude:legacy_work_queue_transition:governance-docs",
-            "[critical] claude: remediate legacy_work_queue_transition"
+            "[high] claude: remediate legacy_work_queue_transition"
           ],
           "duplicate_of_previous_draft_key": null,
           "draft_state": "changed",
-          "previous_title": "[critical] claude: remediate legacy_work_queue_transition",
-          "previous_severity": "critical",
+          "previous_title": "[high] claude: remediate legacy_work_queue_transition",
+          "previous_severity": "high",
           "previous_owner_team": "governance-maintainers",
           "minimum_evidence_present": true,
           "should_open_issue": true,
@@ -2638,14 +2614,41 @@
             "[high] gemini: remediate legacy_local_work_queue_items",
             "gemini: remediate legacy_local_work_queue_items",
             "gemini:legacy_local_work_queue_items:high:planning-workflow",
-            "gemini:legacy_local_work_queue_items:planning-workflow",
-            "[critical] gemini: remediate legacy_local_work_queue_items"
+            "gemini:legacy_local_work_queue_items:planning-workflow"
+          ],
+          "duplicate_of_previous_draft_key": "44f0d2d9243d957f",
+          "draft_state": "unchanged",
+          "previous_title": "[high] gemini: remediate legacy_local_work_queue_items",
+          "previous_severity": "high",
+          "previous_owner_team": "planning-ops",
+          "minimum_evidence_present": true,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+          "evidence_gaps": []
+        },
+        {
+          "provider": "hermes",
+          "title": "[high] hermes: remediate llm_wiki_spinout_path_drift",
+          "severity": "high",
+          "owner_team": "audit-operators",
+          "preferred_fix_lane": "monitoring",
+          "body": "Summary: Provider `hermes` is currently at trigger level `act_this_week` with health `red` and urgency tier `next_up`.\nPrimary issue: llm_wiki_spinout_path_drift\nOwner team: audit-operators\nPreferred fix lane: monitoring\nOwner surface: docs/reports/provider-session-ecosystem-audit.md\nWatchlist trigger: red health due to llm_wiki_spinout_path_drift; corpus anomaly present\nSuggested follow-up: Prioritize this week on hermes: prioritize legacy-path redirect cleanup and prompt/doc updates\nGuidance: The LLM-wiki artifact store moved out of workspace-hub/knowledge into the llm-wiki repository; redirect wiki-content reads to llm-wiki and keep control-plane work in workspace-hub.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- knowledge/wikis/engineering/wiki/index.md\n- knowledge/wikis/engineering/wiki/log.md\n- knowledge/wikis/marine-engineering/wiki/index.md\nCanonical targets:\n- llm-wiki/wikis/\n- llm-wiki/docs/\n- docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md\n- docs/sessions/2026-05-07-nest-llm-wiki-kaggle-into-hub.md\nFirst steps:\n- Inspect the top matched stale paths for llm_wiki_spinout_path_drift and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
+          "draft_key": "123e4430b62af18b",
+          "dedupe_scope": "hermes:llm_wiki_spinout_path_drift:monitoring",
+          "linkage_key": "hermes:llm_wiki_spinout_path_drift:high:monitoring",
+          "linkage_aliases": [
+            "[high] hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes:llm_wiki_spinout_path_drift:high:monitoring",
+            "hermes:llm_wiki_spinout_path_drift:monitoring",
+            "[medium] hermes: remediate llm_wiki_spinout_path_drift"
           ],
           "duplicate_of_previous_draft_key": null,
           "draft_state": "changed",
-          "previous_title": "[critical] gemini: remediate legacy_local_work_queue_items",
-          "previous_severity": "critical",
-          "previous_owner_team": "planning-ops",
+          "previous_title": "[medium] hermes: remediate llm_wiki_spinout_path_drift",
+          "previous_severity": "medium",
+          "previous_owner_team": "audit-operators",
           "minimum_evidence_present": true,
           "should_open_issue": true,
           "issue_open_reason": "changed actionable draft with minimum evidence present",
@@ -2666,55 +2669,24 @@
             "[medium] codex: remediate nested_repo_context_drift",
             "codex: remediate nested_repo_context_drift",
             "codex:nested_repo_context_drift:medium:monitoring",
-            "codex:nested_repo_context_drift:monitoring",
-            "[high] codex: remediate unmapped path drift",
-            "codex: remediate unmapped path drift"
+            "codex:nested_repo_context_drift:monitoring"
           ],
-          "duplicate_of_previous_draft_key": null,
-          "draft_state": "changed",
-          "previous_title": "[high] codex: remediate unmapped path drift",
-          "previous_severity": "high",
-          "previous_owner_team": "drift-triage",
-          "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
-          "evidence_gaps": []
-        },
-        {
-          "provider": "hermes",
-          "title": "[medium] hermes: remediate llm_wiki_spinout_path_drift",
-          "severity": "medium",
-          "owner_team": "audit-operators",
-          "preferred_fix_lane": "monitoring",
-          "body": "Summary: Provider `hermes` is currently at trigger level `investigate` with health `yellow` and urgency tier `investigate`.\nPrimary issue: llm_wiki_spinout_path_drift\nOwner team: audit-operators\nPreferred fix lane: monitoring\nOwner surface: docs/reports/provider-session-ecosystem-audit.md\nWatchlist trigger: yellow health with sustained 7d activity and llm_wiki_spinout_path_drift\nSuggested follow-up: Sample current traces on hermes and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup\nGuidance: The LLM-wiki artifact store moved out of workspace-hub/knowledge into the llm-wiki repository; redirect wiki-content reads to llm-wiki and keep control-plane work in workspace-hub.\nReference doc: docs/ops/legacy-claude-reference-map.md\nInspect paths:\n- knowledge/wikis/engineering/wiki/index.md\n- knowledge/wikis/engineering/wiki/log.md\n- knowledge/wikis/marine-engineering/wiki/index.md\nCanonical targets:\n- llm-wiki/wikis/\n- llm-wiki/docs/\n- docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md\n- docs/sessions/2026-05-07-nest-llm-wiki-kaggle-into-hub.md\nFirst steps:\n- Inspect the top matched stale paths for llm_wiki_spinout_path_drift and confirm they should redirect rather than be recreated.\n- Open the canonical targets and migrate prompts/docs/tooling toward: llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md.\n- Update redirect docs, prompts, or exporter mappings so the legacy path family stops appearing in future audits.",
-          "draft_key": "6c6c1a1f9fb9711e",
-          "dedupe_scope": "hermes:llm_wiki_spinout_path_drift:monitoring",
-          "linkage_key": "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-          "linkage_aliases": [
-            "[medium] hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-            "hermes:llm_wiki_spinout_path_drift:monitoring",
-            "[medium] hermes: remediate unmapped path drift",
-            "hermes: remediate unmapped path drift"
-          ],
-          "duplicate_of_previous_draft_key": null,
-          "draft_state": "changed",
-          "previous_title": "[medium] hermes: remediate unmapped path drift",
+          "duplicate_of_previous_draft_key": "c98daa2aa3ea0bc0",
+          "draft_state": "unchanged",
+          "previous_title": "[medium] codex: remediate nested_repo_context_drift",
           "previous_severity": "medium",
-          "previous_owner_team": "drift-triage",
+          "previous_owner_team": "audit-operators",
           "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
           "evidence_gaps": []
         }
       ],
       "issue_posting_readiness": [
         {
           "provider": "claude",
-          "severity": "high",
+          "severity": "critical",
           "draft_state": "changed",
           "posting_status": "ready",
           "minimum_evidence_present": true,
@@ -2722,13 +2694,13 @@
           "issue_open_reason": "changed actionable draft with minimum evidence present",
           "blocker_reason": null,
           "evidence_gaps": [],
-          "linkage_key": "claude:legacy_work_queue_transition:high:governance-docs",
+          "linkage_key": "claude:legacy_work_queue_transition:critical:governance-docs",
           "linkage_aliases": [
-            "[high] claude: remediate legacy_work_queue_transition",
+            "[critical] claude: remediate legacy_work_queue_transition",
             "claude: remediate legacy_work_queue_transition",
-            "claude:legacy_work_queue_transition:high:governance-docs",
+            "claude:legacy_work_queue_transition:critical:governance-docs",
             "claude:legacy_work_queue_transition:governance-docs",
-            "[critical] claude: remediate legacy_work_queue_transition"
+            "[high] claude: remediate legacy_work_queue_transition"
           ],
           "linked_issue_number": null,
           "linked_issue_url": null,
@@ -2744,6 +2716,34 @@
         {
           "provider": "gemini",
           "severity": "high",
+          "draft_state": "unchanged",
+          "posting_status": "blocked",
+          "minimum_evidence_present": true,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+          "evidence_gaps": [],
+          "linkage_key": "gemini:legacy_local_work_queue_items:high:planning-workflow",
+          "linkage_aliases": [
+            "[high] gemini: remediate legacy_local_work_queue_items",
+            "gemini: remediate legacy_local_work_queue_items",
+            "gemini:legacy_local_work_queue_items:high:planning-workflow",
+            "gemini:legacy_local_work_queue_items:planning-workflow"
+          ],
+          "linked_issue_number": null,
+          "linked_issue_url": null,
+          "linked_issue_state": null,
+          "matched_on": "none",
+          "linked_issue_match_reason": "no linked issue match found",
+          "linkage_confidence": "none",
+          "should_open_issue_final": true,
+          "final_posting_status": "ready",
+          "final_open_reason": "unchanged draft has no linked issue; safe to open once",
+          "final_blocker_reason": null
+        },
+        {
+          "provider": "hermes",
+          "severity": "high",
           "draft_state": "changed",
           "posting_status": "ready",
           "minimum_evidence_present": true,
@@ -2751,13 +2751,13 @@
           "issue_open_reason": "changed actionable draft with minimum evidence present",
           "blocker_reason": null,
           "evidence_gaps": [],
-          "linkage_key": "gemini:legacy_local_work_queue_items:high:planning-workflow",
+          "linkage_key": "hermes:llm_wiki_spinout_path_drift:high:monitoring",
           "linkage_aliases": [
-            "[high] gemini: remediate legacy_local_work_queue_items",
-            "gemini: remediate legacy_local_work_queue_items",
-            "gemini:legacy_local_work_queue_items:high:planning-workflow",
-            "gemini:legacy_local_work_queue_items:planning-workflow",
-            "[critical] gemini: remediate legacy_local_work_queue_items"
+            "[high] hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes: remediate llm_wiki_spinout_path_drift",
+            "hermes:llm_wiki_spinout_path_drift:high:monitoring",
+            "hermes:llm_wiki_spinout_path_drift:monitoring",
+            "[medium] hermes: remediate llm_wiki_spinout_path_drift"
           ],
           "linked_issue_number": null,
           "linked_issue_url": null,
@@ -2773,21 +2773,19 @@
         {
           "provider": "codex",
           "severity": "medium",
-          "draft_state": "changed",
-          "posting_status": "ready",
+          "draft_state": "unchanged",
+          "posting_status": "blocked",
           "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
+          "should_open_issue": false,
+          "issue_open_reason": null,
+          "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
           "evidence_gaps": [],
           "linkage_key": "codex:nested_repo_context_drift:medium:monitoring",
           "linkage_aliases": [
             "[medium] codex: remediate nested_repo_context_drift",
             "codex: remediate nested_repo_context_drift",
             "codex:nested_repo_context_drift:medium:monitoring",
-            "codex:nested_repo_context_drift:monitoring",
-            "[high] codex: remediate unmapped path drift",
-            "codex: remediate unmapped path drift"
+            "codex:nested_repo_context_drift:monitoring"
           ],
           "linked_issue_number": null,
           "linked_issue_url": null,
@@ -2797,64 +2795,125 @@
           "linkage_confidence": "none",
           "should_open_issue_final": true,
           "final_posting_status": "ready",
-          "final_open_reason": "changed actionable draft with no linked issue found",
-          "final_blocker_reason": null
-        },
-        {
-          "provider": "hermes",
-          "severity": "medium",
-          "draft_state": "changed",
-          "posting_status": "ready",
-          "minimum_evidence_present": true,
-          "should_open_issue": true,
-          "issue_open_reason": "changed actionable draft with minimum evidence present",
-          "blocker_reason": null,
-          "evidence_gaps": [],
-          "linkage_key": "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-          "linkage_aliases": [
-            "[medium] hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes: remediate llm_wiki_spinout_path_drift",
-            "hermes:llm_wiki_spinout_path_drift:medium:monitoring",
-            "hermes:llm_wiki_spinout_path_drift:monitoring",
-            "[medium] hermes: remediate unmapped path drift",
-            "hermes: remediate unmapped path drift"
-          ],
-          "linked_issue_number": null,
-          "linked_issue_url": null,
-          "linked_issue_state": null,
-          "matched_on": "none",
-          "linked_issue_match_reason": "no linked issue match found",
-          "linkage_confidence": "none",
-          "should_open_issue_final": true,
-          "final_posting_status": "ready",
-          "final_open_reason": "changed actionable draft with no linked issue found",
+          "final_open_reason": "unchanged draft has no linked issue; safe to open once",
           "final_blocker_reason": null
         }
       ],
       "cleared_followup_issue_drafts": []
     },
     "recent_activity_since_previous_audit": {
-      "previous_generated_at": "2026-05-07T09:26:58Z",
+      "previous_generated_at": "2026-05-07T09:37:54Z",
       "status": "ok",
       "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
       "providers": {
         "claude": {
-          "post_records": 0,
-          "sessions": 0,
-          "top_tools": [],
-          "top_missing_repo_reads": [],
+          "post_records": 52,
+          "sessions": 6,
+          "top_tools": [
+            {
+              "tool": "Bash",
+              "count": 25
+            },
+            {
+              "tool": "Read",
+              "count": 20
+            },
+            {
+              "tool": "Grep",
+              "count": 2
+            },
+            {
+              "tool": "unknown",
+              "count": 2
+            },
+            {
+              "tool": "Agent",
+              "count": 1
+            }
+          ],
+          "top_missing_repo_reads": [
+            {
+              "path": "scripts/review/results/2026-05-07-plan-2655-gemini.md.err",
+              "count": 1
+            }
+          ],
           "top_sibling_repo_reads": [],
           "top_non_repo_artifact_reads": [],
           "non_repo_artifact_read_total": 0,
-          "top_reads": [],
-          "top_writes": [],
-          "top_edits": [],
-          "top_bash_command_families": []
+          "top_reads": [
+            {
+              "path": "scripts/analysis/provider_session_ecosystem_audit.py",
+              "count": 4
+            },
+            {
+              "path": "docs/plans/2026-05-07-issue-2655-codex-nested-repo-context-drift.md",
+              "count": 3
+            },
+            {
+              "path": "docs/ops/legacy-claude-reference-map.md",
+              "count": 3
+            },
+            {
+              "path": "scripts/review/results/2026-05-07-plan-2655-codex.md",
+              "count": 2
+            },
+            {
+              "path": "tests/analysis/test_provider_session_ecosystem_audit.py",
+              "count": 2
+            }
+          ],
+          "top_writes": [
+            {
+              "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/reference_claude_dreaming_managed_agents.md",
+              "count": 1
+            }
+          ],
+          "top_edits": [
+            {
+              "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md",
+              "count": 1
+            }
+          ],
+          "top_bash_command_families": [
+            {
+              "prefix": "ls",
+              "count": 11
+            },
+            {
+              "prefix": "python3",
+              "count": 5
+            },
+            {
+              "prefix": "uv run",
+              "count": 3
+            },
+            {
+              "prefix": "find",
+              "count": 2
+            },
+            {
+              "prefix": "grep",
+              "count": 2
+            },
+            {
+              "prefix": "gh",
+              "count": 1
+            },
+            {
+              "prefix": "(ls",
+              "count": 1
+            }
+          ]
         },
         "codex": {
-          "post_records": 0,
-          "sessions": 0,
-          "top_tools": [],
+          "post_records": 48,
+          "sessions": 2,
+          "top_tools": [
+            {
+              "tool": "Bash",
+              "count": 48
+            }
+          ],
           "top_missing_repo_reads": [],
           "top_sibling_repo_reads": [],
           "top_non_repo_artifact_reads": [],
@@ -2862,20 +2921,179 @@
           "top_reads": [],
           "top_writes": [],
           "top_edits": [],
-          "top_bash_command_families": []
+          "top_bash_command_families": [
+            {
+              "prefix": "sed",
+              "count": 13
+            },
+            {
+              "prefix": "rg",
+              "count": 8
+            },
+            {
+              "prefix": "find",
+              "count": 8
+            },
+            {
+              "prefix": "codex",
+              "count": 7
+            },
+            {
+              "prefix": "pkill",
+              "count": 2
+            },
+            {
+              "prefix": "ls",
+              "count": 1
+            },
+            {
+              "prefix": "git",
+              "count": 1
+            },
+            {
+              "prefix": "which",
+              "count": 1
+            }
+          ]
         },
         "hermes": {
-          "post_records": 0,
-          "sessions": 0,
-          "top_tools": [],
+          "post_records": 1857,
+          "sessions": 70,
+          "top_tools": [
+            {
+              "tool": "Read",
+              "count": 726
+            },
+            {
+              "tool": "Bash",
+              "count": 507
+            },
+            {
+              "tool": "Grep",
+              "count": 406
+            },
+            {
+              "tool": "Write",
+              "count": 133
+            },
+            {
+              "tool": "Edit",
+              "count": 71
+            }
+          ],
           "top_missing_repo_reads": [],
-          "top_sibling_repo_reads": [],
+          "top_sibling_repo_reads": [
+            {
+              "path": "digitalmodel/docs/plans/README.md",
+              "count": 5
+            },
+            {
+              "path": "digitalmodel/docs/plans/_template-issue-plan.md",
+              "count": 2
+            }
+          ],
           "top_non_repo_artifact_reads": [],
           "non_repo_artifact_read_total": 0,
-          "top_reads": [],
-          "top_writes": [],
-          "top_edits": [],
-          "top_bash_command_families": []
+          "top_reads": [
+            {
+              "path": "business.gtm-parametric-demo-reports",
+              "count": 42
+            },
+            {
+              "path": "digitalmodel.digitalmodel-code-explorer",
+              "count": 35
+            },
+            {
+              "path": "github.github-issues",
+              "count": 35
+            },
+            {
+              "path": "gtm-parametric-demo-reports",
+              "count": 34
+            },
+            {
+              "path": "digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+              "count": 27
+            }
+          ],
+          "top_writes": [
+            {
+              "path": "/mnt/local-analysis/workspace-hub/digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+              "count": 4
+            },
+            {
+              "path": "/mnt/local-analysis/workspace-hub/digitalmodel/examples/demos/gtm/data/ctv_operability_kincardine.json",
+              "count": 3
+            },
+            {
+              "path": "/mnt/ace/digitalmodel/references/vessel-suitability/ctv-operability-kincardine-seaops.md",
+              "count": 3
+            },
+            {
+              "path": "/mnt/local-analysis/workspace-hub/digitalmodel/examples/demos/gtm/tests/test_ctv_operability_reference.py",
+              "count": 3
+            },
+            {
+              "path": "/tmp/digitalmodel-issue-591-entail-otc-comment.md",
+              "count": 3
+            }
+          ],
+          "top_edits": [
+            {
+              "path": "/mnt/local-analysis/workspace-hub/digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+              "count": 27
+            },
+            {
+              "path": "/mnt/ace/digitalmodel/references/vessel-suitability/REFERENCE-INDEX.md",
+              "count": 8
+            },
+            {
+              "path": "/mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/structural/stress/nonlinear.py",
+              "count": 7
+            },
+            {
+              "path": "/mnt/ace/digitalmodel/references/vessel-suitability/entail-otc-2026-brochure-extraction.md",
+              "count": 4
+            },
+            {
+              "path": "/mnt/local-analysis/workspace-hub/digitalmodel/examples/demos/gtm/README.md",
+              "count": 3
+            }
+          ],
+          "top_bash_command_families": [
+            {
+              "prefix": "git status",
+              "count": 66
+            },
+            {
+              "prefix": "gh",
+              "count": 65
+            },
+            {
+              "prefix": "uv run",
+              "count": 49
+            },
+            {
+              "prefix": "set",
+              "count": 45
+            },
+            {
+              "prefix": "git",
+              "count": 38
+            },
+            {
+              "prefix": "python",
+              "count": 17
+            },
+            {
+              "prefix": "printf",
+              "count": 15
+            },
+            {
+              "prefix": "date",
+              "count": 15
+            }
+          ]
         },
         "gemini": {
           "post_records": 0,
@@ -2891,171 +3109,140 @@
           "top_bash_command_families": []
         }
       },
-      "ranked_providers": []
+      "ranked_providers": [
+        {
+          "provider": "hermes",
+          "post_records": 1857,
+          "sessions": 70
+        },
+        {
+          "provider": "claude",
+          "post_records": 52,
+          "sessions": 6
+        },
+        {
+          "provider": "codex",
+          "post_records": 48,
+          "sessions": 2
+        }
+      ]
     },
     "recent_activity_windows": {
-      "generated_at": "2026-05-07T09:37:54Z",
+      "generated_at": "2026-05-08T11:03:24Z",
       "status": "ok",
       "windows": {
         "last_24h": {
-          "window_start": "2026-05-06T09:37:54Z",
-          "window_end": "2026-05-07T09:37:54Z",
+          "window_start": "2026-05-07T11:03:24Z",
+          "window_end": "2026-05-08T11:03:24Z",
           "status": "ok",
           "scope_note": "Last 24 hours of event-time activity ending at this audit timestamp.",
           "providers": {
             "claude": {
-              "post_records": 553,
-              "sessions": 10,
+              "post_records": 52,
+              "sessions": 6,
               "top_tools": [
                 {
-                  "tool": "unknown",
-                  "count": 257
-                },
-                {
                   "tool": "Bash",
-                  "count": 162
-                },
-                {
-                  "tool": "Edit",
-                  "count": 66
+                  "count": 25
                 },
                 {
                   "tool": "Read",
-                  "count": 39
+                  "count": 20
                 },
                 {
-                  "tool": "Write",
-                  "count": 28
+                  "tool": "Grep",
+                  "count": 2
+                },
+                {
+                  "tool": "unknown",
+                  "count": 2
+                },
+                {
+                  "tool": "Agent",
+                  "count": 1
                 }
               ],
-              "top_missing_repo_reads": [],
+              "top_missing_repo_reads": [
+                {
+                  "path": "scripts/review/results/2026-05-07-plan-2655-gemini.md.err",
+                  "count": 1
+                }
+              ],
               "top_sibling_repo_reads": [],
               "top_non_repo_artifact_reads": [],
               "non_repo_artifact_read_total": 0,
               "top_reads": [
                 {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/README.md",
-                  "count": 7
-                },
-                {
-                  "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md",
-                  "count": 5
-                },
-                {
-                  "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/project_kaggle_rogii_2026.md",
+                  "path": "scripts/analysis/provider_session_ecosystem_audit.py",
                   "count": 4
                 },
                 {
-                  "path": "docs/plans/_template-issue-plan.md",
+                  "path": "docs/plans/2026-05-07-issue-2655-codex-nested-repo-context-drift.md",
+                  "count": 3
+                },
+                {
+                  "path": "docs/ops/legacy-claude-reference-map.md",
+                  "count": 3
+                },
+                {
+                  "path": "scripts/review/results/2026-05-07-plan-2655-codex.md",
                   "count": 2
                 },
                 {
-                  "path": "digitalmodel/docs/plans/2026-05-05-issue-559-rao-full-matrix-interpolation.md",
+                  "path": "tests/analysis/test_provider_session_ecosystem_audit.py",
                   "count": 2
                 }
               ],
               "top_writes": [
                 {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/scripts/review/results/2026-05-06-plan-1-claude.md",
-                  "count": 2
-                },
-                {
-                  "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/project_kaggle_rogii_2026.md",
-                  "count": 1
-                },
-                {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/README.md",
-                  "count": 1
-                },
-                {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/_template-issue-plan.md",
-                  "count": 1
-                },
-                {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/2026-05-06-issue-1-linear-extrapolation.md",
+                  "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/reference_claude_dreaming_managed_agents.md",
                   "count": 1
                 }
               ],
               "top_edits": [
                 {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/README.md",
-                  "count": 9
-                },
-                {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/PLANNING-ROADMAP.md",
-                  "count": 6
-                },
-                {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/2026-05-06-issue-worldenergydata-392-well-logs-datasets.md",
-                  "count": 5
-                },
-                {
                   "path": "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md",
-                  "count": 4
-                },
-                {
-                  "path": "/mnt/local-analysis/kaggle-rogii-2026/docs/plans/2026-05-06-issue-9-kaggle-path-detection-fix.md",
-                  "count": 4
+                  "count": 1
                 }
               ],
               "top_bash_command_families": [
                 {
-                  "prefix": "echo",
-                  "count": 25
+                  "prefix": "ls",
+                  "count": 11
+                },
+                {
+                  "prefix": "python3",
+                  "count": 5
+                },
+                {
+                  "prefix": "uv run",
+                  "count": 3
+                },
+                {
+                  "prefix": "find",
+                  "count": 2
+                },
+                {
+                  "prefix": "grep",
+                  "count": 2
                 },
                 {
                   "prefix": "gh",
-                  "count": 22
+                  "count": 1
                 },
                 {
-                  "prefix": "cd",
-                  "count": 20
-                },
-                {
-                  "prefix": "git add",
-                  "count": 15
-                },
-                {
-                  "prefix": "ls",
-                  "count": 9
-                },
-                {
-                  "prefix": "cat",
-                  "count": 8
-                },
-                {
-                  "prefix": "-C",
-                  "count": 8
-                },
-                {
-                  "prefix": "for",
-                  "count": 7
+                  "prefix": "(ls",
+                  "count": 1
                 }
               ]
             },
             "codex": {
-              "post_records": 333,
-              "sessions": 4,
+              "post_records": 48,
+              "sessions": 2,
               "top_tools": [
                 {
                   "tool": "Bash",
-                  "count": 313
-                },
-                {
-                  "tool": "_add_comment_to_issue",
-                  "count": 17
-                },
-                {
-                  "tool": "create_goal",
-                  "count": 1
-                },
-                {
-                  "tool": "update_goal",
-                  "count": 1
-                },
-                {
-                  "tool": "_update_issue",
-                  "count": 1
+                  "count": 48
                 }
               ],
               "top_missing_repo_reads": [],
@@ -3067,121 +3254,150 @@
               "top_edits": [],
               "top_bash_command_families": [
                 {
-                  "prefix": "gh",
-                  "count": 57
-                },
-                {
                   "prefix": "sed",
-                  "count": 33
-                },
-                {
-                  "prefix": "find",
-                  "count": 26
-                },
-                {
-                  "prefix": "git diff",
-                  "count": 24
+                  "count": 13
                 },
                 {
                   "prefix": "rg",
-                  "count": 20
+                  "count": 8
+                },
+                {
+                  "prefix": "find",
+                  "count": 8
                 },
                 {
                   "prefix": "codex",
-                  "count": 18
+                  "count": 7
                 },
                 {
-                  "prefix": "uv run",
-                  "count": 17
+                  "prefix": "pkill",
+                  "count": 2
                 },
                 {
-                  "prefix": "git status",
-                  "count": 15
+                  "prefix": "ls",
+                  "count": 1
+                },
+                {
+                  "prefix": "git",
+                  "count": 1
+                },
+                {
+                  "prefix": "which",
+                  "count": 1
                 }
               ]
             },
             "hermes": {
-              "post_records": 744,
-              "sessions": 37,
+              "post_records": 828,
+              "sessions": 36,
               "top_tools": [
                 {
                   "tool": "Read",
-                  "count": 299
+                  "count": 343
                 },
                 {
                   "tool": "Bash",
-                  "count": 227
+                  "count": 211
                 },
                 {
                   "tool": "Grep",
-                  "count": 84
+                  "count": 148
                 },
                 {
                   "tool": "Write",
-                  "count": 77
+                  "count": 88
                 },
                 {
                   "tool": "Edit",
-                  "count": 45
+                  "count": 30
                 }
               ],
               "top_missing_repo_reads": [],
-              "top_sibling_repo_reads": [],
+              "top_sibling_repo_reads": [
+                {
+                  "path": "digitalmodel/docs/plans/README.md",
+                  "count": 5
+                },
+                {
+                  "path": "digitalmodel/docs/plans/_template-issue-plan.md",
+                  "count": 2
+                }
+              ],
               "top_non_repo_artifact_reads": [],
               "non_repo_artifact_read_total": 0,
               "top_reads": [
                 {
+                  "path": "digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+                  "count": 27
+                },
+                {
+                  "path": "workspace-hub/repo-structure",
+                  "count": 24
+                },
+                {
+                  "path": "_internal/meta/discipline-refactor",
+                  "count": 13
+                },
+                {
+                  "path": "_internal/meta/repo-cleanup",
+                  "count": 13
+                },
+                {
                   "path": "coordination/gh-work-planning",
-                  "count": 48
-                },
-                {
-                  "path": "devops/kanban-orchestrator",
-                  "count": 44
-                },
-                {
-                  "path": "github/issue-portfolio-triage",
-                  "count": 43
-                },
-                {
-                  "path": "coordination/agent-label-routing",
-                  "count": 32
-                },
-                {
-                  "path": "docs/reports/2026-05-06-tier1-kanban-portfolio-review.md",
-                  "count": 14
+                  "count": 13
                 }
               ],
               "top_writes": [
                 {
-                  "path": "/mnt/local-analysis/workspace-hub/docs/session-handoffs/2026-05-07-kanban-board-review-exit-handoff.md",
-                  "count": 1
+                  "path": "/mnt/local-analysis/workspace-hub/digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+                  "count": 4
                 },
                 {
-                  "path": "teamresumes/cv/va_resume.md",
-                  "count": 1
+                  "path": "/mnt/local-analysis/workspace-hub/docs/reports/2026-05-07-tier1-folder-structure-inventory.md",
+                  "count": 2
+                },
+                {
+                  "path": "/tmp/digitalmodel-repo-structure-issue.md",
+                  "count": 2
+                },
+                {
+                  "path": "/mnt/local-analysis/workspace-hub/digitalmodel/scripts/review/results/2026-05-07-plan-596-rereview-claude.md",
+                  "count": 2
+                },
+                {
+                  "path": "/mnt/local-analysis/workspace-hub/digitalmodel/scripts/review/results/2026-05-07-plan-596-rereview-codex.md",
+                  "count": 2
                 }
               ],
               "top_edits": [
                 {
-                  "path": "docs/reports/2026-05-06-tier1-kanban-portfolio-review.md",
-                  "count": 30
+                  "path": "/mnt/local-analysis/workspace-hub/digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+                  "count": 27
                 },
                 {
-                  "path": "/mnt/local-analysis/workspace-hub/docs/reports/2026-05-06-tier1-kanban-portfolio-review.md",
-                  "count": 11
+                  "path": "/mnt/local-analysis/workspace-hub/worldenergydata/src/worldenergydata/scheduler/jobs/bsee_refresh.py",
+                  "count": 1
                 },
                 {
-                  "path": "/mnt/local-analysis/workspace-hub/docs/vision/VISION.md",
-                  "count": 4
+                  "path": "/mnt/ace/digitalmodel/references/vessel-suitability/REFERENCE-INDEX.md",
+                  "count": 1
+                },
+                {
+                  "path": "/mnt/ace/digitalmodel/references/vessel-suitability/entail-otc-2026-brochure-extraction.md",
+                  "count": 1
                 }
               ],
               "top_bash_command_families": [
                 {
-                  "prefix": "set",
-                  "count": 28
+                  "prefix": "gh",
+                  "count": 30
                 },
                 {
-                  "prefix": "python",
+                  "prefix": "set",
+                  "count": 23
+                },
+                {
+                  "prefix": "git",
                   "count": 21
                 },
                 {
@@ -3189,36 +3405,27 @@
                   "count": 18
                 },
                 {
-                  "prefix": "pwd",
+                  "prefix": "python",
                   "count": 10
                 },
                 {
-                  "prefix": "pwd;",
-                  "count": 7
+                  "prefix": "codex",
+                  "count": 6
                 },
                 {
-                  "prefix": "gh",
-                  "count": 7
+                  "prefix": "gemini",
+                  "count": 6
                 },
                 {
-                  "prefix": "date",
-                  "count": 5
-                },
-                {
-                  "prefix": "uv run",
-                  "count": 5
+                  "prefix": "claude",
+                  "count": 6
                 }
               ]
             },
             "gemini": {
-              "post_records": 1,
-              "sessions": 1,
-              "top_tools": [
-                {
-                  "tool": "Browser",
-                  "count": 1
-                }
-              ],
+              "post_records": 0,
+              "sessions": 0,
+              "top_tools": [],
               "top_missing_repo_reads": [],
               "top_sibling_repo_reads": [],
               "top_non_repo_artifact_reads": [],
@@ -3232,55 +3439,50 @@
           "ranked_providers": [
             {
               "provider": "hermes",
-              "post_records": 744,
-              "sessions": 37
+              "post_records": 828,
+              "sessions": 36
             },
             {
               "provider": "claude",
-              "post_records": 553,
-              "sessions": 10
+              "post_records": 52,
+              "sessions": 6
             },
             {
               "provider": "codex",
-              "post_records": 333,
-              "sessions": 4
-            },
-            {
-              "provider": "gemini",
-              "post_records": 1,
-              "sessions": 1
+              "post_records": 48,
+              "sessions": 2
             }
           ]
         },
         "last_7d": {
-          "window_start": "2026-04-30T09:37:54Z",
-          "window_end": "2026-05-07T09:37:54Z",
+          "window_start": "2026-05-01T11:03:24Z",
+          "window_end": "2026-05-08T11:03:24Z",
           "status": "ok",
           "scope_note": "Last 7 days of event-time activity ending at this audit timestamp.",
           "providers": {
             "claude": {
-              "post_records": 9082,
-              "sessions": 101,
+              "post_records": 7986,
+              "sessions": 56,
               "top_tools": [
                 {
                   "tool": "Bash",
-                  "count": 5623
+                  "count": 4889
                 },
                 {
                   "tool": "Read",
-                  "count": 1262
+                  "count": 1065
                 },
                 {
                   "tool": "unknown",
-                  "count": 802
+                  "count": 796
                 },
                 {
                   "tool": "Edit",
-                  "count": 676
+                  "count": 645
                 },
                 {
                   "tool": "Write",
-                  "count": 433
+                  "count": 394
                 }
               ],
               "top_missing_repo_reads": [
@@ -3337,14 +3539,6 @@
               ],
               "top_writes": [
                 {
-                  "path": "/mnt/local-analysis/workspace-hub/docs/plans/overnight-results/claude-2-plan-review-hardening.md",
-                  "count": 2
-                },
-                {
-                  "path": "/mnt/local-analysis/workspace-hub/docs/plans/overnight-results/provider-autofeed-20260430-102314-claude-recovery-control-plane-1.md",
-                  "count": 2
-                },
-                {
                   "path": "/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-02-collect-ignore-cumulative-audit.md",
                   "count": 2
                 },
@@ -3354,6 +3548,14 @@
                 },
                 {
                   "path": "/mnt/local-analysis/workspace-hub/docs/plans/2026-05-03-2609-marine-ops-triage.md",
+                  "count": 2
+                },
+                {
+                  "path": "/tmp/mystery-tests-2616.md",
+                  "count": 2
+                },
+                {
+                  "path": "/mnt/local-analysis/workspace-hub/docs/plans/2026-05-03-2609-solvers-orcaflex-triage.md",
                   "count": 2
                 }
               ],
@@ -3381,84 +3583,84 @@
               ],
               "top_bash_command_families": [
                 {
-                  "prefix": "ls",
-                  "count": 870
+                  "prefix": "grep",
+                  "count": 766
                 },
                 {
-                  "prefix": "grep",
-                  "count": 842
+                  "prefix": "ls",
+                  "count": 698
                 },
                 {
                   "prefix": "gh",
-                  "count": 526
+                  "count": 477
                 },
                 {
                   "prefix": "cd",
-                  "count": 462
+                  "count": 441
                 },
                 {
                   "prefix": "find",
-                  "count": 350
+                  "count": 327
                 },
                 {
                   "prefix": "echo",
-                  "count": 341
+                  "count": 307
                 },
                 {
                   "prefix": "cat",
-                  "count": 271
+                  "count": 229
                 },
                 {
                   "prefix": "uv run",
-                  "count": 184
+                  "count": 179
                 }
               ]
             },
             "codex": {
-              "post_records": 1944,
-              "sessions": 64,
+              "post_records": 1455,
+              "sessions": 27,
               "top_tools": [
                 {
                   "tool": "Bash",
-                  "count": 1272
+                  "count": 1160
                 },
                 {
                   "tool": "Read",
-                  "count": 519
+                  "count": 211
                 },
                 {
                   "tool": "Grep",
-                  "count": 106
+                  "count": 46
                 },
                 {
                   "tool": "_add_comment_to_issue",
                   "count": 19
                 },
                 {
-                  "tool": "list_mcp_resources",
-                  "count": 8
+                  "tool": "update_plan",
+                  "count": 4
                 }
               ],
               "top_missing_repo_reads": [
                 {
-                  "path": "scripts/review/results/2026-04-30-plan-2554-r2-claude.md",
-                  "count": 5
-                },
-                {
-                  "path": "scripts/review/results/2026-04-30-plan-2554-r2-synthesis.md",
-                  "count": 5
-                },
-                {
-                  "path": "scripts/review/results/2026-04-30-plan-2554-r2-codex.md",
-                  "count": 4
-                },
-                {
-                  "path": "scripts/review/results/2026-04-30-plan-2554-r2-gemini.md",
+                  "path": "src/digitalmodel/asset_integrity/common/yml_utilities.py",
                   "count": 3
+                },
+                {
+                  "path": "knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md",
+                  "count": 3
+                },
+                {
+                  "path": "src/digitalmodel/workflows/automation/quality_gates.py",
+                  "count": 2
+                },
+                {
+                  "path": ".claude/quality-gates.yaml",
+                  "count": 2
                 },
                 {
                   "path": "docs/security/external-contributor-runbook.md",
-                  "count": 3
+                  "count": 2
                 }
               ],
               "top_sibling_repo_reads": [],
@@ -3467,23 +3669,23 @@
               "top_reads": [
                 {
                   "path": "docs/plans/README.md",
-                  "count": 22
-                },
-                {
-                  "path": "docs/handoffs/github-collaborator-only-lockdown-2026-04-29.md",
-                  "count": 9
-                },
-                {
-                  "path": "github://vamseeachanta/workspace-hub/issues/2550",
-                  "count": 9
+                  "count": 8
                 },
                 {
                   "path": "docs/standards/HARD-STOP-POLICY.md",
-                  "count": 8
+                  "count": 4
                 },
                 {
-                  "path": "docs/plans/2026-04-29-issue-2554-vessel-contractor-outreach-matrix.md",
-                  "count": 8
+                  "path": "src/digitalmodel/asset_integrity/common/yml_utilities.py",
+                  "count": 3
+                },
+                {
+                  "path": "github://vamseeachanta/workspace-hub/issues/2574",
+                  "count": 3
+                },
+                {
+                  "path": "docs/handoffs/github-collaborator-only-lockdown-2026-04-29.md",
+                  "count": 3
                 }
               ],
               "top_writes": [],
@@ -3491,89 +3693,93 @@
               "top_bash_command_families": [
                 {
                   "prefix": "sed",
-                  "count": 216
+                  "count": 184
                 },
                 {
                   "prefix": "gh",
                   "count": 83
                 },
                 {
-                  "prefix": "git status",
-                  "count": 67
+                  "prefix": "find",
+                  "count": 68
+                },
+                {
+                  "prefix": "rg",
+                  "count": 66
                 },
                 {
                   "prefix": "git diff",
                   "count": 66
                 },
                 {
-                  "prefix": "rg",
-                  "count": 63
-                },
-                {
-                  "prefix": "find",
-                  "count": 63
-                },
-                {
-                  "prefix": "pwd",
-                  "count": 46
+                  "prefix": "git status",
+                  "count": 64
                 },
                 {
                   "prefix": "nl",
+                  "count": 45
+                },
+                {
+                  "prefix": "uv run",
                   "count": 45
                 }
               ]
             },
             "hermes": {
-              "post_records": 9503,
-              "sessions": 415,
+              "post_records": 9083,
+              "sessions": 403,
               "top_tools": [
                 {
-                  "tool": "Bash",
-                  "count": 3554
+                  "tool": "Read",
+                  "count": 3353
                 },
                 {
-                  "tool": "Read",
-                  "count": 3175
+                  "tool": "Bash",
+                  "count": 3290
                 },
                 {
                   "tool": "Grep",
-                  "count": 1374
+                  "count": 1242
                 },
                 {
                   "tool": "Write",
-                  "count": 936
+                  "count": 822
                 },
                 {
                   "tool": "Edit",
-                  "count": 380
+                  "count": 320
                 }
               ],
               "top_missing_repo_reads": [
                 {
-                  "path": "knowledge/wikis/naval-architecture/wiki/concepts/yaw-moment-rudder-sweep.md",
-                  "count": 5
-                },
-                {
-                  "path": "knowledge/wikis/naval-architecture/wiki/concepts/rudder-force-modeling.md",
-                  "count": 5
-                },
-                {
-                  "path": "knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md",
-                  "count": 4
-                },
-                {
-                  "path": "knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-validation-metrics.md",
-                  "count": 4
-                },
-                {
                   "path": "knowledge/wikis/marine-engineering/wiki/overview.md",
                   "count": 3
+                },
+                {
+                  "path": "knowledge/wikis/marine-engineering/CLAUDE.md",
+                  "count": 2
+                },
+                {
+                  "path": "knowledge/wikis/engineering/CLAUDE.md",
+                  "count": 2
+                },
+                {
+                  "path": "knowledge/wikis/lng-projects/wiki/sources/elements-doris-62092-sesa.md",
+                  "count": 1
+                },
+                {
+                  "path": "**Umbrella:**",
+                  "count": 1
                 }
               ],
               "top_sibling_repo_reads": [
                 {
-                  "path": "digitalmodel/src/digitalmodel/naval_architecture/curves.py",
-                  "count": 1
+                  "path": "digitalmodel/docs/plans/README.md",
+                  "count": 5
+                },
+                {
+                  "path": "digitalmodel/docs/plans/_template-issue-plan.md",
+                  "count": 2
                 }
               ],
               "top_non_repo_artifact_reads": [],
@@ -3581,111 +3787,111 @@
               "top_reads": [
                 {
                   "path": "coordination/gh-work-planning",
-                  "count": 132
+                  "count": 152
                 },
                 {
                   "path": "workspace-hub/worktree-branch-sync-hygiene",
-                  "count": 97
+                  "count": 118
                 },
                 {
-                  "path": "github/github-issues",
-                  "count": 94
+                  "path": "coordination/provider-session-ecosystem-audit",
+                  "count": 90
                 },
                 {
                   "path": "coordination/llm-wiki-roadmap-integration",
                   "count": 84
                 },
                 {
-                  "path": "github/domain-gap-to-issue-roadmap",
-                  "count": 58
+                  "path": "github/github-issues",
+                  "count": 84
                 }
               ],
               "top_writes": [
                 {
                   "path": "/mnt/local-analysis/workspace-hub/docs/reports/tier-1-indexing-freshness-latest.md",
-                  "count": 8
-                },
-                {
-                  "path": "/mnt/local-analysis/agent-logs/provider-autofeed-monitor/latest.md",
                   "count": 6
-                },
-                {
-                  "path": "/mnt/local-analysis/agent-logs/provider-autofeed-monitor/classify_and_launch.sh",
-                  "count": 4
                 },
                 {
                   "path": "/mnt/local-analysis/workspace-hub/docs/plans/2026-05-04-issue-2641-multimachine-solver-inbox-ingestion.md",
                   "count": 4
                 },
                 {
-                  "path": "/tmp/issue-2563-allowlist-configured.md",
+                  "path": "/tmp/codex_nested_repo_context_drift_issue.md",
+                  "count": 4
+                },
+                {
+                  "path": "/mnt/local-analysis/workspace-hub/digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+                  "count": 4
+                },
+                {
+                  "path": "/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-01-pr-sweep-ledger.md",
                   "count": 3
                 }
               ],
               "top_edits": [
                 {
-                  "path": "/mnt/local-analysis/digitalmodel-issue2565/src/digitalmodel/naval_architecture/rudder_stock_torque.py",
-                  "count": 30
-                },
-                {
                   "path": "docs/reports/2026-05-06-tier1-kanban-portfolio-review.md",
                   "count": 30
                 },
                 {
-                  "path": "/mnt/local-analysis/worktrees/nightly-batch-2-20260501T043948Z/workspace-hub/docs/plans/2026-04-29-issue-2550-interaction-limit-renewal-scheduled-task.md",
-                  "count": 24
+                  "path": "/mnt/local-analysis/workspace-hub/digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md",
+                  "count": 27
                 },
                 {
-                  "path": "/mnt/local-analysis/digitalmodel-issue2565/tests/naval_architecture/test_rudder_stock_torque_sweep.py",
-                  "count": 18
+                  "path": "/mnt/local-analysis/workspace-hub/scripts/repository_sync-auto",
+                  "count": 17
                 },
                 {
-                  "path": "/mnt/local-analysis/worktrees/nightly-batch-2-20260501T043948Z/workspace-hub/docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md",
-                  "count": 18
+                  "path": "/mnt/local-analysis/worktrees/provider-capacity-aware-20260503-0259-2510-plan-patch/docs/plans/2026-04-26-issue-2510-python-layout-cad-automation-demo.md",
+                  "count": 15
+                },
+                {
+                  "path": "/mnt/local-analysis/workspace-hub/tests/scripts/test_repository_sync_auto.sh",
+                  "count": 12
                 }
               ],
               "top_bash_command_families": [
                 {
                   "prefix": "set",
-                  "count": 957
+                  "count": 715
                 },
                 {
                   "prefix": "gh",
-                  "count": 184
+                  "count": 295
                 },
                 {
                   "prefix": "git status",
-                  "count": 142
-                },
-                {
-                  "prefix": "git",
-                  "count": 133
+                  "count": 191
                 },
                 {
                   "prefix": "uv run",
-                  "count": 132
+                  "count": 145
                 },
                 {
-                  "prefix": "python",
-                  "count": 117
-                },
-                {
-                  "prefix": "bash",
-                  "count": 77
+                  "prefix": "git",
+                  "count": 138
                 },
                 {
                   "prefix": "git diff",
-                  "count": 69
+                  "count": 91
+                },
+                {
+                  "prefix": "printf",
+                  "count": 63
+                },
+                {
+                  "prefix": "date",
+                  "count": 61
                 }
               ]
             },
             "gemini": {
-              "post_records": 5,
-              "sessions": 5,
+              "post_records": 4,
+              "sessions": 4,
               "top_tools": [
                 {
                   "tool": "Browser",
-                  "count": 5
+                  "count": 4
                 }
               ],
               "top_missing_repo_reads": [],
@@ -3701,30 +3907,30 @@
           "ranked_providers": [
             {
               "provider": "hermes",
-              "post_records": 9503,
-              "sessions": 415
+              "post_records": 9083,
+              "sessions": 403
             },
             {
               "provider": "claude",
-              "post_records": 9082,
-              "sessions": 101
+              "post_records": 7986,
+              "sessions": 56
             },
             {
               "provider": "codex",
-              "post_records": 1944,
-              "sessions": 64
+              "post_records": 1455,
+              "sessions": 27
             },
             {
               "provider": "gemini",
-              "post_records": 5,
-              "sessions": 5
+              "post_records": 4,
+              "sessions": 4
             }
           ]
         }
       }
     },
     "corpus_change_since_previous_audit": {
-      "previous_generated_at": "2026-05-07T09:26:58Z",
+      "previous_generated_at": "2026-05-07T09:37:54Z",
       "status": "ok",
       "scope_note": "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.",
       "providers": {
@@ -3733,16 +3939,16 @@
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
           "previous_post_records": 104285,
-          "current_post_records": 104285,
-          "post_record_delta": 0,
+          "current_post_records": 104337,
+          "post_record_delta": 52,
           "previous_sessions": 50,
-          "current_sessions": 50,
-          "session_delta": 0,
+          "current_sessions": 51,
+          "session_delta": 1,
           "previous_missing_repo_reads": 8818,
-          "current_missing_repo_reads": 8818,
-          "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
-          "event_time_sessions_since_previous_audit": 0,
+          "current_missing_repo_reads": 8819,
+          "missing_repo_read_delta": 1,
+          "event_time_post_records_since_previous_audit": 52,
+          "event_time_sessions_since_previous_audit": 6,
           "reconciliation_gap_post_records": 0,
           "interpretation": "Snapshot post-record change aligns with recent event-time activity."
         },
@@ -3751,36 +3957,36 @@
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
           "previous_post_records": 30827,
-          "current_post_records": 30827,
-          "post_record_delta": 0,
+          "current_post_records": 30875,
+          "post_record_delta": 48,
           "previous_sessions": 65,
-          "current_sessions": 65,
-          "session_delta": 0,
+          "current_sessions": 66,
+          "session_delta": 1,
           "previous_missing_repo_reads": 730,
           "current_missing_repo_reads": 730,
           "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
-          "event_time_sessions_since_previous_audit": 0,
+          "event_time_post_records_since_previous_audit": 48,
+          "event_time_sessions_since_previous_audit": 2,
           "reconciliation_gap_post_records": 0,
           "interpretation": "Snapshot post-record change aligns with recent event-time activity."
         },
         "hermes": {
-          "status": "aligned",
+          "status": "positive_corpus_growth_beyond_recent_activity",
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
           "previous_post_records": 188802,
-          "current_post_records": 188802,
-          "post_record_delta": 0,
+          "current_post_records": 192069,
+          "post_record_delta": 3267,
           "previous_sessions": 39,
           "current_sessions": 39,
           "session_delta": 0,
           "previous_missing_repo_reads": 1240,
           "current_missing_repo_reads": 1240,
           "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
-          "event_time_sessions_since_previous_audit": 0,
-          "reconciliation_gap_post_records": 0,
-          "interpretation": "Snapshot post-record change aligns with recent event-time activity."
+          "event_time_post_records_since_previous_audit": 1857,
+          "event_time_sessions_since_previous_audit": 70,
+          "reconciliation_gap_post_records": 1410,
+          "interpretation": "Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage."
         },
         "gemini": {
           "status": "aligned",
@@ -3803,16 +4009,23 @@
       },
       "ranked_providers": [
         {
+          "provider": "hermes",
+          "post_record_delta": 3267,
+          "event_time_post_records_since_previous_audit": 1857,
+          "reconciliation_gap_post_records": 1410,
+          "status": "positive_corpus_growth_beyond_recent_activity"
+        },
+        {
           "provider": "claude",
-          "post_record_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
+          "post_record_delta": 52,
+          "event_time_post_records_since_previous_audit": 52,
           "reconciliation_gap_post_records": 0,
           "status": "aligned"
         },
         {
           "provider": "codex",
-          "post_record_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
+          "post_record_delta": 48,
+          "event_time_post_records_since_previous_audit": 48,
           "reconciliation_gap_post_records": 0,
           "status": "aligned"
         },
@@ -3822,16 +4035,9 @@
           "event_time_post_records_since_previous_audit": 0,
           "reconciliation_gap_post_records": 0,
           "status": "aligned"
-        },
-        {
-          "provider": "hermes",
-          "post_record_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
-          "reconciliation_gap_post_records": 0,
-          "status": "aligned"
         }
       ],
-      "largest_positive_reconciliation_gap_provider": "claude",
+      "largest_positive_reconciliation_gap_provider": "hermes",
       "largest_negative_reconciliation_gap_provider": "claude"
     }
   }
