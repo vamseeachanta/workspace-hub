@@ -43,6 +43,10 @@ tags: []
 | "This output file is small, no need for .gitignore" | Committed artifacts accumulate. If it is generated, it belongs in .gitignore, regardless of size. |
 | "The user didn't specify where to put this" | That is exactly when you consult repo-structure. Silence is not permission to improvise. |
 
+## Generated Evidence Exception Pattern
+
+When tracked files already exist under generated-output roots (`outputs/**`, `reports/**`, `dist/**`, etc.), do **not** blindly move or delete them during a structure refactor. First classify the path as unauthorized generated artifact, durable evidence, or temporary durable exception. Temporary durable exceptions must include owner/category/review-date metadata, a concrete follow-up issue URL or permanent-justification schema, and checker coverage that rejects placeholders. If live source/docs intentionally reference the generated path, broad zero-match stale-reference gates are invalid; use scoped checks that only reject unauthorized tracked generated roots and stale committed-evidence links.
+
 ## Red Flags
 
 These phrases signal you are about to violate the Iron Law:
