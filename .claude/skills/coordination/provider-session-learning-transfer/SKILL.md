@@ -117,6 +117,9 @@ Before finishing, verify:
 - target repo files are modified in the intended locations
 - GitHub comment/edit succeeded
 - transferred learnings are framed as next-session execution guidance, not just retrospective commentary
+- exact transfer artifact paths are clean after commit/push, even if unrelated session-generated repo dirt remains elsewhere
+
+If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately.
 
 ### 9. Convert the top actionable transfer into the next planning gate when asked
 If the user asks for the next logical step after a provider-learning transfer, do not automatically rerun the audit. Prefer converting the highest-priority concrete remediation issue into the next gate:
