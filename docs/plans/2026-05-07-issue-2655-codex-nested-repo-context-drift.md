@@ -1,6 +1,6 @@
 # Plan for #2655: Route Codex nested-repo path drift to owning tier-1 repos
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-05-07
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2655
