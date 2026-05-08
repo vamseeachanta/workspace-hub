@@ -1515,6 +1515,8 @@ def test_build_missing_read_remediation_hints_covers_spinout_worktree_and_nested
     hints = module.build_missing_read_remediation_hints(
         [
             {"path": "knowledge/wikis/engineering/wiki/index.md", "count": 6},
+            {"path": "knowledge/wikis/engineering/wiki/log.md", "count": 5},
+            {"path": "knowledge/wikis/marine-engineering/wiki/index.md", "count": 4},
             {"path": ".claude/worktrees/ecosystem-sync/docs/plans/plan.md", "count": 5},
             {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
             {"path": "tests/unit/cost/test_proxy_comparison.py", "count": 3},

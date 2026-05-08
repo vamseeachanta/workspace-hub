@@ -141,6 +141,8 @@ Script: `scripts/cron/comprehensive-learning-nightly.sh`
 
 When the user asks to "document and prepare to exit," do **not** run the heavyweight comprehensive-learning pipeline in-session. Instead, create or update the task-specific durable handoff/report, verify commit/push/clean-state evidence, and leave deeper insights/reflect/knowledge/improve processing to the nightly pipeline. The exit response should be concise: handoff path, pushed commit(s), known dirty-state exceptions, external-action status, and remaining next steps.
 
+For the concrete closeout checklist, use `references/exit-handoff-closeout.md`. Key requirements: write the handoff under `docs/session-handoffs/` when no task-specific location exists, include final clean/sync proof for every touched tier-1 repo, commit and push the handoff unless blocked, inspect any hook-generated dirt before claiming clean state, and explicitly state that no external send/action was performed unless the user approved it.
+
 ## Iron Law
 
 > No learning pipeline phase (/insights, /reflect, /knowledge, /improve) shall run standalone during an active work session — learning is deferred to the nightly pipeline, always.

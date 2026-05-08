@@ -6,6 +6,8 @@ Prepared from: `/mnt/local-analysis/workspace-hub`
 ## Copy/paste prompt for the fresh session
 
 ```text
+/goal repo-by-repo folder/file structure normalization for the workspace-hub tier-1 ecosystem
+
 Resume the repo-by-repo folder/file structure normalization wave for the workspace-hub tier-1 ecosystem.
 
 User intent:

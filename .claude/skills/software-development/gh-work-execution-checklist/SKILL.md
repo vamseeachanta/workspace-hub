@@ -74,6 +74,12 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 - Push only after validation and review are complete.
 - Post the landed summary and verification evidence to GitHub.
 
+7a. Interruption / tool-budget handoff gate
+- If execution is interrupted before validation, commit/push, or closeout, do not write a completion-style summary.
+- Write a resumption handoff instead: live issue state, labels, plan/approval status, exact dirty paths, tests already run and their result, first unmet acceptance criterion, and explicit `not completed` statements.
+- Preserve RED-state evidence truthfully. A failing TDD test plus no implementation is progress, not completion.
+- On resume, re-run live checks rather than trusting the handoff narrative: issue labels/state, `git status`, relevant diffs, and the targeted test/validator.
+
 8. Closeout
 - Close only when the issue is landed, or proven already satisfied/invalid with evidence.
 - Link any future issues discovered during execution.
@@ -83,3 +89,5 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 ## Operating note
 
 When in doubt, stop using the checklist as a shortcut and return to `gh-work-execution` for the full decision framework, delegation rules, GitHub posting cadence, blocker handling, and closeout requirements.
+
+Reference: `references/interrupted-approved-issue-execution-handoff.md` captures the interruption handoff pattern for approved issue work that reaches RED tests or reconnaissance but stops before implementation/closeout.

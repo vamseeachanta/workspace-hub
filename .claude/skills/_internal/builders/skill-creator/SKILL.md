@@ -123,6 +123,23 @@ Skills are classified into quality tiers (A/B/C/D) based on enforcement level:
 
 Target Tier A or B for new skills. See `config/skills/quality-tiers.yaml`.
 
+## Skill Library Update / Session Learning Rubric
+
+Use this section when the user asks to review a session and update the skill library.
+
+1. Be active: if the session contains a user correction, workflow correction, non-trivial workaround, tool-usage pitfall, or missing/outdated skill behavior, update a skill rather than replying with "Nothing to save."
+2. Prefer class-level updates in this order:
+   - Patch a skill that was loaded/used during the session and already governs the task class.
+   - Patch an existing class-level umbrella skill discovered via `skills_list`/`skill_view`.
+   - Add a concise `references/<topic>.md` support file under an existing umbrella and add a one-line pointer from `SKILL.md`.
+   - Create a new class-level umbrella only if no existing skill covers the pattern.
+3. Do not create narrow one-session-one-skill entries named after issue numbers, one-off error strings, feature codenames, or today's repo artifact.
+4. User style/workflow complaints belong in the relevant skill body as procedural guidance, not only in memory.
+5. When a context-compaction handoff is present, treat it as background only: inspect current dirty skill files and live repo state before deciding what to patch, then preserve unrelated dirty skill-library work instead of overwriting it.
+6. Keep session-specific evidence in `references/`; keep reusable operating rules in `SKILL.md`.
+
+Reference: `references/session-learning-library-update-rubric.md` captures a compact checklist for this pattern.
+
 ## Related Skills
 
 - `coordination/session-start-routine/SKILL.md` - Skill library maintenance
