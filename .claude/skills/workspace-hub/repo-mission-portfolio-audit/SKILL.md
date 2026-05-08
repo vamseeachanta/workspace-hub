@@ -156,13 +156,27 @@ Use:
 - If the workspace root or a target repo is dirty, mention it before recommending direct changes.
 - Treat unresolved architecture questions (for example LLM-wiki embedded vs spinout) as current-state constraints, not settled facts.
 
+## Client-facing ecosystem PDF pattern
+
+When producing a one-page, client-facing repo ecosystem PDF for engineering consulting:
+1. Treat the current Tier-1 ecosystem as eight repos unless live docs say otherwise: `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`, `aceengineer-website`, and `aceengineer-strategy`.
+2. In the flowchart itself, include the repo name inside every block, not just role labels, so reviewers can map each function to a GitHub location quickly.
+3. Include a repo-links block with clickable GitHub links and three concise purpose bullets per repo.
+4. Make `llm-wiki` explicit as the knowledge storehouse / public methodology corpus / retrieval-context layer feeding engineering agents and reports.
+5. Verify the rendered PDF is a single landscape page, has no visual cut-off, and preserves links (for Chrome-generated PDFs, `pdfinfo`, `pdftotext`, `strings "$PDF" | grep 'https://github.com/...'`, and a browser visual check worked well).
+
+See `references/client-facing-ecosystem-pdf.md` for the session-derived layout and verification checklist.
+
 ## Reusable conclusion pattern
 
 A common portfolio conclusion in this ecosystem is:
-- `workspace-hub` = control plane
+- `workspace-hub` = control plane and governed work orchestration
 - `digitalmodel` = engineering computation core
 - `assetutilities` = shared utility substrate
+- `worldenergydata` = energy data layer
+- `llm-wiki` = cross-repo durable knowledge storehouse and retrieval context
 - `aceengineer-website` = GTM/proof surface
-- `llm-wikis` = cross-repo durable knowledge layer
+- `aceengineer-strategy` = private GTM/pilot operations
+- `assethold` = business/finance evidence and decision support
 
 Use this as a hypothesis only when supported by the current docs and session evidence.

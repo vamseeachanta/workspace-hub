@@ -129,7 +129,9 @@ Before finishing, verify:
 - Step 8 review evidence is recorded in the transfer report with provider verdicts, committed artifact path(s), issue/PR comment URL(s) when they exist, evaluated commit SHA or exact revision identifier, and any reviewer waiver/unavailability noted
 - exact transfer artifact paths are clean after commit/push, even if unrelated session-generated repo dirt remains elsewhere
 
-If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately.
+If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately. This is mandatory when the compaction note says summary generation was unavailable. See `references/2026-05-08-plan-review-closeout-and-compaction-resume.md` for the #2657 pattern.
+
+After completing a provider-session transfer or plan-review closeout, perform the session-end skill-library review while the learning is fresh. Prefer patching this class-level skill or adding a `references/` note over creating narrow one-session skills; include concrete closeout pitfalls such as compaction recovery, remote verification anomalies, and unrelated dirty-state preservation.
 
 ### 9a. Exit handoff for provider-transfer sessions
 See `references/2026-05-08-exit-closeout-pattern.md` for a concrete closeout example including the remote ref-lock push anomaly.

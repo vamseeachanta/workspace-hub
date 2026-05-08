@@ -113,6 +113,40 @@ file /tmp/pdf-pages/document_page_01.png /tmp/pdf-pages/document_page_${PAGE}.pn
 3. For evidence questions, render both the cover/first page and the controlling clause page so the user can visually verify document identity and operative text.
 4. If visual inspection is needed, run image analysis on the rendered page and confirm the visible section/page before reporting.
 
+## One-Page HTML-to-PDF Report Verification
+
+For client-facing one-page PDFs generated from HTML (flowcharts, ecosystem maps, brochures), use a verification loop rather than trusting the browser render:
+
+1. Render with Chrome headless and file access enabled when local assets (logos/SVGs) are referenced:
+
+```bash
+google-chrome --headless --disable-gpu --no-sandbox --allow-file-access-from-files \
+  --no-pdf-header-footer --print-to-pdf="$OUT" "file://$HTML"
+```
+
+2. Verify it stayed one page and that links survived:
+
+```bash
+pdfinfo "$OUT" | grep -E 'Pages:|Page size:'
+strings "$OUT" | grep -E '/URI \(https://github.com/|/URI \(https://'
+```
+
+3. Extract a text smoke check for critical labels and repo names:
+
+```bash
+pdftotext "$OUT" - | grep -E 'Digital Model|llm-wiki|Tier-1 repo links|workspace-hub'
+```
+
+4. If the browser PDF viewer is blank or unreliable, render page 1 to PNG and inspect the image:
+
+```bash
+mkdir -p /tmp/pdf-check
+pdftoppm -f 1 -l 1 -png -singlefile "$OUT" /tmp/pdf-check/page1
+file /tmp/pdf-check/page1.png
+```
+
+5. After adding a larger header/logo, re-check page count immediately. SVG/logo additions can push an otherwise valid one-page layout onto page 2; shrink the logo, vertical gaps, canvas height, or footer spacing until `pdfinfo` reports `Pages: 1`.
+
 
 ## Version History
 

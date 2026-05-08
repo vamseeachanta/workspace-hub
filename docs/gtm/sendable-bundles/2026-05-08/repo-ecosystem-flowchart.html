@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>A&CE Engineering Automation Repo Ecosystem</title>
+<style>
+  @page { size: Letter landscape; margin: 0.24in; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Inter, Arial, sans-serif; color: #102033; background: #f7f9fc; }
+  .page { width: 10.52in; height: 8.02in; padding: 0.13in; background: linear-gradient(135deg,#f7f9fc 0%,#ffffff 58%,#eef5ff 100%); }
+  header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom: 3px solid #0b2f55; padding-bottom: 4px; }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand-logo { width: 2.25in; height:auto; display:block; }
+  .brand-title { font-size: 13px; font-weight:800; color:#0b2f55; letter-spacing:.2px; text-transform:uppercase; }
+  .subtitle { margin-top:2px; font-size: 11.6px; color:#40536b; max-width: 7.55in; line-height:1.22; }
+  .badge { background:#ff8a00; color:#fff; border-radius:18px; padding:6px 11px; font-weight:700; font-size:11.3px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+  .main { display:grid; grid-template-columns: 6.78in 3.27in; gap: 0.13in; margin-top: 0.06in; }
+  .canvas { position:relative; height: 6.28in; border:1px solid #d9e2ef; border-radius:13px; background:#fff; overflow:hidden; box-shadow:0 2px 8px rgba(16,32,51,.08); }
+  svg { position:absolute; inset:0; width:100%; height:100%; }
+  .node { position:absolute; border-radius:11px; padding:7px 8px; border:1.25px solid #cbd8e8; background:#ffffff; box-shadow:0 3px 9px rgba(16,32,51,.11); text-decoration:none; color:#102033; }
+  .node:hover { outline: 3px solid #ffb45a; }
+  .node h2 { margin:0 0 2px 0; font-size:11.6px; color:#0b2f55; line-height:1.08; }
+  .node p { margin:0; font-size:9.15px; line-height:1.15; color:#344960; }
+  .node .repo { font-size:8.3px; color:#0065a8; font-weight:800; margin-top:2px; }
+  .node .url { display:inline-block; margin-top:3px; padding:2px 5px; border-radius:9px; background:#e8f3ff; color:#005b99; font-size:7.1px; line-height:1; font-weight:800; text-decoration:underline; border:1px solid #9fd0ff; }
+  .strategy { left:0.13in; top:0.22in; width:1.68in; height:0.91in; border-top:5px solid #7b3ff2; }
+  .website { left:0.13in; top:1.31in; width:1.68in; height:0.91in; border-top:5px solid #23a6d5; }
+  .hub { left:2.14in; top:0.70in; width:1.82in; height:1.02in; border-top:5px solid #0b2f55; }
+  .wiki { left:2.15in; top:2.05in; width:1.80in; height:0.99in; border-top:5px solid #9b5de5; }
+  .util { left:4.42in; top:0.14in; width:1.72in; height:0.89in; border-top:5px solid #4b9f45; }
+  .data { left:4.42in; top:1.20in; width:1.72in; height:0.89in; border-top:5px solid #2f7dd1; }
+  .calc { left:4.20in; top:2.50in; width:1.94in; height:1.06in; border-top:5px solid #e05a28; }
+  .fin { left:4.42in; top:3.92in; width:1.72in; height:0.89in; border-top:5px solid #64748b; }
+  .deliver { left:0.23in; top:3.33in; width:2.35in; height:1.16in; border:2px solid #ff8a00; border-top:7px solid #ff8a00; background:#fffaf3; }
+  .loop { position:absolute; left:0.24in; bottom:0.13in; width:6.25in; padding:7px 9px; border-radius:10px; background:#0b2f55; color:#fff; font-size:10.2px; line-height:1.22; }
+  .loop b { color:#ffd08a; }
+  .side { height: 6.28in; display:flex; flex-direction:column; gap:0.06in; }
+  .panel { border:1px solid #d9e2ef; border-radius:12px; background:#fff; padding:7px 8px; box-shadow:0 2px 8px rgba(16,32,51,.08); }
+  .panel h3 { margin:0 0 4px 0; color:#0b2f55; font-size:11.5px; }
+  .review ul { margin:0; padding-left:14px; font-size:9.15px; line-height:1.18; color:#2b3e55; }
+  .review li { margin-bottom:2px; }
+  .repo-panel { flex:1; overflow:hidden; }
+  .repo-grid { display:grid; grid-template-columns: 1fr 1fr; gap:5px 6px; }
+  .repo-card { break-inside:avoid; padding:4px 5px; border-radius:8px; background:#f8fbff; border:1px solid #dce7f4; min-height:0.67in; }
+  .repo-card a { color:#0065a8; text-decoration:none; font-weight:800; font-size:8.6px; display:block; margin-bottom:1px; }
+  .repo-card ul { margin:0; padding-left:10px; font-size:6.75px; line-height:1.08; color:#2b3e55; }
+  .repo-card li { margin:0 0 1px 0; }
+  footer { margin-top:0.05in; display:grid; grid-template-columns: 1fr 1fr 1fr; gap:0.08in; font-size:9.2px; color:#43556d; }
+  .footbox { background:#ffffff; border:1px solid #d9e2ef; border-radius:9px; padding:5px 8px; min-height:0.48in; }
+  .footbox b { color:#0b2f55; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <div class="brand">
+        <img class="brand-logo" src="../../../../digitalmodel/assets/logo/digitalmodel_logo.svg" alt="Digital Model logo" />
+        <div class="brand-title">Repo ecosystem</div>
+      </div>
+      <div class="subtitle">Tier-1 operating model for an engineering consulting company: prospect need → governed issue → reusable knowledge/data/code → traceable analysis pack. Every repo label is a clickable GitHub link.</div>
+    </div>
+    <div class="badge">Doris pilot-ready view</div>
+  </header>
+
+  <div class="main">
+    <section class="canvas" aria-label="Repository ecosystem flowchart">
+      <svg viewBox="0 0 678 655" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#0b2f55"/></marker>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ff8a00"/></marker>
+          <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9b5de5"/></marker>
+        </defs>
+        <path d="M 172 62 C 205 62, 228 84, 246 101" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 172 161 C 211 158, 231 136, 246 123" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 338 161 C 338 184, 338 194, 338 207" stroke="#9b5de5" stroke-width="3" fill="none" marker-end="url(#arrow3)"/>
+        <path d="M 386 101 C 421 76, 440 61, 469 52" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 386 127 C 421 139, 439 157, 469 166" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 550 91 C 535 178, 526 235, 510 258" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 549 193 C 531 231, 523 250, 509 277" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 386 274 C 412 280, 430 287, 452 297" stroke="#9b5de5" stroke-width="3" fill="none" marker-end="url(#arrow3)"/>
+        <path d="M 510 339 C 492 378, 493 401, 506 424" stroke="#0b2f55" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+        <path d="M 452 356 C 380 421, 318 431, 258 403" stroke="#ff8a00" stroke-width="3.5" fill="none" marker-end="url(#arrow2)"/>
+        <path d="M 505 463 C 432 491, 342 494, 258 443" stroke="#ff8a00" stroke-width="3.5" fill="none" marker-end="url(#arrow2)"/>
+        <path d="M 136 333 C 168 271, 224 189, 274 159" stroke="#0b2f55" stroke-width="2.4" fill="none" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+        <text x="205" y="321" font-size="10" fill="#40536b" font-weight="700">governed build loop</text>
+        <text x="300" y="446" font-size="10" fill="#9a5300" font-weight="700">client-ready reports</text>
+      </svg>
+
+      <a class="node strategy" href="https://github.com/vamseeachanta/aceengineer-strategy">
+        <h2>aceengineer-strategy<br/>Prospect / pilot intake</h2><p>Opportunity context, outreach history, pilot scope, follow-up actions.</p><span class="url">↗ github.com/.../aceengineer-strategy</span>
+      </a>
+      <a class="node website" href="https://github.com/vamseeachanta/aceengineer-website">
+        <h2>aceengineer-website<br/>Public proof surface</h2><p>Brochures, examples, case studies, credibility layer.</p><span class="url">↗ github.com/.../aceengineer-website</span>
+      </a>
+      <a class="node hub" href="https://github.com/vamseeachanta/workspace-hub">
+        <h2>workspace-hub<br/>AI control plane</h2><p>GSD issues, plan/review/approval gates, multi-agent execution, standards.</p><span class="url">↗ github.com/.../workspace-hub</span>
+      </a>
+      <a class="node wiki" href="https://github.com/vamseeachanta/llm-wiki">
+        <h2>llm-wiki<br/>Knowledge storehouse</h2><p>Curated engineering corpus, methods, standards notes, reusable retrieval context.</p><span class="url">↗ github.com/.../llm-wiki</span>
+      </a>
+      <a class="node util" href="https://github.com/vamseeachanta/assetutilities">
+        <h2>assetutilities<br/>Utility substrate</h2><p>Config, units, calculations, CLI/report helpers reused across analyses.</p><span class="url">↗ github.com/.../assetutilities</span>
+      </a>
+      <a class="node data" href="https://github.com/vamseeachanta/worldenergydata">
+        <h2>worldenergydata<br/>Energy data layer</h2><p>BSEE/EIA/drilling/economics datasets and data-prep pipelines.</p><span class="url">↗ github.com/.../worldenergydata</span>
+      </a>
+      <a class="node calc" href="https://github.com/vamseeachanta/digitalmodel">
+        <h2>digitalmodel<br/>Engineering computation core</h2><p>Offshore/subsea/marine automation: pipelines, jumpers, OrcaFlex/AQWA/FEA workflows.</p><span class="url">↗ github.com/.../digitalmodel</span>
+      </a>
+      <a class="node fin" href="https://github.com/vamseeachanta/assethold">
+        <h2>assethold<br/>Business evidence</h2><p>Portfolio / finance analytics supporting proposals, budgeting, and decisions.</p><span class="url">↗ github.com/.../assethold</span>
+      </a>
+      <div class="node deliver">
+        <h2>Client-ready consulting pack</h2><p><b>Representative pilot:</b> one problem → parametric cases → pass/fail matrices → traceable methodology → PDF/HTML report for senior engineer review.</p><div class="repo">Examples: wall thickness, freespan/VIV, vessel suitability</div>
+      </div>
+      <div class="loop"><b>Operating promise:</b> repeatable studies become reusable software assets; AI agents handle orchestration, tests, and review evidence; senior engineers focus on assumptions, governing checks, and client decisions.</div>
+    </section>
+
+    <aside class="side">
+      <div class="panel review">
+        <h3>What Mo/Stephane can review</h3>
+        <ul>
+          <li>Pick one representative Doris problem, structure, pipeline, or installation case.</li>
+          <li>A&CE converts it into a starter automation pack with caveats and traceability.</li>
+          <li>Doris reviews outputs against senior-engineer judgment before production use.</li>
+        </ul>
+      </div>
+      <div class="panel repo-panel">
+        <h3>Tier-1 repo links reviewed</h3>
+        <div class="repo-grid">
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/workspace-hub">workspace-hub</a><ul><li>AI control plane</li><li>Issue/plan/review gates</li><li>Cross-repo standards</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/digitalmodel">digitalmodel</a><ul><li>Engineering calculations</li><li>Offshore/subsea workflows</li><li>OrcaFlex/AQWA/FEA outputs</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/assetutilities">assetutilities</a><ul><li>Shared utilities</li><li>Units/config/CLI helpers</li><li>Report/data plumbing</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/worldenergydata">worldenergydata</a><ul><li>Energy datasets</li><li>BSEE/EIA/drilling inputs</li><li>Data prep pipelines</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/llm-wiki">llm-wiki</a><ul><li>Knowledge storehouse</li><li>Public methodology corpus</li><li>Retrieval context for agents</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/aceengineer-website">aceengineer-website</a><ul><li>Public proof surface</li><li>Brochures/case studies</li><li>Client-facing credibility</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/aceengineer-strategy">aceengineer-strategy</a><ul><li>Private GTM operations</li><li>Prospect/pilot tracking</li><li>Proposal strategy notes</li></ul></div>
+          <div class="repo-card"><a href="https://github.com/vamseeachanta/assethold">assethold</a><ul><li>Business evidence</li><li>Finance/portfolio analytics</li><li>Budget and decision support</li></ul></div>
+        </div>
+      </div>
+      <div class="panel review">
+        <h3>Why this matters</h3>
+        <ul>
+          <li>Faster option screening before teams commit heavy engineering hours.</li>
+          <li>Reusable code/data/knowledge instead of one-off spreadsheets.</li>
+          <li>GitHub traceability for assumptions, tests, issues, and report versions.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <div class="footbox"><b>Governance:</b> Issue → plan → adversarial review → user approval → TDD implementation → verified closeout.</div>
+    <div class="footbox"><b>Engineering scope:</b> subsea pipelines, rigid jumpers, vessel suitability, OrcaFlex/AQWA/ANSYS extensions.</div>
+    <div class="footbox"><b>Caveat:</b> public artifact only; client-specific data and confidential details stay out of public repos.</div>
+  </footer>
+</div>
+</body>
+</html>
