@@ -15,15 +15,17 @@ metadata:
 ## When to Use
 
 Per [AI Review Routing Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md):
-- **Three-agent adversarial review is the default** for non-trivial plans, code, harness, file-structure, test-suite, docs/report, skill-transfer, governance, and workflow changes. Claude/orchestrator frames and synthesizes; Codex and Gemini (or explicit substitutes when unavailable) provide independent adversarial review.
-- **Reduction to two-provider or single sanity-check review is allowed only under the policy reduction rules**: explicit user scoping, provider unavailability/quota with evidence, or purely clerical changes with an explicit waiver note.
+- **Three-provider adversarial review is the default** for non-trivial plans, code, harness, file-structure, test-suite, docs/report, skill-transfer, governance, and workflow changes. Claude/orchestrator frames and synthesizes; Codex and Gemini (or explicit substitutes when unavailable) provide independent adversarial review.
+- **Reduction in reviewer count or prompt depth is allowed only under the policy reduction rules**: explicit user scoping, provider unavailability/quota with evidence, or purely clerical changes with an explicit waiver note. A scaled sanity-check prompt is a lighter review shape, not a gate skip.
 
 Do **not** skip adversarial review merely because a change is "docs-only", "skill-only", "harness-only", or "workflow/report-only" when it is meaningful to the repo ecosystem. Scale the prompt depth instead:
 - **Thorough review**: harness, file-structure, test-suite, policy, governance, enforcement hooks/scripts, workflow-impacting changes, and changes to this review skill itself.
 - **Scaled sanity-check review**: low-risk transfer reports, audit refreshes, and narrative documentation with semantic repo impact.
 - **Clerical waiver**: typo-only, formatting-only, generated timestamp-only, or mechanically regenerated artifacts with no semantic/policy/workflow impact may waive one reviewer under the policy, but must record the waiver reason.
 
-The agent/provider that authored the change does **not** count as an independent adversarial reviewer. Record reviewer verdicts (`APPROVE`, `MINOR`, `MAJOR`) and durable artifact paths or issue/PR comment URLs before treating a review gate as satisfied.
+The agent/provider that authored the change does **not** count as an independent adversarial reviewer. Record reviewer verdicts (`APPROVE`, `MINOR`, `MAJOR`), the durable artifact path committed under `scripts/review/results/`, the issue/PR comment URL when one exists, and the commit SHA or exact revision identifier the review evaluated. All channels that exist must be recorded; any omitted channel must be explained.
+
+If a single provider sustains `MAJOR` for 3+ rounds while the other two converge on `MINOR` or `APPROVE`, surface the consensus-vs-minority decision to the user rather than auto-cycling further rounds.
 
 ## Two Review Checkpoints
 

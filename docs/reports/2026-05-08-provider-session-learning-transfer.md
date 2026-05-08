@@ -37,11 +37,15 @@ Source audit: `docs/reports/provider-session-ecosystem-audit.md` / `analysis/pro
 
 ## Retroactive review evidence
 
-- Review prompt: `.planning/quick/review-916743102-provider-transfer-retro.md`
+- Review prompt: `scripts/review/results/2026-05-08-provider-transfer-retro-review-prompt.md`
 - Consolidated review: `scripts/review/results/2026-05-08-provider-transfer-retro-review.md`
+- Initial transfer commit evaluated: `916743102`
+- Skill-transfer follow-up evaluated: `513378ecb`
+- Remediation commit evaluated by follow-up review: `366de15c5`
 - Codex verdict: `MINOR`; no blocker if evidence is recorded durably; requested provenance and review-artifact path improvements.
 - Claude verdict: `MAJOR`; blockers were policy/skill mismatch, too-late review placement, weak evidence requirements, undefined meaningful-work threshold, and duplicate-issue ambiguity.
-- Remediation in this follow-up patch: aligned the review skill with the three-agent default policy, moved provider-transfer review to a pre-close gate, required durable verdict/artifact evidence, clarified scaled-review vs clerical-waiver boundaries, corrected the memory-parity wording, and documented #2657 vs #2650 scope separation.
+- Remediation in this follow-up patch: aligned the review skill with the three-provider default policy, moved provider-transfer review to a pre-close gate, required durable verdict/artifact/SHA evidence, clarified scaled-review vs clerical-waiver boundaries, corrected the memory-parity wording, and documented #2657 vs #2650 scope separation.
+- Follow-up remediation review: Codex `MINOR`, Claude `MINOR`, Gemini unavailable due repository Gemini agent-definition loading errors (`permissionMode` unsupported). Codex/Claude follow-up findings were remediated in the current patch.
 
 ## Verification
 

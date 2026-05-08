@@ -126,7 +126,7 @@ Before finishing, verify:
 - target repo files are modified in the intended locations
 - GitHub comment/edit succeeded
 - transferred learnings are framed as next-session execution guidance, not just retrospective commentary
-- adversarial review evidence exists for the transfer with provider verdicts, artifact paths/comment URLs, and any reviewer waiver/unavailability noted
+- Step 8 review evidence is recorded in the transfer report with provider verdicts, committed artifact path(s), issue/PR comment URL(s) when they exist, evaluated commit SHA or exact revision identifier, and any reviewer waiver/unavailability noted
 - exact transfer artifact paths are clean after commit/push, even if unrelated session-generated repo dirt remains elsewhere
 
 If the session is resumed after context compaction, re-run a scoped closeout pass rather than relying on the pre-compaction narrative: compare local `HEAD` to `origin/main`, check `git status --short -- <artifact paths>`, validate JSON/report/skill files as applicable, then record unrelated dirty paths separately.
