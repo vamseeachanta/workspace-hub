@@ -1,6 +1,6 @@
 # Plan for #2657: Remediate Hermes llm-wiki spinout path drift
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-05-08
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2657
