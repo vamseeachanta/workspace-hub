@@ -17,8 +17,13 @@ Use when an agent claims work is complete and you need to verify exact files, co
 3. Confirm no unrelated dirt is being mistaken for task output.
 4. For public/distributable generated artifacts, inspect machine-readable sidecars/manifests as well as the visible output: they must not serialize absolute local paths, staging roots, client repo names, temp directories, or other environment/client identifiers.
 5. For visual artifacts (PNG/SVG/PDF/HTML charts, brochures, dashboards), run both structural smoke checks and a human/visual readability check before claiming success.
-6. If the repo-wide/legal scanner fails because of unrelated dirty files outside the claimed artifact set, do not either ignore it or falsely report a clean official scan. Run a staged/claimed-file-only deny-list check, report it explicitly as scoped evidence, and document the unrelated blocker separately.
-7. Record evidence before closing or reporting success.
+6. For generated artifact families (HTML + PDF + ZIP/manifests), verify the complete family together: inspect `file` output, sizes/page counts where available, secret/deny-list scan text renderables, and re-run status after staging/commit because PDF/ZIP generators can rewrite already-tracked binaries after an apparently clean check.
+7. If the repo-wide/legal scanner fails because of unrelated dirty files outside the claimed artifact set, do not either ignore it or falsely report a clean official scan. Run a staged/claimed-file-only deny-list check, report it explicitly as scoped evidence, and document the unrelated blocker separately.
+8. Record evidence before closing or reporting success.
+
+## Dirty or Hanging Git Status During Handoff
+
+If repo-wide `git status` or combined status/log commands hang, time out, or produce unusable/truncated output, switch to bounded path-scoped verification instead of retrying broad commands. Use `GIT_OPTIONAL_LOCKS=0 timeout 10 ...` around conflict checks, individual path status checks, branch divergence checks, and file-existence checks. If the workspace is behind remote, dirty, or conflict-adjacent (`AA`/`UU`/ambiguous planning files), do not create a mixed handoff commit; leave the handoff untracked if necessary, document why, and give the next session explicit salvage/reconciliation steps. See `references/dirty-hanging-status-handoff.md`.
 
 ## Public Artifact Hygiene
 

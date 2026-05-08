@@ -28,6 +28,7 @@ Use when a GitHub plan, implementation plan, or review artifact must survive adv
 14. Before promoting a plan after iterative reruns, commit durable provider artifacts and synthesis to the repo; `/tmp` fanout outputs are useful working evidence but are not sufficient durable gate evidence when the plan AC requires archived review files.
 15. If `git push` or pre-push hooks time out after partial output, verify `HEAD` versus `origin/main` before rerunning reviewers or claiming the remote was updated.
 16. Session reference: `references/evidence-gate-rerun-and-remote-verification.md` captures the evidence-validator, artifact-archive, and remote-SHA verification pattern from a 2026-04-30 #2554 GTM plan-review loop.
+17. For repo-structure/refactor plans involving tracked files under generated-output roots, avoid broad zero-match stale-reference gates when runtime/source/docs intentionally retain those paths. Prefer scoped generated-artifact checks, explicit temporary durable-exception metadata, concrete follow-up issue URLs, CI-bound checker validation, and final re-review synthesis before requesting approval. See `references/repo-structure-plan-hardening-with-generated-evidence-exceptions.md`.
 
 ## Consolidated Session Learnings
 
