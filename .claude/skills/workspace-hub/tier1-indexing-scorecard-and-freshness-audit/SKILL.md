@@ -1,7 +1,7 @@
 ---
 name: tier1-indexing-scorecard-and-freshness-audit
-description: Audit tier-1 repos for code-placement/retrieval readiness, write a scorecard report, create follow-up GitHub issues, and add a daily freshness cron while avoiding legacy product-doc reference patterns.
-version: 1.0.1
+description: Audit tier-1 repos for code-placement/retrieval readiness, write scorecard/freshness reports, create follow-up GitHub issues when requested, and handle daily freshness checks without reinforcing legacy product-doc reference patterns.
+version: 1.0.2
 category: workspace-hub
 ---
 
@@ -16,7 +16,7 @@ Use when the user wants to assess whether tier-1 repos are indexed well enough t
 
 - User asks for a portfolio review of tier-1 repos focused on code placement, retrieval, indexing, or repo curation
 - User wants a report file plus a concrete GitHub issue set
-- User wants the curation to be maintained on a daily cadence
+- User wants the curation to be checked or maintained on a daily cadence
 - User explicitly wants to avoid legacy product-doc references in reporting/planning artifacts
 
 ## Core rule learned from live use
@@ -36,6 +36,26 @@ If old docs still reference legacy product-doc files, describe them as:
 
 ## Audit workflow
 
+### Freshness-only scheduled/audit mode
+
+When the user asks for a scheduled or daily freshness audit, do **not** assume the task includes creating or editing cron jobs. Treat scheduling as out of scope unless the user explicitly asks for cron setup. The default deliverable is a local refresh of `docs/reports/tier-1-indexing-freshness-latest.md` with a current timestamp, current evidence, and a clear statement that no new cron jobs were scheduled.
+
+For the current tier-1 repo set (`workspace-hub`, `digitalmodel`, `assetutilities`, `aceengineer-website`), inspect these canonical routing/index surfaces first:
+- `AGENTS.md`
+- `README.md`
+- `docs/README.md`
+- repo-local operator map under `docs/maps/<repo>-operator-map.md` when applicable
+- `docs/registry/module-routing.yaml` when applicable
+
+For freshness reports, include:
+- date/time
+- per-repo status (`green` / `yellow` / `red`)
+- exact broken or missing surfaces
+- concise next actions
+- whether the 2026-04-22 tier-1 indexing scorecard assumptions still hold or need revision
+
+Use “no status-level material drift detected” when repo statuses are unchanged but the scan surfaces additional non-status-changing evidence. Do not overstate as “no material drift” if newly detected broken references were added to the report.
+
 ### 1. Load context and identify tier-1 repos
 Read:
 - `docs/BUSINESS_BRAIN.md`
@@ -53,7 +73,7 @@ For each repo, inspect whether these surfaces exist and are trustworthy:
 - repo docs entry point
 - repo operator maps
 - domain docs when relevant
-- machine-readable registry (for example `specs/module-registry.yaml` or similar)
+- machine-readable registry (prefer `docs/registry/module-routing.yaml` for current tier-1 routing; only use older `specs/module-registry.yaml`-style files when the repo already documents them as canonical)
 - source tree
 - tests tree
 - CI workflow directory
@@ -114,10 +134,24 @@ Suggested pattern from live use:
 - Verify every created issue immediately with `gh issue view --json ...`
 - Post one linking comment on the contract issue listing all child issues
 
+
+## Freshness scan false-positive guardrails
+
+When extracting broken references from canonical docs, avoid these common false positives:
+- wildcard routing patterns such as `*.html`, `content/*.html`, or `tests/unit/test_common_*.py` are patterns, not literal missing files
+- descriptive module names in overview tables (for example `engine.py`, `calculation.py`, `math_helpers.py`) are not broken paths unless the surrounding text presents them as canonical file links
+- naming-convention placeholders such as `feature-name.md` are examples, not missing files
+- relative links should be resolved from the file that contains the link; if the visible label is bare but the Markdown target includes a directory (for example `modules/ai/AI_AGENT_GUIDELINES.md`), check the target, not only the label
+
+Known current evidence pattern from 2026-05-08: `digitalmodel/docs/maps/digitalmodel-operator-map.md` referenced `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md` as if repo-local while the matching file existed at the workspace-level map path; report this as a stale repo-local routing reference unless fixed.
+
+See `references/2026-05-08-freshness-audit-lessons.md` for the compact evidence snapshot, false-positive filters, and validation checklist from the 2026-05-08 scheduled freshness audit.
+
+
 ## Daily freshness automation pattern
 
-If no existing daily repo-curation job covers this need, add a local cron job.
-Always list existing cron jobs first so you do not duplicate an already-running maintenance loop.
+If no existing daily repo-curation job covers this need and the user explicitly asks to create or repair automation, add a local cron job.
+Always list existing cron jobs first so you do not duplicate an already-running maintenance loop. If the user says not to schedule new cron jobs, only refresh the report and state that no new cron jobs were scheduled.
 
 Recommended job shape:
 - schedule: daily early morning local time
