@@ -30,13 +30,23 @@ Collected with live `git fetch`/status probes on 2026-05-09.
 
 ## Dirty-state exceptions at this exit
 
-Do **not** claim all repos are clean. The following dirty paths were present before this handoff was staged:
+Do **not** claim all repos are clean. The following dirty paths were present after the first handoff commit/push-equivalence check and were intentionally left unstaged because they are outside this exit-handoff scope:
 
 ### workspace-hub dirty paths
 
 ```text
+ M .claude/skills/business/sales/draft-outreach/SKILL.md
  M .claude/state/corrections/.edit_sequence_counter
  M .claude/state/corrections/.recent_edits
+ M config/ai-tools/agent-quota-latest.json
+ M config/ai-tools/provider-autolabel-candidates.json
+ M config/ai-tools/provider-routing-scorecard.json
+ M config/ai-tools/provider-utilization-weekly.json
+ M config/ai-tools/provider-work-queue.json
+ M docs/reports/provider-autolabel-candidates.md
+ M docs/reports/provider-routing-scorecard.md
+ M docs/reports/provider-utilization-weekly.md
+ M docs/reports/provider-work-queue.md
 ?? .claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/references/2026-05-09-freshness-audit-lessons.md
 ?? .claude/state/corrections/session_20260509.jsonl
 ?? .claude/state/session-signals/2026-05-09.jsonl
@@ -44,23 +54,11 @@ Do **not** claim all repos are clean. The following dirty paths were present bef
 ?? logs/quality/memory-health-20260509.md
 ```
 
-Classification: session/correction state, skill-reference/session-learning artifact, governance design note, and memory-health report churn. These were not inspected deeply enough for a durable commit and were intentionally left unstaged.
+Classification: provider telemetry/report churn, correction/session-signal state, skill/session-learning artifact, governance design note, memory-health report churn, and one unrelated sales-skill edit. These were not inspected deeply enough for a durable commit and were intentionally left unstaged.
 
-### llm-wiki dirty paths
+### Nested repo dirty paths
 
-```text
- M wikis/engineering-standards/wiki/index.md
-```
-
-Classification: existing wiki index modification from other work; not staged by this exit handoff.
-
-### assethold dirty paths
-
-```text
- M .github/workflows/python-tests.yml
-```
-
-Classification: existing workflow modification from other work; not staged by this exit handoff.
+A follow-up direct status probe showed `llm-wiki` and `assethold` clean after the earlier transient dirty readings; all other tier-1 nested repos were clean and synced at final probe time.
 
 ## Remaining blockers / next steps
 
