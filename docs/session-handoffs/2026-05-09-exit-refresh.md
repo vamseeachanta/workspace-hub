@@ -16,7 +16,7 @@ Collected with live `git fetch`/status probes on 2026-05-09.
 | assetutilities | main | `ff6530076d0e` | `origin/main` @ `ff6530076d0e` | `0/0` | 0 |
 | digitalmodel | main | `162a9e38f1ad` | `origin/main` @ `162a9e38f1ad` | `0/0` | 0 |
 | worldenergydata | main | `1b8e2f19ac5f` | `origin/main` @ `1b8e2f19ac5f` | `0/0` | 0 |
-| llm-wiki | main | `b601d3a3a72f` | `origin/main` @ `b601d3a3a72f` | `0/0` | 0 |
+| llm-wiki | main | `b601d3a3a72f` | `origin/main` @ `b601d3a3a72f` | `0/0` | 5 |
 | assethold | main | `ccc370990901` | `origin/main` @ `ccc370990901` | `0/0` | 0 |
 | aceengineer-website | main | `df75720842af` | `origin/main` @ `df75720842af` | `0/0` | 0 |
 | aceengineer-strategy | main | `9057555e35f8` | `origin/main` @ `9057555e35f8` | `0/0` | 0 |
@@ -60,7 +60,17 @@ Classification: provider telemetry/report churn, correction/session-signal state
 
 ### Nested repo dirty paths
 
-A follow-up direct status probe showed `llm-wiki` and `assethold` clean after the earlier transient dirty readings; all other tier-1 nested repos were clean and synced at final probe time.
+`llm-wiki` had five untracked standards pages present at the final direct probe:
+
+```text
+?? wikis/engineering-standards/wiki/standards/api-spec-6a.md
+?? wikis/engineering-standards/wiki/standards/api-std-1104.md
+?? wikis/engineering-standards/wiki/standards/api-std-579.md
+?? wikis/engineering-standards/wiki/standards/astm-a370.md
+?? wikis/engineering-standards/wiki/standards/bs-7910-flaw-assessment.md
+```
+
+Classification: untracked public wiki standards pages from another ingest stream; not staged by this exit handoff. All other tier-1 nested repos were clean and synced at final probe time.
 
 ## Remaining blockers / next steps
 
