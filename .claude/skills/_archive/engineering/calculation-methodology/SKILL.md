@@ -151,6 +151,9 @@ guidance:
 - [ ] Charts have axis labels, units, and titles
 - [ ] Data tables state units in column headers, not in cell values
 
+### Plan-Review Placeholder Artifacts
+When the user asks for an engineering-calculation concept artifact before implementation approval, create a clearly labeled placeholder HTML under the plan/review artifact area (for example `docs/plans/assets/<issue>-<topic>-placeholder.html`) rather than final output folders. The placeholder should demonstrate reviewer-facing chart intent — chart titles, axis labels with units, dropdown/default behavior, formulas, assumptions, sign/frame conventions, and limitations — while explicitly stating it is not the TDD-backed final deliverable. Link it from the GitHub issue and the issue plan artifact map, commit/push it transactionally, and verify with both a static HTML structure check and a browser/console load check when possible.
+
 ## Usage
 
 ```

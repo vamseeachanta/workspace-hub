@@ -42,6 +42,15 @@ The skill avoids generic patterns like "I hope this email finds you well" or "I'
 - LinkedIn connection requests and follow-up messages
 - Plain text for manual copying
 
+## User-Specific Formatting and Governance
+
+For AceEngineer GTM/prospect outreach:
+- Keep email drafts plain text by default. Avoid markdown bullets, tables, emoji, decorative separators, and special symbols unless the user explicitly asks for them.
+- Use simple sections such as SUBJECT, BASE EMAIL, PERSON VERSION, and NOTES when drafting in a markdown file, but keep the email body itself copy-paste-ready plain text.
+- If the user asks to open an outreach markdown file, write the draft to a `.md` file and open it with VS Code (`code path/to/file.md`) when available.
+- Do not send outreach or imply outreach is authorized until the user approves the final message and attachments.
+- Keep named prospect/contact details in the private strategy repository of record; route generic reusable collateral and implementation work to the appropriate delivery repos.
+
 ## Supported Triggers
 
 Users activate the skill with requests like "draft outreach to [person/company]," "write cold email to [prospect]," or "reach out to [name]."

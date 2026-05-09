@@ -40,7 +40,8 @@ Examples:
 ### Layer 0 — Server Setup (local files only)
 If a local path is given, start a Python HTTP server in the parent directory on
 a free port (default `8974`). Use `uv run python -m http.server` so the uv
-environment is active. Kill the server after verification is complete.
+environment is active. For background tool launches, explicitly `cd` into the
+intended server root inside the command (for example `cd /path/to/repo && python -m http.server 8974`) rather than relying only on the tool's `workdir`; a wrong server root produces misleading 404s even when the file exists. Kill the server after verification is complete.
 
 ### Layer 1 — Page Load
 - Navigate to URL via `mcp__claude-in-chrome__navigate`

@@ -147,6 +147,10 @@ For the concrete closeout checklist, use `references/exit-handoff-closeout.md`. 
 
 > No learning pipeline phase (/insights, /reflect, /knowledge, /improve) shall run standalone during an active work session — learning is deferred to the nightly pipeline, always.
 
+### Explicit Skill-Library Update Requests
+
+If the user explicitly asks to "review the conversation and update the skill library," do not hide behind the nightly deferral rule. Perform a targeted skill update using `skill_manage` against the currently loaded class-level skill or the closest existing umbrella. This is a bounded library-maintenance action, not the heavyweight comprehensive-learning pipeline. If a referenced support file is missing, create it immediately under `references/` and keep SKILL.md pointing to it.
+
 ## Rationalization Defense
 
 | Excuse | Reality |
