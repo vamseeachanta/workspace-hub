@@ -73,3 +73,5 @@ shown:
     tips: [cc-worktree, gsd-note]
   - date: 2026-05-08
     tips: [gsd-workstreams, eco-capability-map]
+  - date: 2026-05-09
+    tips: [eco-reflect, bp-stop-hook]

@@ -1,13 +1,3 @@
-2026-05-07T13:59:01-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/concepts/wave-shoaling-and-depth-dependent-loading.md|20605
-2026-05-07T13:59:13-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/index.md|20606
-2026-05-07T13:59:14-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/index.md|20607
-2026-05-07T13:59:19-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/index.md|20608
-2026-05-07T13:59:24-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/index.md|20609
-2026-05-07T13:59:52-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/log.md|20610
-2026-05-07T14:03:18-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/project_llm_wiki_strategic_role.md|20611
-2026-05-07T14:03:20-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md|20612
-2026-05-07T14:08:14-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/concepts/wave-shoaling-and-depth-dependent-loading.md|20613
-2026-05-07T14:08:26-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/naval-architecture/wiki/concepts/ship-design.md|20614
 2026-05-07T14:08:48-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/naval-architecture/wiki/log.md|20615
 2026-05-07T14:08:53-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/log.md|20616
 2026-05-07T14:10:56-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/marine-engineering/wiki/concepts/stress-tendency-analysis.md|20617
@@ -48,3 +38,13 @@
 2026-05-08T19:45:19-05:00|/mnt/local-analysis/workspace-hub/scripts/data/llm-wiki/tests/test_resolve_wiki_path.py|20652
 2026-05-08T19:46:12-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-08-llm-wiki-completeness-loop.md|20653
 2026-05-08T20:17:35-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-08-llm-wiki-completeness-loop.md|20654
+2026-05-09T07:03:35-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-dnv.md|20655
+2026-05-09T07:05:54-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-abs.md|20656
+2026-05-09T07:06:33-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-asce.md|20657
+2026-05-09T07:07:19-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-minor-publishers.md|20658
+2026-05-09T07:07:23-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-asme.md|20659
+2026-05-09T07:08:37-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-iso.md|20660
+2026-05-09T07:08:44-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-bsi.md|20661
+2026-05-09T07:09:28-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-api.md|20662
+2026-05-09T07:10:17-05:00|/mnt/local-analysis/workspace-hub/llm-wiki/wikis/engineering-standards/wiki/sources/og-standards-onepetro.md|20663
+2026-05-09T07:32:54-05:00|/mnt/local-analysis/workspace-hub/docs/sessions/2026-05-08-llm-wiki-completeness-loop.md|20664
