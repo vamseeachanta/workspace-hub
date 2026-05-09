@@ -12,12 +12,12 @@ Collected with live `git fetch`/status probes on 2026-05-09.
 
 | Repo | Branch | HEAD | Upstream | Ahead/Behind | Dirty |
 | --- | --- | --- | --- | --- | --- |
-| workspace-hub | main | `724109a63a03` | `origin/main` @ `724109a63a03` | `0/0` | 7 |
+| workspace-hub | main | `230c327e312c` | `origin/main` @ `230c327e312c` | `0/0` | 17 |
 | assetutilities | main | `ff6530076d0e` | `origin/main` @ `ff6530076d0e` | `0/0` | 0 |
 | digitalmodel | main | `162a9e38f1ad` | `origin/main` @ `162a9e38f1ad` | `0/0` | 0 |
 | worldenergydata | main | `1b8e2f19ac5f` | `origin/main` @ `1b8e2f19ac5f` | `0/0` | 0 |
-| llm-wiki | main | `6a614c55ffff` | `origin/main` @ `6a614c55ffff` | `0/0` | 1 |
-| assethold | main | `ccc370990901` | `origin/main` @ `ccc370990901` | `0/0` | 1 |
+| llm-wiki | main | `b601d3a3a72f` | `origin/main` @ `b601d3a3a72f` | `0/0` | 0 |
+| assethold | main | `ccc370990901` | `origin/main` @ `ccc370990901` | `0/0` | 0 |
 | aceengineer-website | main | `df75720842af` | `origin/main` @ `df75720842af` | `0/0` | 0 |
 | aceengineer-strategy | main | `9057555e35f8` | `origin/main` @ `9057555e35f8` | `0/0` | 0 |
 
@@ -26,7 +26,7 @@ Collected with live `git fetch`/status probes on 2026-05-09.
 - `assetutilities#78` repo-structure Phase 1 contract/checker/tests/docs/enforcement was implemented, locally verified, pushed, GitHub Actions verified, and closed in commit `ff6530076d0e`.
 - `digitalmodel#596` approval reconciliation was committed and pushed earlier; current `digitalmodel` is synced and clean at `162a9e38f1ad`. Implementation was not started in this session closeout scope.
 - `worldenergydata#394` preservation state has since landed/synced: current `worldenergydata` is clean and synced at `1b8e2f19ac5f`.
-- Root `workspace-hub` has newer auto-sync/documentation commits after the previous handoff; current root is synced at `724109a63a03` before this handoff commit.
+- Root `workspace-hub` has newer auto-sync/documentation commits after the previous handoff; current root is synced at `230c327e312c` as of the final proof in this handoff.
 
 ## Dirty-state exceptions at this exit
 
