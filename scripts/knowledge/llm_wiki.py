@@ -506,11 +506,16 @@ def cmd_query(args: argparse.Namespace) -> int:
     results = []
     wiki_dir = wiki_root / "wiki"
 
-    for category in ["entities", "concepts", "sources", "comparisons"]:
-        subdir = wiki_dir / category
-        if not subdir.exists():
-            continue
+    # Iterate every wiki/<subdir>/ instead of a hard-coded subset, so newly
+    # introduced subdirs (e.g. standards/, workflows/) are searched without
+    # requiring a code change. The .glob("*.md") restriction below keeps
+    # image-only subdirs like visualizations/ harmless.
+    if not wiki_dir.exists():
+        subdirs: list[Path] = []
+    else:
+        subdirs = sorted(d for d in wiki_dir.iterdir() if d.is_dir())
 
+    for subdir in subdirs:
         for md_file in subdir.glob("*.md"):
             content = md_file.read_text()
             matches = sum(1 for word in query_words if word in content.lower())

@@ -50,6 +50,10 @@ ASSET_TYPE_ENUM = {
     "seed",
     "governance-doc",
     "operational-template",
+    # 1.1.3 (2026-05-08) — Elements-ingest visibility per gap-D fix #3:
+    "ingest-manifest",
+    "extraction-queue",
+    "classification",
 }
 
 LAYER_ENUM = {

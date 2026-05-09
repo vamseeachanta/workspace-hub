@@ -27,6 +27,9 @@ Optional arguments:
 - `/repo-sync pull` — Pull all repos (default)
 - `/repo-sync status` — Status check only, no pulls
 - `/repo-sync push` — Push all repos with unpushed commits
+- `repository_sync pull <repo-name>` — Pull one configured repository (for example `./scripts/repository_sync pull acma-projects`)
+
+CLI syntax pitfall: `repository_sync <repo-name>` is not valid and returns `Unknown command`. If the user gives a bare repo name with `repository_sync`, infer the intended default operation as a single-repo pull and run `./scripts/repository_sync pull <repo-name>` after a quick status check.
 
 ## What It Does
 
@@ -111,11 +114,17 @@ See `/ecosystem-health` skill for the full check suite and pass conditions.
 
 When this skill is invoked, execute these steps:
 
-### Step 1: Run bulk pull
+### Step 1: Run pull
+For all repos:
 ```bash
 ./scripts/repository_sync pull all
 ```
-Capture output. Identify repos marked with `✗ Failed`.
+For a single configured repo:
+```bash
+./scripts/repository_sync status <repo-name>
+./scripts/repository_sync pull <repo-name>
+```
+Capture output. Identify repos marked with `✗ Failed` or any nonzero command exit.
 
 ### Step 2: For each failed repo, diagnose
 ```bash

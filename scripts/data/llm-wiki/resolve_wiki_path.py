@@ -58,6 +58,20 @@ def resolve_wiki_dir() -> Path:
     repo_data = REPO_ROOT / "data" / "llm-wiki"
     if repo_data.exists():
         return repo_data
+    if repo_data.is_symlink():
+        # Operator intent was branch #3 but the symlink target is unreachable
+        # (typical case: NFS mount not present on this host). Warn explicitly
+        # so callers don't get silent zero-result failures from the fallback.
+        try:
+            target = os.readlink(repo_data)
+        except OSError:
+            target = "(unreadable)"
+        print(
+            f"WARNING: {repo_data} is a dangling symlink (target: {target}). "
+            f"Falling back to knowledge/wikis/. Set LLM_WIKI_DATA_DIR or "
+            f"repair the symlink to suppress this.",
+            file=sys.stderr,
+        )
 
     # 4. Fallback: the git-tracked knowledge/wikis directory
     return REPO_ROOT / "knowledge" / "wikis"

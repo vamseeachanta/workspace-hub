@@ -47,6 +47,8 @@ tags: []
 
 When tracked files already exist under generated-output roots (`outputs/**`, `reports/**`, `dist/**`, etc.), do **not** blindly move or delete them during a structure refactor. First classify the path as unauthorized generated artifact, durable evidence, or temporary durable exception. Temporary durable exceptions must include owner/category/review-date metadata, a concrete follow-up issue URL or permanent-justification schema, and checker coverage that rejects placeholders. If live source/docs intentionally reference the generated path, broad zero-match stale-reference gates are invalid; use scoped checks that only reject unauthorized tracked generated roots and stale committed-evidence links.
 
+Checker pitfall: path-only parsing of `git status --short` is insufficient. Preserve status codes so the checker rejects deletion (`D`) and rename/relocation (`R`) of generated-output paths; otherwise a prohibited generated-artifact move can pass merely because the path itself is classified.
+
 ## Phase 1 Contract Checker Pattern
 
 For approved Phase 1 repo-structure issues, use the packaged pattern in [`references/phase1-contract-checker-pattern.md`](references/phase1-contract-checker-pattern.md): bounded docs/config/checker/tests/enforcement only, TDD slices for unapproved roots and generated-root metadata, default checker coverage of `git ls-files` plus non-ignored working-tree paths, and no broad moves/deletions until artifacts are classified.

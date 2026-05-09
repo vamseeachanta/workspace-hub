@@ -149,6 +149,38 @@ class TestFallback:
         assert result == tmp_repo / "knowledge" / "wikis"
 
 
+# -- 4b. Dangling symlink at branch #3 ----------------------------------------
+
+
+class TestDanglingSymlink:
+
+    def test_dangling_symlink_at_data_llm_wiki_warns_and_falls_through(
+        self, tmp_path, tmp_repo, capsys
+    ):
+        """Broken symlink at data/llm-wiki should warn to stderr and fall through to fallback."""
+        target = tmp_path / "nonexistent-nfs-target"  # never created
+        # Replace the directory with a broken symlink
+        shutil.rmtree(tmp_repo / "data" / "llm-wiki")
+        os.symlink(str(target), str(tmp_repo / "data" / "llm-wiki"))
+
+        with patch.object(mod, "REPO_ROOT", tmp_repo):
+            result = mod.resolve_wiki_dir()
+        captured = capsys.readouterr()
+        assert "dangling symlink" in captured.err
+        assert "nonexistent-nfs-target" in captured.err
+        assert result == tmp_repo / "knowledge" / "wikis"
+
+    def test_no_warning_when_data_llm_wiki_simply_absent(self, tmp_repo, capsys):
+        """No symlink + no dir should fall through silently — the warning is reserved for the broken-symlink case."""
+        shutil.rmtree(tmp_repo / "data" / "llm-wiki")
+
+        with patch.object(mod, "REPO_ROOT", tmp_repo):
+            result = mod.resolve_wiki_dir()
+        captured = capsys.readouterr()
+        assert "dangling symlink" not in captured.err
+        assert result == tmp_repo / "knowledge" / "wikis"
+
+
 # -- 5. Resolution order -------------------------------------------------------
 
 

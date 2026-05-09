@@ -7,7 +7,7 @@
 # Parent model: docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md (#2205)
 #
 # asset_type enum: wiki, registry, ledger, map, architecture-doc, entry-point, seed,
-#   governance-doc, operational-template
+#   governance-doc, operational-template, ingest-manifest, extraction-queue, classification
 # layer enum: L1, L2, L3, L3-adjacent, L4, L5, L6, recurring-operational
 # source_of_truth_tier enum: git-tracked, shared-mount, local-cache
 # durability enum: durable, transient, recurring-operational
@@ -18,9 +18,10 @@
 #   1.1.0 (2026-04-17) — additive: per-asset `fields:` sub-block for structural field declarations (#2307)
 #   1.1.1 (2026-04-17) — declared `summary_file_exists` alongside `summary_done` after #2309 field split; added `semantic` and `semantic_pair` keys on field entries to document companion relationships
 #   1.1.2 (2026-04-28) — normalized `freshness_cadence: daily` to `nightly` per #2105 governance vocabulary; no registry field rename
+#   1.1.3 (2026-05-08) — additive: three new asset_type enum values (ingest-manifest, extraction-queue, classification) so the Elements-to-LLM-wiki ingest pack (#2535/#2536) becomes visible to registry-tracking consumers (gap-D fix #3, see docs/sessions/2026-05-08-llm-wiki-completeness-loop.md)
 
 generated: '2026-04-11'
-schema_version: '1.1.2'
+schema_version: '1.1.3'
 
 assets:
 
@@ -492,6 +493,59 @@ assets:
     discoverability: hard-to-discover
     gaps: "Not linked from navigation surfaces"
     owner_issue: null
+
+  # ── L4 — Elements → LLM-Wiki Ingest Artifacts (gap-D fix #3, 2026-05-08) ─
+
+  - asset_key: ingest-manifest-elements-llm-wiki
+    title: Elements → LLM Wiki Ingest Manifest
+    asset_type: ingest-manifest
+    layer: L4
+    canonical_path: .planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl
+    human_entry_point: .planning/intel/elements-to-llm-wiki/wiki-ingest-report.md
+    agent_entry_point: .planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md
+    query_command: "wc -l .planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: transient
+    freshness_source: "git log -1 --format=%ci .planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "No in-tree consumer; regenerated only on Elements drive remount via build-elements-wiki-inventory.py"
+    owner_issue: '#2535'
+
+  - asset_key: extraction-queue-elements-deep
+    title: Elements Deep-Extraction Work Queue
+    asset_type: extraction-queue
+    layer: L4
+    canonical_path: .planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv
+    human_entry_point: .planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv
+    agent_entry_point: .planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md
+    query_command: "wc -l .planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: transient
+    freshness_source: "git log -1 --format=%ci .planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "671-row queue has no dispatcher; tracked under #2536 (E10 in docs/sessions/2026-05-08-llm-wiki-completeness-loop.md)"
+    owner_issue: '#2536'
+
+  - asset_key: classification-elements-wiki-buckets
+    title: Elements Bucket → Wiki Domain Classification
+    asset_type: classification
+    layer: L4
+    canonical_path: .planning/intel/elements-to-llm-wiki/elements-wiki-classification.tsv
+    human_entry_point: .planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md
+    agent_entry_point: .planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md
+    query_command: "cat .planning/intel/elements-to-llm-wiki/elements-wiki-classification.tsv"
+    machine_scope: [all-git-clones]
+    source_of_truth_tier: git-tracked
+    durability: transient
+    freshness_source: "git log -1 --format=%ci .planning/intel/elements-to-llm-wiki/elements-wiki-classification.tsv"
+    freshness_cadence: on-demand
+    discoverability: hard-to-discover
+    gaps: "Classification fixed at 8 buckets; new ingest sources require regen"
+    owner_issue: '#2535'
 
   # ── Recurring-Operational ──────────────────────────────────────────────
 

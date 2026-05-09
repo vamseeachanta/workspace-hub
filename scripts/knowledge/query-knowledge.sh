@@ -7,6 +7,7 @@ set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 KNOWLEDGE_BASE_DIR="${KNOWLEDGE_BASE_DIR:-${REPO_ROOT}/knowledge-base}"
 KNOWLEDGE_SEEDS_DIR="${KNOWLEDGE_SEEDS_DIR:-${REPO_ROOT}/knowledge/seeds}"
+WIKI_SEEDS_DIR="${WIKI_SEEDS_DIR:-${REPO_ROOT}/llm-wiki/seeds}"
 
 QUERY=""
 CATEGORY=""
@@ -26,6 +27,7 @@ import json, os, sys, re
 
 kb_dir = "${KNOWLEDGE_BASE_DIR}"
 seeds_dir = "${KNOWLEDGE_SEEDS_DIR}"
+wiki_seeds_dir = "${WIKI_SEEDS_DIR}"
 query = "${QUERY}".lower()
 category = "${CATEGORY}".lower()
 limit = ${LIMIT}
@@ -49,16 +51,27 @@ def load_jsonl(path):
         pass
     return out
 
-# Determine whether to use index.jsonl (source-mtime check)
+# Determine whether to use index.jsonl (source-mtime check).
+# Discover all *.yaml seeds across both seed roots (knowledge/seeds and
+# llm-wiki/seeds) so naval-architecture / maritime-law / mooring-failures
+# seeds become reachable from this query path. Schemas without entries[]
+# (e.g. naval-architecture-resources.yaml's textbooks[]) are silently skipped
+# below — they are out of scope for this loader and will need a separate handler.
 index_path = os.path.join(kb_dir, "index.jsonl")
-career_path = os.path.join(seeds_dir, "career-learnings.yaml")
 wrk_path = os.path.join(kb_dir, "wrk-completions.jsonl")
+
+seed_yaml_paths = []
+for sdir in [seeds_dir, wiki_seeds_dir]:
+    if os.path.isdir(sdir):
+        for fname in sorted(os.listdir(sdir)):
+            if fname.endswith(".yaml"):
+                seed_yaml_paths.append(os.path.join(sdir, fname))
 
 use_index = False
 if os.path.exists(index_path):
     idx_mtime = os.path.getmtime(index_path)
     src_mtimes = []
-    for p in [wrk_path, career_path]:
+    for p in [wrk_path] + seed_yaml_paths:
         if os.path.exists(p):
             src_mtimes.append(os.path.getmtime(p))
     if src_mtimes and all(m <= idx_mtime for m in src_mtimes):
@@ -72,16 +85,19 @@ else:
         for fname in os.listdir(kb_dir):
             if fname.endswith(".jsonl") and fname != "index.jsonl":
                 entries.extend(load_jsonl(os.path.join(kb_dir, fname)))
-    # Normalize career-learnings.yaml entries
-    if os.path.exists(career_path):
-        try:
-            import yaml  # type: ignore[import]
-            with open(career_path) as f:
-                seed = yaml.safe_load(f) or {}
-            for e in seed.get("entries", []):
+    # Load entries[]-style seed yamls from both seed roots.
+    try:
+        import yaml  # type: ignore[import]
+        for ypath in seed_yaml_paths:
+            try:
+                with open(ypath) as f:
+                    seed = yaml.safe_load(f) or {}
+            except Exception:
+                continue
+            for e in (seed.get("entries") or []):
                 entries.append(e)
-        except Exception:
-            pass
+    except Exception:
+        pass
 
 # Dedup by id
 deduped = []
