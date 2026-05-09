@@ -12,7 +12,7 @@ Collected with live `git fetch`/status probes on 2026-05-09.
 
 | Repo | Branch | HEAD | Upstream | Ahead/Behind | Dirty |
 | --- | --- | --- | --- | --- | --- |
-| workspace-hub | main | `230c327e312c` | `origin/main` @ `230c327e312c` | `0/0` | 17 |
+| workspace-hub | main | `791e4b7aea25` | `origin/main` @ `791e4b7aea25` | `0/0` | 19 |
 | assetutilities | main | `ff6530076d0e` | `origin/main` @ `ff6530076d0e` | `0/0` | 0 |
 | digitalmodel | main | `162a9e38f1ad` | `origin/main` @ `162a9e38f1ad` | `0/0` | 0 |
 | worldenergydata | main | `1b8e2f19ac5f` | `origin/main` @ `1b8e2f19ac5f` | `0/0` | 0 |
@@ -26,7 +26,7 @@ Collected with live `git fetch`/status probes on 2026-05-09.
 - `assetutilities#78` repo-structure Phase 1 contract/checker/tests/docs/enforcement was implemented, locally verified, pushed, GitHub Actions verified, and closed in commit `ff6530076d0e`.
 - `digitalmodel#596` approval reconciliation was committed and pushed earlier; current `digitalmodel` is synced and clean at `162a9e38f1ad`. Implementation was not started in this session closeout scope.
 - `worldenergydata#394` preservation state has since landed/synced: current `worldenergydata` is clean and synced at `1b8e2f19ac5f`.
-- Root `workspace-hub` has newer auto-sync/documentation commits after the previous handoff; current root is synced at `230c327e312c` as of the final proof in this handoff.
+- Root `workspace-hub` has newer auto-sync/documentation commits after the previous handoff; current root is synced at `791e4b7aea25` as of the final proof in this handoff.
 
 ## Dirty-state exceptions at this exit
 
@@ -35,7 +35,9 @@ Do **not** claim all repos are clean. The following dirty paths were present aft
 ### workspace-hub dirty paths
 
 ```text
+ M .claude/skills/_archive/engineering/calculation-methodology/SKILL.md
  M .claude/skills/business/sales/draft-outreach/SKILL.md
+ M .claude/skills/development/html-report-verify/SKILL.md
  M .claude/state/corrections/.edit_sequence_counter
  M .claude/state/corrections/.recent_edits
  M config/ai-tools/agent-quota-latest.json
@@ -54,7 +56,7 @@ Do **not** claim all repos are clean. The following dirty paths were present aft
 ?? logs/quality/memory-health-20260509.md
 ```
 
-Classification: provider telemetry/report churn, correction/session-signal state, skill/session-learning artifact, governance design note, memory-health report churn, and one unrelated sales-skill edit. These were not inspected deeply enough for a durable commit and were intentionally left unstaged.
+Classification: provider telemetry/report churn, correction/session-signal state, skill/session-learning artifacts, governance design note, memory-health report churn, and unrelated skill edits. These were not inspected deeply enough for a durable commit and were intentionally left unstaged.
 
 ### Nested repo dirty paths
 
