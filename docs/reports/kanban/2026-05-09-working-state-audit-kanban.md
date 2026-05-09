@@ -1,0 +1,38 @@
+# Working State Audit Kanban Board
+
+Generated: 2026-05-09
+
+## Lane counts
+
+| Lane | Count |
+| --- | ---: |
+| Blocked / Waiting | 0 |
+| In Progress / Status Working | 15 |
+| State Conflict / Hygiene | 0 |
+| Plan Review / Needs Approval | 0 |
+| Approved Label Drift / Repair Before Execution | 0 |
+| Ready / Plan Approved | 0 |
+| Other Status / Triage | 0 |
+| Planning Needed / Future Backlog | 0 |
+
+## Review lanes
+
+### In Progress / Status Working (15)
+
+| Issue | Title | Lane | Domain routes | Priority | 5-hour Hermes swarm route | Labels |
+| --- | --- | --- | --- | --- | --- | --- |
+| [digitalmodel #504](https://github.com/vamseeachanta/digitalmodel/issues/504) | OrcaFlex buoys builder refactor: split 611-line mega-builder into focused builders | In Progress / Status Working | unlabeled-domain | priority:unspecified | status audit window: verify branch/PR/worker state; avoid duplicate launch | `enhancement`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2403](https://github.com/vamseeachanta/workspace-hub/issues/2403) | feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | In Progress / Status Working | category:data-pipeline, category:research, domain:document-intelligence | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:data-pipeline`, `cat:research`, `domain:document-intelligence`, `enhancement`, `priority:medium`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2402](https://github.com/vamseeachanta/workspace-hub/issues/2402) | feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | In Progress / Status Working | category:data-pipeline, domain:document-intelligence | priority:high | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:data-pipeline`, `domain:document-intelligence`, `enhancement`, `priority:high`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2327](https://github.com/vamseeachanta/workspace-hub/issues/2327) | digitalmodel: CadQuery spike for parametric offshore geometry generation | In Progress / Status Working | category:engineering, category:research | priority:low | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:engineering`, `cat:research`, `priority:low`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2269](https://github.com/vamseeachanta/workspace-hub/issues/2269) | feat(openfoam): standardize ESI v2312 baseline workflow and validation | In Progress / Status Working | category:documentation, category:engineering | priority:high | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:documentation`, `cat:engineering`, `enhancement`, `machine:dev-secondary`, `priority:high`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2229](https://github.com/vamseeachanta/workspace-hub/issues/2229) | feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live | In Progress / Status Working | category:harness | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:claude`, `agent:codex`, `cat:harness`, `enhancement`, `machine:licensed-win-1`, `priority:medium`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2129](https://github.com/vamseeachanta/workspace-hub/issues/2129) | chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts | In Progress / Status Working | category:ai-orchestration, category:harness | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:claude`, `agent:codex`, `cat:ai-orchestration`, `cat:harness`, `enhancement`, `priority:medium`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2125](https://github.com/vamseeachanta/workspace-hub/issues/2125) | feat(llm-wiki): auto-refresh ingestion on new Orcina releases | In Progress / Status Working | category:data-pipeline, domain:knowledge-management, domain:marine | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:data-pipeline`, `domain:knowledge-management`, `domain:marine`, `enhancement`, `priority:medium`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2124](https://github.com/vamseeachanta/workspace-hub/issues/2124) | feat(llm-wiki): extend ingestion to Orcina resources, examples, and training materials | In Progress / Status Working | category:data-pipeline, domain:knowledge-management, domain:marine | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:data-pipeline`, `domain:knowledge-management`, `domain:marine`, `enhancement`, `priority:medium`, `status:plan-approved`, `status:working` |
+| [workspace-hub #2055](https://github.com/vamseeachanta/workspace-hub/issues/2055) | feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | In Progress / Status Working | category:engineering | priority:high | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:claude`, `agent:codex`, `cat:engineering`, `dark-intelligence`, `enhancement`, `priority:high`, `scope:v1`, `status:needs-data`, … |
+| [workspace-hub #2046](https://github.com/vamseeachanta/workspace-hub/issues/2046) | Audit compliance of strict issue planning workflow after rollout | In Progress / Status Working | category:ai-orchestration, category:operations | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:ai-orchestration`, `cat:operations`, `priority:medium`, `status:plan-approved`, `status:working` |
+| [workspace-hub #1962](https://github.com/vamseeachanta/workspace-hub/issues/1962) | FEATURE: Tier-1 Repo Ecosystem Refactoring — audit, plan, execute with Claude Code plan mode | In Progress / Status Working | category:engineering, category:harness | priority:high | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:claude`, `agent:codex`, `agent:gemini`, `cat:engineering`, `cat:harness`, `enhancement`, `priority:high`, `status:plan-approved`, … |
+| [workspace-hub #1782](https://github.com/vamseeachanta/workspace-hub/issues/1782) | epic: zero-loss agent learnings — git-track ALL AI agent memories, corrections, patterns, and insights | In Progress / Status Working | category:ai-orchestration, category:harness | priority:high | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:claude`, `agent:codex`, `cat:ai-orchestration`, `cat:harness`, `enhancement`, `machine:multi`, `priority:high`, `status:plan-approved`, … |
+| [workspace-hub #1583](https://github.com/vamseeachanta/workspace-hub/issues/1583) | Hermes config parity via repo ecosystem templates | In Progress / Status Working | category:ai-orchestration, category:harness | priority:medium | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:claude`, `agent:codex`, `cat:ai-orchestration`, `cat:harness`, `enhancement`, `machine:multi`, `priority:medium`, `status:plan-approved`, … |
+| [workspace-hub #1264](https://github.com/vamseeachanta/workspace-hub/issues/1264) | WRK-1365: OrcaFlex frame analysis | In Progress / Status Working | category:engineering-calculations | priority:high | status audit window: verify branch/PR/worker state; avoid duplicate launch | `agent:codex`, `cat:engineering-calculations`, `enhancement`, `machine:licensed-win-1`, `priority:high`, `status:plan-approved`, `status:working`, `wrk-item` |

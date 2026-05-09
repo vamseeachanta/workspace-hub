@@ -1,0 +1,38 @@
+# category:business Kanban Board
+
+Generated: 2026-05-09
+
+## Lane counts
+
+| Lane | Count |
+| --- | ---: |
+| Blocked / Waiting | 0 |
+| In Progress / Status Working | 0 |
+| State Conflict / Hygiene | 0 |
+| Plan Review / Needs Approval | 0 |
+| Approved Label Drift / Repair Before Execution | 0 |
+| Ready / Plan Approved | 0 |
+| Other Status / Triage | 0 |
+| Planning Needed / Future Backlog | 15 |
+
+## Review lanes
+
+### Planning Needed / Future Backlog (15)
+
+| Issue | Title | Lane | Domain routes | Priority | 5-hour Hermes swarm route | Labels |
+| --- | --- | --- | --- | --- | --- | --- |
+| [workspace-hub #2557](https://github.com/vamseeachanta/workspace-hub/issues/2557) | chore(productivity): weekly work-pattern review and flow hacks | Planning Needed / Future Backlog | category:ai-orchestration, category:business, domain:gtm | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:ai-orchestration`, `cat:business`, `domain:gtm`, `priority:high` |
+| [workspace-hub #2117](https://github.com/vamseeachanta/workspace-hub/issues/2117) | feat(gtm): resume + cover letter generator for Rigzone applications (#1993) | Planning Needed / Future Backlog | category:business, domain:gtm | priority:medium | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:gtm`, `enhancement`, `priority:medium` |
+| [workspace-hub #2038](https://github.com/vamseeachanta/workspace-hub/issues/2038) | feat(gtm): manim installation sequence / operability envelope animation | Planning Needed / Future Backlog | category:business, domain:gtm | priority:medium | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:gtm`, `enhancement`, `priority:medium` |
+| [workspace-hub #2037](https://github.com/vamseeachanta/workspace-hub/issues/2037) | feat(gtm): manim mooring layout / force explainer animation | Planning Needed / Future Backlog | category:business, domain:gtm | priority:medium | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:gtm`, `enhancement`, `priority:medium` |
+| [workspace-hub #2035](https://github.com/vamseeachanta/workspace-hub/issues/2035) | feat(gtm): manim-based engineering explainer pipeline | Planning Needed / Future Backlog | category:business, domain:gtm | priority:medium | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:gtm`, `enhancement`, `priority:medium` |
+| [workspace-hub #2016](https://github.com/vamseeachanta/workspace-hub/issues/2016) | feat(gtm): client conversion pipeline -- turn repo capability into paying clients | Planning Needed / Future Backlog | category:business, category:strategy, domain:gtm | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:business`, `cat:strategy`, `domain:gtm`, `priority:high` |
+| [workspace-hub #1994](https://github.com/vamseeachanta/workspace-hub/issues/1994) | [WRK] Register for GLG, AlphaSights, Guidepoint expert networks | Planning Needed / Future Backlog | category:business, category:strategy, domain:gtm | priority:unspecified | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `cat:strategy`, `domain:gtm` |
+| [workspace-hub #1993](https://github.com/vamseeachanta/workspace-hub/issues/1993) | [WRK] Rigzone job application pipeline — resume tailoring and submission | Planning Needed / Future Backlog | category:business, category:strategy, domain:gtm | priority:unspecified | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `cat:strategy`, `domain:gtm` |
+| [workspace-hub #1669](https://github.com/vamseeachanta/workspace-hub/issues/1669) | [WRK] GTM: Vessel Installation Contractor Email Outreach Campaign | Planning Needed / Future Backlog | category:business, category:strategy, domain:gtm | priority:unspecified | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `cat:strategy`, `domain:gtm` |
+| [workspace-hub #197](https://github.com/vamseeachanta/workspace-hub/issues/197) | WRK-665: docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset | Planning Needed / Future Backlog | category:business, domain:gtm | priority:medium | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:gtm`, `enhancement`, `priority:medium` |
+| [workspace-hub #191](https://github.com/vamseeachanta/workspace-hub/issues/191) | WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients) | Planning Needed / Future Backlog | category:business, domain:gtm | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:business`, `domain:gtm`, `enhancement`, `priority:high` |
+| [workspace-hub #183](https://github.com/vamseeachanta/workspace-hub/issues/183) | WRK-580: feat(worldenergydata): map open-access journal portfolio for engineering | Planning Needed / Future Backlog | category:business, domain:website | priority:low | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:website`, `enhancement`, `priority:low` |
+| [workspace-hub #117](https://github.com/vamseeachanta/workspace-hub/issues/117) | WRK-470: feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem | Planning Needed / Future Backlog | category:business, domain:gtm | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:business`, `domain:gtm`, `enhancement`, `priority:high` |
+| [workspace-hub #108](https://github.com/vamseeachanta/workspace-hub/issues/108) | WRK-148: ACE-GTM: A&CE Go-to-Market strategy stream | Planning Needed / Future Backlog | category:business, domain:gtm | priority:high | planning factory: 1-2 high-priority issues/window through resource intel + draft plan | `cat:business`, `domain:gtm`, `enhancement`, `priority:high` |
+| [workspace-hub #17](https://github.com/vamseeachanta/workspace-hub/issues/17) | WRK-021: Stock analysis for drastic trend changes, technical indicators, and insider | Planning Needed / Future Backlog | category:business, domain:cre-finance | priority:medium | planning factory: cluster 3-5 similar backlog issues/window; create child issues when scope is broad | `cat:business`, `domain:cre-finance`, `enhancement`, `priority:medium` |
