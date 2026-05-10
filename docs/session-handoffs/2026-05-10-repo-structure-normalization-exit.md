@@ -42,20 +42,27 @@ Validation:
 
 ## Workspace-hub root state / blocker
 
-The live root checkout `/mnt/local-analysis/workspace-hub` was **not clean and not linearly synced** when exit documentation was requested:
+The live root checkout `/mnt/local-analysis/workspace-hub` had unrelated dirty state when exit documentation was requested and was therefore not used to author this handoff.
+
+Initial root probe during exit:
 
 - Branch: `main`
-- Local HEAD: `05f24e15f chore(workspace-hub): bundled commit -- oss-wiki-development-arc skill + prior-session telemetry`
-- Remote `origin/main`: `6caba5fc9 skill(coordination): add oss-wiki-development-arc methodology`
-- Divergence at probe: ahead/behind `1/1`
-- Dirty count at probe: 59 paths
+- Local HEAD at first probe: `05f24e15f chore(workspace-hub): bundled commit -- oss-wiki-development-arc skill + prior-session telemetry`
+- Remote `origin/main` at first probe: `6caba5fc9 skill(coordination): add oss-wiki-development-arc methodology`
+- Divergence at first probe: ahead/behind `1/1`
+- Dirty count at first probe: 59 paths
 
-The dirty/diverged root was not modified or swept into this handoff. To satisfy the durable-handoff requirement without polluting the dirty root, this file was created from a clean temporary worktree based on `origin/main`:
+Final root proof after the handoff push and a concurrent cron/report handoff commit landed:
 
-- Temporary worktree: `/tmp/workspace-hub-exit-handoff-20260510`
-- Temporary branch: `handoff/2026-05-10-repo-structure-exit`
+- Branch: `main`
+- Local HEAD: `8ef34f5c5 docs: add cron daily report exit handoff`
+- Remote `origin/main`: `8ef34f5c5`
+- Ahead/behind: `0/0`
+- Dirty count: 59 paths
 
-Next session must classify/reconcile the root divergence and existing dirty state before executing `workspace-hub#2656` from the live checkout.
+The unrelated 59 dirty paths were not modified or swept into this handoff. To satisfy the durable-handoff requirement without polluting the dirty root, this file was created and updated from clean temporary worktrees based on `origin/main`.
+
+Next session must classify/reconcile the root dirty state before executing `workspace-hub#2656` from the live checkout.
 
 ## Remaining approved queue
 
