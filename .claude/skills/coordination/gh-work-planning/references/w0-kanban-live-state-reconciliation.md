@@ -43,3 +43,20 @@ Write a short durable report under `docs/reports/kanban/YYYY-MM-DD-w0-live-state
 - recommended next action
 
 Then link it from the Kanban board index so later swarms consume the reconciliation state.
+
+## Post-reconciliation sweep and closeout hygiene
+
+After writing board/reconciliation artifacts, finish with a transactional repository sweep before claiming the board is ready:
+
+1. Re-read `git status --short --branch` and `git rev-parse HEAD origin/main` immediately before staging. Do not rely on an earlier clean-state check; concurrent Claude/Codex/Gemini workers may have pushed or written generated state while the board was being prepared.
+2. If another worker commits/pushes during the sweep, pull/rebase or otherwise reconcile first, then make the smallest follow-up commit for remaining generated state. Report the concurrent commit separately instead of hiding it inside the board work.
+3. Stage only the intended board/report/skill artifacts plus inspected generated state. Treat surprise root files or hook-generated dirt as evidence to inspect, not as automatically safe clutter.
+4. Let pre-commit hooks run normally. If a generated skill/reference trips a critical scanner or denylist, fix the content and recommit; do not bypass the hook for library updates.
+5. Push in the same window and verify:
+   - `git rev-parse HEAD`
+   - `git rev-parse origin/main`
+   - `git rev-list --left-right --count origin/main...HEAD`
+   - `git status --short`
+6. Final board/exit status should name the pushed commit(s), state whether any external action was performed, and include clean/synced proof.
+
+This prevents a planning board from becoming stale immediately after generation and matches the user's transactional closeout expectation for repo-sync and planning artifacts.
