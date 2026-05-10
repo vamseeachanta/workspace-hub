@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-10T09:20:11.832147Z
+Generated: 2026-05-10T13:20:10.402875Z
 Current week: 2026-W19
 Recommended provider order: gemini, codex, claude
 
@@ -31,8 +31,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | existing codex agent label | enhancement, priority:high, cat:engineering, cat:documentation, status:working, machine:dev-secondary |
-| #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:working, agent:codex |
+| #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | existing codex agent label | enhancement, priority:high, cat:engineering, cat:documentation, status:blocked, machine:dev-secondary |
+| #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:blocked, agent:codex |
 | #2523 feat(workstations): add reusable Hermes preflight readiness checker | yes | implementation/test/fix language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:ai-orchestration, domain:workstations |
 | #2403 feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | yes | existing codex agent label | enhancement, priority:medium, cat:data-pipeline, cat:research, domain:document-intelligence, status:working |
 | #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | yes | implementation/test/fix language | enhancement, priority:medium, cat:operations, domain:automation, domain:security, status:plan-approved |

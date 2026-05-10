@@ -140,7 +140,10 @@ that report's specific sections.
 When verifying, note (but do not fail on) these visual quality signals:
 - [ ] Section headers have consistent hierarchy (H1 → H2 → H3)
 - [ ] Color scheme is consistent (no clashing inline colors)
-- [ ] Charts have axis labels and a legend
+- [ ] Charts have explicit physical-scope labels in titles/axes (for example, "rudder-induced" vs total-load wording when the model is bounded)
+- [ ] Charts have readable axis labels, units, legends/colorbars, and hover text with the governing parameters
+- [ ] Default controls produce a screenshot-ready state and do not imply an extreme/off-nominal case unless that is intentional and documented
+- [ ] Parameter-sweep reports include a visible selected-case or selected-speed summary panel/table when a single dropdown controls multiple charts
 - [ ] Reference screenshots are labeled ("Reference (WAMIT paper)")
 - [ ] Side-by-side comparison columns are balanced in width
 - [ ] No content overflow or horizontal scroll at 1280px viewport

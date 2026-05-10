@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-10T09:20:11.832147Z",
+  "generated_at": "2026-05-10T13:20:10.402875Z",
   "current_week": "2026-W19",
-  "scorecard_generated_at": "2026-05-10T09:20:10.184000Z",
+  "scorecard_generated_at": "2026-05-10T13:20:08.654362Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -227,12 +227,12 @@
             "priority:high",
             "cat:engineering",
             "cat:documentation",
-            "status:working",
+            "status:blocked",
             "machine:dev-secondary",
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-28T06:12:10Z",
+          "updatedAt": "2026-05-10T12:46:27Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -254,11 +254,11 @@
             "priority:high",
             "cat:data-pipeline",
             "domain:document-intelligence",
-            "status:working",
+            "status:blocked",
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-04-28T09:19:15Z",
+          "updatedAt": "2026-05-10T12:46:06Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
