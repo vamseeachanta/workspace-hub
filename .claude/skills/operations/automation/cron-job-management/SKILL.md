@@ -220,6 +220,8 @@ To perform a comprehensive cron health review:
 5. Verify the `/today` daily report at `logs/daily/YYYY-MM-DD.md` is fresh
 6. If reports exist but health-check is broken, fix the script first, then rerun
 
+For full closeout of a "fix all cron jobs / daily report is current" request, collect the evidence bundle in `references/cron-daily-report-closeout.md` before reporting success.
+
 ### Canonical vs Drift-Prone Sources
 When auditing cron drift in workspace-hub, treat these as canonical:
 - `config/scheduled-tasks/schedule-tasks.yaml`

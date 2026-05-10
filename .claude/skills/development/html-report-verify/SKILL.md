@@ -59,7 +59,7 @@ For static local collateral where browser/MCP verification is unnecessary or una
 | Title present | `document.title` | Non-empty string |
 | H1/H2 headings | `querySelectorAll('h1,h2').length` | ≥ 1 |
 | Navigation bar | `querySelector('.nav-bar, nav, [class*="nav"]')` | Not null |
-| Plotly charts rendered | `querySelectorAll('.plotly-graph-div').length` | ≥ 1 |
+| Plotly charts rendered | `querySelectorAll('.js-plotly-plot, .plotly-graph-div').length` | ≥ 1 |
 | No broken images | `[...querySelectorAll('img')].every(i => i.complete && i.naturalWidth > 0)` | True |
 | No empty script errors | Check console | Zero JS exceptions |
 
@@ -68,6 +68,14 @@ For static local collateral where browser/MCP verification is unnecessary or una
 2. Scroll to bottom (`window.scrollTo(0, document.body.scrollHeight)`)
 3. Screenshot bottom of page (should show QTF / last section)
 4. Confirm plots are visible (not grey/blank boxes)
+
+### Layer 3b — Data Contract Cross-Check for Parameter-Sweep Reports
+When a report visualizes generated sweep data (speed × heading × angle, cases × phases, benchmarks, etc.), do not stop at DOM rendering. Cross-check the rendered controls and embedded/chart data against the source artifact (`.csv`, `.json`, manifest, or generator summary):
+- Enumerate dropdown options and selected defaults from the DOM.
+- Verify sweep cardinality from source data (e.g., rows per current speed, heading/rudder ranges and step counts).
+- Exercise at least one dropdown change and verify chart titles/data update.
+- Confirm scope/provenance caveats are visible when the displayed quantity is a subset/model approximation rather than total physical load.
+- Include any extra default case policy in the verdict (for example, a chart default speed outside the requested sweep list).
 
 ### Layer 4 — Module-Specific Checks
 
@@ -114,6 +122,7 @@ If any layer fails, list the specific failing check and what was found vs expect
 
 ## Implementation Notes
 
+- See `references/parameter-sweep-report-review.md` for the data-contract + interaction checklist for generated engineering parameter-sweep chart reports.
 - Always call `mcp__claude-in-chrome__tabs_context_mcp` first to get a valid tab ID
 - Use `mcp__claude-in-chrome__tabs_create_mcp` for a fresh tab (don't reuse report tab)
 - After verification, kill the HTTP server: `pkill -f "http.server 8974"` (Linux/macOS) or `taskkill` (Windows)

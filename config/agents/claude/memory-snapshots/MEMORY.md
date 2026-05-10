@@ -11,6 +11,7 @@
 - [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
 - [Worktree gitlink pollution](feedback_worktree_gitlink_pollution.md) — add .claude/worktrees/ to .gitignore before parallel-agent runs
 - [Adversarial review stance](feedback_adversarial_review_stance.md) — every review prompt must force defect-hunting, not charitable reading
+- [Always adversarial review; scale depth](feedback_always_adversarial_review_scale_depth.md) — never skip; dial review depth/breadth/provider count to scope (T1=1 provider scoped, T2=Codex+Gemini, T3=add Claude code-reviewer)
 - [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex's GitHub-connector evidence locally
 - [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if issue already CLOSED, --comment is silently lost; reopen-comment-close to recover
 - [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GitHub BEFORE dispatching `codex exec` review; sandbox can't read local files

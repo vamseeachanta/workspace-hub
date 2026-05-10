@@ -77,3 +77,5 @@ shown:
     tips: [eco-reflect, bp-stop-hook]
   - date: 2026-05-09
     tips: [gsd-review, bp-challenge-claude]
+  - date: 2026-05-10
+    tips: [cc-hooks, bp-scrap-restart]

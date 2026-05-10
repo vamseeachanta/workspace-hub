@@ -145,7 +145,10 @@ When extracting broken references from canonical docs, avoid these common false 
 
 Known current evidence pattern from 2026-05-08: `digitalmodel/docs/maps/digitalmodel-operator-map.md` referenced `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md` as if repo-local while the matching file existed at the workspace-level map path; report this as a stale repo-local routing reference unless fixed.
 
-See `references/2026-05-08-freshness-audit-lessons.md` for the compact evidence snapshot, false-positive filters, and validation checklist from the 2026-05-08 scheduled freshness audit.
+Latest evidence references:
+- `references/2026-05-08-freshness-audit-lessons.md` — compact evidence snapshot, false-positive filters, and validation checklist from the 2026-05-08 scheduled freshness audit.
+- `references/2026-05-09-freshness-audit-lessons.md` — status-level baseline and scanner false-positive refinements from the 2026-05-09 scheduled audit.
+- `references/2026-05-10-freshness-audit-lessons.md` — updated evidence: `assetutilities` broken-link findings refined as false positives, `aceengineer-website` remains RED for missing registry, and report verification evidence should be included when available.
 
 
 ## Daily freshness automation pattern

@@ -39,6 +39,12 @@ Use precise language:
 - Good: "Nested repo `llm-wiki` has ongoing untracked standards-page ingest dirt; preserved intentionally."
 - Bad: "Clean enough" or "mostly clean" without counts and paths/classes.
 
+## Updating an existing handoff
+
+If a durable handoff already exists but is untracked or lacks final exit evidence, update that same file instead of creating a second closeout artifact. Append a short exit-closeout section with task status, issue/link state, repo-state proof, branch/worktree disposition, external-action status, and remaining restart steps. Then stage only that handoff file, commit, push, re-fetch, and prove the task repo is synced/clean.
+
+When the active work happened in a tier-1 child repo, commit the handoff in that child repo. Also record the control repo state if it was touched or inspected, but do not stage unrelated generated/learning/provider-report churn from the control repo just to make the exit look clean. Report those paths as pre-existing dirty-state exceptions with counts.
+
 ## Interaction with comprehensive learning
 
 Do not run the heavyweight learning pipeline during normal exit closeout. If the user explicitly asks to update the skill library, perform a targeted skill update with `skill_manage`; that is different from running the full nightly comprehensive-learning pipeline.

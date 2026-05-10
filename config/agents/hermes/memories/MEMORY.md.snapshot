@@ -1,3 +1,9 @@
 `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
 §
-Workspace-hub tier-1 Kanban scope includes seven repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, assethold, aceengineer-website, and aceengineer-strategy; user values general, per-repo, per-domain, execution-ready, approval-drift, and planning-needed boards for sequential review/refinement before multiagent execution.
+Workspace-hub tier-1 ecosystem scope includes eight repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, and aceengineer-strategy; user values general, per-repo, per-domain, execution-ready, approval-drift, and planning-needed boards for sequential review/refinement before multiagent execution.
+§
+User prefers workspace-hub repo-sync/closeout reports to show referenced GitHub issues as clickable hyperlinks grounded via live `gh issue view`, not just issue numbers.
+§
+workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status).
+§
+For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there.

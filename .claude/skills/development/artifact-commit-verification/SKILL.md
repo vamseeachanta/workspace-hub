@@ -17,13 +17,18 @@ Use when an agent claims work is complete and you need to verify exact files, co
 3. Confirm no unrelated dirt is being mistaken for task output.
 4. For public/distributable generated artifacts, inspect machine-readable sidecars/manifests as well as the visible output: they must not serialize absolute local paths, staging roots, client repo names, temp directories, or other environment/client identifiers.
 5. For visual artifacts (PNG/SVG/PDF/HTML charts, brochures, dashboards), run both structural smoke checks and a human/visual readability check before claiming success.
-6. For generated artifact families (HTML + PDF + ZIP/manifests), verify the complete family together: inspect `file` output, sizes/page counts where available, secret/deny-list scan text renderables, and re-run status after staging/commit because PDF/ZIP generators can rewrite already-tracked binaries after an apparently clean check.
-7. If the repo-wide/legal scanner fails because of unrelated dirty files outside the claimed artifact set, do not either ignore it or falsely report a clean official scan. Run a staged/claimed-file-only deny-list check, report it explicitly as scoped evidence, and document the unrelated blocker separately.
-8. Record evidence before closing or reporting success.
+6. For interactive chart artifacts (dropdowns, sliders, tabs, filters), verify at least one representative control path in a browser or DOM-capable test: confirm the default selection is present, changing the control updates the expected chart/data region, and the displayed labels/units remain correct. Static HTML grep alone is not sufficient for interactive controls.
+7. For generated artifact families (HTML + PDF + ZIP/manifests), verify the complete family together: inspect `file` output, sizes/page counts where available, secret/deny-list scan text renderables, and re-run status after staging/commit because PDF/ZIP generators can rewrite already-tracked binaries after an apparently clean check.
+8. If the repo-wide/legal scanner fails because of unrelated dirty files outside the claimed artifact set, do not either ignore it or falsely report a clean official scan. Run a staged/claimed-file-only deny-list check, report it explicitly as scoped evidence, and document the unrelated blocker separately.
+9. Record evidence before closing or reporting success.
 
 ## Dirty or Hanging Git Status During Handoff
 
 If repo-wide `git status` or combined status/log commands hang, time out, or produce unusable/truncated output, switch to bounded path-scoped verification instead of retrying broad commands. Use `GIT_OPTIONAL_LOCKS=0 timeout 10 ...` around conflict checks, individual path status checks, branch divergence checks, and file-existence checks. If the workspace is behind remote, dirty, or conflict-adjacent (`AA`/`UU`/ambiguous planning files), do not create a mixed handoff commit; leave the handoff untracked if necessary, document why, and give the next session explicit salvage/reconciliation steps. See `references/dirty-hanging-status-handoff.md`.
+
+## Post-Compaction Verification Resume
+
+When a context-compaction handoff leaves only a preserved active task list, treat the summary as reference-only and re-ground before claiming closeout. Reload the governing verification skill, identify the exact committed artifact paths, verify those paths are clean, validate representative machine-readable outputs (for example JSON with `uv run python -m json.tool`), and compare `git rev-parse HEAD` with `git ls-remote origin refs/heads/main`. If the broader worktree still has unrelated/session-generated dirt, report it separately as a caveat instead of blocking or polluting the transactional artifact commit.
 
 ## Public Artifact Hygiene
 
@@ -35,6 +40,10 @@ When the official scanner reports failures from unrelated uncommitted state (for
 - **decision:** whether the scoped pass is sufficient for a docs-only/handoff commit, or whether the unrelated blocker must be cleaned before publication/release
 
 Never summarize a scoped staged-only scan as a full repo legal PASS.
+
+## Remote Ref-Lock Push Anomaly
+
+If `git push` fails with a remote ref-lock message like `cannot lock ref 'refs/heads/main': is at <new> but expected <old>`, do not assume the push failed. Immediately verify remote state with `git fetch origin main` or `git ls-remote origin refs/heads/main`, then compare to local `git rev-parse HEAD`. If remote already equals local `HEAD`, treat the commit as landed, record the verified state, and avoid unnecessary retry/rebase churn.
 
 ## Consolidated Session Learnings
 

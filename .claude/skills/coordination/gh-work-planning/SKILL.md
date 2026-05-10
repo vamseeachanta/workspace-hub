@@ -895,6 +895,24 @@ Classification:
 
 If none are approval-ready, answer that directly and list the best approval-prep targets rather than presenting stale `status:plan-review` issues as ready.
 
+## Kanban-to-execution W0 reconciliation gate
+
+When a generated Kanban board, roadmap, or five-hour swarm recommendation packet proposes execution windows, run a W0 live-state reconciliation before launching workers.
+
+Do not treat generated board lanes as launch authority by themselves. Re-check live GitHub state, approval markers on `origin/main`, referenced worker branches/worktrees, and commits mentioned in issue comments. Classify each candidate as:
+- closeout candidate: already landed but still open/working
+- blocked/no-op candidate: prior worker found a dependency blocker and no active branch remains
+- board drift only: issue is closed or labels changed after board generation
+- executable candidate: still open, approved, not blocked, and not already landed
+
+Next action by class:
+- closeout candidate -> scoped verification + transactional issue closeout, not implementation
+- blocked/no-op candidate -> blocker conversion or plan revision, not relaunch
+- board drift only -> refresh board/exclude from active routing
+- executable candidate -> only then package a 5-hour execution prompt
+
+Session-specific command pattern and report shape: see `references/w0-kanban-live-state-reconciliation.md`.
+
 ## Post-approval implementation-state audit
 
 When the user asks for the current blocker/status of an already-approved issue, do not stop at plan artifacts and labels.

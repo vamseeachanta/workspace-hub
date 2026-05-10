@@ -7008,3 +7008,43 @@
     git_non_conventional: 3
     git_missing_wrk_ref: 5
     git_exempt_type: 22
+- scanned_at: "2026-05-10T07:06:58Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/09/rollout-2026-05-09T23-14-45-019e1018-4230-7ed1-8f60-85c5a1438512.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-10T07:06:58Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/09/rollout-2026-05-09T23-23-57-019e1020-ac9a-7463-91dc-72a1cc905ab9.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-10T07:06:58Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/09/rollout-2026-05-09T23-29-11-019e1025-7622-7731-96bd-1208fec48434.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-10T07:07:05Z"
+  log: "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude/session_20260509.jsonl"
+  provider: "claude"
+  violations:
+    python_runtime: 183
+    file_placement: 0
+    git_workflow: 16
+    git_non_conventional: 0
+    git_missing_wrk_ref: 16
+    git_exempt_type: 9

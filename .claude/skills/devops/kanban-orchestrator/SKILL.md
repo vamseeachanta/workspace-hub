@@ -133,7 +133,7 @@ Tell them what you created in plain prose:
 
 ## Common patterns
 
-**GitHub-label-derived portfolio board:** When the work already exists as GitHub issues across multiple repos, do not create a separate manual Kanban queue first. Build a label-derived board/dashboard view, classify by plan-gate labels and local approval evidence, and use it to choose the next small execution/governance/planning batches. See `references/github-label-derived-portfolio-board.md` for the proven collection, lane, artifact, and verification pattern.
+**GitHub-label-derived portfolio board:** When the work already exists as GitHub issues across multiple repos, do not create a separate manual Kanban queue first. Build a label-derived board/dashboard view, classify by plan-gate labels and local approval evidence, and use it to choose the next small execution/governance/planning batches. When the user asks how to feed Hermes/AI swarms, add bounded ~5-hour recommendation packets derived from the board and verify every referenced issue live. See `references/github-label-derived-portfolio-board.md` for the proven collection, lane, artifact, recommendation-packet, and verification pattern.
 
 **Fan-out + fan-in (research → synthesize):** N `researcher` tasks with no parents, one `analyst` task with all of them as parents.
 
