@@ -85,11 +85,11 @@ No email/chat/external send action was performed for this exit refresh. Only loc
 
 ## 2026-05-09T23:28:58-05:00 closeout refresh
 
-A later closeout request re-checked live tier-1 repository state. This section supersedes the earlier proof table for final exit reporting, while preserving the earlier evidence trail above.
+A later closeout request re-checked live tier-1 repository state. This section supersedes the earlier proof table for final exit reporting, while preserving the earlier evidence trail above. The final response records the latest handoff commit produced by this closeout sequence; the table captures the live proof used for this dirty-state inventory.
 
 | Repo | Branch | HEAD | Upstream | Ahead/Behind | Dirty |
 | --- | --- | --- | --- | --- | --- |
-| workspace-hub | main | `ca1f6a2a646d` | `origin/main` @ `ca1f6a2a646d` | `0/0` | 20 |
+| workspace-hub | main | `cb79e8c00f65` | `origin/main` @ `cb79e8c00f65` | `0/0` | 22 |
 | assetutilities | main | `ff6530076d0e` | `origin/main` @ `ff6530076d0e` | `0/0` | 0 |
 | digitalmodel | main | `22788a36a63d` | `origin/main` @ `22788a36a63d` | `0/0` | 0 |
 | worldenergydata | main | `1b8e2f19ac5f` | `origin/main` @ `1b8e2f19ac5f` | `0/0` | 0 |
@@ -100,7 +100,7 @@ A later closeout request re-checked live tier-1 repository state. This section s
 
 ### Updated dirty-state exceptions
 
-`workspace-hub` remains synced but not clean. The 20 dirty paths are unrelated to this handoff and were not staged:
+`workspace-hub` remains synced but not clean. The 22 dirty paths are unrelated to this handoff and were not staged:
 
 ```text
  M .claude/state/corrections/.edit_sequence_counter
@@ -110,6 +110,7 @@ A later closeout request re-checked live tier-1 repository state. This section s
  M config/ai-tools/provider-routing-scorecard.json
  M config/ai-tools/provider-utilization-weekly.json
  M config/ai-tools/provider-work-queue.json
+ M config/workflow-tips/tip-history.yaml
  M docs/reports/provider-autolabel-candidates.md
  M docs/reports/provider-routing-scorecard.md
  M docs/reports/provider-utilization-weekly.md
@@ -122,6 +123,7 @@ A later closeout request re-checked live tier-1 repository state. This section s
 ?? docs/governance/2026-05-09-anthropics-financial-services-ingest-design.md
 ?? logs/quality/memory-health-20260509.md
 ?? scripts/review/results/2026-05-09-plan-2659-codex-r2.md
+?? scripts/review/results/2026-05-09-plan-2659-codex-r3.md
 ?? scripts/review/results/2026-05-09-plan-2659-codex.md
 ```
 
