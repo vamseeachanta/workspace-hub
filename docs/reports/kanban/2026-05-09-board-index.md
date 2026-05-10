@@ -26,6 +26,7 @@ Generated: 2026-05-09
 
 - [Five-hour Hermes swarm recommendations](2026-05-09-five-hour-swarm-recommendations.md)
 - [W0 live-state / approval-state audit](2026-05-10-w0-live-state-approval-audit.md)
+- [W0 reconciliation closeout](2026-05-10-w0-reconciliation-closeout.md)
 
 ## Review lanes
 
