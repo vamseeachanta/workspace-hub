@@ -21,6 +21,8 @@ Collected on `ace-linux-1` in `/mnt/local-analysis/workspace-hub`.
 - Initial `origin/main`: `6caba5fc952831709705c5623c145fe19c0863e6`
 - Initial ahead/behind: `0/0`
 - Initial dirty/untracked count before this handoff: `59`
+- Post-handoff push verification pass: `2026-05-10T07:30:51-05:00`, with `HEAD == origin/main` and dirty/untracked count still `59`.
+- Final exact commit/sync proof should be taken from the last closeout command output because any in-file self-reference changes the commit hash.
 
 ### Cron verification
 
@@ -49,7 +51,9 @@ The session's cron fix work was pushed before this handoff. Recent relevant comm
 - `0b06513e4` — `fix: harden cron health and scheduled script environments`
 - `01e2f0ea3` — `docs(#1473): weekly plugin audit — 2026-05-09`
 
-Current `origin/main` was later advanced by other already-synced commits, with initial closeout proof at `6caba5fc952831709705c5623c145fe19c0863e6`.
+This handoff was committed and pushed during closeout. Final exact commit/sync proof should be read from the last live closeout verification, not hardcoded here, to avoid stale self-referential commit hashes.
+
+Final sync proof requirement: after the handoff commit is pushed, run `git fetch origin main`, compare `git rev-parse HEAD` to `git rev-parse origin/main`, and confirm ahead/behind is `0/0`.
 
 ## Dirty-state exceptions preserved
 
