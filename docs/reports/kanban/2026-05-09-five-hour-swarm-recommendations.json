@@ -1,0 +1,1038 @@
+{
+  "generated": "2026-05-09",
+  "source": "docs/reports/2026-05-09-tier1-gh-issue-kanban-data.json",
+  "verified_issues": [
+    {
+      "repo": "workspace-hub",
+      "number": 2657,
+      "rationale": "Execute now candidate: provider/session path drift remediation; control-plane leverage.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2657",
+      "live": {
+        "live_ok": true,
+        "title": "chore(provider-session): remediate Hermes llm-wiki spinout path drift",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2657",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:documentation",
+          "cat:harness",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-08T15:03:05Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2523,
+      "rationale": "Execute now candidate: reusable Hermes preflight readiness checker; improves future swarm readiness.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2523",
+      "live": {
+        "live_ok": true,
+        "title": "feat(workstations): add reusable Hermes preflight readiness checker",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2523",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "domain:ai-orchestration",
+          "domain:workstations",
+          "domain:agent-cost-tracking",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-03T19:30:33Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2533,
+      "rationale": "Execute now candidate: repo mission/objective revision; portfolio clarity.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2533",
+      "live": {
+        "live_ok": true,
+        "title": "feat(repo-portfolio): review and revise mission/objective statements across active repos",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2533",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:documentation",
+          "domain:repo-organization",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-03T19:27:15Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2563,
+      "rationale": "Execute now candidate: Telegram mobile access; control-plane ops value, but confirm side-effect scope before credentials.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
+      "live": {
+        "live_ok": true,
+        "title": "Set up Telegram mobile access for Hermes AI control",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2563",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:operations",
+          "domain:integrations",
+          "domain:notification",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-03T12:47:12Z"
+      }
+    },
+    {
+      "repo": "digitalmodel",
+      "number": 596,
+      "rationale": "Execute now candidate: repo-structure normalization; large but high-leverage, one full window.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/digitalmodel/issues/596",
+      "live": {
+        "live_ok": true,
+        "title": "chore(repo-structure): normalize digitalmodel folder/file structure",
+        "url": "https://github.com/vamseeachanta/digitalmodel/issues/596",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "cat:engineering",
+          "priority:high",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-08T15:17:39Z"
+      }
+    },
+    {
+      "repo": "digitalmodel",
+      "number": 574,
+      "rationale": "Execute now candidate: FOWT standards wiki family; documentation/engineering leverage.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/digitalmodel/issues/574",
+      "live": {
+        "live_ok": true,
+        "title": "Wiki standards-page family for FOWT (IEC 61400-3-2, DNV-ST-0119, DNV-RP-0286, DNV-ST-0126, DNV-ST-0358, DNV-RP-0360, API RP 2SIM)",
+        "url": "https://github.com/vamseeachanta/digitalmodel/issues/574",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "cat:engineering",
+          "priority:high",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-06T03:23:13Z"
+      }
+    },
+    {
+      "repo": "digitalmodel",
+      "number": 573,
+      "rationale": "Possible small-batch with related marine_ops test-fix work if file ownership is non-overlapping.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/digitalmodel/issues/573",
+      "live": {
+        "live_ok": true,
+        "title": "fix(marine_ops): DNV-RP-F103 calibration drift in test_cathodic_protection_dnv.py \u2014 clears 16 of 77 marine_ops failures",
+        "url": "https://github.com/vamseeachanta/digitalmodel/issues/573",
+        "state": "OPEN",
+        "labels": [
+          "bug",
+          "cat:engineering",
+          "domain:naval-architecture",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-06T03:05:55Z"
+      }
+    },
+    {
+      "repo": "digitalmodel",
+      "number": 566,
+      "rationale": "Possible small-batch with related marine_ops test-fix work if file ownership is non-overlapping.",
+      "board_lane": "Ready / Plan Approved",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/digitalmodel/issues/566",
+      "live": {
+        "live_ok": true,
+        "title": "fix(marine_ops): batched residue clusters R1+R5+R7+R8 \u2014 clears ~10 of 77 marine_ops failures",
+        "url": "https://github.com/vamseeachanta/digitalmodel/issues/566",
+        "state": "OPEN",
+        "labels": [
+          "bug",
+          "domain:naval-architecture",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-06T03:05:48Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2656,
+      "rationale": "Approval drift repair: plan exists, marker missing; repair governance before execution.",
+      "board_lane": "Approved Label Drift / Repair Before Execution",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
+      "live": {
+        "live_ok": true,
+        "title": "chore(repo-structure): normalize workspace-hub folder/file structure",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2656",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "cat:harness",
+          "domain:repo-organization",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-08T11:04:04Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2628,
+      "rationale": "Approval drift repair: major CI architecture issue; repair governance before execution.",
+      "board_lane": "Approved Label Drift / Repair Before Execution",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+      "live": {
+        "live_ok": true,
+        "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "cat:harness",
+          "domain:testing",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-04T09:03:49Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2552,
+      "rationale": "Approval drift repair: external contributor runbook; security/doc governance.",
+      "board_lane": "Approved Label Drift / Repair Before Execution",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
+      "live": {
+        "live_ok": true,
+        "title": "docs(security): external contributor and unsolicited paid-help response runbook",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
+        "state": "OPEN",
+        "labels": [
+          "documentation",
+          "priority:medium",
+          "cat:documentation",
+          "domain:security",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-03T21:15:07Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2550,
+      "rationale": "Approval drift repair: public repo interaction-limit scheduled task.",
+      "board_lane": "Approved Label Drift / Repair Before Execution",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
+      "live": {
+        "live_ok": true,
+        "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:operations",
+          "domain:automation",
+          "domain:security",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-03T21:18:30Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2112,
+      "rationale": "Approval drift repair: approval marker exists but plan artifact missing; recreate/verify canonical plan.",
+      "board_lane": "Approved Label Drift / Repair Before Execution",
+      "board_priority": "priority:high",
+      "board_has_plan": false,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2112",
+      "live": {
+        "live_ok": true,
+        "title": "data(field-dev): backfill SubseaIQ equipment counts to unblock cost benchmarking",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2112",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "agent:claude",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-01T20:19:50Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2643,
+      "rationale": "Plan-review candidate: metadata-only /mnt/ace-data coverage triage.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2643",
+      "live": {
+        "live_ok": true,
+        "title": "feat(llm-wiki): plan metadata-only /mnt/ace-data raw-like source coverage triage",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2643",
+        "state": "OPEN",
+        "labels": [
+          "priority:high",
+          "cat:data-pipeline",
+          "cat:documentation",
+          "domain:document-intelligence",
+          "domain:knowledge-management",
+          "status:plan-review",
+          "llm-wiki"
+        ],
+        "updatedAt": "2026-05-05T04:29:45Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2632,
+      "rationale": "Plan-review candidate: rebind llm-wiki plan-approved issues stuck on missing markers.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2632",
+      "live": {
+        "live_ok": true,
+        "title": "META: rebind 3 llm-wiki plan-approved issues stuck on missing approval markers (#2368/#2124/#2125)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2632",
+        "state": "OPEN",
+        "labels": [
+          "priority:medium",
+          "cat:knowledge-domain",
+          "domain:knowledge-management",
+          "status:plan-review"
+        ],
+        "updatedAt": "2026-05-05T03:35:37Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2626,
+      "rationale": "Plan-review candidate: narrow security runbook tests; likely bounded doc/test work.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2626",
+      "live": {
+        "live_ok": true,
+        "title": "fix(security): narrow #2552 external-contributor runbook tests + scenario 3 \u2014 drop privacy-leaking test, define ingestion vector, resolve interaction-limit contradiction",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2626",
+        "state": "OPEN",
+        "labels": [
+          "priority:medium",
+          "cat:documentation",
+          "domain:security",
+          "status:plan-review"
+        ],
+        "updatedAt": "2026-05-04T03:33:01Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2551,
+      "rationale": "Plan-review candidate: branch/ruleset protections audit.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2551",
+      "live": {
+        "live_ok": true,
+        "title": "audit(security): verify branch/ruleset protections across public repos after collaborator-only lockdown",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2551",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:operations",
+          "domain:security",
+          "domain:repo-health",
+          "status:plan-review"
+        ],
+        "updatedAt": "2026-05-06T13:18:28Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2528,
+      "rationale": "Plan-review candidate: retire deprecated email skills; infrastructure cleanup.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2528",
+      "live": {
+        "live_ok": true,
+        "title": "chore(skills): retire 6 deprecated email skills + update gmail-triage to queue model",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2528",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:infrastructure",
+          "domain:skill-curation",
+          "maintenance",
+          "status:plan-review"
+        ],
+        "updatedAt": "2026-05-06T13:18:26Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2510,
+      "rationale": "Plan-review candidate: CAD automation demo for chip/package geometries.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
+      "live": {
+        "live_ok": true,
+        "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
+        "state": "OPEN",
+        "labels": [
+          "priority:medium",
+          "cat:engineering",
+          "cat:tooling",
+          "status:plan-review",
+          "domain:semiconductor",
+          "domain:chip-design"
+        ],
+        "updatedAt": "2026-05-04T03:14:29Z"
+      }
+    },
+    {
+      "repo": "digitalmodel",
+      "number": 598,
+      "rationale": "Plan-review/live-drift candidate: generated board says plan-review, live issue may now be approved; refresh before routing.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/digitalmodel/issues/598",
+      "live": {
+        "live_ok": true,
+        "title": "feat(naval-architecture): SIROCCO current-heading/rudder force component chart set",
+        "url": "https://github.com/vamseeachanta/digitalmodel/issues/598",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "cat:engineering",
+          "priority:high",
+          "cat:engineering-calculations",
+          "domain:naval-architecture",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-05-10T04:25:21Z"
+      }
+    },
+    {
+      "repo": "llm-wiki",
+      "number": 44,
+      "rationale": "Plan-review batch: BSEE source-family clearance checklist.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/llm-wiki/issues/44",
+      "live": {
+        "live_ok": true,
+        "title": "governance(llm-wiki): prepare BSEE source-family clearance checklist",
+        "url": "https://github.com/vamseeachanta/llm-wiki/issues/44",
+        "state": "OPEN",
+        "labels": [
+          "status:plan-review",
+          "cat:data-pipeline",
+          "domain:knowledge-management",
+          "domain:document-intelligence"
+        ],
+        "updatedAt": "2026-05-07T00:37:47Z"
+      }
+    },
+    {
+      "repo": "llm-wiki",
+      "number": 45,
+      "rationale": "Plan-review batch: HSE dataset source-family clearance checklist.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/llm-wiki/issues/45",
+      "live": {
+        "live_ok": true,
+        "title": "governance(llm-wiki): prepare HSE dataset source-family clearance checklist",
+        "url": "https://github.com/vamseeachanta/llm-wiki/issues/45",
+        "state": "OPEN",
+        "labels": [
+          "status:plan-review",
+          "cat:data-pipeline",
+          "domain:knowledge-management",
+          "domain:document-intelligence"
+        ],
+        "updatedAt": "2026-05-07T00:37:47Z"
+      }
+    },
+    {
+      "repo": "llm-wiki",
+      "number": 46,
+      "rationale": "Plan-review batch: Frontier Deepwater clearance checklist.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/llm-wiki/issues/46",
+      "live": {
+        "live_ok": true,
+        "title": "governance(llm-wiki): prepare Frontier Deepwater source-family clearance checklist",
+        "url": "https://github.com/vamseeachanta/llm-wiki/issues/46",
+        "state": "OPEN",
+        "labels": [
+          "status:plan-review",
+          "cat:data-pipeline",
+          "domain:knowledge-management",
+          "domain:document-intelligence"
+        ],
+        "updatedAt": "2026-05-07T00:37:48Z"
+      }
+    },
+    {
+      "repo": "llm-wiki",
+      "number": 47,
+      "rationale": "Plan-review batch: restore Batch Pack 1 execution inputs.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/llm-wiki/issues/47",
+      "live": {
+        "live_ok": true,
+        "title": "governance(llm-wiki): restore Batch Pack 1 approved execution inputs",
+        "url": "https://github.com/vamseeachanta/llm-wiki/issues/47",
+        "state": "OPEN",
+        "labels": [
+          "status:plan-review",
+          "cat:documentation",
+          "domain:knowledge-management"
+        ],
+        "updatedAt": "2026-05-07T01:55:38Z"
+      }
+    },
+    {
+      "repo": "llm-wiki",
+      "number": 48,
+      "rationale": "Plan-review batch: restore Batch Pack 4 execution inputs.",
+      "board_lane": "Plan Review / Needs Approval",
+      "board_priority": "priority:unspecified",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/llm-wiki/issues/48",
+      "live": {
+        "live_ok": true,
+        "title": "governance(llm-wiki): restore Batch Pack 4 approved execution inputs",
+        "url": "https://github.com/vamseeachanta/llm-wiki/issues/48",
+        "state": "OPEN",
+        "labels": [
+          "status:plan-review",
+          "cat:data-pipeline",
+          "domain:knowledge-management"
+        ],
+        "updatedAt": "2026-05-07T01:56:48Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2402,
+      "rationale": "Working-state audit: active doc-intel embeddings issue; avoid duplicate launch.",
+      "board_lane": "In Progress / Status Working",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2402",
+      "live": {
+        "live_ok": true,
+        "title": "feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2402",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:data-pipeline",
+          "domain:document-intelligence",
+          "status:working",
+          "agent:codex",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-04-28T09:19:15Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2269,
+      "rationale": "Working-state audit: active OpenFOAM dev-secondary issue; verify PR/branch state.",
+      "board_lane": "In Progress / Status Working",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
+      "live": {
+        "live_ok": true,
+        "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "cat:documentation",
+          "status:working",
+          "machine:dev-secondary",
+          "agent:codex",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-04-28T06:12:10Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2129,
+      "rationale": "Working-state audit: active drift/redundancy audit issue; verify current worker state.",
+      "board_lane": "In Progress / Status Working",
+      "board_priority": "priority:medium",
+      "board_has_plan": true,
+      "board_has_approval_marker": true,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2129",
+      "live": {
+        "live_ok": true,
+        "title": "chore(harness): automate issue-state drift and redundancy audit across GitHub + analysis artifacts",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2129",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "status:working",
+          "agent:claude",
+          "agent:codex",
+          "status:plan-approved"
+        ],
+        "updatedAt": "2026-04-28T06:12:08Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2646,
+      "rationale": "Planning-needed: ace-linux-2 SSH/VNC handoff runbook; high readiness value.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:high",
+      "board_has_plan": false,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2646",
+      "live": {
+        "live_ok": true,
+        "title": "feat(workstations): package ace-linux-2 direct-work SSH/VNC handoff runbook",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2646",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "domain:workstations",
+          "machine:dev-secondary",
+          "machine:multi",
+          "agent:claude"
+        ],
+        "updatedAt": "2026-05-05T10:11:49Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2645,
+      "rationale": "Planning-needed: ace-linux-2 repo/mount/path readiness; prerequisite for overflow machine.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:high",
+      "board_has_plan": false,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
+      "live": {
+        "live_ok": true,
+        "title": "fix(workstations): normalize ace-linux-2 repo, mount, and path readiness",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2645",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:operations",
+          "domain:workstations",
+          "machine:dev-secondary",
+          "agent:claude"
+        ],
+        "updatedAt": "2026-05-05T10:11:46Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2641,
+      "rationale": "Planning-needed: hands-off multi-machine solver inbox ingestion; engineering ops leverage.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:high",
+      "board_has_plan": true,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
+      "live": {
+        "live_ok": true,
+        "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "domain:marine",
+          "machine:multi"
+        ],
+        "updatedAt": "2026-05-05T10:12:17Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2634,
+      "rationale": "Planning-needed critical alert: validate whether live issue is actionable/noisy.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:critical",
+      "board_has_plan": false,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
+      "live": {
+        "live_ok": true,
+        "title": "Compliance alert: W19 \u2014 35% (high)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2634",
+        "state": "OPEN",
+        "labels": [
+          "priority:high",
+          "priority:critical",
+          "compliance-alert"
+        ],
+        "updatedAt": "2026-05-09T11:45:06Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2625,
+      "rationale": "Planning-needed: digitalmodel Cluster E marine regressions.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:medium",
+      "board_has_plan": false,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2625",
+      "live": {
+        "live_ok": true,
+        "title": "investigate(digitalmodel-tests): Cluster E \u2014 marine-engineering domain regressions (~60 failures across catenary/wave/ocimf/RAO)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2625",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:engineering",
+          "domain:marine",
+          "domain:mooring"
+        ],
+        "updatedAt": "2026-05-03T21:15:09Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2624,
+      "rationale": "Planning-needed: digitalmodel Cluster D dependency policy.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:medium",
+      "board_has_plan": false,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2624",
+      "live": {
+        "live_ok": true,
+        "title": "policy(digitalmodel-tests): Cluster D \u2014 decide whether redis/psycopg2/motor belong in QG suite (51 errors)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2624",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:engineering",
+          "domain:testing"
+        ],
+        "updatedAt": "2026-05-03T21:14:21Z"
+      }
+    },
+    {
+      "repo": "workspace-hub",
+      "number": 2623,
+      "rationale": "Planning-needed: digitalmodel Cluster A sys.modules pollution.",
+      "board_lane": "Planning Needed / Future Backlog",
+      "board_priority": "priority:medium",
+      "board_has_plan": false,
+      "board_has_approval_marker": false,
+      "board_url": "https://github.com/vamseeachanta/workspace-hub/issues/2623",
+      "live": {
+        "live_ok": true,
+        "title": "fix(digitalmodel-tests): Cluster A \u2014 sys.modules pollution leaking MagicMock into tests/contracts/ (2 failures)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2623",
+        "state": "OPEN",
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:engineering",
+          "domain:testing"
+        ],
+        "updatedAt": "2026-05-03T21:14:10Z"
+      }
+    }
+  ],
+  "waves": [
+    {
+      "name": "W0 \u2014 Live-state and approval-state audit",
+      "objective": "Audit, no implementation. Verify `status:working` branches/PRs, update board drift, and classify approved-label issues as executable vs governance repair. Output should be a short durable audit report before launch.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2402
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2269
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2129
+        },
+        {
+          "repo": "digitalmodel",
+          "number": 598
+        }
+      ]
+    },
+    {
+      "name": "W1 \u2014 Approval-drift repair batch",
+      "objective": "Repair governance only: canonical plan artifacts, approval markers, label conflicts, and final approval comments. Do not code.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2656
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2628
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2552
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2550
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2112
+        }
+      ]
+    },
+    {
+      "name": "W2 \u2014 Control-plane execution window A",
+      "objective": "One issue/window. Execute with TDD, evidence, same-window commit/push/closeout.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2523
+        }
+      ]
+    },
+    {
+      "name": "W3 \u2014 Control-plane execution window B",
+      "objective": "One issue/window. Execute with TDD, evidence, same-window commit/push/closeout.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2657
+        }
+      ]
+    },
+    {
+      "name": "W4 \u2014 Digitalmodel engineering execution window",
+      "objective": "Pick exactly one large issue or a proven non-overlapping small test-fix batch after preflight. Avoid mixing repo-structure with marine_ops tests in one window.",
+      "issues": [
+        {
+          "repo": "digitalmodel",
+          "number": 596
+        },
+        {
+          "repo": "digitalmodel",
+          "number": 574
+        },
+        {
+          "repo": "digitalmodel",
+          "number": 573
+        },
+        {
+          "repo": "digitalmodel",
+          "number": 566
+        }
+      ]
+    },
+    {
+      "name": "W5 \u2014 Plan-review approval packet batch",
+      "objective": "No implementation. Produce approval/revision packet for user decision; if any MAJOR/stale review artifact is found, repair before asking approval.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2643
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2632
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2626
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2551
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2528
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2510
+        }
+      ]
+    },
+    {
+      "name": "W6 \u2014 llm-wiki clearance plan-review batch",
+      "objective": "No implementation. Batch because issues share domain and governance shape; produce one concise approval packet with per-issue links and exact approval commands.",
+      "issues": [
+        {
+          "repo": "llm-wiki",
+          "number": 44
+        },
+        {
+          "repo": "llm-wiki",
+          "number": 45
+        },
+        {
+          "repo": "llm-wiki",
+          "number": 46
+        },
+        {
+          "repo": "llm-wiki",
+          "number": 47
+        },
+        {
+          "repo": "llm-wiki",
+          "number": 48
+        }
+      ]
+    },
+    {
+      "name": "W7 \u2014 ace-linux-2 / multi-machine planning factory",
+      "objective": "Planning only. This should precede any overflow-machine delegation because memory says ace-linux-2 needs repo/tool/auth checks before delegation.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2646
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2645
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2641
+        }
+      ]
+    },
+    {
+      "name": "W8 \u2014 digitalmodel broken-test planning factory",
+      "objective": "Planning only unless already approved after audit. Cluster related test-failure issues into child/sequence plan; avoid launching multiple workers into same test files.",
+      "issues": [
+        {
+          "repo": "workspace-hub",
+          "number": 2625
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2624
+        },
+        {
+          "repo": "workspace-hub",
+          "number": 2623
+        }
+      ]
+    }
+  ]
+}

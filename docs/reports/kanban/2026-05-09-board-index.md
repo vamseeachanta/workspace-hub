@@ -22,6 +22,10 @@ Generated: 2026-05-09
 | Other Status / Triage | 23 |
 | Planning Needed / Future Backlog | 984 |
 
+## Execution planning
+
+- [Five-hour Hermes swarm recommendations](2026-05-09-five-hour-swarm-recommendations.md)
+
 ## Review lanes
 
 - [Execution-ready](2026-05-09-execution-ready-kanban.md)
