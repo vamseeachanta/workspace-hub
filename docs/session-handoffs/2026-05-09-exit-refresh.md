@@ -89,13 +89,13 @@ A later closeout request re-checked live tier-1 repository state. This section s
 
 | Repo | Branch | HEAD | Upstream | Ahead/Behind | Dirty |
 | --- | --- | --- | --- | --- | --- |
-| workspace-hub | main | `d5e3ab760884` | `origin/main` @ `d5e3ab760884` | `0/0` | 20 |
+| workspace-hub | main | `ca1f6a2a646d` | `origin/main` @ `ca1f6a2a646d` | `0/0` | 20 |
 | assetutilities | main | `ff6530076d0e` | `origin/main` @ `ff6530076d0e` | `0/0` | 0 |
 | digitalmodel | main | `22788a36a63d` | `origin/main` @ `22788a36a63d` | `0/0` | 0 |
 | worldenergydata | main | `1b8e2f19ac5f` | `origin/main` @ `1b8e2f19ac5f` | `0/0` | 0 |
 | llm-wiki | main | `4b40794ef974` | `origin/main` @ `4b40794ef974` | `0/0` | 0 |
 | assethold | main | `e0495787915f` | `origin/main` @ `e0495787915f` | `0/0` | 0 |
-| aceengineer-website | main | `85deb21a0fce` | `origin/main` @ `85deb21a0fce` | `0/0` | 10 |
+| aceengineer-website | main | `85deb21a0fce` | `origin/main` @ `85deb21a0fce` | `0/0` | 9 |
 | aceengineer-strategy | main | `9057555e35f8` | `origin/main` @ `9057555e35f8` | `0/0` | 0 |
 
 ### Updated dirty-state exceptions
@@ -125,12 +125,11 @@ A later closeout request re-checked live tier-1 repository state. This section s
 ?? scripts/review/results/2026-05-09-plan-2659-codex.md
 ```
 
-`aceengineer-website` is synced but not clean. The 10 dirty paths appear to be repo-structure Phase 1 implementation artifacts from another active stream and were not staged by this handoff:
+`aceengineer-website` is synced but not clean. The 9 dirty paths appear to be repo-structure Phase 1 implementation artifacts from another active stream and were not staged by this handoff:
 
 ```text
  M .github/workflows/ci.yml
  M pyproject.toml
- M stats.json
 ?? .pre-commit-config.yaml
 ?? config/repo_structure.yml
 ?? docs/standards/repo-structure.md
