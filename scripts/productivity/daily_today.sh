@@ -5,6 +5,9 @@
 
 set -euo pipefail
 
+# Cron runs with a minimal environment; keep uv/node/git helpers resolvable.
+export PATH="/home/vamsee/.local/bin:/home/vamsee/.npm-global/bin:/home/vamsee/.cargo/bin:/usr/local/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SECTIONS_DIR="$SCRIPT_DIR/sections"
 WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"

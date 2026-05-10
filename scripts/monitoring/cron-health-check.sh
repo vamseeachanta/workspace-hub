@@ -81,7 +81,7 @@ fi
 
 # ── Error patterns to scan for ───────────────────────────────────────────────
 ERROR_PATTERNS=(
-    "ERROR:"
+    "(^|[[:space:]])ERROR:"
     "fatal:"
     "ModuleNotFoundError"
     "Permission denied"
@@ -220,12 +220,19 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
             PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
         fi
 
-        # Scan for errors in the most recent log (last 100 lines)
-        if [[ -f "$NEWEST_LOG" ]]; then
+        # Scan for errors in the most recent log (last 100 lines).
+        # The cron-health task's own log intentionally contains [ERROR] rows when
+        # reporting other jobs; do not let that make the health monitor
+        # self-referentially unhealthy.
+        if [[ -f "$NEWEST_LOG" && "$tid" != "cron-health" ]]; then
             ERROR_MATCHES=""
+            # Scan only the tail of the most recent log. Some cron logs are append-only
+            # (for example logs/daily/cron.log); old transient failures must not keep a
+            # currently successful job red forever.
+            RECENT_LOG_TAIL=$(tail -n 100 "$NEWEST_LOG" 2>/dev/null || true)
             for pattern in "${ERROR_PATTERNS[@]}"; do
-                if grep -qi "$pattern" "$NEWEST_LOG" 2>/dev/null; then
-                    match_count=$(grep -ci "$pattern" "$NEWEST_LOG" 2>/dev/null || echo 0)
+                if grep -Eq "$pattern" <<<"$RECENT_LOG_TAIL" 2>/dev/null; then
+                    match_count=$(grep -Ec "$pattern" <<<"$RECENT_LOG_TAIL" 2>/dev/null || echo 0)
                     ERRORS_FOUND=$((ERRORS_FOUND + match_count))
                     ERROR_MATCHES+="${pattern} (${match_count}), "
                 fi

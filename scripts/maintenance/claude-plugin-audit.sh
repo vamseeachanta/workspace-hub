@@ -4,6 +4,9 @@
 # Exit 0 = audit ran successfully; Exit 1 = operational failure.
 set -uo pipefail
 
+# Cron runs with a minimal environment; keep uv/node/git helpers resolvable.
+export PATH="/home/vamsee/.local/bin:/home/vamsee/.npm-global/bin:/home/vamsee/.cargo/bin:/usr/local/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 REPORT="$REPO_ROOT/docs/reports/claude-plugin-audit-latest.md"
