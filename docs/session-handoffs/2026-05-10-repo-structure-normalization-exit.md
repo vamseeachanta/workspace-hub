@@ -58,9 +58,9 @@ Final root proof after the handoff push and a concurrent cron/report handoff com
 - Local HEAD: `8ef34f5c5 docs: add cron daily report exit handoff`
 - Remote `origin/main`: `8ef34f5c5`
 - Ahead/behind: `0/0`
-- Dirty count: 59 paths
+- Dirty count at the final root probe after fast-forwarding this handoff: 60 paths
 
-The unrelated 59 dirty paths were not modified or swept into this handoff. To satisfy the durable-handoff requirement without polluting the dirty root, this file was created and updated from clean temporary worktrees based on `origin/main`.
+The unrelated dirty paths were not modified or swept into this handoff. The count drifted from 59 to 60 during exit because concurrent/root-local handoff or generated-state churn continued while this docs-only handoff was being pushed. To satisfy the durable-handoff requirement without polluting the dirty root, this file was created and updated from clean temporary worktrees based on `origin/main`.
 
 Next session must classify/reconcile the root dirty state before executing `workspace-hub#2656` from the live checkout.
 
