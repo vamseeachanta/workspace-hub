@@ -185,6 +185,12 @@ The cron-health-check reports STALE for weekly jobs (Sunday/Monday) when viewed 
 - Weekly jobs scheduled for 3+ days ago = ACTUALLY stale and needs attention
 - Daily jobs > 25h old = genuinely stale
 
+Error scans must be bounded to recent log output, not the full append-only log. Use `tail -n 100` (or another explicit recent window) before matching `ERROR`/`Traceback`, otherwise an old transient failure in `logs/daily/cron.log` can keep a healthy job red indefinitely.
+
+Do not let `cron-health` self-poison: its own log legitimately contains `[ERROR]` rows when reporting other broken jobs. Either skip error-pattern scanning for the `cron-health` task itself or restrict self-checking to the current run's process exit/result artifact.
+
+Make `ERROR:` matching case-sensitive and anchored, e.g. `(^|[[:space:]])ERROR:`, so warning prose such as `403 Client Error: Forbidden` is not counted as an operational failure.
+
 ### Log Path Gotchas
 - `log: null` in YAML means the health checker cannot monitor the task -- this produces a MISS on glob matching. Every task should have a `log:` field with a valid glob pattern.
 - The glob pattern is expanded relative to `$WORKSPACE_HUB`, so `logs/quality/thing-*.log` resolves to `/mnt/local-analysis/workspace-hub/logs/quality/thing-*.log`.
