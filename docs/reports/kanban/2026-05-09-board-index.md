@@ -25,6 +25,7 @@ Generated: 2026-05-09
 ## Execution planning
 
 - [Five-hour Hermes swarm recommendations](2026-05-09-five-hour-swarm-recommendations.md)
+- [W0 live-state / approval-state audit](2026-05-10-w0-live-state-approval-audit.md)
 
 ## Review lanes
 
