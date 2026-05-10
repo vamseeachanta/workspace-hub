@@ -82,3 +82,68 @@ Classification: untracked public wiki standards pages from another ingest stream
 ## External actions
 
 No email/chat/external send action was performed for this exit refresh. Only local git/status checks and this handoff documentation were performed.
+
+## 2026-05-09T23:28:58-05:00 closeout refresh
+
+A later closeout request re-checked live tier-1 repository state. This section supersedes the earlier proof table for final exit reporting, while preserving the earlier evidence trail above.
+
+| Repo | Branch | HEAD | Upstream | Ahead/Behind | Dirty |
+| --- | --- | --- | --- | --- | --- |
+| workspace-hub | main | `d5e3ab760884` | `origin/main` @ `d5e3ab760884` | `0/0` | 20 |
+| assetutilities | main | `ff6530076d0e` | `origin/main` @ `ff6530076d0e` | `0/0` | 0 |
+| digitalmodel | main | `22788a36a63d` | `origin/main` @ `22788a36a63d` | `0/0` | 0 |
+| worldenergydata | main | `1b8e2f19ac5f` | `origin/main` @ `1b8e2f19ac5f` | `0/0` | 0 |
+| llm-wiki | main | `4b40794ef974` | `origin/main` @ `4b40794ef974` | `0/0` | 0 |
+| assethold | main | `e0495787915f` | `origin/main` @ `e0495787915f` | `0/0` | 0 |
+| aceengineer-website | main | `85deb21a0fce` | `origin/main` @ `85deb21a0fce` | `0/0` | 10 |
+| aceengineer-strategy | main | `9057555e35f8` | `origin/main` @ `9057555e35f8` | `0/0` | 0 |
+
+### Updated dirty-state exceptions
+
+`workspace-hub` remains synced but not clean. The 20 dirty paths are unrelated to this handoff and were not staged:
+
+```text
+ M .claude/state/corrections/.edit_sequence_counter
+ M .claude/state/corrections/.recent_edits
+ M config/ai-tools/agent-quota-latest.json
+ M config/ai-tools/provider-autolabel-candidates.json
+ M config/ai-tools/provider-routing-scorecard.json
+ M config/ai-tools/provider-utilization-weekly.json
+ M config/ai-tools/provider-work-queue.json
+ M docs/reports/provider-autolabel-candidates.md
+ M docs/reports/provider-routing-scorecard.md
+ M docs/reports/provider-utilization-weekly.md
+ M docs/reports/provider-work-queue.md
+?? .claude/skills/workspace-hub/comprehensive-learning/references/exit-handoff-closeout.md
+?? .claude/skills/workspace-hub/repo-structure/references/phase1-contract-checker-pattern.md
+?? .claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/references/2026-05-09-freshness-audit-lessons.md
+?? .claude/state/corrections/session_20260509.jsonl
+?? .claude/state/session-signals/2026-05-09.jsonl
+?? docs/governance/2026-05-09-anthropics-financial-services-ingest-design.md
+?? logs/quality/memory-health-20260509.md
+?? scripts/review/results/2026-05-09-plan-2659-codex-r2.md
+?? scripts/review/results/2026-05-09-plan-2659-codex.md
+```
+
+`aceengineer-website` is synced but not clean. The 10 dirty paths appear to be repo-structure Phase 1 implementation artifacts from another active stream and were not staged by this handoff:
+
+```text
+ M .github/workflows/ci.yml
+ M pyproject.toml
+ M stats.json
+?? .pre-commit-config.yaml
+?? config/repo_structure.yml
+?? docs/standards/repo-structure.md
+?? scripts/__init__.py
+?? scripts/maintenance/__init__.py
+?? scripts/maintenance/verify_repo_structure.py
+?? tests/repo_structure/test_repo_structure_contract.py
+```
+
+`llm-wiki` is now clean/synced at `4b40794ef974`; the earlier untracked standards-page dirt is no longer present at this closeout probe.
+
+### Updated closeout notes
+
+- This refresh is documentation-only and stages only this handoff file.
+- No external send/action was performed.
+- The heavyweight comprehensive-learning pipeline remains deferred to nightly processing.
