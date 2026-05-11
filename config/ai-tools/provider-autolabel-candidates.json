@@ -1,78 +1,10 @@
 {
-  "generated_at": "2026-05-11T10:09:04.363801Z",
+  "generated_at": "2026-05-11T13:20:06.918647Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 8,
+  "eligible_count": 6,
   "applied": [],
   "candidates": [
-    {
-      "number": 2523,
-      "title": "feat(workstations): add reusable Hermes preflight readiness checker",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2523",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:ai-orchestration",
-        "cat:harness",
-        "domain:ai-orchestration",
-        "domain:workstations",
-        "domain:agent-cost-tracking",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-03T19:30:33Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2550,
-      "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:operations",
-        "domain:automation",
-        "domain:security",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-03T21:18:30Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
     {
       "number": 2533,
       "title": "feat(repo-portfolio): review and revise mission/objective statements across active repos",
@@ -347,6 +279,33 @@
         "machine:dev-primary"
       ],
       "updatedAt": "2026-04-26T21:54:09Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2647,
+      "title": "ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2647",
+      "labels": [
+        "priority:high"
+      ],
+      "updatedAt": "2026-05-06T03:07:27Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",

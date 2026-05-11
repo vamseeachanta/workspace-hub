@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-11T10:09:04.238532Z
+Generated: 2026-05-11T13:20:06.786709Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: high
 - Execution-ready candidates: 7
-- Total routed candidates: 166
+- Total routed candidates: 167
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -26,19 +26,19 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 6
-- Total routed candidates: 31
+- Execution-ready candidates: 5
+- Total routed candidates: 30
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2269 feat(openfoam): standardize ESI v2312 baseline workflow and validation | yes | existing codex agent label | enhancement, priority:high, cat:engineering, cat:documentation, status:blocked, machine:dev-secondary |
 | #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:blocked, agent:codex |
-| #2523 feat(workstations): add reusable Hermes preflight readiness checker | yes | implementation/test/fix language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:ai-orchestration, domain:workstations |
 | #2403 feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | yes | existing codex agent label | enhancement, priority:medium, cat:data-pipeline, cat:research, domain:document-intelligence, status:working |
-| #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | yes | implementation/test/fix language | enhancement, priority:medium, cat:operations, domain:automation, domain:security, status:plan-approved |
+| #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | yes | existing codex agent label | enhancement, priority:medium, cat:operations, domain:automation, domain:security, agent:codex |
 | #2327 digitalmodel: CadQuery spike for parametric offshore geometry generation | yes | existing codex agent label | priority:low, cat:engineering, cat:research, status:working, agent:codex, status:plan-approved |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
+| #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | no | implementation/test/fix language | priority:high |
 
 ## gemini
 
