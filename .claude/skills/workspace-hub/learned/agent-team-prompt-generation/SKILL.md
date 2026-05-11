@@ -12,7 +12,7 @@ metadata:
 
 Use this when handing a GitHub issue or tightly scoped workstream to Claude Code/Codex/Gemini in one self-contained prompt, especially after planning is complete and you want a provider session to operate like an internal agent team in a single run.
 
-Also use it when generating a small set of independent swarm prompts for the same repo ecosystem; see `references/parallel-independent-swarm-prompts.md` for the five-lane audit decomposition and launch/logging pattern.
+Also use it when generating a small set of independent swarm prompts for the same repo ecosystem; see `references/parallel-independent-swarm-prompts.md` for the five-lane audit decomposition, `/goal` reverse-prompt shape, and launch/logging pattern.
 
 ## When to use
 - A parent issue or child issue is already planned and needs an execution-ready Claude prompt
@@ -130,8 +130,8 @@ End with a strict required-output list such as:
 
 This makes later orchestration and artifact roundup much easier.
 
-### 9. Parallel swarm launch contract
-When producing prompts for multiple independent swarms, assign each worker one lane, one prompt file, one log file, and one expected output artifact. Make the prompts comparable by using a shared output schema, but make the investigation lens distinct per swarm. Record PID/provider/log/artifact metadata and verify the process has actually started before reporting dispatch success. See `references/parallel-independent-swarm-prompts.md`.
+### 9. Parallel swarm prompt contract
+When producing prompts for multiple independent swarms, assign each worker one lane, one prompt file, one log file, and one expected output artifact. Make the prompts comparable by using a shared output schema, but make the investigation lens distinct per swarm. If the user asks for "reverse prompts" or prompts "we can submit" to `/goal`, generate copy-paste-ready prompt text or prompt files; do **not** launch agents, mutate issue state, or push branches unless the user explicitly asks for dispatch/execution. If dispatch is explicitly requested, record PID/provider/log/artifact metadata and verify the process has actually started before reporting dispatch success. See `references/parallel-independent-swarm-prompts.md`.
 
 ## Recommended template skeleton
 
@@ -226,6 +226,7 @@ This is especially important in shared orchestration repos.
 - missing final return format
 - no explicit rule for when GitHub labels/comments should or should not change
 - for multi-swarm dispatch, treating process launch as completion instead of separately reporting startup, running/exited state, and artifact existence
+- treating a request for reverse prompts as authorization to launch agents; prompt-generation mode and dispatch mode are separate
 - giving independent swarms overlapping write permissions or mutually dependent tasks
 
 ## Minimal checklist before saving a prompt file

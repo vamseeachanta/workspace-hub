@@ -15,6 +15,18 @@ Each swarm prompt should be self-contained and include:
 7. **Priority lens** — a distinct question for each swarm, not five variants of the same generic audit.
 8. **Stop conditions** — bounded time/scope and when to report blockers rather than drift.
 
+## `/goal` reverse-prompt mode
+
+When the user asks for "reverse prompts" or prompts "we can submit" to independent `/goal` swarms, treat the deliverable as prompt text, not execution. Produce five copy-paste-ready blocks (or files if requested) with:
+
+- a short `/goal` title line or objective line suitable for the target agent interface;
+- exact repo ecosystem scope and current working directory;
+- lane-specific mission, read-only/write boundaries, and output path;
+- shared evidence/output schema so results are comparable;
+- explicit instruction not to coordinate with other swarms and not to close issues/push unless separately authorized.
+
+Do not dispatch, background, close, label, commit, or push from reverse-prompt mode unless the user adds explicit execution language such as "launch", "run", "submit now", or "dispatch".
+
 ## Five-lane audit decomposition
 
 A useful 5-swarm split for workspace-hub ecosystem governance/audit work:
