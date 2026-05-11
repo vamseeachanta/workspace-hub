@@ -57,10 +57,20 @@ Class of task: live GitHub approval-state reconciliation across labels, local ap
 
 ## Output pattern
 
+When the user asks for approval links, do a live `gh issue view`/`gh issue list` check immediately and return concise clickable GitHub URLs. Do not include implementation planning, review history, or extra narrative unless asked.
+
 Use a short table:
 
 | Bucket | Issue | State | Action |
 |---|---|---|---|
-| Approval needed | `#NNN` | `status:plan-review` | User may promote to `status:plan-approved` |
-| Needs data | `#NNN` | `status:plan-approved`, `status:needs-data` | User/data decision still required |
-| Approved / execution-prep | `#NNN` | `status:plan-approved`, marker missing | Create local marker before implementation |
+| Approval needed | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-review` | User may promote to `status:plan-approved` |
+| Needs data | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, `status:needs-data` | User/data decision still required |
+| Approved / execution-prep | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, marker missing | Create local marker before implementation |
+
+For a narrow request like “show gh issue links for user approval,” a reduced table is preferred:
+
+| Issue | Title | Link |
+|---:|---|---|
+| #NNN | <title> | https://github.com/OWNER/REPO/issues/NNN |
+
+End with one sentence confirming the live labels/state checked (for example: “All listed issues are open and labeled `status:plan-review`.”).

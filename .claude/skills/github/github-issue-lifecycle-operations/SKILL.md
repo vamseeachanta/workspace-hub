@@ -16,11 +16,19 @@ Use for GitHub issue intake, decomposition, planning, execution handoff, label/e
 2. Prefer durable umbrella/roadmap anchors over duplicate replacement epics.
 3. Put command-heavy bodies in files to avoid shell quoting and command substitution hazards.
 4. Maintain explicit evidence fields and closeout comments before state transitions.
-5. Use checklist skills as support material, not separate discovery targets.
+5. If a docs-only planning commit is blocked by branch protection / required PR rules, publish the exact planning commit on a short-lived `plan/issue-<N>-...` branch, open a PR, and post the issue's final plan-review comment with the PR/branch evidence instead of treating direct-main push failure as completion.
+6. Use checklist skills as support material, not separate discovery targets.
+7. For user-approved batches, reconcile labels with explicit issue-number `gh issue view` loops and body-file comments; do not rely on broad comma-separated `gh issue list --search` queries for final proof. See `references/approval-label-reconciliation.md`.
+8. For W0/Kanban reconciliation, classify stale WIP into closeable-landed, landed-but-externally-blocked, no-code dependency-blocked, or closed-label-drift before launching any new swarm; verify landed commits against `origin/main`, post evidence via body files, fix labels, and write a scoped report without sweeping unrelated generated dirt. See `references/w0-kanban-reconciliation-closeout.md`.
 
 ## Consolidated Session Learnings
 
 The `references/` directory contains archived narrow skills absorbed during the 2026-04-29 umbrella consolidation pass. Use the subsections below as the class-level index, then open the named reference when a case-specific recipe is needed.
+### `w0-kanban-reconciliation-closeout`
+
+- Session reference: `references/w0-kanban-reconciliation-closeout.md`.
+- Preserved insight: Before launching the next Kanban/5-hour swarm wave, reconcile stale W0/WIP items by proving landed commits, closing only fully satisfied issues, rerouting runtime/dependency blockers to `status:blocked`, cleaning closed-label drift, and committing a scoped report while leaving unrelated generated root dirt untouched.
+
 ## Absorbed Narrow Skills (2026-04-29)
 
 ### `gh-issue-creation-full-repo-and-batch-setup`
@@ -32,6 +40,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 
 - Former skill demoted to `references/gh-work-execution.md`.
 - Preserved insight: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Claude agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
+- Repo-structure/CI readiness addendum: use `references/repo-structure-contract-gate-slices.md` for bounded Phase 1 structure-normalization issues that need approval-marker evidence, TDD contract/checker/wiring, generated-root exceptions, CI/pre-commit enforcement, generated-churn cleanup, and transactional closeout.
 
 ### `gh-work-execution-checklist`
 
