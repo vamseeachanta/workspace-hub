@@ -1,7 +1,7 @@
 # GTM Trend Report — Week-over-Week Hiring Momentum
 
-> Generated: 2026-05-04
-> Total scans to date: 5
+> Generated: 2026-05-11
+> Total scans to date: 6
 
 ## Scan History
 
@@ -12,6 +12,7 @@
 | 2026-04-13 | 738 | 671 | 67 | 376 |
 | 2026-04-20 | 587 | 492 | 95 | 314 |
 | 2026-05-04 | 664 | 622 | 42 | 333 |
+| 2026-05-11 | 638 | 594 | 44 | 347 |
 
 ## 📈 Trending UP — Companies Hiring MORE This Week
 
@@ -21,45 +22,45 @@ These companies have MORE open roles than last scan — they are getting busier.
 | Company | This Week | Last Week | Change | Priority? |
 |---------|-----------|-----------|--------|-----------|
 | **Deloitte** | 49 | 36 | +13 |  |
-| **American Bureau of Shipping (ABS)** | 13 | 4 | +9 | ✅ |
-| **Jobs via Dice** | 14 | 6 | +8 |  |
-| **Blue Origin** | 11 | 4 | +7 |  |
-| **Vestas** | 7 | 1 | +6 |  |
-| **Seatrium** | 7 | 1 | +6 |  |
-| **Rheem Manufacturing** | 8 | 2 | +6 |  |
-| **Baker Hughes** | 6 | 1 | +5 |  |
-| **Tesla** | 6 | 1 | +5 |  |
-| **ExxonMobil** | 7 | 3 | +4 | ✅ |
+| **Mercor** | 12 | 1 | +11 |  |
+| **Intermoor** | 8 | 1 | +7 | ✅ |
+| **Oceaneering** | 8 | 2 | +6 | ✅ |
+| **Weeks Marine, Inc.** | 8 | 3 | +5 |  |
+| **SEGULA Technologies** | 6 | 1 | +5 |  |
 | **Worley** | 9 | 5 | +4 | ✅ |
-| **Leidos** | 5 | 1 | +4 |  |
+| **TechnipFMC** | 6 | 2 | +4 | ✅ |
+| **WSP in the U.S.** | 10 | 6 | +4 |  |
+| **First Search Inc.** | 5 | 1 | +4 |  |
 | **McDermott International, Ltd** | 4 | 1 | +3 | ✅ |
-| **Zachry Group** | 5 | 2 | +3 |  |
-| **Helix Energy Solutions Group** | 4 | 1 | +3 |  |
-| **LHH** | 4 | 1 | +3 |  |
-| **Bechtel Corporation** | 5 | 2 | +3 |  |
+| **Acuren** | 9 | 6 | +3 |  |
+| **Chevron** | 4 | 1 | +3 | ✅ |
+| **Insight Global** | 9 | 6 | +3 |  |
+| **EVONA** | 6 | 3 | +3 |  |
 | **Resource Innovations** | 5 | 2 | +3 |  |
 | **Xometry** | 4 | 1 | +3 |  |
-| **Tallgrass** | 5 | 2 | +3 |  |
+| **Gravitics Inc** | 4 | 1 | +3 |  |
+| **Halliburton** | 4 | 2 | +2 |  |
+| **Bureau Veritas** | 3 | 1 | +2 | ✅ |
 
 ## ➡️ Consistently Busy — Stable High Hiring
 
 | Company | Roles (stable) | Priority? |
 |---------|---------------|-----------|
 | ABS | 13 | ✅ |
+| Seatrium | 7 |  |
+| GE Vernova | 6 | ✅ |
 | Orsted | 6 | ✅ |
 | Gilead Sciences | 6 |  |
+| Zachry Group | 5 |  |
 | Honeywell | 5 |  |
+| Mammoet | 4 |  |
 | HDR | 4 |  |
+| Helix Energy Solutions Group | 4 |  |
+| Pentangle Tech Services | P5 Group | 4 |  |
 | Altrad Sparrows – Americas | 4 |  |
 | LaBella Associates | 4 |  |
 | Arup | 3 |  |
-| Weeks Marine, Inc. | 3 |  |
 | Noble Corporation | 3 |  |
-| Actalent | 3 |  |
-| EVONA | 3 |  |
-| Slalom | 3 |  |
-| SEPHORA | 3 |  |
-| DNV | 3 | ✅ |
 
 ## 🔥 Persistent Openings — Hard to Fill = Consulting Gold
 
@@ -68,38 +69,38 @@ They are the most likely to accept a consulting alternative.
 
 | Weeks Seen | Title | Company | Score | First Seen |
 |------------|-------|---------|-------|------------|
-| 4 | Engineering | TechnipFMC | 100 | 2026-04-02 |
-| 4 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
-| 4 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
-| 4 | Engineering Reviews | ABS | 100 | 2026-04-02 |
-| 4 | Engineering Applications | ABS | 100 | 2026-04-02 |
-| 4 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
-| 4 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
-| 4 | Subsea Solutions | ABS | 100 | 2026-04-02 |
-| 4 | Subsea Mining | ABS | 100 | 2026-04-02 |
-| 4 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
-| 4 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
-| 4 | Engineering Software | ABS | 100 | 2026-04-02 |
-| 4 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
-| 4 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
-| 4 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
-| 4 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
-| 4 | Engineering &
+| 5 | Engineering | TechnipFMC | 100 | 2026-04-02 |
+| 5 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
+| 5 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
+| 5 | Engineering Reviews | ABS | 100 | 2026-04-02 |
+| 5 | Engineering Applications | ABS | 100 | 2026-04-02 |
+| 5 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
+| 5 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
+| 5 | Subsea Solutions | ABS | 100 | 2026-04-02 |
+| 5 | Subsea Mining | ABS | 100 | 2026-04-02 |
+| 5 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
+| 5 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
+| 5 | Engineering Software | ABS | 100 | 2026-04-02 |
+| 5 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
+| 5 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
+| 5 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
+| 5 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
+| 5 | Engineering &
                             Technolo | GE Vernova | 100 | 2026-04-02 |
-| 4 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
+| 5 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
+| 4 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 4 | Engineering Applications | ABS | 100 | 2026-04-13 |
+| 4 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 4 | Subsea Solutions | ABS | 100 | 2026-04-13 |
 | 3 | CareersEngineering ·  3 min readEngineering succes | Worley | 115 | 2026-04-02 |
 | 3 | CareersWorley Consulting ·  3 min readFrom the gro | Worley | 105 | 2026-04-02 |
 | 3 | Analyst Coverage | Crescent Energy | 100 | 2026-04-02 |
-| 3 | CALM Buoy Mooring System | SBM Offshore | 100 | 2026-04-02 |
-| 3 | Engineering | Worley | 100 | 2026-04-02 |
-| 3 | Simplifying subsea tiebacks with pseudo dry gas in | Worley | 100 | 2026-04-02 |
-| 3 | Analyst coverage | Worley | 100 | 2026-04-02 |
 
 ## Cumulative Statistics
 
-- **2493** unique job postings tracked all-time
-- **1065** unique companies seen
-- **5** scans completed
+- **3087** unique job postings tracked all-time
+- **1206** unique companies seen
+- **6** scans completed
 
 ---
 
