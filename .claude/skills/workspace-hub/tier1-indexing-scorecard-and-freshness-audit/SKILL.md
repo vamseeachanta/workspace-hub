@@ -47,6 +47,8 @@ For the current tier-1 repo set (`workspace-hub`, `digitalmodel`, `assetutilitie
 - repo-local operator map under `docs/maps/<repo>-operator-map.md` when applicable
 - `docs/registry/module-routing.yaml` when applicable
 
+When the requested working directory is `/mnt/local-analysis/workspace-hub`, prefer nested repo paths under that tree (`/mnt/local-analysis/workspace-hub/<repo>`). Sibling paths under `/mnt/local-analysis/<repo>` may exist; use them only as fallback if the nested repo is absent so the refreshed local report reflects the requested workspace checkout.
+
 For freshness reports, include:
 - date/time
 - per-repo status (`green` / `yellow` / `red`)
@@ -149,6 +151,7 @@ Latest evidence references:
 - `references/2026-05-08-freshness-audit-lessons.md` — compact evidence snapshot, false-positive filters, and validation checklist from the 2026-05-08 scheduled freshness audit.
 - `references/2026-05-09-freshness-audit-lessons.md` — status-level baseline and scanner false-positive refinements from the 2026-05-09 scheduled audit.
 - `references/2026-05-10-freshness-audit-lessons.md` — updated evidence: `assetutilities` broken-link findings refined as false positives, `aceengineer-website` remains RED for missing registry, and report verification evidence should be included when available.
+- `references/2026-05-11-freshness-audit-lessons.md` — latest status-level baseline, nested-repo path guardrail, current stale-reference evidence, and report verification evidence from the 2026-05-11 scheduled audit.
 
 
 ## Daily freshness automation pattern
