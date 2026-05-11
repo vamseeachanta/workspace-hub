@@ -20,7 +20,7 @@ Use when the user asks to "document and prepare to exit" or an equivalent closeo
 
 ## If push emits a ref-lock/race warning
 
-Do not assume failure from the warning alone. Immediately run a fetch/status check and compare local `HEAD` to `origin/<branch>`. If they match and ahead/behind is `0/0`, report the warning as a benign ref-lock race with verification evidence.
+Do not assume failure from the warning alone. Immediately run a fetch/status check and compare local `HEAD` to `origin/<branch>`. If they match and ahead/behind is `0/0`, report the warning as a benign ref-lock race with verification evidence. This also applies when the push output says `remote rejected ... cannot lock ref` but the follow-up fetch shows the remote already contains the exact local `HEAD` commit; treat the push as verified-by-state, not failed-by-text.
 
 ## If concurrent writers advance `origin/main`
 
@@ -38,6 +38,10 @@ Use precise language:
 - Good: "Repo is not clean: 19 unrelated dirty paths remain; not staged by this handoff."
 - Good: "Nested repo `llm-wiki` has ongoing untracked standards-page ingest dirt; preserved intentionally."
 - Bad: "Clean enough" or "mostly clean" without counts and paths/classes.
+
+## Updating embedded proof sections
+
+If you update a handoff's "final proof" section after an earlier clean/synced commit, that edit creates a new commit and invalidates the embedded commit hash unless you re-run the full closeout loop. Commit the proof-section update, push, fetch, and capture the latest live `HEAD`, `origin/<branch>`, ahead/behind, and `git status --short` for the final user response. Do not rely only on the proof block written before the proof-update commit.
 
 ## Updating an existing handoff
 

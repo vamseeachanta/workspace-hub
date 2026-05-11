@@ -10,7 +10,9 @@ metadata:
 
 # Agent-Team Prompt Generation
 
-Use this when handing a GitHub issue or tightly scoped workstream to Claude Code in one self-contained prompt, especially after planning is complete and you want Claude to operate like an internal agent team in a single run.
+Use this when handing a GitHub issue or tightly scoped workstream to Claude Code/Codex/Gemini in one self-contained prompt, especially after planning is complete and you want a provider session to operate like an internal agent team in a single run.
+
+Also use it when generating a small set of independent swarm prompts for the same repo ecosystem; see `references/parallel-independent-swarm-prompts.md` for the five-lane audit decomposition and launch/logging pattern.
 
 ## When to use
 - A parent issue or child issue is already planned and needs an execution-ready Claude prompt
@@ -18,6 +20,7 @@ Use this when handing a GitHub issue or tightly scoped workstream to Claude Code
 - You want one Claude session to simulate multiple roles (Planner, Architect/Implementer, Reviewer, Integrator)
 - You need strict write-path ownership and zero scope creep
 - You want a reusable handoff artifact committed into `docs/plans/`
+- You need 3-5+ independent AI swarms to audit different lenses of the same repo ecosystem with comparable outputs
 
 ## Core pattern
 
@@ -127,6 +130,9 @@ End with a strict required-output list such as:
 
 This makes later orchestration and artifact roundup much easier.
 
+### 9. Parallel swarm launch contract
+When producing prompts for multiple independent swarms, assign each worker one lane, one prompt file, one log file, and one expected output artifact. Make the prompts comparable by using a shared output schema, but make the investigation lens distinct per swarm. Record PID/provider/log/artifact metadata and verify the process has actually started before reporting dispatch success. See `references/parallel-independent-swarm-prompts.md`.
+
 ## Recommended template skeleton
 
 ```md
@@ -219,6 +225,8 @@ This is especially important in shared orchestration repos.
 - asking Claude to both define parent architecture and implement child details in one run
 - missing final return format
 - no explicit rule for when GitHub labels/comments should or should not change
+- for multi-swarm dispatch, treating process launch as completion instead of separately reporting startup, running/exited state, and artifact existence
+- giving independent swarms overlapping write permissions or mutually dependent tasks
 
 ## Minimal checklist before saving a prompt file
 - Is the repo path exact?

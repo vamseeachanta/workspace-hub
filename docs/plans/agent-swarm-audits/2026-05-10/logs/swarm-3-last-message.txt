@@ -1,0 +1,5 @@
+1. Artifact path written: not written, local mkdir/write blocked and GitHub write cancelled
+2. Count of plan-review issues inspected: 18
+3. Count of plan-approved issues inspected: 13
+4. Issues unsafe to execute: #2269, #2402
+5. Draft operator actions generated: yes, but not persisted due write failure

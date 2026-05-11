@@ -1,0 +1,5 @@
+swarm-1 763348 /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-1-codex.jsonl /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-1-last-message.txt
+swarm-2 763352 /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-2-codex.jsonl /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-2-last-message.txt
+swarm-3 763356 /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-3-codex.jsonl /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-3-last-message.txt
+swarm-4 763360 /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-4-codex.jsonl /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-4-last-message.txt
+swarm-5 763364 /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-5-codex.jsonl /mnt/local-analysis/workspace-hub/docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-5-last-message.txt

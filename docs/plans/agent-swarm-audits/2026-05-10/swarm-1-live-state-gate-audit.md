@@ -1,0 +1,43 @@
+# Swarm 1: Live-State Gate Audit
+
+Date: 2026-05-10 / 2026-05-11 run window
+Provider: Codex CLI swarm launched from workspace-hub
+Log: `logs/swarm-1-codex.jsonl`
+Status: completed (`turn.completed` observed in log)
+Artifact note: original worker-local artifact write failed; this report was recovered by Hermes from the worker's final log message during exit closeout.
+
+## Recovered final result
+
+1. Artifact path written: not written. Local shell and `apply_patch` failed; GitHub write fallback was cancelled.
+
+2. Top 5 workflow risks:
+- Local git state could not be audited: `bwrap: loopback: Failed RTM_NEWADDR`.
+- `llm-wiki#14/#19/#25/#26` are `status:plan-approved` but blocked.
+- `llm-wiki#43-#48` child governance lanes need explicit approval/implementation.
+- `worldenergydata#392` is T3 plan-review with degraded cross-provider review.
+- `digitalmodel#283` has checked implementation items but no TDD evidence/comments.
+
+3. Repos clean/synced vs dirty/blocked:
+- Clean/synced: none locally verified.
+- No sampled status-label blockers on GitHub: `assetutilities`, `assethold`, `aceengineer-website`, `aceengineer-strategy`.
+- Blocked/risky: `workspace-hub`, `digitalmodel`, `worldenergydata`, `llm-wiki`.
+
+4. Issues needing operator attention:
+- `llm-wiki#43-#48`
+- `llm-wiki#14/#19/#25/#26`
+- `worldenergydata#392`
+- `digitalmodel#283`
+- `workspace-hub#2626`
+
+5. Anything unsafe to automate:
+- Implementation/closeout from `status:plan-approved` alone.
+- Parent execution for blocked `llm-wiki` issues.
+- Local commit/push/cleanup before a working local git audit.
+- Raw-source extraction from `/mnt/ace` or `/mnt/ace-data`.
+- Closing legacy WRK items without commit/test evidence.
+
+## Verification notes
+
+- Process exited before closeout check.
+- Worker log exists under `docs/plans/agent-swarm-audits/2026-05-10/logs/`.
+- The concise final result is also copied to `logs/swarm-1-last-message.txt` for easier inspection.
