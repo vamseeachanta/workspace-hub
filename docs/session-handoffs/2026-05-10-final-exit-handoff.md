@@ -69,4 +69,13 @@ No external send/email/chat action was performed.
 
 ## Final post-push proof
 
-To be filled after committing, pushing, refetching, and checking clean state.
+Post-closeout proof captured after committing and synchronizing session artifacts:
+
+```text
+HEAD   = 4ea9bfa12abff579db8647c7ee7b78244b432443
+ORIGIN = 4ea9bfa12abff579db8647c7ee7b78244b432443
+Ahead/Behind = 0/0
+git status --short = clean
+```
+
+A later commit may contain only this proof-section update; the final chat response should report the latest live `HEAD` after that proof commit is pushed/refetched.
