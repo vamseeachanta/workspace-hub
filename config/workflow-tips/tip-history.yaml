@@ -79,3 +79,5 @@ shown:
     tips: [gsd-review, bp-challenge-claude]
   - date: 2026-05-10
     tips: [cc-hooks, bp-scrap-restart]
+  - date: 2026-05-11
+    tips: [cc-voice, cc-security-review]

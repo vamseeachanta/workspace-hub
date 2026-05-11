@@ -40,7 +40,10 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
    - Prefer `provider-work-queue.json -> provider_queues.codex.top_issues`.
    - Favor open issues with `status:plan-approved` and bounded implementation/test/refactor/documentation scope.
    - Respect existing `agent:*` labels and avoid issues already `status:working` unless recovering a known stalled lane.
+   - When the user asks for ecosystem-aware or ambition-aware burn planning, combine the generated queue with live per-repo issue scans and recent-session/history signals; use `references/workspace-ecosystem-lane-selection.md` for the lane-selection checklist and avoid-list.
    - Keep about 3-5 concurrent Codex lanes; top up periodically rather than launching too many at once.
+   - For short burn windows where the goal is high useful throughput, bundle 2-4 tightly related approved issues from the same repo into one Codex lane/worktree only when they share validation setup and can land as separate commits or clearly scoped blocker notes; see `references/multi-issue-bundle-closeout.md`.
+   - Before launching an overnight/12-hour burn, produce a compact launch manifest, per-lane PID/session/log paths, exit-code/status artifacts, and autonomous-vs-human-in-loop exclusions; use `references/autonomous-burn-launch-closeout.md` for the closeout/monitoring shape. Treat missing PID/exit/status launch evidence as unrecoverable later rather than backfilling guesses.
 
 3. Isolate each lane
    - Create one worktree or clone per issue under a run directory, e.g.:
@@ -143,10 +146,11 @@ Do not let the controller recursively schedule more cron jobs.
 ## Verification before claiming success
 
 Before reporting that a lane landed:
-- inspect process output
+- inspect process output and capture Codex-reported token usage when available
 - check `git -C <worktree> status --short`
 - check `git -C <worktree> log --oneline -3`
 - verify pushed branch or main ancestry
 - verify GitHub comment/closure state
+- remove any temporary `status:working` label from closed or explicitly blocked issues that are no longer actively running
 
-Report "running" or "blocked" rather than claiming completion when the process is only launched.
+Report "running" or "blocked" rather than claiming completion when the process is only launched. For partial bundles, close only issues with landed/verified scope and leave blockers open with an evidence comment naming the missing prerequisite or approval gap.

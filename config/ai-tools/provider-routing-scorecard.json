@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-05-11T05:20:05.588279Z",
+  "generated_at": "2026-05-11T10:09:02.287318Z",
   "current_week": "2026-W20",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-11T05:20:05.418698Z",
-    "audit_generated_at": "2026-05-08T11:03:24Z"
+    "utilization_generated_at": "2026-05-11T10:09:02.151750Z",
+    "audit_generated_at": "2026-05-11T09:15:03Z"
   },
   "recommended_provider_order": [
     "gemini",
@@ -21,16 +21,16 @@
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
       "sessions_current_week": 5,
-      "post_records_current_week": 44,
-      "audit_post_records": 104337,
-      "missing_repo_reads": 8819,
-      "python3_per_1k_records": 8.87,
-      "migration_debt_per_1k_records": 16.67,
+      "post_records_current_week": 46,
+      "audit_post_records": 105154,
+      "missing_repo_reads": 8824,
+      "python3_per_1k_records": 9.69,
+      "migration_debt_per_1k_records": 16.54,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 34
+          "count": 36
         },
         {
           "tool": "Read",
@@ -70,45 +70,33 @@
       "reported_utilization_pct": 2.6,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
-      "audit_post_records": 30875,
-      "missing_repo_reads": 730,
-      "python3_per_1k_records": 11.82,
-      "migration_debt_per_1k_records": 2.3,
+      "sessions_current_week": 25,
+      "post_records_current_week": 747,
+      "audit_post_records": 31761,
+      "missing_repo_reads": 818,
+      "python3_per_1k_records": 11.49,
+      "migration_debt_per_1k_records": 2.24,
       "top_migration_hint": "nested_repo_context_drift",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 24513
-        },
-        {
           "tool": "Read",
-          "count": 4162
+          "count": 399
         },
         {
           "tool": "Grep",
-          "count": 1255
+          "count": 200
         },
         {
-          "tool": "update_plan",
-          "count": 408
+          "tool": "Bash",
+          "count": 99
         },
         {
-          "tool": "list_mcp_resources",
-          "count": 193
+          "tool": "create_goal",
+          "count": 16
         },
         {
-          "tool": "_add_comment_to_issue",
-          "count": 105
-        },
-        {
-          "tool": "_fetch_commit",
-          "count": 21
-        },
-        {
-          "tool": "list_mcp_resource_templates",
-          "count": 18
+          "tool": "_create_file",
+          "count": 7
         }
       ],
       "preferred_work": [
@@ -135,9 +123,9 @@
       "quota_source": "estimated",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 6185,
+      "audit_post_records": 6189,
       "missing_repo_reads": 604,
-      "python3_per_1k_records": 47.05,
+      "python3_per_1k_records": 47.02,
       "migration_debt_per_1k_records": 13.9,
       "top_migration_hint": "legacy_local_work_queue_items",
       "top_tools": [
@@ -163,7 +151,7 @@
         },
         {
           "tool": "Browser",
-          "count": 118
+          "count": 122
         },
         {
           "tool": "ToolSearch",

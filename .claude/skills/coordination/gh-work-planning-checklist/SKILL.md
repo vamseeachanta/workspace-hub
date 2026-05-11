@@ -88,6 +88,13 @@ Do not use this as a substitute for the full planning route.
 - Link future issues back to the current issue and mention them in the plan.
 - Decision gate at each major step: continue current issue, create future issue, stop for user decision, or stop for blocker.
 
+7b. Blocker revalidation after child/prep closeout
+- When a blocked parent issue has child governance, input-readiness, or prep issues that just closed, do not equate child closure with parent unblocked status.
+- Inspect the child closeout comments and linked artifacts to distinguish "checklist/input artifact exists" from "all required fields/evidence/approval values are completed."
+- If fields/gates remain incomplete, keep the parent open with `status:blocked` and post a parent comment naming the cleared prerequisite plus remaining gates.
+- For high-risk raw/private/vendor/client-source lanes, use an independent read-only provider review and explicitly prohibit edits, issue comments, and raw extraction in the prompt.
+- See `references/blocker-revalidation-after-child-closeout.md` for the detailed checklist and comment template.
+
 8. Approval gate
 - Before stopping: save the plan, update planning index if used, ensure follow-up issues are created or called out, post final plan comment, add `status:plan-review`, remove stale conflicting labels.
 - If context or tool-call budget is running low, prioritize transactional posting/label/commit verification over additional polish; do not leave the plan in an unposted draft state after review is already complete unless a blocker is explicit.
