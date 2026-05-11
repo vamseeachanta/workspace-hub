@@ -83,19 +83,25 @@ Design or operate a central AI workflow control plane that combines provider quo
    - provider urgency / fit (for example expiring Codex credit)
    - machine readiness / ownership (for example `ace-linux-1` control plane, `ace-linux-2` overflow)
 
-7. **Emit a dispatch ledger**
-   Minimum fields:
+7. **Emit a dispatch ledger or Kanban execution board**
+   Minimum fields for either artifact:
    - issue number + URL
+   - lifecycle lane / approval state
+   - domain/category board
    - provider/model
+   - reviewer/cross-review owner
    - workstation
    - reason for routing
    - quota/urgency basis
    - approval status
    - branch/worktree/path ownership
+   - repo structure/test/CI hygiene gate
    - launch prompt or command
    - validation command(s)
    - expected evidence artifact/comment
    - fallback/stop condition
+
+   When generating tier-1 Kanban boards, every issue row should carry enough provider + machine routing information that it can be converted into a safe dispatch ledger without reclassifying from scratch. Keep user-decision and plan-review lanes visible as first-class queues; do not hide them inside generic backlog.
 
 8. **Get approval before long-running execution**
    Present the operator with the shortlist and launch plan before starting cross-machine or high-credit-burn batches.

@@ -53,7 +53,7 @@ Critical learned behavior:
 - For non-interactive/background runs, always add `< /dev/null`.
 - When the prompt is long, write it to a file and run: `codex exec "$(cat prompt.md)" < /dev/null 2>&1 | tee out.log`.
 - If a background Codex run shows no progress and the output file only contains that stdin message, kill it and relaunch with stdin redirected.
-- In some sandboxed environments, Codex review runs may emit `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` when trying to shell-read local files. The run may still finish using only prompt-provided context, but its retrieval adequacy is degraded. For adversarial reviews, prefer embedding the full plan text in the prompt instead of assuming Codex can read repo files itself.
+- In some sandboxed environments, Codex review/read-only analysis runs may emit `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` when trying to shell-read local files. The run may still finish using only prompt-provided context, but its retrieval adequacy is degraded. For adversarial reviews, prefer embedding the full plan text in the prompt instead of assuming Codex can read repo files itself. For trusted local read-only analysis lanes where the sandbox blocks all file inspection, relaunch with `--dangerously-bypass-approvals-and-sandbox` only after the prompt states a no-write contract, uses absolute paths for prompt files, redirects stdin from `/dev/null`, and writes findings to a temp output file for orchestrator review.
 
 ## Key Flags
 
