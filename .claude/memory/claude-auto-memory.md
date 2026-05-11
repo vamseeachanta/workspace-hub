@@ -61,7 +61,7 @@
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` (in-kernel) refuses dirty NTFS volumes; use `ntfs-3g` (FUSE) which auto-replays journal; drop `default_permissions` and pass explicit `uid`/`gid` for ownership
 - [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g-created symlinks as raw `IntxLNK` blobs; corrupts git type-tracked symlinks; verified 2026-05-01 on workspace-hub `/dev/sdc1`; stay on ntfs-3g for any volume hosting a git repo
 - [Wikimedia thumb width quirk](feedback_wikimedia_thumb_width_quirk.md) — query `imageinfo` API for canonical `thumburl`; never hand-construct width segment; main-session re-verify (subagent verification was wrong twice on 2026-04-27)
-- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner *stale: 2026-05-11*
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects only sparse repo (368K tracked, ~6% on disk); `git sparse-checkout add <path>` for missing files, never `disable` (hung 22min on 2026-04-30 materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — agent regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 password-hashing comments; for workspace-hub paths, trust the hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions can land half-resolved files; pull produces double-nested conflict markers; `git checkout --ours` if HEAD is clean
@@ -128,7 +128,7 @@
 > ai-orchestration.md, network_machines.md
 - [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — modern Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
-- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry
+- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry *stale: 2026-05-11*
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data

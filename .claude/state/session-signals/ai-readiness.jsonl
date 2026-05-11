@@ -349,3 +349,9 @@
 {"ts":"2026-05-10T07:03:59Z","host":"ace-linux-1","agent":"claude","status":"ok","version":"2.1.38","message":"version 2.1.38 ok; expected model claude-sonnet-4-6"}
 {"ts":"2026-05-10T07:03:59Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.114.0","message":"version 0.114.0 below minimum 1.0.0 — run update"}
 {"ts":"2026-05-10T07:03:59Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-05-11T07:01:50Z","host":"ace-linux-1","agent":"claude","status":"ok","version":"2.1.38","message":"version 2.1.38 ok; expected model claude-sonnet-4-6"}
+{"ts":"2026-05-11T07:01:50Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.114.0","message":"version 0.114.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-05-11T07:01:50Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
+{"ts":"2026-05-11T07:03:07Z","host":"ace-linux-1","agent":"claude","status":"ok","version":"2.1.38","message":"version 2.1.38 ok; expected model claude-sonnet-4-6"}
+{"ts":"2026-05-11T07:03:07Z","host":"ace-linux-1","agent":"codex","status":"warn","version":"0.114.0","message":"version 0.114.0 below minimum 1.0.0 — run update"}
+{"ts":"2026-05-11T07:03:07Z","host":"ace-linux-1","agent":"gemini","status":"warn","version":"0.27.3","message":"version 0.27.3 below minimum 1.0.0 — run update"}
