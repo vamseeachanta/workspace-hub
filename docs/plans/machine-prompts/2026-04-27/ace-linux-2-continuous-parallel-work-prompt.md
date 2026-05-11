@@ -34,31 +34,13 @@ Primary objective for the next 24h:
 
 ## Startup readiness probe
 
-Run this first from a login shell on ace-linux-2:
+Run the reusable Hermes preflight first from ace-linux-1, which uses a login shell on ace-linux-2 and writes JSON/Markdown artifacts under `docs/reports/preflight/`:
 
 ```bash
-bash -lc '
-set -euo pipefail
-hostname
-pwd
-for c in hermes codex claude gemini gh git python uv; do
-  echo "--- $c ---"
-  command -v "$c" || true
-  "$c" --version 2>&1 | head -3 || true
-done
-
-echo "--- gh auth ---"
-gh auth status 2>&1 || true
-
-echo "--- workspace ---"
-cd /mnt/local-analysis/workspace-hub
-git branch --show-current || true
-git rev-parse --short HEAD || true
-git remote get-url origin || true
-git status --short || true
-git fetch origin main --prune || true
-'
+uv run python -m scripts.preflight.hermes_preflight --target ace-linux-2
 ```
+
+If running directly on ace-linux-2, use `--target ace-linux-2`; the checker detects local versus remote execution from `config/workstations/registry.yaml`.
 
 If `/mnt/local-analysis/workspace-hub` does not exist, locate the repo:
 
