@@ -3,7 +3,12 @@
 # Source this file and call codex_version_guard_check.
 
 CODEX_KNOWN_BAD_FLOOR="${CODEX_KNOWN_BAD_FLOOR:-0.124.0}"
-CODEX_VERSION_GUARD_CEILING_DEFAULT="${CODEX_VERSION_GUARD_CEILING_DEFAULT:-}"
+# 0.130.0 validated 2026-05-11 (#2661): codex exec works in both arg-form
+# (58s real-time) and stdin-form (faster); upstream openai/codex#19945 stdin-hang
+# regression no longer reproduces. Intermediate versions 0.124.0..0.129.x remain
+# in the known-bad band — lower the ceiling only after each is individually
+# verified. Probe transcripts: workspace-hub #2661.
+CODEX_VERSION_GUARD_CEILING_DEFAULT="${CODEX_VERSION_GUARD_CEILING_DEFAULT:-0.130.0}"
 CODEX_PIN_VERSION_DEFAULT="${CODEX_PIN_VERSION_DEFAULT:-0.123.0}"
 
 _codex_ge() {
