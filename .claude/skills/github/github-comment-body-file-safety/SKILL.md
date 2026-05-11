@@ -70,6 +70,30 @@ If an inline comment/body was already posted and looks mangled:
 3. for malformed new issues created via `gh issue create --body`, immediately repair the issue with `gh issue edit --body-file <file>`
 4. verify the rendered GitHub comment/body afterward
 
+## Heredoc pitfall: Python generators still need quoted delimiters
+
+Do not embed markdown with backticks inside an **unquoted** shell heredoc, even if the heredoc feeds Python instead of `cat`. Bash performs command substitution before Python runs:
+
+```bash
+# BAD: backticks inside the Python string are executed by bash first
+python3 - <<PY
+body = "Plan: `docs/plans/example.md`"
+PY
+```
+
+Use a quoted heredoc delimiter, pass dynamic values through environment variables or argv, and then post with `--body-file`:
+
+```bash
+SHA="$sha" FULL="$full" python3 - <<'PY'
+from pathlib import Path
+import os
+body = f"Plan: `docs/plans/example.md`\nCommit: `{os.environ['SHA']}` (`{os.environ['FULL']}`)\n"
+Path('/tmp/gh-comment.md').write_text(body)
+PY
+
+gh issue comment 123 --body-file /tmp/gh-comment.md
+```
+
 ## Minimal checklist
 
 Before any `gh ... --body` call, ask:
