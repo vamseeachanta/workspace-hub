@@ -1,6 +1,6 @@
 # Plan for #2665: provider-credit approval dashboard and dispatch gates
 
-> **Status:** plan-review ready after focused re-review; pending user approval after GitHub posting
+> **Status:** plan-approved; user approved #2665 via GitHub label on 2026-05-12, local approval marker recorded at `.planning/plan-approved/2665.md`
 > **Complexity:** T3
 > **Date:** 2026-05-12
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2665
@@ -393,7 +393,7 @@ function provider_utilization_refresh_cron():
 - [ ] Running jobs have provider, machine, issue, lease id, idempotency key, TTL, expected artifact, parent #2519 relation, and status in a single-writer lease ledger; lease writes are centralized through ace-linux-1/Hermes leader using local `flock` and #2519 coexistence preflight, ace-linux-2 is worker-only, and any promotion requires explicit single-writer handoff that disables the prior leader before new lease writes.
 - [ ] Morning QA packet summarizes completed/running/blocked work, tests, changed files, artifacts, and recommended user action.
 - [ ] Provider refresh cron integrates Kanban/dashboard generation and includes exact fail-closed checks: `[[ -f "${REPO_ROOT}/config/ai-tools/provider-kanban.json" ]]`, `[[ -f "${REPO_ROOT}/docs/reports/provider-kanban-dashboard.md" ]]`, and `[[ -f "${REPO_ROOT}/docs/reports/provider-kanban-dashboard.html" ]]`.
-- [ ] No implementation begins from this plan until user approval moves #2665 to `status:plan-approved`.
+- [x] User approval has moved #2665 to `status:plan-approved`; local approval marker recorded at `.planning/plan-approved/2665.md`.
 
 ---
 
@@ -407,7 +407,7 @@ function provider_utilization_refresh_cron():
 | Fresh focused reviewer A | APPROVE | Verified prior MAJORs resolved: user approval, per-issue locks, single-writer leases, #2519 preflight, strict fail-closed inference, continuous-planning-pipeline reuse, corrected test paths, and complete acceptance command. |
 | Fresh focused reviewer B | MAJOR → resolved in this revision | Found stale status/user-approval wording and missing explicit continuous-planning-pipeline file/TDD entries; this revision removes the stale wording and adds the file/test entries. |
 
-**Overall result:** prior MAJOR findings have been incorporated. The plan is ready to post for user approval review, but implementation remains blocked until the user explicitly approves and #2665 moves to `status:plan-approved` with a local approval marker.
+**Overall result:** prior MAJOR findings have been incorporated. The plan was posted for user approval review and is now approved for implementation: the user reported #2665 approved via GitHub label, and `.planning/plan-approved/2665.md` records the local approval evidence. Implementation remains constrained to the approved TDD scope above.
 
 Revisions made based on review:
 - Chose the approval architecture: static report remains read-only; real HTML button works only through `scripts/ai/provider-kanban-server.py` on localhost with ephemeral token and explicit user intent.
