@@ -56,7 +56,9 @@ For freshness reports, include:
 - concise next actions
 - whether the 2026-04-22 tier-1 indexing scorecard assumptions still hold or need revision
 
-Use “no status-level material drift detected” when repo statuses are unchanged but the scan surfaces additional non-status-changing evidence. Do not overstate as “no material drift” if newly detected broken references were added to the report.
+Use “no material drift detected at the status level” when repo statuses are unchanged but the scan surfaces additional non-status-changing evidence. Do not overstate as “no material drift” if newly detected broken references were added to the report.
+
+When including verification evidence, avoid embedding exact `stat` size/mtime/checksum values inside the report until all report edits are complete. A safer pattern is: write the full report, finish all patches, run final `stat`/`sha256sum`, then put exact verification values in the final cron response (or append them only as the last report edit).
 
 ### 1. Load context and identify tier-1 repos
 Read:
@@ -151,7 +153,8 @@ Latest evidence references:
 - `references/2026-05-08-freshness-audit-lessons.md` — compact evidence snapshot, false-positive filters, and validation checklist from the 2026-05-08 scheduled freshness audit.
 - `references/2026-05-09-freshness-audit-lessons.md` — status-level baseline and scanner false-positive refinements from the 2026-05-09 scheduled audit.
 - `references/2026-05-10-freshness-audit-lessons.md` — updated evidence: `assetutilities` broken-link findings refined as false positives, `aceengineer-website` remains RED for missing registry, and report verification evidence should be included when available.
-- `references/2026-05-11-freshness-audit-lessons.md` — latest status-level baseline, nested-repo path guardrail, current stale-reference evidence, and report verification evidence from the 2026-05-11 scheduled audit.
+- `references/2026-05-11-freshness-audit-lessons.md` — status-level baseline, nested-repo path guardrail, current stale-reference evidence, and report verification evidence from the 2026-05-11 scheduled audit.
+- `references/2026-05-12-freshness-audit-lessons.md` — latest status-level baseline, unchanged-status wording, current stale-reference evidence, and the report verification pitfall about not embedding exact checksums before final report edits.
 
 
 ## Daily freshness automation pattern
