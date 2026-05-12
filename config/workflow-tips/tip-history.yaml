@@ -81,3 +81,5 @@ shown:
     tips: [cc-hooks, bp-scrap-restart]
   - date: 2026-05-11
     tips: [cc-voice, cc-security-review]
+  - date: 2026-05-12
+    tips: [cc-agents, cc-powerup]

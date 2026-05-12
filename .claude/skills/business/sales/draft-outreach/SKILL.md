@@ -45,8 +45,9 @@ The skill avoids generic patterns like "I hope this email finds you well" or "I'
 ## User-Specific Formatting and Governance
 
 For AceEngineer GTM/prospect outreach:
-- Keep email drafts plain text by default. Avoid markdown bullets, tables, emoji, decorative separators, and special symbols unless the user explicitly asks for them.
-- Use simple sections such as SUBJECT, BASE EMAIL, PERSON VERSION, and NOTES when drafting in a markdown file, but keep the email body itself copy-paste-ready plain text.
+- Keep email drafts plain text by default. Avoid markdown bullets, numbered lists, tables, emoji, decorative separators, and special symbols unless the user explicitly asks for them.
+- Optimize outreach drafts for easy copy/edit: use normal paragraphs in the email body, not outline formatting. If listing capabilities, prefer a compact sentence with semicolons over bullets or numbered items.
+- Use simple labels such as `Subject:`, then the email body, then optional `Notes for editing:` when drafting in a markdown file. Keep the email body itself copy-paste-ready plain text.
 - If the user asks to open an outreach markdown file, write the draft to a `.md` file and open it with VS Code (`code path/to/file.md`) when available.
 - Do not send outreach or imply outreach is authorized until the user approves the final message and attachments.
 - Keep named prospect/contact details in the private strategy repository of record; route generic reusable collateral and implementation work to the appropriate delivery repos.

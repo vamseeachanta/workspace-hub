@@ -171,7 +171,15 @@ gh pr checks
 
 # Watch until all checks finish (polls every 10s)
 gh pr checks --watch
+
+# If watch times out or long matrix jobs remain pending, query the PR rollup directly.
+# This is often more reliable than rerunning the same watch command.
+gh pr view <PR_NUMBER> \
+  --json number,url,state,headRefOid,mergeStateStatus,statusCheckRollup \
+  --jq '.url, .headRefOid, .mergeStateStatus, (.statusCheckRollup[] | [.name,.status,.conclusion,.detailsUrl] | @tsv)'
 ```
+
+Pitfall: avoid piping `gh pr view --json ...` into `uv run python -` for quick parsing unless you have verified `uv` is silent in that environment; bytecode/build status output can contaminate JSON stdin. Prefer `gh --jq` for PR-status extraction.
 
 **With git + curl:**
 

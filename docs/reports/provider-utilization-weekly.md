@@ -1,6 +1,6 @@
 # Provider utilization weekly report
 
-Generated: 2026-05-12T05:20:07.837401Z
+Generated: 2026-05-12T13:20:08.448116Z
 Current week: 2026-W20
 Total monthly spend tracked: $260.0/mo
 
@@ -10,10 +10,10 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
-| claude | 8 | 247 | 0.6% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 25 | 747 | 2.6% | quota | 2.6% | week_messages/weekly_limit from history.jsonl |
-| gemini | 0 | 0 | 0.0% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| claude | 13 | 342 | 0.8% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 51 | 1952 | 2.6% | quota | 2.6% | week_messages/weekly_limit from history.jsonl |
+| gemini | 1 | 1 | 0.0% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
+| hermes | 146 | 2731 | 4.4% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
 ## 2026-W19
 
@@ -22,7 +22,7 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 | claude | 51 | 2833 | 7.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
 | codex | 21 | 1341 | 2.6% | quota | 2.6% | week_messages/weekly_limit from history.jsonl |
 | gemini | 5 | 6 | 0.2% | activity_vs_recent_peak | 0.0% | today_messages/daily_limit from estimated; using activity fallback |
-| hermes | 588 | 14288 | 22.8% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 633 | 16294 | 26.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
 ## 2026-W18
 
@@ -80,7 +80,7 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 
 ## Current-week underutilization alerts
 
-- claude at 0.6% (activity_vs_recent_peak)
+- claude at 0.8% (activity_vs_recent_peak)
 - codex at 2.6% (quota)
 - gemini at 0.0% (activity_vs_recent_peak)
 

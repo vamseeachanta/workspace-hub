@@ -45,6 +45,18 @@ Each card should expose:
 - proposed provider route and why;
 - approval blocker if the button is disabled.
 
+## Weekly anti-waste loop
+
+Use this when weekly provider capacity is regularly left unused:
+
+1. Maintain at least three buffers: approval candidates, execution-ready approved work, and planning/recon feedstock.
+2. Start every burn window by refreshing telemetry and the provider work queue, not by launching agents from memory.
+3. Pull in this order: approved implementation -> QA/closeout -> adversarial review -> plan drafting/hardening -> recon/risk/source scans -> telemetry or dashboard improvements.
+4. If execution-ready work is empty, explicitly route capacity to non-implementation lanes; do not let agents self-select unapproved code changes.
+5. End each burn window with a short evidence packet: work completed, provider used, issue/plan links, tests/review state, blockers, and next refill action.
+
+A practical utilization target is sustained high use with clean closeout, not blind 100% burn. Wasted credits are bad, but ungated changes create more cleanup debt than unused credits.
+
 ## Dispatch guardrails
 
 - Codex: bounded implementation, tests, refactors, mechanical cleanup, crisp approved issues.

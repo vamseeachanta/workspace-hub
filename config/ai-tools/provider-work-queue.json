@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-12T05:20:09.769541Z",
+  "generated_at": "2026-05-12T13:20:11.040947Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-12T05:20:07.955115Z",
+  "scorecard_generated_at": "2026-05-12T13:20:08.579438Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 7,
-      "total_candidates": 168,
+      "execution_ready_count": 6,
+      "total_candidates": 167,
       "top_issues": [
         {
           "number": 2533,
@@ -139,32 +139,6 @@
           ]
         },
         {
-          "number": 2229,
-          "title": "feat(windows-parity): validate licensed-win-1 NightlyReadiness and MemoryBridgeSync live",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2229",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "status:working",
-            "machine:licensed-win-1",
-            "agent:claude",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T06:09:41Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 2552,
           "title": "docs(security): external contributor and unsolicited paid-help response runbook",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
@@ -209,6 +183,29 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2517,
+          "title": "Compliance alert: W18 \u2014 42% (high)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
+          "labels": [
+            "priority:high",
+            "priority:medium",
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-05-03T11:45:05Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -216,7 +213,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 29,
+      "total_candidates": 30,
       "top_issues": [
         {
           "number": 2269,

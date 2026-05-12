@@ -557,3 +557,9 @@
 {"ts":"2026-05-12T06:16:41Z","agent":"hermes","action":"modify","skill_path":".claude/skills/research/llm-wiki/SKILL.md","commit":"837cf6e935badc5f9f4866cba7703a668a0f4dbf"}
 {"ts":"2026-05-12T06:16:41Z","agent":"hermes","action":"create","skill_path":".claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/references/2026-05-11-freshness-audit-lessons.md","commit":"837cf6e935badc5f9f4866cba7703a668a0f4dbf"}
 {"ts":"2026-05-12T06:16:41Z","agent":"hermes","action":"modify","skill_path":".claude/skills/workspace-hub/worktree-branch-sync-hygiene/SKILL.md","commit":"837cf6e935badc5f9f4866cba7703a668a0f4dbf"}
+{"ts":"2026-05-12T09:36:05Z","agent":"claude","action":"create","skill_path":".claude/skills/operations/mnt-analysis-cleanup/SKILL.md","commit":"8036c183434b290f4a7be1b6bd81f5639ef675c2"}
+{"ts":"2026-05-12T09:36:05Z","agent":"claude","action":"create","skill_path":".claude/skills/operations/mnt-analysis-cleanup/references/case-study-2026-05-12.md","commit":"8036c183434b290f4a7be1b6bd81f5639ef675c2"}
+{"ts":"2026-05-12T10:17:34Z","agent":"hermes","action":"create","skill_path":".claude/skills/operations/mnt-analysis-cleanup/references/hermes-adversarial-review-2026-05-12.md","commit":"b04ac36d6de0a049281bf7a44dd9b385fdf696f2"}
+{"ts":"2026-05-12T13:42:09Z","agent":"hermes","action":"modify","skill_path":".claude/skills/operations/mnt-analysis-cleanup/SKILL.md","commit":"f06a2bcd31f851cb89b331b643aa8789859df45a"}
+{"ts":"2026-05-12T13:42:09Z","agent":"hermes","action":"modify","skill_path":".claude/skills/operations/mnt-analysis-cleanup/references/case-study-2026-05-12.md","commit":"f06a2bcd31f851cb89b331b643aa8789859df45a"}
+{"ts":"2026-05-12T13:44:15Z","agent":"claude","action":"create","skill_path":".claude/skills/workspace-hub/domain-knowledge-sweep/SKILL.md","commit":"36a64f9f2e3c79af16b94769f03d0b057319c9c5"}

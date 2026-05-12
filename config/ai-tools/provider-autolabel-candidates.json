@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T05:20:09.904787Z",
+  "generated_at": "2026-05-12T13:20:11.209530Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -390,6 +390,37 @@
         "compliance-alert"
       ],
       "updatedAt": "2026-04-26T11:45:09Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2517,
+      "title": "Compliance alert: W18 \u2014 42% (high)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
+      "labels": [
+        "priority:high",
+        "priority:medium",
+        "priority:critical",
+        "compliance-alert"
+      ],
+      "updatedAt": "2026-05-03T11:45:05Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

@@ -40,6 +40,19 @@ Plotly template generator for interactive charts:
 
 ## Usage Patterns
 
+### Public-facing risk / incident infographics
+
+When generating infographic statistics from incident, safety, reliability, or risk datasets, treat the evidence taxonomy as part of the visualization contract. Before rendering:
+
+- name each metric with its exact evidence scope;
+- persist numerator evidence (`matched_incident_ids`) and exclusions (`excluded_incident_ids`);
+- show denominators alongside percentages;
+- avoid broad substring classifiers that can overcount (`weather`, `sank`, `overboard` are common traps);
+- include caveats in both stats JSON and rendered HTML;
+- run adversarial review on metric semantics before merging or publishing.
+
+See `references/risk-infographic-evidence-taxonomy.md` for the checklist and false-positive examples.
+
 ### YAML Configuration Structure
 ```yaml
 visualization:

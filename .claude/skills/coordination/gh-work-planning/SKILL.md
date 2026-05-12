@@ -177,6 +177,21 @@ If planning is blocked, post a GitHub update immediately with:
 
 If the blocker is substantial and not resolvable inside the current planning cycle, create a future issue or dependency-tracking issue instead of burying it in notes.
 
+## Tool-budget / interruption checkpoint rule
+
+If planning is interrupted by context/tool-call limits, provider timeout, or a forced stop before Step 5, leave a restartable checkpoint instead of a vague status note.
+
+The checkpoint must state:
+- current task-list status by step (`intake`, `draft`, `review`, `post`, or equivalent)
+- exact issue URL/number and live status/labels last observed
+- evidence already gathered, with paths/commands/issue comments inspected
+- artifacts confirmed absent or present, especially `docs/plans/*issue-NNN*` and `scripts/review/results/*NNN*`
+- dirty-worktree caveat if unrelated existing changes were present before the planning work
+- the next 3-7 concrete files/commands to inspect when resuming
+- the gate state: whether implementation is still blocked and why
+
+Do not imply the plan is approval-ready unless the canonical plan exists and review artifacts are complete. A checkpoint is a handoff, not a substitute for Step 3/4/5.
+
 ## STEP 2 — Resource intelligence
 
 Read-only only. No code written.
