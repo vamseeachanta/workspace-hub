@@ -46,11 +46,20 @@ For each orphan-worktree bundle, the agent:
 For `assetutilities-bundle` — only build/test artifacts (.benchmarks, egg-info, test logs/results/Plot). **Nothing unique non-derived. Safe delete.**
 
 For `worldenergydata-bundle` — flagged 4 suspicious paths:
-- `data/marine_safety` and `data/metocean` — turned out to be 0-byte empty dirs on both sides
-- `marine_safety.db` (84K SQLite) — unique to bundle; could be runtime cache, archived to be safe
-- `results/` (16K) + `test_output/` (988K) — test-run outputs; small, archived to be safe
 
-**Lesson**: the agent's first instinct ("nothing unique") was almost right but for two items. The Iron-Law step caught both. Total archive cost: 1.1 MB. Total bytes-at-risk-of-loss if Iron Law were skipped: 1.1 MB. Cost-benefit of the law is overwhelming.
+| Path | Size | Classification (Hermes-revised post-review) | Why archived | Confidence (useful / regenerable / unknown) |
+|---|---|---|---|---|
+| `data/marine_safety` | 0 B (empty) | not residue | n/a | n/a |
+| `data/metocean` | 0 B (empty) | not residue | n/a | n/a |
+| `marine_safety.db` | 84 K SQLite | Bucket B (evidence-bearing) | could be runtime cache; could be downloaded BSEE data | **regenerable** (likely) — but cleanup pass could not prove this before delete |
+| `results/` | 16 K | Bucket B (evidence-bearing) | test-run outputs | **regenerable** |
+| `test_output/` | 988 K | Bucket B (evidence-bearing) | test-run outputs | **regenerable** |
+
+**Lesson — revised post-Hermes-review**: the agent's first instinct ("nothing unique non-derived") was correct in spirit but the worldenergydata bundle had 1.1 MB of residue the Iron-Law preserved **pending classification**. This is NOT proof that 1.1 MB of useful work was saved; the residue may have been entirely regenerable. The correct framing is:
+
+> The Iron Law preserved 1.1 MB of unique residue pending classification. This may have been regenerable, but preserving it was the correct default because the cleanup pass could not prove that before deletion. The cost-benefit calculation is "small archive cost vs. unknowable-loss-cost", not "definite save".
+
+The original draft of this case study said "Total bytes-at-risk-of-loss if Iron Law were skipped: 1.1 MB" — that was a vanity metric. The Iron Law's value is **epistemic** (it lets you defer the classification decision to post-archive review), not **byte-counting** (it doesn't prove the bytes were valuable).
 
 ## What the archive contains
 
