@@ -19,11 +19,11 @@
 - Found: `config/ai-tools/pricing.yaml` — concrete $/M token rates per model (Claude Opus 4.6 $5/$25, Sonnet 4.6 $3/$15, Haiku 4.5 $0.80/$4, Codex o4-mini/gpt-5.4 $0.50/$1.50, Gemini 2.5 Pro $0.075/$0.30).
 - Found: `config/ai-tools/subscriptions.yaml` (last_updated 2025-12-23) — Claude Max $106.60/mo + OpenAI Plus $21.28 + Google AI Pro $19.99 + Copilot Pro $8.88/mo = $156.75/mo declared. **Stale**: missing the Codex paid plan ($200/mo per `project_hermes_codex_quota` memory).
 - Found: `scripts/review/` — `submit-to-claude.sh`, `submit-to-codex.sh`, `submit-to-gemini.sh`, `cross-review.sh`, `attest-plan-claims.sh`, `plan-review-fanout.sh`, `normalize-verdicts.sh`, `validate-review-output.sh`. The cross-review apparatus is **mature** and the plan must invoke it, not re-tool it.
-- Found: `scripts/review/results/` contains 1,437 review-result files — empirical cross-provider effectiveness data already exists for retro-fitting outcome thresholds.
+- Found: `scripts/review/results/` contains 1,444 review-result files (count as of 2026-05-12 post-fanout; earlier survey said 1,437) — empirical cross-provider effectiveness data already exists for retro-fitting outcome thresholds.
 - Found: `.claude/skills/ai/` — existing skills include `agent-usage-optimizer`, `provider-utilization-scorecard`, `durable-provider-throughput-dispatch`, `hermes-model-switching`, `provider-session-quota-operations`, `inventory-readiness-provider-dispatch`. These are the plan's building blocks.
 - Found: `.claude/hooks/` and `scripts/enforcement/` — Level-3 enforcement is in place for plan-approval (`require-plan-approval.sh`), cross-review (`require-cross-review.sh`, `cross-review-gate.sh`), TDD pairing (`require-tdd-pairing.sh`), and verify-artifacts (`require-verify-artifacts.sh`).
 - Found: adapter files `CLAUDE.md` (997B), `AGENTS.md` (1729B), `GEMINI.md` (680B) — all within the 20-line harness limit. **Gap: `CODEX.md` does not exist.**
-- Found: provider-specific config dirs `config/agents/claude/` (populated), `config/agents/{codex,gemini,hermes}/` (all empty skeletons as of `ls -la`).
+- Found: provider-specific config dirs all populated: `config/agents/claude/` (populated), `config/agents/codex/` (`config.toml` + state-snapshots), `config/agents/gemini/` (`settings.json` + state-snapshots), `config/agents/hermes/` (`SOUL.md` + `config.yaml.template` + memories/ + patches/). **Correction from earlier draft**: the initial `ls -la` size column read 0 for these dirs, which I mis-interpreted as empty; `git ls-files` confirms 13 tracked files across the three subdirs.
 
 ### Standards
 
@@ -54,7 +54,7 @@ Not applicable. This is a harness/orchestration governance plan, not engineering
 
 1. **No single document maps outcomes → provider matrix → workflow → failure-modes.** The substrate (capabilities, routing, pricing, scores) is rich but un-connected to *measurable outcomes per work class*.
 2. **No `CODEX.md` adapter file** to mirror `CLAUDE.md` / `AGENTS.md` / `GEMINI.md`. The repo has heavy Codex usage (1,437 review results) but no adapter-file entry point. (The #2399 plan also names `.codex/CODEX.md` as a discoverability anchor; either location must be reconciled.)
-3. **`config/agents/{codex,gemini,hermes}/` directories are empty skeletons.** Provider-specific configs exist only for Claude.
+3. **`config/agents/{codex,gemini,hermes}/` are populated but minimally — not "empty skeletons".** Codex has `config.toml` (274B) + state-snapshots; Gemini has `settings.json` (83B) + state-snapshots; Hermes has `SOUL.md` + `config.yaml.template` + memories/ + patches/. Gap is **not "no content"** — it is **"no behavior-anchored content aligned to the §B provider role matrix"**. The follow-up issue should audit-and-extend, not populate-from-scratch.
 4. **`config/ai-tools/subscriptions.yaml` is stale (2025-12-23)** and omits the Codex paid plan. Total cost claim of $156.75/mo understates reality by ~$200/mo.
 5. **`config/ai-tools/agent-capability-scores.yaml` predates the 2026-04 and 2026-05 wave of lessons** captured in memory (`feedback_codex_sandbox_no_execution`, `feedback_gemini_sandbox_overlay_blindness`, etc.). Scores reflect pre-incident perception.
 6. **Existing routing-config tier definitions (`SIMPLE`/`STANDARD`/`COMPLEX`/`REASONING`) do not name work-class outcomes** — they name token budgets. The reverse-prompted ledger must add an outcome layer on top.
@@ -77,7 +77,7 @@ Not applicable. This is a harness/orchestration governance plan, not engineering
 - EXISTS: `docs/BUSINESS_BRAIN.md` (13192B), `docs/ops/hermes-weekly-cross-machine-parity-checklist.md` (6069B), `docs/plans/README.md` (109811B), `docs/plans/_template-issue-plan.md` (8844B), `docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md`
 - EXISTS: `scripts/review/` with `submit-to-{claude,codex,gemini}.sh`, `cross-review.sh`, `attest-plan-claims.sh`, `plan-review-fanout.sh`, and 1,437 entries under `results/`
 - MISSING: `CODEX.md` (no adapter file)
-- MISSING (empty dir, no files): `config/agents/codex/`, `config/agents/gemini/`, `config/agents/hermes/`
+- EXISTS but minimally populated: `config/agents/codex/` (2 files + 3 in state-snapshots), `config/agents/gemini/` (1 file + 2 in state-snapshots), `config/agents/hermes/` (2 files + 2 in memories + 2 in patches). Original "empty dir" wording was wrong; corrected this revision.
 - MISSING (new — this plan creates): `docs/standards/AI_ECOSYSTEM_DESIGN.md`, `docs/reports/2026-05-12-issue-2675-outcome-ledger.md`, `docs/reports/2026-05-12-issue-2675-provider-role-matrix.md`, `docs/reports/2026-05-12-issue-2675-failure-mode-design-contract.md`, `docs/reports/2026-05-12-issue-2675-followup-issues-list.md`
 
 **Line excerpts**:
@@ -117,7 +117,7 @@ totals:
 
 **Gap proofs**:
 - `ls -la CODEX.md 2>&1 | head -3` → "No such file or directory" — confirms no Codex adapter at repo root.
-- `ls config/agents/codex/ config/agents/gemini/ config/agents/hermes/ 2>&1 | wc -l` → 3 lines, each empty — confirms empty provider dirs.
+- `git ls-files config/agents/codex/ config/agents/gemini/ config/agents/hermes/` → 13 tracked files across all three (corrected from earlier "empty dir" claim).
 - `grep -i codex config/ai-tools/subscriptions.yaml | head -3` → no matches in active subscription block — confirms Codex paid plan absent from subscriptions ledger.
 
 **Reproduction proofs**: **N/A — this is a design issue with no runtime failure claim.** Skip is intentional per `issue-planning-mode` Step 1.5.
@@ -336,7 +336,7 @@ Per acceptance criterion #7, the plan enumerates downstream work without filing 
 
 1. **`chore(ai-tools): refresh subscriptions.yaml with current Codex paid plan`** — fix the $156.75 → ~$356.75/mo drift; add Codex $200/mo entry. Cite `project_hermes_codex_quota` memory.
 2. **`feat(ai-orchestration): add CODEX.md adapter file`** — mirror `CLAUDE.md` / `GEMINI.md`; ≤20 lines per `.claude/rules/coding-style.md`; cite memory's Codex-usage rules. Reconcile location with #2399's `.codex/CODEX.md` proposal.
-3. **`chore(ai-config): populate config/agents/{codex,gemini,hermes}/`** — skeleton dirs need content matching the role matrix; reference `config/agents/claude/` as template.
+3. **`chore(ai-config): audit + extend config/agents/{codex,gemini,hermes}/ to match the §B role matrix`** — existing minimal content needs auditing against the role matrix; gaps to be filled per provider (Codex: review-only enforcement in `config.toml`; Gemini: `git ls-files` precondition reference; Hermes: preflight contract in `SOUL.md` or `config.yaml.template`). Reference `config/agents/claude/` as the populated template.
 4. **`feat(ai-orchestration): cost/quota model + monthly spend envelope`** (deferred from this plan) — concrete monthly target per provider with triggers that change routing; consume `config/ai-tools/usage-tracking.yaml`, `weekly-utilization.json`, `pricing.yaml`.
 5. **`feat(ai-orchestration): migration plan for AI_ECOSYSTEM_DESIGN.md adoption`** (deferred from this plan) — day-1 / month-1 / quarter-1 incremental adoption schedule.
 6. **`feat(ai-orchestration): workflow walkthrough — knowledge/wiki contribution`** — deferred from this plan; covers `feedback_llm_wiki_*` rules.
@@ -406,16 +406,26 @@ These mirror the issue body's acceptance criteria (#2675):
 
 ## Adversarial Review Summary
 
+**Wave 1 — dispatched 2026-05-12T16:34 via `scripts/review/plan-review-fanout.sh`** (artifacts at `scripts/review/results/2026-05-12-plan-2675-{claude,codex,gemini}.md`)
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Awaiting review |
-| Codex | PENDING | Awaiting review |
-| Gemini | PENDING | Awaiting review |
+| Claude | UNAVAILABLE | rc=124 — SessionEnd hook (`scripts/session-lifecycle-hook.mjs`) cancelled. Harness regression, not a content verdict. |
+| Codex  | UNAVAILABLE | rc=124 — stdin-hang on codex-cli 0.130.0 despite fanout wrapper passing `</dev/null`. Reproduces the 0.124.0 symptom pattern at a later version; possibly a related upstream regression. |
+| Gemini | MAJOR — **REJECTED as overlay-blindness false-positive** | 8 findings, all claiming file-missing for files that **are tracked in git**. Verified by `git ls-files` against all 17 cited paths plus 3 cited dirs — every one exists. Memory line 40 (`feedback_gemini_sandbox_overlay_blindness`) explicitly prescribes this rejection. Finding 8 (memory files at `/tmp/llm-wiki/...`) is a hallucination — memory lives at `~/.claude/projects/.../memory/`, verified. |
 
-**Overall result:** PENDING
+**Overall result:** NOT-APPROVAL-READY — but for **insufficient cross-review signal**, not content defects.
+
+- T2 minimum (`feedback_always_adversarial_review_scale_depth`) requires Codex + Gemini usable verdicts. Codex unavailable + Gemini rejected = **zero usable provider signal**.
+- Per `feedback_codex_sustained_MAJOR_loop` analog (line 34) — when providers fail structurally, surface to user instead of auto-cycling.
+- The two CLI failures are harness regressions warranting their own follow-up issues, independent of this plan's content.
 
 Revisions made based on review:
-- none yet
+- **Plan defect caught by self-review (not by any provider)**: §RIS gap #3 and the Evidence block incorrectly claimed `config/agents/{codex,gemini,hermes}/` were "empty skeletons"; `git ls-files` confirms 13 tracked files across the three. Corrected at three sites; §F follow-up issue #3 re-scoped from "populate" to "audit + extend".
+- Count drift in §RIS for `scripts/review/results/`: 1,437 → 1,444 (drift since plan-draft; updated with timestamp note).
+- No content revisions driven by provider findings (none were valid).
+
+Synthesis artifact: `scripts/review/results/2026-05-12-plan-2675-summary.md` documents the rejection rationale.
 
 ---
 
