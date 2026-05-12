@@ -51,8 +51,8 @@ process(action="kill", session_id="<id>")
 Critical learned behavior:
 - In Hermes background mode, `codex exec ...` may print `Reading additional input from stdin...` and then hang indefinitely if stdin is left open.
 - For non-interactive/background runs, always add `< /dev/null`.
-- When the prompt is long, write it to a file and run: `codex exec "$(cat prompt.md)" < /dev/null 2>&1 | tee out.log`.
-- If a background Codex run shows no progress and the output file only contains that stdin message, kill it and relaunch with stdin redirected.
+- When the prompt is long, write it to a file and prefer stdin-as-prompt syntax: `codex exec --sandbox workspace-write -C /abs/repo - < /abs/prompt.md > /tmp/codex-task.log 2>&1`. Do not combine a prompt argument with piped stdin unless you intentionally want stdin appended as a `<stdin>` block.
+- If a background Codex run shows no progress and the output file only contains the stdin message, kill it and relaunch with stdin-as-prompt syntax (`- < prompt.md`) or with stdin redirected.
 - In some sandboxed environments, Codex review/read-only analysis runs may emit `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` when trying to shell-read local files. The run may still finish using only prompt-provided context, but its retrieval adequacy is degraded. For adversarial reviews, prefer embedding the full plan text in the prompt instead of assuming Codex can read repo files itself. For trusted local read-only analysis lanes where the sandbox blocks all file inspection, relaunch with `--dangerously-bypass-approvals-and-sandbox` only after the prompt states a no-write contract, uses absolute paths for prompt files, redirects stdin from `/dev/null`, and writes findings to a temp output file for orchestrator review.
 
 ## Key Flags
@@ -110,7 +110,7 @@ terminal(command="gh pr comment 86 --body '<review>'", workdir="~/project")
 
 ## Rules
 
-1. **Always use `pty=true`** — Codex is an interactive terminal app and hangs without a PTY
+1. **Use PTY for interactive sessions** — `codex` TUI/review sessions need `pty=true`; pure `codex exec - < prompt.md > log 2>&1` background jobs can run without PTY and are often safer for non-interactive Hermes orchestration.
 2. **Git repo required** — Codex won't run outside a git directory. Use `mktemp -d && git init` for scratch
 3. **Use `exec` for one-shots** — `codex exec "prompt"` runs and exits cleanly
 4. **`--sandbox workspace-write` for building** — auto-approves changes within the workspace sandbox; `--full-auto` is deprecated and should only appear in legacy command transcripts
