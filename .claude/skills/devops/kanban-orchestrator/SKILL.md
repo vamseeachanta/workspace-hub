@@ -36,10 +36,12 @@ Your job description says "route, don't execute." The rules that enforce that:
 
 ## The standard specialist roster (convention)
 
-Unless the user's setup has customized profiles, assume these exist. Adjust to whatever the user actually has — ask if you're unsure.
+## Failure Modes
 
-| Profile | Does | Typical workspace |
-|---|---|---|
+| Failure | Prevention |
+|---|---|
+| Subagent planning wave exceeds requested cap after retrying timed-out lanes | Treat the user-requested subagent cap as a total-attempt budget, not only completed results. If a lane times out, report the timeout and ask before replacement attempts unless the user explicitly authorized retries beyond the cap. |
+| `delegate_task` children time out before first LLM request when launched with an empty toolset | Do not pass `toolsets: []` for no-tool planning. Use a minimal toolset such as `['terminal']` and explicitly instruct the child not to call tools, or omit toolsets only when inherited tool access is acceptable. |
 | `researcher` | Reads sources, gathers facts, writes findings | `scratch` |
 | `analyst` | Synthesizes, ranks, de-dupes. Consumes multiple `researcher` outputs | `scratch` |
 | `writer` | Drafts prose in the user's voice | `scratch` or `dir:` into their Obsidian vault |
@@ -133,7 +135,7 @@ Tell them what you created in plain prose:
 
 ## Common patterns
 
-**GitHub-label-derived portfolio board:** When the work already exists as GitHub issues across multiple repos, do not create a separate manual Kanban queue first. Build a label-derived board/dashboard view, classify by plan-gate labels and local approval evidence, and use it to choose the next small execution/governance/planning batches. When the user asks how to feed Hermes/AI swarms, add bounded ~5-hour recommendation packets derived from the board and verify every referenced issue live. See `references/github-label-derived-portfolio-board.md` for the proven collection, lane, artifact, recommendation-packet, and verification pattern.
+**GitHub-label-derived portfolio board:** When the work already exists as GitHub issues across multiple repos, do not create a separate manual Kanban queue first. Build a label-derived board/dashboard view, classify by plan-gate labels and local approval evidence, and use it to choose the next small execution/governance/planning batches. For tier-1 repo boards, include per-issue AI provider/reviewer routing, machine routing, explicit decision/user-input lanes, and standing structure/test/CI/cross-review gates. When the user asks how to feed Hermes/AI swarms, add bounded ~5-hour recommendation packets derived from the board and verify every referenced issue live. See `references/github-label-derived-portfolio-board.md` for the proven collection, lane, artifact, recommendation-packet, provider/machine routing, and verification pattern.
 
 **Fan-out + fan-in (research → synthesize):** N `researcher` tasks with no parents, one `analyst` task with all of them as parents.
 

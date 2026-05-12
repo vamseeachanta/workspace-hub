@@ -24,7 +24,7 @@ Use when an agent claims work is complete and you need to verify exact files, co
 
 ## Dirty or Hanging Git Status During Handoff
 
-If repo-wide `git status` or combined status/log commands hang, time out, or produce unusable/truncated output, switch to bounded path-scoped verification instead of retrying broad commands. Use `GIT_OPTIONAL_LOCKS=0 timeout 10 ...` around conflict checks, individual path status checks, branch divergence checks, and file-existence checks. If the workspace is behind remote, dirty, or conflict-adjacent (`AA`/`UU`/ambiguous planning files), do not create a mixed handoff commit; leave the handoff untracked if necessary, document why, and give the next session explicit salvage/reconciliation steps. See `references/dirty-hanging-status-handoff.md`.
+If repo-wide `git status` or combined status/log commands hang, time out, or produce unusable/truncated output, switch to bounded path-scoped verification instead of retrying broad commands. Use `GIT_OPTIONAL_LOCKS=0 timeout 10 ...` around conflict checks, individual path status checks, branch divergence checks, and file-existence checks. If the workspace is behind remote, dirty, or conflict-adjacent (`AA`/`UU`/ambiguous planning files), do not create a mixed handoff commit; leave the handoff untracked if necessary, document why, and give the next session explicit salvage/reconciliation steps. If normal `git commit` also hangs but the staged file set and diff are narrow, fully verified, and ready for immediate push, follow the `worktree-branch-sync-hygiene` `references/commit-tree-fallback-when-commit-hangs.md` fallback rather than repeatedly invoking hanging porcelain. See `references/dirty-hanging-status-handoff.md`.
 
 ## Post-Compaction Verification Resume
 

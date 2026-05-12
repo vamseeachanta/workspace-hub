@@ -48,8 +48,27 @@ Class of task: live GitHub approval-state reconciliation across labels, local ap
    - If the user approves an umbrella and child issues together, execute the child issues as the concrete units unless the umbrella plan has standalone deliverables.
    - Use the umbrella for coordination, rollup comments, and closing only after children are complete or explicitly scoped.
 
+## Exit-closeout after approval
+
+When the user approves issues and immediately asks to "document and prepare to exit":
+
+1. Verify live `status:plan-approved` labels for the named issues with `gh issue view`.
+2. Reconcile local governance surfaces before writing the handoff:
+   - update plan frontmatter and gate text from `plan-review` to `plan-approved`;
+   - update `docs/plans/README.md` status rows;
+   - create `.planning/plan-approved/<issue>.md` markers that cite the live label/user approval;
+   - remove stale `.planning/plan-review/<issue>.md` pointers.
+3. Run the repo's targeted governance/plan validators and the narrow tests that cover planning artifacts.
+4. Write a durable handoff under `docs/session-handoffs/` that states the issues are approved but not implemented, plus the public-safety/no-external-action boundary.
+5. Commit, push, fetch, and prove `HEAD == origin/<branch>` in the same closeout window.
+6. Post concise GitHub issue comments using `--body-file` to record the approval reconciliation and validation evidence.
+7. Do not implement or close the issues during this exit-only pass unless the user explicitly asked for execution/closure.
+
+This pattern prevents the next session from seeing contradictory live labels (`status:plan-approved`) and local files (`plan-review`) while preserving the implementation gate.
+
 ## Pitfalls
 
+- Do not leave stale `.planning/plan-review/<issue>.md` files after creating `.planning/plan-approved/<issue>.md`; mixed local markers create approval drift for the next operator.
 - Do not say an issue still needs user approval merely because its local approval marker is missing after the user applied the GitHub label.
 - Do not treat `status:needs-data` as solved by `status:plan-approved`; data/assumption questions still need user input.
 - Do not self-approve or create approval markers before verifying the live GitHub label or explicit user approval.
