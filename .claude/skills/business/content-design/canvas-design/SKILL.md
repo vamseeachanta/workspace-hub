@@ -1,8 +1,6 @@
 ---
 name: canvas-design
-description: Create original visual art in PNG and PDF formats using design philosophy
-  principles. Express aesthetic movements visually with minimal text. Use for creating
-  museum-quality visual artifacts, design manifestos, and artistic compositions.
+description: Create original visual art, static infographics, and data-backed visual artifacts in PNG and PDF formats using design philosophy principles. Use for museum-quality visual artifacts, design manifestos, artistic compositions, and stakeholder-facing risk/safety infographics.
 type: reference
 version: 2.0.0
 category: business
@@ -20,7 +18,7 @@ tags: []
 
 ## Overview
 
-This skill guides creation of original visual art in PNG and PDF formats using design philosophy principles. Emphasize craftsmanship and express aesthetic movements visually rather than through text.
+This skill guides creation of original visual art, static infographics, and data-backed visual artifacts in PNG and PDF formats using design philosophy principles. Emphasize craftsmanship and visual hierarchy; use minimal text for art pieces, but allow concise evidence labels and provenance for stakeholder-facing infographics.
 
 ## When to Use
 
@@ -28,7 +26,12 @@ This skill guides creation of original visual art in PNG and PDF formats using d
 - Generating design manifestos with visual expression
 - Building artistic compositions for presentations or publications
 - Producing abstract art for branding or decoration
+- Creating data-backed risk infographics from a source document plus repository datasets
 - Any project requiring 90%+ visual design with minimal text
+
+## Data-Backed Risk Infographics
+
+When the artifact is meant to show avoidable risk using operational or incident data, use the workflow in [references/data-backed-risk-infographics.md](references/data-backed-risk-infographics.md): extract document themes, compute a statistics sidecar, produce HTML plus PNG/PDF exports, and verify rendered readability/clipping before handoff.
 
 ## Quick Start
 

@@ -1,5 +1,5 @@
 model = "gpt-5.5"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "xhigh"
 
 
 
@@ -54,7 +54,8 @@ model_reasoning_effort = "medium"
 
 
 [features]
-codex_hooks = true
+fast_mode = true
+hooks = true
 
 [settings]
 max_threads = 12  # Enable higher parallel agent throughput (default is 6)

@@ -200,6 +200,8 @@ bash scripts/cron/provider-utilization-refresh.sh
 4. Review the autolabel candidate report.
 5. Only then consider applying labels.
 
+For active weekly credit burn-down, use the Kanban approval control-plane pattern in `references/kanban-approval-control-plane.md`: keep planning/feedstock, plan-review, execution-ready, running/leased, and QA/closeout lanes; expose hover summaries for approval candidates; and make any "Approve Plan" button perform a real auditable approval transaction rather than a UI-only state change.
+
 ## Conservative auto-labeling rule
 
 Auto-labeling should remain conservative. The current reusable pattern is:
