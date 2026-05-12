@@ -24,7 +24,7 @@
 - [Merge-race silent revert](feedback_merge_race_silent_revert.md) — auto-sync race during `git merge --no-ff` + `git commit --no-edit` can drop second-parent tree; always verify merged content matches branch tip
 - [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when tool output is machine-consumed
 - [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
-- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills live under `~/.claude/plugins/cache/`; `git mv` cannot operate on them
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills live under `~/.claude/plugins/cache/`; `git mv` cannot operate on them *stale: 2026-05-12*
 - [Retry-loop reset hazard](feedback_retry_loop_reset_hazard.md) — `git reset HEAD -- .` in a retry loop under auto-sync contention can strip staged edits and land mislabeled commits
 - [Codex sandbox no execution](feedback_codex_sandbox_no_execution.md) — Codex sandbox blocks ALL shell exec (not just writes); never delegate implementation/build/commit to Codex
 - [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
@@ -82,7 +82,7 @@
 - [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
 - [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
-- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/`
+- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/` *verified: 2026-05-12*
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -117,7 +117,7 @@
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve/uplift/add via public + legally-sanitized private sources; coverage gaps are first-class defects
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest pattern; first-run 2026-05-07 (Sherwood naval-arch + Rötzer wave-shoaling)
-- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
+- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/` *stale: 2026-05-12*
 - [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
 - [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; nested in workspace-hub at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (independent .git, gitignored from hub); team-merging open
 

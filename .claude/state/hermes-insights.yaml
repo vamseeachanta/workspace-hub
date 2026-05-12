@@ -3,14 +3,15 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-05-10T07:02:15Z"
-  source_hash: "0e72a9509ed9f3437cc5ff9643386964"
+  generated: "2026-05-12T07:01:10Z"
+  source_hash: "f03f183ba1b92887cbb547d73a0a1374"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
-  entry_count: 7
+  entry_count: 9
 
 environment_facts:
-  []
+  - "For repeated judge/checklist continuation prompts, user values fresh evidence artifacts/crosswalks, precise inventory/status reconciliation, and explicit blocked-stop decisions over relaunching implicit continuation work across human/governance/scope gates."
+  - "Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it."
 
 conventions:
   - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
@@ -22,5 +23,5 @@ project_knowledge:
   - "For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there."
 
 user_preferences:
-  - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation."
+  - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks. Tier-1 Kanban boards need provider/machine routing, decision lanes, hygiene gates, and cross-review ownership."
   - "Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing first and cleaning later is unacceptable. User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeout must include push, branch/worktree disposition, cleanup or explicit preservation, and clean-state proof in the same window. User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session-end learning reviews are active; update class-level umbrella skills/references when nontrivial signal exists, and use “Nothing to save” only for true no-signal cases. “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps."

@@ -3,20 +3,21 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-05-10T07:02:15Z"
-  source_hash: "0e72a9509ed9f3437cc5ff9643386964"
+  generated: "2026-05-12T07:01:10Z"
+  source_hash: "f03f183ba1b92887cbb547d73a0a1374"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 7
+      entry_count: 9
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 137
+      memory_file_count: 147
 
 hermes_insights:
   environment_facts:
-    []
+    - "For repeated judge/checklist continuation prompts, user values fresh evidence artifacts/crosswalks, precise inventory/status reconciliation, and explicit blocked-stop decisions over relaunching implicit continuation work across human/governance/scope gates."
+    - "Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it."
   conventions:
     - "`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only."
   project_knowledge:
@@ -25,7 +26,7 @@ hermes_insights:
     - "workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status)."
     - "For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there."
   user_preferences:
-    - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation."
+    - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks. Tier-1 Kanban boards need provider/machine routing, decision lanes, hygiene gates, and cross-review ownership."
     - "Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing first and cleaning later is unacceptable. User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeout must include push, branch/worktree disposition, cleanup or explicit preservation, and clean-state proof in the same window. User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session-end learning reviews are active; update class-level umbrella skills/references when nontrivial signal exists, and use “Nothing to save” only for true no-signal cases. “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps."
 
 claude_memory_index:
@@ -114,8 +115,12 @@ claude_memory_index:
       topic: "no jargon"
     - file: "feedback_codex_sandbox_fallback_paths.md"
       topic: "codex sandbox fallback paths"
+    - file: "reference_thariq_html_article.md"
+      topic: "thariq html article"
     - file: "project_solver_queue_architecture.md"
       topic: "solver queue architecture"
+    - file: "feedback_chatgpt_share_dom_duplication.md"
+      topic: "chatgpt share dom duplication"
     - file: "project_hermes_codex_quota.md"
       topic: "hermes codex quota"
     - file: "feedback_cross_provider_review_payoff.md"
@@ -194,10 +199,16 @@ claude_memory_index:
       topic: "pdf esignature style default"
     - file: "feedback_plan_past_tense_artifact_claims.md"
       topic: "plan past tense artifact claims"
+    - file: "project_devakrishna_developmental_pace.md"
+      topic: "devakrishna developmental pace"
+    - file: "feedback_doc_counter_rule_writetime.md"
+      topic: "doc counter rule writetime"
     - file: "reference_claude_desktop_linux_aaddrick.md"
       topic: "claude desktop linux aaddrick"
     - file: "feedback_git_switch_discard_changes_pattern.md"
       topic: "git switch discard changes pattern"
+    - file: "feedback_git_status_lock_storm.md"
+      topic: "git status lock storm"
     - file: "feedback_worktree_isolation_large_repo_cost.md"
       topic: "worktree isolation large repo cost"
     - file: "project_kaggle_rogii_2026.md"
@@ -212,6 +223,8 @@ claude_memory_index:
       topic: "field dev arch patterns"
     - file: "feedback_pre_push_hook_no_verify_for_preservation.md"
       topic: "pre push hook no verify for preservation"
+    - file: "project_gtm_artifact_layout_inconsistency.md"
+      topic: "gtm artifact layout inconsistency"
     - file: "project_elements_drive_identity.md"
       topic: "elements drive identity"
     - file: "feedback_wikimedia_thumb_width_quirk.md"
@@ -222,6 +235,8 @@ claude_memory_index:
       topic: "gmail bulk archive no confirm"
     - file: "feedback_autosync_silent_pusher.md"
       topic: "autosync silent pusher"
+    - file: "project_llm_wiki_v18_corpus_freeze.md"
+      topic: "llm wiki v18 corpus freeze"
     - file: "feedback_ntfs3_symlink_intxlnk.md"
       topic: "ntfs3 symlink intxlnk"
     - file: "reference_va_job_applications_log.md"
@@ -270,6 +285,8 @@ claude_memory_index:
       topic: "network machines"
     - file: "feedback_claude_in_chrome_session_scoped.md"
       topic: "claude in chrome session scoped"
+    - file: "feedback_html_default_artifact.md"
+      topic: "html default artifact"
     - file: "project_doc_intel_operating_model.md"
       topic: "doc intel operating model"
     - file: "feedback_recruiter_engagement.md"
@@ -282,6 +299,8 @@ claude_memory_index:
       topic: "superpowers specs gitignored"
     - file: "reference_google_cli_paid.md"
       topic: "google cli paid"
+    - file: "feedback_local_venv_pytest_import_hang.md"
+      topic: "local venv pytest import hang"
     - file: "project_issue_2460_approval_binding.md"
       topic: "issue 2460 approval binding"
     - file: "feedback_codex_sandbox_no_execution.md"
@@ -304,6 +323,8 @@ claude_memory_index:
       topic: "hermes active preflight check"
     - file: "reference_achantas_data.md"
       topic: "achantas data"
+    - file: "reference_krishna_videos_youtube.md"
+      topic: "krishna videos youtube"
 
 shared_conventions:
   # These conventions from Hermes should be honored by all agents

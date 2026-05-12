@@ -1,18 +1,18 @@
 # Weekly Trend Summary
 
-Generated: 2026-05-11 02:09
+Generated: 2026-05-12 02:08
 
 | Week | Violations/day | Corrections | Sessions | One-shot % | Median stage (s) | Stages |
 |------|---------------|-------------|----------|-----------|-----------------|--------|
 | 2026-W17 | 63.0 | 0 | 1087 | 100.0% | 0 | 0 |
 | 2026-W18 | 80.0 | 0 | 883 | 100.0% | 0 | 0 |
 | 2026-W19 | 62.5 | 0 | 911 | 100.0% | 0 | 0 |
-| 2026-W20 | 20.0 | 0 | 1 | 100.0% | 0 | 0 |
+| 2026-W20 | 17.0 | 0 | 66 | 100.0% | 0 | 0 |
 
 ## Week-over-Week Delta
 
-- **violations_per_day**: 62.5 → 20.0 (↓ 42.5)
+- **violations_per_day**: 62.5 → 17.0 (↓ 45.5)
 - **corrections**: 0 → 0 (→ 0.0)
-- **sessions**: 911 → 1 (↓ 910.0)
+- **sessions**: 911 → 66 (↓ 845.0)
 - **median_stage_s**: 0 → 0 (→ 0.0)
 - **stages_completed**: 0 → 0 (→ 0.0)

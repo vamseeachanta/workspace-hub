@@ -80,10 +80,15 @@
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
 - [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/`
 - [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText before counting turns; user prompt often absent
+- [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` alone hangs >30s at digitalmodel/.venv even though Python works; rely on CI for verification; verify syntax via `py_compile` not pytest
+- [Git status lock storm from Claude subagents](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` from Claude PPIDs blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses; don't kill the parent claude
+- [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files; reruns regenerate HTML in place; do NOT create a `/html` skill (workspace-hub#2663 codifies)
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
+- [devaKrishna developmental pace](project_devakrishna_developmental_pace.md) — singular/plural rule generalization taking 5+ yrs; calibrate goals to 6–24mo per micro-milestone; functional > academic; activity menus > goal hierarchies; strengthens Plan-A signal at achantas-data#73
 - [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready to send, BSEE fix landed, open issues
+- [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots, 3 date conventions, 3 bundle formats across repos; scan all 4 paths for "where's the GTM pack?"; tracked at #2662
 - [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250+ datasets surveyed 2026-05-05, top 12 candidates curated in repo's SOURCES_kaggle.md; gate ingest on downstream consumer
 > project_cfd_openfoam_storage.md
 - [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209 children; 2026-04-19 amendments landed; follow-ons #2360/#2361/#2362
@@ -124,6 +129,7 @@
 
 ## References
 > ai-orchestration.md, network_machines.md
+- [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress/activity videos on YouTube account `achantav@gmail.com`; grounds skill-analysis workstream in observed evidence
 - [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — modern Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
 - [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry
@@ -133,3 +139,4 @@
 - [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
 - [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present
 - [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (research preview, 2026-05-06); NOT in Claude Code CLI or Claude.ai; auto vs review-before-apply policy
+- [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for workspace-hub#2663/#2664; examples gallery at https://thariqs.github.io/html-effectiveness/
