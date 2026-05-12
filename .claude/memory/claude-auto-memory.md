@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-05-09
+> Last captured: 2026-05-12
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -17,6 +17,8 @@
 - [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
 - [Worktree gitlink pollution](feedback_worktree_gitlink_pollution.md) — add .claude/worktrees/ to .gitignore before parallel-agent runs
 - [Adversarial review stance](feedback_adversarial_review_stance.md) — every review prompt must force defect-hunting, not charitable reading
+- [Always adversarial review; scale depth](feedback_always_adversarial_review_scale_depth.md) — never skip; dial review depth/breadth/provider count to scope (T1=1 provider scoped, T2=Codex+Gemini, T3=add Claude code-reviewer)
+- [Doc-counter rules write-time](feedback_doc_counter_rule_writetime.md) — plans modifying phantom counters express criteria as write-time recompute rules, not frozen integers; static value = baseline only
 - [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex's GitHub-connector evidence locally
 - [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if issue already CLOSED, --comment is silently lost; reopen-comment-close to recover
 - [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GitHub BEFORE dispatching `codex exec` review; sandbox can't read local files
@@ -24,7 +26,7 @@
 - [Merge-race silent revert](feedback_merge_race_silent_revert.md) — auto-sync race during `git merge --no-ff` + `git commit --no-edit` can drop second-parent tree; always verify merged content matches branch tip
 - [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when tool output is machine-consumed
 - [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
-- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills live under `~/.claude/plugins/cache/`; `git mv` cannot operate on them *stale: 2026-05-12*
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills live under `~/.claude/plugins/cache/`; `git mv` cannot operate on them
 - [Retry-loop reset hazard](feedback_retry_loop_reset_hazard.md) — `git reset HEAD -- .` in a retry loop under auto-sync contention can strip staged edits and land mislabeled commits
 - [Codex sandbox no execution](feedback_codex_sandbox_no_execution.md) — Codex sandbox blocks ALL shell exec (not just writes); never delegate implementation/build/commit to Codex
 - [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
@@ -47,7 +49,7 @@
 - [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` silently fails for untracked-when-stashed files; use `stash@{0}^3` (third parent = untracked tree)
 - [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync also resolves push contention by quietly pushing local-ahead commits; wait+verify after `[rejected]` instead of retrying
 - [Gemini trust-env blocks reviews](feedback_gemini_trust_env_blocks_reviews.md) — Gemini CLI exits 55 in headless without `GEMINI_CLI_TRUST_WORKSPACE=true`; wrapper masked the real stderr; durable fix landed in submit-to-gemini.sh 2026-04-24
-- [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` directory name poisons every Python dotted-path reference below it; recurred 3x in 2026-04-24 agent-drafted plans; grep plans for `llm-wiki\.` as a P1 smell *verified: 2026-05-10*
+- [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` directory name poisons every Python dotted-path reference below it; recurred 3x in 2026-04-24 agent-drafted plans; grep plans for `llm-wiki\.` as a P1 smell
 - [llm-wiki concept pages need public references](feedback_llm_wiki_concept_pages_need_public_references.md) — gap-fill concept pages from external posts must ground on textbooks/DOIs/public manuals; LinkedIn-only sourcing fails day-one lint
 - [Gmail override-filters silent defeat](feedback_gmail_override_filters_silent_defeat.md) — Inbox "Override filters for important" silently nullifies Skip-Inbox; flip to "Don't override" before installing filters (2026-04-24 ace sweep)
 - [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread state machines for actionable ~20% residue
@@ -61,7 +63,7 @@
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` (in-kernel) refuses dirty NTFS volumes; use `ntfs-3g` (FUSE) which auto-replays journal; drop `default_permissions` and pass explicit `uid`/`gid` for ownership
 - [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g-created symlinks as raw `IntxLNK` blobs; corrupts git type-tracked symlinks; verified 2026-05-01 on workspace-hub `/dev/sdc1`; stay on ntfs-3g for any volume hosting a git repo
 - [Wikimedia thumb width quirk](feedback_wikimedia_thumb_width_quirk.md) — query `imageinfo` API for canonical `thumburl`; never hand-construct width segment; main-session re-verify (subagent verification was wrong twice on 2026-04-27)
-- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner *stale: 2026-05-11*
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects only sparse repo (368K tracked, ~6% on disk); `git sparse-checkout add <path>` for missing files, never `disable` (hung 22min on 2026-04-30 materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — agent regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 password-hashing comments; for workspace-hub paths, trust the hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions can land half-resolved files; pull produces double-nested conflict markers; `git checkout --ours` if HEAD is clean
@@ -82,11 +84,17 @@
 - [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
 - [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
-- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/` *verified: 2026-05-12*
+- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/`
+- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText before counting turns; user prompt often absent
+- [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` alone hangs >30s at digitalmodel/.venv even though Python works; rely on CI for verification; verify syntax via `py_compile` not pytest
+- [Git status lock storm from Claude subagents](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` from Claude PPIDs blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses; don't kill the parent claude
+- [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files; reruns regenerate HTML in place; do NOT create a `/html` skill (workspace-hub#2663 codifies)
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
+- [devaKrishna developmental pace](project_devakrishna_developmental_pace.md) — singular/plural rule generalization taking 5+ yrs; calibrate goals to 6–24mo per micro-milestone; functional > academic; activity menus > goal hierarchies; strengthens Plan-A signal at achantas-data#73
 - [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready to send, BSEE fix landed, open issues
+- [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots, 3 date conventions, 3 bundle formats across repos; scan all 4 paths for "where's the GTM pack?"; tracked at #2662
 - [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250+ datasets surveyed 2026-05-05, top 12 candidates curated in repo's SOURCES_kaggle.md; gate ingest on downstream consumer
 > project_cfd_openfoam_storage.md
 - [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209 children; 2026-04-19 amendments landed; follow-ons #2360/#2361/#2362
@@ -117,7 +125,8 @@
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve/uplift/add via public + legally-sanitized private sources; coverage gaps are first-class defects
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest pattern; first-run 2026-05-07 (Sherwood naval-arch + Rötzer wave-shoaling)
-- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/` *stale: 2026-05-12*
+- [llm-wiki V18 corpus-freeze](project_llm_wiki_v18_corpus_freeze.md) — 335pp freeze 2026-05-10 iter-60; cron-only; V19 2026-06-09; URL queue + 10 anti-rec list
+- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
 - [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
 - [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; nested in workspace-hub at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (independent .git, gitignored from hub); team-merging open
 
@@ -126,12 +135,14 @@
 
 ## References
 > ai-orchestration.md, network_machines.md
+- [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress/activity videos on YouTube account `achantav@gmail.com`; grounds skill-analysis workstream in observed evidence
 - [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — modern Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
-- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry *stale: 2026-05-11*
+- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data
 - [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
-- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present *stale: 2026-05-10*
+- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present
 - [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (research preview, 2026-05-06); NOT in Claude Code CLI or Claude.ai; auto vs review-before-apply policy
+- [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for workspace-hub#2663/#2664; examples gallery at https://thariqs.github.io/html-effectiveness/

@@ -1,12 +1,25 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-09
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-12
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_codex_cli_0_124_upstream_regression.md
 
 ---
-name: codex-cli 0.124.0 upstream stdin-hang blocks all cross-reviews
-description: Feedback 2026-04-24 — codex-cli 0.124.0 installed 2026-04-23 15:06 blocks all `codex exec` invocations with "Reading additional input from stdin..." regardless of stdin redirection. Not patchable in workspace scripts. Workaround: pin/downgrade to 0.123.0. Tracked in #2479.
+name: codex-cli 0.124.0 upstream stdin-hang blocks all cross-reviews (RESOLVED on 0.130.0)
+description: Feedback 2026-04-24 — codex-cli 0.124.0 blocked all `codex exec` invocations; resolved on 0.130.0 (verified 2026-05-11, workspace-hub `47916445c` raised CODEX_VERSION_GUARD_CEILING_DEFAULT to 0.130.0). Versions 0.124.0..0.129.x remain unverified in the wrapper's known-bad band.
 type: feedback
 originSessionId: 3415d1dc-e37e-4069-a1eb-a2a3a2c2ca83
 ---
+
+## Status update — 2026-05-11
+
+Codex 0.130.0 verified working in workspace-hub during digitalmodel #515 PR #599 cross-review prep. Both `codex exec "prompt"` (arg-form) and `echo "prompt" | codex exec` (stdin-form) complete with exit 0. Arg-form takes ~58 s real-time for a simple "Reply with: OK" prompt (gpt-5.5 default + medium reasoning effort), but does NOT hang — earlier 30 s probe gave a false-positive hang signal.
+
+Wrapper fix: `CODEX_VERSION_GUARD_CEILING_DEFAULT` raised from empty to `0.130.0` in workspace-hub commit `47916445c` (closes #2661). Intermediate 0.124.0..0.129.x remain in the known-bad band — lower the ceiling only after each is individually verified.
+
+The pre-2026-05-11 content below is preserved as historical record; it described the 0.124.0..0.125.0 hang accurately for those versions.
+
+---
+
+## Historical record (2026-04-24, applies to 0.124.0..0.125.0 only)
+
 codex-cli 0.124.0 introduced an upstream stdin-detection regression that causes every `codex exec` invocation to hang on "Reading additional input from stdin..." (exit 124 after timeout), regardless of our wrapper's stdin redirection.
 
 **Why it matters:** Every `scripts/review/cross-review.sh` / `scripts/review/submit-to-codex.sh` / `scripts/review/plan-review-fanout.sh` call silently degrades to 2-provider review (Claude + Gemini only). Do NOT trust "consensus MAJOR" signals when Codex is UNAVAILABLE — the third provider carries unique defect-detection signal per `feedback_cross_provider_review_payoff`.

@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-09)
+## Synced from Hermes Memory (2026-05-12)
 
 ### Environment Facts
 
@@ -15,13 +15,15 @@
 - User prefers workspace-hub repo-sync/closeout reports to show referenced GitHub issues as clickable hyperlinks grounded via live `gh issue view`, not just issue numbers.
 - workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status).
 - For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there.
+- For repeated judge/checklist continuation prompts, user values fresh evidence artifacts/crosswalks, precise inventory/status reconciliation, and explicit blocked-stop decisions over relaunching implicit continuation work across human/governance/scope gates.
+- Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it.
 
 ### User Profile
 
-- User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks before delegation.
-- Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing first and cleaning later is unacceptable.
-- User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeout must include push, branch/worktree disposition, cleanup or explicit preservation, and clean-state proof in the same window.
-- User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session-end learning reviews are active; update class-level umbrella skills/references when nontrivial signal exists, and use “Nothing to save” only for true no-signal cases.
+- User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks. Tier-1 Kanban boards need provider/machine routing, decision lanes, hygiene ga...
+- Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing ...
+- User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeou...
+- User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session...
 - “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps.
 
 
@@ -67,13 +69,13 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo *verified: 2026-05-11*
+- Plans live in `.planning/` within each repo
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-05-11*
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 
