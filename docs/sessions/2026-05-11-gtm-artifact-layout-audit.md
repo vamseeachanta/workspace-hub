@@ -114,3 +114,41 @@ After the issue was filed, user requested a full hygiene pass across worktrees, 
 ### Parent dir left in place
 
 `/mnt/local-analysis/codex-burn-20260511/` was NOT removed — it contains sibling burn-artifact subdirs for other repos (`assetutilities-bundle`, `worldenergydata-bundle`, `monitoring-evidence`, `logs`, `prompts`) that are out of workspace-hub scope.
+
+## Addendum — `/mnt/local-analysis/` ecosystem consolidation (same session)
+
+User asked: "there are repos outside in /mnt/local-analysis and also inside repo ecosystem. Please review and make it consistent."
+
+### Inconsistency discovered
+
+Four repos existed BOTH at `/mnt/local-analysis/<repo>` (outer clone) AND nested at `/mnt/local-analysis/workspace-hub/<repo>` (inner clone): `assetutilities`, `digitalmodel`, `llm-wiki`, `worldenergydata`. Twenty-two-plus other repos (`achantas-data`, `doris`, `acma-projects`, `kaggle-rogii-2026`, etc.) lived only as nested copies. The 4 outer clones were the exception, not the rule — vestigial standby copies from an earlier workflow that adopted nesting later.
+
+### Pre-delete verification
+
+| Outer clone | HEAD vs inner | Unique unpushed | Dirty | Stash | Size |
+|---|---|---|---|---|---|
+| `assetutilities` | identical (`ff65300`) | none | no | none | 1.6 GB |
+| `digitalmodel` | inner 1 day newer | none | no | none | ~GB-scale |
+| `llm-wiki` | inner 17h newer | none (outer behind 2) | no | none | 55 MB |
+| `worldenergydata` | identical (`1b8e2f1`) | none | no | none | 202 MB |
+
+All branches in outer clones tracked origin; no `[ahead]` annotations on any local branch. Targeted grep across `scripts/` and `.claude/` plus crontab found zero references to outer paths. Memory `feedback_per_repo_metadata_is_firewall` confirmed nesting doesn't violate any governance boundary.
+
+### Actions taken
+
+| Step | Operation | Result |
+|---|---|---|
+| 1 | `rm -rf /mnt/local-analysis/{assetutilities,digitalmodel,llm-wiki,worldenergydata}` | ~9 GB recovered (197 GB → 188 GB used); worldenergydata required one retry due to overlay-FS quirk |
+| 2 | `rm -rf /mnt/local-analysis/agent-worktrees` (empty) + `worktrees/workspace-hub-exit-handoff-887881/` (empty) + `worktrees/` parent (now empty) | 3 stale meta-dirs removed |
+| 3 | `find /mnt/local-analysis/agent-logs -mindepth 1 -mtime +7 -exec rm -rf {} +` | Pruned 60+ `provider-capacity-aware-*` subdirs >7 days old; 6 entries retained (May 4 onwards, boundary cases) |
+| 4 | `gh issue create` — file [#2666](https://github.com/vamseeachanta/workspace-hub/issues/2666) | Documents 3-repo codex-burn-20260511 pattern: workspace-hub merged today; assetutilities (1 commit) + worldenergydata (3 commits) still unmerged on `origin/codex/burn-...` branches |
+
+### Final ecosystem state
+
+- `/mnt/local-analysis/` now contains: `workspace-hub/` + `agent-logs/` (slim) + `codex-burn-20260511/` (still has assetutilities/worldenergydata bundle dirs pending #2666) + `.pnpm-store/` + `.Trash-1000/`
+- One canonical location per repo: nested inside `workspace-hub/`. 22+ nested-only repos no longer have any sibling-by-exception.
+- ~9 GB disk recovered.
+
+### Pattern surfaced for follow-up
+
+The 2026-05-11 codex-burn batch hit at least 3 repos with the same "implementation pushed to `codex/burn-...` branch, not merged to main, parent issue sometimes closed anyway" antipattern. Workspace-hub case fixed today; assetutilities + worldenergydata tracked at [#2666](https://github.com/vamseeachanta/workspace-hub/issues/2666). If the antipattern recurs in future codex-burn batches, treat it as a workflow-fix priority (codex-burn close-out script should refuse to close parent issues without an associated merged PR).
