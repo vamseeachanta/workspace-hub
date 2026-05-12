@@ -1,0 +1,44 @@
+set -uo pipefail
+echo "PREFLIGHT_PROBE_V1"
+echo "hostname=$(hostname -s 2>/dev/null || hostname 2>/dev/null || true)"
+echo "workspace_root=${WORKSPACE_ROOT}"
+if cd "${WORKSPACE_ROOT}" 2>/dev/null; then
+  echo "workspace_exists=true"
+  echo "git_branch=$(git branch --show-current 2>/dev/null || true)"
+  echo "git_status_line=$(git status --short --branch 2>/dev/null | sed -n '1p' || true)"
+  echo "git_dirty_count=$(git status --short 2>/dev/null | wc -l | tr -d ' ')"
+  echo "git_remote_url=$(git remote get-url origin 2>/dev/null || true)"
+  ab="$(git rev-list --left-right --count @{upstream}...HEAD 2>/dev/null || printf '0 0')"
+  echo "git_behind=$(printf '%s' "$ab" | awk '{print $1}')"
+  echo "git_ahead=$(printf '%s' "$ab" | awk '{print $2}')"
+else
+  echo "workspace_exists=false"
+fi
+echo "disk_free_gb=$(df -BG "${WORKSPACE_ROOT}" 2>/dev/null | awk 'NR==2 {gsub(/G/, "", $4); print $4}' || printf '0')"
+for c in hermes codex claude gemini gh git uv; do
+  p="$(command -v "$c" 2>/dev/null || true)"
+  echo "tool.${c}.path=${p}"
+  if [ -n "$p" ]; then
+    echo "tool.${c}.version=$("$c" --version 2>&1 | sed -n '1p' || true)"
+  fi
+done
+gh_auth="$(gh auth status 2>&1)"
+gh_auth_rc=$?
+echo "gh.auth.exit=${gh_auth_rc}"
+echo "gh.auth.output=$(printf '%s' "$gh_auth" | tr '\n' ' ' | sed 's/[[:space:]][[:space:]]*/ /g')"
+gh_login="$(gh api user --jq .login 2>/dev/null)"
+gh_api_rc=$?
+echo "gh.api.exit=${gh_api_rc}"
+echo "gh.api.login=${gh_login}"
+echo "hermes.model=${HERMES_DEFAULT_MODEL:-}"
+if command -v hermes >/dev/null 2>&1; then
+  hp="$(command -v hermes)"
+  head -1 "$hp" 2>/dev/null | grep -q ".hermes/hermes-agent/.venv/bin/python" && echo "hermes.shebang=ok" || echo "hermes.shebang=warn"
+else
+  echo "hermes.shebang=skip"
+fi
+for c in openfoam gmsh paraview calculix orcaflex; do
+  if command -v "$c" >/dev/null 2>&1; then
+    echo "engineering.${c}.version=$("$c" --version 2>&1 | sed -n '1p' || true)"
+  fi
+done
