@@ -28,6 +28,17 @@ codex_version_guard_check() {
     return 2
   fi
 
+  # Environment guard (#2684): codex exec hangs from Claude-Code Bash regardless
+  # of codex version. The Claude-Code Bash tool provides a non-closeable stdin
+  # layer that does not propagate EOF to the codex subprocess (upstream
+  # openai/codex#19945). Detect via CLAUDECODE=1 (set by Claude Code in every
+  # Bash subprocess) and fail fast with a clear reason so the operator knows
+  # how to recover (run from a plain terminal, or unset CLAUDECODE).
+  if [[ "${CLAUDECODE:-}" == "1" ]]; then
+    echo "INCOMPATIBLE (running under Claude-Code Bash — codex exec stdin-hangs regardless of version; upstream openai/codex#19945; see workspace-hub #2684; dispatch from a plain terminal OR unset the env var via 'env -u CLAUDECODE bash scripts/review/plan-review-fanout.sh ...' for Codex review)"
+    return 3
+  fi
+
   local raw ver base prerelease floor ceiling
   if ! raw="$(timeout 5 "$bin" --version 2>/dev/null)"; then
     echo "codex --version failed or timed out"

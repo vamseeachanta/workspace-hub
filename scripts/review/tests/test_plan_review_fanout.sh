@@ -30,6 +30,11 @@ run_wrapper_under_mocks() {
   (
     export PATH="$MOCKS_DIR:$PATH"
     export PLAN_REVIEW_CAPTURE_DIR="$out_dir/captures"
+    # Unset CLAUDECODE by default so the #2684 env-guard doesn't block the
+    # codex leg in tests that don't explicitly exercise the guard. Tests that
+    # DO exercise the guard pass `CLAUDECODE=1` via extra_env (re-exported
+    # below, after this unset).
+    unset CLAUDECODE
     for kv in "${extra_env[@]}"; do export "$kv"; done
     bash "$WRAPPER" "$fixture" --output-dir="$out_dir/results"
   )
@@ -306,6 +311,7 @@ test_two_fixture_plumbing() {
   (
     export PATH="$MOCKS_DIR:$PATH"
     export PLAN_REVIEW_CAPTURE_DIR="$td1"
+    unset CLAUDECODE  # don't trip the #2684 env-guard in test harness
     mkdir -p "$td1/results"
     bash "$WRAPPER" "$FIXTURES_DIR/2026-04-17-issue-9001-known-good.md" --output-dir="$td1/results"
   ) >/dev/null 2>&1 || true
@@ -314,6 +320,7 @@ test_two_fixture_plumbing() {
   (
     export PATH="$MOCKS_DIR:$PATH"
     export PLAN_REVIEW_CAPTURE_DIR="$td2"
+    unset CLAUDECODE  # don't trip the #2684 env-guard in test harness
     mkdir -p "$td2/results"
     bash "$WRAPPER" "$FIXTURES_DIR/2026-04-17-issue-9002-known-broken.md" --output-dir="$td2/results"
   ) >/dev/null 2>&1 || true
@@ -363,6 +370,7 @@ test_gemini_unavailable_does_not_abort_codex() {
     export PATH="$MOCKS_DIR:$PATH"
     export PLAN_REVIEW_CAPTURE_DIR="$td/captures"
     export MOCK_GEMINI_FAIL=1
+    unset CLAUDECODE  # don't trip the #2684 env-guard in test harness
     mkdir -p "$td/captures" "$td/results"
     local fixture="$td/2026-04-17-issue-9999-test-slug.md"
     printf '%s\n%s\n' "$FIXTURE_FIRST_LINE" "Plan body line 2." > "$fixture"
@@ -511,6 +519,33 @@ test_claude_case_branch_documents_2683() {
   fi
 }
 
+test_fanout_codex_unavailable_under_claudecode_env() {
+  run_test "codex env-guard emits UNAVAILABLE when CLAUDECODE=1 (#2684)"
+
+  local td; td="$(mktemp -d)"
+  # Pass CLAUDECODE=1 via extra_env (NOT prefix-assignment) so it lands AFTER
+  # run_wrapper_under_mocks's default `unset CLAUDECODE`. The unset prevents
+  # other tests from accidentally tripping the #2684 env-guard when the test
+  # runner itself is under Claude-Code Bash.
+  run_wrapper_under_mocks "$td" "CLAUDECODE=1" >/dev/null 2>&1 || true
+
+  local codex_art cap
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  cap="$td/captures/codex.capture"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing after CLAUDECODE=1 env guard"
+  elif ! grep -qF 'UNAVAILABLE' "$codex_art"; then
+    fail "CLAUDECODE=1 did not produce UNAVAILABLE artifact" "$(head -20 "$codex_art")"
+  elif ! grep -qF '#2684' "$codex_art"; then
+    fail "UNAVAILABLE artifact missing #2684 reference" "$(head -20 "$codex_art")"
+  elif [[ -f "$cap" ]] && grep -qF 'ARGV: exec' "$cap"; then
+    fail "codex exec was invoked despite CLAUDECODE env guard" "$(head -5 "$cap")"
+  else
+    pass "CLAUDECODE=1 guard wrote UNAVAILABLE and skipped codex exec"
+  fi
+  rm -rf "$td"
+}
+
 test_fanout_codex_unavailable_on_bad_version() {
   run_test "codex bad-version guard emits UNAVAILABLE without invoking codex exec"
 
@@ -550,6 +585,7 @@ test_codex_stderr_review_is_promoted_to_artifact
 test_empty_provider_output_becomes_unavailable_stub
 test_provider_timeout_becomes_unavailable_stub
 test_partial_stderr_timeout_becomes_unavailable_stub
+test_fanout_codex_unavailable_under_claudecode_env
 test_fanout_codex_unavailable_on_bad_version
 test_claude_invocation_sets_plugin_dir_override
 test_claude_case_branch_documents_2683
