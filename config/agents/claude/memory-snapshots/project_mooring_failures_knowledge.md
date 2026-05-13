@@ -1,10 +1,13 @@
 ---
-name: Mooring failures LNG terminals knowledge seed
-description: Comprehensive mooring line failure research at knowledge/seeds/mooring-failures-lng-terminals.yaml — 40 entries covering NWS/Woodside, global incidents, standards, solutions
-type: project
+name: mooring-failures-lng-terminals-knowledge-seed
+description: "Comprehensive mooring line failure research at llm-wiki/seeds/mooring-failures-lng-terminals.yaml — 40 entries covering NWS/Woodside, global incidents, standards, solutions"
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: 37c4fd1d-3784-4903-a5ea-5fe997dd7044
 ---
 
-Created `knowledge/seeds/mooring-failures-lng-terminals.yaml` on 2026-03-29 with 40 entries (1,126 lines).
+Created `knowledge/seeds/mooring-failures-lng-terminals.yaml` on 2026-03-29 with 40 entries (1,126 lines). **Path migration:** seeds moved to `llm-wiki/seeds/mooring-failures-lng-terminals.yaml` after the 2026-05-05 llm-wiki spinout (see [[project_llm_wiki_spunout]]). Verified 2026-05-12 by R5 audit at [#2681](https://github.com/vamseeachanta/workspace-hub/issues/2681).
 
 **Why:** User provided first-hand knowledge of Dom Allery's 2015 SIGTTO Panel presentation about NWS LNG mooring line failures (including the 2014 event where 3 lines parted in ~50mm swell). This triggered deep research to build a comprehensive knowledge seed.
 

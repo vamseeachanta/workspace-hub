@@ -1,23 +1,31 @@
 ---
 name: mnt-analysis-cleanup
-description: Survey, classify, and clean up `/mnt/local-analysis/` (or any sibling-to-workspace-hub directory holding orphan worktrees, codex-burn artifacts, agent log accumulations, and outer-clone duplicates) without losing useful code/work. Surfaces a tiered approval menu rather than baking decisions; defers all destructive ops until user confirms.
-when_to_use: |
-  - User asks to "clean up local-analysis", "free up disk", "remove stale repos", "what's still useful in /mnt/local-analysis"
-  - User mentions "disk pressure", "orphan worktree", "codex-burn", "outer-clone duplicates", "agent-log accumulation"
+description: Survey, classify, and clean up `/mnt/local-analysis/` (or any sibling-to-workspace-hub
+  directory holding orphan worktrees, codex-burn artifacts, agent log accumulations,
+  and outer-clone duplicates) without losing useful code/work. Surfaces a tiered approval
+  menu rather than baking decisions; defers all destructive ops until user confirms.
+when_to_use: '- User asks to "clean up local-analysis", "free up disk", "remove stale
+  repos", "what''s still useful in /mnt/local-analysis"
+
+  - User mentions "disk pressure", "orphan worktree", "codex-burn", "outer-clone duplicates",
+  "agent-log accumulation"
+
   - After a Hermes codex-burn run completes (post-run artifact sweep)
-  - Routinely (monthly or after disk pressure) to keep the workspace-hub sibling area lean
+
+  - Routinely (monthly or after disk pressure) to keep the workspace-hub sibling area
+  lean
+
   - Whenever `df -P /mnt/local-analysis` crosses a warning threshold (configurable)
-related_skills:
-  - "workspace-hub/repo-sync — handles inner-clone freshness"
-  - "coordination/issue-planning-mode — when cleanup surfaces issues for follow-up"
+
+  '
 tags:
-  - disk-cleanup
-  - local-analysis
-  - codex-burn
-  - orphan-worktrees
-  - outer-clones
-  - agent-logs
-  - hermes-coordination
+- disk-cleanup
+- local-analysis
+- codex-burn
+- orphan-worktrees
+- outer-clones
+- agent-logs
+- hermes-coordination
 ---
 
 # `/mnt/local-analysis/` cleanup

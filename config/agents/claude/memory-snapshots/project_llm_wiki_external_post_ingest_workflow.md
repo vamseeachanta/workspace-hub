@@ -1,12 +1,14 @@
 ---
-name: llm-wiki external-post ingest workflow
-description: Reusable workflow for ingesting external engineering posts (LinkedIn, blog articles) into vamseeachanta/llm-wiki — domain routing, schema compliance, references grounding, commit hygiene
+name: llm-wiki external-content ingest workflow
+description: Reusable workflow for ingesting external engineering content (LinkedIn posts, blog articles, vendor product-family pages with brochures) into vamseeachanta/llm-wiki — domain routing, schema compliance, references grounding, vendor-PDF off-repo archival, commit hygiene
 type: project
 originSessionId: 714b2423-3b30-4ff5-8d73-dca937209407
 ---
-Reusable workflow for ingesting external engineering posts (LinkedIn, blog articles) into the public llm-wiki repo at `vamseeachanta/llm-wiki` (nested at `/mnt/local-analysis/workspace-hub/llm-wiki`).
+Reusable workflow for ingesting external engineering content into the public llm-wiki repo at `vamseeachanta/llm-wiki` (nested at `/mnt/local-analysis/workspace-hub/llm-wiki`). Source types supported: LinkedIn practitioner essays, blog articles, **and vendor product-family pages with downloadable brochures** (the vendor variant follows the same 8 steps but with the brochures going off-repo).
 
-**Why:** llm-wiki is CC-BY-4.0 content + MIT code with a firewall barring workspace-hub private state from leaking into commits. External-post ingests recur (LinkedIn engineering essays from practitioners, blog posts) and follow the same rhythm each time. First execution ran 2026-05-07 with two ingests (Sherwood naval-arch role, Rötzer wave shoaling) committed as `4e50b1b2` and `533d3889`.
+**Why:** llm-wiki is CC-BY-4.0 content + MIT code with a firewall barring workspace-hub private state from leaking into commits, plus a vendor-PDF governance rule that keeps vendor brochures out of the repo entirely. External-content ingests recur and follow the same rhythm each time. Execution history:
+- 2026-05-07 — Sherwood naval-arch role + Rötzer wave shoaling, committed `4e50b1b2` and `533d3889`.
+- 2026-05-12 — Miah Froude number (naval-arch) + Lloyd's tug fender height (marine-eng) + NOV motion-compensation product family (marine-eng), committed `94e0bd62`, `f24c6a8f`, `33338317`, pushed to origin/main as fast-forward from `b0a441c6`.
 
 **How to apply** — eight-step workflow, write-only by default unless user authorizes commits:
 
@@ -25,4 +27,6 @@ Reusable workflow for ingesting external engineering posts (LinkedIn, blog artic
 - Wave-theory deep-water concept: `engineering/wiki/concepts/wave-theory-offshore.md`
 - Naval-arch source spine already in wiki: `naval-architecture/wiki/sources/introduction-to-naval-architecture.md` (Tupper), the PNA series (multiple slugs, including `principles-of-naval-architecture-volume-i---stability-and-strength.md` and `-volume-ii---resistance-propulsion-and-vibration.md`)
 
-**Don't apply when:** the source is a vendor-derivative PDF (those live at `/mnt/ace`, never in this repo per spinout governance) or the request would require restating proprietary clauses, tables, or formulas from DNV/API/ABS/etc. — link to the existing standards page instead.
+**Don't apply when:** the request would require restating proprietary clauses, tables, or formulas from DNV/API/ABS/etc. — link to the existing standards page instead.
+
+**Vendor product-family variant (2026-05-12 NOV precedent):** When the source is a vendor product page (e.g., NOV motion compensation systems), the workflow still applies — but with a binary-archival split. Step 1 expands to: WebFetch the page, then `curl` the page HTML and grep `href=".*\.pdf"` to enumerate brochure URLs (WebFetch summarises but does not return direct download URLs). Step 4 downloads each PDF to `/mnt/ace/llm-wiki-archive/<domain>/raw/papers/` with a `NOV_<descriptive_name>_<year>.pdf` (or vendor-prefixed equivalent) filename, **never** to a directory inside llm-wiki. The source-page frontmatter and body reference brochures by canonical filename only — never by `/mnt/ace/...` path, which would leak private mount paths into a CC-BY-4.0 public repo. The concept-page synthesis anchors on API / DNV / ABS / ISO standards and public peer-reviewed papers; vendors are named (it's an existence-proof that the product family is commercially supplied) but vendor identity is explicitly stated as not the anchor for any technical claim. Verified vendor-asset URL caveat: NOV's `assets.nov.com` paths are Bynder DAM content-addressable strings (e.g., `NCP4N68N/at/<22-char-hash>/<name>.pdf`) that can rotate if the DAM is reorganised — the locally-archived binary is the durable artifact.

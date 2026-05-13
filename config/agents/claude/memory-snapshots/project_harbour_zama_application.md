@@ -1,0 +1,14 @@
+---
+name: harbour-zama-application
+description: "2026-05-12 application to Harbour Energy / Zama Project Senior Gas Export Pipeline Engineer via Andy Garnett (Rock Oilfield); CV sent was Jan 2026 va_resume.docx, no refresh"
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: 3537e768-7e6b-42e4-9a13-a4b0e3f1d9aa
+---
+
+On 2026-05-12 the user replied to Andy Garnett (Rock Oilfield) on Harbour Energy's Zama Project contract slate. Selection: **Senior Gas Export Pipeline Engineer (GV)** — the only one of nine roles whose stated 15-year YOE minimum cleanly clears the A&CE stated base. Resume submitted: the existing `va_resume.docx` from the Jan 2026 Andy thread "Subsea Roles - 2 pipeline/riser engineers" — not refreshed for this application. Pay band ~$150/hr, presumed W-2 through Rock Oilfield (same as 2023 Subsea 7 placement, pending Andy's confirmation).
+
+**Why:** Andy is the same recurring channel that placed the user at Subsea 7 in 2023 — passes the `feedback_recruiter_engagement` consulting-level + credible source bar; not a drive-by recruiter. Andy framed urgency as "candidates needed this afternoon" — same-day reply was correct call. Of the 9 attached JDs, the OCR pass (see `feedback_pdf_ocr_fallback_chain`) revealed 8 require 20–25 years; Senior Gas Export Pipeline Engineer at 15 yrs + 8 yrs Owner's Engineer is the only YOE-feasible position. SURF Lead was technical/channel-fit-perfect but the 25-year wall would have required Andy to advocate past it.
+
+**How to apply:** When Andy replies, watch for: (1) role-scope clarifications — JD says "rigid pipelines, jumpers, hybrid rigid/flexible systems, flowlines" + "mechanical design of offshore gas pipelines" matches Abaqus pipeline work; (2) "(GV)" suffix meaning — undocumented in the JD, asked Andy to clarify; (3) whether Harbour gas export line is dense-phase / high-pressure — shifts the right Abaqus emphasis; (4) confirmation of W-2 channel; (5) interview scheduling. Mexican regulatory context (CNH/SENER/ASEA) is preferred-not-gating per JD; the pre-emptive disclosure paragraph in `aceengineer-strategy/pipeline/harbour-zama-mexican-regulatory-context-2026-05-12.md` is on standby if Andy wants it surfaced before interview. **Resume note**: Jan 2026 `va_resume.docx` was sent unrefreshed — if interview lands, refresh to foreground the 2023 Subsea 7 installation-analysis (the Owner's Engineer-equivalent angle) and Abaqus pipeline-mechanical-design work before the conversation. Authoritative artifact tree: `aceengineer-strategy/pipeline/harbour-energy-zama-contract-positions-fit-2026-05-12.md` (fit + reply draft), `aceengineer-strategy/pipeline/harbour-zama-mexican-regulatory-context-2026-05-12.md` (regulatory framing), prospects.md Harbour Energy + Talos entries. Raw JDs at `aceengineer-strategy/journal/private/harbour-zama-jds-2026-05-12/` (gitignored). Channel: Andy Garnett, Rock Oilfield — same channel as Subsea 7 2023 placement.

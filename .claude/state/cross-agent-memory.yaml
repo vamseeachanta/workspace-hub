@@ -3,16 +3,16 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-05-12T07:01:10Z"
-  source_hash: "f03f183ba1b92887cbb547d73a0a1374"
+  generated: "2026-05-13T07:01:09Z"
+  source_hash: "d9a65e6e445c2547ed32cda88e283871"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
       user_file: "/home/vamsee/.hermes/memories/USER.md"
-      entry_count: 9
+      entry_count: 10
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 147
+      memory_file_count: 152
 
 hermes_insights:
   environment_facts:
@@ -26,8 +26,9 @@ hermes_insights:
     - "workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status)."
     - "For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there."
   user_preferences:
-    - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks. Tier-1 Kanban boards need provider/machine routing, decision lanes, hygiene gates, and cross-review ownership."
-    - "Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing first and cleaning later is unacceptable. User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeout must include push, branch/worktree disposition, cleanup or explicit preservation, and clean-state proof in the same window. User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session-end learning reviews are active; update class-level umbrella skills/references when nontrivial signal exists, and use “Nothing to save” only for true no-signal cases. “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps."
+    - "User requires zero-waste AI spend; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks. Tier-1 Kanban boards need provider/machine routing, decision lanes, hygiene ga..."
+    - "Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing ... User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeou... User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session... “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps."
+    - "For requested user actions/approvals, user prefers a compact preview with GitHub links, current gate/status, exact recommended action, and what will happen next so they can approve quickly in-window."
 
 claude_memory_index:
   files:
@@ -37,6 +38,8 @@ claude_memory_index:
       topic: "stash caret 3 for untracked"
     - file: "feedback_gh_issue_close_silent_comment_drop.md"
       topic: "gh issue close silent comment drop"
+    - file: "project_domain_knowledge_sweep.md"
+      topic: "domain knowledge sweep"
     - file: "feedback_dark_intelligence_excel.md"
       topic: "dark intelligence excel"
     - file: "feedback_gmail_filter_first_over_per_thread.md"
@@ -99,6 +102,8 @@ claude_memory_index:
       topic: "gmail override filters silent defeat"
     - file: "reference_gmail_mcp_scope.md"
       topic: "gmail mcp scope"
+    - file: "project_krishna_typing_tools.md"
+      topic: "krishna typing tools"
     - file: "feedback_claude_desktop_agent_mode_embeds_cli.md"
       topic: "claude desktop agent mode embeds cli"
     - file: "feedback_attestation_enables_contradiction_detection.md"
@@ -133,6 +138,8 @@ claude_memory_index:
       topic: "cross repo closes at squash"
     - file: "feedback_plugin_cache_not_repo_tracked.md"
       topic: "plugin cache not repo tracked"
+    - file: "feedback_pdf_ocr_fallback_chain.md"
+      topic: "pdf ocr fallback chain"
     - file: "reference_claude_dreaming_managed_agents.md"
       topic: "claude dreaming managed agents"
     - file: "feedback_inline_gh_issue_url.md"
@@ -167,6 +174,8 @@ claude_memory_index:
       topic: "ace linux 2 vnc"
     - file: "feedback_gemini_sandbox_overlay_blindness.md"
       topic: "gemini sandbox overlay blindness"
+    - file: "feedback_gh_api_rate_limit_during_dispatch.md"
+      topic: "gh api rate limit during dispatch"
     - file: "project_tier1_refactor.md"
       topic: "tier1 refactor"
     - file: "feedback_origin_committed_with_unresolved_markers.md"
@@ -177,6 +186,8 @@ claude_memory_index:
       topic: "permission gate blocks cross review"
     - file: "feedback_parallel_agent_write_only_pattern.md"
       topic: "parallel agent write only pattern"
+    - file: "project_harbour_zama_application.md"
+      topic: "harbour zama application"
     - file: "feedback_multi_session_swarm.md"
       topic: "multi session swarm"
     - file: "feedback_llm_wiki_concept_pages_need_public_references.md"

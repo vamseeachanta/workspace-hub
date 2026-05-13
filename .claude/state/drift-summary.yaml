@@ -7678,3 +7678,63 @@
     git_non_conventional: 3
     git_missing_wrk_ref: 10
     git_exempt_type: 13
+- scanned_at: "2026-05-13T07:06:43Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/12/rollout-2026-05-12T07-34-42-019e1c2e-b22d-7ec3-9ba9-d4126219f34b.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-13T07:06:43Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/12/rollout-2026-05-12T07-57-15-019e1c43-56da-7e61-86ad-1fe94949a344.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-13T07:06:43Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/12/rollout-2026-05-12T09-02-47-019e1c7f-5647-7323-82a6-5a2577b79569.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-13T07:06:44Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/12/rollout-2026-05-12T09-14-39-019e1c8a-345e-7f30-85e8-394a8cff0c73.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-13T07:06:44Z"
+  log: "/home/vamsee/.codex/sessions/2026/05/12/rollout-2026-05-12T09-23-18-019e1c92-1e47-7793-9b67-4014d853e7fe.jsonl"
+  provider: "codex"
+  violations:
+    python_runtime: 0
+    file_placement: 0
+    git_workflow: 0
+    git_non_conventional: 0
+    git_missing_wrk_ref: 0
+    git_exempt_type: 0
+- scanned_at: "2026-05-13T07:06:51Z"
+  log: "/mnt/local-analysis/workspace-hub/logs/orchestrator/claude/session_20260512.jsonl"
+  provider: "claude"
+  violations:
+    python_runtime: 8
+    file_placement: 0
+    git_workflow: 16
+    git_non_conventional: 9
+    git_missing_wrk_ref: 7
+    git_exempt_type: 8

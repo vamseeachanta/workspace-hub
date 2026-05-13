@@ -23,7 +23,7 @@
 - `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
   - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
 - `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent
-- `worldenergydata/` — energy data sub-repo
+- `worldenergydata/` — energy data sub-repo *verified: 2026-05-13*
 
 ## Windows Path Conventions
 
