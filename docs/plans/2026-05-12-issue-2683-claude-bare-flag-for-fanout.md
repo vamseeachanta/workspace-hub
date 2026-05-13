@@ -80,7 +80,7 @@ Source count: 3 (issue body + plan-review-fanout.sh source + claude --help outpu
 
 ## Deliverable
 
-`scripts/review/plan-review-fanout.sh` invokes the Claude provider with `claude --bare -p ...` instead of `claude -p ...`, so third-party plugin hooks (including the codex plugin's SessionEnd hook) do not load in the child claude session and cannot crash the review with `Hook cancelled` rc=124.
+`scripts/review/plan-review-fanout.sh` invokes the Claude provider with `env CLAUDE_PLUGIN_DIR=<empty-tempdir> claude -p ...` instead of `claude -p ...`, so third-party plugins (including the codex plugin's SessionEnd hook) are not discovered for the child claude session and cannot crash the review with `Hook cancelled` rc=124. **Mechanism switched from `--bare` to `CLAUDE_PLUGIN_DIR` override during execution** (see Adversarial Review Summary below): `--bare` would have also disabled keychain reads and required `ANTHROPIC_API_KEY`, breaking the typical local-dev auth path. The env-var override is mechanism-narrower (only plugin discovery, no auth/memory side effects) and version-independent (no claude ≥ 2.1.140 requirement).
 
 ---
 
@@ -94,28 +94,33 @@ T1 — trivial. See "Files to Change" below.
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `scripts/review/plan-review-fanout.sh` (line 147) | Add `--bare` before `-p` flag |
-| Create (if test harness exists) | `scripts/review/tests/...` | Regression test that the claude invocation includes `--bare` |
+| Modify | `scripts/review/plan-review-fanout.sh` (claude case branch, ~lines 143-149) | Wrap the claude invocation with `env CLAUDE_PLUGIN_DIR=<mktemp -d>` so the child claude doesn't discover the codex plugin |
+| Modify | `scripts/review/tests/mocks/claude` | Mock records `ENV.CLAUDE_PLUGIN_DIR` value so the regression test can assert the override fired |
+| Modify | `scripts/review/tests/test_plan_review_fanout.sh` | Add `test_claude_invocation_sets_plugin_dir_override` + `test_claude_case_branch_documents_2683` |
 | Update | `docs/plans/README.md` | Add this plan to index |
 
-Exact change at line 147:
-
-```diff
--        claude -p "@$PROMPT_FILE — review the plan at $PLAN_FILE. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS." \
-+        claude --bare -p "@$PROMPT_FILE — review the plan at $PLAN_FILE. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS." \
-```
-
-Add a comment block above the `claude)` case explaining why `--bare` is required (so future maintainers do not "clean up" the flag thinking it limits Claude's capabilities for the review):
+Exact change in the claude case branch (the existing 1-line comment + 4-line invocation becomes a 13-line block):
 
 ```bash
     claude)
-      # `--bare` is REQUIRED: it disables hooks/plugin-sync/auto-memory in the
-      # child claude session. Without it, third-party plugin SessionEnd hooks
-      # (codex plugin observed 2026-05-12, #2683) race with claude's headless
-      # shutdown, hit their 5s timeout, and cause `claude -p` to exit rc=124
-      # with `Hook cancelled`. Skills still resolve via /skill-name; explicit
-      # MCP via --mcp-config still works. This is the minimal-mode invocation
-      # documented in `claude --help`.
+      # Disable third-party plugin loading for the child claude session (#2683):
+      # the codex plugin's SessionEnd hook does a synchronous fs.readFileSync(0)
+      # with a 5s timeout that races claude's headless shutdown and causes
+      # `claude -p` to exit rc=124 with `Hook cancelled`. Pointing
+      # CLAUDE_PLUGIN_DIR at an empty directory disables plugin discovery for
+      # THIS invocation only, leaving keychain/OAuth auth intact. (Earlier
+      # iteration tried `--bare`, but that also disables keychain reads and
+      # requires ANTHROPIC_API_KEY — incompatible with the typical local-dev
+      # auth setup. The env-var override is mechanism-narrower and
+      # version-independent.)
+      local plugin_dir_override
+      plugin_dir_override="$(mktemp -d -t claude-no-plugins-XXXXXX)"
+      timeout -k 5s "${timeout_s}s" \
+        env CLAUDE_PLUGIN_DIR="$plugin_dir_override" \
+        claude -p "@$PROMPT_FILE — review the plan at $PLAN_FILE. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS." \
+        > "$out" 2>"$err" || rc=$?
+      rmdir "$plugin_dir_override" 2>/dev/null || true
+      ;;
 ```
 
 ---
@@ -124,16 +129,18 @@ Add a comment block above the `claude)` case explaining why `--bare` is required
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_fanout_claude_uses_bare_flag | The claude invocation in the Claude `case` branch includes `--bare` | shell-level inspection of `scripts/review/plan-review-fanout.sh` | grep for `claude --bare -p` returns ≥1 match |
-| test_fanout_claude_does_not_hang_under_hostile_plugin | Smoke: a `claude -p` invocation with `--bare` does NOT execute the codex SessionEnd hook (no `Hook cancelled` in stderr) | live invocation with codex plugin installed | rc=0 OR stderr does not contain `Hook cancelled` |
+| test_claude_invocation_sets_plugin_dir_override | The wrapper sets `CLAUDE_PLUGIN_DIR` to an empty tempdir for the child claude (so plugins aren't discovered) | run wrapper under mocks; inspect `claude.capture` ENV section | `ENV.CLAUDE_PLUGIN_DIR` value present and contains `claude-no-plugins-` prefix |
+| test_claude_case_branch_documents_2683 | The wrapper references `#2683` in comments (defends against future cleanup) | `grep #2683 scripts/review/plan-review-fanout.sh` | ≥1 match |
+| Smoke (manual) | `env CLAUDE_PLUGIN_DIR=$(mktemp -d) claude -p "Reply OK"` returns rc=0 with `OK` on stdout, no `Hook cancelled` in stderr | live invocation with codex plugin installed | rc=0; stdout contains `OK`; auth via keychain still works |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `grep -c 'claude --bare -p' scripts/review/plan-review-fanout.sh` returns 1
+- [ ] `grep -c 'CLAUDE_PLUGIN_DIR=' scripts/review/plan-review-fanout.sh` returns ≥1 (the env-var override is set in the claude case branch)
+- [ ] `grep -c '#2683' scripts/review/plan-review-fanout.sh` returns ≥1 (explanatory comment is preserved)
 - [ ] Live re-run of `scripts/review/plan-review-fanout.sh docs/plans/2026-05-12-issue-2675-ai-ecosystem-reverse-prompt-plan.md` produces a Claude leg with a real VERDICT/FINDINGS/BLOCKERS structure (not `UNAVAILABLE rc=124`) — does NOT require Codex to be working for this check
-- [ ] No regression in existing fanout tests (whatever harness `scripts/review/tests/` uses today)
+- [ ] No regression in existing 17 fanout tests (`scripts/review/tests/test_plan_review_fanout.sh` total goes from 17 → 19; all green)
 - [ ] Plan registered in `docs/plans/README.md`
 
 ---
@@ -152,14 +159,24 @@ User has two paths at approval time:
 1. **Approve as-is** — findings #1, #3, #4 captured as inline TODOs during execution. Finding #1 (cross-machine version assumption) becomes a follow-up acceptance criterion.
 2. **Fold findings in first** — amend this plan to address all 7, then approve the amended version.
 
+### Mechanism deviation discovered at execution time (2026-05-13)
+
+User approved path 1 (`status:plan-approved` set 2026-05-13). During implementation, the live smoke test of `claude --bare -p "..."` returned `Not logged in · Please run /login` — the `--bare` flag disables keychain reads (per its own `claude --help` text: *"OAuth and keychain are never read"*) and requires `ANTHROPIC_API_KEY`, which is not set on this machine. The originally-approved mechanism would have broken the fanout for every user authenticating via keychain/OAuth.
+
+A better fix surfaced from the same smoke test: `env CLAUDE_PLUGIN_DIR=<empty-tempdir> claude -p "..."` returned `OK rc=0` cleanly. The override disables plugin discovery (so the codex plugin's SessionEnd hook doesn't load) **without** touching auth.
+
+User confirmed the deviation (2026-05-13 chat). Implementation switched to `CLAUDE_PLUGIN_DIR` override at all four touch points (script, mock-claude `ENV` capture, two new tests). The r3 review finding #1 (cross-machine version assumption) **dissolves** because env-var overrides have no version dependency.
+
+**Root cause this slipped past r3 review:** the review's 8 "affirmative checks" verified that `claude --help` describes the `--bare` flag (the flag exists), but never actually invoked `claude --bare` to confirm it works in this environment. Classic `superpowers:verification-before-completion` gap — evidence-of-syntax confused with evidence-of-behavior. Lesson captured for future plan reviews.
+
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** `--bare` also disables auto-memory and CLAUDE.md auto-discovery. The plan-review prompt is fully self-contained (a path reference + a static prompt file), so this should not degrade review quality — but verify by inspecting the first post-fix review artifact and confirming it still cites repo paths.
-- **Risk:** `--bare` also skips skills auto-discovery; skills must be invoked via `/skill-name`. The current plan-review-prompt.md should not depend on auto-loaded skills (the prompt is the contract). Verify on first post-fix run.
-- **Open:** Should we apply `--bare` to the entire fanout (Claude, Codex, Gemini) as a discipline, or just Claude? Codex and Gemini are not affected by claude's plugin system, so the answer is: only Claude needs it. Don't widen scope.
-- **Open:** Should the codex plugin's SessionEnd hook also be patched upstream (separate from this defensive fix)? Yes — file an upstream issue against `openai/codex-plugin-cc`, but that is OUT OF SCOPE for this plan. Capture as follow-up.
+- **Risk:** future claude versions could change how `CLAUDE_PLUGIN_DIR` is honored (e.g., respect only `~/.claude/plugins/cache/` and ignore the env var). The smoke test at execution time confirms it works on claude 2.1.140 today, but the test_claude_invocation_sets_plugin_dir_override regression test only confirms the wrapper *sets* the env var, not that claude *honors* it. A live re-dispatch against #2675 (post-implementation) is the integration check.
+- **Risk:** the empty tempdir is cleaned up via `rmdir` after each invocation; if a future change adds files to that dir, `rmdir` will leave it behind. Cosmetic, not load-bearing.
+- **Open:** Should we apply the plugin-dir override to all three providers as a discipline (Codex, Gemini), or just Claude? Codex and Gemini are not affected by claude's plugin system, so the answer is: only Claude needs it. Don't widen scope.
+- **Open:** Should the codex plugin's SessionEnd hook also be patched upstream (separate from this defensive fix)? Yes — file an upstream issue against `openai/codex-plugin-cc`, but that is OUT OF SCOPE for this plan. Captured as follow-up: track upstream after this plan lands.
 
 ---
 

@@ -473,6 +473,44 @@ test_partial_stderr_timeout_becomes_unavailable_stub() {
 }
 
 
+test_claude_invocation_sets_plugin_dir_override() {
+  run_test "claude is invoked with CLAUDE_PLUGIN_DIR override (#2683 — disables third-party SessionEnd hooks)"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local cap="$td/captures/claude.capture"
+  if [[ ! -f "$cap" ]]; then
+    fail "claude capture file not written ($cap)"
+    rm -rf "$td"; return
+  fi
+
+  # The wrapper must set CLAUDE_PLUGIN_DIR to a path that does NOT match the
+  # real plugin cache location (which would defeat the fix). An empty tempdir
+  # path is what the wrapper creates via mktemp.
+  local plugin_dir_value
+  plugin_dir_value="$(grep '^ENV.CLAUDE_PLUGIN_DIR:' "$cap" | sed 's/^ENV.CLAUDE_PLUGIN_DIR: //')"
+
+  if [[ -z "$plugin_dir_value" || "$plugin_dir_value" == "(unset)" ]]; then
+    fail "claude invocation did not set CLAUDE_PLUGIN_DIR — codex SessionEnd hook can still fire (#2683)" "$(head -5 "$cap")"
+  elif [[ "$plugin_dir_value" == *"plugins/cache"* ]]; then
+    fail "CLAUDE_PLUGIN_DIR points at real plugin cache; doesn't disable plugins" "$plugin_dir_value"
+  else
+    pass "CLAUDE_PLUGIN_DIR overridden to '$plugin_dir_value'"
+  fi
+  rm -rf "$td"
+}
+
+test_claude_case_branch_documents_2683() {
+  run_test "claude case branch references #2683 (prevents future cleanup from removing the plugin-dir override)"
+
+  if ! grep -qF '#2683' "$WRAPPER"; then
+    fail "wrapper has no #2683 reference — explanatory comment was removed"
+  else
+    pass "wrapper documents #2683 in comments"
+  fi
+}
+
 test_fanout_codex_unavailable_on_bad_version() {
   run_test "codex bad-version guard emits UNAVAILABLE without invoking codex exec"
 
@@ -513,6 +551,8 @@ test_empty_provider_output_becomes_unavailable_stub
 test_provider_timeout_becomes_unavailable_stub
 test_partial_stderr_timeout_becomes_unavailable_stub
 test_fanout_codex_unavailable_on_bad_version
+test_claude_invocation_sets_plugin_dir_override
+test_claude_case_branch_documents_2683
 test_disagreement_report_captures_unique_finding
 test_two_fixture_plumbing
 

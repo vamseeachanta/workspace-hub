@@ -142,10 +142,23 @@ invoke_provider() {
 
   case "$prov" in
     claude)
-      # Path reference — no inline body.
+      # Disable third-party plugin loading for the child claude session (#2683):
+      # the codex plugin's SessionEnd hook does a synchronous fs.readFileSync(0)
+      # with a 5s timeout that races claude's headless shutdown and causes
+      # `claude -p` to exit rc=124 with `Hook cancelled`. Pointing
+      # CLAUDE_PLUGIN_DIR at an empty directory disables plugin discovery for
+      # THIS invocation only, leaving keychain/OAuth auth intact. (Earlier
+      # iteration tried `--bare`, but that also disables keychain reads and
+      # requires ANTHROPIC_API_KEY — incompatible with the typical local-dev
+      # auth setup. The env-var override is mechanism-narrower and
+      # version-independent.)
+      local plugin_dir_override
+      plugin_dir_override="$(mktemp -d -t claude-no-plugins-XXXXXX)"
       timeout -k 5s "${timeout_s}s" \
+        env CLAUDE_PLUGIN_DIR="$plugin_dir_override" \
         claude -p "@$PROMPT_FILE — review the plan at $PLAN_FILE. Return sections: VERDICT, RETRIEVAL, FINDINGS, BLOCKERS." \
         > "$out" 2>"$err" || rc=$?
+      rmdir "$plugin_dir_override" 2>/dev/null || true
       ;;
     codex)
       local combined
