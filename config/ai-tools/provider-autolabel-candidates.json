@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-05-13T09:20:11.738594Z",
+  "generated_at": "2026-05-13T13:20:12.182132Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 7,
+  "eligible_count": 8,
   "applied": [],
   "candidates": [
     {
@@ -209,19 +209,51 @@
       "eligible": true
     },
     {
-      "number": 2552,
-      "title": "docs(security): external contributor and unsolicited paid-help response runbook",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
+      "number": 2684,
+      "title": "bug(harness): codex-cli 0.130.0 reproduces #2479 stdin-hang pattern in plan-review-fanout despite </dev/null guard",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2684",
       "labels": [
-        "documentation",
-        "priority:medium",
-        "cat:documentation",
-        "domain:security",
+        "bug",
+        "priority:high",
+        "cat:harness",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-03T21:15:07Z",
+      "updatedAt": "2026-05-13T13:15:37Z",
       "execution_ready": true,
-      "priority_rank": 2,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2686,
+      "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:engineering",
+        "cat:bugfix",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-13T11:36:36Z",
+      "execution_ready": true,
+      "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -360,6 +392,35 @@
       "eligible": false
     },
     {
+      "number": 2284,
+      "title": "feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2284",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation"
+      ],
+      "updatedAt": "2026-04-15T11:19:53Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 2498,
       "title": "chore(harness): #2364 plan branch drift recovery decision needed",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2498",
@@ -439,36 +500,6 @@
         "priority-labeled",
         "strong-gemini-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 2431,
-      "title": "Compliance alert: W17 \u2014 20% (critical)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
-      "labels": [
-        "priority:high",
-        "priority:critical",
-        "compliance-alert"
-      ],
-      "updatedAt": "2026-04-26T11:45:09Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": false
     }

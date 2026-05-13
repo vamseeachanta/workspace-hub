@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-13T09:20:11.581537Z",
+  "generated_at": "2026-05-13T13:20:12.044153Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-13T09:20:09.333413Z",
+  "scorecard_generated_at": "2026-05-13T13:20:10.195770Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 7,
-      "total_candidates": 169,
+      "execution_ready_count": 11,
+      "total_candidates": 171,
       "top_issues": [
         {
           "number": 2533,
@@ -164,19 +164,18 @@
           ]
         },
         {
-          "number": 2552,
-          "title": "docs(security): external contributor and unsolicited paid-help response runbook",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
+          "number": 2684,
+          "title": "bug(harness): codex-cli 0.130.0 reproduces #2479 stdin-hang pattern in plan-review-fanout despite </dev/null guard",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2684",
           "labels": [
-            "documentation",
-            "priority:medium",
-            "cat:documentation",
-            "domain:security",
+            "bug",
+            "priority:high",
+            "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-03T21:15:07Z",
+          "updatedAt": "2026-05-13T13:15:37Z",
           "execution_ready": true,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -188,17 +187,19 @@
           ]
         },
         {
-          "number": 2431,
-          "title": "Compliance alert: W17 \u2014 20% (critical)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
+          "number": 2686,
+          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
           "labels": [
+            "bug",
             "priority:high",
-            "priority:critical",
-            "compliance-alert"
+            "cat:engineering",
+            "cat:bugfix",
+            "status:plan-approved"
           ],
-          "updatedAt": "2026-04-26T11:45:09Z",
-          "execution_ready": false,
-          "priority_rank": 0,
+          "updatedAt": "2026-05-13T11:36:36Z",
+          "execution_ready": true,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -214,36 +215,9 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 5,
-      "total_candidates": 27,
+      "execution_ready_count": 4,
+      "total_candidates": 25,
       "top_issues": [
-        {
-          "number": 2269,
-          "title": "feat(openfoam): standardize ESI v2312 baseline workflow and validation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2269",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "cat:documentation",
-            "status:blocked",
-            "machine:dev-secondary",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-10T12:46:27Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 2402,
           "title": "feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier)",
@@ -403,6 +377,27 @@
           "updatedAt": "2026-05-06T03:07:27Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2284,
+          "title": "feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2284",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:documentation"
+          ],
+          "updatedAt": "2026-04-15T11:19:53Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

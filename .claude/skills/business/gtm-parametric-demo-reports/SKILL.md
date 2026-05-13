@@ -44,7 +44,7 @@ Create JSON databases per category BEFORE writing any demo code:
 | `pipelines.json` | Pipe catalog: OD, WT schedules, grades, SMYS/SMTS, submerged weight |
 | `csv_hlv_vessels.json` | Construction vessels: crane curves (SWL vs radius), dims, RAOs |
 | `pipelay_vessels.json` | Pipelay vessels: tensioner capacity, stinger config, depth range |
-| `ctv_operability_<site>.json` | CTV/SOV access-operability reference data: landing arrangements, monthly weather-window/workability, headline uplift metrics |
+| `ctv_operability_<site>.json` | CTV/SOV access-operability reference data: landing arrangements, monthly weather-window/workability, headline uplift metrics. Only place under `gtm/data/` after explicit GTM-use/rights approval; otherwise keep in `references/vessel-suitability/data/` as `internal_reference_only`. |
 | `mudmat_structures.json` | Structures: dims, mass, CoG, hydro coefficients (C_s, C_D, C_a) |
 | `rigid_jumpers.json` | Jumpers: length, OD, WT, mass per meter, total mass |
 | `freespan_scenarios.json` | Environmental: currents, span lengths, soil types, gap ratios |
@@ -122,7 +122,7 @@ Two cross-demo aggregation files:
 - **Prospect email language**: use low-risk pilot / fixed-fee starter / 30-minute review language with concrete deliverables; avoid desperation or "survival pricing" framing. For field-development engineering consulting companies, emphasize early-phase option screening, subsea pipeline wall thickness, rigid jumper freespan/VIV, and vessel/installation suitability as reusable client-ready packs; use `templates/field-development-consulting-outreach.md` rather than drafting from scratch.
 - **Don't let missing data block everything**: Create representative/generic databases, spin GH issues for real data, build demos with what you have. Swap real data in later.
 - **Vessel suitability has two layers**: separate raw/reference intake and GTM packaging from deeper engineering implementation. Add a traceability index for the actual reference corpus reviewed, then create/link a GTM issue for scoring/report output rather than overloading the engineering anchor issue. See `references/vessel-suitability-reference-intake.md`.
-- **Access operability is not the same as vessel specs**: CTV/SOV workability infographics belong in a separate access-operability dataset with source caveats, not merged into CSV/HLV or pipelay vessel databases. See `references/ctv-access-operability-reference-flow.md`.
+- **Access operability is not the same as vessel specs**: CTV/SOV workability infographics belong in a separate access-operability dataset with source caveats, not merged into CSV/HLV or pipelay vessel databases. If rights/GTM approval is not explicit, keep the dataset under `references/vessel-suitability/data/` as `internal_reference_only` and remove any generated GTM HTML/PDF/index derivatives. See `references/ctv-access-operability-reference-flow.md`.
 - **PDF generation needs artifact verification**: headless Chrome can exit successfully while assets/JS render poorly or files are absent; always check non-zero PDF sizes and, when available, `pdfinfo`/`pdftotext` before reporting. See `references/client-pdf-packaging.md`.
 - **Vessel data is always the hardest to get**: Crane curves, RAOs need public spec sheets or industry databases. Pipeline data is easy (API 5L tables).
 - **Senior engineers spot-check numbers**: If wall thickness or safety factors look wrong, the entire demo loses credibility. Use real code formulas.
