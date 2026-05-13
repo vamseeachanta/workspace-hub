@@ -13,11 +13,13 @@ Use when tests or CI fail due to environment, shell, import cache, syntax/lint d
 
 ## Class-Level Workflow
 1. Reproduce failure locally with the narrowest command that preserves the observed behavior.
-2. Check shell semantics (`set -euo pipefail`, `grep -q`, pipes), platform shells, and cached imports before changing product code.
-3. For large lint/test debt, restore gates incrementally with explicit baselines.
-4. Use targeted test repair patterns when failures are assertion/schema drift rather than production regressions.
-5. When GitHub Actions logs are noisy or include escaped JUnit XML, download artifacts (`gh run download <run-id> --dir /tmp/...`) and parse `*.xml` test result files with Python/XML instead of relying on grep. This quickly separates true failing test names/messages from enormous package lists or serialized XML noise.
+2. For CI lint failures, inspect the workflow and run the exact CI commands locally (for example Black/isort/flake8 paths and flags), not just a nearby faster linter such as Ruff. A targeted `ruff check` pass does not prove a repo's Black/isort/flake8 CI gate is green.
+3. Check shell semantics (`set -euo pipefail`, `grep -q`, pipes), platform shells, and cached imports before changing product code.
+4. For large lint/test debt, restore gates incrementally with explicit baselines.
+5. Use targeted test repair patterns when failures are assertion/schema drift rather than production regressions.
+6. When GitHub Actions logs are noisy or include escaped JUnit XML, download artifacts (`gh run download <run-id> --dir /tmp/...`) and parse `*.xml` test result files with Python/XML instead of relying on grep. This quickly separates true failing test names/messages from enormous package lists or serialized XML noise.
 6. If a broad test run times out with the log tail stopped at a generic scheduler/job smoke test, inspect whether `run(config={})` triggers live network refreshes or writes to checked-in data paths. Make empty-config smoke calls offline-safe (quick `skipped` result or explicit opt-in requirement) while preserving dedicated mocked adapter tests. See `references/offline-safe-scheduler-smoke-tests.md`.
+7. For multi-repo CI readiness waves, do not stop at worker-reported test success. Reconcile every tier-1 repo from the control checkout: branch, local HEAD, origin HEAD, ahead/behind, dirty count, pushed commits, and intentional worktree/branch exceptions. Sanitize absolute machine-local paths in handoff artifacts before committing. See `references/multi-repo-ci-readiness-closeout.md`.
 
 ## CI Test Expectation Drift Gotchas
 - Smoke/infrastructure tests often hard-require optional plugins (`pytest-html`, `pytest-json-report`, `pytest-xdist`) or a particular coverage invocation (`--cov=` in `pytest.ini`). Treat these as environment-contract checks: either install the plugin intentionally or relax tests to require only current CI-supported infrastructure and skip optional accelerators when absent.

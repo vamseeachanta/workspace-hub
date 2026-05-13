@@ -13,14 +13,15 @@ Use when an agent claims work is complete and you need to verify exact files, co
 
 ## Class-Level Workflow
 1. Identify the claimed artifact/file/commit set.
-2. Compare the exact claimed paths against git status, git diff, and generated output files.
-3. Confirm no unrelated dirt is being mistaken for task output.
-4. For public/distributable generated artifacts, inspect machine-readable sidecars/manifests as well as the visible output: they must not serialize absolute local paths, staging roots, client repo names, temp directories, or other environment/client identifiers.
-5. For visual artifacts (PNG/SVG/PDF/HTML charts, brochures, dashboards), run both structural smoke checks and a human/visual readability check before claiming success.
-6. For interactive chart artifacts (dropdowns, sliders, tabs, filters), verify at least one representative control path in a browser or DOM-capable test: confirm the default selection is present, changing the control updates the expected chart/data region, and the displayed labels/units remain correct. Static HTML grep alone is not sufficient for interactive controls.
-7. For generated artifact families (HTML + PDF + ZIP/manifests), verify the complete family together: inspect `file` output, sizes/page counts where available, secret/deny-list scan text renderables, and re-run status after staging/commit because PDF/ZIP generators can rewrite already-tracked binaries after an apparently clean check.
-8. If the repo-wide/legal scanner fails because of unrelated dirty files outside the claimed artifact set, do not either ignore it or falsely report a clean official scan. Run a staged/claimed-file-only deny-list check, report it explicitly as scoped evidence, and document the unrelated blocker separately.
-9. Record evidence before closing or reporting success.
+2. Resolve whether the artifact path is inside the canonical git repository. If the generated file lives in a staging/non-repo mount (for example `/mnt/ace/...`) but the deliverable belongs in a tier-1 repo, copy it into the repo-tracked canonical path first, then verify and commit the repo path. Do not treat a non-repo staging directory as the source of truth for push/closeout.
+3. Compare the exact claimed paths against git status, git diff, and generated output files.
+4. Confirm no unrelated dirt is being mistaken for task output.
+5. For public/distributable generated artifacts, inspect machine-readable sidecars/manifests as well as the visible output: they must not serialize absolute local paths, staging roots, client repo names, temp directories, or other environment/client identifiers.
+6. For visual artifacts (PNG/SVG/PDF/HTML charts, brochures, dashboards), run both structural smoke checks and a human/visual readability check before claiming success.
+7. For interactive chart artifacts (dropdowns, sliders, tabs, filters), verify at least one representative control path in a browser or DOM-capable test: confirm the default selection is present, changing the control updates the expected chart/data region, and the displayed labels/units remain correct. Static HTML grep alone is not sufficient for interactive controls.
+8. For generated artifact families (HTML + PDF + ZIP/manifests), verify the complete family together: inspect `file` output, sizes/page counts where available, secret/deny-list scan text renderables, and re-run status after staging/commit because PDF/ZIP generators can rewrite already-tracked binaries after an apparently clean check.
+9. If the repo-wide/legal scanner fails because of unrelated dirty files outside the claimed artifact set, do not either ignore it or falsely report a clean official scan. Run a staged/claimed-file-only deny-list check, report it explicitly as scoped evidence, and document the unrelated blocker separately.
+10. Record evidence before closing or reporting success.
 
 ## Dirty or Hanging Git Status During Handoff
 
@@ -44,6 +45,14 @@ Never summarize a scoped staged-only scan as a full repo legal PASS.
 ## Remote Ref-Lock Push Anomaly
 
 If `git push` fails with a remote ref-lock message like `cannot lock ref 'refs/heads/main': is at <new> but expected <old>`, do not assume the push failed. Immediately verify remote state with `git fetch origin main` or `git ls-remote origin refs/heads/main`, then compare to local `git rev-parse HEAD`. If remote already equals local `HEAD`, treat the commit as landed, record the verified state, and avoid unnecessary retry/rebase churn.
+
+## Client-Facing GitHub Links for Generated Artifacts
+
+When the user asks for a GitHub link to client-facing generated artifacts, especially PNG/PDF/HTML reports:
+1. Commit and push the exact artifact paths first; do not give cache paths or untracked local file paths as if they are GitHub deliverables.
+2. Provide both the GitHub `blob/<branch>/...` URL for browser review and the `raw.githubusercontent.com/<owner>/<repo>/<branch>/...` URL for direct download/embedding.
+3. For binary/image artifacts, verify the raw URL returns HTTP `200` after push before reporting it.
+4. If the artifact is on a feature/issue branch rather than `main`, say that plainly in the response so the user does not assume the link is from the default branch.
 
 ## Consolidated Session Learnings
 

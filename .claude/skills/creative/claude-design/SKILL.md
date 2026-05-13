@@ -4,6 +4,7 @@ description: Design one-off HTML artifacts (landing, deck, prototype).
 version: 1.0.0
 author: BadTechBandit
 license: MIT
+platforms: [linux, macos, windows]
 metadata:
   hermes:
     tags: [design, html, prototype, ux, ui, creative, artifact, deck, motion, design-system]
@@ -342,6 +343,20 @@ Variations can explore:
 Do not create variations that are merely color swaps unless color is the actual question.
 
 When the user picks a direction, consolidate. Do not leave the project as a pile of options forever.
+
+## Print / Redmark Variants
+
+Use this pattern when the user asks for “same image,” “white background,” “dark text,” “printable,” “client redmark,” or similar markup-review copies.
+
+1. Identify the source artifact before rebuilding. If the exact file path is not provided, inspect recent screenshots/images and use vision/search to confirm the intended source rather than guessing.
+2. Preserve the original information architecture and core data. Change the visual treatment only as needed for print legibility: white background, dark/high-contrast text, simplified fills, restrained outlines, and enough blank space for handwritten comments.
+3. Prefer vector/source-first deliverables when possible: SVG + HTML as editable/browser-print sources, then export PNG/PDF for client use.
+4. For browser exports, use headless Chrome with explicit viewport and hidden scrollbars for clean image output, e.g. `google-chrome --headless=new --no-sandbox --disable-gpu --hide-scrollbars --screenshot=out.png --window-size=850,1100 file:///path/to/artifact.html` and `--print-to-pdf=out.pdf` for a print copy.
+5. Verify the exported image visually before final response: white background, no accidental scrollbars, no clipped text, dark readable typography, and broad fidelity to the original artifact.
+
+See `references/print-redmark-variant-workflow.md` for the concise source-first SVG/HTML → PNG/PDF export recipe.
+
+Pitfall: do not simply invert colors. Dark-theme cards and glow effects often print poorly; rebuild the palette as a print system while preserving layout and labels.
 
 ## Tweakable Designs in CLI/API Mode
 
