@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-05-12T21:23:36.686575Z
+Generated: 2026-05-13T01:20:41.170270Z
 Apply mode: False
 Threshold: 0.9
 
@@ -11,6 +11,7 @@ Threshold: 0.9
 | #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2656 chore(repo-structure): normalize workspace-hub folder/file structure | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2657 chore(provider-session): remediate Hermes llm-wiki spinout path drift | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2665 feat(kanban): provider-credit approval dashboard and dispatch gates | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2552 docs(security): external contributor and unsolicited paid-help response runbook | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
@@ -20,4 +21,3 @@ Threshold: 0.9
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2679 R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions) | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2431 Compliance alert: W17 — 20% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2517 Compliance alert: W18 — 42% (high) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |

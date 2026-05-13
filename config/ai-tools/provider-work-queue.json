@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-12T21:23:10.362581Z",
+  "generated_at": "2026-05-13T01:20:37.050169Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-12T21:22:38.436583Z",
+  "scorecard_generated_at": "2026-05-13T01:20:31.567036Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 6,
-      "total_candidates": 167,
+      "execution_ready_count": 7,
+      "total_candidates": 169,
       "top_issues": [
         {
           "number": 2533,
@@ -139,6 +139,31 @@
           ]
         },
         {
+          "number": 2665,
+          "title": "feat(kanban): provider-credit approval dashboard and dispatch gates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2665",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-cost-tracking",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-12T23:24:58Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2552,
           "title": "docs(security): external contributor and unsolicited paid-help response runbook",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2552",
@@ -183,29 +208,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2517,
-          "title": "Compliance alert: W18 \u2014 42% (high)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2517",
-          "labels": [
-            "priority:high",
-            "priority:medium",
-            "priority:critical",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-05-03T11:45:05Z",
-          "execution_ready": false,
-          "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
@@ -213,7 +215,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 29,
+      "total_candidates": 27,
       "top_issues": [
         {
           "number": 2269,
