@@ -16,4 +16,4 @@
 
 **Do NOT apply when:** the constant is derived from the code itself (not a standard), is a convention-only numeric (e.g., array size), or is already in a scope where the caller has wired citations upstream. Don't double-cite.
 
-**Pilot reference:** `digitalmodel/src/digitalmodel/orcaflex/mooring_design.py` demonstrates citation emission for DNV-OS-E301 mooring safety factors.
+**Pilot reference (PENDING — see [#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685)):** `digitalmodel/src/digitalmodel/orcaflex/mooring_design.py` is the *intended* pilot for DNV-OS-E301 mooring safety factor citation emission. As of 2026-05-12 the file does **not** yet import `digitalmodel.citations` or emit `Citation` instances — `citations/registry.py:get_mooring_safety_factor()` exists but has zero callers. The rule above is currently aspirational at the *emission-site* level until #2685 wires the pilot. The *schema* itself (referenced in step 3) is real and importable.
