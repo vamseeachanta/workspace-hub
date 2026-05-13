@@ -82,12 +82,14 @@ Universal constraints only. Stage-specific rules live in micro-skills (`.claude/
 | Design doc | `docs/governance/2026-05-13-goal-use-case-catalog-design.md` (commit `752222f11`) |
 | Rule (new) | `.claude/rules/goal-invocation.md` |
 | Rule index | `.claude/rules/README.md` |
-| Plan review — Claude | `scripts/review/results/2026-05-13-plan-2695-claude.md` (single-author r3) |
+| Plan review — Claude | `scripts/review/results/2026-05-13-plan-2695-claude-r3.md` (single-author r3, verdict MINOR — landed at this commit) |
 | Hermes upgrade follow-up | https://github.com/vamseeachanta/workspace-hub/issues/2696 |
 
 ---
 
 ## Tasks
+
+> **Marker convention (per T1 review Round 2):** Markers like `<fill: ...>`, `[Fill in ...]`, and `<CLAUDE: fill in SHA ...>` are deliberate **runtime-substitution slots** — fill them in at execution time from the cited source (Task N Step M output, or live `gh`/`git` query). They are **NOT** placeholder bugs and do not indicate incomplete planning. The `[ ]` checkbox markers are TodoList-style tracking checkboxes and are flipped to `[x]` as each step completes.
 
 ### Task 1: Create `.claude/rules/goal-invocation.md`
 
