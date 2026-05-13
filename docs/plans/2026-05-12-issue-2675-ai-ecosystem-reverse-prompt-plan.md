@@ -19,7 +19,7 @@
 - Found: `config/ai-tools/pricing.yaml` — concrete $/M token rates per model (Claude Opus 4.6 $5/$25, Sonnet 4.6 $3/$15, Haiku 4.5 $0.80/$4, Codex o4-mini/gpt-5.4 $0.50/$1.50, Gemini 2.5 Pro $0.075/$0.30).
 - Found: `config/ai-tools/subscriptions.yaml` (last_updated 2025-12-23) — Claude Max $106.60/mo + OpenAI Plus $21.28 + Google AI Pro $19.99 + Copilot Pro $8.88/mo = $156.75/mo declared. **Stale**: missing the Codex paid plan ($200/mo per `project_hermes_codex_quota` memory).
 - Found: `scripts/review/` — `submit-to-claude.sh`, `submit-to-codex.sh`, `submit-to-gemini.sh`, `cross-review.sh`, `attest-plan-claims.sh`, `plan-review-fanout.sh`, `normalize-verdicts.sh`, `validate-review-output.sh`. The cross-review apparatus is **mature** and the plan must invoke it, not re-tool it.
-- Found: `scripts/review/results/` contains 1,444 review-result files (count as of 2026-05-12 post-fanout; earlier survey said 1,437) — empirical cross-provider effectiveness data already exists for retro-fitting outcome thresholds.
+- Found: `scripts/review/results/` contains **N review-result files where N is resolved at write-time** per `feedback_doc_counter_rule_writetime` (rule: do not freeze drifting counters into plan text; cite the recompute command instead). Verify via `ls scripts/review/results/ | wc -l`. Empirical cross-provider effectiveness data already exists for retro-fitting outcome thresholds. (Wave-3 review blocker #5 / minor fix: earlier values "1,437" and "1,444" were drift snapshots that went stale within 24h; converted to write-time rule.)
 - Found: `.claude/skills/ai/` — existing skills include `agent-usage-optimizer`, `provider-utilization-scorecard`, `durable-provider-throughput-dispatch`, `hermes-model-switching`, `provider-session-quota-operations`, `inventory-readiness-provider-dispatch`. These are the plan's building blocks.
 - Found: `.claude/hooks/` and `scripts/enforcement/` — Level-3 enforcement is in place for plan-approval (`require-plan-approval.sh`), cross-review (`require-cross-review.sh`, `cross-review-gate.sh`), TDD pairing (`require-tdd-pairing.sh`), and verify-artifacts (`require-verify-artifacts.sh`).
 - Found: adapter files `CLAUDE.md` (997B), `AGENTS.md` (1729B), `GEMINI.md` (680B) — all within the 20-line harness limit. **Gap: `CODEX.md` does not exist.**
@@ -75,7 +75,7 @@ Not applicable. This is a harness/orchestration governance plan, not engineering
 - EXISTS: `config/agents/provider-capabilities.yaml`, `routing-config.yaml`, `model-registry.yaml`, `behavior-contract.yaml`, `drift-policy.yaml`, `skill-graph-index.yaml`, `user-profile.yaml`
 - EXISTS: `config/ai-tools/pricing.yaml`, `subscriptions.yaml`, `usage-tracking.yaml`, `weekly-utilization.json`, `provider-routing-scorecard.json`, `provider-work-queue.json`, `provider-utilization-weekly.json`, `provider-autolabel-candidates.json`, `agent-quota-latest.json`, `agent-capability-scores.yaml`, `agent-capability-radar.html`, `pricing.yaml`, `mcp-servers.yaml`, `onet-lookup.yaml`, `release-scan-state.yaml`, `continuous-planning-pipeline.json`
 - EXISTS: `docs/BUSINESS_BRAIN.md` (13192B), `docs/ops/hermes-weekly-cross-machine-parity-checklist.md` (6069B), `docs/plans/README.md` (109811B), `docs/plans/_template-issue-plan.md` (8844B), `docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md`
-- EXISTS: `scripts/review/` with `submit-to-{claude,codex,gemini}.sh`, `cross-review.sh`, `attest-plan-claims.sh`, `plan-review-fanout.sh`, and 1,437 entries under `results/`
+- EXISTS: `scripts/review/` with `submit-to-{claude,codex,gemini}.sh`, `cross-review.sh`, `attest-plan-claims.sh`, `plan-review-fanout.sh`, and N entries under `results/` (N resolved at write-time per `feedback_doc_counter_rule_writetime`)
 - MISSING: `CODEX.md` (no adapter file)
 - EXISTS but minimally populated: `config/agents/codex/` (2 files + 3 in state-snapshots), `config/agents/gemini/` (1 file + 2 in state-snapshots), `config/agents/hermes/` (2 files + 2 in memories + 2 in patches). Original "empty dir" wording was wrong; corrected this revision.
 - MISSING (new — this plan creates): `docs/standards/AI_ECOSYSTEM_DESIGN.md`, `docs/reports/2026-05-12-issue-2675-outcome-ledger.md`, `docs/reports/2026-05-12-issue-2675-provider-role-matrix.md`, `docs/reports/2026-05-12-issue-2675-failure-mode-design-contract.md`, `docs/reports/2026-05-12-issue-2675-followup-issues-list.md`
@@ -139,13 +139,9 @@ totals:
 | Follow-up issues (listed, not filed) | `docs/reports/2026-05-12-issue-2675-followup-issues-list.md` |
 | Wave-1 synthesis (rejection rationale) | `scripts/review/results/2026-05-12-plan-2675-summary.md` |
 | Wave-2 synthesis (cross-provider overlap analysis) | `scripts/review/results/2026-05-13-plan-2675-summary.md` |
-| Plan review — Claude (wave 1) | `scripts/review/results/2026-05-12-plan-2675-claude.md` |
-| Plan review — Claude (wave 2) | `scripts/review/results/2026-05-13-plan-2675-claude.md` |
-| Plan review — Codex (waves 1+2 both UNAVAILABLE by design post-#2684) | `scripts/review/results/2026-05-{12,13}-plan-2675-codex.md` |
-| Plan review — Gemini (waves 1+2) | `scripts/review/results/2026-05-{12,13}-plan-2675-gemini.md` |
-| Plan review — Claude (legacy artifact path) | `scripts/review/results/2026-05-12-plan-2675-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-05-12-plan-2675-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-05-12-plan-2675-gemini.md` |
+| Plan review artifacts — Claude (per wave) | `scripts/review/results/2026-05-1?-plan-2675-claude.md` (wave 1: rc=124 SessionEnd crash, pre-#2683; wave 2: MAJOR substantive review; wave 3: MAJOR audit-trail findings) |
+| Plan review artifacts — Codex (per wave) | `scripts/review/results/2026-05-1?-plan-2675-codex.md` (wave 1: rc=124 stdin-hang, pre-#2684; waves 2+3: UNAVAILABLE-by-design via env-guard, distinct failure-modes per wave despite same final state) |
+| Plan review artifacts — Gemini (per wave) | `scripts/review/results/2026-05-1?-plan-2675-gemini.md` (wave 1: MAJOR rejected as overlay-blind false-positives; wave 2: MAJOR substantive; wave 3: UNAVAILABLE — server-side 429 capacity exhaustion, new failure mode) |
 | README index row | `docs/plans/README.md` (Plan Index — row for #2675 added during wave-1 execution at line 203; pre-existing as of plan-v2) |
 
 ---
@@ -174,7 +170,7 @@ The ledger declares *what good output looks like* for each top-level work class 
 | **Ops/automation (Hermes/cron/batch)** | Preflight check passes before commit storms; no merge-race silent reverts; agents write-only-shared (commits serialized in main session) | Hermes activity log + `git reflog` audit for race events | 0 silent reverts per week; 0 dual-write commit races per week |
 | **Cross-machine readiness** *(referenced from #2089, not owned here)* | Reflected in #2089's weekly checklist | Output of weekly review | Out of scope: owned by #2089 |
 
-**Rationale for 6 rows above** (vs. acceptance criterion of ≥5): every class above has at least one paid-for failure mode in memory. The "cross-machine readiness" row is *listed* to make the boundary with #2089 explicit but is *owned by #2089*, not duplicated here.
+**Rationale for 7 rows above** (vs. acceptance criterion of ≥5): 6 owned work classes (issue planning, adversarial review, implementation execution, knowledge/wiki contribution, comms, ops/automation) — every one has at least one paid-for failure mode in memory. The 7th row, "cross-machine readiness," is *listed* to make the boundary with [#2089](https://github.com/vamseeachanta/workspace-hub/issues/2089) explicit but is *owned by #2089*, not duplicated here. (Wave-3 review blocker #4 fix: prior wording said "6 rows above" but the table contains 7; reconciled by explicit "6 owned + 1 referenced" formulation.)
 
 ### B. Provider role matrix (with fallbacks)
 
@@ -355,7 +351,7 @@ Per acceptance criterion #7, the plan enumerates downstream work without filing 
 ### Harness follow-ups (filed live during plan-2675 execution; documented here for §F completeness — wave-2 Gemini finding #3)
 
 11. **[#2683](https://github.com/vamseeachanta/workspace-hub/issues/2683)** — `bug(harness): Claude SessionEnd hook (codex plugin) times out and crashes plan-review-fanout`. **STATUS: FIXED** at commit `b61f2c5a3` (CLAUDE_PLUGIN_DIR override; mechanism deviation from approved plan documented in the issue's plan file).
-12. **[#2684](https://github.com/vamseeachanta/workspace-hub/issues/2684)** — `bug(harness): codex-cli stdin-hang under Claude-Code Bash subprocess`. **STATUS: FIXED** at commit `0cd40c6ab` (CLAUDECODE env-guard added to `codex_version_guard_check`).
+12. **[#2684](https://github.com/vamseeachanta/workspace-hub/issues/2684)** — `bug(harness): codex-cli stdin-hang under Claude-Code Bash subprocess`. **STATUS: CLOSED 2026-05-13** at commit `0cd40c6ab` (CLAUDECODE env-guard added to `codex_version_guard_check`). The env-guard is a **mitigation/workaround**, not a fix for the underlying upstream `openai/codex#19945`; Option 1 (env-guard) was the user-chosen resolution path per the issue body. Upstream advocacy (Option 3) captured for follow-up.
 
 Both #2683 and #2684 were filed and landed during plan-2675's wave-2 review cycle. They are part of the #2675 work record but are out-of-scope for plan-2675's own deliverables (those follow-ups remain items 1–10 above).
 
@@ -392,10 +388,10 @@ Governance plans deliver documents, not runtime code, so "tests" here are struct
 | `test_walkthroughs_name_gate_checkpoints` | §C1 and §C2 each cite ≥2 existing repo gates | walkthroughs MD | each section grep matches `issue-planning-mode\|require-plan-approval\|require-cross-review\|cross-review-gate` |
 | `test_failure_mode_contract_references_memories` | §E table cites ≥15 distinct feedback files | failure-mode MD | grep `^| \`feedback_` distinct-count ≥15 |
 | `test_followups_listed_not_filed` | §F is markdown only; no `gh issue create` was run for these | git log + GitHub state | no new issues filed referencing #2675 as parent except this plan's own comment |
-| `test_no_self_approve` | the `status:plan-approved` label on #2675 was set by a human actor (not an automation/agent identity) | `gh api /repos/vamseeachanta/workspace-hub/issues/2675/events --jq '.[] \| select(.event=="labeled" and .label.name=="status:plan-approved") \| .actor.login'` | matches the issue owner (`vamseeachanta`), NOT a `*[bot]` or service account; expected count ≥ 1 |
+| `test_no_self_approve` | the `status:plan-approved` label on #2675 was set by a human actor (not an automation/agent identity — wave-3 review blocker #7 fix: contract is "no agent/bot," NOT "specific-login-only") | `gh api /repos/vamseeachanta/workspace-hub/issues/2675/events --jq '.[] \| select(.event=="labeled" and .label.name=="status:plan-approved") \| .actor.login'` | actor.login does NOT match `*[bot]`, does NOT match service-account suffixes (e.g., `-agent`, `-bot`, `-auto`), and is NOT an empty list (≥1 human labeling event) |
 | `test_primary_deliverable_present` | `docs/standards/AI_ECOSYSTEM_DESIGN.md` exists and contains §A–§E content promoted from this plan | `ls docs/standards/AI_ECOSYSTEM_DESIGN.md && grep -c '^## ' docs/standards/AI_ECOSYSTEM_DESIGN.md` | file exists; ≥5 top-level headings | (added per wave-2 Gemini finding #7) |
 | `test_no_no_verify` | no commits in this plan's branch used `--no-verify` | `git log --format=%B` grep | zero matches |
-| `test_review_artifacts_exist` | all 3 provider review files exist before status:plan-review label | `ls scripts/review/results/2026-05-12-plan-2675-*` | 3 files present (or documented provider-failure substitute) |
+| `test_review_artifacts_exist` | all 3 provider review files exist for **the latest dispatched wave** before status:plan-review label | `ls scripts/review/results/$(date +%Y-%m-%d)-plan-2675-{claude,codex,gemini}.md` OR `ls scripts/review/results/2026-05-1?-plan-2675-{claude,codex,gemini}.md \| sort -r \| head -3` for the latest wave | 3 files present per wave (UNAVAILABLE artifacts count when produced by documented env-guards like #2684) — wave dates verified at write-time per `feedback_doc_counter_rule_writetime` |
 | `test_readme_index_row_added` | `docs/plans/README.md` has new row for 2675 | `grep '^| 2675 ' docs/plans/README.md` | exactly 1 match |
 
 ---
@@ -405,8 +401,8 @@ Governance plans deliver documents, not runtime code, so "tests" here are struct
 These mirror the issue body's acceptance criteria (#2675):
 
 - [ ] Plan filed at `docs/plans/2026-05-12-issue-2675-ai-ecosystem-reverse-prompt-plan.md` using the canonical `docs/plans/_template-issue-plan.md` structure
-- [ ] Resource Intelligence Summary cites ≥3 distinct sources including #2089, #2399, #2549 and the relevant `.claude/rules/` files (**this plan: 12 sources**)
-- [ ] Outcome ledger names ≥5 work classes with measurable signals (**this plan: 6 classes in §A**)
+- [ ] Resource Intelligence Summary cites ≥3 distinct sources including #2089, #2399, #2549 and the relevant `.claude/rules/` files (**this plan: 16 sources** counted by file path / issue number; wave-2 review Claude finding #9 fix)
+- [ ] Outcome ledger names ≥5 work classes with measurable signals (**this plan: 7 rows in §A — 6 owned (issue planning, adversarial review, implementation execution, knowledge/wiki contribution, comms, ops/automation) + 1 cross-boundary reference (cross-machine readiness, owned by #2089)**)
 - [ ] Provider role matrix exists with explicit fallbacks per class (**this plan: §B**)
 - [ ] Reverse-prompted walk-throughs delivered for *issue planning* (§C1) and *adversarial review* (§C2) — each one names the gate checkpoints it passes through
 - [ ] Failure-mode design contract references the feedback memories listed (§E references 20 distinct memories; threshold ≥15)
@@ -415,7 +411,7 @@ These mirror the issue body's acceptance criteria (#2675):
 - [ ] Issue marked `status:plan-review` after adversarial review; await user approval at `status:plan-approved` before any follow-up issues are filed or any settings change
 - [ ] **No** `--no-verify` commits, **no** self-labeling `status:plan-approved`, **no** Codex-driven file writes (Codex review only, per sandbox limits)
 - [ ] Plan TDD Test List checks all pass on the produced artifacts
-- [ ] Review artifacts posted to `scripts/review/results/2026-05-12-plan-2675-{claude,codex,gemini}.md`
+- [ ] Review artifacts posted to `scripts/review/results/<YYYY-MM-DD>-plan-2675-{claude,codex,gemini}.md` for the latest dispatched wave — wave dates resolved at write time, not frozen (per `feedback_doc_counter_rule_writetime`; wave-3 review blocker #2 fix). UNAVAILABLE-by-design artifacts (e.g., Codex post-#2684) count as posted.
 
 ---
 
@@ -457,6 +453,20 @@ Re-dispatched after `#2683` (CLAUDE_PLUGIN_DIR override, `b61f2c5a3`) and `#2684
 **Overall result (wave 2):** **MAJOR — plan is NOT approval-ready.** Both Claude and Gemini returned MAJOR with non-overlapping blocker-class findings; Codex correctly emitted UNAVAILABLE per the #2684 design. This is real cross-provider review signal for the first time, and it surfaces real plan defects (not just harness drift). The wave-1 framing of "insufficient signal not content defects" no longer holds — wave-2 shows both signal AND content defects.
 
 Wave-2 synthesis: `scripts/review/results/2026-05-13-plan-2675-summary.md` with full cross-provider overlap analysis and three recommended next-step paths.
+
+**Wave 3 — dispatched 2026-05-13T12:07 via `scripts/review/plan-review-fanout.sh`** (artifacts at `scripts/review/results/2026-05-13-plan-2675-{claude,codex,gemini}.md` — note: same date prefix as wave-2; verdicts differ because plan-v2 was committed between waves)
+
+Re-dispatched after plan-v2 revisions folded in all 8 wave-2 blockers + 6 minors (commit `a7581e454`).
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude (headless) | **MAJOR** | 4 blockers + 4 minor. Top blockers: (1) §F #12 mislabeled #2684 FIXED while issue was OPEN (now CLOSED 2026-05-13 per this revision); (2) TDD `test_review_artifacts_exist` glob hardcoded to wave-1 date — converted to write-time rule per `feedback_doc_counter_rule_writetime`; (3) source count contradicted between §RIS (16) and AC (12) — reconciled to 16; (4) §A row count off-by-one (7 rows vs. "6 above") — reconciled to "6 owned + 1 referenced." All 4 blockers + the minors (counter rot, Artifact Map dedup, test_no_self_approve contract narrowing) addressed in plan-v3 inline. |
+| Codex | UNAVAILABLE (rc=3, by design — #2684 env-guard) | Same outcome as wave 2; mechanism working as intended. |
+| Gemini | UNAVAILABLE (rc=124, NEW failure mode) | Server-side 429 `RESOURCE_EXHAUSTED` for `gemini-3.1-pro-preview` — "No capacity available for model on the server." NOT overlay-blindness, NOT stdin-hang — fresh failure class. Wave-3 effectively single-provider (Claude). |
+
+**Overall result (wave 3):** **MAJOR — but all findings are audit-trail rot, not content defects.** Per Claude wave-3 insight (line 51 of `2026-05-13-plan-2675-claude.md`): *"The plan's content (matrix, ledger, walk-throughs, failure-mode contract) is substantively approval-grade — it's the bookkeeping skin that's rotted enough to undermine the audit-trail value the plan claims as its deliverable."* All 4 wave-3 blockers + the high-value minors are folded into this plan-v3 revision; remaining minors (#5–#8) folded same-pass.
+
+Three rounds of cross-review have moved the defect class **harness-broken (W1) → content-defects (W2) → bookkeeping-rot (W3)**. The trajectory is healthy: each wave catches a different class. Approval-readiness now depends on whether wave-3 fixes hold OR a wave-4 surfaces fresh issues.
 
 ---
 
