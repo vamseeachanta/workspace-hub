@@ -1,6 +1,6 @@
 # /goal use-case catalog — design
 
-**Date:** 2026-05-13
+**Date:** 2026-05-13 (revised same day to fold in brain/hands architecture per [Hermes Agent + Claude MCP video](https://youtu.be/bgZt7I2Uxbc), [Anthropic Managed Agents](https://www.anthropic.com/engineering/managed-agents), and [Hermes provider docs](https://hermes-agent.nousresearch.com/docs/integrations/providers))
 **Status:** design ready for review; implementation plan deferred to `writing-plans` skill
 **Issue:** [#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695)
 **Related:** [#2675](https://github.com/vamseeachanta/workspace-hub/issues/2675) (provider role matrix — adjacent, not duplicate), [#2089](https://github.com/vamseeachanta/workspace-hub/issues/2089) (weekly Hermes parity sweep), [#2399](https://github.com/vamseeachanta/workspace-hub/issues/2399), [#2549](https://github.com/vamseeachanta/workspace-hub/issues/2549)
@@ -40,10 +40,14 @@ This catalog fixes both by:
 
 **Hard cap at 5 items per week.** Token budgets across Claude/Codex/Gemini/Hermes only support 3-5 multi-day `/goal` invocations realistically. Listing more guarantees nothing runs.
 
+**v2 revision (2026-05-13):** Comment template now allocates work across **three explicit roles** instead of a single `runner:` field — planning brain (Claude main session), routing/hands (Hermes → Claude Code | Hermes → Codex | Claude main direct), and independent review. See D7.
+
 ### D4. Thin rule at `.claude/rules/goal-invocation.md` enforces consultation
 **Decision:** ~40-line rule file. Modeled on `.claude/rules/calc-citation-contract.md`. Tells Claude to fetch issue #2695 body + latest comment before invoking `/goal`. Adds a post-invocation comment-back step to feed the next refresh.
 **Why:** A rule without enforcement is theatre. The rule lives in `.claude/rules/` (auto-loaded by Claude per CLAUDE.md) rather than in `docs/governance/` because Claude's the runtime that auto-loads. Codex and Hermes get the issue # in dispatch prompts and read directly — no `.claude/rules/` symmetry needed.
 **Escape valves:** The rule has explicit "Do NOT apply when" clauses for explicit user override and unreachable-issue cases. Without these, the rule would get bypassed with `--no-verify` weekly. Pattern adopted from `calc-citation-contract.md`.
+
+**Step 4.5 added 2026-05-13 (per D7):** Between "check runner allocation" and "after invocation", the rule inserts a brain/hands delegation check — *"If the catalog entry is `[execution-heavy]` or `[bidirectional]` and the proposed work has reached planning-complete state, surface the option of delegating execution to Hermes (routing to Claude Code or Codex) instead of running Claude main session end-to-end."*
 
 ### D5. Refresh cadence is weekly, aligned to token-quota windows
 **Decision:** Weekly picklist comment. Catalog body refresh is on-demand (when new patterns emerge), not on a clock.
@@ -53,6 +57,28 @@ This catalog fixes both by:
 ### D6. Full planning-workflow rigor (Steps A-H)
 **Decision:** Treat this meta-issue per the workspace-hub planning workflow: file issue → design doc (this) → formal plan (next) → adversarial review → status:plan-approved → implementation.
 **Why:** Self-consistency. The rule this issue creates says "validate /goal invocations against the catalog issue." If we bypassed the workflow to file the catalog itself, we'd be designing a rule we'd already broken on day one. The opposite — applying our own discipline to filing the discipline — signals the contract is real.
+
+### D7. Brain/hands three-layer delegation model (added 2026-05-13)
+**Decision:** The catalog encodes a *three-layer* delegation chain consuming *three independent quota pools additively*. Every entry is tagged `[planning-heavy]`, `[execution-heavy]`, or `[bidirectional]`. The weekly comment template names three explicit roles (planning brain, routing/hands, review) instead of one `runner:` slot.
+
+**The three layers:**
+1. **Planning brain** — Claude main session (interactive). Burns Anthropic Max plan **base** quota. Does `/goal` invocation, design decisions, in-loop user dialogue, code review.
+2. **Routing brain** — Hermes Agent v0.13.0+. Picks the cheapest competent execution path per task; serializes parallel work; handles scheduling/retry. Hermes itself is free; routing is overhead-only.
+3. **Execution hands** — Claude Code CLI (via Hermes, consumes Anthropic **overage** credits — a *separate* budget from layer 1) **or** Codex CLI (via Hermes, consumes OpenAI quota).
+
+Independent review (Codex direct / Gemini) is layer 4 and orthogonal — exists today via `feedback_always_adversarial_review_scale_depth`.
+
+**Why:**
+- Anthropic-documented pattern via [Scaling Managed Agents](https://www.anthropic.com/engineering/managed-agents): *"Decoupling the brain from the hands makes each hand a tool, `execute(name, input) → string`."*
+- Hermes v0.13.0+ ([provider docs](https://hermes-agent.nousresearch.com/docs/integrations/providers)) routes to Claude Code OR Codex based on cost/quota. The Anthropic Max base allowance is NOT consumed by Hermes — only the overage credits are. That means three independent quota pools (Max base, Max overage, OpenAI) reset on independent windows.
+- Cost-efficiency pattern from search-grounded research: *"Run a budget model as your Hermes default and override to Sonnet or a Codex model only when a task earns it — most people see 60–90% of their bill disappear."* Brain/hands tagging on entries surfaces this routing decision per-catalog-entry.
+- Treating providers as *peers* (the v1 `runner: claude | codex | hermes | gemini` field) collapses the additive quota story into a single-slot allocation. v2 explicit roles preserves it.
+
+**Alternatives rejected:**
+- *Tag distribution as separate metadata file*: requires Codex/Hermes to fetch two surfaces; defeats D1's single-canonical-surface decision.
+- *Drop tags, infer at picklist time*: every picklist author would re-derive the same brain/hands judgement weekly. Pre-tagging fixes the work once.
+
+**Consequence for the rule file (D4):** added Step 4.5 surfacing Hermes delegation for execution-heavy / bidirectional entries when planning is complete.
 
 ## Artifact list
 
@@ -78,10 +104,12 @@ This catalog fixes both by:
 | Risk | Mitigation |
 |---|---|
 | Catalog drifts from reality (entries listed but never used) | `SKIPPED` section in weekly comment surfaces non-use; quarterly review trims Tier 2 |
-| Multiple agents race on the same `/goal` candidate | Weekly comment includes explicit `runner:` field; rule step 4 makes Claude check before invoking |
+| Multiple agents race on the same `/goal` candidate | Weekly comment includes explicit `planning brain` / `routing/hands` / `review` fields (per D7); rule step 4 makes Claude check before invoking |
 | Rule consultation is skipped under time pressure | Explicit user-override clause in the rule preserves escape valve, prevents `--no-verify`-style bypass culture |
 | Issue # changes (e.g., transferred to another repo) | Rule file hardcodes the issue #; one-line edit fixes it; trade-off accepted for simplicity over indirection |
 | Codex/Hermes dispatch prompts forget to include issue # | Codex/Hermes dispatch templates updated as part of implementation Step G |
+| Hermes version drift (local v0.4.0 vs. latest v0.13.0 as of 2026-05-07) | D7's three-layer model assumes Hermes v0.13.0 routing capabilities; if local Hermes is stuck on v0.4.0, the routing/hands layer degrades to manual provider selection. Mitigation: follow-up issue filed to track v0.4.0 → v0.13.0 upgrade (see Acceptance Criteria) |
+| Brain/hands tagging miscalibration | Tags are author judgement; first 4-6 weeks of picklist comments will surface mismatches (e.g., entry tagged `[execution-heavy]` but always runs brain-only). Quarterly review re-tags from comment evidence |
 
 ## Implementation sequence (handed to `writing-plans` skill)
 
@@ -93,19 +121,22 @@ Following workspace-hub planning workflow:
 - Step E — Plan adversarial review at T1 (single-author r3 fits scope — doc-only change, small surface, no provider integration risk)
 - Step F — `status:plan-review` → user approves → `status:plan-approved`
 - Step G — Implementation:
-  - Add `.claude/rules/goal-invocation.md`
+  - Add `.claude/rules/goal-invocation.md` **including Step 4.5 (brain/hands delegation surfacing per D7)**
   - Edit `.claude/rules/README.md` to list it
   - Update Codex/Hermes dispatch prompt templates to include the catalog issue # (if any exist; verify scope first)
-  - Post bootstrap weekly comment for week-of 2026-05-13
+  - Post bootstrap weekly comment for week-of 2026-05-13 **using the v2 three-role template (per D7)**
 - Step H — Close-out comment on #2695 with commit links + bootstrap status
+- Step I (follow-up, separate issue) — Hermes v0.4.0 → v0.13.0 upgrade audit; verify routing layer matches D7 assumptions
 
 ## Open questions for the user
 
 None blocking. The design is internally consistent and matches workspace-hub conventions. Section approvals during brainstorming covered:
 - Issue structure (Section 1) ✓
 - Tier 2 categories (Section 2) ✓
-- Weekly comment format (Section 3) ✓
-- Rule file content (Section 4) ✓
+- Weekly comment format (Section 3) ✓ (revised to v2 three-role template per D7)
+- Rule file content (Section 4) ✓ (Step 4.5 added per D7)
 - Files and commit plan (Section 5) ✓
 
-If anything in this written form differs from what was discussed, surface it now before Step D.
+**Post-write revision (2026-05-13, same day):** Brain/hands architecture (D7) folded in after the user pointed to the [Hermes Agent + Claude MCP video](https://youtu.be/bgZt7I2Uxbc) and asked for the dual-quota story to be made explicit. Search-grounded against [Anthropic Managed Agents](https://www.anthropic.com/engineering/managed-agents), [Hermes provider docs](https://hermes-agent.nousresearch.com/docs/integrations/providers), and the v0.13.0 release notes (released 2026-05-07). Memory says local Hermes is v0.4.0 — version-drift risk noted in the Risks table and Step I added to the implementation sequence.
+
+If anything in this revised form differs from what was discussed, surface it now before Step D.
