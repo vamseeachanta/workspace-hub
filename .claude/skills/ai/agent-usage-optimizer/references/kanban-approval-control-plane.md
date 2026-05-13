@@ -66,3 +66,33 @@ A practical utilization target is sustained high use with clean closeout, not bl
 Implementation dispatch requires the approval lane. Planning/review/recon packets may run when approval-ready implementation work is unavailable, but must be labeled as non-implementation work.
 
 Running jobs need a lease/idempotency key so the same issue is not double-dispatched.
+
+## Continuous Claude/Codex runner methods
+
+When the user asks how to make Claude and Codex run continuously until useful work is done, use a controlled runner design rather than an infinite agent loop.
+
+Recommended methods:
+
+1. Queue feeder
+   - Refresh issue state, provider telemetry, and work queues on a fixed cadence.
+   - Select the next card from the highest safe lane: execution-ready first, then QA/closeout, then plan-review hardening, then planning/recon.
+   - Do not select unapproved implementation work just because provider quota remains.
+
+2. Provider-specific worker loop
+   - Codex loop: bounded implementation/test/refactor packets with exact issue, plan path, allowed files, expected tests, and stop condition.
+   - Claude loop: planning, architecture, adversarial review, synthesis, high-complexity implementation only when the plan gate is already satisfied.
+   - Gemini loop: batched research/recon/risk/source scans when available.
+
+3. Lease + heartbeat contract
+   - Every dispatch writes a lease record: issue, provider, machine, branch/worktree, prompt hash, start time, max runtime, expected artifacts.
+   - Worker must heartbeat or produce an artifact by the lease deadline.
+   - Expired leases move to review/recovery; they are not silently relaunched without checking output.
+
+4. Stop conditions
+   - Stop when the weekly utilization target is met, the safe queues are empty, repo/worktree health is red, or all remaining work requires user approval.
+   - If blocked by approvals, produce a compact approval shortlist instead of launching more implementation.
+
+5. Evidence packet per burn window
+   - For every continuous run, end with issue links, provider used, branch/commit/artifacts, tests/review state, blockers, queue refill count, and remaining provider headroom.
+
+Anti-pattern: `while true` prompts that ask agents to "find useful work". That burns quota while creating governance drift. The continuous loop must pull from the approved/known queues and preserve auditability.

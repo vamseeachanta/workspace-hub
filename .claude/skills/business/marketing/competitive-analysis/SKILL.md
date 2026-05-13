@@ -27,9 +27,12 @@ This skill provides comprehensive competitive intelligence capabilities includin
 
 1. **Identify competitors** - Direct, indirect, status quo
 2. **Analyze positioning** - How they position vs. you
-3. **Create battlecards** - Sales enablement tools
-4. **Monitor changes** - Ongoing competitive tracking
-5. **Adjust strategy** - Differentiate and win
+3. **Classify reference boundaries** - Decide whether competitor-adjacent artifacts are internal research/reference only, project collateral, or GTM collateral; default to research/reference until the user explicitly approves external/project reuse
+4. **Create battlecards** - Sales enablement tools
+5. **Monitor changes** - Ongoing competitive tracking
+6. **Adjust strategy** - Differentiate and win
+
+See `references/reference-material-boundaries.md` for the reusable boundary checklist for competitor-derived or competitor-adjacent assets.
 
 ## When to Use
 
@@ -39,6 +42,11 @@ This skill provides comprehensive competitive intelligence capabilities includin
 - Sales enablement
 - Pricing strategy
 - Product roadmap input
+- Preserving competitor-adjacent examples or polished reference artifacts in the repo ecosystem without accidentally promoting them into GTM/project deliverables
+
+## Competitor Reference Boundary
+
+When an artifact, report, screenshot, or methodology note is based on competitor-adjacent material, document it as internal research/reference by default. Do not describe it as client-facing, GTM-ready, or project-delivery collateral unless the user explicitly approves that use. Add a local README or handoff note near the artifact with the boundary and the competitor context so future sessions do not reuse it incorrectly.
 
 ## Resources
 

@@ -200,7 +200,7 @@ bash scripts/cron/provider-utilization-refresh.sh
 4. Review the autolabel candidate report.
 5. Only then consider applying labels.
 
-For active weekly credit burn-down, use the Kanban approval control-plane pattern in `references/kanban-approval-control-plane.md`: keep planning/feedstock, plan-review, execution-ready, running/leased, and QA/closeout lanes; expose hover summaries for approval candidates; and make any "Approve Plan" button perform a real auditable approval transaction rather than a UI-only state change.
+For active weekly credit burn-down, use the Kanban approval control-plane pattern in `references/kanban-approval-control-plane.md`: keep planning/feedstock, plan-review, execution-ready, running/leased, and QA/closeout lanes; expose hover summaries for approval candidates; make any "Approve Plan" button perform a real auditable approval transaction rather than a UI-only state change; and run Claude/Codex through controlled queue-feeder + lease/heartbeat loops instead of open-ended "find useful work" prompts.
 
 When the user asks for a practical plan to stop wasting weekly provider credits, do not answer with a generic quota lecture. Produce an operating plan that creates/uses a durable queue, preserves hard approval gates, and defines fallback burn lanes: approved implementation first; if insufficient, plan-review hardening, issue planning, recon, adversarial review, QA/closeout, and telemetry improvement. Treat 100% utilization as a pacing target, not permission to bypass plan approval, TDD, review, or closeout gates.
 

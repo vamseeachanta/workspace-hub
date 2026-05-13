@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-13T05:20:05.401253Z",
+  "generated_at": "2026-05-13T09:20:09.333413Z",
   "current_week": "2026-W20",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-13T05:20:05.265975Z",
+    "utilization_generated_at": "2026-05-13T09:20:09.205948Z",
     "audit_generated_at": "2026-05-11T09:15:03Z"
   },
   "recommended_provider_order": [
@@ -74,8 +74,8 @@
       "reported_utilization_pct": 2.6,
       "quota_basis": "quota",
       "quota_source": "history.jsonl",
-      "sessions_current_week": 51,
-      "post_records_current_week": 1952,
+      "sessions_current_week": 56,
+      "post_records_current_week": 2028,
       "audit_post_records": 31761,
       "missing_repo_reads": 818,
       "python3_per_1k_records": 11.49,
@@ -84,15 +84,15 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 1055
+          "count": 1084
         },
         {
           "tool": "Read",
-          "count": 584
+          "count": 624
         },
         {
           "tool": "Grep",
-          "count": 254
+          "count": 259
         },
         {
           "tool": "create_goal",
@@ -122,11 +122,11 @@
       "provider": "gemini",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 0.1,
       "quota_basis": "estimated_daily_quota",
       "quota_source": "estimated",
-      "sessions_current_week": 1,
-      "post_records_current_week": 1,
+      "sessions_current_week": 2,
+      "post_records_current_week": 3,
       "audit_post_records": 6189,
       "missing_repo_reads": 604,
       "python3_per_1k_records": 47.02,
@@ -135,7 +135,7 @@
       "top_tools": [
         {
           "tool": "Browser",
-          "count": 1
+          "count": 3
         }
       ],
       "preferred_work": [

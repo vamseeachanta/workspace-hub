@@ -83,3 +83,5 @@ shown:
     tips: [cc-voice, cc-security-review]
   - date: 2026-05-12
     tips: [cc-agents, cc-powerup]
+  - date: 2026-05-13
+    tips: [gsd-pause-resume, bp-settings-not-claude-md]
