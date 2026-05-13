@@ -82,7 +82,7 @@ Not applicable. This is a harness/orchestration governance plan, not engineering
 
 **Line excerpts**:
 
-`config/agents/provider-capabilities.yaml` lines 47–52 (claude.horizon_2026_h1):
+`config/agents/provider-capabilities.yaml` lines 47–51 (claude.horizon_2026_h1):
 ```
     horizon_2026_h1:
       trajectory: improving_rapidly
@@ -122,7 +122,7 @@ totals:
 
 **Reproduction proofs**: **N/A — this is a design issue with no runtime failure claim.** Skip is intentional per `issue-planning-mode` Step 1.5.
 
-**Source count: 12 distinct sources cited** (issue body, 5 related issues, 7 config files, 1 ops doc, 1 plan, 1 skill spec, 22 memory feedback files counted as group = ≥3 individually). Minimum 3 satisfied.
+**Source count: 16 distinct sources cited by file path or issue number** (issue body, 5 related issues, 7 config files, 1 ops doc, 1 plan, 1 skill spec). Minimum 3 satisfied. (Wave-2 review Claude finding #9 noted prior wording "22 memory files = ≥3 individually" inflated the count; memory files are *one collective source* — `~/.claude/projects/.../memory/`. Reverted to file-path-and-issue-number-only counting.)
 
 ---
 
@@ -137,10 +137,16 @@ totals:
 | Workflow walk-throughs report | `docs/reports/2026-05-12-issue-2675-workflow-walkthroughs.md` |
 | Failure-mode design contract report | `docs/reports/2026-05-12-issue-2675-failure-mode-design-contract.md` |
 | Follow-up issues (listed, not filed) | `docs/reports/2026-05-12-issue-2675-followup-issues-list.md` |
-| Plan review — Claude | `scripts/review/results/2026-05-12-plan-2675-claude.md` |
+| Wave-1 synthesis (rejection rationale) | `scripts/review/results/2026-05-12-plan-2675-summary.md` |
+| Wave-2 synthesis (cross-provider overlap analysis) | `scripts/review/results/2026-05-13-plan-2675-summary.md` |
+| Plan review — Claude (wave 1) | `scripts/review/results/2026-05-12-plan-2675-claude.md` |
+| Plan review — Claude (wave 2) | `scripts/review/results/2026-05-13-plan-2675-claude.md` |
+| Plan review — Codex (waves 1+2 both UNAVAILABLE by design post-#2684) | `scripts/review/results/2026-05-{12,13}-plan-2675-codex.md` |
+| Plan review — Gemini (waves 1+2) | `scripts/review/results/2026-05-{12,13}-plan-2675-gemini.md` |
+| Plan review — Claude (legacy artifact path) | `scripts/review/results/2026-05-12-plan-2675-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-05-12-plan-2675-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-05-12-plan-2675-gemini.md` |
-| README index row | `docs/plans/README.md` (Plan Index, line ~203) |
+| README index row | `docs/plans/README.md` (Plan Index — row for #2675 added during wave-1 execution at line 203; pre-existing as of plan-v2) |
 
 ---
 
@@ -178,7 +184,7 @@ The matrix extends `config/agents/provider-capabilities.yaml`'s `strategy_role` 
 |---|---|---|---|---|---|
 | Issue planning | **Claude** (Sonnet 4.6 default; Opus 4.6 for Route-C complex) | Long-context multi-source synthesis; orchestrator role; tool-driving in main session (`feedback_claude_in_chrome_session_scoped`) | Hermes | Codex | Claude quota exhausted, or memory-heavy backlog drain (Hermes); never delegate planning to Codex (sandbox cannot execute, per `feedback_codex_sandbox_no_execution`) |
 | Adversarial review (T1 — scoped) | **Claude** single-author r3 | Cost-efficient; sufficient when permission gates block dispatch (`feedback_permission_gate_blocks_cross_review`) | — | — | T1 has no fallback; if scope grows mid-review, escalate to T2 |
-| Adversarial review (T2 — standard) | **Codex** + **Gemini** | Codex non-overlapping defects vs. Claude (`feedback_cross_provider_review_payoff`); Gemini cheap at scale | Claude (reviewer-of-record) | OpenAI GPT-4.1 | Codex CLI hang (`feedback_codex_cli_0_124_upstream_regression`) → fallback OpenAI; Gemini sandbox overlay blind (`feedback_gemini_sandbox_overlay_blindness`) → verify with `git ls-files` first |
+| Adversarial review (T2 — standard, 3-of-3 attempt) | **Claude** (headless, post-#2683 fix) + **Codex** (when not under Claude-Code Bash) + **Gemini** | Three-provider parallel dispatch via `plan-review-fanout.sh`. Codex empirically catches non-overlapping defects vs. Claude (`feedback_cross_provider_review_payoff`); Gemini is the cheap third lane. Wave-2 of #2675 (2026-05-13) demonstrated all three legs producing distinct signal once #2683 + #2684 landed. | When Codex returns UNAVAILABLE (under Claude-Code Bash per `#2684`): accept 2-of-3 (Claude+Gemini) with documented exception, OR re-dispatch from plain terminal via `env -u CLAUDECODE bash scripts/review/plan-review-fanout.sh ...` to recover Codex | OpenAI GPT-4.1 if Codex CLI breaks at a future version | Gemini sandbox overlay blind (`feedback_gemini_sandbox_overlay_blindness`) → verify with `git ls-files` before accepting MAJOR file-missing claims |
 | Adversarial review (T3 — complex) | **Claude** + **Codex** + **Gemini** full 3-of-3 | `routing-config.cross_review.COMPLEX: true` already mandates it | Any 2 of 3 if one provider down | — | Provider unavailability → record explicit failure, continue with available, never auto-approve |
 | Implementation execution | **Claude** main session | Tool execution + file writes; Codex cannot write (`feedback_codex_sandbox_write_blocked`); subagent Write phantoms possible (`feedback_subagent_write_phantom`) → main session must `ls` verify | Codex *review-only* | — | Never delegate writes to Codex; never trust subagent Write reports without local verify |
 | Knowledge/wiki contribution | **Claude** (drafting) + **Codex** (independent check) | Claude long-context for source synthesis; Codex sandbox can still *read+critique* even when it cannot write | Hermes (overnight batch) | Gemini (large-doc overflow) | — |
@@ -187,7 +193,7 @@ The matrix extends `config/agents/provider-capabilities.yaml`'s `strategy_role` 
 
 **Operational rules baked into the matrix:**
 
-- **No provider owns more than 2 primary roles** without explicit cost/quota justification. Today Claude legitimately owns planning + execution + comms because it is the only one that drives tools in main session — but this is a known concentration risk that the cost/quota follow-up issue must address.
+- **Claude is concentrated as Primary in 5 of 7 work classes** (issue planning, T1 review, implementation execution, knowledge/wiki drafting, comms). This is **structural, not a designed-around defect**: only Claude drives tools in the main session per `feedback_claude_in_chrome_session_scoped`, so any work-class involving tool execution defaults to Claude. The honest mitigation is *graceful halt-and-wait under quota exhaustion*, not an automatic fallback — there is no other provider that can drive tools in the main session today. The cost/quota follow-up issue (§F #4) must define the explicit halt protocol + name the observable triggers that escalate from "warning" to "stop." Wave-2 review (Claude finding #3) flagged the prior wording ("no provider owns more than 2 primary roles") as a stated rule the matrix violated; the rule was wrong, not the matrix.
 - **Codex is review-only by hard policy.** No Codex file writes, no Codex shell execution. The `submit-to-codex.sh` wrapper enforces this; the matrix reinforces it.
 - **Gemini lane requires `git ls-files` ground-truth check before accepting MAJOR file-missing claims.** Encoded as a precondition in the cross-review walkthrough (§ C2).
 - **Fallback firing must be logged** (`scripts/review/results/...-fallback.md`) so the weekly review (#2089) can audit whether fallbacks happen often enough to update the matrix.
@@ -232,19 +238,20 @@ T1 (scoped, single-provider):
 2. Verdict written to scripts/review/results/...-claude.md
 3. No fanout; if scope grows, escalate to T2
 
-T2 (standard, 2-of-3):
+T2 (standard, 3-of-3 attempt; accept 2-of-3 with documented exception):
 1. Push plan file to origin (per feedback_codex_needs_pushed_artifact)
 2. scripts/review/attest-plan-claims.sh injects evidence block (per #2405)
-3. Parallel dispatch:
-   - scripts/review/submit-to-codex.sh  (review-only; sandbox-safe prompt)
-   - scripts/review/submit-to-gemini.sh (with GEMINI_CLI_TRUST_WORKSPACE=true; per feedback_gemini_trust_env_blocks_reviews)
-4. Wait for both; if Codex CLI hangs (feedback_codex_cli_0_124_upstream_regression) fall back to OpenAI
-5. Claude reviews the merged-findings file
-6. If any MAJOR: revise plan, GOTO 1 (re-attest, re-dispatch)
-7. If sustained-MAJOR 3+ rounds from one provider while others MINOR (feedback_codex_sustained_MAJOR_loop): surface consensus-vs-minority decision to user, do NOT auto-cycle
+3. Parallel dispatch ALL THREE providers via scripts/review/plan-review-fanout.sh:
+   - claude (headless, with CLAUDE_PLUGIN_DIR override per #2683 — independent adversarial review of the plan, NOT just synthesis)
+   - codex  (review-only; sandbox-safe prompt; env-guard per #2684 fast-fails under Claude-Code Bash)
+   - gemini (with GEMINI_CLI_TRUST_WORKSPACE=true per feedback_gemini_trust_env_blocks_reviews; cwd=/tmp per fanout's documented gemini workaround)
+4. Codex will emit UNAVAILABLE in 0.033s under Claude-Code Bash (per #2684 env-guard, by design). Operator may re-dispatch from a plain terminal via `env -u CLAUDECODE bash scripts/review/plan-review-fanout.sh ...` to add a real Codex verdict if needed for high-stakes plans.
+5. Verify Gemini MAJOR findings with `git ls-files` before acceptance (per feedback_gemini_sandbox_overlay_blindness — empirical false-positive rate is high enough to warrant ground-truth check).
+6. If any provider returns MAJOR with validated findings: revise plan, GOTO 1 (re-attest, re-dispatch).
+7. Single-dissent loop control: if sustained-MAJOR 3+ rounds from ONE provider while a DIFFERENT provider returns MINOR/APPROVE on the same content, surface the consensus-vs-minority decision to user, do NOT auto-cycle (per feedback_codex_sustained_MAJOR_loop). With T2 = 3 providers (Claude + Codex + Gemini), "dissent" is one-vs-other-two; with T2 effectively 2 providers when Codex is UNAVAILABLE-by-design, "dissent" is Claude-vs-Gemini.
 
 T3 (complex, full 3-of-3 with synthesis):
-1. Steps 1–4 from T2, plus Claude as independent third lane
+1. Steps 1–4 from T2 with operator commitment to re-dispatch Codex from a plain terminal (no UNAVAILABLE-by-design acceptance)
 2. scripts/review/render-structured-review.py synthesizes the 3 verdicts
 3. Apply T2 step 6 + 7 logic
 ```
@@ -312,7 +319,7 @@ Each row is a paid-for memory lesson → its durable mitigation surface in the r
 | `feedback_codex_needs_pushed_artifact` | `scripts/review/attest-plan-claims.sh` runs after `git push` |
 | `feedback_codex_sandbox_fallback_paths` | Codex prompt authorizes `js_repl` + GitHub connector fallback; MAJOR verdicts without fallback-read citation are weakly grounded — flagged in `scripts/review/validate-review-output.sh` |
 | `feedback_codex_sustained_MAJOR_loop` | T2 walkthrough step 7 — surface decision after 3 sustained-MAJOR rounds |
-| `feedback_codex_cli_0_124_upstream_regression` | T2 walkthrough step 4 — fallback to OpenAI on Codex hang; downgrade-to-0.123.0 documented in #2479 |
+| `feedback_codex_cli_0_124_upstream_regression` + sibling `#2684` (CLAUDECODE env-guard at `0cd40c6ab`) | T2 walkthrough step 4 — codex env-guard in `scripts/review/lib/codex-version-guard.sh` fast-fails under Claude-Code Bash; operator re-dispatches from plain terminal via `env -u CLAUDECODE` to recover Codex verdict. (Wave-2 review Claude finding #2 flagged the prior wording "fallback to OpenAI" as obsolete post-#2684.) |
 | `feedback_gemini_sandbox_overlay_blindness` | T2 walkthrough — `git ls-files` precondition before accepting Gemini MAJOR file-missing claims |
 | `feedback_gemini_trust_env_blocks_reviews` | `submit-to-gemini.sh` sets `GEMINI_CLI_TRUST_WORKSPACE=true` (already landed 2026-04-24) |
 | `feedback_hermes_active_preflight_check` | Hermes worker scripts call `pgrep -af 'git (rebase\|stash push\|commit\|merge\|reset\|checkout)'` and abort on hit |
@@ -335,7 +342,7 @@ Each row is a paid-for memory lesson → its durable mitigation surface in the r
 Per acceptance criterion #7, the plan enumerates downstream work without filing it. These issues will be filed only *after* user approval at `status:plan-approved`.
 
 1. **`chore(ai-tools): refresh subscriptions.yaml with current Codex paid plan`** — fix the $156.75 → ~$356.75/mo drift; add Codex $200/mo entry. Cite `project_hermes_codex_quota` memory.
-2. **`feat(ai-orchestration): add CODEX.md adapter file`** — mirror `CLAUDE.md` / `GEMINI.md`; ≤20 lines per `.claude/rules/coding-style.md`; cite memory's Codex-usage rules. Reconcile location with #2399's `.codex/CODEX.md` proposal.
+2. **`feat(ai-orchestration): add CODEX.md adapter file + extend coding-style.md enumeration`** — mirror `CLAUDE.md` / `GEMINI.md`; ≤20 lines. **The follow-up PR MUST extend `.claude/rules/coding-style.md:13` enumeration to include `CODEX.md`** — the current rule enumerates `CLAUDE.md, MEMORY.md, AGENTS.md, GEMINI.md` only, so the `scripts/enforcement/check-harness-file-size.sh` 20-line check does not bind on `CODEX.md` without this extension (wave-2 review Claude finding #4). Cite memory's Codex-usage rules. Reconcile location with #2399's `.codex/CODEX.md` proposal.
 3. **`chore(ai-config): audit + extend config/agents/{codex,gemini,hermes}/ to match the §B role matrix`** — existing minimal content needs auditing against the role matrix; gaps to be filled per provider (Codex: review-only enforcement in `config.toml`; Gemini: `git ls-files` precondition reference; Hermes: preflight contract in `SOUL.md` or `config.yaml.template`). Reference `config/agents/claude/` as the populated template.
 4. **`feat(ai-orchestration): cost/quota model + monthly spend envelope`** (deferred from this plan) — concrete monthly target per provider with triggers that change routing; consume `config/ai-tools/usage-tracking.yaml`, `weekly-utilization.json`, `pricing.yaml`.
 5. **`feat(ai-orchestration): migration plan for AI_ECOSYSTEM_DESIGN.md adoption`** (deferred from this plan) — day-1 / month-1 / quarter-1 incremental adoption schedule.
@@ -343,7 +350,14 @@ Per acceptance criterion #7, the plan enumerates downstream work without filing 
 7. **`feat(ai-orchestration): workflow walkthrough — execution batch run`** — deferred from this plan; covers Hermes overnight batch + parallel-agent commit serialization.
 8. **`chore(ai-tools): refresh agent-capability-scores.yaml from 2026-04/05 incident data`** — scores predate the codex/gemini sandbox lessons; re-score and reference incident memories.
 9. **`feat(ai-orchestration): codify "when NOT to cross-review" rule in routing-config.yaml`** — add a tier-tier override field; cite `feedback_permission_gate_blocks_cross_review`.
-10. **`feat(ai-orchestration): "Memory-to-Surface" map maintenance contract`** — quarterly refresh of the §E table as new memory lessons land; integrate with `learn-extended` skill.
+10. **`feat(ai-orchestration): "Memory-to-Surface" map maintenance contract`** — quarterly refresh of the §E table as new memory lessons land; integrate with `learn-extended` skill. **Refresh trigger**: any commit that renames or deletes a `~/.claude/projects/.../memory/feedback_*.md` slug cited in §E must update the row in the same PR (cycle ≤24h, not quarterly; quarterly is the baseline sweep only).
+
+### Harness follow-ups (filed live during plan-2675 execution; documented here for §F completeness — wave-2 Gemini finding #3)
+
+11. **[#2683](https://github.com/vamseeachanta/workspace-hub/issues/2683)** — `bug(harness): Claude SessionEnd hook (codex plugin) times out and crashes plan-review-fanout`. **STATUS: FIXED** at commit `b61f2c5a3` (CLAUDE_PLUGIN_DIR override; mechanism deviation from approved plan documented in the issue's plan file).
+12. **[#2684](https://github.com/vamseeachanta/workspace-hub/issues/2684)** — `bug(harness): codex-cli stdin-hang under Claude-Code Bash subprocess`. **STATUS: FIXED** at commit `0cd40c6ab` (CLAUDECODE env-guard added to `codex_version_guard_check`).
+
+Both #2683 and #2684 were filed and landed during plan-2675's wave-2 review cycle. They are part of the #2675 work record but are out-of-scope for plan-2675's own deliverables (those follow-ups remain items 1–10 above).
 
 ---
 
@@ -378,7 +392,8 @@ Governance plans deliver documents, not runtime code, so "tests" here are struct
 | `test_walkthroughs_name_gate_checkpoints` | §C1 and §C2 each cite ≥2 existing repo gates | walkthroughs MD | each section grep matches `issue-planning-mode\|require-plan-approval\|require-cross-review\|cross-review-gate` |
 | `test_failure_mode_contract_references_memories` | §E table cites ≥15 distinct feedback files | failure-mode MD | grep `^| \`feedback_` distinct-count ≥15 |
 | `test_followups_listed_not_filed` | §F is markdown only; no `gh issue create` was run for these | git log + GitHub state | no new issues filed referencing #2675 as parent except this plan's own comment |
-| `test_no_self_approve` | issue #2675 never bears `status:plan-approved` set by this session | `gh issue view 2675 --json labels` + session author audit | label only ever set by user, not in same session as draft |
+| `test_no_self_approve` | the `status:plan-approved` label on #2675 was set by a human actor (not an automation/agent identity) | `gh api /repos/vamseeachanta/workspace-hub/issues/2675/events --jq '.[] \| select(.event=="labeled" and .label.name=="status:plan-approved") \| .actor.login'` | matches the issue owner (`vamseeachanta`), NOT a `*[bot]` or service account; expected count ≥ 1 |
+| `test_primary_deliverable_present` | `docs/standards/AI_ECOSYSTEM_DESIGN.md` exists and contains §A–§E content promoted from this plan | `ls docs/standards/AI_ECOSYSTEM_DESIGN.md && grep -c '^## ' docs/standards/AI_ECOSYSTEM_DESIGN.md` | file exists; ≥5 top-level headings | (added per wave-2 Gemini finding #7) |
 | `test_no_no_verify` | no commits in this plan's branch used `--no-verify` | `git log --format=%B` grep | zero matches |
 | `test_review_artifacts_exist` | all 3 provider review files exist before status:plan-review label | `ls scripts/review/results/2026-05-12-plan-2675-*` | 3 files present (or documented provider-failure substitute) |
 | `test_readme_index_row_added` | `docs/plans/README.md` has new row for 2675 | `grep '^| 2675 ' docs/plans/README.md` | exactly 1 match |
@@ -406,6 +421,8 @@ These mirror the issue body's acceptance criteria (#2675):
 
 ## Adversarial Review Summary
 
+> **Anti-self-clearance preamble (wave-2 Claude finding #1 lesson):** an Adversarial Review Summary authored *inside* the plan-under-review is a self-clearance surface — it invites the reader to accept the author's framing of why review signal was inadequate, rather than treating "inadequate signal" or unmet acceptance criteria as a blocker. This summary records waves chronologically; **the verdict is whatever the latest wave returned**, not whatever framing the author writes around it. When an acceptance criterion is unmet (e.g., line 399 "T2 minimum"), it stays unmet until evidence shows otherwise; framing the gap as "harness-not-content" does not satisfy the gate. Wave-2 (2026-05-13) returned MAJOR with real content defects; wave-1's "insufficient signal not content defects" framing was wrong in hindsight.
+
 **Wave 1 — dispatched 2026-05-12T16:34 via `scripts/review/plan-review-fanout.sh`** (artifacts at `scripts/review/results/2026-05-12-plan-2675-{claude,codex,gemini}.md`)
 
 | Provider | Verdict | Key findings |
@@ -414,7 +431,7 @@ These mirror the issue body's acceptance criteria (#2675):
 | Codex  | UNAVAILABLE | rc=124 — stdin-hang on codex-cli 0.130.0 despite fanout wrapper passing `</dev/null`. Reproduces the 0.124.0 symptom pattern at a later version; possibly a related upstream regression. |
 | Gemini | MAJOR — **REJECTED as overlay-blindness false-positive** | 8 findings, all claiming file-missing for files that **are tracked in git**. Verified by `git ls-files` against all 17 cited paths plus 3 cited dirs — every one exists. Memory line 40 (`feedback_gemini_sandbox_overlay_blindness`) explicitly prescribes this rejection. Finding 8 (memory files at `/tmp/llm-wiki/...`) is a hallucination — memory lives at `~/.claude/projects/.../memory/`, verified. |
 
-**Overall result:** NOT-APPROVAL-READY — but for **insufficient cross-review signal**, not content defects.
+**Overall result (wave 1):** NOT-APPROVAL-READY due to **insufficient cross-review signal**. ~~"not content defects"~~ — this framing was wrong; wave-2 (post-#2683/#2684 harness fixes) surfaced 8 distinct blocker-class content defects across two usable providers, demonstrating the wave-1 "harness-not-content" claim was self-clearance, not honest assessment.
 
 - T2 minimum (`feedback_always_adversarial_review_scale_depth`) requires Codex + Gemini usable verdicts. Codex unavailable + Gemini rejected = **zero usable provider signal**.
 - Per `feedback_codex_sustained_MAJOR_loop` analog (line 34) — when providers fail structurally, surface to user instead of auto-cycling.
