@@ -427,6 +427,20 @@ Revisions made based on review:
 
 Synthesis artifact: `scripts/review/results/2026-05-12-plan-2675-summary.md` documents the rejection rationale.
 
+**Wave 2 — dispatched 2026-05-13T08:15 via `scripts/review/plan-review-fanout.sh`** (artifacts at `scripts/review/results/2026-05-13-plan-2675-{claude,codex,gemini}.md`)
+
+Re-dispatched after `#2683` (CLAUDE_PLUGIN_DIR override, `b61f2c5a3`) and `#2684` (CLAUDECODE env-guard, `0cd40c6ab`) harness fixes landed.
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude (headless, post-#2683 fix) | **MAJOR** | 4 blockers + 7 minor. Top blockers: (1) self-clearance pattern — plan declares acceptance criterion line 399 unmet but ships as if final; (2) §C2 step 4 cites obsolete `feedback_codex_cli_0_124_*` (24h-stale post-#2684); (3) §B matrix violates its own line-190 concentration rule (Claude in 5 primary roles vs. 2-max stated); (4) §F #2 CODEX.md 20-line claim is structurally unbinding (rule list at `.claude/rules/coding-style.md:13` doesn't include CODEX.md). |
+| Codex  | UNAVAILABLE (rc=3, by design) | Env-guard from `#2684` correctly fast-failed in 0.033s with full INCOMPATIBLE message + override hint. No review signal expected from Codex inside Claude-Code Bash; operator can re-dispatch via `env -u CLAUDECODE bash scripts/review/plan-review-fanout.sh ...` from a plain terminal to add a Codex verdict if needed. |
+| Gemini | **MAJOR** | 4 blockers + 3 minor. Non-overlapping with Claude. Top blockers: (1) §C2 T2 step 7 has mathematically-impossible "others MINOR" plural with only 2 T2 providers; (2) §C2 T2 walkthrough doesn't include Claude as adversarial reviewer despite acceptance criterion mandating it; (3) §F missing harness-bug follow-ups the plan's own summary said should be filed; (4) TDD `test_no_self_approve` uses `--json labels` which can't return event timeline data. |
+
+**Overall result (wave 2):** **MAJOR — plan is NOT approval-ready.** Both Claude and Gemini returned MAJOR with non-overlapping blocker-class findings; Codex correctly emitted UNAVAILABLE per the #2684 design. This is real cross-provider review signal for the first time, and it surfaces real plan defects (not just harness drift). The wave-1 framing of "insufficient signal not content defects" no longer holds — wave-2 shows both signal AND content defects.
+
+Wave-2 synthesis: `scripts/review/results/2026-05-13-plan-2675-summary.md` with full cross-provider overlap analysis and three recommended next-step paths.
+
 ---
 
 ## Risks and Open Questions
