@@ -291,6 +291,25 @@ Important guardrails:
 - If the audit discovers fixable bugs, create/link follow-up issues or draft plans; do not silently patch code from an audit-only batch.
 - Keep prompt packs self-contained so overnight workers do not need current-chat context.
 
+## Approval-state reconciliation fallback
+
+When syncing an issue from `status:plan-review` to `status:plan-approved`, verify the live and local approval surfaces from the narrowest reliable evidence rather than waiting on broad workspace scans.
+
+Recommended fallback sequence when the normal path is slow or rate-limited:
+1. Fetch live issue labels with GitHub REST if `gh issue view` GraphQL is rate-limited:
+   ```bash
+   gh api repos/OWNER/REPO/issues/NNN --jq '{state: .state, labels: [.labels[].name]}'
+   ```
+2. Verify or create the committed local marker: `.planning/plan-approved/NNN.md`.
+3. Verify the canonical plan header, acceptance/approval checklist, and `docs/plans/README.md` row with targeted `grep`/`test -f` checks.
+4. In large or dirty repos where full `git status` is slow, verify only the target artifact set before staging/committing:
+   ```bash
+   git status --short -- .planning/plan-approved/NNN.md docs/plans/<plan>.md docs/plans/README.md
+   git diff -- .planning/plan-approved/NNN.md docs/plans/<plan>.md docs/plans/README.md
+   ```
+5. Commit/push the narrow artifact set, then verify `HEAD` equals upstream and post a GitHub handoff comment using `--body-file`.
+6. Report any broad-worktree uncertainty separately; do not let unrelated status churn block a targeted governance sync when the target files are clean and pushed.
+
 ## Pitfalls
 
 - Treating a continuous pipeline request as a one-off overnight batch.

@@ -27,6 +27,14 @@ Use when a visual artifact must translate a source document plus repository data
    - PDF export is readable and not clipped
    - source-data provenance is visible in the artifact or sidecar
    - git status identifies whether artifacts are untracked, staged, or committed
+8. When the user asks for a client-sendable screenshot/export, produce clearly named handoff files, not cache filenames:
+   - copy/rename any browser cache screenshot to a semantic name such as `<topic>-client-dark.png`
+   - place a convenience copy in the user's share location when obvious, e.g. `~/Downloads/`, while preserving repo/report copies if relevant
+   - verify with `file`, image dimensions, and/or hash output before reporting paths
+9. When the client needs markup/comment space, create a light/white-background variant rather than asking them to annotate a dark design:
+   - prefer a small CSS override file or sibling HTML variant that keeps the same DOM/statistics but changes colors to white panels, dark text, subtle borders, and high-contrast links
+   - export this variant as a separate semantic PNG such as `<topic>-client-markup-white.png`
+   - visually verify the white variant for dark readable text, no clipping/overlap, and preserved provenance
 
 ## Recommended artifact set
 

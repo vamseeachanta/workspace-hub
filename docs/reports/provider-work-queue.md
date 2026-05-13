@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-12T13:20:11.040947Z
+Generated: 2026-05-12T21:23:10.362581Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 5
-- Total routed candidates: 30
+- Total routed candidates: 29
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -44,11 +44,12 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 3
+- Total routed candidates: 4
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | no | research/triage/audit language | enhancement, priority:high, cat:personal-finance, domain:tax-preparation |
 | #2498 chore(harness): #2364 plan branch drift recovery decision needed | no | research/triage/audit language | priority:medium, cat:harness |
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | no | research/triage/audit language | priority:medium, cat:documentation, cat:harness |
+| #2679 R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions) | no | research/triage/audit language | priority:medium, cat:engineering, cat:research |
 

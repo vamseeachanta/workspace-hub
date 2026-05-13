@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T13:20:11.209530Z",
+  "generated_at": "2026-05-12T21:23:36.686575Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 6,
@@ -362,6 +362,34 @@
         "cat:harness"
       ],
       "updatedAt": "2026-04-26T17:57:48Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "gemini",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:gemini",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-gemini-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2679,
+      "title": "R3 \u2014 Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2679",
+      "labels": [
+        "priority:medium",
+        "cat:engineering",
+        "cat:research"
+      ],
+      "updatedAt": "2026-05-12T13:43:36Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
