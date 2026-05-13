@@ -140,13 +140,17 @@ Add a comment block above the `claude)` case explaining why `--bare` is required
 
 ## Adversarial Review Summary
 
-Deferred. The fanout is structurally broken today (both Claude and Codex legs degraded), so this plan cannot itself receive a cross-review fanout pass until at least one leg is restored. Single-author review approach per `feedback_permission_gate_blocks_cross_review`:
+Single-author r3 fallback per `feedback_permission_gate_blocks_cross_review` — T2 fanout cannot review THIS plan because the bugs THIS plan fixes are the very ones blocking fanout. Per `feedback_always_adversarial_review_scale_depth`, T1 scope (single-line shell change) means 1 provider is the correct depth, not a degraded fallback.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude (self) | (to be filled by reviewing session) | — |
+| Claude (main session, r3) | MINOR | 7 findings: 1 MAJOR-but-non-blocking (cross-machine claude-version assumption), 6 MINOR (comment placement; acceptance-criterion grep too narrow; test-artifact path defers a determined decision; CLAUDE.md auto-discovery risk discussion incomplete; source-count off-by-one; upstream follow-up tracker not named). All 8 affirmative checks pass: ≥3 sources, repro proof present, failure-mode matches claim, complexity T1 defensible, diff mechanically correct, codex-plugin hook timeout/path accurately cited, `--bare` behavior matches `claude --help`, TDD list covers structural+behavioral assertions. |
 
-**Overall result:** PENDING — requires user approval; this is a T1 single-line fix and the surface area is tiny.
+**Overall result:** **MINOR — can advance to `status:plan-review` for user approval.** Patch is mechanically correct; the 7 findings are refinement suggestions, not defects. Review artifact at `scripts/review/results/2026-05-12-plan-2683-claude-r3.md` with full per-finding rationale and verification evidence.
+
+User has two paths at approval time:
+1. **Approve as-is** — findings #1, #3, #4 captured as inline TODOs during execution. Finding #1 (cross-machine version assumption) becomes a follow-up acceptance criterion.
+2. **Fold findings in first** — amend this plan to address all 7, then approve the amended version.
 
 ---
 
