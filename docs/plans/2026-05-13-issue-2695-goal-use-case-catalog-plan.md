@@ -1,6 +1,6 @@
 # Plan for #2695: /goal use-case catalog for repo ecosystem (claude+codex+hermes)
 
-> **Status:** draft
+> **Status:** COMPLETE — 2026-05-13
 > **Complexity:** T1
 > **Date:** 2026-05-13
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2695
