@@ -1,0 +1,142 @@
+[
+  {
+    "number": 9001,
+    "title": "fix(routing): bounded refactor of routing weights",
+    "url": "https://example.test/issues/9001",
+    "state": "OPEN",
+    "body": "implement small routing refactor",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:high"}, {"name": "status:plan-approved"}],
+    "comments": []
+  },
+  {
+    "number": 9002,
+    "title": "fix(test): repair flaky regression",
+    "url": "https://example.test/issues/9002",
+    "state": "OPEN",
+    "body": "test repair",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:medium"}, {"name": "status:plan-approved"}],
+    "comments": []
+  },
+  {
+    "number": 9003,
+    "title": "fix(impl): bounded implementation cleanup",
+    "url": "https://example.test/issues/9003",
+    "state": "OPEN",
+    "body": "cleanup work",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:medium"}, {"name": "status:plan-review"}],
+    "comments": []
+  },
+  {
+    "number": 9004,
+    "title": "fix(repair): test repair for module foo",
+    "url": "https://example.test/issues/9004",
+    "state": "OPEN",
+    "body": "fix tests",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:medium"}],
+    "comments": []
+  },
+  {
+    "number": 9005,
+    "title": "fix(normalize): normalize artifact identity",
+    "url": "https://example.test/issues/9005",
+    "state": "OPEN",
+    "body": "implementation work",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:high"}],
+    "comments": []
+  },
+  {
+    "number": 9006,
+    "title": "fix(bounded): bounded validator script",
+    "url": "https://example.test/issues/9006",
+    "state": "OPEN",
+    "body": "validator implementation",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:medium"}],
+    "comments": []
+  },
+  {
+    "number": 9007,
+    "title": "fix(test): test artifact regression",
+    "url": "https://example.test/issues/9007",
+    "state": "OPEN",
+    "body": "regression test artifact",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:low"}],
+    "comments": []
+  },
+  {
+    "number": 9008,
+    "title": "fix(impl): writeback fix bounded",
+    "url": "https://example.test/issues/9008",
+    "state": "OPEN",
+    "body": "writeback implementation",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:low"}],
+    "comments": []
+  },
+  {
+    "number": 9009,
+    "title": "fix(repair): bounded test repair v2",
+    "url": "https://example.test/issues/9009",
+    "state": "OPEN",
+    "body": "test repair v2",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:low"}],
+    "comments": []
+  },
+  {
+    "number": 9010,
+    "title": "fix(cleanup): bounded mechanical cleanup",
+    "url": "https://example.test/issues/9010",
+    "state": "OPEN",
+    "body": "cleanup",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:low"}],
+    "comments": []
+  },
+  {
+    "number": 9011,
+    "title": "fix(refactor): bounded refactor follow-up",
+    "url": "https://example.test/issues/9011",
+    "state": "OPEN",
+    "body": "follow-up refactor",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:low"}],
+    "comments": []
+  },
+  {
+    "number": 9012,
+    "title": "fix(prepare): bounded prepare work",
+    "url": "https://example.test/issues/9012",
+    "state": "OPEN",
+    "body": "prepare work",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:low"}],
+    "comments": []
+  },
+  {
+    "number": 9101,
+    "title": "research(domain): triage knowledge wiki",
+    "url": "https://example.test/issues/9101",
+    "state": "OPEN",
+    "body": "research and triage",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:medium"}],
+    "comments": []
+  },
+  {
+    "number": 9201,
+    "title": "design: workflow strategy review",
+    "url": "https://example.test/issues/9201",
+    "state": "OPEN",
+    "body": "strategy and policy work",
+    "updatedAt": "2026-05-12T12:00:00Z",
+    "labels": [{"name": "priority:high"}],
+    "comments": []
+  }
+]
