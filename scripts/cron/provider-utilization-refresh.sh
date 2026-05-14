@@ -26,6 +26,10 @@ cd "${REPO_ROOT}"
   uv run --no-project python scripts/ai/provider-routing-scorecard.py
   uv run --no-project python scripts/ai/provider-work-queue.py
   uv run --no-project python scripts/ai/provider-autolabel.py
+  # #2665: regenerate the Kanban dashboard from the refreshed work queue and
+  # routing scorecard. Defaults to read-only static HTML (served_localhost=False)
+  # so committed artifacts cannot mutate GitHub state.
+  uv run --no-project python scripts/ai/provider-kanban.py
 } >> "${LOG_FILE}" 2>&1
 
 [[ -f "${QUOTA_OUT}" ]] || { echo "ERROR: missing ${QUOTA_OUT}" >&2; exit 1; }
@@ -37,3 +41,8 @@ cd "${REPO_ROOT}"
 [[ -f "${REPO_ROOT}/docs/reports/provider-work-queue.md" ]] || { echo "ERROR: missing provider work queue Markdown" >&2; exit 1; }
 [[ -f "${REPO_ROOT}/config/ai-tools/provider-autolabel-candidates.json" ]] || { echo "ERROR: missing provider autolabel candidate JSON" >&2; exit 1; }
 [[ -f "${REPO_ROOT}/docs/reports/provider-autolabel-candidates.md" ]] || { echo "ERROR: missing provider autolabel candidate Markdown" >&2; exit 1; }
+# #2665: Kanban artifacts are non-optional. If any of these is missing the cron
+# run is treated as failed so morning QA can surface the regression.
+[[ -f "${REPO_ROOT}/config/ai-tools/provider-kanban.json" ]] || { echo "ERROR: missing provider-kanban.json" >&2; exit 1; }
+[[ -f "${REPO_ROOT}/docs/reports/provider-kanban-dashboard.md" ]] || { echo "ERROR: missing provider-kanban-dashboard.md" >&2; exit 1; }
+[[ -f "${REPO_ROOT}/docs/reports/provider-kanban-dashboard.html" ]] || { echo "ERROR: missing provider-kanban-dashboard.html" >&2; exit 1; }
