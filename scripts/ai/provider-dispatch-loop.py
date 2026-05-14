@@ -449,6 +449,21 @@ def generate_morning_qa(
         lines.append("- (none)")
     for l in stale + failed:
         lines.append(f"- {l.lease_id} (#{l.issue_number} → {l.provider}@{l.machine}) — state={l.state}, error={l.error}")
+    # Per #2665 acceptance criterion: surface tests + changed_files from launcher
+    # outcome payloads when present. Launchers MAY emit {tests: ..., changed_files: [...]}
+    # in their outcome dict; this section is empty when no launcher reports them.
+    outcome_rows = [r for r in runs if isinstance(r.get("outcome"), dict)
+                    and (r["outcome"].get("tests") or r["outcome"].get("changed_files"))]
+    if outcome_rows:
+        lines.extend(["", "## Run outcomes (tests / changed files)", ""])
+        for row in outcome_rows[-20:]:
+            outcome = row["outcome"]
+            tests = outcome.get("tests") or "(none reported)"
+            changed = outcome.get("changed_files") or []
+            lines.append(
+                f"- {row.get('lease_id', '?')} — tests: {tests}; "
+                f"changed_files: {len(changed)}"
+            )
     lines.extend(["", "## Recommended user actions", ""])
     if stale:
         lines.append(f"- Investigate {len(stale)} stale leases past TTL; either continue or close-out.")
