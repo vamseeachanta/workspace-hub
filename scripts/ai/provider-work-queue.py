@@ -159,6 +159,10 @@ def build_queue(scorecard: dict[str, Any], issues: list[dict[str, Any]]) -> dict
             "execution_ready_count": sum(1 for item in items if item["execution_ready"]),
             "total_candidates": len(items),
             "top_issues": items[:8],
+            # Non-truncated candidate set for downstream Kanban/dispatcher consumers (#2665).
+            # top_issues stays capped at 8 for human-readable Markdown; full_candidates
+            # carries the complete provider-routed backlog.
+            "full_candidates": items,
         }
 
     now = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -179,7 +183,7 @@ def render_markdown(queue: dict[str, Any]) -> str:
         f"Current week: {queue['current_week']}",
         f"Recommended provider order: {', '.join(queue['recommended_provider_order'])}",
         "",
-        "Execution-ready means the issue already carries `status:plan-approved` or an explicit agent label.",
+        "Execution-ready means the issue already carries `status:plan-approved`. agent:* labels are routing hints only and do not grant execution approval.",
         "",
     ]
     for provider in PROVIDERS:
