@@ -1,6 +1,8 @@
 # Plan for #2694: Cathodic Protection — edition-parameterized merge (Option β)
 
-> **Status:** revised (r2 — addresses 8 MAJOR findings from r1 cross-review)
+> **Status:** approved (r3 — 2 r2 defects patched inline; sustained-MAJOR loop break per feedback_codex_sustained_major_loop)
+> **r2 review artifacts:** scripts/review/results/2026-05-13-plan-2694-{claude,codex,gemini}.md
+> **r3 patches:** main-session inline edits, 2026-05-13
 > **r1 review artifacts:** scripts/review/results/2026-05-13-plan-2694-{claude,codex,gemini}.md
 > **r2 date:** 2026-05-13
 > **Complexity:** T2 (regulatory-hazardous calc surface — review at T2/3-provider depth)
@@ -509,6 +511,95 @@ COATING_2017_TO_2021 = {
 # and cannot be inverted without project-specific context. Callers must pick.
 ```
 
+---
+
+## Units Contract (r3 — addresses Claude r2 units-boundary gap)
+
+The r2 plan added 4 lookup tables for material divergences but missed the **units-contract**
+dimension at the McCoy/Dwight merge boundary. This is a **silent-verdict-flip class hazard**
+per memory `feedback_silent_verdict_flip_defect_class`: same numeric arguments fed to the two
+formulas yield wildly different results because they live in different unit systems, and the
+merged signature inherits the hazard unless the adapter boundary is explicit.
+
+### Unit-system divergence verified 2026-05-13 in live code
+
+| Formula | Module / line | Inputs accepted | Resistivity | Lengths | Output |
+|---|---|---|---|---|---|
+| **McCoy** (2017 functional) | `dnv_rp_b401.py:283-329` | `rho_ohm_cm, L_a_in, W_in, H_in, r_eq_in` | `ohm·cm` | **inches** (converted to cm internally via × 2.54) | ohm |
+| **Dwight** (2021 router) | `cp_DNV_RP_B401_2021.py:332-348` (`_b401_anode_resistance`) | `rho, L, r` (from `inputs["environment"]["resistivity_ohm_m"]`, anode `length_m`, `radius_m`) | `ohm·m` | **meters** (SI) | ohm |
+
+**Python recompute 2026-05-13** confirms the hazard:
+- Apples-to-apples (both formulas evaluated symbolically at `L=2, r=0.15, rho=1`): `r_mccoy = 0.4430`, `r_dwight = 0.2369`, **ratio = 1.8702** — this is the geometry-dependent number AC-P1.1 already locks. It is a *symbolic* ratio, NOT an as-called ratio across the live signatures.
+- If a caller passes `L=2.0` (intending meters) directly to McCoy's `L_a_in` parameter (silent unit mistake at the merge boundary): output is `0.1744 ohm` — **74% of Dwight's value**, an under-prediction of resistance ⇒ over-prediction of current ⇒ **under-sized CP design**, regulatorily defensible only by coincidence.
+- If the caller correctly converts 2 m → 78.74 in *and* keeps `rho` in ohm·cm: output is `0.00443 ohm` — three orders of magnitude off vs. proper SI Dwight, because the `rho` unit (ohm·cm) is now scaling the lengths-in-cm denominator without rebasing back to ohm·m.
+
+### Merged-API unit convention (decision)
+
+**SI throughout the public API.** All public `digitalmodel.cathodic_protection.*` functions
+accept and return SI: `rho` in **ohm·m**, lengths/radii in **meters**, resistance in **ohm**.
+The McCoy adapter is the ONLY place a unit conversion lives, and it is implementation-internal:
+
+```
+# digitalmodel/cathodic_protection/dnv_rp_b401.py  — r3 units-contract patch
+def flush_anode_resistance(
+    rho_ohm_m: float,     # SI — was rho_ohm_cm in r2; renamed at the public boundary
+    L_a_m: float,         # SI — was L_a_in in r2
+    W_m: float,           # SI — was W_in in r2 (still folded into r_eq)
+    H_m: float,           # SI — was H_in in r2 (still folded into r_eq)
+    r_eq_m: float,        # SI — was r_eq_in in r2
+    *,
+    edition: Edition | None = None,
+) -> float:
+    """Anode resistance for flush-mount hull anode.
+
+    SI throughout. The McCoy formula's historical Imperial signature is
+    preserved as `_flush_anode_resistance_mccoy_imperial()` (private) for
+    spreadsheet-compatibility callers; the public surface is SI.
+
+    edition='2017' dispatches to McCoy (via SI adapter); '2021' dispatches
+    to Dwight (already SI). Same input units; explicit formula choice via
+    edition.
+    """
+    ed = normalize_edition(edition)
+    if ed == "2017":
+        # Adapter: convert SI → Imperial internally for McCoy, then call.
+        # McCoy operates on cm; rho conversion: ohm·m → ohm·cm × 100.
+        return _flush_anode_resistance_mccoy_imperial(
+            rho_ohm_cm=rho_ohm_m * 100.0,
+            L_a_in=L_a_m / 0.0254,
+            W_in=W_m / 0.0254,
+            H_in=H_m / 0.0254,
+            r_eq_in=r_eq_m / 0.0254,
+        )
+    return _b401_anode_resistance_dwight_si(
+        rho=rho_ohm_m, L=L_a_m, r=r_eq_m,
+    )
+```
+
+The Imperial-signature function is **kept** (renamed private) so spreadsheet-derived call sites
+that already pass inches continue to work; new code uses the SI public surface.
+
+### TDD additions (Units Contract)
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_unit_conversion_boundary_mccoy_vs_dwight_same_input_units` | After the merge, both editions accept the same input-unit convention (SI) and the apples-to-apples ratio holds | `rho=1.0 ohm·m, L=2.0 m, r=0.15 m, edition in ("2017","2021")` | `r_2017 / r_2021 == pytest.approx(1.8702, rel=1e-3)` |
+| `test_imperial_signature_preserved_under_private_alias` | Spreadsheet-compat path still works for legacy callers | `_flush_anode_resistance_mccoy_imperial(rho_ohm_cm=100.0, L_a_in=78.74, ...)` | matches SI call within float tolerance |
+| `test_si_signature_rejects_legacy_imperial_args` | Misuse caught loudly | passing `rho_ohm_m=100.0` (numerically a `rho_ohm_cm`) is not catchable by types, but `L=2.0` passed to a function expecting inches is fine — protective layer is a smoke-bound check that `L > 1e-6 and L < 1e3` (meters realistic range; inches of 80 would also pass, so this test instead asserts the *signature* attribute via inspect: parameter names end in `_m` not `_in`) | `inspect.signature(flush_anode_resistance).parameters` keys all end in `_m` | passes |
+
+### Acceptance Criterion addition
+
+- [ ] **AC-P2.U (Units Contract enforced) — r3 addition:**
+  - (a) `mypy --strict` on the merged signatures: `uv run mypy --strict digitalmodel/src/digitalmodel/cathodic_protection/dnv_rp_b401.py digitalmodel/src/digitalmodel/cathodic_protection/anode_sizing.py` exits 0. Parameter names ending `_m` (meters), `_ohm_m` (resistivity SI) carry explicit unit suffixes; any function still accepting `_in`, `_cm`, `_ohm_cm` arguments at the public boundary is a defect.
+  - (b) Numerical apples-to-apples cross-check: `r_2017 / r_2021 == pytest.approx(1.8702, rel=1e-3)` ONLY when both formulas are fed in SI (`L=2.0 m, r=0.15 m, rho=1.0 ohm·m`); the imperial-aliased private path must agree with the SI path within float tolerance after the McCoy adapter conversion.
+  - (c) `grep -E "rho_ohm_cm|L_a_in|r_eq_in" digitalmodel/src/digitalmodel/cathodic_protection/dnv_rp_b401.py` — non-zero matches MUST be inside a function whose name starts with `_` (private Imperial alias) and NOT in any public-API signature.
+
+### Risk addition (Units Contract)
+
+- **Risk (critical — silent-verdict-flip class):** Same numeric arguments fed to McCoy vs. Dwight produce wildly different results because the two formulas operate in different unit systems (McCoy: `rho_ohm_cm`, inches; Dwight: `rho_ohm_m`, meters). The post-merge public signature inherits this hazard unless the conversion is explicit at the McCoy adapter boundary. Per memory `feedback_silent_verdict_flip_defect_class`: the merged surface MUST present a single SI convention publicly and keep the Imperial McCoy path as a private alias. **Mitigation:** parameter-name suffixes (`_m`, `_ohm_m`) carry the unit; `mypy --strict` + the AC-P2.U numerical cross-check pinpoint any drift; the `_flush_anode_resistance_mccoy_imperial` rename makes legacy Imperial call sites obvious in code review.
+
+---
+
 ### P3 — Standards consolidation (lowest-risk phase)
 
 ```
@@ -611,7 +702,7 @@ rm digitalmodel/src/digitalmodel/infrastructure/common/cp_sacrificial_anode_b401
 | **Delete (P3)** | digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cp_astm_g42.py | Move logic into functional pkg (no current `iso_15589_2.py`-equivalent for G42; add one) |
 | **Delete (P3)** | digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cp_astm_g80.py | Same as G42 |
 | **Create (P3)** | digitalmodel/src/digitalmodel/cathodic_protection/astm_g42.py, astm_g80.py | Receive the logic from deleted router-side modules |
-| **Modify (P4)** | digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml | Replace `calculation_type: ABS_gn_ships_2018 # DNV_rp_b401_2011, DNV_rp_b401_2021_05, ABS_gn_ships_2018` with `standard:` + `edition:` two-key dispatch; remove dead keys |
+| **Modify (P4)** | digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml | ADD `edition:` (optional, additive — when present overrides the calculation_type's default edition); RETAIN `calculation_type:` (preserves legacy router dispatch at `cathodic_protection.py:18-29`); remove the dead-key advertisement comment (`DNV_rp_b401_2011`, `DNV_rp_b401_2021_05`). r3 fix (Codex r2 F1): plan previously contradicted itself between "keep calculation_type" (pseudocode) and "replace with standard" (this row) — resolved to ADDITIVE edition: key. |
 | **Modify (P4)** | digitalmodel/src/digitalmodel/infrastructure/base_solvers/hydrodynamics/cathodic_protection.py | Reduce `CathodicProtection.router()` from 1 853 LOC monolith to thin adapter that calls `digitalmodel.cathodic_protection.run(...)` |
 | **Delete (P4)** | digitalmodel/src/digitalmodel/infrastructure/common/cathodic_protection.py | Shim — after test imports migrated |
 | **Delete (P4)** | digitalmodel/src/digitalmodel/infrastructure/common/cp_DNV_RP_B401_2021.py | Shim — after test imports migrated |
@@ -673,7 +764,7 @@ rm digitalmodel/src/digitalmodel/infrastructure/common/cp_sacrificial_anode_b401
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| `test_yaml_calculation_type_replaced_with_standard_plus_edition` | YAML no longer carries dead keys | `cathodic_protection.yml` | `grep -c "DNV_rp_b401_2011\|DNV_rp_b401_2021_05" == 0` |
+| `test_yaml_calculation_type_retained_edition_additive` | YAML retains `calculation_type` (legacy routing preserved) AND `edition:` is an optional additive override; no dead-key comments | `cathodic_protection.yml` | (a) `grep -c "^  calculation_type:" yml >= 1` (key retained); (b) `grep -c "DNV_rp_b401_2011\|DNV_rp_b401_2021_05" yml == 0` (dead-key advertisement removed); (c) two routing scenarios: live YAML with `calculation_type: ABS_gn_ships_2018` and no `edition:` routes via legacy path; same YAML + `edition: "2021"` causes override dispatch. r3 fix (Codex r2 F1). |
 | `test_three_deprecation_shims_deleted` | Shim files gone | `ls infrastructure/common/cathodic_protection.py` | not exists (3 files checked) |
 | `test_no_test_imports_transit_old_shim_paths` | All test imports migrated | `grep -rn "from digitalmodel.infrastructure.common.cp\|cathodic_protection" tests/` | 0 matches |
 | `test_router_class_still_dispatches_legacy_calc_types` | Backward compat for any external YAML | `CathodicProtection().router(cfg_with_DNV_RP_B401_offshore)` | runs, returns result with edition_used field |
@@ -729,7 +820,10 @@ Every AC is pytest- or grep-checkable.
   - (a) `grep -c "from digitalmodel.citations" digitalmodel/src/digitalmodel/cathodic_protection/anode_sizing.py` ≥ 1
   - (b) Primary payload type stable: `uv run python -c "from digitalmodel.cathodic_protection import coating_breakdown_factor; import inspect; r = coating_breakdown_factor('FBE', 10.0, edition='2017'); assert isinstance(r, float), type(r)"` — exits 0
   - (c) Sidecar populated on result objects: `uv run python -c "from digitalmodel.cathodic_protection import design_cp_system; r = design_cp_system(...); assert hasattr(r, 'citations'); assert isinstance(r.citations, tuple)"` — exits 0
-- [ ] **AC-P4.7a (Finding 5 — legacy YAML routes correctly):** Live YAML config at `digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml` with the (current) `calculation_type: ABS_gn_ships_2018` and no `edition:` key routes successfully via `CathodicProtection().router(cfg)` and produces a result with `cfg["results"]["edition_used"]` either populated (B401 dispatches) or `None` (non-B401 dispatches like ABS). Specific assertion: `pytest digitalmodel/tests/specialized/cathodic_protection/test_router_legacy_yaml.py -v` — new test file added in P4 reads the YAML directly, runs the dispatcher, asserts no `KeyError` on `cfg["inputs"]["calculation_type"]`.
+- [ ] **AC-P4.7a (Finding 5 — legacy YAML routes correctly; r3 Codex F1 fix — both legacy and override paths):** Live YAML config at `digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml` is verified to support BOTH routing modes via two scenarios in `test_router_legacy_yaml.py`:
+  - **Scenario A (legacy path):** YAML with `calculation_type: ABS_gn_ships_2018` and NO `edition:` key routes successfully via `CathodicProtection().router(cfg)` and produces a result with `cfg["results"]["edition_used"]` either populated (for B401 dispatches) or `None` (for non-B401 dispatches like ABS); no `KeyError` on `cfg["inputs"]["calculation_type"]`.
+  - **Scenario B (additive override path):** Same YAML with `calculation_type: ABS_gn_ships_2018` PLUS `edition: "2021"` does not alter dispatch (calculation_type still wins routing); for a B401 calculation_type (e.g., `DNV_RP_B401_offshore`), adding `edition: "2017"` overrides the calc-type's default 2021 edition and the result carries `edition_used == "2017"`.
+  - Assertion: `pytest digitalmodel/tests/specialized/cathodic_protection/test_router_legacy_yaml.py -v` — both scenario tests green.
 - [ ] **AC-P4.6:** Wiki pages exist with valid frontmatter: `ls knowledge/wikis/engineering/wiki/standards/dnv-rp-b401-2017.md knowledge/wikis/engineering/wiki/standards/dnv-rp-b401-2021.md` — both exist; `grep -c "^code_id:" $page` ≥ 1 each
 - [ ] **AC-P4.7:** Router still routes legacy YAML configs (no external breakage): `uv run pytest digitalmodel/tests/specialized/cathodic_protection/test_cathodic_protection_b401.py -v` — 59 tests still pass after import migration
 - [ ] **AC-P4.8:** Full CP suite green: `uv run pytest digitalmodel/tests/cathodic_protection/ digitalmodel/tests/specialized/cathodic_protection/ digitalmodel/tests/marine_ops/marine_engineering/test_cathodic_protection_dnv.py -v` — all 500+ tests pass
