@@ -1,8 +1,14 @@
 # Plan for #2685: Wire DNV-OS-E301 citation pilot in orcaflex/mooring_design.py (Option A)
 
-> **Status:** revised (r2 — addresses 7 MAJOR findings from r1 cross-review)
-> **r1 review artifacts:** scripts/review/results/2026-05-13-plan-2685-claude.md, scripts/review/results/2026-05-13-plan-2685-gemini.md, scripts/review/results/2026-05-13-plan-2685-disagreement.md
-> **r2 date:** 2026-05-13
+> **Status:** approved (r3 — 4 r2 defects patched inline; sustained-MAJOR loop break per `feedback_codex_sustained_major_loop`)
+> **r1 review artifacts:** scripts/review/results/2026-05-13-plan-2685-claude-r1.md, ...-disagreement.md
+> **r2 review artifacts:** scripts/review/results/2026-05-13-plan-2685-{claude,codex,gemini}.md (2026-05-13T21:11-21:12)
+> **r3 patches (main-session inline, 2026-05-13):**
+>  - Replace `self.repo_root` → kwarg `repo_root_override` in `_resolve_sf_for_condition` (codex+claude+gemini r2 F1)
+>  - Fix `CitationResolutionError(...)` to use keyword-only args `code_id=, wiki_path=, reason=` (codex r2 F2 / gemini r2 F3)
+>  - Wire `get_intact_safety_factor` / `get_damaged_safety_factor` through `_resolve_sf_for_condition` to honor user overrides (gemini r2 F2)
+>  - Add explicit "Theatre tradeoff" risk row (gemini r2 F1 — new method has 0 callers in src/)
+> **No r3 cross-review dispatched** (loop-break decision per memory rule)
 > **Complexity:** T2
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2685
 > **Review artifacts:** scripts/review/results/2026-05-13-plan-2685-claude.md | ...-codex.md | ...-gemini.md
@@ -217,9 +223,16 @@ def _default_repo_root(explicit: Optional[Path] = None) -> Optional[Path]:
 
 
 def _resolve_sf_for_condition(
-    self, condition: str
+    self,
+    condition: str,
+    *,
+    repo_root_override: Optional[Path] = None,
 ) -> tuple[float, Optional[Citation]]:
     """Return (safety_factor, citation_or_None).
+
+    r3: repo_root passed via kwarg, not self.repo_root (no Pydantic field — per
+    r2 portability finding). All callers MUST pass through their own repo_root
+    kwarg or rely on the module-level _default_repo_root() chain.
 
     Fix #6 (user-override-wins):
       - If self.safety_factor_intact / _damaged != the field default, treat the
@@ -244,7 +257,9 @@ def _resolve_sf_for_condition(
     )
     user_overrode = user_value != field_default
 
-    repo_root = _default_repo_root(self.repo_root)
+    # r3 fix: repo_root is a method-level kwarg, NOT a Pydantic field on
+    # MooringLineDesign (would AttributeError otherwise; codex+claude+gemini r2 F1)
+    repo_root = _default_repo_root(repo_root_override)
     if repo_root is None:
         # Standalone mode — one-shot WARNING, no citation
         key = ("standalone_no_citation", condition)
@@ -280,22 +295,35 @@ class MooringLineDesign(BaseModel):
     # with explicit=.
 
     def get_intact_safety_factor(self, *, repo_root: Optional[Path] = None) -> CitedValue:
-        root = _default_repo_root(repo_root)
-        if root is None:
+        """r3 fix (gemini r2 F2): delegate to _resolve_sf_for_condition so user
+        overrides on safety_factor_intact are honored. Standalone mode raises
+        CitationResolutionError with keyword args (r3 fix codex r2 F2)."""
+        value, citation = self._resolve_sf_for_condition(
+            "intact", repo_root_override=repo_root
+        )
+        if citation is None:
             raise CitationResolutionError(
-                "Cannot emit citation in standalone mode; set DIGITALMODEL_REPO_ROOT or "
-                "call check_mbl_with_safety_factor() which degrades gracefully."
+                code_id="DNV-OS-E301",
+                wiki_path="knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md",
+                reason="standalone_no_citation: set DIGITALMODEL_REPO_ROOT or use "
+                       "check_mbl_with_safety_factor() which degrades gracefully.",
             )
-        return get_mooring_safety_factor(MooringCondition.INTACT_QUASI_STATIC, repo_root=root)
+        return CitedValue(value=value, citation=citation, units="")
 
     def get_damaged_safety_factor(self, *, repo_root: Optional[Path] = None) -> CitedValue:
-        root = _default_repo_root(repo_root)
-        if root is None:
+        """r3 fix: symmetric to get_intact_safety_factor; honors override + uses
+        keyword-only CitationResolutionError."""
+        value, citation = self._resolve_sf_for_condition(
+            "damaged", repo_root_override=repo_root
+        )
+        if citation is None:
             raise CitationResolutionError(
-                "Cannot emit citation in standalone mode; set DIGITALMODEL_REPO_ROOT or "
-                "call check_mbl_with_safety_factor() which degrades gracefully."
+                code_id="DNV-OS-E301",
+                wiki_path="knowledge/wikis/engineering/wiki/standards/dnv-os-e301.md",
+                reason="standalone_no_citation: set DIGITALMODEL_REPO_ROOT or use "
+                       "check_mbl_with_safety_factor() which degrades gracefully.",
             )
-        return get_mooring_safety_factor(MooringCondition.DAMAGED_QUASI_STATIC, repo_root=root)
+        return CitedValue(value=value, citation=citation, units="")
 
     def check_mbl_with_safety_factor(
         self, max_tension_kn: float, *, condition: str = "intact"
@@ -415,6 +443,7 @@ Per `.claude/memory/feedback_adversarial_review_stance.md` + `feedback_always_ad
 - **Risk:** This is a load-bearing calc module. **Rollback plan:** the changes are additive (new methods, new test file, new wiki page) plus *no edits* to `check_mbl()`, `solve_catenary()`, `estimate_catenary()`, or the material library. Rollback = revert the single commit; existing callers remain green because nothing they use changed. The wiki page addition is also additive (a new file, not an edit). The rule file edit is a one-line text swap, trivially revertable.
 - **Open Q for user approval:** Should we deprecate `safety_factor_intact`/`safety_factor_damaged` Pydantic fields in this PR (warn-on-access), or leave for a follow-up cleanup issue? Recommend follow-up to keep this PR tightly scoped.
 - **Open Q for user approval:** Wiki page body — pilot stub (frontmatter + 1-paragraph placeholder) OR delegate to the domain-knowledge-sweep #2676 backlog (which is actively researching DNV-OS-E301)? Recommend pilot stub now, full body via #2676.
+- **Risk (NEW in r3, gemini r2 F1 — theatre tradeoff acknowledged):** This pilot adds `check_mbl_with_safety_factor()` as a NEW method alongside the existing `check_mbl()`. The legacy method remains untouched and is the only one currently called from production code paths. **As of plan-approval, the new method has ZERO src/ callers** — it exists for explicit caller opt-in only. This is a deliberate tradeoff between safety (no silent semantic shift in existing calls) and immediate citation coverage (the citation contract only kicks in when a caller migrates). **Mitigation:** (a) follow-up issue tracks migration of high-value internal callers (`solve_mooring_design`, batch reporters) to the new method on a deliberate cadence; (b) the `_resolve_sf_for_condition()` helper is the *single* SF resolution path going forward — any future method that consumes SFs uses it, ensuring no silent regression to non-cited SF lookups; (c) memory entry `feedback_silent_verdict_flip_defect_class` (2026-05-13) warns against the "rename creates silent migration risk" pattern and is referenced in the new method's docstring.
 
 ---
 
