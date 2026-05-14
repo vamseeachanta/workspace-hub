@@ -262,6 +262,62 @@ def test_live_issue_list_enriches_unlabeled_issues_for_lane_e(monkeypatch) -> No
     assert any(call[:3] == ["gh", "issue", "view"] and call[3] == "401" for call in calls)
 
 
+def test_continuous_planning_pipeline_exports_reusable_readiness_primitives() -> None:
+    """Per #2665 acceptance criterion: provider-kanban.py must consume the
+    existing plan/review/marker/lane classification primitives instead of
+    re-implementing readiness logic. This test pins the stable public surface
+    so a future refactor cannot silently break the Kanban consumer.
+    """
+    public_primitives = [
+        "discover_plan_files",
+        "discover_reviews",
+        "discover_markers",
+        "marker_quality",
+        "review_summary",
+        "classify_issue",
+        "build_snapshot",
+        "label_names",
+        "priority_rank",
+        "issue_state",
+        "sha256_file",
+        "LANE_NAMES",
+    ]
+    for name in public_primitives:
+        assert hasattr(module, name), (
+            f"continuous-planning-pipeline.{name} is the documented reuse contract for "
+            f"provider-kanban; do not remove or rename without coordinating both consumers."
+        )
+
+    # Lane key contract — Kanban remaps these onto its own lane vocabulary; the
+    # set of keys must stay stable.
+    assert set(module.LANE_NAMES.keys()) == {"A", "B", "C", "D", "E"}
+
+
+def test_kanban_consumer_can_classify_shared_fixture(tmp_path: Path) -> None:
+    """Smoke test that the Kanban consumer's flow (build_snapshot on a small
+    fixture set) returns the lane/review_clean/approval_marker fields the
+    Kanban relies on. If this test starts failing, provider-kanban will too.
+    """
+    plan_path = plan(tmp_path, 9001)
+    sha = module.sha256_file(plan_path)
+    clean_reviews(tmp_path, 9001, sha=sha)
+    marker(tmp_path, 9001)
+    plan(tmp_path, 9003)  # plan-review fixture, no marker
+
+    snapshot = classify(
+        tmp_path,
+        [
+            issue(9001, ["status:plan-approved"]),
+            issue(9003, ["status:plan-review"]),
+        ],
+    )
+
+    fields_kanban_consumes = {"lane", "review_clean", "approval_marker", "warnings", "primary_action"}
+    for entry in snapshot["items"]:
+        missing = fields_kanban_consumes - set(entry.keys())
+        assert not missing, f"entry for #{entry['number']} missing Kanban-required fields: {missing}"
+
+
 def test_overnight_packet_limits_new_dispatch_candidates_to_three(tmp_path: Path) -> None:
     issues = []
     for number in range(501, 506):
