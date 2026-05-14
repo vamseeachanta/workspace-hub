@@ -60,6 +60,8 @@ Use “no material drift detected at the status level” when repo statuses are 
 
 When including verification evidence, avoid embedding exact `stat` size/mtime/checksum values inside the report until all report edits are complete. A safer pattern is: write the full report, finish all patches, run final `stat`/`sha256sum`, then put exact verification values in the final cron response (or append them only as the last report edit).
 
+If the existing `tier-1-indexing-freshness-latest.md` contains stale status or stale broken-link counts from a prior generator, explicitly note the correction in the refreshed report. Do not silently preserve stale counts: re-run false-positive-filtered checks, keep `aceengineer-website` red until `docs/registry/module-routing.yaml` exists, and keep `assetutilities` yellow when the only confirmed remaining issue is trusted-path runtime/cache/log/report noise.
+
 ### 1. Load context and identify tier-1 repos
 Read:
 - `docs/BUSINESS_BRAIN.md`
@@ -154,7 +156,8 @@ Latest evidence references:
 - `references/2026-05-09-freshness-audit-lessons.md` — status-level baseline and scanner false-positive refinements from the 2026-05-09 scheduled audit.
 - `references/2026-05-10-freshness-audit-lessons.md` — updated evidence: `assetutilities` broken-link findings refined as false positives, `aceengineer-website` remains RED for missing registry, and report verification evidence should be included when available.
 - `references/2026-05-11-freshness-audit-lessons.md` — status-level baseline, nested-repo path guardrail, current stale-reference evidence, and report verification evidence from the 2026-05-11 scheduled audit.
-- `references/2026-05-12-freshness-audit-lessons.md` — latest status-level baseline, unchanged-status wording, current stale-reference evidence, and the report verification pitfall about not embedding exact checksums before final report edits.
+- `references/2026-05-12-freshness-audit-lessons.md` — status-level baseline, unchanged-status wording, current stale-reference evidence, and the report verification pitfall about not embedding exact checksums before final report edits.
+- `references/2026-05-14-freshness-audit-lessons.md` — latest status-level baseline, corrected stale previous-report content (`assetutilities` broken-link false positive and `aceengineer-website` RED registry status), and current evidence snapshot.
 
 
 ## Daily freshness automation pattern
