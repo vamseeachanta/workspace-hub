@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-13T13:20:12.044153Z",
+  "generated_at": "2026-05-13T21:20:07.285754Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-13T13:20:10.195770Z",
+  "scorecard_generated_at": "2026-05-13T21:20:05.458726Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 11,
-      "total_candidates": 171,
+      "execution_ready_count": 13,
+      "total_candidates": 173,
       "top_issues": [
         {
           "number": 2533,
@@ -164,29 +164,6 @@
           ]
         },
         {
-          "number": 2684,
-          "title": "bug(harness): codex-cli 0.130.0 reproduces #2479 stdin-hang pattern in plan-review-fanout despite </dev/null guard",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2684",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-13T13:15:37Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2686,
           "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
@@ -209,6 +186,30 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2510,
+          "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:tooling",
+            "status:plan-approved",
+            "domain:semiconductor",
+            "domain:chip-design"
+          ],
+          "updatedAt": "2026-05-13T18:56:17Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -216,7 +217,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 25,
+      "total_candidates": 23,
       "top_issues": [
         {
           "number": 2402,
@@ -387,15 +388,16 @@
           ]
         },
         {
-          "number": 2284,
-          "title": "feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2284",
+          "number": 2345,
+          "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
           "labels": [
-            "enhancement",
             "priority:medium",
-            "cat:documentation"
+            "cat:engineering",
+            "cat:harness",
+            "domain:gtm"
           ],
-          "updatedAt": "2026-04-15T11:19:53Z",
+          "updatedAt": "2026-04-21T10:27:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",

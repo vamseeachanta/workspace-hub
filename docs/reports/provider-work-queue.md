@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-13T13:20:12.044153Z
+Generated: 2026-05-13T21:20:07.285754Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 11
-- Total routed candidates: 171
+- Execution-ready candidates: 13
+- Total routed candidates: 173
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -20,14 +20,14 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2656 chore(repo-structure): normalize workspace-hub folder/file structure | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:repo-organization, status:plan-approved |
 | #2657 chore(provider-session): remediate Hermes llm-wiki spinout path drift | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:harness, status:plan-approved |
 | #2665 feat(kanban): provider-credit approval dashboard and dispatch gates | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking, status:plan-approved |
-| #2684 bug(harness): codex-cli 0.130.0 reproduces #2479 stdin-hang pattern in plan-review-fanout despite </dev/null guard | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, status:plan-approved |
 | #2686 Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | yes | strategy/workflow/architecture language | bug, priority:high, cat:engineering, cat:bugfix, status:plan-approved |
+| #2510 feat(cad): build Python layout/CAD automation demo for chip/package geometries | yes | strategy/workflow/architecture language | priority:medium, cat:engineering, cat:tooling, status:plan-approved, domain:semiconductor, domain:chip-design |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 4
-- Total routed candidates: 25
+- Total routed candidates: 23
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Execution-ready means the issue already carries `status:plan-approved` or an exp
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | no | implementation/test/fix language | priority:high |
-| #2284 feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain | no | implementation/test/fix language | enhancement, priority:medium, cat:documentation |
+| #2345 feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot | no | implementation/test/fix language | priority:medium, cat:engineering, cat:harness, domain:gtm |
 
 ## gemini
 
