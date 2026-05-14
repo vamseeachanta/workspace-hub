@@ -1,0 +1,42 @@
+---
+name: drilling-engineering-corpus-initiative
+description: 2026-05-13 user-directed initiative to build drilling-rig technical-specs corpus in new vamseeachanta/llm-wiki drilling-engineering domain; founding source is Papkov (2026) drilling-tender AI-agent post; seed roadmap covers API drilling specs and IADC manual
+metadata: 
+  node_type: memory
+  type: project
+  originSessionId: 72238262-9b25-493d-9731-fc22b67185aa
+---
+
+User directive 2026-05-13: "we need to get all technical specs of drilling rigs lined up i.e. all the data; then unleash AI into it." Triggered creation of a new `drilling-engineering/` wiki domain in `vamseeachanta/llm-wiki` — the first new domain founded since the eight original wikis were spun up in 2026-04. Founding commit `18634cb0`, founding source is Papkov (2026) LinkedIn drilling-tender AI-agent prototype post.
+
+**Why:** the user's downstream goal is AI-assisted drilling-tender evaluation (the Papkov-post problem space — operators awarding drilling contracts on incomplete technical evaluation because procurement platforms can't evaluate technical consistency against drilling requirements and offset history). The data-quality dependency for that AI is a rigorous corpus of rig specs, drilling equipment, well plans, AFEs, offset wells, and tender-evaluation methodology — which is what this wiki domain exists to build. Per `project_llm_wiki_strategic_role.md`, coverage gaps in llm-wiki are first-class defects; the absence of drilling content was such a gap.
+
+**How to apply:**
+
+0. **Phase 1 EXECUTED and CLOSED 2026-05-13.** Parent epic [llm-wiki#49](https://github.com/vamseeachanta/llm-wiki/issues/49) CLOSED. All 5 sub-issues CLOSED: [#51](https://github.com/vamseeachanta/llm-wiki/issues/51) casing (commit `bf21f20e`, 6 pages), [#52](https://github.com/vamseeachanta/llm-wiki/issues/52) drill pipe (commit `fc740ab4`, 8 pages), [#50](https://github.com/vamseeachanta/llm-wiki/issues/50) drilling rigs (commit `f7b6d1d9`, 18 pages), [#53](https://github.com/vamseeachanta/llm-wiki/issues/53) drill bit (commit `811001af`, 7 pages), [#54](https://github.com/vamseeachanta/llm-wiki/issues/54) rod pump (commit `7f1229e8`, 9 pages). Execution sequence: #51 → #52 → #50 → #53 → #54 (one commit per sub-issue, pushed sequentially to origin/main as fast-forward from `18634cb0`).
+
+1. **Final state after Phase 1.** drilling-engineering wiki at **49 pages**: 15 standards, 27 concepts, 7 entities. Source count still 1 (Papkov founding).
+1b. **worldenergydata cross-reference layer landed 2026-05-13 in commit [`d9b53e90`](https://github.com/vamseeachanta/llm-wiki/commit/d9b53e90).** Added a "Structured rig-fleet data — pointer to worldenergydata" section to `overview.md` plus a per-stub `Data` section on each of the 6 drilling-contractor fleet entities (Transocean, Valaris, Noble, Diamond, Seadrill, H&P FlexRig). Pointers anchor on `worldenergydata/data/modules/vessel_fleet/curated/drilling_rigs.csv` (2,211 rigs, BSEE-WAR-based, refreshed 2026-05-05), the Noble+Seadrill vendor-scrape JSONs at `data/modules/vessel_fleet/raw/contractor_scrape/`, the site-validation provenance doc, and tracker issue [worldenergydata#127 WRK-1204](https://github.com/vamseeachanta/worldenergydata/issues/127). **No data duplicated into the wiki** — pointers + filter expressions + per-contractor scope-edge notes only. Vendor→curated merge work parked at worldenergydata#127; the May-6 worktree `agent-a189ba5c6b942455a` is untouched (deferred to next session per parallel-work safety memory).
+
+1a. **Phase 2 EXECUTED and CLOSED 2026-05-13.** Parent epic [llm-wiki#55](https://github.com/vamseeachanta/llm-wiki/issues/55) CLOSED. All 5 sub-issues CLOSED: [#56](https://github.com/vamseeachanta/llm-wiki/issues/56) BOP+well-control (`1fef450e`, 9 pages), [#57](https://github.com/vamseeachanta/llm-wiki/issues/57) drilling fluids (`b84e1229`, 8 pages), [#58](https://github.com/vamseeachanta/llm-wiki/issues/58) cementing (`a21d1275`+`8d2b50b7`+`6717e568`, 8 pages + 2 fixups), [#59](https://github.com/vamseeachanta/llm-wiki/issues/59) well services (`094201a0`, 8 pages), [#60](https://github.com/vamseeachanta/llm-wiki/issues/60) well-construction concept pack / Papkov AI consumer pack (`0d3f2ac3`+`2daa8171`, 7 pages + 1 fixup). Wiki grew **49 → 89 pages**. Sub-issue #60 is the explicit Papkov AI-agent consumer integration anchor — `drilling-tender-evaluation.md` names well-plan + AFE + offset-well-analysis + DDR + BHA + Phase 1 standards as the bid-pathology-detection input set.
+2. **Phase 3 deferred scope** (when user signals):
+   - Underbalanced drilling, managed-pressure drilling (MPD), dual-gradient drilling specialty topics
+   - Subsea wellhead, surface BOP for floating rigs, riser-fill-up / annular-friction calcs (riser-engineering crosses into marine-engineering)
+   - Plug-and-abandonment operations
+   - Specific drilling-rig entity pages (named rigs from the 6 fleet stubs created Phase 1)
+   - Production-engineering domain spin-off (artificial-lift other than rod pump, completions) — re-route candidate for `artificial-lift-method-selection.md`
+2a. **Edit-tool-freshness operational lesson (Phase 2 fixups).** When a single conversation turn does substantial Write work (~10+ files) followed by Edit calls on a previously-edited file (like index.md), the Edit-tool's "File has not been read yet" guard can silently invalidate. Two fixup commits required in Phase 2 (`8d2b50b7` for #58, `2daa8171` for #60). Mitigation: Read the target file fresh immediately before an Edit chain when the same turn has done substantial preceding Write work. Pattern is now documented in [`feedback_edit_tool_freshness_window_after_writes.md`] (to be created).
+3. **Cross-wiki anchors** declared in `wikis/drilling-engineering/CLAUDE.md` and `overview.md`:
+   - `marine-engineering/` for MODU stability, station-keeping, marine operations during rig-move
+   - `naval-architecture/` for drillship hull, MODU intact and damage stability (links into `concepts/damage-stability.md` and `concepts/intact-stability-criteria.md`)
+   - `engineering-standards/` for API drilling specs once the per-document standards pages are written
+   - `asset-management/` for drilling-rig as an offshore asset (SCE classification, integrity management)
+4. **License discipline.** Vendor-confidential drilling-equipment manuals (NOV, SLB, Halliburton, Baker Hughes) stay off-repo per the 2026-05-05 governance rule; cite the publisher (API / IADC / IOGP / SPE) standard or peer-reviewed paper as anchor, not the vendor brochure. Drilling-contractor fleet listings should reference public-facing fleet pages with attribution.
+5. **V18 anti-rec #8 status.** Founding this domain overrode the "no new wiki creation absent explicit signal" anti-rec. The user's directive is the explicit signal of record. V19 audit (2026-06-09) should treat `drilling-engineering/` as authorized, not flag as drift.
+6. **Routing future drilling content.** When new drilling-related material arrives (LinkedIn posts, SPE papers, IADC publications, rig spec sheets), default to `drilling-engineering/`. Cross-reference (not duplicate) into `naval-architecture/` or `marine-engineering/` when the topic straddles disciplines (e.g., drillship hull form, MODU stability).
+
+**Cross-references:**
+
+- `project_llm_wiki_external_post_ingest_workflow.md` — the 8-step workflow used to land Papkov; now references the drilling-engineering domain in its routing list.
+- `project_llm_wiki_strategic_role.md` — the strategic frame that makes coverage gaps first-class defects.
+- `project_llm_wiki_spunout.md` — repo location, license boundary, pipeline-stays-in-workspace-hub mechanics. Domain count there should be updated 8 → 9 next time that memory is touched.

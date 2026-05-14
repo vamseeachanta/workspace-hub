@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-14T01:20:07.389454Z",
+  "generated_at": "2026-05-14T05:20:12.453720Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -16,7 +16,7 @@
         "domain:repo-organization",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-03T19:27:15Z",
+      "updatedAt": "2026-05-14T03:37:50Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -51,7 +51,7 @@
         "domain:notification",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-03T12:47:12Z",
+      "updatedAt": "2026-05-14T03:35:51Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -85,7 +85,7 @@
         "domain:testing",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-04T09:03:49Z",
+      "updatedAt": "2026-05-14T03:42:24Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -152,7 +152,7 @@
         "cat:harness",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-08T15:03:05Z",
+      "updatedAt": "2026-05-14T03:24:45Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -186,7 +186,40 @@
         "domain:agent-cost-tracking",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-12T23:24:58Z",
+      "updatedAt": "2026-05-14T03:56:50Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2685,
+      "title": "Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2685",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:engineering",
+        "cat:knowledge-domain",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-14T02:23:47Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -219,7 +252,7 @@
         "cat:bugfix",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-13T11:36:36Z",
+      "updatedAt": "2026-05-14T02:08:00Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -228,39 +261,6 @@
       "provider_status": "underused",
       "work_type": [
         "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2510,
-      "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
-      "labels": [
-        "priority:medium",
-        "cat:engineering",
-        "cat:tooling",
-        "status:plan-approved",
-        "domain:semiconductor",
-        "domain:chip-design"
-      ],
-      "updatedAt": "2026-05-13T18:56:17Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
         "implementation",
         "strategy"
       ],

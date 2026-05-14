@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-05-14T01:20:07.389454Z
+Generated: 2026-05-14T05:20:12.453720Z
 Apply mode: False
 Threshold: 0.9
 
@@ -12,8 +12,8 @@ Threshold: 0.9
 | #2656 chore(repo-structure): normalize workspace-hub folder/file structure | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2657 chore(provider-session): remediate Hermes llm-wiki spinout path drift | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2665 feat(kanban): provider-credit approval dashboard and dispatch gates | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #2685 Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2686 Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #2510 feat(cad): build Python layout/CAD automation demo for chip/package geometries | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | agent:gemini | 0.60 | no | priority-labeled, strong-gemini-language-match, provider-highest-priority |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
