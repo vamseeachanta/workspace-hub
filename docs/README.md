@@ -15,6 +15,7 @@ docs/
 ├── README.md                        # This file - main index
 ├── WORKSPACE_HUB_CAPABILITIES_SUMMARY.md  # Full capabilities overview
 ├── WORKSPACE_HUB_REPOSITORY_OVERVIEW.md   # Repository relationships & navigation
+├── REPO_MISSION_PORTFOLIO.md              # Per-repo mission/objective + routing rules (#2533)
 │
 ├── modules/                         # All module documentation
 │   ├── ai/                          # AI agent & Claude documentation

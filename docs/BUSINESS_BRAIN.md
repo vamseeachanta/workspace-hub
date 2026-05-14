@@ -13,6 +13,8 @@ No team members. AI agents are the workforce.
 
 ## Repositories (24 active, GitHub: vamseeachanta)
 
+> Canonical per-repo mission/objective + routing rules → [`docs/REPO_MISSION_PORTFOLIO.md`](REPO_MISSION_PORTFOLIO.md) (source-of-truth at `data/document-index/repo-portfolio-inventory.yaml`).
+
 ### Tier-1 (actively developed, cross-repo dependencies)
 | Repo | Domain | Language | Visibility |
 |------|--------|----------|------------|

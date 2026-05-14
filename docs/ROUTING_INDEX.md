@@ -6,6 +6,8 @@ Source contract: `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
 
 This is the curated workspace-hub routing surface for tier-1 issue execution. Use it to map issue type to repo and canonical path before using broad search or raw inventories.
 
+> Portfolio-wide mission/objective + per-repo routing rules (Tier-1, Tier-2, Tier-3, support, archive) → [`docs/REPO_MISSION_PORTFOLIO.md`](REPO_MISSION_PORTFOLIO.md). This index remains Tier-1 routing-only.
+
 ## Portfolio Matrix
 
 | Issue type | Repo | Canonical path | First validation surface |
