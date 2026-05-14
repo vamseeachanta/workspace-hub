@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-05-12
+> Last captured: 2026-05-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -56,7 +56,7 @@
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` tools bind to main session; subagents can't drive Chrome; partition: main=browser, subagents=research
 - [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive (any volume) has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome; stay on archive+filter surface
 - [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures up to 50 frames w/ click indicators; audit/skill-authoring/compliance artifact; start_recording → export to `docs/sessions/`
-- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's default `docs/superpowers/specs/` path is silently gitignored (workspace-hub `.gitignore:438`); write durable specs to `docs/governance/` instead *verified: 2026-05-13*
+- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's default `docs/superpowers/specs/` path is silently gitignored (workspace-hub `.gitignore:438`); write durable specs to `docs/governance/` instead
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — when Hermes runs "remove unrelated files" cleanup loops on main, parallel commits get reverted within minutes; preflight `pgrep -af 'git (rebase|stash push|commit|merge|reset|checkout)'` and use a worktree+feature-branch if active
 - [git switch --discard-changes](feedback_git_switch_discard_changes_pattern.md) — use `git switch --discard-changes` (not `git checkout`) when `.claude/state/` is dirty; plain checkout aborts silently and downstream cp+commit lands on the wrong branch (recurred 2x in 2026-04-25 wave-3/wave-5 contamination)
 - [x11vnc vs TigerVNC for headless](feedback_x11vnc_vs_tigervnc_headless.md) — x11vnc is a screen mirror and crashloops on headless hosts (no GUI session to attach to); use TigerVNC `vncserver :N` instead — verified 2026-04-27 ace-linux-2 (67,189 crashloops in 4 days)
@@ -82,17 +82,25 @@
 - [PDF e-signature style default](feedback_pdf_esignature_style_default.md) — for PDF signing (paychecks, admin), default to typed cursive (Z003 chancery) + "Electronically signed" + date; avoid bitmap signature images (filename-mislabel risk)
 - [Parallel gh issue create reverses numbers](feedback_parallel_gh_issue_create_reverses_numbers.md) — `gh issue create &` in parallel assigns numbers in apparent reverse arrival order; never bake cross-refs at create time, audit titles by `--json` immediately after batch
 - [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
-- [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active` *stale: 2026-05-14*
+- [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
 - [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/`
-- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText before counting turns; user prompt often absent *stale: 2026-05-13*
+- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText before counting turns; user prompt often absent
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` alone hangs >30s at digitalmodel/.venv even though Python works; rely on CI for verification; verify syntax via `py_compile` not pytest
 - [Git status lock storm from Claude subagents](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` from Claude PPIDs blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses; don't kill the parent claude
 - [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files; reruns regenerate HTML in place; do NOT create a `/html` skill (workspace-hub#2663 codifies)
+- [PDF OCR fallback chain](feedback_pdf_ocr_fallback_chain.md) — when pdftotext AND PyMuPDF both return 0 chars, PDF is image-rendered; fall back to PyMuPDF render at 300 DPI → tesseract --psm 6; verified 2026-05-12 on recruiter-supplied JDs
+- [Parallel branch checkout reverts working dir](feedback_parallel_branch_checkout_working_dir.md) — parallel session `git checkout`-ing a feature branch reverts your working dir's file contents; verify with `git reflog` + `git branch --show-current` before re-applying "missing" commits
+- [Silent verdict-flip defect class](feedback_silent_verdict_flip_defect_class.md) — two impls citing same standard but different sections/editions can return OPPOSITE stable/unstable verdicts at design margin. Both legitimately "compliant". Found 2026-05-13 in cathodic protection + on-bottom stability. Citations need section+edition, not just code_id.
+- [r3-inline loop-break pattern](feedback_r3_inline_loop_break_pattern.md) — when r1/r2 surface DIFFERENT defects each round (revision introducing fresh issues), apply r3 main-session inline patches and label plan-approved; do NOT dispatch r3 review. Used 2026-05-13 on plans #2685+#2694. Distinct from same-defect sustained-MAJOR anti-pattern.
+- [Skill-content scanner docs tension](feedback_skill_content_scanner_docs_tension.md) — ops-doc skills trip the credential-access scanner on `~/.hermes/.env`, `curl ${TOKEN}`, etc.; use `${HERMES_HOME}/.env` placeholder + push literal commands to docs/runbooks/ (unscanned). 18 CRITICAL→0 fix landed 2026-05-13 commit 6702bf5ac.
+- [N-night blocker → replan](feedback_n_night_blocker_promote_to_replan.md) — 3+ nightly-batch comments with same root-cause blocker = halt polling, surface design-replan. Observed #2403 (6 nights, same prereq); 6th invocation halted at preflight rather than spawning blocked-comment #7.
+- [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts loaded via spec_from_file_location must register in sys.modules BEFORE exec_module if they contain @dataclass; otherwise `AttributeError: 'NoneType'` at decoration time. Fixed 2026-05-13 in 4 #2665 tests.
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
 - [devaKrishna developmental pace](project_devakrishna_developmental_pace.md) — singular/plural rule generalization taking 5+ yrs; calibrate goals to 6–24mo per micro-milestone; functional > academic; activity menus > goal hierarchies; strengthens Plan-A signal at achantas-data#73
+- [Krishna typing tools rotation](project_krishna_typing_tools.md) — typing.com stall 2026-05-12; rotate TypingClub + Dance Mat Typing + Keybr; functional typing (10min/day own content) > lesson-tree completion
 - [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready to send, BSEE fix landed, open issues
 - [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots, 3 date conventions, 3 bundle formats across repos; scan all 4 paths for "where's the GTM pack?"; tracked at #2662
 - [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250+ datasets surveyed 2026-05-05, top 12 candidates curated in repo's SOURCES_kaggle.md; gate ingest on downstream consumer
@@ -118,17 +126,22 @@
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
 - [digitalmodel uv compile-bytecode](project_digitalmodel_uv_compile_bytecode.md) — flipping both `compile-bytecode` settings to `false` resolved silent uv-sync finalize stall; if hang returns first verify the flag drift
 - [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
-- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24 *verified: 2026-05-14*
+- [/goal catalog](project_goal_catalog.md) — #2695 catalog + .claude/rules/goal-invocation.md rule + weekly picklist; D7 brain/hands model; #2696 Hermes upgrade dep
+- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24
 - [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser automation only for interactive UI tasks
 - [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing principle sanctioned across eng/marine/naval wikis; **#2471 is CSA-Z276-only** (verified 2026-04-25), referenced codification plan does not exist; general offshore/marine substrate now scoped to aceengineer-strategy aces-#4
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve/uplift/add via public + legally-sanitized private sources; coverage gaps are first-class defects
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest pattern; first-run 2026-05-07 (Sherwood naval-arch + Rötzer wave-shoaling)
+- [drilling-engineering corpus initiative](project_drilling_engineering_corpus_initiative.md) — 2026-05-13 user-directed 9th wiki domain founded with Papkov AI-agent post; seed roadmap covers API 4F/7K/8C, IADC
+- [production-engineering corpus initiative](project_production_engineering_corpus_initiative.md) — 2026-05-13 10th wiki domain founded as DE scope-edge completion; PE Phase 1 epic+5 sub-issues at #61-#66 status:plan-review
+- [Domain Knowledge Sweep](project_domain_knowledge_sweep.md) — multi-source domain research (#2667); R1-R6 subissue tree; Domain 1 Hydrodynamics launched 2026-05-12 (#2668, subissues #2669-#2674)
 - [llm-wiki V18 corpus-freeze](project_llm_wiki_v18_corpus_freeze.md) — 335pp freeze 2026-05-10 iter-60; cron-only; V19 2026-06-09; URL queue + 10 anti-rec list
-- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/` *stale: 2026-05-13*
+- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
 - [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
 - [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; nested in workspace-hub at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (independent .git, gitignored from hub); team-merging open
+- [Harbour Zama application 2026-05-12](project_harbour_zama_application.md) — applied for Senior Gas Export Pipeline Engineer via Andy Garnett (Rock Oilfield); Jan 2026 va_resume.docx sent unrefreshed; ~$150/hr presumed W-2; awaiting Andy reply with (GV) clarification, gas-line phase, W-2 confirmation, interview scheduling
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing
@@ -142,7 +155,7 @@
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
 - [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data
-- [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration *stale: 2026-05-13*
-- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present *stale: 2026-05-14*
+- [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
+- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present
 - [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (research preview, 2026-05-06); NOT in Claude Code CLI or Claude.ai; auto vs review-before-apply policy
 - [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for workspace-hub#2663/#2664; examples gallery at https://thariqs.github.io/html-effectiveness/

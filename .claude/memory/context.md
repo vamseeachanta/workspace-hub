@@ -23,7 +23,7 @@
 - `digitalmodel/` — **separate git repo** (vamseeachanta/digitalmodel.git), gitignored by parent
   - Commits MUST be made from inside `digitalmodel/` — not from workspace-hub root
 - `aceengineer-strategy/` — private GTM strategy repo, nested, gitignored by parent
-- `worldenergydata/` — energy data sub-repo *verified: 2026-05-13*
+- `worldenergydata/` — energy data sub-repo
 
 ## Windows Path Conventions
 
@@ -51,6 +51,6 @@ Git IS the sync mechanism.
 ## Legal Compliance
 
 - `.legal-deny-list.yaml` — 15 client name patterns, repo root
-- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents *verified: 2026-05-14*
+- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents
 - Catalogs (`dde-*`, `conference-*`) are excluded from scanning
 - MANDATORY for all document-intelligence and resource work
