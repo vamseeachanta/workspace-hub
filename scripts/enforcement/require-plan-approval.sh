@@ -10,12 +10,23 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 # ── Parse arguments ──────────────────────────────────────────────────────
 STRICT_MODE="${FORCE_PLAN_GATE_STRICT:-0}"
+# Strict-issue mode (added per #2665): require an issue-specific marker only;
+# never fall back to "any recent marker" evidence. Triggered by either:
+#   - explicit --require-issue <N> CLI flag, OR
+#   - FORCE_PLAN_GATE_STRICT_ISSUE=1 env var (asks for --require-issue when set)
+STRICT_ISSUE_MODE="${FORCE_PLAN_GATE_STRICT_ISSUE:-0}"
+REQUIRE_ISSUE=""
 
-for arg in "$@"; do
-  case "$arg" in
+# Manual arg-parser (can't use getopt because we need to preserve --strict / --check)
+while [[ $# -gt 0 ]]; do
+  case "$1" in
     --strict) STRICT_MODE=1 ;;
     --check) STRICT_MODE=0 ;;  # advisory mode
+    --require-issue) REQUIRE_ISSUE="${2:-}"; STRICT_ISSUE_MODE=1; shift ;;
+    --require-issue=*) REQUIRE_ISSUE="${1#*=}"; STRICT_ISSUE_MODE=1 ;;
+    --strict-issue) STRICT_ISSUE_MODE=1 ;;
   esac
+  shift || true
 done
 
 # ── Detect if this is an engineering commit ──────────────────────────────
@@ -46,7 +57,21 @@ needs_plan_approval() {
 # ── Check for plan approval evidence ─────────────────────────────────────
 has_plan_approval() {
   local repo_root="$1"
-  
+
+  # Strict-issue mode (#2665): only accept the named issue's marker. Never
+  # fall back to broad/recent-marker evidence — that would let approval for
+  # one issue authorize implementation commits for another.
+  if [[ "$STRICT_ISSUE_MODE" == "1" ]]; then
+    if [[ -z "$REQUIRE_ISSUE" ]]; then
+      return 1  # ambiguous: strict-issue mode requires explicit --require-issue
+    fi
+    local issue_marker="${repo_root}/.planning/plan-approved/${REQUIRE_ISSUE}.md"
+    if [[ -f "$issue_marker" ]]; then
+      return 0
+    fi
+    return 1
+  fi
+
   # Check 1: .planning/plan-approved/ directory has recent marker
   # Use -print -quit to avoid pipefail/SIGPIPE false negatives when many markers exist.
   if find "${repo_root}/.planning/plan-approved/" -name "*.md" -newer "${repo_root}/.planning/STATE.md" -print -quit 2>/dev/null | grep -q .; then
@@ -92,15 +117,28 @@ main() {
   
   # No approval found
   local msg="[plan-gate] NO APPROVAL: Implementation changes detected without plan approval."
-  
+  if [[ "$STRICT_ISSUE_MODE" == "1" && -z "$REQUIRE_ISSUE" ]]; then
+    msg="[plan-gate] STRICT-ISSUE MODE: --require-issue <N> not set; cannot infer the responsible issue."
+  elif [[ "$STRICT_ISSUE_MODE" == "1" && -n "$REQUIRE_ISSUE" ]]; then
+    msg="[plan-gate] STRICT-ISSUE MODE: no marker at .planning/plan-approved/${REQUIRE_ISSUE}.md for issue #${REQUIRE_ISSUE}."
+  fi
+
   if [[ "$STRICT_MODE" == "1" ]]; then
     echo "$msg"
     echo ""
     echo "To resolve:"
-    echo "  1. Create a plan: /gsd:plan"
-    echo "  2. Get it reviewed: /gsd:review --phase 1"
-    echo "  3. Approval creates marker in .planning/plan-approved/"
-    echo "  4. Then commit and push"
+    if [[ "$STRICT_ISSUE_MODE" == "1" && -z "$REQUIRE_ISSUE" ]]; then
+      echo "  - Pass --require-issue <N> explicitly: $0 --strict --require-issue 1234"
+      echo "  - Or unset FORCE_PLAN_GATE_STRICT_ISSUE if issue-specific check is unintended."
+    elif [[ "$STRICT_ISSUE_MODE" == "1" ]]; then
+      echo "  - Create marker for the named issue: .planning/plan-approved/${REQUIRE_ISSUE}.md"
+      echo "  - Or remove --require-issue to fall back to broader approval evidence."
+    else
+      echo "  1. Create a plan: /gsd:plan"
+      echo "  2. Get it reviewed: /gsd:review --phase 1"
+      echo "  3. Approval creates marker in .planning/plan-approved/"
+      echo "  4. Then commit and push"
+    fi
     echo ""
     echo "To bypass (logged): FORCE_PLAN_GATE=1 git commit"
     
