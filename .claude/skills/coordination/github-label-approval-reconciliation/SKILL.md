@@ -32,6 +32,8 @@ Class of task: live GitHub approval-state reconciliation across labels, local ap
    - Live GitHub `status:plan-approved` is authoritative evidence of user approval.
    - If local `.planning/plan-approved/NNN.md` is missing, treat that as execution-prep governance cleanup, not as more user input.
    - Do not resurface those issues as needing approval once the live label is verified.
+   - Make approval transitions idempotent: if the user says an issue is approved but live GitHub already has `status:plan-approved`, do not treat absent `status:plan-review` as an error or blocker. Verify the current labels, then proceed to local marker/plan-status reconciliation.
+   - For combined requests like “show gh #NNN” plus “approved GH #NNN”, satisfy both: display the live issue link/state and reconcile the approval state in the same pass.
 
 3. **Separate queues in the response**
    - Remaining user approval needed: open issues still labeled `status:plan-review`.
