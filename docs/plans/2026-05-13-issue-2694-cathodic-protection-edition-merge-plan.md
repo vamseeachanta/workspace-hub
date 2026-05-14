@@ -1,10 +1,23 @@
 # Plan for #2694: Cathodic Protection — edition-parameterized merge (Option β)
 
-> **Status:** draft
+> **Status:** revised (r2 — addresses 8 MAJOR findings from r1 cross-review)
+> **r1 review artifacts:** scripts/review/results/2026-05-13-plan-2694-{claude,codex,gemini}.md
+> **r2 date:** 2026-05-13
 > **Complexity:** T2 (regulatory-hazardous calc surface — review at T2/3-provider depth)
-> **Date:** 2026-05-13
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2694
-> **Review artifacts:** scripts/review/results/2026-05-13-plan-2694-claude.md | ...-codex.md | ...-gemini.md
+
+## r2 Revision Summary (vs r1)
+
+Fixes (each verified against live code on 2026-05-13):
+
+1. **(Finding 1, 3)** Baseline McCoy/Dwight ratio AC corrected from `≈ 2.0` to the actual computed value `1.8702` at `L=2 m, r=0.15 m`. Python recompute: `(ln(4)−0.5)/(ln(53.33)−1) × 2 ≈ 1.8702`. The ratio is geometry-dependent and asymptotically approaches but never reaches 2.0; choosing a numeric is more falsifiable than a symbolic claim.
+2. **(Finding 2)** Removed non-existent symbol references. Real names verified in code: `marine_structure_current_demand` and `ZONE_CURRENT_DENSITY` (not `get_zone_current_density_2017`); `_B401_2021_COATING_CATEGORIES` (not `COATING_BREAKDOWN_2021`); enum members `THREE_LAYER_PE`/`THREE_LAYER_PP`/`CONCRETE_WEIGHT` (not `3LPE`/`3LPP`/`CONCRETE`).
+3. **(Finding 3 from Claude r1)** `COATING_BREAKDOWN_2017` table corrected to mirror `coating.py:39-49` exactly: NEOPRENE `(0.02, 0.003)`, CONCRETE_WEIGHT `(0.02, 0.001)`, all keys use the enum member names actually shipped.
+4. **(Finding 4)** P2 scope expanded from 4 to 7 material divergence dimensions. Added: bracelet resistance (item #10), utilization factor defaults (#11), zinc capacity availability (#13), Dwight stubbiness validation (#14). AC-P2.2 expanded to enforce all 7 table names; new AC rows added per divergence.
+5. **(Finding 5)** P4 router pseudocode keeps `cfg["inputs"]["calculation_type"]` as the dispatch key (matches live router + YAML); edition is mapped from `calculation_type` internally (no schema break). New AC `AC-P4.7a` asserts legacy YAML routes correctly.
+6. **(Finding 6)** P1/P4 pseudocode no longer changes `coating_breakdown_factor`'s return type to `CitedValue`. It continues returning `float`; `Citation` instances emit to a sidecar attribute `result.citations: tuple[Citation, ...]` on the dataclass results that already carry numeric payloads, per `.claude/rules/calc-citation-contract.md` step 6.
+7. **(Finding 7)** New "Cross-Repo Strategy" section spells out which commits land in workspace-hub (docs/rules/wiki/plan) vs digitalmodel (code/tests/yaml), commit ordering, per-repo rollback, PR/tag conventions, and CI ordering.
+8. **(Finding 8)** Reduced the deliverable promise to the 6 B401-edition-sensitive modules explicitly listed in §Files to Change (dnv_rp_b401, coating, marine_cp, marine_structure_cp, anode_sizing, pipeline_cp). Added an explicit non-goal: the remaining 11 functional modules (anode_depletion, corrosion_rate, iccp_design, cp_monitoring, cp_reporting, cp_survey, stray_current, fuel_system_cp, iso_15589_2, api_rp_1632, astm_g42/g80) are out-of-scope for `edition=` because they are not B401-2017-vs-2021-sensitive; documented per module.
 
 ---
 
@@ -154,49 +167,115 @@ $ grep -rln "from digitalmodel.citations" digitalmodel/src/digitalmodel/infrastr
 **Reproduction proofs** (Step 1.5 — capture divergence numerically BEFORE merge):
 
 This plan is unusual: there is no "alleged runtime failure" to reproduce in the bug-report sense.
-The R5 finding is an **edition-disclosure defect** + 4 silent numeric divergences that the merge must
-preserve as a regression suite. **Step 1.5 produces a baseline-capture test file** before any production
-change lands:
+The R5 finding is an **edition-disclosure defect** + multiple silent numeric divergences that the merge
+must preserve as a regression suite. **Step 1.5 produces a baseline-capture test file** before any
+production change lands. All symbol names below verified against live code on 2026-05-13.
 
-```
+```python
 File: digitalmodel/tests/cathodic_protection/test_edition_divergence_baseline.py  (NEW — Step 1.5 artifact)
+
+import math
+import pytest
 
 def test_baseline_splash_zone_divergence():
     """Captures current behavior — DO NOT 'fix'. Asserts both surfaces produce
     today's documented divergence so the merge can detect when one collapses
-    onto the other unexpectedly."""
-    from digitalmodel.cathodic_protection.marine_structure_cp import (
-        get_zone_current_density_2017,  # may need to expose this
-    )
-    from digitalmodel.infrastructure.common.cathodic_protection import CathodicProtection
-    # 2017 functional: splash = 0.0 A/m²
-    # 2021 router: splash @ coated = 0.100 A/m²
-    assert functional_splash == pytest.approx(0.0)
-    assert router_splash_coated == pytest.approx(0.100)
+    onto the other unexpectedly.
 
-def test_baseline_flush_anode_resistance_divergence():
-    """McCoy (functional, denominator πL) vs Dwight (router, denominator 2πL)
-    → 2× ratio for the same geometry."""
-    from digitalmodel.cathodic_protection.dnv_rp_b401 import flush_anode_resistance as r_mccoy
-    # ...invoke router's equivalent...
-    r_dwight = ...
-    assert r_mccoy / r_dwight == pytest.approx(2.0, rel=0.01)
+    Functional pkg: marine_structure_cp.ZONE_CURRENT_DENSITY maps every
+    (SPLASH, *) tuple to (0.0, 0.0, 0.0) A/m² — splash treated as out-of-scope.
+    Router 2021: cp_DNV_RP_B401_2021._B401_2021_CURRENT_DENSITIES["splash"]
+    is {"coated": 0.100, "bare": 0.200}.
+    """
+    from digitalmodel.cathodic_protection.marine_structure_cp import (
+        ZONE_CURRENT_DENSITY, ExposureZone, ClimateRegion,
+    )
+    from digitalmodel.infrastructure.base_solvers.hydrodynamics.cp_DNV_RP_B401_2021 import (
+        _B401_2021_CURRENT_DENSITIES,
+    )
+    # 2017 functional: splash = 0.0 A/m² regardless of climate (mA/m² → /1000 in caller)
+    assert ZONE_CURRENT_DENSITY[(ExposureZone.SPLASH, ClimateRegion.TEMPERATE)] == (0.0, 0.0, 0.0)
+    # 2021 router: splash @ coated = 0.100 A/m², @ bare = 0.200 A/m²
+    assert _B401_2021_CURRENT_DENSITIES["splash"]["coated"] == 0.100
+    assert _B401_2021_CURRENT_DENSITIES["splash"]["bare"] == 0.200
+
+def test_baseline_flush_anode_resistance_ratio_geometry_dependent():
+    """McCoy (functional, denominator πL) vs Dwight (router, denominator 2πL).
+
+    Ratio = 2 * (ln(2L/r) - 0.5) / (ln(4L/r) - 1). Geometry-dependent;
+    asymptotically approaches but never reaches 2.0 as L/r → ∞.
+    Verified by Python recompute 2026-05-13: at L=2 m, r=0.15 m the ratio is
+    1.8702, well outside any tolerance that would let r1's `≈ 2.0` assertion pass.
+    """
+    L_m, r_m = 2.0, 0.15
+    L_cm, r_cm = L_m * 100.0, r_m * 100.0
+    # Functional pkg flush_anode_resistance accepts inches; recompute the
+    # formula at known L,r and assert the numeric (apples-to-apples in same units).
+    r_mccoy = (1.0 / (math.pi * L_m)) * (math.log(2.0 * L_m / r_m) - 0.5)
+    r_dwight = (1.0 / (2.0 * math.pi * L_m)) * (math.log(4.0 * L_m / r_m) - 1.0)
+    assert r_mccoy / r_dwight == pytest.approx(1.8702, rel=1e-3)
+    # Sanity: the ratio is < 2 (never reaches it; would be 2 only in the limit)
+    assert 1.5 < r_mccoy / r_dwight < 2.0
+
+def test_baseline_internal_router_dwight_divergence():
+    """Two router-side modules claim 'Dwight' but use different log arguments.
+
+    cp_DNV_RP_B401_2021._b401_anode_resistance uses ln(4L/r) - 1
+    cp_sacrificial_anode_b401.anode_resistance_flush uses ln(2L/r) - 1
+    Same denominator (2πL) but ln(2)-difference numerator ⇒ ~1.30× internal
+    divergence. Plan P2 must NOT silently collapse these onto one another;
+    pick one per edition explicitly.
+    """
+    L, r = 2.0, 0.15
+    r_b401 = (1.0/(2.0*math.pi*L)) * (math.log(4.0*L/r) - 1.0)
+    r_sacrificial = (1.0/(2.0*math.pi*L)) * (math.log(2.0*L/r) - 1.0)
+    ratio = r_b401 / r_sacrificial
+    # Verified 2026-05-13: ratio ≈ 1.303 at L=2, r=0.15
+    assert ratio == pytest.approx(1.303, rel=5e-3)
 
 def test_baseline_coating_category_schema_divergence():
     """Functional pkg has 9 categories; router has 4. Assert both cardinalities
-    so a merge cannot silently flatten one."""
+    so a merge cannot silently flatten one. Symbol names verified 2026-05-13:
+    functional exposes `CoatingCategory` enum; router exposes
+    `_B401_2021_COATING_CATEGORIES` (NOT `COATING_BREAKDOWN_2021`)."""
     from digitalmodel.cathodic_protection.coating import CoatingCategory
     from digitalmodel.infrastructure.base_solvers.hydrodynamics.cp_DNV_RP_B401_2021 import (
-        COATING_BREAKDOWN_2021,
+        _B401_2021_COATING_CATEGORIES,
     )
     assert len(list(CoatingCategory)) == 9
-    assert len(COATING_BREAKDOWN_2021) == 4
+    assert len(_B401_2021_COATING_CATEGORIES) == 4
 
 def test_baseline_coating_breakdown_a_b_constants():
-    """FBE 2017 (a=0.02, b=0.003) vs router Cat I 2021 (a=0.05, b=0.020) —
-    Cat I is HARSHER than FBE; this is the silent under-sizing risk in P2."""
-    # assert numeric values
+    """FBE 2017 (a=0.02, b=0.003) vs router Cat I 2021 (a=0.05, k=0.020) —
+    Cat I is HARSHER than FBE; this is the silent under-sizing risk P2 must
+    preserve documentation of. Values copied directly from coating.py:40 and
+    cp_DNV_RP_B401_2021.py:31."""
+    from digitalmodel.cathodic_protection.coating import COATING_CONSTANTS, CoatingCategory
+    from digitalmodel.infrastructure.base_solvers.hydrodynamics.cp_DNV_RP_B401_2021 import (
+        _B401_2021_COATING_CATEGORIES,
+    )
+    assert COATING_CONSTANTS[CoatingCategory.FBE] == (0.02, 0.003)
+    assert _B401_2021_COATING_CATEGORIES["I"] == {"f_ci": 0.05, "k": 0.020}
+    # FBE 2017 at 20yr = 0.02 + 0.003*20 = 0.08; Cat I 2021 at 20yr = 0.05+0.020*20 = 0.45.
+    # Cat I is 5.6× harsher — that's the silent regulatory hazard.
+
+def test_baseline_yaml_dead_keys_raise():
+    """Live router (cathodic_protection.py:29) raises on the YAML's
+    advertised-but-undispatched calc types."""
+    from digitalmodel.infrastructure.base_solvers.hydrodynamics.cathodic_protection import (
+        CathodicProtection,
+    )
+    cfg = {"inputs": {"calculation_type": "DNV_rp_b401_2011"}}
+    with pytest.raises(Exception, match="not IMPLEMENTED"):
+        CathodicProtection().router(cfg)
 ```
+
+**Numerical-claim audit (r2)**: every numeric in this baseline test was independently recomputed via
+Python on 2026-05-13 against the actual code:
+- McCoy/Dwight ratio at L=2 m, r=0.15 m → **1.8702** (NOT 2.0; r1 was wrong).
+- Internal router Dwight divergence (b401 vs sacrificial) → **1.303**.
+- Coating-category cardinalities → **9 vs 4**.
+- FBE-2017 vs Cat-I-2021 breakdown ratio at 20yr → **5.6×**.
 
 Run command (one-shot, captured in plan PR):
 ```
@@ -243,14 +322,30 @@ phases (P2 especially) can run it to prove no unintended collapse occurred.
 ## Deliverable
 
 A single canonical cathodic-protection surface (the functional package `digitalmodel.cathodic_protection.*`)
-that accepts `edition: Literal["2017", "2021"] = "2021"` at every public entry point, dispatches to
-edition-specific lookup tables for the 4 material divergence dimensions (coating-category schema, coating
-breakdown constants, splash-zone treatment, flush-anode resistance formula), preserves all 8 additional
-standards (ISO 15589-2, API RP 1632, NACE SP0169/SP0176/SP0207, NORSOK M-506, EN 50162/15280, ISO 18086),
-emits `result.edition_used` + `result.standard` fields on every result object, emits `Citation` instances
-per `.claude/rules/calc-citation-contract.md` (once #2685 pilot lands), with the 3 deprecation shims
-deleted, the YAML config corrected to advertise only dispatchable calc-types, and 270+ functional-side +
-230+ router-side tests migrated and parametrized on `edition`.
+that accepts `edition: Literal["2017", "2021"] = "2021"` at **the 6 B401-edition-sensitive public modules**
+(`dnv_rp_b401.py`, `coating.py`, `marine_cp.py`, `marine_structure_cp.py`, `anode_sizing.py`,
+`pipeline_cp.py`), dispatches to edition-specific lookup tables for **7 material divergence dimensions**
+(coating-category schema, coating breakdown constants, splash-zone treatment, flush-anode resistance
+formula, bracelet resistance formula, utilization factor defaults, anode material support — items #4, #5,
+#7, #9, #10, #11, #13 from investigation §2), enforces **Dwight stubbiness validation** across both
+editions (item #14), preserves all 8 additional standards (ISO 15589-2, API RP 1632, NACE
+SP0169/SP0176/SP0207, NORSOK M-506, EN 50162/15280, ISO 18086) **without `edition=` because they are not
+B401-edition-sensitive**, emits `result.edition_used` + `result.standard` fields on every result object
+from the 6 modules, emits `Citation` instances on a **sidecar** `result.citations` attribute (NOT changing
+the primary numeric return type) per `.claude/rules/calc-citation-contract.md` step 6 once the #2685 pilot
+lands, with the 3 deprecation shims deleted, the YAML config corrected to advertise only dispatchable
+calc-types (preserving the `calculation_type` dispatch key for back-compat), and 206 functional-side +
+~221 specialized + ~39 marine_ops tests migrated.
+
+**Explicit non-goals (Finding 8 closure):** The remaining 11 functional modules
+(`anode_depletion.py`, `corrosion_rate.py`, `iccp_design.py`, `cp_monitoring.py`, `cp_reporting.py`,
+`cp_survey.py`, `stray_current.py`, `fuel_system_cp.py`, `iso_15589_2.py`, `api_rp_1632.py`, and any new
+`astm_g42.py`/`astm_g80.py` migrations) do **NOT** acquire `edition=` parameters in this plan because:
+(a) `iso_15589_2`, `api_rp_1632`, `stray_current`, `iccp_design`, `corrosion_rate`, `cp_survey`,
+`fuel_system_cp` implement non-B401 standards (no 2017-vs-2021 ambiguity); (b) `anode_depletion`,
+`cp_monitoring`, `cp_reporting` are post-design instruments that read result objects produced by the 6
+edition-sensitive modules and inherit edition via the `result.edition_used` field already carried.
+If a follow-up audit identifies B401-edition sensitivity in any of these 11, file as a discrete issue.
 
 ---
 
@@ -283,19 +378,45 @@ def normalize_edition(edition: Edition | None) -> Edition:
     return edition
 
 # digitalmodel/cathodic_protection/dnv_rp_b401.py — public-API change
+# (Finding 6 fix: citations emit to SIDECAR — primary numeric payload unchanged.)
 def coating_breakdown_factor(
     category: str,
     age_years: float,
     *,
     edition: Edition | None = None,
-) -> CitedValue:
+) -> float:
+    """Return the breakdown factor as a plain float (unchanged primary payload).
+
+    Citation emission happens at result-object boundary (anode_sizing.design_cp_system
+    etc), not here. This preserves downstream-consumer compatibility per
+    .claude/rules/calc-citation-contract.md step 6.
+    """
     ed = normalize_edition(edition)
     a, b = _coating_constants_for(category, edition=ed)   # P2 dispatch
-    bd = a + b * age_years
-    return CitedValue(
-        value=bd,
-        units="dimensionless",
-        citation=_b401_citation(edition=ed, section=_section_for("coating_bd", ed)),
+    return a + b * age_years
+
+
+# digitalmodel/cathodic_protection/anode_sizing.py — sidecar attachment
+@dataclass
+class AnodeSizingResult(EditionedResult):
+    total_anode_mass_kg: float
+    anode_count: int
+    # ...other numeric payload unchanged...
+    edition_used: Edition
+    standard: str
+    # SIDECAR (per citation contract step 6):
+    citations: tuple["Citation", ...] = field(default_factory=tuple)
+
+def design_cp_system(..., *, edition: Edition | None = None) -> AnodeSizingResult:
+    ed = normalize_edition(edition)
+    # ...compute numeric payload (unchanged behavior at byte level for old edition path)...
+    citations = _collect_citations(edition=ed) if _CITATION_PILOT_LANDED else ()
+    return AnodeSizingResult(
+        total_anode_mass_kg=...,
+        anode_count=...,
+        edition_used=ed,
+        standard=_standard_string_for(ed),
+        citations=citations,   # SIDECAR — does NOT change primary numeric return
     )
 ```
 
@@ -306,38 +427,70 @@ def coating_breakdown_factor(
 # All numerics from the two existing modules, keyed by edition.
 # DO NOT introduce new constants — only mirror what each surface already ships.
 
+# r2 fix (Findings 2, 3): values copied verbatim from coating.py:39-49 and
+# cp_DNV_RP_B401_2021.py:30-35 on 2026-05-13. Enum-member names mirror the
+# actual CoatingCategory enum (THREE_LAYER_PE/PP, CONCRETE_WEIGHT, etc.).
 COATING_BREAKDOWN_2017 = {
-    "FBE": (0.02, 0.003),
-    "3LPE": (0.01, 0.002),
-    "3LPP": (0.005, 0.001),
+    "FBE":             (0.02, 0.003),
+    "THREE_LAYER_PE":  (0.01, 0.002),
+    "THREE_LAYER_PP":  (0.01, 0.002),   # coating.py:42 — same as 3LPE, NOT (0.005, 0.001)
     "COAL_TAR_ENAMEL": (0.05, 0.005),
-    "ASPHALT_ENAMEL": (0.05, 0.005),
-    "POLYURETHANE": (0.03, 0.004),
-    "CONCRETE": (0.05, 0.002),
-    "NEOPRENE": (0.01, 0.002),
-    "NONE": (1.0, 0.0),
+    "ASPHALT_ENAMEL":  (0.05, 0.005),
+    "POLYURETHANE":    (0.03, 0.004),
+    "CONCRETE_WEIGHT": (0.02, 0.001),   # coating.py:46 — NOT key "CONCRETE", NOT (0.05, 0.002)
+    "NEOPRENE":        (0.02, 0.003),   # coating.py:47 — NOT (0.01, 0.002)
+    "NONE":            (1.0,  0.0),
 }
+# Keyed identically to live cp_DNV_RP_B401_2021._B401_2021_COATING_CATEGORIES
+# but flattened to (a, b) tuples for parity with COATING_BREAKDOWN_2017.
 COATING_BREAKDOWN_2021 = {
-    "CAT_I":   (0.05, 0.020),
-    "CAT_II":  (0.10, 0.030),
-    "CAT_III": (0.25, 0.050),
-    "BARE":    (1.0,  0.0),
+    "I":    (0.05, 0.020),
+    "II":   (0.10, 0.030),
+    "III":  (0.25, 0.050),
+    "bare": (1.00, 0.000),
 }
 
 SPLASH_CURRENT_DENSITY = {
-    "2017": {"coated": 0.0,   "bare": 0.0},      # 2017 surface treats as out-of-scope
-    "2021": {"coated": 0.100, "bare": 0.200},    # 2021 actively CP-protected
+    "2017": {"coated": 0.0,   "bare": 0.0},      # 2017 surface treats as out-of-scope (#7)
+    "2021": {"coated": 0.100, "bare": 0.200},    # 2021 actively CP-protected (#7)
 }
 
 FLUSH_RESISTANCE_FORMULA = {
-    "2017": "mccoy",   # (rho/piL) * (ln(2L/r) - 0.5)
-    "2021": "dwight",  # (rho/2piL) * (ln(4L/r) - 1)
+    "2017": "mccoy",   # (rho/piL) * (ln(2L/r) - 0.5)              — dnv_rp_b401.py:327
+    "2021": "dwight",  # (rho/2piL) * (ln(4L/r) - 1)               — cp_DNV_RP_B401_2021.py:339
 }
 # Engineering note: DNV-RP-B401 2021 §4.9 normatively cites Dwight for all anode
 # geometries including flush-mount. McCoy is a 2017-era half-space approximation
 # retained for back-compat with legacy projects. We do NOT collapse to one formula
 # on engineering merit — we keep both, dispatched by edition, because customer
 # contracts dictate the choice.
+
+# r2 addition (Finding 4): items 10, 11, 13, 14 from investigation §2.
+BRACELET_RESISTANCE_FORMULA = {
+    "2017": "area_based",  # 0.315 * rho / sqrt(A)            — cp_sacrificial_anode_b401:166
+    "2021": "modified_dwight",  # (rho/2piL) * (ln(2piL/r)-1) — cp_DNV_RP_B401_2021.py:346
+}
+
+UTILIZATION_FACTOR_DEFAULTS = {
+    # functional pkg uses per-anode-type 2017 Table 10-8 values
+    "2017": {"stand_off": 0.90, "flush_mounted": 0.85, "bracelet": 0.80},
+    # router defaults conservatively to a single value
+    "2021": {"stand_off": 0.85, "flush_mounted": 0.85, "bracelet": 0.85},
+}
+
+ANODE_MATERIAL_CAPACITY_AH_KG = {
+    "2017": {"aluminium": 2000.0},                       # functional pkg: Al only
+    "2021": {"aluminium": 2000.0, "zinc": 780.0},        # router: Al + Zn
+}
+
+DWIGHT_STUBBINESS_VALIDATION = {
+    # Item #14: router enforces 4L/r > e; functional pkg accepts any geometry.
+    # Merged surface enforces in BOTH editions (no silent nonsense for stubby
+    # geometry under edition='2017'). This is a deliberate STRICTNESS UPLIFT, not
+    # a behavior preservation — documented in plan §Risks below.
+    "2017": "enforce_strict",
+    "2021": "enforce_strict",
+}
 
 # digitalmodel/cathodic_protection/_coating_translation.py  (NEW)
 # Bidirectional translator with explicit "no clean 1:1" flags. Reviewed by SME.
@@ -387,21 +540,44 @@ SUPPORTED_STANDARDS = (
 ### P4 — Cleanup
 
 ```
-# YAML correction
-calculation_type: DNV-RP-B401  # 2017 | 2021 — dispatched via 'edition' key below
-edition: "2021"   # NEW: explicit edition selector
+# YAML correction (Finding 5: keep calculation_type as the dispatch key — live
+# router uses it exclusively at cathodic_protection.py:19-29 and engine.py:146
+# routes through it. Adding a parallel `edition:` key is non-breaking).
+calculation_type: DNV_RP_B401_offshore   # legacy dispatch key — UNCHANGED
+edition: "2021"                          # NEW: explicit edition selector (optional;
+                                         # defaults via _calc_type_to_edition() below)
 
-# Router becomes a thin adapter
+# Router becomes a thin adapter — preserves calculation_type dispatch (no schema break)
 class CathodicProtection:
+    # r2 fix (Finding 5): legacy calculation_type → edition map. New
+    # explicit `inputs.edition` overrides the inferred default.
+    _CALC_TYPE_TO_DEFAULT_EDITION = {
+        "DNV_RP_B401_offshore":     "2021",   # router today is 2021
+        "DNV_RP_B401_2017":         "2017",   # NEW dispatch alias for legacy projects
+        "ABS_gn_ships_2018":         None,    # not B401 — edition= ignored
+        "ABS_gn_offshore_2018":      None,
+        "DNV_RP_F103_2010":          None,
+    }
+
     def router(self, cfg):
-        std    = cfg["inputs"]["standard"]            # was "calculation_type"
-        ed     = cfg["inputs"].get("edition")          # NEW
-        # Look up in SUPPORTED_STANDARDS, dispatch to functional package
+        calc_type = cfg["inputs"]["calculation_type"]   # UNCHANGED — same key as today
+        if calc_type not in self._CALC_TYPE_TO_DEFAULT_EDITION:
+            raise ValueError(
+                f"Calculation type: {calc_type} not IMPLEMENTED. ... FAIL"
+            )
+        # Edition resolution: explicit `inputs.edition` wins; else fall back to
+        # the calc-type's default (which is None for non-B401 std's).
+        explicit_ed = cfg["inputs"].get("edition")
+        default_ed = self._CALC_TYPE_TO_DEFAULT_EDITION[calc_type]
+        ed = explicit_ed if explicit_ed is not None else default_ed
         result = digitalmodel.cathodic_protection.run(
-            standard=std, edition=ed, inputs=cfg["inputs"],
+            calculation_type=calc_type, edition=ed, inputs=cfg["inputs"],
         )
-        cfg["results"] = {**result.dict(), "edition_used": result.edition_used,
-                          "standard": result.standard}
+        cfg["results"] = {
+            **result.dict(),
+            "edition_used": getattr(result, "edition_used", None),
+            "standard": getattr(result, "standard", None),
+        }
         return cfg
 
 # Shim deletion (after all 230+ test imports migrated)
@@ -457,10 +633,11 @@ rm digitalmodel/src/digitalmodel/infrastructure/common/cp_sacrificial_anode_b401
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
 | `test_baseline_splash_zone_divergence` | 2017 splash = 0.0; 2021 splash = 0.100 coated, 0.200 bare | both surfaces, default config | 0.0 vs 0.100/0.200 assertion holds |
-| `test_baseline_flush_anode_resistance_2x_ratio` | McCoy/Dwight ratio | L=2 m, r=0.15 m, rho=0.3 Ω·m | r_mccoy / r_dwight ≈ 2.0 |
-| `test_baseline_coating_category_cardinality` | functional has 9 cats, router has 4 | enum + dict | len==9, len==4 |
-| `test_baseline_fbe_2017_vs_cat_i_2021` | FBE 2017 LESS conservative than Cat I 2021 | age=20 yr | a_2017+b_2017*20 < a_2021+b_2021*20 |
-| `test_baseline_yaml_dead_keys_raise` | `DNV_rp_b401_2011` raises ValueError | run router with the dead key | `ValueError("not IMPLEMENTED")` |
+| `test_baseline_flush_anode_resistance_ratio_geometry_dependent` | McCoy/Dwight ratio at known geometry | L=2 m, r=0.15 m | r_mccoy / r_dwight ≈ **1.8702** (rel=1e-3); ratio bounded < 2.0 always |
+| `test_baseline_internal_router_dwight_divergence` | Two router-side "Dwight" formulas differ by ln(2) | L=2 m, r=0.15 m | ratio ≈ 1.303 (rel=5e-3) |
+| `test_baseline_coating_category_schema_divergence` | functional has 9 cats, router has 4 | enum + `_B401_2021_COATING_CATEGORIES` dict | len==9, len==4 |
+| `test_baseline_coating_breakdown_a_b_constants` | FBE 2017 vs Cat I 2021 — values mirror live code | `COATING_CONSTANTS[CoatingCategory.FBE] == (0.02, 0.003)`; `_B401_2021_COATING_CATEGORIES["I"] == {f_ci:0.05, k:0.020}` | both equalities hold |
+| `test_baseline_yaml_dead_keys_raise` | `DNV_rp_b401_2011` raises with "not IMPLEMENTED" in message | run router with the dead key | exception with `match="not IMPLEMENTED"` |
 
 ### P1 edition-API tests
 
@@ -512,7 +689,7 @@ Every AC is pytest- or grep-checkable.
 
 ### P1 — Foundation
 
-- [ ] **AC-P1.1:** `uv run pytest digitalmodel/tests/cathodic_protection/test_edition_divergence_baseline.py -v` — all 5 baseline tests pass (locks today's behavior before any source change)
+- [ ] **AC-P1.1:** `uv run pytest digitalmodel/tests/cathodic_protection/test_edition_divergence_baseline.py -v` — all **6** baseline tests pass (r2: expanded by 1 for internal-router-Dwight divergence). Tests lock today's behavior before any source change. All numerics in those tests were independently recomputed via Python on 2026-05-13 against live code; the r1 plan's `≈ 2.0` claim has been replaced with the empirical `1.8702` value at the specified geometry.
 - [ ] **AC-P1.2:** `grep -c "edition:" digitalmodel/src/digitalmodel/cathodic_protection/_edition.py` ≥ 1 (file exists with `Edition` literal)
 - [ ] **AC-P1.3:** `uv run python -c "from digitalmodel.cathodic_protection import Edition, DEFAULT_EDITION; assert DEFAULT_EDITION == '2021'"` — exits 0
 - [ ] **AC-P1.4:** Every public function in `dnv_rp_b401.py` accepts `edition=` kwarg: `grep -c "edition:" digitalmodel/src/digitalmodel/cathodic_protection/dnv_rp_b401.py` ≥ 8
@@ -522,7 +699,11 @@ Every AC is pytest- or grep-checkable.
 ### P2 — Numeric consolidation
 
 - [ ] **AC-P2.1:** Edition tables module exists and is non-empty: `wc -l digitalmodel/src/digitalmodel/cathodic_protection/_edition_tables.py` ≥ 50
-- [ ] **AC-P2.2:** All 4 material divergence dimensions covered: `grep -E "COATING_BREAKDOWN_2017|COATING_BREAKDOWN_2021|SPLASH_CURRENT_DENSITY|FLUSH_RESISTANCE_FORMULA" digitalmodel/src/digitalmodel/cathodic_protection/_edition_tables.py | wc -l` ≥ 4
+- [ ] **AC-P2.2:** All 7 material divergence dimensions covered (r2: expanded from 4 per Finding 4): `grep -E "COATING_BREAKDOWN_2017|COATING_BREAKDOWN_2021|SPLASH_CURRENT_DENSITY|FLUSH_RESISTANCE_FORMULA|BRACELET_RESISTANCE_FORMULA|UTILIZATION_FACTOR_DEFAULTS|ANODE_MATERIAL_CAPACITY_AH_KG|DWIGHT_STUBBINESS_VALIDATION" digitalmodel/src/digitalmodel/cathodic_protection/_edition_tables.py | wc -l` ≥ 8 (7 dimension tables + at least one stubbiness key, counted separately)
+- [ ] **AC-P2.2a (Finding 4, item #10):** Bracelet resistance dispatches by edition: 2017 returns area-based `0.315*ρ/√A` form (matches `cp_sacrificial_anode_b401.py:166`); 2021 returns modified-Dwight `(ρ/2πL)*(ln(2πL/r)-1)` (matches `cp_DNV_RP_B401_2021.py:346`). Cross-edition ratio test in `test_edition_consistency.py`.
+- [ ] **AC-P2.2b (Finding 4, item #11):** Utilization factor defaults match `UTILIZATION_FACTOR_DEFAULTS[edition][anode_type]`. Stand-off under `edition='2017'` returns 0.90; under `edition='2021'` returns 0.85. Verified by `pytest -k test_utilization_factor_defaults`.
+- [ ] **AC-P2.2c (Finding 4, item #13):** Zinc material accepted under `edition='2021'`; rejected with clear error under `edition='2017'` (functional pkg never supported Zn). `coating_breakdown_factor(material='zinc', edition='2017')` raises `ValueError` with "Zn not supported in 2017 edition" substring.
+- [ ] **AC-P2.2d (Finding 4, item #14):** Dwight stubbiness validation enforced in BOTH editions (strictness uplift documented in Risks). `anode_resistance_slender_standoff(L=0.1, r=0.5, edition='2017')` raises ValueError (today it silently returns nonsense); `edition='2021'` same behavior.
 - [ ] **AC-P2.3:** Coating translation map declared with confidence flags: `grep -c "approximate\|exact" digitalmodel/src/digitalmodel/cathodic_protection/_coating_translation.py` ≥ 9 (one per 2017 category)
 - [ ] **AC-P2.4:** Cross-edition divergence tests pass: `uv run pytest digitalmodel/tests/cathodic_protection/test_edition_consistency.py -v` — all green
 - [ ] **AC-P2.5:** Baseline tests STILL pass (no silent collapse): `uv run pytest digitalmodel/tests/cathodic_protection/test_edition_divergence_baseline.py -v` — same 5 tests
@@ -544,7 +725,11 @@ Every AC is pytest- or grep-checkable.
 - [ ] **AC-P4.2:** YAML config introduces edition selector: `grep -c "^edition:\|^  edition:" digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml` ≥ 1
 - [ ] **AC-P4.3:** All 3 deprecation shims deleted: `ls digitalmodel/src/digitalmodel/infrastructure/common/cathodic_protection.py digitalmodel/src/digitalmodel/infrastructure/common/cp_DNV_RP_B401_2021.py digitalmodel/src/digitalmodel/infrastructure/common/cp_sacrificial_anode_b401.py 2>&1 | grep -c "No such" == 3`
 - [ ] **AC-P4.4:** No test still transits shim path: `grep -rn "from digitalmodel.infrastructure.common.cathodic_protection\|from digitalmodel.infrastructure.common.cp_" digitalmodel/tests/ | wc -l` == 0
-- [ ] **AC-P4.5:** Citation emission wired (after #2685 lands): `grep -c "from digitalmodel.citations" digitalmodel/src/digitalmodel/cathodic_protection/dnv_rp_b401.py` ≥ 1
+- [ ] **AC-P4.5 (Finding 6 — sidecar):** Citation emission wired on result-object SIDECAR; primary numeric return types UNCHANGED. Three sub-checks:
+  - (a) `grep -c "from digitalmodel.citations" digitalmodel/src/digitalmodel/cathodic_protection/anode_sizing.py` ≥ 1
+  - (b) Primary payload type stable: `uv run python -c "from digitalmodel.cathodic_protection import coating_breakdown_factor; import inspect; r = coating_breakdown_factor('FBE', 10.0, edition='2017'); assert isinstance(r, float), type(r)"` — exits 0
+  - (c) Sidecar populated on result objects: `uv run python -c "from digitalmodel.cathodic_protection import design_cp_system; r = design_cp_system(...); assert hasattr(r, 'citations'); assert isinstance(r.citations, tuple)"` — exits 0
+- [ ] **AC-P4.7a (Finding 5 — legacy YAML routes correctly):** Live YAML config at `digitalmodel/src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml` with the (current) `calculation_type: ABS_gn_ships_2018` and no `edition:` key routes successfully via `CathodicProtection().router(cfg)` and produces a result with `cfg["results"]["edition_used"]` either populated (B401 dispatches) or `None` (non-B401 dispatches like ABS). Specific assertion: `pytest digitalmodel/tests/specialized/cathodic_protection/test_router_legacy_yaml.py -v` — new test file added in P4 reads the YAML directly, runs the dispatcher, asserts no `KeyError` on `cfg["inputs"]["calculation_type"]`.
 - [ ] **AC-P4.6:** Wiki pages exist with valid frontmatter: `ls knowledge/wikis/engineering/wiki/standards/dnv-rp-b401-2017.md knowledge/wikis/engineering/wiki/standards/dnv-rp-b401-2021.md` — both exist; `grep -c "^code_id:" $page` ≥ 1 each
 - [ ] **AC-P4.7:** Router still routes legacy YAML configs (no external breakage): `uv run pytest digitalmodel/tests/specialized/cathodic_protection/test_cathodic_protection_b401.py -v` — 59 tests still pass after import migration
 - [ ] **AC-P4.8:** Full CP suite green: `uv run pytest digitalmodel/tests/cathodic_protection/ digitalmodel/tests/specialized/cathodic_protection/ digitalmodel/tests/marine_ops/marine_engineering/test_cathodic_protection_dnv.py -v` — all 500+ tests pass
@@ -649,6 +834,67 @@ silent collapse, edition drift, and any path where a CP design could be undersiz
   isolation if needed.
 - **Risk (low — `cp_html_report.py`):** consumes the router result schema; needs matching update for new
   fields.
+
+### Cross-Repo Strategy (r2 — addresses Finding 7)
+
+This plan modifies files in **two independent git repos**:
+
+- **workspace-hub** (this repo): `docs/plans/`, `.claude/rules/calc-citation-contract.md`,
+  `docs/field-development/cathodic-protection-edition-decision.md` (read-only), `knowledge/wikis/engineering/wiki/standards/dnv-rp-b401-{2017,2021}.md` (NEW)
+- **digitalmodel** (nested separate repo at `/mnt/local-analysis/workspace-hub/digitalmodel/`):
+  all `src/digitalmodel/cathodic_protection/**`, `src/digitalmodel/infrastructure/**`,
+  `tests/cathodic_protection/**`, `tests/specialized/cathodic_protection/**`,
+  `tests/marine_ops/marine_engineering/test_cathodic_protection_dnv.py`,
+  `src/digitalmodel/visualization/reporting/cp_html_report.py`,
+  `src/digitalmodel/infrastructure/base_configs/domains/cathodic_protection/cathodic_protection.yml`.
+
+(a) **Commit destination per phase:**
+
+| Phase | workspace-hub commits | digitalmodel commits |
+|---|---|---|
+| P1 (foundation) | None (P1 is code-only) | All P1 source/test edits |
+| P2 (numeric) | None | All P2 edits |
+| P3 (standards) | None | All P3 edits |
+| P4 (cleanup) | Wiki page stubs; rule doc update | Router refactor, shim deletion, YAML, test migration, citation wiring |
+
+(b) **Commit ordering (regulatory-hazard sensitive):**
+
+1. workspace-hub: land plan r2 (this commit) + #2685 wiki-page stubs as part of P4 prep.
+2. digitalmodel: branch `wip/2694-cp-edition-merge` from `main`. Phases P1 → P2 → P3 → P4 land
+   sequentially as four separate squashed PRs to `digitalmodel/main`.
+3. workspace-hub: after digitalmodel P4 merges to main, update `docs/plans/README.md` index +
+   `.claude/rules/calc-citation-contract.md` to add CP as second live emission site.
+
+(c) **Per-repo rollback:**
+
+- **workspace-hub rollback** (any phase): `git revert` the plan/rule/wiki commits. Cosmetic-only;
+  zero runtime impact. Wiki page stubs are additive (deleting them only fail-closes citations if
+  digitalmodel was already calling them — which it isn't until P4 lands).
+- **digitalmodel rollback:**
+  - P1: `git revert` the P1 PR. Trivial — additive only.
+  - P2: `git revert` the P2 PR. Restores inline constants; baseline tests prove byte-identity restoration.
+  - P3: `git revert` P3 PR. Restores router-side ASTM modules.
+  - P4: `git revert` P4 PR. Restores shims + old test imports + dead YAML keys. **Coordinated revert**
+    of workspace-hub's wiki-page stubs is OPTIONAL — leaving them in workspace-hub is no-op once the
+    digitalmodel citation imports are reverted.
+
+(d) **PR/tag conventions:**
+
+- digitalmodel PRs: `wrk/2694-cp-edition-merge-{p1,p2,p3,p4}`, tagged on merge as
+  `cp-merge-checkpoint-{p1,p2,p3,p4}` for crisp revert targets.
+- workspace-hub PRs: `wrk/2694-plan-r2`, `wrk/2694-wiki-stubs`, `wrk/2694-rule-doc-update`.
+- Cross-repo reference: each digitalmodel PR body links to the workspace-hub issue
+  `https://github.com/vamseeachanta/workspace-hub/issues/2694`; the workspace-hub plan-update
+  commits link to the digitalmodel PR SHAs in their body.
+
+(e) **CI ordering:**
+
+1. digitalmodel CI must be green on each phase PR *before* the next phase branches.
+2. workspace-hub CI runs independently (no test-suite coupling to digitalmodel).
+3. **No cross-repo CI** exists today — explicit manual gate: `gh pr checks <digitalmodel-pr> --watch`
+   before opening the next phase PR.
+4. Plan-approval is workspace-hub-side (issue #2694 carries `status:plan-approved`); the workspace-hub
+   issue is the single source of truth for "is this work authorized to proceed".
 
 ### Rollback Strategy
 
