@@ -1,0 +1,775 @@
+# Repo Portfolio Inventory — source of truth for docs/REPO_MISSION_PORTFOLIO.md
+#
+# Generated/maintained per docs/plans/2026-05-02-issue-2533-mission-portfolio.md (rev-3).
+# Discovery date: 2026-05-13.
+# Markdown table is REGENERATED from this YAML by:
+#   scripts/tests/check_repo_mission_portfolio.sh --generate
+# DO NOT hand-edit docs/REPO_MISSION_PORTFOLIO.md — edit this file and re-run --generate.
+#
+# Schema (per acceptance criterion C3):
+#   repo:                     str  — repo directory name
+#   tier:                     str  — tier-1 | tier-2 | tier-3 | inventory-drift
+#   mission:                  str  — 1-3 sentence mission paragraph
+#   source_path:              str  — relative path of mission source, OR "none",
+#                                    OR prefixed with "legacy_source:" for .agent-os/product/mission.md fallback
+#   routing_belongs_here:     str  — "work belongs here when..."
+#   routing_route_elsewhere:  str  — "work should route elsewhere when..."
+#   overlap_notes:            str  — known mission overlaps (must be symmetric per C7)
+#   inventory_status:         str  — present-locally | not-present-locally | added-post-plan
+#   notes:                    str  — memory-derived facts, provenance caveats, retirement plans
+
+schema_version: 1
+discovery_date: 2026-05-13
+plan_reference: docs/plans/2026-05-02-issue-2533-mission-portfolio.md
+issue_reference: "https://github.com/vamseeachanta/workspace-hub/issues/2533"
+
+repos:
+
+  # ============================================================
+  # Tier-1 — actively developed, cross-repo dependencies, four-repo routing contract
+  # ============================================================
+
+  - repo: workspace-hub
+    tier: tier-1
+    mission: >-
+      Engineering workspace and portfolio control plane. Houses the GSD framework,
+      AI harness, durable cross-repo standards, document-intelligence registries,
+      and shared utilities used to perform governance and harness work across all
+      Tier-1 repositories.
+    source_path: AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is portfolio-wide governance, harness/orchestration
+      infrastructure, durable cross-repo standards, document-intelligence registries,
+      or planning/review artifacts that coordinate work across multiple repos.
+    routing_route_elsewhere: >-
+      Route elsewhere when work is repo-specific execution that has a single owning
+      Tier-1 or Tier-2 repo — code/calculations to digitalmodel, shared utilities to
+      assetutilities, site delivery to aceengineer-website, per-client work to its
+      client repo. Per-repo execution docs live in the owning repo, not here.
+    overlap_notes: >-
+      Overlaps with per-repo execution docs in every owning Tier-1 repo
+      (digitalmodel, assetutilities, aceengineer-website) — workspace-hub owns
+      portfolio governance/harness/standards; owning repos own their own
+      single-repo execution surfaces. Cross-repo coordination → workspace-hub;
+      single-repo-scope → owning repo.
+    inventory_status: present-locally
+    notes: >-
+      Portfolio control plane per #2460 contract. Hosts the four-repo Tier-1
+      routing index at docs/ROUTING_INDEX.md.
+
+  - repo: digitalmodel
+    tier: tier-1
+    mission: >-
+      Engineering digital twin and numerical-model library — asset integrity,
+      cathodic protection, GIS, hydrodynamics (OrcaWave, OrcaFlex, AQWA), and
+      field-development calculation pipelines. Reusable engineering calculation
+      code and methodology live here.
+    source_path: digitalmodel/AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is reusable engineering calculation code, tests,
+      methodology, OrcaWave/OrcaFlex/AQWA solver workflows, hydrodynamics,
+      cathodic protection, asset integrity, GIS, or field-development modules.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is one-off client-project data with non-reusable
+      inputs (→ matching client vertical like acma-projects, seanation, saipem,
+      frontierdeepwater, doris) or shared cross-repo utilities (→ assetutilities).
+    overlap_notes: >-
+      Overlaps with workspace-hub on portfolio-vs-execution boundary
+      (workspace-hub owns governance/harness; digitalmodel owns engineering
+      execution). Overlaps with assetutilities on reusable-utility boundary
+      (digitalmodel depends on assetutilities; shared utility code belongs in
+      assetutilities, not digitalmodel). Overlaps with client/project verticals
+      (acma-projects, seanation, saipem, frontierdeepwater, doris): reusable
+      engineering code/tests/methodology → digitalmodel; one-off client analysis
+      with non-reusable inputs → matching client vertical. Per #2462
+      (PR digitalmodel#539) digitalmodel canonical routing surfaces are being
+      hardened.
+    inventory_status: present-locally
+    notes: >-
+      Depends on assetutilities. Per #2462 the canonical operator map is being
+      consolidated at digitalmodel/docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md.
+
+  - repo: assetutilities
+    tier: tier-1
+    mission: >-
+      Shared Python utilities library for engineering repositories — project
+      config, unit conversions, calculations, and CLI tools used across
+      digitalmodel and other engineering repos.
+    source_path: assetutilities/AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is a shared Python utility used by 2+ engineering
+      repos, project config plumbing, unit conversions, or general-purpose CLI
+      tooling that is reusable across repos.
+    routing_route_elsewhere: >-
+      Route elsewhere when a utility is only needed in a single repo (→ that repo)
+      or when the code is domain-specific engineering calculation (→ digitalmodel).
+    overlap_notes: >-
+      Overlaps with repo-specific utilities in every consumer repo (primarily
+      digitalmodel, which depends on assetutilities) — assetutilities holds
+      utilities only when 2+ repos need them; single-repo utilities stay in the
+      owning repo. Per #2461 (CLOSED) source-hygiene cleanup is complete.
+    inventory_status: present-locally
+    notes: >-
+      Maturity stable. Source hygiene gate at scripts/hygiene/check-source-hygiene.sh
+      enforces structural conventions.
+
+  - repo: aceengineer-website
+    tier: tier-1
+    mission: >-
+      Public website, marketing content, demos, calculators, and deployment
+      assets for AceEngineer Inc. Static-site delivery surface; not a strategic
+      copy authority.
+    source_path: aceengineer-website/docs/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is public-facing site content (root HTML pages,
+      blog posts, case studies, calculators), site build/deployment changes, or
+      asset/JS work for the public website.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is strategic copy authority or business GTM
+      content (→ aceengineer-strategy, private), engineering calculation logic
+      that powers a calculator (→ digitalmodel or assetutilities depending on
+      reuse scope), or admin/financial automation (→ aceengineer-admin).
+    overlap_notes: >-
+      Overlaps with aceengineer-strategy (private). aceengineer-website is the
+      public delivery surface; aceengineer-strategy is the private canonical
+      strategic-copy authority. Strategic copy work → strategy; site delivery /
+      pages / build → website. Per #2463 (CLOSED) the canonical operator map at
+      aceengineer-website/docs/maps/aceengineer-website-operator-map.md is set.
+    inventory_status: present-locally
+    notes: >-
+      AGENTS.md is a pointer to workspace-hub/AGENTS.md with repo-specific routing
+      table; mission text lives in docs/README.md. Per memory the firm's
+      strategic copy lives in private aceengineer-strategy repo, not here.
+
+  # ============================================================
+  # Tier-2 — domain-specific, periodic work, single-owner dependencies
+  # ============================================================
+
+  - repo: OGManufacturing
+    tier: tier-2
+    mission: >-
+      Oil and gas manufacturing analysis — drilling operations and production
+      surveillance. Domain-specific context and reusable code routes to
+      digitalmodel when generalized.
+    source_path: OGManufacturing/AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is oil-and-gas drilling-operations or
+      production-surveillance project data, analysis, or repository-bound code
+      that is not yet generalized.
+    routing_route_elsewhere: >-
+      Route elsewhere when the calculation/code is reusable across engineering
+      repos (→ digitalmodel) or shared utility (→ assetutilities).
+    overlap_notes: >-
+      Overlaps with digitalmodel when O&G calculations generalize beyond a
+      single project. Per BUSINESS_BRAIN, reusable code routes to digitalmodel.
+    inventory_status: present-locally
+    notes: >-
+      Maturity alpha.
+
+  - repo: acma-projects
+    tier: tier-2
+    mission: >-
+      ACMA Inc. naval-architecture client project data and delivery — structural
+      design and analysis for vessels (LNG tanks, workboats, novel hulls)
+      across steel, aluminum, and composites.
+    source_path: acma-projects/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is ACMA-client naval-architecture project data,
+      structural-analysis deliverables, or vessel design context tied to ACMA
+      engagements.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is reusable engineering methodology
+      (→ digitalmodel), shared utilities (→ assetutilities), or generic
+      multi-client wrapper (→ client_projects when no dedicated ACMA scope).
+    overlap_notes: >-
+      Overlaps with client_projects (the generic client wrapper) — ACMA-client
+      work always wins when work targets ACMA specifically; client_projects is
+      the catch-all only when no dedicated client repo exists. Overlaps with
+      digitalmodel on the reusable-vs-client-specific boundary: reusable
+      naval-architecture methodology → digitalmodel; ACMA-engagement-specific
+      analysis stays here.
+    inventory_status: present-locally
+    notes: >-
+      Operator map TBD. AGENTS.md is a pointer; README.md carries mission text.
+
+  - repo: frontierdeepwater
+    tier: tier-2
+    mission: >-
+      Frontier Deepwater startup project data and company documents.
+      AceEngineer holds a 5% stake per BUSINESS_BRAIN; relationship is
+      partner/investor as well as engineering contributor.
+    source_path: frontierdeepwater/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is Frontier Deepwater project documents, deal
+      context, or company-specific engineering work tied to that engagement.
+    routing_route_elsewhere: >-
+      Route elsewhere when the engineering analysis generalizes (→ digitalmodel),
+      when shared utility work is needed (→ assetutilities), or when generic
+      client wrapper applies (→ client_projects).
+    overlap_notes: >-
+      Overlaps with client_projects when work spans multiple engagements —
+      Frontier Deepwater-specific work stays here; multi-client coordination
+      goes to client_projects. Overlaps with digitalmodel on the
+      reusable-vs-client-specific boundary: reusable deepwater methodology
+      → digitalmodel; FDW-engagement-specific analysis stays here.
+    inventory_status: present-locally
+    notes: >-
+      Per BUSINESS_BRAIN, AceEngineer has 5% equity stake. README.md is brief;
+      mission is short.
+
+  - repo: worldenergydata
+    tier: tier-2
+    mission: >-
+      Global energy market data aggregation and analysis — BSEE, EIA,
+      drilling, and economics datasets. Depends on assetutilities for
+      shared engineering utilities.
+    source_path: worldenergydata/AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is global energy market dataset ingestion
+      (BSEE, EIA), drilling-data analysis, or energy-economics modeling
+      that is publicly grounded and not client-specific.
+    routing_route_elsewhere: >-
+      Route elsewhere when the dataset is client/project-specific
+      (→ matching client vertical), the analysis is engineering calculation
+      that generalizes (→ digitalmodel), or shared CLI utility
+      (→ assetutilities).
+    overlap_notes: >-
+      Overlaps with digitalmodel when energy datasets feed engineering models —
+      pure ingestion/aggregation/economics stays here; downstream solver/
+      methodology work crosses to digitalmodel.
+    inventory_status: present-locally
+    notes: >-
+      Maturity beta. Depends on assetutilities. Open follow-ups in
+      docs/reports/provider-work-queue.md GTM stream.
+
+  - repo: sabithaandkrishnaestates
+    tier: tier-2
+    mission: >-
+      Investment management system for Sabitha & Krishna Estates Incorporated —
+      corporate investment tracking across CRE and other asset classes, with
+      documentation-based workflows, git version control, and AI-assisted analysis.
+    source_path: sabithaandkrishnaestates/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is Sabitha & Krishna Estates corporate finance,
+      tax filings, entity records, CRE portfolio tracking, or investment-decision
+      documentation tied to that corporation.
+    routing_route_elsewhere: >-
+      Route elsewhere when the investment analysis or modeling generalizes
+      across portfolios (→ assethold), or when personal/family records belong to
+      a different entity (→ achantas-data).
+    overlap_notes: >-
+      Overlaps with assethold (general asset portfolio analysis): corporate-specific
+      tracking and entity records stay here; reusable investment analytics → assethold.
+      Also overlaps with achantas-data for personal/family records.
+    inventory_status: present-locally
+    notes: >-
+      Single-entity investment book. AGENTS.md is a pointer; README.md carries
+      mission text.
+
+  # ============================================================
+  # Tier-3 / Support / Archive / Strategic / Personal
+  # ============================================================
+
+  - repo: aceengineer-admin
+    tier: tier-3
+    mission: >-
+      Financial automation suite for AceEngineer Inc. — invoice generation,
+      tax preparation, and business administration tools. Python-powered
+      back-office automation for engineering consulting.
+    source_path: aceengineer-admin/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is AceEngineer firm admin/finance automation —
+      invoicing, tax preparation, business-administration scripts, or financial
+      tracking workflows.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is public-facing marketing/site content
+      (→ aceengineer-website) or private strategic GTM/business-strategy work
+      (→ aceengineer-strategy).
+    overlap_notes: >-
+      Distinct from aceengineer-website (public delivery surface) and
+      aceengineer-strategy (private GTM authority). All three share the
+      "aceengineer" prefix but cover different domains.
+    inventory_status: present-locally
+    notes: >-
+      AGENTS.md is a pointer; README.md carries mission text.
+
+  - repo: aceengineer-strategy
+    tier: tier-3
+    mission: >-
+      PRIVATE business strategy, GTM execution, and pipeline management for
+      A&CE. Operations centre for business development — strategy documents,
+      prospect pipeline, experiments, weekly accountability. Privacy wall —
+      no cross-references to public engineering repos.
+    source_path: aceengineer-strategy/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is firm strategy, ICP/positioning/pricing/
+      GTM-plan work, prospect pipeline tracking, business experiments, or
+      private founder-journal entries. Strategic copy authority — public-facing
+      copy pulls from here.
+    routing_route_elsewhere: >-
+      Route elsewhere when the artifact is public-facing site content
+      (→ aceengineer-website), firm admin/finance (→ aceengineer-admin), or
+      cross-repo coordination (→ workspace-hub). Engineering work is OUT OF
+      SCOPE — privacy wall holds.
+    overlap_notes: >-
+      Overlaps with aceengineer-website (public delivery). Per memory
+      project_aceengineer_copy_canonical_sources, aceengineer-strategy is
+      the private canonical strategic-copy authority; aceengineer-website
+      pulls from here, NOT the reverse.
+    inventory_status: present-locally
+    notes: >-
+      PRIVATE repo. No AGENTS.md, no CLAUDE.md, no .agent-os — only README.md
+      (consistent with private/strategic character). Strategic-copy authority
+      per session memory; aceengineer-website copy should align with this repo.
+
+  - repo: achantas-data
+    tier: tier-3
+    mission: >-
+      REVIEW_REQUIRED — README.md is bare ("# achantas"). Per cross-source
+      context (investments mission and BUSINESS_BRAIN), achantas-data is the
+      destination for personal/private/family source records and reference
+      data migrating out of investments.
+    source_path: achantas-data/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is family/personal private records,
+      personal-reference data, or content migrated from investments per the
+      BUSINESS_BRAIN retirement plan.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is corporate investment tracking
+      (→ assethold or sabithaandkrishnaestates) or media files
+      (→ achantas-media).
+    overlap_notes: >-
+      Overlaps with assethold and investments as migration source/sinks.
+      Per BUSINESS_BRAIN, investments source records migrate to achantas-data;
+      investment analysis migrates to assethold.
+    inventory_status: present-locally
+    notes: >-
+      REVIEW_REQUIRED — README.md is a single line; AGENTS.md is a pointer;
+      CLAUDE.md is a pointer; no .agent-os/product/mission.md. Mission inferred
+      from cross-source context. A follow-up should add a real mission paragraph
+      to achantas-data/README.md or achantas-data/AGENTS.md.
+
+  - repo: achantas-media
+    tier: tier-3
+    mission: >-
+      REVIEW_REQUIRED — no mission source available (README.md is empty;
+      AGENTS.md is a pointer; CLAUDE.md is a pointer; no .agent-os/product/mission.md).
+      Per name and BUSINESS_BRAIN classification, likely a personal/family
+      media-asset repository, but no in-repo source confirms this.
+    source_path: none
+    routing_belongs_here: >-
+      Likely belongs here when storing family/personal media assets (photos,
+      audio, video), but mission source needs to be established before this
+      can be authoritative.
+    routing_route_elsewhere: >-
+      Route elsewhere when the content is engineering or business data
+      (→ matching repo per workspace-hub portfolio), or personal records
+      (→ achantas-data).
+    overlap_notes: >-
+      Overlaps potentially with achantas-data for personal artifacts.
+      Boundary not formally established in any in-repo source.
+    inventory_status: present-locally
+    notes: >-
+      REVIEW_REQUIRED — no mission source in repo. Highest-priority follow-up
+      from this portfolio review is to add a mission paragraph to achantas-media
+      so the boundary with achantas-data is explicit.
+
+  - repo: assethold
+    tier: tier-3
+    mission: >-
+      Asset portfolio financial analysis — fundamentals, options analysis,
+      modules, and analysis pipelines. Reusable investment analytics library;
+      destination for investments-repo migration.
+    source_path: assethold/AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is reusable investment analytics — equity
+      fundamentals, options analysis, portfolio modeling, or analysis pipelines
+      that generalize across portfolios.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is single-entity corporate tracking
+      (→ sabithaandkrishnaestates), personal/family records
+      (→ achantas-data), or active-triage investment files
+      (→ investments, retiring within 3 months).
+    overlap_notes: >-
+      Receives investments migration (BUSINESS_BRAIN: investments analysis/code
+      → assethold over 3 months). Overlaps with sabithaandkrishnaestates for
+      corporate-specific tracking. Per memory, ownership of assethold was
+      transferred samdansk2 → vamseeachanta.
+    inventory_status: present-locally
+    notes: >-
+      samdansk2 → vamseeachanta ownership transfer per session memory; local
+      origin may be stale. Maturity beta. Depends on assetutilities. Per
+      session memory project_assethold_ownership_transfer and
+      project_assethold_spec_location, design docs live in docs/reports/
+      (specs/ is gitignored).
+
+  - repo: CAD-DEVELOPMENTS
+    tier: tier-3
+    mission: >-
+      AI-agent-driven Finite Element Analysis model development from scratch —
+      parametric CAD geometry, mesh generation, solver execution, and
+      post-processing automated end-to-end via Python agents, with no manual
+      intervention.
+    source_path: CAD-DEVELOPMENTS/AGENTS.md
+    routing_belongs_here: >-
+      Work belongs here when it is FEA-model agent infrastructure — geometry
+      agents (FreeCAD/build123d), mesh generation, solver registry abstractions,
+      results extraction, or pipeline orchestration for AI-agent-driven FEA.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is reusable engineering calculation
+      (→ digitalmodel), shared utilities (→ assetutilities), or
+      domain-specific solver work that fits existing OrcaWave/OrcaFlex/AQWA
+      surfaces in digitalmodel.
+    overlap_notes: >-
+      Overlaps with digitalmodel on solver registry and engineering-model
+      surfaces. CAD-DEVELOPMENTS is the agent-infrastructure layer;
+      digitalmodel holds the engineering calculation surfaces. Currently
+      PAUSED per memory project_cad_tooling_review until #2205 review.
+    inventory_status: present-locally
+    notes: >-
+      Per session memory project_cad_tooling_review, CAD tooling review is
+      PAUSED; #2327, #2328, #2329 await doc/resource intel (#2205) review.
+
+  - repo: client_projects
+    tier: tier-3
+    mission: >-
+      Generic client-projects catch-all — list of client engagements, shared
+      project-management surfaces, and confidential codes to enable delivery
+      across multiple clients without a dedicated repo.
+    source_path: client_projects/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is client work that lacks a dedicated client
+      repo, cross-client coordination, or shared project-management context
+      for multiple engagements.
+    routing_route_elsewhere: >-
+      Route elsewhere when the engagement has a dedicated client repo
+      (acma-projects, seanation, saipem, frontierdeepwater, doris) — that
+      always wins.
+    overlap_notes: >-
+      Overlaps with every client-specific repo (acma-projects, seanation,
+      saipem, frontierdeepwater, doris). Client-specific repo wins when work
+      targets a single client. client_projects is the catch-all for engagements
+      that lack a dedicated repo.
+    inventory_status: present-locally
+    notes: >-
+      AGENTS.md is a pointer; README.md is brief. Catch-all wrapper.
+
+  - repo: doris
+    tier: tier-3
+    mission: >-
+      Doris client project context — engineering consulting work performed by
+      Vamsee for Doris (an engineering consulting firm and client). Maintains
+      client project data, deliverables, references, and execution context
+      needed to support consulting delivery.
+    source_path: "legacy_source:doris/.agent-os/product/mission.md"
+    routing_belongs_here: >-
+      Work belongs here when it is Doris-client consulting deliverables, client
+      project data, or reference context tied to the Doris engagement.
+    routing_route_elsewhere: >-
+      Route elsewhere when reusable engineering work (→ digitalmodel), shared
+      utilities (→ assetutilities), or generic multi-client coordination
+      (→ client_projects).
+    overlap_notes: >-
+      Overlaps with client_projects as one of the client-specific verticals —
+      Doris-client work always wins for Doris-targeted engagements. Overlaps
+      with digitalmodel on the reusable-vs-client-specific boundary: reusable
+      consulting methodology → digitalmodel; Doris-engagement-specific
+      analysis stays here.
+    inventory_status: present-locally
+    notes: >-
+      Mission source is legacy .agent-os/product/mission.md (no AGENTS.md mission
+      body, no README.md). Should be migrated to AGENTS.md per
+      CONTROL_PLANE_CONTRACT.md; tracked as low-priority follow-up.
+
+  - repo: hobbies
+    tier: tier-3
+    mission: >-
+      Personal and family knowledge management for hobbies, sports, and
+      personal development. Browsable reference for practical notes, training
+      resources, and cultural content — not a software project (no tests, no CI).
+    source_path: hobbies/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is family/personal hobby notes — gardening,
+      swimming, sports, cultural-content references that are clearly not
+      business or engineering.
+    routing_route_elsewhere: >-
+      Route elsewhere when content is engineering, business, or
+      finance-related (→ matching workspace-hub portfolio repo).
+    overlap_notes: >-
+      None identified. Distinct from achantas-data (personal records) and
+      achantas-media (likely personal media) by content type — hobbies is
+      practical-notes/training-resources.
+    inventory_status: present-locally
+    notes: >-
+      Explicitly not-a-software-project per README.md. No tests, no CI.
+
+  - repo: saipem
+    tier: tier-3
+    mission: >-
+      Saipem (engineering installation contractor) project work and reference
+      documents. Per BUSINESS_BRAIN, an archive/extraction candidate — extract
+      useful installation-project information and archive/retire the repo over time.
+    source_path: saipem/README.md
+    routing_belongs_here: >-
+      Work belongs here only while triaging Saipem-engagement files for
+      extraction/migration. Active engineering work routes elsewhere.
+    routing_route_elsewhere: >-
+      Route reusable installation-analysis methodology (→ digitalmodel),
+      generic-client work without dedicated repo (→ client_projects), or
+      cross-repo coordination (→ workspace-hub).
+    overlap_notes: >-
+      Overlaps with client_projects and digitalmodel as migration targets.
+      Per BUSINESS_BRAIN archive/extraction candidate list. Tracked at
+      gh issue #2545.
+    inventory_status: present-locally
+    notes: >-
+      README.md is sparse (project location + DBA path note). Active-archive
+      status. Follow-up #2545 extracts useful info before retirement.
+
+  - repo: sd-work
+    tier: tier-3
+    mission: >-
+      Restricted repository for bio/pharmacy work files and documents
+      belonging to Sabitha Deepthimahanti's work context. Active only when
+      ACE/Vamsee specifically pursues a bio/pharma opportunity; not a general
+      development platform.
+    source_path: "legacy_source:sd-work/.agent-os/product/mission.md"
+    routing_belongs_here: >-
+      Work belongs here only when explicitly engaged on a bio/pharma request
+      or engagement tied to Sabitha Deepthimahanti's work context.
+    routing_route_elsewhere: >-
+      Route elsewhere by default — sd-work should not become an active workstream
+      unless explicit engagement criteria are met. Engineering work
+      → digitalmodel; admin → aceengineer-admin.
+    overlap_notes: >-
+      None identified. Distinct scope (bio/pharma, restricted).
+    inventory_status: present-locally
+    notes: >-
+      Restricted / on-demand reference only. Mission source is legacy
+      .agent-os/product/mission.md (no AGENTS.md body, no README.md).
+
+  - repo: teamresumes
+    tier: tier-3
+    mission: >-
+      Markdown-based resume builder — edit resume.md, push, and a GitHub
+      Action publishes HTML/PDF artifacts. Personal admin tool for resume
+      maintenance.
+    source_path: teamresumes/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is resume content/templates, build-pipeline
+      adjustments, or output-format changes for the resume builder.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is firm admin/finance automation
+      (→ aceengineer-admin) or personal records other than resumes
+      (→ achantas-data).
+    overlap_notes: >-
+      None identified. Distinct personal-admin scope.
+    inventory_status: present-locally
+    notes: >-
+      Personal admin tool. Active.
+
+  - repo: rock-oil-field
+    tier: tier-3
+    mission: >-
+      Temporary client/work archive that should be sanity-checked and
+      migrated into the appropriate Tier-1 repositories. Reusable code,
+      engineering calculations, technical workflows, data products, and
+      analysis should move to the correct Tier-1 home rather than remain here.
+    source_path: "legacy_source:rock-oil-field/.agent-os/product/mission.md"
+    routing_belongs_here: >-
+      Work belongs here only during triage. Mission is migrate-out, not
+      accumulate-here.
+    routing_route_elsewhere: >-
+      Route engineering calculations to digitalmodel, shared utilities to
+      assetutilities, generic-client work to client_projects, and once nothing
+      useful remains exclusively here, archive/retire the repo.
+    overlap_notes: >-
+      Overlaps with digitalmodel, assetutilities, and client_projects as
+      migration targets. Per BUSINESS_BRAIN archive/extraction candidate list.
+      Tracked at gh issue #2539.
+    inventory_status: present-locally
+    notes: >-
+      Mission source is legacy .agent-os/product/mission.md (rank-5 fallback);
+      no AGENTS.md body, no README.md, CLAUDE.md is a pointer. Tracked at
+      gh issue #2539 for sanity-check and migration.
+
+  - repo: investments
+    tier: tier-3
+    mission: >-
+      Private, short-lived repository for investment/deal files that must be
+      sanity-checked and routed to the correct long-term home within the next
+      three months: analysis/models/scripts/code → assethold; source records
+      and personal/private reference data → achantasdata. Mission is migrate-out
+      and retire.
+    source_path: "legacy_source:investments/.agent-os/product/mission.md"
+    routing_belongs_here: >-
+      Work belongs here only during the active 3-month triage window. Mission
+      is retire-after-migration, not accumulate.
+    routing_route_elsewhere: >-
+      Route analysis/models/scripts/code to assethold; private source records
+      and personal-reference data to achantas-data; then archive/retire this repo.
+    overlap_notes: >-
+      Overlaps with assethold (analysis/code migration target) and
+      achantas-data (private-records migration target). Per BUSINESS_BRAIN,
+      retire within 3 months after migration. Tracked at gh issue #2537.
+    inventory_status: present-locally
+    notes: >-
+      Mission source is legacy .agent-os/product/mission.md. Retirement target
+      3 months from BUSINESS_BRAIN last-updated; track #2537.
+
+  - repo: seanation
+    tier: tier-3
+    mission: >-
+      Client-specific repository containing project data, technical information,
+      analysis context, and documents from a SeaNation client engagement.
+      Mission is review-extract-archive: extract any useful data/information,
+      preserve context/provenance, migrate reusable artifacts to durable
+      repositories, then archive.
+    source_path: "legacy_source:seanation/.agent-os/product/mission.md"
+    routing_belongs_here: >-
+      Work belongs here only during extraction triage for the SeaNation client
+      engagement.
+    routing_route_elsewhere: >-
+      Route reusable artifacts to digitalmodel/assetutilities; generic-client
+      wrapper work to client_projects.
+    overlap_notes: >-
+      Overlaps with client_projects (catch-all client wrapper) and digitalmodel
+      (engineering migration target). Per BUSINESS_BRAIN archive/extraction
+      candidate list. Tracked at gh issue #2547.
+    inventory_status: present-locally
+    notes: >-
+      Mission source is legacy .agent-os/product/mission.md. Status:
+      client archive / planned extraction and archive. Tracked at #2547.
+
+  # ============================================================
+  # Post-plan additions (added after 2026-05-02 plan; covered in this rev)
+  # ============================================================
+
+  - repo: kaggle-rogii-2026
+    tier: tier-3
+    mission: >-
+      Kaggle competition repository for the ROGII Wellbore Geology Prediction
+      contest (2026-05-05 to 2026-08-05) — predict TVT (True Vertical Thickness,
+      ft) along the evaluation zone of horizontal wellbores. Submission format
+      is a Kaggle Notebook with ≤9-hour CPU/GPU runtime and no internet at
+      submit time. $50k prize pool.
+    source_path: kaggle-rogii-2026/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is competition-specific data wrangling, model
+      training/evaluation, notebook drafts, submission preparation, or any
+      Kaggle-specific tooling for the ROGII Wellbore Geology Prediction contest.
+    routing_route_elsewhere: >-
+      Route elsewhere when the methodology or models generalize beyond the
+      competition (→ digitalmodel), shared utilities (→ assetutilities), or
+      domain-knowledge writeups (→ llm-wiki via the workspace-hub pipeline).
+    overlap_notes: >-
+      Overlaps with digitalmodel and worldenergydata on wellbore/drilling
+      domain. Competition-scoped work stays here; promoted/durable methodology
+      → digitalmodel.
+    inventory_status: added-post-plan
+    notes: >-
+      Inventory added post-2026-05-02 plan; recognized at 2026-05-13 portfolio
+      sweep. Dataset (~1.33 GB) lives on /mnt/ace/kaggle-rogii-2026/data/,
+      not in the repo (symlinks in repo's data/ subfolders point there).
+
+  - repo: llm-wiki
+    tier: tier-3
+    mission: >-
+      Engineering knowledge wikis — multi-domain corpus extracted from publicly
+      referenceable engineering sources, industry reports, and methodology
+      references. Content storehouse only; the corpus-extraction pipeline that
+      feeds this repository remains in workspace-hub (orchestration tooling
+      stays there; this repo holds the artifacts the pipeline produces).
+    source_path: llm-wiki/README.md
+    routing_belongs_here: >-
+      Work belongs here when it is wiki content additions/edits across the
+      domain wikis (engineering, marine-engineering, naval-architecture,
+      maritime-law, asset-management, lng-projects, engineering-standards,
+      acma-projects-wiki, drilling-engineering), cross-domain link manifest
+      updates, or seed YAMLs for downstream extraction.
+    routing_route_elsewhere: >-
+      Route elsewhere when the work is corpus-extraction pipeline code
+      (→ workspace-hub: scripts/data/ and related), engineering calculation
+      methodology that would be code (→ digitalmodel), or shared utility
+      tooling (→ assetutilities). Vendor-derivative source pages are out of
+      scope per #2482 governance.
+    overlap_notes: >-
+      Overlaps with workspace-hub on pipeline-vs-content boundary: pipeline
+      stays in workspace-hub, content lives here. Per session memory
+      project_llm_wiki_spunout the spinout happened 2026-05-05 (overriding
+      earlier #2398 plan to keep embedded); per
+      project_llm_wiki_strategic_role this is the trunk corpus for code,
+      client work, and chatbots.
+    inventory_status: added-post-plan
+    notes: >-
+      Inventory added post-2026-05-02 plan; this is the dedicated public repo
+      spun out from workspace-hub on 2026-05-05 (license MIT + CC-BY-4.0).
+      Per session memory project_llm_wiki_v18_corpus_freeze, V18 corpus
+      freeze landed 2026-05-10 at 335pp/iter-60; V19 target 2026-06-09.
+
+  # ============================================================
+  # Inventory-drift: mentioned in source documents but not present locally
+  # ============================================================
+
+  - repo: pdf-large-reader
+    tier: inventory-drift
+    mission: >-
+      Mentioned in #2533 issue body as a Tier-3/support candidate ("if present/
+      active"); not present in local immediate-child checkout. No in-repo
+      mission source available.
+    source_path: none
+    routing_belongs_here: >-
+      Cannot route work here — repo not locally present. If/when materialized,
+      mission and routing rules must be established.
+    routing_route_elsewhere: >-
+      Until repo materializes, route any "pdf large reader" work either to
+      workspace-hub (if portfolio-tooling) or to a relevant Tier-2/3 repo
+      with a clear owner.
+    overlap_notes: >-
+      Insufficient source to identify overlaps.
+    inventory_status: not-present-locally
+    notes: >-
+      Source mentioning this repo - #2533 issue body ("pdf-large-reader if
+      present/active"). Confirm with the owner whether to materialize or
+      remove from BUSINESS_BRAIN.
+
+  - repo: heavyequipemnt-rag
+    tier: inventory-drift
+    mission: >-
+      Mentioned in docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md as a portfolio
+      member; not present in local immediate-child checkout. No in-repo
+      mission source available.
+    source_path: none
+    routing_belongs_here: >-
+      Cannot route work here — repo not locally present. If/when materialized,
+      mission and routing rules must be established.
+    routing_route_elsewhere: >-
+      Until repo materializes, route equipment-RAG work either to digitalmodel
+      (engineering models) or to workspace-hub (knowledge-pipeline tooling).
+    overlap_notes: >-
+      Possible overlap with llm-wiki (knowledge corpus) and digitalmodel
+      (equipment modeling) — cannot resolve without an in-repo mission source.
+    inventory_status: not-present-locally
+    notes: >-
+      Source mentioning this repo - docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md.
+      Confirm with the owner whether to materialize or remove from the overview.
+
+  - repo: simpledigitalmarketing
+    tier: inventory-drift
+    mission: >-
+      Mentioned in docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md as a portfolio
+      member; not present in local immediate-child checkout. No in-repo
+      mission source available.
+    source_path: none
+    routing_belongs_here: >-
+      Cannot route work here — repo not locally present.
+    routing_route_elsewhere: >-
+      Until repo materializes, route firm marketing work to aceengineer-website
+      (public delivery) or aceengineer-strategy (private GTM).
+    overlap_notes: >-
+      Possible overlap with aceengineer-website and aceengineer-strategy —
+      cannot resolve without an in-repo mission source.
+    inventory_status: not-present-locally
+    notes: >-
+      Source mentioning this repo - docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md.
+      Confirm with the owner whether to materialize or remove from the overview.
