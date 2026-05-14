@@ -27,6 +27,81 @@
   "cards": [
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:engineering",
+          "cat:harness"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2704,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2704",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2703,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2703",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -38,7 +113,7 @@
           "cat:ai-orchestration",
           "cat:infrastructure",
           "domain:agent-cost-tracking",
-          "status:plan-review"
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -62,6 +137,7 @@
       "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
       "warnings": [
+        "approved_no_marker",
         "legacy_review_no_sha",
         "missing_review"
       ]
@@ -1482,6 +1558,7 @@
       "hover": {
         "labels": [
           "priority:high",
+          "priority:medium",
           "priority:critical",
           "compliance-alert"
         ],
@@ -7827,87 +7904,9 @@
         "legacy_review_no_sha",
         "major_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: unavailable_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:high",
-          "cat:operations",
-          "cat:harness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- **Verified existing:** `scripts/monitoring/cron-health-check.sh` (308 lines).",
-        "provider_route": "claude",
-        "risks": "**Risk:** anchored regex must stay specific. If a reviewer presents a real-world failure shape that doesn't match the proposed two-line regex set, we will need to extend the pattern list. Mitigation: keep the false-positive guard test; document the shape catalog in a comment block above `ERROR_PATTERNS`. | **Risk:** YAML command-string changes can affect downstream consumers (`setup-cron.sh`, `val",
-        "tests": "13 TDD tests defined",
-        "title": "fix(cron-health): harden failure detection and align task evidence contracts"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2291,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-04-26-issue-2291-cron-health-failure-detection.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "fix(cron-health): harden failure detection and align task evidence contracts",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
-      "warnings": [
-        "legacy_review_no_sha",
-        "unavailable_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:low"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(architecture): assess LR and Noble Denton corpus for downstream repo routing"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2287,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(architecture): assess LR and Noble Denton corpus for downstream repo routing",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2287",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-14T05:20:13Z",
+  "generated_at": "2026-05-14T17:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -7915,6 +7914,81 @@
     "planning_feedstock": [
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2704,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2704",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2703,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2703",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -7926,7 +8000,7 @@
             "cat:ai-orchestration",
             "cat:infrastructure",
             "domain:agent-cost-tracking",
-            "status:plan-review"
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -7950,6 +8024,7 @@
         "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
         "warnings": [
+          "approved_no_marker",
           "legacy_review_no_sha",
           "missing_review"
         ]
@@ -9370,6 +9445,7 @@
         "hover": {
           "labels": [
             "priority:high",
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
@@ -15715,84 +15791,6 @@
           "legacy_review_no_sha",
           "major_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: unavailable_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- **Verified existing:** `scripts/monitoring/cron-health-check.sh` (308 lines).",
-          "provider_route": "claude",
-          "risks": "**Risk:** anchored regex must stay specific. If a reviewer presents a real-world failure shape that doesn't match the proposed two-line regex set, we will need to extend the pattern list. Mitigation: keep the false-positive guard test; document the shape catalog in a comment block above `ERROR_PATTERNS`. | **Risk:** YAML command-string changes can affect downstream consumers (`setup-cron.sh`, `val",
-          "tests": "13 TDD tests defined",
-          "title": "fix(cron-health): harden failure detection and align task evidence contracts"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2291,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-04-26-issue-2291-cron-health-failure-detection.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "fix(cron-health): harden failure detection and align task evidence contracts",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
-        "warnings": [
-          "legacy_review_no_sha",
-          "unavailable_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:low"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(architecture): assess LR and Noble Denton corpus for downstream repo routing"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2287,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(architecture): assess LR and Noble Denton corpus for downstream repo routing",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2287",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15803,18 +15801,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-14T05:20:10.624593Z",
+  "scorecard_generated_at": "2026-05-14T17:20:07.196727Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-14T05:20:10.445822Z",
+  "utilization_generated_at": "2026-05-14T17:20:07.011008Z",
   "warning_summary": {
-    "approved_no_marker": 13,
+    "approved_no_marker": 14,
     "approved_no_plan": 2,
     "empty_review": 1,
-    "legacy_review_no_sha": 30,
+    "legacy_review_no_sha": 29,
     "major_review": 19,
     "marker_without_open_approved_issue": 123,
     "missing_review": 28,
-    "unavailable_review": 13,
+    "unavailable_review": 12,
     "unknown_review": 3
   }
 }

@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-14T05:20:13Z
+Generated: 2026-05-14T17:20:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #2702 | audit(infra): Hermes v0.13.0 routing-layer empirical verification — delegate_task round-trip + Anthropic base/overage consumption | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2704 | spike(doc-intel): cloud embeddings comparison — Voyage + OpenAI text-embed-3 (deferred from #2403) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2703 | feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2702 | audit(infra): Hermes v0.13.0 routing-layer empirical verification — delegate_task round-trip + Anthropic base/overage consumption | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2701 | audit(harness): 17 status:plan-approved issues missing .planning/plan-approved/ markers — restore user-in-loop contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2700 | feat(ai-orchestration): "Memory-to-Surface" map maintenance contract for AI_ECOSYSTEM_DESIGN.md §E | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2699 | chore(ai-tools): refresh agent-capability-scores.yaml from 2026-04/05 incident data | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2294 | chore(skills): salvage #2290 follow-on learnings for regression coverage and github-code-review scope | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2293 | fix(wiki-ingest): make nightly ingest idempotent and push-status truthful | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2292 | fix(queue-refresh): restore weekly queue refresh evidence and cron execution | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2291 | fix(cron-health): harden failure detection and align task evidence contracts | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2287 | feat(architecture): assess LR and Noble Denton corpus for downstream repo routing | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

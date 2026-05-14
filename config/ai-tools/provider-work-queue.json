@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-14T05:20:12.322744Z",
+  "generated_at": "2026-05-14T17:20:09.411537Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-14T05:20:10.624593Z",
+  "scorecard_generated_at": "2026-05-14T17:20:07.196727Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 15,
+      "execution_ready_count": 16,
       "total_candidates": 174,
       "top_issues": [
         {
@@ -579,6 +579,30 @@
           ]
         },
         {
+          "number": 2702,
+          "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
+          "labels": [
+            "priority:medium",
+            "cat:ai-orchestration",
+            "cat:infrastructure",
+            "domain:agent-cost-tracking",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-14T16:01:19Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2431,
           "title": "Compliance alert: W17 \u2014 20% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
@@ -703,35 +727,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2660",
           "labels": [
             "priority:high",
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-13T11:45:06Z",
+          "updatedAt": "2026-05-14T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2291,
-          "title": "fix(cron-health): harden failure detection and align task evidence contracts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2291",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:operations",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T10:39:33Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2795,7 +2797,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-13T12:45:34Z",
+          "updatedAt": "2026-05-14T12:09:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3538,40 +3540,18 @@
           ]
         },
         {
-          "number": 2702,
-          "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:infrastructure",
-            "domain:agent-cost-tracking",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-14T03:21:49Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2287,
-          "title": "feat(architecture): assess LR and Noble Denton corpus for downstream repo routing",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2287",
+          "number": 2704,
+          "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2704",
           "labels": [
             "enhancement",
-            "priority:low"
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness"
           ],
-          "updatedAt": "2026-04-15T11:20:01Z",
+          "updatedAt": "2026-05-14T16:10:16Z",
           "execution_ready": false,
-          "priority_rank": 3,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4079,7 +4059,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-13T11:29:09Z",
+          "updatedAt": "2026-05-14T11:08:26Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4157,6 +4137,24 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2703,
+          "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2703",
+          "labels": [],
+          "updatedAt": "2026-05-14T16:35:07Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4179,7 +4177,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:56:49Z",
+          "updatedAt": "2026-05-14T16:10:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4206,7 +4204,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:25:18Z",
+          "updatedAt": "2026-05-14T16:10:46Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4371,7 +4369,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:56:49Z",
+          "updatedAt": "2026-05-14T16:10:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4398,7 +4396,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:25:18Z",
+          "updatedAt": "2026-05-14T16:10:46Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
