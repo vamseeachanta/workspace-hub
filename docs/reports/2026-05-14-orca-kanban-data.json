@@ -1,0 +1,2970 @@
+{
+  "boards": {
+    "OrcaFlex": {
+      "Approved Label Drift": [
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:engineering",
+            "cat:knowledge-domain",
+            "status:plan-approved"
+          ],
+          "number": 2685,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation",
+          "updated": "2026-05-14T02:23:47Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2685"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:engineering",
+            "cat:bugfix",
+            "status:plan-approved"
+          ],
+          "number": 2686,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+          "updated": "2026-05-14T02:08:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:harness",
+            "domain:testing",
+            "status:plan-approved"
+          ],
+          "number": 2628,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+          "updated": "2026-05-14T03:42:24Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:bugfix",
+            "status:plan-approved"
+          ],
+          "number": 2694,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability)",
+          "updated": "2026-05-14T03:43:52Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2694"
+        }
+      ],
+      "Blocked / Waiting": [],
+      "Done": [
+        {
+          "closed": "2026-04-03T04:13:56Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "machine:dev-primary"
+          ],
+          "number": 1656,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "OrcaFlex orcaflex/ package: promote to TESTED maturity after test uplift",
+          "updated": "2026-04-03T04:13:56Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1656"
+        },
+        {
+          "closed": "2026-04-27T03:46:03Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1",
+            "status:plan-approved"
+          ],
+          "number": 2475,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": "status:plan-approved",
+          "title": "chore(licensed-proof): define OrcaWave/OrcaFlex native load-run proof protocol",
+          "updated": "2026-04-27T03:46:03Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2475"
+        },
+        {
+          "closed": "2026-04-22T14:06:26Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2453,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "epic(canonical-spec): flagship structure-family validation wave for OrcaWave/OrcaFlex",
+          "updated": "2026-04-24T01:34:34Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2453"
+        },
+        {
+          "closed": "2026-03-19T18:18:40Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "archived",
+            "domain:orcaflex",
+            "status:plan-review"
+          ],
+          "number": 342,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": "status:plan-review",
+          "title": "WRK-314: OrcaFlex Reporting Phase 4 \u2014 OrcFxAPI Integration",
+          "updated": "2026-05-05T21:58:43Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/342"
+        },
+        {
+          "closed": "2026-05-02T04:08:33Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "domain:repo-organization",
+            "status:done",
+            "agent:codex"
+          ],
+          "number": 2462,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": "status:done",
+          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
+          "updated": "2026-05-02T04:08:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462"
+        },
+        {
+          "closed": "2026-04-24T01:31:35Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2456,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(canonical-spec): extend OrcaFlex semantic proof to lazy/steep-wave riser variants",
+          "updated": "2026-04-24T01:32:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2456"
+        },
+        {
+          "closed": "2026-04-03T03:54:07Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1753,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: repair stale digitalmodel OrcaWave/OrcaFlex documentation references",
+          "updated": "2026-04-03T03:54:07Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1753"
+        },
+        {
+          "closed": "2026-04-02T04:43:48Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1580,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Connect OrcaWave/OrcaFlex web resources to download pipeline",
+          "updated": "2026-04-02T04:43:48Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1580"
+        },
+        {
+          "closed": "2026-04-04T01:18:42Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1768,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "dev-primary: automate OrcaWave \u2192 OrcaFlex handoff pipeline (#1592 implementation)",
+          "updated": "2026-04-04T01:18:42Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1768"
+        },
+        {
+          "closed": "2026-04-03T03:53:14Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1755,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: reconcile OrcaWave/OrcaFlex issues against current repo reality",
+          "updated": "2026-04-03T03:53:14Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1755"
+        },
+        {
+          "closed": "2026-04-03T03:53:12Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1752,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: canonical operator map for digitalmodel OrcaWave/OrcaFlex domain",
+          "updated": "2026-04-03T03:53:12Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1752"
+        },
+        {
+          "closed": "2026-04-04T01:19:11Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1"
+          ],
+          "number": 1592,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Automate OrcaWave \u2192 OrcaFlex handoff: RAO extraction \u2192 vessel type generation",
+          "updated": "2026-04-04T01:19:11Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1592"
+        },
+        {
+          "closed": "2026-04-04T01:18:40Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1766,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "dev-primary: OrcaWave-to-OrcaFlex handoff validation suite (#1605 implementation)",
+          "updated": "2026-04-04T01:18:40Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1766"
+        },
+        {
+          "closed": "2026-04-03T03:53:13Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1754,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: create reusable workflow skill for digitalmodel OrcaWave/OrcaFlex work",
+          "updated": "2026-04-03T03:53:13Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1754"
+        },
+        {
+          "closed": "2026-03-19T18:18:43Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "archived",
+            "domain:mooring",
+            "status:plan-review"
+          ],
+          "number": 344,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": "status:plan-review",
+          "title": "WRK-315: CALM buoy mooring fatigue \u2014 spectral fatigue from OrcaFlex time-domain output",
+          "updated": "2026-05-05T21:58:47Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/344"
+        },
+        {
+          "closed": "2026-04-10T15:52:25Z",
+          "domain": "BOTH",
+          "labels": [],
+          "number": 2088,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(llm-wiki): ingest OrcaFlex, OrcaWave, and OrcFxAPI online help into llm-wiki",
+          "updated": "2026-04-10T15:52:25Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2088"
+        },
+        {
+          "closed": "2026-04-04T01:19:09Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary",
+            "machine:licensed-win-1"
+          ],
+          "number": 1605,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "OrcaWave-to-OrcaFlex integration test \u2014 .owr export and RAO import validation",
+          "updated": "2026-04-04T01:19:09Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1605"
+        },
+        {
+          "closed": "2026-04-10T15:52:26Z",
+          "domain": "BOTH",
+          "labels": [],
+          "number": 2102,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(llm-wiki): wire llm-wiki paths into OrcaFlex/OrcaWave agent SKILL.md files",
+          "updated": "2026-04-10T15:52:26Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2102"
+        },
+        {
+          "closed": "2026-03-19T18:19:42Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "archived",
+            "domain:orcaflex"
+          ],
+          "number": 386,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-314: OrcaFlex Reporting Phase 4 \u2014 OrcFxAPI Integration",
+          "updated": "2026-03-20T10:53:14Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/386"
+        },
+        {
+          "closed": "2026-04-04T01:18:46Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:licensed-win-1"
+          ],
+          "number": 1764,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "licensed-win-1: run OrcaFlex mooring model for handoff validation fixture (#1605 follow-on)",
+          "updated": "2026-04-04T01:18:46Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1764"
+        },
+        {
+          "closed": "2026-04-04T01:18:45Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:licensed-win-1"
+          ],
+          "number": 1762,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "licensed-win-1: generate minimal OrcaFlex .sim fixture for integration tests (#1652 follow-on)",
+          "updated": "2026-04-04T01:18:45Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1762"
+        },
+        {
+          "closed": "2026-03-19T18:25:19Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "archived",
+            "domain:orcaflex"
+          ],
+          "number": 622,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-569: docs: map OrcaFlex .dat model library to data-source YAMLs",
+          "updated": "2026-03-20T10:43:16Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/622"
+        },
+        {
+          "closed": "2026-03-19T18:26:15Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "archived",
+            "domain:orcaflex"
+          ],
+          "number": 663,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-569: docs: map OrcaFlex .dat model library to data-source YAMLs",
+          "updated": "2026-03-20T10:41:52Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/663"
+        },
+        {
+          "closed": "2026-03-19T18:20:55Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "archived",
+            "domain:ai-tools"
+          ],
+          "number": 438,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-380: Multi-physics simulation chain \u2014 Gmsh \u2192 OpenFOAM \u2192 OrcaFlex as agent-executable pipeline",
+          "updated": "2026-03-21T13:39:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/438"
+        },
+        {
+          "closed": "2026-03-19T18:19:42Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "archived",
+            "domain:orcaflex"
+          ],
+          "number": 387,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-336: Portable installation analysis library \u2014 extract generic OrcaFlex automation from project code",
+          "updated": "2026-03-21T13:37:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/387"
+        },
+        {
+          "closed": "2026-03-19T18:19:45Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "archived",
+            "domain:mooring"
+          ],
+          "number": 389,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-315: CALM buoy mooring fatigue \u2014 spectral fatigue from OrcaFlex time-domain output",
+          "updated": "2026-03-20T10:53:06Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/389"
+        },
+        {
+          "closed": "2026-03-19T18:20:41Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "archived",
+            "domain:orcaflex"
+          ],
+          "number": 431,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-336: Portable installation analysis library \u2014 extract generic OrcaFlex automation from project code",
+          "updated": "2026-03-20T10:51:21Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/431"
+        },
+        {
+          "closed": "2026-03-19T18:22:03Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "archived",
+            "domain:ai-tools"
+          ],
+          "number": 483,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-380: Multi-physics simulation chain \u2014 Gmsh \u2192 OpenFOAM \u2192 OrcaFlex as agent-executable pipeline",
+          "updated": "2026-03-20T10:49:03Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/483"
+        },
+        {
+          "closed": "2026-03-19T18:26:36Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "archived",
+            "domain:pipeline"
+          ],
+          "number": 677,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+          "updated": "2026-03-20T04:21:31Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/677"
+        },
+        {
+          "closed": "2026-03-19T18:25:40Z",
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "archived",
+            "domain:pipeline"
+          ],
+          "number": 637,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+          "updated": "2026-03-20T04:21:44Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/637"
+        },
+        {
+          "closed": "2026-04-27T13:19:59Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "status:done"
+          ],
+          "number": 2476,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": "status:done",
+          "title": "docs(llm-wiki): add canonical spec semantic-equivalence contract and fixture cookbook",
+          "updated": "2026-04-27T13:20:14Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2476"
+        },
+        {
+          "closed": "2026-04-22T20:30:54Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary",
+            "machine:licensed-win-1"
+          ],
+          "number": 1595,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Solver queue batch submission and result watcher \u2014 submit-batch.sh + watch-results.sh",
+          "updated": "2026-04-22T20:30:54Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1595"
+        },
+        {
+          "closed": "2026-04-24T01:31:34Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2455,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(canonical-spec): validate rigid jumper family via PLET-to-PLEM semantic proof",
+          "updated": "2026-04-24T01:31:58Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2455"
+        },
+        {
+          "closed": "2026-04-04T11:33:39Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary",
+            "machine:licensed-win-1"
+          ],
+          "number": 1597,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "RAO extractor and database population pipeline \u2014 .owr results to RAODatabase",
+          "updated": "2026-04-04T11:33:39Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1597"
+        },
+        {
+          "closed": "2026-04-04T11:24:25Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1787,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "auto-populate RAODatabase from solver queue completions",
+          "updated": "2026-04-04T11:24:25Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1787"
+        },
+        {
+          "closed": "2026-04-02T11:18:25Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1596,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Parametric spec.yml generator \u2014 DiffractionSpec-compliant spec files from sweep definitions",
+          "updated": "2026-04-02T11:18:25Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1596"
+        },
+        {
+          "closed": "2026-04-04T03:23:47Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1785,
+          "priority": "priority:low",
+          "state": "CLOSED",
+          "status": null,
+          "title": "diffraction: CLI and exporter test coverage (6 files, ~3205 LOC)",
+          "updated": "2026-04-04T03:23:47Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1785"
+        },
+        {
+          "closed": "2026-04-06T02:31:50Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:document-intelligence",
+            "domain:marine",
+            "agent:gemini"
+          ],
+          "number": 1621,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Batch-process 26 reference marine standards to done status (marine 12% \u2192 91%)",
+          "updated": "2026-04-06T02:31:50Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1621"
+        },
+        {
+          "closed": "2026-04-05T03:23:31Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "agent:gemini"
+          ],
+          "number": 1624,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Acquire critical marine hydrodynamics reference texts \u2014 Faltinsen, Pinkster, Newman",
+          "updated": "2026-04-05T03:23:31Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1624"
+        },
+        {
+          "closed": "2026-04-04T01:18:43Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:licensed-win-1"
+          ],
+          "number": 1761,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "licensed-win-1: validate solver queue end-to-end with WAMIT batch (#1586 follow-on)",
+          "updated": "2026-04-04T01:18:43Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1761"
+        },
+        {
+          "closed": "2026-05-02T04:08:30Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:done",
+            "agent:codex"
+          ],
+          "number": 2126,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": "status:done",
+          "title": "test(llm-wiki): validate markdown conversion quality across all 717 topics",
+          "updated": "2026-05-02T04:08:30Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2126"
+        },
+        {
+          "closed": "2026-04-05T12:10:39Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "cat:strategy",
+            "domain:gtm",
+            "agent:gemini"
+          ],
+          "number": 1676,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "[WRK] Market-Driven Repo Development Roadmap \u2014 Align digitalmodel Packages to Job Market Demand",
+          "updated": "2026-04-05T12:10:39Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1676"
+        },
+        {
+          "closed": "2026-04-02T11:18:27Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1598,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "End-to-end DiffractionSpec pipeline integration test",
+          "updated": "2026-04-02T11:18:27Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1598"
+        },
+        {
+          "closed": "2026-04-06T03:06:43Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "cat:data-pipeline",
+            "agent:gemini"
+          ],
+          "number": 1910,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "SCAN: Map all 3,820 Excel workbooks in docs/tests and /mnt/ace/digitalmodel",
+          "updated": "2026-04-06T03:06:43Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1910"
+        },
+        {
+          "closed": "2026-04-04T01:26:54Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 1588,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Parametric spec.yml generator \u2014 bridge hull_library to DiffractionSpec pipeline",
+          "updated": "2026-04-04T01:26:54Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1588"
+        },
+        {
+          "closed": "2026-04-06T03:04:36Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:document-intelligence",
+            "domain:marine",
+            "agent:gemini"
+          ],
+          "number": 1622,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Create marine sub-domain taxonomy in Phase C \u2014 split 32K marine docs into 7+ categories",
+          "updated": "2026-04-06T03:04:36Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1622"
+        },
+        {
+          "closed": "2026-04-06T03:06:42Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:data-pipeline",
+            "agent:gemini"
+          ],
+          "number": 1909,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "INVENTORY: Complete Excel workbook catalog \u2014 3,700+ sheets across all mounts",
+          "updated": "2026-04-06T03:06:42Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1909"
+        },
+        {
+          "closed": "2026-05-01T20:05:19Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:gtm"
+          ],
+          "number": 2115,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(gtm): mooring demo \u2014 GTM Demo 6 for station-keeping outreach",
+          "updated": "2026-05-01T20:05:19Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2115"
+        },
+        {
+          "closed": "2026-04-04T03:12:56Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1599,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Parametric hull analysis test suite \u2014 forward_speed, shallow_water, passing_ship, charts",
+          "updated": "2026-04-04T03:12:56Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1599"
+        },
+        {
+          "closed": "2026-05-03T21:49:01Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "domain:testing",
+            "status:done"
+          ],
+          "number": 2622,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": "status:done",
+          "title": "fix(digitalmodel-tests): Cluster C \u2014 drop -p no:capture from QG command or refactor capsys tests (~17 errors)",
+          "updated": "2026-05-03T21:49:01Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2622"
+        },
+        {
+          "closed": "2026-04-06T15:23:11Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1984,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Implement seakeeping module \u2014 6-DOF motion analysis",
+          "updated": "2026-04-06T15:23:11Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1984"
+        },
+        {
+          "closed": "2026-04-04T11:33:19Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1786,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "RAO comparison plots: extracted vs WAMIT reference data",
+          "updated": "2026-04-04T11:33:19Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1786"
+        },
+        {
+          "closed": "2026-04-27T03:49:50Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:data-pipeline",
+            "domain:pipeline",
+            "domain:marine",
+            "status:done"
+          ],
+          "number": 2514,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": "status:done",
+          "title": "feat(digitalmodel): schema for subsea cable, umbilical, and pipeline cross-sections",
+          "updated": "2026-04-27T03:49:50Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2514"
+        },
+        {
+          "closed": "2026-04-04T01:18:39Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1765,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "dev-primary: build RAO extractor from .owr fixtures to RAODatabase (#1597 implementation)",
+          "updated": "2026-04-04T01:18:39Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1765"
+        },
+        {
+          "closed": "2026-04-28T21:54:28Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "number": 2536,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": "status:plan-approved",
+          "title": "feat(llm-wiki): deep-extract high-value Elements engineering corpora",
+          "updated": "2026-04-28T21:54:28Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2536"
+        },
+        {
+          "closed": "2026-04-10T13:52:16Z",
+          "domain": "BODY-MARINE",
+          "labels": [
+            "cat:engineering",
+            "gtm"
+          ],
+          "number": 1931,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "READY: Build GTM Demo 3 \u2014 Deepwater Mudmat Installation (180 cases)",
+          "updated": "2026-04-10T13:52:16Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1931"
+        }
+      ],
+      "In Progress / Status Working": [
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering-calculations",
+            "wrk-item",
+            "status:working",
+            "machine:licensed-win-1",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "number": 1264,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:working",
+          "title": "WRK-1365: OrcaFlex frame analysis",
+          "updated": "2026-04-28T06:11:39Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1264"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "number": 2125,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": "status:working",
+          "title": "feat(llm-wiki): auto-refresh ingestion on new Orcina releases",
+          "updated": "2026-04-28T06:15:27Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2125"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "number": 2124,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": "status:working",
+          "title": "feat(llm-wiki): extend ingestion to Orcina resources, examples, and training materials",
+          "updated": "2026-04-28T09:18:13Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2124"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:low",
+            "cat:engineering",
+            "cat:research",
+            "status:working",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "number": 2327,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": "status:working",
+          "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
+          "updated": "2026-04-28T07:30:09Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327"
+        }
+      ],
+      "Plan Review / Needs Approval": [
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "status:plan-review"
+          ],
+          "number": 2548,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-review",
+          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
+          "updated": "2026-05-13T13:20:51Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548"
+        }
+      ],
+      "Ready / Plan Approved": [],
+      "Triage Needed (no status label)": [
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2474,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
+          "updated": "2026-04-26T21:54:09Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2473,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
+          "updated": "2026-04-24T01:33:06Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2472,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
+          "updated": "2026-04-24T01:33:05Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:research"
+          ],
+          "number": 2692,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "R5 \u2014 Subsea Pipelines: Comprehensive code coverage audit (digitalmodel subsea/geotechnical/cathodic_protection/orcaflex)",
+          "updated": "2026-05-13T11:41:23Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2692"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1572,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain-specific capability roadmaps \u2014 OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline",
+          "updated": "2026-04-24T01:34:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1572"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:research"
+          ],
+          "number": 2690,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "R3 \u2014 Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)",
+          "updated": "2026-05-13T11:06:34Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2690"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 21,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-039: SPM project benchmarking - AQWA vs OrcaFlex",
+          "updated": "2026-03-21T13:23:56Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/21"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "cat:engineering",
+            "domain:data-pipeline"
+          ],
+          "number": 1932,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "INVENTORY: Complete OrcaFlex/OrcaWave model catalog (3,524 YML + legacy)",
+          "updated": "2026-04-05T17:23:20Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1932"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "gtm"
+          ],
+          "number": 1905,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "DATA: Rigid jumper OrcaFlex model + input workbook for model generation",
+          "updated": "2026-04-05T11:56:26Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1905"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:multi"
+          ],
+          "number": 2641,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+          "updated": "2026-05-05T10:12:17Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:pipeline",
+            "domain:marine"
+          ],
+          "number": 1797,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(freespan): link to OrcaFlex rigid jumper VIV workflow (#23)",
+          "updated": "2026-04-04T03:06:41Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1797"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary",
+            "machine:licensed-win-1"
+          ],
+          "number": 1788,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "OrcaFlex .sim snapshot testing: HTML report from minimal_test.sim fixture",
+          "updated": "2026-04-23T02:12:36Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1788"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "machine:licensed-win-1"
+          ],
+          "number": 1652,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "OrcaFlex reporting: integration test with real .sim fixture + HTML snapshot testing",
+          "updated": "2026-04-23T02:12:34Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1652"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "number": 2170,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(operations): implement OrcaFlex, OrcaWave, and ANSYS/AQWA Windows probe adapters",
+          "updated": "2026-04-10T22:58:47Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2170"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1594,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "Design Load Case (DLC) matrix generator for OrcaFlex mooring/riser analysis",
+          "updated": "2026-04-22T14:10:37Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1594"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 24,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-046: OrcaFlex drilling and completion riser parametric analysis",
+          "updated": "2026-03-21T13:24:04Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/24"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering"
+          ],
+          "number": 1694,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Fatigue post-processor: OrcaFlex time-history \u2192 rainflow \u2192 S-N damage report",
+          "updated": "2026-04-02T17:51:50Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1694"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "agent:codex"
+          ],
+          "number": 1628,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Sprint plan: OrcaWave/OrcaFlex Phase 1 \u2014 solver queue hardening + orcawave test coverage",
+          "updated": "2026-04-22T14:10:40Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1628"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1600,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Cross-tool structural comparison framework \u2014 2D solver vs OrcaFlex vs CalculiX",
+          "updated": "2026-04-02T04:25:14Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1600"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:harness",
+            "domain:knowledge-management"
+          ],
+          "number": 2123,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
+          "updated": "2026-04-24T03:27:01Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering-calculations",
+            "wrk-item",
+            "machine:licensed-win-1"
+          ],
+          "number": 1292,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-1342: OrcaFlex parachute deployment template \u2014 time-domain snap load analysis",
+          "updated": "2026-04-03T03:54:56Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1292"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "number": 2175,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "test(operations): add fixture-backed OrcaFlex Windows probe smoke matrix across readiness states",
+          "updated": "2026-04-11T04:16:25Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2175"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 28,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-075: OFFPIPE Integration Module \\u2014 pipelay cross-validation against OrcaFlex",
+          "updated": "2026-03-21T13:24:13Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/28"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:pipeline"
+          ],
+          "number": 19,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support",
+          "updated": "2026-03-21T13:23:51Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/19"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "gtm"
+          ],
+          "number": 1904,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "INVENTORY: Complete OrcaFlex/OrcaWave model and Excel workbook catalog across all data mounts",
+          "updated": "2026-04-07T19:47:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1904"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2454,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): validate flagship generic-track OrcaFlex mooring case via turret-moored FPSO semantic proof",
+          "updated": "2026-04-23T09:48:20Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2454"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:pipeline"
+          ],
+          "number": 23,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations",
+          "updated": "2026-03-21T13:24:01Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/23"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:structural"
+          ],
+          "number": 20,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural",
+          "updated": "2026-03-21T13:23:54Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/20"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:research"
+          ],
+          "number": 2673,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "R5 \u2014 Hydrodynamics: Comprehensive code coverage audit (digitalmodel + related repos)",
+          "updated": "2026-05-13T11:41:20Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2673"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1"
+          ],
+          "number": 1586,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Harden solver queue: batch submission, result watcher, auto post-processing",
+          "updated": "2026-04-22T20:21:42Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1586"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1620,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Clone and pip-install BEMRosetta, pyHAMS, OCEANLYZ, wavespectra \u2014 critical marine OSS tools",
+          "updated": "2026-04-02T04:45:46Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1620"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:knowledge-domain"
+          ],
+          "number": 2668,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain Sweep: Offshore Hydrodynamics (RAOs, motion analysis, wave-structure interaction)",
+          "updated": "2026-05-13T01:30:13Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2668"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1593,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "Automated WAMIT validation runner for L00 test cases",
+          "updated": "2026-04-02T04:22:32Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1593"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:low",
+            "cat:marketing",
+            "cat:research"
+          ],
+          "number": 2672,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "R4 \u2014 Hydrodynamics: LinkedIn expert mapping (marketing surface)",
+          "updated": "2026-05-12T10:01:44Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2672"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:data-pipeline",
+            "domain:marine",
+            "domain:knowledge-management",
+            "agent:codex"
+          ],
+          "number": 2103,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(llm-wiki): extend ingestion to AQWA and BEMRosetta documentation",
+          "updated": "2026-04-25T09:03:15Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2103"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-secondary"
+          ],
+          "number": 1607,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Capytaine BEM end-to-end integration with parametric hull sweep pipeline",
+          "updated": "2026-04-02T04:29:52Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1607"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "cat:engineering",
+            "machine:licensed-win-1"
+          ],
+          "number": 1789,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "licensed-win-1: retry hemisphere.owr fixture generation (missing .gdf)",
+          "updated": "2026-04-04T11:20:28Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1789"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:knowledge-domain"
+          ],
+          "number": 2687,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain Sweep: Subsea Pipelines (design, installation, integrity, on-bottom stability)",
+          "updated": "2026-05-13T11:40:43Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2687"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:research"
+          ],
+          "number": 2681,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "R5 \u2014 Mooring: Code coverage audit (digitalmodel + citation pilot)",
+          "updated": "2026-05-13T11:41:22Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2681"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering"
+          ],
+          "number": 1695,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "ANSYS package: YAML-based pipeline spec \u2014 define full FEA workflow in a single YAML file",
+          "updated": "2026-04-02T17:51:57Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1695"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "cat:business",
+            "cat:strategy",
+            "domain:gtm"
+          ],
+          "number": 1669,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "[WRK] GTM: Vessel Installation Contractor Email Outreach Campaign",
+          "updated": "2026-04-29T15:06:35Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1669"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:research"
+          ],
+          "number": 2679,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "R3 \u2014 Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions)",
+          "updated": "2026-05-12T13:43:36Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2679"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:research"
+          ],
+          "number": 2671,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "R3 \u2014 Hydrodynamics: Industry practice (conferences, journals, vendor docs)",
+          "updated": "2026-05-12T10:01:42Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2671"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:knowledge-domain"
+          ],
+          "number": 2676,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain Sweep: Mooring Design (catenary, taut, DP-assist, station-keeping, fatigue)",
+          "updated": "2026-05-13T01:30:14Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2676"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1591,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Seed hull registry with standard hull forms (barge, tanker, semi-sub, spar, FPSO)",
+          "updated": "2026-04-22T14:10:34Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1591"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:licensed-win-1",
+            "agent:codex"
+          ],
+          "number": 1827,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "licensed-win-1: extract .sim model metadata to JSON for snapshot testing",
+          "updated": "2026-04-04T20:33:35Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1827"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1637,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Parametric spec generator: multi-dimensional sweep combinations and CLI interface",
+          "updated": "2026-04-22T14:10:29Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1637"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "agent:claude"
+          ],
+          "number": 1698,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "ANSYS package: Solver queue integration \u2014 dispatch FEA jobs to licensed-win-1",
+          "updated": "2026-04-04T20:33:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1698"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:pipeline",
+            "domain:marine"
+          ],
+          "number": 2516,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(digitalmodel): flexible pipe and dynamic riser cross-section mechanics follow-up",
+          "updated": "2026-04-26T21:54:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2516"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [],
+          "number": 1687,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "Docstring uplift wave 3 \u2014 complete infrastructure/ coverage (24 files remaining) (#1645 follow-up)",
+          "updated": "2026-04-02T17:51:27Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1687"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "wrk-item",
+            "machine:dev-primary"
+          ],
+          "number": 1314,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-1372: Ship-specific hydrostatic data tables (DDG-51, FFG-7)",
+          "updated": "2026-04-02T04:28:56Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1314"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 29,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-099: Run 3-way benchmark on Unit Box hull",
+          "updated": "2026-03-21T13:24:16Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/29"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "machine:dev-secondary"
+          ],
+          "number": 1360,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK: extract algorithms and methods from riser-eng-job archives",
+          "updated": "2026-03-31T11:26:27Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1360"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 22,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-043: Parametric hull form analysis with RAO generation and client-facing lookup",
+          "updated": "2026-03-21T13:23:59Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/22"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:ai-tools"
+          ],
+          "number": 27,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "WRK-050: Hardware consolidation \\u2014 inventory, assess, repurpose devices + dev environment\\",
+          "updated": "2026-03-21T13:24:11Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/27"
+        }
+      ]
+    },
+    "OrcaWave": {
+      "Approved Label Drift": [],
+      "Blocked / Waiting": [],
+      "Done": [
+        {
+          "closed": "2026-04-27T03:46:03Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1",
+            "status:plan-approved"
+          ],
+          "number": 2475,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": "status:plan-approved",
+          "title": "chore(licensed-proof): define OrcaWave/OrcaFlex native load-run proof protocol",
+          "updated": "2026-04-27T03:46:03Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2475"
+        },
+        {
+          "closed": "2026-04-22T14:06:26Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2453,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "epic(canonical-spec): flagship structure-family validation wave for OrcaWave/OrcaFlex",
+          "updated": "2026-04-24T01:34:34Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2453"
+        },
+        {
+          "closed": "2026-05-02T04:08:33Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:documentation",
+            "domain:repo-organization",
+            "status:done",
+            "agent:codex"
+          ],
+          "number": 2462,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": "status:done",
+          "title": "feat(digitalmodel): repo-wide operator map and canonical routing surfaces beyond OrcaWave/OrcaFlex",
+          "updated": "2026-05-02T04:08:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2462"
+        },
+        {
+          "closed": "2026-04-03T03:54:07Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1753,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: repair stale digitalmodel OrcaWave/OrcaFlex documentation references",
+          "updated": "2026-04-03T03:54:07Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1753"
+        },
+        {
+          "closed": "2026-04-02T04:43:48Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1580,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Connect OrcaWave/OrcaFlex web resources to download pipeline",
+          "updated": "2026-04-02T04:43:48Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1580"
+        },
+        {
+          "closed": "2026-04-04T01:18:42Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1768,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "dev-primary: automate OrcaWave \u2192 OrcaFlex handoff pipeline (#1592 implementation)",
+          "updated": "2026-04-04T01:18:42Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1768"
+        },
+        {
+          "closed": "2026-04-03T03:53:14Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1755,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: reconcile OrcaWave/OrcaFlex issues against current repo reality",
+          "updated": "2026-04-03T03:53:14Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1755"
+        },
+        {
+          "closed": "2026-04-03T03:53:12Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1752,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: canonical operator map for digitalmodel OrcaWave/OrcaFlex domain",
+          "updated": "2026-04-03T03:53:12Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1752"
+        },
+        {
+          "closed": "2026-04-04T01:19:11Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1"
+          ],
+          "number": 1592,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "Automate OrcaWave \u2192 OrcaFlex handoff: RAO extraction \u2192 vessel type generation",
+          "updated": "2026-04-04T01:19:11Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1592"
+        },
+        {
+          "closed": "2026-04-04T01:18:40Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1766,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "dev-primary: OrcaWave-to-OrcaFlex handoff validation suite (#1605 implementation)",
+          "updated": "2026-04-04T01:18:40Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1766"
+        },
+        {
+          "closed": "2026-04-03T03:53:13Z",
+          "domain": "BOTH",
+          "labels": [
+            "documentation",
+            "enhancement"
+          ],
+          "number": 1754,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Traceability: create reusable workflow skill for digitalmodel OrcaWave/OrcaFlex work",
+          "updated": "2026-04-03T03:53:13Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1754"
+        },
+        {
+          "closed": "2026-04-10T15:52:25Z",
+          "domain": "BOTH",
+          "labels": [],
+          "number": 2088,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(llm-wiki): ingest OrcaFlex, OrcaWave, and OrcFxAPI online help into llm-wiki",
+          "updated": "2026-04-10T15:52:25Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2088"
+        },
+        {
+          "closed": "2026-04-04T01:19:09Z",
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary",
+            "machine:licensed-win-1"
+          ],
+          "number": 1605,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "OrcaWave-to-OrcaFlex integration test \u2014 .owr export and RAO import validation",
+          "updated": "2026-04-04T01:19:09Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1605"
+        },
+        {
+          "closed": "2026-04-10T15:52:26Z",
+          "domain": "BOTH",
+          "labels": [],
+          "number": 2102,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(llm-wiki): wire llm-wiki paths into OrcaFlex/OrcaWave agent SKILL.md files",
+          "updated": "2026-04-10T15:52:26Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2102"
+        },
+        {
+          "closed": "2026-04-24T01:31:35Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2457,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "feat(canonical-spec): promote L03 ship benchmark to explicit OrcaWave roundtrip proof case",
+          "updated": "2026-04-24T01:32:02Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2457"
+        },
+        {
+          "closed": "2026-05-06T22:54:51Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "status:working",
+            "machine:dev-primary",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "number": 2458,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": "status:working",
+          "title": "feat(canonical-spec): promote named OrcaWave multi-body benchmark fixture for roundtrip and handoff readiness",
+          "updated": "2026-05-06T22:54:51Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2458"
+        },
+        {
+          "closed": "2026-04-04T02:38:40Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 1639,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "OrcaWave test coverage: move package from DEVELOPMENT to TESTED maturity",
+          "updated": "2026-04-04T02:38:40Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1639"
+        },
+        {
+          "closed": "2026-04-03T04:13:57Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 1638,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "DiffractionSpec pipeline: reverse parser \u2014 native OrcaWave YAML back to DiffractionSpec",
+          "updated": "2026-04-03T04:13:57Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1638"
+        },
+        {
+          "closed": "2026-04-03T03:53:28Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1606,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "OrcaWave damping-sweep test suite \u2014 viscous roll damping parametric analysis",
+          "updated": "2026-04-03T03:53:28Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1606"
+        },
+        {
+          "closed": "2026-04-02T11:18:23Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement"
+          ],
+          "number": 1585,
+          "priority": null,
+          "state": "CLOSED",
+          "status": null,
+          "title": "Test coverage: orcawave package \u2014 13 source files, 0 tests (SKELETON \u2192 DEVELOPMENT)",
+          "updated": "2026-04-02T11:18:23Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1585"
+        },
+        {
+          "closed": "2026-04-04T01:49:56Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1767,
+          "priority": "priority:medium",
+          "state": "CLOSED",
+          "status": null,
+          "title": "dev-primary: OrcaWave test coverage \u2014 close remaining diffraction pipeline gaps (#1639 follow-on)",
+          "updated": "2026-04-04T01:49:56Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1767"
+        },
+        {
+          "closed": "2026-04-04T01:18:48Z",
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:licensed-win-1"
+          ],
+          "number": 1763,
+          "priority": "priority:high",
+          "state": "CLOSED",
+          "status": null,
+          "title": "licensed-win-1: generate OrcaWave .owr result fixtures for RAO extraction (#1597 follow-on)",
+          "updated": "2026-04-04T01:18:48Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1763"
+        }
+      ],
+      "In Progress / Status Working": [],
+      "Plan Review / Needs Approval": [],
+      "Ready / Plan Approved": [],
+      "Triage Needed (no status label)": [
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2473,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
+          "updated": "2026-04-24T01:33:06Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1572,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain-specific capability roadmaps \u2014 OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline",
+          "updated": "2026-04-24T01:34:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1572"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "cat:engineering",
+            "domain:data-pipeline"
+          ],
+          "number": 1932,
+          "priority": null,
+          "state": "OPEN",
+          "status": null,
+          "title": "INVENTORY: Complete OrcaFlex/OrcaWave model catalog (3,524 YML + legacy)",
+          "updated": "2026-04-05T17:23:20Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1932"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:multi"
+          ],
+          "number": 2641,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+          "updated": "2026-05-05T10:12:17Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "number": 2170,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(operations): implement OrcaFlex, OrcaWave, and ANSYS/AQWA Windows probe adapters",
+          "updated": "2026-04-10T22:58:47Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2170"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "agent:codex"
+          ],
+          "number": 1628,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Sprint plan: OrcaWave/OrcaFlex Phase 1 \u2014 solver queue hardening + orcawave test coverage",
+          "updated": "2026-04-22T14:10:40Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1628"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:low",
+            "cat:harness",
+            "domain:knowledge-management"
+          ],
+          "number": 2123,
+          "priority": "priority:low",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation",
+          "updated": "2026-04-24T03:27:01Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2123"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "gtm"
+          ],
+          "number": 1904,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "INVENTORY: Complete OrcaFlex/OrcaWave model and Excel workbook catalog across all data mounts",
+          "updated": "2026-04-07T19:47:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1904"
+        },
+        {
+          "closed": null,
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "machine:dev-primary"
+          ],
+          "number": 1611,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "Fill domain gaps in resource registry \u2014 orcawave, fatigue, subsea, geotechnical",
+          "updated": "2026-04-02T04:44:34Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1611"
+        },
+        {
+          "closed": null,
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "number": 1636,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "OrcaWave reporting: section-level unit tests for all 7 section builders",
+          "updated": "2026-04-02T11:19:06Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1636"
+        },
+        {
+          "closed": null,
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "number": 2182,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "test(operations): add OrcaWave L02 OC4 semi-sub manifest assertions and parity regression coverage",
+          "updated": "2026-04-11T09:26:02Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2182"
+        },
+        {
+          "closed": null,
+          "domain": "OW",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness"
+          ],
+          "number": 2176,
+          "priority": "priority:medium",
+          "state": "OPEN",
+          "status": null,
+          "title": "test(operations): add OrcaWave diffraction smoke fixtures and AQWA install-vs-usable classification tests",
+          "updated": "2026-04-11T04:16:28Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2176"
+        }
+      ]
+    }
+  },
+  "code_repo_audited": "/mnt/local-analysis/digitalmodel",
+  "completion_audit": {
+    "all_landed": true,
+    "missing": [],
+    "samples": [],
+    "samples_checked": 0
+  },
+  "counts": {
+    "by_lane_of": {
+      "Approved Label Drift": 4,
+      "Blocked / Waiting": 0,
+      "Done": 56,
+      "In Progress / Status Working": 4,
+      "Plan Review / Needs Approval": 1,
+      "Ready / Plan Approved": 0,
+      "Triage Needed (no status label)": 55
+    },
+    "by_lane_ow": {
+      "Approved Label Drift": 0,
+      "Blocked / Waiting": 0,
+      "Done": 22,
+      "In Progress / Status Working": 0,
+      "Plan Review / Needs Approval": 0,
+      "Ready / Plan Approved": 0,
+      "Triage Needed (no status label)": 12
+    },
+    "of_open": 64,
+    "of_total": 120,
+    "ow_open": 12,
+    "ow_total": 34
+  },
+  "generated_utc": "2026-05-14T04:00:09.299792+00:00",
+  "lanes": [
+    "Ready / Plan Approved",
+    "Plan Review / Needs Approval",
+    "In Progress / Status Working",
+    "Approved Label Drift",
+    "Triage Needed (no status label)",
+    "Blocked / Waiting",
+    "Done"
+  ],
+  "methodology": "Three-pass gh issue list (orcaflex-title, orcawave-title, body-marine) deduped by issue number. Body-only matches kept only if domain:marine / cat:engineering label or marine keyword in title. Lane assigned from status:* label + .planning/plan-approved/<n>.md marker presence. CLOSED issues whose title names a code module are spot-checked against /mnt/local-analysis/digitalmodel/src/ to catch revert/never-landed cases.",
+  "source_repo": "vamseeachanta/workspace-hub",
+  "way_forward": {
+    "OrcaFlex": {
+      "needs_marker_repair": [
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:engineering",
+            "cat:knowledge-domain",
+            "status:plan-approved"
+          ],
+          "number": 2685,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation",
+          "updated": "2026-05-14T02:23:47Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2685"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:engineering",
+            "cat:bugfix",
+            "status:plan-approved"
+          ],
+          "number": 2686,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+          "updated": "2026-05-14T02:08:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:harness",
+            "domain:testing",
+            "status:plan-approved"
+          ],
+          "number": 2628,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern",
+          "updated": "2026-05-14T03:42:24Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2628"
+        },
+        {
+          "closed": null,
+          "domain": "BODY-MARINE",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "cat:bugfix",
+            "status:plan-approved"
+          ],
+          "number": 2694,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-approved",
+          "title": "Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability)",
+          "updated": "2026-05-14T03:43:52Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2694"
+        }
+      ],
+      "needs_user_approval": [
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "status:plan-review"
+          ],
+          "number": 2548,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": "status:plan-review",
+          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
+          "updated": "2026-05-13T13:20:51Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548"
+        }
+      ],
+      "ready_to_execute": [],
+      "ripe_for_promotion": [
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:multi"
+          ],
+          "number": 2641,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+          "updated": "2026-05-05T10:12:17Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2474,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof",
+          "updated": "2026-04-26T21:54:09Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2474"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2473,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
+          "updated": "2026-04-24T01:33:06Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473"
+        },
+        {
+          "closed": null,
+          "domain": "OF",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2472,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof",
+          "updated": "2026-04-24T01:33:05Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2472"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1572,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain-specific capability roadmaps \u2014 OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline",
+          "updated": "2026-04-24T01:34:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1572"
+        }
+      ]
+    },
+    "OrcaWave": {
+      "needs_marker_repair": [],
+      "needs_user_approval": [],
+      "ready_to_execute": [],
+      "ripe_for_promotion": [
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:multi"
+          ],
+          "number": 2641,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA",
+          "updated": "2026-05-05T10:12:17Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2641"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:dev-primary"
+          ],
+          "number": 2473,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "feat(canonical-spec): prove OrcaWave-to-OrcaFlex hydrodynamic handoff semantics",
+          "updated": "2026-04-24T01:33:06Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2473"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "machine:dev-primary"
+          ],
+          "number": 1572,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Domain-specific capability roadmaps \u2014 OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline",
+          "updated": "2026-04-24T01:34:33Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1572"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "agent:codex"
+          ],
+          "number": 1628,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "Sprint plan: OrcaWave/OrcaFlex Phase 1 \u2014 solver queue hardening + orcawave test coverage",
+          "updated": "2026-04-22T14:10:40Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1628"
+        },
+        {
+          "closed": null,
+          "domain": "BOTH",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "gtm"
+          ],
+          "number": 1904,
+          "priority": "priority:high",
+          "state": "OPEN",
+          "status": null,
+          "title": "INVENTORY: Complete OrcaFlex/OrcaWave model and Excel workbook catalog across all data mounts",
+          "updated": "2026-04-07T19:47:00Z",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/1904"
+        }
+      ]
+    }
+  }
+}
