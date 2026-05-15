@@ -47,20 +47,7 @@ saipem, sd-work, teamresumes
 
 ## Machines (workstation inventory)
 
-Hermes on `ace-linux-1` is the primary control plane for dispatching work to all machines. Maintain an inventory of installed programs, licenses, AI-provider auth, repo readiness, and dispatch capability so work can flow continuously from `ace-linux-1` to worker machines.
-
-| Machine | Role | OS | Primary Use |
-|---------|------|----|-------------|
-| ace-linux-1 | Primary control plane | Linux | Hermes driver, GitHub mutation, provider routing, dispatch ledgers |
-| ace-linux-2 | Overflow worker | Linux | Parallel AI execution after repo/tool/auth readiness checks |
-| licensed-win-1 | Licensed engineering worker | Windows | OrcaFlex and AQWA runs to start; dispatched from `ace-linux-1` |
-| licensed-win-2 | Licensed engineering worker | Windows | Future/overflow licensed engineering tools |
-| macbook-portable | Portable dev | macOS | Travel, mobile sessions |
-| home-win | Home workstation | Windows | Off-hours work |
-| acma-ws014 | Office workstation | Windows | On-site ACMA work |
-| multi | — | — | Issues spanning all machines |
-
-Machine inventory must answer: installed programs, license availability, AI-provider auth state, repo checkout locations, run/smoke-test commands, and what work may be dispatched safely.
+Hermes on `ace-linux-1` is the primary control plane for dispatching work to all machines. Full inventory — installed programs, licenses, AI-provider auth state, repo checkout locations, run/smoke commands, and dispatch readiness per machine — lives in [`docs/ops/machine-inventory.md`](ops/machine-inventory.md). Canonical capability/ssh/workspace data: `config/workstations/registry.yaml`.
 
 ## AI Provider Accounts
 
