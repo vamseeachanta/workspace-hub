@@ -145,6 +145,48 @@ jobs:
             exit $EXIT_CODE
           fi
 
+  marker-label-parity:
+    name: Marker-Label Parity Check
+    # Reverse-direction plan-approval gate: if a PR adds/modifies any
+    # .planning/plan-approved/<n>.md marker, require the corresponding GH
+    # issue to also carry status:plan-approved set by a non-bot account.
+    # Companion to plan-approval (forward direction). Filed for the failure
+    # mode observed in #2703 (agent rationalized dispatch as approval and
+    # wrote the marker file directly). See also #2701 (forward-direction
+    # audit: 17 labels without markers).
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate marker files added in this PR have user-set labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "## Marker-Label Parity Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          chmod +x scripts/enforcement/check-marker-label-parity.sh
+
+          if scripts/enforcement/check-marker-label-parity.sh \
+              --strict \
+              --base-ref origin/${{ github.base_ref }} \
+              --head-ref HEAD 2>&1 | tee /tmp/marker-parity.log; then
+            echo "**Result:** PASS — no marker added without user-set label" >> $GITHUB_STEP_SUMMARY
+          else
+            EXIT_CODE=$?
+            echo "**Result:** FAIL — marker file added without backing label" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat /tmp/marker-parity.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          fi
+
   compliance-dashboard:
     name: Compliance Dashboard
     runs-on: ubuntu-latest
