@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T09:20:07.448097Z",
+  "generated_at": "2026-05-15T13:20:10.610974Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-15T09:20:05.820835Z",
+  "scorecard_generated_at": "2026-05-15T13:20:08.763204Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 17,
+      "execution_ready_count": 16,
       "total_candidates": 174,
       "top_issues": [
         {
@@ -26,29 +26,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-14T03:37:50Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2548,
-          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-15T04:10:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -209,6 +186,30 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 2686,
+          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:engineering",
+            "cat:bugfix",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-14T02:08:00Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ],
       "full_candidates": [
@@ -224,29 +225,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-14T03:37:50Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2548,
-          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-15T04:10:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -492,7 +470,7 @@
             "maintenance",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T04:01:12Z",
+          "updatedAt": "2026-05-15T10:21:43Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -587,7 +565,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T04:11:32Z",
+          "updatedAt": "2026-05-15T10:22:05Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -753,7 +731,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-14T11:45:07Z",
+          "updatedAt": "2026-05-15T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1221,29 +1199,6 @@
           ]
         },
         {
-          "number": 2708,
-          "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2708",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:marine",
-            "machine:licensed-win-1"
-          ],
-          "updatedAt": "2026-05-15T03:54:13Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2709,
           "title": "feat(solver-queue): add AQWA runner adapter and schema extension",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2709",
@@ -1268,18 +1223,18 @@
           ]
         },
         {
-          "number": 2297,
-          "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
+          "number": 2715,
+          "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2715",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness"
+            "bug",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:infrastructure"
           ],
-          "updatedAt": "2026-04-16T13:59:55Z",
+          "updatedAt": "2026-05-15T12:08:22Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2010,7 +1965,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-13T12:07:01Z",
+          "updatedAt": "2026-05-15T12:10:06Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2723,7 +2678,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-14T12:09:21Z",
+          "updatedAt": "2026-05-15T12:11:10Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3577,6 +3532,28 @@
           ]
         },
         {
+          "number": 2716,
+          "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2716",
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:infrastructure"
+          ],
+          "updatedAt": "2026-05-15T12:20:25Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2325,
           "title": "Design conference-corpus enrichment (successor to #2305 deferral)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2325",
@@ -4073,7 +4050,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-14T11:08:26Z",
+          "updatedAt": "2026-05-15T11:08:41Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4140,6 +4117,27 @@
             "status:needs-plan"
           ],
           "updatedAt": "2026-05-12T03:50:22Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2714,
+          "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2714",
+          "labels": [
+            "cat:knowledge-domain",
+            "cat:research"
+          ],
+          "updatedAt": "2026-05-15T09:51:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4804,7 +4802,7 @@
           "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
           "labels": [],
-          "updatedAt": "2026-05-13T10:06:35Z",
+          "updatedAt": "2026-05-15T10:09:29Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

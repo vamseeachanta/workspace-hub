@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15T09:20:07.584613Z",
+  "generated_at": "2026-05-15T13:20:10.745140Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -17,38 +17,6 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-05-14T03:37:50Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2548,
-      "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:documentation",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-15T04:10:48Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -252,6 +220,39 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-05-14T02:23:47Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2686,
+      "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:engineering",
+        "cat:bugfix",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-14T02:08:00Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",

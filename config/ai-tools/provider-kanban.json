@@ -36,6 +36,120 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "bug",
+          "priority:medium",
+          "cat:infrastructure"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2716,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2716",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:infrastructure"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2715,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2715",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "cat:knowledge-domain",
+          "cat:research"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2714,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2714",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:medium",
           "cat:harness",
           "domain:ai-orchestration"
@@ -105,7 +219,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "reviews not clean: major_review,missing_review,unavailable_review",
+        "reviews not clean: unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -119,9 +233,9 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "- EXISTS: `docs/governance/2026-05-14-service-provider-data-routing-and-bsee-ingest-design.md` \u2014 D3 decision: Helix IRS vendor brochure routes to `/mnt/ace/vendor-pdfs/helix-esg/`, NOT in any git repo. Copyright owned by vendor; not redistributable under CC-BY-4.0; #2482 deny-lis",
+        "plan_summary": "Issue #2711 body specifies the pilot at `docs/provider-data/helix/15k-irs/` containing `README.md`, `source.pdf`, `parameters.yaml`, and `orcaflex-mapping.md`, plus a license assessment in the pilot README. **This plan amends those criteria per governance routing decision D3 (`do",
         "provider_route": "claude",
-        "risks": "**Risk (license \u2014 flag for user):** Factual engineering specifications (bore diameter, working pressure, depth rating, weight) are generally not copyrightable under US law (17 U.S.C. \u00a7 102(b) \u2014 copyright does not extend to ideas, procedures, processes, or discoveries). This plan stores only numeric values with units, not copied prose or verbatim table formatting. The source PDF stays off-repo per ",
+        "risks": "**Risk (license \u2014 flag for user):** Factual engineering specifications (bore diameter, working pressure, depth rating, weight) and short factual phrases (control-system architecture name; connector type with nominal size) are generally not copyrightable under US law (17 U.S.C. \u00a7 102(b) \u2014 copyright does not extend to ideas, procedures, processes, or discoveries). This plan stores only factual value",
         "tests": "12 TDD tests defined",
         "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot"
       },
@@ -140,15 +254,13 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
       "warnings": [
         "legacy_review_no_sha",
-        "major_review",
-        "missing_review",
         "unavailable_review"
       ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "reviews not clean: empty_review,major_review,missing_review",
+        "reviews not clean: empty_review,major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -165,8 +277,8 @@
         "machine_route": "(none ready)",
         "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; solver validation at lines 13\u201316 is hardcoded `orcawave | orcaflex`; creates YAML job file, commits, and pushes. This plan p",
         "provider_route": "claude",
-        "risks": "**Risk:** `queue/job-schema.yaml` solver field is prose, not a machine-parseable YAML enum. Option B was rejected; Option A (hardcoded list) is used instead. If `submit-job.sh` adds a solver without updating the wrapper, `test_solver_list_consistency` will catch the drift \u2014 but only if that test is run as part of the #2709 PR CI. Mitigation: document this test as a required CI step in the #2709 pl",
-        "tests": "10 TDD tests defined",
+        "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) and the harness will additionally check `git status --short queue/pending/` before/after each test to fail loudly if any pending file",
+        "tests": "12 TDD tests defined",
         "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI"
       },
       "lane": "planning_feedstock",
@@ -186,13 +298,13 @@
         "empty_review",
         "legacy_review_no_sha",
         "major_review",
-        "missing_review"
+        "unavailable_review"
       ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "reviews not clean: empty_review,major_review,missing_review",
+        "reviews not clean: empty_review,major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -230,50 +342,7 @@
         "empty_review",
         "legacy_review_no_sha",
         "major_review",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: major_review,missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:engineering",
-          "domain:marine",
-          "machine:licensed-win-1"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 accepts `orcawave | orcaflex`; rejects everything else. **Always writes `export_excel: true` (line 32) \u2014 see Finding 4 below for divergence.**",
-        "provider_route": "claude",
-        "risks": "**Risk:** licensed-win-1 may have the SolverQueue task disabled or in an Error state. Pre-flight 0a catches this. | **Risk:** If watch-results.sh IS running on licensed-win-1 and crashes on `.sim`, it could loop into failure (per r1 Finding 3). Pre-flight 0b requires explicit operator verification before submission. | **Risk:** `pipeline_test_model.dat` may reference external paths (libraries, inc",
-        "tests": "TDD section present",
-        "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2708,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-14-issue-2708-orcaflex-live-validation.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2708",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review",
-        "missing_review"
+        "unavailable_review"
       ]
     },
     {
@@ -2924,48 +2993,6 @@
       "title": "chore(business-brain): periodically assess repo work and refresh ecosystem context",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2549",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:documentation",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- EXISTS: `config/workstations/registry.yaml` \u2014 machine capability registry covering all 7 machines (hostname, os, role, workspace_root, ssh, tailscale_ip, capabilities, repos). **Gap:** no per-machine AI-provider auth state column; no smoke/run commands; `dev-secondary.workspace",
-        "provider_route": "claude",
-        "risks": "**Risk:** licensed-win-1 and licensed-win-2 have `ssh: null` \u2014 executor cannot remotely verify programs/licenses. Plan scopes Windows hosts as \"document from registry.yaml + baseline inventory; mark unverified.\" If user can provide a manual inventory snapshot from the physical machine, it should replace the placeholder. | **Risk:** `docs/BUSINESS_BRAIN.md` is at 201 lines (over the 200-line cap st",
-        "tests": "TDD section present",
-        "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2548,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-13-issue-2548-control-plane-machine-inventory.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     },
     {
       "approval_blockers": [
@@ -7877,53 +7904,128 @@
       "title": "feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2298",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:engineering",
-          "cat:harness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2297,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-15T09:20:09Z",
+  "generated_at": "2026-05-15T13:20:12Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:infrastructure"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2716,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2716",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:infrastructure"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2715,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2715",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "cat:knowledge-domain",
+            "cat:research"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2714,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2714",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8004,7 +8106,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "reviews not clean: major_review,missing_review,unavailable_review",
+          "reviews not clean: unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8018,9 +8120,9 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "- EXISTS: `docs/governance/2026-05-14-service-provider-data-routing-and-bsee-ingest-design.md` \u2014 D3 decision: Helix IRS vendor brochure routes to `/mnt/ace/vendor-pdfs/helix-esg/`, NOT in any git repo. Copyright owned by vendor; not redistributable under CC-BY-4.0; #2482 deny-lis",
+          "plan_summary": "Issue #2711 body specifies the pilot at `docs/provider-data/helix/15k-irs/` containing `README.md`, `source.pdf`, `parameters.yaml`, and `orcaflex-mapping.md`, plus a license assessment in the pilot README. **This plan amends those criteria per governance routing decision D3 (`do",
           "provider_route": "claude",
-          "risks": "**Risk (license \u2014 flag for user):** Factual engineering specifications (bore diameter, working pressure, depth rating, weight) are generally not copyrightable under US law (17 U.S.C. \u00a7 102(b) \u2014 copyright does not extend to ideas, procedures, processes, or discoveries). This plan stores only numeric values with units, not copied prose or verbatim table formatting. The source PDF stays off-repo per ",
+          "risks": "**Risk (license \u2014 flag for user):** Factual engineering specifications (bore diameter, working pressure, depth rating, weight) and short factual phrases (control-system architecture name; connector type with nominal size) are generally not copyrightable under US law (17 U.S.C. \u00a7 102(b) \u2014 copyright does not extend to ideas, procedures, processes, or discoveries). This plan stores only factual value",
           "tests": "12 TDD tests defined",
           "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot"
         },
@@ -8039,15 +8141,13 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
         "warnings": [
           "legacy_review_no_sha",
-          "major_review",
-          "missing_review",
           "unavailable_review"
         ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "reviews not clean: empty_review,major_review,missing_review",
+          "reviews not clean: empty_review,major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8064,8 +8164,8 @@
           "machine_route": "(none ready)",
           "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; solver validation at lines 13\u201316 is hardcoded `orcawave | orcaflex`; creates YAML job file, commits, and pushes. This plan p",
           "provider_route": "claude",
-          "risks": "**Risk:** `queue/job-schema.yaml` solver field is prose, not a machine-parseable YAML enum. Option B was rejected; Option A (hardcoded list) is used instead. If `submit-job.sh` adds a solver without updating the wrapper, `test_solver_list_consistency` will catch the drift \u2014 but only if that test is run as part of the #2709 PR CI. Mitigation: document this test as a required CI step in the #2709 pl",
-          "tests": "10 TDD tests defined",
+          "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) and the harness will additionally check `git status --short queue/pending/` before/after each test to fail loudly if any pending file",
+          "tests": "12 TDD tests defined",
           "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI"
         },
         "lane": "planning_feedstock",
@@ -8085,13 +8185,13 @@
           "empty_review",
           "legacy_review_no_sha",
           "major_review",
-          "missing_review"
+          "unavailable_review"
         ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "reviews not clean: empty_review,major_review,missing_review",
+          "reviews not clean: empty_review,major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8129,50 +8229,7 @@
           "empty_review",
           "legacy_review_no_sha",
           "major_review",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: major_review,missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:marine",
-            "machine:licensed-win-1"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 accepts `orcawave | orcaflex`; rejects everything else. **Always writes `export_excel: true` (line 32) \u2014 see Finding 4 below for divergence.**",
-          "provider_route": "claude",
-          "risks": "**Risk:** licensed-win-1 may have the SolverQueue task disabled or in an Error state. Pre-flight 0a catches this. | **Risk:** If watch-results.sh IS running on licensed-win-1 and crashes on `.sim`, it could loop into failure (per r1 Finding 3). Pre-flight 0b requires explicit operator verification before submission. | **Risk:** `pipeline_test_model.dat` may reference external paths (libraries, inc",
-          "tests": "TDD section present",
-          "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2708,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-14-issue-2708-orcaflex-live-validation.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2708",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review",
-          "missing_review"
+          "unavailable_review"
         ]
       },
       {
@@ -10823,48 +10880,6 @@
         "title": "chore(business-brain): periodically assess repo work and refresh ecosystem context",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2549",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- EXISTS: `config/workstations/registry.yaml` \u2014 machine capability registry covering all 7 machines (hostname, os, role, workspace_root, ssh, tailscale_ip, capabilities, repos). **Gap:** no per-machine AI-provider auth state column; no smoke/run commands; `dev-secondary.workspace",
-          "provider_route": "claude",
-          "risks": "**Risk:** licensed-win-1 and licensed-win-2 have `ssh: null` \u2014 executor cannot remotely verify programs/licenses. Plan scopes Windows hosts as \"document from registry.yaml + baseline inventory; mark unverified.\" If user can provide a manual inventory snapshot from the physical machine, it should replace the placeholder. | **Risk:** `docs/BUSINESS_BRAIN.md` is at 201 lines (over the 200-line cap st",
-          "tests": "TDD section present",
-          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2548,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-13-issue-2548-control-plane-machine-inventory.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -15776,45 +15791,6 @@
         "title": "feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2298",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2297,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15825,18 +15801,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-15T09:20:05.820835Z",
+  "scorecard_generated_at": "2026-05-15T13:20:08.763204Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-15T09:20:05.667958Z",
+  "utilization_generated_at": "2026-05-15T13:20:08.631418Z",
   "warning_summary": {
-    "approved_no_marker": 15,
+    "approved_no_marker": 14,
     "approved_no_plan": 2,
     "empty_review": 3,
-    "legacy_review_no_sha": 31,
-    "major_review": 21,
+    "legacy_review_no_sha": 30,
+    "major_review": 19,
     "marker_without_open_approved_issue": 124,
-    "missing_review": 30,
-    "unavailable_review": 13,
+    "missing_review": 25,
+    "unavailable_review": 15,
     "unknown_review": 3
   }
 }

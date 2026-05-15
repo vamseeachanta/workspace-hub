@@ -97,6 +97,7 @@ Do not use this as a substitute for the full planning route.
 
 8. Approval gate
 - Before stopping: save the plan, update planning index if used, ensure follow-up issues are created or called out, post final plan comment, add `status:plan-review`, remove stale conflicting labels.
+- For batch-created planning issues, run an explicit verification pass before summarizing approvals: view each issue live, confirm title/URL/state/labels, confirm required body sections (`## Summary`, `## Acceptance criteria`, and approval/`status:plan-review` gate language), and patch any missing gate text immediately before reporting success.
 - If context or tool-call budget is running low, prioritize transactional posting/label/commit verification over additional polish; do not leave the plan in an unposted draft state after review is already complete unless a blocker is explicit.
 - Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and explicit approval request.
 - Hard stop: do not implement while awaiting approval.

@@ -122,6 +122,21 @@ For each candidate issue:
 - Use live counts in the issue body when they justify prioritization.
 - If an adjacent issue already exists but only covers a neighboring layer, create the new issue only if the ownership concern is clearly different.
 
+## Weekly-cadence / code-utility roadmap pattern
+
+When the user asks how to keep an LLM wiki continuously up to date on a weekly cadence and make it more useful for code development, do not only propose more ingest. Treat the wiki as an operational engineering substrate.
+
+Use `references/weekly-cadence-code-utility-roadmap.md` for the detailed pattern. The durable issue family is:
+
+1. Weekly freshness control loop.
+2. Agent-facing entrypoints and domain manifests (`llms.txt`-style surfaces).
+3. Public-safe knowledge graph manifests.
+4. RAG/query evaluation benchmark suite.
+5. Weekly OSS / concept watchlist.
+6. CLI/MCP query surface over stable manifests/graph.
+
+Sequencing heuristic: freshness → manifests → graph → evals → watchlist → CLI/MCP. Keep each as a separately planned GitHub issue with a linked plan artifact and do not start implementation until plan review plus user approval.
+
 ## Additional proven issue themes from deeper recommendation sweeps
 
 After the first gap-to-issues pass, the following additional themes also produced strong, non-duplicate issues when validated with parallel subagents:

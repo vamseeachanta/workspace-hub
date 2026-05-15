@@ -40,6 +40,9 @@ Root skill for OrcaFlex marine dynamic analysis workflows.
 - **static-debug/** — Static analysis debugging
 - **yaml-gotchas/** — Common YAML configuration pitfalls
 
+### Review References
+- **references/current-vs-rudder-force-review.md** — Pattern for comparing OCIMF-style hull current forces against rudder-induced forces; includes component/resultant table structure, coefficient-provenance caveat, and interpretation checklist.
+
 ### Utilities
 - **batch-manager/** — Batch run management
 - **file-conversion/** — File format conversion
