@@ -112,3 +112,8 @@ Pilot module (per #2481 D1 decision): `digitalmodel/src/digitalmodel/orcaflex/mo
 - #2238 — closed-issue citation guardrail (covers durable docs; this contract covers calc outputs)
 - #2400 — MCP wiki_search (future resolver backend)
 - #2485 — GTM boundary enforcement linter (separate concern)
+- #2685 — DNV-OS-E301 mooring pilot wiring (this contract's first live emission site)
+
+## 9. Changelog
+
+- **2026-05-13:** DNV-OS-E301 mooring pilot live via `orcaflex.mooring_design.MooringLineDesign.check_mbl_with_safety_factor` (plan dated 2026-05-13, landed 2026-05-15 per #2685). Sidecar return shape: `{results, safety_factor, condition, citations}`. The legacy `check_mbl()` remains for backward compatibility and intentionally does NOT apply safety factors — opt-in by method name.
