@@ -152,3 +152,19 @@ Future sessions can recover full context from:
 - **Plan-gate hook (from 51887c839) fired correctly** on both workspace-hub commits with `[plan-gate] PASS: No implementation changes or low-risk files only.` — first real-world validation of the marker-label parity gate enforcement.
 - **Parallel-session interactions observed**: (a) Codex companion pushing `feat/marker-label-parity-gate` for ~1h10m — ultimately merged as PR #2706 during this session, mid-commit; (b) Hermes orchestrator polling `git status` every ~30s causing 5 retry-loop attempts for the first workspace-hub commit (index.lock contention); (c) production-engineering parallel session landing 4 ingest commits (#63 / #64 / #65 / #66) in llm-wiki, completing PE Phase 1. None of these collided with our subtree-disjoint writes — validates `feedback_parallel_agent_write_only_pattern`.
 - **WebFetch report on the BSEE PDF was wrong** — it claimed "binary-heavy / no readable text" when the PDF has selectable embedded text fully extractable via `pdftotext`. Lesson: don't trust WebFetch's PDF-content read; always cross-check with `pdftotext` before declaring a PDF unreadable.
+
+## Post-execution memory hygiene (2026-05-15)
+
+After the session's primary work landed, MEMORY.md was triaged in response to the session-start size-warning (30.3 KB vs. the 24.4 KB load limit; entries after ~line 200 were being truncated for future sessions).
+
+**Cleanup buckets applied** (user-approved as a set):
+1. **Trim oversized index entries** to ≤200 chars — ~20 entries shortened by moving detail into their underlying topic .md files. Pure tightening; nothing deleted.
+2. **Retire 5 superseded version-specific entries** from index: `codex_cli_0_124_0_upstream_regression`, `gemini_trust_env_blocks_reviews`, `x11vnc_vs_tigervnc_headless`, `wikimedia_thumb_width_quirk`, `python_m_build_no_isolation_flag`. **All 5 topic .md files preserved on disk** — recoverable via direct `Read` if needed.
+3. **Consolidate near-duplicate clusters**: 5 Codex-sandbox entries → 1 umbrella entry (`[Codex sandbox model]`); 4 git-multi-agent sub-patterns folded into the existing `[Multi-agent commit serialization]` umbrella. Topic files preserved.
+4. **Trim Project DONE entries** in-place — kept all 42 since they were already terse or carried follow-up trackers worth indexing.
+
+**Outcome**: 30,346 bytes → 22,095 bytes (−27%); 2.3 KB under the 24.4 KB load limit with margin. 78 Feedback + 42 Project + 11 Reference entries. Phantom-reference scan: 0 dangling links.
+
+**Reversibility**: pre-cleanup backup preserved at `/tmp/MEMORY.md.20260515-pre-cleanup-backup` (30,346 bytes, original). To restore: `cp /tmp/MEMORY.md.20260515-pre-cleanup-backup ~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md`. All retired/consolidated topic .md files remain on disk in the memory directory.
+
+This cleanup is per-machine state (`~/.claude/projects/...` is not git-tracked) and therefore not part of any commit on this branch — recorded here purely for the audit trail.
