@@ -1,10 +1,26 @@
 # Plan for #2709: feat(solver-queue): add AQWA runner adapter and schema extension
 
-> **Status:** draft (revised after r1 Codex review — 7 blockers addressed)
+> **Status:** HALTED at draft pending [#2717](https://github.com/vamseeachanta/workspace-hub/issues/2717) (live AQWA env baseline). Not advancing to `status:plan-review` until empirical grounding for AQWA invocation contract is captured.
 > **Complexity:** T2
-> **Date:** 2026-05-14 (drafted) / 2026-05-15 (r1 revision)
+> **Date:** 2026-05-14 (drafted) / 2026-05-15 (r1 + r2 reviewed; halted)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2709
-> **Review artifacts:** scripts/review/results/2026-05-14-plan-2709-claude.md | scripts/review/results/2026-05-14-plan-2709-codex.md | scripts/review/results/2026-05-14-plan-2709-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-14-plan-2709-codex.md (r1 MAJOR / 7 blockers); scripts/review/results/2026-05-15-plan-2709-claude.md (r2 MAJOR / 13 findings, 8 blockers)
+> **Prerequisite:** [#2717](https://github.com/vamseeachanta/workspace-hub/issues/2717) — live AQWA invocation baseline on licensed Windows host
+
+## ⚠ HALT NOTICE (2026-05-15)
+
+Two rounds of adversarial review have caught defects in the AQWA invocation contract (executable path, error-scrape file, pydantic-validator hook semantics, skip placement). The r2 Claude review's closing diagnosis is load-bearing: **"Until the live smoke validation actually runs once and is captured, the probe and scrape logic is speculation."**
+
+Without live AQWA access on a licensed Windows host, every revision round produces sophisticated-looking-but-unsupported speculation. The plan is halted at this revision until [#2717](https://github.com/vamseeachanta/workspace-hub/issues/2717) (live AQWA env baseline) produces empirical evidence.
+
+When #2717 lands:
+1. Re-ground §Resource Intelligence Summary against the captured baseline artifact
+2. Reconcile `_locate_aqwa_exe()` probe order with the actual install layout
+3. Replace `.lis` error-scrape with `.mes` (per cited skill) OR justify with empirical sample
+4. Redesign `target_machine` warning mechanism outside pydantic (`@field_validator` cannot append to `ResultValidation.warnings`)
+5. Re-dispatch r3 cross-review with the regrounded plan
+
+See [[feedback_codex_sustained_major_loop]] spirit: when SAME defect class survives multiple revisions, the root cause is usually missing empirical grounding, not documentation gap.
 
 ---
 
