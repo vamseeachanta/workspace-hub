@@ -129,8 +129,14 @@ mkdir -p "$(dirname "$raw_verdict")"
 rm -f "$raw_verdict"
 
 version_command="${OPENFOAM_VERSION_COMMAND:-foamVersion}"
-version_output="$(bash -lc "$version_command" 2>/dev/null || true | tr -d '\r')"
-version="$(printf '%s' "$version_output" | grep -o 'v[0-9][0-9]*' | head -1)"
+version_output="$(bash -lc "$version_command" 2>/dev/null | tr -d '\r' || true)"
+version="$(printf '%s' "$version_output" | grep -o 'v[0-9][0-9]*' | head -1 || true)"
+# ESI v2312 lacks the `foamVersion` script; fall back to WM_PROJECT_VERSION
+# (set by sourcing the bashrc above) so a valid install isn't penalized for a
+# missing probe and the version-mismatch verdict-writer still runs on real misses.
+if [[ -z "$version" && -n "${WM_PROJECT_VERSION:-}" ]]; then
+    version="$WM_PROJECT_VERSION"
+fi
 version="${version:-}"
 normalized_foam_version="$version"
 verification_method="WM_PROJECT_VERSION=${WM_PROJECT_VERSION:-unknown}; foamVersion=${normalized_foam_version}; WM_PROJECT_DIR=${WM_PROJECT_DIR:-missing}"
