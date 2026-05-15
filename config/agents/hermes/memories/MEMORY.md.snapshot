@@ -1,17 +1,10 @@
 `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
 §
 Workspace-hub tier-1 ecosystem scope includes eight repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, and aceengineer-strategy; user values general, per-repo, per-domain, execution-ready, approval-drift, and planning-needed boards for sequential review/refinement before multiagent execution.
-§
 User prefers workspace-hub repo-sync/closeout reports to show referenced GitHub issues as clickable hyperlinks grounded via live `gh issue view`, not just issue numbers.
-§
 workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status).
-§
 For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there.
-§
 For repeated judge/checklist continuation prompts, user values fresh evidence artifacts/crosswalks, precise inventory/status reconciliation, and explicit blocked-stop decisions over relaunching implicit continuation work across human/governance/scope gates.
-§
 Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it.
-§
 CTV operability assets in digitalmodel are reference material for future vessel-operability ecosystem work; SeaOps is treated as a competitor, so use those assets for research and repo documentation only unless the user explicitly approves GTM/project reuse.
-§
 ace-linux-2 is reachable by SSH from ace-linux-1 and has OpenFOAM ESI v2312 installed: wrapper `/usr/bin/openfoam2312`, bashrc `/usr/lib/openfoam/openfoam2312/etc/bashrc`, `WM_PROJECT_DIR=/usr/lib/openfoam/openfoam2312`, `WM_PROJECT_VERSION=v2312`.

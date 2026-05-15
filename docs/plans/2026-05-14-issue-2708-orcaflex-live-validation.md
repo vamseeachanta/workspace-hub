@@ -1,10 +1,10 @@
 # Plan for #2708: feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1
 
-> **Status:** draft
+> **Status:** draft (revised after r1 Claude review — 22 findings addressed)
 > **Complexity:** T1
-> **Date:** 2026-05-14
+> **Date:** 2026-05-14 (drafted) / 2026-05-15 (r1 revision)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2708
-> **Review artifacts:** scripts/review/results/2026-05-14-plan-2708-claude.md
+> **Review artifacts:** scripts/review/results/2026-05-14-plan-2708-claude.md (r1 MAJOR; revised below)
 
 ---
 
@@ -12,70 +12,97 @@
 
 ### Existing repo code
 
-- EXISTS: `scripts/solver/submit-job.sh:13` — accepts `orcawave | orcaflex`; rejects everything else.
+- EXISTS: `scripts/solver/submit-job.sh:13` — accepts `orcawave | orcaflex`; rejects everything else. **Always writes `export_excel: true` (line 32) — see Finding 4 below for divergence.**
 - EXISTS: `scripts/solver/process-queue.py:182-183` — dispatches `orcaflex` to `run_orcaflex()`.
-- EXISTS: `scripts/solver/process-queue.py:375-410` — `run_orcaflex()` adapter wired to `OrcFxAPI.Model`.
-- EXISTS: `queue/job-schema.yaml:14` — schema lists `orcawave | orcaflex` as valid solver values.
-- EXISTS: `scripts/solver/setup-scheduler.ps1` — Windows Task Scheduler config; polls every 30 minutes via `git pull origin main` then `python process-queue.py`.
-- EXISTS: `output/orcaflex_validation/pipeline_test_model.dat` — 131,874 byte file, ORCAFLEX header verified, git-tracked.
-- GAP: No `queue/completed/` or `queue/failed/` entry for an OrcaFlex job (only OrcaWave entries) — confirmed via `ls queue/completed/ queue/failed/` returning OrcaWave-only directory names.
+- EXISTS: `scripts/solver/process-queue.py:172-174` — on success, dispatcher MOVES job dir to `COMPLETED_DIR / job_name`.
+- EXISTS: `scripts/solver/process-queue.py:207-213` — on failure, dispatcher MOVES job dir to `FAILED_DIR / job_name` (NOT `COMPLETED_DIR`).
+- EXISTS: `scripts/solver/process-queue.py:375-411` — `run_orcaflex()` adapter. Accepts `export_excel` parameter but **never uses it** (no `if export_excel:` branch like `run_orcawave():362-371` has). Plain dynamics solve via `OrcFxAPI.Model(...).RunSimulation()`, then `model.SaveSimulation(<stem>.sim)`. No xlsx export path.
+- EXISTS: `scripts/solver/watch-results.sh:10,91` — separately maintained post-processor. Writes `.done` markers into `queue/.processed/` AFTER a job lands in `queue/completed/`. **Not part of the dispatch path; not under test in this plan.**
+- EXISTS: `scripts/solver/post-process-hook.py` — OrcaWave-tuned (metric extraction from `.owr`). Fires from `watch-results.sh`. Not part of `process-queue.py`'s direct path.
+- EXISTS: `queue/job-schema.yaml:14` — schema lists `orcawave | orcaflex`.
+- EXISTS: `output/orcaflex_validation/pipeline_test_model.dat` — 131,874 bytes, ORCAFLEX header, git-tracked.
+- GAP: No `queue/completed/` or `queue/failed/` entry for an OrcaFlex job — confirmed via `ls queue/completed/ queue/failed/` returning OrcaWave-only directory names.
 
 ### Standards
 
-Not applicable — this is an operational-validation issue.
+Not applicable — operational-validation issue.
 
 ### LLM Wiki pages consulted
 
-No relevant wiki pages for this dispatch validation.
+No relevant wiki pages.
 
 ### Documents consulted
 
-- `docs/plans/2026-05-13-issue-2548-control-plane-machine-inventory.md` — adjacent docs work; describes the git-poll dispatch model used here.
-- Related issue #1586 — parent; queue hardening; closing comment states "remaining work: validate against real queue use".
-- Related issue #2641 — multi-machine inbox parent; scopes AQWA separately.
-- `docs/ops/2026-05-04-multimachine-baseline-inventory.md` §5 — confirms OrcaFlex is target for licensed Windows hosts only.
+- `docs/plans/2026-05-13-issue-2548-control-plane-machine-inventory.md` — adjacent docs work; same git-poll dispatch model.
+- Related issue #1586 — parent; "remaining work: validate against real queue use".
+- Related issue #2641 — multi-machine inbox parent; AQWA scoped separately.
+- `docs/ops/2026-05-04-multimachine-baseline-inventory.md` §5 — OrcaFlex target for licensed Windows only.
 
 ### Gaps identified
 
-- No recorded OrcaFlex dispatch result on licensed-win-1 — implementation exists, validation does not.
-- No smoke-test report convention for non-OrcaWave solvers — this plan establishes the pattern.
+- No recorded OrcaFlex dispatch result on licensed-win-1 — code exists, never exercised.
+- No smoke-test report convention for non-OrcaWave solvers — this plan establishes it.
+- `run_orcaflex()` silently ignores `export_excel: true` — known divergence between submit-job.sh hardcoded YAML and the adapter's parameter handling. Documented here; fix is out of scope for #2708 but filed as follow-up before this issue closes.
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-05-14 via `gh issue view`):
 - `#2708` — OPEN — feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)
-- `#1586` — OPEN — Harden solver queue: batch submission, result watcher, auto post-processing
-- `#2641` — OPEN — feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA
+- `#1586` — OPEN — Harden solver queue
+- `#2641` — OPEN — multi-machine inbox
 
 **File existence** (`ls -la` 2026-05-14):
-- EXISTS: `scripts/solver/submit-job.sh` (1,523 bytes, executable)
-- EXISTS: `scripts/solver/process-queue.py` (15,949 bytes, executable)
+- EXISTS: `scripts/solver/submit-job.sh` (1,523 bytes)
+- EXISTS: `scripts/solver/process-queue.py` (15,949 bytes)
 - EXISTS: `scripts/solver/setup-scheduler.ps1`
+- EXISTS: `scripts/solver/watch-results.sh` (separate post-processor)
 - EXISTS: `queue/job-schema.yaml`
-- EXISTS: `output/orcaflex_validation/pipeline_test_model.dat` (131,874 bytes, git-tracked via `git ls-files`)
+- EXISTS: `output/orcaflex_validation/pipeline_test_model.dat`
 - MISSING (new — this plan creates): `docs/reports/2026-05-14-orcaflex-smoke-validation.md`
 
-**Line excerpts** (`grep -n` 2026-05-14):
+**Line excerpts** (verified 2026-05-14):
 ```
-# scripts/solver/submit-job.sh:13
+# scripts/solver/submit-job.sh:13-16
 if [[ "${SOLVER}" != "orcawave" && "${SOLVER}" != "orcaflex" ]]; then
+    echo "ERROR: solver must be 'orcawave' or 'orcaflex', got '${SOLVER}'" >&2
+    exit 1
+fi
+
+# scripts/solver/submit-job.sh:32 — hardcoded
+export_excel: true
 
 # scripts/solver/process-queue.py:182-183
 elif solver == "orcaflex":
     result_files = run_orcaflex(input_path, output_dir, export_excel)
 
-# queue/job-schema.yaml:14
-    solver: "orcawave | orcaflex"
+# scripts/solver/process-queue.py:172-174 (success path)
+shutil.move(str(job_dir), str(COMPLETED_DIR / job_name))
+
+# scripts/solver/process-queue.py:207-213 (failure path)
+shutil.move(str(job_dir), str(FAILED_DIR / job_name))
+
+# scripts/solver/process-queue.py:375-411 — run_orcaflex
+def run_orcaflex(input_path, output_dir, export_excel):
+    # ... loads model, runs simulation, saves .sim
+    # NO `if export_excel:` xlsx branch
 ```
 
+**Setup-scheduler trigger** (`scripts/solver/setup-scheduler.ps1:35-37`):
+```
+$Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
+    -RepetitionInterval (New-TimeSpan -Minutes 30) `
+    -RepetitionDuration (New-TimeSpan -Days 3650)
+```
+**Pickup offset:** the next firing is anchored to whatever wall-clock time `setup-scheduler.ps1` was originally run, NOT a 30-min clock starting at submit time. Worst-case wait = full 30 min; average ~15 min.
+
 **Gap proofs**:
-- `ls queue/completed/ 2>&1 | grep -i orcaflex` → no matches → no OrcaFlex job has been processed.
-- `ls queue/failed/ 2>&1 | grep -i orcaflex` → no matches → no OrcaFlex job has been attempted.
+- `ls queue/completed/ 2>&1 | grep -i orcaflex` → no matches
+- `ls queue/failed/ 2>&1 | grep -i orcaflex` → no matches
+- `git check-ignore queue/completed/anything.sim 2>&1` → (must be run before submission per Finding 10)
 
-**Reproduction proofs**:
-N/A — this issue is positive validation, not a failure repro. The implementation exists but has never been exercised; this issue exercises it. Marked intentional per `issue-planning-mode` SKILL.md Step 1.5 skip-allowed rule.
+**Reproduction proofs**: N/A — positive validation, not failure repro. Implementation exists but unexercised. Intentional skip per `issue-planning-mode` SKILL.md Step 1.5.
 
-<!-- Verification: distinct sources: (1) submit-job.sh, (2) process-queue.py, (3) job-schema.yaml, (4) #1586, (5) #2641, (6) baseline inventory doc, (7) pipeline_test_model.dat. Count: 7 — exceeds minimum 3 ✓ -->
+<!-- Verification: distinct sources: (1) submit-job.sh, (2) process-queue.py dispatcher + adapters + success+failure paths, (3) job-schema.yaml, (4) watch-results.sh (clarifies it's separate), (5) post-process-hook.py (OrcaWave-tuned), (6) setup-scheduler.ps1 trigger semantics, (7) #1586, (8) #2641, (9) baseline inventory doc, (10) pipeline_test_model.dat. Count: 10 — exceeds minimum 3 ✓ -->
 
 ---
 
@@ -86,20 +113,22 @@ N/A — this issue is positive validation, not a failure repro. The implementati
 | This plan | `docs/plans/2026-05-14-issue-2708-orcaflex-live-validation.md` |
 | Smoke test report | `docs/reports/2026-05-14-orcaflex-smoke-validation.md` |
 | Job submission YAML (auto-created) | `queue/pending/<timestamp>-pipeline_test_model.yaml` |
-| Expected completion artifact | `queue/completed/<timestamp>-pipeline_test_model/result.yaml` + `.sim` |
-| Plan review — Claude | `scripts/review/results/2026-05-14-plan-2708-claude.md` |
+| Expected completion artifact | `queue/completed/<job-name>/result.yaml` + `<stem>.sim` |
+| Expected failure artifact | `queue/failed/<job-name>/result.yaml` (if run fails) |
+| Plan review — Claude (r1) | `scripts/review/results/2026-05-14-plan-2708-claude.md` |
+| Plan review — Claude (r2) | `scripts/review/results/2026-05-15-plan-2708-claude.md` |
 
 ---
 
 ## Deliverable
 
-An end-to-end OrcaFlex dispatch from this machine (ace-linux-1) through `submit-job.sh`, git push, licensed-win-1 30-min Task Scheduler pickup, and result write-back will be performed, with the smoke-test report at `docs/reports/2026-05-14-orcaflex-smoke-validation.md` capturing exact timestamps, durations, and artifact paths.
+An end-to-end OrcaFlex dispatch from this machine (ace-linux-1) through `submit-job.sh`, git push, licensed-win-1 Task Scheduler pickup (15-min average / 30-min worst case wait), and result write-back to either `queue/completed/<job-name>/` (success) or `queue/failed/<job-name>/` (failure) will be performed, with the smoke-test report at `docs/reports/2026-05-14-orcaflex-smoke-validation.md` capturing exact timestamps, durations, artifact paths, and final state for the SUBMITTED job specifically.
 
 ---
 
 ## Pseudocode
 
-Trivial — see Files to Change. Operational steps are concrete commands, not pseudocode.
+Trivial — see TDD Test List. Operational steps are concrete commands.
 
 ---
 
@@ -109,63 +138,79 @@ Trivial — see Files to Change. Operational steps are concrete commands, not ps
 |---|---|---|
 | Run | `scripts/solver/submit-job.sh orcaflex output/orcaflex_validation/pipeline_test_model.dat "OrcaFlex smoke validation per #2708"` | Submission step |
 | Auto-create | `queue/pending/<timestamp>-pipeline_test_model.yaml` | Job YAML written by submit-job.sh |
-| Auto-move | `queue/completed/<job-name>/` OR `queue/failed/<job-name>/` | Result location after licensed-win-1 processes |
+| Auto-move (success) | `queue/completed/<job-name>/` with `result.yaml` + `.sim` | Result location after licensed-win-1 processes successfully |
+| Auto-move (failure) | `queue/failed/<job-name>/` with `result.yaml` | Result location after licensed-win-1 processes with failure |
 | Create | `docs/reports/2026-05-14-orcaflex-smoke-validation.md` | Smoke test report with timestamps, durations, artifacts |
-| Update | `docs/plans/README.md` | Add plan row |
+| Update | `docs/plans/README.md` | Plan row already added 2026-05-14 commit `4cf347dd2` — no further change |
 
 ---
 
 ## TDD Test List
 
-Operational verification, not pytest. Each row is a verification command.
+Operational verification, not pytest. Each row is a verification command. The first three rows are PRE-FLIGHT — they run BEFORE submission. The remaining rows verify the SUBMITTED job specifically (by captured `${JOB_NAME}`).
 
 | Step | Command | Expected result |
 |---|---|---|
-| Submit job | `bash scripts/solver/submit-job.sh orcaflex output/orcaflex_validation/pipeline_test_model.dat "OrcaFlex smoke validation per #2708"` | Exit 0; "Job submitted: queue/pending/<timestamp>-pipeline_test_model.yaml" printed; commit pushed to origin/main |
-| Verify push landed | `git log -1 origin/main --format=%s` | "queue: submit <job-name>" |
-| Wait for pickup | Wait up to 30 min OR ask user to run `Start-ScheduledTask -TaskName SolverQueue` on licensed-win-1 | (waiting; no command output) |
-| Verify pickup occurred | `git pull && ls queue/.processed/ \| tail -3` | New entry matches submitted job-name |
-| Verify completion | `git pull && ls queue/completed/<job-name>/result.yaml` | File exists |
-| Verify completion status | `grep "status:" queue/completed/<job-name>/result.yaml` | `status: completed` |
-| Verify .sim artifact | `ls queue/completed/<job-name>/*.sim` | File exists, non-zero bytes |
-| Report written | `ls docs/reports/2026-05-14-orcaflex-smoke-validation.md` | File exists |
+| **Pre-flight 0a — scheduled task exists** | (Operator on licensed-win-1) `Get-ScheduledTask -TaskName SolverQueue \| Format-List State,LastRunTime,LastTaskResult` | `State: Ready` (NOT Disabled); `LastTaskResult: 0` (or stale-but-zero); `LastRunTime` within last hour |
+| **Pre-flight 0b — watcher state** | (Operator on licensed-win-1) `Get-Process \| Where-Object {$_.CommandLine -like '*watch-results*'}` | Either empty (watcher NOT running — safe) OR documented as running with `.sim`-handling explicitly verified (see Finding 3 below) |
+| **Pre-flight 0c — .sim gitignore stance** | `git check-ignore queue/completed/sample.sim 2>&1` followed by `cat .gitignore \| grep -E "\\.sim\|queue/"` | Document the answer in the report. If `.sim` is NOT ignored, also pre-check expected size (`.sim` for this model est. <5 MB based on .dat size); accept commit-back. If `.sim` may exceed 50 MB on this model, decide BEFORE submission whether to add a `.gitignore` rule (out of scope for this issue) or accept the commit-back. |
+| **Submit job + capture name** | `JOB_NAME=$(bash scripts/solver/submit-job.sh orcaflex output/orcaflex_validation/pipeline_test_model.dat "OrcaFlex smoke validation per #2708" \| awk '/Job submitted:/ {gsub(/.*queue\\/pending\\/\|\\.yaml/, "", $0); print}')` | `JOB_NAME` is set to `<timestamp>-pipeline_test_model`; commit pushed to origin/main; submission output printed |
+| **Verify push landed** | `git fetch origin && git log -1 origin/main --format=%s` | "queue: submit ${JOB_NAME}" (uses explicit fetch — local origin/main ref may be stale otherwise) |
+| **Wait for pickup** | Wait up to 30 min (~15 min average per setup-scheduler.ps1 trigger semantics) OR ask user to run `Start-ScheduledTask -TaskName SolverQueue` on licensed-win-1 for instant pickup | (waiting) |
+| **Verify outcome — branched** | `git pull && (ls queue/completed/${JOB_NAME}/ 2>/dev/null && echo COMPLETED) \|\| (ls queue/failed/${JOB_NAME}/ 2>/dev/null && echo FAILED) \|\| echo PENDING` | One of: `COMPLETED`, `FAILED`, or `PENDING` (still waiting) |
+| **If COMPLETED — verify .sim** | `ls -la queue/completed/${JOB_NAME}/*.sim` | At least one `.sim` file, non-zero bytes |
+| **If COMPLETED — verify result.yaml** | `grep "^status:" queue/completed/${JOB_NAME}/result.yaml` | `status: completed` |
+| **If FAILED — capture diagnostic** | `cat queue/failed/${JOB_NAME}/result.yaml` | YAML with `status: failed` and error message; copy into report |
+| **Report written** | `ls docs/reports/2026-05-14-orcaflex-smoke-validation.md` | File exists |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `submit-job.sh orcaflex output/orcaflex_validation/pipeline_test_model.dat "..."` will succeed, print job path, and push commit
-- [ ] licensed-win-1 will pick up the job (within 30 min via scheduled poll, OR by manual trigger)
-- [ ] `queue/completed/<job-name>/result.yaml` will contain `status: completed`
-- [ ] A `.sim` output file will exist in the completed directory
-- [ ] `docs/reports/2026-05-14-orcaflex-smoke-validation.md` will document the run with submit-timestamp, pickup-timestamp, completion-timestamp, durations, and artifact paths
-- [ ] No regression: `queue/pending/` will be empty after run (job moved to completed/)
-- [ ] If run fails: failure will be recorded under `queue/failed/<job-name>/`, root cause analysed, and a fix-it issue filed before #2708 closes
+- [ ] Pre-flight steps 0a-0c will be executed and their outputs captured in the report before submission
+- [ ] `submit-job.sh orcaflex output/orcaflex_validation/pipeline_test_model.dat "..."` will succeed, print the job path, push commit; `${JOB_NAME}` will be captured for downstream verification
+- [ ] licensed-win-1 will pick up the job within 30 min (or operator will manually trigger SolverQueue task for instant pickup)
+- [ ] Exactly one of `queue/completed/${JOB_NAME}/` OR `queue/failed/${JOB_NAME}/` will exist after pickup — the branched verify command confirms which
+- [ ] If COMPLETED: a `.sim` file will exist in `queue/completed/${JOB_NAME}/`; `result.yaml` will contain `status: completed`
+- [ ] If FAILED: `result.yaml` in `queue/failed/${JOB_NAME}/` will contain `status: failed` with a captured error message; a fix-it follow-up issue will be filed before #2708 closes
+- [ ] `docs/reports/2026-05-14-orcaflex-smoke-validation.md` will document the SUBMITTED JOB specifically (by `${JOB_NAME}`) with submit-timestamp, pickup-timestamp, completion-timestamp, durations, and full artifact paths — NOT a claim that `queue/pending/` is empty (other submitters may have queued jobs concurrently)
+- [ ] The `export_excel: true` → `run_orcaflex()` ignores divergence (Finding 4) will be documented in the report and a separate fix-it issue will be filed regardless of outcome
 
 ---
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | — |
+| Claude (r1) | MAJOR | 3 blockers + 7 MINOR; all addressed in this revision (see "Revisions made" below) |
+| Claude (r2) | PENDING | — |
 
-**Overall result:** PENDING
+**Overall result (r1):** MAJOR — revised. r2 pending.
+
+**Revisions made based on r1 review:**
+1. **Blocker 1** — TDD "Verify pickup occurred" now reads `queue/completed/${JOB_NAME}/` and `queue/failed/${JOB_NAME}/` (the two dispatcher write paths) via a branched check. `.processed/` is documented as `watch-results.sh`-owned and explicitly out of the verification chain.
+2. **Blocker 2** — TDD list now has explicit "If FAILED" branch with diagnostic capture, so the operator can distinguish "not picked up" from "picked up and failed".
+3. **Blocker 3** — Pre-flight 0b checks `watch-results.sh` process state on licensed-win-1. If running, the operator must verify `.sim` handling before submission (cheaper than expanding scope to harden the hook). If not running, submission proceeds. Eliminates the silent-loop risk.
+4. **MINOR 4** — `export_excel: true` / `run_orcaflex()` ignore divergence documented in Resource Intelligence and Acceptance Criteria; fix-it follow-up will be filed.
+5. **MINOR 5** — AC #6 restated: "the SUBMITTED job will be absent from queue/pending/" (verifiable via `${JOB_NAME}`), not "directory will be empty".
+6. **MINOR 6** — Pre-flight 0a added (scheduled task state check) BEFORE the 30-min wait window opens.
+7. **MINOR 7** — "Verify push landed" now uses `git fetch origin && git log -1 origin/main`.
+8. **MINOR 8** — 30-min trigger semantics explained in Resource Intel + Deliverable: anchored to setup-scheduler.ps1 run time, not submit time. Average ~15 min.
+9. **MINOR 9** — TDD row 1 now uses `JOB_NAME=$(...)` capture so downstream rows are runnable verbatim.
+10. **MINOR 10** — Pre-flight 0c added: `git check-ignore` for `.sim` and explicit pre-submission size/.gitignore decision.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** 30-minute polling latency may make this issue feel stuck. Mitigation: user can manually trigger `Start-ScheduledTask -TaskName SolverQueue` on licensed-win-1 from any RDP/console session.
-- **Risk:** `pipeline_test_model.dat` may have dependencies (external paths, library references) that fail on `D:\workspace-hub` instead of the dev path. Mitigation: if first run fails, inspect the .dat with `OrcFxAPI.Model().LoadData()` locally for path issues before re-submitting.
-- **Risk:** licensed-win-1 may not have the SolverQueue scheduled task running (paused, Windows session locked, AV interference). Pre-flight: ask user to confirm task state via `Get-ScheduledTask -TaskName SolverQueue` before submission.
-- **Open:** If the .sim file is large (>50MB), should it be committed back to git or stored outside? Plan recommends commit unless >100MB (then defer to git-LFS or external storage).
-- **Open:** Is `post-process-hook.py` expected to fire for OrcaFlex completion? It is currently OrcaWave-tuned (metric extraction from `.owr`). OrcaFlex `.sim` post-processing is separate scope (#1586 or #1698 ANSYS sibling). Plan recommends: if the hook errors on `.sim`, log and skip rather than fail the run; track as follow-up.
+- **Risk:** licensed-win-1 may have the SolverQueue task disabled or in an Error state. Pre-flight 0a catches this.
+- **Risk:** If watch-results.sh IS running on licensed-win-1 and crashes on `.sim`, it could loop into failure (per r1 Finding 3). Pre-flight 0b requires explicit operator verification before submission.
+- **Risk:** `pipeline_test_model.dat` may reference external paths (libraries, included models) that resolve differently on `D:\workspace-hub` than on Linux dev paths. Mitigation: if first run fails with path-not-found errors, inspect the .dat with `OrcFxAPI.Model().LoadData()` locally before re-submitting.
+- **Open:** Should `post-process-hook.py` fire for OrcaFlex completion? It is currently OrcaWave-tuned. If watcher is running on licensed-win-1, the hook may error on `.sim`. Pre-flight 0b is the gate. Beyond that, follow-up is separate scope (#1586 or new issue).
+- **Open:** Does Finding 4 (`export_excel: true` ignored by `run_orcaflex()`) warrant immediate fix in this PR or a separate one? Plan defers to separate — keeps T1 scope clean.
 
 ---
 
 ## Complexity: T1
 
-**T1** — operational validation, no new code. Submits one job via existing tooling, waits for pickup, documents the result. The 30-min wait is the bulk of the wall-clock time; the active work is the report.
+**T1** — operational validation, no new code. Submits one job via existing tooling, runs three pre-flight checks, branches verification on outcome, documents the run. The wait dominates wall-clock; the active work is the pre-flight checks + report.

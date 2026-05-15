@@ -1,7 +1,7 @@
 ---
 name: tier1-indexing-scorecard-and-freshness-audit
 description: Audit tier-1 repos for code-placement/retrieval readiness, write scorecard/freshness reports, create follow-up GitHub issues when requested, and handle daily freshness checks without reinforcing legacy product-doc reference patterns.
-version: 1.0.2
+version: 1.0.3
 category: workspace-hub
 ---
 
@@ -157,7 +157,8 @@ Latest evidence references:
 - `references/2026-05-10-freshness-audit-lessons.md` — updated evidence: `assetutilities` broken-link findings refined as false positives, `aceengineer-website` remains RED for missing registry, and report verification evidence should be included when available.
 - `references/2026-05-11-freshness-audit-lessons.md` — status-level baseline, nested-repo path guardrail, current stale-reference evidence, and report verification evidence from the 2026-05-11 scheduled audit.
 - `references/2026-05-12-freshness-audit-lessons.md` — status-level baseline, unchanged-status wording, current stale-reference evidence, and the report verification pitfall about not embedding exact checksums before final report edits.
-- `references/2026-05-14-freshness-audit-lessons.md` — latest status-level baseline, corrected stale previous-report content (`assetutilities` broken-link false positive and `aceengineer-website` RED registry status), and current evidence snapshot.
+- `references/2026-05-14-freshness-audit-lessons.md` — status-level baseline, corrected stale previous-report content (`assetutilities` broken-link false positive and `aceengineer-website` RED registry status), and current evidence snapshot.
+- `references/2026-05-15-freshness-audit-lessons.md` — latest status-level baseline, report readback/verification pattern, historical-scorecard-as-context guardrail, and current evidence snapshot.
 
 
 ## Daily freshness automation pattern

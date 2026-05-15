@@ -340,3 +340,8 @@
 {"event":"smoke_test","ts":"2026-05-14T07:03:27Z","repo":"worldenergydata","status":"pass","passed":0,"failed":0,"duration_s":75}
 {"event":"smoke_test","ts":"2026-05-14T07:03:27Z","repo":"assethold","status":"pass","passed":0,"failed":0,"duration_s":4}
 {"event":"smoke_test","ts":"2026-05-14T07:03:27Z","repo":"OGManufacturing","status":"pass","passed":0,"failed":0,"duration_s":1}
+{"event":"smoke_test","ts":"2026-05-15T07:03:23Z","repo":"assetutilities","status":"pass","passed":0,"failed":0,"duration_s":12}
+{"event":"smoke_test","ts":"2026-05-15T07:03:23Z","repo":"digitalmodel","status":"pass","passed":0,"failed":0,"duration_s":44}
+{"event":"smoke_test","ts":"2026-05-15T07:03:23Z","repo":"worldenergydata","status":"pass","passed":0,"failed":0,"duration_s":93}
+{"event":"smoke_test","ts":"2026-05-15T07:03:23Z","repo":"assethold","status":"pass","passed":0,"failed":0,"duration_s":3}
+{"event":"smoke_test","ts":"2026-05-15T07:03:23Z","repo":"OGManufacturing","status":"pass","passed":0,"failed":0,"duration_s":0}

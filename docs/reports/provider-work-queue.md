@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-15T01:20:06.801563Z
+Generated: 2026-05-15T05:20:11.014238Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 16
+- Execution-ready candidates: 17
 - Total routed candidates: 174
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2533 feat(repo-portfolio): review and revise mission/objective statements across active repos | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, domain:repo-organization, status:plan-approved |
+| #2548 feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1 | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, status:plan-approved |
 | #2563 Set up Telegram mobile access for Hermes AI control | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:operations, domain:integrations, domain:notification |
 | #2628 epic(digitalmodel-ci): domain-divided CI architecture replacing maxfail-masking pattern | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:testing, status:plan-approved |
 | #2656 chore(repo-structure): normalize workspace-hub folder/file structure | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:repo-organization, status:plan-approved |
 | #2657 chore(provider-session): remediate Hermes llm-wiki spinout path drift | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:harness, status:plan-approved |
 | #2665 feat(kanban): provider-credit approval dashboard and dispatch gates | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking, status:plan-approved |
 | #2685 Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation | yes | strategy/workflow/architecture language | bug, priority:high, cat:engineering, cat:knowledge-domain, status:plan-approved |
-| #2686 Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | yes | strategy/workflow/architecture language | bug, priority:high, cat:engineering, cat:bugfix, status:plan-approved |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 4
-- Total routed candidates: 22
+- Total routed candidates: 23
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -44,11 +44,10 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 4
+- Total routed candidates: 3
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #2295 WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | no | research/triage/audit language | enhancement, priority:high, cat:personal-finance, domain:tax-preparation |
 | #2498 chore(harness): #2364 plan branch drift recovery decision needed | no | research/triage/audit language | priority:medium, cat:harness |
 | #2501 chore(planning): #2105 governance-lock — handoff vs live-state discrepancy | no | research/triage/audit language | priority:medium, cat:documentation, cat:harness |
 | #2679 R3 — Mooring: Industry practice (Vryhof, Bridon, MIRP, OMAE sessions) | no | research/triage/audit language | priority:medium, cat:engineering, cat:research |

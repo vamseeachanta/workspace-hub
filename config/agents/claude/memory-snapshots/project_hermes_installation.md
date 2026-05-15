@@ -36,7 +36,9 @@ Hermes Agent **v0.13.0 (release 2026.5.7)** is installed on ace-linux-1, verifie
 - CLI noun `skill` → `skills` (plural). Scripts calling `hermes skill list` will fail with "invalid choice" — use `hermes skills`.
 - New subcommands visible: `kanban`, `plugins`, `curator`, `profile`, `dashboard`, `claw`, `computer-use`, `acp`. The `kanban` surface backs #2665's quota dashboard work.
 - New auth provider: Nous Portal (OAuth). Optional for current routing; required if pulling Nous-hosted models.
-- `delegate_task` synchronous-subtask primitive is available per #2695 D7 design; empirical test pending in #2696.
+- `delegate_task` synchronous-subtask primitive is available per #2695 D7 design; empirical test pending in [#2702](https://github.com/vamseeachanta/workspace-hub/issues/2702) (the routing-audit residue from #2696). Note: `delegate_task` is a TOOL inside Hermes, **not a CLI subcommand** — `hermes delegate ...` will fail with "invalid choice: 'delegate'".
+
+**Non-interactive prompt invocation (verified 2026-05-14):** `hermes -z "$PROMPT" --yolo` is the Hermes equivalent of `claude -p` — runs the prompt through the configured provider (currently `openai-codex` / `gpt-5.5` per `hermes config show`), auto-confirms tool calls, exits with the response on stdout. This is the path to use for autonomous overnight dispatch via Hermes; do NOT shell out to `codex exec` (the codex CLI 0.130.0 still has the v0.124-era stdin-hang regression — both stdin form `codex exec - <<<` AND positional form `codex exec "$PROMPT"` time out, so direct codex CLI invocation is broken). Hermes routes to OpenAI's API directly, bypassing the codex CLI binary entirely. Tested: 30s round-trip on a small prompt, exit 0.
 
 **Stale local launcher (low priority):** `~/.local/bin/hermes` shebang still points at `venv/bin/python3` (note: missing dot — predates the `.venv/` rename), last touched 2026-04-20. Direct invocation via `~/.hermes/hermes-agent/.venv/bin/hermes` (or `python -m hermes_cli.main`) bypasses it cleanly. Fix needed only if something calls `hermes` from PATH.
 

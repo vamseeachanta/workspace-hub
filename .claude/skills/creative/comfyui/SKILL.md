@@ -1,8 +1,8 @@
 ---
 name: comfyui
 description: "Generate images, video, and audio with ComfyUI — install, launch, manage nodes/models, run workflows with parameter injection. Uses the official comfy-cli for lifecycle and direct REST/WebSocket API for execution."
-version: 5.0.0
-author: [kshitijk4poor, alt-glitch]
+version: 5.1.0
+author: [kshitijk4poor, alt-glitch, purzbeats]
 license: MIT
 platforms: [macos, linux, windows]
 compatibility: "Requires ComfyUI (local, Comfy Desktop, or Comfy Cloud) and comfy-cli (auto-installed via pipx/uvx by the setup script)."
@@ -40,6 +40,12 @@ for workflow execution.
 - `official-cli.md` — every `comfy ...` command, with flags
 - `rest-api.md` — REST + WebSocket endpoints (local + cloud), payload schemas
 - `workflow-format.md` — API-format JSON, common node types, param mapping
+- `template-integrity.md` — converting `comfyui-workflow-templates` from
+  editor format to API format: Reroute bypass, dotted dynamic-input keys
+  (`values.a`, `resize_type.width`), Cloud quirks (302 redirect, 1 concurrent
+  free-tier job, 1080p VRAM ceiling), Discord-compatible ffmpeg stitch.
+  Authored by [@purzbeats](https://github.com/purzbeats). Load this whenever
+  you're starting from an official template.
 
 **Scripts (`scripts/`):**
 
@@ -318,7 +324,7 @@ For users without a capable GPU or who want zero setup. Hosted on RTX 6000 Pro.
 2. Generate an API key at https://platform.comfy.org/login
 3. Set the key:
    ```bash
-   export COMFY_CLOUD_API_KEY="comfyui-xxxxxxxxxxxx" <!-- scanner-allow:all -->
+   export COMFY_CLOUD_API_KEY="comfyui-xxxxxxxxxxxx"
    ```
 4. Run workflows:
    ```bash
@@ -530,7 +536,7 @@ curl -X POST "https://cloud.comfy.org/api/upload/image" \
 
 ```bash
 # Local
-curl -s http://127.0.0.1:8188/queue | python3 -m json.tool <!-- scanner-allow:curl_pipe_python -->
+curl -s http://127.0.0.1:8188/queue | python3 -m json.tool
 curl -X POST http://127.0.0.1:8188/queue -d '{"clear": true}'    # cancel pending
 curl -X POST http://127.0.0.1:8188/interrupt                      # cancel running
 curl -X POST http://127.0.0.1:8188/free \

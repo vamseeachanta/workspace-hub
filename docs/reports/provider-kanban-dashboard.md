@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-15T01:20:08Z
+Generated: 2026-05-15T05:20:12Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,8 +43,13 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2712 | fix(hermes-ops): ace-linux-2 kanban-worker spawn fails — `hermes` not on gateway PATH | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2711 | feat(provider-data): service-provider data library — Helix 15k IRS pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2710 | feat(solver-queue): conversational submit UX — /solver-submit skill + interactive CLI | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: empty_review,major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2709 | feat(solver-queue): add AQWA runner adapter and schema extension | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: empty_review,major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2708 | feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2707 | chore(skills): curation judgments — single-skill stragglers, eng/ flat-files, session-logs/ relocation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2704 | spike(doc-intel): cloud embeddings comparison — Voyage + OpenAI text-embed-3 (deferred from #2403) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2703 | feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2702 | audit(infra): Hermes v0.13.0 routing-layer empirical verification — delegate_task round-trip + Anthropic base/overage consumption | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2701 | audit(harness): 17 status:plan-approved issues missing .planning/plan-approved/ markers — restore user-in-loop contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2700 | feat(ai-orchestration): "Memory-to-Surface" map maintenance contract for AI_ECOSYSTEM_DESIGN.md §E | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -90,7 +95,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2651 | Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2650 | chore(knowledge): post-spinout cleanup for llm-wiki migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2647 | ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2646 | feat(workstations): package ace-linux-2 direct-work SSH/VNC handoff runbook | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2645 | fix(workstations): normalize ace-linux-2 repo, mount, and path readiness | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2641 | feat(solver-queue): hands-off multi-machine inbox ingestion for OrcaWave, OrcaFlex, and AQWA | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2640 | feat(gtm): worldenergydata production decline forecast — shareable Jupyter notebook for GTM demo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -111,7 +115,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2551 | audit(security): verify branch/ruleset protections across public repos after collaborator-only lockdown | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2550 | chore(security): codify public repo interaction-limit renewal in scheduled tasks | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: unavailable_review |
 | #2549 | chore(business-brain): periodically assess repo work and refresh ecosystem context | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2548 | feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2548 | feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2547 | chore(seanation): extract useful client information and archive repo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2545 | chore(saipem): extract useful installation-project information and archive or retire repo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2539 | chore(rock-oil-field): sanity-check and migrate useful code/data/analysis to Tier-1 repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -239,10 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2298 | feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2297 | feat(portability): schedule unified smoke drift detection after #2272 baseline | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2296 | WRK: 2026 tax projections — SKEstates and AceEngineer income tax planning | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2295 | WRK: 2025 TX franchise No Tax Due + PIR — SKEstates and AceEngineer | gemini | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2294 | chore(skills): salvage #2290 follow-on learnings for regression coverage and github-code-review scope | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2293 | fix(wiki-ingest): make nightly ingest idempotent and push-status truthful | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2292 | fix(queue-refresh): restore weekly queue refresh evidence and cron execution | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 

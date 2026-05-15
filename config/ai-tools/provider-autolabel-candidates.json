@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15T01:20:06.935125Z",
+  "generated_at": "2026-05-15T05:20:11.271576Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -17,6 +17,38 @@
         "status:plan-approved"
       ],
       "updatedAt": "2026-05-14T03:37:50Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 2548,
+      "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:documentation",
+        "status:plan-approved"
+      ],
+      "updatedAt": "2026-05-15T04:10:48Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -240,68 +272,6 @@
         "provider-high-priority"
       ],
       "eligible": true
-    },
-    {
-      "number": 2686,
-      "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:engineering",
-        "cat:bugfix",
-        "status:plan-approved"
-      ],
-      "updatedAt": "2026-05-14T02:08:00Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 2295,
-      "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:personal-finance",
-        "domain:tax-preparation"
-      ],
-      "updatedAt": "2026-04-16T02:54:39Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "gemini",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research"
-      ],
-      "target_label": "agent:gemini",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-gemini-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
     },
     {
       "number": 2472,

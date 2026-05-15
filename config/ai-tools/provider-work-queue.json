@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T01:20:06.801563Z",
+  "generated_at": "2026-05-15T05:20:11.014238Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-15T01:20:05.191517Z",
+  "scorecard_generated_at": "2026-05-15T05:20:09.279074Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 16,
+      "execution_ready_count": 17,
       "total_candidates": 174,
       "top_issues": [
         {
@@ -26,6 +26,29 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-14T03:37:50Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2548,
+          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-15T04:10:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -186,30 +209,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2686,
-          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:engineering",
-            "cat:bugfix",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-14T02:08:00Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ],
       "full_candidates": [
@@ -225,6 +224,29 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-14T03:37:50Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2548,
+          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-15T04:10:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -470,7 +492,7 @@
             "maintenance",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-13T18:56:57Z",
+          "updatedAt": "2026-05-15T04:01:12Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -565,7 +587,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T04:02:08Z",
+          "updatedAt": "2026-05-15T04:11:32Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1059,29 +1081,6 @@
           ]
         },
         {
-          "number": 2548,
-          "title": "feat(control-plane): inventory machine software/auth and dispatch OrcaFlex/AQWA runs to licensed-win-1",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2548",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-13T13:20:51Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2557,
           "title": "chore(productivity): weekly work-pattern review and flow hacks",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2557",
@@ -1200,34 +1199,6 @@
           ]
         },
         {
-          "number": 2646,
-          "title": "feat(workstations): package ace-linux-2 direct-work SSH/VNC handoff runbook",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2646",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:workstations",
-            "machine:dev-secondary",
-            "machine:multi",
-            "agent:claude",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-13T13:20:53Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "existing claude agent label",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2697,
           "title": "chore(ai-tools): refresh subscriptions.yaml with current Codex paid plan + bump declared totals",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2697",
@@ -1250,65 +1221,42 @@
           ]
         },
         {
-          "number": 2292,
-          "title": "fix(queue-refresh): restore weekly queue refresh evidence and cron execution",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2292",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:operations"
-          ],
-          "updatedAt": "2026-04-16T10:39:49Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2293,
-          "title": "fix(wiki-ingest): make nightly ingest idempotent and push-status truthful",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2293",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:harness",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-04-16T10:40:05Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2294,
-          "title": "chore(skills): salvage #2290 follow-on learnings for regression coverage and github-code-review scope",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2294",
+          "number": 2708,
+          "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2708",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:documentation",
-            "cat:maintenance"
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1"
           ],
-          "updatedAt": "2026-04-15T23:18:29Z",
+          "updatedAt": "2026-05-15T03:54:13Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2709,
+          "title": "feat(solver-queue): add AQWA runner adapter and schema extension",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2709",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1"
+          ],
+          "updatedAt": "2026-05-15T03:54:35Z",
+          "execution_ready": false,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3563,6 +3511,73 @@
           ]
         },
         {
+          "number": 2707,
+          "title": "chore(skills): curation judgments \u2014 single-skill stragglers, eng/ flat-files, session-logs/ relocation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2707",
+          "labels": [
+            "enhancement",
+            "priority:medium"
+          ],
+          "updatedAt": "2026-05-15T03:39:21Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2710,
+          "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:work-queue"
+          ],
+          "updatedAt": "2026-05-15T03:54:56Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2711,
+          "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine"
+          ],
+          "updatedAt": "2026-05-15T03:55:30Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2325,
           "title": "Design conference-corpus enrichment (successor to #2305 deferral)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2325",
@@ -4137,24 +4152,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 2703,
-          "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2703",
-          "labels": [],
-          "updatedAt": "2026-05-14T20:41:24Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ]
     },
@@ -4162,7 +4159,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 22,
+      "total_candidates": 23,
       "top_issues": [
         {
           "number": 2402,
@@ -4675,6 +4672,28 @@
           ]
         },
         {
+          "number": 2712,
+          "title": "fix(hermes-ops): ace-linux-2 kanban-worker spawn fails \u2014 `hermes` not on gateway PATH",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2712",
+          "labels": [
+            "priority:medium",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-cost-tracking"
+          ],
+          "updatedAt": "2026-05-15T04:29:07Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 2350,
           "title": "verify: #2043 mooring animation render outputs \u2014 confirm published or reopen",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2350",
@@ -4820,29 +4839,8 @@
       "provider": "gemini",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 4,
+      "total_candidates": 3,
       "top_issues": [
-        {
-          "number": 2295,
-          "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:personal-finance",
-            "domain:tax-preparation"
-          ],
-          "updatedAt": "2026-04-16T02:54:39Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
-          ]
-        },
         {
           "number": 2498,
           "title": "chore(harness): #2364 plan branch drift recovery decision needed",
@@ -4904,27 +4902,6 @@
         }
       ],
       "full_candidates": [
-        {
-          "number": 2295,
-          "title": "WRK: 2025 TX franchise No Tax Due + PIR \u2014 SKEstates and AceEngineer",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2295",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:personal-finance",
-            "domain:tax-preparation"
-          ],
-          "updatedAt": "2026-04-16T02:54:39Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "gemini",
-          "routing_reason": "research/triage/audit language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research"
-          ]
-        },
         {
           "number": 2498,
           "title": "chore(harness): #2364 plan branch drift recovery decision needed",

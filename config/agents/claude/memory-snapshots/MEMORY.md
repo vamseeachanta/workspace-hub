@@ -90,6 +90,9 @@
 - [Skill-content scanner docs tension](feedback_skill_content_scanner_docs_tension.md) — ops-doc skills trip the credential-access scanner on `~/.hermes/.env`, `curl ${TOKEN}`, etc.; use `${HERMES_HOME}/.env` placeholder + push literal commands to docs/runbooks/ (unscanned). 18 CRITICAL→0 fix landed 2026-05-13 commit 6702bf5ac.
 - [N-night blocker → replan](feedback_n_night_blocker_promote_to_replan.md) — 3+ nightly-batch comments with same root-cause blocker = halt polling, surface design-replan. Observed #2403 (6 nights, same prereq); 6th invocation halted at preflight rather than spawning blocked-comment #7.
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts loaded via spec_from_file_location must register in sys.modules BEFORE exec_module if they contain @dataclass; otherwise `AttributeError: 'NoneType'` at decoration time. Fixed 2026-05-13 in 4 #2665 tests.
+- [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — agent dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user execution-instruction as approval; dispatch prompts must forbid BOTH GH-label self-approval AND marker writes. #2703 lane 2026-05-14 (stripped pre-PR #2705).
+- [Autostash replay after checkout -b](feedback_autostash_replay_after_checkout_b.md) — leftover autostash from `git rebase --onto` can silently auto-apply on next `git checkout -b`, reverting tracked state in working tree+index. Always `git stash list` + drop unwanted autostashes BEFORE creating new branches. Recovered 2026-05-14 via /tmp backup + reset. Distinct from retry-loop reset hazard.
+- [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14 from BSEE+Helix collision; #2482
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md

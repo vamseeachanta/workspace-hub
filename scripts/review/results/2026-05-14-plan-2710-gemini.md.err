@@ -1,0 +1,3 @@
+Ripgrep is not available. Falling back to GrepTool.
+Error executing tool list_directory: Error: Failed to list directory.
+Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "update_topic", "grep_search", "invoke_agent"?
