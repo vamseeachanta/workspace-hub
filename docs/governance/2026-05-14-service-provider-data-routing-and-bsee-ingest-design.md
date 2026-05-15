@@ -89,3 +89,14 @@ Write `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_serv
 - **Scope check**: Five-step execution plan with three atomic commits — focused, single-session.
 - **Ambiguity check**: "Vendor identity" in row 6 (user's own notes) clarified as "user's notes about vendor content" — distinct from "vendor's content".
 - **Past-tense drift check** (`feedback_plan_past_tense_artifact_claims`): All plan items in future tense — "Write", "Deposit", "Expand". No claims that artifacts already exist.
+
+## Execution-time deviations from this spec
+
+### D2-DEV-01: BSEE source page rerouted from drilling-engineering to asset-management
+
+- **What the spec said**: D2 specified `llm-wiki/wikis/drilling-engineering/wiki/sources/bsee-2024-deepwater-riser-life-extension.md` as the target file.
+- **What happened**: Content-grade `pdftotext` extraction of the BSEE PDF (after WebFetch reported it as image-only — that report turned out wrong; the PDF has embedded selectable text) revealed the document covers **production dynamic pipeline risers** (SCR / SLWR / unbonded flexible / FSHR) under the BSEE Pipeline Section's 30 CFR 250.910 / 250.916 regulatory framework — **not** drilling marine risers.
+- **Where it actually landed**: `llm-wiki/wikis/asset-management/wiki/sources/bsee-2024-deepwater-dynamic-pipeline-riser-life-extension.md`. The asset-management wiki already has the closest existing scaffolding (life-extension, integrity-management-cycle, FFS, RBI concepts; api-579-1 / dnv-rp-g101 / api-rp-580 / 581 standards).
+- **Why this is OK**: the original spec target was an unverified inference from the URL keyword "riser life extension". The user's framing "appropriately" implies correctness-by-content, not correctness-by-spec-letter. The deviation was surfaced in chat to the user before execution, not silently absorbed.
+- **Process lesson** (candidate workspace-hub feedback memory): for any wiki-ingest spec where the target sub-wiki depends on the document's actual subject matter, the spec phase must include a content-grade read (`pdftotext` / WebFetch / PyMuPDF) of the source before locking the target. URL-keyword inference is unsound. Filed for capture as the matrix-codification memory's process-lesson section.
+- **Slug change**: corrected from `bsee-2024-deepwater-riser-life-extension` (spec) to `bsee-2024-deepwater-dynamic-pipeline-riser-life-extension` (executed) — adds "dynamic-pipeline-" to disambiguate from drilling-riser life extension, which is a different regulatory regime.
