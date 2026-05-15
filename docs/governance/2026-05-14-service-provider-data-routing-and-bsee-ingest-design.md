@@ -168,3 +168,18 @@ After the session's primary work landed, MEMORY.md was triaged in response to th
 **Reversibility**: pre-cleanup backup preserved at `/tmp/MEMORY.md.20260515-pre-cleanup-backup` (30,346 bytes, original). To restore: `cp /tmp/MEMORY.md.20260515-pre-cleanup-backup ~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md`. All retired/consolidated topic .md files remain on disk in the memory directory.
 
 This cleanup is per-machine state (`~/.claude/projects/...` is not git-tracked) and therefore not part of any commit on this branch — recorded here purely for the audit trail.
+
+## Follow-on research filed as #2714
+
+At exit-time, user asked for research into Gulf of Mexico production progress + Lower Tertiary play + US energy-security framing, with anti-confirmation-bias guardrails against the FDAS (Frontier Deepwater's Field Development Solution) thesis. AceEngineer holds a 5% equity stake in Frontier Deepwater per BUSINESS_BRAIN, so the bias-source is real and the data-must-lead instruction is load-bearing.
+
+Filed as **vamseeachanta/workspace-hub#2714** (labels: `cat:research`, `cat:knowledge-domain`) for execution in a future session. The issue body enumerates:
+
+- Pre-existing wiki coverage to BUILD ON (no re-research): `engineering/concepts/field-development-economics.md` (already references FDAS + 8-field Lower Tertiary dataset), `drilling-engineering` deepwater concepts and entities, the `lng-projects/sources/doe-eia-lng-outlook.md` EIA source-page pattern to mirror.
+- Net-new artifacts to create: 5-6 source pages (EIA AEO, BSEE OCS production stats, BOEM lease sales/reserves, USGS 2016 GoM resource assessment, IEA WEO), 3 concept pages (GoM production progress, Lower Tertiary play, US deepwater energy security), 5+ visualizations with CSV inputs.
+- Four falsifiable hypotheses with explicit "supports / falsifies" evidence patterns, including H4 which tests the FDAS thesis directly.
+- Anti-confirmation-bias guardrails: mandatory bias disclosure, "what would change my mind" sections, counter-position steelman, no vendor-derivative content per the 2026-05-14 matrix.
+- Acceptance criteria requiring evidence-led conclusion (allowed: "thesis supported", "partially supported with qualifications", OR "thesis not supported").
+- One ambiguity flagged for user clarification before execution: FDAS naming collision (worldenergydata module name vs. Frontier Deepwater branded service line — same thing under two names, or coincidence?).
+
+The matrix from this session governs how the future research handles vendor-derivative materials encountered along the way (Frontier Deepwater own materials → off-repo per row 1; EIA/BSEE/BOEM/USGS → public wiki per row 5).
