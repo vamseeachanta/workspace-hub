@@ -18,12 +18,14 @@ SIGNAL_DIR="${WS}/.claude/state/session-signals"
 SESSION_DIR="${WS}/.claude/state/sessions"
 mkdir -p "$SIGNAL_DIR"
 
-# Read Stop hook stdin to extract session_id
-INPUT=""
+# Read only a bounded prefix from Stop-hook stdin. On large transcript payloads,
+# reading all stdin just to extract session_id can exceed the 10s hook timeout.
+INPUT_PREFIX=""
 if [ ! -t 0 ]; then
-    INPUT=$(cat 2>/dev/null) || INPUT=""
+    INPUT_PREFIX=$(head -c 65536 2>/dev/null || true)
 fi
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"' 2>/dev/null) || SESSION_ID="unknown"
+FIRST_LINE=$(printf '%s\n' "$INPUT_PREFIX" | sed -n '1p')
+SESSION_ID=$(printf '%s' "$FIRST_LINE" | jq -r '.session_id // "unknown"' 2>/dev/null) || SESSION_ID="unknown"
 
 TS=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 LOG_DATE=$(date +%Y-%m-%d)

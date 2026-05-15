@@ -24,18 +24,16 @@ INBOUND → TRIAGE → EXTRACT DATA → ACT → DELETE
 
 | Skill | Purpose | Status |
 |---|---|---|
-| `gmail-triage` | Daily inbox scan, classify, digest | Active — updated to queue model |
-| `gmail-extract-and-act` | Extract structured data, track state, delete when done | Active — NEW |
-| `gmail-outreach` | Touchbase messages + batch unsubscribe | Active — NEW (merges touchbase + unsubscribe) |
-| `gmail-multi-account` | Foundation — 3 accounts, OAuth, himalaya | Active (no changes) |
-| `gmail-attachment-to-document` | Parse attachments, save structured data | Active (no changes) |
-| `contact-manager` | Normalize/classify contact databases | Active (no changes) |
-| `himalaya` | CLI reference for email operations | Active (reference only) |
-| `gmail-headless-oauth` | Manual OAuth2 token exchange | Active (infra utility) |
-| `gmail-extract-and-clean` | Archive-everything model | DEPRECATED |
-| `gmail-extract-archive` | Archive-everything model | DEPRECATED |
-| `gmail-email-to-repo-extraction` | Archive-everything model | DEPRECATED |
-| `gmail-data-extraction` | Code reference only | Keep for patterns, not workflow |
+| `gmail-triage` | Daily inbox scan, classify, digest | Active — queue model |
+| `gmail-extract-and-act` | Extract structured data, track state, delete when done | Active — queue action engine |
+| `gmail-operations` | Class-level Gmail/email operations: triage, extraction, attachments, outreach, and state handling | Active — aggregator |
+| `gmail-outreach` | Touchbase messages + batch unsubscribe | Active — replaces old touchbase/unsubscribe flows |
+| `gmail-multi-account` | Foundation — 3 accounts, OAuth, himalaya | Active |
+| `gmail-attachment-to-document` | Parse attachments, save structured data | Active |
+| `gmail-data-extraction` | Historical extraction patterns and code reference | Active — reference/pattern skill |
+| `contact-manager` | Normalize/classify contact databases | Active |
+| `himalaya` | CLI reference for email operations | Active — reference only |
+| `gmail-headless-oauth` | Manual OAuth2 token exchange | Active — infra utility |
 
 ## Routing Rules
 
@@ -44,7 +42,8 @@ INBOUND → TRIAGE → EXTRACT DATA → ACT → DELETE
 ## State Tracking
 
 - Gmail labels: `wh-email/extracted`, `wh-email/awaiting-reply`, `wh-email/completed`, `wh-email/noise`
-- Local state: `~/.hermes/email-state.yaml` (authoritative tracker)
+- Local state: `~/.hermes/email-state.yaml` (authoritative tracker; credentials/config values must stay out of docs)
+- Label semantics: `docs/email/email-skill-state-labels.md`
 - Grace period: 7 days for completed threads before deletion
 
 ## Cron Jobs

@@ -6,6 +6,10 @@ set -uo pipefail
 
 WS="${WORKSPACE_HUB:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)}"
 NUDGE_FILE="${WS}/.claude/state/skill-nudge.json"
+START_MARKER="${WS}/.claude/state/skill-nudge-start.marker"
+
+mkdir -p "${WS}/.claude/state" 2>/dev/null
+touch "$START_MARKER" 2>/dev/null || true
 
 if [[ ! -f "$NUDGE_FILE" ]]; then
     exit 0

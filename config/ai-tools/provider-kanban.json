@@ -37,6 +37,44 @@
       "hover": {
         "labels": [
           "priority:medium",
+          "cat:harness",
+          "domain:ai-orchestration"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2713,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2713",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
           "domain:agent-cost-tracking"
@@ -172,7 +210,7 @@
         "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 hard-rejects any solver that is not `orcawave` or `orcaflex`; `aqwa` will cause immediate `exit 1`.",
         "provider_route": "claude",
         "risks": "**Open (blocking for implementation): Which licensed Windows host holds the AQWA license?** `docs/ops/2026-05-04-multimachine-baseline-inventory.md` \u00a71 states licensed-win-2 is the \"preferred AQWA fallback/parallel host until live probes confirm exact licenses.\" licensed-win-1 lists \"OrcaWave/OrcaFlex/ANSYS\" broadly. Exact ANSYS/AQWA install and license-server address on each host are unconfirmed.",
-        "tests": "15 TDD tests defined",
+        "tests": "21 TDD tests defined",
         "title": "feat(solver-queue): add AQWA runner adapter and schema extension"
       },
       "lane": "planning_feedstock",
@@ -213,9 +251,9 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 accepts `orcawave | orcaflex`; rejects everything else.",
+        "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 accepts `orcawave | orcaflex`; rejects everything else. **Always writes `export_excel: true` (line 32) \u2014 see Finding 4 below for divergence.**",
         "provider_route": "claude",
-        "risks": "**Risk:** 30-minute polling latency may make this issue feel stuck. Mitigation: user can manually trigger `Start-ScheduledTask -TaskName SolverQueue` on licensed-win-1 from any RDP/console session. | **Risk:** `pipeline_test_model.dat` may have dependencies (external paths, library references) that fail on `D:\\workspace-hub` instead of the dev path. Mitigation: if first run fails, inspect the .dat",
+        "risks": "**Risk:** licensed-win-1 may have the SolverQueue task disabled or in an Error state. Pre-flight 0a catches this. | **Risk:** If watch-results.sh IS running on licensed-win-1 and crashes on `.sim`, it could loop into failure (per r1 Finding 3). Pre-flight 0b requires explicit operator verification before submission. | **Risk:** `pipeline_test_model.dat` may reference external paths (libraries, inc",
         "tests": "TDD section present",
         "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)"
       },
@@ -7878,53 +7916,52 @@
       "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:personal-finance",
-          "domain:tax-preparation"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2296,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-15T05:20:12Z",
+  "generated_at": "2026-05-15T09:20:09Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:harness",
+            "domain:ai-orchestration"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2713,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2713",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8072,7 +8109,7 @@
           "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 hard-rejects any solver that is not `orcawave` or `orcaflex`; `aqwa` will cause immediate `exit 1`.",
           "provider_route": "claude",
           "risks": "**Open (blocking for implementation): Which licensed Windows host holds the AQWA license?** `docs/ops/2026-05-04-multimachine-baseline-inventory.md` \u00a71 states licensed-win-2 is the \"preferred AQWA fallback/parallel host until live probes confirm exact licenses.\" licensed-win-1 lists \"OrcaWave/OrcaFlex/ANSYS\" broadly. Exact ANSYS/AQWA install and license-server address on each host are unconfirmed.",
-          "tests": "15 TDD tests defined",
+          "tests": "21 TDD tests defined",
           "title": "feat(solver-queue): add AQWA runner adapter and schema extension"
         },
         "lane": "planning_feedstock",
@@ -8113,9 +8150,9 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 accepts `orcawave | orcaflex`; rejects everything else.",
+          "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 accepts `orcawave | orcaflex`; rejects everything else. **Always writes `export_excel: true` (line 32) \u2014 see Finding 4 below for divergence.**",
           "provider_route": "claude",
-          "risks": "**Risk:** 30-minute polling latency may make this issue feel stuck. Mitigation: user can manually trigger `Start-ScheduledTask -TaskName SolverQueue` on licensed-win-1 from any RDP/console session. | **Risk:** `pipeline_test_model.dat` may have dependencies (external paths, library references) that fail on `D:\\workspace-hub` instead of the dev path. Mitigation: if first run fails, inspect the .dat",
+          "risks": "**Risk:** licensed-win-1 may have the SolverQueue task disabled or in an Error state. Pre-flight 0a catches this. | **Risk:** If watch-results.sh IS running on licensed-win-1 and crashes on `.sim`, it could loop into failure (per r1 Finding 3). Pre-flight 0b requires explicit operator verification before submission. | **Risk:** `pipeline_test_model.dat` may reference external paths (libraries, inc",
           "tests": "TDD section present",
           "title": "feat(solver-queue): validate OrcaFlex dispatch on licensed-win-1 (#1586 child)"
         },
@@ -15778,45 +15815,6 @@
         "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:personal-finance",
-            "domain:tax-preparation"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2296,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15827,9 +15825,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-15T05:20:09.279074Z",
+  "scorecard_generated_at": "2026-05-15T09:20:05.820835Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-15T05:20:09.154800Z",
+  "utilization_generated_at": "2026-05-15T09:20:05.667958Z",
   "warning_summary": {
     "approved_no_marker": 15,
     "approved_no_plan": 2,

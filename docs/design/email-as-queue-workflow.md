@@ -554,7 +554,7 @@ The daily digest (gmail-digest.py) should include a "Learning Backlog" section:
 | 7 | Enable completed+grace-period deletion on ace account | Medium | 7-day grace + trash (not permanent delete) |
 | 8 | Extend deletion to personal and skestates | Medium | Same safeguards |
 | 9 | Deprecate `gmail-archive-extract.py` | Low | New pipeline has parity |
-| 10 | Retire deprecated skills (gmail-extract-and-clean, gmail-extract-archive, gmail-email-to-repo-extraction) | Low | Skills marked deprecated in docs/email/WORKFLOW.md |
+| 10 | Retire deprecated active skills (gmail-extract-and-clean, gmail-extract-archive, gmail-email-to-repo-extraction, gmail-touchbase, gmail-unsubscribe) | Low | Active folders removed; archived twins retained under `.claude/skills/email/_archived/` |
 
 ### 10.2 Existing Data
 
@@ -572,12 +572,12 @@ Raw email archives already committed to repos are not deleted retroactively. The
 | contact-manager | KEEP | Contact normalization |
 | himalaya | KEEP | CLI reference |
 | gmail-headless-oauth | KEEP | Infra utility |
-| gmail-extract-and-clean | DEPRECATE | Replaced by gmail-extract-and-act |
-| gmail-extract-archive | DEPRECATE | Replaced by gmail-extract-and-act |
-| gmail-email-to-repo-extraction | DEPRECATE | Replaced by gmail-extract-and-act |
+| gmail-extract-and-clean | RETIRED from active skills | Replaced by gmail-extract-and-act; archived twin retained |
+| gmail-extract-archive | RETIRED from active skills | Replaced by gmail-extract-and-act; archived twin retained |
+| gmail-email-to-repo-extraction | RETIRED from active skills | Replaced by gmail-extract-and-act; archived twin retained |
 | gmail-data-extraction | KEEP (reference) | Code patterns only, not workflow |
-| gmail-touchbase | MERGE into gmail-outreach | -- |
-| gmail-unsubscribe | MERGE into gmail-outreach | -- |
+| gmail-touchbase | RETIRED from active skills | Replaced by gmail-outreach; archived twin retained |
+| gmail-unsubscribe | RETIRED from active skills | Replaced by gmail-outreach; archived twin retained |
 
 ---
 
@@ -639,9 +639,9 @@ Raw email archives already committed to repos are not deleted retroactively. The
 - [ ] Add exception reporting for unknown domains and extraction failures
 
 ### Phase 6: Skill Consolidation (#2019)
-- [ ] Deprecate `gmail-extract-and-clean`, `gmail-extract-archive`, `gmail-email-to-repo-extraction`
-- [ ] Merge `gmail-touchbase` + `gmail-unsubscribe` into `gmail-outreach`
-- [ ] Update all remaining skills to reference queue model
+- [x] Retire active `gmail-extract-and-clean`, `gmail-extract-archive`, `gmail-email-to-repo-extraction` folders; preserve archived twins
+- [x] Retire active `gmail-touchbase` + `gmail-unsubscribe` folders after replacement by `gmail-outreach`
+- [x] Update active email workflow docs and wiki frontmatter to reference queue-model skills
 
 ### Phase 7: Learning Loop
 - [ ] Track extraction patterns that work well

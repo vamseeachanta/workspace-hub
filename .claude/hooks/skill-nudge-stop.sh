@@ -6,11 +6,14 @@ set -uo pipefail
 
 WS="${WORKSPACE_HUB:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)}"
 NUDGE_FILE="${WS}/.claude/state/skill-nudge.json"
+START_MARKER="${WS}/.claude/state/skill-nudge-start.marker"
 mkdir -p "${WS}/.claude/state" 2>/dev/null
 
-# Read Stop hook stdin
-INPUT=""
-[ ! -t 0 ] && INPUT=$(cat 2>/dev/null) || INPUT=""
+# Drain only a bounded prefix if Stop-hook stdin is present. This hook does not
+# need transcript content, and full reads can exceed Claude's 10s hook timeout.
+if [ ! -t 0 ]; then
+    head -c 65536 >/dev/null 2>&1 || true
+fi
 
 # Count tool calls from session signals (today's file)
 TODAY=$(date +%Y-%m-%d)
@@ -26,15 +29,19 @@ if (( TOOL_COUNT < 10 )); then
     exit 0
 fi
 
-# Check if any skill files were created/modified in this session
-# Use git to detect skill file changes since session start
-SKILL_CHANGES=$(git -C "$WS" diff --name-only HEAD 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md')
-SKILL_STAGED=$(git -C "$WS" diff --cached --name-only 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md')
-SKILL_UNTRACKED=$(git -C "$WS" ls-files --others --exclude-standard 2>/dev/null | grep -c '\.claude/skills/.*SKILL\.md')
+# Check if any skill files were created/modified in this session. Avoid git
+# scans here; this hook must stay well under Claude's 10s Stop-hook timeout.
+if [[ -f "$START_MARKER" ]]; then
+    SKILL_TOUCHED=$(find "${WS}/.claude/skills" -maxdepth 5 \
+        \( -name references -o -name assets -o -name __pycache__ \) -prune -o \
+        -name 'SKILL.md' -newer "$START_MARKER" -print -quit 2>/dev/null)
+else
+    SKILL_TOUCHED=$(find "${WS}/.claude/skills" -maxdepth 5 \
+        \( -name references -o -name assets -o -name __pycache__ \) -prune -o \
+        -name 'SKILL.md' -mtime -1 -print -quit 2>/dev/null)
+fi
 
-TOTAL_SKILL_CHANGES=$(( SKILL_CHANGES + SKILL_STAGED + SKILL_UNTRACKED ))
-
-if (( TOTAL_SKILL_CHANGES > 0 )); then
+if [[ -n "$SKILL_TOUCHED" ]]; then
     # Skills were created/modified — no nudge needed, clear any existing one
     rm -f "$NUDGE_FILE" 2>/dev/null
     exit 0

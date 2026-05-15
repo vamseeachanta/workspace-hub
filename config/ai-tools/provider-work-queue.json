@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T05:20:11.014238Z",
+  "generated_at": "2026-05-15T09:20:07.448097Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-15T05:20:09.279074Z",
+  "scorecard_generated_at": "2026-05-15T09:20:05.820835Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1264,28 +1264,6 @@
           "work_type": [
             "research",
             "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2296,
-          "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:personal-finance",
-            "domain:tax-preparation"
-          ],
-          "updatedAt": "2026-04-16T02:54:57Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
             "strategy"
           ]
         },
@@ -3566,6 +3544,27 @@
             "domain:marine"
           ],
           "updatedAt": "2026-05-15T03:55:30Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2713,
+          "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2713",
+          "labels": [
+            "priority:medium",
+            "cat:harness",
+            "domain:ai-orchestration"
+          ],
+          "updatedAt": "2026-05-15T09:12:46Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
