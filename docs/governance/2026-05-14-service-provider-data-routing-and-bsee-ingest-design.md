@@ -1,7 +1,7 @@
 ---
 title: Service-provider data routing matrix + BSEE 2024 deepwater riser life-extension source ingest — design
 date: 2026-05-14
-status: approved-pending-execution
+status: executed-2026-05-14
 authors: [vamsee, claude (opus 4.7)]
 related:
   - llm-wiki/CLAUDE.md (target of matrix codification)
@@ -100,3 +100,55 @@ Write `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_serv
 - **Why this is OK**: the original spec target was an unverified inference from the URL keyword "riser life extension". The user's framing "appropriately" implies correctness-by-content, not correctness-by-spec-letter. The deviation was surfaced in chat to the user before execution, not silently absorbed.
 - **Process lesson** (candidate workspace-hub feedback memory): for any wiki-ingest spec where the target sub-wiki depends on the document's actual subject matter, the spec phase must include a content-grade read (`pdftotext` / WebFetch / PyMuPDF) of the source before locking the target. URL-keyword inference is unsound. Filed for capture as the matrix-codification memory's process-lesson section.
 - **Slug change**: corrected from `bsee-2024-deepwater-riser-life-extension` (spec) to `bsee-2024-deepwater-dynamic-pipeline-riser-life-extension` (executed) — adds "dynamic-pipeline-" to disambiguate from drilling-riser life extension, which is a different regulatory regime.
+
+## Session execution outcome (2026-05-14)
+
+### Commits landed
+
+| Repo | SHA | Purpose | Pushed |
+|---|---|---|---|
+| workspace-hub | `a2103c707` | Matrix design doc + vendor-PDF inventory file | Yes (auto-sync) |
+| workspace-hub | `fbd38f8b5` | D2-DEV-01 deviation log (BSEE rerouted to asset-management) | Yes (auto-sync) |
+| workspace-hub | _this commit_ | Session execution outcome appended to this doc | Pending |
+| llm-wiki | `86b601c7` | `CLAUDE.md` Vendor-PDFs rule → 6-row matrix; new `docs/governance/service-provider-data-routing.md` | Yes (auto-sync) |
+| llm-wiki | `a6b50d23` | BSEE 2024 source page + `wikis/asset-management/wiki/{sources,index.md,log.md}` | **No** — local-only at session exit; auto-sync window did not fire before close. Will sync on next poll OR user can `cd llm-wiki && git push` to force. |
+
+### Private mount deposits (off-repo, no commit)
+
+`/mnt/ace/vendor-pdfs/helix-esg/`:
+- `Helix_Well_Ops_Q4000_LTR_2024-09-12.pdf` (3.2 MB, 4 pages)
+- `Helix_Well_Ops_IRS-7-15k_LTR_2023-11-28.pdf` (4.0 MB, 4 pages)
+- `Helix_riser-based-well-intervention_2026-05-14_snapshot.html` (70 KB)
+
+Inventory entry in `workspace-hub/docs/governance/vendor-pdf-inventory.md`.
+
+### Memory artifact
+
+- New: `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_service_provider_data_routing.md` (6.3 KB, 52 lines)
+- Indexed: `MEMORY.md` line 95 (217 chars).
+- **Caveat**: MEMORY.md is now 30.3 KB, exceeding the documented 24.4 KB load-limit (session-start warned at 28.7 KB). Future sessions will load truncated. Recommend a separate triage pass to retire stale feedback entries before adding more.
+
+### Deferred follow-ups (open work for future sessions)
+
+- **llm-wiki/wikis/asset-management/wiki/concepts/deepwater-dynamic-riser-life-extension-process.md** — concept page synthesizing the 8-step BSEE process with API RP 17G + DNV-OS-F201 + API RP 1160 + API RP 2RIM grounding. Blocked on multi-source grounding per `feedback_llm_wiki_concept_pages_need_public_references`.
+- **llm-wiki standards pages**: `api-rp-1160.md`, `api-rp-2rim.md`, `30-cfr-250-subpart-i.md`. CFR routing convention may need a governance issue (similar to #2615 / #2596 for the API/DNV routing). Surface in next planning pass.
+- **llm-wiki/wikis/asset-management/wiki/concepts/cva-platform-verification-program.md** — CVA workflow concept page; needs BSEE 30 CFR 250 Subpart B citations + at least one CVA-vendor public technical paper as grounding.
+- **llm-wiki/wikis/drilling-engineering/wiki/entities/helix-energy-solutions-fleet.md** — Helix entity page sourced from SEC 10-K + class-society records + at least one OTC/SPE paper. Currently blocked: only vendor-derivative brochures available off-repo. Promote when public-record grounding accumulates.
+- **MEMORY.md triage** — retire or consolidate stale feedback entries to get back under 24.4 KB load limit.
+- **Promotion-path watch**: track recurrence of vendor-brochure-URL-in-public-wiki anti-patterns. If observed even once, promote the matrix from Level-0 prose to Level-2 pre-commit hook per `.claude/rules/patterns.md` enforcement gradient.
+
+### Cross-session recovery
+
+Future sessions can recover full context from:
+1. This design doc (full design + deviation log + outcome).
+2. `llm-wiki/docs/governance/service-provider-data-routing.md` (matrix authority).
+3. `llm-wiki/CLAUDE.md` (pointer + summary).
+4. `workspace-hub/docs/governance/vendor-pdf-inventory.md` (private-mount index).
+5. `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_service_provider_data_routing.md` (auto-loaded on session start when index entry survives MEMORY.md truncation).
+6. Commit messages on the 5 SHAs above carry redundant trace.
+
+### Notable session observations (not durable but worth recording for the audit trail)
+
+- **Plan-gate hook (from 51887c839) fired correctly** on both workspace-hub commits with `[plan-gate] PASS: No implementation changes or low-risk files only.` — first real-world validation of the marker-label parity gate enforcement.
+- **Parallel-session interactions observed**: (a) Codex companion pushing `feat/marker-label-parity-gate` for ~1h10m — ultimately merged as PR #2706 during this session, mid-commit; (b) Hermes orchestrator polling `git status` every ~30s causing 5 retry-loop attempts for the first workspace-hub commit (index.lock contention); (c) production-engineering parallel session landing 4 ingest commits (#63 / #64 / #65 / #66) in llm-wiki, completing PE Phase 1. None of these collided with our subtree-disjoint writes — validates `feedback_parallel_agent_write_only_pattern`.
+- **WebFetch report on the BSEE PDF was wrong** — it claimed "binary-heavy / no readable text" when the PDF has selectable embedded text fully extractable via `pdftotext`. Lesson: don't trust WebFetch's PDF-content read; always cross-check with `pdftotext` before declaring a PDF unreadable.
