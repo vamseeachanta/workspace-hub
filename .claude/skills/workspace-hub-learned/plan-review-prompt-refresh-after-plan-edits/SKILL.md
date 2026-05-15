@@ -3,7 +3,7 @@ name: plan-review-prompt-refresh-after-plan-edits
 description: Refresh reviewer prompt files from the latest on-disk plan before every adversarial re-review. Prevents Codex/Gemini from critiquing stale plan text after local edits.
 version: 1.0.0
 author: Hermes Agent
-category: workspace_hub_learned
+category: workspace-hub-learned
 tags: [planning, review, prompt-packaging, codex, gemini, github]
 related_skills:
   - multi-provider-adversarial-review

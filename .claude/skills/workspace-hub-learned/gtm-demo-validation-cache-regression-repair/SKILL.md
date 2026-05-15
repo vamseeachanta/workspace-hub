@@ -2,7 +2,7 @@
 name: gtm-demo-validation-cache-regression-repair
 description: Diagnose and repair GTM demo validation failures caused by legacy cache files missing intermediate chart data, especially in nested digitalmodel demo scripts using --from-cache.
 version: 1.0.0
-category: workspace_hub_learned
+category: workspace-hub-learned
 tags: [gtm, digitalmodel, validation, cache, regression, pytest]
 ---
 
