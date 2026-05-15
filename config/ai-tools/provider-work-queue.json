@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-14T17:20:09.411537Z",
+  "generated_at": "2026-05-14T21:20:07.999961Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-14T17:20:07.196727Z",
+  "scorecard_generated_at": "2026-05-14T21:20:05.764552Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -31,7 +31,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -57,7 +57,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -82,7 +82,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -107,7 +107,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -131,7 +131,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -156,7 +156,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -180,7 +180,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -204,7 +204,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -230,7 +230,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -256,7 +256,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -281,7 +281,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -306,7 +306,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -330,7 +330,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -355,7 +355,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -379,7 +379,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -403,7 +403,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -427,7 +427,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -452,7 +452,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -476,7 +476,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -500,7 +500,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -524,7 +524,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -547,7 +547,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -571,7 +571,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -595,7 +595,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -617,7 +617,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -640,7 +640,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -666,7 +666,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -692,7 +692,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -714,7 +714,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -737,7 +737,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -760,7 +760,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -783,7 +783,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -806,7 +806,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -830,7 +830,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -853,7 +853,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -877,7 +877,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -900,7 +900,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -924,7 +924,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -948,7 +948,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -974,7 +974,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -999,7 +999,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1025,7 +1025,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1051,7 +1051,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1074,7 +1074,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1097,7 +1097,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1121,7 +1121,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1144,7 +1144,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -1167,7 +1167,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1192,7 +1192,7 @@
           "suggested_provider": "claude",
           "routing_reason": "existing claude agent label",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1220,7 +1220,7 @@
           "suggested_provider": "claude",
           "routing_reason": "existing claude agent label",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1242,7 +1242,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1265,7 +1265,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1288,7 +1288,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1312,7 +1312,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1335,7 +1335,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -1357,7 +1357,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1380,7 +1380,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1403,7 +1403,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1426,7 +1426,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1448,7 +1448,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1471,7 +1471,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1493,7 +1493,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1515,7 +1515,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1537,7 +1537,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1559,7 +1559,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1583,7 +1583,7 @@
           "suggested_provider": "claude",
           "routing_reason": "existing claude agent label",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1607,7 +1607,7 @@
           "suggested_provider": "claude",
           "routing_reason": "existing claude agent label",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1630,7 +1630,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -1653,7 +1653,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1677,7 +1677,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1700,7 +1700,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1723,7 +1723,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1746,7 +1746,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1769,7 +1769,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1793,7 +1793,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1817,7 +1817,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1841,7 +1841,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1864,7 +1864,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1887,7 +1887,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1911,7 +1911,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -1934,7 +1934,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -1955,7 +1955,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1977,7 +1977,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -1999,7 +1999,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2023,7 +2023,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2045,7 +2045,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2068,7 +2068,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2090,7 +2090,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2113,7 +2113,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2137,7 +2137,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2159,7 +2159,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2183,7 +2183,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2207,7 +2207,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2231,7 +2231,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2255,7 +2255,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2279,7 +2279,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2303,7 +2303,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2327,7 +2327,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2351,7 +2351,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2375,7 +2375,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -2396,7 +2396,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2418,7 +2418,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2442,7 +2442,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2465,7 +2465,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2487,7 +2487,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2510,7 +2510,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2531,7 +2531,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2552,7 +2552,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -2572,7 +2572,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2596,7 +2596,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2620,7 +2620,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -2643,7 +2643,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -2666,7 +2666,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -2689,7 +2689,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -2712,7 +2712,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2736,7 +2736,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2760,7 +2760,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2782,7 +2782,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -2803,7 +2803,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -2824,7 +2824,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2846,7 +2846,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2869,7 +2869,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2891,7 +2891,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2913,7 +2913,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2935,7 +2935,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2957,7 +2957,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -2980,7 +2980,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3003,7 +3003,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3023,7 +3023,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3046,7 +3046,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3069,7 +3069,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3092,7 +3092,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3115,7 +3115,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3137,7 +3137,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3159,7 +3159,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3180,7 +3180,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3202,7 +3202,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3225,7 +3225,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3247,7 +3247,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3268,7 +3268,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3289,7 +3289,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3311,7 +3311,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3334,7 +3334,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3356,7 +3356,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3378,7 +3378,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3399,7 +3399,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3421,7 +3421,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3443,7 +3443,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3465,7 +3465,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3487,7 +3487,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3509,7 +3509,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3532,7 +3532,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3555,7 +3555,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3576,7 +3576,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3599,7 +3599,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3621,7 +3621,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3642,7 +3642,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3663,7 +3663,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3684,7 +3684,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3706,7 +3706,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3728,7 +3728,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -3748,7 +3748,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3770,7 +3770,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3792,7 +3792,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3813,7 +3813,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3834,7 +3834,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "strategy"
@@ -3853,7 +3853,7 @@
           "suggested_provider": "claude",
           "routing_reason": "default long-context routing",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "general"
           ]
@@ -3869,7 +3869,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "strategy"
           ]
@@ -3885,7 +3885,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -3902,7 +3902,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -3921,7 +3921,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -3940,7 +3940,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "implementation",
             "strategy"
@@ -3959,7 +3959,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -3979,7 +3979,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4000,7 +4000,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4023,7 +4023,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4045,7 +4045,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4065,7 +4065,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4089,7 +4089,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4110,7 +4110,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4131,7 +4131,7 @@
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
@@ -4143,13 +4143,13 @@
           "title": "feat(hermes-curator): mine recent Hermes-approved provider sessions for new skills + curate skill-tree ecosystem",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2703",
           "labels": [],
-          "updatedAt": "2026-05-14T16:35:07Z",
+          "updatedAt": "2026-05-14T20:41:24Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
-          "provider_status": "underused",
+          "provider_status": "needs_cleanup",
           "work_type": [
             "research",
             "implementation",
