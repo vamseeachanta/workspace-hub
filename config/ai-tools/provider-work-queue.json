@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T13:20:10.610974Z",
+  "generated_at": "2026-05-15T17:20:11.028931Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-15T13:20:08.763204Z",
+  "scorecard_generated_at": "2026-05-15T17:20:09.252115Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 16,
-      "total_candidates": 174,
+      "total_candidates": 173,
       "top_issues": [
         {
           "number": 2533,
@@ -459,30 +459,6 @@
           ]
         },
         {
-          "number": 2528,
-          "title": "chore(skills): retire 6 deprecated email skills + update gmail-triage to queue model",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2528",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:infrastructure",
-            "domain:skill-curation",
-            "maintenance",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-15T10:21:43Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
           "number": 2551,
           "title": "audit(security): verify branch/ruleset protections across public repos after collaborator-only lockdown",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2551",
@@ -579,17 +555,18 @@
           ]
         },
         {
-          "number": 2702,
-          "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
+          "number": 2710,
+          "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
           "labels": [
+            "enhancement",
             "priority:medium",
             "cat:ai-orchestration",
-            "cat:infrastructure",
-            "domain:agent-cost-tracking",
+            "cat:harness",
+            "domain:work-queue",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T16:01:19Z",
+          "updatedAt": "2026-05-15T16:16:44Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -598,6 +575,29 @@
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2711,
+          "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-15T16:16:52Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -1209,7 +1209,7 @@
             "domain:marine",
             "machine:licensed-win-1"
           ],
-          "updatedAt": "2026-05-15T03:54:35Z",
+          "updatedAt": "2026-05-15T15:49:12Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1232,7 +1232,32 @@
             "cat:ai-orchestration",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-15T12:08:22Z",
+          "updatedAt": "2026-05-15T16:26:19Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2717,
+          "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1",
+            "machine:licensed-win-2"
+          ],
+          "updatedAt": "2026-05-15T15:45:12Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3465,52 +3490,6 @@
           ]
         },
         {
-          "number": 2710,
-          "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:work-queue"
-          ],
-          "updatedAt": "2026-05-15T03:54:56Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2711,
-          "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "domain:marine"
-          ],
-          "updatedAt": "2026-05-15T03:55:30Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2713,
           "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2713",
@@ -4156,7 +4135,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 23,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 2402,
@@ -4327,18 +4306,18 @@
           ]
         },
         {
-          "number": 2345,
-          "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+          "number": 2718,
+          "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
           "labels": [
-            "priority:medium",
-            "cat:engineering",
+            "priority:high",
+            "cat:ai-orchestration",
             "cat:harness",
-            "domain:gtm"
+            "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-04-21T10:27:04Z",
+          "updatedAt": "2026-05-15T15:57:12Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4507,6 +4486,28 @@
             "priority:high"
           ],
           "updatedAt": "2026-05-06T03:07:27Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2718,
+          "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
+          "labels": [
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-cost-tracking"
+          ],
+          "updatedAt": "2026-05-15T15:57:12Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",

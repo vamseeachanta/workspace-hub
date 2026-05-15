@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-15T13:20:10.610974Z
+Generated: 2026-05-15T17:20:11.028931Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 16
-- Total routed candidates: 174
+- Total routed candidates: 173
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 4
-- Total routed candidates: 23
+- Total routed candidates: 24
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -38,7 +38,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | no | implementation/test/fix language | priority:high |
-| #2345 feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot | no | implementation/test/fix language | priority:medium, cat:engineering, cat:harness, domain:gtm |
+| #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking |
 
 ## gemini
 

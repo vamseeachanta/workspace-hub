@@ -43,6 +43,8 @@ a free port (default `8974`). Use `uv run python -m http.server` so the uv
 environment is active. For background tool launches, explicitly `cd` into the
 intended server root inside the command (for example `cd /path/to/repo && python -m http.server 8974`) rather than relying only on the tool's `workdir`; a wrong server root produces misleading 404s even when the file exists. Kill the server after verification is complete.
 
+For a user asking only for a clickable HTML review link, do the minimal hyperlink path instead of full visual QA: start or reuse a local server from the artifact's parent directory, move to the next free port if the default is occupied, verify the exact URL returns `200 OK` with `curl -I`/HEAD, then return a concise Markdown hyperlink plus artifact path and verification status. Do not present an unverified server-start URL as review-ready.
+
 ### Layer 1 — Page Load
 - Navigate to URL via `mcp__claude-in-chrome__navigate`
 - Take screenshot immediately

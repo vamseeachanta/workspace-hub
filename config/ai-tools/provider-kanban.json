@@ -36,6 +36,86 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "domain:agent-cost-tracking"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2718,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering",
+          "domain:marine",
+          "machine:licensed-win-1",
+          "machine:licensed-win-2"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2717,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "bug",
           "priority:medium",
           "cat:infrastructure"
@@ -219,6 +299,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -229,7 +310,8 @@
           "enhancement",
           "priority:medium",
           "cat:engineering",
-          "domain:marine"
+          "domain:marine",
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -253,6 +335,7 @@
       "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
       "warnings": [
+        "approved_no_marker",
         "legacy_review_no_sha",
         "unavailable_review"
       ]
@@ -260,6 +343,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: empty_review,major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -271,14 +355,15 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "domain:work-queue"
+          "domain:work-queue",
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; solver validation at lines 13\u201316 is hardcoded `orcawave | orcaflex`; creates YAML job file, commits, and pushes. This plan p",
+        "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; **validates BOTH solver enum (lines 13-16) AND input-file existence (lines 18-23)** before any git operation (commit at line",
         "provider_route": "claude",
-        "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) and the harness will additionally check `git status --short queue/pending/` before/after each test to fail loudly if any pending file",
-        "tests": "12 TDD tests defined",
+        "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) AND `test_no_queue_file_leakage` (new in r3) snapshots `git status --short queue/pending/` before/after each delegation-mock test and",
+        "tests": "15 TDD tests defined",
         "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI"
       },
       "lane": "planning_feedstock",
@@ -295,6 +380,7 @@
       "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
       "warnings": [
+        "approved_no_marker",
         "empty_review",
         "legacy_review_no_sha",
         "major_review",
@@ -319,7 +405,7 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 hard-rejects any solver that is not `orcawave` or `orcaflex`; `aqwa` will cause immediate `exit 1`.",
+        "plan_summary": "Two rounds of adversarial review have caught defects in the AQWA invocation contract (executable path, error-scrape file, pydantic-validator hook semantics, skip placement). The r2 Claude review's closing diagnosis is load-bearing: **\"Until the live smoke validation actually runs",
         "provider_route": "claude",
         "risks": "**Open (blocking for implementation): Which licensed Windows host holds the AQWA license?** `docs/ops/2026-05-04-multimachine-baseline-inventory.md` \u00a71 states licensed-win-2 is the \"preferred AQWA fallback/parallel host until live probes confirm exact licenses.\" licensed-win-1 lists \"OrcaWave/OrcaFlex/ANSYS\" broadly. Exact ANSYS/AQWA install and license-server address on each host are unconfirmed.",
         "tests": "21 TDD tests defined",
@@ -420,50 +506,6 @@
       "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2704",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:ai-orchestration",
-          "cat:infrastructure",
-          "domain:agent-cost-tracking",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- No prior plan for #2702 (verified `ls docs/plans/*2702*` \u2192 no matches).",
-        "provider_route": "claude",
-        "risks": "**Risk (load-bearing):** Anthropic dashboard time-bucketing may be too coarse to register a ~50-token round-trip \u2014 \u0394 values could both be 0 (the AMBIGUOUS case). **Mitigation:** retry-with-larger-payload (~5000 tokens) explicitly designed into pseudocode; this is an empirical question and the procedure already accounts for it. | **Risk:** Claude Code hand may not be invokable via `delegate_task(ac",
-        "tests": "TDD section present",
-        "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2702,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-13-issue-2702-routing-layer-audit-plan.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
-      "warnings": [
-        "approved_no_marker",
-        "legacy_review_no_sha",
-        "missing_review"
-      ]
     },
     {
       "approval_blockers": [
@@ -3305,50 +3347,6 @@
       "title": "[Daily] Inbox manageability tracker \u2014 auto-comment thread from daily-inbox-manageability agent",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2529",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:infrastructure",
-          "domain:skill-curation",
-          "maintenance",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `.claude/skills/email/` \u2014 15 active skill folders present (not 14 as issue body states); `gmail-operations` is an undocumented extra skill not inventoried in the issue body. The 6 deletion targets (`gmail-touchbase`, `gmail-unsubscribe`, `gmail-data-extraction`, `gmail-e",
-        "provider_route": "claude",
-        "risks": "**Open (blocker):** `gmail-data-extraction` disposition \u2014 WORKFLOW.md says \"Keep for patterns, not workflow\" (KEEP active) but issue body says DELETE. Recommend DELETE (has _archived/ twin; \"patterns\" value is preserved in the archived copy), but user must confirm before execution because WORKFLOW.md is a governance document. | **Open (blocker):** `gmail-operations` skill disposition \u2014 undocumente",
-        "tests": "TDD section present",
-        "title": "chore(skills): retire 6 deprecated email skills + update gmail-triage to queue model"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2528,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-06-issue-2528-retire-deprecated-email-skills.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "chore(skills): retire 6 deprecated email skills + update gmail-triage to queue model",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2528",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     },
     {
       "approval_blockers": [
@@ -7906,12 +7904,92 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-15T13:20:12Z",
+  "generated_at": "2026-05-15T17:20:12Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-cost-tracking"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2718,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "machine:licensed-win-1",
+            "machine:licensed-win-2"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2717,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "infra: live AQWA env access on licensed Windows host \u2014 prerequisite for #2709",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2717",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8106,6 +8184,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -8116,7 +8195,8 @@
             "enhancement",
             "priority:medium",
             "cat:engineering",
-            "domain:marine"
+            "domain:marine",
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8140,6 +8220,7 @@
         "title": "feat(provider-data): service-provider data library \u2014 Helix 15k IRS pilot",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2711",
         "warnings": [
+          "approved_no_marker",
           "legacy_review_no_sha",
           "unavailable_review"
         ]
@@ -8147,6 +8228,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: empty_review,major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -8158,14 +8240,15 @@
             "priority:medium",
             "cat:ai-orchestration",
             "cat:harness",
-            "domain:work-queue"
+            "domain:work-queue",
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; solver validation at lines 13\u201316 is hardcoded `orcawave | orcaflex`; creates YAML job file, commits, and pushes. This plan p",
+          "plan_summary": "- Found: `scripts/solver/submit-job.sh:1-44` \u2014 the authoritative single-source-of-truth CLI; accepts positional args `<solver> <input_file> [description]`; **validates BOTH solver enum (lines 13-16) AND input-file existence (lines 18-23)** before any git operation (commit at line",
           "provider_route": "claude",
-          "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) and the harness will additionally check `git status --short queue/pending/` before/after each test to fail loudly if any pending file",
-          "tests": "12 TDD tests defined",
+          "risks": "**Risk:** Tests must always set `SUBMIT_JOB_OVERRIDE` \u2014 a forgotten override would silently invoke the real `submit-job.sh` and push to git. Mitigation: `test_submit_interactive.sh` will export `SUBMIT_JOB_OVERRIDE` once at the top of the test harness (not per-test) AND `test_no_queue_file_leakage` (new in r3) snapshots `git status --short queue/pending/` before/after each delegation-mock test and",
+          "tests": "15 TDD tests defined",
           "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI"
         },
         "lane": "planning_feedstock",
@@ -8182,6 +8265,7 @@
         "title": "feat(solver-queue): conversational submit UX \u2014 /solver-submit skill + interactive CLI",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2710",
         "warnings": [
+          "approved_no_marker",
           "empty_review",
           "legacy_review_no_sha",
           "major_review",
@@ -8206,7 +8290,7 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "- EXISTS: `scripts/solver/submit-job.sh:13` \u2014 hard-rejects any solver that is not `orcawave` or `orcaflex`; `aqwa` will cause immediate `exit 1`.",
+          "plan_summary": "Two rounds of adversarial review have caught defects in the AQWA invocation contract (executable path, error-scrape file, pydantic-validator hook semantics, skip placement). The r2 Claude review's closing diagnosis is load-bearing: **\"Until the live smoke validation actually runs",
           "provider_route": "claude",
           "risks": "**Open (blocking for implementation): Which licensed Windows host holds the AQWA license?** `docs/ops/2026-05-04-multimachine-baseline-inventory.md` \u00a71 states licensed-win-2 is the \"preferred AQWA fallback/parallel host until live probes confirm exact licenses.\" licensed-win-1 lists \"OrcaWave/OrcaFlex/ANSYS\" broadly. Exact ANSYS/AQWA install and license-server address on each host are unconfirmed.",
           "tests": "21 TDD tests defined",
@@ -8307,50 +8391,6 @@
         "title": "spike(doc-intel): cloud embeddings comparison \u2014 Voyage + OpenAI text-embed-3 (deferred from #2403)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2704",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:infrastructure",
-            "domain:agent-cost-tracking",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- No prior plan for #2702 (verified `ls docs/plans/*2702*` \u2192 no matches).",
-          "provider_route": "claude",
-          "risks": "**Risk (load-bearing):** Anthropic dashboard time-bucketing may be too coarse to register a ~50-token round-trip \u2014 \u0394 values could both be 0 (the AMBIGUOUS case). **Mitigation:** retry-with-larger-payload (~5000 tokens) explicitly designed into pseudocode; this is an empirical question and the procedure already accounts for it. | **Risk:** Claude Code hand may not be invokable via `delegate_task(ac",
-          "tests": "TDD section present",
-          "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2702,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-13-issue-2702-routing-layer-audit-plan.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "audit(infra): Hermes v0.13.0 routing-layer empirical verification \u2014 delegate_task round-trip + Anthropic base/overage consumption",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2702",
-        "warnings": [
-          "approved_no_marker",
-          "legacy_review_no_sha",
-          "missing_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -11192,50 +11232,6 @@
         "title": "[Daily] Inbox manageability tracker \u2014 auto-comment thread from daily-inbox-manageability agent",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2529",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:infrastructure",
-            "domain:skill-curation",
-            "maintenance",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `.claude/skills/email/` \u2014 15 active skill folders present (not 14 as issue body states); `gmail-operations` is an undocumented extra skill not inventoried in the issue body. The 6 deletion targets (`gmail-touchbase`, `gmail-unsubscribe`, `gmail-data-extraction`, `gmail-e",
-          "provider_route": "claude",
-          "risks": "**Open (blocker):** `gmail-data-extraction` disposition \u2014 WORKFLOW.md says \"Keep for patterns, not workflow\" (KEEP active) but issue body says DELETE. Recommend DELETE (has _archived/ twin; \"patterns\" value is preserved in the archived copy), but user must confirm before execution because WORKFLOW.md is a governance document. | **Open (blocker):** `gmail-operations` skill disposition \u2014 undocumente",
-          "tests": "TDD section present",
-          "title": "chore(skills): retire 6 deprecated email skills + update gmail-triage to queue model"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2528,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-06-issue-2528-retire-deprecated-email-skills.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "chore(skills): retire 6 deprecated email skills + update gmail-triage to queue model",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2528",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -15801,17 +15797,17 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-15T13:20:08.763204Z",
+  "scorecard_generated_at": "2026-05-15T17:20:09.252115Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-15T13:20:08.631418Z",
+  "utilization_generated_at": "2026-05-15T17:20:09.111670Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 2,
     "empty_review": 3,
-    "legacy_review_no_sha": 30,
+    "legacy_review_no_sha": 29,
     "major_review": 19,
     "marker_without_open_approved_issue": 124,
-    "missing_review": 25,
+    "missing_review": 23,
     "unavailable_review": 15,
     "unknown_review": 3
   }

@@ -16,6 +16,9 @@ metadata:
 - The user asks to "add what needs to be done" to an existing llm-wiki / knowledge-base issue portfolio
 - The request spans both the central knowledge base and downstream repos
 - There is a risk of creating duplicate umbrella issues instead of integrating existing work
+- The user asks how to keep `llm-wiki` current on a weekly cadence or how to make it more useful for code development
+
+Reference: `references/weekly-cadence-issue-wave.md` captures the recurring cadence issue-wave pattern, including first-wave issue classes, approval-sync surfaces, public-safety boundaries, and sequencing.
 
 ## Core pattern
 Do not default to creating new issues.

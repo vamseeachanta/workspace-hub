@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-15T13:20:10.745140Z",
+  "generated_at": "2026-05-15T17:20:11.165668Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -364,18 +364,18 @@
       "eligible": false
     },
     {
-      "number": 2345,
-      "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+      "number": 2718,
+      "title": "audit(hermes): kanban-worker dispatch hazards \u2014 parallel-spawn race + silent-hang (#2715-affected)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2718",
       "labels": [
-        "priority:medium",
-        "cat:engineering",
+        "priority:high",
+        "cat:ai-orchestration",
         "cat:harness",
-        "domain:gtm"
+        "domain:agent-cost-tracking"
       ],
-      "updatedAt": "2026-04-21T10:27:04Z",
+      "updatedAt": "2026-05-15T15:57:12Z",
       "execution_ready": false,
-      "priority_rank": 2,
+      "priority_rank": 1,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",

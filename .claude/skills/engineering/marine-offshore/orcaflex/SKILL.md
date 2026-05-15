@@ -8,6 +8,10 @@ type: domain
 
 Root skill for OrcaFlex marine dynamic analysis workflows.
 
+## References
+
+- `references/current-rudder-resultant-reporting.md` — checklist for OCIMF-style current vs rudder vs total/resultant force and yaw-moment report sections, including static Markdown/PDF requirements.
+
 ## Sub-Skills
 
 ### Modeling
