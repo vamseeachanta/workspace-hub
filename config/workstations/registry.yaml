@@ -40,7 +40,7 @@ machines:
     hostname_aliases: []
     os: linux
     role: secondary-dev
-    workspace_root: /mnt/workspace-hub
+    workspace_root: /mnt/local-analysis/workspace-hub
     schedule_variant: contribute
     ssh: ace-linux-2
     tailscale_ip: 10.1.0.2
