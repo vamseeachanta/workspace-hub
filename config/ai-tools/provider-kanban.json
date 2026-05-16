@@ -66,8 +66,7 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: major_review",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -81,7 +80,7 @@
           "cat:harness",
           "domain:integrations",
           "domain:notification",
-          "status:needs-plan"
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -105,8 +104,7 @@
       "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2720",
       "warnings": [
-        "legacy_review_no_sha",
-        "major_review"
+        "missing_review"
       ]
     },
     {
@@ -7910,7 +7908,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-16T13:20:14Z",
+  "generated_at": "2026-05-16T17:20:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -7957,8 +7955,7 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: major_review",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -7972,7 +7969,7 @@
             "cat:harness",
             "domain:integrations",
             "domain:notification",
-            "status:needs-plan"
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -7996,8 +7993,7 @@
         "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2720",
         "warnings": [
-          "legacy_review_no_sha",
-          "major_review"
+          "missing_review"
         ]
       },
       {
@@ -15809,17 +15805,17 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-16T13:20:11.494564Z",
+  "scorecard_generated_at": "2026-05-16T17:20:11.157944Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-16T13:20:11.242810Z",
+  "utilization_generated_at": "2026-05-16T17:20:11.023340Z",
   "warning_summary": {
     "approved_no_marker": 11,
     "approved_no_plan": 3,
     "empty_review": 3,
-    "legacy_review_no_sha": 29,
-    "major_review": 19,
+    "legacy_review_no_sha": 28,
+    "major_review": 18,
     "marker_without_open_approved_issue": 124,
-    "missing_review": 24,
+    "missing_review": 25,
     "unavailable_review": 15,
     "unknown_review": 3
   }

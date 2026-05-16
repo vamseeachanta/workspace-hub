@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-16T13:20:14Z
+Generated: 2026-05-16T17:20:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -44,7 +44,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
 | #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2720 | feat(hermes): multi-machine Telegram dispatch and sync control plane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2720 | feat(hermes): multi-machine Telegram dispatch and sync control plane | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2719 | feat(ai-orchestration): unify SOUL.md across providers — SHARED + per-provider canonical with symlink runtime | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2717 | infra: live AQWA env access on licensed Windows host — prerequisite for #2709 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

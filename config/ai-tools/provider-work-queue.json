@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-16T13:20:13.107114Z",
+  "generated_at": "2026-05-16T17:20:12.667187Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-16T13:20:11.494564Z",
+  "scorecard_generated_at": "2026-05-16T17:20:11.157944Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1283,9 +1283,9 @@
             "cat:harness",
             "domain:integrations",
             "domain:notification",
-            "status:needs-plan"
+            "status:plan-review"
           ],
-          "updatedAt": "2026-05-16T10:23:04Z",
+          "updatedAt": "2026-05-16T16:10:11Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",

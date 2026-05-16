@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-05-16T13:20:11.494564Z",
+  "generated_at": "2026-05-16T17:20:11.157944Z",
   "current_week": "2026-W20",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-05-16T13:20:11.242810Z",
+    "utilization_generated_at": "2026-05-16T17:20:11.023340Z",
     "audit_generated_at": "2026-05-11T09:15:03Z"
   },
   "recommended_provider_order": [
@@ -21,7 +21,7 @@
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
       "sessions_current_week": 60,
-      "post_records_current_week": 4705,
+      "post_records_current_week": 4711,
       "audit_post_records": 105154,
       "missing_repo_reads": 8824,
       "python3_per_1k_records": 9.69,
@@ -30,7 +30,7 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 2184
+          "count": 2188
         },
         {
           "tool": "unknown",
@@ -38,7 +38,7 @@
         },
         {
           "tool": "Read",
-          "count": 640
+          "count": 641
         },
         {
           "tool": "Edit",
@@ -46,7 +46,7 @@
         },
         {
           "tool": "Write",
-          "count": 194
+          "count": 195
         }
       ],
       "preferred_work": [
