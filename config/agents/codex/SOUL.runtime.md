@@ -115,7 +115,8 @@ The user runs a multi-provider operation (Hermes on `ace-linux-1`, Claude Max su
 
 # Codex Provider Delta
 > Inherits identity, gates, and must-fire rules from [`../SHARED_SOUL.md`](../SHARED_SOUL.md). This file carries only Codex-specific operating-model differences.
-> Runtime artifact: [`./SOUL.runtime.md`](./SOUL.runtime.md) and [`./AGENTS.runtime.md`](./AGENTS.runtime.md) (the latter is what `~/.codex/AGENTS.md` symlinks to once `scripts/agents/install-soul-runtime.sh` runs).
+> **Operational runtime artifact**: [`./AGENTS.runtime.md`](./AGENTS.runtime.md) — `~/.codex/AGENTS.md` symlinks to this. Verified 2026-05-16 (Phase 5): Codex CLI base instructions explicitly cite `AGENTS.md` as the loaded surface.
+> Reference artifact: [`./SOUL.runtime.md`](./SOUL.runtime.md) — built for review parity; NOT loaded by Codex CLI.
 
 # Codex-Specific Operating Model
 

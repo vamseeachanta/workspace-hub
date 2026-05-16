@@ -66,19 +66,22 @@ else
 fi
 
 # Codex
+# Phase 5 verified (2026-05-16): Codex CLI's base instructions explicitly
+# cite AGENTS.md as the loaded surface; SOUL.md is not read. Only the
+# AGENTS.md symlink is installed.
 if [[ -d "${HOME}/.codex" ]]; then
     link_if_needed config/agents/codex/AGENTS.runtime.md  "${HOME}/.codex/AGENTS.md"
-    link_if_needed config/agents/codex/SOUL.runtime.md    "${HOME}/.codex/SOUL.md"
 else
     echo "SKIP   ~/.codex/ not present"
 fi
 
 # Gemini
-if [[ -d "${HOME}/.gemini" ]]; then
-    link_if_needed config/agents/gemini/SOUL.runtime.md   "${HOME}/.gemini/SOUL.md"
-else
-    echo "SKIP   ~/.gemini/ not present"
-fi
+# Phase 5 verified (2026-05-16): Gemini CLI bundle references GEMINI.md
+# (workspace and ~/.gemini/GEMINI.md), not SOUL.md. No user-global symlink
+# is created here. Workspace GEMINI.md integration is Phase 6 (adapter
+# de-duplication). config/agents/gemini/SOUL.runtime.md remains a built
+# reference artifact for review and future use.
+echo "SKIP   ~/.gemini/SOUL.md not created — Gemini CLI doesn't load SOUL.md (see Phase 5)"
 
 echo
 echo "Summary: ${created} created, ${unchanged} unchanged, ${backed_up} backed-up, ${skipped} skipped."

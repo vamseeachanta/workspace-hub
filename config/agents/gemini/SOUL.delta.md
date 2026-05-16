@@ -1,6 +1,6 @@
 # Gemini Provider Delta
 > Inherits identity, gates, and must-fire rules from [`../SHARED_SOUL.md`](../SHARED_SOUL.md). This file carries only Gemini-specific operating-model differences.
-> Runtime artifact: [`./SOUL.runtime.md`](./SOUL.runtime.md) (built by `scripts/agents/build-soul-runtime.sh`).
+> **Reference artifact only**: [`./SOUL.runtime.md`](./SOUL.runtime.md) — built for review parity. Verified 2026-05-16 (Phase 5): Gemini CLI bundle references `GEMINI.md` (workspace and `~/.gemini/GEMINI.md`), not `SOUL.md`. The operational Gemini surface is workspace [`GEMINI.md`](../../../GEMINI.md); de-duplication into SHARED_SOUL.md is Phase 6 of #2719.
 
 # Gemini-Specific Operating Model
 
