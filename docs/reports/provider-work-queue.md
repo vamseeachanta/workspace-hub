@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-15T17:20:11.028931Z
+Generated: 2026-05-15T21:20:10.461885Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 16
+- Execution-ready candidates: 15
 - Total routed candidates: 173
 
 | Issue | Ready | Why routed here | Labels |
@@ -20,8 +20,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2656 chore(repo-structure): normalize workspace-hub folder/file structure | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:harness, domain:repo-organization, status:plan-approved |
 | #2657 chore(provider-session): remediate Hermes llm-wiki spinout path drift | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:documentation, cat:harness, status:plan-approved |
 | #2665 feat(kanban): provider-credit approval dashboard and dispatch gates | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking, status:plan-approved |
-| #2685 Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation | yes | strategy/workflow/architecture language | bug, priority:high, cat:engineering, cat:knowledge-domain, status:plan-approved |
 | #2686 Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | yes | strategy/workflow/architecture language | bug, priority:high, cat:engineering, cat:bugfix, status:plan-approved |
+| #2694 Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:engineering, cat:bugfix, status:plan-approved |
 
 ## codex
 

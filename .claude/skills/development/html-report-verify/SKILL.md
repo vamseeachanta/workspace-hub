@@ -79,6 +79,15 @@ When a report visualizes generated sweep data (speed × heading × angle, cases 
 - Confirm scope/provenance caveats are visible when the displayed quantity is a subset/model approximation rather than total physical load.
 - Include any extra default case policy in the verdict (for example, a chart default speed outside the requested sweep list).
 
+### Layer 3c — Multi-Artifact Engineering Report Bundle Checks
+When a generator emits an HTML/PDF report plus CSV/JSON/provenance/manifest artifacts, verify the bundle before summarizing success:
+- Parse the manifest and confirm every referenced artifact exists and has non-zero size.
+- Cross-check generated CSV/JSON row counts and key extrema against the command output or generator summary.
+- Verify HTML structure with browser tools when available; if browser verification is unavailable, use Python stdlib `html.parser` for title, headings, expected section labels, schematic captions, and provenance/caveat text.
+- Verify PDF readability by extracting text/metadata when possible. If only file existence/size was checked, label PDF status as "existence-only" and do not claim content fidelity.
+- For engineering force reports, confirm individual component forces, resultant forces, heading/rudder-angle convention schematics, and selected basecase/current magnitude are visible in the report.
+- Treat non-blocking solver/license warnings as caveats, not failures, when the report path uses packaged/static input data and all artifacts are produced.
+
 ### Layer 4 — Module-Specific Checks
 
 #### `--module orcawave-qtf`
@@ -125,6 +134,7 @@ If any layer fails, list the specific failing check and what was found vs expect
 ## Implementation Notes
 
 - See `references/parameter-sweep-report-review.md` for the data-contract + interaction checklist for generated engineering parameter-sweep chart reports.
+- See `references/engineering-report-artifact-verification.md` for manifest/HTML/PDF/CSV/JSON verification when an engineering report generator emits a multi-artifact bundle.
 - Always call `mcp__claude-in-chrome__tabs_context_mcp` first to get a valid tab ID
 - Use `mcp__claude-in-chrome__tabs_create_mcp` for a fresh tab (don't reuse report tab)
 - After verification, kill the HTTP server: `pkill -f "http.server 8974"` (Linux/macOS) or `taskkill` (Windows)

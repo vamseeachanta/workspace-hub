@@ -611,6 +611,15 @@ For lint-inventory prerequisites, a reusable TDD/documentation pattern is:
 - run the exact inventory command and the focused report test
 - record implementation-review artifacts in the orchestration repo if the report itself lands in a nested repo
 
+## Interruption and tool-budget recovery
+
+If execution is interrupted by context compression, tool-call exhaustion, provider limits, or an enforced final-response boundary while validation or closeout is still pending:
+- Do not present the issue as complete or imply closeout succeeded.
+- Preserve the active gate state explicitly: implementation complete vs validation in progress vs commit/push/close pending.
+- Name the exact next checkpoint to resume from, starting with `git status`, changed-file inspection, targeted validators, adversarial review, then commit/push/issue closeout.
+- If skill loading fails due to ambiguous duplicate skill names, do not retry the same `skill_view` arguments. Continue with already-loaded governing skills or load the repo-local/canonical path explicitly in the next session.
+- Treat the resulting final answer as a restart checkpoint, not a substitute for GitHub closeout evidence.
+
 ## Git pitfalls
 When an approved parent issue has become an umbrella/decomposition contract and child issues own the source-level remediation:
 1. Do not drift into child source edits from the parent pass, even if the failing command is easy to inspect.

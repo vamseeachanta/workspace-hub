@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-15T17:20:12Z
+Generated: 2026-05-15T21:20:12Z
 Mode: static (read-only)
 
 ## How to approve
@@ -70,7 +70,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2688 | R1 — Subsea Pipelines: Standards & Codes inventory (DNV-OS-F101, F105, F109, F110, API RP 1111, ASME B31.4/.8) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2687 | Domain Sweep: Subsea Pipelines (design, installation, integrity, on-bottom stability) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2686 | Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #2685 | Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review |
 | #2682 | R6 — Mooring: Coverage map synthesis + gap subissue spawning | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2681 | R5 — Mooring: Code coverage audit (digitalmodel + citation pilot) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2680 | R4 — Mooring: LinkedIn expert mapping (marketing surface) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2300 | feat(governance): reconcile GitHub labels, approval markers, and README planning state | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2299 | chore(plans): make retention metadata a required planning artifact | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2298 | feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2297 | feat(portability): schedule unified smoke drift detection after #2272 baseline | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

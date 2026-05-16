@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T17:20:11.028931Z",
+  "generated_at": "2026-05-15T21:20:10.461885Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-15T17:20:09.252115Z",
+  "scorecard_generated_at": "2026-05-15T21:20:08.773233Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 16,
+      "execution_ready_count": 15,
       "total_candidates": 173,
       "top_issues": [
         {
@@ -164,17 +164,17 @@
           ]
         },
         {
-          "number": 2685,
-          "title": "Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2685",
+          "number": 2686,
+          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
           "labels": [
             "bug",
             "priority:high",
             "cat:engineering",
-            "cat:knowledge-domain",
+            "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T02:23:47Z",
+          "updatedAt": "2026-05-14T02:08:00Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -188,17 +188,17 @@
           ]
         },
         {
-          "number": 2686,
-          "title": "Catenary solver canonicalization: 8 implementations, 4 numerically diverge, 5 shadows to delete",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2686",
+          "number": 2694,
+          "title": "Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2694",
           "labels": [
-            "bug",
+            "enhancement",
             "priority:high",
             "cat:engineering",
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T02:08:00Z",
+          "updatedAt": "2026-05-14T03:43:52Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -350,30 +350,6 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-14T03:56:50Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2685,
-          "title": "Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2685",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:engineering",
-            "cat:knowledge-domain",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-14T02:23:47Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -541,7 +517,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T10:22:05Z",
+          "updatedAt": "2026-05-15T20:32:06Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1260,6 +1236,29 @@
           "updatedAt": "2026-05-15T15:45:12Z",
           "execution_ready": false,
           "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2297,
+          "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness"
+          ],
+          "updatedAt": "2026-04-16T13:59:55Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
