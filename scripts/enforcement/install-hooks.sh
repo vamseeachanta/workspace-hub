@@ -204,6 +204,46 @@ EOF
   fi
 fi
 
+# ── Step 3.6: Wire conflict-marker check into pre-commit (#2722) ──────
+# Inserts the check BEFORE the existing `exit 0` at the end of the early
+# enforcement chain. Linux-gated awk-in-place rewrite; macOS/non-Linux
+# emits manual-install instructions (Claude r1 finding #6 on BSD sed).
+if [[ -f "$PRE_COMMIT" ]]; then
+  if grep -q "check-no-conflict-markers" "$PRE_COMMIT" 2>/dev/null; then
+    log "OK: conflict-marker check already wired into pre-commit"
+  elif [[ "$DRY_RUN" == "1" ]]; then
+    log "DRY-RUN: Would wire conflict-marker check into pre-commit"
+  elif [[ "$(uname -s)" == "Linux" ]]; then
+    tmpfile="$(mktemp)"
+    awk '
+      /^exit 0$/ && !done {
+        print ""
+        print "# ── Conflict-marker check (#2722) ──"
+        print "if [[ -f \"${REPO_ROOT}/scripts/enforcement/check-no-conflict-markers.sh\" ]]; then"
+        print "  bash \"${REPO_ROOT}/scripts/enforcement/check-no-conflict-markers.sh\" || exit 1"
+        print "fi"
+        print ""
+        print
+        done = 1
+        next
+      }
+      { print }
+    ' "$PRE_COMMIT" > "$tmpfile"
+    mv "$tmpfile" "$PRE_COMMIT"
+    chmod +x "$PRE_COMMIT"
+    log "OK: Wired conflict-marker check into pre-commit"
+  else
+    log "WARN: non-Linux platform ($(uname -s)) — auto-wiring skipped"
+    log "      Add the following block to $PRE_COMMIT before the final 'exit 0':"
+    cat <<'EOF'
+        # ── Conflict-marker check (#2722) ──
+        if [[ -f "${REPO_ROOT}/scripts/enforcement/check-no-conflict-markers.sh" ]]; then
+          bash "${REPO_ROOT}/scripts/enforcement/check-no-conflict-markers.sh" || exit 1
+        fi
+EOF
+  fi
+fi
+
 # ── Step 4: Wire learning pipeline into post-commit ─────────────────────
 POST_COMMIT="${REPO_ROOT}/.git/hooks/post-commit"
 

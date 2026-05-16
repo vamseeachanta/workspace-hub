@@ -118,6 +118,19 @@ if [[ -x "${INSTALL_SOUL}" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.6. Install conflict-marker pre-commit hook across tier-1 repos (per #2722)
+#      Vendors scripts/enforcement/check-no-conflict-markers.sh into each
+#      sibling repo and wires it into .git/hooks/pre-commit. Idempotent;
+#      refuses to overwrite uncommitted local changes.
+# ---------------------------------------------------------------------------
+INSTALL_HOOK_CROSS_REPO="${REPO_ROOT}/scripts/agents/install-pre-commit-hook-cross-repo.sh"
+if [[ -x "${INSTALL_HOOK_CROSS_REPO}" ]]; then
+    echo ""
+    echo -e "${CYAN}Installing conflict-marker pre-commit hook across tier-1 repos...${NC}"
+    bash "${INSTALL_HOOK_CROSS_REPO}" || true
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
