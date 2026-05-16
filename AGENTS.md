@@ -1,5 +1,5 @@
 # Workspace Hub
-> Engineering workspace with sub shared utilities to perform work in a given repositories (tier-1 repositories)
+> Engineering workspace with sub shared utilities to perform work in a given repositories (tier-1 repositories). Cross-provider identity + per-message rules baseline: `config/agents/SHARED_SOUL.md` (materialized into `config/agents/<provider>/SOUL.runtime.md` artifacts via `scripts/agents/build-soul-runtime.sh`).
 ## Retrieval
 - Consult `docs/` for reference maps, coverage reports, and domain guides before searching
 ## Hard Gates

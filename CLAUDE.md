@@ -1,5 +1,5 @@
 # Workspace Hub — Claude Adapter
-> Canonical instructions: AGENTS.md | Rules: `.claude/rules/` | Docs: `docs/`, `.claude/docs/`
+> Canonical instructions: AGENTS.md | Identity + rules: `config/agents/claude/SOUL.runtime.md` (built from `config/agents/SHARED_SOUL.md` + `claude/SOUL.delta.md`) | Rules: `.claude/rules/` | Docs: `docs/`, `.claude/docs/`
 ## Claude-Specific
 - Retrieval first — consult `docs/`, `.claude/docs/`, `.claude/rules/`, memory before training knowledge
 - Workflow: GSD framework (`/gsd:help`, `/gsd:progress`, `/gsd:settings`)

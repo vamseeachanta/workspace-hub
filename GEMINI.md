@@ -1,5 +1,5 @@
 # Workspace Hub — Gemini Adapter
-> Canonical instructions: AGENTS.md | Docs: `docs/`
+> Canonical instructions: AGENTS.md | Identity + rules: `config/agents/gemini/SOUL.runtime.md` (reference; Gemini loads this `GEMINI.md` directly per its bundle spec) | Docs: `docs/`
 ## Gemini-Specific
 - Retrieval first — consult `docs/` for reference maps and domain guides before searching
 - Current workflow surface: `AGENTS.md`, `docs/work-queue-workflow.md`, `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`, and `.gemini/` (older wrapper-based entrypoints are deleted legacy paths)

@@ -1,15 +1,9 @@
 # Codex Agent Adapter
-<!-- provider: codex | contract-version: 1.1.0 | updated: 2026-02-24 | generated-from: AGENTS.md -->
-> Canonical contract: workspace-hub/AGENTS.md. Rules: `.claude/rules/`.
+<!-- provider: codex | contract-version: 1.2.0 | updated: 2026-05-16 | generated-from: AGENTS.md | identity: config/agents/SHARED_SOUL.md -->
+> Canonical contract: workspace-hub/AGENTS.md. Identity + per-message rules: `config/agents/codex/AGENTS.runtime.md` (which `~/.codex/AGENTS.md` symlinks to per #2719 Phase 4). Rules: `.claude/rules/`.
 
 ## Required Gates
-1. Every task maps to WRK-* in `.claude/work-queue/`
-2. Plan + explicit approval before implementation
-3. Route B/C requires cross-review before completion
-4. Workflow lifecycle skills are mandatory: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md`
-5. Code must pass `scripts/legal/legal-sanity-scan.sh`; secrets via env vars; TDD mandatory
-6. No client identifiers in code — see `.claude/rules/legal-compliance.md` and `.legal-deny-list.yaml`
-7. Input validation, parameterized queries, no hardcoded secrets — see `.claude/rules/security.md`
+Loaded via `config/agents/SHARED_SOUL.md` §Hard Gates §1-7 (Plan+approval, TDD, adversarial review at both stages, cross-review 3-agent, legal/security scan, security baseline) and Codex-specific extensions in `config/agents/codex/SOUL.delta.md` §Required Gates (WRK-* mapping, workflow lifecycle skills, coding-style guardrails, git workflow). This adapter file no longer duplicates the gate prose to avoid drift.
 
 ## Provider Profile
 **Strengths**: focused code tasks — single-file changes, algorithms, testing, refactoring, config
