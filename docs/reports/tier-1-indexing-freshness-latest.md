@@ -1,70 +1,71 @@
-# Tier-1 Indexing Freshness Audit — Latest
+# Tier-1 Indexing Freshness Report
 
-- **Generated:** 2026-05-16T03:34:01-05:00
-- **Scope:** `workspace-hub`, `digitalmodel`, `assetutilities`, `aceengineer-website`
-- **Working tree inspected:** `/mnt/local-analysis/workspace-hub`
-- **Cron action:** no new cron jobs scheduled
-- **Portfolio status:** **RED**
-- **Material status drift:** no material drift detected at the status level; timestamp refreshed and current evidence revalidated
+Action required: 1 tier-1 repo(s) have missing required surfaces or legacy references. See per-repo findings below.
 
-## Per-repo status
+Generated: 2026-05-16T11:30:01Z
+Scope: workspace-hub, digitalmodel, assetutilities, aceengineer-website
+Source baseline: `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`
 
-| Repo | Status | Exact broken/missing/stale surfaces | Concise next actions |
-|---|---:|---|---|
-| `workspace-hub` | **RED** | missing `docs/maps/workspace-hub-operator-map.md`<br>missing `docs/registry/module-routing.yaml`<br>broken `docs/README.md:300 -> ../.agent-os/product/mission.md`<br>broken `docs/README.md:301 -> ../.agent-os/product/tech-stack.md`<br>broken `docs/README.md:302 -> ../.agent-os/product/roadmap.md`<br>broken `docs/README.md:303 -> ../.agent-os/product/decisions.md`<br>legacy `docs/README.md:264: ├── .agent-os/              # Agent OS configuration`<br>legacy `docs/README.md:300: - [Mission & Vision](../.agent-os/product/mission.md)`<br>legacy `docs/README.md:301: - [Technical Stack](../.agent-os/product/tech-stack.md)`<br>legacy `docs/README.md:302: - [Development Roadmap](../.agent-os/product/roadmap.md)`<br>legacy `docs/README.md:303: - [Product Decisions](../.agent-os/product/decisions.md)`<br>root/index noise: `**Complexity:**`, `**Date:**`, `**Issue:**`, `**Review`, `**Status:**`, `CAD-DEVELOPMENTS/`, `Defines`, `GEMINI.md`, `MEMORY.md`, `OGManufacturing/`, `Planning`, `_archive/` (+81 more)<br>trusted-path noise (30 sample(s)): `src/__pycache__/__init__.cpython-311.pyc`, `src/__pycache__/__init__.cpython-312.pyc`, `src/__pycache__/__init__.cpython-313.pyc`, `src/workspace_hub/workstations/__pycache__/resolver.cpython-311.pyc`, `src/workspace_hub/workstations/__pycache__/resolver.cpython-312.pyc`, `src/workspace_hub/workstations/__pycache__/resolver.cpython-313.pyc`, `src/workspace_hub/workstations/__pycache__/__init__.cpython-311.pyc`, `src/workspace_hub/workstations/__pycache__/__init__.cpython-312.pyc`, … | Add/curate `docs/maps/workspace-hub-operator-map.md`; add `docs/registry/module-routing.yaml`; remove stale legacy references from `docs/README.md`; reduce root/index noise. |
-| `digitalmodel` | **YELLOW** | broken `README.md:73 -> specs/data-needs.yaml`<br>stale `README.md:73 -> specs/data-needs.yaml`<br>stale `docs/maps/digitalmodel-operator-map.md:9 -> repo-local docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md missing; workspace-level map exists`<br>trusted-path noise (30 sample(s)): `src/digitalmodel/__pycache__/engine.cpython-311.pyc`, `src/digitalmodel/__pycache__/sections.cpython-311.pyc`, `src/digitalmodel/__pycache__/units.cpython-311.pyc`, `src/digitalmodel/__pycache__/units.cpython-312.pyc`, `src/digitalmodel/__pycache__/_compat.cpython-311.pyc`, `src/digitalmodel/__pycache__/_compat.cpython-312.pyc`, `src/digitalmodel/__pycache__/_compat.cpython-313.pyc`, `src/digitalmodel/__pycache__/__init__.cpython-311.pyc`, … | Fix/remove `specs/data-needs.yaml` reference; either add repo-local OrcaWave/OrcaFlex map or update map reference to canonical workspace-level path. |
-| `assetutilities` | **YELLOW** | trusted-path noise (30 sample(s)): `src/modules/web-contextualization/__pycache__/content_indexer.cpython-311.pyc`, `src/modules/web-contextualization/__pycache__/pdf_processor.cpython-311.pyc`, `src/modules/web-contextualization/__pycache__/resource_fetcher.cpython-311.pyc`, `src/modules/web-contextualization/__pycache__/web_contextualizer.cpython-311.pyc`, `src/modules/web-contextualization/__pycache__/web_contextualizer_enhanced.cpython-311.pyc`, `src/modules/agent_os/enhanced_create_specs/__pycache__/ai_persistence_system.cpython-311.pyc`, `src/modules/agent_os/enhanced_create_specs/__pycache__/cross_repository_integration.cpython-311.pyc`, `src/modules/agent_os/enhanced_create_specs/__pycache__/cross_repository_integration.cpython-313.pyc`, … | Quarantine or ignore runtime/cache/log/report noise from trusted `src`/`tests`/`docs` paths; keep current operator map and registry fresh. |
-| `aceengineer-website` | **RED** | missing `docs/registry/module-routing.yaml`<br>trusted-path noise (14 sample(s)): `tests/__pycache__/__init__.cpython-312.pyc`, `tests/__pycache__/__init__.cpython-313.pyc`, `tests/repo_structure/__pycache__/test_repo_structure_contract.cpython-312-pytest-9.0.2.pyc`, `tests/python/__pycache__/conftest.cpython-312-pytest-9.0.2.pyc`, `tests/python/__pycache__/conftest.cpython-313-pytest-9.0.3.pyc`, `tests/python/__pycache__/test_brand_identity_assets.cpython-312-pytest-9.0.2.pyc`, `tests/python/__pycache__/test_competitor_analysis.cpython-312-pytest-9.0.2.pyc`, `tests/python/__pycache__/test_content_sync.cpython-312-pytest-9.0.2.pyc`, … | Add `docs/registry/module-routing.yaml` matching the repo operator map and current app/content routes. |
+## Overall Status
 
-## Canonical surfaces inspected
+Portfolio status: red
 
-### `workspace-hub`
-- Path: `/mnt/local-analysis/workspace-hub`
-- `AGENTS.md`: present
-- `README.md`: present
-- `docs/README.md`: present
-- `docs/maps/workspace-hub-operator-map.md`: MISSING
-- `docs/registry/module-routing.yaml`: MISSING
+Reason:
+- at least one tier-1 repo is missing required canonical surfaces or carries broken active references
+- portfolio cannot return to green until per-repo remediations land
 
-### `digitalmodel`
-- Path: `/mnt/local-analysis/workspace-hub/digitalmodel`
-- `AGENTS.md`: present
-- `README.md`: present
-- `docs/README.md`: present
-- `docs/maps/digitalmodel-operator-map.md`: present
-- `docs/registry/module-routing.yaml`: present
+## Repo Status
 
-### `assetutilities`
-- Path: `/mnt/local-analysis/workspace-hub/assetutilities`
-- `AGENTS.md`: present
-- `README.md`: present
-- `docs/README.md`: present
-- `docs/maps/assetutilities-operator-map.md`: present
-- `docs/registry/module-routing.yaml`: present
+### workspace-hub — red
+Current concerns
+- missing required surface(s): docs/maps/workspace-hub-operator-map.md,docs/registry/module-routing.yaml
 
-### `aceengineer-website`
-- Path: `/mnt/local-analysis/workspace-hub/aceengineer-website`
-- `AGENTS.md`: present
-- `README.md`: present
-- `docs/README.md`: present
-- `docs/maps/aceengineer-website-operator-map.md`: present
-- `docs/registry/module-routing.yaml`: MISSING
+Next actions
+- execute #2464 to clean curated routing surfaces
 
-## 2026-04-22 scorecard assumption check
+### digitalmodel — yellow
+Current concerns
+- 1 broken active reference(s) in canonical routing surfaces
 
-The 2026-04-22 tier-1 indexing scorecard assumptions **partially still hold but need detail-level revision**.
+Next actions
+- execute #2462 to align canonical routing surfaces
 
-Still holds:
-- Portfolio remains only partially ready for reliable code placement and canonical retrieval because required routing registries are still missing in `workspace-hub` and `aceengineer-website`.
-- `workspace-hub` remains the strongest control-plane repo but root/index hygiene and missing current routing surfaces keep trust weak.
-- `digitalmodel` remains the strongest engineering source/test structure, with only stale-reference/map-locality issues in the inspected routing surfaces.
+### assetutilities — yellow
+Current concerns
+- 6 broken active reference(s) in canonical routing surfaces
 
-Needs revision:
-- Several surfaces assumed absent in the original scorecard now exist: `digitalmodel/docs/README.md`, `digitalmodel/docs/maps/digitalmodel-operator-map.md`, `digitalmodel/docs/registry/module-routing.yaml`, `assetutilities/docs/README.md`, `assetutilities/docs/maps/assetutilities-operator-map.md`, `assetutilities/docs/registry/module-routing.yaml`, and `aceengineer-website/docs/maps/aceengineer-website-operator-map.md`.
-- `assetutilities` no longer has confirmed active canonical Markdown broken links after false-positive filtering in this scan; its remaining issue is trusted-path runtime/cache/log/report noise.
+Next actions
+- execute #2461 first among repo-specific remediations
 
-## Scanner notes
+### aceengineer-website — yellow
+Current concerns
+- missing required surface(s): docs/registry/module-routing.yaml
+- 2 broken active reference(s) in canonical routing surfaces
 
-- Markdown-link checks were limited to current canonical routing surfaces and filtered for wildcard/example/placeholders to avoid stale false positives.
-- Legacy `.agent-os` references were detected only as stale legacy references and are not recommended as routing surfaces.
-- Historical scorecards were treated as context, not authority; current files under the requested checkout were inspected.
+Next actions
+- execute #2463 to replace legacy product-doc references
+
+## Assumption Check Against Upstream Contract
+
+Status: contract present at `docs/standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md`. Per-repo checks executed against the upstream contract's required-trusted-routing-surfaces table.
+
+## Tracking
+
+Created issues
+- #2460 tier-1 indexing and code-placement contract
+- #2461 assetutilities routing surfaces and source-hygiene cleanup
+- #2462 digitalmodel repo-wide routing surfaces
+- #2463 aceengineer-website routing surfaces cleanup
+- #2464 workspace-hub curated routing index cleanup
+- #2465 daily tier-1 indexing freshness audit and scorecard refresh
+
+Scheduled job
+- `tier1-indexing-freshness` (in-repo, `config/scheduled-tasks/schedule-tasks.yaml`); pre-existing remote routine `aefef5167f2f` at `30 3 * * *` is being cut over per the routine-management appendix in `docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md`
+
+## Notes
+
+This report intentionally avoids legacy product-doc reference patterns and uses current canonical routing surfaces only.
+
+MUST NOT treat any tier-1 indexing scorecard under docs/reports/ as required canonical authority
+
+_Generated by `scripts/cron/tier1-indexing-freshness.sh`._

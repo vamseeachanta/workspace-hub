@@ -61,6 +61,7 @@ If the token leaks: **revoke immediately** via BotFather `/revoke`. Do not wait.
 Use a different procedure when:
 
 - The deployment is **multi-user** (group bot with multiple operators) — needs `TELEGRAM_GROUP_ALLOWED_USERS` + `TELEGRAM_GROUP_ALLOWED_CHATS` and a different approval-mode story
+- The deployment is **multi-machine dispatch/sync** (Telegram Desktop/mobile dispatching work across Windows + Linux Hermes hosts) — use this skill for the per-host hardening baseline, but load `references/multi-machine-dispatch.md` before designing the control plane. Telegram should be the dispatch/notification surface; git/GitHub/repo artifacts must remain the synchronization source of truth.
 - The deployment is **webhook-based** (not polling) — the env-var reference at `~/.hermes/hermes-agent/website/docs/reference/environment-variables.md` line 230 covers `TELEGRAM_WEBHOOK_URL/PORT/SECRET` and the GHSA-3vpc-7q5r-276h note that `_SECRET` is required if `_URL` is set
 - The host is multi-tenant or doesn't have a single trusted operator with sudo — the residual `/proc/<pid>/cmdline` token leak in §3.5 below is not acceptable; switch to a Python `requests` validator
 - The bot needs to schedule cron-mode actions that *bypass* approval — out of scope; this skill enforces `approvals.cron_mode: deny`

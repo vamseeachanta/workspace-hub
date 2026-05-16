@@ -49,6 +49,17 @@ If a durable handoff already exists but is untracked or lacks final exit evidenc
 
 When the active work happened in a tier-1 child repo, commit the handoff in that child repo. Also record the control repo state if it was touched or inspected, but do not stage unrelated generated/learning/provider-report churn from the control repo just to make the exit look clean. Report those paths as pre-existing dirty-state exceptions with counts.
 
+## Published report/link closeout
+
+When the closeout includes human-facing rendered artifacts (HTML/PDF reports, dashboards, demos), record both immutable and review-friendly links:
+
+- immutable rendered URL pinned to the content-producing commit, so later handoff-only commits do not change the reviewed artifact;
+- source URL on the default branch for repository navigation;
+- HTTP/content-type proof for hosted HTML/PDF links;
+- browser/render proof where relevant: no console errors, required charts/tables/dropdowns visible, and any first-open gateway notice documented.
+
+If the repository tip later advances with handoff-only commits, state the distinction explicitly: the rendered artifact links may remain pinned to the implementation/report-generation commit, while the final repo `HEAD` includes closeout documentation.
+
 ## Interaction with comprehensive learning
 
 Do not run the heavyweight learning pipeline during normal exit closeout. If the user explicitly asks to update the skill library, perform a targeted skill update with `skill_manage`; that is different from running the full nightly comprehensive-learning pipeline.
