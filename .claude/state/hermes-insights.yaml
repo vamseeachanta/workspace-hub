@@ -3,8 +3,8 @@
 # Source: Hermes MEMORY.md + USER.md
 
 metadata:
-  generated: "2026-05-15T07:01:04Z"
-  source_hash: "9cddd21d2aafedcd810ff28c51674bd4"
+  generated: "2026-05-16T07:01:21Z"
+  source_hash: "a472e4bda643e383e4bceef737a21c45"
   hermes_memory: "/home/vamsee/.hermes/memories/MEMORY.md"
   hermes_user: "/home/vamsee/.hermes/memories/USER.md"
   entry_count: 4
@@ -19,5 +19,5 @@ project_knowledge:
   []
 
 user_preferences:
-  - "User requires zero-waste AI spend: actively consume weekly provider credits on useful approved work. Prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks."
+  - "User requires zero-waste AI spend: consume weekly provider credits on useful approved work; prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions. In marine/offshore force reviews, user expects individual components and resultants compared side-by-side using existing basecase assumptions."
   - "Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing ... User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeou... User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session... “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps. For requested user actions/approvals, user prefers a compact preview with GitHub links, current gate/status, exact recommended action, and what will happen next so they can approve quickly in-window."

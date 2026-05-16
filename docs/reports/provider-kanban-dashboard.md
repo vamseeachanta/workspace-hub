@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-16T01:20:12Z
+Generated: 2026-05-16T05:20:10Z
 Mode: static (read-only)
 
 ## How to approve
@@ -50,7 +50,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2715 | bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2714 | research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2713 | infra: gemini 0.42.0 headless mode reports run_shell_command not found — blocks cross-review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2712 | fix(hermes-ops): ace-linux-2 kanban-worker spawn fails — `hermes` not on gateway PATH | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2711 | feat(provider-data): service-provider data library — Helix 15k IRS pilot | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: unavailable_review |
 | #2710 | feat(solver-queue): conversational submit UX — /solver-submit skill + interactive CLI | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: empty_review,major_review,unavailable_review |
 | #2709 | feat(solver-queue): add AQWA runner adapter and schema extension | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: empty_review,major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2299 | chore(plans): make retention metadata a required planning artifact | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2298 | feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2297 | feat(portability): schedule unified smoke drift detection after #2272 baseline | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2296 | WRK: 2026 tax projections — SKEstates and AceEngineer income tax planning | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

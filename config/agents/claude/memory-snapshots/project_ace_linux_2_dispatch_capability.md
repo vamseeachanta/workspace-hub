@@ -15,20 +15,21 @@ ace-linux-2 (dev-secondary, overflow worker per [[machine-inventory]] `docs/ops/
 | Workspace clone at `/mnt/local-analysis/workspace-hub` | ✓ present, on `main` |
 | digitalmodel repo present | ✓ |
 | Hermes installed | ✓ at `~/.hermes/hermes-agent/venv/bin/python` (note: `venv`, NOT `.venv` — DIFFERENT from ace-linux-1's `.venv/bin/python` path) |
-| Hermes gateway running | ✓ (PID varies, runs `hermes_cli.main gateway run --replace`) |
+| Hermes gateway running | ✓ as systemd user unit `hermes-gateway.service` (parent = `systemd --user`, ppid=1627) |
 | kanban-create accepted via SSH | ✓ verified |
-| **kanban worker spawn** | ✗ **blocked** — auto-blocks at spawn with `\`hermes\` executable not found on PATH` |
+| **kanban worker spawn** | ✓ verified 2026-05-15 — live `subprocess.Popen` replication using gateway's `/proc/<pid>/environ` succeeds. #2712 closed as can't-repro. |
 
-**Why:** Cross-machine dispatch is the parallelism path: ace-linux-1 holds the canonical dispatch ledger / GH-mutation surface, ace-linux-2 absorbs OSS-engineering and parallel-AI workloads. Per dual-quota delegation model in [[goal-catalog]] #2695, ace-linux-2 capacity is one of the additive quota pools. Wasting a 5-min cross-machine dispatch attempt on auto-block burns time.
+**Why:** Cross-machine dispatch is the parallelism path: ace-linux-1 holds the canonical dispatch ledger / GH-mutation surface, ace-linux-2 absorbs OSS-engineering and parallel-AI workloads. Per dual-quota delegation model in [[goal-catalog]] #2695, ace-linux-2 capacity is one of the additive quota pools.
 
-The PATH gap is real but minor: `~/.local/bin/hermes` symlink → `~/.hermes/hermes-agent/venv/bin/hermes` EXISTS, but `~/.local/bin` isn't on the gateway-subprocess PATH (verified: `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin`). Fix tracked at #2712 — recommend `sudo ln -s ~/.hermes/hermes-agent/venv/bin/hermes /usr/local/bin/hermes` for durability.
+The original 2026-05-14 `hermes executable not found on PATH` failure DID NOT REPRODUCE on 2026-05-15. Root cause in #2712 issue body was wrong: it conflated SSH-non-login-session PATH (which lacks `~/.local/bin`) with the gateway-subprocess PATH (which inherits `dict(os.environ)` from the systemd user unit and DOES include `~/.hermes/hermes-agent/venv/bin` + `~/.local/bin`). See [[feedback_rca_conflated_ssh_vs_subprocess_path]] for the generalizable defect class. Code reference: `hermes_cli/kanban_db.py:3779` does `env = dict(os.environ)` before the `Popen(cmd, env=env, ...)` at line 3848 — worker inherits gateway PATH, full stop.
 
 **How to apply:**
 
-1. Before dispatching to ace-linux-2, check #2712 status. If still open, defer to ace-linux-1 — don't waste a dispatch attempt.
-2. After #2712 closes, dispatch pattern works: `ssh ace-linux-2 '~/.hermes/hermes-agent/venv/bin/python -m hermes_cli.main kanban create ...'` — use the `venv` (no dot) path on ace-linux-2.
+1. Cross-machine dispatch to ace-linux-2 currently WORKS. Verified empirically 2026-05-15 with closing comment + code citation on #2712.
+2. Dispatch pattern: `ssh ace-linux-2 '~/.local/bin/hermes kanban create ...'` (the SSH-session lacks `~/.local/bin` in PATH, so use the absolute path for SSH invocations). The worker subprocess spawned by the gateway works fine because the gateway env has hermes in PATH.
 3. ace-linux-2's kanban.db is INDEPENDENT of ace-linux-1's — no cross-machine task sync. Tasks dispatched there don't appear in `hermes kanban list` here. Track both via GH issue comments instead (the user-visible surface).
 4. Per inventory: route OSS-engineering work (digitalmodel CI, mesh prep, freecad/gmsh/openfoam/blender, gdsfactory, GPU-suitable embeddings) to ace-linux-2. Keep dispatch-ledger-sensitive work (GH-mutation-heavy, Hermes config changes, kanban orchestration) on ace-linux-1.
+5. **If a future spawn failure recurs**: capture `/proc/<gateway-pid>/environ` immediately (it's ground truth for what the worker actually sees). Don't infer from `echo $PATH` in an SSH session — that's a different env.
 
 Cross-references:
 - [[feedback_cross_machine_execution]] — per-machine tasks via shared git repo

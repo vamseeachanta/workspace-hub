@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-16T01:20:10.524010Z",
+  "generated_at": "2026-05-16T05:20:08.551408Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-16T01:20:08.962727Z",
+  "scorecard_generated_at": "2026-05-16T05:20:06.966220Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 16,
-      "total_candidates": 173,
+      "total_candidates": 174,
       "top_issues": [
         {
           "number": 2533,
@@ -422,7 +422,7 @@
             "domain:workflow",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T22:48:19Z",
+          "updatedAt": "2026-05-16T01:32:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1268,6 +1268,28 @@
           "work_type": [
             "research",
             "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2296,
+          "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:personal-finance",
+            "domain:tax-preparation"
+          ],
+          "updatedAt": "2026-04-16T02:54:57Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
             "strategy"
           ]
         },
@@ -4137,7 +4159,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 24,
+      "total_candidates": 23,
       "top_issues": [
         {
           "number": 2402,
@@ -4660,28 +4682,6 @@
             "cat:research"
           ],
           "updatedAt": "2026-05-12T10:01:42Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2712,
-          "title": "fix(hermes-ops): ace-linux-2 kanban-worker spawn fails \u2014 `hermes` not on gateway PATH",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2712",
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:agent-cost-tracking"
-          ],
-          "updatedAt": "2026-05-15T04:29:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",

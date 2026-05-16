@@ -16,9 +16,9 @@
 - workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status).
 - For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there.
 - For repeated judge/checklist continuation prompts, user values fresh evidence artifacts/crosswalks, precise inventory/status reconciliation, and explicit blocked-stop decisions over relaunching implicit continuation work across human/governance/scope gates.
-- Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it.
+- Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it. *stale: 2026-05-16*
 - CTV operability assets in digitalmodel are reference material for future vessel-operability ecosystem work; SeaOps is treated as a competitor, so use those assets for research and repo documentation only unless the user explicitly approves GTM/project reuse.
-- ace-linux-2 is reachable by SSH from ace-linux-1 and has OpenFOAM ESI v2312 installed: wrapper `/usr/bin/openfoam2312`, bashrc `/usr/lib/openfoam/openfoam2312/etc/bashrc`, `WM_PROJECT_DIR=/usr/lib/openfoam/openfoam2312`, `WM_PROJECT_VERSION=v2312`.
+- ace-linux-2 is reachable by SSH from ace-linux-1 and has OpenFOAM ESI v2312 installed: wrapper `/usr/bin/openfoam2312`, bashrc `/usr/lib/openfoam/openfoam2312/etc/bashrc`, `WM_PROJECT_DIR=/usr/lib/openfoam/openfoam2312`, `WM_PROJECT_VERSION=v2312`. *stale: 2026-05-16*
 
 ### User Profile
 
@@ -73,12 +73,12 @@ Context parity = compute parity. Zero waste everywhere.
 
 GSD is the sole workflow system since 2026-03-25.
 - Plans live in `.planning/` within each repo
-- Long-duration plans live in `docs/plans/`
+- Long-duration plans live in `docs/plans/` *verified: 2026-05-16*
 - Use `/gsd:*` commands for task management
 
 ## Skill System (Hermes)
 
-Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
+Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1. *stale: 2026-05-16*
 On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
 
 
@@ -96,7 +96,7 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 
 ## ACE Engineer GTM Context
 
-- `aceengineer-strategy/` — private nested repo with full GTM strategy
+- `aceengineer-strategy/` — private nested repo with full GTM strategy *verified: 2026-05-16*
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)

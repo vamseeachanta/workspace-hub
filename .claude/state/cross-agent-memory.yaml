@@ -3,8 +3,8 @@
 # Merges: Hermes (MEMORY.md/USER.md) + Claude (project memory files)
 
 metadata:
-  generated: "2026-05-15T07:01:04Z"
-  source_hash: "9cddd21d2aafedcd810ff28c51674bd4"
+  generated: "2026-05-16T07:01:21Z"
+  source_hash: "a472e4bda643e383e4bceef737a21c45"
   agents:
     hermes:
       memory_file: "/home/vamsee/.hermes/memories/MEMORY.md"
@@ -12,7 +12,7 @@ metadata:
       entry_count: 4
     claude:
       project_memory_dir: "/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
-      memory_file_count: 166
+      memory_file_count: 175
 
 hermes_insights:
   environment_facts:
@@ -22,7 +22,7 @@ hermes_insights:
   project_knowledge:
     []
   user_preferences:
-    - "User requires zero-waste AI spend: actively consume weekly provider credits on useful approved work. Prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions; ace-linux-1 is Hermes control plane, ace-linux-2 overflow needs repo/tool/auth checks."
+    - "User requires zero-waste AI spend: consume weekly provider credits on useful approved work; prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions. In marine/offshore force reviews, user expects individual components and resultants compared side-by-side using existing basecase assumptions."
     - "Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing ... User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeou... User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session... “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps. For requested user actions/approvals, user prefers a compact preview with GitHub links, current gate/status, exact recommended action, and what will happen next so they can approve quickly in-window."
 
 claude_memory_index:
@@ -69,8 +69,14 @@ claude_memory_index:
       topic: "repo scope"
     - file: "project_llm_wiki_spunout.md"
       topic: "llm wiki spunout"
+    - file: "feedback_label_vs_planbody_gate_inconsistency.md"
+      topic: "label vs planbody gate inconsistency"
     - file: "project_gsd_migration.md"
       topic: "gsd migration"
+    - file: "feedback_retry_loop_sweep_contamination.md"
+      topic: "retry loop sweep contamination"
+    - file: "feedback_parallel_session_staged_change_bleedthrough.md"
+      topic: "parallel session staged change bleedthrough"
     - file: "project_production_engineering_corpus_initiative.md"
       topic: "production engineering corpus initiative"
     - file: "feedback_skill_before_code.md"
@@ -149,6 +155,8 @@ claude_memory_index:
       topic: "pdf ocr fallback chain"
     - file: "reference_claude_dreaming_managed_agents.md"
       topic: "claude dreaming managed agents"
+    - file: "feedback_discovery_first_on_stale_plan_approved.md"
+      topic: "discovery first on stale plan approved"
     - file: "feedback_inline_gh_issue_url.md"
       topic: "inline gh issue url"
     - file: "feedback_isolated_clone_dispatch_race.md"
@@ -275,6 +283,8 @@ claude_memory_index:
       topic: "offrepo intel routing"
     - file: "feedback_adversarial_review_stance.md"
       topic: "adversarial review stance"
+    - file: "feedback_r1_review_trust_hazard.md"
+      topic: "r1 review trust hazard"
     - file: "feedback_cross_machine_execution.md"
       topic: "cross machine execution"
     - file: "project_overnight_batch_runs.md"
@@ -317,6 +327,8 @@ claude_memory_index:
       topic: "edit tool freshness window after writes"
     - file: "feedback_html_default_artifact.md"
       topic: "html default artifact"
+    - file: "feedback_hermes_provider_openai_codex_routes_via_codex_exec.md"
+      topic: "hermes provider openai codex routes via codex exec"
     - file: "project_doc_intel_operating_model.md"
       topic: "doc intel operating model"
     - file: "feedback_recruiter_engagement.md"
@@ -327,6 +339,8 @@ claude_memory_index:
       topic: "workflow tips today"
     - file: "feedback_python_m_build_no_isolation_flag.md"
       topic: "python m build no isolation flag"
+    - file: "feedback_rca_conflated_ssh_vs_subprocess_path.md"
+      topic: "rca conflated ssh vs subprocess path"
     - file: "feedback_superpowers_specs_gitignored.md"
       topic: "superpowers specs gitignored"
     - file: "reference_google_cli_paid.md"
@@ -337,6 +351,8 @@ claude_memory_index:
       topic: "issue 2460 approval binding"
     - file: "feedback_codex_sandbox_no_execution.md"
       topic: "codex sandbox no execution"
+    - file: "feedback_ci_baseline_red_not_pr_broken.md"
+      topic: "ci baseline red not pr broken"
     - file: "feedback_naive_secret_scan_false_positive_cascade.md"
       topic: "naive secret scan false positive cascade"
     - file: "feedback_lane_result_path_outside_sandbox.md"
@@ -357,6 +373,8 @@ claude_memory_index:
       topic: "hermes active preflight check"
     - file: "reference_achantas_data.md"
       topic: "achantas data"
+    - file: "feedback_parallel_subagent_shared_target_manifest_deferral.md"
+      topic: "parallel subagent shared target manifest deferral"
     - file: "reference_krishna_videos_youtube.md"
       topic: "krishna videos youtube"
 

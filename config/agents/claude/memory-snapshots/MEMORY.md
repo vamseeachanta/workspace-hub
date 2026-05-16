@@ -6,103 +6,98 @@
 > repo_scope, research_skill_sources, specs_plans_location, uv_run_isolation, no_jargon
 - [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
 - [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
+- [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
 - [Comment on issues](feedback_gh_issue_comment.md) — post summary on every issue
-- [Inline gh issue URLs](feedback_inline_gh_issue_url.md) — render `#NNNN` as Markdown hyperlink in chat output (not bare token)
+- [Inline gh issue URLs](feedback_inline_gh_issue_url.md) — render `#NNNN` as Markdown hyperlink in chat (not bare token)
 - [Queue git-tracked](feedback_queue_git_tracked.md) — verify files in git before queue
 - [Worktree gitlink pollution](feedback_worktree_gitlink_pollution.md) — add .claude/worktrees/ to .gitignore before parallel-agent runs
 - [Adversarial review stance](feedback_adversarial_review_stance.md) — every review prompt must force defect-hunting, not charitable reading
-- [Always adversarial review; scale depth](feedback_always_adversarial_review_scale_depth.md) — never skip; dial review depth/breadth/provider count to scope (T1=1 provider scoped, T2=Codex+Gemini, T3=add Claude code-reviewer)
-- [Doc-counter rules write-time](feedback_doc_counter_rule_writetime.md) — plans modifying phantom counters express criteria as write-time recompute rules, not frozen integers; static value = baseline only
-- [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex's GitHub-connector evidence locally
-- [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if issue already CLOSED, --comment is silently lost; reopen-comment-close to recover
-- [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GitHub BEFORE dispatching `codex exec` review; sandbox can't read local files
-- [Codex sandbox write blocked](feedback_codex_sandbox_write_blocked.md) — Codex sandbox blocks filesystem writes even for pushed artifacts; capture findings inline and write the review file yourself
-- [Merge-race silent revert](feedback_merge_race_silent_revert.md) — auto-sync race during `git merge --no-ff` + `git commit --no-edit` can drop second-parent tree; always verify merged content matches branch tip
-- [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when tool output is machine-consumed
+- [Always adversarial review; scale depth](feedback_always_adversarial_review_scale_depth.md) — never skip; dial depth to scope (T1/T2/T3 = 1/2/3 providers)
+- [Doc-counter rules write-time](feedback_doc_counter_rule_writetime.md) — phantom counters as write-time recompute rules, not frozen integers
+- [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex GitHub-connector evidence locally
+- [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if CLOSED, --comment silently lost; reopen-comment-close
+- [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GH BEFORE `codex exec`; sandbox can't read local files
+- [Codex sandbox model](feedback_codex_sandbox_write_blocked.md) — sandbox blocks fs writes AND shell exec; fallback via js_repl + GH connector. See also: codex_sandbox_no_execution, codex_sandbox_fallback_paths topic files.
+- [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when machine-consumed
 - [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
-- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills live under `~/.claude/plugins/cache/`; `git mv` cannot operate on them
-- [Retry-loop reset hazard](feedback_retry_loop_reset_hazard.md) — `git reset HEAD -- .` in a retry loop under auto-sync contention can strip staged edits and land mislabeled commits
-- [Codex sandbox no execution](feedback_codex_sandbox_no_execution.md) — Codex sandbox blocks ALL shell exec (not just writes); never delegate implementation/build/commit to Codex
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate
 - [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
-- [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents touching shared index files race on git lock; serialize the commit phase or use worktrees
-- [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mock tests pass what live CLIs reject; always do a live repro before close
+- [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents race on git lock; serialize commits OR use worktrees. Umbrella covering: merge-race silent revert, retry-loop reset hazard, git switch --discard-changes, autostash replay, parallel-session staged-change bleedthrough (see topic files; pre-commit `git diff --cached --name-only` is the universal mitigation)
+- [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mocks pass what live CLIs reject; always live-repro before close
 - [Attestation enables contradiction detection](feedback_attestation_enables_contradiction_detection.md) — #2405 unlocks plan-vs-live-state defect finding, not just Class-B silencing
-- [Subagent Write phantom](feedback_subagent_write_phantom.md) — subagent reports Write success while file doesn't land on disk; main session must independently `ls` before believing
-- [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve in chat, never pre-authorize downstream agents via handoff-prompt language; user-in-loop gate is load-bearing across session boundaries
-- [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; do NOT draft replies to generic/drive-by recruiter outreach even in active job-search context
-- [Email cross-noise](feedback_email_cross_noise.md) — third parties using user's Gmail by mistake; standard unsubscribe fails; mitigate with sender-domain DELETE in routing config
-- [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — when Codex MAJOR 3+ rounds while Claude+Gemini MINOR by v3, surface consensus-vs-minority decision instead of auto-cycling (#2045, #2289 anti-pattern)
-- [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without needing worktrees for every agent
+- [Subagent Write phantom](feedback_subagent_write_phantom.md) — subagent reports Write success while file doesn't land; main session must `ls` before believing
+- [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve, never pre-authorize via handoff-prompt; user-in-loop gate is load-bearing
+- [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; no drive-by recruiter replies even in active job-search
+- [Email cross-noise](feedback_email_cross_noise.md) — third parties mistakenly using user's Gmail; standard unsubscribe fails; sender-domain DELETE in routing config
+- [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — Codex MAJOR 3+ rounds while Claude/Gemini MINOR by v3 → surface consensus-vs-minority, don't auto-cycle (#2045, #2289)
+- [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without worktrees
+- [Parallel subagent shared-target manifest deferral](feedback_parallel_subagent_shared_target_manifest_deferral.md) — partition into unique-target (subagent writes) + shared-target (manifest delta, main applies) when 2+ subagents need same files. Pilot: llm-wiki #82 + #83 in single ~30min session
 - [Permission gate blocks cross-review](feedback_permission_gate_blocks_cross_review.md) — planning-only sessions can't dispatch cross-review.sh; fallback is single-author r3 with transparent provenance
-- [Commit attestation narrow scope](feedback_commit_attestation_narrow_scope.md) — commit "gates passed" covers only that commit's files; broader gate can regress; re-run live, don't infer from `git log A..B -- <fix files>`
-- [Isolated-clone dispatch race](feedback_isolated_clone_dispatch_race.md) — subagent executing in exec-clone must check for parallel-session landing on main workspace before writing, since both lanes share the same GitHub issue
-- [Codex sandbox fallback paths](feedback_codex_sandbox_fallback_paths.md) — when shell wrapper is blocked, Codex recovers via js_repl + GitHub connector; prompt must authorize these, and MAJOR verdicts lacking a fallback-read citation are weakly grounded
-- [Gemini sandbox overlay blindness](feedback_gemini_sandbox_overlay_blindness.md) — Gemini cross-review sandbox can't see sparse-checkout overlay; 2026-04-23 batch had ~54 false-positive file-missing claims across 8 plans; always verify with `git ls-files` before accepting MAJOR
-- [codex-cli 0.124.0 upstream stdin-hang](feedback_codex_cli_0_124_upstream_regression.md) — installed 2026-04-23; blocks ALL `codex exec` calls regardless of stdin redirection; reproduces on 90-byte plans; #2479 filed; workaround = downgrade to 0.123.0
-- [Reflog as ground truth](feedback_reflog_as_ground_truth.md) — `[rejected]` pushes and "lock failed" rebase errors can mask successful operations; check reflog + `git status` before retrying
-- [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` silently fails for untracked-when-stashed files; use `stash@{0}^3` (third parent = untracked tree)
-- [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync also resolves push contention by quietly pushing local-ahead commits; wait+verify after `[rejected]` instead of retrying
-- [Gemini trust-env blocks reviews](feedback_gemini_trust_env_blocks_reviews.md) — Gemini CLI exits 55 in headless without `GEMINI_CLI_TRUST_WORKSPACE=true`; wrapper masked the real stderr; durable fix landed in submit-to-gemini.sh 2026-04-24
-- [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` directory name poisons every Python dotted-path reference below it; recurred 3x in 2026-04-24 agent-drafted plans; grep plans for `llm-wiki\.` as a P1 smell
-- [llm-wiki concept pages need public references](feedback_llm_wiki_concept_pages_need_public_references.md) — gap-fill concept pages from external posts must ground on textbooks/DOIs/public manuals; LinkedIn-only sourcing fails day-one lint
-- [Gmail override-filters silent defeat](feedback_gmail_override_filters_silent_defeat.md) — Inbox "Override filters for important" silently nullifies Skip-Inbox; flip to "Don't override" before installing filters (2026-04-24 ace sweep)
-- [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread state machines for actionable ~20% residue
-- [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` tools bind to main session; subagents can't drive Chrome; partition: main=browser, subagents=research
-- [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive (any volume) has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome; stay on archive+filter surface
-- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures up to 50 frames w/ click indicators; audit/skill-authoring/compliance artifact; start_recording → export to `docs/sessions/`
-- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's default `docs/superpowers/specs/` path is silently gitignored (workspace-hub `.gitignore:438`); write durable specs to `docs/governance/` instead
-- [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — when Hermes runs "remove unrelated files" cleanup loops on main, parallel commits get reverted within minutes; preflight `pgrep -af 'git (rebase|stash push|commit|merge|reset|checkout)'` and use a worktree+feature-branch if active
-- [git switch --discard-changes](feedback_git_switch_discard_changes_pattern.md) — use `git switch --discard-changes` (not `git checkout`) when `.claude/state/` is dirty; plain checkout aborts silently and downstream cp+commit lands on the wrong branch (recurred 2x in 2026-04-25 wave-3/wave-5 contamination)
-- [x11vnc vs TigerVNC for headless](feedback_x11vnc_vs_tigervnc_headless.md) — x11vnc is a screen mirror and crashloops on headless hosts (no GUI session to attach to); use TigerVNC `vncserver :N` instead — verified 2026-04-27 ace-linux-2 (67,189 crashloops in 4 days)
-- [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` (in-kernel) refuses dirty NTFS volumes; use `ntfs-3g` (FUSE) which auto-replays journal; drop `default_permissions` and pass explicit `uid`/`gid` for ownership
-- [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g-created symlinks as raw `IntxLNK` blobs; corrupts git type-tracked symlinks; verified 2026-05-01 on workspace-hub `/dev/sdc1`; stay on ntfs-3g for any volume hosting a git repo
-- [Wikimedia thumb width quirk](feedback_wikimedia_thumb_width_quirk.md) — query `imageinfo` API for canonical `thumburl`; never hand-construct width segment; main-session re-verify (subagent verification was wrong twice on 2026-04-27)
-- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed lanes prescribe `agent-logs/...` paths outside the workspace-hub sandbox; Read/Write/stat blocked, Glob enumeration only; fall back to `docs/sessions/` and emit ENV-MISMATCH banner
-- [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects only sparse repo (368K tracked, ~6% on disk); `git sparse-checkout add <path>` for missing files, never `disable` (hung 22min on 2026-04-30 materializing ~329K files)
-- [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — agent regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 password-hashing comments; for workspace-hub paths, trust the hardened pre-commit hook
-- [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions can land half-resolved files; pull produces double-nested conflict markers; `git checkout --ours` if HEAD is clean
-- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iteration; partial-deleted worktree's `.git` gitlink loss is recoverable via parent-repo `.git/worktrees/<name>/HEAD` registry entry
-- [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle create` from parent repo fails on unreachable orphans; bundle from inside worktree where HEAD points at the SHA; tag-on-origin for cross-machine durability
-- [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans only `commit --no-verify`; push --no-verify allowed for codex-branch preservation pushes when tier-1 hook blocks
-- [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — two concurrent /whats-next sessions on the same machine produce healthy non-colliding plan work; wip-label gates same-issue collision, auto-sync arbitrates push contention; cross-validate before filing follow-ups
-- [Worktree isolation too slow on large repo](feedback_worktree_isolation_large_repo_cost.md) — Agent `isolation: worktree` triggers 33,325-file checkout that times out 60% of the time on workspace-hub; default to write-only-shared, reserve worktree-isolation for agents that must commit/push themselves
-- [QG --maxfail undercounts](feedback_qg_maxfail_undercounts.md) — digitalmodel Quality Gates runs `pytest --maxfail=20`; reported "20 failed" was the ceiling, true count is 244+ (verified 2026-05-02 on `60d59565`); never trust QG artifact failure count without local repro
-- [Desktop Agent-Mode embeds CLI](feedback_claude_desktop_agent_mode_embeds_cli.md) — Claude Desktop spawns a child `claude` CLI from `~/.config/Claude/claude-code/<v>/`; upgrade via `apt upgrade claude-desktop`, not system `claude`
-- [`python -m build` no `--isolation` flag](feedback_python_m_build_no_isolation_flag.md) — isolation is the DEFAULT; `--no-isolation` is the opt-out; remove the flag to restore isolation, don't add `--isolation`
+- [Commit attestation narrow scope](feedback_commit_attestation_narrow_scope.md) — "gates passed" covers ONLY that commit's files; re-run live, don't infer from `git log A..B`
+- [Isolated-clone dispatch race](feedback_isolated_clone_dispatch_race.md) — exec-clone subagent must check parallel landing on main workspace before writing (shared GH issue)
+- [Gemini sandbox overlay blindness](feedback_gemini_sandbox_overlay_blindness.md) — Gemini cross-review can't see sparse-checkout overlay; 54 false-positive file-missing on 2026-04-23 batch; verify with `git ls-files`
+- [Reflog as ground truth](feedback_reflog_as_ground_truth.md) — `[rejected]` pushes and "lock failed" rebase errors can mask successful ops; check reflog + status before retrying
+- [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` fails for untracked-when-stashed; use `stash@{0}^3`
+- [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync resolves push contention by quietly pushing local-ahead; wait+verify after `[rejected]` not retry
+- [Retry-loop sweep contamination](feedback_retry_loop_sweep_contamination.md) — retry-loop commits can sweep parallel-session staged files; use `git commit -m "..." -- <file>` pathspec form (order matters: `--` after `-m`)
+- [r1 review trust hazard](feedback_r1_review_trust_hazard.md) — before applying r1 fix asserting a gap, independently verify the asserted-missing surface; reviewers have constrained retrieval and selectively quote (Plan #2710 r1 missed submit-job.sh:18-23 existing check)
+- [CI baseline red ≠ PR broken](feedback_ci_baseline_red_not_pr_broken.md) — pre-existing main-branch CI failures inherit to new PRs; always check upstream baseline via `gh run list --branch main` before assuming the PR caused the red state
+- [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` poisons Python dotted-paths; grep plans for `llm-wiki\.` as P1 smell
+- [llm-wiki concept pages need public references](feedback_llm_wiki_concept_pages_need_public_references.md) — concept pages need textbooks/DOIs/manuals; LinkedIn-only fails day-one lint
+- [Gmail override-filters silent defeat](feedback_gmail_override_filters_silent_defeat.md) — Inbox "Override filters for important" silently nullifies Skip-Inbox; flip to "Don't override" before installing
+- [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread for ~20% residue
+- [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` binds main session; subagents can't drive Chrome; partition main=browser, sub=research
+- [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome
+- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/`
+- [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's `docs/superpowers/specs/` is gitignored (`.gitignore:438`); write to `docs/governance/` instead
+- [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — Hermes cleanup loops on main revert parallel commits in minutes; preflight pgrep, use worktree+branch if active
+- [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` refuses dirty volumes; use `ntfs-3g` (FUSE) auto-replays journal; explicit uid/gid for ownership
+- [ntfs3 breaks IntxLNK symlinks](feedback_ntfs3_symlink_intxlnk.md) — in-kernel ntfs3 reads ntfs-3g symlinks as raw `IntxLNK`; stay on ntfs-3g for git repos. Verified 2026-05-01.
+- [Lane result path outside sandbox](feedback_lane_result_path_outside_sandbox.md) — provider-autofeed `agent-logs/...` paths blocked Read/Write/stat; fall back to `docs/sessions/` + ENV-MISMATCH banner
+- [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects sparse only; `git sparse-checkout add <path>` not `disable` (hung 22min materializing ~329K files)
+- [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 comments; trust hardened pre-commit hook
+- [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions land half-resolved files; pull double-nests markers; `git checkout --ours` if HEAD clean
+- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD`
+- [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle` from parent fails on unreachable orphans; bundle from worktree where HEAD points; tag for cross-machine
+- [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans `commit --no-verify` only; push --no-verify ok for codex-branch preservation
+- [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — 2 concurrent /whats-next on same machine produce non-colliding work; wip-label gates collisions; cross-validate before follow-ups
+- [Worktree isolation too slow on large repo](feedback_worktree_isolation_large_repo_cost.md) — `isolation: worktree` triggers 33K-file checkout, 60% timeout on workspace-hub; reserve for commit/push agents
+- [QG --maxfail undercounts](feedback_qg_maxfail_undercounts.md) — digitalmodel QG runs `pytest --maxfail=20`; "20 failed" was ceiling, true=244+; never trust QG count without local repro
+- [Desktop Agent-Mode embeds CLI](feedback_claude_desktop_agent_mode_embeds_cli.md) — Claude Desktop spawns child `claude` CLI from `~/.config/Claude/claude-code/<v>/`; upgrade via `apt upgrade claude-desktop`
 - [Cross-repo Closes at squash](feedback_cross_repo_closes_at_squash.md) — `Closes vamseeachanta/<repo>#NNNN` fires for ALL refs in a squash-merge body; multi-issue batches auto-close cleanly
-- [Comma-joined Closes fires once on direct push](feedback_closes_trailer_fires_once.md) — `Closes #X, #Y` in ONE commit body pushed directly to main only auto-closes the FIRST ref; verify and follow up with explicit `gh issue close`
-- [WebFetch first for LinkedIn recon](feedback_webfetch_first_for_linkedin.md) — public LinkedIn posts return full content via og:description; skip the chrome browser unless WebFetch returns a "log in to view" gate
-- [Credential-issuer copy-paste leak](feedback_credential_issuer_copy_paste_leak.md) — never commit raw "save this token" output (BotFather, AWS, Stripe, OAuth); commit only a pointer to a secret manager. Recovery: revoke first, delete branch local+origin (no archive tag), then `git reflog expire --expire=now --expire-unreachable=now --all && git gc --prune=now --aggressive`
-- [PDF e-signature style default](feedback_pdf_esignature_style_default.md) — for PDF signing (paychecks, admin), default to typed cursive (Z003 chancery) + "Electronically signed" + date; avoid bitmap signature images (filename-mislabel risk)
-- [Parallel gh issue create reverses numbers](feedback_parallel_gh_issue_create_reverses_numbers.md) — `gh issue create &` in parallel assigns numbers in apparent reverse arrival order; never bake cross-refs at create time, audit titles by `--json` immediately after batch
-- [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; bound it, prefer env-var environment detection over file-existence checks; cost of missing this on Kaggle: 12 h of free-tier compute
-- [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic branch-protection but NOT newer rulesets; toggle `enforcement=disabled` via `gh api PUT /rulesets/{id}` to merge past failing baseline checks, then restore `active`
-- [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context boundaries are enforced by `LICENSE` + `.gitignore` + per-repo `.claude/` + per-repo `.git`, not by file-system distance; don't cite "structural cost" against nesting before verifying which mechanisms actually bind
-- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos (license-bound corpus, curated `docs/`), side-channel notes (vendor marketing, intel, future-attention) go to `/mnt/ace/<repo-name>/docs/`, not in-repo `docs/`
-- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText before counting turns; user prompt often absent
-- [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` alone hangs >30s at digitalmodel/.venv even though Python works; rely on CI for verification; verify syntax via `py_compile` not pytest
-- [Git status lock storm from Claude subagents](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` from Claude PPIDs blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses; don't kill the parent claude
-- [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files; reruns regenerate HTML in place; do NOT create a `/html` skill (workspace-hub#2663 codifies)
-- [PDF OCR fallback chain](feedback_pdf_ocr_fallback_chain.md) — when pdftotext AND PyMuPDF both return 0 chars, PDF is image-rendered; fall back to PyMuPDF render at 300 DPI → tesseract --psm 6; verified 2026-05-12 on recruiter-supplied JDs
-- [Parallel branch checkout reverts working dir](feedback_parallel_branch_checkout_working_dir.md) — parallel session `git checkout`-ing a feature branch reverts your working dir's file contents; verify with `git reflog` + `git branch --show-current` before re-applying "missing" commits
-- [Silent verdict-flip defect class](feedback_silent_verdict_flip_defect_class.md) — two impls citing same standard but different sections/editions can return OPPOSITE stable/unstable verdicts at design margin. Both legitimately "compliant". Found 2026-05-13 in cathodic protection + on-bottom stability. Citations need section+edition, not just code_id.
-- [r3-inline loop-break pattern](feedback_r3_inline_loop_break_pattern.md) — when r1/r2 surface DIFFERENT defects each round (revision introducing fresh issues), apply r3 main-session inline patches and label plan-approved; do NOT dispatch r3 review. Used 2026-05-13 on plans #2685+#2694. Distinct from same-defect sustained-MAJOR anti-pattern.
-- [Skill-content scanner docs tension](feedback_skill_content_scanner_docs_tension.md) — ops-doc skills trip the credential-access scanner on `~/.hermes/.env`, `curl ${TOKEN}`, etc.; use `${HERMES_HOME}/.env` placeholder + push literal commands to docs/runbooks/ (unscanned). 18 CRITICAL→0 fix landed 2026-05-13 commit 6702bf5ac.
-- [N-night blocker → replan](feedback_n_night_blocker_promote_to_replan.md) — 3+ nightly-batch comments with same root-cause blocker = halt polling, surface design-replan. Observed #2403 (6 nights, same prereq); 6th invocation halted at preflight rather than spawning blocked-comment #7.
-- [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts loaded via spec_from_file_location must register in sys.modules BEFORE exec_module if they contain @dataclass; otherwise `AttributeError: 'NoneType'` at decoration time. Fixed 2026-05-13 in 4 #2665 tests.
-- [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — agent dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user execution-instruction as approval; dispatch prompts must forbid BOTH GH-label self-approval AND marker writes. #2703 lane 2026-05-14 (stripped pre-PR #2705).
-- [Autostash replay after checkout -b](feedback_autostash_replay_after_checkout_b.md) — leftover autostash from `git rebase --onto` can silently auto-apply on next `git checkout -b`, reverting tracked state in working tree+index. Always `git stash list` + drop unwanted autostashes BEFORE creating new branches. Recovered 2026-05-14 via /tmp backup + reset. Distinct from retry-loop reset hazard.
-- [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14 from BSEE+Helix collision; #2482
+- [Comma-joined Closes fires once on direct push](feedback_closes_trailer_fires_once.md) — `Closes #X, #Y` in ONE commit pushed direct only auto-closes FIRST ref; follow up with `gh issue close`
+- [WebFetch first for LinkedIn recon](feedback_webfetch_first_for_linkedin.md) — public LinkedIn returns full content via og:description; skip Chrome unless WebFetch shows login gate
+- [Credential-issuer copy-paste leak](feedback_credential_issuer_copy_paste_leak.md) — never commit raw "save this token" output; recovery = revoke first, delete branch, reflog expire + gc prune
+- [PDF e-signature style default](feedback_pdf_esignature_style_default.md) — default typed cursive (Z003 chancery) + "Electronically signed" + date; avoid bitmap (filename-mislabel risk)
+- [Parallel gh issue create reverses numbers](feedback_parallel_gh_issue_create_reverses_numbers.md) — `gh issue create &` parallel assigns numbers reverse arrival; audit titles via `--json` post-batch
+- [Path.parent walk needs a sentinel](feedback_path_parent_infinite_loop.md) — `while not marker.exists(): repo = repo.parent` infinite-loops at `/`; prefer env-var detection
+- [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic protection but NOT rulesets; toggle `enforcement=disabled` via API, then restore
+- [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context enforced by LICENSE+.gitignore+per-repo .claude+.git, not by file-system distance
+- [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos, side-channel notes (vendor marketing, intel) go to `/mnt/ace/<repo-name>/docs/`, not in-repo
+- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent
+- [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` hangs >30s at digitalmodel/.venv; rely on CI; verify syntax via `py_compile` not pytest
+- [Git status lock storm](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses
+- [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files. workspace-hub#2663 codifies
+- [PDF OCR fallback chain](feedback_pdf_ocr_fallback_chain.md) — pdftotext+PyMuPDF=0 chars → PDF is image-rendered; fall back PyMuPDF 300 DPI → tesseract --psm 6
+- [Parallel branch checkout reverts working dir](feedback_parallel_branch_checkout_working_dir.md) — parallel `git checkout`-ing feature branch reverts your dir; verify reflog + `git branch --show-current`
+- [Silent verdict-flip defect class](feedback_silent_verdict_flip_defect_class.md) — 2 impls citing same standard but different sections/editions return OPPOSITE verdicts at margin; need section+edition not just code_id
+- [r3-inline loop-break pattern](feedback_r3_inline_loop_break_pattern.md) — r1/r2 surface DIFFERENT defects each round → apply r3 main-session inline patches; do NOT dispatch r3 review
+- [Skill-content scanner docs tension](feedback_skill_content_scanner_docs_tension.md) — ops-doc skills trip credential-scanner on `~/.hermes/.env`, `curl ${TOKEN}`; use `${HERMES_HOME}/.env` placeholder
+- [N-night blocker → replan](feedback_n_night_blocker_promote_to_replan.md) — 3+ nightly-batch comments with same root-cause = halt polling, surface design-replan. #2403 (6 nights)
+- [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
+- [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
+- [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
+- [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
-- [devaKrishna developmental pace](project_devakrishna_developmental_pace.md) — singular/plural rule generalization taking 5+ yrs; calibrate goals to 6–24mo per micro-milestone; functional > academic; activity menus > goal hierarchies; strengthens Plan-A signal at achantas-data#73
-- [Krishna typing tools rotation](project_krishna_typing_tools.md) — typing.com stall 2026-05-12; rotate TypingClub + Dance Mat Typing + Keybr; functional typing (10min/day own content) > lesson-tree completion
-- [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready to send, BSEE fix landed, open issues
-- [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots, 3 date conventions, 3 bundle formats across repos; scan all 4 paths for "where's the GTM pack?"; tracked at #2662
-- [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250+ datasets surveyed 2026-05-05, top 12 candidates curated in repo's SOURCES_kaggle.md; gate ingest on downstream consumer
+- [devaKrishna developmental pace](project_devakrishna_developmental_pace.md) — 5+ yr generalization horizon; calibrate to 6–24mo per milestone; functional > academic; achantas-data#73
+- [Krishna typing tools rotation](project_krishna_typing_tools.md) — typing.com stall 2026-05-12; rotate TypingClub/Dance Mat/Keybr; functional > lesson-tree
+- [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready, BSEE fix landed, open issues
+- [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots × 3 date conventions × 3 bundle formats; scan all 4 paths; #2662
+- [Kaggle oil-gas backlog](project_kaggle_oil_gas_backlog.md) — ~250 datasets surveyed 2026-05-05; top 12 curated in SOURCES_kaggle.md; gate on consumer
 > project_cfd_openfoam_storage.md
-- [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209 children; 2026-04-19 amendments landed; follow-ons #2360/#2361/#2362
+- [Doc-intel operating model](project_doc_intel_operating_model.md) — #2205 parent + #2206/#2207/#2209; follow-ons #2360/#2361/#2362
 - [GSD](project_gsd_migration.md) — sole workflow, v1.38.1, Node 24+
 - [Cross-review](project_cross_review_policy.md) — gate scripts + pre-push hook + audit cron
 - [Mooring knowledge](project_mooring_failures_knowledge.md) — 40 entries at knowledge/seeds/
@@ -118,41 +113,41 @@
 - [Field-dev arch](project_field_dev_arch_patterns.md) — DONE; follow-ups #2082,#2084,#2086
 - [assethold specs](project_assethold_spec_location.md) — design docs go in docs/reports/ (specs/ gitignored)
 - [assethold ownership](project_assethold_ownership_transfer.md) — transferred samdansk2 → vamseeachanta; local origin may be stale
-- [TX Franchise 2026](project_tx_franchise_2026.md) — DONE; both C-Corps filed, C-Corps ineligible for passive entity
-- [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily, posts to repo-readiness issue
+- [TX Franchise 2026](project_tx_franchise_2026.md) — DONE; both C-Corps filed; ineligible for passive entity
+- [Daily readiness cron](project_daily_readiness_cron.md) — trig_019GWtRosbZ9rw1HxrGpsvy9, 6am CT daily; posts to repo-readiness issue
 - [CAD tooling review](project_cad_tooling_review.md) — PAUSED; #2327/#2328/#2329 await doc/resource intel (#2205) review
-- [digitalmodel uv compile-bytecode](project_digitalmodel_uv_compile_bytecode.md) — flipping both `compile-bytecode` settings to `false` resolved silent uv-sync finalize stall; if hang returns first verify the flag drift
-- [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending), brand hierarchy + visual-DNA locked 2026-04-21
-- [/goal catalog](project_goal_catalog.md) — #2695 catalog + .claude/rules/goal-invocation.md rule + weekly picklist; D7 brain/hands model; #2696 Hermes upgrade dep
-- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE for firm copy; real canonical = live site + aceengineer-strategy (private); skill at `.claude/skills/coordination/aceengineer-website-copy-alignment/`; first execution issue #6 on 2026-04-24
-- [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser automation only for interactive UI tasks
-- [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review artifact paths + storage surface), not mutable file-path refs; follow-ups #2467/#2468/#2469 (worldenergydata flake8 lanes)
-- [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing principle sanctioned across eng/marine/naval wikis; **#2471 is CSA-Z276-only** (verified 2026-04-25), referenced codification plan does not exist; general offshore/marine substrate now scoped to aceengineer-strategy aces-#4
-- [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; new repo at vamseeachanta/llm-wiki (MIT+CC-BY-4.0); pipeline stays in workspace-hub
-- [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve/uplift/add via public + legally-sanitized private sources; coverage gaps are first-class defects
-- [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest pattern; first-run 2026-05-07 (Sherwood naval-arch + Rötzer wave-shoaling)
-- [drilling-engineering corpus initiative](project_drilling_engineering_corpus_initiative.md) — 2026-05-13 user-directed 9th wiki domain founded with Papkov AI-agent post; seed roadmap covers API 4F/7K/8C, IADC
-- [production-engineering corpus initiative](project_production_engineering_corpus_initiative.md) — 2026-05-13 10th wiki domain founded as DE scope-edge completion; PE Phase 1 epic+5 sub-issues at #61-#66 status:plan-review
-- [Domain Knowledge Sweep](project_domain_knowledge_sweep.md) — multi-source domain research (#2667); R1-R6 subissue tree; Domain 1 Hydrodynamics launched 2026-05-12 (#2668, subissues #2669-#2674)
-- [llm-wiki V18 corpus-freeze](project_llm_wiki_v18_corpus_freeze.md) — 335pp freeze 2026-05-10 iter-60; cron-only; V19 2026-06-09; URL queue + 10 anti-rec list
-- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc.service; runbook in `.claude/skills/operations/devops/remote-desktop-headless-ubuntu/`
-- [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4 TB, NTFS UUID `94183792183771FA`, mounts at `/mnt/elements` on ace-linux-1; ingest into `/mnt/ace` planned per `docs/sessions/2026-04-27-elements-drive-ingest-handoff.md`; mount RO only; dirty-bit chkdsk pending
-- [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontal wells, RMSE, $50k pool, deadline 2026-08-05; nested in workspace-hub at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/` (independent .git, gitignored from hub); team-merging open
-- [Harbour Zama application 2026-05-12](project_harbour_zama_application.md) — applied for Senior Gas Export Pipeline Engineer via Andy Garnett (Rock Oilfield); Jan 2026 va_resume.docx sent unrefreshed; ~$150/hr presumed W-2; awaiting Andy reply with (GV) clarification, gas-line phase, W-2 confirmation, interview scheduling
+- [digitalmodel uv compile-bytecode](project_digitalmodel_uv_compile_bytecode.md) — flip both `compile-bytecode` to `false` to fix silent uv-sync stall; verify flag drift first if hang returns
+- [Claude Design adoption](project_claude_design_adoption.md) — epic #2426, trial #2435 in-flight (10 cards pending); brand+visual-DNA locked 2026-04-21
+- [/goal catalog](project_goal_catalog.md) — #2695 catalog + `.claude/rules/goal-invocation.md` rule + weekly picklist; D7 brain/hands model; #2696 Hermes dep
+- [AceEngineer copy canonical sources](project_aceengineer_copy_canonical_sources.md) — llm-wiki OUT OF SCOPE; real canonical = live site + aceengineer-strategy; first exec aces-#6
+- [Gmail MCP scope bump](project_gmail_mcp_scope_bump_decision.md) — #2423 mutation path is OAuth `gmail.modify` on claude_ai_Gmail MCP; browser only for UI tasks
+- [Issue #2460 approval binding](project_issue_2460_approval_binding.md) — CLOSED 2026-04-23; approval markers must be revision-bound (SHA + review paths), not mutable file-path refs
+- [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing across eng/marine/naval; #2471 is CSA-Z276-only (verified 2026-04-25)
+- [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; vamseeachanta/llm-wiki MIT+CC-BY-4.0; pipeline stays in workspace-hub
+- [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve via public + legally-sanitized private sources; gaps = defects
+- [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer)
+- [drilling-engineering corpus initiative](project_drilling_engineering_corpus_initiative.md) — 2026-05-13 9th wiki domain founded with Papkov; seed covers API 4F/7K/8C, IADC
+- [production-engineering corpus initiative](project_production_engineering_corpus_initiative.md) — 2026-05-13 10th wiki domain; PE Phase 1 epic+5 sub-issues #61-#66; Phase 1 completed 2026-05-14
+- [Domain Knowledge Sweep](project_domain_knowledge_sweep.md) — multi-source domain research (#2667); R1-R6 subissue tree; Domain 1 Hydrodynamics launched 2026-05-12 (#2668)
+- [llm-wiki V18 corpus-freeze](project_llm_wiki_v18_corpus_freeze.md) — 335pp freeze 2026-05-10 iter-60; cron-only; V19 2026-06-09
+- [ace-linux-2 VNC](project_ace_linux_2_vnc.md) — TigerVNC `vncserver@:1` user-systemd, 127.0.0.1:5901, SecurityTypes=None gated by SSH; replaces broken x11vnc
+- [Elements drive identity](project_elements_drive_identity.md) — WD Elements 4TB NTFS UUID `94183792183771FA`; mounts `/mnt/elements` ace-linux-1; ingest into `/mnt/ace`; RO only
+- [Kaggle ROGII 2026](project_kaggle_rogii_2026.md) — predict TVT along horizontals, RMSE, $50k pool, deadline 2026-08-05; nested at `/mnt/local-analysis/workspace-hub/kaggle-rogii-2026/`
+- [Harbour Zama application 2026-05-12](project_harbour_zama_application.md) — Senior Gas Export Pipeline Engineer via Andy Garnett (Rock Oilfield); awaiting reply with (GV)/phase/W-2 clarifications
 
 ## Tips
 - [Voice prompts](user_voice_prompt_tips.md) — Linux shortcuts for voice-dictated editing
 
 ## References
 > ai-orchestration.md, network_machines.md
-- [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress/activity videos on YouTube account `achantav@gmail.com`; grounds skill-analysis workstream in observed evidence
-- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — modern Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
+- [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress videos on YouTube `achantav@gmail.com`; grounds skill-analysis evidence
+- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
-- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06 with Candid entry
+- [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
 - [Gmail MCP scope](reference_gmail_mcp_scope.md) — read+compose only, no modify; archive/label/delete require browser or user UI
-- [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`; calibration trips #41/#67/#68 in achantas-data
-- [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT repo at `pkg.claude-desktop-debian.dev` post-April-2026 migration
-- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps official OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/` with symlinked `~/.cargo`/`~/.rustup` to spare home partition; skip `install-deps.sh` when distro packages already present
-- [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (research preview, 2026-05-06); NOT in Claude Code CLI or Claude.ai; auto vs review-before-apply policy
-- [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for workspace-hub#2663/#2664; examples gallery at https://thariqs.github.io/html-effectiveness/
+- [Travel skill family](reference_travel_skill_family.md) — `.claude/skills/travel/` (workspace-hub, SHA `0722fa994`); entry = `trip-planner`
+- [Claude Desktop on Linux](reference_claude_desktop_linux_aaddrick.md) — `aaddrick/claude-desktop-debian`; APT at `pkg.claude-desktop-debian.dev` post-April-2026
+- [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/`
+- [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (2026-05-06 research preview); NOT in Claude Code CLI or Claude.ai
+- [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for #2663/#2664

@@ -306,45 +306,6 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:agent-cost-tracking"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "fix(hermes-ops): ace-linux-2 kanban-worker spawn fails \u2014 `hermes` not on gateway PATH"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2712,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "fix(hermes-ops): ace-linux-2 kanban-worker spawn fails \u2014 `hermes` not on gateway PATH",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2712",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -7905,9 +7866,48 @@
       "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:personal-finance",
+          "domain:tax-preparation"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2296,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-05-16T01:20:12Z",
+  "generated_at": "2026-05-16T05:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8189,45 +8189,6 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "infra: gemini 0.42.0 headless mode reports run_shell_command not found \u2014 blocks cross-review",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2713",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:agent-cost-tracking"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "fix(hermes-ops): ace-linux-2 kanban-worker spawn fails \u2014 `hermes` not on gateway PATH"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2712,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "fix(hermes-ops): ace-linux-2 kanban-worker spawn fails \u2014 `hermes` not on gateway PATH",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2712",
         "warnings": []
       },
       {
@@ -15793,6 +15754,45 @@
         "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:personal-finance",
+            "domain:tax-preparation"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2296,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15803,9 +15803,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-16T01:20:08.962727Z",
+  "scorecard_generated_at": "2026-05-16T05:20:06.966220Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-16T01:20:08.808226Z",
+  "utilization_generated_at": "2026-05-16T05:20:06.758916Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 3,
