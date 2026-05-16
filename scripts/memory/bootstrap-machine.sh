@@ -103,6 +103,21 @@ if [[ "${OS}" == "windows" ]]; then
 fi
 
 # ---------------------------------------------------------------------------
+# 2.5. Install SOUL runtime symlinks (per #2719)
+#      Retargets ~/.hermes/SOUL.md, ~/.codex/AGENTS.md, ~/.codex/SOUL.md,
+#      ~/.gemini/SOUL.md to committed config/agents/<provider>/*.runtime.md
+#      artifacts. Idempotent; backs up pre-existing non-symlink files.
+# ---------------------------------------------------------------------------
+INSTALL_SOUL="${REPO_ROOT}/scripts/agents/install-soul-runtime.sh"
+if [[ -x "${INSTALL_SOUL}" ]]; then
+    if [[ -d "${HOME}/.hermes" || -d "${HOME}/.codex" || -d "${HOME}/.gemini" ]]; then
+        echo ""
+        echo -e "${CYAN}Installing SOUL runtime symlinks...${NC}"
+        bash "${INSTALL_SOUL}"
+    fi
+fi
+
+# ---------------------------------------------------------------------------
 # 3. Remind about bridge script (Linux/Hermes machines only)
 # ---------------------------------------------------------------------------
 if [[ -d "${HOME}/.hermes" ]]; then
