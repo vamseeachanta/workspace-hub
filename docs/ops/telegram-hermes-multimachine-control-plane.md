@@ -1,0 +1,150 @@
+# Telegram + Hermes multi-machine control plane
+
+> Issue: [#2720](https://github.com/vamseeachanta/workspace-hub/issues/2720)
+> Status: MVP contract and runbook. Telegram is the command/notification plane only; GitHub, git refs, and repo artifacts remain canonical state.
+
+## Recommendation
+
+Use **one coordinator Telegram bot on `dev-primary` (`ace-linux-1`) for the MVP**. It will read `config/workstations/registry.yaml`, report per-host readiness, and dispatch only when GitHub issue gates and git synchronization gates pass.
+
+Ranked options:
+
+1. **Coordinator bot on `dev-primary` — recommended MVP**
+   - Lowest operator confusion: one chat, one allowlist, one command surface.
+   - Keeps lease creation centralized while still allowing worker hosts through registry routing.
+   - Blast radius is controlled by allowlist, fail-closed readiness, host disable flags, and token rotation.
+2. **Per-host bot profiles**
+   - Better isolation after MVP, but creates more token rotation and chat routing overhead.
+   - Use only after host readiness and lease semantics are proven.
+3. **Telegram Desktop manual status on every machine**
+   - Useful for Windows/macOS operator visibility.
+   - Not acceptable as an unattended dispatch mechanism because it is not canonical state.
+
+## Canonical state model
+
+| Surface | Role | Canonical? |
+|---|---|---|
+| Telegram chat | Operator command input and short status notifications | No |
+| GitHub issue labels/comments | Workflow gate and human-visible lease mirror | Yes for issue state; comments mirror lease evidence |
+| Git remote ref `refs/heads/dispatch/leases/<issue>-<mode>` | Atomic dispatch lease | Yes |
+| `config/workstations/registry.yaml` | Machine identity, capabilities, dispatch posture, data-access profile | Yes |
+| `.planning/plan-approved/<issue>.md` | Local user-approval marker paired with GitHub `status:plan-approved` | Yes |
+| Local JSONL/job logs | Audit/cache only | No |
+
+## Supported commands
+
+### `/status [--host host|auto]`
+
+Reports registry-derived readiness without exposing secrets.
+
+Required output fields:
+
+- `host_id`, hostname, role, OS, workspace root.
+- Telegram/Hermes posture: coordinator, worker, desktop-status-only, disabled.
+- Dispatchability: pass/warn/fail/status-only/not-onboarded.
+- Git/repo state: dirty, ahead, behind, missing root, missing `AGENTS.md`.
+- Data access: repos, storage roots, remote mounts, freshness thresholds.
+- Security: allowlist configured, `GATEWAY_ALLOW_ALL_USERS` false/unset, token values redacted.
+
+### `/dispatch <issue> [--mode plan|implementation] [--host host|auto]`
+
+Translates a Telegram request into a gated GitHub/repo-backed job decision.
+
+Fail-closed gates:
+
+1. Resolve issue through `gh`/GitHub. No GitHub authority means no dispatch.
+2. For `--mode implementation`, require both:
+   - GitHub label `status:plan-approved`.
+   - Local marker `.planning/plan-approved/<issue>.md`.
+3. For `--mode plan`, allow only `status:needs-plan` or `status:plan-review` issues.
+4. Select host from `config/workstations/registry.yaml`; status-only hosts cannot execute.
+5. Block dirty worktrees, ahead/behind branches, missing data access, stale readiness, unreachable hosts, or unsafe gateway config.
+6. Create or renew the Git remote-ref lease. The non-forced push result is the atomic winner/loser arbiter.
+
+Lease rules:
+
+```text
+lease_ref = refs/heads/dispatch/leases/<issue>-<mode>
+idempotency_key = <issue>:<mode>:<host_id>
+```
+
+- New lease: create an empty lease commit parented to current `origin/main`; push without force to `lease_ref`.
+- Expired lease renewal: create a successor empty lease commit parented to the current lease-ref tip; push without force. Rejection means another host won.
+- GitHub issue comments mirror the winning lease and job/log pointers for humans; comments are not the lock.
+
+### `/jobs`
+
+Lists active dispatch leases and recent job evidence:
+
+- Lease ref.
+- Issue URL.
+- Host ID.
+- Mode.
+- Job/log artifact path.
+- Age/expiry status.
+
+### `/sync [--host host|auto]`
+
+Runs non-destructive synchronization discovery first.
+
+Rules:
+
+1. Verify host identity and repo root match `config/workstations/registry.yaml`.
+2. Run fetch/status discovery.
+3. If dirty, ahead, behind with conflicts, or missing upstream: stop and report blocker.
+4. If clean: `git pull --ff-only` only.
+5. Refresh repo-backed Hermes/skill/config paths.
+6. Re-run readiness smoke and report evidence.
+
+## Host dispatch posture
+
+| Host ID | MVP posture | Reason |
+|---|---|---|
+| `dev-primary` | Coordinator + dispatchable | Primary Linux control plane, workspace-hub source of truth, broad data access. |
+| `dev-secondary` | Worker dispatchable after readiness | Linux OSS simulation worker with reachable SSH and repo-backed sync. |
+| `licensed-win-1` | Desktop/status-only | Licensed solver host; no unattended dispatch until Windows Hermes/gateway parity is proven. |
+| `licensed-win-2` | Desktop/status-only | Same as `licensed-win-1`. |
+| `macbook-portable` | Manual/status-only | Portable/manual machine, no unattended Linux cron/control-plane dependency. |
+| `gali-linux-compute-1` | Not onboarded | GPU node lacks workspace/repo/Hermes setup. |
+
+## Security and token handling
+
+- Store Telegram bot tokens and gateway credentials only in local secret stores such as `~/.hermes/.env`; never commit them.
+- `GATEWAY_ALLOW_ALL_USERS=true` is a readiness failure for this MVP.
+- Missing allowlist evidence is a readiness failure for dispatch.
+- Status/log output must redact token-like values, API keys, password fields, and credential fields.
+- A compromised host can be disabled by setting `telegram_hermes.dispatch_enabled: false` in `config/workstations/registry.yaml`, committing/pushing the change, and rotating the relevant local token.
+
+## Token rotation
+
+1. Disable the affected host in `config/workstations/registry.yaml` if there is any risk of active compromise.
+2. Rotate the bot token with BotFather or the gateway provider.
+3. Update only the local secret store (`~/.hermes/.env` or host-specific secret manager).
+4. Restart Hermes/gateway on the coordinator host.
+5. Run `scripts/readiness/telegram-hermes-readiness.sh --host <host_id>`.
+6. Re-enable dispatch only after readiness is pass/warn and the worktree is clean/synced.
+
+## Rollback
+
+Fast rollback for unsafe behavior:
+
+```text
+1. Stop the Telegram gateway/Hermes listener on the affected host.
+2. Set telegram_hermes.dispatch_enabled=false for that host.
+3. Commit and push the registry change.
+4. Revoke or rotate the bot token if command spoofing or leakage is suspected.
+5. Leave existing Git lease refs intact as evidence; do not force-delete them during incident triage.
+```
+
+## Manual desktop smoke checks
+
+Telegram Desktop UX across Linux, Windows, and macOS is manual evidence for MVP. Use:
+
+- `docs/ops/telegram-hermes-desktop-smoke-checklist.md`
+
+## Existing dispatch infrastructure stance
+
+- `scripts/ai/provider-dispatch-loop.py` has useful leader/lease/idempotency patterns, but provider routing is not the Telegram machine dispatcher.
+- `scripts/ai/task-dispatcher.py` can inform capability/provider scoring, but it is not a job launcher.
+- `scripts/operations/workstation-dispatch.sh` and `scripts/coordination/routing/lib/agent_dispatcher.sh` remain local dispatch helpers.
+- Dated `scripts/dispatch/overnight-*` lane scripts are historical execution artifacts and must not become the Telegram command API.

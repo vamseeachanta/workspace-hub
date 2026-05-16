@@ -680,6 +680,29 @@ check_r_skills_extended() {
 } ; check_r_skills_extended || true
 
 # ─────────────────────────────────────────────────────────────────────────────
+# R-TELEGRAM-HERMES: multi-host Telegram/Hermes dispatch readiness (#2720)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_telegram_hermes() {
+  local tg_script="${WORKSPACE_HUB}/scripts/readiness/telegram-hermes-readiness.sh"
+  [[ -f "$tg_script" ]] || { log_pass "R-TELEGRAM-HERMES: readiness script absent — skip"; return; }
+
+  local tg_output overall
+  tg_output=$(bash "$tg_script" 2>&1 || true)
+  overall=$(printf '%s\n' "$tg_output" | jq -r '.overall_status // "fail"' 2>/dev/null || echo "fail")
+  case "$overall" in
+    pass)
+      log_pass "R-TELEGRAM-HERMES: all Telegram/Hermes dispatch hosts ready"
+      ;;
+    warn)
+      log_pass "R-TELEGRAM-HERMES: dispatch hosts ready; non-dispatch/status-only hosts present"
+      ;;
+    *)
+      log_fail "R-TELEGRAM-HERMES: readiness failed — run scripts/readiness/telegram-hermes-readiness.sh"
+      ;;
+  esac
+} ; check_r_telegram_hermes || true
+
+# ─────────────────────────────────────────────────────────────────────────────
 # R12: Nightly smoke tests — tier-1 repo pytest -m smoke (WRK-1172)
 # ─────────────────────────────────────────────────────────────────────────────
 check_r12() {

@@ -32,6 +32,8 @@ tags:
 
 This skill captures the reusable install procedure for the deployment first delivered for `@AceEngineerBot` on `ace-linux-1` per [issue #2563](https://github.com/vamseeachanta/workspace-hub/issues/2563). The host-specific operator runbook with the actual sudo/host commands is at `docs/runbooks/telegram-hermes-mobile.md`; this skill is the **procedure outline**, not the per-host state. Concrete shell commands are intentionally minimized here and live in the runbook so the security scanner doesn't have to relitigate every literal path on each commit.
 
+For multi-machine dispatch/sync, use the tracked runbook `docs/ops/telegram-hermes-multimachine-control-plane.md` from [issue #2720](https://github.com/vamseeachanta/workspace-hub/issues/2720). The multi-host contract keeps Telegram as a command/notification surface only; `config/workstations/registry.yaml`, GitHub issue gates, `.planning/plan-approved/<issue>.md`, and Git remote refs under `refs/heads/dispatch/leases/<issue>-<mode>` remain canonical state. Do not use Telegram message history as a sync source.
+
 ## Conventions used in this skill
 
 - `${HERMES_HOME}` — directory containing Hermes config and the env-vars file. Defaults to the user's Hermes home directory per `systemd-unit:HERMES_HOME`. Substitute the absolute path at execution time.

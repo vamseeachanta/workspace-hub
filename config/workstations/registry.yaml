@@ -16,7 +16,7 @@ machines:
     capabilities:
       agent_clis: [claude, gemini]
       languages: [python3, bash]
-      tools: [uv, git, gh, npm]
+      tools: [uv, git, gh, npm, hermes]
       gpu: false
     storage:
       local: /mnt/local-analysis          # ext4, primary work partition
@@ -31,6 +31,19 @@ machines:
       - assethold
       - workspace-hub
       - OGManufacturing
+    telegram_hermes:
+      dispatch_enabled: true
+      telegram_mode: coordinator
+      hermes_profile: default
+      sync_policy: pull-before-work-push-after-work
+      data_access_profile:
+        repos: [workspace-hub, digitalmodel, assetutilities, worldenergydata, assethold, OGManufacturing]
+        storage_roots: [/mnt/local-analysis, /mnt/ace]
+        remote_mounts:
+          - /mnt/remote/ace-linux-2/dde
+          - /mnt/remote/ace-linux-2/local-analysis
+      readiness_freshness_thresholds:
+        report_hours: 25
     notes: >
       Primary dev workstation. All nightly scheduled tasks run here.
       NFS server for /mnt/ace knowledge center.
@@ -47,7 +60,7 @@ machines:
     capabilities:
       agent_clis: [claude]
       languages: [python3, bash]
-      tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, capytaine, tmux, uv, git]
+      tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, capytaine, tmux, uv, git, gh, hermes]
       gpu: nvidia-t400
     storage:
       local: /mnt/dde                     # primary work partition
@@ -56,6 +69,17 @@ machines:
     repos:
       - digitalmodel
       - worldenergydata
+    telegram_hermes:
+      dispatch_enabled: true
+      telegram_mode: worker
+      hermes_profile: linux-worker
+      sync_policy: pull-before-work-push-after-work
+      data_access_profile:
+        repos: [digitalmodel, worldenergydata]
+        storage_roots: [/mnt/dde]
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
     notes: >
       Secondary dev workstation. Open-source FEA/CFD simulation stack.
       NFS client, memory backup target.
@@ -80,6 +104,17 @@ machines:
       remote_mounts: []
     repos:
       - OGManufacturing
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: desktop-status-only
+      hermes_profile: windows-git-bash
+      sync_policy: manual-status-only
+      data_access_profile:
+        repos: [OGManufacturing]
+        storage_roots: ['D:\']
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
     notes: >
       Windows workstation. Hosts OrcaFlex and ANSYS licenses.
       No SSH — access physically or via GUI. Git Bash (MINGW64) for scripts.
@@ -100,6 +135,17 @@ machines:
       gpu: false
     repos:
       - OGManufacturing
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: desktop-status-only
+      hermes_profile: windows-git-bash
+      sync_policy: manual-status-only
+      data_access_profile:
+        repos: [OGManufacturing]
+        storage_roots: ['D:\']
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
     storage:
       local: 'D:\'
       knowledge: null
@@ -127,6 +173,17 @@ machines:
       remote_mounts: []
     repos:
       - workspace-hub
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: desktop-status-only
+      hermes_profile: macos-manual
+      sync_policy: manual-status-only
+      data_access_profile:
+        repos: [workspace-hub]
+        storage_roots: [/Users/krishna]
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
     notes: >
       Portable macOS workstation. No cron — manual or launchd-based scheduling.
       Path conventions differ from Linux (/Users/ vs /home/).
@@ -147,6 +204,17 @@ machines:
       tools: [cuda]
       gpu: rtx-3090x2
     repos: []
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: disabled
+      hermes_profile: not-onboarded
+      sync_policy: none
+      data_access_profile:
+        repos: []
+        storage_roots: []
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
     notes: >
       GPU compute node — 2x RTX 3090 (48 GB VRAM), 128 GB RAM.
       Not yet onboarded to workspace-hub. Route heavy ML/CUDA workloads here.
