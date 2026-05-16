@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-16T09:20:11.765837Z",
+  "generated_at": "2026-05-16T13:20:13.107114Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-16T09:20:10.255833Z",
+  "scorecard_generated_at": "2026-05-16T13:20:11.494564Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -198,7 +198,7 @@
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:43:52Z",
+          "updatedAt": "2026-05-16T10:13:41Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -397,7 +397,7 @@
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:43:52Z",
+          "updatedAt": "2026-05-16T10:13:41Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -422,7 +422,7 @@
             "domain:workflow",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-16T01:32:48Z",
+          "updatedAt": "2026-05-16T12:40:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -447,7 +447,7 @@
             "domain:semiconductor",
             "domain:chip-design"
           ],
-          "updatedAt": "2026-05-13T18:56:17Z",
+          "updatedAt": "2026-05-16T10:13:40Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -518,7 +518,7 @@
             "domain:security",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T21:58:05Z",
+          "updatedAt": "2026-05-16T10:13:37Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -732,7 +732,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-15T11:45:06Z",
+          "updatedAt": "2026-05-16T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1233,7 +1233,7 @@
             "cat:ai-orchestration",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-15T16:26:19Z",
+          "updatedAt": "2026-05-16T12:24:45Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1272,46 +1272,50 @@
           ]
         },
         {
-          "number": 2296,
-          "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
+          "number": 2720,
+          "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2720",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:personal-finance",
-            "domain:tax-preparation"
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "cat:harness",
+            "domain:integrations",
+            "domain:notification",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-04-16T02:54:57Z",
+          "updatedAt": "2026-05-16T10:23:04Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
+            "implementation",
             "strategy"
           ]
         },
         {
-          "number": 2297,
-          "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
+          "number": 2721,
+          "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness"
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-04-16T13:59:55Z",
+          "updatedAt": "2026-05-16T12:31:46Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -2727,7 +2731,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-15T12:11:10Z",
+          "updatedAt": "2026-05-16T12:12:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4053,7 +4057,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-15T11:08:41Z",
+          "updatedAt": "2026-05-16T11:06:43Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4158,7 +4162,7 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 4,
+      "execution_ready_count": 3,
       "total_candidates": 23,
       "top_issues": [
         {
@@ -4212,31 +4216,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 2550,
-          "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:automation",
-            "domain:security",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-15T21:58:06Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
           ]
         },
         {
@@ -4350,6 +4329,28 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2345,
+          "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness",
+            "domain:gtm"
+          ],
+          "updatedAt": "2026-04-21T10:27:04Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4404,31 +4405,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 2550,
-          "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:automation",
-            "domain:security",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-15T21:58:06Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
           ]
         },
         {
@@ -4620,6 +4596,30 @@
           "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2550,
+          "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "domain:automation",
+            "domain:security",
+            "agent:codex"
+          ],
+          "updatedAt": "2026-05-16T10:14:05Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [

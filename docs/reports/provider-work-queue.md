@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-16T09:20:11.765837Z
+Generated: 2026-05-16T13:20:13.107114Z
 Current week: 2026-W20
 Recommended provider order: gemini, codex, claude
 
@@ -26,19 +26,19 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 4
+- Execution-ready candidates: 3
 - Total routed candidates: 23
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #2402 feat(doc-intel): build embeddings index L2+L3 + query CLI (single authoritative tier) | yes | existing codex agent label | enhancement, priority:high, cat:data-pipeline, domain:document-intelligence, status:blocked, agent:codex |
 | #2403 feat(doc-intel): embeddings model-selection spike — BGE-M3 / Voyage / text-embedding-3-large | yes | existing codex agent label | enhancement, priority:medium, cat:data-pipeline, cat:research, domain:document-intelligence, status:working |
-| #2550 chore(security): codify public repo interaction-limit renewal in scheduled tasks | yes | existing codex agent label | enhancement, priority:medium, cat:operations, domain:automation, domain:security, agent:codex |
 | #2327 digitalmodel: CadQuery spike for parametric offshore geometry generation | yes | existing codex agent label | priority:low, cat:engineering, cat:research, status:working, agent:codex, status:plan-approved |
 | #2472 feat(canonical-spec): validate CALM/SPM buoy OrcaFlex semantic proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | no | implementation/test/fix language | priority:high |
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking |
+| #2345 feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot | no | implementation/test/fix language | priority:medium, cat:engineering, cat:harness, domain:gtm |
 
 ## gemini
 

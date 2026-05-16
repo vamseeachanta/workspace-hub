@@ -28,6 +28,90 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "domain:agent-cost-tracking"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2721,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "reviews not clean: major_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:operations",
+          "cat:harness",
+          "domain:integrations",
+          "domain:notification",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "- Found: `config/workstations/registry.yaml` \u2014 canonical workstation registry. It states: `HARD RULE: all machine identity/capability data lives here.` The implementation will **extend this file in-place** with Telegram/Hermes dispatch metadata instead of creating a competing hos",
+        "provider_route": "claude",
+        "risks": "**Risk:** A single coordinator bot could become a central failure point and wider blast-radius token. The runbook will compare this against per-host bots/profiles and recommend a coordinator-bot MVP only if token rotation, host disablement, allowlist enforcement, and lease visibility are satisfactory. | **Risk:** Telegram Desktop on Windows/Linux could create operator confusion if multiple hosts r",
+        "tests": "26 TDD tests defined",
+        "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2720,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-05-16-issue-2720-multi-machine-telegram-dispatch-sync-control-plane.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2720",
+      "warnings": [
+        "legacy_review_no_sha",
+        "major_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
         "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
@@ -753,9 +837,10 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: major_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2694.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -787,7 +872,6 @@
       "title": "Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2694",
       "warnings": [
-        "approved_no_marker",
         "legacy_review_no_sha",
         "major_review"
       ]
@@ -2918,7 +3002,6 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "already has status:plan-approved",
         "reviews not clean: unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -2931,8 +3014,7 @@
           "cat:operations",
           "domain:automation",
           "domain:security",
-          "agent:codex",
-          "status:plan-approved"
+          "agent:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2956,7 +3038,6 @@
       "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
       "warnings": [
-        "approved_no_marker",
         "legacy_review_no_sha",
         "unavailable_review"
       ]
@@ -3682,9 +3763,10 @@
         "missing status:plan-review label",
         "already has status:plan-approved",
         "reviews not clean: major_review,unavailable_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2510.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -3717,7 +3799,6 @@
       "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
       "warnings": [
-        "approved_no_marker",
         "legacy_review_no_sha",
         "major_review",
         "unavailable_review"
@@ -7827,92 +7908,98 @@
       "title": "feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2298",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:engineering",
-          "cat:harness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2297,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:personal-finance",
-          "domain:tax-preparation"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2296,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-16T09:20:13Z",
+  "generated_at": "2026-05-16T13:20:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-cost-tracking"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2721,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "reviews not clean: major_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "cat:harness",
+            "domain:integrations",
+            "domain:notification",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "- Found: `config/workstations/registry.yaml` \u2014 canonical workstation registry. It states: `HARD RULE: all machine identity/capability data lives here.` The implementation will **extend this file in-place** with Telegram/Hermes dispatch metadata instead of creating a competing hos",
+          "provider_route": "claude",
+          "risks": "**Risk:** A single coordinator bot could become a central failure point and wider blast-radius token. The runbook will compare this against per-host bots/profiles and recommend a coordinator-bot MVP only if token rotation, host disablement, allowlist enforcement, and lease visibility are satisfactory. | **Risk:** Telegram Desktop on Windows/Linux could create operator confusion if multiple hosts r",
+          "tests": "26 TDD tests defined",
+          "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2720,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-05-16-issue-2720-multi-machine-telegram-dispatch-sync-control-plane.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2720",
+        "warnings": [
+          "legacy_review_no_sha",
+          "major_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8641,9 +8728,10 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: major_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2694.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8675,7 +8763,6 @@
         "title": "Epic: Cross-domain duplicate-implementation cleanup (catenary, PipeCapacity, cathodic protection, natural-period, hydro-matrix, on-bottom stability)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2694",
         "warnings": [
-          "approved_no_marker",
           "legacy_review_no_sha",
           "major_review"
         ]
@@ -10806,7 +10893,6 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "already has status:plan-approved",
           "reviews not clean: unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -10819,8 +10905,7 @@
             "cat:operations",
             "domain:automation",
             "domain:security",
-            "agent:codex",
-            "status:plan-approved"
+            "agent:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10844,7 +10929,6 @@
         "title": "chore(security): codify public repo interaction-limit renewal in scheduled tasks",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2550",
         "warnings": [
-          "approved_no_marker",
           "legacy_review_no_sha",
           "unavailable_review"
         ]
@@ -11570,9 +11654,10 @@
           "missing status:plan-review label",
           "already has status:plan-approved",
           "reviews not clean: major_review,unavailable_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2510.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -11605,7 +11690,6 @@
         "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
         "warnings": [
-          "approved_no_marker",
           "legacy_review_no_sha",
           "major_review",
           "unavailable_review"
@@ -15715,84 +15799,6 @@
         "title": "feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2298",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2297,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(portability): schedule unified smoke drift detection after #2272 baseline",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2297",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:personal-finance",
-            "domain:tax-preparation"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2296,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "WRK: 2026 tax projections \u2014 SKEstates and AceEngineer income tax planning",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2296",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15803,15 +15809,15 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-16T09:20:10.255833Z",
+  "scorecard_generated_at": "2026-05-16T13:20:11.494564Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-16T09:20:10.120882Z",
+  "utilization_generated_at": "2026-05-16T13:20:11.242810Z",
   "warning_summary": {
-    "approved_no_marker": 14,
+    "approved_no_marker": 11,
     "approved_no_plan": 3,
     "empty_review": 3,
-    "legacy_review_no_sha": 28,
-    "major_review": 18,
+    "legacy_review_no_sha": 29,
+    "major_review": 19,
     "marker_without_open_approved_issue": 124,
     "missing_review": 24,
     "unavailable_review": 15,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T09:20:11.900703Z",
+  "generated_at": "2026-05-16T13:20:13.249571Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -252,7 +252,7 @@
         "cat:bugfix",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T03:43:52Z",
+      "updatedAt": "2026-05-16T10:13:41Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -376,6 +376,36 @@
       "updatedAt": "2026-05-15T15:57:12Z",
       "execution_ready": false,
       "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2345,
+      "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+      "labels": [
+        "priority:medium",
+        "cat:engineering",
+        "cat:harness",
+        "domain:gtm"
+      ],
+      "updatedAt": "2026-04-21T10:27:04Z",
+      "execution_ready": false,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",

@@ -101,6 +101,21 @@ flock -x -w 60 .git/serializer.lock -c 'git add <files> && git commit -m "<msg>"
 
 The wait timeout prevents indefinite blocking. `.git/serializer.lock` is a workspace convention, not a Git-native file — it just provides a single coordination point across agent processes on the same host.
 
+### D. Remote-first temporary worktree for non-fast-forward closeout
+
+If a shared `main` checkout has the desired local artifact commit but `git push origin main` is rejected because `origin/main` advanced, do **not** reflexively merge/rebase the whole dirty/divergent checkout. For narrow planning/review closeout, prefer a remote-first worktree:
+
+1. Inspect divergence with `git log --left-right --cherry-pick HEAD...origin/main` and confirm the local commit is a narrow artifact commit.
+2. Create a temporary worktree at `origin/main`.
+3. Cherry-pick only the intended commit into that worktree.
+4. Resolve conflicts only in the intended artifact paths; if unrelated conflicts appear, stop and report.
+5. Run the relevant gates in the worktree.
+6. Push with `git push origin HEAD:main`.
+7. Verify `git ls-remote origin main` matches the pushed commit.
+8. Remove the temporary worktree.
+
+This avoids dragging unrelated local-only commits or remote session/config churn into an otherwise narrow closeout. It is especially useful for plan/review artifacts where the remote needs the durable files, but the current checkout is contaminated by parallel-session work.
+
 ## Verification Checklist
 
 Before issuing the mutating git command:

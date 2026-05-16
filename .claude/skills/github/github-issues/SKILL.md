@@ -230,6 +230,18 @@ curl -s -X POST \
 
 ## 3. Managing Issues
 
+### Plan-review closeout for gated work
+
+When an issue-scoped plan has been written and adversarial-reviewed, close the planning gate transactionally before reporting success:
+
+1. Commit and push the plan plus durable review artifacts first.
+2. Post a GitHub issue comment with plan path, review artifact paths, verdict summary, validation commands, and pushed commit hash.
+3. Move labels from the planning intake state to `status:plan-review`.
+4. Re-query the issue and verify the expected label and comment URL.
+5. State explicitly that `status:plan-review` is not implementation approval; implementation remains blocked until the user applies `status:plan-approved`.
+
+Use `--body-file` for the comment body so paths, backticks, and verdict tables do not trigger shell quoting issues.
+
 ### Add/Remove Labels
 
 **With gh:**

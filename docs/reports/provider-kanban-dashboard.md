@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-16T09:20:13Z
+Generated: 2026-05-16T13:20:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2720 | feat(hermes): multi-machine Telegram dispatch and sync control plane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2719 | feat(ai-orchestration): unify SOUL.md across providers — SHARED + per-provider canonical with symlink runtime | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2717 | infra: live AQWA env access on licensed Windows host — prerequisite for #2709 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -116,7 +118,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2553 | docs(repo-portfolio): reconcile repository overview docs after mission review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2552 | docs(security): external contributor and unsolicited paid-help response runbook | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,unavailable_review |
 | #2551 | audit(security): verify branch/ruleset protections across public repos after collaborator-only lockdown | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2550 | chore(security): codify public repo interaction-limit renewal in scheduled tasks | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: unavailable_review |
+| #2550 | chore(security): codify public repo interaction-limit renewal in scheduled tasks | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2549 | chore(business-brain): periodically assess repo work and refresh ecosystem context | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2547 | chore(seanation): extract useful client information and archive repo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2545 | chore(saipem): extract useful installation-project information and archive or retire repo | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2300 | feat(governance): reconcile GitHub labels, approval markers, and README planning state | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2299 | chore(plans): make retention metadata a required planning artifact | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2298 | feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2297 | feat(portability): schedule unified smoke drift detection after #2272 baseline | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2296 | WRK: 2026 tax projections — SKEstates and AceEngineer income tax planning | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

@@ -219,6 +219,21 @@ For operations / cron / scheduler / environment issues, explicitly separate:
 
 Do not assume a repo patch is the right answer just because the symptom appears in repo logs.
 
+## Scheduled-report route-state rule
+
+For weekly cadence reports, OSS watchlists, roadmap boards, or any generated artifact that routes findings to GitHub issues, plan route-state safety as part of the normal generation path — not only as an after-the-fact validator.
+
+Planning must inspect and name every routing source:
+- committed route-map data files
+- hardcoded fallback/default route constants in generator scripts
+- helper functions that apply route-map values to rendered rows
+- prior generated reports showing user-facing route output
+- live GitHub state for referenced issue numbers
+
+A plan is weak if it only adds a validator that detects closed issue targets while normal offline generation can still render those closed targets. Require TDD that proves rendered output falls back to an open roadmap/umbrella anchor, or another explicitly verified open child issue, when a mapped child issue has closed.
+
+Session-specific detail and test-shape checklist: `references/route-state-validation-for-weekly-cadence.md`.
+
 Required planning behavior for these issues:
 1. Capture a reviewable live-state classification artifact first (for example: installed vs not-installed, firing vs not-firing, failing before startup vs failing after startup).
 2. State which branch is operational-only and which branch is repo-fixable.
