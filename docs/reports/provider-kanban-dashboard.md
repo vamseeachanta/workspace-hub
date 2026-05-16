@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-15T21:20:12Z
+Generated: 2026-05-16T01:20:12Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2719 | feat(ai-orchestration): unify SOUL.md across providers — SHARED + per-provider canonical with symlink runtime | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2717 | infra: live AQWA env access on licensed Windows host — prerequisite for #2709 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2716 | cleanup(paths): fix 4 hardcoded /mnt/workspace-hub callsites surfaced by #2548 review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -163,7 +164,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2450 | chore(ci-health): triage tests/work-queue/ — port to GSD or delete | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2449 | chore(ci-health): audit .planning/templates/ orphan refs from WRK→GSD migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2447 | Residual #2045 gaps — CODEX.md legacy WRK ref + GEMINI.md deprecated workflow pointer | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2446 | Close Hermes onboarding gate — SOUL.md has no workflow/gate references | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2445 | Implement bypass-rollback advisor and post-commit observer per #2289 policy | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2440 | decision: visual DNA coherence across aceengineer.com + digitalmodel | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2439 | chore(aceengineer-website): Bootstrap design-debt audit + token consolidation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

@@ -126,7 +126,7 @@ For each candidate issue:
 
 When the user asks how to keep an LLM wiki continuously up to date on a weekly cadence and make it more useful for code development, do not only propose more ingest. Treat the wiki as an operational engineering substrate.
 
-Use `references/weekly-cadence-code-utility-roadmap.md` for the detailed issue-family pattern. After drafting the related plans and running adversarial reviews, use `references/weekly-cadence-plan-review-hardening.md` to patch MINOR/MAJOR findings, create a cross-issue synthesis report, push the plan artifacts, post issue comments, and move issues to `status:plan-review` before surfacing approval choices.
+Use `references/weekly-cadence-code-utility-roadmap.md` for the detailed issue-family pattern. After drafting the related plans and running adversarial reviews, use `references/weekly-cadence-plan-review-hardening.md` to patch MINOR/MAJOR findings, create a cross-issue synthesis report, push the plan artifacts, post issue comments, and move issues to `status:plan-review` before surfacing approval choices. After a weekly-cadence plan is approved and implemented, use `references/weekly-freshness-implementation-closeout.md` for the durable artifact shape and validation/closeout checklist.
 
 The durable issue family is:
 

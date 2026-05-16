@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-15T21:20:10.461885Z",
+  "generated_at": "2026-05-16T01:20:10.524010Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-15T21:20:08.773233Z",
+  "scorecard_generated_at": "2026-05-16T01:20:08.962727Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 15,
+      "execution_ready_count": 16,
       "total_candidates": 173,
       "top_issues": [
         {
@@ -411,6 +411,31 @@
           ]
         },
         {
+          "number": 2719,
+          "title": "feat(ai-orchestration): unify SOUL.md across providers \u2014 SHARED + per-provider canonical with symlink runtime",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2719",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:workflow",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-15T22:48:19Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2510,
           "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
@@ -493,7 +518,7 @@
             "domain:security",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-13T13:03:45Z",
+          "updatedAt": "2026-05-15T21:58:05Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2296,28 +2321,6 @@
             "domain:workflow"
           ],
           "updatedAt": "2026-04-21T17:37:29Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2446,
-          "title": "Close Hermes onboarding gate \u2014 SOUL.md has no workflow/gate references",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2446",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workflow"
-          ],
-          "updatedAt": "2026-04-21T17:56:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4202,7 +4205,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-11T12:13:18Z",
+          "updatedAt": "2026-05-15T21:58:06Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4394,7 +4397,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-11T12:13:18Z",
+          "updatedAt": "2026-05-15T21:58:06Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",

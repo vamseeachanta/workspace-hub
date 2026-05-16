@@ -28,6 +28,52 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "already has status:plan-approved",
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:ai-orchestration",
+          "cat:harness",
+          "domain:workflow",
+          "status:plan-approved"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(ai-orchestration): unify SOUL.md across providers \u2014 SHARED + per-provider canonical with symlink runtime"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2719,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(ai-orchestration): unify SOUL.md across providers \u2014 SHARED + per-provider canonical with symlink runtime",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2719",
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -4781,44 +4827,6 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:harness",
-          "domain:workflow"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Close Hermes onboarding gate \u2014 SOUL.md has no workflow/gate references"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2446,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Close Hermes onboarding gate \u2014 SOUL.md has no workflow/gate references",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2446",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -7899,12 +7907,58 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-15T21:20:12Z",
+  "generated_at": "2026-05-16T01:20:12Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:workflow",
+            "status:plan-approved"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(ai-orchestration): unify SOUL.md across providers \u2014 SHARED + per-provider canonical with symlink runtime"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2719,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(ai-orchestration): unify SOUL.md across providers \u2014 SHARED + per-provider canonical with symlink runtime",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2719",
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -12661,44 +12715,6 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workflow"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Close Hermes onboarding gate \u2014 SOUL.md has no workflow/gate references"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2446,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Close Hermes onboarding gate \u2014 SOUL.md has no workflow/gate references",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2446",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -15787,17 +15803,17 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-15T21:20:08.773233Z",
+  "scorecard_generated_at": "2026-05-16T01:20:08.962727Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-15T21:20:08.653921Z",
+  "utilization_generated_at": "2026-05-16T01:20:08.808226Z",
   "warning_summary": {
-    "approved_no_marker": 13,
-    "approved_no_plan": 2,
+    "approved_no_marker": 14,
+    "approved_no_plan": 3,
     "empty_review": 3,
     "legacy_review_no_sha": 28,
     "major_review": 18,
     "marker_without_open_approved_issue": 124,
-    "missing_review": 23,
+    "missing_review": 24,
     "unavailable_review": 15,
     "unknown_review": 3
   }
