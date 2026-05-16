@@ -1,6 +1,6 @@
 # Plan for #2510: Python layout/CAD automation demo for chip/package geometries
 
-> **Status:** plan-review — 2026-05-04 Codex r15 MAJOR findings patched in plan text; fresh rerun required before approval
+> **Status:** approved — sustained-MAJOR loop-break per user comment 2026-05-13T18:56:15Z accepting r14 inline; marker `.planning/plan-approved/2510.md` materialized 2026-05-16 per [[feedback_codex_sustained_major_loop]] + [[feedback_label_vs_planbody_gate_inconsistency]]
 > **Complexity:** T2
 > **Date:** 2026-04-26
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2510
