@@ -94,3 +94,53 @@ Total: **8 commits, +1602 net lines across 13 unique files, 0 regressions.**
 - Review synthesis + Path B selection: [issuecomment-4464198699](https://github.com/vamseeachanta/workspace-hub/issues/2719#issuecomment-4464198699)
 - R3 inline-patch summary: [issuecomment-4464222752](https://github.com/vamseeachanta/workspace-hub/issues/2719#issuecomment-4464222752)
 - Phase 1 Discovery resolution: [issuecomment-4464316028](https://github.com/vamseeachanta/workspace-hub/issues/2719#issuecomment-4464316028)
+
+---
+
+## Post-handoff continuation (2026-05-16, same session)
+
+After this handoff was first committed, the user requested continued work on the next-step list. The following extensions landed:
+
+### Phase 8 — Gemini r2 rerun (post quota-reset)
+- Dispatched against the #2719 reshape body; quota reset successfully
+- **Verdict invalidated** — I reused the pre-r3-reshape `/tmp/codex-r2-prompt.txt` for Gemini's input (operational error); Gemini returned MAJOR with 5 findings, all of which were already fixed by r3+Phases 1-7
+- Transparent crosswalk posted at [issuecomment-4466874488](https://github.com/vamseeachanta/workspace-hub/issues/2719#issuecomment-4466874488); each Gemini finding mapped 1:1 to its landed commit
+- Lesson promoted to memory: `feedback_reviewer_dispatch_refetch_live_body`
+
+### Ecosystem audit (workspace-hub#2411 follow-on)
+- Found that a workspace-hub umbrella issue already exists for this exact scope: [#2411 "tier-1 provider entrypoint and parity surface inventory"](https://github.com/vamseeachanta/workspace-hub/issues/2411)
+- Dispatched 7 parallel Explore subagents across all tier-1 sibling repos
+- Posted canonical 7-repo inventory comment satisfying #2411's 4 acceptance criteria: [issuecomment-4467824635](https://github.com/vamseeachanta/workspace-hub/issues/2411#issuecomment-4467824635)
+- Meta-finding: **3 of 7 tier-1 repos have unresolved merge conflicts on `main`** (42.9% break rate) — separate from adapter-parity question
+
+### Merge-conflict fixes (3 repos)
+- **[worldenergydata#414](https://github.com/vamseeachanta/worldenergydata/issues/414)** + [PR #415](https://github.com/vamseeachanta/worldenergydata/pull/415) — `.claude/docs/agents.md` (6 markers, 2 blocks; resolution keep-HEAD)
+- **[aceengineer-website#14](https://github.com/vamseeachanta/aceengineer-website/issues/14)** + [PR #15](https://github.com/vamseeachanta/aceengineer-website/pull/15) — `content/blog/AI_AGENT_ORCHESTRATION.md` (105 markers, 35 blocks) PLUS `content/blog/HTML_REPORTING_STANDARDS.md` (15 markers, sibling regression caught by broader test)
+- **[assethold#50](https://github.com/vamseeachanta/assethold/issues/50)** + [PR #51](https://github.com/vamseeachanta/assethold/pull/51) — `.claude/settings.json` (3 markers, 1 block; resolution merge-both with explicit per-key retention)
+
+All 3 followed the same TDD-first → fix → branch → PR pattern (forced because all 3 repos have `main` branch protection rulesets per `feedback_admin_flag_vs_rulesets_api`).
+
+### New feedback memories promoted (3 total)
+- `feedback_codex_bootstrap_untracked_sed_origin` — Phase 1 Discovery lesson
+- `feedback_reviewer_dispatch_refetch_live_body` — Gemini r2 stale-input lesson
+- `feedback_regression_test_broader_than_issue_scope` — broader-than-named-target test catches sibling regressions for free (caught HTML_REPORTING_STANDARDS.md while fixing AI_AGENT_ORCHESTRATION.md)
+
+### Updated awaiting-user-action queue (cumulative)
+
+| Item | State | Action |
+|---|---|---|
+| [workspace-hub#2719](https://github.com/vamseeachanta/workspace-hub/issues/2719) | 7 phases + audit + Gemini crosswalk | close |
+| [workspace-hub#2446](https://github.com/vamseeachanta/workspace-hub/issues/2446) | 5/5 acceptance satisfied | close |
+| [workspace-hub#2411](https://github.com/vamseeachanta/workspace-hub/issues/2411) | 4/4 acceptance via 7-repo inventory | close |
+| [worldenergydata#414](https://github.com/vamseeachanta/worldenergydata/issues/414) + [PR #415](https://github.com/vamseeachanta/worldenergydata/pull/415) | resolution in PR | merge PR |
+| [aceengineer-website#14](https://github.com/vamseeachanta/aceengineer-website/issues/14) + [PR #15](https://github.com/vamseeachanta/aceengineer-website/pull/15) | resolution in PR | merge PR |
+| [assethold#50](https://github.com/vamseeachanta/assethold/issues/50) + [PR #51](https://github.com/vamseeachanta/assethold/pull/51) | resolution in PR | merge PR |
+
+3 issues to close (workspace-hub side) + 3 PRs to merge (sibling repos side).
+
+### Next-step candidates for follow-on session
+
+1. **Per-repo adapter-parity rollout** — digitalmodel/, assetutilities/, worldenergydata/, assethold/, aceengineer-website/ each PARTIAL on the adapter pattern (audit at [#2411 inventory comment](https://github.com/vamseeachanta/workspace-hub/issues/2411#issuecomment-4467824635)). Bundle as one umbrella OR 5 per-repo issues; deferred for user direction.
+2. **Cross-machine bootstrap dry-run on `ace-linux-2`** — validates Phase 4 cross-machine claim empirically; needs user-driven run since I can't SSH per `feedback_cross_machine_execution`.
+3. **Pre-commit hook for merge-conflict marker detection across tier-1 repos** — given 3/7 repos had unresolved conflicts at audit time, a hook would catch future regressions before they reach `main`. Propagated install via `bootstrap-machine.sh §2.6`.
+4. **Final close-out of `feedback_codex_cli_0_124_upstream_regression`** ([#2715](https://github.com/vamseeachanta/workspace-hub/issues/2715)) — out-of-scope for this session but adjacent.
