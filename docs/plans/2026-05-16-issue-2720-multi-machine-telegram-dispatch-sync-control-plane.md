@@ -139,9 +139,9 @@ scripts/ai/provider-work-queue.py:162:            # Non-truncated candidate set 
 ```
 These gap proofs show no existing Telegram/Hermes multi-host dispatch parser, job API, sync API, or lease implementation under the planned script/test paths; existing references are generic dispatch/sync infrastructure, not the requested Telegram control plane.
 
-**Plan/index existence:** `docs/plans/README.md` contains the #2720 row at line 203 with status `draft` before final review closeout.
+**Plan/index existence:** `docs/plans/README.md` contains the #2720 row at line 203 with status `plan-review` after adversarial review closeout.
 
-**Durability caveat before closeout:** before final commit/push, `git status --short` showed the #2720 plan and review artifacts as untracked. This is a workflow closeout blocker, not an implementation permission; it must be resolved before any GitHub `status:plan-review` transition.
+**Durability closeout:** the #2720 plan and r4 review artifacts are committed by the closeout commit and pushed to `origin/main` before the GitHub issue label transition. This is not implementation permission; implementation remains blocked until user approval.
 
 Initial T3 adversarial plan review artifacts for this plan returned **MAJOR** from Claude, Codex, and Gemini. Subsequent rounds drove the plan to the current patched state: duplicate host registry removed, Git remote-ref lease with expired-lease fast-forward renewal specified, approval marker gate added, harness-config path reconciliation added, embedded evidence added, allow-all fail-closed tests added, skill/reference durability corrected, and acceptance criteria tightened. No implementation may start until the user applies `status:plan-approved`.
 
@@ -354,7 +354,7 @@ function redact_and_emit_status(status):
 | Codex r4 | MAJOR before final closeout | Content fixes were mostly verified; blockers were non-durable artifacts, stale review-state wording, and harness-config visibility. This revision patches wording/visibility; durability is resolved by commit/push and issue comment before label transition. |
 | Gemini r4 | MAJOR before final closeout | Required embedded tool-output evidence and explicit `scripts/readiness/harness-config.yaml` reconciliation. This revision embeds the required evidence and includes harness-config in Files to Change and acceptance criteria. |
 
-**Overall result:** plan-content blockers from r4 have been patched inline. Remaining blockers are workflow closeout actions only: commit/push the plan and review artifacts, post the GitHub issue summary, and set `status:plan-review`. A final `status:plan-review` transition does **not** approve implementation; implementation remains blocked until the user applies `status:plan-approved`.
+**Overall result:** plan-content blockers from r4 have been patched inline. Workflow closeout is complete once this commit is pushed, the GitHub issue summary is posted, and the issue is moved to `status:plan-review`. A `status:plan-review` transition does **not** approve implementation; implementation remains blocked until the user applies `status:plan-approved`.
 
 Revisions made based on review:
 - Replaced proposed `config/workstations/telegram-hermes-hosts.yaml` with in-place extension of `config/workstations/registry.yaml`.
