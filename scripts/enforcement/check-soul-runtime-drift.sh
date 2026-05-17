@@ -74,6 +74,29 @@ check_one codex  SOUL.delta.md SOUL.runtime.md
 check_one codex  SOUL.delta.md AGENTS.runtime.md
 check_one gemini SOUL.delta.md SOUL.runtime.md
 
+# ── Auto-load wiring check (workspace-hub#2725) ──
+# CLAUDE.md and GEMINI.md must inline-import their per-provider runtime
+# artifacts via @file.md import syntax (Claude Code @file, Gemini CLI @file.md).
+# Without this, the 14+5 Must-Fire Rules don't reach Claude/Gemini sessions.
+check_autoload_wiring() {
+    local file="$1" expected="$2"
+    local full_path="${REPO_ROOT}/${file}"
+    if [[ ! -f "${full_path}" ]]; then
+        echo "DRIFT  ${file} — file missing; cannot verify auto-load wiring"
+        drift_count=$((drift_count + 1))
+        return 0
+    fi
+    if ! grep -Fxq "${expected}" "${full_path}"; then
+        echo "DRIFT  ${file} missing auto-load directive: ${expected}"
+        drift_count=$((drift_count + 1))
+    elif [[ "${QUIET}" -eq 0 ]]; then
+        echo "OK     ${file} auto-load wired"
+    fi
+}
+
+check_autoload_wiring CLAUDE.md "@config/agents/claude/SOUL.runtime.md"
+check_autoload_wiring GEMINI.md "@config/agents/gemini/SOUL.runtime.md"
+
 if [[ "${drift_count}" -gt 0 ]]; then
     echo
     echo "DRIFT DETECTED: ${drift_count} artifact(s) out of sync."
