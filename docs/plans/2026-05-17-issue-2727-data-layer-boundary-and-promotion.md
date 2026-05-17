@@ -50,6 +50,13 @@
 | Execution artifacts | issue plans, YAML/JSON configs, prompt bundles, tool manifests, run logs, checksums | Execution/report boundary; promote only manifests/evidence, not bulky generated data by default |
 | Report artifacts | internal reports, client HTML, limited PDFs, chatbot/query configs/indexes | Report layer; audience-specific evidence and sanitization gates required |
 
+### Concrete example path classes for user review
+| Example path / pattern | Example contents | Data layer level | Public/private posture | Notes |
+|---|---|---|---|---|
+| `/mnt/ace/` raw PDFs → generated `.md` files | Standards/literature/project PDFs and their first-pass markdown extraction outputs | D-L1 raw/source data → D-L2 raw-like extraction output | Private/local source data | Treat the PDFs and unreviewed markdown as local/private source material; no direct public `llm-wiki` or client-report eligibility without promotion gates. |
+| `/mnt/ace/raw-processed/` | Index files, markdown files, uncurated `llm-wiki` drafts/staging packs, extraction manifests | D-L2 raw-like structured/staging data | Private/local source data | Treat as staging and curation workspace; useful for source cards, inventories, RAG chunks, and reviewer work queues, but not public by default. |
+| `/mnt/local-analysis/<repo>/` | Tier-1 repo checkouts such as `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`, `aceengineer-website`, `aceengineer-strategy` | D-L3 curated knowledge/data or repo-backed execution/report metadata, depending on repo/path | Public-facing only for explicitly public repos/content; sanitized/curated data only | Public `llm-wiki` content, curated data, and sanitized fixtures belong here when repo policy allows; private raw source data should not be inferred public just because it was used to create a sanitized derivative. |
+
 ### Gaps identified
 - No approved level taxonomy yet for data L1 raw → L2 raw-llm-wiki/staging → L3 public `llm-wiki`/chatbot knowledge.
 - No approved level taxonomy yet for execution inputs vs data-layer inputs, code/tooling, machines/compute, validation evidence, and handoff manifests.
@@ -66,6 +73,7 @@
 - EXISTS: `data/document-index/mounted-source-registry.yaml`
 - EXISTS: `docs/content-pipeline/README.md`
 - EXISTS: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`
+- Path probe 2026-05-17: `/mnt/ace/` exists on this host; `/mnt/ace/raw-processed/` is recorded as user-provided intended/example staging path but was not present in this runtime probe; `/mnt/local-analysis/` exists and contains at least `workspace-hub`, `llm-wiki`, and `digitalmodel` checkouts in this runtime.
 
 **Line excerpts consulted**:
 ```text
@@ -154,6 +162,7 @@ function classify_data_source(source):
 ## Acceptance Criteria
 - [ ] Data levels D-L1 through D-L4 are defined and reconciled with existing data residence tiers.
 - [ ] Initial source inventory includes `/mnt` roots, tier-1 repos, `worldenergydata` public sources, `digitalmodel` reference data, mounted standards/literature, client/project data, private/raw `llm-wiki`, public `llm-wiki`, and derived indexes.
+- [ ] Data source inventory includes concrete path-class examples for `/mnt/ace/` raw PDFs → markdown, `/mnt/ace/raw-processed/` private staging/indexes/uncurated wiki material, and `/mnt/local-analysis/<repo>/` tier-1 public-facing repos with curated/sanitized data.
 - [ ] `llm-wiki` raw/staging vs public-facing content boundaries are explicit.
 - [ ] Client/project data and mounted private data are non-public by default.
 - [ ] Promotion gates include provenance, license/legal, sanitization, technical review, and freshness/regeneration metadata.
