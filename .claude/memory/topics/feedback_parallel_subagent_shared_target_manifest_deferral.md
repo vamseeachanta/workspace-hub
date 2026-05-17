@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-16
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-17
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_parallel_subagent_shared_target_manifest_deferral.md
 
 ---
@@ -29,9 +29,27 @@ When two or more parallel write-only subagents both need to insert content into 
 
 - Subagent-emitted `old_string` anchors can cause structural violations (e.g., H2 inserted between H3 subsections of a parent H2) — main session should structurally validate Edit deltas before apply, not blind-apply
 - The pattern adds main-session integration overhead; reserve for I/O-bound authoring work (wiki page authoring) where parallelization payoff exceeds the integration cost
-- Do not attempt with >2 parallel subagents — shared-target collision-management overhead grows quadratically; 3+ subagents should run sequentially
+- Do not attempt with >2 parallel subagents in a single batch — shared-target collision-management overhead grows quadratically; for 3 sub-issues use the **two-batch + solo trailing** pattern instead (see below)
+
+**Two-batch + solo trailing pattern (validated 4 epics — 2026-05-15 to 2026-05-16):** for sub-issue counts of 3, do NOT extend Batch 1 to 3 parallel subagents. Instead:
+
+- **Batch 1**: 2 parallel subagents on 2 sub-issues (the 2 with most disjoint topic surfaces — typically the broader-foundational ones)
+- **Batch 2**: 1 solo subagent on the remaining sub-issue (typically the one with the heaviest cross-link surface back to Batch 1 + prior phases — solo dispatch lets it cross-link the now-landed Batch 1 pages without forward-reference fragility)
+
+This preserves the per-pair shared-target collision safety while extending parallelism beyond 2 sub-issues, AND positions the heaviest cross-link work where it benefits most from solo execution.
 
 **Pilot reference (LIVE — 2026-05-15):** llm-wiki PE Phase 2 sub-issues [#82](https://github.com/vamseeachanta/llm-wiki/issues/82) (sand control) + [#83](https://github.com/vamseeachanta/llm-wiki/issues/83) (multi-zone & smart completions) authored in parallel from a single Claude Code session; commits [`5bc269fb`](https://github.com/vamseeachanta/llm-wiki/commit/5bc269fb) + [`863c7e96`](https://github.com/vamseeachanta/llm-wiki/commit/863c7e96). Total wall-clock ~30 min vs estimated 4-5 hours sequential. Five shared-target files (perforating.md, perforation-strategy.md, ESP, index, log) edited TWICE — once per commit — without any race or conflict. See exit handoff `docs/session-handoffs/2026-05-15-issues-82-83-sand-control-multi-zone-exit.md` for full pattern walkthrough.
+
+**Scale validation (LIVE — 4 epics in a row, 2026-05-15 → 2026-05-16):** the two-batch + solo pattern has now shipped through every PE epic with 3 sub-issues:
+
+- PE Phase 2 [#73](https://github.com/vamseeachanta/llm-wiki/issues/73) — Batch 1: #82 + #83 parallel; Batch 2 not applicable (only 2 sub-issues)
+- PE Phase 3 [#74](https://github.com/vamseeachanta/llm-wiki/issues/74) — Batch 1: #84 + #85 parallel; Batch 2: #86 solo
+- PE Phase 4 [#87](https://github.com/vamseeachanta/llm-wiki/issues/87) — Batch 1: #89 + #90 parallel; Batch 2: #91 solo
+- PE Phase 5 [#92](https://github.com/vamseeachanta/llm-wiki/issues/92) — Batch 1: #93 + #94 parallel; Batch 2: #95 solo
+
+The Batch 2 sub-issue in each epic was the highest-cross-link one (well integrity / surface handover — heavy backlinks into Batch 1). In Phase 5 specifically, the two Batch 1 subagents independently converged on the same calc-citation posture (doc-only metadata) WITHOUT inter-agent coordination — strong evidence that when subagents follow structural prompt guidance, posture-consistency emerges naturally and the main session doesn't need to enforce uniformity post-hoc.
+
+PE wiki growth measured under the pattern: 0 pages (pre-Phase 1) → 93 pages (post-Phase 5), ~93 pages across 5 phases with 4 batched-parallel epics. The pattern is now durable beyond pilot status.
 
 **Related:**
 - [[feedback_parallel_agent_write_only_pattern]] — base pattern this extends (subagents write, main commits; doesn't address shared-target collision)

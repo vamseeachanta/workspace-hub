@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-16
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-17
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_closes_trailer_fires_once.md
 
 ---
@@ -22,14 +22,15 @@ When a SINGLE commit message contains multiple `Closes #NNNN` references joined 
      [ "$state" = "OPEN" ] && gh issue close $n
    done
    ```
-2. **Better pattern**: split into separate `Closes #X` trailers on their own lines (untested but more likely to fire) — instead of `Closes #X, #Y` write:
+2. **Better pattern (VERIFIED 2026-05-16)**: split into separate `Closes #X` trailers on their own lines — this fires ALL refs reliably on direct push. Instead of `Closes #X, #Y` write:
    ```
-   Closes #X
-   Closes #Y
+   Closes vamseeachanta/llm-wiki#X
+   Closes vamseeachanta/llm-wiki#Y
    ```
+   Verified 2026-05-16: llm-wiki commit [`b8cb773b`](https://github.com/vamseeachanta/llm-wiki/commit/b8cb773b) had separate-line `Closes vamseeachanta/llm-wiki#93` + `Closes vamseeachanta/llm-wiki#94` trailers; on direct push to main, GitHub closed BOTH issues with closeAt timestamps 1 second apart (22:45:12Z + 22:45:13Z). Sequential processing per trailer line, all fire.
 3. **Best pattern (when applicable)**: use the PR squash-merge flow — open one PR with N commits, each with its own `Closes` ref, squash-merge → all fire reliably (the verified-good case).
 4. `gh issue comment <n>` works in BOTH OPEN and CLOSED states; only `gh issue close --comment "..."` drops on already-closed issues (per `feedback_gh_issue_close_silent_comment_drop.md`).
 
-**Do NOT apply when:** filing one commit per issue (no comma trailer), or when using the PR squash-merge flow (different mechanism, works correctly).
+**Do NOT apply when:** filing one commit per issue (no comma trailer), using separate-line `Closes` form (each fires independently), or when using the PR squash-merge flow.
 
-**Untested variant worth probing:** does `Closes #X\nCloses #Y` (line-separated, same commit body) fire all refs? If yes, the rule narrows to "comma form fires once; line-separated form fires all."
+**Variant resolution (RESOLVED 2026-05-16):** the previously-untested variant `Closes #X\nCloses #Y` (line-separated, same commit body) **DOES fire all refs** on direct push to main. The rule now narrows to: **comma-joined form fires once; line-separated form fires all**. Sequential processing per trailer line (observed 1-second gap between closeAt timestamps confirms GitHub's webhook pipeline processes each trailer-line as a separate event after the push lands). Preferred pattern for multi-issue commits is now the line-separated form — no post-push verification loop needed.

@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-16
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-17
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_admin_flag_vs_rulesets_api.md
 
 ---

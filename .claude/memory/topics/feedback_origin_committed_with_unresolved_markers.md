@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-16
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-17
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_origin_committed_with_unresolved_markers.md
 
 ---
@@ -9,15 +9,15 @@ originSessionId: 73cbf578-6fb3-4436-9a95-06ed471cd8b1
 ---
 A parallel Claude session can commit a half-resolved file containing literal `<<<<<<< Updated upstream` / `=======` / `>>>>>>> Stashed changes` text on origin/main (from a prior `git stash apply` that wasn't completed). When the local session later merges, git produces DOUBLE-NESTED conflict markers:
 ```
-<<<<<<< HEAD
+<<<<<<< HEAD # CONFLICT_MARKER_FORENSIC_OK
 > **Status:** completed
-=======
-<<<<<<< Updated upstream
+======= # CONFLICT_MARKER_FORENSIC_OK
+<<<<<<< Updated upstream # CONFLICT_MARKER_FORENSIC_OK
 > **Status:** plan-review
-=======
+======= # CONFLICT_MARKER_FORENSIC_OK
 > **Status:** completed
->>>>>>> Stashed changes
->>>>>>> 8f1aa93c0...
+>>>>>>> Stashed changes # CONFLICT_MARKER_FORENSIC_OK
+>>>>>>> 8f1aa93c0... # CONFLICT_MARKER_FORENSIC_OK
 ```
 
 **Why:** the outer markers are git's normal HEAD-vs-FETCH_HEAD merge conflict; the inner markers are pre-existing TEXT in origin's committed file (because a prior committer mistakenly committed conflict-marker text without resolving). It happened on 2026-05-01 with `docs/plans/2026-05-01-issue-2570-...md` — origin's `52c1cf09a` had 9 stale markers; the manual run had to resolve via `git checkout --ours` of the file (HEAD was already clean).

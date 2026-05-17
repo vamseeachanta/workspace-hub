@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-16)
+## Synced from Hermes Memory (2026-05-17)
 
 ### Environment Facts
 
@@ -23,11 +23,8 @@
 ### User Profile
 
 - User requires zero-waste AI spend: consume weekly provider credits on useful approved work; prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions. In marine/offshore force reviews, user expects individual components and resultants compared side-by-side using existing basecase assumptions.
-- Issue closeout needs transactional same-window push to origin, branch/worktree disposition, cleanup/removal or explicit evidence-preserving blocker, and clean-state proof before/with closure; closing ...
-- User treats stale files, branches, unmerged commits, and uncleaned worktrees after issue closure as workflow failures requiring evidence-based RCA and durable process correction; transactional closeou...
-- User expects strict workflow compliance for meaningful work: adversarial review gates apply to harness/file-structure/test-suite/docs/report/skill-transfer/non-code changes (scaled if needed). Session...
-- “Document and prepare to exit” means concise exit report + committed/pushed handoff (usually docs/session-handoffs/) with repo states, dirty exceptions, no-external-action status, and next steps.
-- For requested user actions/approvals, user prefers a compact preview with GitHub links, current gate/status, exact recommended action, and what will happen next so they can approve quickly in-window.
+- User expects strict workflow compliance: meaningful work needs proper gates and adversarial review even for docs/reports/skills/non-code. Closeout must be transactional in-window: push to origin, branch/worktree disposition, clean-state proof or explicit evidence-preserving blocker; stale files/branches/worktrees after closure are workflow failures. “Document and prepare to exit” means a committed/pushed docs/session-handoffs report with repo states, dirty exceptions, no-external-action status, and next steps. Approval requests should be compact with GitHub links, current gate/status, exact recommended action, and what happens next. User wants llm-wiki maintained on a weekly freshness cadence for code-development leverage.
+- When execution is interrupted by context/tool-call limits, user expects a concise, truthful handoff: current task state, verified evidence, blockers, exact next commands, and an explicit non-closeout if gates are incomplete.
 
 
 <!-- BRIDGE:END -->
