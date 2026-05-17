@@ -1,10 +1,10 @@
 # Plan for #2728: Define execution layer contracts, tooling, and compute routing
 
-> **Status:** draft — user source-curation pass pending; not adversarial-reviewed; not `status:plan-review`
+> **Status:** `status:plan-review` — re-reviewed 2026-05-17; awaiting user decision; not approved
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2728
-> **Review artifacts:** pending after user source-curation pass
+> **Review artifacts:** `scripts/review/results/2026-05-17-plan-2728-claude.md`, `scripts/review/results/2026-05-17-plan-2728-codex.md`, `scripts/review/results/2026-05-17-plan-2728-gemini.md`, `scripts/review/results/2026-05-17-plan-2728-disagreement.md`
 
 ---
 
@@ -162,7 +162,16 @@ function execute_pipeline(execution_manifest):
 ---
 
 ## Adversarial Review Summary
-Pending. Do not move to `status:plan-review` until user source-curation pass and adversarial review are complete.
+Re-reviewed on 2026-05-17 with Claude, Codex, and Gemini via `scripts/review/plan-review-fanout.sh`.
+
+| Provider | Artifact | Verdict |
+|---|---|---|
+| Claude | `scripts/review/results/2026-05-17-plan-2728-claude.md` | MAJOR |
+| Codex | `scripts/review/results/2026-05-17-plan-2728-codex.md` | MAJOR |
+| Gemini | `scripts/review/results/2026-05-17-plan-2728-gemini.md` | MAJOR |
+| Disagreement report | `scripts/review/results/2026-05-17-plan-2728-disagreement.md` | MAJOR findings consolidated |
+
+Plan is in `status:plan-review` for user review only. Do not implement or mark `status:plan-approved` until the user explicitly approves a revised plan.
 
 ---
 
