@@ -82,6 +82,37 @@ Recommended next planning target: multi-machine live dispatch execution from ace
 4. run only approved low-risk probes first;
 5. require user approval before any cross-machine execution with side effects.
 
-## Final proof update requirement
+## First exit proof commit
 
-This file itself must be committed and pushed after creation. Final user response should cite the post-push `HEAD`, `origin/main`, ahead/behind, and remaining dirty count from the live repository state after the handoff commit lands.
+- Handoff commit: `70b5435770d617bc3dab4d8119e3da92b6cf462f` — `docs: add issue 2720 exit handoff`
+- Post-push proof at that time: `HEAD == origin/main`, ahead/behind `0/0`.
+- Dirty state remained unrelated and preserved.
+
+## Second exit confirmation — 2026-05-17 10:51 UTC / 2026-05-17 05:51 CDT
+
+The user repeated "document and prepare to exit" after the first handoff commit. This section records the fresh live state rather than creating a duplicate handoff file.
+
+Repository: `/mnt/local-analysis/workspace-hub`
+
+- Branch: `main`
+- Local `HEAD` before this second confirmation commit: `70b5435770d617bc3dab4d8119e3da92b6cf462f`
+- `origin/main` before this second confirmation commit: `70b5435770d617bc3dab4d8119e3da92b6cf462f`
+- Ahead/behind before this second confirmation commit: `0/0`
+- Issue #2720 live state: `CLOSED`, closed at `2026-05-17T10:35:26Z`
+- Dirty/untracked count before this second confirmation commit: 74 total paths
+  - tracked modified: 19
+  - untracked: 55
+
+Additional unrelated dirty paths appeared after the first handoff, including:
+
+- `.claude/skills/github/github-issues/SKILL.md`
+- `.claude/skills/workspace-hub/comprehensive-learning/SKILL.md`
+- `.planning/quick/review-77-codex.out`
+- `.planning/quick/review-77-gemini.out`
+- `logs/quality/memory-health-20260517.md`
+
+These were not staged for issue #2720. They are preserved as unrelated concurrent/session artifacts.
+
+External action status for the repeated exit confirmation: no external send/action performed.
+
+Final user response must cite the post-push commit for this second confirmation and fresh `HEAD == origin/main` evidence.
