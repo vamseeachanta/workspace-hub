@@ -82,6 +82,34 @@ def test_registry_extends_existing_workstation_schema(tmp_path: Path) -> None:
     assert hosts["macbook-portable"].dispatch_enabled is False
 
 
+def test_load_registry_allows_incomplete_non_dispatch_hosts(tmp_path: Path) -> None:
+    registry_path = _write_registry(tmp_path)
+    data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    data["machines"]["gpu-not-onboarded"] = {
+        "hostname": "shoerack",
+        "os": "linux",
+        "role": "gpu-compute",
+        "workspace_root": None,
+        "capabilities": {"tools": ["cuda"], "agent_clis": [], "gpu": "rtx-3090x2"},
+        "repos": [],
+        "telegram_hermes": {
+            "dispatch_enabled": False,
+            "telegram_mode": "disabled",
+            "hermes_profile": "not-onboarded",
+            "sync_policy": "none",
+            "data_access_profile": {"repos": [], "storage_roots": [], "remote_mounts": []},
+            "readiness_freshness_thresholds": {"report_hours": 25},
+        },
+    }
+    registry_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+
+    hosts = module.load_registry(registry_path)
+
+    assert hosts["gpu-not-onboarded"].dispatch_enabled is False
+    assert hosts["gpu-not-onboarded"].telegram_mode == "disabled"
+    assert hosts["gpu-not-onboarded"].repos == ()
+
+
 def test_load_registry_rejects_secret_values(tmp_path: Path) -> None:
     registry_path = _write_registry(tmp_path)
     data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
@@ -192,6 +220,61 @@ def test_dispatch_allows_plan_only_for_needs_plan(tmp_path: Path) -> None:
     assert result.reason_code == "accepted"
     assert result.host_id == "dev-primary"
     assert result.lease_ref == "refs/heads/dispatch/leases/2720-plan"
+
+
+def test_auto_dispatch_skips_ready_host_with_missing_data(tmp_path: Path) -> None:
+    registry_path = _write_registry(tmp_path)
+    data = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    data["machines"]["dev-secondary"] = data["machines"]["dev-primary"] | {
+        "hostname": "ace-linux-2",
+        "role": "secondary-dev",
+    }
+    registry_path.write_text(yaml.safe_dump(data), encoding="utf-8")
+    marker_dir = tmp_path / ".planning" / "plan-approved"
+    marker_dir.mkdir(parents=True)
+    (marker_dir / "2720.md").write_text("approved", encoding="utf-8")
+    request = module.DispatchRequest(command="/dispatch 2720 --host auto", issue_number=2720, mode="implementation", host_selector="auto")
+    issue = module.IssueState(number=2720, labels=["status:plan-approved"], url="https://github.com/example/issues/2720")
+    readiness = {
+        "dev-primary": module.HostReadiness(host_id="dev-primary", status="pass", dirty=False, ahead=0, behind=0, missing_data=["/mnt/ace"]),
+        "dev-secondary": module.HostReadiness(host_id="dev-secondary", status="pass", dirty=False, ahead=0, behind=0, missing_data=[]),
+    }
+
+    result = module.evaluate_dispatch_request(request, issue, registry_path, marker_dir, readiness, lease_snapshot=_verified_empty_lease_snapshot())
+
+    assert result.accepted is True
+    assert result.host_id == "dev-secondary"
+
+
+def test_auto_dispatch_skips_warn_host_and_selects_later_pass_host(tmp_path: Path) -> None:
+    registry = _write_registry(tmp_path)
+    data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+    data["machines"]["dev-secondary"] = data["machines"]["dev-primary"] | {
+        "hostname": "ace-linux-2",
+        "role": "secondary-dev",
+    }
+    registry.write_text(yaml.safe_dump(data), encoding="utf-8")
+    issue = module.IssueState(number=2720, labels=["status:plan-approved"], url="https://github.invalid/2720")
+    marker_dir = tmp_path / "markers"
+    marker_dir.mkdir()
+    (marker_dir / "2720.md").write_text("approved", encoding="utf-8")
+
+    readiness = {
+        "dev-primary": module.HostReadiness(host_id="dev-primary", status="warn", dirty=False, ahead=0, behind=0, missing_data=[]),
+        "dev-secondary": module.HostReadiness(host_id="dev-secondary", status="pass", dirty=False, ahead=0, behind=0, missing_data=[]),
+    }
+
+    result = module.evaluate_dispatch_request(
+        module.DispatchRequest(command="/dispatch 2720 --host auto", issue_number=2720, mode="implementation", host_selector="auto"),
+        issue,
+        registry,
+        marker_dir,
+        readiness,
+        module.LeaseSnapshot(fetched_ok=True, source="test", leases=[]),
+    )
+
+    assert result.accepted is True
+    assert result.host_id == "dev-secondary"
 
 
 def test_dispatch_blocks_dirty_repo_and_duplicate_lease(tmp_path: Path) -> None:

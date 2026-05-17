@@ -17,6 +17,7 @@ import yaml
 
 SECRET_KEY_RE = re.compile(r"(token|secret|api[_-]?key|password|credential)", re.IGNORECASE)
 SECRET_VALUE_RE = re.compile(r"\b(?:\d{6,}:[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9_-]+)\b")
+ENV_POINTER_FIELDS = {"bot_token_env", "allowed_user_ids_env"}
 ALLOWED_TELEGRAM_MODES = {"coordinator", "worker", "desktop-status-only", "disabled"}
 DISPATCH_TELEGRAM_MODES = {"coordinator", "worker"}
 ALLOWED_HOST_ROLES = {
@@ -114,7 +115,7 @@ def _walk_for_secrets(value: Any, path: str = "root") -> None:
         for key, child in value.items():
             key_text = str(key)
             child_path = f"{path}.{key_text}"
-            if SECRET_KEY_RE.search(key_text):
+            if SECRET_KEY_RE.search(key_text) and key_text not in ENV_POINTER_FIELDS:
                 raise DispatchPolicyError(f"registry contains secret-like value at field {child_path}")
             _walk_for_secrets(child, child_path)
     elif isinstance(value, list):
@@ -136,7 +137,7 @@ def load_registry(path: str | Path) -> dict[str, HostRecord]:
     for host_id, raw in data["machines"].items():
         if not isinstance(raw, dict):
             raise DispatchPolicyError(f"machine {host_id} must be a mapping")
-        for required in ("hostname", "os", "role", "workspace_root", "capabilities", "storage", "repos"):
+        for required in ("hostname", "os", "role", "workspace_root", "capabilities", "repos"):
             if required not in raw:
                 raise DispatchPolicyError(f"machine {host_id} missing required field {required}")
         role = str(raw["role"])
@@ -152,6 +153,8 @@ def load_registry(path: str | Path) -> dict[str, HostRecord]:
         if dispatch_enabled and mode not in DISPATCH_TELEGRAM_MODES:
             raise DispatchPolicyError(f"machine {host_id} dispatch_enabled requires telegram_mode coordinator or worker")
         if dispatch_enabled:
+            if "storage" not in raw:
+                raise DispatchPolicyError(f"machine {host_id} dispatch_enabled missing storage")
             for required in ("telegram_mode", "hermes_profile", "sync_policy", "data_access_profile", "readiness_freshness_thresholds"):
                 if required not in tg:
                     raise DispatchPolicyError(f"machine {host_id} dispatch_enabled missing {required}")
@@ -230,7 +233,16 @@ def _select_host(hosts: dict[str, HostRecord], selector: str, readiness: dict[st
         return selector if selector in hosts else None
     for host_id, host in hosts.items():
         state = readiness.get(host_id)
-        if host.dispatch_enabled and host.telegram_mode in DISPATCH_TELEGRAM_MODES and state and state.status in {"pass", "warn"} and not state.dirty and state.ahead == 0 and state.behind == 0:
+        if (
+            host.dispatch_enabled
+            and host.telegram_mode in DISPATCH_TELEGRAM_MODES
+            and state
+            and state.status == "pass"
+            and not state.dirty
+            and state.ahead == 0
+            and state.behind == 0
+            and not state.missing_data
+        ):
             return host_id
     return None
 
@@ -270,8 +282,8 @@ def evaluate_dispatch_request(
     if host.telegram_mode not in DISPATCH_TELEGRAM_MODES:
         return DispatchDecision(False, "host_status_only", f"Host {host_id} mode {host.telegram_mode} is not dispatch-capable")
     state = readiness.get(host_id)
-    if state is None or state.status not in {"pass", "warn"}:
-        return DispatchDecision(False, "host_not_ready", f"Host {host_id} readiness is not pass/warn")
+    if state is None or state.status != "pass":
+        return DispatchDecision(False, "host_not_ready", f"Host {host_id} readiness is not pass")
     if state.dirty or state.ahead or state.behind:
         return DispatchDecision(False, "repo_not_clean", f"Host {host_id} repo is not clean or synced")
     if state.missing_data:

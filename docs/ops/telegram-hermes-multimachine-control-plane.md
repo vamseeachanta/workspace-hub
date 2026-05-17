@@ -121,8 +121,12 @@ Rules:
 2. Rotate the bot token with BotFather or the gateway provider.
 3. Update only the local secret store (`~/.hermes/.env` or host-specific secret manager).
 4. Restart Hermes/gateway on the coordinator host.
-5. Run `scripts/readiness/telegram-hermes-readiness.sh --host <host_id>`.
-6. Re-enable dispatch only after readiness is pass/warn and the worktree is clean/synced.
+5. On the target machine, generate host-local readiness evidence into a shared/synced evidence directory, then run the coordinator check with that directory:
+   ```bash
+   scripts/readiness/telegram-hermes-readiness.sh --host <host_id> --evidence-dir <evidence_dir>
+   ```
+   Without `--evidence-dir`, remote dispatch hosts intentionally fail closed with `host-local-readiness-evidence` missing.
+6. Re-enable dispatch only after readiness is `pass` and the worktree is clean/synced; `warn` is status-only and is not dispatch-eligible.
 
 ## Rollback
 
