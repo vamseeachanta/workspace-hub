@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-17T13:20:12Z
+Generated: 2026-05-17T17:20:09Z
 Mode: static (read-only)
 
 ## How to approve
@@ -50,10 +50,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2732 | feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2731 | feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2730 | fix(gemini): remove unsupported permissionMode keys from agent definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2729 | feat(architecture): define report layer outputs, publication surfaces, and evidence rules | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2728 | feat(architecture): define execution layer contracts, tooling, and compute routing | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2726 | feat(architecture): review data, execution, and report layer boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2729 | feat(architecture): define report layer outputs, publication surfaces, and evidence rules | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2728 | feat(architecture): define execution layer contracts, tooling, and compute routing | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2726 | feat(architecture): review data, execution, and report layer boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2723 | chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

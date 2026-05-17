@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-17T13:20:11.171401Z",
+  "generated_at": "2026-05-17T17:20:07.722555Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-17T13:20:09.501807Z",
+  "scorecard_generated_at": "2026-05-17T17:20:06.033712Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1324,9 +1324,10 @@
             "cat:data-pipeline",
             "cat:document-intelligence",
             "domain:reporting",
-            "domain:knowledge"
+            "domain:knowledge",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-05-17T11:19:59Z",
+          "updatedAt": "2026-05-17T14:25:35Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1348,9 +1349,10 @@
             "priority:high",
             "cat:data-pipeline",
             "cat:document-intelligence",
-            "domain:knowledge"
+            "domain:knowledge",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-05-17T11:08:25Z",
+          "updatedAt": "2026-05-17T14:25:38Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1373,9 +1375,10 @@
             "cat:operations",
             "cat:harness",
             "domain:workflow",
-            "domain:infrastructure"
+            "domain:infrastructure",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-05-17T01:36:21Z",
+          "updatedAt": "2026-05-17T14:25:40Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1397,9 +1400,10 @@
             "priority:high",
             "cat:documentation",
             "domain:reporting",
-            "domain:gtm"
+            "domain:gtm",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-05-17T01:36:22Z",
+          "updatedAt": "2026-05-17T14:25:42Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
