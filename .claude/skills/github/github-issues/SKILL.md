@@ -240,6 +240,10 @@ When an issue-scoped plan has been written and adversarial-reviewed, close the p
 4. Re-query the issue and verify the expected label and comment URL.
 5. State explicitly that `status:plan-review` is not implementation approval; implementation remains blocked until the user applies `status:plan-approved`.
 
+If adversarial reviewers return `MAJOR` findings but the user explicitly asked to post/re-post the plans for their review, it is still valid to label the issues `status:plan-review` after the reviews complete. Do not soften the verdicts. The issue comment and plan summary must say that the plans are awaiting user decision, are not approved, and that implementation remains blocked until explicit user approval.
+
+For multi-issue re-review batches, use one consistent issue comment shape across all issues: review command/date, provider list, per-provider artifact paths and verdicts, consolidated disagreement artifact, gate state, and pushed commit hash. This makes the user-review queue scannable and prevents one issue from silently drifting from the others.
+
 Use `--body-file` for the comment body so paths, backticks, and verdict tables do not trigger shell quoting issues.
 
 ### Add/Remove Labels

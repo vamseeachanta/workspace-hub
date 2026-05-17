@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T17:20:12.804352Z",
+  "generated_at": "2026-05-17T13:20:11.323328Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -404,6 +404,34 @@
         "domain:gtm"
       ],
       "updatedAt": "2026-04-21T10:27:04Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 2359,
+      "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
+      "labels": [
+        "bug",
+        "priority:medium"
+      ],
+      "updatedAt": "2026-04-20T02:53:21Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

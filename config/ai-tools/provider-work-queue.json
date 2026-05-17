@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-16T17:20:12.667187Z",
+  "generated_at": "2026-05-17T13:20:11.171401Z",
   "current_week": "2026-W20",
-  "scorecard_generated_at": "2026-05-16T17:20:11.157944Z",
+  "scorecard_generated_at": "2026-05-17T13:20:09.501807Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 16,
+      "execution_ready_count": 18,
       "total_candidates": 174,
       "top_issues": [
         {
@@ -411,31 +411,6 @@
           ]
         },
         {
-          "number": 2719,
-          "title": "feat(ai-orchestration): unify SOUL.md across providers \u2014 SHARED + per-provider canonical with symlink runtime",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2719",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:workflow",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-16T12:40:08Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2510,
           "title": "feat(cad): build Python layout/CAD automation demo for chip/package geometries",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2510",
@@ -604,6 +579,75 @@
           ]
         },
         {
+          "number": 2734,
+          "title": "research: audit current Hermes agent memory capabilities + identify gaps for canonical-backend role",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2734",
+          "labels": [
+            "priority:medium",
+            "cat:research",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-17T13:13:57Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2735,
+          "title": "design: memory write/read API for non-Hermes providers (Claude / Codex / Gemini) \u2192 Hermes canonical memory",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2735",
+          "labels": [
+            "priority:medium",
+            "cat:engineering-methodology",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-17T13:13:59Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2736,
+          "title": "design: migration plan from per-provider memory stores (Claude / Codex / Gemini local state) into Hermes canonical memory",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2736",
+          "labels": [
+            "priority:medium",
+            "cat:engineering-methodology",
+            "domain:knowledge-management",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-17T13:14:00Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2431,
           "title": "Compliance alert: W17 \u2014 20% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2431",
@@ -732,32 +776,9 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-16T11:45:06Z",
+          "updatedAt": "2026-05-17T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2301,
-          "title": "bug(hermes): classify and recover from openai-codex transport/challenge failures",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2301",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-04-16T14:37:26Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1020,7 +1041,7 @@
             "domain:workstations",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-04-27T18:55:34Z",
+          "updatedAt": "2026-05-16T21:44:34Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1272,33 +1293,6 @@
           ]
         },
         {
-          "number": 2720,
-          "title": "feat(hermes): multi-machine Telegram dispatch and sync control plane",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2720",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:operations",
-            "cat:harness",
-            "domain:integrations",
-            "domain:notification",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-16T16:10:11Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2721,
           "title": "fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts \u2014 retrofit with `script -qc`",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2721",
@@ -1321,18 +1315,20 @@
           ]
         },
         {
-          "number": 2298,
-          "title": "feat(portability): phase-2 unified smoke runner expansion for CalculiX/Gmsh/Capytaine",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2298",
+          "number": 2726,
+          "title": "feat(architecture): review data, execution, and report layer boundaries",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2726",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness"
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:reporting",
+            "domain:knowledge"
           ],
-          "updatedAt": "2026-04-16T13:59:58Z",
+          "updatedAt": "2026-05-17T11:19:59Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1344,18 +1340,68 @@
           ]
         },
         {
-          "number": 2299,
-          "title": "chore(plans): make retention metadata a required planning artifact",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2299",
+          "number": 2727,
+          "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
           "labels": [
             "enhancement",
-            "priority:medium",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:knowledge"
+          ],
+          "updatedAt": "2026-05-17T11:08:25Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2728,
+          "title": "feat(architecture): define execution layer contracts, tooling, and compute routing",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "cat:harness",
+            "domain:workflow",
+            "domain:infrastructure"
+          ],
+          "updatedAt": "2026-05-17T01:36:21Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2729,
+          "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
+          "labels": [
+            "enhancement",
+            "priority:high",
             "cat:documentation",
-            "cat:harness"
+            "domain:reporting",
+            "domain:gtm"
           ],
-          "updatedAt": "2026-04-16T14:00:02Z",
+          "updatedAt": "2026-05-17T01:36:22Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1367,18 +1413,19 @@
           ]
         },
         {
-          "number": 2300,
-          "title": "feat(governance): reconcile GitHub labels, approval markers, and README planning state",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2300",
+          "number": 2731,
+          "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2731",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness"
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:knowledge"
           ],
-          "updatedAt": "2026-04-16T14:00:06Z",
+          "updatedAt": "2026-05-17T11:19:58Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1390,40 +1437,19 @@
           ]
         },
         {
-          "number": 2310,
-          "title": "analysis(harness): rank Claude stale-read migration-debt backlog and link remediation issues",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2310",
+          "number": 2732,
+          "title": "feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2732",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:harness"
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge",
+            "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-08T11:06:28Z",
+          "updatedAt": "2026-05-17T13:13:48Z",
           "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2312,
-          "title": "chore(harness): replace legacy local lifecycle-script guidance with GitHub/.planning authority",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2312",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "cat:harness"
-          ],
-          "updatedAt": "2026-05-08T11:06:29Z",
-          "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1851,29 +1877,6 @@
           ]
         },
         {
-          "number": 2411,
-          "title": "feat(release-readiness): tier-1 provider entrypoint and parity surface inventory",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2411",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:release-management"
-          ],
-          "updatedAt": "2026-04-20T19:57:28Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
           "number": 2412,
           "title": "feat(release-readiness): deterministic follow-up issue creation and dedup policy",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2412",
@@ -2040,7 +2043,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-15T12:10:06Z",
+          "updatedAt": "2026-05-17T12:13:45Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2731,7 +2734,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-16T12:12:13Z",
+          "updatedAt": "2026-05-17T12:07:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3561,39 +3564,19 @@
           ]
         },
         {
-          "number": 2325,
-          "title": "Design conference-corpus enrichment (successor to #2305 deferral)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2325",
+          "number": 2730,
+          "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2730",
           "labels": [
-            "priority:low",
-            "cat:document-intelligence"
+            "bug",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "domain:ai-config",
+            "domain:tooling"
           ],
-          "updatedAt": "2026-04-17T10:29:15Z",
+          "updatedAt": "2026-05-17T10:42:33Z",
           "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2328,
-          "title": "CAD-DEVELOPMENTS: comparison \u2014 CadQuery vs build123d vs ReplicAD vs FluidCAD",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2328",
-          "labels": [
-            "priority:low",
-            "cat:engineering",
-            "cat:tooling",
-            "cat:research"
-          ],
-          "updatedAt": "2026-04-17T14:56:06Z",
-          "execution_ready": false,
-          "priority_rank": 3,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3839,6 +3822,27 @@
           ]
         },
         {
+          "number": 2723,
+          "title": "chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2723",
+          "labels": [
+            "priority:low",
+            "cat:harness",
+            "domain:workflow"
+          ],
+          "updatedAt": "2026-05-16T22:35:05Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 2330,
           "title": "Verify first run of daily-repo-readiness cron (trig_019GWtRosbZ9rw1HxrGpsvy9)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2330",
@@ -4057,7 +4061,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-16T11:06:43Z",
+          "updatedAt": "2026-05-17T11:11:31Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4162,8 +4166,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 3,
-      "total_candidates": 23,
+      "execution_ready_count": 2,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 2402,
@@ -4208,31 +4212,6 @@
           "updatedAt": "2026-05-14T16:10:46Z",
           "execution_ready": true,
           "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2327,
-          "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
-          "labels": [
-            "priority:low",
-            "cat:engineering",
-            "cat:research",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T07:30:09Z",
-          "execution_ready": true,
-          "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
@@ -4351,6 +4330,26 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 2359,
+          "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
+          "labels": [
+            "bug",
+            "priority:medium"
+          ],
+          "updatedAt": "2026-04-20T02:53:21Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4397,31 +4396,6 @@
           "updatedAt": "2026-05-14T16:10:46Z",
           "execution_ready": true,
           "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "existing codex agent label",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2327,
-          "title": "digitalmodel: CadQuery spike for parametric offshore geometry generation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2327",
-          "labels": [
-            "priority:low",
-            "cat:engineering",
-            "cat:research",
-            "status:working",
-            "agent:codex",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-04-28T07:30:09Z",
-          "execution_ready": true,
-          "priority_rank": 3,
           "suggested_provider": "codex",
           "routing_reason": "existing codex agent label",
           "provider_priority": "highest",
@@ -4805,7 +4779,7 @@
           "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
           "labels": [],
-          "updatedAt": "2026-05-15T10:09:29Z",
+          "updatedAt": "2026-05-17T10:08:40Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4838,9 +4812,35 @@
     "gemini": {
       "provider": "gemini",
       "routing_priority": "highest",
-      "execution_ready_count": 0,
-      "total_candidates": 3,
+      "execution_ready_count": 1,
+      "total_candidates": 4,
       "top_issues": [
+        {
+          "number": 2733,
+          "title": "epic: make Hermes agent memory canonical across all AI providers",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2733",
+          "labels": [
+            "priority:high",
+            "cat:ai-orchestration",
+            "domain:knowledge-management",
+            "agent:gemini",
+            "agent:claude",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-17T13:13:56Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "gemini",
+          "routing_reason": "existing gemini agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
         {
           "number": 2498,
           "title": "chore(harness): #2364 plan branch drift recovery decision needed",
@@ -4902,6 +4902,32 @@
         }
       ],
       "full_candidates": [
+        {
+          "number": 2733,
+          "title": "epic: make Hermes agent memory canonical across all AI providers",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2733",
+          "labels": [
+            "priority:high",
+            "cat:ai-orchestration",
+            "domain:knowledge-management",
+            "agent:gemini",
+            "agent:claude",
+            "agent:codex",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-17T13:13:56Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "gemini",
+          "routing_reason": "existing gemini agent label",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
         {
           "number": 2498,
           "title": "chore(harness): #2364 plan branch drift recovery decision needed",
