@@ -133,3 +133,18 @@ Three reasonable branches:
 Recommend (1) — closes the loop on Wave 2 surprises and surfaces the work explicitly for future sessions. Then (2) Wave 3 once #1's license-verification sub-issue is itself resolved.
 
 **Do not** auto-pick. **Do not** start Wave 3 concept-page authoring without re-reading the Wave 2 manifest to confirm the `ingest` vs `defer` source distinction.
+
+---
+
+## Post-handoff update — 4 sub-issues filed (2026-05-17)
+
+The 4 forward-reference recommendations listed above as "NOT yet filed" have since been filed:
+
+| # | Title | Maps to recommendation |
+|---|---|---|
+| [#96](https://github.com/vamseeachanta/llm-wiki/issues/96) | License-verification for the 10 `defer` rows | #1 above |
+| [#97](https://github.com/vamseeachanta/llm-wiki/issues/97) | arXiv expansion to close mixed-quality gap to ≥50 | #2 above |
+| [#98](https://github.com/vamseeachanta/llm-wiki/issues/98) | Kansas Geological Survey reuse-permission email | #3 above |
+| [#99](https://github.com/vamseeachanta/llm-wiki/issues/99) | `docs/governance/` note on `/mnt/ace/rock-oil-field/` wrong-domain | #4 above |
+
+All 4 carry `status:plan-review`; awaiting user approval to flip to `status:plan-approved` before implementation. Cross-referenced from parent [#40](https://github.com/vamseeachanta/llm-wiki/issues/40) via comment with sequencing recommendation (#98 first by lowest effort, #96 + #97 close the corpus target, #99 parallelizable). Wave 3 should not begin until at least #96 + #97 land.
