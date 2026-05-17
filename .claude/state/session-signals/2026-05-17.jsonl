@@ -12,3 +12,5 @@
 {"ts":"2026-05-17T01:36:02Z","event":"stop_signal_captured","session_id":"5db7e4c7-4f76-4d7d-86bc-4906d339cf16"}
 {"ts":"2026-05-17T03:01:28Z","event":"stop_signal_captured","session_id":"232a32a4-c42b-48c1-96d9-2f5f1c95a9fd"}
 {"ts":"2026-05-17T03:05:06Z","event":"stop_signal_captured","session_id":"5db7e4c7-4f76-4d7d-86bc-4906d339cf16"}
+{"ts":"2026-05-17T12:13:59Z","event":"stop_signal_captured","session_id":"b87b0f5c-540e-4fd1-8bd3-3886fbf34c9f"}
+{"ts":"2026-05-17T12:13:59Z","event":"session_tool_summary","session_id":"b87b0f5c-540e-4fd1-8bd3-3886fbf34c9f","wrk":"none","tool_calls":2,"edits":0,"reads":2}
