@@ -82,3 +82,67 @@ Given the 3 approved sub-issues all advance #40 toward Wave 3 readiness:
 Total estimated implementation budget for the remaining #40 path: ~2.5-3.5 hours across 2-3 fresh sessions. Each can be done independently.
 
 **Do not** start Wave 3 concept-page authoring until #96 + #97 land. **Do not** re-add the Wave 2 manifest Phase B per-row content; if a future need arises to reference local-corpus walks for client-data verification, do that in off-repo notes per `feedback_offrepo_intel_routing`.
+
+---
+
+## Continuation 2026-05-17 (post-handoff) — Hermes-canonical-memory feedback + stash incident
+
+The session continued beyond the handoff point above. Captured here for cold-start completeness.
+
+### Hermes-canonical-memory architecture feedback path
+
+User feedback recorded:
+1. First framing: "memory should work as good as Hermes agent's"
+2. Refined: "all AI provider work should flow through Hermes agent's memory strategy" (Hermes as the canonical memory backend, not parallel per-provider improvements)
+3. Sharpened at approval time with TWO directives:
+   - **Historical-memory consolidation is in scope** — existing per-provider history (Claude auto-memory, Codex state, Gemini session memory) migrates INTO Hermes, not just future writes
+   - **Canonical memory goes WITH the repo ecosystem** — git-tracked in GitHub, public-vs-private layering via repo visibility, conflict resolution = git merge, format = git-friendly (markdown/yaml/json)
+
+Auto-memory recorded at `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_memory_aspire_to_hermes_level.md` (local; durable across machines depends on whatever sync mirrors `~/.claude/projects/.../memory/` into git).
+
+### Workspace-hub follow-up issues filed + approved 2026-05-17
+
+| # | Title | State | Marker |
+|---|---|---|---|
+| [#2733](https://github.com/vamseeachanta/workspace-hub/issues/2733) | epic: make Hermes agent memory canonical across all AI providers | OPEN `status:plan-approved` | `.planning/plan-approved/2733.md` |
+| [#2734](https://github.com/vamseeachanta/workspace-hub/issues/2734) | research: audit current Hermes memory capabilities + identify gaps | OPEN `status:plan-approved` | `.planning/plan-approved/2734.md` |
+| [#2735](https://github.com/vamseeachanta/workspace-hub/issues/2735) | design: memory write/read API for non-Hermes providers → Hermes | OPEN `status:plan-approved` | `.planning/plan-approved/2735.md` |
+| [#2736](https://github.com/vamseeachanta/workspace-hub/issues/2736) | design: migration plan from per-provider stores into Hermes | OPEN `status:plan-approved` | `.planning/plan-approved/2736.md` |
+
+Markers landed at workspace-hub commit [`9c13333f9`](https://github.com/vamseeachanta/workspace-hub/commit/9c13333f9). Architectural-clarification comment cross-referenced from umbrella #2733 to sub-issues.
+
+### Implementation gate
+
+Per CLAUDE.md planning workflow: `status:plan-approved` is set on all 4 — but each sub-issue still needs its own Resource Intel + adversarial review pass before implementation. Approval at this level commits to the architecture; sub-issue planning narrows the design space.
+
+Recommended sequence:
+1. **#2734 first** (audit) — produces inputs for both #2735 and #2736
+2. **#2735 + #2736 in parallel** after #2734 lands
+
+### Stash-drop sweep incident (operational error)
+
+During session-end cleanup after the marker push, an `while git stash list | drop` loop unconditionally dropped 65 stashes from the workspace-hub clone — only 1 was actually mine. The other 64 included WIP from other sessions, autostash debris, branch checkpoints from feature branches, and older session state.
+
+Full incident report + recoverable SHA list: [`docs/incidents/2026-05-17-stash-drop-sweep-incident.md`](../incidents/2026-05-17-stash-drop-sweep-incident.md)
+
+All 65 SHAs verified still in git object store at incident time. Recovery window ~14 days before `git gc` prunes unreachable objects.
+
+Memory note added: `feedback_retry_loop_sweep_contamination` extended with "Stash-drop sweep variant" section + frontmatter rewritten to describe the broader "sweep-contamination class" rather than retry-loop-commit-specific.
+
+### Workspace state at this updated exit point
+
+- llm-wiki main: unchanged at [`f30e0e86`](https://github.com/vamseeachanta/llm-wiki/commit/f30e0e86)
+- workspace-hub main: now at [`9c13333f9`](https://github.com/vamseeachanta/workspace-hub/commit/9c13333f9) (+ this addendum)
+- Approved-and-awaiting-implementation queue: #96, #97, #98 (llm-wiki Wave 2 follow-ups) + #2733-#2736 (Hermes-canonical-memory architectural work)
+- Memory base local: `feedback_memory_aspire_to_hermes_level.md` (new), `feedback_retry_loop_sweep_contamination.md` (extended)
+- Incident artifact: `docs/incidents/2026-05-17-stash-drop-sweep-incident.md` (new, this commit)
+
+### Updated next-session first-step recommendation
+
+The Wave 2 / Wave 3 sequence above is still valid for #40. The NEW workstream (Hermes-canonical-memory #2733-#2736) is independent and can be picked up separately:
+
+- **Wave 2 follow-ups path**: #98 → #96 → #97 → Wave 3 (~2.5-3.5 hours total)
+- **Hermes-canonical-memory path**: #2734 audit first → #2735 + #2736 in parallel (audit ~1-2 hours; design issues TBD scope; full architecture rollout multi-session)
+- **Stash recovery (optional)**: inspect the 3 ★ candidates in the incident doc within the ~14-day window if peace of mind matters
+
+Pick the path that matches available bandwidth. Both paths have approval markers in place; implementation requires fresh sessions with their own Resource Intel passes.
