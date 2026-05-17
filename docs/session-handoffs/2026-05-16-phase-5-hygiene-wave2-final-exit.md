@@ -148,3 +148,5 @@ The 4 forward-reference recommendations listed above as "NOT yet filed" have sin
 | [#99](https://github.com/vamseeachanta/llm-wiki/issues/99) | `docs/governance/` note on `/mnt/ace/rock-oil-field/` wrong-domain | #4 above |
 
 All 4 carry `status:plan-review`; awaiting user approval to flip to `status:plan-approved` before implementation. Cross-referenced from parent [#40](https://github.com/vamseeachanta/llm-wiki/issues/40) via comment with sequencing recommendation (#98 first by lowest effort, #96 + #97 close the corpus target, #99 parallelizable). Wave 3 should not begin until at least #96 + #97 land.
+
+**Update 2026-05-17**: see `2026-05-17-sub-issue-approvals-phase-b-redact-exit.md` for continuation — #96/#97/#98 approved, #99 CLOSED as not-planned per user reframing (`/mnt/ace/rock-oil-field/` is client-data infrastructure, not wrong-domain), Phase B redaction applied to corpus manifest.
