@@ -116,3 +116,46 @@ These were not staged for issue #2720. They are preserved as unrelated concurren
 External action status for the repeated exit confirmation: no external send/action performed.
 
 Final user response must cite the post-push commit for this second confirmation and fresh `HEAD == origin/main` evidence.
+
+## Third exit confirmation — 2026-05-17 10:54 UTC / 2026-05-17 05:54 CDT
+
+The user again requested “document and prepare to exit.” This section records the fresh live repository and issue state after concurrent `main` advancement by other handoff/plan commits. This is an update to the existing #2720 closeout artifact, not a duplicate handoff.
+
+### Live GitHub state checked
+
+- [#2720](https://github.com/vamseeachanta/workspace-hub/issues/2720): `CLOSED`; closed at `2026-05-17T10:35:26Z`; labels include `status:done`.
+- [#2730](https://github.com/vamseeachanta/workspace-hub/issues/2730): `OPEN`; follow-up for Gemini `permissionMode` schema cleanup; labels: `bug`, `priority:medium`, `cat:ai-orchestration`, `domain:ai-config`, `domain:tooling`.
+
+### Live repo-state evidence before this third confirmation commit
+
+Repository: `/mnt/local-analysis/workspace-hub`
+
+- Branch: `main`
+- Local `HEAD` before this third confirmation commit: `ac2e1128c983ac022b71f0fa0e70822cc6198f3c`
+- `origin/main` before this third confirmation commit: `ac2e1128c983ac022b71f0fa0e70822cc6198f3c`
+- Ahead/behind before this third confirmation commit: `0/0`
+- Dirty/untracked count before this third confirmation commit: 76 total paths
+  - tracked modified: 20
+  - untracked: 56
+
+Dirty-state exception: 76 unrelated paths remain preserved and were not staged for this exit confirmation. They include skill edits/reference files, `.claude/state` session/correction state, provider quota/kanban/report outputs, planning review outputs, logs, and `tests/hooks/test_stop_hooks.py`. This handoff update stages only this file.
+
+### Worktree disposition checked
+
+`git worktree list --porcelain` showed:
+
+- `/mnt/local-analysis/workspace-hub` on `main`
+- `/mnt/local-analysis/workspace-hub-2703` on `issue-2703-skill-curation`
+- `/mnt/local-analysis/worktrees/workspace-hub-2657` on `issue-2657-hermes-llm-wiki-path-drift-2`
+- `/tmp/wh-h4` on `dispatch/h4-2152`
+
+No worktrees or branches were removed in this exit step because those are outside #2720 and may preserve other workstreams.
+
+### External action status
+
+No external send/action was performed. GitHub was read for live issue state, and this handoff update is intended to be committed and pushed as closeout documentation.
+
+### Final response requirement
+
+After committing/pushing this third confirmation, re-fetch and report the final live `HEAD`, `origin/main`, ahead/behind, and remaining dirty-state exception count. If concurrent writers advance `origin/main`, state both the handoff commit and the final synced repository tip.
+
