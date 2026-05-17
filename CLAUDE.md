@@ -10,3 +10,5 @@
 - Steps: Issue → Resource Intel → **Reproduce alleged failure** (Step 1.5) → Plan → Adversarial Review → `status:plan-review` → USER APPROVES → `status:plan-approved` → Implement
 - Template: `docs/plans/_template-issue-plan.md` | Full guide: `docs/plans/README.md`
 - Batch agents: only act on `status:plan-approved` issues; never self-approve
+
+@config/agents/claude/SOUL.runtime.md
