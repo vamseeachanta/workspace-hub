@@ -1,0 +1,49 @@
+# Data Source Inventory — Issue #2727
+
+Generated from `tests/fixtures/architecture/data_source_inventory.yaml`. The YAML fixture remains the structured source of truth; this markdown is the curated human-readable view required by the approved plan.
+
+| source_id | source_class | owner | canonical_home | allowed_artifacts | forbidden_artifacts | retention_rule | publication_rule | provenance | license_posture | sensitivity | promotion_gate | output_residency |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `mnt_workspace_control_plane` | `mnt_workspace_control_plane` | workspace-hub | `/mnt/local-analysis/workspace-hub` | plans<br>architecture contracts<br>validation fixtures | raw client data<br>credentials<br>bulk generated outputs | git-tracked governance artifacts only | Public repo content allowed after review; no raw/private data. | repo-native control-plane documentation | MIT/docs policy | public_control_plane | plan-approved + legal scan | `repo-public` |
+| `mnt_local_analysis_repos` | `repo_ecosystem_data` | workspace-hub ecosystem | `/mnt/local-analysis` | repo placement inventory<br>repo identity metadata | silent repo moves<br>copied private corpus content | inventory only until a repo-layout issue is approved | No repository relocation or publication by this issue. | filesystem repo probe showed workspace-hub and llm-wiki as sibling repos; digitalmodel absent at probed path | repo metadata only | internal | follow-up issue before relocation | `repo-public` |
+| `worldenergydata_public_sources` | `public_collection_data` | worldenergydata | `/mnt/local-analysis/worldenergydata` | public-source metadata<br>collection pipeline references | private mounts<br>client files | public-source regeneration policy | May promote derived public metadata when source license permits. | DATA_RESIDENCE_POLICY Tier 1 collection data | source-specific public licenses required | public_source | source license + provenance + freshness | `llm-wiki-public` |
+| `digitalmodel_reference_data` | `engineering_reference_data` | digitalmodel | `/mnt/local-analysis/digitalmodel` | reference-data dependency declarations<br>public-safe summaries | standards text reproduction<br>client project data | reference data remains in owning repo | Public summaries only when license/publication permits. | DATA_RESIDENCE_POLICY Tier 2 engineering reference data | standards/vendor restrictions may apply | mixed_public_restricted | license/legal + citation sidecar for standards-derived constants | `llm-wiki-private` |
+| `mounted_standards_literature` | `mounted_standards_literature` | workspace mounted data | `/mnt/ace/docs/_standards` | metadata ledgers<br>citation references<br>derived non-sensitive abstracts when permitted | raw PDFs<br>licensed standards text<br>bulk extracted text | mounted source remains outside git | No public llm-wiki promotion unless source is public and license-cleared. | mounted-source registry entry ace_standards_local plus per-domain source metadata | licensed_reference | licensed_reference | legal/license review + source-class separation | `llm-wiki-private` |
+| `mnt_ace_raw_documents` | `client_project_data` | client/private project owners | `/mnt/ace/<client-or-project-root>` | sanitized metadata<br>private wiki notes<br>runtime retrieval evidence | public llm-wiki pages<br>public chatbot indexes<br>client-facing report snippets without review | remain on private mounted storage | No public publication; private client wiki or report runtime only. | approved #2727 runtime probe and data-layer plan | client/private contractual restrictions | client_confidential | privacy/sanitization/legal/client approval | `llm-wiki-private` |
+| `client_present_001` | `client_project_data` | client/private project owners | `/mnt/ace/<present-client-root>` | private derived summaries<br>private <client-private-wiki-root> notes | public llm-wiki<br>public chatbot<br>raw output commits | client source remains private | No public publication; route through private client wiki target if provisioned. | runtime probe confirmed present private client-class roots without preserving literals in inventory | client/private contractual restrictions | client_confidential | client approval + sanitization + source-class separation | `llm-wiki-private` |
+| `client_private_wiki_target_provisioning_001` | `private_client_wiki_target` | client/private project owners | `/mnt/local-analysis/<client-private-wiki-root>` | sanitized client-specific derived notes<br>private retrieval indexes<br>private chatbot corpus manifests | public llm-wiki pages<br>raw client uploads<br>client-facing report publication without report-layer gate | private repo provisioning target; literal client path and existence evidence remain outside public artifacts | No public publication; public reporting requires sanitized derivatives and report-layer approval. | user-approved #2727 private client wiki target captured in redacted public form; literal path remains private evidence only | client_private | client_confidential | private repo provisioning + privacy/sanitization/legal/client approval | `llm-wiki-private` |
+| `llm_wiki_raw_staging` | `llm_wiki_raw_staging` | workspace-hub/llm-wiki pipeline | `/mnt/local-analysis/llm-wiki-private-staging` | raw/private llm-wiki staging notes<br>metadata-only staging manifests | public pages<br>raw PDFs<br>secrets | staging retained only as private working corpus | Not publishable until promotion gates pass. | derived from input corpora with source-class tags | mixed; inherit strictest source | private | D-L2 review + sanitization + source provenance | `llm-wiki-private` |
+| `public_llm_wiki` | `public_llm_wiki_content` | llm-wiki | `/mnt/local-analysis/llm-wiki` | public wiki pages<br>public-safe curated learnings<br>citation-backed summaries | raw client data<br>private mount paths<br>licensed text reproduction | git-tracked public knowledge artifacts | Public publication allowed only after source/license/sanitization gates. | public repo content and curated public-domain synthesis | CC-BY-4.0 docs/content posture | public | D-L4 publication gate | `llm-wiki-public` |
+| `generated_chatbot_index` | `generated_index_query_surface` | workspace-hub report/query stack | `/mnt/local-analysis/<private-index-root>` | private retrieval index<br>query manifest with corpus scope and freshness | public chatbot<br>raw outputs without residency tags | regenerate from manifests; do not commit private index payloads | Inherit strictest corpus; public chatbot only for public-only corpus. | generated from selected corpora at execution/report runtime | inherits source corpus licenses | private | manifest output_residency + corpus scope + freshness | `llm-wiki-private` |
+| `report_artifact_surface` | `report_artifact_surface` | workspace-hub reporting | `/mnt/local-analysis/<report-output-root>` | raw output manifests<br>client-facing HTML after review<br>limited PDFs after review<br>chatbot manifests | raw private data in public artifacts<br>uncited client deliverables<br>unreviewed generated outputs | generated outputs retained per report contract, not as data-layer canon | Report publication requires audience-specific evidence/legal/source checks. | reports/chatbots are downstream outputs from execution layer | inherits source and client constraints | mixed_public_private | report-layer legal/source/evidence gate | `report-scoped` |
+
+## Runtime probe summary
+
+| source_id | command | machine | timestamp | status |
+|---|---|---|---|---|
+| `mnt_workspace_control_plane` | `git remote get-url origin` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `mnt_local_analysis_repos` | `test -d /mnt/local-analysis` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `worldenergydata_public_sources` | `test -d /mnt/local-analysis/worldenergydata` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `absent_recorded` |
+| `digitalmodel_reference_data` | `test -d /mnt/local-analysis/digitalmodel` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `absent_recorded` |
+| `mounted_standards_literature` | `test -d /mnt/ace/docs/_standards` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `mnt_ace_raw_documents` | `test -d /mnt/ace` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `client_present_001` | `test -d /mnt/ace` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `client_private_wiki_target_provisioning_001` | `redacted-private-target-probe` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `redacted_not_publicly_probed` |
+| `llm_wiki_raw_staging` | `test -d /mnt/local-analysis` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `public_llm_wiki` | `test -d /mnt/local-analysis/llm-wiki` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+| `generated_chatbot_index` | `test -f data/document-index/index.jsonl || test -d data/document-index` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `recorded` |
+| `report_artifact_surface` | `test -d /mnt/local-analysis` | `ace-linux-1` | `2026-05-18T15:37:13Z` | `present_recorded` |
+
+## Cleanup note
+
+Do not delete the compatibility alias before consumers are migrated. The architecture action is to migrate durable references first, then delete the /mnt/ace-data symlink only after a separate operational cleanup issue proves no remaining dependency.
+
+## Repository placement note
+
+The probe found `/mnt/local-analysis/workspace-hub` and `/mnt/local-analysis/llm-wiki` as sibling git repositories and did not prove local `digitalmodel` or `worldenergydata` repo checkouts at the probed sibling paths. This issue records the evidence but does not move repositories.
+
+## Related policy references
+
+- `docs/BUSINESS_BRAIN.md`
+- `docs/DATA_RESIDENCE_POLICY.md`
+- `.legal-deny-list.yaml`
