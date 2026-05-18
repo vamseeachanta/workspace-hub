@@ -1,0 +1,193 @@
+type: object
+additionalProperties: false
+required:
+  - bundle_id
+  - issue
+  - artifact_type
+  - output_residency
+  - published_claims
+  - legal_scan
+properties:
+  bundle_id: {type: string}
+  issue: {type: string}
+  artifact_type:
+    enum:
+      - raw_output
+      - evidence_bundle
+      - internal_report
+      - client_facing_html
+      - limited_pdf
+      - chatbot_query_surface
+      - public_page
+      - report_derived_learning
+  exception_reason: {type: string, minLength: 1}
+  output_residency:
+    enum:
+      - public_llm_wiki
+      - domain_private_corpus
+      - registered_client_private_corpus
+      - ignored_internal_run_artifact
+      - no_preserve
+  published_claims:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required:
+        - claim_id
+        - statement
+        - source_class
+        - bindings
+        - source_manifest
+        - command_manifest
+        - validation_result
+        - legal_scan
+        - checksum
+        - review_verdict
+        - output_residency
+        - promotion_decision
+        - promotion_gates
+        - sanitization_gate
+      properties:
+        claim_id: {type: string}
+        statement: {type: string}
+        source_class: {type: string}
+        bindings:
+          type: array
+          minItems: 8
+          items:
+            enum:
+              - source_manifest
+              - command_manifest
+              - validation_result
+              - legal_scan
+              - checksum
+              - review_verdict
+              - output_residency
+              - promotion_decision
+          allOf:
+            - contains: {const: source_manifest}
+            - contains: {const: command_manifest}
+            - contains: {const: validation_result}
+            - contains: {const: legal_scan}
+            - contains: {const: checksum}
+            - contains: {const: review_verdict}
+            - contains: {const: output_residency}
+            - contains: {const: promotion_decision}
+        source_manifest: {type: string}
+        command_manifest: {type: string}
+        validation_result: {type: string}
+        legal_scan:
+          type: object
+          additionalProperties: false
+          required: [command, result]
+          properties:
+            command: {type: string, minLength: 1}
+            result:
+              enum:
+                - pass
+                - fail
+                - pending-required-before-publication
+                - required-before-publication
+        checksum:
+          type: string
+          minLength: 1
+        review_verdict:
+          enum:
+            - approved
+            - approved-with-notes
+            - required-before-closeout
+            - rejected
+        output_residency:
+          enum:
+            - public_llm_wiki
+            - domain_private_corpus
+            - registered_client_private_corpus
+            - ignored_internal_run_artifact
+            - no_preserve
+        promotion_decision: {type: string, minLength: 1}
+        promotion_gates:
+          type: array
+          items:
+            enum:
+              - provenance
+              - license
+              - legal
+              - sanitization
+              - owner-review
+        sanitization_gate:
+          enum:
+            - pass
+            - required-before-publication
+            - rejected
+      allOf:
+        - if:
+            properties:
+              output_residency:
+                const: public_llm_wiki
+          then:
+            properties:
+              promotion_gates:
+                allOf:
+                  - contains: {const: provenance}
+                  - contains: {const: license}
+                  - contains: {const: legal}
+                  - contains: {const: sanitization}
+                  - contains: {const: owner-review}
+  legal_scan:
+    type: object
+    additionalProperties: false
+    required: [command, result]
+    properties:
+      command: {type: string, minLength: 1}
+      result:
+        enum:
+          - pass
+          - fail
+          - pending-required-before-publication
+          - required-before-publication
+allOf:
+  - if:
+      properties:
+        artifact_type:
+          const: limited_pdf
+    then:
+      required:
+        - exception_reason
+  - if:
+      properties:
+        output_residency:
+          const: public_llm_wiki
+    then:
+      properties:
+        legal_scan:
+          properties:
+            result:
+              const: pass
+        published_claims:
+          items:
+            properties:
+              legal_scan:
+                properties:
+                  result:
+                    const: pass
+              review_verdict:
+                enum:
+                  - approved
+                  - approved-with-notes
+              sanitization_gate:
+                const: pass
+              promotion_gates:
+                allOf:
+                  - contains: {const: provenance}
+                  - contains: {const: license}
+                  - contains: {const: legal}
+                  - contains: {const: sanitization}
+                  - contains: {const: owner-review}
+registry_backing:
+  public_llm_wiki: public llm-wiki repository or public website corpus after promotion gates
+  domain_private_corpus: private/local llm-wiki raw data or internal domain corpus
+  registered_client_private_corpus: client/project-private corpus registered by data-layer source registry
+  ignored_internal_run_artifact: transient execution output not intended for durable publication
+  no_preserve: scratch output intentionally discarded

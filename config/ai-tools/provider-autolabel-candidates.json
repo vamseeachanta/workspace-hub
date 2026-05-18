@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T17:20:09.435222Z",
+  "generated_at": "2026-05-18T21:20:11.678210Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -16,7 +16,7 @@
         "domain:repo-organization",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T03:37:50Z",
+      "updatedAt": "2026-05-18T19:38:45Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -51,7 +51,7 @@
         "domain:notification",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T03:35:51Z",
+      "updatedAt": "2026-05-18T19:37:58Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -85,7 +85,7 @@
         "domain:testing",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T03:42:24Z",
+      "updatedAt": "2026-05-18T19:37:34Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -119,7 +119,7 @@
         "domain:repo-organization",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-08T11:04:04Z",
+      "updatedAt": "2026-05-18T19:37:08Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -152,7 +152,7 @@
         "cat:harness",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T03:24:45Z",
+      "updatedAt": "2026-05-18T19:37:05Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -186,7 +186,7 @@
         "domain:agent-cost-tracking",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T03:56:50Z",
+      "updatedAt": "2026-05-18T19:36:47Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -219,7 +219,7 @@
         "cat:bugfix",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-14T02:08:00Z",
+      "updatedAt": "2026-05-18T19:35:56Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -252,7 +252,7 @@
         "cat:bugfix",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-16T10:13:41Z",
+      "updatedAt": "2026-05-18T19:35:32Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -285,7 +285,7 @@
         "domain:marine",
         "machine:dev-primary"
       ],
-      "updatedAt": "2026-04-24T01:33:05Z",
+      "updatedAt": "2026-05-18T19:40:23Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -316,7 +316,7 @@
         "domain:marine",
         "machine:dev-primary"
       ],
-      "updatedAt": "2026-04-26T21:54:09Z",
+      "updatedAt": "2026-05-18T19:40:17Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -343,7 +343,7 @@
       "labels": [
         "priority:high"
       ],
-      "updatedAt": "2026-05-06T03:07:27Z",
+      "updatedAt": "2026-05-18T19:37:20Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -373,7 +373,7 @@
         "cat:harness",
         "domain:agent-cost-tracking"
       ],
-      "updatedAt": "2026-05-15T15:57:12Z",
+      "updatedAt": "2026-05-18T19:34:40Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -403,7 +403,7 @@
         "cat:harness",
         "domain:gtm"
       ],
-      "updatedAt": "2026-04-21T10:27:04Z",
+      "updatedAt": "2026-05-18T19:43:32Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -431,7 +431,7 @@
         "bug",
         "priority:medium"
       ],
-      "updatedAt": "2026-04-20T02:53:21Z",
+      "updatedAt": "2026-05-18T19:43:08Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -459,7 +459,7 @@
         "priority:medium",
         "cat:harness"
       ],
-      "updatedAt": "2026-04-26T17:57:44Z",
+      "updatedAt": "2026-05-18T19:39:50Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
@@ -487,7 +487,7 @@
         "cat:documentation",
         "cat:harness"
       ],
-      "updatedAt": "2026-04-26T17:57:48Z",
+      "updatedAt": "2026-05-18T19:39:41Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",
@@ -515,7 +515,7 @@
         "cat:engineering",
         "cat:research"
       ],
-      "updatedAt": "2026-05-12T13:43:36Z",
+      "updatedAt": "2026-05-18T19:36:08Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "gemini",

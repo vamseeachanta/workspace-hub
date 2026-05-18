@@ -1,0 +1,37 @@
+bundle_id: report-2729-contract-seed
+issue: '#2729'
+artifact_type: client_facing_html
+output_residency: registered_client_private_corpus
+legal_scan:
+  command: scripts/legal/legal-sanity-scan.sh --diff-only
+  result: required-before-publication
+published_claims:
+  - claim_id: report-claim-001
+    statement: Report claim must be traceable to source, command, validation, legal, checksum, review, residency, and promotion evidence.
+    bindings:
+      - source_manifest
+      - command_manifest
+      - validation_result
+      - legal_scan
+      - checksum
+      - review_verdict
+      - output_residency
+      - promotion_decision
+    source_manifest: tests/fixtures/architecture/layer_boundary_matrix.yaml
+    command_manifest: tests/fixtures/architecture/execution_manifest.yaml
+    validation_result: uv run pytest tests/architecture/test_report_layer_contract.py -v
+    legal_scan:
+      command: scripts/legal/legal-sanity-scan.sh --diff-only
+      result: required-before-publication
+    checksum: pending-final-artifact-checksum
+    review_verdict: required-before-closeout
+    output_residency: registered_client_private_corpus
+    promotion_decision: no-public-promotion-without-gates
+    promotion_gates:
+      - provenance
+      - license
+      - legal
+      - sanitization
+      - owner-review
+    sanitization_gate: required-before-publication
+    source_class: registered_client_private_corpus

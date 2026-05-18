@@ -1,0 +1,13 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Ripgrep is not available. Falling back to GrepTool.
+Skill conflict detected: "field-dev-code-recon" from "/mnt/local-analysis/workspace-hub/.agents/skills/field-dev-code-recon/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/field-dev-code-recon/SKILL.md".
+Skill conflict detected: "extract-learnings-to-issues" from "/mnt/local-analysis/workspace-hub/.agents/skills/extract-learnings-to-issues/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/extract-learnings-to-issues/SKILL.md".
+Skill conflict detected: "corporate-tax-form-fill" from "/mnt/local-analysis/workspace-hub/.agents/skills/corporate-tax-form-fill/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/corporate-tax-form-fill/SKILL.md".
+- Verdict: APPROVE
+- Findings by severity with exact file/path evidence
+  - **MAJOR**: None. The patch correctly implements all requested validations, vocabularies, schemas, and tests, fully addressing the prior major blocks.
+  - **MINOR**: In `docs/architecture/execution-manifest.schema.yaml`, the `propertyNames` prohibition (lines 5-10, 85-88) against `[raw_data, data_dump, client_payload, source_text]` at the top level and inside `test_evidence` is technically redundant. Both the top-level schema and `test_evidence.items` declare `additionalProperties: false` with explicitly defined property names that do not include the banned keys. Any attempt to use `raw_data` would already fail validation under `additionalProperties: false`. This redundancy is benign and does not affect correctness.
+- Required fixes before closeout: None. The seed contract schemas and tests are sound and sufficient to close #2728/#2729.

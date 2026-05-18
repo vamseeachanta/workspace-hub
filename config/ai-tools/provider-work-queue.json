@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-18T17:20:09.245345Z",
+  "generated_at": "2026-05-18T21:20:11.535853Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-18T17:20:07.485664Z",
+  "scorecard_generated_at": "2026-05-18T21:20:09.676899Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 21,
+      "execution_ready_count": 22,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -25,7 +25,7 @@
             "domain:repo-organization",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:37:50Z",
+          "updatedAt": "2026-05-18T19:38:45Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -51,7 +51,7 @@
             "domain:notification",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:35:51Z",
+          "updatedAt": "2026-05-18T19:37:58Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -76,7 +76,7 @@
             "domain:testing",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:42:24Z",
+          "updatedAt": "2026-05-18T19:37:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -101,7 +101,7 @@
             "domain:repo-organization",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-08T11:04:04Z",
+          "updatedAt": "2026-05-18T19:37:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -125,7 +125,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:24:45Z",
+          "updatedAt": "2026-05-18T19:37:05Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -150,7 +150,7 @@
             "domain:agent-cost-tracking",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:56:50Z",
+          "updatedAt": "2026-05-18T19:36:47Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -174,7 +174,7 @@
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T02:08:00Z",
+          "updatedAt": "2026-05-18T19:35:56Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -198,7 +198,7 @@
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-16T10:13:41Z",
+          "updatedAt": "2026-05-18T19:35:32Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -224,7 +224,7 @@
             "domain:repo-organization",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:37:50Z",
+          "updatedAt": "2026-05-18T19:38:45Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -250,7 +250,7 @@
             "domain:notification",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:35:51Z",
+          "updatedAt": "2026-05-18T19:37:58Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -275,7 +275,7 @@
             "domain:testing",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:42:24Z",
+          "updatedAt": "2026-05-18T19:37:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -300,7 +300,7 @@
             "domain:repo-organization",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-08T11:04:04Z",
+          "updatedAt": "2026-05-18T19:37:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -324,7 +324,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:24:45Z",
+          "updatedAt": "2026-05-18T19:37:05Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -349,7 +349,7 @@
             "domain:agent-cost-tracking",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T03:56:50Z",
+          "updatedAt": "2026-05-18T19:36:47Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -373,7 +373,7 @@
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T02:08:00Z",
+          "updatedAt": "2026-05-18T19:35:56Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -397,7 +397,7 @@
             "cat:bugfix",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-16T10:13:41Z",
+          "updatedAt": "2026-05-18T19:35:32Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -411,18 +411,44 @@
           ]
         },
         {
-          "number": 2727,
-          "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
+          "number": 2728,
+          "title": "feat(architecture): define execution layer contracts, tooling, and compute routing",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "cat:document-intelligence",
-            "domain:knowledge",
+            "cat:operations",
+            "cat:harness",
+            "domain:workflow",
+            "domain:infrastructure",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T15:35:40Z",
+          "updatedAt": "2026-05-18T19:34:31Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2729,
+          "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:documentation",
+            "domain:reporting",
+            "domain:gtm",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-18T19:34:28Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -450,7 +476,7 @@
             "agent:claude",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T10:04:07Z",
+          "updatedAt": "2026-05-18T19:34:01Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -478,7 +504,7 @@
             "agent:claude",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T10:04:09Z",
+          "updatedAt": "2026-05-18T19:33:58Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -503,7 +529,7 @@
             "domain:semiconductor",
             "domain:chip-design"
           ],
-          "updatedAt": "2026-05-16T10:13:40Z",
+          "updatedAt": "2026-05-18T19:39:18Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -527,7 +553,7 @@
             "domain:repo-health",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-13T13:03:48Z",
+          "updatedAt": "2026-05-18T19:38:13Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -551,7 +577,7 @@
             "domain:security",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-03T21:15:07Z",
+          "updatedAt": "2026-05-18T19:38:10Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -574,7 +600,7 @@
             "domain:security",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-16T10:13:37Z",
+          "updatedAt": "2026-05-18T19:37:37Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -598,7 +624,7 @@
             "cat:harness",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T20:32:06Z",
+          "updatedAt": "2026-05-18T19:35:29Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -623,7 +649,7 @@
             "domain:work-queue",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T16:16:44Z",
+          "updatedAt": "2026-05-18T19:35:01Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -647,7 +673,7 @@
             "domain:marine",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-15T16:16:52Z",
+          "updatedAt": "2026-05-18T19:34:58Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -669,7 +695,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-17T13:13:57Z",
+          "updatedAt": "2026-05-18T19:34:13Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -692,7 +718,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-17T13:13:59Z",
+          "updatedAt": "2026-05-18T19:34:10Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -715,7 +741,7 @@
             "domain:knowledge-management",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-17T13:14:00Z",
+          "updatedAt": "2026-05-18T19:34:07Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -737,7 +763,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-04-26T11:45:09Z",
+          "updatedAt": "2026-05-18T19:41:02Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -760,7 +786,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-03T11:45:05Z",
+          "updatedAt": "2026-05-18T19:39:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -786,7 +812,7 @@
             "domain:workstations",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-04-27T18:57:43Z",
+          "updatedAt": "2026-05-18T19:39:03Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -812,7 +838,7 @@
             "domain:workstations",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-04-27T17:45:28Z",
+          "updatedAt": "2026-05-18T19:39:00Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -834,7 +860,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-10T11:45:06Z",
+          "updatedAt": "2026-05-18T19:37:31Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -857,7 +883,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-17T11:45:07Z",
+          "updatedAt": "2026-05-18T19:36:59Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -880,7 +906,7 @@
             "cat:data-pipeline",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-26T21:54:20Z",
+          "updatedAt": "2026-05-18T19:42:59Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -903,7 +929,7 @@
             "cat:data-pipeline",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-20T07:05:23Z",
+          "updatedAt": "2026-05-18T19:42:56Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -927,7 +953,7 @@
             "cat:harness",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-20T07:22:12Z",
+          "updatedAt": "2026-05-18T19:42:53Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -950,7 +976,7 @@
             "cat:harness",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-04-28T03:47:39Z",
+          "updatedAt": "2026-05-18T19:42:15Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -974,7 +1000,7 @@
             "cat:harness",
             "domain:release-management"
           ],
-          "updatedAt": "2026-04-20T19:58:02Z",
+          "updatedAt": "2026-05-18T19:42:12Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -997,7 +1023,7 @@
             "cat:harness",
             "domain:release-management"
           ],
-          "updatedAt": "2026-04-26T21:54:36Z",
+          "updatedAt": "2026-05-18T19:41:54Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1021,7 +1047,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-23T09:48:20Z",
+          "updatedAt": "2026-05-18T19:40:29Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1045,7 +1071,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-24T01:33:06Z",
+          "updatedAt": "2026-05-18T19:40:20Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1071,7 +1097,7 @@
             "domain:semiconductor",
             "domain:chip-design"
           ],
-          "updatedAt": "2026-04-26T21:49:16Z",
+          "updatedAt": "2026-05-18T19:39:24Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1096,7 +1122,7 @@
             "domain:semiconductor",
             "domain:chip-design"
           ],
-          "updatedAt": "2026-04-26T21:49:02Z",
+          "updatedAt": "2026-05-18T19:39:21Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1122,7 +1148,7 @@
             "domain:workstations",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-05-16T21:44:34Z",
+          "updatedAt": "2026-05-18T19:38:57Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1148,7 +1174,7 @@
             "domain:workstations",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-04-27T18:55:36Z",
+          "updatedAt": "2026-05-18T19:38:54Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1171,7 +1197,7 @@
             "cat:business",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-29T15:25:26Z",
+          "updatedAt": "2026-05-18T19:38:04Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1195,7 +1221,7 @@
             "cat:data-pipeline",
             "status:needs-data"
           ],
-          "updatedAt": "2026-04-29T18:06:11Z",
+          "updatedAt": "2026-05-18T19:38:01Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1218,7 +1244,7 @@
             "cat:engineering",
             "domain:gtm"
           ],
-          "updatedAt": "2026-05-05T01:58:15Z",
+          "updatedAt": "2026-05-18T19:37:28Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1241,7 +1267,7 @@
             "domain:marine",
             "machine:multi"
           ],
-          "updatedAt": "2026-05-05T10:12:17Z",
+          "updatedAt": "2026-05-18T19:37:25Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1266,7 +1292,7 @@
             "machine:dev-secondary",
             "agent:claude"
           ],
-          "updatedAt": "2026-05-05T10:11:46Z",
+          "updatedAt": "2026-05-18T19:37:23Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1288,7 +1314,7 @@
             "priority:high",
             "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-05-13T18:52:38Z",
+          "updatedAt": "2026-05-18T19:35:26Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1312,7 +1338,7 @@
             "domain:marine",
             "machine:licensed-win-1"
           ],
-          "updatedAt": "2026-05-15T15:49:12Z",
+          "updatedAt": "2026-05-18T19:35:04Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1335,7 +1361,7 @@
             "cat:ai-orchestration",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-16T12:24:45Z",
+          "updatedAt": "2026-05-18T19:34:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1360,7 +1386,7 @@
             "machine:licensed-win-1",
             "machine:licensed-win-2"
           ],
-          "updatedAt": "2026-05-15T15:45:12Z",
+          "updatedAt": "2026-05-18T19:34:43Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1383,7 +1409,7 @@
             "cat:harness",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-05-16T12:31:46Z",
+          "updatedAt": "2026-05-18T19:34:37Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1391,57 +1417,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2728,
-          "title": "feat(architecture): define execution layer contracts, tooling, and compute routing",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:operations",
-            "cat:harness",
-            "domain:workflow",
-            "domain:infrastructure",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-17T14:25:40Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2729,
-          "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "domain:reporting",
-            "domain:gtm",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-18T01:13:45Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -1457,7 +1432,7 @@
             "cat:document-intelligence",
             "domain:knowledge"
           ],
-          "updatedAt": "2026-05-17T11:19:58Z",
+          "updatedAt": "2026-05-18T19:34:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1481,7 +1456,7 @@
             "domain:knowledge",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-17T13:13:48Z",
+          "updatedAt": "2026-05-18T19:34:19Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1507,7 +1482,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T09:51:44Z",
+          "updatedAt": "2026-05-18T19:34:04Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1532,7 +1507,7 @@
             "domain:knowledge",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-18T09:38:16Z",
+          "updatedAt": "2026-05-18T19:33:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1556,7 +1531,7 @@
             "cat:operations",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-18T09:38:58Z",
+          "updatedAt": "2026-05-18T19:33:47Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1580,7 +1555,7 @@
             "cat:document-intelligence",
             "domain:knowledge"
           ],
-          "updatedAt": "2026-05-18T09:38:57Z",
+          "updatedAt": "2026-05-18T19:33:44Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1604,7 +1579,7 @@
             "cat:document-intelligence",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-05-18T09:38:20Z",
+          "updatedAt": "2026-05-18T19:33:41Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1628,7 +1603,7 @@
             "cat:documentation",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-05-18T09:38:22Z",
+          "updatedAt": "2026-05-18T19:33:38Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1650,7 +1625,7 @@
             "domain:gtm",
             "review-backlog"
           ],
-          "updatedAt": "2026-04-21T19:12:02Z",
+          "updatedAt": "2026-05-18T19:43:29Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1672,7 +1647,7 @@
             "priority:medium",
             "cat:data-pipeline"
           ],
-          "updatedAt": "2026-04-20T03:11:59Z",
+          "updatedAt": "2026-05-18T19:43:05Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1694,7 +1669,7 @@
             "priority:medium",
             "cat:data-pipeline"
           ],
-          "updatedAt": "2026-04-20T03:12:20Z",
+          "updatedAt": "2026-05-18T19:43:02Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1718,7 +1693,7 @@
             "domain:session",
             "agent:claude"
           ],
-          "updatedAt": "2026-04-20T07:25:20Z",
+          "updatedAt": "2026-05-18T19:42:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1742,7 +1717,7 @@
             "domain:session",
             "agent:claude"
           ],
-          "updatedAt": "2026-04-20T07:26:02Z",
+          "updatedAt": "2026-05-18T19:42:47Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1765,7 +1740,7 @@
             "cat:documentation",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-20T07:34:47Z",
+          "updatedAt": "2026-05-18T19:42:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1788,7 +1763,7 @@
             "cat:harness",
             "domain:session"
           ],
-          "updatedAt": "2026-04-20T07:34:53Z",
+          "updatedAt": "2026-05-18T19:42:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1812,7 +1787,7 @@
             "cat:harness",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-20T12:33:43Z",
+          "updatedAt": "2026-05-18T19:42:38Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1835,7 +1810,7 @@
             "cat:harness",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-20T12:33:47Z",
+          "updatedAt": "2026-05-18T19:42:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1858,7 +1833,7 @@
             "cat:harness",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-20T12:33:50Z",
+          "updatedAt": "2026-05-18T19:42:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1881,7 +1856,7 @@
             "cat:harness",
             "domain:session"
           ],
-          "updatedAt": "2026-04-20T14:44:42Z",
+          "updatedAt": "2026-05-18T19:42:29Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1904,7 +1879,7 @@
             "cat:data-pipeline",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-20T14:47:11Z",
+          "updatedAt": "2026-05-18T19:42:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1928,7 +1903,7 @@
             "cat:documentation",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-24T15:17:42Z",
+          "updatedAt": "2026-05-18T19:42:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1952,7 +1927,7 @@
             "cat:harness",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-21T03:09:15Z",
+          "updatedAt": "2026-05-18T19:42:09Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1976,7 +1951,7 @@
             "cat:harness",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-29T00:55:53Z",
+          "updatedAt": "2026-05-18T19:42:06Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1999,7 +1974,7 @@
             "cat:harness",
             "domain:document-intelligence"
           ],
-          "updatedAt": "2026-04-21T10:26:41Z",
+          "updatedAt": "2026-05-18T19:41:57Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2022,7 +1997,7 @@
             "cat:harness",
             "domain:release-management"
           ],
-          "updatedAt": "2026-04-20T19:57:25Z",
+          "updatedAt": "2026-05-18T19:41:51Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2046,7 +2021,7 @@
             "cat:harness",
             "domain:release-management"
           ],
-          "updatedAt": "2026-04-20T19:57:38Z",
+          "updatedAt": "2026-05-18T19:41:48Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2067,7 +2042,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-20T20:24:49Z",
+          "updatedAt": "2026-05-18T19:41:45Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2089,7 +2064,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-20T20:24:51Z",
+          "updatedAt": "2026-05-18T19:41:43Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2111,7 +2086,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-20T20:24:52Z",
+          "updatedAt": "2026-05-18T19:41:39Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2135,7 +2110,7 @@
             "cat:automation",
             "domain:skills"
           ],
-          "updatedAt": "2026-04-20T20:36:34Z",
+          "updatedAt": "2026-05-18T19:41:36Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2157,7 +2132,7 @@
             "priority:medium",
             "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-04-20T21:23:10Z",
+          "updatedAt": "2026-05-18T19:41:33Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2180,7 +2155,7 @@
             "cat:harness",
             "domain:release-management"
           ],
-          "updatedAt": "2026-04-20T21:17:09Z",
+          "updatedAt": "2026-05-18T19:41:27Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2202,7 +2177,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-17T12:13:45Z",
+          "updatedAt": "2026-05-18T19:41:24Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2225,7 +2200,7 @@
             "cat:ai-orchestration",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-21T13:35:12Z",
+          "updatedAt": "2026-05-18T19:41:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2249,7 +2224,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T19:28:06Z",
+          "updatedAt": "2026-05-18T19:41:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2271,7 +2246,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-21T10:25:03Z",
+          "updatedAt": "2026-05-18T19:41:14Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2295,7 +2270,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T19:14:05Z",
+          "updatedAt": "2026-05-18T19:41:11Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2319,7 +2294,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T10:25:25Z",
+          "updatedAt": "2026-05-18T19:41:08Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2343,7 +2318,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T10:25:38Z",
+          "updatedAt": "2026-05-18T19:41:05Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2367,7 +2342,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-05-12T03:16:17Z",
+          "updatedAt": "2026-05-18T19:40:59Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2391,7 +2366,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T15:42:25Z",
+          "updatedAt": "2026-05-18T19:40:56Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2415,7 +2390,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T15:33:31Z",
+          "updatedAt": "2026-05-18T19:40:53Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2439,7 +2414,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T13:41:47Z",
+          "updatedAt": "2026-05-18T19:40:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2463,7 +2438,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T15:32:41Z",
+          "updatedAt": "2026-05-18T19:40:47Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2487,7 +2462,7 @@
             "domain:frontend-design",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T18:49:44Z",
+          "updatedAt": "2026-05-18T19:40:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2508,7 +2483,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-21T17:37:29Z",
+          "updatedAt": "2026-05-18T19:40:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2532,7 +2507,7 @@
             "cat:documentation",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-23T20:48:22Z",
+          "updatedAt": "2026-05-18T19:40:26Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2555,7 +2530,7 @@
             "cat:ci",
             "status:pending"
           ],
-          "updatedAt": "2026-04-24T10:12:39Z",
+          "updatedAt": "2026-05-18T19:40:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2577,7 +2552,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-04-24T16:56:20Z",
+          "updatedAt": "2026-05-18T19:40:11Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2600,7 +2575,7 @@
             "cat:harness",
             "domain:knowledge-management"
           ],
-          "updatedAt": "2026-04-24T18:59:31Z",
+          "updatedAt": "2026-05-18T19:40:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2621,7 +2596,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-04-26T17:57:43Z",
+          "updatedAt": "2026-05-18T19:39:52Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2642,7 +2617,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:46Z",
+          "updatedAt": "2026-05-18T19:39:47Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2662,7 +2637,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:47Z",
+          "updatedAt": "2026-05-18T19:39:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2686,7 +2661,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-26T19:05:10Z",
+          "updatedAt": "2026-05-18T19:39:38Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2710,7 +2685,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-26T19:05:12Z",
+          "updatedAt": "2026-05-18T19:39:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2733,7 +2708,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-26T19:05:13Z",
+          "updatedAt": "2026-05-18T19:39:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2756,7 +2731,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-26T19:05:15Z",
+          "updatedAt": "2026-05-18T19:39:29Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2779,7 +2754,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-26T19:05:16Z",
+          "updatedAt": "2026-05-18T19:39:26Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2802,7 +2777,7 @@
             "domain:semiconductor",
             "domain:chip-design"
           ],
-          "updatedAt": "2026-04-26T21:49:07Z",
+          "updatedAt": "2026-05-18T19:39:15Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2826,7 +2801,7 @@
             "cat:research",
             "domain:marine"
           ],
-          "updatedAt": "2026-04-26T21:53:56Z",
+          "updatedAt": "2026-05-18T19:39:12Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2850,7 +2825,7 @@
             "domain:pipeline",
             "domain:marine"
           ],
-          "updatedAt": "2026-04-26T21:54:00Z",
+          "updatedAt": "2026-05-18T19:39:09Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2872,7 +2847,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-04-27T21:13:51Z",
+          "updatedAt": "2026-05-18T19:38:51Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2893,7 +2868,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-18T12:22:49Z",
+          "updatedAt": "2026-05-18T19:38:48Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2914,7 +2889,7 @@
             "cat:operations",
             "cat:data"
           ],
-          "updatedAt": "2026-04-28T19:03:06Z",
+          "updatedAt": "2026-05-18T19:38:42Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2936,7 +2911,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-04-28T23:28:52Z",
+          "updatedAt": "2026-05-18T19:38:39Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2959,7 +2934,7 @@
             "cat:data-pipeline",
             "domain:gis"
           ],
-          "updatedAt": "2026-04-29T09:17:27Z",
+          "updatedAt": "2026-05-18T19:38:36Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2981,7 +2956,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-04-28T23:50:26Z",
+          "updatedAt": "2026-05-18T19:38:33Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3003,7 +2978,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-04-29T00:48:56Z",
+          "updatedAt": "2026-05-18T19:38:30Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3025,7 +3000,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-04-29T01:38:55Z",
+          "updatedAt": "2026-05-18T19:38:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3047,7 +3022,7 @@
             "priority:medium",
             "cat:documentation"
           ],
-          "updatedAt": "2026-05-12T03:16:25Z",
+          "updatedAt": "2026-05-18T19:38:19Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3070,7 +3045,7 @@
             "cat:documentation",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-04-29T02:09:10Z",
+          "updatedAt": "2026-05-18T19:38:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3093,7 +3068,7 @@
             "cat:engineering",
             "domain:testing"
           ],
-          "updatedAt": "2026-05-03T21:14:21Z",
+          "updatedAt": "2026-05-18T19:37:43Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3113,7 +3088,7 @@
           "labels": [
             "priority:medium"
           ],
-          "updatedAt": "2026-05-05T22:01:43Z",
+          "updatedAt": "2026-05-18T19:37:16Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3136,7 +3111,7 @@
             "cat:documentation",
             "cat:harness"
           ],
-          "updatedAt": "2026-05-12T03:17:22Z",
+          "updatedAt": "2026-05-18T19:36:53Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3159,7 +3134,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-05-12T03:17:14Z",
+          "updatedAt": "2026-05-18T19:36:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3182,7 +3157,7 @@
             "cat:knowledge-domain",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:08:35Z",
+          "updatedAt": "2026-05-18T19:36:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3205,7 +3180,7 @@
             "cat:engineering",
             "cat:knowledge-domain"
           ],
-          "updatedAt": "2026-05-13T01:30:13Z",
+          "updatedAt": "2026-05-18T19:36:38Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3227,7 +3202,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T10:01:38Z",
+          "updatedAt": "2026-05-18T19:36:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3249,7 +3224,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T10:01:40Z",
+          "updatedAt": "2026-05-18T19:36:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3270,7 +3245,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:41:20Z",
+          "updatedAt": "2026-05-18T19:36:23Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3292,7 +3267,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T10:01:48Z",
+          "updatedAt": "2026-05-18T19:36:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3315,7 +3290,7 @@
             "cat:engineering",
             "cat:knowledge-domain"
           ],
-          "updatedAt": "2026-05-13T01:30:14Z",
+          "updatedAt": "2026-05-18T19:36:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3337,7 +3312,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T13:43:31Z",
+          "updatedAt": "2026-05-18T19:36:14Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3358,7 +3333,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T13:43:33Z",
+          "updatedAt": "2026-05-18T19:36:11Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3379,7 +3354,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:41:22Z",
+          "updatedAt": "2026-05-18T19:36:02Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3401,7 +3376,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T13:43:47Z",
+          "updatedAt": "2026-05-18T19:35:59Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3424,7 +3399,7 @@
             "cat:engineering",
             "cat:knowledge-domain"
           ],
-          "updatedAt": "2026-05-13T11:40:43Z",
+          "updatedAt": "2026-05-18T19:35:53Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3446,7 +3421,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:05:29Z",
+          "updatedAt": "2026-05-18T19:35:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3468,7 +3443,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:05:57Z",
+          "updatedAt": "2026-05-18T19:35:47Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3489,7 +3464,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:06:34Z",
+          "updatedAt": "2026-05-18T19:35:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3511,7 +3486,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:41:23Z",
+          "updatedAt": "2026-05-18T19:35:38Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3533,7 +3508,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:08:04Z",
+          "updatedAt": "2026-05-18T19:35:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3555,7 +3530,7 @@
             "priority:medium",
             "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-05-13T18:55:26Z",
+          "updatedAt": "2026-05-18T19:35:23Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3577,7 +3552,7 @@
             "priority:medium",
             "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-05-13T18:56:01Z",
+          "updatedAt": "2026-05-18T19:35:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3599,7 +3574,7 @@
             "priority:medium",
             "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-05-13T18:56:38Z",
+          "updatedAt": "2026-05-18T19:35:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3622,7 +3597,7 @@
             "cat:harness",
             "cat:maintenance"
           ],
-          "updatedAt": "2026-05-14T02:35:02Z",
+          "updatedAt": "2026-05-18T19:35:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3645,7 +3620,7 @@
             "cat:engineering",
             "cat:harness"
           ],
-          "updatedAt": "2026-05-14T16:10:16Z",
+          "updatedAt": "2026-05-18T19:35:10Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3666,7 +3641,7 @@
             "enhancement",
             "priority:medium"
           ],
-          "updatedAt": "2026-05-15T03:39:21Z",
+          "updatedAt": "2026-05-18T19:35:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3688,7 +3663,7 @@
             "cat:harness",
             "domain:ai-orchestration"
           ],
-          "updatedAt": "2026-05-15T09:12:46Z",
+          "updatedAt": "2026-05-18T19:34:55Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3709,7 +3684,7 @@
             "priority:medium",
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-05-15T12:20:25Z",
+          "updatedAt": "2026-05-18T19:34:46Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3733,7 +3708,7 @@
             "domain:ai-config",
             "domain:tooling"
           ],
-          "updatedAt": "2026-05-17T10:42:33Z",
+          "updatedAt": "2026-05-18T19:34:25Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3759,7 +3734,7 @@
             "domain:notification",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T08:40:29Z",
+          "updatedAt": "2026-05-18T19:33:55Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3785,7 +3760,7 @@
             "domain:cross-platform",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-18T08:40:30Z",
+          "updatedAt": "2026-05-18T19:33:52Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3806,7 +3781,7 @@
             "priority:medium",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-18T11:45:05Z",
+          "updatedAt": "2026-05-18T19:33:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3827,7 +3802,7 @@
             "priority:low",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-21T10:26:59Z",
+          "updatedAt": "2026-05-18T19:43:26Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3848,7 +3823,7 @@
             "domain:gtm",
             "claude:design"
           ],
-          "updatedAt": "2026-04-21T10:26:56Z",
+          "updatedAt": "2026-05-18T19:43:20Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3869,7 +3844,7 @@
             "cat:engineering",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-21T10:26:50Z",
+          "updatedAt": "2026-05-18T19:43:14Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3891,7 +3866,7 @@
             "cat:harness",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-21T10:26:47Z",
+          "updatedAt": "2026-05-18T19:43:11Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3913,7 +3888,7 @@
             "priority:low",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-20T14:44:52Z",
+          "updatedAt": "2026-05-18T19:42:26Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3933,7 +3908,7 @@
             "enhancement",
             "priority:low"
           ],
-          "updatedAt": "2026-04-20T14:45:30Z",
+          "updatedAt": "2026-05-18T19:42:24Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3955,7 +3930,7 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-04-21T19:09:58Z",
+          "updatedAt": "2026-05-18T19:40:38Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3977,7 +3952,7 @@
             "cat:marketing",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T10:01:44Z",
+          "updatedAt": "2026-05-18T19:36:26Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3998,7 +3973,7 @@
             "cat:marketing",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T13:43:40Z",
+          "updatedAt": "2026-05-18T19:36:05Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -4019,7 +3994,7 @@
             "cat:marketing",
             "cat:research"
           ],
-          "updatedAt": "2026-05-13T11:07:12Z",
+          "updatedAt": "2026-05-18T19:35:41Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -4040,9 +4015,28 @@
             "cat:harness",
             "domain:workflow"
           ],
-          "updatedAt": "2026-05-16T22:35:05Z",
+          "updatedAt": "2026-05-18T19:34:34Z",
           "execution_ready": false,
           "priority_rank": 3,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2341,
+          "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2341",
+          "labels": [
+            "bug"
+          ],
+          "updatedAt": "2026-05-18T19:43:35Z",
+          "execution_ready": false,
+          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4059,7 +4053,7 @@
           "labels": [
             "enhancement"
           ],
-          "updatedAt": "2026-04-19T21:36:06Z",
+          "updatedAt": "2026-05-18T19:43:17Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4078,7 +4072,7 @@
           "labels": [
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-04-22T02:44:38Z",
+          "updatedAt": "2026-05-18T19:40:35Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4098,7 +4092,7 @@
           "labels": [
             "cat:infrastructure"
           ],
-          "updatedAt": "2026-04-22T02:45:00Z",
+          "updatedAt": "2026-05-18T19:40:32Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4119,7 +4113,7 @@
             "enhancement",
             "tech-debt"
           ],
-          "updatedAt": "2026-04-26T13:12:18Z",
+          "updatedAt": "2026-05-18T19:40:01Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4142,7 +4136,7 @@
             "domain:digitalmodel",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-03T11:03:53Z",
+          "updatedAt": "2026-05-18T19:37:52Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4164,7 +4158,7 @@
             "tracker",
             "domain:digitalmodel"
           ],
-          "updatedAt": "2026-05-04T15:20:15Z",
+          "updatedAt": "2026-05-18T19:37:49Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4184,7 +4178,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-18T11:08:52Z",
+          "updatedAt": "2026-05-18T19:37:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4208,7 +4202,7 @@
             "domain:quality",
             "llm-wiki"
           ],
-          "updatedAt": "2026-05-09T13:18:50Z",
+          "updatedAt": "2026-05-18T19:37:02Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4229,7 +4223,7 @@
             "domain:repo-cleanup",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-12T03:02:55Z",
+          "updatedAt": "2026-05-18T19:36:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4250,7 +4244,7 @@
             "domain:repo-cleanup",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-12T03:50:22Z",
+          "updatedAt": "2026-05-18T19:36:44Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4271,7 +4265,7 @@
             "cat:knowledge-domain",
             "cat:research"
           ],
-          "updatedAt": "2026-05-15T09:51:56Z",
+          "updatedAt": "2026-05-18T19:34:52Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4305,7 +4299,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T16:10:48Z",
+          "updatedAt": "2026-05-18T19:42:00Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4332,7 +4326,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T16:10:46Z",
+          "updatedAt": "2026-05-18T19:42:03Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4356,7 +4350,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-24T01:33:05Z",
+          "updatedAt": "2026-05-18T19:40:23Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4379,7 +4373,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-26T21:54:09Z",
+          "updatedAt": "2026-05-18T19:40:17Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4398,7 +4392,7 @@
           "labels": [
             "priority:high"
           ],
-          "updatedAt": "2026-05-06T03:07:27Z",
+          "updatedAt": "2026-05-18T19:37:20Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4420,7 +4414,7 @@
             "cat:harness",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-05-15T15:57:12Z",
+          "updatedAt": "2026-05-18T19:34:40Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4442,7 +4436,7 @@
             "cat:harness",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-21T10:27:04Z",
+          "updatedAt": "2026-05-18T19:43:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4462,7 +4456,7 @@
             "bug",
             "priority:medium"
           ],
-          "updatedAt": "2026-04-20T02:53:21Z",
+          "updatedAt": "2026-05-18T19:43:08Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4489,7 +4483,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T16:10:48Z",
+          "updatedAt": "2026-05-18T19:42:00Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4516,7 +4510,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-14T16:10:46Z",
+          "updatedAt": "2026-05-18T19:42:03Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4540,7 +4534,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-24T01:33:05Z",
+          "updatedAt": "2026-05-18T19:40:23Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4563,7 +4557,7 @@
             "domain:marine",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-04-26T21:54:09Z",
+          "updatedAt": "2026-05-18T19:40:17Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4582,7 +4576,7 @@
           "labels": [
             "priority:high"
           ],
-          "updatedAt": "2026-05-06T03:07:27Z",
+          "updatedAt": "2026-05-18T19:37:20Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4604,7 +4598,7 @@
             "cat:harness",
             "domain:agent-cost-tracking"
           ],
-          "updatedAt": "2026-05-15T15:57:12Z",
+          "updatedAt": "2026-05-18T19:34:40Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4626,7 +4620,7 @@
             "cat:harness",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-21T10:27:04Z",
+          "updatedAt": "2026-05-18T19:43:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4646,7 +4640,7 @@
             "bug",
             "priority:medium"
           ],
-          "updatedAt": "2026-04-20T02:53:21Z",
+          "updatedAt": "2026-05-18T19:43:08Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4667,7 +4661,7 @@
             "priority:medium",
             "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-04-20T21:23:13Z",
+          "updatedAt": "2026-05-18T19:41:30Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4688,7 +4682,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-24T16:56:21Z",
+          "updatedAt": "2026-05-18T19:40:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4712,7 +4706,7 @@
             "domain:security",
             "agent:codex"
           ],
-          "updatedAt": "2026-05-16T10:14:05Z",
+          "updatedAt": "2026-05-18T19:38:16Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4734,7 +4728,7 @@
             "cat:engineering",
             "domain:testing"
           ],
-          "updatedAt": "2026-05-03T21:14:10Z",
+          "updatedAt": "2026-05-18T19:37:46Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4757,7 +4751,7 @@
             "domain:marine",
             "domain:mooring"
           ],
-          "updatedAt": "2026-05-03T21:15:09Z",
+          "updatedAt": "2026-05-18T19:37:40Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4778,7 +4772,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T10:01:42Z",
+          "updatedAt": "2026-05-18T19:36:29Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4798,7 +4792,7 @@
             "priority:low",
             "domain:gtm"
           ],
-          "updatedAt": "2026-04-21T10:26:56Z",
+          "updatedAt": "2026-05-18T19:43:23Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "codex",
@@ -4818,7 +4812,7 @@
             "priority:low",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:41Z",
+          "updatedAt": "2026-05-18T19:39:55Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "codex",
@@ -4838,7 +4832,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-04-26T16:12:04Z",
+          "updatedAt": "2026-05-18T19:39:58Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4854,7 +4848,7 @@
           "title": "Routine: /repo-sync + /mnt/local-analysis cleanup audit (every 2 days)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2572",
           "labels": [],
-          "updatedAt": "2026-05-17T10:08:40Z",
+          "updatedAt": "2026-05-18T19:37:55Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4871,7 +4865,7 @@
           "title": "Convert ROGII task brief PPTX to PDF on ace-linux-2 (LibreOffice required)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2651",
           "labels": [],
-          "updatedAt": "2026-05-06T03:20:26Z",
+          "updatedAt": "2026-05-18T19:37:14Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4903,7 +4897,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T04:00:31Z",
+          "updatedAt": "2026-05-18T19:34:16Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -4924,7 +4918,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:44Z",
+          "updatedAt": "2026-05-18T19:39:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -4944,7 +4938,7 @@
             "cat:documentation",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:48Z",
+          "updatedAt": "2026-05-18T19:39:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -4964,7 +4958,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T13:43:36Z",
+          "updatedAt": "2026-05-18T19:36:08Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -4990,7 +4984,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T04:00:31Z",
+          "updatedAt": "2026-05-18T19:34:16Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5011,7 +5005,7 @@
             "priority:medium",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:44Z",
+          "updatedAt": "2026-05-18T19:39:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -5031,7 +5025,7 @@
             "cat:documentation",
             "cat:harness"
           ],
-          "updatedAt": "2026-04-26T17:57:48Z",
+          "updatedAt": "2026-05-18T19:39:41Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",
@@ -5051,7 +5045,7 @@
             "cat:engineering",
             "cat:research"
           ],
-          "updatedAt": "2026-05-12T13:43:36Z",
+          "updatedAt": "2026-05-18T19:36:08Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "gemini",

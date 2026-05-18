@@ -784,10 +784,13 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: major_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2729.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -796,7 +799,7 @@
           "cat:documentation",
           "domain:reporting",
           "domain:gtm",
-          "status:plan-review"
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -826,10 +829,13 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: major_review,unavailable_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2728.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -839,7 +845,7 @@
           "cat:harness",
           "domain:workflow",
           "domain:infrastructure",
-          "status:plan-review"
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -866,51 +872,6 @@
         "legacy_review_no_sha",
         "major_review",
         "unavailable_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: major_review",
-        "issue already has approval marker on disk",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": ".planning/plan-approved/2727.md",
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data-pipeline",
-          "cat:document-intelligence",
-          "domain:knowledge",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-        "provider_route": "claude",
-        "risks": "**Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table. | **Risk:** Some `/mnt` inventories can expose client identifiers; tracked public docs must use redacted source IDs or private-only appendices for raw client path names. | **Decision for this packet:** D-L2 raw-like `llm-wiki` staging is private/local onl",
-        "tests": "TDD section present",
-        "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2727,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review"
       ]
     },
     {
@@ -7989,9 +7950,45 @@
       "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2341,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2341",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-05-18T17:20:11Z",
+  "generated_at": "2026-05-18T21:20:13Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8756,10 +8753,13 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: major_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2729.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8768,7 +8768,7 @@
             "cat:documentation",
             "domain:reporting",
             "domain:gtm",
-            "status:plan-review"
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8798,10 +8798,13 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: major_review,unavailable_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2728.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8811,7 +8814,7 @@
             "cat:harness",
             "domain:workflow",
             "domain:infrastructure",
-            "status:plan-review"
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8838,51 +8841,6 @@
           "legacy_review_no_sha",
           "major_review",
           "unavailable_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: major_review",
-          "issue already has approval marker on disk",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": ".planning/plan-approved/2727.md",
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:document-intelligence",
-            "domain:knowledge",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-          "provider_route": "claude",
-          "risks": "**Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table. | **Risk:** Some `/mnt` inventories can expose client identifiers; tracked public docs must use redacted source IDs or private-only appendices for raw client path names. | **Decision for this packet:** D-L2 raw-like `llm-wiki` staging is private/local onl",
-          "tests": "TDD section present",
-          "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2727,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review"
         ]
       },
       {
@@ -15961,6 +15919,42 @@
         "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2341,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2341",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15971,16 +15965,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-18T17:20:07.485664Z",
+  "scorecard_generated_at": "2026-05-18T21:20:09.676899Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-18T17:20:07.299439Z",
+  "utilization_generated_at": "2026-05-18T21:20:09.492570Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 5,
     "empty_review": 3,
-    "legacy_review_no_sha": 28,
-    "major_review": 19,
-    "marker_without_open_approved_issue": 130,
+    "legacy_review_no_sha": 27,
+    "major_review": 18,
+    "marker_without_open_approved_issue": 131,
     "missing_review": 27,
     "unavailable_review": 15,
     "unknown_review": 3

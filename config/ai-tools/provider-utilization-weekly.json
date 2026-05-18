@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T17:20:07.299439Z",
+  "generated_at": "2026-05-18T21:20:09.492570Z",
   "current_week": "2026-W21",
   "report_weeks": 8,
   "subscriptions": {
@@ -1031,23 +1031,23 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W21",
-        "sessions": 30,
-        "post_records": 716,
+        "sessions": 31,
+        "post_records": 740,
         "activity_utilization_pct": 1.8,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 1.8,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-05-18T17:20:01Z",
+        "quota_snapshot_ts": "2026-05-18T21:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 349
+            "count": 364
           },
           {
             "tool": "Read",
-            "count": 222
+            "count": 225
           },
           {
             "tool": "unknown",
@@ -1055,15 +1055,15 @@
           },
           {
             "tool": "Edit",
-            "count": 42
+            "count": 45
           },
           {
             "tool": "Write",
-            "count": 9
+            "count": 12
           }
         ],
         "first_ts": "2026-05-18T01:14:44Z",
-        "last_ts": "2026-05-18T16:20:53Z",
+        "last_ts": "2026-05-18T20:17:50Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -1077,7 +1077,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-05-18T17:20:01Z",
+        "quota_snapshot_ts": "2026-05-18T21:20:02Z",
         "top_tools": [
           {
             "tool": "Read",
@@ -1107,7 +1107,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-05-18T17:20:01Z",
+        "quota_snapshot_ts": "2026-05-18T21:20:02Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,

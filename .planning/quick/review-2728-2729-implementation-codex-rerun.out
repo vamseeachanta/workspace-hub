@@ -1,0 +1,1313 @@
+OpenAI Codex v0.131.0
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019e3d3d-2ebc-7243-8940-9bfbc2471a8e
+--------
+user
+# Implementation Adversarial Re-Review: workspace-hub #2728/#2729
+
+This is a re-review after prior Codex/Gemini MAJOR findings.
+
+## Prior MAJOR/MINOR findings addressed
+- `report_eligible: true` now requires `legal_scan_evidence.result: pass`, non-pending checksum values, and at least one `report_handoff` output.
+- Execution schema now forbids raw/private payload key names (`raw_data`, `data_dump`, `client_payload`, `source_text`) at top-level plus checksum/test evidence containers.
+- `test_evidence` is now object-shaped with closed result vocabulary.
+- Report bundle schema now has closed legal/review/sanitization vocabularies.
+- `limited_pdf` now requires `exception_reason`.
+- Public report bundles require top-level legal pass and per-claim legal pass, approved/approved-with-notes review, sanitization pass, and full promotion gates.
+- Added negative tests for failed legal scan, pending checksums, nested raw payload fields, invalid legal vocabulary, and limited PDF missing exception reason.
+
+## Validation
+`uv run pytest tests/architecture/test_execution_layer_contract.py tests/architecture/test_report_layer_contract.py -q` -> `26 passed in 0.61s`.
+
+## Review questions
+1. Did the patch resolve the previous MAJOR blockers sufficiently to close #2728/#2729 as architecture contract seed work?
+2. Are there any remaining MAJOR blockers within the approved docs/schema/tests scope?
+3. Identify any MINOR follow-up issues separately; do not block closeout for future validator/runtime implementation work already captured in follow-up backlog unless seed contract is unsound.
+
+Output format:
+- Verdict: APPROVE | MINOR | MAJOR
+- Findings by severity with exact file/path evidence
+- Required fixes before closeout
+
+## Current patched artifacts
+
+
+## FILE: docs/architecture/execution-manifest.schema.yaml
+```
+type: object
+additionalProperties: false
+propertyNames:
+  not:
+    enum:
+      - raw_data
+      - data_dump
+      - client_payload
+      - source_text
+required:
+  - manifest_id
+  - issue
+  - source_ids
+  - source_registry_kind
+  - source_registry_ref
+  - input_residency
+  - output_residency
+  - tool
+  - machine
+  - provider_tool
+  - command_manifest
+  - regeneration_command
+  - replay_command
+  - environment_pin
+  - outputs
+  - checksums
+  - test_evidence
+  - legal_scan_evidence
+  - review_artifact_paths
+  - promotion_gates
+  - report_eligible
+properties:
+  manifest_id: {type: string}
+  issue: {type: string}
+  source_ids:
+    type: array
+    minItems: 1
+    items: {type: string}
+  source_registry_kind:
+    enum:
+      - mounted_source_registry
+      - repo_registry
+      - document_index_registry
+      - manual_seed
+      - unavailable
+  source_registry_ref: {type: string}
+  input_residency:
+    enum:
+      - raw_data
+      - readable_raw_data
+      - owner_repo_checkout
+      - target_repo_checkout
+      - domain_private_corpus
+      - registered_client_private_corpus
+      - public_llm_wiki
+  output_residency:
+    enum:
+      - public_llm_wiki
+      - domain_private_corpus
+      - registered_client_private_corpus
+      - ignored_internal_run_artifact
+      - no_preserve
+  tool: {type: string}
+  machine: {type: string}
+  provider_tool: {type: string}
+  command_manifest:
+    type: object
+    additionalProperties: false
+    required: [working_directory, command]
+    properties:
+      working_directory: {type: string}
+      command: {type: string}
+  regeneration_command: {type: string}
+  replay_command: {type: string}
+  environment_pin: {type: string}
+  outputs:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required:
+        - path
+        - kind
+        - report_handoff
+        - output_residency
+      properties:
+        path: {type: string}
+        kind: {type: string}
+        report_handoff: {type: boolean}
+        output_residency:
+          enum:
+            - public_llm_wiki
+            - domain_private_corpus
+            - registered_client_private_corpus
+            - ignored_internal_run_artifact
+            - no_preserve
+  checksums:
+    type: object
+    minProperties: 1
+    propertyNames:
+      not:
+        enum: [raw_data, data_dump, client_payload, source_text]
+    additionalProperties:
+      type: string
+      minLength: 1
+  test_evidence:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      propertyNames:
+        not:
+          enum: [raw_data, data_dump, client_payload, source_text]
+      required: [command, result]
+      properties:
+        command: {type: string, minLength: 1}
+        result:
+          enum:
+            - pass
+            - fail
+            - pending-required-before-publication
+  legal_scan_evidence:
+    type: object
+    additionalProperties: false
+    required: [command, result]
+    properties:
+      command: {type: string, minLength: 1}
+      result:
+        enum:
+          - pass
+          - fail
+          - pending-required-before-publication
+          - required-before-publication
+  review_artifact_paths:
+    type: array
+    minItems: 1
+    items: {type: string, minLength: 1}
+  promotion_gates:
+    type: array
+    items:
+      enum:
+        - provenance
+        - license
+        - legal
+        - sanitization
+        - owner-review
+  report_eligible: {type: boolean}
+allOf:
+  - if:
+      properties:
+        source_registry_kind:
+          const: unavailable
+    then:
+      properties:
+        report_eligible:
+          const: false
+  - if:
+      properties:
+        output_residency:
+          const: public_llm_wiki
+    then:
+      properties:
+        promotion_gates:
+          allOf:
+            - contains: {const: provenance}
+            - contains: {const: license}
+            - contains: {const: legal}
+            - contains: {const: sanitization}
+            - contains: {const: owner-review}
+  - if:
+      properties:
+        outputs:
+          contains:
+            type: object
+            properties:
+              output_residency:
+                const: public_llm_wiki
+    then:
+      properties:
+        promotion_gates:
+          allOf:
+            - contains: {const: provenance}
+            - contains: {const: license}
+            - contains: {const: legal}
+            - contains: {const: sanitization}
+            - contains: {const: owner-review}
+  - if:
+      properties:
+        report_eligible:
+          const: true
+    then:
+      properties:
+        legal_scan_evidence:
+          properties:
+            result:
+              const: pass
+        checksums:
+          additionalProperties:
+            type: string
+            minLength: 1
+            not:
+              pattern: (?i)pending
+        outputs:
+          contains:
+            type: object
+            properties:
+              report_handoff:
+                const: true
+
+```
+
+## FILE: docs/architecture/report-evidence-bundle.schema.yaml
+```
+type: object
+additionalProperties: false
+required:
+  - bundle_id
+  - issue
+  - artifact_type
+  - output_residency
+  - published_claims
+  - legal_scan
+properties:
+  bundle_id: {type: string}
+  issue: {type: string}
+  artifact_type:
+    enum:
+      - raw_output
+      - evidence_bundle
+      - internal_report
+      - client_facing_html
+      - limited_pdf
+      - chatbot_query_surface
+      - public_page
+      - report_derived_learning
+  exception_reason: {type: string, minLength: 1}
+  output_residency:
+    enum:
+      - public_llm_wiki
+      - domain_private_corpus
+      - registered_client_private_corpus
+      - ignored_internal_run_artifact
+      - no_preserve
+  published_claims:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required:
+        - claim_id
+        - statement
+        - source_class
+        - bindings
+        - source_manifest
+        - command_manifest
+        - validation_result
+        - legal_scan
+        - checksum
+        - review_verdict
+        - output_residency
+        - promotion_decision
+        - promotion_gates
+        - sanitization_gate
+      properties:
+        claim_id: {type: string}
+        statement: {type: string}
+        source_class: {type: string}
+        bindings:
+          type: array
+          minItems: 8
+          items:
+            enum:
+              - source_manifest
+              - command_manifest
+              - validation_result
+              - legal_scan
+              - checksum
+              - review_verdict
+              - output_residency
+              - promotion_decision
+          allOf:
+            - contains: {const: source_manifest}
+            - contains: {const: command_manifest}
+            - contains: {const: validation_result}
+            - contains: {const: legal_scan}
+            - contains: {const: checksum}
+            - contains: {const: review_verdict}
+            - contains: {const: output_residency}
+            - contains: {const: promotion_decision}
+        source_manifest: {type: string}
+        command_manifest: {type: string}
+        validation_result: {type: string}
+        legal_scan:
+          type: object
+          additionalProperties: false
+          required: [command, result]
+          properties:
+            command: {type: string, minLength: 1}
+            result:
+              enum:
+                - pass
+                - fail
+                - pending-required-before-publication
+                - required-before-publication
+        checksum:
+          type: string
+          minLength: 1
+        review_verdict:
+          enum:
+            - approved
+            - approved-with-notes
+            - required-before-closeout
+            - rejected
+        output_residency:
+          enum:
+            - public_llm_wiki
+            - domain_private_corpus
+            - registered_client_private_corpus
+            - ignored_internal_run_artifact
+            - no_preserve
+        promotion_decision: {type: string, minLength: 1}
+        promotion_gates:
+          type: array
+          items:
+            enum:
+              - provenance
+              - license
+              - legal
+              - sanitization
+              - owner-review
+        sanitization_gate:
+          enum:
+            - pass
+            - required-before-publication
+            - rejected
+      allOf:
+        - if:
+            properties:
+              output_residency:
+                const: public_llm_wiki
+          then:
+            properties:
+              promotion_gates:
+                allOf:
+                  - contains: {const: provenance}
+                  - contains: {const: license}
+                  - contains: {const: legal}
+                  - contains: {const: sanitization}
+                  - contains: {const: owner-review}
+  legal_scan:
+    type: object
+    additionalProperties: false
+    required: [command, result]
+    properties:
+      command: {type: string, minLength: 1}
+      result:
+        enum:
+          - pass
+          - fail
+          - pending-required-before-publication
+          - required-before-publication
+allOf:
+  - if:
+      properties:
+        artifact_type:
+          const: limited_pdf
+    then:
+      required:
+        - exception_reason
+  - if:
+      properties:
+        output_residency:
+          const: public_llm_wiki
+    then:
+      properties:
+        legal_scan:
+          properties:
+            result:
+              const: pass
+        published_claims:
+          items:
+            properties:
+              legal_scan:
+                properties:
+                  result:
+                    const: pass
+              review_verdict:
+                enum:
+                  - approved
+                  - approved-with-notes
+              sanitization_gate:
+                const: pass
+              promotion_gates:
+                allOf:
+                  - contains: {const: provenance}
+                  - contains: {const: license}
+                  - contains: {const: legal}
+                  - contains: {const: sanitization}
+                  - contains: {const: owner-review}
+registry_backing:
+  public_llm_wiki: public llm-wiki repository or public website corpus after promotion gates
+  domain_private_corpus: private/local llm-wiki raw data or internal domain corpus
+  registered_client_private_corpus: client/project-private corpus registered by data-layer source registry
+  ignored_internal_run_artifact: transient execution output not intended for durable publication
+  no_preserve: scratch output intentionally discarded
+
+```
+
+## FILE: tests/architecture/test_execution_layer_contract.py
+```
+from copy import deepcopy
+from pathlib import Path
+
+from jsonschema import Draft202012Validator
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+ARCH = ROOT / "docs/architecture"
+SCHEMA_PATH = ARCH / "execution-manifest.schema.yaml"
+FIXTURE_PATH = ROOT / "tests/fixtures/architecture/execution_manifest.yaml"
+ROUTING_CASES_PATH = ROOT / "tests/fixtures/architecture/execution_routing_cases.yaml"
+DATA_SOURCE_INVENTORY_PATH = ROOT / "tests/fixtures/architecture/data_source_inventory.yaml"
+ROUTING_POLICY_PATH = ARCH / "execution-routing-policy-view.md"
+ENTRY_INVENTORY_PATH = ARCH / "execution-entry-point-inventory.md"
+FOLLOW_UP_BACKLOG_PATH = ARCH / "execution-follow-up-issue-backlog.md"
+CONTRACT_PATH = ARCH / "execution-layer-contract.md"
+WORKSTATION_REGISTRY_PATH = ROOT / "config/workstations/registry.yaml"
+
+REQUIRED_EXECUTION_LEVELS = {"E-L1", "E-L2", "E-L3", "E-L4"}
+REQUIRED_MANIFEST_FIELDS = {
+    "manifest_id",
+    "issue",
+    "source_ids",
+    "source_registry_kind",
+    "source_registry_ref",
+    "input_residency",
+    "output_residency",
+    "tool",
+    "machine",
+    "provider_tool",
+    "command_manifest",
+    "regeneration_command",
+    "replay_command",
+    "environment_pin",
+    "outputs",
+    "checksums",
+    "test_evidence",
+    "legal_scan_evidence",
+    "review_artifact_paths",
+    "promotion_gates",
+    "report_eligible",
+}
+EVIDENCE_FIELDS = {
+    "regeneration_command",
+    "replay_command",
+    "environment_pin",
+    "checksums",
+    "test_evidence",
+    "legal_scan_evidence",
+    "review_artifact_paths",
+}
+INPUT_RESIDENCY_ENUM = {
+    "raw_data",
+    "readable_raw_data",
+    "owner_repo_checkout",
+    "target_repo_checkout",
+    "domain_private_corpus",
+    "registered_client_private_corpus",
+    "public_llm_wiki",
+}
+OUTPUT_RESIDENCY_ENUM = {
+    "public_llm_wiki",
+    "domain_private_corpus",
+    "registered_client_private_corpus",
+    "ignored_internal_run_artifact",
+    "no_preserve",
+}
+REQUIRED_OUTPUT_FIELDS = {"path", "kind", "report_handoff", "output_residency"}
+REQUIRED_PUBLIC_PROMOTION_GATES = {"provenance", "license", "legal", "sanitization", "owner-review"}
+SOURCE_REGISTRY_KIND_ENUM = {
+    "mounted_source_registry",
+    "repo_registry",
+    "document_index_registry",
+    "manual_seed",
+    "unavailable",
+}
+RAW_DATA_FORBIDDEN_KEYS = {"raw_data", "data_dump", "client_payload", "source_text"}
+DUPLICATED_MACHINE_TRUTH_FIELDS = {
+    "hostname:",
+    "tailscale_ip:",
+    "os:",
+    "roles:",
+    "capabilities:",
+    "agent_clis:",
+    "tools:",
+}
+NAMED_REPOS = {
+    "workspace-hub",
+    "digitalmodel",
+    "assetutilities",
+    "worldenergydata",
+    "llm-wiki",
+    "aceengineer-website",
+    "aceengineer-strategy",
+}
+
+
+def load_yaml(path: Path) -> dict:
+    assert path.exists(), f"Missing required file: {path}"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(data, dict), f"{path} must contain a YAML mapping"
+    return data
+
+
+def test_execution_levels_are_defined_in_contract():
+    text = CONTRACT_PATH.read_text(encoding="utf-8")
+    for level in REQUIRED_EXECUTION_LEVELS:
+        assert level in text
+    assert "does not own raw data" in text
+    assert "validation/evidence" in text
+    assert "report-layer handoff" in text
+
+
+def test_execution_manifest_required_fields():
+    schema = load_yaml(SCHEMA_PATH)
+    manifest = load_yaml(FIXTURE_PATH)
+    required = set(schema["required"])
+    assert REQUIRED_MANIFEST_FIELDS <= required
+    assert REQUIRED_MANIFEST_FIELDS <= set(manifest)
+
+
+def test_execution_manifest_fixture_validates_against_schema_and_registry():
+    schema = load_yaml(SCHEMA_PATH)
+    manifest = load_yaml(FIXTURE_PATH)
+    Draft202012Validator.check_schema(schema)
+    Draft202012Validator(schema).validate(manifest)
+    inventory = load_yaml(DATA_SOURCE_INVENTORY_PATH)["sources"]
+    source_ids = {row["source_id"] for row in inventory}
+    assert set(manifest["source_ids"]) <= source_ids
+    assert manifest["source_registry_kind"] in SOURCE_REGISTRY_KIND_ENUM
+    assert manifest["source_registry_kind"] != "unavailable"
+
+
+def test_execution_manifest_fails_closed_for_unavailable_sources_and_public_gates():
+    schema = load_yaml(SCHEMA_PATH)
+    validator = Draft202012Validator(schema)
+    manifest = load_yaml(FIXTURE_PATH)
+
+    unavailable = deepcopy(manifest)
+    unavailable["source_registry_kind"] = "unavailable"
+    unavailable["source_registry_ref"] = ""
+    unavailable["report_eligible"] = True
+    assert list(validator.iter_errors(unavailable)), "unavailable registry must not be report eligible"
+
+    public = deepcopy(manifest)
+    public["output_residency"] = "public_llm_wiki"
+    public["outputs"][0]["output_residency"] = "public_llm_wiki"
+    public["promotion_gates"] = ["legal"]
+    assert list(validator.iter_errors(public)), "public output must require the full promotion gate set"
+
+    nested_public = deepcopy(manifest)
+    nested_public["output_residency"] = "domain_private_corpus"
+    nested_public["outputs"][0]["output_residency"] = "public_llm_wiki"
+    nested_public["promotion_gates"] = ["legal"]
+    assert list(validator.iter_errors(nested_public)), "public output items must require the full promotion gate set"
+
+    no_handoff = deepcopy(manifest)
+    no_handoff["report_eligible"] = True
+    for output in no_handoff["outputs"]:
+        output["report_handoff"] = False
+    assert list(validator.iter_errors(no_handoff)), "report eligibility requires at least one report handoff output"
+
+    failed_legal = deepcopy(manifest)
+    failed_legal["report_eligible"] = True
+    failed_legal["legal_scan_evidence"]["result"] = "fail"
+    assert list(validator.iter_errors(failed_legal)), "report eligibility requires passing legal scan evidence"
+
+    pending_checksum = deepcopy(manifest)
+    pending_checksum["report_eligible"] = True
+    pending_checksum["checksums"] = {"docs/architecture/execution-layer-contract.md": "pending-final-checksum"}
+    assert list(validator.iter_errors(pending_checksum)), "report eligibility requires non-pending checksums"
+
+    nested_raw = deepcopy(manifest)
+    nested_raw["test_evidence"][0]["source_text"] = "inline raw payload must not validate"
+    assert list(validator.iter_errors(nested_raw)), "test evidence must not embed raw/private payload fields"
+
+
+def test_execution_manifest_closed_residency_vocabularies_and_output_schema():
+    schema = load_yaml(SCHEMA_PATH)
+    manifest = load_yaml(FIXTURE_PATH)
+    assert schema["additionalProperties"] is False
+    assert set(schema["propertyNames"]["not"]["enum"]) == RAW_DATA_FORBIDDEN_KEYS
+    assert set(schema["properties"]["input_residency"]["enum"]) == INPUT_RESIDENCY_ENUM
+    assert set(schema["properties"]["output_residency"]["enum"]) == OUTPUT_RESIDENCY_ENUM
+    assert manifest["input_residency"] in INPUT_RESIDENCY_ENUM
+    assert manifest["output_residency"] in OUTPUT_RESIDENCY_ENUM
+    output_item_schema = schema["properties"]["outputs"]["items"]
+    assert output_item_schema["additionalProperties"] is False
+    assert REQUIRED_OUTPUT_FIELDS <= set(output_item_schema["required"])
+    assert set(output_item_schema["properties"]["output_residency"]["enum"]) == OUTPUT_RESIDENCY_ENUM
+    for output in manifest["outputs"]:
+        assert REQUIRED_OUTPUT_FIELDS <= set(output)
+        assert output["output_residency"] in OUTPUT_RESIDENCY_ENUM
+
+
+def test_execution_manifest_evidence_fields_complete():
+    manifest = load_yaml(FIXTURE_PATH)
+    for field in EVIDENCE_FIELDS:
+        value = manifest[field]
+        assert value not in (None, "", [], {}), f"{field} must be non-empty"
+    assert manifest["legal_scan_evidence"]["command"] == "scripts/legal/legal-sanity-scan.sh --diff-only"
+    assert manifest["review_artifact_paths"], "review artifacts are required for report handoff"
+
+
+def test_no_execution_direct_publication():
+    schema = load_yaml(SCHEMA_PATH)
+    manifest = load_yaml(FIXTURE_PATH)
+    promotion_gate_schema = schema["properties"]["promotion_gates"]
+    assert set(promotion_gate_schema["items"]["enum"]) == REQUIRED_PUBLIC_PROMOTION_GATES
+    if manifest["report_eligible"]:
+        assert manifest["test_evidence"], "report eligibility requires tests"
+        assert manifest["legal_scan_evidence"]["result"] in {"pass", "pending-required-before-publication"}
+        assert manifest["review_artifact_paths"], "report eligibility requires adversarial review artifacts"
+        assert manifest["output_residency"] != "public_llm_wiki" or REQUIRED_PUBLIC_PROMOTION_GATES <= set(
+            manifest["promotion_gates"]
+        ), "public output residency requires complete promotion gates"
+
+
+def test_routing_policy_references_workstation_registry_without_duplicate_truth():
+    registry = load_yaml(WORKSTATION_REGISTRY_PATH)
+    policy = ROUTING_POLICY_PATH.read_text(encoding="utf-8")
+    assert "config/workstations/registry.yaml" in policy
+    for machine_id in ["dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"]:
+        assert machine_id in registry["machines"]
+        assert machine_id in policy
+    for field in DUPLICATED_MACHINE_TRUTH_FIELDS:
+        assert field not in policy, f"routing policy view must not duplicate canonical field {field}"
+    for dependency in ["#2119", "#1838", "#2089"]:
+        assert dependency in policy
+        assert "open dependenc" in policy.lower()
+
+
+def test_validation_evidence_required_for_report_handoff():
+    manifest = load_yaml(FIXTURE_PATH)
+    assert manifest["outputs"], "manifest must declare outputs"
+    for output in manifest["outputs"]:
+        if output.get("report_handoff"):
+            assert manifest["command_manifest"]
+            assert manifest["regeneration_command"]
+            assert manifest["test_evidence"]
+            assert manifest["legal_scan_evidence"]
+            assert manifest["checksums"]
+            assert manifest["review_artifact_paths"]
+            assert output["output_residency"] == manifest["output_residency"]
+
+
+def test_residency_compatibility_matrix():
+    cases = load_yaml(ROUTING_CASES_PATH)["cases"]
+    assert any(case["expected"] == "reject" for case in cases)
+    for case in cases:
+        assert case["input_residency"] in INPUT_RESIDENCY_ENUM
+        assert case["output_residency"] in OUTPUT_RESIDENCY_ENUM
+        more_public = case["output_publicity_rank"] > case["input_publicity_rank"]
+        if more_public and not case.get("promotion_gates"):
+            assert case["expected"] == "reject", f"{case['case_id']} must fail closed"
+        if more_public and case.get("promotion_gates"):
+            assert REQUIRED_PUBLIC_PROMOTION_GATES <= set(case["promotion_gates"])
+        if case["expected"] == "allow":
+            assert case.get("validation_evidence")
+            assert case.get("promotion_gates") or not more_public
+
+
+def test_input_data_boundary_crosswalk():
+    manifest = load_yaml(FIXTURE_PATH)
+    assert manifest["source_ids"], "execution must reference data-layer source IDs"
+    assert manifest["source_registry_kind"] in SOURCE_REGISTRY_KIND_ENUM
+    inline_raw_keys = {"raw_data", "data_dump", "client_payload", "source_text"}
+    assert not inline_raw_keys & set(manifest), "execution manifest must not own inline raw data"
+    assert manifest["source_registry_ref"], "manifest must point to the applicable registry or blocked source issue"
+
+
+def test_execution_entry_point_inventory_covers_named_repos():
+    text = ENTRY_INVENTORY_PATH.read_text(encoding="utf-8")
+    for repo in NAMED_REPOS:
+        assert f"| {repo} |" in text
+    assert "Enumeration command" in text
+    assert "unavailable" in text.lower() or "not available" in text.lower()
+    assert "client_projects/" not in text, "tracked inventory must not leak client child paths"
+
+
+def test_follow_up_issue_bundle_present():
+    text = FOLLOW_UP_BACKLOG_PATH.read_text(encoding="utf-8")
+    for phrase in [
+        "gh issue create",
+        "execution manifest validator",
+        "runtime enforcement",
+        "machine/provider routing registry adapter",
+        "#2728",
+    ]:
+        assert phrase in text
+    fence_lines = [line.strip() for line in text.splitlines() if line.strip().startswith("```")]
+    assert fence_lines.count("```bash") == fence_lines.count("```")
+    for body_file in [
+        "docs/architecture/follow-up-bodies/execution-manifest-validator.md",
+        "docs/architecture/follow-up-bodies/execution-runtime-enforcement.md",
+        "docs/architecture/follow-up-bodies/execution-routing-registry-adapter.md",
+        "docs/architecture/follow-up-bodies/execution-source-registry-gap.md",
+    ]:
+        assert (ROOT / body_file).exists(), f"Missing follow-up issue body: {body_file}"
+
+```
+
+## FILE: tests/architecture/test_report_layer_contract.py
+```
+from copy import deepcopy
+from pathlib import Path
+
+from jsonschema import Draft202012Validator
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+ARCH = ROOT / "docs/architecture"
+CONTRACT_PATH = ARCH / "report-layer-contract.md"
+TAXONOMY_DOC_PATH = ARCH / "report-output-taxonomy.md"
+GATES_PATH = ARCH / "report-publication-gates.md"
+EVIDENCE_DOC_PATH = ARCH / "report-evidence-bundle-schema.md"
+SCHEMA_PATH = ARCH / "report-evidence-bundle.schema.yaml"
+ROUTING_DOC_PATH = ARCH / "report-derived-learning-routing.md"
+FOLLOW_UP_BACKLOG_PATH = ARCH / "report-follow-up-issue-backlog.md"
+CONTENT_PIPELINE_PATH = ROOT / "docs/content-pipeline/README.md"
+EVIDENCE_FIXTURE_PATH = ROOT / "tests/fixtures/architecture/report_evidence_bundle.yaml"
+RESIDENCY_CASES_PATH = ROOT / "tests/fixtures/architecture/report_residency_cases.yaml"
+TAXONOMY_FIXTURE_PATH = ROOT / "tests/fixtures/architecture/report_output_taxonomy.yaml"
+
+REQUIRED_REPORT_LEVELS = {"R-L1", "R-L2", "R-L3", "R-L4", "R-L5", "R-L6"}
+REQUIRED_ARTIFACT_TYPES = {
+    "raw_output",
+    "evidence_bundle",
+    "internal_report",
+    "client_facing_html",
+    "limited_pdf",
+    "chatbot_query_surface",
+    "public_page",
+    "report_derived_learning",
+}
+OUTPUT_RESIDENCY_ENUM = {
+    "public_llm_wiki",
+    "domain_private_corpus",
+    "registered_client_private_corpus",
+    "ignored_internal_run_artifact",
+    "no_preserve",
+}
+REQUIRED_PUBLIC_PROMOTION_GATES = {"provenance", "license", "legal", "sanitization", "owner-review"}
+PUBLISHED_CLAIM_BINDINGS = {
+    "source_manifest",
+    "command_manifest",
+    "validation_result",
+    "legal_scan",
+    "checksum",
+    "review_verdict",
+    "output_residency",
+    "promotion_decision",
+}
+
+
+def load_yaml(path: Path) -> dict:
+    assert path.exists(), f"Missing required file: {path}"
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(data, dict), f"{path} must contain a YAML mapping"
+    return data
+
+
+def test_report_levels_are_defined_in_contract():
+    text = CONTRACT_PATH.read_text(encoding="utf-8")
+    for level in REQUIRED_REPORT_LEVELS:
+        assert level in text
+    assert "report-derived" in text
+    assert "output_residency" in text
+    assert "HTML-first" in text
+
+
+def test_raw_outputs_not_deliverables_by_default():
+    taxonomy = load_yaml(TAXONOMY_FIXTURE_PATH)["artifacts"]
+    raw_rows = [row for row in taxonomy if row["artifact_type"] == "raw_output"]
+    assert raw_rows
+    for row in raw_rows:
+        assert row["deliverable_by_default"] is False
+        assert row["default_output_residency"] == "ignored_internal_run_artifact"
+
+
+def test_html_default_pdf_limited():
+    taxonomy = load_yaml(TAXONOMY_FIXTURE_PATH)["artifacts"]
+    html = next(row for row in taxonomy if row["artifact_type"] == "client_facing_html")
+    pdf = next(row for row in taxonomy if row["artifact_type"] == "limited_pdf")
+    assert html["preferred_format"] == "html"
+    assert html["deliverable_by_default"] is True
+    assert pdf["preferred_format"] == "pdf"
+    assert pdf["requires_exception_reason"] is True
+    assert pdf["exception_reason"]
+
+
+def test_report_evidence_bundle_fixture_validates_against_schema():
+    schema = load_yaml(SCHEMA_PATH)
+    bundle = load_yaml(EVIDENCE_FIXTURE_PATH)
+    Draft202012Validator.check_schema(schema)
+    Draft202012Validator(schema).validate(bundle)
+
+
+def test_report_evidence_bundle_fails_closed_for_public_claim_without_full_gates():
+    schema = load_yaml(SCHEMA_PATH)
+    validator = Draft202012Validator(schema)
+    bundle = load_yaml(EVIDENCE_FIXTURE_PATH)
+    public = deepcopy(bundle)
+    public["output_residency"] = "public_llm_wiki"
+    public["published_claims"][0]["output_residency"] = "public_llm_wiki"
+    public["published_claims"][0]["promotion_gates"] = ["legal"]
+    assert list(validator.iter_errors(public)), "public claims must require the full promotion gate set"
+
+    top_public = deepcopy(bundle)
+    top_public["output_residency"] = "public_llm_wiki"
+    top_public["published_claims"][0]["output_residency"] = "registered_client_private_corpus"
+    top_public["published_claims"][0]["promotion_gates"] = ["legal"]
+    assert list(validator.iter_errors(top_public)), "public bundles must require every claim to carry full gates"
+
+    missing_binding = deepcopy(bundle)
+    bindings = missing_binding["published_claims"][0]["bindings"]
+    bindings.remove("promotion_decision")
+    bindings.append("source_manifest")
+    assert list(validator.iter_errors(missing_binding)), "claim bindings must include every required evidence binding"
+
+    invalid_legal = deepcopy(bundle)
+    invalid_legal["legal_scan"]["result"] = "maybe"
+    assert list(validator.iter_errors(invalid_legal)), "legal scan result must use the closed evidence vocabulary"
+
+    limited_pdf = deepcopy(bundle)
+    limited_pdf["artifact_type"] = "limited_pdf"
+    assert list(validator.iter_errors(limited_pdf)), "limited PDF bundles must carry an exception reason"
+    limited_pdf["exception_reason"] = "Client contract requires a static filing copy."
+    validator.validate(limited_pdf)
+
+
+def test_client_public_requires_evidence_bundle():
+    bundle = load_yaml(EVIDENCE_FIXTURE_PATH)
+    for claim in bundle["published_claims"]:
+        bindings = set(claim["bindings"])
+        assert PUBLISHED_CLAIM_BINDINGS <= bindings
+        assert claim["legal_scan"]["command"] == "scripts/legal/legal-sanity-scan.sh --diff-only"
+        assert claim["sanitization_gate"] in {"pass", "required-before-publication"}
+
+
+def test_chatbot_inherits_corpus_posture():
+    cases = load_yaml(RESIDENCY_CASES_PATH)["cases"]
+    assert any(case["artifact_type"] == "chatbot_query_surface" for case in cases)
+    for case in cases:
+        if case["artifact_type"] == "chatbot_query_surface":
+            more_public = case["output_publicity_rank"] > case["corpus_publicity_rank"]
+            if more_public:
+                assert case["expected"] == "reject"
+            if case["expected"] == "allow":
+                assert case["freshness_disclosure"]
+                assert case["corpus_scope_disclosure"]
+
+
+def test_report_derived_learning_routes_by_output_residency():
+    cases = load_yaml(RESIDENCY_CASES_PATH)["cases"]
+    routing_text = ROUTING_DOC_PATH.read_text(encoding="utf-8")
+    for destination in OUTPUT_RESIDENCY_ENUM:
+        assert destination in routing_text
+    for case in cases:
+        if case["artifact_type"] == "report_derived_learning" and case["expected"] == "allow":
+            assert case["output_residency"] in OUTPUT_RESIDENCY_ENUM
+            assert case["target_corpus"]
+            assert REQUIRED_PUBLIC_PROMOTION_GATES <= set(case["promotion_gates"])
+
+
+def test_report_taxonomy_seed_artifacts():
+    taxonomy = load_yaml(TAXONOMY_FIXTURE_PATH)["artifacts"]
+    actual = {row["artifact_type"] for row in taxonomy}
+    assert REQUIRED_ARTIFACT_TYPES <= actual
+    text = TAXONOMY_DOC_PATH.read_text(encoding="utf-8")
+    for artifact_type in REQUIRED_ARTIFACT_TYPES:
+        assert artifact_type in text
+
+
+def test_evidence_bundle_claim_binding():
+    schema = load_yaml(SCHEMA_PATH)
+    bundle = load_yaml(EVIDENCE_FIXTURE_PATH)
+    enum_values = set(schema["properties"]["output_residency"]["enum"])
+    assert schema["additionalProperties"] is False
+    assert OUTPUT_RESIDENCY_ENUM == enum_values
+    assert set(schema["properties"]["artifact_type"]["enum"]) == REQUIRED_ARTIFACT_TYPES
+    claim_schema = schema["properties"]["published_claims"]["items"]
+    assert claim_schema["additionalProperties"] is False
+    assert PUBLISHED_CLAIM_BINDINGS <= set(claim_schema["required"])
+    assert "source_class" in claim_schema["required"]
+    assert "sanitization_gate" in claim_schema["required"]
+    assert "promotion_gates" in claim_schema["required"]
+    assert set(claim_schema["properties"]["output_residency"]["enum"]) == OUTPUT_RESIDENCY_ENUM
+    assert set(claim_schema["properties"]["promotion_gates"]["items"]["enum"]) == REQUIRED_PUBLIC_PROMOTION_GATES
+    for value in OUTPUT_RESIDENCY_ENUM:
+        assert value in schema["registry_backing"]
+    for claim in bundle["published_claims"]:
+        assert claim["output_residency"] in OUTPUT_RESIDENCY_ENUM
+        assert PUBLISHED_CLAIM_BINDINGS <= set(claim["bindings"])
+        assert claim["source_class"]
+        assert claim["promotion_decision"]
+        if claim["output_residency"] == "public_llm_wiki":
+            assert REQUIRED_PUBLIC_PROMOTION_GATES <= set(claim["promotion_gates"])
+
+
+def test_publication_gates_use_canonical_legal_scan():
+    text = GATES_PATH.read_text(encoding="utf-8")
+    assert "scripts/legal/legal-sanity-scan.sh --diff-only" in text
+    assert ".legal-deny-list.yaml" in text
+    assert "parallel denylist" not in text.lower()
+    for gate in REQUIRED_PUBLIC_PROMOTION_GATES:
+        assert gate in text
+
+
+def test_content_pipeline_has_bounded_report_crosslink():
+    text = CONTENT_PIPELINE_PATH.read_text(encoding="utf-8")
+    assert "docs/architecture/report-publication-gates.md" in text
+    assert "report-derived learning" in text
+
+
+def test_follow_up_issue_backlog_present():
+    text = FOLLOW_UP_BACKLOG_PATH.read_text(encoding="utf-8")
+    for phrase in [
+        "gh issue create",
+        "report validator",
+        "artifact index",
+        "publication pipeline",
+        "#2729",
+    ]:
+        assert phrase in text
+    for body_file in [
+        "docs/architecture/follow-up-bodies/report-validator.md",
+        "docs/architecture/follow-up-bodies/report-artifact-index.md",
+        "docs/architecture/follow-up-bodies/report-publication-pipeline.md",
+    ]:
+        assert (ROOT / body_file).exists(), f"Missing follow-up issue body: {body_file}"
+
+```
+
+## FILE: tests/fixtures/architecture/execution_manifest.yaml
+```
+manifest_id: exec-2728-contract-seed
+issue: '#2728'
+source_ids:
+  - mnt_workspace_control_plane
+  - mnt_local_analysis_repos
+source_registry_kind: mounted_source_registry
+source_registry_ref: tests/fixtures/architecture/data_source_inventory.yaml
+input_residency: owner_repo_checkout
+output_residency: domain_private_corpus
+tool: architecture contract documentation and pytest validation
+machine: dev-primary
+provider_tool: hermes
+command_manifest:
+  working_directory: /mnt/local-analysis/workspace-hub
+  command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+regeneration_command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+replay_command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+environment_pin: uv-managed Python from pyproject.toml in workspace-hub
+outputs:
+  - path: docs/architecture/execution-layer-contract.md
+    kind: contract
+    report_handoff: true
+    output_residency: domain_private_corpus
+checksums:
+  docs/architecture/execution-layer-contract.md: sha256:contract-checksum-required-at-publication
+  docs/architecture/execution-manifest.schema.yaml: sha256:schema-checksum-required-at-publication
+test_evidence:
+  - command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+    result: pass
+legal_scan_evidence:
+  command: scripts/legal/legal-sanity-scan.sh --diff-only
+  result: pass
+review_artifact_paths:
+  - scripts/review/results/2026-05-18-plan-2728-claude.md
+  - scripts/review/results/2026-05-18-plan-2728-codex.md
+promotion_gates:
+  - provenance
+  - license
+  - legal
+  - sanitization
+  - owner-review
+report_eligible: true
+
+```
+
+## FILE: tests/fixtures/architecture/report_evidence_bundle.yaml
+```
+bundle_id: report-2729-contract-seed
+issue: '#2729'
+artifact_type: client_facing_html
+output_residency: registered_client_private_corpus
+legal_scan:
+  command: scripts/legal/legal-sanity-scan.sh --diff-only
+  result: required-before-publication
+published_claims:
+  - claim_id: report-claim-001
+    statement: Report claim must be traceable to source, command, validation, legal, checksum, review, residency, and promotion evidence.
+    bindings:
+      - source_manifest
+      - command_manifest
+      - validation_result
+      - legal_scan
+      - checksum
+      - review_verdict
+      - output_residency
+      - promotion_decision
+    source_manifest: tests/fixtures/architecture/layer_boundary_matrix.yaml
+    command_manifest: tests/fixtures/architecture/execution_manifest.yaml
+    validation_result: uv run pytest tests/architecture/test_report_layer_contract.py -v
+    legal_scan:
+      command: scripts/legal/legal-sanity-scan.sh --diff-only
+      result: required-before-publication
+    checksum: pending-final-artifact-checksum
+    review_verdict: required-before-closeout
+    output_residency: registered_client_private_corpus
+    promotion_decision: no-public-promotion-without-gates
+    promotion_gates:
+      - provenance
+      - license
+      - legal
+      - sanitization
+      - owner-review
+    sanitization_gate: required-before-publication
+    source_class: registered_client_private_corpus
+
+```
+
+## FILE: tests/fixtures/architecture/report_residency_cases.yaml
+```
+cases:
+  - case_id: private_client_chatbot_to_public_without_promotion
+    artifact_type: chatbot_query_surface
+    corpus_publicity_rank: 1
+    output_publicity_rank: 4
+    output_residency: public_llm_wiki
+    target_corpus: public chatbot corpus
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: []
+    expected: reject
+  - case_id: private_chatbot_stays_private_with_disclosure
+    artifact_type: chatbot_query_surface
+    corpus_publicity_rank: 1
+    output_publicity_rank: 1
+    output_residency: registered_client_private_corpus
+    target_corpus: client-private chatbot corpus
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: []
+    expected: allow
+  - case_id: public_report_learning_to_public_wiki
+    artifact_type: report_derived_learning
+    corpus_publicity_rank: 4
+    output_publicity_rank: 4
+    output_residency: public_llm_wiki
+    target_corpus: public llm-wiki
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: [provenance, license, legal, sanitization, owner-review]
+    expected: allow
+  - case_id: client_report_learning_to_private_corpus
+    artifact_type: report_derived_learning
+    corpus_publicity_rank: 1
+    output_publicity_rank: 1
+    output_residency: registered_client_private_corpus
+    target_corpus: registered client-private corpus
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: [provenance, license, legal, sanitization, owner-review]
+    expected: allow
+
+```
+
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+codex
+Using the adversarial review skill because this is explicitly an implementation re-review. I’ll verify the patched files locally rather than relying only on the pasted snippets, then return a severity-ranked verdict.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PreToolUse Completed
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+Local shell access is currently blocked by `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`, so I cannot independently read or run the repo files in this session. I’m continuing from the supplied patched artifacts and will call out that evidence limitation explicitly.
+codex
+Verdict: MAJOR
+
+**Findings by severity**
+
+MAJOR: `report_eligible: true` still accepts placeholder checksum evidence.
+
+Evidence: `docs/architecture/execution-manifest.schema.yaml` only rejects checksum values matching `(?i)pending` under the `report_eligible: true` branch:
+
+```yaml
+checksums:
+  additionalProperties:
+    type: string
+    minLength: 1
+    not:
+      pattern: (?i)pending
+```
+
+But the validating fixture uses non-real placeholders:
+
+```yaml
+checksums:
+  docs/architecture/execution-layer-contract.md: sha256:contract-checksum-required-at-publication
+  docs/architecture/execution-manifest.schema.yaml: sha256:schema-checksum-required-at-publication
+report_eligible: true
+```
+
+Evidence: `tests/fixtures/architecture/execution_manifest.yaml`.
+
+That means the prior blocker is not fully closed: the contract now rejects the word `pending`, but still allows “required-at-publication” checksum placeholders while declaring the manifest report eligible. This is inside the approved schema/tests scope because the patch explicitly claims checksum gating was fixed.
+
+MINOR: `tests/architecture/test_execution_layer_contract.py` has stale report-eligibility logic in `test_no_execution_direct_publication`:
+
+```python
+assert manifest["legal_scan_evidence"]["result"] in {"pass", "pending-required-before-publication"}
+```
+
+The schema now correctly requires `pass` when `report_eligible: true`, so this assertion should be tightened to `== "pass"` for consistency. This is not the blocker because another negative test covers failed legal scan.
+
+**Required fixes before closeout**
+
+1. Make checksum evidence real or fail-closed for `report_eligible: true`.
+   Recommended schema constraint: require checksum values to match actual SHA-256 format, e.g. `^sha256:[a-fA-F0-9]{64}$`, at least in the `report_eligible: true` branch.
+
+2. Update `tests/fixtures/architecture/execution_manifest.yaml` to either:
+   - use real `sha256:<64 hex>` values, or
+   - set `report_eligible: false` until real checksums exist.
+
+3. Add a negative test proving `sha256:contract-checksum-required-at-publication`, `required-at-publication`, `todo`, or similar placeholders do not validate when `report_eligible: true`.
+
+I do not see another MAJOR in the provided report bundle schema. Public report bundle gates, legal/review/sanitization vocabularies, `limited_pdf` exception handling, and per-claim public gating look sufficient for seed-contract scope. Note: I could not run local verification because shell access failed with `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`; this review is based on the supplied artifacts.
+hook: Stop
+hook: Stop
+hook: Stop
+hook: Stop
+hook: Stop Completed
+hook: Stop Completed
+hook: Stop Completed
+hook: Stop Completed
+tokens used
+13,306
+Verdict: MAJOR
+
+**Findings by severity**
+
+MAJOR: `report_eligible: true` still accepts placeholder checksum evidence.
+
+Evidence: `docs/architecture/execution-manifest.schema.yaml` only rejects checksum values matching `(?i)pending` under the `report_eligible: true` branch:
+
+```yaml
+checksums:
+  additionalProperties:
+    type: string
+    minLength: 1
+    not:
+      pattern: (?i)pending
+```
+
+But the validating fixture uses non-real placeholders:
+
+```yaml
+checksums:
+  docs/architecture/execution-layer-contract.md: sha256:contract-checksum-required-at-publication
+  docs/architecture/execution-manifest.schema.yaml: sha256:schema-checksum-required-at-publication
+report_eligible: true
+```
+
+Evidence: `tests/fixtures/architecture/execution_manifest.yaml`.
+
+That means the prior blocker is not fully closed: the contract now rejects the word `pending`, but still allows “required-at-publication” checksum placeholders while declaring the manifest report eligible. This is inside the approved schema/tests scope because the patch explicitly claims checksum gating was fixed.
+
+MINOR: `tests/architecture/test_execution_layer_contract.py` has stale report-eligibility logic in `test_no_execution_direct_publication`:
+
+```python
+assert manifest["legal_scan_evidence"]["result"] in {"pass", "pending-required-before-publication"}
+```
+
+The schema now correctly requires `pass` when `report_eligible: true`, so this assertion should be tightened to `== "pass"` for consistency. This is not the blocker because another negative test covers failed legal scan.
+
+**Required fixes before closeout**
+
+1. Make checksum evidence real or fail-closed for `report_eligible: true`.
+   Recommended schema constraint: require checksum values to match actual SHA-256 format, e.g. `^sha256:[a-fA-F0-9]{64}$`, at least in the `report_eligible: true` branch.
+
+2. Update `tests/fixtures/architecture/execution_manifest.yaml` to either:
+   - use real `sha256:<64 hex>` values, or
+   - set `report_eligible: false` until real checksums exist.
+
+3. Add a negative test proving `sha256:contract-checksum-required-at-publication`, `required-at-publication`, `todo`, or similar placeholders do not validate when `report_eligible: true`.
+
+I do not see another MAJOR in the provided report bundle schema. Public report bundle gates, legal/review/sanitization vocabularies, `limited_pdf` exception handling, and per-claim public gating look sufficient for seed-contract scope. Note: I could not run local verification because shell access failed with `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`; this review is based on the supplied artifacts.

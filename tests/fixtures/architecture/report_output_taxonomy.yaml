@@ -1,0 +1,49 @@
+artifacts:
+  - artifact_type: raw_output
+    deliverable_by_default: false
+    preferred_format: native
+    default_output_residency: ignored_internal_run_artifact
+    requires_exception_reason: false
+    exception_reason: null
+  - artifact_type: evidence_bundle
+    deliverable_by_default: true
+    preferred_format: yaml
+    default_output_residency: domain_private_corpus
+    requires_exception_reason: false
+    exception_reason: null
+  - artifact_type: internal_report
+    deliverable_by_default: true
+    preferred_format: html
+    default_output_residency: domain_private_corpus
+    requires_exception_reason: false
+    exception_reason: null
+  - artifact_type: client_facing_html
+    deliverable_by_default: true
+    preferred_format: html
+    default_output_residency: registered_client_private_corpus
+    requires_exception_reason: false
+    exception_reason: null
+  - artifact_type: limited_pdf
+    deliverable_by_default: false
+    preferred_format: pdf
+    default_output_residency: registered_client_private_corpus
+    requires_exception_reason: true
+    exception_reason: contractual filing, signature package, offline archive, or client-requested static export
+  - artifact_type: chatbot_query_surface
+    deliverable_by_default: false
+    preferred_format: index
+    default_output_residency: domain_private_corpus
+    requires_exception_reason: false
+    exception_reason: null
+  - artifact_type: public_page
+    deliverable_by_default: false
+    preferred_format: markdown
+    default_output_residency: public_llm_wiki
+    requires_exception_reason: false
+    exception_reason: null
+  - artifact_type: report_derived_learning
+    deliverable_by_default: false
+    preferred_format: markdown
+    default_output_residency: domain_private_corpus
+    requires_exception_reason: false
+    exception_reason: null

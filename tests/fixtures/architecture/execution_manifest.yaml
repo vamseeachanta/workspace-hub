@@ -1,0 +1,42 @@
+manifest_id: exec-2728-contract-seed
+issue: '#2728'
+source_ids:
+  - mnt_workspace_control_plane
+  - mnt_local_analysis_repos
+source_registry_kind: mounted_source_registry
+source_registry_ref: tests/fixtures/architecture/data_source_inventory.yaml
+input_residency: owner_repo_checkout
+output_residency: domain_private_corpus
+tool: architecture contract documentation and pytest validation
+machine: dev-primary
+provider_tool: hermes
+command_manifest:
+  working_directory: /mnt/local-analysis/workspace-hub
+  command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+regeneration_command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+replay_command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+environment_pin: uv-managed Python from pyproject.toml in workspace-hub
+outputs:
+  - path: docs/architecture/execution-layer-contract.md
+    kind: contract
+    report_handoff: true
+    output_residency: domain_private_corpus
+checksums:
+  docs/architecture/execution-layer-contract.md: sha256:contract-checksum-required-at-publication
+  docs/architecture/execution-manifest.schema.yaml: sha256:schema-checksum-required-at-publication
+test_evidence:
+  - command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
+    result: pass
+legal_scan_evidence:
+  command: scripts/legal/legal-sanity-scan.sh --diff-only
+  result: pass
+review_artifact_paths:
+  - scripts/review/results/2026-05-18-plan-2728-claude.md
+  - scripts/review/results/2026-05-18-plan-2728-codex.md
+promotion_gates:
+  - provenance
+  - license
+  - legal
+  - sanitization
+  - owner-review
+report_eligible: true
