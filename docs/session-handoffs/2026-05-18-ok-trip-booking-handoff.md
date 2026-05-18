@@ -86,15 +86,18 @@ Live issue evidence:
 
 No separate branch or worktree was created for this task. Work occurred on `workspace-hub` `main` for this closeout artifact plus GitHub issue comments in `achantas-data`.
 
-## Final push/sync proof
+## Push/sync proof captured during closeout
 
-Final proof after committing this handoff:
+Proof captured immediately after the first proof-section commit:
 
-- handoff commit: `7d35f47fa85927a0d3aa259ddb5818964cd14d9e` (`docs: add ok trip booking handoff`)
+- handoff commits at that checkpoint:
+  - `7d35f47fa85927a0d3aa259ddb5818964cd14d9e` (`docs: add ok trip booking handoff`)
+  - `efc840a38bbbdbbc0b7721f0fc696f5f0ca96508` (`docs: record ok trip handoff sync proof`)
 - branch: `main`
-- HEAD after fetch: `7d35f47fa85927a0d3aa259ddb5818964cd14d9e`
-- origin/main after fetch: `7d35f47fa85927a0d3aa259ddb5818964cd14d9e`
+- HEAD after fetch: `efc840a38bbbdbbc0b7721f0fc696f5f0ca96508`
+- origin/main after fetch: `efc840a38bbbdbbc0b7721f0fc696f5f0ca96508`
 - ahead/behind: `0/0`
 - remaining dirty/untracked count: `43`
+- push note: the push emitted a remote ref-lock race warning, but the immediate fetch proved `HEAD == origin/main` at `efc840a38bbbdbbc0b7721f0fc696f5f0ca96508`; treat as verified-by-state.
 
-Remaining dirty paths were not staged by this handoff and are preserved as unrelated/concurrent workspace-hub session state.
+Remaining dirty paths were not staged by this handoff and are preserved as unrelated/concurrent workspace-hub session state. The authoritative final live proof is the post-push/fetch status reported in the exit response.
