@@ -4,7 +4,7 @@
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2727
-> **Review artifacts:** `scripts/review/results/2026-05-17-plan-2727-claude.md`, `scripts/review/results/2026-05-17-plan-2727-codex.md`, `scripts/review/results/2026-05-17-plan-2727-gemini.md`, `scripts/review/results/2026-05-17-plan-2727-disagreement.md`
+> **Review artifacts:** prior-cycle blockers are summarized in `scripts/review/results/2026-05-17-plan-2727-disagreement.md`; current-cycle Claude/Codex/Gemini artifacts must be generated after this revision and verified non-empty before an approval request. Gemini may be `UNAVAILABLE` only when the artifact records quota exhaustion.
 
 ---
 
@@ -66,7 +66,7 @@
 | `/mnt/local-analysis/<repo>/` | repo checkouts such as `workspace-hub`, documented tier-1 engineering/data repos (`digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`), and knowledge/publication/strategy repos (`llm-wiki`, `aceengineer-website`, `aceengineer-strategy`) | D-L3 curated knowledge/data or repo-backed execution/report metadata, depending on repo/path | Public-facing only for explicitly public repos/content; sanitized/curated data only | Public `llm-wiki` content, curated data, and sanitized fixtures belong here when repo policy allows; private raw source data should not be inferred public just because it was used to create a sanitized derivative. |
 
 ### Client data handling model
-Tracked public docs must not publish raw client-identifying path names. The implementation packet must use redacted source IDs in `docs/architecture/data-source-inventory.md` and keep any literal path mapping in a private-only appendix outside public docs, unless the source is explicitly public-safe.
+Tracked public docs and fixtures must not publish raw client-identifying path names. The implementation packet must use redacted source IDs in `docs/architecture/data-source-inventory.md` and `tests/fixtures/architecture/*.yaml`. No private appendix is created by this public-repo packet; if literal path mapping is needed, it must be handled in a separate private repository/issue and verified untracked here.
 
 | Source ID class | Runtime evidence posture | Allowed destination |
 |---|---|---|
@@ -75,7 +75,37 @@ Tracked public docs must not publish raw client-identifying path names. The impl
 | `client_llm_wiki_target` | `/mnt/local-analysis/<client>-llm-wiki` is a provisioning pattern, not an assumed existing repo | follow-up issue must create/private-register before implementation relies on it |
 | `public_domain_source` | source/license/provenance/legal gates pass | public `llm-wiki` or public repo surface where policy allows |
 
-Structured inventory source of truth for this packet is `tests/fixtures/architecture/data_source_inventory.yaml`; it must cross-link existing `data/document-index/mounted-source-registry.yaml` entries and must not fork that registry.
+Structured inventory source of truth for this packet is `tests/fixtures/architecture/data_source_inventory.yaml`; `docs/architecture/data-source-inventory.md` is the human-readable view derived from or checked against that YAML. The YAML must cross-link existing `data/document-index/mounted-source-registry.yaml` entries and must not fork that registry.
+
+
+## Artifact Map
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md` |
+| Data-layer contract | `docs/architecture/data-layer-contract.md` |
+| Human-readable inventory | `docs/architecture/data-source-inventory.md` |
+| Machine-readable inventory source of truth | `tests/fixtures/architecture/data_source_inventory.yaml` |
+| Promotion-case fixture | `tests/fixtures/architecture/data_promotion_cases.yaml` |
+| Boundary/gap follow-up issue bundle | `docs/architecture/data-boundary-violations-and-gaps.md` |
+| TDD tests | `tests/architecture/test_data_layer_contract.py` |
+| Prior-cycle review summary | `scripts/review/results/2026-05-17-plan-2727-disagreement.md` |
+
+## Deliverable
+A data-layer contract and source inventory will define D-L1 through D-L4 boundaries, promotion gates, source/residency metadata, redaction behavior, and follow-up issue creation requirements for data that moves from raw/private sources into curated public/private knowledge surfaces.
+
+## Data-layer level definitions to encode
+| Level | Meaning | Default posture | Required promotion evidence |
+|---|---|---|---|
+| D-L1 raw/source data | Original source material: PDFs, APIs, client/project files, mounted standards/literature, raw exports | inherits source; private unless explicitly public | source_id/path_class, owner, provenance, license, sensitivity, retention rule |
+| D-L2 raw-like structured/staging data | OCR/markdown extractions, inventories, source cards, RAG chunks, staging packs, unreviewed wiki drafts | private/local or controlled staging | D-L1 link, extraction/regeneration command, checksum, reviewer, redaction status |
+| D-L3 curated knowledge/data | Reviewed, cited, sanitized domain knowledge or public-safe repo data | public or domain-private depending on gate | provenance/license/legal/sanitization/freshness gates; output_residency |
+| D-L4 generated index/query surface | Embeddings, search indexes, chatbot corpora, retrieval manifests | cannot be more public than its source corpus | corpus source list, build command, freshness timestamp, legal/sanitization evidence |
+
+
+## Machine-readable inventory schema
+`tests/fixtures/architecture/data_source_inventory.yaml` is the single tested source of truth. `docs/architecture/data-source-inventory.md` is a checked human-readable view and must not introduce rows or values absent from YAML. Required YAML keys per source row: `source_id`, `source_class`, `owner`, `canonical_home`, `path_class`, `allowed_artifacts`, `forbidden_artifacts`, `retention_rule`, `publication_rule`, `provenance`, `license_posture`, `sensitivity`, `promotion_gate`, `output_residency`, `runtime_probe.command`, `runtime_probe.machine`, `runtime_probe.timestamp`, `runtime_probe.status`, `mounted_source_registry_ref`, and `notes`. Enum-like fields must fail closed: unknown `sensitivity`, `promotion_gate`, `output_residency`, or missing registry reference is invalid unless the row is explicitly `status: unavailable` with command evidence.
+
+Boundary-violation discovery must record the command scope used to search for blurred raw/staged/public/client boundaries. Minimum evidence fields for each search: `command`, `machine`, `timestamp`, `paths_scanned`, `excluded_patterns`, `matches`, and `conclusion`. A `none_found` conclusion is invalid without these fields.
 
 ## Contract Logic
 This is a documentation/architecture packet. Runtime classification code is out of scope unless a separate implementation issue is opened. Tests validate the machine-readable YAML fixtures, registry cross-links, redaction rules, and markdown views; they do not pretend to exercise a non-existent runtime function.
@@ -91,7 +121,7 @@ This is a documentation/architecture packet. Runtime classification code is out 
 | Create | `docs/architecture/data-source-inventory.md` | Human-readable source/source-class matrix for user curation; required columns: source_class, allowed_artifacts, forbidden_artifacts, canonical_home, retention_rule, publication_rule, owner, source_id/path, provenance, license_posture, sensitivity, promotion_gate, output_residency |
 | Create | `docs/architecture/data-boundary-violations-and-gaps.md` | Inventory of existing artifacts that violate or blur raw/staged/public/client boundaries, plus actual `gh issue create` commands/body drafts for follow-up issues when not filed immediately |
 | Create | `docs/architecture/llm-wiki-data-promotion-gates.md` | Defines D-L1→D-L2→D-L3/D-L4 promotion rules |
-| Create | `tests/governance/test_data_layer_contract.py` | Guards inventory/schema behavior using fixtures, not only markdown phrase presence |
+| Create | `tests/architecture/test_data_layer_contract.py` | Guards inventory/schema behavior using fixtures, not only markdown phrase presence |
 | Update | `docs/DATA_RESIDENCE_POLICY.md` | Cross-link layer levels after approval |
 
 ---
@@ -112,7 +142,7 @@ This is a documentation/architecture packet. Runtime classification code is out 
 ---
 
 ## Acceptance Criteria
-- [ ] Data levels D-L1 through D-L4 are defined and reconciled with existing data residence tiers.
+- [ ] Data levels D-L1 through D-L4 are defined in this plan and in `docs/architecture/data-layer-contract.md`, with a crosswalk to existing data residence tiers.
 - [ ] Initial source inventory includes `/mnt` roots, tier-1 repos, `worldenergydata` public sources, `digitalmodel` reference data, mounted standards/literature, client/project data, private/raw `llm-wiki`, public `llm-wiki`, and derived indexes.
 - [ ] Data source inventory includes concrete path-class examples for `/mnt/ace/` raw PDFs → markdown, `[REDACTED-CLIENT-ROOT]` private staging/indexes/uncurated wiki material, and `/mnt/local-analysis/<repo>/` repo-backed public-facing/curated surfaces, without assuming every local checkout is tier-1.
 - [ ] `llm-wiki` raw/staging vs public-facing content boundaries are explicit.
@@ -121,13 +151,28 @@ This is a documentation/architecture packet. Runtime classification code is out 
 - [ ] Promotion gates include provenance, license/legal, sanitization, technical review, freshness/regeneration metadata, and output_residency.
 - [ ] Data source inventory includes allowed artifacts, forbidden artifacts, canonical home, retention rule, and publication rule for every bucket.
 - [ ] Boundary violation/gap inventory identifies existing blurred-boundary artifacts or explicitly records none-found with search evidence.
-- [ ] Follow-up implementation work is proposed as GitHub issue titles/scopes in `docs/architecture/data-boundary-violations-and-gaps.md`; no implementation is embedded in this plan.
-- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_data_layer_contract.py -v` and `scripts/legal/legal-sanity-scan.sh --diff-only`.
-- [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
+- [ ] Follow-up implementation work is represented by exact `gh issue create` command/body drafts in `docs/architecture/data-boundary-violations-and-gaps.md`; if any follow-up is not filed immediately, the blocker reason is recorded.
+- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/architecture/test_data_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Public-tracked docs and fixtures use redacted source IDs/path classes for client/private paths; this packet creates no private appendix and verifies any literal private mapping remains untracked/out-of-scope.
+- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, and no unresolved MAJOR findings may remain.
 
 ---
 
-## Adversarial Review Summary
+## Revision / Adversarial Review Summary
+
+Prior-cycle MAJOR disposition for this revision:
+
+| Finding class | Disposition in this revision |
+|---|---|
+| Missing Artifact Map / Deliverable | Added required sections. |
+| D-L1..D-L4 undefined | Added explicit level-definition table. |
+| Inventory source-of-truth contradiction | YAML fixture is the source of truth; markdown is checked view. |
+| Tier-1 widening | Tier-1 wording remains limited to documented engineering/data repos; publication/strategy repos require registry evidence. |
+| Gemini gate contradiction | AC now permits Gemini only as substantive or explicit quota `UNAVAILABLE`; Claude/Codex must be substantive. |
+| Follow-up issue ambiguity | Gap doc must contain exact `gh issue create` command/body drafts or blocker reason. |
+| Fixture loader / schema ambiguity | TDD rows parse YAML fixtures directly and validate required schema fields. |
+| Redaction not testable | Added explicit redaction TDD/AC. |
+
 Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
 Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.

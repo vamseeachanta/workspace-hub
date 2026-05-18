@@ -4,7 +4,7 @@
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2726
-> **Review artifacts:** `scripts/review/results/2026-05-17-plan-2726-claude.md`, `scripts/review/results/2026-05-17-plan-2726-codex.md`, `scripts/review/results/2026-05-17-plan-2726-gemini.md`, `scripts/review/results/2026-05-17-plan-2726-disagreement.md`
+> **Review artifacts:** prior-cycle blockers are summarized in `scripts/review/results/2026-05-17-plan-2726-disagreement.md`; current-cycle Claude/Codex/Gemini artifacts must be generated after this revision and verified non-empty before an approval request. Do not cite same-cycle per-provider output paths from this plan body.
 
 ---
 
@@ -30,7 +30,11 @@
 
 ### Documents consulted
 - [#2726](https://github.com/vamseeachanta/workspace-hub/issues/2726) — issue body requests this architecture review and layer-specific scope.
-- [#2726](https://github.com/vamseeachanta/workspace-hub/issues/2726) — parent architecture issue for data, execution, and report layer boundaries.
+- [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727) — data-layer child issue.
+- [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728) — execution-layer child issue.
+- [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) — report-layer child issue.
+- [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) and [#2732](https://github.com/vamseeachanta/workspace-hub/issues/2732) — mount/source registry sequencing dependencies.
+- [#2119](https://github.com/vamseeachanta/workspace-hub/issues/2119), [#1838](https://github.com/vamseeachanta/workspace-hub/issues/1838), and [#2089](https://github.com/vamseeachanta/workspace-hub/issues/2089) — execution/provider routing dependencies.
 - `docs/DATA_RESIDENCE_POLICY.md` — current data residence policy and examples.
 - `data/document-index/mounted-source-registry.yaml` — known mounted/API source roots.
 - `docs/content-pipeline/README.md` — current internal knowledge to public website pipeline.
@@ -67,7 +71,10 @@
 ### Evidence (embedded verification)
 **Issue statuses** (verified 2026-05-17T01:12:21Z via `gh issue view`):
 - `#2726` — OPEN — feat(architecture): review data, execution, and report layer boundaries
-- `#2726` — OPEN — feat(architecture): review data, execution, and report layer boundaries
+- `#2727` — OPEN — feat(architecture): define data layer boundaries and promotion rules
+- `#2728` — OPEN — feat(architecture): define execution layer contracts and routing
+- `#2729` — OPEN — feat(architecture): define report layer outputs and evidence boundaries
+- `#2731`, `#2732`, `#2119`, `#1838`, `#2089` — dependency issues referenced for sequencing; this parent plan must link to them but must not consume unapproved deliverables as current policy
 
 **File existence / evidence sources**:
 - EXISTS: `docs/DATA_RESIDENCE_POLICY.md`
@@ -109,8 +116,8 @@ N/A — architecture/governance planning issue, not a runtime failure.
 | Report-layer child plan | `docs/plans/2026-05-17-issue-2729-report-layer-outputs-evidence.md` |
 | Target architecture contract | `docs/architecture/data-execution-report-layer-contract.md` |
 | Source classification matrix | `docs/architecture/source-layer-classification-matrix.md` |
-| Review artifacts | `scripts/review/results/2026-05-17-plan-2726-*.md` |
-| Tests | `tests/governance/test_layer_boundary_architecture_contract.py` |
+| Prior-cycle review synthesis | `scripts/review/results/2026-05-17-plan-2726-disagreement.md` |
+| Tests | `tests/architecture/test_layer_boundary_architecture_contract.py` |
 | Structured layer matrix fixture | `tests/fixtures/architecture/layer_boundary_matrix.yaml` |
 
 ---
@@ -173,17 +180,31 @@ function build_layer_contract():
 ---
 
 ## Acceptance Criteria
-- [ ] Child plans for [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727), [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728), and [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) are source-curated and reviewed.
-- [ ] Architecture contract defines level taxonomy for data, execution, and report layers.
+- [ ] Child plans for [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727), [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728), and [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) are source-curated, have non-empty Claude/Codex review artifacts, and have no unresolved MAJOR findings; Gemini may be `UNAVAILABLE` only when the artifact records quota exhaustion.
+- [ ] Architecture contract defines level taxonomy for data, execution, and report layers and explicitly separates architecture-surface codes from document-intelligence L-levels.
 - [ ] Initial known source classes distinguish control-plane repo data, documented tier-1 repos, tier-2/publication repos, public/private `llm-wiki`, execution artifacts, and report/chatbot artifacts; it must not mislabel `workspace-hub`, `llm-wiki`, `aceengineer-website`, or `aceengineer-strategy` as tier-1 unless the cited registry says so.
-- [ ] Matrix defines owner repo/path, public/private posture, promotion gate, output_residency, and report/chatbot eligibility for each source class.
-- [ ] Legal/security scan passes for all created docs.
-- [ ] Re-review artifacts are substantive for Claude/Codex, Gemini is substantive or explicitly UNAVAILABLE due quota, and no unresolved MAJOR findings remain before asking the user for approval.
+- [ ] Matrix defines `source_class`, `owner`, `canonical_path`, `layer`, `level`, `allowed_artifacts`, `forbidden_artifacts`, `retention_expectations`, `publication_rules`, `public_posture`, `promotion_gate`, `output_residency`, and `report_chatbot_eligibility` for each source class.
+- [ ] Legal/security scan passes for all created docs and fixtures using `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Live public/private `llm-wiki` inventory is present in the matrix with tracked-map evidence and live probe evidence, or each unavailable path is marked `unavailable` with the failed command and no canonical assumption.
+- [ ] Issue-body scope is traceable: report outputs are classified by audience, data sources map to source layer, execution inputs/tools/compute are separated, report artifacts include HTML/PDF/chatbot surfaces, and follow-up gaps are linked to GitHub issue URLs or exact `gh issue create --title ... --body-file ... --label ...` command blocks with body-file paths and blocker reasons; local TODO-only backlogs do not satisfy this criterion.
+- [ ] Re-review artifacts are substantive for Claude/Codex, Gemini is substantive or explicitly UNAVAILABLE due quota, no unresolved MAJOR findings remain, and the approval request cites revision-stamped non-empty artifact evidence rather than same-cycle paths that may be truncated by `plan-review-fanout.sh`.
 - [ ] No implementation or publication changes occur before user approval.
 
 ---
 
-## Adversarial Review Summary
+## Revision / Adversarial Review Summary
+
+Prior-cycle MAJOR disposition for this revision:
+
+| Finding class | Disposition in this revision |
+|---|---|
+| Missing test/fixture create rows | Added explicit `tests/architecture/test_layer_boundary_architecture_contract.py` and `tests/fixtures/architecture/layer_boundary_matrix.yaml` rows. |
+| Acceptance/TDD column mismatch | Acceptance criteria now enumerate the same 13 matrix columns as the TDD row. |
+| Legal scan mode unbound | TDD and AC now require `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`. |
+| Dependency issue evidence missing | Documents/evidence now name #2731, #2732, #2119, #1838, and #2089 as sequencing dependencies, not approved current policy. |
+| `llm-wiki` inventory gap | Added explicit inventory artifact and probe-evidence TDD/AC. |
+| Child-plan review ambiguity | AC now requires non-empty Claude/Codex artifacts and no unresolved MAJOR findings for child plans. |
+
 Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
 Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.

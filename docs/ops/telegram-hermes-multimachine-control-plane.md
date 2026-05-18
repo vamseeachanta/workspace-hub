@@ -110,6 +110,8 @@ Rules:
 ## Security and token handling
 
 - Store Telegram bot tokens and gateway credentials only in local secret stores such as `~/.hermes/.env`; never commit them.
+- Dispatch-enabled host records must point to the local secret env var names via `telegram_hermes.bot_token_env` and `telegram_hermes.allowed_user_ids_env`; the committed registry stores names only, never values.
+- For the current MVP, `dev-primary` and `dev-secondary` use the existing Hermes Telegram env names: `TELEGRAM_BOT_TOKEN` and `TELEGRAM_ALLOWED_USERS`.
 - `GATEWAY_ALLOW_ALL_USERS=true` is a readiness failure for this MVP.
 - Missing allowlist evidence is a readiness failure for dispatch.
 - Status/log output must redact token-like values, API keys, password fields, and credential fields.
@@ -139,6 +141,28 @@ Fast rollback for unsafe behavior:
 4. Revoke or rotate the bot token if command spoofing or leakage is suspected.
 5. Leave existing Git lease refs intact as evidence; do not force-delete them during incident triage.
 ```
+
+## Minimum safe enablement path
+
+Current MVP target is **dispatch only on `dev-primary` and `dev-secondary`**. Windows/macOS machines remain status-only until a separate approved plan proves host-local Hermes gateway parity, approval posture, and safe job execution.
+
+1. Coordinator (`dev-primary`):
+   - Remove or unset `GATEWAY_ALLOW_ALL_USERS` from the local Hermes env store.
+   - Ensure `TELEGRAM_BOT_TOKEN` and `TELEGRAM_ALLOWED_USERS` are present only in the local secret store.
+   - Install/verify the systemd drop-in loads the env file and sets a gateway stop timeout compatible with Hermes restart drain.
+   - Clean or explicitly preserve/stash workspace-hub dirty state before dispatch.
+2. Worker (`dev-secondary`):
+   - Sync workspace-hub to a revision that includes `scripts/readiness/telegram-hermes-readiness.sh` and this runbook.
+   - Install Hermes CLI/gateway if missing; keep approval mode safe (`manual` or reviewed `smart`, never unguarded destructive execution).
+   - Configure the same env-name contract locally (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_ALLOWED_USERS`) without committing values.
+   - Generate host-local readiness evidence and make it available to the coordinator via `--evidence-dir`.
+3. Status-only machines (`licensed-win-1`, `licensed-win-2`, `macbook-portable`):
+   - Keep `dispatch_enabled: false`.
+   - Use Telegram Desktop/manual smoke checks only; do not route unattended work there until a Windows/macOS dispatch plan is approved.
+4. Not-onboarded machines (`gali-linux-compute-1`):
+   - Add workspace root, repo sync, Hermes install, network reachability, and host-local readiness before considering Telegram/Hermes connection.
+
+Full dispatch readiness is declared only when `scripts/readiness/telegram-hermes-readiness.sh --evidence-dir <dir>` reports `pass` for every `dispatch_enabled: true` host.
 
 ## Manual desktop smoke checks
 

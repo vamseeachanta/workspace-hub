@@ -4,7 +4,7 @@
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2728
-> **Review artifacts:** `scripts/review/results/2026-05-17-plan-2728-claude.md`, `scripts/review/results/2026-05-17-plan-2728-codex.md`, `scripts/review/results/2026-05-17-plan-2728-gemini.md`, `scripts/review/results/2026-05-17-plan-2728-disagreement.md`
+> **Review artifacts:** prior-cycle blockers are summarized in `scripts/review/results/2026-05-17-plan-2728-disagreement.md`; current-cycle Claude/Codex/Gemini artifacts must be generated after this revision and verified non-empty before an approval request. Do not cite same-cycle per-provider paths from this plan body.
 
 ---
 
@@ -112,8 +112,8 @@ N/A — architecture/governance planning issue, not a runtime failure.
 | Execution layer contract | `docs/architecture/execution-layer-contract.md` |
 | Execution input/output manifest schema | `docs/architecture/execution-manifest-schema.md` and `docs/architecture/execution-manifest.schema.yaml` |
 | Machine/tool routing policy view | `docs/architecture/execution-routing-policy-view.md` |
-| Tests | `tests/governance/test_execution_layer_contract.py`; fixtures in `tests/fixtures/architecture/execution_manifest.yaml` and `tests/fixtures/architecture/execution_routing_cases.yaml` |
-| Review artifacts | `scripts/review/results/2026-05-17-plan-2728-*.md` |
+| Tests | `tests/architecture/test_execution_layer_contract.py`; fixtures in `tests/fixtures/architecture/execution_manifest.yaml` and `tests/fixtures/architecture/execution_routing_cases.yaml` |
+| Prior-cycle review synthesis | `scripts/review/results/2026-05-17-plan-2728-disagreement.md` |
 
 ---
 
@@ -137,7 +137,7 @@ An execution-layer contract will define how input data contracts, code/tools, ag
 function validate_execution_contract(execution_manifest):
     validate manifest schema, declared data source_ids, input_residency, and output_residency
     verify source availability and permission posture from current `mounted-source-registry.yaml` entries; repo/client/wiki path taxonomy beyond current registry is blocked on #2731/#2732 and must fail closed
-    route work to capable machine/provider/tool using config/workstations/registry.yaml plus #2119 policy
+    route work to capable machine/tool using config/workstations/registry.yaml; treat #2119/#1838/#2089 as open dependencies, not approved policy
     document the repo-backed run command/regeneration_command, isolated workdir/worktree, tests, legal scan, checksums, output manifest, and review artifacts
     mark outputs report-eligible only if validation/evidence gates and output_residency allow it; runtime orchestrator enforcement is deferred to filed follow-up issue unless explicitly implemented
 ```
@@ -152,43 +152,59 @@ function validate_execution_contract(execution_manifest):
 | Create | `docs/architecture/execution-manifest.schema.yaml` | Machine-readable schema source for tests, including regeneration_command, replay_command, environment pin, input_residency, and output_residency |
 | Create | `tests/fixtures/architecture/execution_manifest.yaml` | Concrete manifest fixture for tests; YAML fixture validates against `docs/architecture/execution-manifest.schema.yaml` |
 | Create | `tests/fixtures/architecture/execution_routing_cases.yaml` | Routing/evidence fixture cases |
-| Create | `docs/architecture/execution-routing-policy-view.md` | Derived/readable policy view that references `config/workstations/registry.yaml` and #2119; it must not duplicate canonical machine identity/capability fields |
-| Create | `docs/architecture/execution-entry-point-inventory.md` | Inventory scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across the named repos with evidence paths |
-| Create | `docs/architecture/execution-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for missing runners, registries, validators, or adapters |
-| Create | `tests/governance/test_execution_layer_contract.py` | Tests manifest fixtures and routing-policy invariants, not only markdown phrase presence |
+| Create | `docs/architecture/execution-routing-policy-view.md` | Derived/readable policy view that references `config/workstations/registry.yaml` and treats #2119/#1838/#2089 as open dependencies; it must not duplicate canonical machine identity/capability/provider fields |
+| Create | `docs/architecture/execution-entry-point-inventory.md` | Inventory scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across the named repos with empirical enumeration evidence and redacted path display |
+| Create | `docs/architecture/execution-follow-up-issue-backlog.md` | Exact `gh issue create --title ... --body-file ... --label ...` command blocks and body drafts for missing runners, registries, validators, adapters, or runtime enforcement; if not filed immediately, blocker reason is recorded |
+| Create | `tests/architecture/test_execution_layer_contract.py` | Tests manifest fixtures and routing-policy invariants, not only markdown phrase presence |
 
 ---
 
 ## TDD Test List
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_execution_manifest_required_fields | Manifest fixture documents source_ids, input_residency, output_residency, tool, machine/provider, outputs, validation, evidence | YAML/JSON fixture derived from schema | missing required fields fail |
+| test_execution_manifest_required_fields | Manifest fixture documents source_ids, input_residency, output_residency, tool, machine/provider, outputs, validation, command_manifest, regeneration_command, replay_command, environment_pin, checksums, legal_scan_evidence, review_artifact_paths | YAML fixture derived from schema | missing required fields fail |
+| test_execution_manifest_evidence_fields_complete | Manifest schema requires `regeneration_command`, `replay_command`, `environment_pin`, `checksums`, `test_evidence`, `legal_scan_evidence`, and `review_artifact_paths` | schema + fixture | each evidence field is present and non-empty where report handoff is claimed |
 | test_no_execution_direct_publication | Execution outputs cannot set `report_eligible: true` without validation evidence and allowed output_residency | manifest fixtures | invalid direct-public fixture fails; valid evidence-backed fixture passes |
-| test_routing_policy_references_workstation_registry | Routing policy view references canonical `config/workstations/registry.yaml` machine IDs instead of redefining machine records | routing policy + registry fixture | orphan/duplicated machine IDs fail |
+| test_routing_policy_references_workstation_registry | Routing policy view references canonical `config/workstations/registry.yaml` registry keys and does not duplicate identity/capability fields (`hostname`, `ip`, `os`, `roles`, license/provider capability fields) | routing policy + registry fixture | orphan IDs or duplicated machine/provider truth fail |
 | test_validation_evidence_required_for_report_handoff | Report handoff requires tests/legal scan/checksums/review evidence according to output posture | manifest fixtures | missing evidence fails |
-| test_input_data_boundary_crosswalk | Input data is cross-referenced to data-layer source IDs rather than duplicated | manifest fixtures | inline raw data or unknown source_id fails |
-| test_execution_entry_point_inventory_covers_named_repos | Inventory contains evidence rows for workspace-hub plus available sibling/related repos or explicit unavailable markers | inventory | no silent omissions |
-| test_follow_up_issue_backlog_present | Missing runners/registries/validators/adapters have issue-title proposals or no-action rationale | backlog | every gap accounted for |
+| test_residency_compatibility_matrix | `output_residency` cannot be more public than `input_residency` unless promotion gates are present | execution routing cases | invalid public/client/report handoffs fail closed |
+| test_input_data_boundary_crosswalk | Input data is cross-referenced to data-layer source IDs rather than duplicated; source IDs must exist in `mounted-source-registry.yaml` or be marked blocked on #2731/#2732 | manifest fixtures + registry | inline raw data, unknown source_id, or unregistered repo/client/wiki path fails closed |
+| test_execution_entry_point_inventory_covers_named_repos | Inventory contains evidence rows for workspace-hub plus available sibling/related repos or explicit unavailable markers, with redacted path display for client/project roots | inventory | no silent omissions or raw private path leakage |
+| test_follow_up_issue_bundle_present | Missing runners/registries/validators/adapters/runtime enforcement have exact `gh issue create` commands and body drafts or no-action rationale | follow-up bundle | every gap accounted for |
 
 ---
 
 ## Acceptance Criteria
 - [ ] Execution levels E-L1 through E-L4 are defined.
 - [ ] Input data boundary is explicit: execution references/validates data-layer inputs but does not become the canonical owner of raw data.
-- [ ] Routing policy view covers canonical registry keys (`dev-primary`, `dev-secondary`, licensed machine keys), local worktrees, background jobs, and provider tools as machine capabilities by referencing `config/workstations/registry.yaml`; provider-credit routing remains deferred to #1838 unless separately approved.
-- [ ] Execution evidence requirements include command manifests, regeneration commands, replay commands, environment pins, checksums, tests, legal scan, and adversarial review artifacts where applicable.
-- [ ] Report-layer handoff requires validation evidence plus `input_residency` and `output_residency` metadata.
-- [ ] Execution entry-point inventory includes empirical filesystem/git enumeration for each available named repo and records explicit unavailable/not-applicable evidence for missing repos.
-- [ ] Follow-up implementation work is proposed as GitHub issue titles/scopes in `docs/architecture/execution-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
-- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_execution_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
-- [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
+- [ ] Routing policy view covers canonical registry keys (`dev-primary`, `dev-secondary`, licensed machine keys), local worktrees, background jobs, and provider tools as machine capabilities by referencing `config/workstations/registry.yaml`; #2119/#1838/#2089 remain open dependencies and must not be treated as approved routing policy.
+- [ ] Execution evidence requirements include command manifests, regeneration commands, replay commands, environment pins, checksums, tests, legal scan, and adversarial review artifacts where applicable, and each required field has a matching schema/TDD assertion.
+- [ ] Report-layer handoff requires validation evidence plus `input_residency` and `output_residency` metadata, and a residency-compatibility test fails closed when output is more public than input without promotion gates.
+- [ ] Execution entry-point inventory includes empirical filesystem/git enumeration for each available named repo, records explicit unavailable/not-applicable evidence for missing repos, and redacts client/project child names in tracked public docs.
+- [ ] Follow-up implementation work is represented by exact `gh issue create` command/body drafts in `docs/architecture/execution-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
+- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/architecture/test_execution_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, no unresolved MAJOR findings may remain, and the approval request cites revision-stamped non-empty artifact evidence rather than same-cycle paths that may be truncated.
 
 ---
 
-## Adversarial Review Summary
+## Revision / Adversarial Review Summary
+
+Prior-cycle MAJOR disposition for this revision:
+
+| Finding class | Disposition in this revision |
+|---|---|
+| Self-defeating same-cycle review citations | Header/artifact map cite only prior-cycle disagreement; current-cycle provider paths are generated after commit. |
+| Routing-policy duplication under-specified | TDD row now names duplicated machine/provider field classes that must fail. |
+| Missing residency-compatibility TDD | Added `test_residency_compatibility_matrix`. |
+| Evidence fields not covered by tests | Added schema/TDD row for replay, env pin, checksums, legal scan, review artifacts. |
+| Entry-point inventory redaction | Added redaction requirement to TDD and AC. |
+| Source-ID universe undefined | TDD now requires known registry IDs or explicit fail-closed blockers on #2731/#2732. |
+| Review gate as acceptance property | AC now states re-review requirement but not as a deliverable substitute; this disposition table is the artifact-property map. |
+| Prior MAJORs not surfaced | This table maps prior MAJOR classes to current revision changes. |
+
 Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
-Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.
+Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>`, inspect non-empty provider artifacts in `scripts/review/results/`, and preserve/cite revision-stamped non-empty evidence in the approval request rather than relying on same-cycle paths that fanout may truncate. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.
 
 ---
 

@@ -4,7 +4,7 @@
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2729
-> **Review artifacts:** `scripts/review/results/2026-05-17-plan-2729-claude.md`, `scripts/review/results/2026-05-17-plan-2729-codex.md`, `scripts/review/results/2026-05-17-plan-2729-gemini.md`, `scripts/review/results/2026-05-17-plan-2729-disagreement.md`
+> **Review artifacts:** prior-cycle blockers are summarized in `scripts/review/results/2026-05-17-plan-2729-disagreement.md`; current-cycle Claude/Codex/Gemini artifacts must be generated after this revision and verified non-empty before an approval request. Do not cite same-cycle per-provider paths from this plan body.
 
 ---
 
@@ -61,7 +61,7 @@
 | Report artifacts | internal reports, client HTML, limited PDFs, chatbot/query configs/indexes | Report layer; audience-specific evidence and sanitization gates required |
 
 ### Gaps identified
-- No approved level taxonomy yet for data L1 raw → L2 raw-llm-wiki/staging → L3 public `llm-wiki`/chatbot knowledge.
+- Parent/data/execution taxonomy remains in `status:plan-review`; this report plan must consume #2726/#2727/#2728 only after those plans clear MAJOR findings, or fail closed to local schema fields defined here without inventing upstream interfaces.
 - No approved level taxonomy yet for execution inputs vs data-layer inputs, code/tooling, machines/compute, validation evidence, and handoff manifests.
 - No approved level taxonomy yet for report raw outputs, data outputs, HTML/PDF/report formats, interactivity, and chatbot surfaces.
 - No canonical matrix yet mapping source class → owner repo/path → public/private posture → promotion gate → report/chatbot eligibility.
@@ -110,16 +110,16 @@ N/A — architecture/governance planning issue, not a runtime failure.
 | Report layer contract | `docs/architecture/report-layer-contract.md` |
 | Report output taxonomy | `docs/architecture/report-output-taxonomy.md` |
 | Publication/evidence gates | `docs/architecture/report-publication-gates.md` |
-| Evidence bundle schema | `docs/architecture/report-evidence-bundle-schema.md` |
+| Evidence bundle schema | `docs/architecture/report-evidence-bundle-schema.md` and `docs/architecture/report-evidence-bundle.schema.yaml` |
 | Report-derived learning routing | `docs/architecture/report-derived-learning-routing.md` |
 | Follow-up issue backlog | `docs/architecture/report-follow-up-issue-backlog.md` |
-| Tests | `tests/governance/test_report_layer_contract.py`; fixtures in `tests/fixtures/architecture/report_evidence_bundle.yaml` and `tests/fixtures/architecture/report_residency_cases.yaml` |
-| Review artifacts | `scripts/review/results/2026-05-17-plan-2729-*.md` |
+| Tests | `tests/architecture/test_report_layer_contract.py`; fixtures in `tests/fixtures/architecture/report_evidence_bundle.yaml` and `tests/fixtures/architecture/report_residency_cases.yaml` |
+| Prior-cycle review synthesis | `scripts/review/results/2026-05-17-plan-2729-disagreement.md` |
 
 ---
 
 ## Deliverable
-A report-layer contract will classify raw outputs, evidence bundles, client/internal/public reports, HTML/PDF formats, interactivity, chatbot/query surfaces, and **report-derived knowledge**. It will add `output_residency` as a required classification field and define where curated learnings from reports/chatbots are preserved: public `llm-wiki` for public-safe domain knowledge, domain-private corpus for restricted/non-public derivatives, and client-private `/mnt/local-analysis/<client>-llm-wiki` for client-derived learnings. Raw generated outputs remain internal by default.
+A report-layer contract will classify raw outputs, evidence bundles, client/internal/public reports, HTML/PDF formats, interactivity, chatbot/query surfaces, and **report-derived knowledge**. It will add `output_residency` as a required classification field and define where curated learnings from reports/chatbots are preserved: public `llm-wiki` for public-safe domain knowledge, domain-private corpus for restricted/non-public derivatives, and registered client-private corpus for client-derived learnings. `/mnt/local-analysis/<client>-llm-wiki` is a provisioning pattern only, not an approved destination until a private repo/corpus registry issue creates and verifies it. Raw generated outputs remain internal by default.
 
 ---
 
@@ -144,7 +144,7 @@ function classify_report_artifact(artifact):
     require output_residency for R-L2+ and for all report-derived learnings
     validate public/client artifact with canonical legal scan plus source/legal/sanitization checklist
     select output format: HTML-first, PDF only when required, chatbot/index only when corpus posture allows
-    route curated report-derived learnings to public, domain-private, or client-private corpus according to output_residency
+    route curated report-derived learnings to public, domain-private, registered client-private corpus, ignored-internal, or no-preserve according to output_residency
     record freshness, limitations, and provenance links
 ```
 
@@ -159,7 +159,7 @@ function classify_report_artifact(artifact):
 | Create | `docs/architecture/report-evidence-bundle-schema.md` | Defines evidence bundle format and required fields: claim_id, artifact_id, source_corpus, corpus_posture, audience_scope, freshness, last_verified, source_manifest, command_manifest, validation_results, legal_scan, checksums, review_verdicts, output_residency, promotion_decision |
 | Create | `docs/architecture/report-derived-learning-routing.md` | Defines public/domain-private/client-private destinations for report-derived knowledge |
 | Create | `docs/architecture/report-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for report validators, artifact indexes, and publication pipelines |
-| Create | `tests/governance/test_report_layer_contract.py` | Tests taxonomy/manifest fixtures and posture invariants, not only markdown phrase presence |
+| Create | `tests/architecture/test_report_layer_contract.py` | Tests taxonomy/manifest fixtures and posture invariants, not only markdown phrase presence |
 | Update | `docs/content-pipeline/README.md` | Add a bounded cross-link to report publication/routing rules after approval; no broad rewrite in this issue |
 
 ---
@@ -184,15 +184,30 @@ function classify_report_artifact(artifact):
 - [ ] Client/public reports require data provenance, execution evidence, legal/source checks, and sanitization.
 - [ ] Chatbots/query surfaces inherit underlying data-corpus public/private posture and freshness limitations through explicit manifest fields/tests, not prose-only policy.
 - [ ] Output taxonomy includes raw outputs, evidence bundles, internal reports, client-facing HTML, limited PDFs, dashboards/interactivity, public website content, chatbots, and report-derived learnings.
-- [ ] `output_residency` destinations are explicit: public `llm-wiki`, domain-private corpus, client-private `/mnt/local-analysis/<client>-llm-wiki`, ignored internal run artifact, or no-preserve.
-- [ ] Evidence bundle schema is concrete and binds each published claim to source manifest, command manifest, validation, legal scan, checksums, and review verdicts.
-- [ ] Follow-up implementation work is filed as GitHub issues or explicitly blocked with issue-title/body drafts and blocker reason in `docs/architecture/report-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
-- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_report_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
-- [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
+- [ ] `output_residency` is defined once in `docs/architecture/report-evidence-bundle.schema.yaml` with enum values `public_llm_wiki`, `domain_private_corpus`, `registered_client_private_corpus`, `ignored_internal_run_artifact`, and `no_preserve`; unregistered `/mnt/local-analysis/<client>-llm-wiki` paths fail closed and require a follow-up issue.
+- [ ] Evidence bundle schema is concrete and falsifiably tested: each published claim binds to source manifest, command manifest, validation, legal scan, checksums, and review verdicts.
+- [ ] Cross-repo report inventory covers workspace-hub, llm-wiki, digitalmodel, aceengineer-website, and aceengineer-strategy, or records unavailable evidence with command, machine, timestamp, and reason.
+- [ ] R-L6 report-derived learning routing explicitly references #2209 and `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md`; it is a crosswalk onto the existing durable/transient boundary, not a new competing intelligence layer, and durable learnings are separated from transient/raw outputs.
+- [ ] Follow-up implementation work is represented by exact `gh issue create` command/body drafts in `docs/architecture/report-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
+- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/architecture/test_report_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, and no unresolved MAJOR findings may remain.
 
 ---
 
-## Adversarial Review Summary
+## Revision / Adversarial Review Summary
+
+Prior-cycle MAJOR disposition for this revision:
+
+| Finding class | Disposition in this revision |
+|---|---|
+| Invented client-private destination | Reframed `/mnt/local-analysis/<client>-llm-wiki` as unapproved provisioning pattern; only registered private client corpus is valid. |
+| Fixture map incomplete | Added explicit Files-to-Change rows for every fixture referenced by tests. |
+| `output_residency` schema missing | Added machine-readable schema artifact and enum/fail-closed AC. |
+| Cross-repo inventory partial | Added inventory fixture/TDD/AC requiring complete coverage or explicit unavailable evidence. |
+| R-L6 policy collision | Added explicit reconciliation with #2209 and durable-vs-transient knowledge boundary. |
+| Evidence claim binding untested | Added `test_evidence_bundle_claim_binding`. |
+| Follow-up issues weakened | Follow-up bundle now requires exact `gh issue create` commands/body drafts. |
+
 Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
 Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.

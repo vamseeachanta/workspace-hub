@@ -35,6 +35,8 @@ machines:
       dispatch_enabled: true
       telegram_mode: coordinator
       hermes_profile: default
+      bot_token_env: TELEGRAM_BOT_TOKEN
+      allowed_user_ids_env: TELEGRAM_ALLOWED_USERS
       sync_policy: pull-before-work-push-after-work
       data_access_profile:
         repos: [workspace-hub, digitalmodel, assetutilities, worldenergydata, assethold, OGManufacturing]
@@ -73,6 +75,8 @@ machines:
       dispatch_enabled: true
       telegram_mode: worker
       hermes_profile: linux-worker
+      bot_token_env: TELEGRAM_BOT_TOKEN
+      allowed_user_ids_env: TELEGRAM_ALLOWED_USERS
       sync_policy: pull-before-work-push-after-work
       data_access_profile:
         repos: [digitalmodel, worldenergydata]

@@ -89,7 +89,43 @@ Do not wait to batch unrelated issues together again if the blocker is local to 
 
 This keeps the feedback loop tight and avoids mixing stale/updated review rounds across different issues.
 
+## Avoid self-referential same-cycle artifacts in plan bodies
+
+When hardening `docs/plans/...` before re-review, do not leave plan-body tables that cite same-cycle provider artifact paths such as:
+
+- `scripts/review/results/<date>-plan-<issue>-claude.md`
+- `scripts/review/results/<date>-plan-<issue>-codex.md`
+- `scripts/review/results/<date>-plan-<issue>-gemini.md`
+- wildcard rows like `scripts/review/results/<date>-plan-<issue>-*.md`
+
+Reason: review fanout scripts may truncate or overwrite target provider files before writing new content. A plan that cites the same files currently being regenerated creates false 0-byte or stale-evidence findings.
+
+Use this pattern instead:
+
+1. Cite only prior-cycle disagreement/synthesis artifacts in the plan body.
+2. State that current-cycle Claude/Codex/Gemini artifacts must be generated after this revision and verified non-empty before approval.
+3. Require the approval request or closeout comment to cite revision-stamped, non-empty review artifacts, not same-cycle placeholders in the plan.
+4. Add a quick scan before validation to reject stale self-references and stale test paths.
+
+Example validation snippet:
+
+```bash
+python - <<'PY'
+from pathlib import Path
+bad = False
+for p in Path('docs/plans').glob('*.md'):
+    for i, line in enumerate(p.read_text().splitlines(), 1):
+        if 'Review artifacts | `scripts/review/results/' in line or '> **Review artifacts:** `scripts/review/results/' in line:
+            print(f'{p}:{i}: same-cycle review artifact path: {line}')
+            bad = True
+        if 'tests/governance/' in line:
+            print(f'{p}:{i}: stale governance test path: {line}')
+            bad = True
+raise SystemExit(1 if bad else 0)
+PY
+```
+
 ## Scope note
 
 This is a packaging/instrumentation problem, not necessarily a plan-quality problem.
-Fix the prompt refresh path first, then interpret any remaining findings.
+Fix the prompt refresh path and same-cycle artifact references first, then interpret any remaining findings.

@@ -708,6 +708,10 @@ def test_live_registry_has_dispatch_metadata_without_secret_fields(monkeypatch) 
 
     for host_id, machine in data["machines"].items():
         assert "telegram_hermes" in machine, f"{host_id} missing telegram_hermes metadata"
+        tg = machine["telegram_hermes"]
+        if tg.get("dispatch_enabled"):
+            assert tg.get("bot_token_env"), f"{host_id} dispatch host missing bot_token_env pointer"
+            assert tg.get("allowed_user_ids_env"), f"{host_id} dispatch host missing allowed_user_ids_env pointer"
 
     report = module.collect_readiness(live_registry)
     rendered = json.dumps(report)
