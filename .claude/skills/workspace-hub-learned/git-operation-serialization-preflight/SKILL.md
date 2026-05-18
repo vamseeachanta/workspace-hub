@@ -143,6 +143,10 @@ When a cleanup/closeout session leaves named safety stashes behind, do not eithe
 
 Detailed procedure: `references/stash-export-and-drop-cleanup.md`.
 
+### G. Commit post-hook metadata before final clean-state claims
+
+If a mutating operation succeeds but hooks or skill tooling append expected metadata, inspect and commit that follow-up ledger before declaring the checkout clean. Detailed procedure: `references/post-commit-hook-metadata.md`.
+
 ## Verification Checklist
 
 Before issuing the mutating git command:
@@ -157,6 +161,8 @@ Before issuing the mutating git command:
 After the mutating step completes:
 
 - [ ] `git rev-parse HEAD` matches the commit you intended to produce.
+- [ ] Immediately re-run `git status --porcelain=v1 --branch` after every commit/merge/push; do not assume hooks left the tree clean.
+- [ ] If hooks or skill tooling generated follow-up metadata (for example `logs/orchestrator/hermes/skill-patches.jsonl`), inspect it, classify it as expected ledger/runtime state, and commit it separately before claiming final clean-state.
 - [ ] `git status --short` reflects the expected post-state (clean for a finished commit, or the residual untracked you decided to defer).
 - [ ] If you pushed: `git ls-remote origin <branch>` matches local `HEAD` (catches the auto-sync race documented in `feedback_merge_race_silent_revert` and `feedback_autosync_silent_pusher`).
 

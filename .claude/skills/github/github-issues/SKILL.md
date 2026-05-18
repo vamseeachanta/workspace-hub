@@ -114,8 +114,9 @@ Before creating a new feature issue, do a quick grounding pass to avoid duplicat
 5. Prefer writing the body to a temp markdown file and using `--body-file` for long, structured issue descriptions.
 6. If you are creating a linked issue tree (parent + children), render any placeholders like `<PARENT_ISSUE>` / `<QUEUE_ISSUE>` into temporary files before calling `gh issue create`. Do not rely on post-hoc mental substitution.
 7. After creation or update, immediately verify the final artifact's title, labels, URL, and rendered body.
-8. If you accidentally create an issue with unresolved placeholders, fix it immediately with `gh issue edit --body-file ...` and then re-verify the rendered body.
-9. For layered architecture/governance issue trees, see `references/layered-architecture-review-issue-tree.md`; it includes parent/child issue structure, data/execution/report layer scope, and the rule that output/report residency must mirror input/data residency unless an explicit promotion gate says otherwise.
+8. When the issue work also commits plan/report artifacts, verify both local and remote repository state before claiming closeout: pushed `HEAD`, local `origin/main`, remote `refs/heads/main`, ahead/behind count, and tracked worktree cleanliness. Do not treat a local commit hash alone as enough evidence.
+9. If you accidentally create an issue with unresolved placeholders, fix it immediately with `gh issue edit --body-file ...` and then re-verify the rendered body.
+10. For layered architecture/governance issue trees, see `references/layered-architecture-review-issue-tree.md`; it includes parent/child issue structure, data/execution/report layer scope, and the rule that output/report residency must mirror input/data residency unless an explicit promotion gate says otherwise.
 
 Example:
 
