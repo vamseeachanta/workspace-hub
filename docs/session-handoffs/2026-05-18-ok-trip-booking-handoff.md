@@ -35,6 +35,14 @@ The following issue comments were edited/verified as the durable booking board:
 
 Verification from `gh api` after update showed those comments contain the updated `PANORAMA`/`RESERVED` decision framing and point back to issue #91.
 
+## Phone numbers to call
+
+Primary host / booking company for all listed Cabins in Broken Bow candidates:
+
+| Company / host | Phone | Use for | Source |
+|---|---:|---|---|
+| **Cabins in Broken Bow** | **580-212-3555** | Lookout, Hilltop, Trail House, Ridgeview Retreat, Crooked Pine, Sierra, Cimarron availability/view/kitchen/access questions | https://cabinsinbrokenbow.com/contact/ |
+
 ## Booking call script
 
 Use this exact call script before booking:
@@ -44,7 +52,7 @@ Use this exact call script before booking:
 ## Restart checklist
 
 1. Open issue #91 and review the three durable comments above.
-2. Call Cabins in Broken Bow / host before booking.
+2. Call **Cabins in Broken Bow: 580-212-3555** before booking.
 3. Ask first about cancellation/manual availability for **Lookout** and **Hilltop**.
 4. If unavailable, ask whether **Trail House** has the view visible from cabin/deck.
 5. If Trail House view is not from cabin/deck, decide explicitly between:
