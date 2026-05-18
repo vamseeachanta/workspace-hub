@@ -1,0 +1,27 @@
+schema_version: '1.0'
+generated: '2026-05-18T15:37:13Z'
+cases:
+- case_id: direct_private_raw_to_public_llm_wiki
+  from: D-L1 raw private/client data
+  to: D-L4 public llm-wiki
+  expected: deny
+  required_evidence: D-L2 readable-raw-data review, D-L3 curated derivative, sanitization,
+    provenance, license/legal approval, and explicit publication gate
+- case_id: reviewed_public_domain_to_public_llm_wiki
+  from: D-L3 public-safe curated derivative
+  to: D-L4 public llm-wiki
+  expected: allow
+  required_evidence: source provenance, license posture, citations, sanitization check,
+    publication reviewer
+- case_id: client_raw_to_private_client_wiki
+  from: D-L1 client raw data
+  to: D-L3 private client llm-wiki
+  expected: allow
+  required_evidence: client-private target, no public path, provenance, access controls,
+    redaction/sanitization note
+- case_id: mixed_public_private_chatbot
+  from: public + client-private corpora
+  to: chatbot runtime
+  expected: allow-private-only
+  required_evidence: runtime manifest with corpus scope, freshness, source-class separation,
+    and private output_residency

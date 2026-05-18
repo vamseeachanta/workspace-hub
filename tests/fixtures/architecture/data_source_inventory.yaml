@@ -1,0 +1,336 @@
+schema_version: '1.0'
+generated: '2026-05-18T15:37:13Z'
+issue: 2727
+sources:
+- source_id: mnt_workspace_control_plane
+  source_class: mnt_workspace_control_plane
+  owner: workspace-hub
+  canonical_home: /mnt/local-analysis/workspace-hub
+  path_class: repo-root
+  source_registry_kind: repo_registry
+  registry_ref: git remote + AGENTS.md
+  allowed_artifacts:
+  - plans
+  - architecture contracts
+  - validation fixtures
+  forbidden_artifacts:
+  - raw client data
+  - credentials
+  - bulk generated outputs
+  retention_rule: git-tracked governance artifacts only
+  publication_rule: Public repo content allowed after review; no raw/private data.
+  provenance: repo-native control-plane documentation
+  license_posture: MIT/docs policy
+  sensitivity: public_control_plane
+  promotion_gate: plan-approved + legal scan
+  output_residency: repo-public
+  runtime_probe:
+    command: git remote get-url origin
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: Control plane stores contracts and evidence pointers, not raw corpora.
+- source_id: mnt_local_analysis_repos
+  source_class: repo_ecosystem_data
+  owner: workspace-hub ecosystem
+  canonical_home: /mnt/local-analysis
+  path_class: multi-repo-root
+  source_registry_kind: manual_seed
+  registry_ref: sanitized runtime probe summary captured in this artifact
+  allowed_artifacts:
+  - repo placement inventory
+  - repo identity metadata
+  forbidden_artifacts:
+  - silent repo moves
+  - copied private corpus content
+  retention_rule: inventory only until a repo-layout issue is approved
+  publication_rule: No repository relocation or publication by this issue.
+  provenance: filesystem repo probe showed workspace-hub and llm-wiki as sibling repos; digitalmodel absent at probed path
+  license_posture: repo metadata only
+  sensitivity: internal
+  promotion_gate: follow-up issue before relocation
+  output_residency: repo-public
+  runtime_probe:
+    command: test -d /mnt/local-analysis
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: This satisfies the approved note to evaluate /mnt/local-analysis placement without moving repositories.
+- source_id: worldenergydata_public_sources
+  source_class: public_collection_data
+  owner: worldenergydata
+  canonical_home: /mnt/local-analysis/worldenergydata
+  path_class: sibling-repo-or-planned
+  source_registry_kind: unavailable
+  registry_ref: ''
+  allowed_artifacts:
+  - public-source metadata
+  - collection pipeline references
+  forbidden_artifacts:
+  - private mounts
+  - client files
+  retention_rule: public-source regeneration policy
+  publication_rule: May promote derived public metadata when source license permits.
+  provenance: DATA_RESIDENCE_POLICY Tier 1 collection data
+  license_posture: source-specific public licenses required
+  sensitivity: public_source
+  promotion_gate: source license + provenance + freshness
+  output_residency: llm-wiki-public
+  runtime_probe:
+    command: test -d /mnt/local-analysis/worldenergydata
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: absent_recorded
+  notes: Repository path not present in this worktree probe; fail closed to references only.
+- source_id: digitalmodel_reference_data
+  source_class: engineering_reference_data
+  owner: digitalmodel
+  canonical_home: /mnt/local-analysis/digitalmodel
+  path_class: sibling-repo-or-planned
+  source_registry_kind: unavailable
+  registry_ref: ''
+  allowed_artifacts:
+  - reference-data dependency declarations
+  - public-safe summaries
+  forbidden_artifacts:
+  - standards text reproduction
+  - client project data
+  retention_rule: reference data remains in owning repo
+  publication_rule: Public summaries only when license/publication permits.
+  provenance: DATA_RESIDENCE_POLICY Tier 2 engineering reference data
+  license_posture: standards/vendor restrictions may apply
+  sensitivity: mixed_public_restricted
+  promotion_gate: license/legal + citation sidecar for standards-derived constants
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: test -d /mnt/local-analysis/digitalmodel
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: absent_recorded
+  notes: Probe found no git repo at this path; repo-layout decision is deferred.
+- source_id: mounted_standards_literature
+  source_class: mounted_standards_literature
+  owner: workspace mounted data
+  canonical_home: /mnt/ace/docs/_standards
+  path_class: mounted-reference-root
+  source_registry_kind: mounted_source_registry
+  registry_ref: data/document-index/mounted-source-registry.yaml
+  allowed_artifacts:
+  - metadata ledgers
+  - citation references
+  - derived non-sensitive abstracts when permitted
+  forbidden_artifacts:
+  - raw PDFs
+  - licensed standards text
+  - bulk extracted text
+  retention_rule: mounted source remains outside git
+  publication_rule: No public llm-wiki promotion unless source is public and license-cleared.
+  provenance: mounted-source registry entry ace_standards_local plus per-domain source metadata
+  license_posture: licensed_reference
+  sensitivity: licensed_reference
+  promotion_gate: legal/license review + source-class separation
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: test -d /mnt/ace/docs/_standards
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: Canonicalized to mounted-source registry path; use /mnt/ace path family only.
+- source_id: mnt_ace_raw_documents
+  source_class: client_project_data
+  owner: client/private project owners
+  canonical_home: /mnt/ace/<client-or-project-root>
+  path_class: mounted-private-root
+  source_registry_kind: manual_seed
+  registry_ref: sanitized runtime probe summary captured in this artifact
+  allowed_artifacts:
+  - sanitized metadata
+  - private wiki notes
+  - runtime retrieval evidence
+  forbidden_artifacts:
+  - public llm-wiki pages
+  - public chatbot indexes
+  - client-facing report snippets without review
+  retention_rule: remain on private mounted storage
+  publication_rule: No public publication; private client wiki or report runtime only.
+  provenance: 'approved #2727 runtime probe and data-layer plan'
+  license_posture: client/private contractual restrictions
+  sensitivity: client_confidential
+  promotion_gate: privacy/sanitization/legal/client approval
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: test -d /mnt/ace
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: Client root paths are intentionally generalized here; exact roots stay out of public artifacts.
+  private_wiki_target: client_private_wiki_target_provisioning_001
+- source_id: client_present_001
+  source_class: client_project_data
+  owner: client/private project owners
+  canonical_home: /mnt/ace/<present-client-root>
+  path_class: mounted-private-root
+  source_registry_kind: manual_seed
+  registry_ref: sanitized runtime probe summary captured in this artifact
+  allowed_artifacts:
+  - private derived summaries
+  - private <client-private-wiki-root> notes
+  forbidden_artifacts:
+  - public llm-wiki
+  - public chatbot
+  - raw output commits
+  retention_rule: client source remains private
+  publication_rule: No public publication; route through private client wiki target if provisioned.
+  provenance: runtime probe confirmed present private client-class roots without preserving literals in inventory
+  license_posture: client/private contractual restrictions
+  sensitivity: client_confidential
+  promotion_gate: client approval + sanitization + source-class separation
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: test -d /mnt/ace
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: Representative client data row proving the private handling contract without leaking literal path names.
+  private_wiki_target: client_private_wiki_target_provisioning_001
+- source_id: client_private_wiki_target_provisioning_001
+  source_class: private_client_wiki_target
+  owner: client/private project owners
+  canonical_home: /mnt/local-analysis/<client-private-wiki-root>
+  path_class: private-client-wiki-target
+  source_registry_kind: manual_seed
+  registry_ref: docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md
+  allowed_artifacts:
+  - sanitized client-specific derived notes
+  - private retrieval indexes
+  - private chatbot corpus manifests
+  forbidden_artifacts:
+  - public llm-wiki pages
+  - raw client uploads
+  - client-facing report publication without report-layer gate
+  retention_rule: private repo provisioning target; literal client path and existence evidence remain outside public artifacts
+  publication_rule: No public publication; public reporting requires sanitized derivatives and report-layer approval.
+  provenance: 'user-approved #2727 private client wiki target captured in redacted public form; literal path remains private evidence only'
+  license_posture: client_private
+  sensitivity: client_confidential
+  promotion_gate: private repo provisioning + privacy/sanitization/legal/client approval
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: redacted-private-target-probe
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: redacted_not_publicly_probed
+  notes: Redacted private client wiki provisioning target; exact client name/path and live existence probe remain private evidence only.
+- source_id: llm_wiki_raw_staging
+  source_class: llm_wiki_raw_staging
+  owner: workspace-hub/llm-wiki pipeline
+  canonical_home: /mnt/local-analysis/llm-wiki-private-staging
+  path_class: private-staging-target
+  source_registry_kind: manual_seed
+  registry_ref: 'approved #2727 plan'
+  allowed_artifacts:
+  - raw/private llm-wiki staging notes
+  - metadata-only staging manifests
+  forbidden_artifacts:
+  - public pages
+  - raw PDFs
+  - secrets
+  retention_rule: staging retained only as private working corpus
+  publication_rule: Not publishable until promotion gates pass.
+  provenance: derived from input corpora with source-class tags
+  license_posture: mixed; inherit strictest source
+  sensitivity: private
+  promotion_gate: D-L2 review + sanitization + source provenance
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: test -d /mnt/local-analysis
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: This is the readable-raw-data / raw/private llm-wiki staging tier.
+- source_id: public_llm_wiki
+  source_class: public_llm_wiki_content
+  owner: llm-wiki
+  canonical_home: /mnt/local-analysis/llm-wiki
+  path_class: public-repo-root
+  source_registry_kind: repo_registry
+  registry_ref: git remote + llm-wiki repo metadata
+  allowed_artifacts:
+  - public wiki pages
+  - public-safe curated learnings
+  - citation-backed summaries
+  forbidden_artifacts:
+  - raw client data
+  - private mount paths
+  - licensed text reproduction
+  retention_rule: git-tracked public knowledge artifacts
+  publication_rule: Public publication allowed only after source/license/sanitization gates.
+  provenance: public repo content and curated public-domain synthesis
+  license_posture: CC-BY-4.0 docs/content posture
+  sensitivity: public
+  promotion_gate: D-L4 publication gate
+  output_residency: llm-wiki-public
+  runtime_probe:
+    command: test -d /mnt/local-analysis/llm-wiki
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: Public llm-wiki is a publication target, not a raw ingest area.
+- source_id: generated_chatbot_index
+  source_class: generated_index_query_surface
+  owner: workspace-hub report/query stack
+  canonical_home: /mnt/local-analysis/<private-index-root>
+  path_class: generated-index-root
+  source_registry_kind: document_index_registry
+  registry_ref: data/document-index/index.jsonl
+  allowed_artifacts:
+  - private retrieval index
+  - query manifest with corpus scope and freshness
+  forbidden_artifacts:
+  - public chatbot
+  - raw outputs without residency tags
+  retention_rule: regenerate from manifests; do not commit private index payloads
+  publication_rule: Inherit strictest corpus; public chatbot only for public-only corpus.
+  provenance: generated from selected corpora at execution/report runtime
+  license_posture: inherits source corpus licenses
+  sensitivity: private
+  promotion_gate: manifest output_residency + corpus scope + freshness
+  output_residency: llm-wiki-private
+  runtime_probe:
+    command: test -f data/document-index/index.jsonl || test -d data/document-index
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: recorded
+  notes: Generated indexes inherit corpus posture and must carry corpus_sources.
+  corpus_sources:
+  - client_project_data
+  - public_llm_wiki_content
+- source_id: report_artifact_surface
+  source_class: report_artifact_surface
+  owner: workspace-hub reporting
+  canonical_home: /mnt/local-analysis/<report-output-root>
+  path_class: generated-report-root
+  source_registry_kind: manual_seed
+  registry_ref: 'approved #2729 linkage'
+  allowed_artifacts:
+  - raw output manifests
+  - client-facing HTML after review
+  - limited PDFs after review
+  - chatbot manifests
+  forbidden_artifacts:
+  - raw private data in public artifacts
+  - uncited client deliverables
+  - unreviewed generated outputs
+  retention_rule: generated outputs retained per report contract, not as data-layer canon
+  publication_rule: Report publication requires audience-specific evidence/legal/source checks.
+  provenance: reports/chatbots are downstream outputs from execution layer
+  license_posture: inherits source and client constraints
+  sensitivity: mixed_public_private
+  promotion_gate: report-layer legal/source/evidence gate
+  output_residency: report-scoped
+  runtime_probe:
+    command: test -d /mnt/local-analysis
+    machine: ace-linux-1
+    timestamp: '2026-05-18T15:37:13Z'
+    status: present_recorded
+  notes: Included to connect data-layer decisions to report-layer output residency.
