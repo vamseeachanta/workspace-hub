@@ -1,10 +1,10 @@
 # Plan for #2739: Promote ace-linux-2 as first Linux cron/Hermes worker
 
-> **Status:** draft
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-05-18
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2739
-> **Review artifacts:** pending
+> **Review artifacts:** inline plan review summary; user-approved 2026-05-18
 
 ---
 
