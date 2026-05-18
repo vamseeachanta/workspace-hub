@@ -199,9 +199,7 @@ allOf:
         checksums:
           additionalProperties:
             type: string
-            minLength: 1
-            not:
-              pattern: (?i)pending
+            pattern: ^sha256:[a-fA-F0-9]{64}$
         outputs:
           contains:
             type: object

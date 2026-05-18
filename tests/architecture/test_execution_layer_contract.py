@@ -170,6 +170,13 @@ def test_execution_manifest_fails_closed_for_unavailable_sources_and_public_gate
     pending_checksum["checksums"] = {"docs/architecture/execution-layer-contract.md": "pending-final-checksum"}
     assert list(validator.iter_errors(pending_checksum)), "report eligibility requires non-pending checksums"
 
+    placeholder_checksum = deepcopy(manifest)
+    placeholder_checksum["report_eligible"] = True
+    placeholder_checksum["checksums"] = {
+        "docs/architecture/execution-layer-contract.md": "sha256:contract-checksum-required-at-publication"
+    }
+    assert list(validator.iter_errors(placeholder_checksum)), "report eligibility requires real sha256 checksums"
+
     nested_raw = deepcopy(manifest)
     nested_raw["test_evidence"][0]["source_text"] = "inline raw payload must not validate"
     assert list(validator.iter_errors(nested_raw)), "test evidence must not embed raw/private payload fields"

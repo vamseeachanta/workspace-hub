@@ -22,8 +22,8 @@ outputs:
     report_handoff: true
     output_residency: domain_private_corpus
 checksums:
-  docs/architecture/execution-layer-contract.md: sha256:contract-checksum-required-at-publication
-  docs/architecture/execution-manifest.schema.yaml: sha256:schema-checksum-required-at-publication
+  docs/architecture/execution-layer-contract.md: sha256:8deb9398e0cbbe676975f7a9b835aa63b8af01fd8b6f383a06099a11686f0f21
+  docs/architecture/execution-manifest.schema.yaml: sha256:0eb1be4cedc65b1c53af17cae1158d02a4f63822dff976518971846a15c20970
 test_evidence:
   - command: uv run pytest tests/architecture/test_execution_layer_contract.py -v
     result: pass

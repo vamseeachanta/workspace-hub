@@ -12,6 +12,7 @@
 - Parallel-first execution standardization is already in `main`.
 - Session artifacts, report architecture artifacts, provider reports, skill ledgers, and closeout handoff files were committed and pushed before this final closeout.
 - A small follow-up lodging-selection skill update was detected after the previous push and is included in this final closeout window.
+- A small execution-manifest checksum hardening diff was detected during closeout; relevant test proof: `uv run pytest tests/architecture/test_execution_layer_contract.py -q` → `13 passed in 1.06s`.
 - No heavyweight comprehensive-learning pipeline was run in-session; leave deeper learning extraction to the scheduled/nightly pipeline.
 
 ## Final repo-state evidence captured before final closeout commit
