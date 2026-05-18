@@ -24,6 +24,8 @@ Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
   → Implement (TDD) → Close
 ```
 
+Canonical execution method: non-trivial work must be classified up front as `single-lane`, `parallel-readonly`, or `parallel-worktree` per `docs/standards/PARALLEL_FIRST_EXECUTION.md`. Resource intelligence, plan review, and validation may run in parallel; implementation still requires user approval and TDD before any write-capable lane starts.
+
 ## Steps
 
 ### Step 1: Intake and Resource Intelligence
@@ -31,6 +33,7 @@ Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
 1. Read the full issue body — scope, acceptance criteria, references
 2. Classify complexity: T1 (trivial), T2 (standard), T3 (complex)
 3. Search existing code, standards, documents, and prior plans before writing
+4. Classify execution mode for the next stage: `single-lane`, `parallel-readonly`, or `parallel-worktree`. For planning, default to `parallel-readonly` evidence gathering when the issue is broad enough to benefit; the main orchestrator still owns the canonical plan.
 
 ### Step 1.5: Reproduce the alleged failure (verify-against-repo-state)
 
@@ -321,10 +324,12 @@ Practical rule:
 ### Step 6: Implement (TDD)
 
 Only after `status:plan-approved` label AND `.planning/plan-approved/NNN.md` marker exist:
-1. Tests FIRST — write tests, confirm they fail
-2. Implement minimum code to pass tests
-3. Run full test suite — confirm no regressions
-4. Self-review against approved plan
+1. Re-check execution mode: `single-lane` for tight/shared work, `parallel-worktree` for approved disjoint write surfaces, or `parallel-readonly` for verification-only lanes.
+2. Tests FIRST — write tests, confirm they fail
+3. Implement minimum code to pass tests
+4. Run full test suite — confirm no regressions
+5. Self-review against approved plan
+6. If using `parallel-worktree`, orchestrator verifies worker outputs directly and serializes commit/push/closeout.
 
 ### Step 7: Close
 

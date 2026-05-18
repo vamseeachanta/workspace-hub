@@ -22,6 +22,14 @@ Use it only after planning is complete and the issue is approved.
 Canonical path:
 Issue -> Plan -> User approves -> TDD implementation -> adversarial review -> commit/push -> comment/close issue
 
+Canonical execution method:
+Every non-trivial work item must be classified before execution as one of:
+- `single-lane` — small, tightly coupled, decision-heavy, or shared-file work handled in the main session
+- `parallel-readonly` — resource intelligence, planning evidence, review, validation, or risk analysis can run concurrently; the orchestrator owns synthesis and durable artifacts
+- `parallel-worktree` — implementation is already plan-approved and the write surface splits cleanly into isolated worktrees with explicit owned/read-only/forbidden paths
+
+Use `docs/standards/PARALLEL_FIRST_EXECUTION.md` as the controlling standard. Parallelization is the default question for non-trivial work, not an afterthought; gates still control when implementation may begin.
+
 ## GitHub posting rule
 
 As execution progresses, post meaningful GitHub updates at each major step.
@@ -64,35 +72,36 @@ Preferred supporting skills for this packaging:
 - `overnight-parallel-agent-prompts`
 - `licensed-machine-prompt-orchestration`
 
-## Central vs delegated execution matrix
+## Parallel-first execution matrix
 
 Choose the execution mode only after the entry gate and already-done pre-check are complete.
+For non-trivial work, explicitly decide `single-lane`, `parallel-readonly`, or `parallel-worktree`; do not silently default to serial execution.
 Do not delegate just because the issue is large; delegate only when ownership, validation, and GitHub reporting are all operationally clear.
 
 | Situation | Mode | Rule |
 | --- | --- | --- |
-| single narrow fix, shared files, short feedback loop | central | keep execution in the main session |
-| uncertain implementation surface or active design decisions | central | finish recon and decision-making centrally first |
-| issue may already be satisfied and only needs verification/closure | central | keep the verification-first closure path in the main session and post evidence directly |
-| multiple independent files/areas with clear acceptance slices | delegated | split into non-overlapping agent-owned streams |
-| overnight/unattended work with explicit validation steps | delegated | package prompts so each stream can complete safely without live supervision |
-| shared files, migration choreography, or likely merge contention | central | do not delegate concurrent writes |
-| wide but mostly read-only recon feeding one final implementation | hybrid | delegate recon, keep final code integration central |
-| approval/authz ambiguity, unclear write access, or missing repo/runtime prerequisites | central | stop delegation and resolve authorization/readiness before any worker starts |
+| single narrow fix, shared files, short feedback loop | `single-lane` | keep execution in the main session |
+| uncertain implementation surface or active design decisions | `single-lane` or `parallel-readonly` | parallelize recon only; finish decisions centrally |
+| issue may already be satisfied and only needs verification/closure | `single-lane` or `parallel-readonly` | keep final close decision in the main session and post evidence directly |
+| multiple independent files/areas with clear acceptance slices | `parallel-worktree` | split into non-overlapping agent-owned streams after plan approval |
+| overnight/unattended work with explicit validation steps | `parallel-worktree` for approved implementation; `parallel-readonly` for planning/review | package prompts so each stream can complete safely without live supervision |
+| shared files, migration choreography, or likely merge contention | `single-lane` or serialized `parallel-worktree` | assign one writer for shared surfaces; do not run concurrent writes |
+| wide but mostly read-only recon feeding one final implementation | `parallel-readonly` | delegate recon, keep final code integration central |
+| approval/authz ambiguity, unclear write access, or missing repo/runtime prerequisites | `single-lane` blocker path | stop delegation and resolve authorization/readiness before any worker starts |
 
-Default to central execution when ownership boundaries are not crisp.
+Default to `parallel-readonly` for non-trivial recon/review/validation when it can reduce wall-clock time. Default to `parallel-worktree` for approved implementation only when ownership boundaries are crisp. Default to `single-lane` when boundaries are unclear or orchestration overhead exceeds the work.
 
 Operational checkpoint before execution:
 1. Confirm the issue is approved and in execution scope
 2. Finish the already-done pre-check
-3. Choose exactly one mode: `central`, `delegated`, or `hybrid`
+3. Choose exactly one mode: `single-lane`, `parallel-readonly`, or `parallel-worktree`
 4. Post the mode decision to GitHub when it changes who will execute or how check-ins will happen
 5. Only then start coding or prompt packaging
 
 Use this decision flow:
-- Choose `central` when the next best step is verification, recon, design resolution, or a tight single-threaded fix
-- Choose `delegated` only when each stream has explicit owned paths, explicit validators, explicit GitHub reporting ownership, and no likely write overlap
-- Choose `hybrid` only when delegated work is read-heavy or sliceable, but final integration/testing must stay central
+- Choose `single-lane` when the next best step is design resolution, user decision, a tight single-threaded fix, or shared-file work with no safe serialization plan
+- Choose `parallel-readonly` when lanes can inspect, validate, review, or classify independently but should not write durable repo state
+- Choose `parallel-worktree` only when each approved implementation stream has explicit owned paths, explicit validators, explicit GitHub reporting ownership, and no likely write overlap
 - If you cannot prove one of those paths safely, stop and continue centrally or return for user/orchestrator decision
 
 Required evidence for a delegated decision:

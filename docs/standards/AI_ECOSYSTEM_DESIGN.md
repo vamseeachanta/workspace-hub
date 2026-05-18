@@ -6,7 +6,7 @@
 >
 > **Authority:** derived from [#2675](https://github.com/vamseeachanta/workspace-hub/issues/2675) plan ([`docs/plans/2026-05-12-issue-2675-ai-ecosystem-reverse-prompt-plan.md`](../plans/2026-05-12-issue-2675-ai-ecosystem-reverse-prompt-plan.md)) through 3 cross-review waves, status `plan-approved` 2026-05-13. Maintenance contract at end of document.
 >
-> **Related governance**: [`docs/standards/CONTROL_PLANE_CONTRACT.md`](CONTROL_PLANE_CONTRACT.md) (entry-point/adapter authority — referenced, not superseded); [`docs/standards/AI_REVIEW_ROUTING_POLICY.md`](AI_REVIEW_ROUTING_POLICY.md) (operational routing policy — this doc anchors to outcomes, the policy implements the routing).
+> **Related governance**: [`docs/standards/CONTROL_PLANE_CONTRACT.md`](CONTROL_PLANE_CONTRACT.md) (entry-point/adapter authority — referenced, not superseded); [`docs/standards/AI_REVIEW_ROUTING_POLICY.md`](AI_REVIEW_ROUTING_POLICY.md) (operational routing policy — this doc anchors to outcomes, the policy implements the routing); [`docs/standards/PARALLEL_FIRST_EXECUTION.md`](PARALLEL_FIRST_EXECUTION.md) (canonical dispatch method for non-trivial work).
 
 ---
 
@@ -18,7 +18,7 @@ The ledger declares *what good output looks like* for each top-level work class 
 |---|---|---|---|
 | **Issue planning** | Plan cites ≥3 distinct sources, names concrete gaps, has reproduction proof or N/A justification | `Resource Intelligence Summary` source-count + presence of `Reproduction proofs` block | ≥3 sources AND repro or N/A-marked |
 | **Adversarial review** | Each provider verdict cites file paths or quoted claims; no praise/restatement; MAJOR/MINOR dominates over rubber-stamp APPROVE | Verdict + per-finding citation density in `scripts/review/results/*` | ≥1 cited finding per provider; APPROVE allowed only with checklist evidence |
-| **Implementation execution** | Tests-first, atomic commits per logical change, no `--no-verify`, no self-approve gate breach | Commit log + pre-commit-hook logs + attestation block (per [#2405](https://github.com/vamseeachanta/workspace-hub/issues/2405)) | Zero bypassed hooks; ≥1 failing test before its fix lands |
+| **Implementation execution** | Parallel-first dispatch decision, tests-first, atomic commits per logical change, no `--no-verify`, no self-approve gate breach | Mode decision (`single-lane` / `parallel-readonly` / `parallel-worktree`) + commit log + pre-commit-hook logs + attestation block (per [#2405](https://github.com/vamseeachanta/workspace-hub/issues/2405)) | Mode stated for non-trivial work; zero bypassed hooks; ≥1 failing test before its fix lands |
 | **Knowledge/wiki contribution** | Concept pages cite public references (textbooks/DOIs/public manuals), not LinkedIn-only sourcing; aligns to repo licensing | Page frontmatter references; lint pass on `feedback_llm_wiki_concept_pages_need_public_references` rule | All non-vendor concept pages cite ≥1 textbook/DOI/public manual |
 | **Comms (issue/PR comments, recruiter routing)** | Single summary comment per issue (per `feedback_gh_issue_comment`); recruiter outreach replied to only when consulting-level + credible (per `feedback_recruiter_engagement`) | Comment count per issue; recruiter-reply log | ≤1 status comment per agent-session per issue |
 | **Ops/automation (Hermes/cron/batch)** | Preflight check passes before commit storms; no merge-race silent reverts; agents write-only-shared (commits serialized in main session) | Hermes activity log + `git reflog` audit for race events | 0 silent reverts per week; 0 dual-write commit races per week |
@@ -38,14 +38,14 @@ Extends `config/agents/provider-capabilities.yaml`'s `strategy_role` field by an
 | Adversarial review (T1 — scoped) | **Claude** single-author r3 | Cost-efficient; sufficient when permission gates block dispatch (`feedback_permission_gate_blocks_cross_review`) | — | — | No fallback; if scope grows, escalate to T2 |
 | Adversarial review (T2 — standard, 3-of-3 attempt) | **Claude** (headless, post-#2683 fix) + **Codex** (when not under Claude-Code Bash) + **Gemini** | Three-provider parallel dispatch via `plan-review-fanout.sh`. Codex empirically catches non-overlapping defects vs. Claude (`feedback_cross_provider_review_payoff`); Gemini is the cheap third lane. | When Codex returns UNAVAILABLE (under Claude-Code Bash per `#2684`): accept 2-of-3 with documented exception, OR re-dispatch from plain terminal via `env -u CLAUDECODE` | OpenAI GPT-4.1 if Codex CLI breaks at a future version | Gemini sandbox overlay blind (`feedback_gemini_sandbox_overlay_blindness`) → verify with `git ls-files` before accepting MAJOR file-missing claims |
 | Adversarial review (T3 — complex) | **Claude** + **Codex** + **Gemini** full 3-of-3 with operator commitment to recover Codex from plain terminal | `routing-config.cross_review.COMPLEX: true` already mandates it | Any 2 of 3 if one provider down | — | Provider unavailability → record explicit failure, never auto-approve |
-| Implementation execution | **Claude** main session | Tool execution + file writes; Codex cannot write (`feedback_codex_sandbox_write_blocked`); subagent Write phantoms possible (`feedback_subagent_write_phantom`) — main session must `ls` verify | Codex *review-only* | — | Never delegate writes to Codex; never trust subagent Write reports without local verify |
+| Implementation execution | **Hermes/Claude orchestrator** using parallel-first classification | Main session owns gate checks, lane contracts, verification, GitHub closeout, and serialized commits. Small/unclear work stays `single-lane`; read-heavy work uses `parallel-readonly`; approved disjoint implementation uses `parallel-worktree`. Codex remains review-only; subagent Write phantoms require direct verification. | Codex *review-only* | Gemini *review-only / large-context read-only* | Never delegate writes to Codex; never trust subagent Write reports without local verify; write-capable parallel lanes require isolated worktrees and owned/read-only/forbidden path contracts |
 | Knowledge/wiki contribution | **Claude** (drafting) + **Codex** (independent check) | Claude long-context for source synthesis; Codex sandbox can still *read+critique* even when it cannot write | Hermes (overnight batch) | Gemini (large-doc overflow) | — |
 | Comms (issue/PR comments) | **Claude** main session | Comment is part of issue-workflow surface; subagent comm phantoms possible | — | — | Never let subagents post comments without main-session re-verify |
 | Ops/automation/scheduled | **Hermes** | Skill tooling, delegation, document-heavy workflows; `feedback_hermes_active_preflight_check` requires Hermes to preflight | Claude (manual fallback) | — | If Hermes mid-rebase: pause delegation, never dispatch parallel commits |
 
 ### Operational rules baked into the matrix
 
-- **Claude is concentrated as Primary in 5 of 7 work classes** (issue planning, T1 review, implementation execution, knowledge/wiki drafting, comms). This is **structural, not a defect to design around**: only Claude drives tools in the main session per `feedback_claude_in_chrome_session_scoped`. The honest mitigation is **graceful halt-and-wait under quota exhaustion**, not an automatic fallback. The cost/quota follow-up (§F #4) defines the explicit halt protocol.
+- **Claude/Hermes orchestrator sessions remain the write authority**, but execution is no longer assumed to be single-threaded. The canonical method is parallel-first classification: `single-lane`, `parallel-readonly`, or `parallel-worktree` per [`PARALLEL_FIRST_EXECUTION.md`](PARALLEL_FIRST_EXECUTION.md). The orchestrator owns final synthesis, direct output verification, GitHub closeout, and serialized commit/push operations.
 - **Codex is review-only by hard policy.** No Codex file writes, no Codex shell execution. The `submit-to-codex.sh` wrapper enforces this; the matrix reinforces it.
 - **Gemini lane requires `git ls-files` ground-truth check before accepting MAJOR file-missing claims** (per `feedback_gemini_sandbox_overlay_blindness` — empirical false-positive rate is high enough to warrant the precondition).
 - **Fallback firing must be logged** (`scripts/review/results/...-fallback.md`) so the weekly review ([#2089](https://github.com/vamseeachanta/workspace-hub/issues/2089)) can audit whether fallbacks happen often enough to update the matrix.
@@ -78,7 +78,7 @@ Extends `config/agents/provider-capabilities.yaml`'s `strategy_role` field by an
 - `require-plan-approval.sh` (pre-commit hook) — enforces `status:plan-approved` before writes outside safe paths
 - `require-cross-review.sh` (pre-push hook) — enforces adversarial-review artifacts before push
 
-**Provider choice rationale:** No Hermes, Codex, or Gemini in planning itself (excluding the review step). Planning is single-session work that requires tool-driving in the main session. Delegating to subagents risks subagent Write phantoms; delegating to Codex breaks (sandbox cannot execute); delegating to Gemini risks overlay blindness.
+**Provider choice rationale:** The orchestrator owns the canonical plan text and GitHub state. Read-only resource-intelligence lanes may run in parallel when they reduce wall-clock time, but final planning authority is not delegated. Do not let subagents write the plan without main-session verification; Codex and Gemini remain review/read-only lanes unless a future tool contract proves otherwise.
 
 ### §C2. Adversarial review (T1 / T2 / T3 depth scaling)
 
@@ -128,11 +128,11 @@ T3 (complex, full 3-of-3 with synthesis):
 
 | Decision | Rule |
 |---|---|
-| Planning work (any tier) | Claude main session — never delegate. |
+| Planning work (any tier) | Orchestrator owns final plan; parallel read-only intel lanes allowed. |
 | T1 review | Claude single-author r3 with transparent provenance. |
 | T2 review | Claude + Codex + Gemini (parallel via fanout). |
 | T3 review | All three independently → render-structured-review.py synthesis. |
-| Implementation writes | Claude main session — verify subagent Write claims by `ls` (`feedback_subagent_write_phantom`). |
+| Implementation writes | Parallel-first classification: `single-lane` for small/shared work; `parallel-worktree` only for plan-approved disjoint write surfaces; orchestrator verifies and serializes commits. |
 | Overnight batch work | Hermes — but preflight `pgrep -af 'git (rebase\|stash push\|commit\|merge\|reset\|checkout)'` first (`feedback_hermes_active_preflight_check`). |
 | Wiki/concept page first-drafting | Claude — never LinkedIn-only sourcing (`feedback_llm_wiki_concept_pages_need_public_references`). |
 | Recruiter / email triage | Claude main session — apply `feedback_recruiter_engagement` and `feedback_email_cross_noise` filters before drafting. |
@@ -144,12 +144,12 @@ T3 (complex, full 3-of-3 with synthesis):
 - **Don't dispatch Hermes during user's active git operations** — merge-race silent reverts (`feedback_merge_race_silent_revert`, `feedback_hermes_active_preflight_check`).
 - **Don't auto-cycle Codex MAJOR loops** beyond 3 rounds — surface consensus-vs-minority decision (`feedback_codex_sustained_MAJOR_loop`).
 - **Don't have subagents drive Chrome** — `mcp__claude-in-chrome__*` is session-scoped (`feedback_claude_in_chrome_session_scoped`).
-- **Don't run worktree-isolation for every agent** — 60% timeout rate on large repo (`feedback_worktree_isolation_large_repo_cost`).
+- **Don't run worktree-isolation for every agent** — use it only for write-capable, plan-approved, disjoint streams. Use `parallel-readonly` lanes for discovery/review to avoid worktree overhead.
 
 ### When to parallelize vs. serialize
 
-- **Parallelize**: independent provider reviews (T2/T3); read-only Resource Intel surveys; non-conflicting Bash + Read tool calls in one message.
-- **Serialize**: commits across parallel agents (`feedback_multi_agent_commit_serialization`, `feedback_parallel_agent_write_only_pattern`) — main session commits, subagents write only; git operations during Hermes activity (per preflight check).
+- **Parallelize**: independent provider reviews (T2/T3); read-only Resource Intel surveys; validation/review lanes; non-conflicting Bash + Read tool calls in one message; approved implementation streams with isolated worktrees and explicit path ownership.
+- **Serialize**: user approval, final plan synthesis, shared-file edits without one owner, commit/push/closeout, and git operations during Hermes activity (per preflight check).
 
 ### When single-author r3 is the right answer
 
