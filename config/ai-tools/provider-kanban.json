@@ -870,10 +870,13 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "reviews not clean: major_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2727.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -882,7 +885,7 @@
           "cat:data-pipeline",
           "cat:document-intelligence",
           "domain:knowledge",
-          "status:plan-review"
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7988,7 +7991,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-18T13:20:11Z",
+  "generated_at": "2026-05-18T17:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8839,10 +8842,13 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "reviews not clean: major_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2727.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8851,7 +8857,7 @@
             "cat:data-pipeline",
             "cat:document-intelligence",
             "domain:knowledge",
-            "status:plan-review"
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15965,9 +15971,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-18T13:20:07.459434Z",
+  "scorecard_generated_at": "2026-05-18T17:20:07.485664Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-18T13:20:07.340350Z",
+  "utilization_generated_at": "2026-05-18T17:20:07.299439Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 5,

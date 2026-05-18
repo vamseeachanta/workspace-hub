@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-18T13:20:11Z
+Generated: 2026-05-18T17:20:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -63,7 +63,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2730 | fix(gemini): remove unsupported permissionMode keys from agent definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2729 | feat(architecture): define report layer outputs, publication surfaces, and evidence rules | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2728 | feat(architecture): define execution layer contracts, tooling, and compute routing | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review |
 | #2723 | chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

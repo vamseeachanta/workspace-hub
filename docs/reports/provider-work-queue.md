@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-18T13:20:09.423265Z
+Generated: 2026-05-18T17:20:09.245345Z
 Current week: 2026-W21
 Recommended provider order: gemini, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 20
+- Execution-ready candidates: 21
 - Total routed candidates: 177
 
 | Issue | Ready | Why routed here | Labels |

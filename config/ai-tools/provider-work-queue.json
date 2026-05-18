@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-18T13:20:09.423265Z",
+  "generated_at": "2026-05-18T17:20:09.245345Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-18T13:20:07.459434Z",
+  "scorecard_generated_at": "2026-05-18T17:20:07.485664Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 20,
+      "execution_ready_count": 21,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -398,6 +398,31 @@
             "status:plan-approved"
           ],
           "updatedAt": "2026-05-16T10:13:41Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2727,
+          "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:knowledge",
+            "status:plan-approved"
+          ],
+          "updatedAt": "2026-05-18T15:35:40Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1366,31 +1391,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2727,
-          "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:document-intelligence",
-            "domain:knowledge",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-05-17T14:25:38Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
