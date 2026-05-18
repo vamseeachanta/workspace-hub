@@ -130,10 +130,24 @@ After landing durable artifacts from an isolated reconciliation checkout, the or
 
 This pattern is safer than a blind `git rebase origin/main` in shared dirty checkouts because it separates: (a) remote commit absorption, (b) local runtime/noise preservation, and (c) later cleanup classification.
 
+### F. Export-and-drop obsolete safety stashes
+
+When a cleanup/closeout session leaves named safety stashes behind, do not either keep them indefinitely or drop them casually. Treat stash cleanup as a destructive git operation with evidence preservation:
+
+1. Re-run writer/lock preflight before touching the stash stack.
+2. Inventory each stash by index, message, date, and SHA.
+3. Export patch/stat/name-status/metadata to an off-repo preservation directory before dropping.
+4. Classify each stash as `drop`, `preserve`, or `export-only then drop` based on whether unique content is already represented in `HEAD` or is stale runtime/bridge/generated state.
+5. Move accidental untracked patch exports out of the repo before final status verification.
+6. Record checksums for exported patches and verify the remaining stash list plus `git status --porcelain=v1 --branch`.
+
+Detailed procedure: `references/stash-export-and-drop-cleanup.md`.
+
 ## Verification Checklist
 
 Before issuing the mutating git command:
 
+- [ ] If `git status -sb` reports detached HEAD, resolve the intended branch/ref before commit or choose an explicit push ref; see `references/detached-head-closeout.md`.
 - [ ] `pgrep -af 'git (commit|merge|rebase|reset|stash push|checkout|switch|worktree)'` returned empty.
 - [ ] `.git/index.lock` does not exist, OR its owner process is verified dead AND removal was explicit/logged.
 - [ ] `.git/config.lock` (for branch/worktree ops) does not exist or has been recovered the same way.
@@ -154,6 +168,7 @@ After the mutating step completes:
 - **Killing the parent agent to clear a status storm.** Status-storm zombies are children of the agent; they exit when their reads complete. Killing the parent loses session state.
 - **Removing `.git/index.lock` without verifying its owner is dead.** Live writer + lock removal → corrupted index. Always cross-check PID before removal.
 - **Skipping the post-mutation push verification.** A successful local commit + push that races with auto-sync can land a silent revert (`feedback_merge_race_silent_revert`); compare local HEAD to `ls-remote` to catch it.
+- **Committing validated staged work while detached without selecting a ref.** A detached HEAD can be safe only when you explicitly attach to the intended branch or push to an explicit ref and verify it; see `references/detached-head-closeout.md`.
 
 ## Related Patterns
 
