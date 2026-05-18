@@ -8,6 +8,10 @@ tags: [knowledge, documentation, llm-wiki, contracts]
 
 # Workspace Knowledge Doc Contracts
 
+## Support Files
+
+- `references/public-graph-artifact-validation.md` — public-safe graph artifact validator hardening: source-corpus freshness checks, URL userinfo rejection, RED tests, and closeout gates for llm-wiki graph manifests.
+
 ## When to Use
 Use when building/repairing LLM-wiki knowledge, aligning repo mission contracts, auditing stale documentation references, extracting learnings into issues, or turning domain gaps into issue roadmaps.
 
@@ -17,6 +21,25 @@ Use when building/repairing LLM-wiki knowledge, aligning repo mission contracts,
 3. Keep repo mission/contract documents aligned with live repository purpose.
 4. Convert real gaps into deduplicated issues only after source-grounded evidence exists.
 5. Maintain semantic taxonomy terms consistently across reports and docs.
+
+## Data Layer / LLM-wiki Source-Class Promotion Model
+
+When planning data/report/execution architecture for workspace-hub, do not treat “domain corpus” as inherently private. Classify by source class and promotion safety:
+
+- **D-L1 raw data**: raw files, PDFs, datasets, exports, workbooks. Never public by default.
+- **D-L2 readable/extracted staging**: OCR text, parsed tables, chunks, source cards. Local/private staging by default; not repo-tracked unless explicitly approved.
+- **D-L3 curated knowledge**:
+  - Public `llm-wiki`: public-safe domain knowledge, public data-source guides, cited concepts, and metadata-only restricted references.
+  - Private corpus: client/project-specific knowledge, restricted derivative summaries, sensitive assumptions, non-public source extractions.
+- **D-L4 outputs/products**: raw outputs, reports, dashboards, PDFs, client-facing HTML, chatbots.
+
+Promotion rule: domain knowledge defaults to public `llm-wiki` **only when the source class is public-safe**. Domain knowledge defaults to private when derived from client, project, licensed, restricted, or commercially sensitive material. Do not route private/client raw or readable data directly into public `llm-wiki`; sanitized derivatives require explicit promotion gates and source-class/citation separation.
+
+Recommended D-L2 storage pattern: use a hybrid local staging layout — shared local roots for public/domain staging, and separate local roots per client/project to prevent cross-client mixing and simplify backup, deletion, audit, and access-control.
+
+Public `llm-wiki` eligible examples: public BSEE/SODIR/NPD/NOAA/NDBC data, public academic-paper summaries with citations, public engineering concept pages, public tool/data-source guides, and standards metadata that does not copy licensed text.
+
+Private or metadata-only examples: client reports/data/decks/workbooks, project assumptions, non-public vendor docs, licensed standards text/clause extraction, screenshots/figures from restricted sources, and anything derived from confidential files even when rewritten generically.
 
 ## Metadata-only LLM-wiki execution for large/sensitive corpora
 
