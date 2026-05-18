@@ -53,7 +53,7 @@
 |---|---|---|
 | `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling repo checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
-| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
+| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | D-L1/D-L2 data-layer candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `client_projects` / project repos / mounted project archives / local client folders | Private by default; sanitized derivatives only |
@@ -131,12 +131,16 @@ inputs → execution → reports/chatbots → curated output learnings → appro
 
 The contract will define data, execution, report, and report-derived-learning boundaries; level taxonomy per layer; canonical source classes; promotion gates; output-residency rules; and ownership boundaries across `/mnt` data, client/project data, control-plane docs, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
 
+The three layer plans are intentionally **interrelated but separable**: this parent plan owns the cross-layer lifecycle contract, while #2727, #2728, and #2729 may be dispatched independently when each child plan consumes the parent crosswalk and does not redefine upstream/downstream interfaces. Separation is an execution/dispatch strategy, not permission to create incompatible data, execution, or report taxonomies.
+
 ### Final architecture decisions to encode
 - **Data at rest remains separated by posture.** Raw/private/client data cannot be merged into public `llm-wiki`; public-safe domain knowledge may live in public `llm-wiki`; restricted/client/non-public derivatives route to private/domain/client corpora.
 - **Execution owns manifests, not source truth.** Execution manifests reference data-layer `source_id`/path contracts and must carry both `input_residency` and `output_residency` metadata.
 - **Reports are publication surfaces, not automatic knowledge promotion.** Raw outputs are internal evidence by default; client/public reports require evidence, legal/source checks, and sanitization.
 - **Report-derived learnings are first-class.** Curated learnings from reports/chatbots route to public `llm-wiki`, domain-private corpus, or client-private `llm-wiki` only after the relevant promotion gate.
 - **Canonical registries win.** Machine routing must use `config/workstations/registry.yaml`; mount/data location work must coordinate with #2731 and #2732; machine/provider routing must coordinate with #2119, #1838, and #2089.
+- **Execution input data is dual-referenced, not dual-owned.** Data-layer records own source truth and residency; execution-layer manifests may reference the same data as executable inputs through `source_id`, `input_residency`, and gate evidence.
+- **Private `llm-wiki` raw/staging has no assumed public-repo home.** Until a private corpus/repo registry exists, plans must use redacted source IDs and fail closed rather than naming an unverified canonical private repo.
 
 ---
 
@@ -165,6 +169,8 @@ function build_layer_contract():
 | Update | `docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md` | Keep data-layer child plan aligned with parent contract |
 | Update | `docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md` | Keep execution-layer child plan aligned with parent contract |
 | Update | `docs/plans/2026-05-17-issue-2729-report-layer-outputs-evidence.md` | Keep report-layer child plan aligned with parent contract |
+| Create | `tests/architecture/test_layer_boundary_architecture_contract.py` | TDD guard for contract/matrix invariants |
+| Create | `tests/fixtures/architecture/layer_boundary_matrix.yaml` | Structured matrix fixture consumed by tests; markdown matrix must derive from or match this fixture |
 
 ---
 
@@ -180,14 +186,14 @@ function build_layer_contract():
 ---
 
 ## Acceptance Criteria
-- [ ] Child plans for [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727), [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728), and [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) are source-curated, have non-empty Claude/Codex review artifacts, and have no unresolved MAJOR findings; Gemini may be `UNAVAILABLE` only when the artifact records quota exhaustion.
+- [ ] Child plans for [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727), [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728), and [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) are separately executable dispatch packets that consume this parent cross-layer contract, have non-empty Claude/Codex review artifacts, and have no unresolved MAJOR findings; Gemini may be `UNAVAILABLE` only when the artifact records quota exhaustion.
 - [ ] Architecture contract defines level taxonomy for data, execution, and report layers and explicitly separates architecture-surface codes from document-intelligence L-levels.
 - [ ] Initial known source classes distinguish control-plane repo data, documented tier-1 repos, tier-2/publication repos, public/private `llm-wiki`, execution artifacts, and report/chatbot artifacts; it must not mislabel `workspace-hub`, `llm-wiki`, `aceengineer-website`, or `aceengineer-strategy` as tier-1 unless the cited registry says so.
 - [ ] Matrix defines `source_class`, `owner`, `canonical_path`, `layer`, `level`, `allowed_artifacts`, `forbidden_artifacts`, `retention_expectations`, `publication_rules`, `public_posture`, `promotion_gate`, `output_residency`, and `report_chatbot_eligibility` for each source class.
 - [ ] Legal/security scan passes for all created docs and fixtures using `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
 - [ ] Live public/private `llm-wiki` inventory is present in the matrix with tracked-map evidence and live probe evidence, or each unavailable path is marked `unavailable` with the failed command and no canonical assumption.
 - [ ] Issue-body scope is traceable: report outputs are classified by audience, data sources map to source layer, execution inputs/tools/compute are separated, report artifacts include HTML/PDF/chatbot surfaces, and follow-up gaps are linked to GitHub issue URLs or exact `gh issue create --title ... --body-file ... --label ...` command blocks with body-file paths and blocker reasons; local TODO-only backlogs do not satisfy this criterion.
-- [ ] Re-review artifacts are substantive for Claude/Codex, Gemini is substantive or explicitly UNAVAILABLE due quota, no unresolved MAJOR findings remain, and the approval request cites revision-stamped non-empty artifact evidence rather than same-cycle paths that may be truncated by `plan-review-fanout.sh`.
+- [ ] Re-review artifacts are substantive for Claude/Codex, Gemini is substantive or explicitly UNAVAILABLE due quota, no unresolved MAJOR findings remain, and the approval request cites revision-stamped non-empty artifact evidence rather than revision-stamped non-empty artifact paths by `plan-review-fanout.sh`.
 - [ ] No implementation or publication changes occur before user approval.
 
 ---
@@ -212,10 +218,10 @@ Current gate: after this exact committed plan path is pushed, run `scripts/revie
 ---
 
 ## Risks and Open Questions
-- **Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics.
+- **Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/E-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics.
+- **Decision:** Execution input data is classified under the data layer for source truth/residency and under the execution layer only as an input-contract reference; manifests must not duplicate raw data ownership.
+- **Decision:** Private/raw-like `llm-wiki` staging is registry-referenced private/local data. No public `llm-wiki` path, branch, or repo is canonical for it until a follow-up registry issue approves that destination.
 - **Risk:** Mounted project/source paths can contain sensitive client names; inventories must support redaction and source IDs.
-- **Open:** Should execution input data be classified primarily under data layer, execution layer, or both via an input-contract boundary?
-- **Open:** Which repo is canonical for private `llm-wiki` raw/staging content if not the public `llm-wiki` repo?
 
 ---
 

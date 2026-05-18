@@ -76,6 +76,19 @@ For engineering-calculation or parametric chart plans, also run the checks in `r
 
 Update the index table in `docs/plans/README.md` with a new row.
 
+### Layered architecture issue trees
+
+When a user asks for a feature/issue that spans multiple architectural layers (for example data at rest, execution/compute, and report/publication surfaces), prefer a parent issue plus dispatchable child issues/plans instead of one overloaded plan.
+
+Required shape:
+- Parent plan owns the cross-layer lifecycle contract, terminology crosswalk, promotion gates, and dependency boundaries.
+- Child layer plans stay independently dispatchable only if they consume the parent crosswalk and do not redefine upstream/downstream interfaces.
+- Use neutral layer prefixes/codes in public docs when source classes may include private/client data; avoid raw private paths and client-identifiable mappings in tracked public artifacts.
+- Keep ambiguous data/report destinations fail-closed until source class, output residency, legal/source status, and promotion decision are explicitly recorded.
+- For plan-review hardening, cite revision-stamped, non-empty review artifacts; do not rely on paths that can be truncated or overwritten by the same review run.
+
+Session-specific examples and checklists: `references/layered-architecture-issue-planning.md`.
+
 Execution discipline for delegated agents:
 - If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
 - After drafting, verify all expected artifacts exist where intended:

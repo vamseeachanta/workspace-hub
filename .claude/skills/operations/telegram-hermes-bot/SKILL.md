@@ -36,6 +36,8 @@ For multi-machine dispatch/sync, use the tracked runbook `docs/ops/telegram-herm
 
 When auditing whether Telegram/Hermes can currently reach all machines, load `references/multimachine-readiness-audit.md`. It captures the fail-closed diagnostic pattern: registry classification first, readiness command evidence second, coordinator gateway/env safety third, host-local evidence for remote workers, and explicit separation of dispatch-enabled vs status-only vs not-onboarded machines.
 
+When that audit identifies blockers and the user asks to persevere toward dispatch enablement, load `references/control-surface-issue-tree.md` before creating GitHub work. It turns machine-readiness blockers into a plan-gated umbrella/subissue tree: coordinator hardening first, first worker promotion second, readiness gates/smoke tests next, and cross-platform/new-host work as expansion planning.
+
 ## Conventions used in this skill
 
 - `${HERMES_HOME}` — directory containing Hermes config and the env-vars file. Defaults to the user's Hermes home directory per `systemd-unit:HERMES_HOME`. Substitute the absolute path at execution time.

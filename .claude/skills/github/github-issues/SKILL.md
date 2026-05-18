@@ -247,6 +247,19 @@ For multi-issue re-review batches, use one consistent issue comment shape across
 
 Use `--body-file` for the comment body so paths, backticks, and verdict tables do not trigger shell quoting issues.
 
+### Removing a child issue from an active issue tree
+
+When the user removes a machine/workstream/deliverable from scope, do not only close the child issue. Keep the parent and child synchronized:
+
+1. Update the parent issue body first: remove the child from the active checklist and add an explicit `Out of scope / removed` note preserving the child issue number and rationale.
+2. Post a child closeout comment before closing, using the race-safe pattern: result, user direction/evidence, actions taken, residual scope, and how to reintroduce the work later.
+3. Close the child with `--reason "not planned"`.
+4. Replace planning labels with terminal labels where the repo taxonomy supports it, e.g. remove `status:needs-plan`, add `status:closed` and `wontfix`.
+5. Comment on the parent with a concise scope-update note.
+6. Verify both sides: child `stateReason: NOT_PLANNED`, closeout comment present, parent active checklist no longer includes the child, and parent body preserves the out-of-scope rationale.
+
+See `references/issue-tree-scope-removal.md` for reusable comment templates and verification criteria.
+
 ### Add/Remove Labels
 
 **With gh:**

@@ -49,7 +49,7 @@
 |---|---|---|
 | `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling repo checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
-| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
+| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | D-L1/D-L2 data-layer candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (preferred migrated local copy; remote DDE is archival per mounted-source-registry.yaml)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; similar client roots | Unique private-client class; promote only to dedicated private `/mnt/local-analysis/<client>-llm-wiki` repos/corpora; sanitized derivatives require explicit approval |
@@ -103,12 +103,24 @@ A data-layer contract and source inventory will define D-L1 through D-L4 boundar
 
 
 ## Machine-readable inventory schema
-`tests/fixtures/architecture/data_source_inventory.yaml` is the single tested source of truth. `docs/architecture/data-source-inventory.md` is a checked human-readable view and must not introduce rows or values absent from YAML. Required YAML keys per source row: `source_id`, `source_class`, `owner`, `canonical_home`, `path_class`, `allowed_artifacts`, `forbidden_artifacts`, `retention_rule`, `publication_rule`, `provenance`, `license_posture`, `sensitivity`, `promotion_gate`, `output_residency`, `runtime_probe.command`, `runtime_probe.machine`, `runtime_probe.timestamp`, `runtime_probe.status`, `mounted_source_registry_ref`, and `notes`. Enum-like fields must fail closed: unknown `sensitivity`, `promotion_gate`, `output_residency`, or missing registry reference is invalid unless the row is explicitly `status: unavailable` with command evidence.
+`tests/fixtures/architecture/data_source_inventory.yaml` is the single tested source of truth. `docs/architecture/data-source-inventory.md` is a checked human-readable view and must not introduce rows or values absent from YAML. Required YAML keys per source row: `source_id`, `source_class`, `owner`, `canonical_home`, `path_class`, `source_registry_kind`, `registry_ref`, `allowed_artifacts`, `forbidden_artifacts`, `retention_rule`, `publication_rule`, `provenance`, `license_posture`, `sensitivity`, `promotion_gate`, `output_residency`, `runtime_probe.command`, `runtime_probe.machine`, `runtime_probe.timestamp`, `runtime_probe.status`, and `notes`. `source_registry_kind` is one of `mounted_source_registry`, `repo_registry`, `document_index_registry`, `manual_seed`, or `unavailable`; `registry_ref` is required only when the selected registry exists for that source class. Enum-like fields must fail closed: unknown `sensitivity`, `promotion_gate`, `output_residency`, missing applicable `registry_ref`, or unregistered private/client destination is invalid unless the row is explicitly `source_registry_kind: unavailable` with command evidence and follow-up issue body path.
 
 Boundary-violation discovery must record the command scope used to search for blurred raw/staged/public/client boundaries. Minimum evidence fields for each search: `command`, `machine`, `timestamp`, `paths_scanned`, `excluded_patterns`, `matches`, and `conclusion`. A `none_found` conclusion is invalid without these fields.
 
 ## Contract Logic
 This is a documentation/architecture packet. Runtime classification code is out of scope unless a separate implementation issue is opened. Tests validate the machine-readable YAML fixtures, registry cross-links, redaction rules, and markdown views; they do not pretend to exercise a non-existent runtime function.
+
+## Pseudocode
+```text
+function validate_data_layer_inventory(inventory, promotion_cases):
+    load canonical YAML fixture as source of truth and derive markdown rows from it
+    classify each seed source as D-L1 raw, D-L2 raw-like/private staging, D-L3 curated knowledge/data, or D-L4 index/query surface
+    require source_id, owner, source/residency posture, provenance, license, sensitivity, and promotion_gate for every row
+    fail closed when a row names private/client/raw staging without a registry-backed private destination or unavailable evidence
+    verify no D-L1/D-L2 private source routes directly to public llm-wiki, public chatbot, or client-facing report
+    record boundary-violation searches with command, machine, timestamp, paths_scanned, exclusions, matches, and conclusion
+    require exact follow-up issue commands/body files for unresolved storage, registry, freshness, or promotion-gate gaps
+```
 
 ---
 
@@ -131,10 +143,10 @@ This is a documentation/architecture packet. Runtime classification code is out 
 |---|---|---|---|
 | test_data_inventory_required_seed_sources | Seed source classes from this plan exist in the inventory | `data-source-inventory.md` | all seed classes present |
 | test_private_sources_default_non_public | Client/project/mounted private sources default to non-public | inventory rows | no public eligibility without gates |
-| test_client_sources_require_private_client_wiki | Client raw roots map to `/mnt/local-analysis/<client>-llm-wiki` private repos, not public `llm-wiki` | inventory rows | client rows require private target repo and explicit report-combine rule |
+| test_client_sources_require_private_client_wiki | Client raw roots map to registered private-client corpus/repo destinations or explicit unavailable/provisioning blockers, never public `llm-wiki` | inventory rows | client rows require registered private destination or explicit follow-up blocker plus report-combine rule |
 | test_raw_to_public_requires_intermediate_gate | D-L1 cannot promote directly to public D-L3 without D-L2 review metadata | promotion rules | direct paths fail |
-| test_every_source_has_owner_and_provenance | Each source class has owner/canonical path or source_id and provenance posture | inventory fixture parsed from source matrix | no blanks in required fields |
-| test_inventory_has_bucket_contract_columns | Each bucket/source class declares allowed_artifacts, forbidden_artifacts, canonical_home, retention_rule, publication_rule, and output_residency | inventory fixture parsed from source matrix | missing columns/blank cells fail |
+| test_every_source_has_owner_and_provenance | Each source class has owner/canonical path or source_id, source_registry_kind/registry_ref semantics, and provenance posture | inventory fixture parsed from source matrix | no blanks in required fields and no missing applicable registry refs |
+| test_inventory_has_bucket_contract_columns | Each bucket/source class declares allowed_artifacts, forbidden_artifacts, canonical_home, retention_rule, publication_rule, source_registry_kind, registry_ref, and output_residency | inventory fixture parsed from source matrix | missing columns/blank cells fail unless explicitly unavailable with command evidence |
 | test_boundary_violation_inventory_present | Existing artifacts that violate or blur boundaries are listed or explicitly marked none-found with search evidence | gap inventory | no un-evidenced omission |
 | test_follow_up_issue_backlog_present | Gap inventory contains proposed follow-up GitHub issue titles/scopes for storage, registries, freshness scans, and promotion gates | gap inventory | each gap has issue proposal or explicit no-action rationale |
 | test_generated_indexes_inherit_corpus_posture | D-L4 indexes cannot be more public than source corpus | inventory fixture | violations fail |
@@ -154,7 +166,7 @@ This is a documentation/architecture packet. Runtime classification code is out 
 - [ ] Follow-up implementation work is represented by exact `gh issue create` command/body drafts in `docs/architecture/data-boundary-violations-and-gaps.md`; if any follow-up is not filed immediately, the blocker reason is recorded.
 - [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/architecture/test_data_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
 - [ ] Public-tracked docs and fixtures use redacted source IDs/path classes for client/private paths; this packet creates no private appendix and verifies any literal private mapping remains untracked/out-of-scope.
-- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, and no unresolved MAJOR findings may remain.
+- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, no unresolved MAJOR findings may remain, and the approval request cites revision-stamped non-empty artifact evidence rather than paths that can be truncated by the same review run.
 
 ---
 
@@ -183,7 +195,7 @@ Current gate: after this exact committed plan path is pushed, run `scripts/revie
 - **Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table.
 - **Risk:** Some `/mnt` inventories can expose client identifiers; tracked public docs must use redacted source IDs or private-only appendices for raw client path names.
 - **Decision for this packet:** D-L2 raw-like `llm-wiki` staging is private/local only and registry-referenced; public `llm-wiki` private branches are not an approved storage home unless separately approved in a follow-up issue.
-- **Open:** Which data sources should be considered chatbot-eligible by default after D-L3 promotion?
+- **Decision:** No data source is chatbot-eligible by default after D-L3 promotion; chatbot eligibility is granted only when corpus posture, freshness, source/legal gates, and output_residency are explicitly present in the inventory row.
 
 ---
 

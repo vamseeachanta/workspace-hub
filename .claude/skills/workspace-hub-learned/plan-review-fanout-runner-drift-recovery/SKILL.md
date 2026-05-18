@@ -122,6 +122,19 @@ for f in scripts/review/results/YYYY-MM-DD-plan-<issue>-{claude,codex,gemini}.md
 done
 ```
 
+When the fanout is launched through Hermes `terminal(background=true)`, status verification is a two-step check:
+
+1. Call the process manager with `list` to see currently running tracked jobs.
+2. Poll the specific remembered `session_id` even if `list` is empty; completed jobs may no longer appear in the active list, but `poll` still returns exit status, exit code, runtime, and final output for that session.
+
+A successful background runner closeout should verify all of the following before reporting completion:
+
+- runner status is `exited` with `exit_code=0`
+- the runner printed the expected completion marker, such as `all fanout runs completed`
+- per-issue runner stderr files exist and are zero bytes, or nonzero stderr is explicitly summarized
+- expected artifact cardinality matches the plan wave, e.g. `4 issues × 4 artifacts = 16` for Claude/Codex/Gemini/disagreement
+- artifact paths are listed from `scripts/review/results/` rather than assumed from runner stdout alone
+
 If the fanout exits `0` but only writes an empty/near-empty disagreement stub with no provider artifacts:
 - Treat the rerun as **no usable review evidence**.
 - Do not cite the disagreement stub as a review artifact.

@@ -54,7 +54,7 @@
 |---|---|---|
 | `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling repo checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
-| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
+| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | D-L1/D-L2 data-layer candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `client_projects` / project repos / mounted project archives / local client folders | Private by default; sanitized derivatives only |
@@ -64,7 +64,7 @@
 | Report artifacts | internal reports, client HTML, limited PDFs, chatbot/query configs/indexes | Report layer; audience-specific evidence and sanitization gates required |
 
 ### Gaps identified
-- No approved level taxonomy yet for data L1 raw → L2 raw-llm-wiki/staging → L3 public `llm-wiki`/chatbot knowledge.
+- No approved level taxonomy yet for D-L1 raw → D-L2 raw-like/private staging → D-L3 curated knowledge → D-L4 indexes/query surfaces.
 - No approved level taxonomy yet for execution inputs vs data-layer inputs, code/tooling, machines/compute, validation evidence, and handoff manifests.
 - No approved level taxonomy yet for report raw outputs, data outputs, HTML/PDF/report formats, interactivity, and chatbot surfaces.
 - No canonical matrix yet mapping source class → owner repo/path → public/private posture → promotion gate → report/chatbot eligibility.
@@ -113,12 +113,16 @@ N/A — architecture/governance planning issue, not a runtime failure.
 | Execution input/output manifest schema | `docs/architecture/execution-manifest-schema.md` and `docs/architecture/execution-manifest.schema.yaml` |
 | Machine/tool routing policy view | `docs/architecture/execution-routing-policy-view.md` |
 | Tests | `tests/architecture/test_execution_layer_contract.py`; fixtures in `tests/fixtures/architecture/execution_manifest.yaml` and `tests/fixtures/architecture/execution_routing_cases.yaml` |
+| Execution entry-point inventory | `docs/architecture/execution-entry-point-inventory.md` |
+| Execution follow-up issue bundle | `docs/architecture/execution-follow-up-issue-backlog.md` |
 | Prior-cycle review synthesis | `scripts/review/results/2026-05-17-plan-2728-disagreement.md` |
 
 ---
 
 ## Deliverable
 An execution-layer contract will define how input data contracts, code/tools, agents, machines/compute, validation, and evidence manifests transform data-layer sources into report-layer eligible artifacts without bypassing gates. It will consume canonical machine capability data from `config/workstations/registry.yaml` and overlapping routing issues (#2119/#1838/#2089), and execution manifests must carry both `input_residency` and `output_residency` so report-layer and data-layer handoffs can be enforced.
+
+This child issue is separately dispatchable only because it owns execution contracts; it must not redefine data-source residency (#2727) or report publication eligibility (#2729). Cross-layer fields (`source_id`, `input_residency`, `output_residency`, evidence bundle links) are interface references to the parent #2726 contract.
 
 ---
 
@@ -136,7 +140,7 @@ An execution-layer contract will define how input data contracts, code/tools, ag
 ```text
 function validate_execution_contract(execution_manifest):
     validate manifest schema, declared data source_ids, input_residency, and output_residency
-    verify source availability and permission posture from current `mounted-source-registry.yaml` entries; repo/client/wiki path taxonomy beyond current registry is blocked on #2731/#2732 and must fail closed
+    verify source availability and permission posture through the data-layer `source_id` plus `source_registry_kind` contract; use `mounted-source-registry.yaml` only for mounted-source rows, repo/document-index rows through their registry refs, and fail closed on repo/client/wiki paths not represented by #2727 or explicitly blocked on #2731/#2732
     route work to capable machine/tool using config/workstations/registry.yaml; treat #2119/#1838/#2089 as open dependencies, not approved policy
     document the repo-backed run command/regeneration_command, isolated workdir/worktree, tests, legal scan, checksums, output manifest, and review artifacts
     mark outputs report-eligible only if validation/evidence gates and output_residency allow it; runtime orchestrator enforcement is deferred to filed follow-up issue unless explicitly implemented
@@ -168,7 +172,7 @@ function validate_execution_contract(execution_manifest):
 | test_routing_policy_references_workstation_registry | Routing policy view references canonical `config/workstations/registry.yaml` registry keys and does not duplicate identity/capability fields (`hostname`, `ip`, `os`, `roles`, license/provider capability fields) | routing policy + registry fixture | orphan IDs or duplicated machine/provider truth fail |
 | test_validation_evidence_required_for_report_handoff | Report handoff requires tests/legal scan/checksums/review evidence according to output posture | manifest fixtures | missing evidence fails |
 | test_residency_compatibility_matrix | `output_residency` cannot be more public than `input_residency` unless promotion gates are present | execution routing cases | invalid public/client/report handoffs fail closed |
-| test_input_data_boundary_crosswalk | Input data is cross-referenced to data-layer source IDs rather than duplicated; source IDs must exist in `mounted-source-registry.yaml` or be marked blocked on #2731/#2732 | manifest fixtures + registry | inline raw data, unknown source_id, or unregistered repo/client/wiki path fails closed |
+| test_input_data_boundary_crosswalk | Input data is cross-referenced to data-layer `source_id`/`source_registry_kind` rows rather than duplicated; mounted sources must reference `mounted-source-registry.yaml`, repo/document-index/manual seed sources must reference their declared registry kind, and unresolved repo/client/wiki paths are blocked on #2731/#2732 | manifest fixtures + data-layer registry fixture | inline raw data, unknown source_id, missing applicable registry_ref, or unregistered repo/client/wiki path fails closed |
 | test_execution_entry_point_inventory_covers_named_repos | Inventory contains evidence rows for workspace-hub plus available sibling/related repos or explicit unavailable markers, with redacted path display for client/project roots | inventory | no silent omissions or raw private path leakage |
 | test_follow_up_issue_bundle_present | Missing runners/registries/validators/adapters/runtime enforcement have exact `gh issue create` commands and body drafts or no-action rationale | follow-up bundle | every gap accounted for |
 
@@ -183,7 +187,7 @@ function validate_execution_contract(execution_manifest):
 - [ ] Execution entry-point inventory includes empirical filesystem/git enumeration for each available named repo, records explicit unavailable/not-applicable evidence for missing repos, and redacts client/project child names in tracked public docs.
 - [ ] Follow-up implementation work is represented by exact `gh issue create` command/body drafts in `docs/architecture/execution-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
 - [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/architecture/test_execution_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
-- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, no unresolved MAJOR findings may remain, and the approval request cites revision-stamped non-empty artifact evidence rather than same-cycle paths that may be truncated.
+- [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, no unresolved MAJOR findings may remain, and the approval request cites revision-stamped non-empty artifact evidence rather than paths that can be truncated by the same review run.
 
 ---
 
@@ -212,7 +216,7 @@ Current gate: after this exact committed plan path is pushed, run `scripts/revie
 - **Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract.
 - **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date.
 - **Decision for this packet:** execution manifest fixtures are YAML; markdown docs are human-readable contract views.
-- **Open:** Should provider-agent prompts be first-class execution artifacts or only evidence attachments?
+- **Decision:** Provider-agent prompts are E-L1 input-contract artifacts when they constrain work scope or tool behavior; provider stdout/stderr/review files are E-L4 validation/evidence artifacts. Both must reference data/report contracts rather than embedding raw private data.
 
 ---
 

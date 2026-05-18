@@ -51,7 +51,7 @@
 |---|---|---|
 | `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling repo checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
-| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
+| Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | D-L1/D-L2 data-layer candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `client_projects` / project repos / mounted project archives / local client folders | Private by default; sanitized derivatives only |
@@ -121,6 +121,8 @@ N/A — architecture/governance planning issue, not a runtime failure.
 ## Deliverable
 A report-layer contract will classify raw outputs, evidence bundles, client/internal/public reports, HTML/PDF formats, interactivity, chatbot/query surfaces, and **report-derived knowledge**. It will add `output_residency` as a required classification field and define where curated learnings from reports/chatbots are preserved: public `llm-wiki` for public-safe domain knowledge, domain-private corpus for restricted/non-public derivatives, and registered client-private corpus for client-derived learnings. `/mnt/local-analysis/<client>-llm-wiki` is a provisioning pattern only, not an approved destination until a private repo/corpus registry issue creates and verifies it. Raw generated outputs remain internal by default.
 
+This child issue is separately dispatchable because it owns publication/output/evidence rules, but every R-layer promotion must consume data residency from #2727 and execution evidence from #2728 through the parent #2726 lifecycle contract.
+
 ---
 
 ## Proposed Report Layer Levels
@@ -156,9 +158,13 @@ function classify_report_artifact(artifact):
 | Create | `docs/architecture/report-layer-contract.md` | Defines report layer levels and boundaries |
 | Create | `docs/architecture/report-output-taxonomy.md` | Maps artifact types to R-level, owner, storage posture, and audience |
 | Create | `docs/architecture/report-publication-gates.md` | Defines evidence/legal/sanitization gates for HTML/PDF/chatbot/public surfaces and wraps/reuses `scripts/legal/legal-sanity-scan.sh` / `.legal-deny-list.yaml` rather than inventing a parallel denylist |
-| Create | `docs/architecture/report-evidence-bundle-schema.md` | Defines evidence bundle format and required fields: claim_id, artifact_id, source_corpus, corpus_posture, audience_scope, freshness, last_verified, source_manifest, command_manifest, validation_results, legal_scan, checksums, review_verdicts, output_residency, promotion_decision |
+| Create | `docs/architecture/report-evidence-bundle-schema.md` | Human-readable evidence bundle contract |
+| Create | `docs/architecture/report-evidence-bundle.schema.yaml` | Machine-readable schema source for `output_residency`, claim binding, and evidence requirements |
 | Create | `docs/architecture/report-derived-learning-routing.md` | Defines public/domain-private/client-private destinations for report-derived knowledge |
-| Create | `docs/architecture/report-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for report validators, artifact indexes, and publication pipelines |
+| Create | `docs/architecture/report-follow-up-issue-backlog.md` | Exact `gh issue create --title ... --body-file ... --label ...` command blocks and body drafts for report validators, artifact indexes, and publication pipelines; if not filed immediately, blocker reason is recorded |
+| Create | `tests/fixtures/architecture/report_evidence_bundle.yaml` | Evidence bundle fixture covering claim-to-source/command/validation/legal/checksum/review binding |
+| Create | `tests/fixtures/architecture/report_residency_cases.yaml` | Residency/publication routing fixture cases |
+| Create | `tests/fixtures/architecture/report_output_taxonomy.yaml` | Seed artifact taxonomy fixture for raw outputs, HTML/PDF, chatbot/query, public page, and report-derived learning cases |
 | Create | `tests/architecture/test_report_layer_contract.py` | Tests taxonomy/manifest fixtures and posture invariants, not only markdown phrase presence |
 | Update | `docs/content-pipeline/README.md` | Add a bounded cross-link to report publication/routing rules after approval; no broad rewrite in this issue |
 
@@ -173,7 +179,8 @@ function classify_report_artifact(artifact):
 | test_chatbot_inherits_corpus_posture | Chatbot/query surface cannot be more public than underlying data corpus | corpus/report manifest fixtures | public chatbot over private corpus fails |
 | test_report_derived_learning_routes_by_output_residency | Curated learnings route to public `llm-wiki`, domain-private, or client-private corpus based on output_residency | routing fixtures | wrong destination fails |
 | test_report_taxonomy_seed_artifacts | Raw outputs, evidence bundles, internal reports, client HTML, PDFs, chatbots, public pages, and report-derived learnings are represented | taxonomy | all seed artifact types present |
-| test_follow_up_issue_backlog_present | Validators/artifact-index/publication-pipeline gaps have issue-title proposals or no-action rationale | backlog | every gap accounted for |
+| test_evidence_bundle_claim_binding | Each published claim binds to source manifest, command manifest, validation result, legal scan, checksum, review verdict, output_residency, and promotion decision | evidence bundle schema + fixture | missing or unbound claim evidence fails |
+| test_follow_up_issue_backlog_present | Validators/artifact-index/publication-pipeline gaps have exact `gh issue create` command/body drafts or explicit no-action/blocker rationale | backlog | every gap accounted for |
 
 ---
 
@@ -184,7 +191,7 @@ function classify_report_artifact(artifact):
 - [ ] Client/public reports require data provenance, execution evidence, legal/source checks, and sanitization.
 - [ ] Chatbots/query surfaces inherit underlying data-corpus public/private posture and freshness limitations through explicit manifest fields/tests, not prose-only policy.
 - [ ] Output taxonomy includes raw outputs, evidence bundles, internal reports, client-facing HTML, limited PDFs, dashboards/interactivity, public website content, chatbots, and report-derived learnings.
-- [ ] `output_residency` is defined once in `docs/architecture/report-evidence-bundle.schema.yaml` with enum values `public_llm_wiki`, `domain_private_corpus`, `registered_client_private_corpus`, `ignored_internal_run_artifact`, and `no_preserve`; unregistered `/mnt/local-analysis/<client>-llm-wiki` paths fail closed and require a follow-up issue.
+- [ ] `output_residency` is defined once in `docs/architecture/report-evidence-bundle.schema.yaml` with enum values `public_llm_wiki`, `domain_private_corpus`, `registered_client_private_corpus`, `ignored_internal_run_artifact`, and `no_preserve`; each enum value has a `registry_backing` rule in the schema (`public_llm_wiki` requires the public repo/corpus row, `domain_private_corpus` and `registered_client_private_corpus` require registered private corpus rows, internal/no-preserve values require evidence-only retention), and unregistered `/mnt/local-analysis/<client>-llm-wiki` paths fail closed with a follow-up issue body path.
 - [ ] Evidence bundle schema is concrete and falsifiably tested: each published claim binds to source manifest, command manifest, validation, legal scan, checksums, and review verdicts.
 - [ ] Cross-repo report inventory covers workspace-hub, llm-wiki, digitalmodel, aceengineer-website, and aceengineer-strategy, or records unavailable evidence with command, machine, timestamp, and reason.
 - [ ] R-L6 report-derived learning routing explicitly references #2209 and `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md`; it is a crosswalk onto the existing durable/transient boundary, not a new competing intelligence layer, and durable learnings are separated from transient/raw outputs.
@@ -217,8 +224,8 @@ Current gate: after this exact committed plan path is pushed, run `scripts/revie
 ## Risks and Open Questions
 - **Risk:** Generated reports may contain private paths or client names; report gates need automated and manual checks.
 - **Risk:** Chatbot/RAG surfaces can silently expose lower-level data; corpus posture inheritance is mandatory.
-- **Open:** Which PDFs are legitimate durable deliverables versus transient exports?
-- **Open:** Which report artifacts belong in project/client repos versus `workspace-hub` governance docs versus website repos?
+- **Decision:** PDFs are durable deliverables only when a contract/client/regulatory/export requirement is recorded in the report taxonomy row; otherwise PDFs are transient exports derived from HTML-first reports and inherit R-L1/R-L2 internal evidence posture unless separately promoted.
+- **Decision:** Report artifact ownership is selected by audience and source posture: `workspace-hub` holds governance/evidence contracts and internal review outputs; project/client repos hold client-specific deliverables and private evidence; `aceengineer-website` holds sanitized public demos/pages; public `llm-wiki` holds only curated public-safe report-derived knowledge. Ambiguous artifacts fail closed to internal evidence until the taxonomy row records an owner and output_residency; ambiguous artifacts fail closed is a tested contract requirement, not guidance.
 
 ---
 
