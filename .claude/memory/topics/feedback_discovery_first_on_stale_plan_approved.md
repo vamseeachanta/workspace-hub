@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-17
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-05-18
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_discovery_first_on_stale_plan_approved.md
 
 ---
@@ -36,6 +36,16 @@ In both cases, the prior bootstrap commits were part of `docs(multi):` cross-wik
 - **Trust the corpus over the issue tree.** A 2-week-old plan-approved issue with no recent activity is more likely overlapping than orphan.
 
 **Anti-pattern to avoid:** "The label says plan-approved → execute the plan." This pattern wastes effort, risks duplicate-write conflicts (multiple ISM Code pages with divergent frontmatter), and pollutes the corpus with rework-flavored commits.
+
+**Variant — external-source policy verification (added 2026-05-17):**
+
+For permission-request style issues (e.g., "send reuse-permission email to publisher X"), the same discovery-first principle applies, but the verification target is the *publisher's own published policy*, not prior commits in the repo.
+
+Before drafting a reuse/permission-request email for a public-corpus destination (CC-BY-4.0, MIT, etc.), do a 2-3 minute WebFetch sweep of the publisher's publishing-policy page + terms-of-use page first. A clear public-domain or open-license statement can resolve some or all rows without an email at all.
+
+llm-wiki [#98](https://github.com/vamseeachanta/llm-wiki/issues/98) example (KGS reuse-permission email, 2026-05-17): 5 rows queued for email confirmation; pre-draft fetch of KGS [Publishing Policy](https://www.kgs.ku.edu/Publications/pubPolicy.html) (`"All KGS publications are public domain and therefore can be reproduced without permission"`) + [Terms of Use](https://www.kgs.ku.edu/General/copyright.html) resolved 3 of 5 rows (LA Bulletin A19-A21) via direct policy citation. Email narrowed to 2 rows (A22 Open-File Reports archive + A23 Magellan LAS data, where the general policy might not blanket-apply because of per-document or data-vs-publication distinctions). Saved ~60% of the originally-approved email scope; cut KGS staff time; stronger audit trail.
+
+**Crucial follow-on rule:** Per [[never-offer-to-self-label-plan-approved]], surface the policy finding to the user via `AskUserQuestion` before changing scope — don't unilaterally skip the email. The user-approval gate is frozen at the moment of approval; new discoveries that narrow scope are still scope changes.
 
 **Related:**
 - [[plan-past-tense-artifact-claims]] — same root cause from the planning side (plans describing proposed work as committed artifacts)

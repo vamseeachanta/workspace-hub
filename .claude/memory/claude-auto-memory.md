@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-05-17
+> Last captured: 2026-05-18
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -10,6 +10,7 @@
 > working-style.md, shell-git-patterns.md, engineering-modules.md
 > feedback_*: html_refresh, skill_before_code, no_shortcuts_knowledge, dark_intelligence_excel
 > repo_scope, research_skill_sources, specs_plans_location, uv_run_isolation, no_jargon
+- [All-provider memory should flow through Hermes](feedback_memory_aspire_to_hermes_level.md) — Hermes is the canonical memory backend; per-provider stores (Claude auto-memory, Codex state, Gemini session) should consolidate to Hermes rather than evolve in parallel. Collapse cross-provider silos (Claude/Codex/Gemini learnings unified, not siloed); aim for Hermes-bar on capture / retrieval / cross-machine + cross-provider sync (2026-05-17)
 - [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
 - [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
 - [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
@@ -45,7 +46,7 @@
 - [Reflog as ground truth](feedback_reflog_as_ground_truth.md) — `[rejected]` pushes and "lock failed" rebase errors can mask successful ops; check reflog + status before retrying
 - [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` fails for untracked-when-stashed; use `stash@{0}^3`
 - [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync resolves push contention by quietly pushing local-ahead; wait+verify after `[rejected]` not retry
-- [Retry-loop sweep contamination](feedback_retry_loop_sweep_contamination.md) — retry-loop commits can sweep parallel-session staged files; use `git commit -m "..." -- <file>` pathspec form (order matters: `--` after `-m`)
+- [Sweep-contamination class (commit + stash variants)](feedback_retry_loop_sweep_contamination.md) — retry-loop commits sweep parallel-session staged files; `while git stash drop` loops drain ALL repo stashes (not just yours, repo-wide scope). Use specific-target syntax: `git commit -m "..." -- <file>` pathspec for commits; `git stash drop stash@{N}` after grep-verifying description for stashes. Never unconditional-drain-all. Recovery via `git stash store/apply <sha>` within ~14d gc window.
 - [r1 review trust hazard](feedback_r1_review_trust_hazard.md) — before applying r1 fix asserting a gap, independently verify the asserted-missing surface; reviewers have constrained retrieval and selectively quote (Plan #2710 r1 missed submit-job.sh:18-23 existing check)
 - [CI baseline red ≠ PR broken](feedback_ci_baseline_red_not_pr_broken.md) — pre-existing main-branch CI failures inherit to new PRs; always check upstream baseline via `gh run list --branch main` before assuming the PR caused the red state
 - [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` poisons Python dotted-paths; grep plans for `llm-wiki\.` as P1 smell
@@ -63,7 +64,7 @@
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects sparse only; `git sparse-checkout add <path>` not `disable` (hung 22min materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 comments; trust hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions land half-resolved files; pull double-nests markers; `git checkout --ours` if HEAD clean
-- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD` *stale: 2026-05-18*
+- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD`
 - [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle` from parent fails on unreachable orphans; bundle from worktree where HEAD points; tag for cross-machine
 - [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans `commit --no-verify` only; push --no-verify ok for codex-branch preservation
 - [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — 2 concurrent /whats-next on same machine produce non-colliding work; wip-label gates collisions; cross-validate before follow-ups
@@ -80,7 +81,7 @@
 - [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic protection but NOT rulesets; toggle `enforcement=disabled` via API, then restore
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context enforced by LICENSE+.gitignore+per-repo .claude+.git, not by file-system distance
 - [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos, side-channel notes (vendor marketing, intel) go to `/mnt/ace/<repo-name>/docs/`, not in-repo
-- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent *stale: 2026-05-18*
+- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` hangs >30s at digitalmodel/.venv; rely on CI; verify syntax via `py_compile` not pytest
 - [Git status lock storm](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses
 - [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files. workspace-hub#2663 codifies
@@ -99,6 +100,7 @@
 - [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture
 - [codex-cli stdin-detection hang REOPENED 2026-05-16](feedback_codex_cli_0_124_upstream_regression.md) — 0.130.0 hangs non-deterministically; `</dev/null` works sometimes not always; downgrade doesn't help; #2715
 - [Regression test broader than issue scope](feedback_regression_test_broader_than_issue_scope.md) — scope test glob to defect class, not just named file; catches sibling regressions for free (caught HTML_REPORTING_STANDARDS.md while fixing AI_AGENT_ORCHESTRATION.md per aceengineer-website#14)
+- [Post-commit autosync defeats test gate](feedback_post_commit_autosync_defeats_test_gate.md) — push-after-test plans MUST use `SKIP_PUSH=1 git commit`; bare `git commit` triggers WRK-1141 post-commit hook which pushes immediately and bypasses the empirical-test gate. Companion to [[feedback_autosync_silent_pusher]]
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -162,3 +164,4 @@
 - [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/`
 - [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (2026-05-06 research preview); NOT in Claude Code CLI or Claude.ai
 - [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for #2663/#2664
+- [License verify via metadata APIs](reference_license_verification_via_metadata_apis.md) — CrossRef API for DOIs + DOAB API for OA books bypass SSO-gated publisher pages; zero-auth, authoritative

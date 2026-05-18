@@ -6,25 +6,21 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-17)
+## Synced from Hermes Memory (2026-05-18)
 
 ### Environment Facts
 
 - `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
-- Workspace-hub tier-1 ecosystem scope includes eight repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, and aceengineer-strategy; user values general, per-repo, per-domain, execution-ready, approval-drift, and planning-needed boards for sequential review/refinement before multiagent execution.
-- User prefers workspace-hub repo-sync/closeout reports to show referenced GitHub issues as clickable hyperlinks grounded via live `gh issue view`, not just issue numbers.
-- workspace-hub/comprehensive-learning now has references/exit-handoff-closeout.md: concrete checklist for “document and prepare to exit” closeout (write docs/session-handoffs handoff, commit/push it, prove clean/synced repos, report no-external-action status).
-- For GTM/prospect work, aceengineer-strategy is the repository of record for specific named prospects/contacts; generic reusable plans, collateral, and implementation work should live in the appropriate other tier-1 repos rather than storing person-specific details there.
-- For repeated judge/checklist continuation prompts, user values fresh evidence artifacts/crosswalks, precise inventory/status reconciliation, and explicit blocked-stop decisions over relaunching implicit continuation work across human/governance/scope gates.
-- Hermes runtime SOUL.md for this workspace is repo-backed: canonical file `/mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md`, with `~/.hermes/SOUL.md` symlinked to it.
-- CTV operability assets in digitalmodel are reference material for future vessel-operability ecosystem work; SeaOps is treated as a competitor, so use those assets for research and repo documentation only unless the user explicitly approves GTM/project reuse.
-- ace-linux-2 is reachable by SSH from ace-linux-1 and has OpenFOAM ESI v2312 installed: wrapper `/usr/bin/openfoam2312`, bashrc `/usr/lib/openfoam/openfoam2312/etc/bashrc`, `WM_PROJECT_DIR=/usr/lib/openfoam/openfoam2312`, `WM_PROJECT_VERSION=v2312`.
+- Multi-machine control-surface baseline: Telegram logged in across 5 machines; Hermes installed on ace-linux-1, ace-linux-2, licensed-win-1, licensed-win-2. User wants live machine reachability first, then machine data/program status, then next steps before triggering runs. ace-linux-2 is SSH-reachable from ace-linux-1 and has OpenFOAM ESI v2312
+- Workspace-hub tier-1 repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, aceengineer-strategy. User prefers clickable GitHub issue links grounded by live gh issue view in repo-sync/closeout reports; exit closeout uses workspace-hub/comprehensive-learning reference exit-handoff-closeout.md. aceengineer-strategy is record for named GTM prospects; generic collateral belongs in appropriate tier-1 repos. Hermes SOUL canonical path: /mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md, symlinked from ~/.hermes/SOUL.md.
+- Workspace-hub data-governance planning should model AI-agent data routing with distinct levels: raw-data, readable-raw-data, llm-wiki-private, and llm-wiki-public. Private/client raw or readable data cannot route directly into public llm-wiki; sanitized derivatives require explicit promotion gates and source-class/citation separation.
+- Workspace-hub data/execution/report architecture planning treats the three layers as interrelated but intentionally separable for dispatch: separate layer issues/plans keep work moving while the parent architecture issue preserves cross-layer contracts.
 
 ### User Profile
 
 - User requires zero-waste AI spend: consume weekly provider credits on useful approved work; prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions. In marine/offshore force reviews, user expects individual components and resultants compared side-by-side using existing basecase assumptions.
-- User expects strict workflow compliance: meaningful work needs proper gates and adversarial review even for docs/reports/skills/non-code. Closeout must be transactional in-window: push to origin, branch/worktree disposition, clean-state proof or explicit evidence-preserving blocker; stale files/branches/worktrees after closure are workflow failures. “Document and prepare to exit” means a committed/pushed docs/session-handoffs report with repo states, dirty exceptions, no-external-action status, and next steps. Approval requests should be compact with GitHub links, current gate/status, exact recommended action, and what happens next. User wants llm-wiki maintained on a weekly freshness cadence for code-development leverage.
-- When execution is interrupted by context/tool-call limits, user expects a concise, truthful handoff: current task state, verified evidence, blockers, exact next commands, and an explicit non-closeout if gates are incomplete.
+- User wants llm-wiki maintained on a weekly cadence as a code-development leverage source: review current LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues that keep the wiki useful for moving engineering work forward.
+- User expects active post-session learning: save durable preferences to memory when revealed, and update class-level umbrella skills for non-trivial techniques or corrections; prefers rich SKILL.md plus references/ over narrow one-session skills.
 
 
 <!-- BRIDGE:END -->
