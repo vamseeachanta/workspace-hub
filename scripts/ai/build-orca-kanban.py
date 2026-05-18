@@ -40,7 +40,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 WORKSPACE_HUB = Path(__file__).resolve().parents[2]
-DIGITALMODEL_ROOT = Path("/mnt/local-analysis/digitalmodel")
+DIGITALMODEL_ROOT = WORKSPACE_HUB / "digitalmodel"
 TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 DATA_PATH = WORKSPACE_HUB / "docs" / "reports" / f"{TODAY}-orca-kanban-data.json"
 HTML_PATH = WORKSPACE_HUB / "docs" / "dashboards" / f"{TODAY}-orca-kanban.html"
@@ -219,7 +219,7 @@ def build_data(issues: list[dict]) -> dict:
             "cat:engineering label or marine keyword in title. Lane assigned from "
             "status:* label + .planning/plan-approved/<n>.md marker presence. "
             "CLOSED issues whose title names a code module are spot-checked against "
-            "/mnt/local-analysis/digitalmodel/src/ to catch revert/never-landed cases."
+            f"{DIGITALMODEL_ROOT}/src/ to catch revert/never-landed cases."
         ),
     }
 
@@ -291,7 +291,7 @@ code{{background:#0f172a;padding:1px 4px;border-radius:3px;font-size:12px}}
 
 <h1>OrcaWave + OrcaFlex Kanban</h1>
 <p>Generated <code>{generated}</code>. Source: <code>vamseeachanta/workspace-hub</code> issues.
-Code-audit reference: <code>/mnt/local-analysis/digitalmodel</code>. Lane vocabulary mirrors
+Code-audit reference: <code>{digitalmodel_root}</code>. Lane vocabulary mirrors
 <a href="2026-05-09-tier1-gh-issue-kanban.html">2026-05-09 Tier-1 kanban</a>.</p>
 
 <div class="summary">
@@ -415,6 +415,7 @@ def render_html(data: dict) -> str:
         ow_lanes=ow_lanes or "<p><em>No issues</em></p>",
         of_lanes=of_lanes or "<p><em>No issues</em></p>",
         methodology=data["methodology"],
+        digitalmodel_root=str(DIGITALMODEL_ROOT),
     )
 
 
