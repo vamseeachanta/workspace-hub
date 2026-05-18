@@ -54,12 +54,12 @@
       <section class="card">
         <h3>Targeted tests</h3>
         <p><span class="status pass">green</span></p>
-        <p><code>uv run pytest tests/readiness/test_telegram_hermes_readiness.py -q</code>: 39 passed.</p>
+        <p><code>uv run pytest tests/readiness/test_telegram_hermes_readiness.py -q</code>: 41 passed.</p>
       </section>
       <section class="card">
         <h3>Host readiness</h3>
         <p><span class="status fail">blocked</span></p>
-        <p>Safe probe still reports 7 pass / 4 fail on <code>ace-linux-1</code>; dispatch must remain disabled until remediated.</p>
+        <p>Safe probe now reports 9 pass / 2 fail on <code>ace-linux-1</code>; dispatch must remain disabled until systemd env wiring and timeout are remediated.</p>
       </section>
     </div>
 
@@ -79,7 +79,7 @@
 
     <h2>Validation evidence</h2>
     <pre>uv run pytest tests/readiness/test_telegram_hermes_readiness.py -q
-39 passed
+41 passed
 
 bash -n scripts/operations/verify-hermes-gateway-coordinator.sh
 shellcheck scripts/operations/verify-hermes-gateway-coordinator.sh
@@ -89,17 +89,17 @@ git diff --check -- scripts/operations/verify-hermes-gateway-coordinator.sh test
 # passed with no output</pre>
 
     <h2>Current ace-linux-1 safe-probe result</h2>
-    <pre>summary: 7 passed, 4 failed</pre>
+    <pre>summary: 9 passed, 2 failed</pre>
     <table>
       <thead><tr><th>Status</th><th>Finding</th><th>Required remediation</th></tr></thead>
       <tbody>
         <tr><td><span class="status pass">pass</span></td><td>Env file exists, mode is <code>600</code>, owner resolved.</td><td>None.</td></tr>
         <tr><td><span class="status pass">pass</span></td><td>Telegram token and allowlist keys are present in the env file.</td><td>None; values remain redacted.</td></tr>
-        <tr><td><span class="status fail">fail</span></td><td><code>GATEWAY_ALLOW_ALL_USERS</code> is currently fail-open.</td><td>Remove it or set it to <code>false</code>.</td></tr>
+        <tr><td><span class="status pass">pass</span></td><td><code>GATEWAY_ALLOW_ALL_USERS</code> is fail-closed.</td><td>None; local env was safely set to <code>false</code> without printing secret values.</td></tr>
         <tr><td><span class="status fail">fail</span></td><td>systemd does not report the Hermes env file in <code>EnvironmentFiles</code>.</td><td>Install a <code>hermes-gateway.service</code> drop-in that loads <code>/home/vamsee/.hermes/.env</code>.</td></tr>
         <tr><td><span class="status fail">fail</span></td><td><code>TimeoutStopUSec</code> probe did not satisfy the verifier; systemd currently shows <code>TimeoutStopUSec=1min</code>.</td><td>Set <code>TimeoutStopSec=210</code> or higher in the service/drop-in and reload systemd.</td></tr>
         <tr><td><span class="status pass">pass</span></td><td>Gateway service is active and one polling PID is detected.</td><td>Re-check after restart.</td></tr>
-        <tr><td><span class="status fail">fail</span></td><td>Recent logs still indicate duplicate Telegram polling / <code>getUpdates</code> conflict.</td><td>Stop duplicate pollers, restart the gateway once, and confirm clean logs.</td></tr>
+        <tr><td><span class="status pass">pass</span></td><td>No duplicate Telegram <code>getUpdates</code> conflict appears in the recent verifier window.</td><td>Keep checking after restart.</td></tr>
       </tbody>
     </table>
 

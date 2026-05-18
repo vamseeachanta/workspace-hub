@@ -4,6 +4,7 @@ set -euo pipefail
 SERVICE="${HERMES_GATEWAY_SERVICE:-hermes-gateway.service}"
 ENV_FILE="${HERMES_GATEWAY_ENV_FILE:-$HOME/.hermes/.env}"
 MIN_TIMEOUT_SEC="${HERMES_GATEWAY_MIN_TIMEOUT_SEC:-210}"
+LOG_SINCE="${HERMES_GATEWAY_LOG_SINCE:-30 minutes ago}"
 BOT_TOKEN_ENV_KEY="${HERMES_GATEWAY_BOT_TOKEN_ENV_KEY:-TELEGRAM_BOT_TOKEN}"
 ALLOWED_USERS_ENV_KEY="${HERMES_GATEWAY_ALLOWED_USERS_ENV_KEY:-TELEGRAM_ALLOWED_USERS}"
 FAIL=0
@@ -80,6 +81,36 @@ check_required_environment_file() {
   fi
 }
 
+systemd_duration_to_seconds() {
+  local raw="$1"
+  local total=0
+  local matched=0
+  if [[ "$raw" =~ ^[0-9]+$ ]]; then
+    printf '%s\n' "$((raw / 1000000))"
+    return 0
+  fi
+
+  while [[ "$raw" =~ ([0-9]+)[[:space:]]*(h|hr|hrs|hour|hours|min|mins|minute|minutes|s|sec|secs|second|seconds|ms|msec|msecs|millisecond|milliseconds|us|usec|usecs|microsecond|microseconds) ]]; do
+    value="${BASH_REMATCH[1]}"
+    unit="${BASH_REMATCH[2]}"
+    matched=1
+    case "$unit" in
+      h|hr|hrs|hour|hours) total=$((total + value * 3600)) ;;
+      min|mins|minute|minutes) total=$((total + value * 60)) ;;
+      s|sec|secs|second|seconds) total=$((total + value)) ;;
+      ms|msec|msecs|millisecond|milliseconds) total=$((total + value / 1000)) ;;
+      us|usec|usecs|microsecond|microseconds) total=$((total + value / 1000000)) ;;
+    esac
+    raw="${raw#*"${BASH_REMATCH[0]}"}"
+  done
+
+  if [ "$matched" = "1" ]; then
+    printf '%s\n' "$total"
+    return 0
+  fi
+  return 1
+}
+
 printf 'Hermes gateway coordinator verifier\n'
 printf 'service=%s\n' "$SERVICE"
 printf 'env_file=%s\n' "$ENV_FILE"
@@ -124,8 +155,8 @@ else
 fi
 
 timeout_usec="$(systemctl_show_value TimeoutStopUSec || true)"
-if [[ "$timeout_usec" =~ ^[0-9]+$ ]]; then
-  timeout_sec=$((timeout_usec / 1000000))
+timeout_sec=""
+if timeout_sec="$(systemd_duration_to_seconds "$timeout_usec")"; then
   if [ "$timeout_sec" -ge "$MIN_TIMEOUT_SEC" ]; then
     pass "TimeoutStopSec >= ${MIN_TIMEOUT_SEC}s"
   else
@@ -142,7 +173,7 @@ else
   fail "exactly one active gateway/polling PID required"
 fi
 
-recent_logs="$(journalctl -u "$SERVICE" -n 200 --no-pager 2>/dev/null || true)"
+recent_logs="$(journalctl -u "$SERVICE" --since "$LOG_SINCE" -n 200 --no-pager 2>/dev/null || true)"
 if printf '%s\n' "$recent_logs" | grep -qiE 'terminated by other getUpdates request|only one bot instance|getUpdates conflict'; then
   fail "duplicate Telegram polling/getUpdates conflict"
 else

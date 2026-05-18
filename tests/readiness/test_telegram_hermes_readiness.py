@@ -970,6 +970,53 @@ exit 1
     assert "TimeoutStopSec must be >=210s" in result.stdout
 
 
+def test_coordinator_verifier_accepts_systemd_human_timeout_values(tmp_path: Path) -> None:
+    env_file, env = _coordinator_env(tmp_path)
+    _write_fake_command(
+        Path(env["PATH"].split(":", 1)[0]),
+        "systemctl",
+        f"""
+if [[ "$1" == "is-active" ]]; then echo active; exit 0; fi
+if [[ "$1" == "show" ]]; then
+  prop="${{4:-${{3:-}}}}"
+  case "$prop" in
+    EnvironmentFiles) echo 'EnvironmentFiles={env_file} (ignore_errors=no)' ;;
+    TimeoutStopUSec) echo 'TimeoutStopUSec=3min 30s' ;;
+    MainPID) echo 'MainPID=4242' ;;
+  esac
+  exit 0
+fi
+exit 1
+""",
+    )
+
+    result = _run_coordinator_verifier(tmp_path, env)
+
+    assert result.returncode == 0, result.stdout
+    assert "TimeoutStopSec >= 210s" in result.stdout
+
+
+def test_coordinator_verifier_scopes_polling_conflicts_to_recent_logs(tmp_path: Path) -> None:
+    _env_file, env = _coordinator_env(tmp_path)
+    _write_fake_command(
+        Path(env["PATH"].split(":", 1)[0]),
+        "journalctl",
+        """
+if printf '%s\\n' "$@" | grep -qx -- '--since'; then
+  echo 'gateway started cleanly'
+else
+  echo 'terminated by other getUpdates request; stale historical conflict'
+fi
+exit 0
+""",
+    )
+
+    result = _run_coordinator_verifier(tmp_path, env)
+
+    assert result.returncode == 0, result.stdout
+    assert "no duplicate Telegram polling conflict in recent logs" in result.stdout
+
+
 def test_coordinator_verifier_detects_duplicate_polling_conflict(tmp_path: Path) -> None:
     _env_file, env = _coordinator_env(tmp_path)
     _write_fake_command(
