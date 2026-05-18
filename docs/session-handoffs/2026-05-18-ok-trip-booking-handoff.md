@@ -12,13 +12,20 @@ GitHub issue: https://github.com/vamseeachanta/achantas-data/issues/91
 
 ## Current decision state
 
+Update 2026-05-18T14:26:23-05:00: user called customer service; customer service suggested **Trail House at Eagle Ridge**: https://cabinsinbrokenbow.com/the-trail-house-at-eagle-ridge/
+
+Trail House is now the practical lead, but before payment still verify the two booking gates explicitly:
+
+1. **View gate:** “Is the visible lake/ridge/nature view visible from the cabin/deck/hot tub, or only from the property/trail?”
+2. **Kitchen gate:** “Does Trail House have a full usable kitchen for family meals — stove/oven, refrigerator, microwave, cookware/dishes? Listing shows dishwasher: No and washer/dryer: No.”
+
 Do **not** book Crooked Pine blindly if panorama is the priority.
 
-Priority order for Jun 6–9, 2026 after booking-engine re-check:
+Priority order for Jun 6–9, 2026 after booking-engine re-check and customer-service call:
 
 1. **Lookout at Eagle Ridge** — strongest small-cabin panorama evidence; current booking engine showed **RESERVED**.
 2. **Hilltop at Eagle Ridge** — strong panorama benchmark; current booking engine showed **RESERVED** and cabin is oversized.
-3. **Trail House at Eagle Ridge** — best currently available panorama-adjacent lead; host must confirm whether lake/nature view is visible from cabin/deck.
+3. **Trail House at Eagle Ridge** — customer-service suggested this as the practical lead; listing says sleeps 4, 2 bedrooms, 1 king + 1 queen, 1 bath, fireplace, fire pit, hot tub, canine friendly, WiFi/Roku, surrounded by National Forest, trail to lake, “gorgeous views”; dishwasher **No**, washer/dryer **No**. Host should still confirm whether lake/nature view is visible from cabin/deck/hot tub and whether kitchen is fully usable for family meals.
 4. **Ridgeview Retreat** — available wooded hillside backup.
 5. **Crooked Pine** — available and strongest kitchen/amenity fit, but weaker panorama/private wooded view.
 6. **Sierra / Cimarron** — fallback only if secluded acreage/water beats ridge panorama.

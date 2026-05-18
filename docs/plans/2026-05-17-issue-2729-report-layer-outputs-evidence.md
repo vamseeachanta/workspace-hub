@@ -1,6 +1,6 @@
 # Plan for #2729: Define report layer outputs, publication surfaces, and evidence rules
 
-> **Status:** `status:plan-review` — revised after MAJOR review findings; pending re-review; not approved
+> **Status:** `status:plan-approved` — user approved on 2026-05-18; implementation authorized
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2729
