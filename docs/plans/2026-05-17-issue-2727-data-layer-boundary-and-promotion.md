@@ -12,7 +12,7 @@
 
 ### Existing repo code
 - Found: `docs/DATA_RESIDENCE_POLICY.md` — existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external-storage thresholds.
-- Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*`, and `api://worldenergydata`.
+- Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (preferred migrated local copy; remote DDE is archival per mounted-source-registry.yaml)`, and `api://worldenergydata`.
 - Found: `docs/content-pipeline/README.md` — existing source → transform → stage → review → publish pipeline for turning internal wiki/source material into public/client-facing website content.
 - Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, documented core engineering/data repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations; only explicitly documented repos may be called tier-1.
 - Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, documented tiered repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
@@ -51,7 +51,7 @@
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
-| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*` | Reference-in-place; never blindly copy into public repos |
+| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (preferred migrated local copy; remote DDE is archival per mounted-source-registry.yaml)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `/mnt/ace/rock-oil-field`; `/mnt/ace/client-projects`; `/mnt/ace/doris`; `/mnt/ace/acma-projects`; `/mnt/ace/frontier-deepwater`; `/mnt/ace/saipem`; similar client roots | Unique private-client class; promote only to dedicated private `/mnt/local-analysis/<client>-llm-wiki` repos/corpora; sanitized derivatives require explicit approval |
 | `llm-wiki` raw-like data | source inventories, extracted notes, staging packs, source cards, provenance metadata, RAG indexes | Private/local or controlled staging until reviewed |
 | Public `llm-wiki` content | sanitized markdown pages and public chatbot/search corpus | Public-facing after source/legal/sanitization gates |
@@ -66,91 +66,20 @@
 | `/mnt/local-analysis/<repo>/` | repo checkouts such as `workspace-hub`, documented tier-1 engineering/data repos (`digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`), and knowledge/publication/strategy repos (`llm-wiki`, `aceengineer-website`, `aceengineer-strategy`) | D-L3 curated knowledge/data or repo-backed execution/report metadata, depending on repo/path | Public-facing only for explicitly public repos/content; sanitized/curated data only | Public `llm-wiki` content, curated data, and sanitized fixtures belong here when repo policy allows; private raw source data should not be inferred public just because it was used to create a sanitized derivative. |
 
 ### Client data handling model
-| Raw client source path / pattern | Intended private knowledge repo | Data layer level | Public/private posture | Insight-report use |
-|---|---|---|---|---|
-| `/mnt/ace/rock-oil-field` | `/mnt/local-analysis/rock-oil-field-llm-wiki` | D-L1 client raw/source → D-L2/D-L3 private client wiki | Private client data; private repo required | Combine private client wiki with public `llm-wiki` only at retrieval/report runtime to produce controlled insight reports. |
-| `/mnt/ace/client-projects` | `/mnt/local-analysis/client-projects-llm-wiki` | D-L1 client raw/source → D-L2/D-L3 private client wiki | Private client data; private repo required | Same: private corpus remains separate; reports cite private/public source classes distinctly. |
-| `/mnt/ace/doris` | `/mnt/local-analysis/doris-llm-wiki` | D-L1 client raw/source → D-L2/D-L3 private client wiki | Private client data; private repo required | Use as client-specific retrieval corpus alongside public `llm-wiki`, not as public `llm-wiki` content. |
-| `/mnt/ace/acma-projects` | `/mnt/local-analysis/acma-projects-llm-wiki` | D-L1 client raw/source → D-L2/D-L3 private client wiki | Private client data; private repo required | Use for private project insight reports; sanitized learnings require separate approval before public reuse. |
-| `/mnt/ace/frontier-deepwater` | `/mnt/local-analysis/frontier-deepwater-llm-wiki` | D-L1 client raw/source → D-L2/D-L3 private client wiki | Private client data; private repo required | Use as private corpus for insight/report generation with explicit access controls. |
-| `/mnt/ace/saipem` and similar client roots | `/mnt/local-analysis/<client>-llm-wiki` | D-L1 client raw/source → D-L2/D-L3 private client wiki | Private client data; private repo required | Pattern for future client corpora; never merge raw/private client content into public `llm-wiki`. |
+Tracked public docs must not publish raw client-identifying path names. The implementation packet must use redacted source IDs in `docs/architecture/data-source-inventory.md` and keep any literal path mapping in a private-only appendix outside public docs, unless the source is explicitly public-safe.
 
-Client data is handled uniquely from general `/mnt/ace` raw/staging data: every client raw root should promote into a dedicated private `/mnt/local-analysis/<client>-llm-wiki` repository/corpus, not into the public `llm-wiki`. Insight reports may combine retrieval from the private client wiki plus the public `llm-wiki`, but the report-generation layer must preserve source-class boundaries, access controls, and sanitization gates.
+| Source ID class | Runtime evidence posture | Allowed destination |
+|---|---|---|
+| `client_present_001`..`client_present_nnn` | verified-present private client/project roots from runtime probe; literal paths stay private | private staging or private client corpus only |
+| `client_planned_001`..`client_planned_nnn` | planned/unavailable roots; not binding until provisioned and re-probed | follow-up issue before use |
+| `client_llm_wiki_target` | `/mnt/local-analysis/<client>-llm-wiki` is a provisioning pattern, not an assumed existing repo | follow-up issue must create/private-register before implementation relies on it |
+| `public_domain_source` | source/license/provenance/legal gates pass | public `llm-wiki` or public repo surface where policy allows |
 
-### Gaps identified
-- No approved level taxonomy yet for data L1 raw → L2 raw-llm-wiki/staging → L3 public `llm-wiki`/chatbot knowledge.
-- No approved level taxonomy yet for execution inputs vs data-layer inputs, code/tooling, machines/compute, validation evidence, and handoff manifests.
-- No approved level taxonomy yet for report raw outputs, data outputs, HTML/PDF/report formats, interactivity, and chatbot surfaces.
-- No canonical matrix yet mapping source class → owner repo/path → public/private posture → promotion gate → report/chatbot eligibility.
-
-### Evidence (embedded verification)
-**Issue statuses** (verified 2026-05-17T01:12:21Z via `gh issue view`):
-- `#2727` — OPEN — feat(architecture): define data layer boundary and llm-wiki data promotion model
-- `#2726` — OPEN — feat(architecture): review data, execution, and report layer boundaries
-
-**File existence / evidence sources**:
-- EXISTS: `docs/DATA_RESIDENCE_POLICY.md`
-- EXISTS: `data/document-index/mounted-source-registry.yaml`
-- EXISTS: `docs/content-pipeline/README.md`
-- EXISTS: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md`
-- Path probe 2026-05-17: `/mnt/ace/` exists on this host; `/mnt/ace/raw-processed/` is recorded as user-provided intended/example staging path but was not present in this runtime probe; `/mnt/local-analysis/` exists and contains at least `workspace-hub`, `llm-wiki`, and `digitalmodel` checkouts in this runtime.
-- Client path probe 2026-05-17: `/mnt/ace/rock-oil-field`, `/mnt/ace/doris`, `/mnt/ace/acma-projects`, and `/mnt/ace/saipem` exist on this host; `/mnt/ace/client-projects` and `/mnt/ace/frontier-deepwater` are recorded as user-provided intended/example client roots but were not present in this runtime probe; the corresponding `/mnt/local-analysis/<client>-llm-wiki` private repo paths were not present in this runtime probe and should be treated as planned/private target repositories unless separately created.
-
-**Line excerpts consulted**:
-```text
-docs/DATA_RESIDENCE_POLICY.md:13-15 — Tier 1 Collection Data = `worldenergydata`; Tier 2 Engineering Reference Data = `digitalmodel`; Tier 3 Project Data = project repos/client_projects.
-docs/DATA_RESIDENCE_POLICY.md:62 — project-specific configurations, analysis inputs/outputs, and client deliverables are never stored in `worldenergydata` or `digitalmodel`.
-data/document-index/mounted-source-registry.yaml:5-48,163-183 — tracked source roots include `workspace_hub_local`, standards/literature mounts, project/docs mounts, API metadata virtual root, and ACMA codes local root.
-docs/content-pipeline/README.md:3,27,51-58,99 — internal knowledge is transformed into client-facing content by stripping internal references/metadata and targeting zero internal references in output.
-docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md:106-113 — documented Tier-1 core engineering repos are `digitalmodel`, `assetutilities`, `assethold`, and `worldenergydata`; other local repos require separate role classification.
-config/workstations/registry.yaml:3 — all machine identity/capability data lives in this registry; execution routing docs must reference it instead of duplicating machine truth.
-docs/BUSINESS_BRAIN.md:106-115 — knowledge promotion requires explicit source/provenance/license/legal gates and `scripts/legal/legal-sanity-scan.sh --diff-only` for reviewed diffs.
-docs/document-intelligence/README.md:1-80; docs/document-intelligence/durable-vs-transient-knowledge-boundary.md:1-120 — durable public/private knowledge boundaries must govern report-derived learning promotion.
-data/document-index/registry.yaml and resource-intelligence-maturity.yaml — document-index/resource-intelligence sources must be read before final implementation; architecture contracts should link rather than fork these registries.
-```
-
-**Gap proofs**:
-- Initial drafting search found no existing plan files for 2726-2729; revised plan now treats existing `scripts/review/results/2026-05-17-plan-272[6-9]-*.md` MAJOR artifacts as active blockers to clear before approval.
-- Existing policies cover important pieces but not the full cross-layer architecture and level taxonomy requested here.
-
-**Reproduction proofs**:
-N/A — architecture/governance planning issue, not a runtime failure.
-
-<!-- Distinct sources: issue body, parent issue, DATA_RESIDENCE_POLICY, mounted-source-registry, content-pipeline README, capabilities summary, related open issues, review artifacts. -->
-
-
----
-
-## Artifact Map
-| Artifact | Path |
-|---|---|
-| This plan | `docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md` |
-| Data layer contract | `docs/architecture/data-layer-contract.md` |
-| Data source inventory matrix | `docs/architecture/data-source-inventory.md` plus structured fixture `tests/fixtures/architecture/data_source_inventory.yaml` |
-| Promotion gates | `docs/architecture/llm-wiki-data-promotion-gates.md` |
-| Tests | `tests/governance/test_data_layer_contract.py`; fixtures in `tests/fixtures/architecture/data_source_inventory.yaml` and `tests/fixtures/architecture/data_promotion_cases.yaml` |
-| Review artifacts | `scripts/review/results/2026-05-17-plan-2727-*.md` |
-
----
-
-## Deliverable
-A data-layer contract will classify known data sources and define level-based promotion from raw/private/source data into raw-like staging, dedicated private client/domain corpora, and public `llm-wiki`/chatbot-ready content. Public-safe domain corpus can live in public `llm-wiki` after provenance/license/legal/sanitization gates. Private/domain/client corpora are only for restricted, client, licensed, embargoed, or otherwise non-public derivatives. Client insight reports may combine private client wiki corpora with public `llm-wiki` at retrieval/report runtime without merging private client data into the public corpus.
-
----
-
-## Proposed Data Layer Levels
-| Level | Working name | Contents | Public posture |
-|---|---|---|---|
-| D-L1 | Raw/source data | `/mnt` raw data, API downloads, standards/literature PDFs, client/project archives, repo raw datasets, generated raw extracts | Private/internal by default; no direct public/report use |
-| D-L2 | Raw-like structured/staging data | inventories, source cards, extracted notes, document summaries, RAG chunks, source manifests, source classification packs | Controlled staging; may be local/private repo; not public by default |
-| D-L3 | Curated knowledge data | sanitized `llm-wiki` markdown pages, public-safe source summaries, curated reference tables/fixtures | Public/chatbot eligible only after provenance/license/legal/sanitization review; public-safe domain corpus belongs in public `llm-wiki` |
-| D-L4 | Derived indexes/search data | embeddings, search indexes, chatbot retrieval corpora, freshness scorecards | Public/private matches underlying corpus; regeneration manifest and output_residency required |
-
----
+Structured inventory source of truth for this packet is `tests/fixtures/architecture/data_source_inventory.yaml`; it must cross-link existing `data/document-index/mounted-source-registry.yaml` entries and must not fork that registry.
 
 ## Pseudocode
 ```text
-function classify_data_source(source):
+function specify_data_classification_contract(source):
     detect origin: public API, engineering standard, literature, repo data, client/project, generated artifact
     assign data residence tier from existing policy
     assign data layer level D-L1..D-L4
@@ -209,23 +138,16 @@ function classify_data_source(source):
 ---
 
 ## Adversarial Review Summary
-Prior review artifacts exist under `scripts/review/results/2026-05-17-plan-*.md`; this revision is pending a fresh post-push re-review via `scripts/review/plan-review-fanout.sh`.
+Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
-| Provider | Artifact | Verdict |
-|---|---|---|
-| Claude | `scripts/review/results/2026-05-17-plan-2727-claude.md` | MAJOR |
-| Codex | `scripts/review/results/2026-05-17-plan-2727-codex.md` | MAJOR |
-| Gemini | `scripts/review/results/2026-05-17-plan-2727-gemini.md` | MAJOR |
-| Disagreement report | `scripts/review/results/2026-05-17-plan-2727-disagreement.md` | MAJOR findings consolidated |
-
-Prior review artifacts contained MAJOR findings and are superseded by this revision. Do not ask for user approval, implement, or mark `status:plan-approved` until this exact committed plan path is pushed, Claude/Codex/Gemini re-review artifacts are non-empty (or a provider is explicitly marked UNAVAILABLE), and MAJOR findings are cleared.
+Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.
 
 ---
 
 ## Risks and Open Questions
 - **Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table.
 - **Risk:** Some `/mnt` inventories can expose client identifiers; tracked public docs must use redacted source IDs or private-only appendices for raw client path names.
-- **Open:** Canonical home for D-L2 raw-like `llm-wiki` staging: private repo, workspace-hub staging, or public `llm-wiki` private branch? This must be resolved against `mounted-source-registry.yaml`; no new inventory may fork the registry.
+- **Decision for this packet:** D-L2 raw-like `llm-wiki` staging is private/local only and registry-referenced; public `llm-wiki` private branches are not an approved storage home unless separately approved in a follow-up issue.
 - **Open:** Which data sources should be considered chatbot-eligible by default after D-L3 promotion?
 
 ---

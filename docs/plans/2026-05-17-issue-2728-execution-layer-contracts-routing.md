@@ -12,7 +12,7 @@
 
 ### Existing repo code
 - Found: `docs/DATA_RESIDENCE_POLICY.md` — existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external-storage thresholds.
-- Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*`, and `api://worldenergydata`.
+- Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)`, and `api://worldenergydata`.
 - Found: `docs/content-pipeline/README.md` — existing source → transform → stage → review → publish pipeline for turning internal wiki/source material into public/client-facing website content.
 - Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, documented core engineering/data repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations; only explicitly documented repos may be called tier-1.
 - Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, documented tiered repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
@@ -56,7 +56,7 @@
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
-| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*` | Reference-in-place; never blindly copy into public repos |
+| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `client_projects` / project repos / mounted project archives / local client folders | Private by default; sanitized derivatives only |
 | `llm-wiki` raw-like data | source inventories, extracted notes, staging packs, source cards, provenance metadata, RAG indexes | Private/local or controlled staging until reviewed |
 | Public `llm-wiki` content | sanitized markdown pages and public chatbot/search corpus | Public-facing after source/legal/sanitization gates |
@@ -88,7 +88,7 @@ data/document-index/mounted-source-registry.yaml:5-48,163-183 — tracked source
 docs/content-pipeline/README.md:3,27,51-58,99 — internal knowledge is transformed into client-facing content by stripping internal references/metadata and targeting zero internal references in output.
 docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md:106-113 — documented Tier-1 core engineering repos are `digitalmodel`, `assetutilities`, `assethold`, and `worldenergydata`; other local repos require separate role classification.
 config/workstations/registry.yaml:3 — all machine identity/capability data lives in this registry; execution routing docs must reference it instead of duplicating machine truth.
-docs/BUSINESS_BRAIN.md:106-115 — knowledge promotion requires explicit source/provenance/license/legal gates and `scripts/legal/legal-sanity-scan.sh --diff-only` for reviewed diffs.
+docs/BUSINESS_BRAIN.md:106-115 — knowledge promotion requires explicit source/provenance/license/legal gates and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only` for reviewed diffs.
 docs/document-intelligence/README.md:1-80; docs/document-intelligence/durable-vs-transient-knowledge-boundary.md:1-120 — durable public/private knowledge boundaries must govern report-derived learning promotion.
 data/document-index/registry.yaml and resource-intelligence-maturity.yaml — document-index/resource-intelligence sources must be read before final implementation; architecture contracts should link rather than fork these registries.
 ```
@@ -136,7 +136,7 @@ An execution-layer contract will define how input data contracts, code/tools, ag
 ```text
 function validate_execution_contract(execution_manifest):
     validate manifest schema, declared data source_ids, input_residency, and output_residency
-    verify source availability and permission posture from data-layer/source registry
+    verify source availability and permission posture from current `mounted-source-registry.yaml` entries; repo/client/wiki path taxonomy beyond current registry is blocked on #2731/#2732 and must fail closed
     route work to capable machine/provider/tool using config/workstations/registry.yaml plus #2119 policy
     document the repo-backed run command/regeneration_command, isolated workdir/worktree, tests, legal scan, checksums, output manifest, and review artifacts
     mark outputs report-eligible only if validation/evidence gates and output_residency allow it; runtime orchestrator enforcement is deferred to filed follow-up issue unless explicitly implemented
@@ -148,8 +148,9 @@ function validate_execution_contract(execution_manifest):
 | Action | Path | Reason |
 |---|---|---|
 | Create | `docs/architecture/execution-layer-contract.md` | Defines execution levels and layer boundaries |
-| Create | `docs/architecture/execution-manifest-schema.md` | Describes input/output manifest fields, including regeneration_command, replay_command, environment pin, input_residency, and output_residency |
-| Create | `tests/fixtures/architecture/execution_manifest.yaml` | Concrete manifest fixture for tests; YAML is the initial canonical machine-readable format for this plan packet |
+| Create | `docs/architecture/execution-manifest-schema.md` | Human-readable manifest contract |
+| Create | `docs/architecture/execution-manifest.schema.yaml` | Machine-readable schema source for tests, including regeneration_command, replay_command, environment pin, input_residency, and output_residency |
+| Create | `tests/fixtures/architecture/execution_manifest.yaml` | Concrete manifest fixture for tests; YAML fixture validates against `docs/architecture/execution-manifest.schema.yaml` |
 | Create | `tests/fixtures/architecture/execution_routing_cases.yaml` | Routing/evidence fixture cases |
 | Create | `docs/architecture/execution-routing-policy-view.md` | Derived/readable policy view that references `config/workstations/registry.yaml` and #2119; it must not duplicate canonical machine identity/capability fields |
 | Create | `docs/architecture/execution-entry-point-inventory.md` | Inventory scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across the named repos with evidence paths |
@@ -181,22 +182,15 @@ function validate_execution_contract(execution_manifest):
 - [ ] Report-layer handoff requires validation evidence plus `input_residency` and `output_residency` metadata.
 - [ ] Execution entry-point inventory covers scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across named repos or records explicit unavailable/not-applicable evidence.
 - [ ] Follow-up implementation work is proposed as GitHub issue titles/scopes in `docs/architecture/execution-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
-- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_execution_layer_contract.py -v` and `scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_execution_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
 - [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
 
 ---
 
 ## Adversarial Review Summary
-Prior review artifacts exist under `scripts/review/results/2026-05-17-plan-*.md`; this revision is pending a fresh post-push re-review via `scripts/review/plan-review-fanout.sh`.
+Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
-| Provider | Artifact | Verdict |
-|---|---|---|
-| Claude | `scripts/review/results/2026-05-17-plan-2728-claude.md` | MAJOR |
-| Codex | `scripts/review/results/2026-05-17-plan-2728-codex.md` | MAJOR |
-| Gemini | `scripts/review/results/2026-05-17-plan-2728-gemini.md` | MAJOR |
-| Disagreement report | `scripts/review/results/2026-05-17-plan-2728-disagreement.md` | MAJOR findings consolidated |
-
-Prior review artifacts contained MAJOR findings and are superseded by this revision. Do not ask for user approval, implement, or mark `status:plan-approved` until this exact committed plan path is pushed, Claude/Codex/Gemini re-review artifacts are non-empty (or a provider is explicitly marked UNAVAILABLE), and MAJOR findings are cleared.
+Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.
 
 ---
 

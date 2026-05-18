@@ -12,7 +12,7 @@
 
 ### Existing repo code
 - Found: `docs/DATA_RESIDENCE_POLICY.md` — existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external-storage thresholds.
-- Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*`, and `api://worldenergydata`.
+- Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)`, and `api://worldenergydata`.
 - Found: `docs/content-pipeline/README.md` — existing source → transform → stage → review → publish pipeline for turning internal wiki/source material into public/client-facing website content.
 - Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, documented core engineering/data repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations; only explicitly documented repos may be called tier-1.
 - Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, documented tiered repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
@@ -51,7 +51,7 @@
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
-| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*` | Reference-in-place; never blindly copy into public repos |
+| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (migrated local copy; remote DDE archival)` | Reference-in-place; never blindly copy into public repos |
 | Client/project data | `client_projects` / project repos / mounted project archives / local client folders | Private by default; sanitized derivatives only |
 | `llm-wiki` raw-like data | source inventories, extracted notes, staging packs, source cards, provenance metadata, RAG indexes | Private/local or controlled staging until reviewed |
 | Public `llm-wiki` content | sanitized markdown pages and public chatbot/search corpus | Public-facing after source/legal/sanitization gates |
@@ -164,7 +164,7 @@ function build_layer_contract():
 ## TDD / Validation List
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_source_matrix_has_required_columns | Source matrix has source_class, owner, canonical_path, layer, level, public_posture, promotion_gate | architecture matrix markdown/csv | all required columns present |
+| test_source_matrix_has_required_columns | Source matrix fixture has source_class, owner, canonical_path, layer, level, allowed_artifacts, forbidden_artifacts, retention_expectations, publication_rules, public_posture, promotion_gate, output_residency, report_chatbot_eligibility | `tests/fixtures/architecture/layer_boundary_matrix.yaml` | all required columns present |
 | test_private_sources_not_public_eligible_by_default | Client/mounted/private roots cannot map directly to public `llm-wiki` or client report without gates | source matrix | violations fail |
 | test_layer_transitions_are_explicit | Every lifecycle path names required gates, including report-derived-learning routing | layer contract | no implicit promotion paths |
 | test_known_sources_are_classified | Initial known sources from this plan are represented | source matrix | all seed classes present |
@@ -184,21 +184,14 @@ function build_layer_contract():
 ---
 
 ## Adversarial Review Summary
-Prior review artifacts exist under `scripts/review/results/2026-05-17-plan-*.md`; this revision is pending a fresh post-push re-review via `scripts/review/plan-review-fanout.sh`.
+Do not summarize in-progress/current-cycle provider artifacts inside this plan body; `plan-review-fanout.sh` truncates target provider files before writing them, so self-referential artifact tables produce false 0-byte evidence findings.
 
-| Provider | Artifact | Verdict |
-|---|---|---|
-| Claude | `scripts/review/results/2026-05-17-plan-2726-claude.md` | MAJOR |
-| Codex | `scripts/review/results/2026-05-17-plan-2726-codex.md` | MAJOR |
-| Gemini | `scripts/review/results/2026-05-17-plan-2726-gemini.md` | MAJOR |
-| Disagreement report | `scripts/review/results/2026-05-17-plan-2726-disagreement.md` | MAJOR findings consolidated |
-
-Prior review artifacts contained MAJOR findings and are superseded by this revision. Do not ask for user approval, implement, or mark `status:plan-approved` until this exact committed plan path is pushed, Claude/Codex/Gemini re-review artifacts are non-empty (or a provider is explicitly marked UNAVAILABLE), and MAJOR findings are cleared.
+Current gate: after this exact committed plan path is pushed, run `scripts/review/plan-review-fanout.sh <plan>` and inspect non-empty provider artifacts in `scripts/review/results/`. Gemini may be recorded as `UNAVAILABLE` during quota exhaustion, but Claude/Codex must return substantive artifacts and MAJOR findings must be cleared before any approval request.
 
 ---
 
 ## Risks and Open Questions
-- **Risk:** Data-level names may conflict with existing `DATA_RESIDENCE_POLICY.md` tier names. Plan must either reconcile terms or use distinct labels (`layer level` vs `data residence tier`).
+- **Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics.
 - **Risk:** Mounted project/source paths can contain sensitive client names; inventories must support redaction and source IDs.
 - **Open:** Should execution input data be classified primarily under data layer, execution layer, or both via an input-contract boundary?
 - **Open:** Which repo is canonical for private `llm-wiki` raw/staging content if not the public `llm-wiki` repo?
