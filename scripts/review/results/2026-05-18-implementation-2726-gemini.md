@@ -2,10 +2,10 @@
 
 Verdict: UNAVAILABLE
 
-Gemini implementation review was attempted twice from Hermes using `gemini exec` with the self-contained implementation-review prompt. Both attempts stalled after startup warnings and produced no substantive verdict before timeout.
+Gemini implementation review was attempted twice from Hermes using `gemini exec` with the self-contained implementation-review prompt. Both attempts produced startup/tool-loading failures and no substantive review verdict. The second background attempt ended with exit code `-15` and only the startup diagnostics below.
 
 Observed startup output included:
-- `.gemini/agents/gsd-executor.md` validation warning for unsupported `permissionMode`
+- `.gemini/agents/gsd-debugger.md` and `.gemini/agents/gsd-executor.md` validation errors for unsupported `permissionMode`
 - ripgrep fallback warning
 - duplicate skill conflict warnings
 
