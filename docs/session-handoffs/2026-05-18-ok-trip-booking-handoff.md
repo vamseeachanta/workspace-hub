@@ -85,3 +85,16 @@ Live issue evidence:
 ## Branch/worktree disposition
 
 No separate branch or worktree was created for this task. Work occurred on `workspace-hub` `main` for this closeout artifact plus GitHub issue comments in `achantas-data`.
+
+## Final push/sync proof
+
+Final proof after committing this handoff:
+
+- handoff commit: `7d35f47fa85927a0d3aa259ddb5818964cd14d9e` (`docs: add ok trip booking handoff`)
+- branch: `main`
+- HEAD after fetch: `7d35f47fa85927a0d3aa259ddb5818964cd14d9e`
+- origin/main after fetch: `7d35f47fa85927a0d3aa259ddb5818964cd14d9e`
+- ahead/behind: `0/0`
+- remaining dirty/untracked count: `43`
+
+Remaining dirty paths were not staged by this handoff and are preserved as unrelated/concurrent workspace-hub session state.
