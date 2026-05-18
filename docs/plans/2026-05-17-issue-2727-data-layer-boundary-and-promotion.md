@@ -1,6 +1,6 @@
 # Plan for #2727: Define data layer boundary and llm-wiki data promotion model
 
-> **Status:** `status:plan-review` — revised after MAJOR review findings; pending re-review; not approved
+> **Status:** `status:plan-approved` — user approved on 2026-05-18 with explicit filesystem/wiki-target notes below
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2727
@@ -51,7 +51,7 @@
 | Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | D-L1/D-L2 data-layer candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
-| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (preferred migrated local copy; remote DDE is archival per mounted-source-registry.yaml)` | Reference-in-place; never blindly copy into public repos |
+| Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace/docs/literature/dde (preferred migrated local copy; remote DDE is archival per mounted-source-registry.yaml)`; `/mnt/ace-data` is a confusing symlink to `/mnt/ace` and should be removed from the machine and registries | Reference-in-place; never blindly copy into public repos; migrate references away from `/mnt/ace-data` before deleting the symlink |
 | Client/project data | `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; similar client roots | Unique private-client class; promote only to dedicated private `/mnt/local-analysis/<client>-llm-wiki` repos/corpora; sanitized derivatives require explicit approval |
 | `llm-wiki` raw-like data | source inventories, extracted notes, staging packs, source cards, provenance metadata, RAG indexes | Private/local or controlled staging until reviewed |
 | Public `llm-wiki` content | sanitized markdown pages and public chatbot/search corpus | Public-facing after source/legal/sanitization gates |
@@ -72,7 +72,7 @@ Tracked public docs and fixtures must not publish raw client-identifying path na
 |---|---|---|
 | `client_present_001`..`client_present_nnn` | verified-present private client/project roots from runtime probe; literal paths stay private | private staging or private client corpus only |
 | `client_planned_001`..`client_planned_nnn` | planned/unavailable roots; not binding until provisioned and re-probed | follow-up issue before use |
-| `client_llm_wiki_target` | `/mnt/local-analysis/<client>-llm-wiki` is a provisioning pattern, not an assumed existing repo | follow-up issue must create/private-register before implementation relies on it |
+| `client_llm_wiki_target` | `/mnt/local-analysis/<client>-llm-wiki` is a provisioning pattern, not an assumed existing repo; include `acma-llm-wiki` as a private client wiki target | follow-up issue must create/private-register before implementation relies on it |
 | `public_domain_source` | source/license/provenance/legal gates pass | public `llm-wiki` or public repo surface where policy allows |
 
 Structured inventory source of truth for this packet is `tests/fixtures/architecture/data_source_inventory.yaml`; `docs/architecture/data-source-inventory.md` is the human-readable view derived from or checked against that YAML. The YAML must cross-link existing `data/document-index/mounted-source-registry.yaml` entries and must not fork that registry.
@@ -156,9 +156,9 @@ function validate_data_layer_inventory(inventory, promotion_cases):
 ## Acceptance Criteria
 - [ ] Data levels D-L1 through D-L4 are defined in this plan and in `docs/architecture/data-layer-contract.md`, with a crosswalk to existing data residence tiers.
 - [ ] Initial source inventory includes `/mnt` roots, tier-1 repos, `worldenergydata` public sources, `digitalmodel` reference data, mounted standards/literature, client/project data, private/raw `llm-wiki`, public `llm-wiki`, and derived indexes.
-- [ ] Data source inventory includes concrete path-class examples for `/mnt/ace/` raw PDFs → markdown, `[REDACTED-CLIENT-ROOT]` private staging/indexes/uncurated wiki material, and `/mnt/local-analysis/<repo>/` repo-backed public-facing/curated surfaces, without assuming every local checkout is tier-1.
+- [ ] Data source inventory includes concrete path-class examples for `/mnt/ace/` raw PDFs → markdown, `[REDACTED-CLIENT-ROOT]` private staging/indexes/uncurated wiki material, and `/mnt/local-analysis/<repo>/` repo-backed public-facing/curated surfaces, without assuming every local checkout is tier-1; it must also record that `/mnt/ace-data` is a confusing symlink to delete after references are migrated.
 - [ ] `llm-wiki` raw/staging vs public-facing content boundaries are explicit.
-- [ ] Client/project data is handled as a distinct class: verified-present raw client roots and explicitly planned/unavailable client roots are separated; planned roots and `/mnt/local-analysis/<client>-llm-wiki` private repositories are provisioning targets, not assumed-existing resources, and must be filed as follow-up issues before implementation can rely on them.
+- [ ] Client/project data is handled as a distinct class: verified-present raw client roots and explicitly planned/unavailable client roots are separated; planned roots and `/mnt/local-analysis/<client>-llm-wiki` private repositories are provisioning targets, not assumed-existing resources, and must be filed as follow-up issues before implementation can rely on them; `acma-llm-wiki` is included as a private client wiki target.
 - [ ] Insight reports can combine private client `llm-wiki` corpora with public `llm-wiki` retrieval, but public and private source classes remain separated and client data is non-public by default.
 - [ ] Promotion gates include provenance, license/legal, sanitization, technical review, freshness/regeneration metadata, and output_residency.
 - [ ] Data source inventory includes allowed artifacts, forbidden artifacts, canonical home, retention rule, and publication rule for every bucket.
@@ -169,6 +169,15 @@ function validate_data_layer_inventory(inventory, promotion_cases):
 - [ ] Revised plan receives substantive Claude/Codex re-review before approval request; Gemini must be substantive or explicitly `UNAVAILABLE` due quota, no unresolved MAJOR findings may remain, and the approval request cites revision-stamped non-empty artifact evidence rather than paths that can be truncated by the same review run.
 
 ---
+
+
+## User Approval Notes — 2026-05-18
+
+User-approved plan additions to carry into implementation:
+- `/mnt/ace-data` is a confusing symlink to `/mnt/ace`; remove/migrate references in the architecture inventory and create/record the machine cleanup action to delete the symlink. Do not rely on `/mnt/ace-data` as canonical storage.
+- `/mnt/local-analysis` currently has active git repos/checkouts including `workspace-hub`, `digitalmodel`, and `llm-wiki`; implementation must evaluate whether `digitalmodel` and `llm-wiki` should live inside `workspace-hub` versus sibling repos, and record the recommendation rather than silently moving repositories.
+- Add `acma-llm-wiki` to private client wiki targets.
+- Remainder of the plan is acceptable to the user after these notes.
 
 ## Revision / Adversarial Review Summary
 
