@@ -15,7 +15,7 @@
 | Generic engineering services BRIEF (~290 W) | aceengineer-website (public) | merged to main, pushed |
 | Detailed ENGINEERING_SERVICES_ONE_PAGER (~800 W) | aceengineer-website (public) | merged to main, pushed |
 | Pre-call prep note (PII, prospect intel) | aceengineer-strategy (private) | merged to main, pushed |
-| Legal-scan failures cleanup (CAESAR TONGA × 14 + 2H Offshore × 2) | aceengineer-website | merged to main, pushed (auto-sync swept) |
+| Legal-scan failures cleanup (16 deny-list hits across sample CSVs + marketing docs) | aceengineer-website | merged to main, pushed (auto-sync swept) |
 
 ### worldenergydata marketing-analysis pipeline (long-term, NOT Wednesday-bound)
 
@@ -104,7 +104,7 @@ For whichever direction the user takes next:
 
 - **`hse_incidents.bsee_incident_id` field is misnamed**: it carries multi-source IDs (`OSHA-INSP-*`, `INC-*`, `INCINV-*`), not just BSEE. Filter by prefix to get true BSEE subset. Worth saving as a reference memory.
 - **The `protect_repo` ruleset on worldenergydata blocks `--admin` merge** when required-status-checks aren't satisfied — confirms `feedback_admin_flag_vs_rulesets_api`. The bypass workflow (toggle enforcement) wasn't exercised this session.
-- **Auto-sync on aceengineer-website silently committed + pushed the CAESAR TONGA / 2H Offshore deny-list fixes** during the session — confirms `feedback_autosync_silent_pusher` is still active. Useful as expected behavior for clean drive-by fixes; potential hazard for sensitive-content work where `SKIP_PUSH=1` would be more appropriate.
+- **Auto-sync on aceengineer-website silently committed + pushed the deny-list cleanup fixes** during the session — confirms `feedback_autosync_silent_pusher` is still active. Useful as expected behavior for clean drive-by fixes; potential hazard for sensitive-content work where `SKIP_PUSH=1` would be more appropriate.
 
 ---
 

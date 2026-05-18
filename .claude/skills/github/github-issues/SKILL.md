@@ -118,6 +118,7 @@ Before creating a new feature issue, do a quick grounding pass to avoid duplicat
 9. If ending a session with a linked issue tree, produce a restart-safe closeout: issue states/gate labels, artifact paths, validation results, pushed commits, remote-ref sync evidence, and preserved unrelated worktrees. See `references/issue-tree-exit-closeout.md`.
 10. If you accidentally create an issue with unresolved placeholders, fix it immediately with `gh issue edit --body-file ...` and then re-verify the rendered body.
 11. For layered architecture/governance issue trees, see `references/layered-architecture-review-issue-tree.md`; it includes parent/child issue structure, data/execution/report layer scope, and the rule that output/report residency must mirror input/data residency unless an explicit promotion gate says otherwise.
+12. Before closing layered architecture contract implementation issues, run the closeout checks in `references/layered-architecture-contract-closeout.md`; in particular, schema readiness gates must reject placeholder checksums and any unresolved adversarial `MAJOR` blocks commit/close.
 
 Example:
 
