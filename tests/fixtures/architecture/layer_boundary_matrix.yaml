@@ -1,0 +1,155 @@
+sources:
+  - source_class: workspace_control_plane_data
+    owner: workspace-hub
+    canonical_path: /mnt/local-analysis/workspace-hub
+    input_residency: /mnt/local-analysis/workspace-hub control-plane docs/config metadata only
+    layer: A-DATA
+    level: D-CONTROL
+    allowed_artifacts: repo docs, plans, governance evidence, configuration metadata
+    forbidden_artifacts: client raw data, mounted standards copies, secrets
+    retention_expectations: git-tracked control-plane records only
+    publication_rules: public only when docs are already repo-public and legal scan passes
+    public_posture: public-controlled
+    promotion_gate: repo review gate plus legal diff scan
+    output_residency: workspace-hub docs or reports
+    report_chatbot_eligibility: internal and public control-plane summaries after review gate
+  - source_class: tier1_repo_ecosystem_data
+    owner: documented tier-1 repos
+    canonical_path: documented repo registry entries; no inference from checkout name
+    input_residency: owner repo checkout or registry-declared source path
+    layer: A-DATA
+    level: D-REPO-CURATED
+    allowed_artifacts: source code, tests, reference configs, curated repo docs
+    forbidden_artifacts: private client payloads, raw mounted data dumps
+    retention_expectations: git-tracked per owner repo policy
+    publication_rules: inherit owner repo visibility and citation/provenance rules
+    public_posture: mixed
+    promotion_gate: owner repo review gate and source/license check
+    output_residency: owner repo or workspace-hub cross-reference
+    report_chatbot_eligibility: eligible only through cited owner-repo artifacts
+  - source_class: tier2_publication_strategy_repos
+    owner: llm-wiki, aceengineer-website, aceengineer-strategy where registry evidence supports role
+    canonical_path: tracked repository map or unavailable until inventoried
+    input_residency: publication repo selected by registry; no private/raw source ingress
+    layer: A-CURATED-LEARNING
+    level: D-PUBLICATION
+    allowed_artifacts: sanitized pages, GTM strategy records, public website content
+    forbidden_artifacts: raw client data, private source excerpts, unredacted mounted-source names
+    retention_expectations: git-tracked curated publication records
+    publication_rules: only sanitized derivatives after promotion gate
+    public_posture: mixed
+    promotion_gate: provenance, license, legal, sanitization, and owner review gate
+    output_residency: publication repo selected by source class
+    report_chatbot_eligibility: public or strategic chatbot only after promotion gate
+  - source_class: public_collection_data
+    owner: worldenergydata or upstream public API owner
+    canonical_path: api://worldenergydata or documented public-source cache
+    input_residency: api://worldenergydata or documented public-source cache
+    layer: A-DATA
+    level: D-RAW-PUBLIC
+    allowed_artifacts: source identifiers, normalized public records, provenance metadata
+    forbidden_artifacts: unchecked bulk raw dumps in control-plane docs
+    retention_expectations: cache or owner repo per data residence policy
+    publication_rules: cite upstream source and license before public report reuse
+    public_posture: public
+    promotion_gate: provenance/license gate and transform validation
+    output_residency: data repo cache or report evidence bundle
+    report_chatbot_eligibility: public report/chatbot eligible after provenance gate
+  - source_class: engineering_reference_data
+    owner: digitalmodel or standards-derived reference owner
+    canonical_path: owner repo reference tables or citation sidecar paths
+    input_residency: owner repo reference tables or citation sidecar paths
+    layer: A-DATA
+    level: D-REFERENCE
+    allowed_artifacts: curated constants, S-N curves, hydrodynamic coefficient references, citation sidecars
+    forbidden_artifacts: copyrighted standards text, unproven constants without Citation where required
+    retention_expectations: owner repo reference-data policy
+    publication_rules: public summaries may publish derived facts only with citation/provenance sidecars and license-safe wording
+    public_posture: restricted
+    promotion_gate: standards citation contract, provenance, license, review gate
+    output_residency: owner repo reference data or calculation report sidecar
+    report_chatbot_eligibility: eligible only with citations and license-safe summaries
+  - source_class: mounted_standards_literature
+    owner: mounted source custodian
+    canonical_path: /mnt/ace/docs/_standards and other mounted-source registry IDs
+    input_residency: mounted-source registry ID; reference-in-place only
+    layer: A-DATA
+    level: D-MOUNTED-REFERENCE
+    allowed_artifacts: redacted source IDs, metadata, citations, derived parameters when allowed
+    forbidden_artifacts: copied standards PDFs, bulk text, unredacted private path inventories
+    retention_expectations: reference in place; do not copy to public repos
+    publication_rules: no public promotion without license/legal/sanitization gate
+    public_posture: restricted
+    promotion_gate: source registry, license, legal, sanitization, citation review gate
+    output_residency: mounted source reference plus repo-safe metadata
+    report_chatbot_eligibility: summaries only after explicit gate; no default public eligibility
+  - source_class: client_project_data
+    owner: client/project repo or private mounted project archive
+    canonical_path: client_projects or redacted project source ID
+    input_residency: client-private repo or redacted mounted project source ID
+    layer: A-DATA
+    level: D-CLIENT-PRIVATE
+    allowed_artifacts: redacted IDs, approved sanitized derivatives, private evidence bundles
+    forbidden_artifacts: public llm-wiki raw data, public chatbot indexes, client-identifiable report snippets
+    retention_expectations: private project retention policy
+    publication_rules: private by default; no public report/public corpus promotion unless sanitized derivative has explicit client/legal gate
+    public_posture: client-private
+    promotion_gate: explicit client authorization, legal, sanitization, and provenance gate
+    output_residency: client-private repo, private corpus, or approved deliverable store
+    report_chatbot_eligibility: client report only after explicit gate; never public by default
+  - source_class: llm_wiki_raw_private_staging
+    owner: private/local corpus owner pending registry
+    canonical_path: unavailable until private corpus registry exists; use redacted source IDs
+    input_residency: private/local staging source ID; no public repo path assumed
+    layer: A-DATA
+    level: D-PRIVATE-STAGING
+    allowed_artifacts: source cards, extraction notes, provenance metadata, private RAG indexes
+    forbidden_artifacts: public llm-wiki pages, public chatbot corpus, unreviewed source excerpts
+    retention_expectations: local/private staging only until promoted
+    publication_rules: fail closed for public report/public corpus until reviewed and routed to approved corpus tier
+    public_posture: local-private
+    promotion_gate: private corpus registry, legal, sanitization, provenance, owner review gate
+    output_residency: private/local staging or approved private corpus
+    report_chatbot_eligibility: private chatbot only after gate; no public eligibility by default
+  - source_class: llm_wiki_public_content
+    owner: public llm-wiki repo
+    canonical_path: tracked public llm-wiki repository path after live inventory
+    input_residency: tracked public llm-wiki repository path after promotion gate
+    layer: A-CURATED-LEARNING
+    level: D-PUBLIC-KNOWLEDGE
+    allowed_artifacts: sanitized public markdown, citations, public-safe source summaries
+    forbidden_artifacts: private raw data, client identifiers, restricted standards text
+    retention_expectations: git-tracked public knowledge pages
+    publication_rules: source/provenance/license/legal gates complete before merge
+    public_posture: public
+    promotion_gate: public knowledge promotion gate and legal scan
+    output_residency: public llm-wiki
+    report_chatbot_eligibility: public chatbot eligible after citation and freshness checks
+  - source_class: execution_artifacts
+    owner: workspace-hub execution/control-plane
+    canonical_path: issue plans, manifests, prompt bundles, run logs, checksums
+    input_residency: source_id plus input_residency references from A-DATA rows; no raw data ownership
+    layer: A-EXEC
+    level: E-MANIFEST-EVIDENCE
+    allowed_artifacts: source_id references, input_residency, output_residency, tool manifests, checksums
+    forbidden_artifacts: duplicated raw data ownership, secrets, bulky generated data by default
+    retention_expectations: commit manifests/evidence; keep bulky runtime output transient unless approved
+    publication_rules: execution evidence may support reports but does not publish source data
+    public_posture: mixed
+    promotion_gate: validation, secret scan, and output-residency review gate
+    output_residency: workspace-hub logs/reports or target repo evidence path
+    report_chatbot_eligibility: evidence summaries eligible after redaction; raw logs private by default
+  - source_class: report_artifacts
+    owner: report-producing repo or client deliverable owner
+    canonical_path: docs/reports, client deliverable store, limited PDFs, chatbot/index configs
+    input_residency: classified evidence bundles and source_id references from A-EXEC/A-DATA
+    layer: A-REPORT
+    level: R-OUTPUT
+    allowed_artifacts: raw internal outputs, client-facing HTML, limited PDFs, chatbot configs, evidence indexes
+    forbidden_artifacts: unreviewed source data, implicit knowledge promotion, private raw indexes in public repos
+    retention_expectations: audience-specific report retention; preserve evidence provenance
+    publication_rules: classify by audience and run legal/sanitization gates before public/client release
+    public_posture: mixed
+    promotion_gate: report evidence, provenance, legal, sanitization, and audience review gate
+    output_residency: internal report path, client deliverable store, or public-safe publication repo
+    report_chatbot_eligibility: depends on audience and output_residency gate
