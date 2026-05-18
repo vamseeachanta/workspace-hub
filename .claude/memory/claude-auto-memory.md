@@ -63,7 +63,7 @@
 - [Sparse-checkout: add not disable](feedback_sparse_checkout_add_not_disable.md) — acma-projects sparse only; `git sparse-checkout add <path>` not `disable` (hung 22min materializing ~329K files)
 - [Naive secret-scan FP cascade](feedback_naive_secret_scan_false_positive_cascade.md) — regex matches `secrets-scan.sh` paths, "tokens used" prose, argon2 comments; trust hardened pre-commit hook
 - [Origin committed with unresolved markers](feedback_origin_committed_with_unresolved_markers.md) — parallel sessions land half-resolved files; pull double-nests markers; `git checkout --ours` if HEAD clean
-- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD`
+- [Emergency-stop recovery](feedback_emergency_stop_recovery_pattern.md) — kill -P stops next iter; partial-deleted worktree `.git` gitlink recoverable via parent `.git/worktrees/<name>/HEAD` *stale: 2026-05-18*
 - [Bundle orphan SHAs from worktree](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle` from parent fails on unreachable orphans; bundle from worktree where HEAD points; tag for cross-machine
 - [push --no-verify for preservation](feedback_pre_push_hook_no_verify_for_preservation.md) — Iron Law bans `commit --no-verify` only; push --no-verify ok for codex-branch preservation
 - [Multi-session /whats-next swarm](feedback_multi_session_swarm.md) — 2 concurrent /whats-next on same machine produce non-colliding work; wip-label gates collisions; cross-validate before follow-ups
@@ -80,7 +80,7 @@
 - [--admin doesn't bypass rulesets](feedback_admin_flag_vs_rulesets_api.md) — `gh pr merge --admin` bypasses classic protection but NOT rulesets; toggle `enforcement=disabled` via API, then restore
 - [Per-repo metadata is the firewall](feedback_per_repo_metadata_is_firewall.md) — license/ToS/agent-context enforced by LICENSE+.gitignore+per-repo .claude+.git, not by file-system distance
 - [Off-repo intel routing](feedback_offrepo_intel_routing.md) — for published repos, side-channel notes (vendor marketing, intel) go to `/mnt/ace/<repo-name>/docs/`, not in-repo
-- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent
+- [ChatGPT share DOM duplicates](feedback_chatgpt_share_dom_duplication.md) — `chatgpt.com/s/<id>` renders each turn twice (a11y + display); dedupe by innerText; user prompt often absent *stale: 2026-05-18*
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — `import pytest` hangs >30s at digitalmodel/.venv; rely on CI; verify syntax via `py_compile` not pytest
 - [Git status lock storm](feedback_git_status_lock_storm.md) — long sessions accumulate 10+ zombie `git status -z -uall` blocking commits; `GIT_OPTIONAL_LOCKS=0 git commit` bypasses
 - [HTML default for rich artifacts](feedback_html_default_artifact.md) — HTML for human-facing plans/specs/reports/PR-explainers; markdown for harness/skill/rule files. workspace-hub#2663 codifies

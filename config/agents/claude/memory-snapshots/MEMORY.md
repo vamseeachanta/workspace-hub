@@ -4,6 +4,7 @@
 > working-style.md, shell-git-patterns.md, engineering-modules.md
 > feedback_*: html_refresh, skill_before_code, no_shortcuts_knowledge, dark_intelligence_excel
 > repo_scope, research_skill_sources, specs_plans_location, uv_run_isolation, no_jargon
+- [All-provider memory should flow through Hermes](feedback_memory_aspire_to_hermes_level.md) — Hermes is the canonical memory backend; per-provider stores (Claude auto-memory, Codex state, Gemini session) should consolidate to Hermes rather than evolve in parallel. Collapse cross-provider silos (Claude/Codex/Gemini learnings unified, not siloed); aim for Hermes-bar on capture / retrieval / cross-machine + cross-provider sync (2026-05-17)
 - [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
 - [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
 - [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
@@ -31,7 +32,7 @@
 - [Email cross-noise](feedback_email_cross_noise.md) — third parties mistakenly using user's Gmail; standard unsubscribe fails; sender-domain DELETE in routing config
 - [Codex sustained-MAJOR loop](feedback_codex_sustained_major_loop.md) — Codex MAJOR 3+ rounds while Claude/Gemini MINOR by v3 → surface consensus-vs-minority, don't auto-cycle (#2045, #2289)
 - [Parallel agent write-only pattern](feedback_parallel_agent_write_only_pattern.md) — agents write files only; main session serializes commits. Avoids git-lock races without worktrees
-- [Parallel subagent shared-target manifest deferral](feedback_parallel_subagent_shared_target_manifest_deferral.md) — partition into unique-target (subagent writes) + shared-target (manifest delta, main applies) when 2+ subagents need same files. Pilot: llm-wiki #82 + #83 in single ~30min session
+- [Parallel subagent shared-target manifest deferral](feedback_parallel_subagent_shared_target_manifest_deferral.md) — partition into unique-target (subagent writes) + shared-target (manifest delta, main applies). For 3 sub-issues use 2-batch + solo trailing (Batch 1 = 2 parallel, Batch 2 = solo on heaviest cross-link). Validated 4 PE epics 2026-05-15 → 2026-05-16
 - [Permission gate blocks cross-review](feedback_permission_gate_blocks_cross_review.md) — planning-only sessions can't dispatch cross-review.sh; fallback is single-author r3 with transparent provenance
 - [Commit attestation narrow scope](feedback_commit_attestation_narrow_scope.md) — "gates passed" covers ONLY that commit's files; re-run live, don't infer from `git log A..B`
 - [Isolated-clone dispatch race](feedback_isolated_clone_dispatch_race.md) — exec-clone subagent must check parallel landing on main workspace before writing (shared GH issue)
@@ -39,7 +40,7 @@
 - [Reflog as ground truth](feedback_reflog_as_ground_truth.md) — `[rejected]` pushes and "lock failed" rebase errors can mask successful ops; check reflog + status before retrying
 - [Stash `^3` for untracked extraction](feedback_stash_caret_3_for_untracked.md) — `git checkout stash@{0} -- <path>` fails for untracked-when-stashed; use `stash@{0}^3`
 - [Auto-sync as silent pusher](feedback_autosync_silent_pusher.md) — auto-sync resolves push contention by quietly pushing local-ahead; wait+verify after `[rejected]` not retry
-- [Retry-loop sweep contamination](feedback_retry_loop_sweep_contamination.md) — retry-loop commits can sweep parallel-session staged files; use `git commit -m "..." -- <file>` pathspec form (order matters: `--` after `-m`)
+- [Sweep-contamination class (commit + stash variants)](feedback_retry_loop_sweep_contamination.md) — retry-loop commits sweep parallel-session staged files; `while git stash drop` loops drain ALL repo stashes (not just yours, repo-wide scope). Use specific-target syntax: `git commit -m "..." -- <file>` pathspec for commits; `git stash drop stash@{N}` after grep-verifying description for stashes. Never unconditional-drain-all. Recovery via `git stash store/apply <sha>` within ~14d gc window.
 - [r1 review trust hazard](feedback_r1_review_trust_hazard.md) — before applying r1 fix asserting a gap, independently verify the asserted-missing surface; reviewers have constrained retrieval and selectively quote (Plan #2710 r1 missed submit-job.sh:18-23 existing check)
 - [CI baseline red ≠ PR broken](feedback_ci_baseline_red_not_pr_broken.md) — pre-existing main-branch CI failures inherit to new PRs; always check upstream baseline via `gh run list --branch main` before assuming the PR caused the red state
 - [llm-wiki hyphen-path pattern](feedback_llm_wiki_hyphen_module_path_pattern.md) — `scripts/data/llm-wiki/` poisons Python dotted-paths; grep plans for `llm-wiki\.` as P1 smell
@@ -65,7 +66,7 @@
 - [QG --maxfail undercounts](feedback_qg_maxfail_undercounts.md) — digitalmodel QG runs `pytest --maxfail=20`; "20 failed" was ceiling, true=244+; never trust QG count without local repro
 - [Desktop Agent-Mode embeds CLI](feedback_claude_desktop_agent_mode_embeds_cli.md) — Claude Desktop spawns child `claude` CLI from `~/.config/Claude/claude-code/<v>/`; upgrade via `apt upgrade claude-desktop`
 - [Cross-repo Closes at squash](feedback_cross_repo_closes_at_squash.md) — `Closes vamseeachanta/<repo>#NNNN` fires for ALL refs in a squash-merge body; multi-issue batches auto-close cleanly
-- [Comma-joined Closes fires once on direct push](feedback_closes_trailer_fires_once.md) — `Closes #X, #Y` in ONE commit pushed direct only auto-closes FIRST ref; follow up with `gh issue close`
+- [Closes trailer: comma-joined vs line-separated](feedback_closes_trailer_fires_once.md) — comma-joined `Closes #X, #Y` in ONE trailer line fires FIRST only; **line-separated `Closes #X` + `Closes #Y` on separate trailer lines fires ALL** (verified llm-wiki 2026-05-16). Prefer line-separated form — no post-push close-loop needed
 - [WebFetch first for LinkedIn recon](feedback_webfetch_first_for_linkedin.md) — public LinkedIn returns full content via og:description; skip Chrome unless WebFetch shows login gate
 - [Credential-issuer copy-paste leak](feedback_credential_issuer_copy_paste_leak.md) — never commit raw "save this token" output; recovery = revoke first, delete branch, reflog expire + gc prune
 - [PDF e-signature style default](feedback_pdf_esignature_style_default.md) — default typed cursive (Z003 chancery) + "Electronically signed" + date; avoid bitmap (filename-mislabel risk)
@@ -87,7 +88,13 @@
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
 - [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
 - [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
+- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4
+- [Reviewer dispatch refetch live body](feedback_reviewer_dispatch_refetch_live_body.md) — never reuse cached `/tmp/<prompt>.txt`; refetch live issue/plan body before each review dispatch (cost: Gemini MAJOR rediscovered already-fixed defects on stale input)
 - [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
+- [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture
+- [codex-cli stdin-detection hang REOPENED 2026-05-16](feedback_codex_cli_0_124_upstream_regression.md) — 0.130.0 hangs non-deterministically; `</dev/null` works sometimes not always; downgrade doesn't help; #2715
+- [Regression test broader than issue scope](feedback_regression_test_broader_than_issue_scope.md) — scope test glob to defect class, not just named file; catches sibling regressions for free (caught HTML_REPORTING_STANDARDS.md while fixing AI_AGENT_ORCHESTRATION.md per aceengineer-website#14)
+- [Post-commit autosync defeats test gate](feedback_post_commit_autosync_defeats_test_gate.md) — push-after-test plans MUST use `SKIP_PUSH=1 git commit`; bare `git commit` triggers WRK-1141 post-commit hook which pushes immediately and bypasses the empirical-test gate. Companion to [[feedback_autosync_silent_pusher]]
 
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
@@ -151,3 +158,4 @@
 - [Codex Desktop on Linux](reference_codex_desktop_linux_ilysenko.md) — `ilysenko/codex-desktop-linux` wraps OpenAI macOS DMG; build under `/mnt/ace/build/codex-desktop/`
 - [Claude Dreaming scope](reference_claude_dreaming_managed_agents.md) — Dreaming is Managed Agents only (2026-05-06 research preview); NOT in Claude Code CLI or Claude.ai
 - [Thariq HTML article](reference_thariq_html_article.md) — Anthropic's @trq212 "Unreasonable Effectiveness of HTML"; source for #2663/#2664
+- [License verify via metadata APIs](reference_license_verification_via_metadata_apis.md) — CrossRef API for DOIs + DOAB API for OA books bypass SSO-gated publisher pages; zero-auth, authoritative

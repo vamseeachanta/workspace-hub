@@ -1,0 +1,28 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Ripgrep is not available. Falling back to GrepTool.
+Skill conflict detected: "field-dev-code-recon" from "/mnt/local-analysis/workspace-hub/.agents/skills/field-dev-code-recon/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/field-dev-code-recon/SKILL.md".
+Skill conflict detected: "extract-learnings-to-issues" from "/mnt/local-analysis/workspace-hub/.agents/skills/extract-learnings-to-issues/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/extract-learnings-to-issues/SKILL.md".
+Skill conflict detected: "corporate-tax-form-fill" from "/mnt/local-analysis/workspace-hub/.agents/skills/corporate-tax-form-fill/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/corporate-tax-form-fill/SKILL.md".
+Error when talking to Gemini API Full report available at: /tmp/gemini-client-error-Turn.run-sendMessageStream-2026-05-18T02-07-47-960Z.json TerminalQuotaError: You have exhausted your capacity on this model. Your quota will reset after 4h52m26s.
+    at classifyGoogleError (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:270063:18)
+    at retryWithBackoff (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:270707:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:293631:28)
+    at async GeminiChat.streamWithRetries (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:293450:29)
+    at async Turn.run (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:294024:24)
+    at async GeminiClient.processTurn (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:306709:22)
+    at async GeminiClient.sendMessageStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-7VVHSNDQ.js:306797:14)
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/gemini-QSTQ2DBG.js:10859:26
+    at async main (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/gemini-QSTQ2DBG.js:16137:5) {
+  cause: {
+    code: 429,
+    message: 'You have exhausted your capacity on this model. Your quota will reset after 4h52m26s.',
+    details: [ [Object], [Object] ]
+  },
+  retryDelayMs: 17546106.45463,
+  reason: 'QUOTA_EXHAUSTED'
+}
+An unexpected critical error occurred:[object Object]

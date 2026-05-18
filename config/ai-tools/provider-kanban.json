@@ -326,7 +326,7 @@
     },
     {
       "approval_blockers": [
-        "reviews not clean: major_review",
+        "reviews not clean: major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -363,12 +363,13 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
       "warnings": [
         "legacy_review_no_sha",
-        "major_review"
+        "major_review",
+        "unavailable_review"
       ]
     },
     {
       "approval_blockers": [
-        "reviews not clean: major_review",
+        "reviews not clean: major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -387,7 +388,7 @@
         "machine_route": "(none ready)",
         "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
         "provider_route": "claude",
-        "risks": "**Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract. | **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date. | **Open:** Should execution manifests be markdown, YAML, or both?",
+        "risks": "**Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract. | **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date. | **Decision for this packet:** execution manifest fixtures are YAML; markdown docs are human-readable contract v",
         "tests": "TDD section present",
         "title": "feat(architecture): define execution layer contracts, tooling, and compute routing"
       },
@@ -406,12 +407,13 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
       "warnings": [
         "legacy_review_no_sha",
-        "major_review"
+        "major_review",
+        "unavailable_review"
       ]
     },
     {
       "approval_blockers": [
-        "reviews not clean: major_review",
+        "reviews not clean: major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -429,7 +431,7 @@
         "machine_route": "(none ready)",
         "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
         "provider_route": "claude",
-        "risks": "**Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table. | **Risk:** Some `/mnt` inventories can expose client identifiers; source IDs and redaction are required in public-facing docs. | **Open:** Canonical home for D-L2 raw-like `llm-wiki` staging: private repo, workspace-hub staging, or public `llm-wiki` priv",
+        "risks": "**Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table. | **Risk:** Some `/mnt` inventories can expose client identifiers; tracked public docs must use redacted source IDs or private-only appendices for raw client path names. | **Decision for this packet:** D-L2 raw-like `llm-wiki` staging is private/local onl",
         "tests": "TDD section present",
         "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model"
       },
@@ -448,12 +450,13 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
       "warnings": [
         "legacy_review_no_sha",
-        "major_review"
+        "major_review",
+        "unavailable_review"
       ]
     },
     {
       "approval_blockers": [
-        "reviews not clean: major_review",
+        "reviews not clean: major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -472,7 +475,7 @@
         "machine_route": "(none ready)",
         "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
         "provider_route": "claude",
-        "risks": "**Risk:** Data-level names may conflict with existing `DATA_RESIDENCE_POLICY.md` tier names. Plan must either reconcile terms or use distinct labels (`layer level` vs `data residence tier`). | **Risk:** Mounted project/source paths can contain sensitive client names; inventories must support redaction and source IDs. | **Open:** Should execution input data be classified primarily under data layer,",
+        "risks": "**Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics. | **Risk:** Mounted project/source paths can contain sensitive client names; inventories must support redaction and source IDs. | **Open:** Sho",
         "tests": "(no TDD section)",
         "title": "feat(architecture): review data, execution, and report layer boundaries"
       },
@@ -491,7 +494,8 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2726",
       "warnings": [
         "legacy_review_no_sha",
-        "major_review"
+        "major_review",
+        "unavailable_review"
       ]
     },
     {
@@ -7927,7 +7931,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-05-18T01:20:24Z",
+  "generated_at": "2026-05-18T05:20:09Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8234,7 +8238,7 @@
       },
       {
         "approval_blockers": [
-          "reviews not clean: major_review",
+          "reviews not clean: major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8271,12 +8275,13 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
         "warnings": [
           "legacy_review_no_sha",
-          "major_review"
+          "major_review",
+          "unavailable_review"
         ]
       },
       {
         "approval_blockers": [
-          "reviews not clean: major_review",
+          "reviews not clean: major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8295,7 +8300,7 @@
           "machine_route": "(none ready)",
           "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
           "provider_route": "claude",
-          "risks": "**Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract. | **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date. | **Open:** Should execution manifests be markdown, YAML, or both?",
+          "risks": "**Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract. | **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date. | **Decision for this packet:** execution manifest fixtures are YAML; markdown docs are human-readable contract v",
           "tests": "TDD section present",
           "title": "feat(architecture): define execution layer contracts, tooling, and compute routing"
         },
@@ -8314,12 +8319,13 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
         "warnings": [
           "legacy_review_no_sha",
-          "major_review"
+          "major_review",
+          "unavailable_review"
         ]
       },
       {
         "approval_blockers": [
-          "reviews not clean: major_review",
+          "reviews not clean: major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8337,7 +8343,7 @@
           "machine_route": "(none ready)",
           "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
           "provider_route": "claude",
-          "risks": "**Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table. | **Risk:** Some `/mnt` inventories can expose client identifiers; source IDs and redaction are required in public-facing docs. | **Open:** Canonical home for D-L2 raw-like `llm-wiki` staging: private repo, workspace-hub staging, or public `llm-wiki` priv",
+          "risks": "**Risk:** Existing data residence tiers and proposed data-layer levels can be confused; implementation must use clear names and crosswalk table. | **Risk:** Some `/mnt` inventories can expose client identifiers; tracked public docs must use redacted source IDs or private-only appendices for raw client path names. | **Decision for this packet:** D-L2 raw-like `llm-wiki` staging is private/local onl",
           "tests": "TDD section present",
           "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model"
         },
@@ -8356,12 +8362,13 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
         "warnings": [
           "legacy_review_no_sha",
-          "major_review"
+          "major_review",
+          "unavailable_review"
         ]
       },
       {
         "approval_blockers": [
-          "reviews not clean: major_review",
+          "reviews not clean: major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8380,7 +8387,7 @@
           "machine_route": "(none ready)",
           "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
           "provider_route": "claude",
-          "risks": "**Risk:** Data-level names may conflict with existing `DATA_RESIDENCE_POLICY.md` tier names. Plan must either reconcile terms or use distinct labels (`layer level` vs `data residence tier`). | **Risk:** Mounted project/source paths can contain sensitive client names; inventories must support redaction and source IDs. | **Open:** Should execution input data be classified primarily under data layer,",
+          "risks": "**Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics. | **Risk:** Mounted project/source paths can contain sensitive client names; inventories must support redaction and source IDs. | **Open:** Sho",
           "tests": "(no TDD section)",
           "title": "feat(architecture): review data, execution, and report layer boundaries"
         },
@@ -8399,7 +8406,8 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2726",
         "warnings": [
           "legacy_review_no_sha",
-          "major_review"
+          "major_review",
+          "unavailable_review"
         ]
       },
       {
@@ -15843,9 +15851,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-18T01:20:20.325698Z",
+  "scorecard_generated_at": "2026-05-18T05:20:06.256726Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-18T01:20:20.171462Z",
+  "utilization_generated_at": "2026-05-18T05:20:06.131883Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 5,
@@ -15854,7 +15862,7 @@
     "major_review": 21,
     "marker_without_open_approved_issue": 128,
     "missing_review": 26,
-    "unavailable_review": 14,
+    "unavailable_review": 18,
     "unknown_review": 3
   }
 }
