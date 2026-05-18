@@ -124,7 +124,7 @@ Use this when the user is no longer asking for general trip planning, but is try
 
 See `references/ok-broken-bow-cabin-booking-2026.md` for a concrete Broken Bow cabin booking example, including multi-photo panorama evidence, contact-sheet view verification, visual issue-comment structure, Checkfront booking-readiness caveats, phone/contact closeout, and the closeout pattern for late priority inversions where panorama becomes the primary gate.
 See `references/customer-service-lead-triage.md` for the reusable pattern when a host/customer-service call produces a new property lead that must still be gated before booking/payment.
-See `references/achantas-data-booking-mode.md` for the achantas-data issue-tracking pattern: start from the existing trip issue, preserve the top-priority candidate, and write a compact booking-readiness table with kitchen/view/pre-payment gates.
+See `references/achantas-data-booking-mode.md` for the achantas-data issue-tracking pattern: start from the existing trip issue, preserve the top-priority candidate, write a compact booking-readiness table with kitchen/view/pre-payment gates, and add/verify cost-estimate tables as issue comments when the user asks for pricing.
 
 ## Reference — past lodging patterns
 

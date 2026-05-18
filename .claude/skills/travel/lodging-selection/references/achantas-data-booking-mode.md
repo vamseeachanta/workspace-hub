@@ -55,3 +55,42 @@ Use a compact, booking-action-oriented comment:
 ```
 
 Keep the issue note transactional. The goal is to make the next booking action obvious, not to write a travel essay.
+
+## Cost-estimate add-on for booking issues
+
+When the user asks for a cost estimate after a booking-readiness review, add the estimate to the same GitHub trip issue as a separate transactional comment. Do not leave the table only in chat.
+
+Use observed booking-engine prices when available, but label the estimate as planning-only unless checkout/final payment has been reached.
+
+Minimum cost-estimate issue comment shape:
+
+```markdown
+## Cost estimate — <trip / lead lodging option>
+
+Planning estimate only — re-verify everything at booking. Prices in USD, rounded.
+
+**Assumptions used:** <party size>, <lead lodging>, <target dates / nights>, <pets/extra adults>, <food plan>. <Observed booking-rate evidence and tax/fee caveat.>
+
+| Bucket | Basis / evidence | Low | High |
+|---|---|---:|---:|
+| Lodging | <nightly rates + tax/fee basis> | $X | $Y |
+| Fuel / road costs | <origin + route buffer> | $X | $Y |
+| Food / groceries / restaurants | <cooking/restaurant assumption> | $X | $Y |
+| Activities / rentals | <free-to-paid activity range> | $X | $Y |
+| Misc. buffer | <supplies/parking/firewood/etc.> | $X | $Y |
+| **Estimated trip total** | <exclusions> | **$X** | **$Y** |
+
+### Optional charges to watch
+| Optional item | Added cost |
+|---|---:|
+| <pet/extra adult/fallback nights/etc.> | <cost formula> |
+```
+
+Operational pattern:
+
+1. Draft the comment to a temporary markdown file.
+2. Post with `gh issue comment <number> --repo vamseeachanta/achantas-data --body-file <file>`.
+3. Verify by viewing the issue comments and checking that the last comment contains the expected table.
+4. Reply with the issue comment URL plus a compact total-range summary.
+
+Pitfall: some booking engines expose hidden currency or selected-date fields that are inconsistent with visible rates. In that case, compute from visible nightly rates plus any observed pay-now/tax factor, state the caveat, and require final checkout re-verification before payment.
