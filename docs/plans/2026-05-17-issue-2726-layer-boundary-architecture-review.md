@@ -59,7 +59,7 @@
 | Report artifacts | internal reports, client HTML, limited PDFs, chatbot/query configs/indexes | Report layer; audience-specific evidence and sanitization gates required |
 
 ### Gaps identified
-- No approved level taxonomy yet for data L1 raw → L2 raw-llm-wiki/staging → L3 public `llm-wiki`/chatbot knowledge.
+- No approved level taxonomy yet for A-DATA raw sources → private/raw-like staging → public-safe curated knowledge/publication surfaces.
 - No approved level taxonomy yet for execution inputs vs data-layer inputs, code/tooling, machines/compute, validation evidence, and handoff manifests.
 - No approved level taxonomy yet for report raw outputs, data outputs, HTML/PDF/report formats, interactivity, and chatbot surfaces.
 - No canonical matrix yet mapping source class → owner repo/path → public/private posture → promotion gate → report/chatbot eligibility.
@@ -153,11 +153,11 @@ function build_layer_contract():
 |---|---|---|
 | Create | `docs/architecture/data-execution-report-layer-contract.md` | Main architecture contract |
 | Create | `docs/architecture/source-layer-classification-matrix.md` | Reviewable initial source inventory and level assignment |
-| Create | `docs/architecture/layer-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for gaps found during the architecture review; no implementation embedded in this issue |
 | Update | `docs/DATA_RESIDENCE_POLICY.md` | Cross-link expanded architecture; do not replace existing policy without review |
 | Update | `docs/content-pipeline/README.md` | Align publication/report-layer language if approved |
-| Update | `docs/plans/README.md` | Plan index entry |
-| Create/Update | child issue plan artifacts | Keep layer-specific details independently reviewable |
+| Update | `docs/plans/2026-05-17-issue-2727-data-layer-boundary-and-promotion.md` | Keep data-layer child plan aligned with parent contract |
+| Update | `docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md` | Keep execution-layer child plan aligned with parent contract |
+| Update | `docs/plans/2026-05-17-issue-2729-report-layer-outputs-evidence.md` | Keep report-layer child plan aligned with parent contract |
 
 ---
 
@@ -178,7 +178,7 @@ function build_layer_contract():
 - [ ] Initial known source classes distinguish control-plane repo data, documented tier-1 repos, tier-2/publication repos, public/private `llm-wiki`, execution artifacts, and report/chatbot artifacts; it must not mislabel `workspace-hub`, `llm-wiki`, `aceengineer-website`, or `aceengineer-strategy` as tier-1 unless the cited registry says so.
 - [ ] Matrix defines owner repo/path, public/private posture, promotion gate, output_residency, and report/chatbot eligibility for each source class.
 - [ ] Legal/security scan passes for all created docs.
-- [ ] Re-review artifacts exist for Claude, Codex, and Gemini after this revision before asking the user for approval.
+- [ ] Re-review artifacts are substantive for Claude/Codex, Gemini is substantive or explicitly UNAVAILABLE due quota, and no unresolved MAJOR findings remain before asking the user for approval.
 - [ ] No implementation or publication changes occur before user approval.
 
 ---

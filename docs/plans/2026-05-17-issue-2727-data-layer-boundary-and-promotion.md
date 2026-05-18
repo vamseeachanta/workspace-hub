@@ -52,7 +52,7 @@
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/ace/docs/literature/dde (preferred migrated local copy; remote DDE is archival per mounted-source-registry.yaml)` | Reference-in-place; never blindly copy into public repos |
-| Client/project data | `/mnt/ace/rock-oil-field`; `/mnt/ace/client-projects`; `/mnt/ace/doris`; `/mnt/ace/acma-projects`; `/mnt/ace/frontier-deepwater`; `/mnt/ace/saipem`; similar client roots | Unique private-client class; promote only to dedicated private `/mnt/local-analysis/<client>-llm-wiki` repos/corpora; sanitized derivatives require explicit approval |
+| Client/project data | `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; `[REDACTED-CLIENT-ROOT]`; similar client roots | Unique private-client class; promote only to dedicated private `/mnt/local-analysis/<client>-llm-wiki` repos/corpora; sanitized derivatives require explicit approval |
 | `llm-wiki` raw-like data | source inventories, extracted notes, staging packs, source cards, provenance metadata, RAG indexes | Private/local or controlled staging until reviewed |
 | Public `llm-wiki` content | sanitized markdown pages and public chatbot/search corpus | Public-facing after source/legal/sanitization gates |
 | Execution artifacts | issue plans, YAML/JSON configs, prompt bundles, tool manifests, run logs, checksums | Execution/report boundary; promote only manifests/evidence, not bulky generated data by default |
@@ -62,7 +62,7 @@
 | Example path / pattern | Example contents | Data layer level | Public/private posture | Notes |
 |---|---|---|---|---|
 | `/mnt/ace/` raw PDFs → generated `.md` files | Standards/literature/project PDFs and their first-pass markdown extraction outputs | D-L1 raw/source data → D-L2 raw-like extraction output | Private/local source data | Treat the PDFs and unreviewed markdown as local/private source material; no direct public `llm-wiki` or client-report eligibility without promotion gates. |
-| `/mnt/ace/raw-processed/` | Index files, markdown files, uncurated `llm-wiki` drafts/staging packs, extraction manifests | D-L2 raw-like structured/staging data | Private/local source data | Treat as staging and curation workspace; useful for source cards, inventories, RAG chunks, and reviewer work queues, but not public by default. |
+| `[REDACTED-CLIENT-ROOT]` | Index files, markdown files, uncurated `llm-wiki` drafts/staging packs, extraction manifests | D-L2 raw-like structured/staging data | Private/local source data | Treat as staging and curation workspace; useful for source cards, inventories, RAG chunks, and reviewer work queues, but not public by default. |
 | `/mnt/local-analysis/<repo>/` | repo checkouts such as `workspace-hub`, documented tier-1 engineering/data repos (`digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`), and knowledge/publication/strategy repos (`llm-wiki`, `aceengineer-website`, `aceengineer-strategy`) | D-L3 curated knowledge/data or repo-backed execution/report metadata, depending on repo/path | Public-facing only for explicitly public repos/content; sanitized/curated data only | Public `llm-wiki` content, curated data, and sanitized fixtures belong here when repo policy allows; private raw source data should not be inferred public just because it was used to create a sanitized derivative. |
 
 ### Client data handling model
@@ -77,17 +77,8 @@ Tracked public docs must not publish raw client-identifying path names. The impl
 
 Structured inventory source of truth for this packet is `tests/fixtures/architecture/data_source_inventory.yaml`; it must cross-link existing `data/document-index/mounted-source-registry.yaml` entries and must not fork that registry.
 
-## Pseudocode
-```text
-function specify_data_classification_contract(source):
-    detect origin: public API, engineering standard, literature, repo data, client/project, generated artifact
-    assign data residence tier from existing policy
-    assign data layer level D-L1..D-L4
-    record canonical owner and path/source_id
-    record provenance, license, sensitivity, regeneration command, last-known-good
-    define permitted next promotion target and required gates
-    document required fail-closed public llm-wiki/chatbot eligibility gates and defer runtime enforcement to filed follow-up issue unless implemented in this packet
-```
+## Contract Logic
+This is a documentation/architecture packet. Runtime classification code is out of scope unless a separate implementation issue is opened. Tests validate the machine-readable YAML fixtures, registry cross-links, redaction rules, and markdown views; they do not pretend to exercise a non-existent runtime function.
 
 ---
 
@@ -102,7 +93,6 @@ function specify_data_classification_contract(source):
 | Create | `docs/architecture/llm-wiki-data-promotion-gates.md` | Defines D-L1→D-L2→D-L3/D-L4 promotion rules |
 | Create | `tests/governance/test_data_layer_contract.py` | Guards inventory/schema behavior using fixtures, not only markdown phrase presence |
 | Update | `docs/DATA_RESIDENCE_POLICY.md` | Cross-link layer levels after approval |
-| Update | `docs/plans/README.md` | Plan index entry |
 
 ---
 
@@ -124,7 +114,7 @@ function specify_data_classification_contract(source):
 ## Acceptance Criteria
 - [ ] Data levels D-L1 through D-L4 are defined and reconciled with existing data residence tiers.
 - [ ] Initial source inventory includes `/mnt` roots, tier-1 repos, `worldenergydata` public sources, `digitalmodel` reference data, mounted standards/literature, client/project data, private/raw `llm-wiki`, public `llm-wiki`, and derived indexes.
-- [ ] Data source inventory includes concrete path-class examples for `/mnt/ace/` raw PDFs → markdown, `/mnt/ace/raw-processed/` private staging/indexes/uncurated wiki material, and `/mnt/local-analysis/<repo>/` repo-backed public-facing/curated surfaces, without assuming every local checkout is tier-1.
+- [ ] Data source inventory includes concrete path-class examples for `/mnt/ace/` raw PDFs → markdown, `[REDACTED-CLIENT-ROOT]` private staging/indexes/uncurated wiki material, and `/mnt/local-analysis/<repo>/` repo-backed public-facing/curated surfaces, without assuming every local checkout is tier-1.
 - [ ] `llm-wiki` raw/staging vs public-facing content boundaries are explicit.
 - [ ] Client/project data is handled as a distinct class: verified-present raw client roots and explicitly planned/unavailable client roots are separated; planned roots and `/mnt/local-analysis/<client>-llm-wiki` private repositories are provisioning targets, not assumed-existing resources, and must be filed as follow-up issues before implementation can rely on them.
 - [ ] Insight reports can combine private client `llm-wiki` corpora with public `llm-wiki` retrieval, but public and private source classes remain separated and client data is non-public by default.

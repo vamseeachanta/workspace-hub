@@ -87,7 +87,7 @@ docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md:106-113 — documented Tier-1 core en
 config/workstations/registry.yaml:3 — all machine identity/capability data lives in this registry; execution routing docs must reference it instead of duplicating machine truth.
 docs/BUSINESS_BRAIN.md:106-115 — knowledge promotion requires explicit source/provenance/license/legal gates and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only` for reviewed diffs.
 docs/document-intelligence/README.md:1-80; docs/document-intelligence/durable-vs-transient-knowledge-boundary.md:1-120 — durable public/private knowledge boundaries must govern report-derived learning promotion.
-data/document-index/registry.yaml and resource-intelligence-maturity.yaml — document-index/resource-intelligence sources must be read before final implementation; architecture contracts should link rather than fork these registries.
+data/document-index/registry.yaml and resource-intelligence-maturity.yaml — registry/maturity data is source-of-truth for document-index provenance and readiness; architecture contracts must link rather than fork these registries and must record unavailable source families explicitly.
 Cross-repo report-surface inventory sample (2026-05-17): `git -C /mnt/local-analysis/llm-wiki ls-tree -r --name-only HEAD | grep -Ei '(report|html|pdf|chatbot|dashboard|gtm|demo)' | head` found `docs/reports/*` and conversion-oracle HTML fixtures; `/mnt/local-analysis/digitalmodel` found benchmark HTML/report JSON/report generators under `docs/benchmarks/` and `docs/domains/orcaflex/`; `/mnt/local-analysis/aceengineer-website` and `/mnt/local-analysis/aceengineer-strategy` were not present in this runtime and must be inventoried from another machine or marked unavailable before closeout.
 ```
 
@@ -156,12 +156,11 @@ function classify_report_artifact(artifact):
 | Create | `docs/architecture/report-layer-contract.md` | Defines report layer levels and boundaries |
 | Create | `docs/architecture/report-output-taxonomy.md` | Maps artifact types to R-level, owner, storage posture, and audience |
 | Create | `docs/architecture/report-publication-gates.md` | Defines evidence/legal/sanitization gates for HTML/PDF/chatbot/public surfaces and wraps/reuses `scripts/legal/legal-sanity-scan.sh` / `.legal-deny-list.yaml` rather than inventing a parallel denylist |
-| Create | `docs/architecture/report-evidence-bundle-schema.md` | Defines evidence bundle format and required fields: artifact_id, source_manifest, command_manifest, validation_results, legal_scan, checksums, review_verdicts, output_residency, promotion_decision |
+| Create | `docs/architecture/report-evidence-bundle-schema.md` | Defines evidence bundle format and required fields: claim_id, artifact_id, source_corpus, corpus_posture, audience_scope, freshness, last_verified, source_manifest, command_manifest, validation_results, legal_scan, checksums, review_verdicts, output_residency, promotion_decision |
 | Create | `docs/architecture/report-derived-learning-routing.md` | Defines public/domain-private/client-private destinations for report-derived knowledge |
 | Create | `docs/architecture/report-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for report validators, artifact indexes, and publication pipelines |
 | Create | `tests/governance/test_report_layer_contract.py` | Tests taxonomy/manifest fixtures and posture invariants, not only markdown phrase presence |
 | Update | `docs/content-pipeline/README.md` | Add a bounded cross-link to report publication/routing rules after approval; no broad rewrite in this issue |
-| Update | `docs/plans/README.md` | Plan index entry |
 
 ---
 

@@ -110,7 +110,7 @@ N/A — architecture/governance planning issue, not a runtime failure.
 |---|---|
 | This plan | `docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md` |
 | Execution layer contract | `docs/architecture/execution-layer-contract.md` |
-| Execution input/output manifest schema | `docs/architecture/execution-manifest-schema.md` |
+| Execution input/output manifest schema | `docs/architecture/execution-manifest-schema.md` and `docs/architecture/execution-manifest.schema.yaml` |
 | Machine/tool routing policy view | `docs/architecture/execution-routing-policy-view.md` |
 | Tests | `tests/governance/test_execution_layer_contract.py`; fixtures in `tests/fixtures/architecture/execution_manifest.yaml` and `tests/fixtures/architecture/execution_routing_cases.yaml` |
 | Review artifacts | `scripts/review/results/2026-05-17-plan-2728-*.md` |
@@ -127,7 +127,7 @@ An execution-layer contract will define how input data contracts, code/tools, ag
 |---|---|---|---|
 | E-L1 | Input contracts | YAML/JSON specs, issue plans, source manifests, fixture manifests, prompt bundles | References data sources by source_id/path; does not own raw data |
 | E-L2 | Tools/code execution | ingestion scripts, parsers, report generators, validation harnesses, legal scanners, skills/prompts | Code is repo-backed; Python via `uv run`; outputs manifest evidence |
-| E-L3 | Compute/runtime placement | ace-linux-1, ace-linux-2, licensed Windows/machines, local worktrees, background jobs, provider agents | Routing contract references `config/workstations/registry.yaml` as canonical machine registry; docs may derive views but cannot duplicate source-of-truth fields |
+| E-L3 | Compute/runtime placement | registry keys (`dev-primary`, `dev-secondary`, `licensed-win-1`, `licensed-win-2`, etc.), hostnames as attributes only, local worktrees, background jobs, and provider tools as machine capabilities | Routing contract references `config/workstations/registry.yaml` as canonical machine registry; docs may derive views but cannot duplicate source-of-truth fields |
 | E-L4 | Validation/evidence | tests, legal scan outputs, adversarial review artifacts, checksums, run manifests, command logs | Required handoff to report layer; raw logs remain internal unless sanitized |
 
 ---
@@ -156,8 +156,6 @@ function validate_execution_contract(execution_manifest):
 | Create | `docs/architecture/execution-entry-point-inventory.md` | Inventory scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across the named repos with evidence paths |
 | Create | `docs/architecture/execution-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for missing runners, registries, validators, or adapters |
 | Create | `tests/governance/test_execution_layer_contract.py` | Tests manifest fixtures and routing-policy invariants, not only markdown phrase presence |
-| Update | `config/workstations/registry.yaml` | Cross-link only if needed after approval; do not change machine routing in plan stage |
-| Update | `docs/plans/README.md` | Plan index entry |
 
 ---
 
@@ -177,10 +175,10 @@ function validate_execution_contract(execution_manifest):
 ## Acceptance Criteria
 - [ ] Execution levels E-L1 through E-L4 are defined.
 - [ ] Input data boundary is explicit: execution references/validates data-layer inputs but does not become the canonical owner of raw data.
-- [ ] Routing policy view covers ace-linux-1, ace-linux-2, licensed machines, local worktrees, background jobs, and provider agents by referencing canonical machine IDs from `config/workstations/registry.yaml`, and explicitly coordinates with #2119/#1838/#2089.
+- [ ] Routing policy view covers canonical registry keys (`dev-primary`, `dev-secondary`, licensed machine keys), local worktrees, background jobs, and provider tools as machine capabilities by referencing `config/workstations/registry.yaml`; provider-credit routing remains deferred to #1838 unless separately approved.
 - [ ] Execution evidence requirements include command manifests, regeneration commands, replay commands, environment pins, checksums, tests, legal scan, and adversarial review artifacts where applicable.
 - [ ] Report-layer handoff requires validation evidence plus `input_residency` and `output_residency` metadata.
-- [ ] Execution entry-point inventory covers scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across named repos or records explicit unavailable/not-applicable evidence.
+- [ ] Execution entry-point inventory includes empirical filesystem/git enumeration for each available named repo and records explicit unavailable/not-applicable evidence for missing repos.
 - [ ] Follow-up implementation work is proposed as GitHub issue titles/scopes in `docs/architecture/execution-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
 - [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_execution_layer_contract.py -v` and `git add -N <new-files> && scripts/legal/legal-sanity-scan.sh --diff-only`.
 - [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
