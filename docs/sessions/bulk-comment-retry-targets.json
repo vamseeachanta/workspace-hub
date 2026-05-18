@@ -1,0 +1,1530 @@
+[
+  {
+    "number": 1829,
+    "title": "RAO comparison plots for L02 OC4 semi-sub (multi-column geometry)"
+  },
+  {
+    "number": 1828,
+    "title": "populate RAODatabase from all existing .xlsx fixtures (5 geometries)"
+  },
+  {
+    "number": 1827,
+    "title": "licensed-win-1: extract .sim model metadata to JSON for snapshot testing"
+  },
+  {
+    "number": 1826,
+    "title": "dark-intel: rebuild stale specs/module-registry.yaml as canonical calculation index"
+  },
+  {
+    "number": 1824,
+    "title": "dark-intel: uplift digitalmodel test coverage 2.95% → 20% using extraction test generators"
+  },
+  {
+    "number": 1818,
+    "title": "dark-intel: extract riser engineering priority files from /mnt/ace/ (3837-CAL series)"
+  },
+  {
+    "number": 1815,
+    "title": "dark-intel: promote flowback calculator extraction → digitalmodel/production_engineering/"
+  },
+  {
+    "number": 1814,
+    "title": "dark-intel: promote API RP 2GEO alpha method archive → digitalmodel/geotechnical/ (offshore pile capacity)"
+  },
+  {
+    "number": 1813,
+    "title": "dark-intel: promote surface wellhead SITP calculation → digitalmodel/well/sitp.py"
+  },
+  {
+    "number": 1812,
+    "title": "dark-intel: promote conductor length assessment → digitalmodel/structural/conductor.py"
+  },
+  {
+    "number": 1811,
+    "title": "dark-intel: promote SN curve POC v2 output → digitalmodel/fatigue/sn_curves.py"
+  },
+  {
+    "number": 1810,
+    "title": "epic: dark intelligence Excel-to-code promotion — extract 3,600 Excel calcs into digitalmodel"
+  },
+  {
+    "number": 1806,
+    "title": "Document autonomous loop patterns — 6 architectures from sequential to RFC-driven DAG"
+  },
+  {
+    "number": 1805,
+    "title": "Security hardening for AI agent workflows — skill scanning, memory poisoning, kill switches"
+  },
+  {
+    "number": 1804,
+    "title": "Evaluate MCP servers: evalview, insaits, token-optimizer, omega-memory"
+  },
+  {
+    "number": 1803,
+    "title": "Add context-budget audit skill — measure token overhead across loaded components"
+  },
+  {
+    "number": 1802,
+    "title": "Implement batch-at-Stop pattern — defer format+typecheck to session end"
+  },
+  {
+    "number": 1801,
+    "title": "Adopt pre:config-protection hook — prevent agents from weakening linter/formatter configs"
+  },
+  {
+    "number": 1799,
+    "title": "DATA: Collect public pipelay barge/vessel specs for shallow water GTM demo"
+  },
+  {
+    "number": 1798,
+    "title": "DATA: Collect public construction/heavy-lift vessel specs for GTM demos"
+  },
+  {
+    "number": 1797,
+    "title": "feat(freespan): link to OrcaFlex rigid jumper VIV workflow (#23)"
+  },
+  {
+    "number": 1796,
+    "title": "feat(freespan): strake and SCF corrections for VIV fatigue damage"
+  },
+  {
+    "number": 1795,
+    "title": "feat(freespan): trench depth correction for CF onset velocity"
+  },
+  {
+    "number": 1794,
+    "title": "feat(freespan): turbulence intensity and wave spreading reduction factors"
+  },
+  {
+    "number": 1793,
+    "title": "feat(freespan): wire wave_velocity into facade — auto-compute Uw from Hs/Tp"
+  },
+  {
+    "number": 1792,
+    "title": "feat(freespan): GTM demo notebook — free-span VIV assessment walkthrough"
+  },
+  {
+    "number": 1789,
+    "title": "licensed-win-1: retry hemisphere.owr fixture generation (missing .gdf)"
+  },
+  {
+    "number": 1788,
+    "title": "OrcaFlex .sim snapshot testing: HTML report from minimal_test.sim fixture"
+  },
+  {
+    "number": 1782,
+    "title": "epic: zero-loss agent learnings — git-track ALL AI agent memories, corrections, patterns, and insights"
+  },
+  {
+    "number": 1775,
+    "title": "feat(harness): weekly Claude Code best-practice adoption cadence — 8-week plan from shanraisshan/claude-code-best-practice"
+  },
+  {
+    "number": 1760,
+    "title": "feat(self-improvement): operationalize /powerup, /insights, /improve, /compound, /reflect, and /knowledge commands for the repo ecosystem"
+  },
+  {
+    "number": 1751,
+    "title": "feat(skills): auto-convert pipeline — detect new agents and generate SKILL.md drafts (#1721 Phase 4)"
+  },
+  {
+    "number": 1749,
+    "title": "feat(skills): convert .claude/commands to SKILL.md — 306 command files across repos (#1721 Phase 3)"
+  },
+  {
+    "number": 1748,
+    "title": "feat(skills): convert CAD-DEVELOPMENTS + aceengineer-admin agents to SKILL.md (#1721 follow-up)"
+  },
+  {
+    "number": 1745,
+    "title": "feat(hermes): enable correction tracking in Hermes orchestrator logs (#1720)"
+  },
+  {
+    "number": 1744,
+    "title": "refactor: stabilize work-queue subsystem — 55% of all 8965 corrections (#1720)"
+  },
+  {
+    "number": 1743,
+    "title": "test: add coverage for top 20 Python correction hotspot files — 0 of 20 have tests (#1720)"
+  },
+  {
+    "number": 1738,
+    "title": "chore: triage 54 pending work queue items in CAD-DEVELOPMENTS"
+  },
+  {
+    "number": 1736,
+    "title": "chore: standardize cross-review verdict format across Codex and Gemini"
+  },
+  {
+    "number": 1734,
+    "title": "chore: add domain skills to assethold (tier-1 with 0 skills)"
+  },
+  {
+    "number": 1733,
+    "title": "chore: promote 5 domain-critical skills from CAD-DEVELOPMENTS to workspace-hub"
+  },
+  {
+    "number": 1732,
+    "title": "chore: deduplicate 13 skills in achantas-data that are copies of workspace-hub"
+  },
+  {
+    "number": 1726,
+    "title": "chore(skills): resurrect 27 dead skills covering active domains (#1720)"
+  },
+  {
+    "number": 1720,
+    "title": "analysis: cross-agent session corpus audit — mine 1M+ tool calls for ecosystem curation opportunities"
+  },
+  {
+    "number": 1717,
+    "title": "chore(policy): resolve work-queue vs GitHub-issues contradiction in AGENTS.md and active docs"
+  },
+  {
+    "number": 1702,
+    "title": "cathodic_protection: consolidate marine_cp.py and marine_structure_cp.py into single module"
+  },
+  {
+    "number": 1701,
+    "title": "ANSYS package: Calculation examples — pressure vessel, flange, nozzle worked examples"
+  },
+  {
+    "number": 1700,
+    "title": "cathodic_protection: ICCP vs SACP comparison tool and cost optimization"
+  },
+  {
+    "number": 1699,
+    "title": "cathodic_protection: cross-module integration tests and edge case hardening"
+  },
+  {
+    "number": 1698,
+    "title": "ANSYS package: Solver queue integration — dispatch FEA jobs to licensed-win-1"
+  },
+  {
+    "number": 1697,
+    "title": "Solver queue: close completed issues #1654, #1650, #1648 after review"
+  },
+  {
+    "number": 1696,
+    "title": "cathodic_protection: integration examples and YAML-driven CP design workflow"
+  },
+  {
+    "number": 1695,
+    "title": "ANSYS package: YAML-based pipeline spec — define full FEA workflow in a single YAML file"
+  },
+  {
+    "number": 1694,
+    "title": "Fatigue post-processor: OrcaFlex time-history → rainflow → S-N damage report"
+  },
+  {
+    "number": 1693,
+    "title": "Solver queue: notification alerts on repeated failures + retry exhaustion"
+  },
+  {
+    "number": 1691,
+    "title": "Fatigue TDD Phase 2: test coverage for plotting, multiaxial, environmental modules"
+  },
+  {
+    "number": 1689,
+    "title": "ANSYS package: Promote to PRODUCTION maturity — docstring audit + models.py test coverage"
+  },
+  {
+    "number": 1688,
+    "title": "Solver queue: deploy cron entries for watch-results + dashboard on ace-linux-1"
+  },
+  {
+    "number": 1687,
+    "title": "Docstring uplift wave 3 — complete infrastructure/ coverage (24 files remaining) (#1645 follow-up)"
+  },
+  {
+    "number": 1686,
+    "title": "ANSYS package: Integration test suite — end-to-end pressure vessel workflow"
+  },
+  {
+    "number": 1685,
+    "title": "Solver queue: integrate validate_manifest into submit-batch.sh pre-flight"
+  },
+  {
+    "number": 1683,
+    "title": "Solver queue: integrate retry_handler into process-queue.py main loop"
+  },
+  {
+    "number": 1682,
+    "title": "Upgrade pytest-asyncio from 0.21.1 to >=0.23.0 — fix hypothesis INTERNALERROR (#1647 follow-up)"
+  },
+  {
+    "number": 1681,
+    "title": "Supply chain hardening for AI harness updates (#1668 follow-up)"
+  },
+  {
+    "number": 1680,
+    "title": "Validate harness-update rollback with simulated tool breakage (#1668 follow-up)"
+  },
+  {
+    "number": 1679,
+    "title": "Active push notifications for harness-update failures (#1668 follow-up)"
+  },
+  {
+    "number": 1678,
+    "title": "Deploy harness-update-windows.sh to licensed-win-1 and licensed-win-2 (#1668 follow-up)"
+  },
+  {
+    "number": 1677,
+    "title": "Deploy harness-update lifecycle to ace-linux-2 (#1668 follow-up)"
+  },
+  {
+    "number": 1669,
+    "title": "[WRK] GTM: Vessel Installation Contractor Email Outreach Campaign"
+  },
+  {
+    "number": 1667,
+    "title": "Reservoir package: add well correlation and facies analysis functions (#1633 follow-up)"
+  },
+  {
+    "number": 1666,
+    "title": "Test health dashboard: add historical trend tracking and coverage delta detection"
+  },
+  {
+    "number": 1664,
+    "title": "Schedule test health dashboard as weekly cron task (Sunday 04:00 UTC)"
+  },
+  {
+    "number": 1663,
+    "title": "Quality score trend dashboard — track maturity trajectory over time"
+  },
+  {
+    "number": 1662,
+    "title": "Module status matrix: PRODUCTION promotion campaign — 16 DEVELOPMENT packages"
+  },
+  {
+    "number": 1661,
+    "title": "Architecture scanner: dependency cycle detection and layering violations"
+  },
+  {
+    "number": 1659,
+    "title": "Promote data_models from SKELETON to DEVELOPMENT — add tests for curves.py"
+  },
+  {
+    "number": 1657,
+    "title": "Resolve 179 cross-package API name collisions — top 20 worst offenders"
+  },
+  {
+    "number": 1654,
+    "title": "Solver queue: retry logic for failed jobs + exponential backoff"
+  },
+  {
+    "number": 1652,
+    "title": "OrcaFlex reporting: integration test with real .sim fixture + HTML snapshot testing"
+  },
+  {
+    "number": 1650,
+    "title": "Solver queue: batch manifest validation CLI + schema enforcement"
+  },
+  {
+    "number": 1648,
+    "title": "Solver queue: integrate watch-results.sh into cron schedule + JSONL dashboard"
+  },
+  {
+    "number": 1647,
+    "title": "Fix broken test dependencies — pint, plotly, deepdiff missing from dev environment"
+  },
+  {
+    "number": 1646,
+    "title": "Docstring uplift wave 3 — solvers, hydrodynamics, specialized, signal_processing, remaining stragglers"
+  },
+  {
+    "number": 1645,
+    "title": "Docstring uplift wave 2 — web, reservoir, infrastructure, marine_ops packages"
+  },
+  {
+    "number": 1637,
+    "title": "Parametric spec generator: multi-dimensional sweep combinations and CLI interface"
+  },
+  {
+    "number": 1636,
+    "title": "OrcaWave reporting: section-level unit tests for all 7 section builders"
+  },
+  {
+    "number": 1635,
+    "title": "152 MODERATE docs approaching staleness — triage and prioritize refreshes"
+  },
+  {
+    "number": 1632,
+    "title": "Test coverage: field_development matplotlib tests — skipped without matplotlib in venv (#1589 follow-up)"
+  },
+  {
+    "number": 1630,
+    "title": "Test coverage: web package Flask integration tests — requires Flask in venv (#1584 follow-up)"
+  },
+  {
+    "number": 1628,
+    "title": "Sprint plan: OrcaWave/OrcaFlex Phase 1 — solver queue hardening + orcawave test coverage"
+  },
+  {
+    "number": 1620,
+    "title": "Clone and pip-install BEMRosetta, pyHAMS, OCEANLYZ, wavespectra — critical marine OSS tools"
+  },
+  {
+    "number": 1615,
+    "title": "Schedule download-and-catalog pipeline as recurring cron task"
+  },
+  {
+    "number": 1614,
+    "title": "Registry freshness checker — periodic URL validation and dead link detection"
+  },
+  {
+    "number": 1613,
+    "title": "Cross-reference resource registry with standards transfer ledger"
+  },
+  {
+    "number": 1611,
+    "title": "Fill domain gaps in resource registry — orcawave, fatigue, subsea, geotechnical"
+  },
+  {
+    "number": 1610,
+    "title": "Add opm-common to open-source-engineering-catalog.yaml (reservoir simulation domain)"
+  },
+  {
+    "number": 1609,
+    "title": "Automated resource download pipeline — execute top-priority downloads from registry"
+  },
+  {
+    "number": 1607,
+    "title": "Capytaine BEM end-to-end integration with parametric hull sweep pipeline"
+  },
+  {
+    "number": 1604,
+    "title": "Architecture scanner: detect API surface and import dependency graph"
+  },
+  {
+    "number": 1603,
+    "title": "Multi-repo architecture scan — expand scanner to all tier-1 repositories"
+  },
+  {
+    "number": 1602,
+    "title": "Promote DEVELOPMENT packages toward PRODUCTION maturity — docstring + test uplift"
+  },
+  {
+    "number": 1601,
+    "title": "Add tests for parametric_hull_analysis: forward_speed, shallow_water, passing_ship, charts"
+  },
+  {
+    "number": 1600,
+    "title": "Cross-tool structural comparison framework — 2D solver vs OrcaFlex vs CalculiX"
+  },
+  {
+    "number": 1594,
+    "title": "Design Load Case (DLC) matrix generator for OrcaFlex mooring/riser analysis"
+  },
+  {
+    "number": 1593,
+    "title": "Automated WAMIT validation runner for L00 test cases"
+  },
+  {
+    "number": 1591,
+    "title": "Seed hull registry with standard hull forms (barge, tanker, semi-sub, spar, FPSO)"
+  },
+  {
+    "number": 1587,
+    "title": "Promote near-PRODUCTION packages: add docstrings to asset_integrity, structural, data_systems"
+  },
+  {
+    "number": 1586,
+    "title": "Harden solver queue: batch submission, result watcher, auto post-processing"
+  },
+  {
+    "number": 1583,
+    "title": "Hermes config parity via repo ecosystem templates"
+  },
+  {
+    "number": 1582,
+    "title": "Install and configure Hermes on ace-linux-2"
+  },
+  {
+    "number": 1581,
+    "title": "Post-update display/VNC recovery on ace-linux-2"
+  },
+  {
+    "number": 1579,
+    "title": "Audit /mnt/ace for undiscovered resources not in any index"
+  },
+  {
+    "number": 1578,
+    "title": "Automated download-and-catalog pipeline — discover, download to /mnt/ace, catalog, link"
+  },
+  {
+    "number": 1572,
+    "title": "Domain-specific capability roadmaps — OrcaWave/OrcaFlex, structural, hydrodynamics, pipeline"
+  },
+  {
+    "number": 1567,
+    "title": "Feature: Continuous Repo Architecture Intelligence — automated discovery, staleness detection, and domain capability roadmap"
+  },
+  {
+    "number": 1565,
+    "title": "Verify cron-health-check.sh runs correctly on ace-linux-2"
+  },
+  {
+    "number": 1564,
+    "title": "Sync crontab on ace-linux-2 from schedule-tasks.yaml"
+  },
+  {
+    "number": 1563,
+    "title": "Feature: Data & Resource Intelligence — consolidated plan (45 issues, 8 sub-features)"
+  },
+  {
+    "number": 1545,
+    "title": "Agentic feature progression for repo ecosystem productivity under GSD"
+  },
+  {
+    "number": 1539,
+    "title": "Install codex-plugin-cc across all machines"
+  },
+  {
+    "number": 1538,
+    "title": "Verify cross-review adversarial enforcement across sessions"
+  },
+  {
+    "number": 1525,
+    "title": "Define canonical repo control-plane contract across workspace ecosystem"
+  },
+  {
+    "number": 1511,
+    "title": "Migrate cron jobs to Claude Desktop scheduled agents for self-healing execution"
+  },
+  {
+    "number": 1510,
+    "title": "Verify Claude Desktop install: ACMA-WS014"
+  },
+  {
+    "number": 1509,
+    "title": "Verify Claude Desktop install: licensed-win-1"
+  },
+  {
+    "number": 1508,
+    "title": "Verify Claude Desktop install: macbook-portable"
+  },
+  {
+    "number": 1507,
+    "title": "Verify Claude Desktop install: home-win"
+  },
+  {
+    "number": 1506,
+    "title": "Verify Claude Desktop install: ace-linux-2"
+  },
+  {
+    "number": 1505,
+    "title": "Verify Claude Desktop install: ace-linux-1"
+  },
+  {
+    "number": 1504,
+    "title": "Install Claude Desktop on all ecosystem machines"
+  },
+  {
+    "number": 1502,
+    "title": "[WRK] Maximize OpenAI Codex account utilization — dual 0 Plus accounts strategy"
+  },
+  {
+    "number": 1499,
+    "title": "Composite/multi-material section analysis PoC with sectionproperties"
+  },
+  {
+    "number": 1498,
+    "title": "Production sectionproperties module in digitalmodel"
+  },
+  {
+    "number": 1497,
+    "title": "Add AISC shapes database lookup for sectionproperties"
+  },
+  {
+    "number": 1485,
+    "title": "Retrofit existing calculation module to use Pint units"
+  },
+  {
+    "number": 1478,
+    "title": "FFmpeg skill for simulation output and media processing"
+  },
+  {
+    "number": 1476,
+    "title": "GWS (Google Workspace CLI) integration — Gmail, Docs, Sheets automation"
+  },
+  {
+    "number": 1465,
+    "title": "[Template] Prospect - [Company Name] - [Contact Name]"
+  },
+  {
+    "number": 1464,
+    "title": "Capytaine BEM available for hull mesh wave load analysis"
+  },
+  {
+    "number": 1462,
+    "title": "Install and configure tmux (or chosen multiplexer) across all workstation machines"
+  },
+  {
+    "number": 1460,
+    "title": "Integrate WEIS floating wind co-design framework"
+  },
+  {
+    "number": 1453,
+    "title": "Integrate ANYstructure DNV steel design tool"
+  },
+  {
+    "number": 1445,
+    "title": "Integrate WISDEM wind plant system design"
+  },
+  {
+    "number": 1444,
+    "title": "Integrate RAFT floating wind turbine dynamics"
+  },
+  {
+    "number": 1443,
+    "title": "Integrate FLORIS wind farm wake modelling"
+  },
+  {
+    "number": 1442,
+    "title": "Integrate FEniCSx PDE solver into ACE ecosystem"
+  },
+  {
+    "number": 1441,
+    "title": "Integrate OpenDrift ocean trajectory modelling into ACE ecosystem"
+  },
+  {
+    "number": 1440,
+    "title": "Install Capytaine BEM solver into ACE ecosystem"
+  },
+  {
+    "number": 1432,
+    "title": "WRK-1432: Settings cleanup: auto mode, deduplicate config across levels"
+  },
+  {
+    "number": 1426,
+    "title": "Accelerate correction-to-skill promotion pipeline (8% to 40% target)"
+  },
+  {
+    "number": 1411,
+    "title": "WRK-1411: fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to /"
+  },
+  {
+    "number": 1409,
+    "title": "WRK-1409: fix: archive blocker from WRK-workspace-hub-1398 — Create centralized machine registry (config/machines/registr"
+  },
+  {
+    "number": 1408,
+    "title": "WRK-1408: Wire notification consumer — surface logs/notifications to /today or desktop"
+  },
+  {
+    "number": 1404,
+    "title": "WRK-1404: Organize /mnt/ace/docs/ subfolders and deduplicate engineering references"
+  },
+  {
+    "number": 1400,
+    "title": "WRK-1400: Spot-check va-hdd-2 classification accuracy for engineering domains"
+  },
+  {
+    "number": 1399,
+    "title": "WRK-1399: Phase B batch summaries for va-hdd-2 engineering files (15,990 gap docs)"
+  },
+  {
+    "number": 1395,
+    "title": "WRK-1395: Add Equinor Northern Lights dataset as curated data"
+  },
+  {
+    "number": 1394,
+    "title": "WRK-1394: Add Equinor/Norce U7 reference data as curated dataset"
+  },
+  {
+    "number": 1393,
+    "title": "WRK-1393: Add Equinor ASA Databricks marketplace as oil and gas data source"
+  },
+  {
+    "number": 1378,
+    "title": "WRK-PENDING: Review local-analysis folders for relocation to knowledge center"
+  },
+  {
+    "number": 1362,
+    "title": "WRK: fix broken README_MIGRATED.md pointers in /mnt/ace/docs/"
+  },
+  {
+    "number": 1360,
+    "title": "WRK: extract algorithms and methods from riser-eng-job archives"
+  },
+  {
+    "number": 1357,
+    "title": "WRK: LLM-classify va-hdd-2 remaining content into digitalmodel domains"
+  },
+  {
+    "number": 1354,
+    "title": "WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater"
+  },
+  {
+    "number": 1353,
+    "title": "WRK-1353: Deep extraction & table promotion for ace_standards + workspace_spec (deferred from WRK-1288)"
+  },
+  {
+    "number": 1352,
+    "title": "whats-next: targeted index refresh before display + parallel agent updates"
+  },
+  {
+    "number": 1351,
+    "title": "Lifecycle HTML still referenced in stage prompts and micro-skills"
+  },
+  {
+    "number": 1350,
+    "title": "WRK-1350: Fix set-active-wrk.sh regex for repo-prefixed WRK IDs"
+  },
+  {
+    "number": 1349,
+    "title": "WRK-1349: Fix update-stage-evidence.py for repo-prefixed WRK IDs"
+  },
+  {
+    "number": 1348,
+    "title": "WRK-1348: Update /work add skill to call capture-wrk.sh"
+  },
+  {
+    "number": 1343,
+    "title": "WRK-1343: ace-license-win-2 network drive sharing from ace-license-win-1 via symlink"
+  },
+  {
+    "number": 1341,
+    "title": "WRK-1341: slim down large repos — relocate PDFs, reduce .git bloat"
+  },
+  {
+    "number": 1331,
+    "title": "WRK-1331: Fix cross-review.sh Codex dispatch crash — unguarded ls glob in count_wrk_codex_reviews()"
+  },
+  {
+    "number": 1327,
+    "title": "WRK-1327: Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation"
+  },
+  {
+    "number": 1326,
+    "title": "WRK-5138: Fix Gemini cross-review NO_OUTPUT — CLI returns exit 0 with invalid JSON"
+  },
+  {
+    "number": 1324,
+    "title": "WRK-1324: Fix archive hook deadlock: enforce-stage-machinery blocks evidence writes after all stages complete"
+  },
+  {
+    "number": 1322,
+    "title": "WRK-1392: 3D interactive frame viewer (HTML/three.js)"
+  },
+  {
+    "number": 1321,
+    "title": "WRK-5126: Session-to-execution flow: integrate data intelligence, file structure, and testing into /work"
+  },
+  {
+    "number": 1320,
+    "title": "WRK-1378: Regulatory compliance engine — IMO/ABS/DNV automated checks"
+  },
+  {
+    "number": 1319,
+    "title": "WRK-1377: Hull form parametric design — coefficients and Series 60"
+  },
+  {
+    "number": 1318,
+    "title": "WRK-1376: Resistance prediction — Holtrop-Mennen method implementation"
+  },
+  {
+    "number": 1317,
+    "title": "WRK-1375: Maneuverability module — rudder forces and turning circle"
+  },
+  {
+    "number": 1316,
+    "title": "WRK-1374: Advanced stability — damage stability and IMO compliance"
+  },
+  {
+    "number": 1314,
+    "title": "WRK-1372: Ship-specific hydrostatic data tables (DDG-51, FFG-7)"
+  },
+  {
+    "number": 1313,
+    "title": "WRK-5130: WRK-5130"
+  },
+  {
+    "number": 1310,
+    "title": "WRK-5121: FEM visualization skill — automate ccx results to PNG pipeline"
+  },
+  {
+    "number": 1309,
+    "title": "WRK-5117: Add VC funding of 1MM to market brochures"
+  },
+  {
+    "number": 1308,
+    "title": "WRK-5115: Custom GitHub CLI bash tools for session-cycle efficiency"
+  },
+  {
+    "number": 1305,
+    "title": "WRK-5101: WRK-5101"
+  },
+  {
+    "number": 1304,
+    "title": "WRK-5098: WRK-5098"
+  },
+  {
+    "number": 1303,
+    "title": "WRK-5096: WRK-5096"
+  },
+  {
+    "number": 1301,
+    "title": "WRK-261: BSEE field economics case study — rebuild on calibrated cost data (WRK-019 + WRK-171)"
+  },
+  {
+    "number": 1300,
+    "title": "WRK-1392: 3D interactive frame viewer (HTML/three.js)"
+  },
+  {
+    "number": 1299,
+    "title": "WRK-1391: FreeCAD skill improvement — bend arcs + coordinate conventions"
+  },
+  {
+    "number": 1298,
+    "title": "WRK-1383: WRK-1383"
+  },
+  {
+    "number": 1297,
+    "title": "WRK-1382: Naval architect expert skill — engineering + legal consultant agent"
+  },
+  {
+    "number": 1296,
+    "title": "WRK-1379: Naval architecture expert skill — knowledge synthesis agent"
+  },
+  {
+    "number": 1292,
+    "title": "WRK-1342: OrcaFlex parachute deployment template — time-domain snap load analysis"
+  },
+  {
+    "number": 1290,
+    "title": "WRK-1338: WRK-1338"
+  },
+  {
+    "number": 1289,
+    "title": "WRK-1329: WRK-1329"
+  },
+  {
+    "number": 1287,
+    "title": "WRK-1287: Phase 4 cleanup: remove deprecated machine-ranges and next-id.sh legacy wrapper"
+  },
+  {
+    "number": 1282,
+    "title": "WRK-5124: INP writer: validate beam element/section compatibility and auto-reorder B32 connectivity"
+  },
+  {
+    "number": 1279,
+    "title": "WRK-5123: CalculiX plate-with-hole test fix — 2 pre-existing failures"
+  },
+  {
+    "number": 1278,
+    "title": "WRK-5122: Calc report generator — auto-embed images as base64"
+  },
+  {
+    "number": 1276,
+    "title": "WRK-5120: Calc report generator — chart JS validation tests"
+  },
+  {
+    "number": 1275,
+    "title": "WRK-5119: CalculiX beam cross-section tests — CIRC and PIPE sections"
+  },
+  {
+    "number": 1274,
+    "title": "WRK-5118: CalculiX B32 quadratic beam integration test with ccx"
+  },
+  {
+    "number": 1267,
+    "title": "WRK-1368: Pipeline and engineering report"
+  },
+  {
+    "number": 1266,
+    "title": "WRK-1367: Member and connection checks"
+  },
+  {
+    "number": 1265,
+    "title": "WRK-1366: 2D vs 3D comparison"
+  },
+  {
+    "number": 1264,
+    "title": "WRK-1365: OrcaFlex frame analysis"
+  },
+  {
+    "number": 1262,
+    "title": "WRK-1363: 2D frame analysis"
+  },
+  {
+    "number": 1260,
+    "title": "WRK-1361: 2D engineering drawing"
+  },
+  {
+    "number": 1258,
+    "title": "WRK-5109: fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution"
+  },
+  {
+    "number": 1249,
+    "title": "WRK-1388: Propagate canonical AGENTS.md format to child repos"
+  },
+  {
+    "number": 1242,
+    "title": "WRK-5082: Parachute frame force calculation — drag car parachute deployment"
+  },
+  {
+    "number": 1119,
+    "title": "WRK-300: workstations skill — evolve from registry to multi-machine work distribution"
+  },
+  {
+    "number": 1006,
+    "title": "TEST-FINAL3: delete me"
+  },
+  {
+    "number": 720,
+    "title": "TEST-RATELIMIT7: delete me"
+  },
+  {
+    "number": 604,
+    "title": "WRK-560: docs(digitalmodel): add calc_examples mapping — pipeline domain"
+  },
+  {
+    "number": 601,
+    "title": "WRK-460: feat(assetutilities/calculations): implement Allen, D.W., 1998 - Vortex-Induced Vi... — Allen, D.W., 1998   Vortex Induced Vibration of..."
+  },
+  {
+    "number": 569,
+    "title": "WRK-444: feat(assetutilities/calculations): implement Vandiver, J.K., et al, 1987 - Hydrody... — Vandiver, J.K., et al, 1987   Hydrodynamic Damp..."
+  },
+  {
+    "number": 375,
+    "title": "WRK-306: feat: AI agent readiness check — claude/codex/gemini CLI versions + default models"
+  },
+  {
+    "number": 209,
+    "title": "WRK-664: feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning"
+  },
+  {
+    "number": 207,
+    "title": "WRK-006: Upload videos from iPhone to YouTube"
+  },
+  {
+    "number": 206,
+    "title": "WRK-5093: 2025 SKEstates Inc tax preparation — C-Corp (Form 1120)"
+  },
+  {
+    "number": 205,
+    "title": "WRK-5084: 2025 personal tax preparation — Vamsee & Sabitha Achanta (MFJ)"
+  },
+  {
+    "number": 204,
+    "title": "WRK-1318: 2025 AceEngineer Inc tax preparation — C-Corp (Form 1120)"
+  },
+  {
+    "number": 203,
+    "title": "WRK-TEST-ENSEMBLE: Smoke test for ensemble planning"
+  },
+  {
+    "number": 202,
+    "title": "WRK-687: arch(comp-learning): per-workstation analysis with ace-linux-1 final compilation"
+  },
+  {
+    "number": 201,
+    "title": "WRK-685: feat(skills): update /today to highlight availability of unused preview AI models"
+  },
+  {
+    "number": 197,
+    "title": "WRK-665: docs(narada): capture OpenClaw/WhatsApp AI agent setup guide as replicable workspace asset"
+  },
+  {
+    "number": 196,
+    "title": "WRK-661: analysis(worldenergydata): dead code identification in common/legacy/ — Gemini call-site sweep"
+  },
+  {
+    "number": 193,
+    "title": "WRK-635: feat(memory): session scanner — extract learnings from all historical Claude sessions into auto-memory"
+  },
+  {
+    "number": 192,
+    "title": "WRK-634: feat(workspace-hub): client roadshow brochures — client1 rigid jumper/pipeline + client2 structural/maritime"
+  },
+  {
+    "number": 191,
+    "title": "WRK-632: feat(frontierdeepwater): chatbot fundamentals — shared persona, tone, tiers, pitch template (all clients)"
+  },
+  {
+    "number": 190,
+    "title": "WRK-626: feat(frontierdeepwater): engineering AI demo — calculation templates + data processing (Days 2-3)"
+  },
+  {
+    "number": 189,
+    "title": "WRK-603: chore(doc-index): review disciplines/knowledge_skills — 30K docs, add repo linkage"
+  },
+  {
+    "number": 188,
+    "title": "WRK-597: feat(digitalmodel): geotechnical module — umbrella tracker"
+  },
+  {
+    "number": 186,
+    "title": "WRK-586: feat(skills): auto-fetch IACS Blue Book UR updates"
+  },
+  {
+    "number": 184,
+    "title": "WRK-581: feat(worldenergydata): evaluate IEA Methane Tracker for ESG module"
+  },
+  {
+    "number": 183,
+    "title": "WRK-580: feat(worldenergydata): map open-access journal portfolio for engineering"
+  },
+  {
+    "number": 181,
+    "title": "WRK-575: Clean digitalmodel docs/modules/ stale content"
+  },
+  {
+    "number": 180,
+    "title": "WRK-574: Remove digitalmodel setup.py (superseded by pyproject.toml)"
+  },
+  {
+    "number": 179,
+    "title": "WRK-554: feat(OGManufacturing/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car"
+  },
+  {
+    "number": 178,
+    "title": "WRK-553: feat(digitalmodel/structural): Implement ASTM A36 — ASTM A36M-04 (2004) Standard Specification for Car"
+  },
+  {
+    "number": 177,
+    "title": "WRK-552: feat(OGManufacturing/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal"
+  },
+  {
+    "number": 176,
+    "title": "WRK-551: feat(digitalmodel/structural): Implement ASTM E739 — ASTM E739 (2004) Std Practice for Statistical Anal"
+  },
+  {
+    "number": 175,
+    "title": "WRK-550: feat(OGManufacturing/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force"
+  },
+  {
+    "number": 174,
+    "title": "WRK-549: feat(digitalmodel/structural): Implement ASTM E466 — ASTM E466 (2002) Std Practice for Conducting Force"
+  },
+  {
+    "number": 173,
+    "title": "WRK-548: feat(OGManufacturing/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o"
+  },
+  {
+    "number": 172,
+    "title": "WRK-547: feat(digitalmodel/structural): Implement ASTM E647 — ASTM E647 (2005) Std Test Method for Measurement o"
+  },
+  {
+    "number": 171,
+    "title": "WRK-546: feat(OGManufacturing/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle"
+  },
+  {
+    "number": 170,
+    "title": "WRK-545: feat(digitalmodel/structural): Implement ASTM E606 — ASTM E606 (2004) Std Practice for Strain-Controlle"
+  },
+  {
+    "number": 169,
+    "title": "WRK-542: feat(OGManufacturing/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural "
+  },
+  {
+    "number": 168,
+    "title": "WRK-541: feat(digitalmodel/structural): Implement ASTM A131 — ASTM A131 (2004) Std Specification for Structural "
+  },
+  {
+    "number": 167,
+    "title": "WRK-5094: Real estate tax skill — CRE tax preparation, depreciation, and tenant reimbursement"
+  },
+  {
+    "number": 166,
+    "title": "WRK-5092: sabithaandkrishnaestates repo — document indexing and structure enhancement"
+  },
+  {
+    "number": 165,
+    "title": "WRK-5090: untitled"
+  },
+  {
+    "number": 164,
+    "title": "WRK-5089: untitled"
+  },
+  {
+    "number": 163,
+    "title": "WRK-5083: untitled"
+  },
+  {
+    "number": 162,
+    "title": "WRK-5081: untitled"
+  },
+  {
+    "number": 161,
+    "title": "WRK-5080: untitled"
+  },
+  {
+    "number": 160,
+    "title": "WRK-5079: untitled"
+  },
+  {
+    "number": 159,
+    "title": "WRK-5078: untitled"
+  },
+  {
+    "number": 158,
+    "title": "WRK-5076: untitled"
+  },
+  {
+    "number": 157,
+    "title": "WRK-5075: untitled"
+  },
+  {
+    "number": 156,
+    "title": "WRK-5074: untitled"
+  },
+  {
+    "number": 155,
+    "title": "WRK-5073: untitled"
+  },
+  {
+    "number": 154,
+    "title": "WRK-5061: untitled"
+  },
+  {
+    "number": 151,
+    "title": "WRK-5053: untitled"
+  },
+  {
+    "number": 150,
+    "title": "WRK-5052: untitled"
+  },
+  {
+    "number": 149,
+    "title": "WRK-5051: untitled"
+  },
+  {
+    "number": 148,
+    "title": "WRK-5050: untitled"
+  },
+  {
+    "number": 147,
+    "title": "WRK-5049: untitled"
+  },
+  {
+    "number": 146,
+    "title": "WRK-5045: untitled"
+  },
+  {
+    "number": 145,
+    "title": "WRK-5043: untitled"
+  },
+  {
+    "number": 144,
+    "title": "WRK-5034: untitled"
+  },
+  {
+    "number": 143,
+    "title": "WRK-5033: untitled"
+  },
+  {
+    "number": 142,
+    "title": "WRK-5032: untitled"
+  },
+  {
+    "number": 141,
+    "title": "WRK-5031: untitled"
+  },
+  {
+    "number": 139,
+    "title": "WRK-5029: untitled"
+  },
+  {
+    "number": 138,
+    "title": "WRK-5028: untitled"
+  },
+  {
+    "number": 137,
+    "title": "WRK-5026: chore(onboarding): add inotify watch limit fix to new-machine-setup"
+  },
+  {
+    "number": 136,
+    "title": "WRK-5025: untitled"
+  },
+  {
+    "number": 135,
+    "title": "WRK-5024: untitled"
+  },
+  {
+    "number": 134,
+    "title": "WRK-5017: untitled"
+  },
+  {
+    "number": 133,
+    "title": "WRK-5015: untitled"
+  },
+  {
+    "number": 132,
+    "title": "WRK-5014: untitled"
+  },
+  {
+    "number": 131,
+    "title": "WRK-5013: Fix session-analysis.sh Windows arithmetic bug (wc -l newline injection)"
+  },
+  {
+    "number": 130,
+    "title": "WRK-5012: untitled"
+  },
+  {
+    "number": 129,
+    "title": "WRK-5011: untitled"
+  },
+  {
+    "number": 128,
+    "title": "WRK-5010: untitled"
+  },
+  {
+    "number": 127,
+    "title": "WRK-5009: untitled"
+  },
+  {
+    "number": 126,
+    "title": "WRK-5008: untitled"
+  },
+  {
+    "number": 125,
+    "title": "WRK-5007: untitled"
+  },
+  {
+    "number": 124,
+    "title": "WRK-5006: untitled"
+  },
+  {
+    "number": 123,
+    "title": "WRK-5005: untitled"
+  },
+  {
+    "number": 122,
+    "title": "WRK-5004: untitled"
+  },
+  {
+    "number": 121,
+    "title": "WRK-5002: Task complexity tier → model routing (extend task_classifier.sh)"
+  },
+  {
+    "number": 119,
+    "title": "WRK-476: feat(worldenergydata): create ESG/Carbon Emissions module"
+  },
+  {
+    "number": 118,
+    "title": "WRK-475: feat(marine_ops): wire Open-Meteo Marine API into weather-window module"
+  },
+  {
+    "number": 117,
+    "title": "WRK-470: feat(gtm): oil-and-gas practitioner persona + 1-month GTM plan for workspace-hub ecosystem"
+  },
+  {
+    "number": 113,
+    "title": "WRK-235: ROADMAP: Repo ecosystem 3-6 month horizon — plan and gear for agentic AI maturation"
+  },
+  {
+    "number": 112,
+    "title": "WRK-227: Evaluate cowork relevance — repo ecosystem fit vs agentic coding momentum"
+  },
+  {
+    "number": 111,
+    "title": "WRK-182: Predictive Session Planning"
+  },
+  {
+    "number": 110,
+    "title": "WRK-181: Session Replay & Time Travel"
+  },
+  {
+    "number": 109,
+    "title": "WRK-180: 'Stop Hook: Cross-Agent Learning Sync'"
+  },
+  {
+    "number": 108,
+    "title": "WRK-148: ACE-GTM: A&CE Go-to-Market strategy stream"
+  },
+  {
+    "number": 107,
+    "title": "WRK-1336: Bulk review 38 existing open issues + roadmap update"
+  },
+  {
+    "number": 106,
+    "title": "WRK-1335: Patch archive-item.sh for ongoing GitHub Issue creation"
+  },
+  {
+    "number": 105,
+    "title": "WRK-1334: Delete HTML infrastructure (generator, sub-skills, files)"
+  },
+  {
+    "number": 104,
+    "title": "WRK-1333: Wire Issue updater into stage lifecycle (replace HTML gen)"
+  },
+  {
+    "number": 103,
+    "title": "WRK-1332: Archive synthesis + knowledge backfill (synthesize-archive.py)"
+  },
+  {
+    "number": 102,
+    "title": "WRK-1331: GitHub Issue body template renderer (update-github-issue.py)"
+  },
+  {
+    "number": 101,
+    "title": "WRK-1327: Codex /work adapter drift — documented subcommands missing from scripts/agents/work.sh"
+  },
+  {
+    "number": 100,
+    "title": "WRK-1326: untitled"
+  },
+  {
+    "number": 98,
+    "title": "WRK-1319: Self-prepared cost segregation study — 15645 Westpark (Family Dollar)"
+  },
+  {
+    "number": 97,
+    "title": "WRK-1315: untitled"
+  },
+  {
+    "number": 92,
+    "title": "WRK-1288: Review article (trq212 thread) — identify skill gaps and honing opportunities for ecosystem"
+  },
+  {
+    "number": 91,
+    "title": "WRK-1287: Document extraction pipeline — index repo ecosystem files and extract key info via doc/excel skills"
+  },
+  {
+    "number": 90,
+    "title": "WRK-1286: untitled"
+  },
+  {
+    "number": 89,
+    "title": "WRK-1285: untitled"
+  },
+  {
+    "number": 88,
+    "title": "WRK-1284: Evaluate Zellij terminal multiplexer for cross-workstation deployment"
+  },
+  {
+    "number": 87,
+    "title": "WRK-1278: setup-cron.sh --replace mode + deploy canonical crontabs on all workstations"
+  },
+  {
+    "number": 86,
+    "title": "WRK-1271: Enforce 200-line hard limit on all SKILL.md files"
+  },
+  {
+    "number": 84,
+    "title": "WRK-1262: aceengineer-admin repo restructure — canonical document taxonomy"
+  },
+  {
+    "number": 82,
+    "title": "WRK-1258: untitled"
+  },
+  {
+    "number": 80,
+    "title": "WRK-1243: Standardize WRK file structure anatomy across all lifecycle stages"
+  },
+  {
+    "number": 79,
+    "title": "WRK-1227: [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/"
+  },
+  {
+    "number": 78,
+    "title": "WRK-1226: untitled"
+  },
+  {
+    "number": 77,
+    "title": "WRK-1209: [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo"
+  },
+  {
+    "number": 76,
+    "title": "WRK-1208: [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa"
+  },
+  {
+    "number": 75,
+    "title": "WRK-1207: untitled"
+  },
+  {
+    "number": 74,
+    "title": "WRK-1206: fix: recurring correction correction pattern on Edit"
+  },
+  {
+    "number": 73,
+    "title": "WRK-1205: fix: recurring correction correction pattern on Write"
+  },
+  {
+    "number": 72,
+    "title": "WRK-1201: Create calculation-implementation-workflow orchestration skill"
+  },
+  {
+    "number": 70,
+    "title": "WRK-1184: Establish ecosystem theme — tethering timeless engineering to single source of truth"
+  },
+  {
+    "number": 69,
+    "title": "WRK-1182: Work-queue-workflow interactive stage menu"
+  },
+  {
+    "number": 66,
+    "title": "WRK-1176: Two-agent pattern — initializer vs coder session roles"
+  },
+  {
+    "number": 65,
+    "title": "WRK-1175: Structured progress log for cross-session WRK continuity"
+  },
+  {
+    "number": 63,
+    "title": "WRK-1168: Review session logs and eliminate recurring errors"
+  },
+  {
+    "number": 62,
+    "title": "WRK-1166: Generator fuel system CP design"
+  },
+  {
+    "number": 61,
+    "title": "WRK-1165: Droop control simulator"
+  },
+  {
+    "number": 60,
+    "title": "WRK-1164: Power flow / load flow calculator"
+  },
+  {
+    "number": 59,
+    "title": "WRK-1163: IEC 61850 GOOSE messaging model"
+  },
+  {
+    "number": 58,
+    "title": "WRK-1162: Protection relay coordination module"
+  },
+  {
+    "number": 57,
+    "title": "WRK-1152: Collect and download electrical engineering resources to document-intelligence"
+  },
+  {
+    "number": 54,
+    "title": "WRK-1136: Improve repo-sync skill: comprehensive origin status summary"
+  },
+  {
+    "number": 53,
+    "title": "WRK-1134: Audit empty submodule dirs in workspace-hub — init or remove CAD-DEVELOPMENTS et al"
+  },
+  {
+    "number": 52,
+    "title": "WRK-1133: Add acma-ws014 to workstations documentation and routing"
+  },
+  {
+    "number": 50,
+    "title": "WRK-1122: untitled"
+  },
+  {
+    "number": 49,
+    "title": "WRK-1121: untitled"
+  },
+  {
+    "number": 48,
+    "title": "WRK-1118: Cross-platform bash sweep — replace bc/python3/nproc in all scripts"
+  },
+  {
+    "number": 47,
+    "title": "WRK-1117: Windows/Git Bash: fix comprehensive-learning push path + signal generation"
+  },
+  {
+    "number": 46,
+    "title": "WRK-1116: Extract + integrate website-building skill patterns from Nate Herk video"
+  },
+  {
+    "number": 45,
+    "title": "WRK-1110: enhance(workstations): extend skill with hardware utility analysis, future planning, and upgrade roadmap"
+  },
+  {
+    "number": 44,
+    "title": "WRK-1109: Set up WhatsApp MCP for Claude CLI on ace-linux-1"
+  },
+  {
+    "number": 42,
+    "title": "WRK-1103: learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings"
+  },
+  {
+    "number": 41,
+    "title": "WRK-1096: Add HydroComp NavCad electric-motor resources to workspace library"
+  },
+  {
+    "number": 40,
+    "title": "WRK-1089: Split check-all.sh by responsibility (400L hard limit violated)"
+  },
+  {
+    "number": 38,
+    "title": "WRK-1088: feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets"
+  },
+  {
+    "number": 37,
+    "title": "WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)"
+  },
+  {
+    "number": 35,
+    "title": "WRK-1048: CV gap analysis + repo project alignment for Power Generation Controls Engineer role"
+  },
+  {
+    "number": 33,
+    "title": "WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS"
+  },
+  {
+    "number": 32,
+    "title": "WRK-1024: chore(harness): increase context window limits for Claude and Codex"
+  },
+  {
+    "number": 31,
+    "title": "WRK-1001: Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo"
+  },
+  {
+    "number": 30,
+    "title": "WRK-1000: fix(work-queue): restore /work skill compatibility in Codex CLI"
+  },
+  {
+    "number": 29,
+    "title": "WRK-099: Run 3-way benchmark on Unit Box hull"
+  },
+  {
+    "number": 28,
+    "title": "WRK-075: OFFPIPE Integration Module \\u2014 pipelay cross-validation against OrcaFlex"
+  },
+  {
+    "number": 27,
+    "title": "WRK-050: Hardware consolidation \\u2014 inventory, assess, repurpose devices + dev environment\\"
+  },
+  {
+    "number": 24,
+    "title": "WRK-046: OrcaFlex drilling and completion riser parametric analysis"
+  },
+  {
+    "number": 23,
+    "title": "WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations"
+  },
+  {
+    "number": 22,
+    "title": "WRK-043: Parametric hull form analysis with RAO generation and client-facing lookup"
+  },
+  {
+    "number": 21,
+    "title": "WRK-039: SPM project benchmarking - AQWA vs OrcaFlex"
+  },
+  {
+    "number": 20,
+    "title": "WRK-036: OrcaFlex structure deployment analysis - supply boat side deployment with structural"
+  },
+  {
+    "number": 19,
+    "title": "WRK-032: Modular OrcaFlex pipeline installation input with parametric campaign support"
+  },
+  {
+    "number": 18,
+    "title": "WRK-023: Property GIS development timeline with future projection and Google Earth animation"
+  },
+  {
+    "number": 17,
+    "title": "WRK-021: Stock analysis for drastic trend changes, technical indicators, and insider"
+  },
+  {
+    "number": 14,
+    "title": "WRK-1251: FreeCAD deep parametric engineering — hull generation, FEM chain, design table studies"
+  },
+  {
+    "number": 13,
+    "title": "WRK-1149: Method assessment and selection — propeller-rudder interaction models"
+  },
+  {
+    "number": 12,
+    "title": "WRK-1022: Consistent terminal experience across Linux CLI and Windows Terminal Git Bash for AI agents"
+  }
+]
