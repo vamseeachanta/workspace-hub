@@ -103,6 +103,21 @@ When writing search criteria, these filters punch above their weight:
 | US national park towns | Town has 8 lodgings, all booked 9 months out | Book the moment dates are locked; consider the next town over |
 | Beach destinations during hurricane season (Jun–Nov US Gulf/Atlantic) | Storms mean evacuation orders | Insist on free-cancellation policies; trip insurance |
 
+## Domestic cabin booking-readiness workflow
+
+Use this when the user is no longer asking for general trip planning, but is trying to choose/book a cabin with specific amenities such as kitchen, view, hot tub, pet-friendly, or child suitability.
+
+1. **Verify exact dates and weekday labels.** Booking engines often display the authoritative check-in/check-out dates; if the user or issue body says weekday names, verify them with a date tool before repeating them.
+2. **Named cabins are acceptable only when grounded.** For established local cabin companies with live listing pages and booking engines, specific named cabin recommendations are OK. Do not invent Airbnb/Vrbo-style listings.
+3. **Separate amenity evidence from marketing copy.** For kitchen requirements, look for listing specs plus photo evidence: full kitchen, stove/oven, refrigerator, dishwasher, coffee setup, cookware, or dining table. For scenic-view requirements, inspect photos/contact sheets and identify whether the view is visible from the unit, deck, balcony, or hot tub — not just from the resort area.
+4. **Translate regional view language explicitly.** In destinations like Broken Bow / Beavers Bend / Hochatown, “mountain view” may realistically mean hilltop, ridge, Ouachita forest, water, or elevated tree views. Say so, and recommend a phone confirmation before payment if the user means an unobstructed mountain panorama.
+5. **Report booking-readiness, not just attractiveness.** Include exact availability status, observed base price, capacity, bed/bath count, kitchen evidence, view evidence, vehicle/access constraints, cancellation/final-fee gaps, and direct listing + booking-engine URLs.
+6. **State checkout verification level precisely.** If browser automation reaches only the availability/price page and cannot complete checkout progression, say: availability and base price were verified, but final taxes/fees/cancellation/payment constraints remain unverified. Do not imply a final payable total.
+7. **When documenting in a GitHub issue, use a visual booking board.** If the user asks to document options or add pictures/actions, post one review-friendly comment with a stable marker, ranked options table, one listing-source image per option, direct listing/booking URLs, and a clear action column. Avoid burying the recommendation in narrative; make the next booking action obvious.
+8. **If view/panorama is a critical criterion, add multiple view photos — not a single hero image.** Build a view-evidence board with several listing-source images per serious candidate, then classify each as: direct unit/deck/hot-tub panorama, wooded/private nature view, property/trail-only view, water view, or non-view/interior. If the primary practical option has only wooded/private views while another option has stronger panorama evidence, pause the booking recommendation and escalate to a host call before payment.
+
+See `references/ok-broken-bow-cabin-booking-2026.md` for a concrete Broken Bow cabin booking example, including multi-photo panorama evidence, contact-sheet view verification, visual issue-comment structure, Checkfront booking-readiness caveats, and the closeout pattern for late priority inversions where panorama becomes the primary gate.
+
 ## Reference — past lodging patterns
 
 - **#41 Beavers Bend cabins:** specific named lodging companies (Beavers Bend Lodging) — OK because brand is established.

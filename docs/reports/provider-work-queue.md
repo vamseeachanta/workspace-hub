@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-18T05:20:07.893617Z
+Generated: 2026-05-18T09:20:07.391628Z
 Current week: 2026-W21
 Recommended provider order: gemini, codex, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 18
-- Total routed candidates: 174
+- Total routed candidates: 178
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 2
-- Total routed candidates: 22
+- Total routed candidates: 18
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -37,8 +37,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | no | implementation/test/fix language | priority:high |
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking |
-| #2345 feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot | no | implementation/test/fix language | priority:medium, cat:engineering, cat:harness, domain:gtm |
 | #2359 chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json | no | implementation/test/fix language | bug, priority:medium |
+| #2420 fix(skills): restore repo-portfolio-steering balance snapshot contract and threshold behavior | no | implementation/test/fix language | bug, priority:medium, cat:ai-orchestration |
 
 ## gemini
 

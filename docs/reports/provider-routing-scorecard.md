@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-05-18T05:20:06.256726Z
+Generated: 2026-05-18T09:20:05.618701Z
 Current week: 2026-W21
 Recommended provider order: gemini, codex, claude
 
@@ -10,13 +10,13 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: underused
 - Priority: high
-- Current-week reported utilization: 1.0%
+- Current-week reported utilization: 1.5%
 - Quota basis: unavailable (unavailable)
-- Current-week sessions / post records: 22 / 418
-- Audit post records: 105154
-- Missing repo reads: 8824
-- Python3 per 1k records: 9.69
-- Migration debt per 1k records: 16.54
+- Current-week sessions / post records: 27 / 590
+- Audit post records: 110989
+- Missing repo reads: 8609
+- Python3 per 1k records: 9.46
+- Migration debt per 1k records: 15.53
 
 ### Preferred work
 - adversarial plan review
@@ -41,11 +41,11 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Priority: highest
 - Current-week reported utilization: 1.1%
 - Quota basis: quota (history.jsonl)
-- Current-week sessions / post records: 0 / 0
-- Audit post records: 31761
-- Missing repo reads: 818
-- Python3 per 1k records: 11.49
-- Migration debt per 1k records: 2.24
+- Current-week sessions / post records: 21 / 488
+- Audit post records: 40631
+- Missing repo reads: 1206
+- Python3 per 1k records: 9.18
+- Migration debt per 1k records: 0.47
 
 ### Preferred work
 - bounded implementation
@@ -60,6 +60,7 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 ### Recommended actions
 - Route bounded implementation/test/refactor issues to Codex immediately.
 - Use Codex for repetitive repo-hardening tasks before spending more Claude review cycles.
+- Reduce stale-path drift before increasing provider load; wasted reads are burning credits.
 
 ## gemini
 
@@ -68,10 +69,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Current-week reported utilization: 0.0%
 - Quota basis: estimated_daily_quota (estimated)
 - Current-week sessions / post records: 0 / 0
-- Audit post records: 6189
-- Missing repo reads: 604
-- Python3 per 1k records: 47.02
-- Migration debt per 1k records: 13.9
+- Audit post records: 6198
+- Missing repo reads: 602
+- Python3 per 1k records: 46.95
+- Migration debt per 1k records: 13.88
 
 ### Preferred work
 - batched research/recon

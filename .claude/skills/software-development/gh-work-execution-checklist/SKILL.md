@@ -63,6 +63,7 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 
 6. Adversarial review gate
 - Challenge the change like a skeptical reviewer.
+- For unattended/dispatch/orchestrator CLIs, explicitly adversarial-test missing evidence and canonical registry enforcement; do not accept a green path that only proves the happy case.
 - Check acceptance coverage, regressions, edge cases, and policy fit.
 - Check whether new work should become a future issue instead of being absorbed.
 - If non-trivial concerns remain, fix them and re-run validation.
@@ -92,3 +93,5 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 When in doubt, stop using the checklist as a shortcut and return to `gh-work-execution` for the full decision framework, delegation rules, GitHub posting cadence, blocker handling, and closeout requirements.
 
 Reference: `references/interrupted-approved-issue-execution-handoff.md` captures the interruption handoff pattern for approved issue work that reaches RED tests or reconnaissance but stops before implementation/closeout.
+
+Reference: `references/cli-orchestrator-safety-gates.md` captures the TDD safety-gate pattern for cron/label/Telegram-Hermes-style CLI orchestrators: dry-run default, explicit execute opt-in, host-local readiness evidence, canonical registry machine labels, real git cleanliness checks, no-overlap locks, and recursive output redaction.

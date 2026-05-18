@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-18T05:20:09Z
+Generated: 2026-05-18T09:20:09Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,17 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2748 | feat(acma): client output scaffolding for reports chatbots and evidence packs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2747 | feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2746 | feat(acma): create private llm-wiki repo target acma-projects-llm-wiki | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2745 | feat(acma): freeze acma-projects and move to local-only archive posture | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2744 | epic(acma): client project data-cycle readiness and private llm-wiki launch | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2742 | plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2741 | test(hermes): validate Telegram dispatch smoke tests and destructive-action canary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2740 | feat(hermes): formalize multi-host dispatch readiness evidence and registry gates | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2739 | feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2738 | feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2737 | feat(hermes): enable Telegram/Hermes control-surface dispatch across approved machines | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2736 | design: migration plan from per-provider memory stores (Claude / Codex / Gemini local state) into Hermes canonical memory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2735 | design: memory write/read API for non-Hermes providers (Claude / Codex / Gemini) → Hermes canonical memory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2734 | research: audit current Hermes agent memory capabilities + identify gaps for canonical-backend role | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -50,10 +61,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2732 | feat(data-governance): canonical first/second-level mount and folder taxonomy for repo ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2731 | feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2730 | fix(gemini): remove unsupported permissionMode keys from agent definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2729 | feat(architecture): define report layer outputs, publication surfaces, and evidence rules | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2729 | feat(architecture): define report layer outputs, publication surfaces, and evidence rules | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2728 | feat(architecture): define execution layer contracts, tooling, and compute routing | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2726 | feat(architecture): review data, execution, and report layer boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2726 | feat(architecture): review data, execution, and report layer boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2723 | chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -232,17 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2350 | verify: #2043 mooring animation render outputs — confirm published or reopen | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2349 | docs(gtm): refresh 30-day plan — #1809 closed, update dependency table + Day-7 checkpoint | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2347 | chore(gtm): reconcile stale tracker bodies for #2016, #1669, #117, #191 to shipped reality | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2345 | feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2341 | bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2339 | Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2338 | chore(cron): cadence-lib smoke test — pre-commit --smoke dry-run | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2337 | chore(cron): cadence-schedule index generator + pre-commit guard | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2336 | chore(cron): cadence-report retention policy — auto-archive old reports | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2335 | chore(cron): retro-refactor state-size-report.sh to use cadence-common.sh helpers | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2332 | chore(harness): drive provider-audit bare-python3 debt to canonical uv-run runtimes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2331 | Review and clean up stale .gemini/gsd-local-patches/ directory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2330 | Verify first run of daily-repo-readiness cron (trig_019GWtRosbZ9rw1HxrGpsvy9) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2329 | Engineering methodology: code-first vs GUI CAD for offshore parametric hardware families | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

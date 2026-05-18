@@ -83,6 +83,19 @@ When the user is operating from Telegram or another lightweight chat surface, ke
 4. Return a compact dashboard: host, workspace, repo/branch/head, git cleanliness, gateway/cron state, active-ish provider counts, key artifact paths, and the recommended next choice.
 5. Avoid GitHub mutations, process kills, destructive git operations, and new long-running fan-out during reconciliation unless the user explicitly approves that action.
 
+## Multi-machine Telegram/Hermes MVP
+
+When the user asks whether Telegram + Hermes can connect to all available machines, do not collapse connectivity into execution. Use a staged MVP:
+
+1. GitHub issues remain the authoritative queue and audit trail.
+2. Labels route work to hosts, for example `machine:ace-linux-1`, `machine:ace-linux-2`, and `agent:<provider>`.
+3. Each host runs its own local cron/scheduler worker and only claims approved work assigned to that host.
+4. Workers post progress, artifacts, failures, and completion evidence back to GitHub comments.
+5. Telegram/Hermes is the control/status/notification surface until direct Telegram-to-machine dispatch has separately approved auth, target-selection, locking, audit, rollback, and cost controls.
+6. Implement the shared queue/claim/lock contract before host-specific worker behavior.
+
+Reference: `references/github-label-cron-telegram-mvp.md`.
+
 ## Lane routing policy
 
 1. **Keep approvals on ace-linux-1**

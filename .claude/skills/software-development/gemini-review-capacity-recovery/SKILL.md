@@ -52,11 +52,19 @@ With:
 - note that repeated capacity retries did not end in a substantive review
 - path to the raw CLI log if captured
 
+## Startup/config failure handling
+Capacity retries are not the only Gemini failure mode. If the captured log contains only startup diagnostics — for example `Agent loading error`, agent-definition validation errors such as unsupported `permissionMode`, tool fallback warnings, or duplicate skill conflict warnings — and no substantive `Verdict:` block appears, mark the provider artifact `Verdict: UNAVAILABLE` as tool/config startup unavailability, not as a substantive `MAJOR` finding.
+
+When a background Gemini review completion notification arrives after closeout, update the existing provider artifact with the final exit code and whether a verdict appeared. If no verdict appeared, keep `UNAVAILABLE`, commit the artifact-only correction, and verify remote state.
+
+Reference: `references/startup-config-failure-vs-capacity.md`.
+
 ## Practical notes
 - Do not classify a run from the first screenful of output.
 - Gemini foreground runs may look noisy but still succeed.
 - Capacity exhaustion is different from tool/config failure; treat them separately.
 - If a provider-specific review artifact already exists as `UNAVAILABLE` and a later rerun recovers with a real verdict, replace the placeholder with the substantive artifact.
+- If `git push` reports a remote ref-lock rejection after an artifact-only correction, fetch and compare `HEAD` vs `origin/main` before retrying; the push may already have landed.
 
 ## Example reusable summary
 "Gemini printed repeated 429 capacity retries but eventually emitted a valid `Verdict:` block. Save the substantive review artifact and do not mark the provider unavailable."

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-18T05:20:07.893617Z",
+  "generated_at": "2026-05-18T09:20:07.391628Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-18T05:20:06.256726Z",
+  "scorecard_generated_at": "2026-05-18T09:20:05.618701Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 18,
-      "total_candidates": 174,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 2533,
@@ -1327,7 +1327,7 @@
             "domain:knowledge",
             "status:plan-review"
           ],
-          "updatedAt": "2026-05-18T01:11:38Z",
+          "updatedAt": "2026-05-18T08:57:29Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1465,17 +1465,194 @@
           ]
         },
         {
-          "number": 2332,
-          "title": "chore(harness): drive provider-audit bare-python3 debt to canonical uv-run runtimes",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2332",
+          "number": 2737,
+          "title": "feat(hermes): enable Telegram/Hermes control-surface dispatch across approved machines",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2737",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:harness"
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "domain:workstations",
+            "domain:notification",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-04-24T01:46:18Z",
+          "updatedAt": "2026-05-18T08:56:25Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2738,
+          "title": "feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2738",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "domain:workstations",
+            "domain:notification",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-18T08:40:24Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2739,
+          "title": "feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2739",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "domain:workstations",
+            "domain:machine-setup",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-18T08:40:26Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2744,
+          "title": "epic(acma): client project data-cycle readiness and private llm-wiki launch",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2744",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:knowledge",
+            "domain:repo-organization"
+          ],
+          "updatedAt": "2026-05-18T09:09:19Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2745,
+          "title": "feat(acma): freeze acma-projects and move to local-only archive posture",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2745",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:operations",
+            "domain:repo-organization"
+          ],
+          "updatedAt": "2026-05-18T09:09:07Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2746,
+          "title": "feat(acma): create private llm-wiki repo target acma-projects-llm-wiki",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2746",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:knowledge"
+          ],
+          "updatedAt": "2026-05-18T09:09:10Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2747,
+          "title": "feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2747",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:document-intelligence",
+            "domain:knowledge-management"
+          ],
+          "updatedAt": "2026-05-18T09:09:13Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2748,
+          "title": "feat(acma): client output scaffolding for reports chatbots and evidence packs",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2748",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:documentation",
+            "domain:knowledge-management"
+          ],
+          "updatedAt": "2026-05-18T09:09:17Z",
+          "execution_ready": false,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3592,17 +3769,73 @@
           ]
         },
         {
-          "number": 2329,
-          "title": "Engineering methodology: code-first vs GUI CAD for offshore parametric hardware families",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2329",
+          "number": 2740,
+          "title": "feat(hermes): formalize multi-host dispatch readiness evidence and registry gates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2740",
           "labels": [
-            "priority:low",
-            "cat:engineering",
-            "cat:engineering-methodology"
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness",
+            "domain:workstations",
+            "domain:gate-evidence",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-04-17T14:56:19Z",
+          "updatedAt": "2026-05-18T08:40:28Z",
           "execution_ready": false,
-          "priority_rank": 3,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2741,
+          "title": "test(hermes): validate Telegram dispatch smoke tests and destructive-action canary",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2741",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "cat:harness",
+            "domain:testing",
+            "domain:notification",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-18T08:40:29Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2742,
+          "title": "plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2742",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:ai-orchestration",
+            "cat:operations",
+            "domain:machine-setup",
+            "domain:cross-platform",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-18T08:40:30Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3837,93 +4070,6 @@
           "updatedAt": "2026-05-16T22:35:05Z",
           "execution_ready": false,
           "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2330,
-          "title": "Verify first run of daily-repo-readiness cron (trig_019GWtRosbZ9rw1HxrGpsvy9)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2330",
-          "labels": [
-            "repo-readiness"
-          ],
-          "updatedAt": "2026-05-05T11:09:57Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "general"
-          ]
-        },
-        {
-          "number": 2331,
-          "title": "Review and clean up stale .gemini/gsd-local-patches/ directory",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2331",
-          "labels": [],
-          "updatedAt": "2026-04-17T14:27:39Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 2335,
-          "title": "chore(cron): retro-refactor state-size-report.sh to use cadence-common.sh helpers",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2335",
-          "labels": [],
-          "updatedAt": "2026-04-17T15:08:29Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2336,
-          "title": "chore(cron): cadence-report retention policy \u2014 auto-archive old reports",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2336",
-          "labels": [],
-          "updatedAt": "2026-04-17T15:08:33Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2341,
-          "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2341",
-          "labels": [
-            "bug"
-          ],
-          "updatedAt": "2026-04-17T20:29:40Z",
-          "execution_ready": false,
-          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4171,7 +4317,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 22,
+      "total_candidates": 18,
       "top_issues": [
         {
           "number": 2402,
@@ -4314,16 +4460,14 @@
           ]
         },
         {
-          "number": 2345,
-          "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+          "number": 2359,
+          "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
           "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness",
-            "domain:gtm"
+            "bug",
+            "priority:medium"
           ],
-          "updatedAt": "2026-04-21T10:27:04Z",
+          "updatedAt": "2026-04-20T02:53:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4336,14 +4480,15 @@
           ]
         },
         {
-          "number": 2359,
-          "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
+          "number": 2420,
+          "title": "fix(skills): restore repo-portfolio-steering balance snapshot contract and threshold behavior",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2420",
           "labels": [
             "bug",
-            "priority:medium"
+            "priority:medium",
+            "cat:ai-orchestration"
           ],
-          "updatedAt": "2026-04-20T02:53:21Z",
+          "updatedAt": "2026-04-20T21:23:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4488,28 +4633,6 @@
           "updatedAt": "2026-05-15T15:57:12Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2345,
-          "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
-          "labels": [
-            "priority:medium",
-            "cat:engineering",
-            "cat:harness",
-            "domain:gtm"
-          ],
-          "updatedAt": "2026-04-21T10:27:04Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4708,54 +4831,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 2337,
-          "title": "chore(cron): cadence-schedule index generator + pre-commit guard",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2337",
-          "labels": [],
-          "updatedAt": "2026-04-17T15:08:36Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 2338,
-          "title": "chore(cron): cadence-lib smoke test \u2014 pre-commit --smoke dry-run",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2338",
-          "labels": [],
-          "updatedAt": "2026-04-17T15:08:40Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 2339,
-          "title": "Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2339",
-          "labels": [],
-          "updatedAt": "2026-04-17T17:55:53Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
             "implementation"
           ]
         },

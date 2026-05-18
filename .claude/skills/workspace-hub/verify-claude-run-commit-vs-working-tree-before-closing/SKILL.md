@@ -172,7 +172,23 @@ Add these checks when the worker was supposed to run in an isolated worktree:
 - verify the expected issue branch tip actually advanced
 
 If the commit landed on the wrong local branch but the diff/tests are valid, prefer cherry-picking into the clean worktree over trying to salvage closeout directly from the dirty checkout.
-If the commit landed on the wrong local branch but the diff/tests are valid, prefer cherry-picking into the clean worktree over trying to salvage closeout directly from the dirty checkout.
+
+## Validation-output hygiene before closeout
+
+When validating generated artifacts before issue closeout, do not let high-volume generator output flood the agent context. A successful validation can still waste the remaining tool budget if the generation command prints huge JSON/CSV summaries.
+
+Preferred pattern:
+1. Run generators with quiet flags when available, or redirect verbose stdout to a temporary log.
+2. Run the fail-closed validator separately and surface only the PASS/FAIL line plus compact counts/digests needed for evidence.
+3. If the generator has no quiet mode, capture a bounded summary instead of raw stdout:
+```bash
+uv run python scripts/generate_public_graph_manifests.py --write > /tmp/artifact-generation.log
+uv run python scripts/validate_public_graph_manifests.py --artifact-dir <artifact-dir> --report-path <report-path> --repo-root .
+```
+4. Preserve the full log only when it is needed to debug a failure; otherwise cite the artifact paths and validator result.
+
+Decision rule:
+- a huge successful stdout dump is not closeout evidence by itself; closeout evidence is the committed artifact set, validator PASS, tests, legal scan, adversarial review, pushed commit, and verified issue state.
 
 ## Separate remote landing from parent-checkout state
 

@@ -30,6 +30,18 @@ Before writing durable paths into the issue body, verify likely aliases and non-
 
 For AI-agent data-governance issues, also use `references/data-governance-usage-level-matrix.md`. Include the four canonical usage levels (`raw-data`, `readable-raw-data`, `llm-wiki-private`, `llm-wiki-public`), promotion gates, source-class/citation rules, and fail-closed checker expectations. Keep private/client and public llm-wiki routes distinct.
 
+## Client/project data-cycle decomposition
+
+When the user asks for feature/issues to review the data, execution, and report layers for a client or private project, split the tree by stable decision boundaries rather than by every artifact type:
+
+1. Umbrella: client/project data-cycle readiness and governance across data → execution → report/output surfaces.
+2. Source/archive posture: freeze or deprecate any legacy raw-data repo/path that should stop receiving new source material; specify local-only/archive behavior and write-guard expectations.
+3. Private knowledge target: define the private/local llm-wiki or readable-raw-data target separately from the public wiki; mark planned targets as planned if not yet created.
+4. Promotion ledger: require raw → readable/private-wiki → public/sanitized promotion records with confidence/completeness scoring and revision triggers as models improve.
+5. Output/report scaffolding: govern raw outputs, client-facing HTML, limited PDFs, dashboards/chatbots, and evidence packs as first-class data products with manifests and residency metadata.
+
+This decomposition keeps the user-review surface small while preserving the key architectural contracts. If the user only asked to “create GH feature/issues,” stop after creating/verifying issues unless they also asked for plan artifacts; do not silently escalate to implementation or plan-review state.
+
 ## Decision propagation and output residency
 
 When the user adds a cross-cutting architecture decision after the issue tree exists, update the umbrella issue and every affected child issue immediately before asking for approval or re-review. Do not leave the decision stranded in only the latest chat response or one GitHub comment.
@@ -49,6 +61,55 @@ inputs → execution → reports/chatbots → curated output learnings → appro
 
 A plan is not approval-ready if this lifecycle/residency decision is only present in a comment but missing from the plan artifacts and affected child issue scopes.
 
+## Local archive path conflict handling
+
+If the user asks to move or localize a client/project raw-data repo into a mounted archive path, treat a pre-existing destination directory as a safety boundary, not as permission to merge:
+
+1. Verify both source and destination state before acting: git/non-git status, remote/branch for the source clone, top-level destination inventory, and approximate sizes.
+2. If the destination already exists and is materially larger or non-git, designate it as a candidate canonical archive only after recording evidence; do not overwrite, rename, merge, or delete either side in the same issue-creation pass.
+3. Create/update an issue for the archive/freeze decision that requires a uniqueness comparison before retirement of the old clone.
+4. Post a GitHub comment capturing the observed paths, sizes, git status, and the explicit non-action taken. This prevents later agents from assuming the move completed or from retrying destructively.
+5. Keep private wiki/readable-source repo creation separate from raw archive movement. The wiki scaffold can proceed when its target is empty/new, but raw archive retirement remains gated on comparison and user approval.
+
+## Parent contract execution pattern
+
+When the umbrella architecture issue becomes explicitly approved for execution, keep the implementation bounded to the cross-layer contract. Do not absorb the child issue details for each layer.
+
+Recommended contract artifacts:
+
+- A concise architecture contract document defining the shared lifecycle, surface codes, and child-issue consumption boundaries.
+- A structured fixture or machine-readable matrix for source classes and enforcement fields.
+- A generated human-readable markdown matrix for reviewer consumption.
+- Tests that enforce the contract instead of only checking that docs exist.
+
+For data/execution/report/chatbot architecture contracts, include these fields in the structured matrix when applicable:
+
+- `source_class`
+- `owner`
+- `canonical_path` or source ID
+- `layer`
+- `level`
+- `allowed_artifacts`
+- `forbidden_artifacts`
+- `retention_expectations`
+- `publication_rules`
+- `public_posture`
+- `promotion_gate`
+- `input_residency`
+- `output_residency`
+- `report_chatbot_eligibility`
+
+Test patterns that caught real drift:
+
+1. Required schema: fail if any source row omits a contract field, especially `input_residency` / `output_residency`.
+2. Seed coverage: assert all expected source classes exist so the parent contract does not silently drop raw data, private staging, public wiki, execution, or report artifacts.
+3. Fail-closed posture: private/restricted rows must forbid public outputs unless an explicit gate exists.
+4. Universal public eligibility gate: any row, including public or mixed rows, that mentions a public destination (`public report`, `public llm-wiki`, public chatbot/export surface) must have `gate` in the promotion gate text.
+5. Row-keyed markdown drift: parse the generated markdown table by `source_class` and compare each rendered row to the fixture in exact column order. Do not use global string-presence checks; they miss swapped cells, duplicated values, and missing row-specific fields.
+6. Contract wording: assert the contract names the lifecycle transitions and architecture surfaces (`A-DATA`, `A-EXEC`, `A-REPORT`, and curated learning/corpus tier where used).
+
+Reviewer lesson: if one provider review is unavailable because of startup/tooling issues, document the failed review artifact and proceed only with targeted validation plus another substantive review path. Do not convert an unavailable review into a negative claim about the provider.
+
 ## Gate handling
 
 - Treat these as planning/governance issues, not implementation.
@@ -65,4 +126,5 @@ After creation/update, verify:
 - parent/child links resolve;
 - plan files are committed and pushed if created;
 - issue comments include the correct plan paths and gate state;
+- approved parent contract implementation has targeted tests, legal/security scan, review artifacts, commit/push evidence, and issue closeout evidence;
 - unrelated dirty worktree state was not swept into the commit.

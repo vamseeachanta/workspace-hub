@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T05:20:08.033870Z",
+  "generated_at": "2026-05-18T09:20:07.520397Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -394,16 +394,14 @@
       "eligible": false
     },
     {
-      "number": 2345,
-      "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+      "number": 2359,
+      "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
       "labels": [
-        "priority:medium",
-        "cat:engineering",
-        "cat:harness",
-        "domain:gtm"
+        "bug",
+        "priority:medium"
       ],
-      "updatedAt": "2026-04-21T10:27:04Z",
+      "updatedAt": "2026-04-20T02:53:21Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -424,14 +422,15 @@
       "eligible": false
     },
     {
-      "number": 2359,
-      "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
+      "number": 2420,
+      "title": "fix(skills): restore repo-portfolio-steering balance snapshot contract and threshold behavior",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2420",
       "labels": [
         "bug",
-        "priority:medium"
+        "priority:medium",
+        "cat:ai-orchestration"
       ],
-      "updatedAt": "2026-04-20T02:53:21Z",
+      "updatedAt": "2026-04-20T21:23:13Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",

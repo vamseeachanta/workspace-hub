@@ -1,7 +1,7 @@
 ---
 name: gh-work-planning
 description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, and execution-ready delegation packaging for Claude agent teams.
-version: 1.3.0
+version: 1.3.1
 author: Hermes Agent
 category: coordination
 triggers:
@@ -218,6 +218,19 @@ For operations / cron / scheduler / environment issues, explicitly separate:
 - repo-owned code/config remediation
 
 Do not assume a repo patch is the right answer just because the symptom appears in repo logs.
+
+## Migration-aware architecture planning
+
+For architecture plans that span data, execution, and report layers, treat current paths as evidence, not authority. If the user or evidence indicates data was moved piecemeal, current layout is a migration state until inventoried.
+
+Planning behavior:
+- keep the broad architecture issue as an umbrella / cross-layer lifecycle contract when it already exists
+- split data, execution, and report concerns into child issues with separate approval surfaces
+- require inventory/taxonomy evidence before final approval of data-boundary decisions
+- allow execution/report issues to proceed only through explicit interface contracts while data residency is unresolved
+- do not create duplicate umbrellas; post the sequencing recommendation to the existing parent issue
+
+Use `references/migration-aware-layer-architecture-planning.md` for data inventory classes, provisional contract fields, fail-closed handling, and GitHub comment shape.
 
 ## Scheduled-report route-state rule
 
@@ -1067,6 +1080,8 @@ Create them if missing before relying on this route.
 - Writing the plan in `.hermes/plans/` instead of `docs/plans/`
 - Forgetting to update the planning index when the repo uses one
 - Starting implementation on `status:plan-review`
+- Treating piecemeal-migrated data locations as canonical architecture without an inventory/taxonomy dependency
+- Letting execution/report child issues hardcode provisional data paths instead of using source/residency contracts while data classification is unresolved
 
 ## Legacy compatibility
 
