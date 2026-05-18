@@ -7,6 +7,8 @@
 
 Use **one coordinator Telegram bot on `dev-primary` (`ace-linux-1`) for the MVP**. It will read `config/workstations/registry.yaml`, report per-host readiness, and dispatch only when GitHub issue gates and git synchronization gates pass.
 
+Linux cron/GitHub-label orchestration is the MVP for unattended Linux background work. Telegram/Hermes is status and notification surface for this phase; direct Telegram-to-machine dispatch remains deferred until separately planned, reviewed, and approved.
+
 Ranked options:
 
 1. **Coordinator bot on `dev-primary` — recommended MVP**
