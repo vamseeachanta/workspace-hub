@@ -1,10 +1,10 @@
 # Plan for #2726: Review data, execution, and report layer boundaries
 
-> **Status:** `status:plan-review` — revised after MAJOR review findings; pending re-review; not approved
+> **Status:** `status:plan-approved` — user-approved; implementation ready for the parent architecture contract/crosswalk slice
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2726
-> **Review artifacts:** prior-cycle blockers are summarized in `scripts/review/results/2026-05-17-plan-2726-disagreement.md`; current-cycle Claude/Codex/Gemini artifacts must be generated after this revision and verified non-empty before an approval request. Do not cite same-cycle per-provider output paths from this plan body.
+> **Review artifacts:** prior-cycle blockers are summarized in `scripts/review/results/2026-05-17-plan-2726-disagreement.md`; current-cycle review artifacts are recorded under `scripts/review/results/2026-05-18-plan-2726-*.md`. Approval marker: `.planning/plan-approved/2726.md`.
 
 ---
 
