@@ -1,6 +1,6 @@
 # Plan for #2729: Define report layer outputs, publication surfaces, and evidence rules
 
-> **Status:** `status:plan-review` — re-reviewed 2026-05-17; awaiting user decision; not approved
+> **Status:** `status:plan-review` — revised after MAJOR review findings; pending re-review; not approved
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2729
@@ -14,8 +14,8 @@
 - Found: `docs/DATA_RESIDENCE_POLICY.md` — existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external-storage thresholds.
 - Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*`, and `api://worldenergydata`.
 - Found: `docs/content-pipeline/README.md` — existing source → transform → stage → review → publish pipeline for turning internal wiki/source material into public/client-facing website content.
-- Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, tier-1 repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations.
-- Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, all tier-1 repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
+- Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, documented core engineering/data repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations; only explicitly documented repos may be called tier-1.
+- Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, documented tiered repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
 
 ### Standards
 | Standard | Status | Source |
@@ -25,22 +25,32 @@
 | Legal/security scan | applicable | `scripts/legal/legal-sanity-scan.sh` |
 
 ### LLM Wiki pages consulted
-- `llm-wiki/` sibling and nested repo presence was detected via filesystem search; this plan will inventory canonical public/private wiki storage rather than assuming current clone layout is authoritative.
+- Public/private `llm-wiki` location must be inventoried from tracked repo maps and live filesystem evidence; this plan must not assume a sibling clone or nested path is authoritative without embedded command output.
 - `docs/content-pipeline/README.md` lists existing internal wiki sources and publication transform rules that strip internal references before public publication.
 
 ### Documents consulted
 - [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) — issue body requests this architecture review and layer-specific scope.
 - [#2726](https://github.com/vamseeachanta/workspace-hub/issues/2726) — parent architecture issue for data, execution, and report layer boundaries.
+- [#2209](https://github.com/vamseeachanta/workspace-hub/issues/2209) — durable-vs-transient knowledge boundary and publication governance reference.
+- `docs/standards/CONTROL_PLANE_CONTRACT.md` — control-plane/reporting boundary reference.
 - `docs/DATA_RESIDENCE_POLICY.md` — current data residence policy and examples.
 - `data/document-index/mounted-source-registry.yaml` — known mounted/API source roots.
 - `docs/content-pipeline/README.md` — current internal knowledge to public website pipeline.
 - `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current ecosystem inventory summary.
 
+- `docs/BUSINESS_BRAIN.md` — existing knowledge-promotion authority; architecture docs must reference this instead of creating a competing promotion policy.
+- `docs/document-intelligence/README.md` — universal document-intelligence retrieval entry point.
+- `docs/document-intelligence/data-intelligence-map.md` — source/corpus intelligence map for data/report routing.
+- `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` — existing durable vs transient promotion boundary; report-derived learnings must reconcile with it.
+- `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` — existing intelligence-layer terminology; this plan's layer codes are architecture-surface codes, not replacements for document-intelligence L1/L2/L3/L5.
+- `data/document-index/registry.yaml` — current document-index registry source of truth.
+- `data/document-index/resource-intelligence-maturity.yaml` — current resource-intelligence maturity model.
+
 ### Initial known data/source classes to include in the architecture
 | Source class | Initial known examples / roots | Initial disposition |
 |---|---|---|
-| `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling tier-1 checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
-| Tier-1 repo data | `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`, `aceengineer-website`, `aceengineer-strategy` | Repo-backed data/config/docs; classify by owner repo and public/private posture |
+| `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling repo checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
+| Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*` | Reference-in-place; never blindly copy into public repos |
@@ -69,20 +79,25 @@
 
 **Line excerpts consulted**:
 ```text
-DATA_RESIDENCE_POLICY.md: Tier 1 Collection Data = worldenergydata; Tier 2 Engineering Reference Data = digitalmodel; Tier 3 Project Data = project repos/client_projects.
-DATA_RESIDENCE_POLICY.md: Raw API downloads and ZIP archives are never committed; pipeline scripts/configs and small reference data can be committed under policy.
-mounted-source-registry.yaml: source roots include workspace_hub_local, ace_standards_local, og_standards_local, ace_project_local, research_literature_local, DDE remote roots, api_metadata_virtual, and acma_codes_local.
-content-pipeline/README.md: Source wiki markdown is transformed, staged, reviewed, then published; transform strips internal references and metadata before publication.
+docs/DATA_RESIDENCE_POLICY.md:13-15 — Tier 1 Collection Data = `worldenergydata`; Tier 2 Engineering Reference Data = `digitalmodel`; Tier 3 Project Data = project repos/client_projects.
+docs/DATA_RESIDENCE_POLICY.md:62 — project-specific configurations, analysis inputs/outputs, and client deliverables are never stored in `worldenergydata` or `digitalmodel`.
+data/document-index/mounted-source-registry.yaml:5-48,163-183 — tracked source roots include `workspace_hub_local`, standards/literature mounts, project/docs mounts, API metadata virtual root, and ACMA codes local root.
+docs/content-pipeline/README.md:3,27,51-58,99 — internal knowledge is transformed into client-facing content by stripping internal references/metadata and targeting zero internal references in output.
+docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md:106-113 — documented Tier-1 core engineering repos are `digitalmodel`, `assetutilities`, `assethold`, and `worldenergydata`; other local repos require separate role classification.
+config/workstations/registry.yaml:3 — all machine identity/capability data lives in this registry; execution routing docs must reference it instead of duplicating machine truth.
+docs/BUSINESS_BRAIN.md:106-115 — knowledge promotion requires explicit source/provenance/license/legal gates and `scripts/legal/legal-sanity-scan.sh --diff-only` for reviewed diffs.
+docs/document-intelligence/README.md:1-80; docs/document-intelligence/durable-vs-transient-knowledge-boundary.md:1-120 — durable public/private knowledge boundaries must govern report-derived learning promotion.
+data/document-index/registry.yaml and resource-intelligence-maturity.yaml — document-index/resource-intelligence sources must be read before final implementation; architecture contracts should link rather than fork these registries.
 ```
 
 **Gap proofs**:
-- `docs/plans/` search for issue numbers 2726-2729 returned no existing plan files before this drafting wave.
+- Initial drafting search found no existing plan files for 2726-2729; revised plan now treats existing `scripts/review/results/2026-05-17-plan-272[6-9]-*.md` MAJOR artifacts as active blockers to clear before approval.
 - Existing policies cover important pieces but not the full cross-layer architecture and level taxonomy requested here.
 
 **Reproduction proofs**:
 N/A — architecture/governance planning issue, not a runtime failure.
 
-<!-- Distinct sources: issue body, parent issue, DATA_RESIDENCE_POLICY, mounted-source-registry, content-pipeline README, capabilities summary. -->
+<!-- Distinct sources: issue body, parent issue, DATA_RESIDENCE_POLICY, mounted-source-registry, content-pipeline README, capabilities summary, related open issues, review artifacts. -->
 
 
 ---
@@ -94,13 +109,16 @@ N/A — architecture/governance planning issue, not a runtime failure.
 | Report layer contract | `docs/architecture/report-layer-contract.md` |
 | Report output taxonomy | `docs/architecture/report-output-taxonomy.md` |
 | Publication/evidence gates | `docs/architecture/report-publication-gates.md` |
-| Tests | `tests/architecture/test_report_layer_contract.py` |
+| Evidence bundle schema | `docs/architecture/report-evidence-bundle-schema.md` |
+| Report-derived learning routing | `docs/architecture/report-derived-learning-routing.md` |
+| Follow-up issue backlog | `docs/architecture/report-follow-up-issue-backlog.md` |
+| Tests | `tests/governance/test_report_layer_contract.py`; fixtures in `tests/fixtures/architecture/report_evidence_bundle.yaml` and `tests/fixtures/architecture/report_residency_cases.yaml` |
 | Review artifacts | `scripts/review/results/2026-05-17-plan-2729-*.md` |
 
 ---
 
 ## Deliverable
-A report-layer contract will classify raw outputs, data outputs, client/internal/public reports, HTML/PDF formats, interactivity, and chatbot/query surfaces, with evidence and sanitization gates before publication.
+A report-layer contract will classify raw outputs, evidence bundles, client/internal/public reports, HTML/PDF formats, interactivity, chatbot/query surfaces, and **report-derived knowledge**. It will add `output_residency` as a required classification field and define where curated learnings from reports/chatbots are preserved: public `llm-wiki` for public-safe domain knowledge, domain-private corpus for restricted/non-public derivatives, and client-private `/mnt/local-analysis/<client>-llm-wiki` for client-derived learnings. Raw generated outputs remain internal by default.
 
 ---
 
@@ -111,7 +129,8 @@ A report-layer contract will classify raw outputs, data outputs, client/internal
 | R-L2 | Evidence bundles | source manifests, command manifests, checksums, validation outputs, legal scans, review verdicts | Internal/review; public-safe excerpts allowed |
 | R-L3 | Internal decision reports | audit reports, plan reviews, kanban dashboards, readiness reports, technical review HTML/MD | Internal repo governance; evidence-bounded |
 | R-L4 | Client/public deliverables | polished client-facing HTML, limited PDFs, public website pages, sanitized demos | Public/client only after evidence/legal/source/sanitization gates |
-| R-L5 | Interactive/query surfaces | chatbots, RAG/search UIs, dashboards, API/query surfaces, embedded notebooks | Must inherit data-corpus posture and disclose evidence/freshness limits |
+| R-L5 | Interactive/query surfaces | chatbots, RAG/search UIs, dashboards, API/query surfaces, embedded notebooks | Must inherit data-corpus posture via manifest field/check and disclose evidence/freshness limits |
+| R-L6 | Curated report-derived learnings | distilled reusable insights, sanitized methodology notes, source-backed corrections, client-specific learnings | Route by `output_residency`: public `llm-wiki`, domain-private corpus, or client-private `llm-wiki`; never preserve raw/private details in public corpus |
 
 ---
 
@@ -121,8 +140,10 @@ function classify_report_artifact(artifact):
     identify source execution manifest and data source classification
     assign report level R-L1..R-L5
     require evidence bundle for R-L3+ and publication gates for R-L4/R-L5
-    validate public/client artifact has no private paths, client identifiers, or unsupported claims
+    require output_residency for R-L2+ and for all report-derived learnings
+    validate public/client artifact with canonical legal scan plus source/legal/sanitization checklist
     select output format: HTML-first, PDF only when required, chatbot/index only when corpus posture allows
+    route curated report-derived learnings to public, domain-private, or client-private corpus according to output_residency
     record freshness, limitations, and provenance links
 ```
 
@@ -133,9 +154,12 @@ function classify_report_artifact(artifact):
 |---|---|---|
 | Create | `docs/architecture/report-layer-contract.md` | Defines report layer levels and boundaries |
 | Create | `docs/architecture/report-output-taxonomy.md` | Maps artifact types to R-level, owner, storage posture, and audience |
-| Create | `docs/architecture/report-publication-gates.md` | Defines evidence/legal/sanitization gates for HTML/PDF/chatbot/public surfaces |
-| Create | `tests/architecture/test_report_layer_contract.py` | Guards HTML default, PDF limits, chatbot corpus posture, evidence requirements |
-| Update | `docs/content-pipeline/README.md` | Cross-link publication/report rules after approval |
+| Create | `docs/architecture/report-publication-gates.md` | Defines evidence/legal/sanitization gates for HTML/PDF/chatbot/public surfaces and wraps/reuses `scripts/legal/legal-sanity-scan.sh` / `.legal-deny-list.yaml` rather than inventing a parallel denylist |
+| Create | `docs/architecture/report-evidence-bundle-schema.md` | Defines evidence bundle format and required fields: artifact_id, source_manifest, command_manifest, validation_results, legal_scan, checksums, review_verdicts, output_residency, promotion_decision |
+| Create | `docs/architecture/report-derived-learning-routing.md` | Defines public/domain-private/client-private destinations for report-derived knowledge |
+| Create | `docs/architecture/report-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for report validators, artifact indexes, and publication pipelines |
+| Create | `tests/governance/test_report_layer_contract.py` | Tests taxonomy/manifest fixtures and posture invariants, not only markdown phrase presence |
+| Update | `docs/content-pipeline/README.md` | Add a bounded cross-link to report publication/routing rules after approval; no broad rewrite in this issue |
 | Update | `docs/plans/README.md` | Plan index entry |
 
 ---
@@ -143,28 +167,33 @@ function classify_report_artifact(artifact):
 ## TDD Test List
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_raw_outputs_not_deliverables_by_default | R-L1 cannot be treated as client/public deliverable | report contract | explicit prohibition present |
-| test_html_default_pdf_limited | Contract uses HTML-first and PDF-limited posture | report contract | HTML default and PDF exceptions present |
-| test_client_public_requires_evidence_bundle | R-L4/R-L5 require evidence/legal/sanitization gates | publication gates | required gates present |
-| test_chatbot_inherits_corpus_posture | Chatbot/query surface cannot be more public than underlying data corpus | taxonomy | inheritance rule present |
-| test_report_taxonomy_seed_artifacts | Raw outputs, evidence bundles, internal reports, client HTML, PDFs, chatbots, public pages are represented | taxonomy | all seed artifact types present |
+| test_raw_outputs_not_deliverables_by_default | R-L1 fixture cannot be promoted to client/public deliverable without evidence and output_residency | taxonomy fixtures | invalid promotion fails |
+| test_html_default_pdf_limited | Output policy fixture permits HTML by default and requires exception reason for PDF | taxonomy fixtures | PDF without reason fails |
+| test_client_public_requires_evidence_bundle | R-L4/R-L5 fixture requires evidence/legal/sanitization gates and canonical legal scan reference | evidence bundle fixture | missing gate fails |
+| test_chatbot_inherits_corpus_posture | Chatbot/query surface cannot be more public than underlying data corpus | corpus/report manifest fixtures | public chatbot over private corpus fails |
+| test_report_derived_learning_routes_by_output_residency | Curated learnings route to public `llm-wiki`, domain-private, or client-private corpus based on output_residency | routing fixtures | wrong destination fails |
+| test_report_taxonomy_seed_artifacts | Raw outputs, evidence bundles, internal reports, client HTML, PDFs, chatbots, public pages, and report-derived learnings are represented | taxonomy | all seed artifact types present |
+| test_follow_up_issue_backlog_present | Validators/artifact-index/publication-pipeline gaps have issue-title proposals or no-action rationale | backlog | every gap accounted for |
 
 ---
 
 ## Acceptance Criteria
-- [ ] Report levels R-L1 through R-L5 are defined.
+- [ ] Report levels R-L1 through R-L6 are defined, including report-derived knowledge.
 - [ ] Raw outputs are explicitly not deliverables by default.
 - [ ] HTML is default for rich human-facing reports; PDFs are limited/exported only when needed.
 - [ ] Client/public reports require data provenance, execution evidence, legal/source checks, and sanitization.
-- [ ] Chatbots/query surfaces inherit underlying data-corpus public/private posture and freshness limitations.
-- [ ] Output taxonomy includes raw outputs, evidence bundles, internal reports, client-facing HTML, limited PDFs, dashboards/interactivity, public website content, and chatbots.
-- [ ] Validation tests and legal scan are planned before implementation.
-- [ ] Plan receives adversarial review before `status:plan-review`.
+- [ ] Chatbots/query surfaces inherit underlying data-corpus public/private posture and freshness limitations through explicit manifest fields/tests, not prose-only policy.
+- [ ] Output taxonomy includes raw outputs, evidence bundles, internal reports, client-facing HTML, limited PDFs, dashboards/interactivity, public website content, chatbots, and report-derived learnings.
+- [ ] `output_residency` destinations are explicit: public `llm-wiki`, domain-private corpus, client-private `/mnt/local-analysis/<client>-llm-wiki`, ignored internal run artifact, or no-preserve.
+- [ ] Evidence bundle schema is concrete and binds each published claim to source manifest, command manifest, validation, legal scan, checksums, and review verdicts.
+- [ ] Follow-up implementation work is filed as GitHub issues or explicitly blocked with issue-title/body drafts and blocker reason in `docs/architecture/report-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
+- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_report_layer_contract.py -v` and `scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
 
 ---
 
 ## Adversarial Review Summary
-Re-reviewed on 2026-05-17 with Claude, Codex, and Gemini via `scripts/review/plan-review-fanout.sh`.
+Prior review artifacts exist under `scripts/review/results/2026-05-17-plan-*.md`; this revision is pending a fresh post-push re-review via `scripts/review/plan-review-fanout.sh`.
 
 | Provider | Artifact | Verdict |
 |---|---|---|
@@ -173,7 +202,7 @@ Re-reviewed on 2026-05-17 with Claude, Codex, and Gemini via `scripts/review/pla
 | Gemini | `scripts/review/results/2026-05-17-plan-2729-gemini.md` | MAJOR |
 | Disagreement report | `scripts/review/results/2026-05-17-plan-2729-disagreement.md` | MAJOR findings consolidated |
 
-Plan is in `status:plan-review` for user review only. Do not implement or mark `status:plan-approved` until the user explicitly approves a revised plan.
+Prior review artifacts contained MAJOR findings and are superseded by this revision. Do not ask for user approval, implement, or mark `status:plan-approved` until this exact committed plan path is pushed, Claude/Codex/Gemini re-review artifacts are non-empty (or a provider is explicitly marked UNAVAILABLE), and MAJOR findings are cleared.
 
 ---
 

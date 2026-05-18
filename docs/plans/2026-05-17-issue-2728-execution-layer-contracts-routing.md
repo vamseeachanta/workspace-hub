@@ -1,6 +1,6 @@
 # Plan for #2728: Define execution layer contracts, tooling, and compute routing
 
-> **Status:** `status:plan-review` — re-reviewed 2026-05-17; awaiting user decision; not approved
+> **Status:** `status:plan-review` — revised after MAJOR review findings; pending re-review; not approved
 > **Complexity:** T3
 > **Date:** 2026-05-17
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2728
@@ -14,8 +14,8 @@
 - Found: `docs/DATA_RESIDENCE_POLICY.md` — existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external-storage thresholds.
 - Found: `data/document-index/mounted-source-registry.yaml` — existing mounted-source registry already enumerates local, remote, API, standards, literature, and project-document source roots, including `/mnt/local-analysis/workspace-hub`, `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/docs`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*`, and `api://worldenergydata`.
 - Found: `docs/content-pipeline/README.md` — existing source → transform → stage → review → publish pipeline for turning internal wiki/source material into public/client-facing website content.
-- Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, tier-1 repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations.
-- Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, all tier-1 repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
+- Found: `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current repo ecosystem summary names workspace-hub as control plane, documented core engineering/data repos, skills, scripts, document-intelligence, llm-wiki, and report/docs locations; only explicitly documented repos may be called tier-1.
+- Gap: No single current architecture contract defines the data → execution → report layer boundaries across `/mnt` data, client project data, documented tiered repo data, public/private `llm-wiki`, execution machines, and report/chatbot surfaces.
 
 ### Standards
 | Standard | Status | Source |
@@ -25,22 +25,35 @@
 | Legal/security scan | applicable | `scripts/legal/legal-sanity-scan.sh` |
 
 ### LLM Wiki pages consulted
-- `llm-wiki/` sibling and nested repo presence was detected via filesystem search; this plan will inventory canonical public/private wiki storage rather than assuming current clone layout is authoritative.
+- Public/private `llm-wiki` location must be inventoried from tracked repo maps and live filesystem evidence; this plan must not assume a sibling clone or nested path is authoritative without embedded command output.
 - `docs/content-pipeline/README.md` lists existing internal wiki sources and publication transform rules that strip internal references before public publication.
 
 ### Documents consulted
 - [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728) — issue body requests this architecture review and layer-specific scope.
+- [#2119](https://github.com/vamseeachanta/workspace-hub/issues/2119) — overlapping machine dispatch/workload routing contract; #2728 must cross-link or defer machine policy instead of duplicating it.
+- [#1838](https://github.com/vamseeachanta/workspace-hub/issues/1838) and [#2089](https://github.com/vamseeachanta/workspace-hub/issues/2089) — overlapping provider/session and AI-routing governance.
+- [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) and [#2732](https://github.com/vamseeachanta/workspace-hub/issues/2732) — overlapping data/repo location inventory and mount taxonomy; #2728 consumes their source IDs/path contract, not redefines them.
 - [#2726](https://github.com/vamseeachanta/workspace-hub/issues/2726) — parent architecture issue for data, execution, and report layer boundaries.
+- `docs/standards/CONTROL_PLANE_CONTRACT.md` — control-plane boundary for harness/infrastructure work.
+- `config/agents/` and `.claude/rules/` — agent/runtime governance references required for harness/infrastructure plans.
 - `docs/DATA_RESIDENCE_POLICY.md` — current data residence policy and examples.
 - `data/document-index/mounted-source-registry.yaml` — known mounted/API source roots.
 - `docs/content-pipeline/README.md` — current internal knowledge to public website pipeline.
 - `docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md` — current ecosystem inventory summary.
 
+- `docs/BUSINESS_BRAIN.md` — existing knowledge-promotion authority; architecture docs must reference this instead of creating a competing promotion policy.
+- `docs/document-intelligence/README.md` — universal document-intelligence retrieval entry point.
+- `docs/document-intelligence/data-intelligence-map.md` — source/corpus intelligence map for data/report routing.
+- `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` — existing durable vs transient promotion boundary; report-derived learnings must reconcile with it.
+- `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` — existing intelligence-layer terminology; this plan's layer codes are architecture-surface codes, not replacements for document-intelligence L1/L2/L3/L5.
+- `data/document-index/registry.yaml` — current document-index registry source of truth.
+- `data/document-index/resource-intelligence-maturity.yaml` — current resource-intelligence maturity model.
+
 ### Initial known data/source classes to include in the architecture
 | Source class | Initial known examples / roots | Initial disposition |
 |---|---|---|
-| `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling tier-1 checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
-| Tier-1 repo data | `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`, `aceengineer-website`, `aceengineer-strategy` | Repo-backed data/config/docs; classify by owner repo and public/private posture |
+| `/mnt` workspace/control-plane data | `/mnt/local-analysis/workspace-hub`; sibling repo checkouts under `/mnt/local-analysis/`; worktrees under `/mnt/local-analysis/worktrees/` | Repo/control-plane evidence; inventory without assuming all paths are canonical |
+| Repo-ecosystem data | `workspace-hub` control-plane data; documented tier-1 engineering/data repos such as `digitalmodel`, `assetutilities`, `worldenergydata`, `assethold`; knowledge/publication/strategy repos such as `llm-wiki`, `aceengineer-website`, `aceengineer-strategy` only where tracked registry evidence supports that role | Repo-backed data/config/docs; classify by owner repo, documented tier, and public/private posture; do not infer tier-1 status from local checkout name |
 | Public collection data | `worldenergydata` APIs/sources: BSEE, SODIR, NDBC, MarineTraffic, marine safety incidents, oil prices, LNG terminals | Data-layer L1/L2 candidates; raw not committed unless policy allows |
 | Engineering reference data | `digitalmodel` reference tables; standards-derived constants; SN curves; steel grades; hydrodynamic coefficients | Data-layer curated/reference; must carry provenance/license/citation sidecars where applicable |
 | Mounted standards/literature | `/mnt/ace/docs/_standards`, `/mnt/ace/0000 O&G`, `/mnt/ace/acma-codes`, `/mnt/ace-data/digitalmodel/docs/domains`, `/mnt/remote/ace-linux-2/dde/*` | Reference-in-place; never blindly copy into public repos |
@@ -69,20 +82,25 @@
 
 **Line excerpts consulted**:
 ```text
-DATA_RESIDENCE_POLICY.md: Tier 1 Collection Data = worldenergydata; Tier 2 Engineering Reference Data = digitalmodel; Tier 3 Project Data = project repos/client_projects.
-DATA_RESIDENCE_POLICY.md: Raw API downloads and ZIP archives are never committed; pipeline scripts/configs and small reference data can be committed under policy.
-mounted-source-registry.yaml: source roots include workspace_hub_local, ace_standards_local, og_standards_local, ace_project_local, research_literature_local, DDE remote roots, api_metadata_virtual, and acma_codes_local.
-content-pipeline/README.md: Source wiki markdown is transformed, staged, reviewed, then published; transform strips internal references and metadata before publication.
+docs/DATA_RESIDENCE_POLICY.md:13-15 — Tier 1 Collection Data = `worldenergydata`; Tier 2 Engineering Reference Data = `digitalmodel`; Tier 3 Project Data = project repos/client_projects.
+docs/DATA_RESIDENCE_POLICY.md:62 — project-specific configurations, analysis inputs/outputs, and client deliverables are never stored in `worldenergydata` or `digitalmodel`.
+data/document-index/mounted-source-registry.yaml:5-48,163-183 — tracked source roots include `workspace_hub_local`, standards/literature mounts, project/docs mounts, API metadata virtual root, and ACMA codes local root.
+docs/content-pipeline/README.md:3,27,51-58,99 — internal knowledge is transformed into client-facing content by stripping internal references/metadata and targeting zero internal references in output.
+docs/WORKSPACE_HUB_CAPABILITIES_SUMMARY.md:106-113 — documented Tier-1 core engineering repos are `digitalmodel`, `assetutilities`, `assethold`, and `worldenergydata`; other local repos require separate role classification.
+config/workstations/registry.yaml:3 — all machine identity/capability data lives in this registry; execution routing docs must reference it instead of duplicating machine truth.
+docs/BUSINESS_BRAIN.md:106-115 — knowledge promotion requires explicit source/provenance/license/legal gates and `scripts/legal/legal-sanity-scan.sh --diff-only` for reviewed diffs.
+docs/document-intelligence/README.md:1-80; docs/document-intelligence/durable-vs-transient-knowledge-boundary.md:1-120 — durable public/private knowledge boundaries must govern report-derived learning promotion.
+data/document-index/registry.yaml and resource-intelligence-maturity.yaml — document-index/resource-intelligence sources must be read before final implementation; architecture contracts should link rather than fork these registries.
 ```
 
 **Gap proofs**:
-- `docs/plans/` search for issue numbers 2726-2729 returned no existing plan files before this drafting wave.
+- Initial drafting search found no existing plan files for 2726-2729; revised plan now treats existing `scripts/review/results/2026-05-17-plan-272[6-9]-*.md` MAJOR artifacts as active blockers to clear before approval.
 - Existing policies cover important pieces but not the full cross-layer architecture and level taxonomy requested here.
 
 **Reproduction proofs**:
 N/A — architecture/governance planning issue, not a runtime failure.
 
-<!-- Distinct sources: issue body, parent issue, DATA_RESIDENCE_POLICY, mounted-source-registry, content-pipeline README, capabilities summary. -->
+<!-- Distinct sources: issue body, parent issue, DATA_RESIDENCE_POLICY, mounted-source-registry, content-pipeline README, capabilities summary, related open issues, review artifacts. -->
 
 
 ---
@@ -93,14 +111,14 @@ N/A — architecture/governance planning issue, not a runtime failure.
 | This plan | `docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md` |
 | Execution layer contract | `docs/architecture/execution-layer-contract.md` |
 | Execution input/output manifest schema | `docs/architecture/execution-manifest-schema.md` |
-| Machine/tool routing matrix | `docs/architecture/execution-routing-matrix.md` |
-| Tests | `tests/architecture/test_execution_layer_contract.py` |
+| Machine/tool routing policy view | `docs/architecture/execution-routing-policy-view.md` |
+| Tests | `tests/governance/test_execution_layer_contract.py`; fixtures in `tests/fixtures/architecture/execution_manifest.yaml` and `tests/fixtures/architecture/execution_routing_cases.yaml` |
 | Review artifacts | `scripts/review/results/2026-05-17-plan-2728-*.md` |
 
 ---
 
 ## Deliverable
-An execution-layer contract will define how input data contracts, code/tools, agents, machines/compute, validation, and evidence manifests transform data-layer sources into report-layer eligible artifacts without bypassing gates.
+An execution-layer contract will define how input data contracts, code/tools, agents, machines/compute, validation, and evidence manifests transform data-layer sources into report-layer eligible artifacts without bypassing gates. It will consume canonical machine capability data from `config/workstations/registry.yaml` and overlapping routing issues (#2119/#1838/#2089), and execution manifests must carry both `input_residency` and `output_residency` so report-layer and data-layer handoffs can be enforced.
 
 ---
 
@@ -109,20 +127,19 @@ An execution-layer contract will define how input data contracts, code/tools, ag
 |---|---|---|---|
 | E-L1 | Input contracts | YAML/JSON specs, issue plans, source manifests, fixture manifests, prompt bundles | References data sources by source_id/path; does not own raw data |
 | E-L2 | Tools/code execution | ingestion scripts, parsers, report generators, validation harnesses, legal scanners, skills/prompts | Code is repo-backed; Python via `uv run`; outputs manifest evidence |
-| E-L3 | Compute/runtime placement | ace-linux-1, ace-linux-2, licensed Windows/machines, local worktrees, background jobs, provider agents | Routing matrix declares capability, data access, license, and security posture |
+| E-L3 | Compute/runtime placement | ace-linux-1, ace-linux-2, licensed Windows/machines, local worktrees, background jobs, provider agents | Routing contract references `config/workstations/registry.yaml` as canonical machine registry; docs may derive views but cannot duplicate source-of-truth fields |
 | E-L4 | Validation/evidence | tests, legal scan outputs, adversarial review artifacts, checksums, run manifests, command logs | Required handoff to report layer; raw logs remain internal unless sanitized |
 
 ---
 
 ## Pseudocode
 ```text
-function execute_pipeline(execution_manifest):
-    validate manifest schema and declared data source_ids
-    verify source availability and permission posture
-    route work to capable machine/provider/tool based on routing matrix
-    run tools using repo-backed commands and isolated workdirs/worktrees
-    collect tests, legal scan, checksums, output manifest, and review artifacts
-    mark outputs report-eligible only if validation/evidence gates pass
+function validate_execution_contract(execution_manifest):
+    validate manifest schema, declared data source_ids, input_residency, and output_residency
+    verify source availability and permission posture from data-layer/source registry
+    route work to capable machine/provider/tool using config/workstations/registry.yaml plus #2119 policy
+    document the repo-backed run command/regeneration_command, isolated workdir/worktree, tests, legal scan, checksums, output manifest, and review artifacts
+    mark outputs report-eligible only if validation/evidence gates and output_residency allow it; runtime orchestrator enforcement is deferred to filed follow-up issue unless explicitly implemented
 ```
 
 ---
@@ -131,9 +148,13 @@ function execute_pipeline(execution_manifest):
 | Action | Path | Reason |
 |---|---|---|
 | Create | `docs/architecture/execution-layer-contract.md` | Defines execution levels and layer boundaries |
-| Create | `docs/architecture/execution-manifest-schema.md` | Describes input/output manifest fields |
-| Create | `docs/architecture/execution-routing-matrix.md` | Maps tools/machines/providers to allowed source classes and outputs |
-| Create | `tests/architecture/test_execution_layer_contract.py` | Ensures manifest/routing docs carry required fields and no direct publish path |
+| Create | `docs/architecture/execution-manifest-schema.md` | Describes input/output manifest fields, including regeneration_command, replay_command, environment pin, input_residency, and output_residency |
+| Create | `tests/fixtures/architecture/execution_manifest.yaml` | Concrete manifest fixture for tests; YAML is the initial canonical machine-readable format for this plan packet |
+| Create | `tests/fixtures/architecture/execution_routing_cases.yaml` | Routing/evidence fixture cases |
+| Create | `docs/architecture/execution-routing-policy-view.md` | Derived/readable policy view that references `config/workstations/registry.yaml` and #2119; it must not duplicate canonical machine identity/capability fields |
+| Create | `docs/architecture/execution-entry-point-inventory.md` | Inventory scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across the named repos with evidence paths |
+| Create | `docs/architecture/execution-follow-up-issue-backlog.md` | Proposed follow-up GitHub issues for missing runners, registries, validators, or adapters |
+| Create | `tests/governance/test_execution_layer_contract.py` | Tests manifest fixtures and routing-policy invariants, not only markdown phrase presence |
 | Update | `config/workstations/registry.yaml` | Cross-link only if needed after approval; do not change machine routing in plan stage |
 | Update | `docs/plans/README.md` | Plan index entry |
 
@@ -142,27 +163,31 @@ function execute_pipeline(execution_manifest):
 ## TDD Test List
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_execution_manifest_required_fields | Manifest documents input source IDs, tool, machine/provider, outputs, validation, evidence | schema doc | all required fields present |
-| test_no_execution_direct_publication | Execution contract forbids raw output direct-to-public/report path | contract | direct publish wording absent/blocked |
-| test_routing_matrix_has_capability_and_data_access | Each machine/provider row has capability, data access, license/security constraints | routing matrix | required columns present |
-| test_validation_evidence_required_for_report_handoff | Report eligibility depends on validation/evidence artifacts | contract/schema | explicit gate present |
-| test_input_data_boundary_crosswalk | Input data is cross-referenced to data-layer source IDs rather than duplicated | schema | source_id/path reference requirement present |
+| test_execution_manifest_required_fields | Manifest fixture documents source_ids, input_residency, output_residency, tool, machine/provider, outputs, validation, evidence | YAML/JSON fixture derived from schema | missing required fields fail |
+| test_no_execution_direct_publication | Execution outputs cannot set `report_eligible: true` without validation evidence and allowed output_residency | manifest fixtures | invalid direct-public fixture fails; valid evidence-backed fixture passes |
+| test_routing_policy_references_workstation_registry | Routing policy view references canonical `config/workstations/registry.yaml` machine IDs instead of redefining machine records | routing policy + registry fixture | orphan/duplicated machine IDs fail |
+| test_validation_evidence_required_for_report_handoff | Report handoff requires tests/legal scan/checksums/review evidence according to output posture | manifest fixtures | missing evidence fails |
+| test_input_data_boundary_crosswalk | Input data is cross-referenced to data-layer source IDs rather than duplicated | manifest fixtures | inline raw data or unknown source_id fails |
+| test_execution_entry_point_inventory_covers_named_repos | Inventory contains evidence rows for workspace-hub plus available sibling/related repos or explicit unavailable markers | inventory | no silent omissions |
+| test_follow_up_issue_backlog_present | Missing runners/registries/validators/adapters have issue-title proposals or no-action rationale | backlog | every gap accounted for |
 
 ---
 
 ## Acceptance Criteria
 - [ ] Execution levels E-L1 through E-L4 are defined.
 - [ ] Input data boundary is explicit: execution references/validates data-layer inputs but does not become the canonical owner of raw data.
-- [ ] Routing matrix covers ace-linux-1, ace-linux-2, licensed machines, local worktrees, background jobs, and provider agents at the class level.
-- [ ] Execution evidence requirements include command manifests, checksums, tests, legal scan, and adversarial review artifacts where applicable.
-- [ ] Report-layer handoff requires validation evidence and audience/posture metadata.
-- [ ] Validation tests and legal scan are planned before implementation.
-- [ ] Plan receives adversarial review before `status:plan-review`.
+- [ ] Routing policy view covers ace-linux-1, ace-linux-2, licensed machines, local worktrees, background jobs, and provider agents by referencing canonical machine IDs from `config/workstations/registry.yaml`, and explicitly coordinates with #2119/#1838/#2089.
+- [ ] Execution evidence requirements include command manifests, regeneration commands, replay commands, environment pins, checksums, tests, legal scan, and adversarial review artifacts where applicable.
+- [ ] Report-layer handoff requires validation evidence plus `input_residency` and `output_residency` metadata.
+- [ ] Execution entry-point inventory covers scripts, packages, prompts, review runners, legal scans, report builders, and content pipelines across named repos or records explicit unavailable/not-applicable evidence.
+- [ ] Follow-up implementation work is proposed as GitHub issue titles/scopes in `docs/architecture/execution-follow-up-issue-backlog.md`; no implementation is embedded in this plan.
+- [ ] Verification commands are explicit and must pass after implementation: `uv run pytest tests/governance/test_execution_layer_contract.py -v` and `scripts/legal/legal-sanity-scan.sh --diff-only`.
+- [ ] Revised plan receives Claude, Codex, and Gemini re-review before approval request.
 
 ---
 
 ## Adversarial Review Summary
-Re-reviewed on 2026-05-17 with Claude, Codex, and Gemini via `scripts/review/plan-review-fanout.sh`.
+Prior review artifacts exist under `scripts/review/results/2026-05-17-plan-*.md`; this revision is pending a fresh post-push re-review via `scripts/review/plan-review-fanout.sh`.
 
 | Provider | Artifact | Verdict |
 |---|---|---|
@@ -171,14 +196,14 @@ Re-reviewed on 2026-05-17 with Claude, Codex, and Gemini via `scripts/review/pla
 | Gemini | `scripts/review/results/2026-05-17-plan-2728-gemini.md` | MAJOR |
 | Disagreement report | `scripts/review/results/2026-05-17-plan-2728-disagreement.md` | MAJOR findings consolidated |
 
-Plan is in `status:plan-review` for user review only. Do not implement or mark `status:plan-approved` until the user explicitly approves a revised plan.
+Prior review artifacts contained MAJOR findings and are superseded by this revision. Do not ask for user approval, implement, or mark `status:plan-approved` until this exact committed plan path is pushed, Claude/Codex/Gemini re-review artifacts are non-empty (or a provider is explicitly marked UNAVAILABLE), and MAJOR findings are cleared.
 
 ---
 
 ## Risks and Open Questions
 - **Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract.
 - **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date.
-- **Open:** Should execution manifests be markdown, YAML, or both?
+- **Decision for this packet:** execution manifest fixtures are YAML; markdown docs are human-readable contract views.
 - **Open:** Should provider-agent prompts be first-class execution artifacts or only evidence attachments?
 
 ---
