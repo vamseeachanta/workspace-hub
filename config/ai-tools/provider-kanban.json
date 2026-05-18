@@ -36,6 +36,43 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:medium",
+          "compliance-alert"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W21 \u2014 50% (medium)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2749,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W21 \u2014 50% (medium)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2749",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "enhancement",
           "priority:high",
           "cat:data-pipeline",
@@ -128,7 +165,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "feat(acma): create private llm-wiki repo target acma-projects-llm-wiki"
+        "title": "feat(acma): create private llm-wiki repo target acma-llm-wiki"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -141,7 +178,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(acma): create private llm-wiki repo target acma-projects-llm-wiki",
+      "title": "feat(acma): create private llm-wiki repo target acma-llm-wiki",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2746",
       "warnings": []
     },
@@ -313,53 +350,12 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:operations",
-          "cat:harness",
-          "domain:workstations",
-          "domain:gate-evidence",
-          "status:needs-plan"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(hermes): formalize multi-host dispatch readiness evidence and registry gates"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2740,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(hermes): formalize multi-host dispatch readiness evidence and registry gates",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2740",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2739.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -369,14 +365,16 @@
           "cat:operations",
           "domain:workstations",
           "domain:machine-setup",
-          "status:needs-plan"
+          "machine:ace-linux-2",
+          "agent:claude",
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `config/workstations/registry.yaml` \u2014 `dev-secondary` maps to hostname `ace-linux-2`, `dispatch_enabled: true`, `telegram_mode: worker`, and data-access roots under `/mnt/local-analysis`.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** Cron workers can create duplicate runs if lease/idempotency is weak; require a lease before provider execution. | **Risk:** Dirty worktrees can corrupt local issue execution; worker must fail closed until clean or explicitly isolated in a worktree. | **Risk:** Direct Telegram dispatch remains over-complex for MVP; keep it deferred and use Telegram for status only.",
+        "tests": "9 TDD tests defined",
         "title": "feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker"
       },
       "lane": "planning_feedstock",
@@ -386,22 +384,25 @@
       "machine_route": null,
       "number": 2739,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-05-18-issue-2739-ace-linux-2-telegram-dispatch-worker.md",
       "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
+      "routing_reason": "existing claude agent label",
       "title": "feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2739",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "already has status:plan-approved",
+        "reviews not clean: missing_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/2738.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -411,14 +412,16 @@
           "cat:operations",
           "domain:workstations",
           "domain:notification",
-          "status:needs-plan"
+          "machine:ace-linux-1",
+          "agent:claude",
+          "status:plan-approved"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/readiness/telegram_hermes_readiness.py` \u2014 collects host readiness from `config/workstations/registry.yaml`, fails closed on unsafe `GATEWAY_ALLOW_ALL_USERS`, missing Telegram allowlist/token env vars, dirty/ahead/behind git state, missing data roots, and missing",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** Editing `/home/vamsee/.hermes/.env` or systemd requires host-side side effects; do not perform without explicit user approval and token-handling discipline. | **Risk:** Current gateway may already be usable for chat but not safe for dispatch because readiness loads environment from the current process while systemd may be using a different env source. | **Risk:** Duplicate Telegram polli",
+        "tests": "7 TDD tests defined",
         "title": "feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator"
       },
       "lane": "planning_feedstock",
@@ -428,13 +431,15 @@
       "machine_route": null,
       "number": 2738,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-05-18-issue-2738-ace-linux-1-telegram-dispatch-coordinator.md",
       "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
+      "routing_reason": "existing claude agent label",
       "title": "feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2738",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -900,49 +905,6 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "reviews not clean: major_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data-pipeline",
-          "cat:document-intelligence",
-          "domain:reporting",
-          "domain:knowledge",
-          "status:plan-review"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-        "provider_route": "claude",
-        "risks": "**Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/E-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics. | **Decision:** Execution input data is classified under the data layer for source truth/residency and under the execution layer only as an ",
-        "tests": "(no TDD section)",
-        "title": "feat(architecture): review data, execution, and report layer boundaries"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2726,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-17-issue-2726-layer-boundary-architecture-review.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(architecture): review data, execution, and report layer boundaries",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2726",
       "warnings": [
         "legacy_review_no_sha",
         "major_review"
@@ -7985,14 +7947,90 @@
       "title": "chore(gtm): reconcile stale tracker bodies for #2016, #1669, #117, #191 to shipped reality",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2347",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
+          "cat:engineering",
+          "cat:harness",
+          "domain:gtm"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2345,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-05-18T09:20:09Z",
+  "generated_at": "2026-05-18T13:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "compliance-alert"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W21 \u2014 50% (medium)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2749,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W21 \u2014 50% (medium)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2749",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8096,7 +8134,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "feat(acma): create private llm-wiki repo target acma-projects-llm-wiki"
+          "title": "feat(acma): create private llm-wiki repo target acma-llm-wiki"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8109,7 +8147,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(acma): create private llm-wiki repo target acma-projects-llm-wiki",
+        "title": "feat(acma): create private llm-wiki repo target acma-llm-wiki",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2746",
         "warnings": []
       },
@@ -8281,53 +8319,12 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "cat:harness",
-            "domain:workstations",
-            "domain:gate-evidence",
-            "status:needs-plan"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(hermes): formalize multi-host dispatch readiness evidence and registry gates"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2740,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(hermes): formalize multi-host dispatch readiness evidence and registry gates",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2740",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2739.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8337,14 +8334,16 @@
             "cat:operations",
             "domain:workstations",
             "domain:machine-setup",
-            "status:needs-plan"
+            "machine:ace-linux-2",
+            "agent:claude",
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `config/workstations/registry.yaml` \u2014 `dev-secondary` maps to hostname `ace-linux-2`, `dispatch_enabled: true`, `telegram_mode: worker`, and data-access roots under `/mnt/local-analysis`.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** Cron workers can create duplicate runs if lease/idempotency is weak; require a lease before provider execution. | **Risk:** Dirty worktrees can corrupt local issue execution; worker must fail closed until clean or explicitly isolated in a worktree. | **Risk:** Direct Telegram dispatch remains over-complex for MVP; keep it deferred and use Telegram for status only.",
+          "tests": "9 TDD tests defined",
           "title": "feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker"
         },
         "lane": "planning_feedstock",
@@ -8354,22 +8353,25 @@
         "machine_route": null,
         "number": 2739,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-05-18-issue-2739-ace-linux-2-telegram-dispatch-worker.md",
         "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
+        "routing_reason": "existing claude agent label",
         "title": "feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2739",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "already has status:plan-approved",
+          "reviews not clean: missing_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/2738.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -8379,14 +8381,16 @@
             "cat:operations",
             "domain:workstations",
             "domain:notification",
-            "status:needs-plan"
+            "machine:ace-linux-1",
+            "agent:claude",
+            "status:plan-approved"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/readiness/telegram_hermes_readiness.py` \u2014 collects host readiness from `config/workstations/registry.yaml`, fails closed on unsafe `GATEWAY_ALLOW_ALL_USERS`, missing Telegram allowlist/token env vars, dirty/ahead/behind git state, missing data roots, and missing",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** Editing `/home/vamsee/.hermes/.env` or systemd requires host-side side effects; do not perform without explicit user approval and token-handling discipline. | **Risk:** Current gateway may already be usable for chat but not safe for dispatch because readiness loads environment from the current process while systemd may be using a different env source. | **Risk:** Duplicate Telegram polli",
+          "tests": "7 TDD tests defined",
           "title": "feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator"
         },
         "lane": "planning_feedstock",
@@ -8396,13 +8400,15 @@
         "machine_route": null,
         "number": 2738,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-05-18-issue-2738-ace-linux-1-telegram-dispatch-coordinator.md",
         "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
+        "routing_reason": "existing claude agent label",
         "title": "feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2738",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -8868,49 +8874,6 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(architecture): define data layer boundary and llm-wiki data promotion model",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2727",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "reviews not clean: major_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:document-intelligence",
-            "domain:reporting",
-            "domain:knowledge",
-            "status:plan-review"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-          "provider_route": "claude",
-          "risks": "**Decision:** Use architecture-surface IDs `A-DATA`, `A-EXEC`, `A-REPORT`, and `A-CURATED-LEARNING` in parent docs; child D-/E-/R- codes must include a crosswalk to existing document-intelligence L-levels and must not redefine normative L1/L2/L3/L5 semantics. | **Decision:** Execution input data is classified under the data layer for source truth/residency and under the execution layer only as an ",
-          "tests": "(no TDD section)",
-          "title": "feat(architecture): review data, execution, and report layer boundaries"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2726,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-17-issue-2726-layer-boundary-architecture-review.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(architecture): review data, execution, and report layer boundaries",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2726",
         "warnings": [
           "legacy_review_no_sha",
           "major_review"
@@ -15953,6 +15916,45 @@
         "title": "chore(gtm): reconcile stale tracker bodies for #2016, #1669, #117, #191 to shipped reality",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2347",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "cat:harness",
+            "domain:gtm"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2345,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "feat(gtm): wire GTM demos into unified smoke runner \u2014 prevent silent demo rot",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2345",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15963,17 +15965,17 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-18T09:20:05.618701Z",
+  "scorecard_generated_at": "2026-05-18T13:20:07.459434Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-18T09:20:05.501494Z",
+  "utilization_generated_at": "2026-05-18T13:20:07.340350Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 5,
     "empty_review": 3,
-    "legacy_review_no_sha": 29,
-    "major_review": 20,
-    "marker_without_open_approved_issue": 128,
-    "missing_review": 25,
+    "legacy_review_no_sha": 28,
+    "major_review": 19,
+    "marker_without_open_approved_issue": 130,
+    "missing_review": 27,
     "unavailable_review": 15,
     "unknown_review": 3
   }

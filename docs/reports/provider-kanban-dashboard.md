@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-18T09:20:09Z
+Generated: 2026-05-18T13:20:11Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,16 +43,16 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #2749 | Compliance alert: W21 — 50% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2748 | feat(acma): client output scaffolding for reports chatbots and evidence packs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2747 | feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2746 | feat(acma): create private llm-wiki repo target acma-projects-llm-wiki | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2746 | feat(acma): create private llm-wiki repo target acma-llm-wiki | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2745 | feat(acma): freeze acma-projects and move to local-only archive posture | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2744 | epic(acma): client project data-cycle readiness and private llm-wiki launch | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2742 | plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2741 | test(hermes): validate Telegram dispatch smoke tests and destructive-action canary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2740 | feat(hermes): formalize multi-host dispatch readiness evidence and registry gates | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2739 | feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2738 | feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2739 | feat(hermes): promote ace-linux-2 as first Telegram/Hermes dispatch worker | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #2738 | feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #2737 | feat(hermes): enable Telegram/Hermes control-surface dispatch across approved machines | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2736 | design: migration plan from per-provider memory stores (Claude / Codex / Gemini local state) into Hermes canonical memory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #2735 | design: memory write/read API for non-Hermes providers (Claude / Codex / Gemini) → Hermes canonical memory | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -64,7 +64,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2729 | feat(architecture): define report layer outputs, publication surfaces, and evidence rules | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2728 | feat(architecture): define execution layer contracts, tooling, and compute routing | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2727 | feat(architecture): define data layer boundary and llm-wiki data promotion model | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
-| #2726 | feat(architecture): review data, execution, and report layer boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: major_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2723 | chore(enforcement): clean up dead code in .git/hooks/pre-commit (deferred from #2722) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2721 | fix(review-tools): submit-to-codex.sh silently degrades in non-TTY contexts — retrofit with `script -qc` | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2718 | audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2350 | verify: #2043 mooring animation render outputs — confirm published or reopen | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2349 | docs(gtm): refresh 30-day plan — #1809 closed, update dependency table + Day-7 checkpoint | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2347 | chore(gtm): reconcile stale tracker bodies for #2016, #1669, #117, #191 to shipped reality | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2345 | feat(gtm): wire GTM demos into unified smoke runner — prevent silent demo rot | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
