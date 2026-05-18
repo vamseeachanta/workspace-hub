@@ -260,6 +260,19 @@ When the user removes a machine/workstream/deliverable from scope, do not only c
 
 See `references/issue-tree-scope-removal.md` for reusable comment templates and verification criteria.
 
+### User approval reconciliation for gated plans
+
+When the user explicitly approves a `status:plan-review` issue but includes correction notes, treat approval as a reconciliation transaction, not a bare label flip:
+
+1. Update the plan artifact first so the user's corrections are durable in the implementation contract.
+2. Commit and push the plan update before changing gate labels.
+3. Post an issue comment recording the exact approval notes, plan path, and commit hash.
+4. Only after that, replace `status:plan-review` with `status:plan-approved`.
+5. Re-query the issue and verify title, URL, open state, and final labels before reporting success.
+6. Keep the user-correction notes scoped to the implementation plan; do not silently mutate repository layout, move data, or delete aliases unless the approved plan explicitly includes that execution step.
+
+This is the one valid case where the agent may apply `status:plan-approved`: the user has explicitly approved the plan in chat or via an equivalent review signal. Never infer approval from reviewer `APPROVE` verdicts alone.
+
 ### Add/Remove Labels
 
 **With gh:**

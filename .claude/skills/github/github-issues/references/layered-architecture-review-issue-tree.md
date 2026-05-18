@@ -117,6 +117,7 @@ Reviewer lesson: if one provider review is unavailable because of startup/toolin
 - Use issue comments for traceability, but state clearly when plans are draft and not approval-ready.
 - Do not self-apply `status:plan-approved`; do not move to `status:plan-review` before adversarial review is actually complete.
 - If the user asks for a re-review batch and to mark the plans for their review, run the adversarial reviews first, preserve every provider artifact, then move to `status:plan-review` even when verdicts are `MAJOR`. In that case the comment must preserve the `MAJOR` verdicts verbatim and say “awaiting user decision / not approved / no implementation until explicit approval.”
+- If the user explicitly approves the plan with architecture notes, patch those notes into the plan artifact before flipping labels. Example note classes from data/execution/report architecture: confusing symlink aliases must be marked non-canonical and slated for cleanup, active sibling repo placement must be evaluated rather than silently moved, and newly named private wiki targets must be added as private targets.
 
 ## Verification
 

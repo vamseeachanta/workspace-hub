@@ -116,6 +116,20 @@ If a shared `main` checkout has the desired local artifact commit but `git push 
 
 This avoids dragging unrelated local-only commits or remote session/config churn into an otherwise narrow closeout. It is especially useful for plan/review artifacts where the remote needs the durable files, but the current checkout is contaminated by parallel-session work.
 
+### E. Absorb remote commits back into a dirty primary checkout
+
+After landing durable artifacts from an isolated reconciliation checkout, the original primary checkout may still be dirty and stale. To absorb the pushed commits without losing unrelated local/session dirt:
+
+1. Run the full writer/lock preflight from this skill.
+2. `git fetch origin main` and inspect `git log --left-right --cherry-pick --oneline HEAD...origin/main`.
+3. If the local ahead commit is already represented on `origin/main` (for example same subject/content but different SHA), create a named safety stash first: `git stash push -u -m absorb-origin-main-$(date +%Y%m%d-%H%M%S)`.
+4. `git reset --hard origin/main` to make the checkout absorb remote commits exactly.
+5. Restore only residual dirty-state paths from the stash: runtime logs, still-unclassified review artifacts, and any local files intentionally preserved. Do **not** restore paths that were just committed and pushed.
+6. If another remote commit lands during the absorb, inspect touched paths for overlap with current dirt. If no overlap, `git merge --ff-only origin/main`; if overlap, stop and classify instead of forcing a merge.
+7. Verify `HEAD`, `origin/main`, and `git ls-remote origin refs/heads/main` all match, then report remaining dirty categories and keep the safety stash until the user approves dropping it.
+
+This pattern is safer than a blind `git rebase origin/main` in shared dirty checkouts because it separates: (a) remote commit absorption, (b) local runtime/noise preservation, and (c) later cleanup classification.
+
 ## Verification Checklist
 
 Before issuing the mutating git command:

@@ -60,6 +60,16 @@ For each worker output, the orchestrator checks:
 - [ ] Documentation updates (if required by plan) are included
 - [ ] Commit messages follow conventional format and reference the issue
 
+### 4A. Generated Artifact Freshness
+
+For generated artifacts (manifests, reports, schemas, indexes, lockfiles, static outputs):
+
+- [ ] Prefer regenerating artifacts from the currently checked-out generator/validator over restoring stale artifact snapshots from patches or archives.
+- [ ] If recovering from an archived patch, treat restored generated outputs as a bootstrap only: rerun the committed generator before validation or commit.
+- [ ] Verify the generator CLI and validator CLI from the current checkout before rerunning old commands; stale renamed flags can create false failures.
+- [ ] When validation reports mass schema-version or missing-field failures across generated outputs, assume generator/artifact schema drift first, regenerate artifacts, then re-run targeted validation before editing validator expectations.
+- [ ] Do not close an issue on recovered generated artifacts until the artifacts have been regenerated or proven byte-for-byte compatible with the current generator and validator contract.
+
 ### 5. No Unplanned Side Effects
 
 - [ ] No unrelated files were modified (check `git diff --stat`)
@@ -136,6 +146,7 @@ For overnight batch runs with multiple terminals:
 
 ## References
 
+- Generated artifact schema drift recovery: `references/generated-artifact-schema-drift.md`
 - Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
 - Plan approval gate: `.claude/hooks/plan-approval-gate.sh`
 - Cross-review policy: `.claude/skills/coordination/cross-review-policy/SKILL.md`
