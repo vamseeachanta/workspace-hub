@@ -21,4 +21,5 @@ Execution manifests must include: `source_ids`, `source_registry_kind`, `source_
 2. Report eligibility requires validation/evidence, a declared `output_residency`, and a report-layer handoff path.
 3. Outputs cannot become more public than inputs unless a promotion gate names provenance, license, legal, sanitization, and owner-review evidence.
 4. Runtime orchestrators may enforce this later, but the contract fails closed through schema, fixtures, and TDD tests now.
-5. Machine/provider routing is a view over `config/workstations/registry.yaml`; #2119, #1838, and #2089 remain open dependencies, not approved policy.
+5. Checksum evidence has two gates: the JSON Schema syntax gate requires `sha256:<64 hex chars>`, and the semantic checksum verifier computes exact file hashes for report-handoff outputs so fabricated digest-looking values fail closed.
+6. Machine/provider routing is a view over `config/workstations/registry.yaml`; #2119, #1838, and #2089 remain open dependencies, not approved policy.

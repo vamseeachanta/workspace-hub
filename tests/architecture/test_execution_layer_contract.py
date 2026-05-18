@@ -1,7 +1,9 @@
+import hashlib
 from copy import deepcopy
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -102,6 +104,20 @@ def load_yaml(path: Path) -> dict:
     return data
 
 
+def assert_manifest_checksums_match_files(manifest: dict) -> None:
+    checksums = manifest.get("checksums", {})
+    assert isinstance(checksums, dict), "manifest checksums must be a mapping"
+    for output in manifest.get("outputs", []):
+        if output.get("report_handoff"):
+            assert output["path"] in checksums, f"missing checksum for report handoff output: {output['path']}"
+    for relative_path, expected in checksums.items():
+        assert isinstance(expected, str), f"checksum for {relative_path} must be a string"
+        artifact_path = ROOT / relative_path
+        assert artifact_path.is_file(), f"checksum target is missing or not a file: {relative_path}"
+        actual = "sha256:" + hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        assert actual == expected.lower(), f"checksum mismatch for {relative_path}: expected {expected}, got {actual}"
+
+
 def test_execution_levels_are_defined_in_contract():
     text = CONTRACT_PATH.read_text(encoding="utf-8")
     for level in REQUIRED_EXECUTION_LEVELS:
@@ -109,6 +125,7 @@ def test_execution_levels_are_defined_in_contract():
     assert "does not own raw data" in text
     assert "validation/evidence" in text
     assert "report-layer handoff" in text
+    assert "semantic checksum verifier" in text
 
 
 def test_execution_manifest_required_fields():
@@ -124,11 +141,34 @@ def test_execution_manifest_fixture_validates_against_schema_and_registry():
     manifest = load_yaml(FIXTURE_PATH)
     Draft202012Validator.check_schema(schema)
     Draft202012Validator(schema).validate(manifest)
+    assert_manifest_checksums_match_files(manifest)
     inventory = load_yaml(DATA_SOURCE_INVENTORY_PATH)["sources"]
     source_ids = {row["source_id"] for row in inventory}
     assert set(manifest["source_ids"]) <= source_ids
     assert manifest["source_registry_kind"] in SOURCE_REGISTRY_KIND_ENUM
     assert manifest["source_registry_kind"] != "unavailable"
+
+
+def test_execution_manifest_fixture_checksums_match_files():
+    manifest = load_yaml(FIXTURE_PATH)
+    assert_manifest_checksums_match_files(manifest)
+
+    forged = deepcopy(manifest)
+    first_path = next(iter(forged["checksums"]))
+    forged["checksums"][first_path] = "sha256:" + "0" * 64
+    with pytest.raises(AssertionError, match="checksum mismatch"):
+        assert_manifest_checksums_match_files(forged)
+
+    non_string_checksum = deepcopy(manifest)
+    non_string_checksum["checksums"][first_path] = 123
+    with pytest.raises(AssertionError, match="must be a string"):
+        assert_manifest_checksums_match_files(non_string_checksum)
+
+    omitted_handoff_checksum = deepcopy(manifest)
+    handoff_path = next(output["path"] for output in manifest["outputs"] if output.get("report_handoff"))
+    omitted_handoff_checksum["checksums"].pop(handoff_path)
+    with pytest.raises(AssertionError, match="missing checksum"):
+        assert_manifest_checksums_match_files(omitted_handoff_checksum)
 
 
 def test_execution_manifest_fails_closed_for_unavailable_sources_and_public_gates():
@@ -175,7 +215,18 @@ def test_execution_manifest_fails_closed_for_unavailable_sources_and_public_gate
     placeholder_checksum["checksums"] = {
         "docs/architecture/execution-layer-contract.md": "sha256:contract-checksum-required-at-publication"
     }
-    assert list(validator.iter_errors(placeholder_checksum)), "report eligibility requires real sha256 checksums"
+    assert list(validator.iter_errors(placeholder_checksum)), "report eligibility requires sha256 digest syntax"
+
+    for invalid_checksum in [
+        "sha256:" + "a" * 63,
+        "sha256:" + "g" * 64,
+        "a" * 64,
+        123,
+    ]:
+        invalid_syntax = deepcopy(manifest)
+        invalid_syntax["report_eligible"] = False
+        invalid_syntax["checksums"] = {"docs/architecture/execution-layer-contract.md": invalid_checksum}
+        assert list(validator.iter_errors(invalid_syntax)), f"checksum syntax must reject {invalid_checksum}"
 
     nested_raw = deepcopy(manifest)
     nested_raw["test_evidence"][0]["source_text"] = "inline raw payload must not validate"
