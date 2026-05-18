@@ -2,7 +2,7 @@
 
 Verdict: UNAVAILABLE
 
-Gemini implementation review was attempted twice from Hermes using `gemini exec` with the self-contained implementation-review prompt. Both attempts produced startup/tool-loading failures and no substantive review verdict. The second background attempt ended with exit code `-15` and only the startup diagnostics below.
+Gemini implementation review was attempted twice from Hermes using `gemini exec` with the self-contained implementation-review prompt. Both background attempts ended with exit code `-15`, produced startup/tool-loading failures only, and emitted no substantive review verdict.
 
 Observed startup output included:
 - `.gemini/agents/gsd-debugger.md` and `.gemini/agents/gsd-executor.md` validation errors for unsupported `permissionMode`
