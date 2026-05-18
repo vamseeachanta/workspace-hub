@@ -28,12 +28,25 @@ Use this reference when llm-wiki work touches generated public-safe knowledge gr
    - reject absolute local paths in artifacts and reports
 7. Validator should not depend on a single dated report filename. Prefer latest matching `*-public-safe-knowledge-graph-report.md`, or require an explicit `--report-path` in CI.
 8. Add report-summary consistency checks so Markdown report counts cannot drift from `summary.json`.
-9. Validation closeout sequence should include:
+9. Make the validator independently fail-closed; do not assume artifacts were produced by the generator:
+   - every node `path` / `node_id` must satisfy the same public-source predicate as generator discovery
+   - every edge `source_node` must reference an accepted node
+   - every repo-relative `target_node` / core target must either be a declared accepted node or fail validation
+   - every `evidence_path` must exist and stay inside the accepted public wiki/link-map surface; reject `raw`, `private`, agent files, absolute paths, and off-surface files even when the basename looks allowlisted
+10. Recompute deterministic `edge_id` values in the validator. The generator contract is SHA1 over `source_node|target_ref|relation|evidence_type|evidence_locator`, truncated to 16 hex characters; duplicate checks are not enough because forged-but-unique IDs can otherwise pass.
+11. Prove artifact freshness against the live corpus, not only internal consistency:
+   - preferred: regenerate into a temporary output/report path and byte-compare deterministic JSONL/CSV/summary/report outputs
+   - acceptable alternative: persist and validate a public corpus digest plus artifact digests
+   - stale but internally consistent artifacts must fail after a source markdown mutation
+12. Apply the same public markdown target rules to normal Markdown links as to wikilinks. Unless the schema explicitly supports non-markdown artifact edges, `[label](foo.pdf)` / image / binary links should not become graph edges.
+13. Resolve curated link-map scope explicitly. If root-level `wikis/cross-links-tier1.md` is supported, both generator and validator must allow exactly that shape. If not, remove it from the allowlist/schema/docs so basename allowlisting cannot imply broader path scope.
+14. Validation closeout sequence should include:
    - targeted unit/regression tests for generator/validator
    - full generator run
    - validator run against generated artifacts
    - legal/public-safety scan for unsafe paths/secrets/private/raw references
    - artifact parity checks for JSONL/CSV/report/schema
+   - artifact freshness/deterministic-regeneration check
    - adversarial re-review before commit/closeout
 
 ## Regression tests to add when this class changes
@@ -46,3 +59,9 @@ Use this reference when llm-wiki work touches generated public-safe knowledge gr
 - CSV field order/content parity with JSONL is enforced.
 - Report count drift from summary is rejected.
 - `raw/`, `private/`, `CLAUDE.md`, and `AGENTS.md` never appear in generated public graph nodes/edges.
+- Forged off-scope nodes are rejected even if `node_id == path` and internal counts are consistent.
+- Forged/off-surface `evidence_path` values are rejected even if the file exists or the basename is allowlisted.
+- Wrong-but-unique `edge_id` values are rejected by recomputing the deterministic ID.
+- Stale artifacts are rejected after mutating a source markdown file without regeneration.
+- Normal Markdown links to PDFs/images/binaries are skipped or rejected according to the public graph contract.
+- Root-level curated link-map behavior is covered explicitly: either accepted only for `wikis/cross-links-tier1.md` or rejected/documented as out of scope.

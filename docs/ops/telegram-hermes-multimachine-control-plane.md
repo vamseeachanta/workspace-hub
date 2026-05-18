@@ -152,6 +152,7 @@ Current MVP target is **dispatch only on `dev-primary` and `dev-secondary`**. Wi
    - Remove or unset `GATEWAY_ALLOW_ALL_USERS` from the local Hermes env store.
    - Ensure `TELEGRAM_BOT_TOKEN` and `TELEGRAM_ALLOWED_USERS` are present only in the local secret store.
    - Install/verify the systemd drop-in loads the env file and sets a gateway stop timeout compatible with Hermes restart drain.
+   - Run `scripts/operations/verify-hermes-gateway-coordinator.sh` on the coordinator; it must pass without printing token or allowlist values.
    - Clean or explicitly preserve/stash workspace-hub dirty state before dispatch.
 2. Worker (`dev-secondary`):
    - Sync workspace-hub to a revision that includes `scripts/readiness/telegram-hermes-readiness.sh` and this runbook.

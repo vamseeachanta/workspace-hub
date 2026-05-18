@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import subprocess
 import sys
 from datetime import UTC, datetime, timedelta
@@ -822,3 +823,129 @@ def test_local_workspace_behind_upstream_fails_closed(tmp_path: Path, monkeypatc
     assert host["dispatchable"] is False
     assert host["behind"] == 1
     assert "behind upstream" in "\n".join(host["failures"])
+
+
+def _write_fake_command(bin_dir: Path, name: str, body: str) -> None:
+    path = bin_dir / name
+    path.write_text("#!/usr/bin/env bash\nset -euo pipefail\n" + body, encoding="utf-8")
+    path.chmod(0o755)
+
+
+def _coordinator_env(tmp_path: Path, *, token: str = "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ12") -> tuple[Path, dict[str, str]]:
+    env_file = tmp_path / "hermes.env"
+    env_file.write_text(
+        f"TELEGRAM_BOT_TOKEN={token}\n"
+        "TELEGRAM_ALLOWED_USERS=12345,67890\n"
+        "GATEWAY_ALLOW_ALL_USERS=false\n",
+        encoding="utf-8",
+    )
+    env_file.chmod(0o600)
+
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    _write_fake_command(
+        bin_dir,
+        "systemctl",
+        f"""
+if [[ "$1" == "is-active" ]]; then echo active; exit 0; fi
+if [[ "$1" == "show" ]]; then
+  prop="${{4:-${{3:-}}}}"
+  case "$prop" in
+    EnvironmentFiles) echo 'EnvironmentFiles={env_file} (ignore_errors=no)' ;;
+    TimeoutStopUSec) echo 'TimeoutStopUSec=210000000' ;;
+    MainPID) echo 'MainPID=4242' ;;
+    *) echo "$prop=" ;;
+  esac
+  exit 0
+fi
+exit 1
+""",
+    )
+    _write_fake_command(bin_dir, "journalctl", "echo 'gateway started cleanly'; exit 0\n")
+    _write_fake_command(bin_dir, "pgrep", "echo 4242; exit 0\n")
+    env = {
+        "PATH": f"{bin_dir}:{os.environ.get('PATH', '')}",
+        "HERMES_GATEWAY_ENV_FILE": str(env_file),
+        "HERMES_GATEWAY_SERVICE": "hermes-gateway.service",
+    }
+    return env_file, env
+
+
+def _run_coordinator_verifier(tmp_path: Path, env: dict[str, str]) -> subprocess.CompletedProcess[str]:
+    script = REPO_ROOT / "scripts" / "operations" / "verify-hermes-gateway-coordinator.sh"
+    return subprocess.run(
+        ["bash", str(script)],
+        cwd=REPO_ROOT,
+        env={**os.environ, **env},
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+
+
+def test_coordinator_verifier_redacts_env_values(tmp_path: Path) -> None:
+    secret = "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ12"
+    _env_file, env = _coordinator_env(tmp_path, token=secret)
+
+    result = _run_coordinator_verifier(tmp_path, env)
+
+    assert result.returncode == 0, result.stdout
+    assert "TELEGRAM_BOT_TOKEN=present" in result.stdout
+    assert "TELEGRAM_ALLOWED_USERS=present" in result.stdout
+    assert "env file mode is 600" in result.stdout
+    assert secret not in result.stdout
+    assert "12345" not in result.stdout
+    assert "67890" not in result.stdout
+
+
+def test_coordinator_verifier_requires_timeout_stop_210(tmp_path: Path) -> None:
+    env_file, env = _coordinator_env(tmp_path)
+    _write_fake_command(
+        Path(env["PATH"].split(":", 1)[0]),
+        "systemctl",
+        f"""
+if [[ "$1" == "is-active" ]]; then echo active; exit 0; fi
+if [[ "$1" == "show" ]]; then
+  prop="${{4:-${{3:-}}}}"
+  case "$prop" in
+    EnvironmentFiles) echo 'EnvironmentFiles={env_file} (ignore_errors=no)' ;;
+    TimeoutStopUSec) echo 'TimeoutStopUSec=60000000' ;;
+    MainPID) echo 'MainPID=4242' ;;
+  esac
+  exit 0
+fi
+exit 1
+""",
+    )
+
+    result = _run_coordinator_verifier(tmp_path, env)
+
+    assert result.returncode != 0
+    assert "TimeoutStopSec must be >=210s" in result.stdout
+
+
+def test_coordinator_verifier_detects_duplicate_polling_conflict(tmp_path: Path) -> None:
+    _env_file, env = _coordinator_env(tmp_path)
+    _write_fake_command(
+        Path(env["PATH"].split(":", 1)[0]),
+        "journalctl",
+        "echo 'terminated by other getUpdates request; make sure only one bot instance is running'; exit 0\n",
+    )
+
+    result = _run_coordinator_verifier(tmp_path, env)
+
+    assert result.returncode != 0
+    assert "duplicate Telegram polling/getUpdates conflict" in result.stdout
+    assert "getUpdates request" not in result.stdout
+
+
+def test_coordinator_verifier_requires_single_gateway_pid(tmp_path: Path) -> None:
+    _env_file, env = _coordinator_env(tmp_path)
+    _write_fake_command(Path(env["PATH"].split(":", 1)[0]), "pgrep", "printf '4242\\n5252\\n'; exit 0\n")
+
+    result = _run_coordinator_verifier(tmp_path, env)
+
+    assert result.returncode != 0
+    assert "exactly one active gateway/polling PID required" in result.stdout

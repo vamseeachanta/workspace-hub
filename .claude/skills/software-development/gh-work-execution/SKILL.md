@@ -30,6 +30,8 @@ Every non-trivial work item must be classified before execution as one of:
 
 Use `docs/standards/PARALLEL_FIRST_EXECUTION.md` as the controlling standard. Parallelization is the default question for non-trivial work, not an afterthought; gates still control when implementation may begin.
 
+Speed-optimization rule: when the user says Hermes issue execution is slow or asks for parallel agent optimization, do not answer only with generic delegation advice. Patch or consult the governing execution/planning surfaces so the optimization applies to every future issue: classify all non-trivial work upfront, parallelize read-only intelligence/review by default, and reserve write-capable lanes for plan-approved isolated worktrees with orchestrator-owned verification.
+
 ## GitHub posting rule
 
 As execution progresses, post meaningful GitHub updates at each major step.

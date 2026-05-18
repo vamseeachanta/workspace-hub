@@ -110,6 +110,24 @@ Test patterns that caught real drift:
 
 Reviewer lesson: if one provider review is unavailable because of startup/tooling issues, document the failed review artifact and proceed only with targeted validation plus another substantive review path. Do not convert an unavailable review into a negative claim about the provider.
 
+## Adversarial MAJOR hardening pattern
+
+When adversarial review of a layered data/execution/report issue returns `MAJOR`, treat it as a new RED-GREEN pass, not as prose cleanup:
+
+1. Convert each repeated reviewer finding into targeted tests before changing the architecture docs. Examples from data/execution/report governance:
+   - schemas must use `additionalProperties: false` where the contract is closed;
+   - schemas must reject inline raw/private payload keys such as `raw_data`, `data_dump`, `client_payload`, and `source_text`;
+   - promotion/publication gates must be closed enums, not prose strings;
+   - report claim entries must bind to source IDs, artifact IDs, source class, sanitization gate, promotion gates, and evidence references;
+   - backlog issue commands that use `--body-file` must point at real tracked body files;
+   - markdown command fences must be balanced.
+2. Run the hardened tests and preserve the failing output as the RED checkpoint.
+3. Patch schema/docs/fixtures until the targeted tests pass. Keep fixture changes contract-shaped; do not relax tests to match loose prose.
+4. Create every referenced follow-up issue body file before declaring the issue backlog validated. Missing body files are a release-blocking artifact defect because future `gh issue create --body-file ...` commands will fail.
+5. Rerun targeted tests, then broader architecture tests, diff whitespace checks, and legal/security scans before commit.
+6. Rerun adversarial review after GREEN. A previous `3x MAJOR` review is not resolved merely because local targeted tests passed.
+7. If tool/time limits interrupt mid-hardening, explicitly report the work as incomplete and list the exact remaining body files/tests. Do not commit, close, or move labels while the RED/GREEN loop is unresolved.
+
 ## Gate handling
 
 - Treat these as planning/governance issues, not implementation.

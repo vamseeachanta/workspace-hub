@@ -160,6 +160,12 @@ journalctl -u hermes-gateway -n 200 --no-pager | grep -c "Stale systemd unit"
 # Verify Telegram polling-mode connection.
 journalctl -u hermes-gateway -n 200 --no-pager | grep -c "Telegram.*polling"
 # Expected: >= 1
+
+# Run the secret-safe coordinator verifier. It prints only presence/absence for
+# Telegram credentials and fails on duplicate polling conflicts or stale drain
+# timeout settings.
+scripts/operations/verify-hermes-gateway-coordinator.sh
+# Expected: summary: N passed, 0 failed
 ```
 
 ### 2.5 Validate the rotated token (without exposing it on cmdline)

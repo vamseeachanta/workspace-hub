@@ -101,6 +101,10 @@ uv run scripts/content/wiki-to-website.py --page knowledge/wikis/engineering/wik
 - **CTA block** appended to every page linking to aceengineer.com/contact
 - See `content-calendar.md` for publication priority and schedule (5 waves, weeks 1-5)
 
+## Report publication boundary
+
+Generated public/client content must follow `docs/architecture/report-publication-gates.md`. Report-derived learning (report-derived learning) requires an evidence bundle, legal scan, sanitization gate, output-residency decision, and explicit routing before it is promoted to public pages, public llm-wiki, or chatbot/query surfaces.
+
 ## Related
 
 - Issue #2022 -- knowledge-to-website content pipeline

@@ -69,6 +69,8 @@ For generated artifacts (manifests, reports, schemas, indexes, lockfiles, static
 - [ ] Verify the generator CLI and validator CLI from the current checkout before rerunning old commands; stale renamed flags can create false failures.
 - [ ] When validation reports mass schema-version or missing-field failures across generated outputs, assume generator/artifact schema drift first, regenerate artifacts, then re-run targeted validation before editing validator expectations.
 - [ ] Do not close an issue on recovered generated artifacts until the artifacts have been regenerated or proven byte-for-byte compatible with the current generator and validator contract.
+- [ ] After pulling/rebasing while generated reports or schemas are in flight, re-run targeted tests that reference canonical generated paths; patch tests to discover the latest canonical artifact or regenerate test fixtures instead of hardcoding stale date/version filenames.
+- [ ] Treat a passing validator CLI plus a failing artifact test as a fixture-contract drift signal until proven otherwise: inspect whether the test points at an older generated report/schema path before changing validator semantics.
 
 ### 5. No Unplanned Side Effects
 

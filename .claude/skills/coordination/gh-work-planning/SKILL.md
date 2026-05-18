@@ -1,11 +1,12 @@
 ---
 name: gh-work-planning
-description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, and execution-ready delegation packaging for Claude agent teams.
+description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
 version: 1.3.1
 author: Hermes Agent
 category: coordination
 triggers:
   - When user says "gh work planning"
+  - When planning Telegram/Hermes machine dispatch readiness; see references/telegram-hermes-machine-dispatch-readiness.md
   - When planning a GitHub issue before implementation
   - When an issue must move into plan-review before code changes
 related_skills:
