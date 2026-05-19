@@ -42,6 +42,15 @@ A reliable pattern is to verify the exact task artifact set before staging or co
 
 5. Only create a new commit if the targeted files still have real uncommitted changes.
 
+## Binary/report artifact extension
+When the artifact is a generated report copy, DOCX/PDF, or other binary under an `outputs/`-style tree, verify both git state and artifact usability before claiming it landed:
+
+- Do not rely only on file-search tools; ignored/generated paths may be omitted from indexed search. Probe exact expected paths with `[ -e <path> ]`, `stat`, and `git ls-files <path>`.
+- Confirm the canonical report sibling names, e.g. `*_report.html`, `*_client_review.docx`, and `*.pdf`, so follow-up work starts from the right artifact rather than a guessed basename.
+- After push, fetch the raw GitHub URL with `curl -L -w '%{http_code}'` and validate the returned size/content, not just local existence.
+- For DOCX replacements, parse the remote DOCX with `python-docx`/zip inspection and report structural evidence such as paragraph count, native table count, and `word/media/*` count. This distinguishes native editable Word output from page-image PDF conversions.
+- Include the issue-comment URL and commit SHA in closeout evidence when a GitHub issue is the coordination record.
+
 ## Exit/handoff extension
 If the target artifacts are already committed but the repo is still dirty:
 - explicitly tell the user the requested task artifacts are already committed

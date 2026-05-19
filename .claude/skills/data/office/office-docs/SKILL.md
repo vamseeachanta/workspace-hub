@@ -27,6 +27,10 @@ cat skills/office-docs/python-docx/SKILL.md
 # Skills are documentation - implement patterns in your document workflows
 ```
 
+## Native DOCX review parity from HTML reports
+
+When a user asks for a Word review copy to be complete or 1:1 relative to an HTML report, keep the DOCX native/editable where possible and separately inventory every HTML visual channel before claiming parity. Do not rely only on `<img>` tags: count inline SVG, Plotly/JavaScript chart renders, canvas, and embedded data images, then compare against `word/media/*` in the DOCX. See `references/html-report-native-docx-parity.md` for the repair workflow, Playwright capture pattern, and verification snippets.
+
 ## Version History
 
 - **1.0.0** (2026-01-17): Initial release with 5 office document skills

@@ -39,6 +39,8 @@ Each category has its own remediation skill. This skill's job is **detection**, 
 
 Run these in order. Each step is a single grep/find/ls; combined runtime should be under 10 seconds.
 
+**Pipefail pitfall:** if you run the audit inside `set -euo pipefail`, `find ... | head` and similar early-closing pipelines can exit `141` from SIGPIPE even though the audit succeeded. Use `sed -n '1,20p'` or wrap the pipeline with `|| true` for report-only probes; cleanup audit commands should surface residue, not fail the closeout because `head` closed the pipe.
+
 ### 1. Repo working-tree state
 ```bash
 cd <canonical-repo>
