@@ -255,9 +255,43 @@ else
   bash "${WORKSPACE_HUB}/scripts/memory/bootstrap-machine.sh"
 fi
 
-# ── Steps 10-13 ───────────────────────────────────────────────────────────────
-# Reserved for Phase 2+3 deliverables (CLI auto-install, auth orchestration,
-# Hermes config render, emit-machine-status). Will land in subsequent commits.
+# ── Step 10: Auto-install provider CLIs (per #2751 G2) ────────────────────────
+# Channel-branched install: gh via system pkg, claude/gemini via npm, codex via
+# the existing scripts/install/pin-codex.sh. Hermes binary out-of-band (warn-only).
+step "10. Auto-install provider CLIs"
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "source scripts/setup/lib/install-provider-clis.sh && install_provider_clis ${WH_OS}"
+else
+  # shellcheck source=lib/install-provider-clis.sh
+  source "${WORKSPACE_HUB}/scripts/setup/lib/install-provider-clis.sh"
+  install_provider_clis "${WH_OS}" || log "WARN: CLI auto-install partial — re-run manually if needed"
+fi
+
+# ── Step 11: Auth orchestration (per #2751 G3) ────────────────────────────────
+# Interactive: launches claude/codex/gh auth login + gemini -p ping + Hermes .env prompt.
+# Bypass via WH_NON_INTERACTIVE=1 for CI smoke tests.
+step "11. Auth orchestration"
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "source scripts/setup/lib/orchestrate-auth.sh && orchestrate_auth"
+else
+  # shellcheck source=lib/orchestrate-auth.sh
+  source "${WORKSPACE_HUB}/scripts/setup/lib/orchestrate-auth.sh"
+  orchestrate_auth || log "WARN: auth orchestration partial — re-run to complete"
+fi
+
+# ── Step 12: Render Hermes config from template (per #2751 G4) ────────────────
+# Idempotent — skips if ~/.hermes/config.yaml exists (preserves user edits).
+step "12. Hermes config (~/.hermes/config.yaml)"
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "source scripts/setup/lib/instantiate-hermes-config.sh && instantiate_hermes_config ${WORKSPACE_HUB}"
+else
+  # shellcheck source=lib/instantiate-hermes-config.sh
+  source "${WORKSPACE_HUB}/scripts/setup/lib/instantiate-hermes-config.sh"
+  instantiate_hermes_config "${WORKSPACE_HUB}" || log "WARN: Hermes config render failed"
+fi
+
+# ── Step 13 ──────────────────────────────────────────────────────────────────
+# Reserved for Phase 3 (emit-machine-status). Will land in next commit.
 
 # ── Step 14: Verify (renumbered from Step 9 per #2751 r2 — verify must run
 #             LAST so it sees the new AI-provider state from Step 9) ──────────
