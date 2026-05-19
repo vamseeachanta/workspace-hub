@@ -48,6 +48,12 @@ Use this reference when llm-wiki work touches generated public-safe knowledge gr
    - artifact parity checks for JSONL/CSV/report/schema
    - artifact freshness/deterministic-regeneration check
    - adversarial re-review before commit/closeout
+15. If the validation loop is interrupted before closeout, do not imply the issue is done. Preserve a handback with:
+   - exact commands that passed and their key output counts
+   - tracked/untracked file state observed
+   - what was not yet verified: full tests, legal/public-safety scan, artifact parity/freshness, re-review, commit/push, issue comment/labels/close
+   - the first resume action: revalidate live working tree before trusting the handback
+   This prevents stale post-compression summaries from being mistaken for closure evidence.
 
 ## Regression tests to add when this class changes
 

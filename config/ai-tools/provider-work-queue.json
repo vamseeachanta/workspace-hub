@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-18T21:20:11.535853Z",
+  "generated_at": "2026-05-19T01:20:13.195152Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-18T21:20:09.676899Z",
+  "scorecard_generated_at": "2026-05-19T01:20:10.760168Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 22,
-      "total_candidates": 177,
+      "execution_ready_count": 20,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 2533,
@@ -411,57 +411,6 @@
           ]
         },
         {
-          "number": 2728,
-          "title": "feat(architecture): define execution layer contracts, tooling, and compute routing",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:operations",
-            "cat:harness",
-            "domain:workflow",
-            "domain:infrastructure",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-18T19:34:31Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2729,
-          "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "domain:reporting",
-            "domain:gtm",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-18T19:34:28Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2738,
           "title": "feat(hermes): harden ace-linux-1 Telegram gateway as dispatch coordinator",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2738",
@@ -476,7 +425,7 @@
             "agent:claude",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-18T19:34:01Z",
+          "updatedAt": "2026-05-19T00:01:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4284,7 +4233,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 2,
-      "total_candidates": 19,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 2402,
@@ -4821,6 +4770,38 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 2338,
+          "title": "chore(cron): cadence-lib smoke test \u2014 pre-commit --smoke dry-run",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2338",
+          "labels": [],
+          "updatedAt": "2026-05-18T19:43:41Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 2339,
+          "title": "Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2339",
+          "labels": [],
+          "updatedAt": "2026-05-18T19:43:38Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
             "implementation"
           ]
         },

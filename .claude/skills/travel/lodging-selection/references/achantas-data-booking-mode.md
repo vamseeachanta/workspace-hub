@@ -76,6 +76,27 @@ Use a compact, booking-action-oriented comment:
 
 Keep the issue note transactional. The goal is to make the next booking action obvious, not to write a travel essay.
 
+## Exit closeout for booking sessions
+
+When the user says “document and prepare to exit” after a booking-readiness review, create or update a durable handoff in the trip repository, not only in the control repo.
+
+Recommended path shape:
+
+```text
+docs/session-handoffs/YYYY-MM-DD-<destination>-booking-closeout.md
+```
+
+Minimum handoff content:
+
+- Canonical issue links: parent trip issue, destination-specific booking issue, and any future-reference split issues.
+- Current booking posture: lead option, fallback option, and options explicitly rejected or deprioritized.
+- Hard booking gates still open: exact booked-unit view, kitchen equipment, all-in total, cancellation cutoff, access/parking, host confirmation.
+- External-action status: explicitly state whether any booking, payment, reservation hold, host message, or external send was performed. If not approved, state that none was performed.
+- Restart checklist: the next 2–4 human actions, ordered by booking risk.
+- Repo proof: branch, HEAD, origin/<branch>, ahead/behind, dirty/untracked count, and unrelated dirty exceptions preserved.
+
+If the trip repo has unrelated untracked personal files or folders, do not stage them for a booking handoff. Stage only the handoff or intended issue-documentation artifacts, then commit/push and re-fetch to prove `HEAD == origin/<branch>`.
+
 ## Cost-estimate add-on for booking issues
 
 When the user asks for a cost estimate after a booking-readiness review, add the estimate to the same GitHub trip issue as a separate transactional comment. Do not leave the table only in chat.

@@ -29,6 +29,10 @@ Produce a transactional status that separates finished work from restart points:
    - ahead/behind is `0 0` when claiming sync;
    - tracked worktree dirty count is zero;
    - unrelated worktrees are listed and explicitly preserved, not silently removed.
+5. Push-warning reconciliation:
+   - if `git push` emits a GitHub-side ref-lock / cannot-lock-ref warning but exits ambiguously or the remote may still have accepted the object, immediately re-query `git ls-remote origin refs/heads/<branch>`, `git rev-parse HEAD`, `git rev-parse origin/<branch>` after `git fetch`, and `git rev-list --left-right --count HEAD...origin/<branch>`;
+   - treat the warning as benign only when local `HEAD`, fetched tracking ref, and remote ref all match and ahead/behind is `0 0`;
+   - include the warning and verification evidence in the handoff instead of claiming a clean push from the warning alone.
 
 ## Handoff artifact pattern
 

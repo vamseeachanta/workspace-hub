@@ -785,98 +785,6 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: major_review",
-        "issue already has approval marker on disk",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": ".planning/plan-approved/2729.md",
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:documentation",
-          "domain:reporting",
-          "domain:gtm",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-        "provider_route": "claude",
-        "risks": "**Risk:** Generated reports may contain private paths or client names; report gates need automated and manual checks. | **Risk:** Chatbot/RAG surfaces can silently expose lower-level data; corpus posture inheritance is mandatory. | **Decision:** PDFs are durable deliverables only when a contract/client/regulatory/export requirement is recorded in the report taxonomy row; otherwise PDFs are transie",
-        "tests": "TDD section present",
-        "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2729,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-17-issue-2729-report-layer-outputs-evidence.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: major_review,unavailable_review",
-        "issue already has approval marker on disk",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": ".planning/plan-approved/2728.md",
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:operations",
-          "cat:harness",
-          "domain:workflow",
-          "domain:infrastructure",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-        "provider_route": "claude",
-        "risks": "**Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract. | **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date. | **Decision for this packet:** execution manifest fixtures are YAML; markdown docs are human-readable contract v",
-        "tests": "TDD section present",
-        "title": "feat(architecture): define execution layer contracts, tooling, and compute routing"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2728,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(architecture): define execution layer contracts, tooling, and compute routing",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review",
-        "unavailable_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -7986,9 +7894,77 @@
       "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2341",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2339,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2339",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(cron): cadence-lib smoke test \u2014 pre-commit --smoke dry-run"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2338,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "chore(cron): cadence-lib smoke test \u2014 pre-commit --smoke dry-run",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2338",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-05-18T21:20:13Z",
+  "generated_at": "2026-05-19T01:20:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8750,98 +8726,6 @@
         "title": "fix(gemini): remove unsupported permissionMode keys from agent definitions",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2730",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: major_review",
-          "issue already has approval marker on disk",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": ".planning/plan-approved/2729.md",
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:documentation",
-            "domain:reporting",
-            "domain:gtm",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-          "provider_route": "claude",
-          "risks": "**Risk:** Generated reports may contain private paths or client names; report gates need automated and manual checks. | **Risk:** Chatbot/RAG surfaces can silently expose lower-level data; corpus posture inheritance is mandatory. | **Decision:** PDFs are durable deliverables only when a contract/client/regulatory/export requirement is recorded in the report taxonomy row; otherwise PDFs are transie",
-          "tests": "TDD section present",
-          "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2729,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-17-issue-2729-report-layer-outputs-evidence.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(architecture): define report layer outputs, publication surfaces, and evidence rules",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2729",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: major_review,unavailable_review",
-          "issue already has approval marker on disk",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": ".planning/plan-approved/2728.md",
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:operations",
-            "cat:harness",
-            "domain:workflow",
-            "domain:infrastructure",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `docs/DATA_RESIDENCE_POLICY.md` \u2014 existing three-tier data model separates collection data (`worldenergydata`), engineering reference data (`digitalmodel`), and project/client data (`client_projects` / equivalent), with path-based handoff conventions and git/LFS/external",
-          "provider_route": "claude",
-          "risks": "**Risk:** Execution input data may be double-counted as data-layer and execution-layer ownership; contract must distinguish source ownership from executable input contract. | **Risk:** Machine routing can drift quickly; matrix must point to canonical registry or include freshness date. | **Decision for this packet:** execution manifest fixtures are YAML; markdown docs are human-readable contract v",
-          "tests": "TDD section present",
-          "title": "feat(architecture): define execution layer contracts, tooling, and compute routing"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2728,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(architecture): define execution layer contracts, tooling, and compute routing",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2728",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review",
-          "unavailable_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -15955,6 +15839,74 @@
         "title": "bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2341",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2339,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Ecosystem: canonical .gitignore fragment + propagation for Claude-agent dirs",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2339",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(cron): cadence-lib smoke test \u2014 pre-commit --smoke dry-run"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2338,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "chore(cron): cadence-lib smoke test \u2014 pre-commit --smoke dry-run",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2338",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15965,18 +15917,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-18T21:20:09.676899Z",
+  "scorecard_generated_at": "2026-05-19T01:20:10.760168Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-18T21:20:09.492570Z",
+  "utilization_generated_at": "2026-05-19T01:20:10.606820Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 5,
     "empty_review": 3,
-    "legacy_review_no_sha": 27,
-    "major_review": 18,
-    "marker_without_open_approved_issue": 131,
+    "legacy_review_no_sha": 25,
+    "major_review": 16,
+    "marker_without_open_approved_issue": 133,
     "missing_review": 27,
-    "unavailable_review": 15,
+    "unavailable_review": 14,
     "unknown_review": 3
   }
 }
