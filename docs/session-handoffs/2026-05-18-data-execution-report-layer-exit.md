@@ -86,3 +86,64 @@ No external send/action was performed during exit closeout beyond GitHub issue i
 2. Do not duplicate #2726; it is the closed parent/anchor for the layer review.
 3. Keep data/output residency symmetric: outputs/reports/chatbots inherit the same domain/client/public boundary model as inputs unless an explicit promotion gate authorizes movement.
 4. Before claiming any future exit, re-run final `git fetch`, `git status -sb`, `git rev-parse HEAD`, `git rev-parse origin/main`, and `git ls-remote origin refs/heads/main` because hooks/skill tooling can append metadata after commits.
+
+## Final exit refresh — 2026-05-19T02:02Z
+
+### Task status
+
+The full data / execution / report architecture issue tree is now closed or reconciled:
+
+- Parent review: [#2726](https://github.com/vamseeachanta/workspace-hub/issues/2726) — `CLOSED`, `status:done`.
+- Data layer: [#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727) — `CLOSED`, reconciled from stale `status:plan-approved` to `status:done` during this exit refresh.
+- Execution layer: [#2728](https://github.com/vamseeachanta/workspace-hub/issues/2728) — `CLOSED`, `status:done`.
+  - Closeout comment: `https://github.com/vamseeachanta/workspace-hub/issues/2728#issuecomment-4483303602`.
+  - Implementation commits cited in closeout: `2fbc6a4c5`, `2d99c4191`.
+- Report layer: [#2729](https://github.com/vamseeachanta/workspace-hub/issues/2729) — `CLOSED`, `status:done`.
+  - Closeout comment: `https://github.com/vamseeachanta/workspace-hub/issues/2729#issuecomment-4483303725`.
+  - Implementation commit cited in closeout: `2fbc6a4c5`.
+
+### Final validation evidence before issue closeout
+
+- `uv run pytest tests/architecture/test_execution_layer_contract.py tests/architecture/test_report_layer_contract.py -q` → `27 passed in 0.54s`.
+- `scripts/legal/legal-sanity-scan.sh --diff-only` → `PASS — no violations found`.
+- `git diff --check` → clean.
+- Code-stage adversarial review was completed before closeout; final recorded verdicts were Codex `APPROVE` and Gemini `APPROVE` after checksum hardening.
+
+### Closeout hardening landed
+
+After the issues were closed, the session also landed closeout-process improvements:
+
+- `452af17b6` — `Harden closeout guardrails after tool-budget cutoff`.
+- `ddc05775d` — `Record closeout guardrail skill ledger`.
+
+A subsequent concurrent auto-sync advanced the repository tip:
+
+- Current synced tip at this refresh: `44afd0a487cc2e4a96332f3b25e7a1a616ae811f` (`chore(sync): auto-sync 2026-05-18`).
+
+### Live repo-state proof before this handoff update
+
+- Repo: `/mnt/local-analysis/workspace-hub`.
+- Branch: `main`.
+- `HEAD`: `44afd0a487cc2e4a96332f3b25e7a1a616ae811f`.
+- `origin/main`: `44afd0a487cc2e4a96332f3b25e7a1a616ae811f`.
+- Ahead/behind: `0\t0`.
+- Dirty/untracked count before this handoff update: `18` paths.
+- Dirty-state classes preserved intentionally and not staged by this handoff:
+  - session/correction state: `.claude/state/**`;
+  - provider/kanban report churn: `config/ai-tools/**`, `docs/reports/provider-*`;
+  - skill ledger metadata: `logs/orchestrator/hermes/skill-patches.jsonl`;
+  - unrelated/new skill and runbook artifacts: `.claude/skills/github/github-issue-closeout-race-safe/references/`, `.claude/skills/workspace-hub-learned/llm-wiki-ecosystem-gap-to-issues/references/public-graph-manifest-validation.md`, `docs/runbooks/telegram-hermes-gateway-vscode-commands.md`.
+
+### Branch/worktree disposition
+
+- Active worktree remains `/mnt/local-analysis/workspace-hub` on `main`.
+- Existing unrelated worktree preserved: `/tmp/wh-h4` on `dispatch/h4-2152`.
+- No issue-specific #2728/#2729 implementation worktree remains to clean up in this repo state.
+
+### External action status
+
+External actions performed during final closeout were limited to GitHub issue comments/closure/label reconciliation and normal git commit/push/fetch verification. No external send/message action was performed.
+
+### Restart checkpoint
+
+No restart work remains for #2726/#2727/#2728/#2729. If the session resumes, start from the remaining dirty-state inventory above rather than reopening the completed architecture layer issues.
