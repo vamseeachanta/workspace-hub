@@ -132,3 +132,89 @@ If resuming from here:
 ## Final proof placeholder
 
 This handoff must be committed and pushed, then final live proof should be reported in the chat response after re-fetching origin.
+
+## Final exit refresh — 2026-05-18T22:56:36-05:00
+
+### Cleanup outcome
+
+Deleted and verified absent from `/mnt/local-analysis`:
+
+- `/mnt/local-analysis/worktrees`
+- `/mnt/local-analysis/.pytest_cache`
+- `/mnt/local-analysis/reconcile-workspace-hub-20260518-145635`
+
+Temporary cleanup controls also verified absent:
+
+- `/mnt/local-analysis/.cleanup-lock`
+- `/mnt/local-analysis/.cleanup-trash`
+
+Remaining top-level entries:
+
+```text
+llm-wiki
+.pnpm-store
+preserved-workspace-hub-cleanup
+.Trash-1000
+workspace-hub
+```
+
+Disk state after cleanup:
+
+```text
+/dev/sdc1      976759804 193049784 783710020  20% /mnt/local-analysis
+```
+
+Deferred intentionally:
+
+- `workspace-hub`: active canonical repo and closeout target.
+- `llm-wiki`: preserved; not touched by this cleanup.
+- `preserved-workspace-hub-cleanup`: evidence-bearing preserved patches/checksums from earlier cleanup.
+- `.pnpm-store`, `.Trash-1000`: cache/trash/system folders; not removed during this pass.
+
+### Skill-library update
+
+A targeted update was made to `.claude/skills/operations/mnt-analysis-cleanup/` to capture the **clean duplicate clone** safe-delete pattern discovered during this cleanup. This is a bounded skill-library update, not the heavyweight comprehensive-learning pipeline.
+
+Intentional skill artifacts:
+
+- `.claude/skills/operations/mnt-analysis-cleanup/SKILL.md`
+- `.claude/skills/operations/mnt-analysis-cleanup/references/clean-duplicate-clone-2026-05-18.md`
+
+### Repo-state proof before final closeout commit
+
+```text
+Host: ace-linux-1
+Repo: /mnt/local-analysis/workspace-hub
+Branch: main
+HEAD: b02b1ef9e572df0230a4030fddf98671c94be380
+origin/main: b02b1ef9e572df0230a4030fddf98671c94be380
+Ahead/behind: 0/0
+```
+
+```text
+git status --porcelain=v1 --branch
+## main...origin/main
+ M .claude/skills/operations/mnt-analysis-cleanup/SKILL.md
+?? .claude/skills/operations/mnt-analysis-cleanup/references/clean-duplicate-clone-2026-05-18.md
+```
+
+Worktree disposition:
+
+```text
+worktree /mnt/local-analysis/workspace-hub
+HEAD b02b1ef9e572df0230a4030fddf98671c94be380
+branch refs/heads/main
+```
+
+No additional worktrees remain under `/mnt/local-analysis/worktrees`; that top-level staging directory was deleted after verification.
+
+### External-action status
+
+No external send/action was performed during this final cleanup closeout. No Telegram/Hermes remote-machine command was triggered.
+
+### Restart checklist
+
+1. Fetch live state: `git fetch origin main && git status --porcelain=v1 --branch`.
+2. Confirm final closeout commit is present on `origin/main`.
+3. If resuming Telegram/Hermes machine connectivity work, use `docs/session-handoffs/2026-05-18-telegram-hermes-machine-connectivity-exit.md` and rerun `scripts/readiness/telegram-hermes-readiness.sh` from a clean checkout.
+4. Leave `preserved-workspace-hub-cleanup` in place unless the preserved evidence is explicitly approved for removal.

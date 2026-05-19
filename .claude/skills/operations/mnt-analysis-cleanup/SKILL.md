@@ -72,6 +72,7 @@ Use this taxonomy (apply order matters — most-specific first):
 | **dotdir (unclassified)** | dotfile/dotdir NOT on the system allowlist | Tier 3 until classified — never auto-treat as system |
 | **workspace-hub canonical** | the workspace-hub repo itself | `workspace-hub/` |
 | **outer-clone duplicate** | a repo dir at top-level that also exists nested under `workspace-hub/<same-name>/` | `assetutilities/`, `digitalmodel/` (historical pattern) |
+| **clean duplicate clone** | a full `.git/` clone of a canonical repo under an ad-hoc/staging/reconcile name; local branch is clean, upstream configured, ahead=0, and local HEAD is contained in origin history | `reconcile-workspace-hub-YYYYMMDD-HHMMSS/` |
 | **orphan worktree** | `.git` is a file (`gitdir:` pointing at a path that no longer exists) | `codex-burn-YYYYMMDD/<repo>-bundle/` after parent clone is gone |
 | **codex-burn run artifact** | dated dir matching `codex-burn-YYYYMMDD/` containing per-repo bundles, monitoring-evidence, logs, prompts | full Hermes codex-burn run output |
 | **agent log accumulation** | dir holding `provider-capacity-aware-YYYYMMDD-*` or `workspace-hub-{exit,closeout}-handoff-*.md` | `agent-logs/` |
@@ -112,6 +113,7 @@ Build-output dirs (`build/`, `dist/`, `target/`, `bin/`, `*.egg-info/`, `.eggs/`
 | Class | Verification |
 |---|---|
 | outer-clone duplicate | Compare HEAD of outer vs nested. Check `for-each-ref refs/heads/ --format='%(upstream:track)'` for unpushed work. Check `git stash list`. Check `git status --short` for dirty. |
+| clean duplicate clone | Fetch/prune first. Confirm remote URL matches the canonical repo; branch has upstream; `git status --short` is empty; `git stash list` is empty; `git rev-list --left-right --count HEAD...@{upstream}` returns `0 N` (ahead=0); and `git branch -r --contains HEAD` includes the upstream/default branch. If clean but behind origin, deletion is acceptable after approval because origin already contains local HEAD. |
 | orphan worktree | Read `.git` (file, contents = `gitdir: <path>`). If that path doesn't exist, orphan confirmed. Fetch the branch the orphan was tracking into a sibling clone, `git archive` it, `diff -rq` with bucket-A filter, build residue list, archive bucket-B/C, then delete. |
 | codex-burn run artifact | Cross-check with Hermes via the full coordination protocol in §6 below. **An old dated dir is a candidate, not vestigial-by-default.** |
 | agent log accumulation | Inspect timestamps; threshold for prune is the `mtime` policy below. |
@@ -121,7 +123,7 @@ Build-output dirs (`build/`, `dist/`, `target/`, `bin/`, `*.egg-info/`, `.eggs/`
 
 Always present four tiers; let the user reject any.
 
-- **Tier 0 — safe deletes**: orphan worktrees with verified-clean origin-diff (residue is bucket-A only), empty coordination meta-dirs (per find -quit check).
+- **Tier 0 — safe deletes**: orphan worktrees with verified-clean origin-diff (residue is bucket-A only), clean duplicate clones with ahead=0/dirty=0/stash=0/HEAD-contained-on-origin, empty coordination meta-dirs (per find -quit check).
 - **Tier 1 — archive then delete**: codex-burn monitoring evidence, prompts, logs — anything in bucket B or C unique to the bundle. Archive workflow per §7.
 - **Tier 2 — reduce in place**: agent-logs with mtime policy (default: prune subdirs >14 days, keep standalone .md handoffs).
 - **Tier 3 — leave alone**: outer-clone duplicates with any unpushed/dirty/stashed state; anything Hermes coordination flagged; unclassified dotdirs; **any orphan worktree whose branch is unmerged and parent issue is still open** (call this evidence-preserving defer, not vestigial).
@@ -284,4 +286,4 @@ When this skill completes a successful run, optionally update auto-memory at `~/
 - `feedback_mnt_analysis_cleanup_gotcha.md` — if a new gotcha surfaced (e.g., a check that should be in §6 but wasn't)
 - `project_mnt_analysis_state.md` — post-run state snapshot if useful for future sessions
 
-The case-study reference (`references/case-study-2026-05-12.md`) captures the worked example that produced this skill. The Hermes adversarial review at `references/hermes-adversarial-review-2026-05-12.md` produced the patch set that hardened it.
+The case-study reference (`references/case-study-2026-05-12.md`) captures the worked example that produced this skill. The Hermes adversarial review at `references/hermes-adversarial-review-2026-05-12.md` produced the patch set that hardened it. The clean duplicate clone deletion pattern is illustrated in `references/clean-duplicate-clone-2026-05-18.md`.
