@@ -135,6 +135,7 @@ If any layer fails, list the specific failing check and what was found vs expect
 
 - See `references/parameter-sweep-report-review.md` for the data-contract + interaction checklist for generated engineering parameter-sweep chart reports.
 - See `references/engineering-report-artifact-verification.md` for manifest/HTML/PDF/CSV/JSON verification when an engineering report generator emits a multi-artifact bundle.
+- See `references/client-review-export-closeout.md` for locating an existing HTML report, producing PDF/DOCX client-review copies, verifying URLs/content, and closing out issue-scoped follow-up artifacts.
 - Always call `mcp__claude-in-chrome__tabs_context_mcp` first to get a valid tab ID
 - Use `mcp__claude-in-chrome__tabs_create_mcp` for a fresh tab (don't reuse report tab)
 - After verification, kill the HTTP server: `pkill -f "http.server 8974"` (Linux/macOS) or `taskkill` (Windows)

@@ -6,3 +6,15 @@
 {"ts":"2026-05-19T11:12:39Z","event":"stop_signal_captured","session_id":"aede781d-7ebd-4abb-813a-78935f433b69"}
 {"ts":"2026-05-19T12:13:50Z","event":"session_tool_summary","session_id":"7dd8af0f-a15b-4a3a-a5f0-0c4ed9a8ae78","wrk":"none","tool_calls":2,"edits":0,"reads":2}
 {"ts":"2026-05-19T12:13:50Z","event":"stop_signal_captured","session_id":"7dd8af0f-a15b-4a3a-a5f0-0c4ed9a8ae78"}
+{"ts":"2026-05-19T13:25:30Z","event":"session_tool_summary","session_id":"cc26971a-8770-49db-81b9-ae41eb299110","wrk":"none","tool_calls":218,"edits":62,"reads":88}
+{"ts":"2026-05-19T13:25:30Z","event":"stop_signal_captured","session_id":"cc26971a-8770-49db-81b9-ae41eb299110"}
+{"ts":"2026-05-19T13:29:51Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":230,"edits":68,"reads":94}
+{"ts":"2026-05-19T13:29:51Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}
+{"ts":"2026-05-19T13:37:08Z","event":"session_tool_summary","session_id":"cc26971a-8770-49db-81b9-ae41eb299110","wrk":"none","tool_calls":234,"edits":70,"reads":94}
+{"ts":"2026-05-19T13:37:08Z","event":"stop_signal_captured","session_id":"cc26971a-8770-49db-81b9-ae41eb299110"}
+{"ts":"2026-05-19T13:41:27Z","event":"session_tool_summary","session_id":"cd691548-23fd-48eb-9043-8f840dd8c52a","wrk":"none","tool_calls":248,"edits":82,"reads":98}
+{"ts":"2026-05-19T13:41:27Z","event":"stop_signal_captured","session_id":"cd691548-23fd-48eb-9043-8f840dd8c52a"}
+{"ts":"2026-05-19T13:42:06Z","event":"session_tool_summary","session_id":"6ef6d2ae-a423-40f2-ad98-9364922b035b","wrk":"none","tool_calls":248,"edits":82,"reads":98}
+{"ts":"2026-05-19T13:42:06Z","event":"stop_signal_captured","session_id":"6ef6d2ae-a423-40f2-ad98-9364922b035b"}
+{"ts":"2026-05-19T13:58:35Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":294,"edits":116,"reads":106}
+{"ts":"2026-05-19T13:58:35Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}

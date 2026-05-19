@@ -53,6 +53,10 @@ Checker pitfall: path-only parsing of `git status --short` is insufficient. Pres
 
 For approved Phase 1 repo-structure issues, use the packaged pattern in [`references/phase1-contract-checker-pattern.md`](references/phase1-contract-checker-pattern.md): bounded docs/config/checker/tests/enforcement only, TDD slices for unapproved roots and generated-root metadata, default checker coverage of `git ls-files` plus non-ignored working-tree paths, and no broad moves/deletions until artifacts are classified.
 
+## Agent/runtime folder authority mapping
+
+When work touches provider identity/config folders, generated runtime files, local home-directory symlinks, memory bridges, or skill roots, classify each path by authority before editing. Use [`references/agent-runtime-authority-map.md`](references/agent-runtime-authority-map.md) for the canonical source vs generated runtime vs local symlink vs bridge output workflow and issue-body shape for recurring human/agent folder-confusion reports.
+
 ## Red Flags
 
 These phrases signal you are about to violate the Iron Law:

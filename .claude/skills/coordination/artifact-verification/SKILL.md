@@ -72,6 +72,16 @@ For generated artifacts (manifests, reports, schemas, indexes, lockfiles, static
 - [ ] After pulling/rebasing while generated reports or schemas are in flight, re-run targeted tests that reference canonical generated paths; patch tests to discover the latest canonical artifact or regenerate test fixtures instead of hardcoding stale date/version filenames.
 - [ ] Treat a passing validator CLI plus a failing artifact test as a fixture-contract drift signal until proven otherwise: inspect whether the test points at an older generated report/schema path before changing validator semantics.
 
+### 4B. Historical Artifact Location / Checkout-Absent Verification
+
+When the user asks to locate an existing report/output artifact from prior work:
+
+- [ ] Search prior session records for the exact artifact path and issue context if the local checkout does not contain the sibling repo or output tree.
+- [ ] Verify the artifact against the remote canonical repo using GitHub Contents/API metadata (`path`, `size`, `sha`, `download_url`) before telling the user it exists.
+- [ ] Keep the distinction explicit: "remote artifact exists" is not the same as "local checkout exists". If the repo is absent locally, say that follow-up edits require clone/sync first.
+- [ ] For generated HTML reports, capture the report path, raw URL, owning issue, size, and SHA; this is enough for a fresh follow-up prompt to resume without regenerating the artifact.
+- [ ] Do not retry the same missing local path repeatedly. After one missing-path failure, inventory available repo roots and switch to session/remote verification.
+
 ### 5. No Unplanned Side Effects
 
 - [ ] No unrelated files were modified (check `git diff --stat`)
@@ -149,6 +159,7 @@ For overnight batch runs with multiple terminals:
 ## References
 
 - Generated artifact schema drift recovery: `references/generated-artifact-schema-drift.md`
+- Historical HTML/report location recovery: `references/historical-html-report-location.md`
 - Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
 - Plan approval gate: `.claude/hooks/plan-approval-gate.sh`
 - Cross-review policy: `.claude/skills/coordination/cross-review-policy/SKILL.md`
