@@ -151,6 +151,8 @@ For the concrete closeout checklist, use `references/exit-handoff-closeout.md`. 
 
 If the user explicitly asks to "review the conversation and update the skill library," do not hide behind the nightly deferral rule. Perform a targeted skill update using `skill_manage` against the currently loaded class-level skill or the closest existing umbrella. This is a bounded library-maintenance action, not the heavyweight comprehensive-learning pipeline. If a referenced support file is missing, create it immediately under `references/` and keep SKILL.md pointing to it.
 
+Use `references/conversation-review-skill-update-mode.md` as the operating checklist for this mode. Key rules: be active by default, patch loaded/governing class-level skills first, prefer support files under existing umbrellas over narrow one-session skills, and treat user corrections about style/format/workflow as first-class skill-library signals.
+
 After targeted skill-library edits, treat the skill ledger as part of the closeout artifact set. A `skill_manage` patch/write can create or later append tracked ledger entries such as `logs/orchestrator/hermes/skill-patches.jsonl`; inspect that dirt after the primary skill commit, commit it separately if it is intentional metadata, then fetch/verify final `HEAD == origin/<branch>`. Do not claim a clean exit immediately after the first commit if hooks or skill tooling generated follow-up ledger dirt.
 
 ## Rationalization Defense
