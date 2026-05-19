@@ -18,3 +18,17 @@
 {"ts":"2026-05-19T13:42:06Z","event":"stop_signal_captured","session_id":"6ef6d2ae-a423-40f2-ad98-9364922b035b"}
 {"ts":"2026-05-19T13:58:35Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":294,"edits":116,"reads":106}
 {"ts":"2026-05-19T13:58:35Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}
+{"ts":"2026-05-19T17:07:23Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":308,"edits":130,"reads":110}
+{"ts":"2026-05-19T17:07:23Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}
+{"ts":"2026-05-19T17:30:25Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}
+{"ts":"2026-05-19T17:30:25Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":311,"edits":130,"reads":110}
+{"ts":"2026-05-19T17:37:16Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":321,"edits":138,"reads":112}
+{"ts":"2026-05-19T17:37:16Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}
+{"ts":"2026-05-19T17:48:43Z","event":"session_tool_summary","session_id":"019e4159-678b-7722-b7af-8ff29aa046f1","wrk":"none","tool_calls":341,"edits":138,"reads":136}
+{"ts":"2026-05-19T17:48:43Z","event":"stop_signal_captured","session_id":"019e4159-678b-7722-b7af-8ff29aa046f1"}
+{"ts":"2026-05-19T17:50:26Z","event":"session_tool_summary","session_id":"bd32b135-7a56-45f5-b417-4aeb277ca02a","wrk":"none","tool_calls":344,"edits":138,"reads":140}
+{"ts":"2026-05-19T17:50:26Z","event":"stop_signal_captured","session_id":"bd32b135-7a56-45f5-b417-4aeb277ca02a"}
+{"ts":"2026-05-19T18:00:35Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":355,"edits":140,"reads":140}
+{"ts":"2026-05-19T18:00:35Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}
+{"ts":"2026-05-19T18:58:47Z","event":"session_tool_summary","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189","wrk":"none","tool_calls":359,"edits":142,"reads":140}
+{"ts":"2026-05-19T18:58:47Z","event":"stop_signal_captured","session_id":"ba9bafdf-2df0-4818-972a-3b30818f3189"}

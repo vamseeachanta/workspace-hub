@@ -53,6 +53,10 @@ Every trip issue body MUST include these in this order. Sections marked **load-b
 
 If the user asks to "make note of" activities, preserve a shortlist, add selected options, or update an existing trip record, do **not** default to the full trip-plan template. Treat it as a trip-maintenance update: find/use the existing `vamseeachanta/achantas-data` trip issue, add a compact issue comment or note with the source URL and selected items, and report the issue/comment URL. See `references/activity-shortlist-note-workflow.md`.
 
+## Nearby alternative exploration exception
+
+If the user asks to explore alternatives to a known trip/destination vibe (for example, "Broken Bow-style cabin but closer"), treat it as an **idea / ranking** task unless they ask for booking-ready listings. Capture the reference vibe as concrete filters, create/reuse a GitHub tracking issue when requested, compare candidates against any known cost baseline, and post a compact ranked exploration comment rather than forcing the full trip-plan template. See `references/nearby-cabin-alternative-exploration.md`.
+
 ## Workflow
 
 1. Detect trip archetype (above), unless this is a lightweight trip-maintenance update.

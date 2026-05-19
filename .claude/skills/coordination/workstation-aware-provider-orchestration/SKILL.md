@@ -39,6 +39,20 @@ Design or operate a central AI workflow control plane that combines provider quo
 
 ## Planning workflow
 
+### Keep canonical infrastructure out of the decision loop
+
+When the user asks to decide machine roles or tier-1 repo placement, do not turn the stream into recurring repo-placement, memory-layout, skill-layout, artifact-format, output-format, or cross-repo file-structure governance. Treat those as canonical infrastructure unless a narrow enforcement defect is explicitly in scope.
+
+For workstation planning, the decision surface should be throughput-oriented:
+
+- which provider(s) run where
+- what workload class each machine owns
+- what readiness gap blocks dispatch
+- what already-approved batch should be routed first
+- how useful throughput will be measured and reconciled
+
+For per-machine issues, prefer `throughput(workstations): activate <machine> provider/machine lane` over broad governance titles. The body should define provider fit, workload class, readiness probe, first approved batch candidate, and proof-of-throughput metric. Add labels such as `cat:ai-orchestration`, `cat:operations`, `domain:ai-orchestration`, `domain:workstations`, `domain:agent-cost-tracking`, `machine:<host>`, and a lifecycle label. See `references/per-machine-throughput-lane-issues.md` for a concise example pattern from the May 2026 correction.
+
 1. **Open or update a GitHub issue first**
    - Use `gh-work-planning` and `github-issues`.
    - Capture the objective, workstation priority, provider urgency, and hard gates.
