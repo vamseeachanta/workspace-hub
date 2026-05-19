@@ -35,6 +35,26 @@ When the user asks for "mountain views," do not treat regional marketing languag
 
 If a city itself cannot satisfy the requested view class, state that explicitly and widen to the nearest realistic region instead of forcing weak in-city matches. Example: Austin proper does not provide a Broken Bow/Ouachita-style mountain-cabin experience; closest substitutes are Texas Hill Country / Canyon Lake / Wimberley / Dripping Springs / Lake Travis, with the tradeoff that they are outside Austin proper.
 
+## Mixed-destination issue hygiene
+
+When an existing trip thread mixes distinct destination decisions (for example OK / Broken Bow plus Austin / Texas Hill Country), split them into separate GitHub issues before adding more booking detail.
+
+Operational pattern:
+
+1. Inspect the parent/background issue and search existing issues for both destination names before creating anything new.
+2. Reuse or reference any existing destination issue when one exists; otherwise create one issue per destination with a booking-oriented title.
+3. Keep the parent issue as background and add one cross-linking comment that points to the destination-specific issues.
+4. In the destination issue, preserve the current lead candidate and add new options as gated contenders, not as a flat research dump.
+5. Keep the recommendation conservative when view evidence differs by type: a wooded/private/forest view is not the same as a verified mountain/ridge/panorama view from the booked unit.
+6. If a sensitive-looking local file path appears during repo search, do not read it for trip planning; represent it only as `[REDACTED]` if it must be mentioned.
+
+Example shape:
+
+- Parent/background issue: vacation ideas or mixed planning thread.
+- OK issue: `Booking shortlist: OK / Broken Bow cabin with kitchen + verified view`.
+- Austin issue: `Trip planning: Austin / Texas Hill Country options`.
+- Parent comment: “Split for booking workflow: OK issue <link>; Austin issue <link>; current OK lead <property>; alternatives <short list>; next gate <view/kitchen/fees/cancel>.”
+
 ## Comment shape for GitHub issues
 
 Use a compact, booking-action-oriented comment:

@@ -60,6 +60,8 @@ When closeout is part of a larger implementation/verification turn, do not leave
 
 If additional verification is still desirable after closeout, state it as residual follow-up in the comment rather than delaying the comment itself.
 
+For the concrete pattern, including how to verify a push that reports a transient GitHub remote `cannot lock ref` race even though `origin/main` advanced to the intended SHA, see `references/tool-budget-and-remote-ref-race-closeout.md`.
+
 ## When not necessary
 
 If you intentionally want a single quick close with no meaningful evidence, `gh issue close` alone is fine. But when evidence matters, always comment first, then close.
