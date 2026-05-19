@@ -243,8 +243,25 @@ else
   log "tmux not found — install with: sudo apt install tmux (Linux) or brew install tmux (macOS)"
 fi
 
-# ── Step 9: Verify ────────────────────────────────────────────────────────────
-step "9. Post-setup verification"
+# ── Step 9: AI-provider harness (per #2751 G1) ───────────────────────────────
+# Wires the AI-provider SOUL-runtime install into the main entry point.
+# Calls bootstrap-machine.sh which now unconditionally creates ~/.hermes,
+# ~/.codex, ~/.gemini parent directories before invoking install-soul-runtime.sh,
+# closing the fresh-machine gap surfaced by Codex r2 finding C1.
+step "9. AI-provider harness (SOUL-runtime symlinks)"
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "bash scripts/memory/bootstrap-machine.sh"
+else
+  bash "${WORKSPACE_HUB}/scripts/memory/bootstrap-machine.sh"
+fi
+
+# ── Steps 10-13 ───────────────────────────────────────────────────────────────
+# Reserved for Phase 2+3 deliverables (CLI auto-install, auth orchestration,
+# Hermes config render, emit-machine-status). Will land in subsequent commits.
+
+# ── Step 14: Verify (renumbered from Step 9 per #2751 r2 — verify must run
+#             LAST so it sees the new AI-provider state from Step 9) ──────────
+step "14. Post-setup verification"
 if [[ "$DRY_RUN" == "true" ]]; then
   dry "bash scripts/setup/verify-setup.sh"
 else
