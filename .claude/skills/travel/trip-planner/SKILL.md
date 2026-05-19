@@ -59,6 +59,16 @@ Every trip issue body MUST include these in this order. Sections marked **load-b
 6. Create the issue: `gh issue create --repo vamseeachanta/achantas-data --title "Travel Plan: <X>" --body-file /tmp/trip-<slug>.md --label documentation`.
 7. Report the new issue URL to the user.
 
+## Lightweight trip-note updates
+
+When the user asks to "make note", "add this to the trip", "currently selected", or otherwise provides a small trip-planning delta, do **not** default to creating a new full trip issue. Instead:
+
+1. Search `vamseeachanta/achantas-data` for the existing trip issue using destination/activity terms.
+2. Prefer updating/commenting on the existing active trip issue when one clearly matches.
+3. Capture the source URL, the selected items, and short planning implications in a concise issue comment with a stable marker.
+4. Verify the final comment URL/body before reporting success.
+5. Only create a new issue if no existing trip issue clearly covers the destination or the user explicitly asks for a new plan.
+
 ## When to refer to the templates
 
 The canonical structures live in `.claude/skills/travel/templates/`:
