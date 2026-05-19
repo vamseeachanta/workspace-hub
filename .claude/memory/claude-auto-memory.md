@@ -55,7 +55,7 @@
 - [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread for ~20% residue
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` binds main session; subagents can't drive Chrome; partition main=browser, sub=research
 - [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome
-- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/`
+- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/` *verified: 2026-05-19*
 - [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's `docs/superpowers/specs/` is gitignored (`.gitignore:438`); write to `docs/governance/` instead
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — Hermes cleanup loops on main revert parallel commits in minutes; preflight pgrep, use worktree+branch if active
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` refuses dirty volumes; use `ntfs-3g` (FUSE) auto-replays journal; explicit uid/gid for ownership
@@ -94,7 +94,7 @@
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
 - [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
 - [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
-- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4
+- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4 *stale: 2026-05-19*
 - [Reviewer dispatch refetch live body](feedback_reviewer_dispatch_refetch_live_body.md) — never reuse cached `/tmp/<prompt>.txt`; refetch live issue/plan body before each review dispatch (cost: Gemini MAJOR rediscovered already-fixed defects on stale input)
 - [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
 - [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture

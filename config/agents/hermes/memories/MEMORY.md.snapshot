@@ -5,3 +5,7 @@ Multi-machine control-surface baseline: Telegram logged in across 5 machines; He
 Workspace-hub tier-1 repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, aceengineer-strategy. User prefers clickable GitHub issue links grounded by live gh issue view in repo-sync/closeout reports; exit closeout uses workspace-hub/comprehensive-learning reference exit-handoff-closeout.md. aceengineer-strategy is record for named GTM prospects; generic collateral belongs in appropriate tier-1 repos. Hermes SOUL canonical path: /mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md, symlinked from ~/.hermes/SOUL.md.
 §
 Workspace-hub data-governance planning should model AI-agent data routing with distinct levels: raw-data, readable-raw-data, llm-wiki-private, and llm-wiki-public. Private/client raw or readable data cannot route directly into public llm-wiki; sanitized derivatives require explicit promotion gates and source-class/citation separation.
+§
+Workspace-hub data/execution/report architecture planning treats the three layers as interrelated but intentionally separable for dispatch: separate layer issues/plans keep work moving while the parent architecture issue preserves cross-layer contracts.
+§
+Workspace-hub canonical execution method is parallel-first gated execution: classify non-trivial work as single-lane, parallel-readonly, or parallel-worktree before starting; implementation still requires plan approval, TDD, isolated write lanes, orchestrator verification, and serialized commit/push/closeout.
