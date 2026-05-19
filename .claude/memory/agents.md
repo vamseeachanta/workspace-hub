@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-18)
+## Synced from Hermes Memory (2026-05-19)
 
 ### Environment Facts
 
@@ -15,12 +15,14 @@
 - Workspace-hub tier-1 repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, aceengineer-strategy. User prefers clickable GitHub issue links grounded by live gh issue view in repo-sync/closeout reports; exit closeout uses workspace-hub/comprehensive-learning reference exit-handoff-closeout.md. aceengineer-strategy is record for named GTM prospects; generic collateral belongs in appropriate tier-1 repos. Hermes SOUL canonical path: /mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md, symlinked from ~/.hermes/SOUL.md.
 - Workspace-hub data-governance planning should model AI-agent data routing with distinct levels: raw-data, readable-raw-data, llm-wiki-private, and llm-wiki-public. Private/client raw or readable data cannot route directly into public llm-wiki; sanitized derivatives require explicit promotion gates and source-class/citation separation.
 - Workspace-hub data/execution/report architecture planning treats the three layers as interrelated but intentionally separable for dispatch: separate layer issues/plans keep work moving while the parent architecture issue preserves cross-layer contracts.
+- Workspace-hub canonical execution method is parallel-first gated execution: classify non-trivial work as single-lane, parallel-readonly, or parallel-worktree before starting; implementation still requires plan approval, TDD, isolated write lanes, orchestrator verification, and serialized commit/push/closeout.
 
 ### User Profile
 
 - User requires zero-waste AI spend: consume weekly provider credits on useful approved work; prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions. In marine/offshore force reviews, user expects individual components and resultants compared side-by-side using existing basecase assumptions.
 - User wants llm-wiki maintained on a weekly cadence as a code-development leverage source: review current LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues that keep the wiki useful for moving engineering work forward.
-- User expects active post-session learning: save durable preferences to memory when revealed, and update class-level umbrella skills for non-trivial techniques or corrections; prefers rich SKILL.md plus references/ over narrow one-session skills.
+- User expects active post-session learning as a deliverable: after non-trivial sessions or explicit review requests, patch loaded/governing class-level skills first, prefer concise references/ support files over one-off narrow skills, and treat “nothing to save” as rare rather than default.
+- User expects travel lodging recommendations to be booking-ready and evidence-grounded: verify live availability/pricing, kitchen details, and that requested views are visible from the booked unit/deck/hot tub/window rather than only from generic property marketing.
 
 
 <!-- BRIDGE:END -->
@@ -65,7 +67,7 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo *verified: 2026-05-19*
+- Plans live in `.planning/` within each repo
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
@@ -92,7 +94,7 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 - `aceengineer-strategy/` — private nested repo with full GTM strategy
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
-- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron) *verified: 2026-05-19*
+- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
 - GTM control rule: continuous AI work should convert external signals, repo engineering work, and approved issue outputs into client-ready material, but keep engineering evidence boundaries explicit.
 - Public-promotion rule: raw data may feed internal code/wiki preparation, but public `llm-wiki` and artifacts must carry provenance plus data/code/standards/methodology separation and pass legal sanity checks.
 - Control-surface rule: `ace-linux-1` remains the approval and reconciliation surface while `ace-linux-1` / `ace-linux-2` long-running lanes keep planning, execution, review, and GTM packaging moving in the background.

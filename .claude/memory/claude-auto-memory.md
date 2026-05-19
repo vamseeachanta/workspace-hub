@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-05-18
+> Last captured: 2026-05-19
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -23,6 +23,8 @@
 - [Doc-counter rules write-time](feedback_doc_counter_rule_writetime.md) — phantom counters as write-time recompute rules, not frozen integers
 - [Cross-provider review payoff](feedback_cross_provider_review_payoff.md) — Codex finds non-overlapping defects vs. Claude; verify Codex GitHub-connector evidence locally
 - [gh issue close drops comments](feedback_gh_issue_close_silent_comment_drop.md) — if CLOSED, --comment silently lost; reopen-comment-close
+- [GitHub addComment "submitted too quickly"](feedback_github_addcomment_submitted_too_quickly.md) — throttle string is "was submitted too quickly", NOT "rate limit"/"abuse"; backoff regex must match it explicitly
+- [Bulk-comment cumulative ceiling](feedback_bulk_comment_cumulative_volume_threshold.md) — ~500 addComment posts on single token in ~25min trips throttle even at 30/min pacing; batch ≤200 + 1hr cooldown
 - [Codex needs pushed artifact](feedback_codex_needs_pushed_artifact.md) — push plan to GH BEFORE `codex exec`; sandbox can't read local files
 - [Codex sandbox model](feedback_codex_sandbox_write_blocked.md) — sandbox blocks fs writes AND shell exec; fallback via js_repl + GH connector. See also: codex_sandbox_no_execution, codex_sandbox_fallback_paths topic files.
 - [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when machine-consumed
@@ -33,6 +35,7 @@
 - [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mocks pass what live CLIs reject; always live-repro before close
 - [Attestation enables contradiction detection](feedback_attestation_enables_contradiction_detection.md) — #2405 unlocks plan-vs-live-state defect finding, not just Class-B silencing
 - [Subagent Write phantom](feedback_subagent_write_phantom.md) — subagent reports Write success while file doesn't land; main session must `ls` before believing
+- [Wait for safety bg task before destructive op](feedback_wait_for_safety_bg_task_before_destructive_op.md) — in-flight "is this safe to delete" bg tasks are blocking deps; "if stale, delete" conditional approval still requires complete evidence first (2026-05-18 digitalmodel premature rm)
 - [Never offer self-label plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — never self-approve, never pre-authorize via handoff-prompt; user-in-loop gate is load-bearing
 - [Recruiter engagement criteria](feedback_recruiter_engagement.md) — consulting-level + credible source only; no drive-by recruiter replies even in active job-search
 - [Email cross-noise](feedback_email_cross_noise.md) — third parties mistakenly using user's Gmail; standard unsubscribe fails; sender-domain DELETE in routing config
@@ -55,7 +58,7 @@
 - [Gmail filter-first over per-thread](feedback_gmail_filter_first_over_per_thread.md) — ingestion filters + "Apply to existing" handle ~80% of mail; reserve per-thread for ~20% residue
 - [claude-in-chrome session-scoped](feedback_claude_in_chrome_session_scoped.md) — `mcp__claude-in-chrome__*` binds main session; subagents can't drive Chrome; partition main=browser, sub=research
 - [Gmail bulk archive dialog-free](feedback_gmail_bulk_archive_no_confirm.md) — archive has no confirm dialog; delete/empty-trash/unsubscribe DO dialog and break claude-in-chrome
-- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/` *verified: 2026-05-19*
+- [gif_creator as proof pattern](feedback_gif_creator_as_proof_pattern.md) — `mcp__claude-in-chrome__gif_creator` captures 50 frames + click indicators; export to `docs/sessions/`
 - [superpowers/specs gitignored](feedback_superpowers_specs_gitignored.md) — brainstorming skill's `docs/superpowers/specs/` is gitignored (`.gitignore:438`); write to `docs/governance/` instead
 - [Hermes-active preflight check](feedback_hermes_active_preflight_check.md) — Hermes cleanup loops on main revert parallel commits in minutes; preflight pgrep, use worktree+branch if active
 - [NTFS dirty-volume mount path](feedback_ntfs_dirty_volume_mount_path.md) — `ntfs3` refuses dirty volumes; use `ntfs-3g` (FUSE) auto-replays journal; explicit uid/gid for ownership
@@ -94,7 +97,7 @@
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
 - [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
 - [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
-- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4 *stale: 2026-05-19*
+- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4
 - [Reviewer dispatch refetch live body](feedback_reviewer_dispatch_refetch_live_body.md) — never reuse cached `/tmp/<prompt>.txt`; refetch live issue/plan body before each review dispatch (cost: Gemini MAJOR rediscovered already-fixed defects on stale input)
 - [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
 - [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture
@@ -105,6 +108,7 @@
 ## Project
 > project_ecosystem_theme.md, project_github_workflow.md, project_2025_taxes.md
 - [devaKrishna developmental pace](project_devakrishna_developmental_pace.md) — 5+ yr generalization horizon; calibrate to 6–24mo per milestone; functional > academic; achantas-data#73
+- [devaKrishna tennis dev](project_devakrishna_tennis_development.md) — 9y5mo (DOB 2016-12-08), serious-track, Green Ball division movement phase; Lobster Elite Grand IV + green-dot balls; Houston venue TBD
 - [Krishna typing tools rotation](project_krishna_typing_tools.md) — typing.com stall 2026-05-12; rotate TypingClub/Dance Mat/Keybr; functional > lesson-tree
 - [worldenergydata GTM state](project_worldenergydata_gtm_state.md) — reports ready, BSEE fix landed, open issues
 - [GTM artifact layout inconsistency](project_gtm_artifact_layout_inconsistency.md) — 3 layout roots × 3 date conventions × 3 bundle formats; scan all 4 paths; #2662
@@ -138,7 +142,9 @@
 - [Wiki standards/ path decision](project_wiki_standards_path_decision.md) — `wiki/standards/<code-id>.md` routing across eng/marine/naval; #2471 is CSA-Z276-only (verified 2026-04-25)
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — 2026-05-05 user override of #2398; vamseeachanta/llm-wiki MIT+CC-BY-4.0; pipeline stays in workspace-hub
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — trunk for code, client work, chatbots; improve via public + legally-sanitized private sources; gaps = defects
-- [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer)
+- [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer); 14-URL 2026-05-18 batch added 2 domains + AskUserQuestion-pivot pattern
+- [llm-wiki geotechnical-engineering founded](project_llm_wiki_geotechnical_engineering_founded.md) — 13th domain 2026-05-18; soil constitutive models, foundations, earthquake-geotech; founding source Xu SoilModelsPy
+- [llm-wiki trends-and-strategies founded](project_llm_wiki_trends_and_strategies_founded.md) — 14th domain 2026-05-18; first non-technical wiki; workforce / forecast / strategy framing; founding source Nagar petroleum workforce crisis
 - [drilling-engineering corpus initiative](project_drilling_engineering_corpus_initiative.md) — 2026-05-13 9th wiki domain founded with Papkov; seed covers API 4F/7K/8C, IADC
 - [production-engineering corpus initiative](project_production_engineering_corpus_initiative.md) — 2026-05-13 10th wiki domain; PE Phase 1 epic+5 sub-issues #61-#66; Phase 1 completed 2026-05-14
 - [Domain Knowledge Sweep](project_domain_knowledge_sweep.md) — multi-source domain research (#2667); R1-R6 subissue tree; Domain 1 Hydrodynamics launched 2026-05-12 (#2668)
