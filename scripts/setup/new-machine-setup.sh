@@ -290,8 +290,17 @@ else
   instantiate_hermes_config "${WORKSPACE_HUB}" || log "WARN: Hermes config render failed"
 fi
 
-# ── Step 13 ──────────────────────────────────────────────────────────────────
-# Reserved for Phase 3 (emit-machine-status). Will land in next commit.
+# ── Step 13: Emit machine-status report (per #2751 G9) ───────────────────────
+# Writes config/machine-baselines/<token>.{md,yaml} with 22-dimension status.
+# Hostname token uses alias-or-sha256 policy per r1 m4 (no PII leak).
+# 7-pattern secret scrub applied to all output per r2 C7.
+step "13. Emit machine-status report"
+if [[ "$DRY_RUN" == "true" ]]; then
+  dry "bash scripts/setup/emit-machine-status.sh ${WORKSPACE_HUB}"
+else
+  bash "${WORKSPACE_HUB}/scripts/setup/emit-machine-status.sh" "${WORKSPACE_HUB}" || \
+    log "WARN: machine-status emission failed (non-fatal — re-run manually to capture)"
+fi
 
 # ── Step 14: Verify (renumbered from Step 9 per #2751 r2 — verify must run
 #             LAST so it sees the new AI-provider state from Step 9) ──────────
