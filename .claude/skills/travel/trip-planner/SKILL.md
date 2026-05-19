@@ -49,15 +49,20 @@ Every trip issue body MUST include these in this order. Sections marked **load-b
 - **Tense discipline.** Trip plans describe future work — never write past-tense as if reservations were already made.
 - **Inline gh issue URLs.** Render `#NNNN` references as `[#NNNN](https://github.com/...)` Markdown hyperlinks per the user's `feedback_inline_gh_issue_url` rule.
 
+## Lightweight trip-maintenance exception
+
+If the user asks to "make note of" activities, preserve a shortlist, add selected options, or update an existing trip record, do **not** default to the full trip-plan template. Treat it as a trip-maintenance update: find/use the existing `vamseeachanta/achantas-data` trip issue, add a compact issue comment or note with the source URL and selected items, and report the issue/comment URL. See `references/activity-shortlist-note-workflow.md`.
+
 ## Workflow
 
-1. Detect trip archetype (above).
-2. Ask the one clarifying question if needed; otherwise proceed.
-3. Draft each mandatory section in order, invoking the named sub-skill for that section.
-4. Verify all photo URLs (`curl -sI -L -A "<UA>"` — see `visual-review-board` skill for the exact pattern).
-5. Write the body to a temp file (`/tmp/trip-<slug>.md`).
-6. Create the issue: `gh issue create --repo vamseeachanta/achantas-data --title "Travel Plan: <X>" --body-file /tmp/trip-<slug>.md --label documentation`.
-7. Report the new issue URL to the user.
+1. Detect trip archetype (above), unless this is a lightweight trip-maintenance update.
+2. For lightweight activity notes, follow `references/activity-shortlist-note-workflow.md` and skip the full template.
+3. Ask the one clarifying question if needed; otherwise proceed.
+4. Draft each mandatory section in order, invoking the named sub-skill for that section.
+5. Verify all photo URLs (`curl -sI -L -A "<UA>"` — see `visual-review-board` skill for the exact pattern).
+6. Write the body to a temp file (`/tmp/trip-<slug>.md`).
+7. Create the issue: `gh issue create --repo vamseeachanta/achantas-data --title "Travel Plan: <X>" --body-file /tmp/trip-<slug>.md --label documentation`.
+8. Report the new issue URL to the user.
 
 ## Lightweight trip-note updates
 
