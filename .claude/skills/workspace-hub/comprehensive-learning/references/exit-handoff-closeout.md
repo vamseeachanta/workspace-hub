@@ -49,6 +49,8 @@ If a durable handoff already exists but is untracked or lacks final exit evidenc
 
 When the active work happened in a tier-1 child repo, commit the handoff in that child repo. Also record the control repo state if it was touched or inspected, but do not stage unrelated generated/learning/provider-report churn from the control repo just to make the exit look clean. Report those paths as pre-existing dirty-state exceptions with counts.
 
+If the user requests a second/final exit refresh after a prior closeout commit, do not reclassify or absorb unrelated dirty implementation files just to make the report look clean. Refresh the existing handoff with live evidence, stage only the handoff, commit/push it, and report the remaining dirty paths as restart-checkpoint work. If a previously mentioned repo path is not present on the current host, state `repository path not present on this host; no action taken` rather than preserving stale dirty-state claims from earlier machines/sessions.
+
 ## Published report/link closeout
 
 When the closeout includes human-facing rendered artifacts (HTML/PDF reports, dashboards, demos), record both immutable and review-friendly links:

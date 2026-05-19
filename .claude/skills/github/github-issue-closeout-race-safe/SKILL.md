@@ -54,6 +54,12 @@ Confirm:
 - issue state is `CLOSED` when intended
 - the closeout comment is present in recent comments
 
+## Tool-budget guardrail
+
+When closeout is part of a larger implementation/verification turn, do not leave evidence comments and issue closure until after optional cleanup, extra review polish, or broad worktree hygiene. Once the deliverable is committed/pushed and the closeout evidence is known, post the evidence comment immediately, then close as a separate command. This prevents tool-call or context limits from leaving an otherwise-complete issue open with no durable closeout trail.
+
+If additional verification is still desirable after closeout, state it as residual follow-up in the comment rather than delaying the comment itself.
+
 ## When not necessary
 
 If you intentionally want a single quick close with no meaningful evidence, `gh issue close` alone is fine. But when evidence matters, always comment first, then close.
