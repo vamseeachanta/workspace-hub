@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-19T20:16:45.561687Z",
+  "generated_at": "2026-05-19T21:20:08.370881Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-19T20:16:43.565012Z",
+  "scorecard_generated_at": "2026-05-19T21:20:06.629017Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -425,7 +425,7 @@
             "agent:claude",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-19T00:01:13Z",
+          "updatedAt": "2026-05-19T20:18:11Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",

@@ -77,6 +77,8 @@ Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pse
 
 For engineering-calculation or parametric chart plans, also run the checks in `references/engineering-parametric-chart-plan-review.md`: freeze local vs reported coordinate frames before formulas, explicitly classify off-grid UI defaults versus engineering sweep rows, ensure representative chart traces do not hide requested sweep coverage, and require tests for frame transforms/sign conventions.
 
+For repo/data location contract plans, also run the checks in `references/repo-location-contract-planning.md`: keep repo checkout placement separate from raw/bulk/private/public data placement, prefer adjacent sibling checkouts under `/mnt/local-analysis/<repo>` with `workspace-hub` as the control plane, enumerate the live checkout set empirically, and represent any moves as future reviewable transactions rather than performing them during planning.
+
 Update the index table in `docs/plans/README.md` with a new row.
 
 ### Layered architecture issue trees

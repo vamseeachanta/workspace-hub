@@ -57,16 +57,21 @@ If the user asks to "make note of" activities, preserve a shortlist, add selecte
 
 If the user asks to explore alternatives to a known trip/destination vibe (for example, "Broken Bow-style cabin but closer"), treat it as an **idea / ranking** task unless they ask for booking-ready listings. Capture the reference vibe as concrete filters, create/reuse a GitHub tracking issue when requested, compare candidates against any known cost baseline, and post a compact ranked exploration comment rather than forcing the full trip-plan template. See `references/nearby-cabin-alternative-exploration.md`.
 
+## Package-deal comparison issue-tree exception
+
+If the user asks to compare package deals across multiple countries, regions, resorts, or operators, create/reuse a parent comparison issue and one child issue per serious option instead of forcing the full single-trip template into one issue. Keep vendor-access confidence explicit: search-index snippets identify leads only; live package names/prices/inclusions need normal/member-session verification before booking claims. See `references/package-deal-comparison-issue-tree.md`.
+
 ## Workflow
 
 1. Detect trip archetype (above), unless this is a lightweight trip-maintenance update.
 2. For lightweight activity notes, follow `references/activity-shortlist-note-workflow.md` and skip the full template.
-3. Ask the one clarifying question if needed; otherwise proceed.
-4. Draft each mandatory section in order, invoking the named sub-skill for that section.
-5. Verify all photo URLs (`curl -sI -L -A "<UA>"` — see `visual-review-board` skill for the exact pattern).
-6. Write the body to a temp file (`/tmp/trip-<slug>.md`).
-7. Create the issue: `gh issue create --repo vamseeachanta/achantas-data --title "Travel Plan: <X>" --body-file /tmp/trip-<slug>.md --label documentation`.
-8. Report the new issue URL to the user.
+3. For package-deal comparisons across multiple options, follow `references/package-deal-comparison-issue-tree.md` and use a parent/child issue tree.
+4. Ask the one clarifying question if needed; otherwise proceed.
+5. Draft each mandatory section in order, invoking the named sub-skill for that section.
+6. Verify all photo URLs (`curl -sI -L -A "<UA>"` — see `visual-review-board` skill for the exact pattern).
+7. Write the body to a temp file (`/tmp/trip-<slug>.md`).
+8. Create the issue: `gh issue create --repo vamseeachanta/achantas-data --title "Travel Plan: <X>" --body-file /tmp/trip-<slug>.md --label documentation`.
+9. Report the new issue URL to the user.
 
 ## Lightweight trip-note updates
 

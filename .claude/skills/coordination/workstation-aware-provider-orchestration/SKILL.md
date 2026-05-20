@@ -51,7 +51,9 @@ For workstation planning, the decision surface should be throughput-oriented:
 - what already-approved batch should be routed first
 - how useful throughput will be measured and reconciled
 
-For per-machine issues, prefer `throughput(workstations): activate <machine> provider/machine lane` over broad governance titles. The body should define provider fit, workload class, readiness probe, first approved batch candidate, and proof-of-throughput metric. Add labels such as `cat:ai-orchestration`, `cat:operations`, `domain:ai-orchestration`, `domain:workstations`, `domain:agent-cost-tracking`, `machine:<host>`, and a lifecycle label. See `references/per-machine-throughput-lane-issues.md` for a concise example pattern from the May 2026 correction.
+For per-machine throughput-lane issues, prefer `throughput(workstations): activate <machine> provider/machine lane` over broad governance titles. The body should define provider fit, workload class, readiness probe, first approved batch candidate, and proof-of-throughput metric. Add labels such as `cat:ai-orchestration`, `cat:operations`, `domain:ai-orchestration`, `domain:workstations`, `domain:agent-cost-tracking`, `machine:<host>`, and a lifecycle label. See `references/per-machine-throughput-lane-issues.md` for a concise example pattern from the May 2026 correction.
+
+If the user explicitly asks to decide which tier-1 repos should live on each machine, treat that as a separate repo-placement decision issue class, not a throughput activation issue. Use `github-issues` → `references/machine-repo-placement-decision-issues.md`: create/reuse one decision issue per machine in the requested order, separate recommendations from implementation, and tier evidence by live/remote/registry verification.
 
 1. **Open or update a GitHub issue first**
    - Use `gh-work-planning` and `github-issues`.

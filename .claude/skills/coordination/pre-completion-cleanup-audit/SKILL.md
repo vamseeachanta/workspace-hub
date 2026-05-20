@@ -41,6 +41,12 @@ Run these in order. Each step is a single grep/find/ls; combined runtime should 
 
 **Pipefail pitfall:** if you run the audit inside `set -euo pipefail`, `find ... | head` and similar early-closing pipelines can exit `141` from SIGPIPE even though the audit succeeded. Use `sed -n '1,20p'` or wrap the pipeline with `|| true` for report-only probes; cleanup audit commands should surface residue, not fail the closeout because `head` closed the pipe.
 
+**Nested-repo timeout pitfall:** workspace-hub style checkouts may contain nested tier-1 repos or large data trees. Do not let report-only `find .` scans traverse every nested checkout until they time out. Bound them with `timeout`, prune `.git` and known nested repo directories, and report that the scan was scoped. Example:
+
+```bash
+timeout 8 bash -lc "find . -path ./.git -prune -o -path ./worldenergydata -prune -o -path ./llm-wiki -prune -o -path ./assethold -prune -o -path ./aceengineer-website -prune -o -path ./aceengineer-strategy -prune -o \( -name '*.partial' -o -name '*.tmp' \) -print" | sed -n '1,20p'
+```
+
 ### 1. Repo working-tree state
 ```bash
 cd <canonical-repo>
