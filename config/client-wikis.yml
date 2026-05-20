@@ -15,7 +15,7 @@ wikis:
     posture: client-private
     status: bootstrapped
     instantiated_at: 2026-05-18
-    notes: "Instance #1. Scaffold only; firewall files + post-rename text fixes pending T6."
+    notes: "Instance #1. Firewall files (LICENSE/.gitignore/.claude/CLAUDE.md/REDACTION-POSTURE.md) + post-rename text fixes landed at llm-wiki-acma commit 1d813086a (2026-05-20). NTFS secondary clone deletion pending T8."
 
   - short_name: rock-oil-field
     repo: vamseeachanta/llm-wiki-rock-oil-field
