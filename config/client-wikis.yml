@@ -1,0 +1,58 @@
+# Client wiki registry — seeded for issue #2746 (llm-wiki-acma rename + factory)
+# Schema: see docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md §4.2
+# T2 of #2746 — instance #1 (acma) is bootstrapped; remaining 5 are planned.
+registry_version: 0.1
+wikis:
+  - short_name: acma
+    repo: vamseeachanta/llm-wiki-acma
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/acma-projects/
+    archived_raw_remotes:
+      - vamseeachanta/acma-projects        # frozen per #2745 (after #2745 executes)
+    local_working_clone: /mnt/local-analysis/llm-wiki-acma/
+    secondary_clone: /mnt/ace/llm-wiki-acma/   # legacy NTFS — to be deleted in T8 of #2746
+    posture: client-private
+    status: bootstrapped
+    instantiated_at: 2026-05-18
+    notes: "Instance #1. Scaffold only; firewall files + post-rename text fixes pending T6."
+
+  - short_name: rock-oil-field
+    repo: vamseeachanta/llm-wiki-rock-oil-field
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/rock-oil-field/
+    posture: client-private
+    status: planned
+
+  - short_name: client-projects
+    repo: vamseeachanta/llm-wiki-client-projects
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/client_projects/    # NOTE: underscore per #2731 D5
+    posture: client-private
+    status: planned
+
+  - short_name: doris
+    repo: vamseeachanta/llm-wiki-doris
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/doris/
+    posture: client-private
+    status: planned
+
+  - short_name: frontierdeepwater
+    repo: vamseeachanta/llm-wiki-frontierdeepwater
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/frontierdeepwater/   # NOTE: no hyphen per #2731 D6
+    posture: client-private
+    status: planned
+
+  - short_name: saipem
+    repo: vamseeachanta/llm-wiki-saipem
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/saipem/
+    posture: client-private
+    status: planned
