@@ -1,6 +1,6 @@
 # Plan for #2754: throughput(workstations): activate ace-linux-1 provider/machine lane
 
-> **Status:** draft
+> **Status:** draft — r1 adversarial review returned MAJOR; patched locally and awaiting re-review
 > **Complexity:** T2
 > **Date:** 2026-05-19
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2754
@@ -12,10 +12,11 @@
 
 ### Existing repo code
 
-- Found: `scripts/readiness/telegram-hermes-readiness.sh` — already evaluates `dev-primary` / ace-linux-1 dispatch readiness, including Telegram env gates, git sync state, dirty workspace state, workspace root, role, and Telegram mode.
-- Found: `config/machines/telegram-hermes-machines.yaml` — existing machine registry names `dev-primary` as `hostname: ace-linux-1`, `role: primary-dev`, `telegram_mode: coordinator`, and `workspace_root: /mnt/local-analysis/workspace-hub`.
-- Found: `docs/plans/machine-prompts/2026-05-19/ace-linux-1-control-plane-dispatch-ledger.md` — an uncommitted dry-run ledger exists for the ace-linux-1 control-plane dispatch lane. This plan will treat it as evidence/adjacent residue, not as authorization to launch work.
-- Gap: no repo-tracked per-machine tier-1 baseline artifact exists for ace-linux-1 that records required/on-demand tier-1 repos, path role, `/mnt/ace` dependency, and dispatch readiness linkage.
+- Found: `scripts/readiness/telegram-hermes-readiness.sh` — thin shell wrapper for the real readiness implementation. It must remain callable but is not the primary integration target.
+- Found: `scripts/readiness/telegram_hermes_readiness.py` — primary readiness implementation; it reads `config/workstations/registry.yaml`, computes host failures/warnings, and controls `dispatchable`. Tier-1 baseline failures must be wired here, not only in the wrapper.
+- Found: `config/workstations/registry.yaml` — single source of truth for workstation identity/capability data. It names `dev-primary` as `hostname: ace-linux-1`, `role: primary-dev`, `telegram_mode: coordinator`, and `workspace_root: /mnt/local-analysis/workspace-hub`.
+- Adjacent residue: `docs/plans/machine-prompts/2026-05-19/ace-linux-1-control-plane-dispatch-ledger.md` may exist in local dirty state, but it is not committed authority and this plan will not depend on it.
+- Gap: `config/workstations/registry.yaml` lacks explicit required/on-demand tier-1 repo semantics, primary/reference checkout roles, and `/mnt/ace` constraints for ace-linux-1. This plan will extend the registry rather than create a competing machine truth source.
 - Gap: no narrow validator exists that can compare the ace-linux-1 tier-1 baseline against observed live checkout placement without moving/cloning/deleting anything.
 
 ### Standards
@@ -25,7 +26,7 @@ Not applicable as engineering-calculation standards. Relevant governance standar
 | Governance source | Status | Source |
 |---|---|---|
 | Issue planning workflow | applicable | `docs/plans/README.md` requires canonical plan artifact, README row, adversarial review, and user approval before implementation. |
-| Repo/data location planning reference | applicable | `.claude/skills/coordination/issue-planning-mode/references/repo-location-contract-planning.md` says repo placement plans must enumerate live checkout set, separate active checkouts from `/mnt/ace` raw/bulk data, and avoid inline moves/deletes. |
+| Repo/data location planning principle | applicable | Memory and `AGENTS.md` require repo placement changes under `/mnt/local-analysis` to be issue/plan driven, not ad-hoc moves; this plan enumerates live checkout state and explicitly forbids clone/move/delete/sync actions. |
 | Parallel-first execution standard | applicable | `docs/standards/PARALLEL_FIRST_EXECUTION.md` requires non-trivial work to classify execution mode and not bypass issue/plan/approval/TDD gates. |
 
 ### LLM Wiki pages consulted
@@ -119,7 +120,7 @@ lrwxrwxrwx  1 root   root       8 Mar 13 14:03 /mnt/ace-data -> /mnt/ace
 
 **Reproduction proofs**: N/A — governance/operations planning issue. There is no alleged failing runtime behavior to reproduce beyond the live readiness probe above.
 
-Distinct sources consulted: issue body/comments, live `gh issue view` output, live filesystem/git checkout inventory, `scripts/readiness/telegram-hermes-readiness.sh` output, `config/machines/telegram-hermes-machines.yaml`, `docs/plans/README.md`, repo-location planning reference.
+Distinct sources consulted: issue body/comments, live `gh issue view` output, live filesystem/git checkout inventory, `scripts/readiness/telegram-hermes-readiness.sh` output, `scripts/readiness/telegram_hermes_readiness.py`, `config/workstations/registry.yaml`, `docs/plans/README.md`, and `docs/standards/PARALLEL_FIRST_EXECUTION.md`.
 
 ---
 
@@ -129,7 +130,7 @@ Distinct sources consulted: issue body/comments, live `gh issue view` output, li
 |---|---|
 | This plan | `docs/plans/2026-05-19-issue-2754-ace-linux-1-throughput-lane-tier1-baseline.md` |
 | Planning index row | `docs/plans/README.md` |
-| Machine tier-1 baseline registry | `config/workstations/ace-linux-1-tier1-repos.yaml` |
+| Workstation registry extension | `config/workstations/registry.yaml` |
 | Baseline schema / documentation | `docs/workstations/ace-linux-1-tier1-repo-baseline.md` |
 | Read-only baseline checker | `scripts/workstations/check-tier1-repo-baseline.py` |
 | Checker tests | `tests/workstations/test_check_tier1_repo_baseline.py` |
@@ -142,7 +143,7 @@ Distinct sources consulted: issue body/comments, live `gh issue view` output, li
 
 ## Deliverable
 
-A repo-tracked ace-linux-1 workstation baseline will define the machine's throughput role, required/on-demand tier-1 repos, `/mnt/ace` constraint for `worldenergydata`, readiness gating, and first approved dispatch target without moving, cloning, deleting, or sync-rewriting repos inline.
+A repo-tracked ace-linux-1 workstation baseline will extend the existing workstation registry to define the machine's throughput role, required/on-demand tier-1 repos, primary/reference checkout roles, `/mnt/ace` constraint for `worldenergydata`, readiness gating, and first approved dispatch target without moving, cloning, deleting, or sync-rewriting repos inline.
 
 ---
 
@@ -170,34 +171,39 @@ A repo-tracked ace-linux-1 workstation baseline will define the machine's throug
 ## Pseudocode
 
 ```text
-function load_baseline(path):
-    parse YAML baseline
-    require machine_id == ace-linux-1
-    require required_repos and optional_repos are explicit lists
-    require each repo has role, expected_path_policy, and dispatch_rationale
-    return normalized baseline object
+function load_baseline(registry_path, host):
+    parse config/workstations/registry.yaml
+    select machines[host] / dev-primary
+    require hostname == ace-linux-1
+    require repos plus tier1_baseline.required and tier1_baseline.optional are explicit
+    require each tier1_baseline repo declares role, expected_path_policy, and dispatch_rationale
+    return normalized baseline object from the single workstation registry
 
-function discover_tier1_repos(candidate_roots):
-    for each tier1 repo name:
-        probe /mnt/local-analysis/<repo>
-        probe /mnt/local-analysis/workspace-hub/<repo>
+function discover_tier1_repos(registry_machine, tier1_repo_names):
+    candidate_roots = ordered unique existing directories from:
+        dirname(workspace_root), workspace_root, storage.local, each storage.remote_mount, and user-provided extra roots
+    for each candidate root and tier1 repo name:
+        probe <root>/<repo> and, when root is workspace_root, nested <workspace_root>/<repo>
         if path exists and is git worktree:
-            collect path, remote, branch, dirty_count_tracked_only
+            collect path, remote, branch, dirty_count_tracked_only, and whether it is primary/reference/unknown
     return discovery table without mutating filesystem
 
-function validate_baseline(baseline, discovery):
+function validate_baseline(baseline, discovery, mounts):
     for each required repo:
         fail if no discovered checkout exists
-        warn if more than one checkout exists and no primary path is declared
-        fail if repo has a declared data_mount_required and mount path is missing
+        fail if more than one checkout exists and no primary/reference role is declared
+        fail if repo has data_mount_required and mount path is missing
     for each optional repo:
         record present/missing but do not fail if missing
-    return JSON/text report with failures, warnings, and observed paths
+        fail if present duplicates lack declared primary/reference roles
+    return structured JSON report with failures, warnings, and observed paths
 
 function integrate_with_readiness(host):
-    run existing Telegram/Hermes readiness checks
-    run tier1 baseline validation for host if baseline exists
-    include baseline failures in dispatchable=false calculation
+    run existing Python Telegram/Hermes readiness checks in scripts/readiness/telegram_hermes_readiness.py
+    run tier1 baseline validation for host when tier1_baseline exists in registry
+    append baseline failures to host.failures and baseline warnings to host.warnings
+    recompute dispatchable=false whenever failures is non-empty
+    include malformed checker output, timeout, or checker-missing cases as fail-closed failures
     do not hide existing Telegram env or dirty-worktree failures
 ```
 
@@ -207,11 +213,12 @@ function integrate_with_readiness(host):
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `config/workstations/ace-linux-1-tier1-repos.yaml` | Durable machine-specific tier-1 repo baseline and role/constraint declarations. |
+| Modify | `config/workstations/registry.yaml` | Extend the existing single workstation truth source with ace-linux-1 required/on-demand tier-1 repo semantics, primary/reference checkout roles, and `/mnt/ace` constraints. |
 | Create | `docs/workstations/ace-linux-1-tier1-repo-baseline.md` | Human-readable decision record for the ace-linux-1 baseline and first dispatch route. |
 | Create | `scripts/workstations/check-tier1-repo-baseline.py` | Read-only validation of baseline vs observed live checkout state; no moves/clones/deletes. |
 | Create | `tests/workstations/test_check_tier1_repo_baseline.py` | TDD coverage for required/optional repo validation, duplicate checkout warnings, and `/mnt/ace` requirement. |
-| Modify | `scripts/readiness/telegram-hermes-readiness.sh` | Include baseline checker output in dispatch readiness for `dev-primary` without weakening existing gates. |
+| Modify | `scripts/readiness/telegram_hermes_readiness.py` | Include baseline checker output in dispatch readiness for `dev-primary`, append failures/warnings to the existing JSON schema, and recompute `dispatchable` fail-closed without weakening existing gates. |
+| Verify/no-op | `scripts/readiness/telegram-hermes-readiness.sh` | Keep wrapper compatibility; change only if needed to expose an existing Python CLI option. |
 | Create/modify | `tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py` | Prove readiness fails when required baseline repos are absent and preserves existing Telegram/dirty failures. |
 | Update | `docs/plans/README.md` | Add this plan to the canonical issue-plan index. |
 | Post comment | [#2754](https://github.com/vamseeachanta/workspace-hub/issues/2754) | Link final plan/review summary and later record the first approved dispatch artifact. |
@@ -225,22 +232,24 @@ function integrate_with_readiness(host):
 | `test_required_repos_must_be_present` | Missing required ace-linux-1 tier-1 repos fail validation. | Baseline requiring `worldenergydata`; discovery omits it. | Non-zero failure with repo name and no filesystem mutation. |
 | `test_optional_repos_do_not_fail_when_missing` | Optional/on-demand repos are reported but do not block dispatch. | Baseline optional `assethold`; discovery omits it. | Success or warning-only result. |
 | `test_worldenergydata_requires_mnt_ace` | `worldenergydata` baseline encodes `/mnt/ace` dependency. | Baseline declares `data_mount_required: /mnt/ace`; mount probe missing. | Failure naming `/mnt/ace`. |
-| `test_duplicate_checkout_requires_primary_role_warning` | Duplicate `digitalmodel` / `assetutilities` checkouts are surfaced for role classification. | Discovery has sibling and nested paths. | Warning lists both paths and does not choose silently unless baseline declares primary. |
-| `test_readonly_checker_does_not_mutate_paths` | Checker never runs clone/move/delete/sync operations. | Temporary fake repos and monkeypatched subprocess. | Only read-only git/path probes are invoked. |
-| `test_readiness_includes_tier1_baseline_failures` | Existing readiness script incorporates baseline failures. | Stub checker returns missing required repo. | `dispatchable=false` and failure appears alongside existing gates. |
+| `test_duplicate_checkout_requires_primary_role_failure` | Duplicate `digitalmodel` / `assetutilities` checkouts are fail-closed unless primary/reference roles are declared. | Discovery has sibling and nested paths with no role declaration. | Failure lists both paths and refuses to choose silently. |
+| `test_declared_primary_reference_duplicates_pass` | Duplicate checkouts become valid only when the registry declares primary/reference roles. | Discovery has sibling and nested paths; registry names one primary and one reference. | Success with observed paths retained in evidence. |
+| `test_readonly_checker_does_not_mutate_paths` | Checker never runs clone/move/delete/sync operations. | Fake repos plus monkeypatched dangerous functions (`os.remove`, `shutil.rmtree`, write/open modes) and subprocess allowlist. | Only read-only git/path probes are invoked; destructive calls fail the test. |
+| `test_readiness_includes_tier1_baseline_failures` | Existing Python readiness collector incorporates baseline failures. | Stub checker returns missing required repo. | `dispatchable=false` and failure appears alongside existing gates. |
 | `test_readiness_preserves_existing_gate_failures` | Baseline integration does not mask Telegram env or dirty workspace failures. | Stub existing readiness failures + passing baseline. | Existing failure strings remain present. |
+| `test_readiness_fail_closed_on_checker_error` | Checker crash, timeout, malformed JSON, or missing checker blocks dispatch. | Stub checker non-zero/timeout/bad output. | Host failure states baseline checker error and `dispatchable=false`. |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `config/workstations/ace-linux-1-tier1-repos.yaml` records ace-linux-1 as `control-surface + high-context-linux-execution-lane`.
+- [ ] `config/workstations/registry.yaml` records ace-linux-1 (`dev-primary`) tier-1 baseline as `control-surface + high-context-linux-execution-lane` without creating a second machine truth source.
 - [ ] Required repo list is exactly: `workspace-hub`, `digitalmodel`, `assetutilities`, `llm-wiki`, `worldenergydata`.
 - [ ] Optional/on-demand repo list is exactly: `assethold`, `aceengineer-website`, `aceengineer-strategy`.
 - [ ] `worldenergydata` includes an explicit `/mnt/ace` data-access constraint and a note that moving it elsewhere requires a separate approved data-access design.
 - [ ] The read-only checker validates required vs optional repos without performing clone/move/delete/sync operations.
-- [ ] The checker surfaces duplicate sibling/nested checkouts as warnings requiring declared primary/reference roles, not as cleanup targets.
-- [ ] `scripts/readiness/telegram-hermes-readiness.sh --host dev-primary` includes tier-1 baseline evidence and still fails closed on Telegram env or dirty workspace state.
+- [ ] The checker surfaces duplicate sibling/nested checkouts as fail-closed until primary/reference roles are declared, not as cleanup targets.
+- [ ] `scripts/readiness/telegram-hermes-readiness.sh --host dev-primary` includes tier-1 baseline evidence from the Python readiness collector and still fails closed on Telegram env, checker errors, or dirty workspace state.
 - [ ] Tests pass: `uv run pytest tests/workstations/test_check_tier1_repo_baseline.py tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py -v`.
 - [ ] Legal/security scan passes: `scripts/legal/legal-sanity-scan.sh`.
 - [ ] The first approved dispatch target is linked as [#2738](https://github.com/vamseeachanta/workspace-hub/issues/2738), and the issue comment records the concrete artifact produced once dispatch is attempted after readiness passes.
@@ -253,14 +262,19 @@ function integrate_with_readiness(host):
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Review not yet run. |
-| Codex | PENDING | Review not yet run. |
-| Gemini | PENDING | Review not yet run. |
+| Claude | UNAVAILABLE | Fanout timed out before a usable Claude review was produced; `scripts/review/results/2026-05-19-plan-2754-claude.md` records the timeout/unavailability. |
+| Codex | MAJOR | Real blockers: wrong registry path, missing repo-location reference, competing baseline truth source, wrong readiness integration target, weak fail-closed/readiness tests, and issue acceptance mismatch. |
+| Gemini | MAJOR | Real blockers: missing/incorrect cited paths, brittle discovery roots, duplicate checkout warnings not fail-closed, unsafe bash parsing/readiness integration, and weak read-only proof. Some path findings were stale/false after local verification, but the plan still needed correction. |
 
-**Overall result:** PENDING — this draft is not approval-ready until adversarial review completes and any MAJOR findings are resolved.
+**Overall result:** MAJOR — this draft is not approval-ready. The corrections below have been applied locally and require re-review before `status:plan-review`.
 
 Revisions made based on review:
-- None yet.
+- Replaced the non-existent `config/machines/telegram-hermes-machines.yaml` authority with `config/workstations/registry.yaml`.
+- Removed reliance on the missing repo-location planning reference and restated the live issue/plan/no-move governance directly.
+- Changed the implementation target from a separate `ace-linux-1-tier1-repos.yaml` file to an extension of the existing workstation registry single source of truth.
+- Added `scripts/readiness/telegram_hermes_readiness.py` as the actual readiness integration target and kept the shell wrapper as compatibility/no-op.
+- Made duplicate checkout ambiguity fail-closed unless primary/reference roles are declared.
+- Added checker crash/timeout/malformed-output fail-closed tests and stronger read-only mutation guards.
 
 ---
 
