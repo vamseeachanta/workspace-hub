@@ -114,6 +114,30 @@ class TestRegistryStructure:
                 f"expected one of {VALID_SCHEDULE_VARIANTS}"
             )
 
+    def test_ace_linux_1_records_sibling_tier1_repo_layout(
+        self, machines: dict
+    ) -> None:
+        """ace-linux-1 records that tier-1 repos live as siblings under /mnt/local-analysis."""
+        machine = machines["dev-primary"]
+        assert machine["hostname"] == "ace-linux-1"
+        assert machine["workspace_root"] == "/mnt/local-analysis/workspace-hub"
+        assert machine.get("tier1_repo_root") == "/mnt/local-analysis"
+        assert machine.get("repo_layout") == "sibling"
+        assert machine["tier1_repo_root"] != machine["workspace_root"]
+        repo_paths = {
+            repo: f"{machine['tier1_repo_root']}/{repo}"
+            for repo in machine["repos"]
+        }
+        assert repo_paths == {
+            "worldenergydata": "/mnt/local-analysis/worldenergydata",
+            "digitalmodel": "/mnt/local-analysis/digitalmodel",
+            "assetutilities": "/mnt/local-analysis/assetutilities",
+            "assethold": "/mnt/local-analysis/assethold",
+            "workspace-hub": "/mnt/local-analysis/workspace-hub",
+            "OGManufacturing": "/mnt/local-analysis/OGManufacturing",
+        }
+        assert repo_paths["workspace-hub"] == machine["workspace_root"]
+
 
 # ---------------------------------------------------------------------------
 # Cross-reference tests

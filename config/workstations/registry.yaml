@@ -10,6 +10,8 @@ machines:
     os: linux
     role: primary-dev
     workspace_root: /mnt/local-analysis/workspace-hub
+    tier1_repo_root: /mnt/local-analysis
+    repo_layout: sibling
     schedule_variant: full
     ssh: ace-linux-1
     tailscale_ip: 10.1.0.1
