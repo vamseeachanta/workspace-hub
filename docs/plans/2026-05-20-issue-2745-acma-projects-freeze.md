@@ -1,8 +1,9 @@
 # Plan for #2745: freeze acma-projects and move to local-only archive posture
 
-> **Status:** draft
+> **Status:** draft (r1 self-review applied; codex r1 deferred)
 > **Complexity:** T2
 > **Date:** 2026-05-20
+> **Revision history:** 2026-05-20 r1-claude — MAJOR finding (`/mnt/ace` at 95% > 85% trigger) resolved by scoping backup disposition OUT of this plan; filed dedicated [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769)
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2745
 > **Paired plan:** [`docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md`](2026-05-20-issue-2746-llm-wiki-acma.md)
 > **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md) (commit `277a855ee`)
@@ -18,7 +19,7 @@
 - Found: `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` — 1.8 TB pre-move backup created today; contains `31522-woodfibre-lng/` and likely other client project subdirectories (full inventory deferred)
 - Found: `gh repo archive` subcommand available (confirmed by `gh --help` 2026-05-20)
 - Gap: no `STATUS-FROZEN.md` exists in `/mnt/ace/acma-projects/` to declare frozen posture
-- Gap: no documented disposition for the 1.8 TB pre-move backup
+- Gap: no formal freeze documentation on the working copy
 
 ### Standards
 Not applicable (operational/data-pipeline issue; no engineering calculation standards).
@@ -75,32 +76,29 @@ No relevant pages.
 ### No workspace-hub artifacts modified
 This plan touches only the external repo `vamseeachanta/acma-projects` and local FS state. No `workspace-hub` files are created or modified.
 
-### Backup disposition decision
-**Pre-picked option A — retain indefinitely with revisit criteria**:
-- Backup `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` (~1.8 TB) remains in place.
-- Documented revisit triggers in `STATUS-FROZEN.md`:
-  1. Disk-fill alert on `/mnt/ace/` (>85% capacity)
-  2. 90-day age threshold (2026-08-18 review checkpoint)
-  3. Sample-inventory confirms ≥80% redundancy with `/mnt/ace/acma-projects/` working copy
-- If any trigger fires, file a new issue and plan to execute option B (tar to slower storage) or C (selective delete).
+### Backup disposition (deferred to dedicated issue)
+
+**Scoped OUT of this plan** following the 2026-05-20 r1 adversarial review (MAJOR finding: `/mnt/ace` already at 95% disk usage when this plan was drafted, exceeding the originally-documented 85% revisit trigger).
+
+The 1.8 TB pre-move backup `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` is **retained AS-IS by this plan**, with disposition planning deferred to [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769). This plan's only obligation toward the backup is to leave it untouched (verified in T6).
 
 ## Deliverable
 
-`vamseeachanta/acma-projects` GH remote archived (read-only). Local working copy `/mnt/ace/acma-projects/` preserved as read-mostly archive with declared frozen status. 1.8 TB pre-move backup retained with documented revisit criteria.
+`vamseeachanta/acma-projects` GH remote archived (read-only). Local working copy `/mnt/ace/acma-projects/` preserved as read-mostly archive with declared frozen status. The adjacent 1.8 TB pre-move backup is untouched; its disposition is deferred to [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769).
 
 ## Scope Boundaries
 
 **IN scope:**
 - Archive `vamseeachanta/acma-projects` on GitHub (reversible)
-- Write `STATUS-FROZEN.md` in the local working copy with freeze rationale + revisit criteria
+- Write `STATUS-FROZEN.md` in the local working copy with freeze rationale + successor pointer (no backup-disposition content)
 - Configure local `remote.origin.pushurl` to no-push as belt-and-suspenders
 - Commit the `STATUS-FROZEN.md` to `vamseeachanta/acma-projects` BEFORE archiving (so it's visible on the now-frozen GH remote)
-- Document the 1.8 TB backup disposition (option A retain) with revisit criteria
+- Verify the 1.8 TB pre-move backup is untouched (T6) — disposition planning is [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769)'s scope, not this plan's
 
 **OUT of scope:**
 - Deleting any file from `/mnt/ace/acma-projects/` (raw data preserved)
 - Compressing or moving the 73 GB working copy
-- Compressing or moving the 1.8 TB backup (option A = retain; B/C deferred to follow-on issues if triggers fire)
+- **Disposition (retain/tar/delete) of the 1.8 TB pre-move backup** — deferred to [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) (separate plan-gated decision under the standard hard gate; 95% disk pressure makes this a near-term decision but not part of this freeze plan)
 - Cross-client generalization of the freeze pattern — that's [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767)'s scope
 - Importing any content from `/mnt/ace/acma-projects/` into `vamseeachanta/llm-wiki-acma` — that's a post-[#2747](https://github.com/vamseeachanta/workspace-hub/issues/2747) operation
 - Renaming or deleting the GH remote (archive is reversible; deletion is not)
@@ -150,19 +148,13 @@ See `vamseeachanta/llm-wiki-acma/DATA-CYCLE.md` for the full contract.
 - The pre-move backup `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/`
   (~1.8 TB) is **retained indefinitely** with revisit criteria below.
 
-## Backup disposition (1.8 TB pre-move sibling)
+## Backup disposition (out of this plan's scope)
 
-Per workspace-hub #2745 plan, the backup at `/mnt/ace/acma-projects.preexisting-*`
-is retained with the following revisit triggers:
-
-1. **Disk-fill alert** on `/mnt/ace/` exceeds 85% capacity → file a new issue and plan
-   option B (tar to slower bulk storage)
-2. **90-day age threshold** reached 2026-08-18 → review whether files remain useful
-3. **Sample-inventory** confirms ≥80% redundancy with `/mnt/ace/acma-projects/` →
-   plan option C (selective deletion of confirmed-redundant files)
-
-If a trigger fires, file a follow-on issue referencing workspace-hub #2745 and
-#2767 (data-layout dedup), then plan disposition under the standard gate.
+The adjacent 1.8 TB pre-move backup at `/mnt/ace/acma-projects.preexisting-*` is
+**preserved AS-IS** by this freeze. Disposition (retain / tar+offload / selective
+deletion) is deferred to workspace-hub#2769, which plans the decision under the
+standard hard gate. Current `/mnt/ace` mount pressure is 95% (verified 2026-05-20),
+so #2769 is a near-term decision but not coupled to this freeze.
 
 ## Reversal
 
@@ -268,7 +260,7 @@ This issue is operational (no code module produced), so "TDD" here = state-verif
 - [ ] Local fetch URL preserved (still `vamseeachanta/acma-projects`) so historical inspection still works
 - [ ] Attempted push to origin fails (verified via `git push --dry-run`)
 - [ ] Backup directory `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` is unchanged (size, timestamp)
-- [ ] `STATUS-FROZEN.md` documents: freeze date, successor repo, backup disposition (option A retain), 3 revisit triggers, reversal procedure
+- [ ] `STATUS-FROZEN.md` documents: freeze date, successor repo (`vamseeachanta/llm-wiki-acma`), reversal procedure, link to [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) for backup-disposition planning
 - [ ] Adversarial review (T2: Claude + Codex) produces APPROVE on plan and execution stages
 - [ ] Legal-sanity scan passes — only short labels (`acma`) and standard repo identifiers, no client legal names
 - [ ] Comment posted on [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) with evidence (commit SHA, archive timestamp, config output, backup `du -sh` output)
@@ -296,7 +288,7 @@ Specific defect-hunt prompts for reviewers:
 |---|---|---|---|
 | `gh repo archive` requires admin auth that operator session lacks | Low | Medium | Pre-check `gh auth status` and `gh api user --jq .login`; pause if not admin |
 | Pushurl trick `no_push://...` is git-version-sensitive | Low | Low | T5 verifies via dry-run; if `--dry-run` succeeds (push allowed), fall back to `git config branch.main.pushRemote no_push` |
-| 1.8 TB option A (retain) misjudged — backup is overwhelmingly redundant | Medium | Low | 90-day revisit checkpoint in STATUS-FROZEN.md; redundancy sample easy to inventory later |
+| 1.8 TB backup disposition stalls in [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) while disk pressure grows | Medium | Medium | [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) is `priority:high`; surface in `/whats-next` if stalled past 2026-06-03 (2-week soft deadline) |
 | Auto-sync pushes the STATUS-FROZEN.md commit silently before archive | Low | Low | Plan sequences T3 (push) BEFORE T4 (archive) by design; auto-sync only accelerates T3 |
 | Concurrent commit lands on `acma-projects:main` between T2 and T3 | Very low | Low | Repo is on freeze posture; user is the only writer; commit before archive locks the state |
 | Backup directory accidentally deleted by another agent's cleanup pass | Low | High | `pre-completion-cleanup-audit` defends; STATUS-FROZEN.md names the backup as EXPECTED residue per `feedback_pre_completion_cleanup_audit_gate` |
@@ -312,5 +304,5 @@ T2 justification: external-state changes affecting a shared GitHub repo (archive
 ## Implementation Notes for Future Approved Work
 
 - T1–T6 execute in sequence; T7 (close issue) only after [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) implementation is also done. Closing both children near-simultaneously keeps the [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) epic audit clean.
-- If the 90-day revisit (2026-08-18) fires, file a new issue (not a reopen of [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745)) per workspace policy. Reference both [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) and [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767).
+- Backup disposition is now [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769)'s scope. If that issue stalls, surface in `/whats-next` rather than reopening this freeze plan.
 - The STATUS-FROZEN.md format established here is a candidate pattern for the broader `llm-wiki-<client>` freeze handling. If a second client wiki (Phase 4–5 from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) spec) ever needs source-repo freeze, this STATUS-FROZEN.md template can be lifted.

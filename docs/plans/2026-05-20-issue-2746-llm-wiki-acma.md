@@ -1,8 +1,9 @@
 # Plan for #2746: create private llm-wiki repo target llm-wiki-acma
 
-> **Status:** draft
+> **Status:** draft (r1 self-review applied; codex r1 deferred)
 > **Complexity:** T2
 > **Date:** 2026-05-20
+> **Revision history:** 2026-05-20 r1-claude — MINOR; blockers 1/2/3 (TDD fixture design, factory-skill step 9 commit semantics, NTFS sync verification depth) resolved inline
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2746
 > **Paired plan:** [`docs/plans/2026-05-20-issue-2745-acma-projects-freeze.md`](2026-05-20-issue-2745-acma-projects-freeze.md)
 > **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md) (commit `277a855ee`)
@@ -87,7 +88,8 @@ No relevant pages (this issue creates infrastructure, doesn't consume wiki conte
 | `templates/client-llm-wiki/ledgers/README.md` | Ledger usage rules |
 | `config/client-wikis.yml` | 6-row registry (acma `bootstrapped`, 5 `planned`) |
 | `scripts/enforcement/check-client-wiki-registry.sh` | Validator with 9 fail conditions |
-| `tests/enforcement/test_client_wiki_registry.sh` | TDD test suite for the checker |
+| `tests/enforcement/test_client_wiki_registry.sh` | TDD test suite for the checker (uses `REGISTRY_PATH` env override) |
+| `tests/enforcement/fixtures/client-wikis-*.yml` | Per-test fixture registries (consistent/duplicate-short-name/missing-repo/wrong-visibility/firewall-violation variants) |
 | `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` | 11-step operator checklist |
 
 ### New files in `vamseeachanta/llm-wiki-acma` (separate repo)
@@ -147,7 +149,11 @@ Each task is self-contained, TDD-first, single-pathspec commits. Approximate siz
 
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-REGISTRY="${REPO_ROOT}/config/client-wikis.yml"
+# Registry path is overridable for tests; defaults to canonical location.
+REGISTRY="${REGISTRY_PATH:-${REPO_ROOT}/config/client-wikis.yml}"
+# Precheck dependencies before doing any work.
+command -v yq >/dev/null || { echo "FAIL: yq v4+ required (https://github.com/mikefarah/yq)"; exit 1; }
+command -v gh >/dev/null || { echo "FAIL: gh CLI required"; exit 1; }
 FAILED=0
 
 # 1. Registry exists
@@ -211,10 +217,16 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 5. `cp -r workspace-hub/templates/client-llm-wiki/* /mnt/local-analysis/llm-wiki-<short_name>/`
 6. Placeholder substitution: `find /mnt/local-analysis/llm-wiki-<short_name> -type f -exec sed -i "s/<CLIENT_SHORT_NAME>/<short_name>/g" {} +`
 7. Open `REDACTION-POSTURE.md` and add client-specific redaction rules beyond the 6 defaults.
-8. Initial commit (pathspec form per `feedback_multi_agent_commit_serialization`) AND push to origin.
-9. Update `config/client-wikis.yml`: change `status: planned` → `status: bootstrapped`; add `instantiated_at` date.
-10. Run `scripts/enforcement/check-client-wiki-registry.sh` — MUST pass before declaring complete.
-11. Post comment on parent client-wiki issue with: repo URL, scaffold commit SHA, registry entry diff.
+8. Initial commit in the NEW client wiki repo (pathspec form per `feedback_multi_agent_commit_serialization`) AND push to origin.
+9. Switch to workspace-hub directory: `cd "$WORKSPACE_HUB"` (or `cd /mnt/local-analysis/workspace-hub`).
+10. Edit `config/client-wikis.yml`: change `status: planned` → `status: bootstrapped`; add `instantiated_at` date.
+11. Commit + push the registry edit in workspace-hub (pathspec form):
+    ```
+    git commit -m "chore(client-wiki-factory): mark <short_name> bootstrapped" -- config/client-wikis.yml
+    git push
+    ```
+12. Run `scripts/enforcement/check-client-wiki-registry.sh` — MUST pass before declaring complete.
+13. Post comment on parent client-wiki issue with: repo URL, scaffold commit SHA, registry entry diff.
 ```
 
 ## Files to Change
@@ -250,7 +262,7 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 - Commit: `git commit -m "feat(client-wiki-factory): checker implementation (TDD green)" -- scripts/enforcement/check-client-wiki-registry.sh`
 
 **T5 — Factory skill** (workspace-hub, single commit)
-- Create `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` with the 11-step checklist (pseudocode above)
+- Create `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` with the 13-step checklist (pseudocode above; expanded from 11 in r1 review to split workspace-hub registry edit into explicit edit + commit + push steps, resolving cross-repo-commit-semantics blocker)
 - Include front-matter (`name`, `description`, `version`, `category: coordination`, `tags`, `related_skills`)
 - Commit: `git commit -m "feat(client-wiki-factory): operator-checklist skill" -- .claude/skills/coordination/client-llm-wiki-factory/SKILL.md`
 
@@ -267,26 +279,55 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 - Commit: `git commit -m "chore(client-wiki-factory): finalize acma registry entry post-firewall-files" -- config/client-wikis.yml`
 
 **T8 — NTFS-clone disposition** (local FS only, no commit)
-- Verify `/mnt/local-analysis/llm-wiki-acma/` is fully synced with origin: `cd /mnt/local-analysis/llm-wiki-acma && git status && git fetch && git diff origin/main..main --quiet`
-- Verify GitHub remote matches: `gh repo view vamseeachanta/llm-wiki-acma --json defaultBranchRef`
-- If sync confirmed, delete NTFS clone: `rm -rf /mnt/ace/llm-wiki-acma/`
-- Rationale per `feedback_ntfs3_symlink_intxlnk`: NTFS-backed clone is a corruption hazard, not a backup; GitHub remote is the durable backup
+
+Pre-delete invariants (ALL must pass; ABORT if any fails):
+
+```bash
+cd /mnt/ace/llm-wiki-acma   # the NTFS clone being deleted (NOT the ext4 clone)
+
+# Invariant 1: no uncommitted changes (staged or unstaged) and no untracked files
+[[ -z "$(git status --porcelain)" ]] || { echo "ABORT: NTFS clone has uncommitted/untracked changes"; exit 1; }
+
+# Invariant 2: each local branch is pushed to origin
+git fetch origin --quiet
+for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/); do
+  if ! git rev-parse --verify --quiet "origin/$branch" >/dev/null; then
+    echo "ABORT: NTFS clone branch '$branch' has no origin counterpart (unpushed)"; exit 1
+  fi
+  if [[ "$(git rev-parse "$branch")" != "$(git rev-parse "origin/$branch")" ]]; then
+    echo "ABORT: NTFS clone branch '$branch' diverges from origin/$branch"; exit 1
+  fi
+done
+
+# Invariant 3: no stash entries
+[[ -z "$(git stash list)" ]] || { echo "ABORT: NTFS clone has stash entries (would be lost)"; exit 1; }
+
+# Invariant 4: GitHub remote reachable and matches expected repo
+gh repo view vamseeachanta/llm-wiki-acma --json visibility,defaultBranchRef >/dev/null \
+  || { echo "ABORT: GitHub remote unreachable"; exit 1; }
+```
+
+If ALL invariants pass: `rm -rf /mnt/ace/llm-wiki-acma/`
+
+Rationale per `feedback_ntfs3_symlink_intxlnk`: NTFS-backed clone is a corruption hazard, not a backup; GitHub remote is the durable backup. The 4 invariants address the r1 finding that the original `git diff origin/main..main --quiet` only caught tracked-commit divergence on main, missing uncommitted changes, untracked files, non-main unpushed branches, and stash entries — all real data-loss vectors.
 
 ## TDD Test List
 
 (Implemented in `tests/enforcement/test_client_wiki_registry.sh`)
 
-| # | Test | Expected |
-|---|---|---|
-| 1 | Registry consistent → checker passes | Exit 0; no stderr |
-| 2 | Registry missing `repo` field on entry | Exit non-zero, name offending `short_name` |
-| 3 | GH repo for `bootstrapped` entry doesn't exist | Exit non-zero (mock or skip with `if [[ -z "$GH_TOKEN" ]]`) |
-| 4 | `client-private` posture but visibility != PRIVATE | Exit non-zero |
-| 5 | `local_working_clone` missing when mount root present | Exit non-zero |
-| 6 | `local_working_clone` missing when mount root ABSENT | Exit 0 (machine-aware skip) |
-| 7 | Duplicate `short_name` across two entries | Exit non-zero |
-| 8 | **Firewall guard:** `client-private` `raw_roots` contains `/mnt/local-analysis/llm-wiki/` (public path) | Exit non-zero |
-| 9 | Instantiated wiki repo: `grep -i 'MIT\|Apache\|BSD\|CC-BY' LICENSE` returns nothing | grep exit non-zero (no OSS keywords) |
+All tests use `REGISTRY_PATH` env override to load per-test fixture YAMLs from `tests/enforcement/fixtures/`. Live `config/client-wikis.yml` is never touched by tests.
+
+| # | Test | Fixture | Expected |
+|---|---|---|---|
+| 1 | Registry consistent → checker passes | `fixtures/client-wikis-consistent.yml` (acma bootstrapped, others planned) | Exit 0; no stderr |
+| 2 | Registry missing `repo` field on entry | `fixtures/client-wikis-missing-repo-field.yml` | Exit non-zero, name offending `short_name` |
+| 3 | GH repo for `bootstrapped` entry doesn't exist | `fixtures/client-wikis-fake-repo.yml` (points at `vamseeachanta/nonexistent-fake-repo`) | Exit non-zero |
+| 4 | `client-private` posture but visibility != PRIVATE | `fixtures/client-wikis-wrong-visibility.yml` (points at a PUBLIC repo, e.g., `vamseeachanta/workspace-hub`) | Exit non-zero |
+| 5 | `local_working_clone` missing when mount root present | `fixtures/client-wikis-missing-clone.yml` (clone path under existing `/mnt/local-analysis/`) | Exit non-zero |
+| 6 | `local_working_clone` missing when mount root ABSENT | `fixtures/client-wikis-missing-mount.yml` (clone path under `/mnt/nonexistent-mount/`) | Exit 0 (machine-aware skip) |
+| 7 | Duplicate `short_name` across two entries | `fixtures/client-wikis-duplicate-shortname.yml` | Exit non-zero |
+| 8 | **Firewall guard:** `client-private` `raw_roots` contains a public llm-wiki path | `fixtures/client-wikis-firewall-violation.yml` (raw_root = `/mnt/local-analysis/llm-wiki/`) | Exit non-zero |
+| 9 | Instantiated wiki repo: `grep` for OSS-license boilerplate in `LICENSE` | n/a (template-instantiation test, not registry test); run on `/mnt/local-analysis/llm-wiki-acma/LICENSE` after T6 | Tightened regex per r1 finding #4: grep for `'Licensed under the MIT'\|'Apache License, Version 2.0'\|'BSD 3-Clause'\|'Creative Commons'` → 0 hits AND `grep -i 'All rights reserved\|Proprietary\|Confidential'` → ≥1 hit |
 
 Test runner shape (one test per `test_*` function in shell):
 
