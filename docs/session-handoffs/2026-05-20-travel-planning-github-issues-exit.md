@@ -89,4 +89,13 @@ These paths are unrelated to this travel closeout unless separately reviewed and
 
 ## Final exit proof
 
-Final proof will be captured after this handoff is committed and pushed.
+Post-handoff commit/push proof captured 2026-05-20T03:58-05:00:
+
+- Handoff commit: `b6bb02c794e0f422ee7467d962b93f477e3272bc`
+- Branch: `main`
+- Local `HEAD`: `b6bb02c794e0f422ee7467d962b93f477e3272bc`
+- `origin/main`: `b6bb02c794e0f422ee7467d962b93f477e3272bc`
+- Ahead/behind: `0/0`
+- Remaining dirty paths in `workspace-hub`: 16, all pre-existing/unrelated to this handoff and intentionally not staged.
+
+This proof section update itself is committed separately during closeout; the final user response carries the latest live `HEAD == origin/main` proof after that update.
