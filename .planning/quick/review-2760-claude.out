@@ -1,0 +1,91 @@
+`★ Insight ─────────────────────────────────────`
+Adversarial plan review for engineering work has a specific failure mode: the plan author internalizes user comments correctly but then *invents* downstream scope (plot ranges, tolerances, fixtures) and treats those inventions with the same weight as approved decisions. The reviewer's job is to separate "decision-ledger-backed" from "plan-invented" and flag the second category. The other classic engineering-plan defect is *text-string tests* — asserting a phrase like `+X forward` appears in metadata while never asserting that the actual numbers respect that convention. Both patterns are present here.
+`─────────────────────────────────────────────────`
+
+# Adversarial Plan Review — workspace-hub #2760
+
+**Verdict: MAJOR**
+
+Plan is structurally sound and preserves most user decisions accurately, but it has three load-bearing problems that must be fixed before `status:plan-review`: (a) the OCIMF coefficient gap is acknowledged but not closed in a calc-citation-contract-compliant way; (b) the TDD list checks *text strings* of sign conventions rather than asserting physics; (c) it invents unapproved plot/comparison scope (the -5..+5° heading plot and an untoleranced yaw verification chart) and pins it as a test contract.
+
+---
+
+## Findings
+
+### Blockers (must fix before plan-review)
+
+- **[critical] OCIMF coefficient source is unresolved and not bound to the calc-citation contract.**
+  The plan says "locate the production CSV or create a bounded in-repo digitized generic coefficient fixture with provenance/limitations" — but `.claude/rules/calc-citation-contract.md` (live, pilot LIVE per CLAUDE.md) requires standards-derived constants to emit a `Citation` sidecar pointing at a wiki page with `code_id`, `publisher`, `revision` frontmatter, with fail-closed validation at calc time. The plan does not reference this rule, does not specify the wiki target page under `knowledge/wikis/engineering/wiki/standards/`, does not commit to using `digitalmodel/src/digitalmodel/citations/`, and leaves "create a fixture" as a fallback escape hatch. A "bounded digitized fixture" without a citable wiki anchor is exactly the dark-data path the contract was written to prevent — and B1528 is a real engineering deliverable to ACMA.
+  **Why it matters:** generic OCIMF MEG4 coefficients drive the *default* current force/moment numbers in the deliverable. If the source is a hand-typed fixture without citation, the report is not defensible to a reviewer or regulator, and the deliverable PDF goes out the door with un-traceable physics.
+  **Recommended change:** Add an explicit prerequisite step before the OCIMF-using calc work: (1) locate or create the wiki standards page (e.g. `knowledge/wikis/engineering/wiki/standards/ocimf-meg4.md`) with the required frontmatter; (2) use `digitalmodel.citations.registry` to register and resolve the coefficient set; (3) replace the "fallback fixture" language with "fixture must be backed by the wiki page + Citation sidecar; if neither the page nor the source can be located, the issue is blocked and the user is consulted before any default value is shipped." Add a TDD test that asserts `CitationResolutionError` fires when the wiki page is missing or frontmatter mismatches.
+
+- **[critical] TDD list checks text strings of sign/datum conventions, not physics.**
+  `test_issue_2760_axes_and_cog_contract` asserts that strings like `+X forward`, `+Y port`, `+N bow-to-port` appear in report metadata. That catches *labels*, not *signs*. A regression that silently flips the Y-axis (e.g., current from port produces -Y instead of +Y) will still pass. Same for `test_issue_2760_ocimf_coefficients_not_placeholder` — "does not equal placeholder formula-only path" is fuzzy; the current placeholder `OCIMF_CURRENT_CX_BASE = 1.05` is *out of the documented OCIMF CXc physical range (-0.618 to 0.968 per PHASE3 doc)*, which is itself diagnostic but isn't being tested for. There's no test pinning `3.08 kn × 0.51444 m/s/kn ≈ 1.585 m/s` either.
+  **Why it matters:** sign convention errors and unit conversion errors are the highest-frequency cause of wrong moored force calculations. They produce results that look plausible (right magnitude, wrong sign) and survive label-only tests. This is a deliverable to an external party.
+  **Recommended change:** Replace the text-string assertions with numeric/sign assertions:
+  - `test_issue_2760_current_from_port_produces_positive_Y` — set heading=+5° port, assert Y > 0 with explicit numeric tolerance against fixture.
+  - `test_issue_2760_rudder_port_deflection_yaw_sign` — set rudder=+28° port, assert N has the documented expected sign.
+  - `test_issue_2760_current_speed_unit_conversion` — assert internal V = 3.08 × 0.51444 m/s within 1e-9.
+  - `test_issue_2760_ocimf_placeholder_constants_removed` — grep the module source and assert `OCIMF_CURRENT_CX_BASE`, `OCIMF_CURRENT_CM_SCALE`, and the `ocimf_cy = heading_sin` line do not appear.
+  - `test_issue_2760_ocimf_coefficients_in_documented_range` — assert returned CXc, CYc, CMc fall within PHASE3-documented OCIMF ranges.
+
+- **[high] Plan invents unapproved scope: -5..+5° heading plot range and pins it in TDD.**
+  Decision ledger has no entry approving a heading *plot range*; the only heading entry is "default = 5° off bow." Pseudocode and `test_issue_2760_current_heading_force_plots_domain` lock in plots over -5..+5° at 1° steps as a tested contract. This is exactly the "plan-invented vs decision-backed" pattern that erodes user-in-loop control and creates retest churn when the user later says "no, I wanted 0..30° at 5° steps."
+  **Why it matters:** even small unapproved scope hard-coded into TDD becomes load-bearing once tests are written — removing it requires plan re-review. The user-in-loop gate exists to prevent this.
+  **Recommended change:** Remove the heading-plot range from pseudocode and TDD until the user confirms it on the issue. Either ask explicitly on #2760 ("plot range for current heading sensitivity?") or drop the plot from scope entirely and revisit after the default-only deliverable is approved. Apply the same treatment to anything else not in the decision ledger.
+
+- **[high] Side-by-side yaw verification chart has no tolerance or interpretation policy.**
+  Decision ledger does approve "one side-by-side verification chart against force × lever-arm method" — but OCIMF direct CMc and Y×arm measure fundamentally different things (CMc captures pressure distribution including effects not representable by a single point of action; Y×arm assumes single-point force). They will *not* match exactly. The plan says nothing about acceptable discrepancy, what to do if they diverge significantly, or how the chart's caption explains the difference. A reviewer or end-client looking at a 30% discrepancy with no caption will either dismiss the result or panic.
+  **Why it matters:** an "untoleranced verification" chart can either falsely validate a wrong number (if both methods happen to share the same error mode) or falsely invalidate a right number (if the user expects them to match). Either way, the chart undermines the deliverable's credibility.
+  **Recommended change:** Pin in the plan: (a) the documented expected discrepancy band (with literature/derivation citation), (b) the chart caption text that explains the methods differ and why, (c) a TDD test that asserts the OCIMF and Y×arm values are within the documented band for the default case (not equal, just within band), and (d) a documented behavior when they diverge beyond band (warn? fail? flag in report?).
+
+- **[high] Simple area/drag rudder model is underspecified at the physics level.**
+  Pseudocode says `simple_default = area_drag_model(current_speed, rudder_angle, rudder_area, rho, Cd/reference)`. Missing: what flow velocity drives the rudder at rpm=0 (ambient current only? current with shielding by hull?), what Cd curve (flat plate Cd=2·sin²α? Hoerner? table?), stall behavior at 28° (many flat-plate models predict stall at ~15–20°, which would dramatically reduce side force exactly at the default), sign convention from rudder deflection to hull-applied force/moment. The "alternate existing hydrodynamic model with Cr=1.0" is similarly thin — `Cr=1.0` is typically a propeller-rudder interaction factor; whether that model is even physically meaningful at rpm=0 is undefined.
+  **Why it matters:** the rudder section is half the deliverable. Without pinning the model, the implementer chooses, and the user is asked to approve a number whose physical basis was selected after plan approval — re-opening the user-in-loop gate retroactively.
+  **Recommended change:** Add a "Rudder model basis" subsection naming: (a) the exact velocity input formula at rpm=0, (b) the Cd or CN curve (with citation), (c) stall handling at 28°, (d) sign mapping from rudder deflection to hull X/Y/N at CoG. Same for the "alternate existing" model — name the source file/equations and explain why `Cr=1.0` is meaningful (or change it to a current-relevant factor). Both should be approved by the user before implementation, since the comparison only has meaning if both models are physically justified.
+
+### Should fix before plan-review
+
+- **[medium] Cross-repo commit/push serialization is hand-waved.**
+  Plan says "Implementation should use an isolated worktree for write-capable changes after approval" — but: digitalmodel is a *separate git repo* (per CLAUDE.md "cd in before committing"), the WRK-1141 post-commit hook can auto-push and defeat the test gate (per `feedback_post_commit_autosync_defeats_test_gate`), and parallel agents can race on the git lock (per `feedback_multi_agent_commit_serialization`). The plan doesn't pin commit order (digitalmodel first? acma-projects first? interleaved?), doesn't reference `SKIP_PUSH=1`, doesn't mention the worktree-isolation cost on workspace-hub (per `feedback_worktree_isolation_large_repo_cost`).
+  **Recommended change:** Add an "Execution gating" subsection: (1) digitalmodel changes commit-and-push first, with `SKIP_PUSH=1` + explicit `git push` after tests green; (2) acma-projects deliverables commit second after digitalmodel green CI; (3) parallel-work preflight per `feedback_check_parallel_work` before either; (4) explicit reflog check after each push per `feedback_reflog_as_ground_truth`.
+
+- **[medium] LLM Wiki anchoring deferred when it should be required.**
+  Plan says "No relevant LLM-wiki page was consulted... If adversarial review requires domain-wiki anchoring, add a read-only lookup before plan approval." For a standards-driven calc (OCIMF MEG4), wiki anchoring is not optional — it's the calc-citation contract's anchor point.
+  **Recommended change:** Convert this from conditional to required. Before plan-review, the plan must list the wiki page(s) it will cite (OCIMF MEG4 standards page, and any wiki page for the chosen simple-rudder model basis).
+
+- **[medium] "Resultant force calculations are removed from main presentation" needs a stronger contract.**
+  `test_issue_2760_no_resultant_main_presentation` looks for tables/charts "labeled resultant" — but the existing code at line 298 returns `ocimf_current_resultant_horizontal_force_N` and at line 315 returns `total_resultant_horizontal_force_N`. A future contributor could keep computing these internally and emit them under a different name. There's no test that the *internal data structure* doesn't carry resultants forward into report-bound JSON either.
+  **Recommended change:** Strengthen the test to: (a) grep the report Markdown/HTML for the specific terms "resultant", "total horizontal force", "heatmap" and assert absence; (b) assert the report JSON manifest contains no key matching `*resultant*`; (c) document whether internal calculation of resultants is permitted for QA-only use (and if so, where it goes).
+
+- **[medium] Rounding contract has an undefined threshold.**
+  "kN/kN·m display rounded to 0 decimals for large values; angles use 1 decimal where needed" — "large values" and "where needed" are not measurable. A test that asserts this can't be written deterministically.
+  **Recommended change:** Pin the threshold (e.g., "all kN ≥ 1.0 rounded to 0 decimals; values below 1.0 rounded to 2 decimals"). Pin the angle rule (e.g., "all angle columns to 1 decimal regardless of magnitude").
+
+- **[medium] Old report archival/superseding policy is missing.**
+  The plan updates the existing PDF at `acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf` but doesn't say whether the old PDF is overwritten in-place, archived with a date suffix, or moved to a `legacy/` folder. The old Markdown report at `digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md` has the same ambiguity. Auditors looking at version history later need a clear supersession.
+  **Recommended change:** Pin a supersession policy: archive old `*_moored_current_*` files to `legacy/2026-05-20-pre-2760/` and emit new files with the revised scenario name, OR overwrite in-place with a "Supersedes" header that names the prior commit SHA.
+
+- **[low] Schematic contract test only checks metadata, not rendered output.**
+  `test_issue_2760_schematic_contract` checks that the report mentions "transparent/simple ship outline, CoG marker, etc." — but the actual rendered schematic (likely SVG or PNG) is not validated. A broken matplotlib path could emit no image while metadata still claims one exists.
+  **Recommended change:** Add a test asserting the schematic file is non-empty and either parses as SVG/PNG OR exceeds a minimum byte-size threshold. For SVG, parse and assert presence of expected `<text>` or `<path>` elements (ship outline path, CoG label, X/Y/N arrows).
+
+- **[low] Word `.docx` generation has no specific test.**
+  The output manifest test checks "Word/PDF paths under acma-projects output included in manifest" — but doesn't assert the `.docx` parses as a valid Word document. `python-docx` round-tripping issues are common and silent (the file exists but is corrupt).
+  **Recommended change:** Add `test_issue_2760_docx_opens_and_contains_required_sections` that opens the generated `.docx` with `python-docx` and asserts headings for "Current Loads," "Rudder Loads," etc.
+
+- **[low] "Broader relevant regression passes or failures are documented as unrelated/pre-existing" is an escape hatch.**
+  This acceptance criterion lets the implementer wave away red tests by labeling them pre-existing. Per `feedback_ci_baseline_red_not_pr_broken`, the baseline check is legitimate — but the *documentation* of which tests are pre-existing should be concrete.
+  **Recommended change:** Replace with "Pre-existing red tests are listed by file path and last-passing commit SHA, with link to the upstream `gh run list --branch main` result for the baseline."
+
+---
+
+## Blockers checklist (must be fixed before `status:plan-review`)
+
+1. Bind OCIMF coefficient source to calc-citation-contract (`.claude/rules/calc-citation-contract.md`); name wiki standards page; remove "create unanchored fixture" fallback.
+2. Replace text-string sign/datum tests with numeric sign + unit-conversion assertions; add explicit grep-for-removed-placeholder-constants test.
+3. Remove the plan-invented -5..+5° heading plot range from pseudocode and TDD until user confirms scope on #2760.
+4. Pin a tolerance band and caption policy for the OCIMF-vs-Y×arm verification chart; add a banded TDD test.
+5. Specify the simple rudder model physics (flow velocity input at rpm=0, Cd/CN curve with citation, stall handling, sign mapping) and the basis for `Cr=1.0` in the alternate model; require user approval of both before implementation.
+
+After these are addressed and the user-in-loop gate is reset, the remaining MINOR items (cross-repo commit gating, wiki anchoring conversion to required, rounding threshold, supersession policy, schematic/docx tests, regression escape hatch tightening) can be patched in a single revision pass before `status:plan-review`.

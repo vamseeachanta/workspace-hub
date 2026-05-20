@@ -1,0 +1,36 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Ripgrep is not available. Falling back to GrepTool.
+Skill conflict detected: "field-dev-code-recon" from "/mnt/local-analysis/workspace-hub/.agents/skills/field-dev-code-recon/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/field-dev-code-recon/SKILL.md".
+Skill conflict detected: "extract-learnings-to-issues" from "/mnt/local-analysis/workspace-hub/.agents/skills/extract-learnings-to-issues/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/extract-learnings-to-issues/SKILL.md".
+Skill conflict detected: "corporate-tax-form-fill" from "/mnt/local-analysis/workspace-hub/.agents/skills/corporate-tax-form-fill/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/corporate-tax-form-fill/SKILL.md".
+Verdict: MAJOR
+
+Findings:
+- [severity: high] OCIMF Coefficient Hallucination Risk — The plan states that if the production CSV is missing, it will "load bounded digitized fixture checked into repo". AI agents cannot accurately synthesize proprietary OCIMF MEG4 current coefficients from scratch. Allowing the agent to create a fixture without a provided data source risks silent injection of unapproved physics. **Recommended change:** Update the plan to explicitly state that if the CSV is missing, the agent MUST NOT invent data, and instead must halt and ask the user to provide the tabular generic OCIMF data in the issue thread.
+- [severity: high] Unresolved Engineering Decisions in "Open Questions" — The plan leaves "exact OCIMF generic vessel class/dataset row" and "exact simple area/drag rudder model coefficient" as open questions to be chosen during implementation. This violates the engineering-critical approval gate by delegating the physical basis to the execution agent rather than the user. **Recommended change:** Resolve these open questions in the plan, or explicitly require the user to specify the generic vessel class and rudder drag coefficients as part of the plan-approval request.
+- [severity: medium] Unspecified Word Document Tooling — The plan requires new Word (DOCX) output generation but fails to identify the tooling mechanism. If `digitalmodel` lacks existing Word generation libraries (e.g., `python-docx`, `pandoc`), this introduces an un-planned dependency. **Recommended change:** Identify the existing library used for Word generation in `digitalmodel` in the Resource Intelligence section, or explicitly plan the addition of a specific dependency.
+- [severity: medium] Untestable Schematic TDD Criterion — `test_issue_2760_schematic_contract` proposes verifying visual elements ("transparent/simple ship outline, CoG marker..."). Programmatic TDD of generated image pixels or opaque PDFs is unreliable and flaky. **Recommended change:** Specify that the schematic should be generated as an SVG, allowing the test to assert against text/DOM elements, OR specify that the test will verify the intermediate data structures passed to the plotting function rather than the final image.
+- [severity: low] Incorrect "Cross-Repo" Assumption — The plan categorizes `digitalmodel` and `acma-projects` as "cross-repo deliverables" requiring "serialized commit/push across repos." Based on the workspace structure, both are subdirectories within the single `/mnt/local-analysis/workspace-hub/` repository. **Recommended change:** Update the risk to refer to cross-directory or module-boundary writes to avoid the implementation agent attempting unnecessary multi-repo git gymnastics.
+
+## Review questions — answers
+1. **Is this plan approval-ready under the workspace gated engineering workflow, or does it need revision before `status:plan-review`?**
+   No, it is not approval-ready and needs revision. The plan delegates critical physical model decisions to the implementation phase and relies on potentially hallucinated data if the OCIMF CSV is missing.
+2. **Does it preserve the user decisions from issue comments without inventing unapproved physics?**
+   It accurately captures the user's requested defaults (3.08 kn, +5° heading, 28° port) and sign conventions, but risks inventing unapproved physics by leaving the generic OCIMF vessel class and rudder drag coefficients up to the implementation agent.
+3. **Does it handle the OCIMF coefficient/provenance gap safely enough before implementation?**
+   No. The instruction to generate a "bounded digitized fixture" without providing a raw data source is a severe hallucination risk for an LLM operator. 
+4. **Is the TDD list specific enough to catch sign convention, datum, output, and report-presentation regressions?**
+   Mostly yes, but testing the schematic contract is physically impractical unless the output format (like SVG) is explicitly specified to allow text-based DOM testing.
+5. **Are cross-repo artifact boundaries and commit/output risks handled sufficiently?**
+   No. The plan incorrectly identifies `digitalmodel` and `acma-projects` as cross-repo. They reside in the same repository, and stating otherwise could trigger complex and broken git handling workflows.
+6. **Are any acceptance criteria ambiguous, impossible, or under-verified?**
+   "Implementation must choose and document the generic curve basis" is ambiguous and inappropriately pushes engineering decisions to the execution agent. Testing visual schematic outputs is nearly impossible without specifying the verifiable format.
+7. **What concrete changes should be made to the plan before approval?**
+   - Forbid inventing OCIMF data; require user input if the CSV is missing.
+   - Surface the choice of vessel class and rudder drag coefficients as mandatory user decisions required for plan approval.
+   - Define the specific library to be used for Word generation.
+   - Update the schematic test to verify SVG paths or intermediate plotting structures.
+   - Correct the repository boundary assumptions to reflect a single repo structure.
