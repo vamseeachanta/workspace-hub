@@ -1,0 +1,316 @@
+# Plan for #2745: freeze acma-projects and move to local-only archive posture
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-05-20
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2745
+> **Paired plan:** [`docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md`](2026-05-20-issue-2746-llm-wiki-acma.md)
+> **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md) (commit `277a855ee`)
+> **Review artifacts:** `scripts/review/results/2026-05-20-plan-2745-claude.md` | `...-codex.md`
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `vamseeachanta/acma-projects` — PRIVATE GitHub remote, ~2 GB on GH, **not archived**, last pushed 2026-05-05; default branch `main`; description "Share high level project data and action lists"
+- Found: `/mnt/ace/acma-projects/` — 73 GB git-tracked local working copy; remote = origin = `vamseeachanta/acma-projects`; HEAD at `105c9ce8 chore(B1528): add SIROCCO moored-current PDF report` per session-start fetch
+- Found: `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` — 1.8 TB pre-move backup created today; contains `31522-woodfibre-lng/` and likely other client project subdirectories (full inventory deferred)
+- Found: `gh repo archive` subcommand available (confirmed by `gh --help` 2026-05-20)
+- Gap: no `STATUS-FROZEN.md` exists in `/mnt/ace/acma-projects/` to declare frozen posture
+- Gap: no documented disposition for the 1.8 TB pre-move backup
+
+### Standards
+Not applicable (operational/data-pipeline issue; no engineering calculation standards).
+
+### LLM Wiki pages consulted
+No relevant pages.
+
+### Documents consulted
+- `docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md` §5.2 — freeze depth chosen: archive GH remote + keep local 1.8 TB; 3 options for backup disposition
+- Parent epic [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) — "acma-projects is a mash-bash of selected project data and should stop receiving new data"
+- Paired plan [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) — creates the private llm-wiki successor target
+- [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D3 — raw/client/source/bulk data stays under `/mnt/ace/<bucket>/` (canonical; the freeze preserves this)
+- Adjacent [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767) — chore(data-layout): unionise preexisting data folders with content dedup; opened today; may generalize the 1.8 TB disposition pattern across clients (out of scope here)
+- `feedback_autosync_silent_pusher` — auto-sync may push silently; verify reflog after `[rejected]` instead of retrying
+- `feedback_admin_flag_vs_rulesets_api` — `gh repo archive` should work; `--admin` flag pattern not needed for archive operation
+- `feedback_pre_completion_cleanup_audit_gate` — run cleanup audit before declaring complete
+
+### Gaps identified
+- GH remote not archived (must be done)
+- `STATUS-FROZEN.md` doesn't exist (must be created with freeze-rationale + revisit criteria)
+- 1.8 TB backup disposition not decided (this plan picks option A — retain with revisit criteria)
+- Local repo `origin` may or may not need push-permission removal (belt-and-suspenders; this plan adds it)
+
+### Evidence (embedded verification)
+
+**Issue statuses** (verified 2026-05-20T18:30Z via `gh issue view`):
+- `#2744` — OPEN — parent epic
+- `#2745` — OPEN, `status:needs-plan` — this issue
+- `#2746` — OPEN, `status:needs-plan` — paired plan target
+
+**GH remote state** (`gh repo view vamseeachanta/acma-projects` 2026-05-20T18:30Z):
+- visibility: PRIVATE; isArchived: false; pushedAt: 2026-05-05T10:08:38Z; diskUsage: 2048971 KB
+
+**Local repo state** (`git log --oneline -3` in `/mnt/ace/acma-projects/` 2026-05-20T18:30Z):
+- `105c9ce8 chore(B1528): add SIROCCO moored-current PDF report`
+- `99cd4072 chore(B1528): refresh SIROCCO time-trace PDF (regenerated 2026-05-04)`
+- `cf4d5a62 chore(sync): track durable agent/codex configs and B1528 SIROCCO PDF`
+
+**Backup directory state** (`du -sh` 2026-05-20T12:50Z):
+- `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/`: 1.8 TB
+
+## Artifact Map
+
+### New files in `vamseeachanta/acma-projects` (separate repo, post-archive)
+| Path | Purpose |
+|---|---|
+| `STATUS-FROZEN.md` | Declares frozen posture, freeze date, revisit criteria, link to successor `vamseeachanta/llm-wiki-acma` |
+
+### Local-only configuration change
+| Path | Operation | Purpose |
+|---|---|---|
+| `/mnt/ace/acma-projects/.git/config` | Modify `remote.origin.url` → push-disabled URL (or `remote.origin.pushurl` → `no_push`) | Belt-and-suspenders against accidental local push |
+
+### No workspace-hub artifacts modified
+This plan touches only the external repo `vamseeachanta/acma-projects` and local FS state. No `workspace-hub` files are created or modified.
+
+### Backup disposition decision
+**Pre-picked option A — retain indefinitely with revisit criteria**:
+- Backup `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` (~1.8 TB) remains in place.
+- Documented revisit triggers in `STATUS-FROZEN.md`:
+  1. Disk-fill alert on `/mnt/ace/` (>85% capacity)
+  2. 90-day age threshold (2026-08-18 review checkpoint)
+  3. Sample-inventory confirms ≥80% redundancy with `/mnt/ace/acma-projects/` working copy
+- If any trigger fires, file a new issue and plan to execute option B (tar to slower storage) or C (selective delete).
+
+## Deliverable
+
+`vamseeachanta/acma-projects` GH remote archived (read-only). Local working copy `/mnt/ace/acma-projects/` preserved as read-mostly archive with declared frozen status. 1.8 TB pre-move backup retained with documented revisit criteria.
+
+## Scope Boundaries
+
+**IN scope:**
+- Archive `vamseeachanta/acma-projects` on GitHub (reversible)
+- Write `STATUS-FROZEN.md` in the local working copy with freeze rationale + revisit criteria
+- Configure local `remote.origin.pushurl` to no-push as belt-and-suspenders
+- Commit the `STATUS-FROZEN.md` to `vamseeachanta/acma-projects` BEFORE archiving (so it's visible on the now-frozen GH remote)
+- Document the 1.8 TB backup disposition (option A retain) with revisit criteria
+
+**OUT of scope:**
+- Deleting any file from `/mnt/ace/acma-projects/` (raw data preserved)
+- Compressing or moving the 73 GB working copy
+- Compressing or moving the 1.8 TB backup (option A = retain; B/C deferred to follow-on issues if triggers fire)
+- Cross-client generalization of the freeze pattern — that's [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767)'s scope
+- Importing any content from `/mnt/ace/acma-projects/` into `vamseeachanta/llm-wiki-acma` — that's a post-[#2747](https://github.com/vamseeachanta/workspace-hub/issues/2747) operation
+- Renaming or deleting the GH remote (archive is reversible; deletion is not)
+
+## Patch Shape
+
+| Task | Files | Net LOC | Repo/Location |
+|---|---|---|---|
+| T1 — Write STATUS-FROZEN.md (RED — verify-absence) | 0 | n/a | local FS check |
+| T2 — Write STATUS-FROZEN.md (GREEN) | 1 new file | ~60 | `vamseeachanta/acma-projects` repo |
+| T3 — Commit + push STATUS-FROZEN.md | n/a | n/a | `vamseeachanta/acma-projects` repo |
+| T4 — Archive GH remote | 0 | n/a | GitHub API |
+| T5 — Local push-disable | `.git/config` mod | ~2 | `/mnt/ace/acma-projects/` |
+| T6 — Verification: state checks | n/a | n/a | runtime |
+| T7 — Backup disposition note (already in STATUS-FROZEN.md) | n/a | n/a | n/a |
+
+## Pseudocode
+
+### `STATUS-FROZEN.md` content (verbatim core)
+
+```markdown
+# STATUS: FROZEN (read-only archive)
+
+> **Frozen:** 2026-05-20 (per workspace-hub #2745)
+> **Successor target:** `vamseeachanta/llm-wiki-acma` (private; per workspace-hub #2746)
+> **Successor type:** curated private llm-wiki layer for client work
+
+## Why this repo is frozen
+
+Per the workspace-hub data-cycle epic (#2744), `acma-projects` was a mixed-data repo
+that should stop receiving new data. New client knowledge work now flows through
+the structured pipeline:
+
+  raw source (/mnt/ace/acma-projects/) → readable derivative → private wiki
+  (vamseeachanta/llm-wiki-acma) → reviewed/sanitized derivative → public llm-wiki
+  (if appropriate)
+
+See `vamseeachanta/llm-wiki-acma/DATA-CYCLE.md` for the full contract.
+
+## What this means
+
+- **No new commits** should land on this repo's `main` branch.
+- The GitHub remote is **archived** (read-only on GitHub).
+- The local working copy at `/mnt/ace/acma-projects/` is **read-mostly**:
+  - Existing files preserved as historical archive
+  - `remote.origin.pushurl` set to `no_push` to prevent accidental push
+- The pre-move backup `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/`
+  (~1.8 TB) is **retained indefinitely** with revisit criteria below.
+
+## Backup disposition (1.8 TB pre-move sibling)
+
+Per workspace-hub #2745 plan, the backup at `/mnt/ace/acma-projects.preexisting-*`
+is retained with the following revisit triggers:
+
+1. **Disk-fill alert** on `/mnt/ace/` exceeds 85% capacity → file a new issue and plan
+   option B (tar to slower bulk storage)
+2. **90-day age threshold** reached 2026-08-18 → review whether files remain useful
+3. **Sample-inventory** confirms ≥80% redundancy with `/mnt/ace/acma-projects/` →
+   plan option C (selective deletion of confirmed-redundant files)
+
+If a trigger fires, file a follow-on issue referencing workspace-hub #2745 and
+#2767 (data-layout dedup), then plan disposition under the standard gate.
+
+## Reversal
+
+This freeze is reversible:
+- `gh repo unarchive vamseeachanta/acma-projects` reactivates the GH remote
+- Edit local `.git/config` to restore push permissions
+- Update or delete this file with a new STATUS-* declaration
+
+## Successor
+
+For new ACMA client knowledge work, use:
+- `vamseeachanta/llm-wiki-acma` (PRIVATE; per workspace-hub #2746 / #2744)
+- Local working clone at `/mnt/local-analysis/llm-wiki-acma/`
+```
+
+### Local push-disable (`.git/config` modification)
+
+```bash
+cd /mnt/ace/acma-projects
+git config --local remote.origin.pushurl "no_push://vamseeachanta/acma-projects (frozen per workspace-hub#2745)"
+# Verify:
+git config --local --get remote.origin.pushurl
+git config --local --get remote.origin.url   # fetch URL stays intact
+```
+
+### GH archive command
+
+```bash
+gh repo archive vamseeachanta/acma-projects --yes
+# Verify:
+gh repo view vamseeachanta/acma-projects --json isArchived,pushedAt -q '"archived=" + (.isArchived|tostring) + " pushedAt=" + .pushedAt'
+# Expect: archived=true
+```
+
+## Files to Change
+
+### Tasks (TDD-ordered; "test" here is verify-state since this is operational, not code)
+
+**T1 — Verify pre-state (RED equivalent)**
+- Check `STATUS-FROZEN.md` does NOT exist in `/mnt/ace/acma-projects/`:
+  - `[[ ! -f /mnt/ace/acma-projects/STATUS-FROZEN.md ]] && echo "RED: absent (expected)"`
+- Check GH remote NOT archived:
+  - `gh repo view vamseeachanta/acma-projects --json isArchived -q .isArchived` → `false`
+- Check local push permission still active:
+  - `git -C /mnt/ace/acma-projects config --local --get remote.origin.pushurl` → empty/error (no pushurl override set)
+
+**T2 — Write STATUS-FROZEN.md (GREEN)** (in `vamseeachanta/acma-projects` repo)
+- `cd /mnt/ace/acma-projects`
+- Create `STATUS-FROZEN.md` with the verbatim content above
+- Verify: `[[ -f STATUS-FROZEN.md ]] && wc -l STATUS-FROZEN.md` → ~60 lines
+
+**T3 — Commit + push STATUS-FROZEN.md** (single pathspec commit)
+- `cd /mnt/ace/acma-projects`
+- `git add STATUS-FROZEN.md`
+- `git commit -m "chore: declare repo frozen per workspace-hub#2745" -- STATUS-FROZEN.md`
+- `git push origin main`
+- Verify: `git log -1 --pretty=oneline` → shows the freeze commit
+- Verify on GH: `gh api repos/vamseeachanta/acma-projects/contents/STATUS-FROZEN.md -q .name` → `STATUS-FROZEN.md`
+
+**T4 — Archive GH remote**
+- `gh repo archive vamseeachanta/acma-projects --yes`
+- Verify: `gh repo view vamseeachanta/acma-projects --json isArchived` → `{"isArchived": true}`
+- Verify: web UI shows "This repository has been archived by the owner" banner
+
+**T5 — Local push-disable**
+- `cd /mnt/ace/acma-projects`
+- `git config --local remote.origin.pushurl "no_push://vamseeachanta/acma-projects (frozen per workspace-hub#2745)"`
+- Verify pushurl set: `git config --local --get remote.origin.pushurl` → returns the no_push URL
+- Verify fetch URL intact: `git config --local --get remote.origin.url` → `https://github.com/vamseeachanta/acma-projects` (or `.git`)
+- Try push (should fail): `git push --dry-run origin main` → expect failure with "could not resolve hostname no_push" or similar
+
+**T6 — Verification: state checks all green**
+- All T1 RED checks now GREEN:
+  - `[[ -f /mnt/ace/acma-projects/STATUS-FROZEN.md ]] && echo "GREEN: present"`
+  - `gh repo view vamseeachanta/acma-projects --json isArchived -q .isArchived` → `true`
+  - `git -C /mnt/ace/acma-projects config --local --get remote.origin.pushurl` → returns no_push URL
+- Backup directory still present: `[[ -d /mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/ ]] && du -sh ...` → ~1.8 TB
+
+**T7 — Comment on #2745 with implementation evidence**
+- Post comment with: STATUS-FROZEN.md commit SHA, GH archive timestamp, local pushurl config, backup state verification, link to #2746 paired completion
+- Close #2745 with `gh issue close 2745 --comment "<evidence>"` per `feedback_gh_issue_comment`
+
+## TDD Test List
+
+This issue is operational (no code module produced), so "TDD" here = state-verification checks executed against runtime. Each is paired RED (pre-state) and GREEN (post-state).
+
+| # | Check | RED (pre-state) | GREEN (post-state) |
+|---|---|---|---|
+| 1 | `STATUS-FROZEN.md` exists in repo | absent | present, ≥40 lines |
+| 2 | GH remote archived | `isArchived: false` | `isArchived: true` |
+| 3 | Local `remote.origin.pushurl` override | unset | `no_push://...` |
+| 4 | Local `remote.origin.url` (fetch) preserved | `https://github.com/...` | unchanged |
+| 5 | Local push attempt blocked | succeeds | fails (no_push host) |
+| 6 | Backup `/mnt/ace/acma-projects.preexisting-*` present | ~1.8 TB | ~1.8 TB unchanged |
+| 7 | STATUS-FROZEN.md visible on GH | 404 | 200, file content matches local |
+| 8 | `/mnt/ace/acma-projects/` working tree clean post-freeze | (variable) | clean (only freeze commit landed) |
+
+## Acceptance Criteria
+
+- [ ] `STATUS-FROZEN.md` committed and pushed to `vamseeachanta/acma-projects:main` BEFORE archive (so visible on archived repo)
+- [ ] `vamseeachanta/acma-projects` has `isArchived: true` on GitHub (verified via `gh repo view`)
+- [ ] Local repo at `/mnt/ace/acma-projects/` has `remote.origin.pushurl` set to no_push (verified via `git config`)
+- [ ] Local fetch URL preserved (still `vamseeachanta/acma-projects`) so historical inspection still works
+- [ ] Attempted push to origin fails (verified via `git push --dry-run`)
+- [ ] Backup directory `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` is unchanged (size, timestamp)
+- [ ] `STATUS-FROZEN.md` documents: freeze date, successor repo, backup disposition (option A retain), 3 revisit triggers, reversal procedure
+- [ ] Adversarial review (T2: Claude + Codex) produces APPROVE on plan and execution stages
+- [ ] Legal-sanity scan passes — only short labels (`acma`) and standard repo identifiers, no client legal names
+- [ ] Comment posted on [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) with evidence (commit SHA, archive timestamp, config output, backup `du -sh` output)
+- [ ] [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) closed with `gh issue close --comment "<evidence>"` per `feedback_gh_issue_comment`
+- [ ] Pre-completion cleanup audit per `coordination/pre-completion-cleanup-audit` skill: CLEAN or EXPECTED only; no UNEXPECTED residue
+- [ ] Paired plan [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) completion confirmed BEFORE this freeze closes (avoid orphaning if [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) reverts)
+
+## Adversarial Review Summary
+
+(To be filled by reviewers; T2 default = Claude + Codex)
+
+**Claude review (drafting agent):** TBD after plan posted
+**Codex review:** TBD after plan posted
+**Gemini review (optional T3 escalation):** UNAVAILABLE / OPTIONAL — degrade per `feedback_gemini_sandbox_overlay_blindness` if quota out
+
+Specific defect-hunt prompts for reviewers:
+- Is `gh repo archive` reversible without history loss? (Yes per GitHub docs; verify reviewer concurs)
+- Does the `no_push://` pushurl trick work on all git versions in use? (Test on 2.40+ via dry-run)
+- Does the STATUS-FROZEN.md cover all revisit triggers a future operator would care about?
+- Does the 1.8 TB option-A pick (retain) under-commit when option C (selective delete) is genuinely cheap?
+
+## Risks and Open Questions
+
+| Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|
+| `gh repo archive` requires admin auth that operator session lacks | Low | Medium | Pre-check `gh auth status` and `gh api user --jq .login`; pause if not admin |
+| Pushurl trick `no_push://...` is git-version-sensitive | Low | Low | T5 verifies via dry-run; if `--dry-run` succeeds (push allowed), fall back to `git config branch.main.pushRemote no_push` |
+| 1.8 TB option A (retain) misjudged — backup is overwhelmingly redundant | Medium | Low | 90-day revisit checkpoint in STATUS-FROZEN.md; redundancy sample easy to inventory later |
+| Auto-sync pushes the STATUS-FROZEN.md commit silently before archive | Low | Low | Plan sequences T3 (push) BEFORE T4 (archive) by design; auto-sync only accelerates T3 |
+| Concurrent commit lands on `acma-projects:main` between T2 and T3 | Very low | Low | Repo is on freeze posture; user is the only writer; commit before archive locks the state |
+| Backup directory accidentally deleted by another agent's cleanup pass | Low | High | `pre-completion-cleanup-audit` defends; STATUS-FROZEN.md names the backup as EXPECTED residue per `feedback_pre_completion_cleanup_audit_gate` |
+
+**Open questions (deferred to implementation or follow-on):**
+- Should the freeze commit be co-signed/tagged for extra historical weight? Default: no, single chore commit is sufficient.
+- Should we also add a CODEOWNERS or branch-protection rule on the archived repo for belt-and-suspenders? Archive already blocks pushes; redundant.
+
+## Complexity: T2
+
+T2 justification: external-state changes affecting a shared GitHub repo (archive is reversible but visible to all collaborators); cross-references workspace-hub#2746 paired completion; 1.8 TB disposition decision warrants peer review. Below T3 because the operational steps are bounded (7 tasks, all reversible within minutes).
+
+## Implementation Notes for Future Approved Work
+
+- T1–T6 execute in sequence; T7 (close issue) only after [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) implementation is also done. Closing both children near-simultaneously keeps the [#2744](https://github.com/vamseeachanta/workspace-hub/issues/2744) epic audit clean.
+- If the 90-day revisit (2026-08-18) fires, file a new issue (not a reopen of [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745)) per workspace policy. Reference both [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) and [#2767](https://github.com/vamseeachanta/workspace-hub/issues/2767).
+- The STATUS-FROZEN.md format established here is a candidate pattern for the broader `llm-wiki-<client>` freeze handling. If a second client wiki (Phase 4–5 from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) spec) ever needs source-repo freeze, this STATUS-FROZEN.md template can be lifted.
