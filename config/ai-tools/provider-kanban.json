@@ -35,6 +35,40 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Explore 3-night Broken Bow-style family getaway alternatives near west Houston"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2761,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Explore 3-night Broken Bow-style family getaway alternatives near west Houston",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2761",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "enhancement",
           "priority:high",
@@ -243,8 +277,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: major_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -263,10 +296,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/readiness/telegram-hermes-readiness.sh` \u2014 thin shell wrapper for the real readiness implementation. It must remain callable but is not the primary integration target.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** The live filesystem currently shows duplicate `digitalmodel` and `assetutilities` checkouts at sibling and nested paths. This plan will require explicit primary/reference role declarations and will not clean them up inline. | **Risk:** `workspace-hub` is dirty and readiness currently fails; ace-linux-1 must not be treated as dispatchable until unrelated residue is committed, preserved, o",
+        "tests": "9 TDD tests defined",
         "title": "throughput(workstations): activate ace-linux-1 provider/machine lane"
       },
       "lane": "planning_feedstock",
@@ -276,13 +309,17 @@
       "machine_route": null,
       "number": 2754,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-05-19-issue-2754-ace-linux-1-throughput-lane-tier1-baseline.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "throughput(workstations): activate ace-linux-1 provider/machine lane",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2754",
-      "warnings": []
+      "warnings": [
+        "legacy_review_no_sha",
+        "major_review",
+        "unavailable_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -1042,7 +1079,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "reviews not clean: missing_review",
+        "reviews not clean: major_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1053,7 +1090,8 @@
           "priority:high",
           "cat:data-pipeline",
           "cat:document-intelligence",
-          "domain:knowledge"
+          "domain:knowledge",
+          "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1077,7 +1115,8 @@
       "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2731",
       "warnings": [
-        "missing_review"
+        "legacy_review_no_sha",
+        "major_review"
       ]
     },
     {
@@ -7971,50 +8010,48 @@
       "title": "chore(website): pin Node engines in aceengineer-website package.json + vercel.json",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2355",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2353,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2353",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-20T01:20:10Z",
+  "generated_at": "2026-05-20T05:20:13Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Explore 3-night Broken Bow-style family getaway alternatives near west Houston"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2761,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Explore 3-night Broken Bow-style family getaway alternatives near west Houston",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2761",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8233,8 +8270,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: major_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8253,10 +8289,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/readiness/telegram-hermes-readiness.sh` \u2014 thin shell wrapper for the real readiness implementation. It must remain callable but is not the primary integration target.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** The live filesystem currently shows duplicate `digitalmodel` and `assetutilities` checkouts at sibling and nested paths. This plan will require explicit primary/reference role declarations and will not clean them up inline. | **Risk:** `workspace-hub` is dirty and readiness currently fails; ace-linux-1 must not be treated as dispatchable until unrelated residue is committed, preserved, o",
+          "tests": "9 TDD tests defined",
           "title": "throughput(workstations): activate ace-linux-1 provider/machine lane"
         },
         "lane": "planning_feedstock",
@@ -8266,13 +8302,17 @@
         "machine_route": null,
         "number": 2754,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-05-19-issue-2754-ace-linux-1-throughput-lane-tier1-baseline.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "throughput(workstations): activate ace-linux-1 provider/machine lane",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2754",
-        "warnings": []
+        "warnings": [
+          "legacy_review_no_sha",
+          "major_review",
+          "unavailable_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9032,7 +9072,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "reviews not clean: missing_review",
+          "reviews not clean: major_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9043,7 +9083,8 @@
             "priority:high",
             "cat:data-pipeline",
             "cat:document-intelligence",
-            "domain:knowledge"
+            "domain:knowledge",
+            "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9067,7 +9108,8 @@
         "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2731",
         "warnings": [
-          "missing_review"
+          "legacy_review_no_sha",
+          "major_review"
         ]
       },
       {
@@ -15961,42 +16003,6 @@
         "title": "chore(website): pin Node engines in aceengineer-website package.json + vercel.json",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2355",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2353,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2353",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16007,18 +16013,18 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-20T01:20:06.572647Z",
+  "scorecard_generated_at": "2026-05-20T05:20:09.264796Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-20T01:20:06.436136Z",
+  "utilization_generated_at": "2026-05-20T05:20:09.142108Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 4,
     "empty_review": 3,
-    "legacy_review_no_sha": 27,
-    "major_review": 18,
+    "legacy_review_no_sha": 29,
+    "major_review": 20,
     "marker_without_open_approved_issue": 134,
-    "missing_review": 28,
-    "unavailable_review": 14,
+    "missing_review": 27,
+    "unavailable_review": 15,
     "unknown_review": 3
   }
 }

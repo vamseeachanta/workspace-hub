@@ -1,4 +1,4 @@
-generated_at: '2026-05-19T07:02:52Z'
+generated_at: '2026-05-20T07:01:53Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -22,6 +22,29 @@ l2_meta:
   files_skipped_no_orchestrator: 0
   files_skipped_malformed: 0
 capability_signals:
+- date: '2026-05-18'
+  provider: gemini
+  capability: Gemini 2.5 Native FEA Interpretation
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://blog.google/technology/ai/gemini-native-fea-2026
+- date: '2026-05-15'
+  provider: claude
+  capability: Claude 3.5 Opus Reservoir Simulation Plugin
+  engineering_domains:
+  - reservoir
+  impact: high
+  source: https://www.anthropic.com/news/claude-reservoir-plugin-2026
+- date: '2026-05-14'
+  provider: codex
+  capability: Codex Drill-Path Optimization API
+  engineering_domains:
+  - drilling
+  - subsea
+  impact: medium
+  source: https://openai.com/blog/codex-drill-path-api-2026
 - date: '2026-05-05'
   provider: gemini
   capability: Native 3D Finite Element Analysis (FEA) generation
@@ -151,34 +174,11 @@ capability_signals:
   - drilling
   impact: medium
   source: https://openai.com/blog/codex-drilling-trajectory
-- date: '2026-04-25'
-  provider: gemini
-  capability: Subsea Fluid Dynamics Native Extension
-  engineering_domains:
-  - subsea
-  impact: medium
-  source: https://cloud.google.com/gemini/subsea-cfd
-- date: '2026-04-20'
-  provider: claude
-  capability: Seismic Data Interpretation Toolkit
-  engineering_domains:
-  - drilling
-  - reservoir
-  impact: low
-  source: https://www.anthropic.com/news/engineering-data-toolkit
-- date: '2026-04-16'
-  provider: claude
-  capability: Opus 4.7 advanced software engineering & enhanced vision
-  engineering_domains:
-  - structural
-  - subsea
-  impact: high
-  source: https://anthropic.com
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: false
-  signals_added: 0
-  signals_pruned: 0
-  carry_forward: true
-  source_verified: false
+  parse_success: true
+  signals_added: 1
+  signals_pruned: 1
+  carry_forward: false
+  source_verified: true

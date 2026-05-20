@@ -29,7 +29,7 @@
 - [Codex sandbox model](feedback_codex_sandbox_write_blocked.md) — sandbox blocks fs writes AND shell exec; fallback via js_repl + GH connector. See also: codex_sandbox_no_execution, codex_sandbox_fallback_paths topic files.
 - [Data-format guidelines](data_format_guidelines.md) — default YAML for agent-facing structured data; JSON only when machine-consumed
 - [Cross-machine execution](feedback_cross_machine_execution.md) — per-machine tasks via shared git repo, not SSH/rsync
-- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate
+- [Plugin cache ≠ repo tree](feedback_plugin_cache_not_repo_tracked.md) — `gsd:`/`sparc:`/`workflows:` skills under `~/.claude/plugins/cache/`; `git mv` cannot operate *stale: 2026-05-20*
 - [Plan past-tense drift](feedback_plan_past_tense_artifact_claims.md) — plans describing proposed work as committed artifacts trick reviewers; future tense only
 - [Multi-agent commit serialization](feedback_multi_agent_commit_serialization.md) — parallel agents race on git lock; serialize commits OR use worktrees. Umbrella covering: merge-race silent revert, retry-loop reset hazard, git switch --discard-changes, autostash replay, parallel-session staged-change bleedthrough (see topic files; pre-commit `git diff --cached --name-only` is the universal mitigation)
 - [Mock vs live invocation](feedback_mock_vs_live_invocation_divergence.md) — for external-CLI fixes, mocks pass what live CLIs reject; always live-repro before close
@@ -92,12 +92,12 @@
 - [Parallel branch checkout reverts working dir](feedback_parallel_branch_checkout_working_dir.md) — parallel `git checkout`-ing feature branch reverts your dir; verify reflog + `git branch --show-current`
 - [Silent verdict-flip defect class](feedback_silent_verdict_flip_defect_class.md) — 2 impls citing same standard but different sections/editions return OPPOSITE verdicts at margin; need section+edition not just code_id
 - [r3-inline loop-break pattern](feedback_r3_inline_loop_break_pattern.md) — r1/r2 surface DIFFERENT defects each round → apply r3 main-session inline patches; do NOT dispatch r3 review
-- [Skill-content scanner docs tension](feedback_skill_content_scanner_docs_tension.md) — ops-doc skills trip credential-scanner on `~/.hermes/.env`, `curl ${TOKEN}`; use `${HERMES_HOME}/.env` placeholder
+- [Skill-content scanner docs tension](feedback_skill_content_scanner_docs_tension.md) — ops-doc skills trip credential-scanner on `~/.hermes/.env`, `curl ${TOKEN}`; use `${HERMES_HOME}/.env` placeholder *stale: 2026-05-20*
 - [N-night blocker → replan](feedback_n_night_blocker_promote_to_replan.md) — 3+ nightly-batch comments with same root-cause = halt polling, surface design-replan. #2403 (6 nights)
 - [importlib + @dataclass needs sys.modules](feedback_importlib_dataclass_sys_modules.md) — kebab-case scripts via spec_from_file_location must register in sys.modules BEFORE exec_module for @dataclass
 - [Dispatch local-marker rationalization](feedback_dispatch_local_marker_rationalization.md) — dispatch lanes can write `.planning/plan-approved/<n>.md` rationalizing user instruction; forbid markers AND label
 - [Service-provider data routing](feedback_service_provider_data_routing.md) — 6-row matrix: vendor brochures→off-repo, SEC/conf-papers/regulator→public wiki. Codified 2026-05-14; #2482
-- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4
+- [Codex bootstrap untracked sed origin](feedback_codex_bootstrap_untracked_sed_origin.md) — broken `~/.codex/AGENTS.md` came from one-off `sed s/claude/Codex/g`, not committed script; symlink-to-runtime fix per #2719 Phase 4 *stale: 2026-05-20*
 - [Reviewer dispatch refetch live body](feedback_reviewer_dispatch_refetch_live_body.md) — never reuse cached `/tmp/<prompt>.txt`; refetch live issue/plan body before each review dispatch (cost: Gemini MAJOR rediscovered already-fixed defects on stale input)
 - [RCA conflated SSH PATH vs subprocess PATH](feedback_rca_conflated_ssh_vs_subprocess_path.md) — for "executable not found" in daemon-spawned subprocesses, read `/proc/<pid>/environ` not `echo $PATH`; #2712 closed as can't-repro
 - [Runtime base64 blocks binary roundtrip](feedback_runtime_base64_blocks_binary_roundtrip.md) — canvas.toDataURL in JS tool results returns `[BLOCKED: Base64 encoded data]`; use download path, save_to_disk, or skip-to-written-description for binary capture

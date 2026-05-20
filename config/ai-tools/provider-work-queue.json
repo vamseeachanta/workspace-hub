@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-20T01:20:08.493593Z",
+  "generated_at": "2026-05-20T05:20:11.135248Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-20T01:20:06.572647Z",
+  "scorecard_generated_at": "2026-05-20T05:20:09.264796Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1402,9 +1402,10 @@
             "priority:high",
             "cat:data-pipeline",
             "cat:document-intelligence",
-            "domain:knowledge"
+            "domain:knowledge",
+            "status:needs-plan"
           ],
-          "updatedAt": "2026-05-19T23:59:17Z",
+          "updatedAt": "2026-05-20T02:22:20Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1603,7 +1604,7 @@
             "machine:ace-linux-1",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-19T23:55:44Z",
+          "updatedAt": "2026-05-20T03:25:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1712,7 +1713,7 @@
             "domain:visualization",
             "domain:naval-architecture"
           ],
-          "updatedAt": "2026-05-19T23:50:50Z",
+          "updatedAt": "2026-05-20T02:26:43Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4076,25 +4077,6 @@
           ]
         },
         {
-          "number": 2353,
-          "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2353",
-          "labels": [
-            "enhancement"
-          ],
-          "updatedAt": "2026-05-18T19:43:17Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2449,
           "title": "chore(ci-health): audit .planning/templates/ orphan refs from WRK\u2192GSD migration",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2449",
@@ -4207,7 +4189,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-19T13:19:03Z",
+          "updatedAt": "2026-05-20T04:00:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4304,6 +4286,23 @@
           "work_type": [
             "research",
             "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2761,
+          "title": "Explore 3-night Broken Bow-style family getaway alternatives near west Houston",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2761",
+          "labels": [],
+          "updatedAt": "2026-05-20T03:15:34Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "strategy"
           ]
         }
@@ -4925,7 +4924,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-19T04:00:21Z",
+          "updatedAt": "2026-05-20T04:00:32Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5012,7 +5011,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-19T04:00:21Z",
+          "updatedAt": "2026-05-20T04:00:32Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",

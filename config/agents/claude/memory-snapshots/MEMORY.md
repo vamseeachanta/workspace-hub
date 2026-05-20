@@ -7,6 +7,8 @@
 - [All-provider memory should flow through Hermes](feedback_memory_aspire_to_hermes_level.md) — Hermes is the canonical memory backend; per-provider stores (Claude auto-memory, Codex state, Gemini session) should consolidate to Hermes rather than evolve in parallel. Collapse cross-provider silos (Claude/Codex/Gemini learnings unified, not siloed); aim for Hermes-bar on capture / retrieval / cross-machine + cross-provider sync (2026-05-17)
 - [No local task IDs](feedback_no_reserved_wrk_ids.md) — GitHub issues only
 - [Check parallel work](feedback_check_parallel_work.md) — scan in-flight sessions first
+- [Hermes session grep: journal vs active](feedback_hermes_session_grep_journal_vs_active.md) — `grep -R <path> ~/.hermes/sessions` hits ≠ active use; discriminator is session_id ∩ running pgrep workers, not file existence
+- [Pre-completion cleanup audit gate](feedback_pre_completion_cleanup_audit_gate.md) — run audit skill before "all done"; CLEAN/EXPECTED/UNEXPECTED bucket verdict; never relay completion with UNEXPECTED residue. Hermes flow-through tracked at [#2750](https://github.com/vamseeachanta/workspace-hub/issues/2750)
 - [Discovery-first on stale plan-approved](feedback_discovery_first_on_stale_plan_approved.md) — inventory codebase before writing; prior commits may have completed scope. llm-wiki #41/#42 both validated
 - [Comment on issues](feedback_gh_issue_comment.md) — post summary on every issue
 - [Inline gh issue URLs](feedback_inline_gh_issue_url.md) — render `#NNNN` as Markdown hyperlink in chat (not bare token)
