@@ -11,11 +11,11 @@ wikis:
     archived_raw_remotes:
       - vamseeachanta/acma-projects        # frozen per #2745 (after #2745 executes)
     local_working_clone: /mnt/local-analysis/llm-wiki-acma/
-    secondary_clone: /mnt/ace/llm-wiki-acma/   # legacy NTFS — to be deleted in T8 of #2746
+    # secondary_clone: removed in T8 2026-05-20 (legacy NTFS clone deleted; ext4 clone + GitHub remote are durable)
     posture: client-private
     status: bootstrapped
     instantiated_at: 2026-05-18
-    notes: "Instance #1. Firewall files (LICENSE/.gitignore/.claude/CLAUDE.md/REDACTION-POSTURE.md) + post-rename text fixes landed at llm-wiki-acma commit 1d813086a (2026-05-20). NTFS secondary clone deletion pending T8."
+    notes: "Instance #1. Firewall files (LICENSE/.gitignore/.claude/CLAUDE.md/REDACTION-POSTURE.md) + post-rename text fixes landed at llm-wiki-acma commit 1d813086a (2026-05-20). NTFS secondary clone deleted in T8 of #2746 (2026-05-20)."
 
   - short_name: rock-oil-field
     repo: vamseeachanta/llm-wiki-rock-oil-field
