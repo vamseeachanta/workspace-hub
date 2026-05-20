@@ -1,10 +1,12 @@
-# Session Handoff — /mnt/local-analysis sibling clones (assetutilities + digitalmodel), deletion deferred pending #2758
+# Session Handoff — /mnt/local-analysis sibling clones (assetutilities + digitalmodel), deletion deferred pending #2731 (primary) / #2758 / #2754
+
+> **Note on filename:** filename slug retains `pending-2758` for chronological grep continuity, but the primary blocker for the deletion question is actually [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) — see "Dependency" section. Initial draft cited #2758 only; corrected before push after spotting `docs/plans/2026-05-19-issue-2731-data-repo-location-contract.md` in the post-commit status.
 
 - **Timestamp:** 2026-05-19T21:30:00-05:00
 - **Host:** ace-linux-1
 - **Working repo for handoff:** `/mnt/local-analysis/workspace-hub`
 - **Branch:** `main`
-- **Purpose:** durable closeout after merging one stray Codex branch into `assetutilities/main`, and pausing the deletion question on `/mnt/local-analysis/{assetutilities,digitalmodel}` until the agent-runtime folder-architecture contract ([#2758](https://github.com/vamseeachanta/workspace-hub/issues/2758)) lands.
+- **Purpose:** durable closeout after merging one stray Codex branch into `assetutilities/main`, and pausing the deletion question on `/mnt/local-analysis/{assetutilities,digitalmodel}` until the data/repo-location contract ([#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731)) and per-machine placement issue ([#2754](https://github.com/vamseeachanta/workspace-hub/issues/2754) for ace-linux-1) land.
 
 ## Session arc
 
@@ -63,10 +65,22 @@ So nothing in the ecosystem is currently bound to these specific paths — the d
 
 ## Dependency
 
-- **Issue:** [#2758](https://github.com/vamseeachanta/workspace-hub/issues/2758) — agent runtime folder-architecture contract.
-- **Plan (in-flight):** `docs/plans/2026-05-19-issue-2758-agent-runtime-folder-architecture-contract.md` (visible in session-start status; not opened this session).
-- **Adjacent skill ref:** `.claude/skills/workspace-hub/repo-structure/references/agent-runtime-authority-map.md` (untracked at session start; concurrent work).
-- **Resolution gate:** `status:plan-approved` on #2758 (and any clarifying user instruction on layout).
+Three related issues; **#2731 is the primary blocker** for this specific deletion question:
+
+- **[#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) — Data/repo location contract for llm-wiki promotion** (PRIMARY)
+  - Plan: `docs/plans/2026-05-19-issue-2731-data-repo-location-contract.md` (status: draft, T3).
+  - Plan summary excerpt: *"no existing single ledger will define the canonical checkout style for active repos under `/mnt/local-analysis`"*. This issue decides the canonical-checkout-style verdict — i.e., directly whether `/mnt/local-analysis/{assetutilities,digitalmodel}` are the canonical clones.
+  - Resolution gate for this handoff: `status:plan-approved` on #2731.
+
+- **[#2758](https://github.com/vamseeachanta/workspace-hub/issues/2758) — Agent/runtime folder architecture contract** (vocabulary)
+  - Plan: `docs/plans/2026-05-19-issue-2758-agent-runtime-folder-architecture-contract.md` (status: draft, T3).
+  - Plan explicitly scopes itself: *"no repo moves in this issue"*. Provides the schema (canonical source vs. generated runtime vs. user-home vs. sibling tier-1 repo vs. workspace-hub subfolder) that #2731 and the per-machine issues consume. Not the deletion decision itself, but relevant.
+
+- **[#2754](https://github.com/vamseeachanta/workspace-hub/issues/2754) — Per-machine repo placement: ace-linux-1** (this host)
+  - Listed in #2758 plan as one of four machine-specific consumers (#2754 ace-linux-1, #2755 ace-linux-2, #2756 licensed-win-1, #2757 licensed-win-2).
+  - This is where the final "what's on ace-linux-1 at `/mnt/local-analysis/`" answer lands. If #2754 says "no `/mnt/local-analysis/` sibling clones on this host" → delete; if it says "tier-1 sibling clones at `/mnt/local-analysis/<repo>/`" → keep.
+
+- **Adjacent skill ref:** `.claude/skills/workspace-hub/repo-structure/references/agent-runtime-authority-map.md` (untracked at session start; concurrent work; supports #2758 schema).
 
 ## Resume hooks (next session pickup)
 
