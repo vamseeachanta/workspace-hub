@@ -93,3 +93,5 @@ shown:
     tips: [cc-sandbox, cc-add-dir]
   - date: 2026-05-18
     tips: [eco-compound, cc-loop]
+  - date: 2026-05-20
+    tips: [cc-schedule, cc-diff]

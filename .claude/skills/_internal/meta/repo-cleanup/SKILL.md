@@ -52,6 +52,12 @@ After CI/test repair work is merged, run a repo-scoped evidence sweep before dec
 
 See `references/ci-readiness-closeout-hygiene.md` for the detailed multi-repo checklist and pitfalls.
 
+## Repository Relocation Pattern
+
+When moving whole git repositories between workspace roots or storage mounts, preflight source/destination state, preserve any preexisting destination by timestamped rename, and verify destination git identity before deleting the source. For large or timeout-prone trees, resume with tracked `rsync -a --delete`, compare source/destination `rev-parse HEAD`, then remove the source only after verification.
+
+See `references/repo-relocation-preserve-and-verify.md` for the exact move/resume checklist and reporting format.
+
 ## Related Skills
 
 - [module-based-refactor](../module-based-refactor/SKILL.md) - For restructuring after cleanup

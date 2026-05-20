@@ -82,6 +82,19 @@ When the user asks to locate an existing report/output artifact from prior work:
 - [ ] For generated HTML reports, capture the report path, raw URL, owning issue, size, and SHA; this is enough for a fresh follow-up prompt to resume without regenerating the artifact.
 - [ ] Do not retry the same missing local path repeatedly. After one missing-path failure, inventory available repo roots and switch to session/remote verification.
 
+### 4C. Nested Checkout Relocation / Duplicate Removal Verification
+
+When a worker claims to have moved, removed, or preserved a nested Git checkout under a parent repo:
+
+- [ ] Verify source and destination roles independently: remotes, branch, HEAD SHA, upstream ahead/behind, and dirty status.
+- [ ] If deleting a duplicate checkout, require matching canonical remote and HEAD SHA, clean status, and `0 0` ahead/behind unless the plan explicitly preserves divergent work.
+- [ ] If preserving untracked/dirty artifacts from a nested checkout, copy only intended relative paths and verify byte-identical copies (`cmp`/checksum) before deletion.
+- [ ] Before `rm -rf` or `mv`, scan `/proc/*/cwd` for processes under the source path; identify and clear stale cwd holders, then repeat the scan.
+- [ ] After the move/delete, re-run destination clean/upstream checks and parent-repo path status; do not accept worker self-report alone.
+- [ ] For delegated default-branch pushes, expect some harnesses to require explicit scoped authorization; the orchestrator may push directly only after verifying the exact commit and files.
+
+Reference: `references/nested-checkout-relocation-verification.md`.
+
 ### 5. No Unplanned Side Effects
 
 - [ ] No unrelated files were modified (check `git diff --stat`)
@@ -160,6 +173,7 @@ For overnight batch runs with multiple terminals:
 
 - Generated artifact schema drift recovery: `references/generated-artifact-schema-drift.md`
 - Historical HTML/report location recovery: `references/historical-html-report-location.md`
+- Nested checkout relocation / duplicate removal verification: `references/nested-checkout-relocation-verification.md`
 - Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
 - Plan approval gate: `.claude/hooks/plan-approval-gate.sh`
 - Cross-review policy: `.claude/skills/coordination/cross-review-policy/SKILL.md`

@@ -77,6 +77,8 @@ Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pse
 
 For engineering-calculation or parametric chart plans, also run the checks in `references/engineering-parametric-chart-plan-review.md`: freeze local vs reported coordinate frames before formulas, explicitly classify off-grid UI defaults versus engineering sweep rows, ensure representative chart traces do not hide requested sweep coverage, and require tests for frame transforms/sign conventions.
 
+When review finds unresolved domain decisions, use `references/domain-decision-blocked-plan-review.md` to keep the plan blocked-draft/needs-decision, post a concise decision checklist, and avoid prematurely applying approval-ready labels.
+
 For repo/data location contract plans, also run the checks in `references/repo-location-contract-planning.md`: keep repo checkout placement separate from raw/bulk/private/public data placement, prefer adjacent sibling checkouts under `/mnt/local-analysis/<repo>` with `workspace-hub` as the control plane, enumerate the live checkout set empirically, and represent any moves as future reviewable transactions rather than performing them during planning.
 
 For per-machine repo placement plans, also apply `references/per-machine-repo-placement-outcome-contract.md`: the first machine issue in a sequence must leave a reusable pattern for consistent tier-1 repo folder structure, primary/reference checkout decisions, and repo harness/file ecosystem handling through one repo-tracked authority rather than creating machine-specific duplicate conventions.
@@ -108,6 +110,10 @@ Execution discipline for delegated agents:
 
 Route the plan to 2+ AI providers for review. Each gives: APPROVE | MINOR | MAJOR.
 If any MAJOR: revise and re-review.
+
+When MAJOR findings identify unresolved user/domain decisions rather than pure plan-writing defects, do **not** force the plan into `status:plan-review` or present it as approval-ready. Patch the plan/header/index to a conservative blocked-draft or needs-decision state, add a short GitHub checkpoint comment listing the exact decisions required, and keep implementation stopped. Only after the user supplies the decisions should you revise the plan, rerun adversarial review, and then surface it for approval.
+
+For batch review closeout where a preserved task list says to move labels but fresh reviews return MAJOR, follow `references/batch-major-review-closeout.md`: post blocking summaries, keep labels conservative, update todos to reflect that `status:plan-review` is intentionally withheld, and patch only issue-scoped README rows to avoid collateral drift.
 
 Post artifacts to `scripts/review/results/YYYY-MM-DD-plan-NNN-<agent>.md`.
 

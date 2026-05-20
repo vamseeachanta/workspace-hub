@@ -57,6 +57,10 @@ For approved Phase 1 repo-structure issues, use the packaged pattern in [`refere
 
 When work touches provider identity/config folders, generated runtime files, local home-directory symlinks, memory bridges, or skill roots, classify each path by authority before editing. Use [`references/agent-runtime-authority-map.md`](references/agent-runtime-authority-map.md) for the canonical source vs generated runtime vs local symlink vs bridge output workflow and issue-body shape for recurring human/agent folder-confusion reports.
 
+## Repo placement and relocation audit
+
+When moving nested checkouts out of a parent repo or preparing machine-placement decisions for tier-1 repos, follow [`references/repo-placement-and-relocation-audit.md`](references/repo-placement-and-relocation-audit.md): classify each checkout first, move whole repos intact, verify `nested=gone`/`sibling=git`, and audit stale nested-path references before creating follow-on placement issues.
+
 ## Red Flags
 
 These phrases signal you are about to violate the Iron Law:
