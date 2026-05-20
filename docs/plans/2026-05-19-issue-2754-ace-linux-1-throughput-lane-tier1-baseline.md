@@ -145,6 +145,8 @@ Distinct sources consulted: issue body/comments, live `gh issue view` output, li
 
 A repo-tracked ace-linux-1 workstation baseline will extend the existing workstation registry to define the machine's throughput role, required/on-demand tier-1 repos, primary/reference checkout roles, `/mnt/ace` constraint for `worldenergydata`, readiness gating, and first approved dispatch target without moving, cloning, deleting, or sync-rewriting repos inline.
 
+Completion note: after this story lands, ace-linux-1 must provide the first concrete, repeatable pattern for consistent tier-1 repo folder structure, methodical repo placement decisions, and handling of the repo harness/file ecosystem through a single repo-tracked authority. The result should be reusable for ace-linux-2, licensed-win-1, licensed-win-2, and later machines rather than becoming another machine-specific convention.
+
 ---
 
 ## Scope Boundaries
@@ -155,6 +157,7 @@ A repo-tracked ace-linux-1 workstation baseline will extend the existing worksta
 - Record required tier-1 repos for ace-linux-1: `workspace-hub`, `digitalmodel`, `assetutilities`, `llm-wiki`, `worldenergydata`.
 - Record optional/on-demand tier-1 repos for ace-linux-1: `assethold`, `aceengineer-website`, `aceengineer-strategy`.
 - Record that `worldenergydata` is required on ace-linux-1 because it needs `/mnt/ace` data access unless a separate approved data-access design says otherwise.
+- Make ace-linux-1 the first reusable machine-placement pattern for consistent tier-1 repo folder structure and repo harness/file ecosystem handling across subsequent machines.
 - Add read-only validation so missing or misplaced required repos are surfaced as readiness evidence.
 - Link the first useful approved dispatch target to [#2738](https://github.com/vamseeachanta/workspace-hub/issues/2738).
 
@@ -253,6 +256,7 @@ function integrate_with_readiness(host):
 - [ ] Tests pass: `uv run pytest tests/workstations/test_check_tier1_repo_baseline.py tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py -v`.
 - [ ] Legal/security scan passes: `scripts/legal/legal-sanity-scan.sh`.
 - [ ] The first approved dispatch target is linked as [#2738](https://github.com/vamseeachanta/workspace-hub/issues/2738), and the issue comment records the concrete artifact produced once dispatch is attempted after readiness passes.
+- [ ] Completion leaves a reusable machine-placement pattern for subsequent workstation issues: consistent tier-1 repo folder structure, methodical primary/reference repo placement decisions, and repo harness/file ecosystem handling all routed through the single workstation registry authority.
 - [ ] No repo is moved, deleted, cloned, renamed, or sync-rewritten by this issue.
 - [ ] Plan review artifacts are saved under `scripts/review/results/` before this issue moves to `status:plan-review`.
 
