@@ -1,10 +1,10 @@
 # Plan for #2754: throughput(workstations): activate ace-linux-1 provider/machine lane
 
-> **Status:** draft — r3 Codex adversarial review returned MAJOR; patched locally and awaiting r4 re-review
+> **Status:** plan-review — r4 adversarial review complete (Claude MINOR bookkeeping-only, Codex MINOR bookkeeping-only, Gemini APPROVE); awaiting USER approval before any implementation
 > **Complexity:** T2
 > **Date:** 2026-05-19
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2754
-> **Review artifacts:** scripts/review/results/2026-05-19-plan-2754-claude.md | scripts/review/results/2026-05-19-plan-2754-codex.md | scripts/review/results/2026-05-19-plan-2754-gemini.md | scripts/review/results/2026-05-20-plan-2754-codex-r2.md | scripts/review/results/2026-05-20-plan-2754-gemini-r2.md | scripts/review/results/2026-05-20-plan-2754-codex-r3.md | scripts/review/results/2026-05-20-plan-2754-gemini-r3.md
+> **Review artifacts:** scripts/review/results/2026-05-19-plan-2754-claude.md | scripts/review/results/2026-05-19-plan-2754-codex.md | scripts/review/results/2026-05-19-plan-2754-gemini.md | scripts/review/results/2026-05-20-plan-2754-codex-r2.md | scripts/review/results/2026-05-20-plan-2754-gemini-r2.md | scripts/review/results/2026-05-20-plan-2754-codex-r3.md | scripts/review/results/2026-05-20-plan-2754-gemini-r3.md | scripts/review/results/2026-05-20-plan-2754-claude-r4.md | scripts/review/results/2026-05-20-plan-2754-codex-r4.md | scripts/review/results/2026-05-20-plan-2754-gemini-r4.md
 
 ---
 
@@ -142,6 +142,9 @@ Distinct sources consulted: issue body/comments, live `gh issue view` output, li
 | Plan re-review — Gemini r2 | `scripts/review/results/2026-05-20-plan-2754-gemini-r2.md` |
 | Plan re-review — Codex r3 | `scripts/review/results/2026-05-20-plan-2754-codex-r3.md` |
 | Plan re-review — Gemini r3 | `scripts/review/results/2026-05-20-plan-2754-gemini-r3.md` |
+| Plan re-review — Claude r4 | `scripts/review/results/2026-05-20-plan-2754-claude-r4.md` |
+| Plan re-review — Codex r4 | `scripts/review/results/2026-05-20-plan-2754-codex-r4.md` |
+| Plan re-review — Gemini r4 | `scripts/review/results/2026-05-20-plan-2754-gemini-r4.md` |
 
 ---
 
@@ -301,8 +304,11 @@ function integrate_with_readiness(host):
 | Gemini r2 | FAILED | `scripts/review/results/2026-05-20-plan-2754-gemini-r2.md` records provider trust failure (`GEMINI_CLI_TRUST_WORKSPACE`/trusted-folder issue); rerun was required. |
 | Codex r3 | MAJOR | Remaining blocker: arbitrary local extra roots under `storage.local` could still satisfy required repos; review bookkeeping was stale. |
 | Gemini r3 | APPROVE | Approved the r3 blocker fixes; asked an implementation question about whether broad `repos` is permanent or dynamically projected. |
+| Claude r4 | MINOR | Functional blockers resolved; only stale review bookkeeping remained and is addressed by this update. |
+| Codex r4 | MINOR | Functional blockers resolved; only stale review bookkeeping remained and is addressed by this update. |
+| Gemini r4 | APPROVE | Approved the r4 blocker fixes. |
 
-**Overall result:** MAJOR — this draft is not approval-ready. The r3 Codex corrections below have been applied locally and require r4 re-review before `status:plan-review`.
+**Overall result:** MINOR, resolved in-place by final bookkeeping update — approval-ready for `status:plan-review`. This does **not** authorize implementation; user approval is still required before applying `status:plan-approved`.
 
 Revisions made based on review:
 - Replaced the non-existent `config/machines/telegram-hermes-machines.yaml` authority with `config/workstations/registry.yaml`.
