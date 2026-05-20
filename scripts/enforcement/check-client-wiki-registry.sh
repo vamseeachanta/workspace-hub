@@ -16,7 +16,10 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+# Anchor REPO_ROOT to the script's own location (not the caller's cwd) so the
+# env-override path works even when invoked from outside the repo (e.g., /tmp).
+SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(git -C "$SELF_DIR" rev-parse --show-toplevel 2>/dev/null || echo "$SELF_DIR")"
 # Registry path is overridable for tests; defaults to canonical location.
 REGISTRY="${REGISTRY_PATH:-${REPO_ROOT}/config/client-wikis.yml}"
 
