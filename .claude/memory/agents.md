@@ -6,23 +6,22 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-05-19)
+## Synced from Hermes Memory (2026-05-20)
 
 ### Environment Facts
 
 - `claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
-- Multi-machine control-surface baseline: Telegram logged in across 5 machines; Hermes installed on ace-linux-1, ace-linux-2, licensed-win-1, licensed-win-2. User wants live machine reachability first, then machine data/program status, then next steps before triggering runs. ace-linux-2 is SSH-reachable from ace-linux-1 and has OpenFOAM ESI v2312
-- Workspace-hub tier-1 repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, aceengineer-strategy. User prefers clickable GitHub issue links grounded by live gh issue view in repo-sync/closeout reports; exit closeout uses workspace-hub/comprehensive-learning reference exit-handoff-closeout.md. aceengineer-strategy is record for named GTM prospects; generic collateral belongs in appropriate tier-1 repos. Hermes SOUL canonical path: /mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md, symlinked from ~/.hermes/SOUL.md.
-- Workspace-hub data-governance planning should model AI-agent data routing with distinct levels: raw-data, readable-raw-data, llm-wiki-private, and llm-wiki-public. Private/client raw or readable data cannot route directly into public llm-wiki; sanitized derivatives require explicit promotion gates and source-class/citation separation.
-- Workspace-hub data/execution/report architecture planning treats the three layers as interrelated but intentionally separable for dispatch: separate layer issues/plans keep work moving while the parent architecture issue preserves cross-layer contracts.
-- Workspace-hub canonical execution method is parallel-first gated execution: classify non-trivial work as single-lane, parallel-readonly, or parallel-worktree before starting; implementation still requires plan approval, TDD, isolated write lanes, orchestrator verification, and serialized commit/push/closeout.
+- Multi-machine control-surface baseline: Telegram logged in across 5 machines; Hermes installed on ace-linux-1, ace-linux-2, licensed-win-1, licensed-win-2. User wants live reachability first, then machine data/program status, then next steps before runs. ace-linux-2 is SSH-reachable from ace-linux-1 and has OpenFOAM ESI v2312.
+- Workspace-hub tier-1 repos: workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold, aceengineer-website, aceengineer-strategy. Treat `/mnt/local-analysis/<tier-1-repo>` sibling checkouts as potentially legitimate working copies, not disposable duplicates; classify role/remote/dirty state before cleanup, sync, move, or delete. User prefers clickable GitHub issue links grounded by live `gh issue view` in reports. aceengineer-strategy stores named GTM prospects; generic collateral belongs in tier-1 repos. Hermes SOUL canonical path: /mnt/local-analysis/workspace-hub/config/agents/hermes/SOUL.md, symlinked from ~/.hermes/SOUL.md.
+- Workspace-hub data-governance planning uses levels: raw-data, readable-raw-data, llm-wiki-private, llm-wiki-public. Private/client raw/readable data cannot route directly into public llm-wiki; sanitized derivatives require explicit promotion gates and source-class/citation separation.
+- Workspace-hub data/execution/report architecture layers are interrelated but separable for dispatch; child plans keep work moving while parent architecture preserves cross-layer contracts.
+- Workspace-hub canonical execution method is parallel-first gated execution: classify non-trivial work as single-lane, parallel-readonly, or parallel-worktree; implementation still requires plan approval, TDD, isolated write lanes, orchestrator verification, serialized commit/push/closeout.
+- Repo placement changes under `/mnt/local-analysis` require GitHub repo-location contract issues/plans, not ad-hoc moves. Verify filesystem before coverage claims. `worldenergydata` needs ace-linux-1 `/mnt/ace` data access unless an explicit data-access design says otherwise.
 
 ### User Profile
 
-- User requires zero-waste AI spend: consume weekly provider credits on useful approved work; prefers Tier-1 Kanban boards with provider/machine routing, decision lanes, hover summaries, and approve actions. In marine/offshore force reviews, user expects individual components and resultants compared side-by-side using existing basecase assumptions.
-- User wants llm-wiki maintained on a weekly cadence as a code-development leverage source: review current LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues that keep the wiki useful for moving engineering work forward.
-- User expects active post-session learning as a deliverable: after non-trivial sessions or explicit review requests, patch loaded/governing class-level skills first, prefer concise references/ support files over one-off narrow skills, and treat “nothing to save” as rare rather than default.
-- User expects travel lodging recommendations to be booking-ready and evidence-grounded: verify live availability/pricing, kitchen details, and that requested views are visible from the booked unit/deck/hot tub/window rather than only from generic property marketing.
+- User requires zero-waste AI spend: consume provider credits on useful approved work and optimize throughput across machines/providers. Workstation planning should focus on execution throughput; repo placement/interactions, memory, skills, artifacts, output formats, and file structure are canonical infrastructure. In marine/offshore force reviews, user expects component/resultant comparisons side-by-side using existing basecase assumptions, and prefers GitHub issue comments as the correction surface for calculation clarification loops.
+- User wants llm-wiki maintained weekly as code-development leverage: review current LLM concepts, assess repo architecture/content gaps, and open actionable GitHub issues. User expects active post-session learning after non-trivial sessions: patch loaded/governing skills first and treat “nothing to save” as rare. User expects travel lodging recommendations to be booking-ready and evidence-grounded; family getaways often depart west Houston/Katy for 2 adults + 10-year-old, favoring secluded wooded cabins with private hot tubs, hiking/outdoors, possible water nearby, and dog-friendly options when feasible.
 
 
 <!-- BRIDGE:END -->
@@ -52,7 +51,7 @@ Context parity = compute parity. Zero waste everywhere.
 - **ace-linux-1 control surface**: keep user approvals, launch decisions, GitHub mutations, and cross-lane reconciliation on `ace-linux-1` unless explicit failover is chosen.
 - **Overnight batch**: 3 self-contained prompts, one per terminal, zero git contention.
   Always include a git contention avoidance map.
-- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`. *verified: 2026-05-20*
+- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`.
 - **Adversarial review**: BOTH stages — plan review AND code/artifact review.
   Minimum: Claude + Codex + Gemini all review.
 - **Context parity**: Corrections made in one agent must propagate to all others.
