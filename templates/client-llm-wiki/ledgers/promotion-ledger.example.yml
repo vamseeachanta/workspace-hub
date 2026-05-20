@@ -1,0 +1,31 @@
+# Example only. Copy to a dated ledger file before use.
+ledger_version: 0.1
+client: <CLIENT_SHORT_NAME>
+entries:
+  - source_id: <CLIENT_SHORT_NAME_UPPER>-SOURCE-0001
+    source_path: /mnt/ace/<CLIENT_RAW_ROOT>/<project>/<source-file>
+    source_class: raw-data
+    readable_derivative_path: null
+    private_wiki_page: null
+    extraction:
+      method: null
+      tool_version: null
+      extracted_at: null
+    confidence:
+      raw_source_presence: 0.0
+      readability_or_ocr_quality: 0.0
+      extraction_completeness: 0.0
+      metadata_completeness: 0.0
+      citation_quality: 0.0
+      privacy_redaction_classification: 0.0
+      engineering_domain_confidence: 0.0
+      report_readiness: 0.0
+      overall: 0.0
+    promotion:
+      status: not_started
+      private_wiki_allowed: false
+      public_llm_wiki_allowed: false
+      rationale: "Initial placeholder; not reviewed."
+    revision_trigger:
+      revisit_when_models_improve: true
+      notes: null

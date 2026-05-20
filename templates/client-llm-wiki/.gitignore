@@ -1,0 +1,39 @@
+# =============================================================================
+# Client private LLM wiki — gitignore
+# Blocks: raw drops, private extraction caches, engineering binaries,
+#         and credentials. This repo is PROPRIETARY and CONFIDENTIAL.
+# =============================================================================
+
+# --- Raw and private extraction directories -----------------------------------
+# Raw client project drops never belong in this repo. Curated, redacted
+# derivatives go under `sources/` and `pages/` only after a ledger entry.
+raw/
+private/
+
+# --- Engineering binaries -----------------------------------------------------
+# CAD, simulation, and large solver inputs/outputs stay in the local raw-data
+# root (/mnt/ace/<CLIENT_RAW_ROOT>/), not in the private wiki.
+*.dwg
+*.sim
+
+# NOTE: .gitignore CANNOT size-gate files. The plan called for blocking
+# `*.dat` files over 10 MB. Since size-based ignore is not expressible in
+# `.gitignore` syntax, ALL `*.dat` files are blocked by default below.
+# If a small (<10 MB) `.dat` file must be tracked, force-add it explicitly
+# with `git add -f path/to/file.dat` after a ledger entry approves it.
+*.dat
+
+# --- Credential and secret patterns -------------------------------------------
+*.pem
+*.key
+.env
+.env.*
+secrets.*
+*token*
+*credential*
+
+# --- OS / editor noise --------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*~
