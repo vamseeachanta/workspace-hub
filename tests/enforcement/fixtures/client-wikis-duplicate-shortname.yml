@@ -1,0 +1,20 @@
+# Fixture: two entries share the same short_name.
+# Used by test_07_duplicate_shortname_fails.
+# status:planned on both so checker doesn't need GH access to detect the dup.
+registry_version: 0.1
+wikis:
+  - short_name: dup-name
+    repo: vamseeachanta/llm-wiki-dup-name-a
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/dup-name-a/
+    posture: client-private
+    status: planned
+
+  - short_name: dup-name
+    repo: vamseeachanta/llm-wiki-dup-name-b
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/dup-name-b/
+    posture: client-private
+    status: planned

@@ -1,0 +1,12 @@
+# Fixture: happy-path registry — single bootstrapped acma entry verifiable against live GH.
+# Used by test_01_consistent_registry_passes.
+registry_version: 0.1
+wikis:
+  - short_name: acma
+    repo: vamseeachanta/llm-wiki-acma
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/acma-projects/
+    local_working_clone: /mnt/local-analysis/llm-wiki-acma/
+    posture: client-private
+    status: bootstrapped

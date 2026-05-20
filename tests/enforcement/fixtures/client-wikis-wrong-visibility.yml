@@ -1,0 +1,12 @@
+# Fixture: client-private posture pointing at a real PUBLIC GH repo (workspace-hub).
+# Used by test_04_wrong_visibility_fails.
+# Checker should flag visibility mismatch: posture=client-private demands PRIVATE.
+registry_version: 0.1
+wikis:
+  - short_name: wrong-visibility
+    repo: vamseeachanta/workspace-hub
+    visibility: PRIVATE          # asserted PRIVATE, but live GH state is PUBLIC
+    raw_roots:
+      - /mnt/ace/wrong-visibility/
+    posture: client-private
+    status: bootstrapped

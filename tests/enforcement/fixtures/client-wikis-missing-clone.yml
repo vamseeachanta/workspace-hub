@@ -1,0 +1,14 @@
+# Fixture: local_working_clone path is under an EXISTING mount root (/mnt/local-analysis/)
+# but the clone directory itself is absent.
+# Used by test_05_missing_clone_fails.
+# Checker must distinguish "mount root present, clone absent" (fail) vs "mount root absent" (skip).
+registry_version: 0.1
+wikis:
+  - short_name: missing-clone
+    repo: vamseeachanta/llm-wiki-missing-clone
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/missing-clone/
+    local_working_clone: /mnt/local-analysis/nonexistent-clone-fixture/
+    posture: client-private
+    status: bootstrapped

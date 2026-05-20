@@ -1,0 +1,13 @@
+# Fixture: client-private posture with a raw_root that points at the PUBLIC llm-wiki tree.
+# Used by test_08_firewall_guard_fails.
+# Firewall guard MUST prevent a client-private wiki from pulling from the public llm-wiki —
+# the two trees are mutually exclusive by license/posture (MIT+CC-BY-4.0 vs. PRIVATE client work).
+registry_version: 0.1
+wikis:
+  - short_name: firewall-violation
+    repo: vamseeachanta/llm-wiki-firewall-violation
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/local-analysis/llm-wiki/   # PUBLIC wiki path — violation
+    posture: client-private
+    status: planned

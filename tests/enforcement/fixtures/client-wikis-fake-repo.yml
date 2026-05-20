@@ -1,0 +1,12 @@
+# Fixture: bootstrapped entry pointing at a GH repo that does not exist.
+# Used by test_03_fake_gh_repo_fails.
+# status:bootstrapped forces checker to actually `gh repo view` (planned rows skip GH lookup).
+registry_version: 0.1
+wikis:
+  - short_name: fake-repo
+    repo: vamseeachanta/nonexistent-fake-repo-do-not-create
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/fake-repo/
+    posture: client-private
+    status: bootstrapped

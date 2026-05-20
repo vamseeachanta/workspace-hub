@@ -1,0 +1,11 @@
+# Fixture: registry row missing required `repo` field.
+# Used by test_02_missing_repo_field_fails.
+registry_version: 0.1
+wikis:
+  - short_name: missing-repo-row
+    # repo: intentionally omitted to trigger checker error
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/ace/missing-repo-row/
+    posture: client-private
+    status: planned

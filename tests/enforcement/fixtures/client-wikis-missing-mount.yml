@@ -1,0 +1,17 @@
+# Fixture: local_working_clone under a NON-EXISTENT mount root (/mnt/nonexistent-mount-fixture/).
+# Used by test_06_missing_mount_skips.
+# Checker should machine-aware skip clone existence check when mount root is absent
+# (e.g., this machine doesn't have that mount), so test expects exit 0.
+#
+# Uses the real acma GH repo so the GH-lookup step also passes — isolates the
+# behavior under test to the mount-root-absent skip path.
+registry_version: 0.1
+wikis:
+  - short_name: missing-mount
+    repo: vamseeachanta/llm-wiki-acma
+    visibility: PRIVATE
+    raw_roots:
+      - /mnt/nonexistent-mount-fixture/raw/
+    local_working_clone: /mnt/nonexistent-mount-fixture/clone/
+    posture: client-private
+    status: bootstrapped
