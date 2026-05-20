@@ -6,3 +6,9 @@
 {"ts":"2026-05-20T02:42:33Z","event":"stop_signal_captured","session_id":"019e4341-d408-77e0-8462-046a8fff71c9"}
 {"ts":"2026-05-20T02:46:39Z","event":"stop_signal_captured","session_id":"377f1ff1-106c-4371-8c78-e3e20de479c6"}
 {"ts":"2026-05-20T06:39:24Z","event":"stop_signal_captured","session_id":"ef7281c5-0154-4bb1-a5eb-249e584ffd49"}
+{"ts":"2026-05-20T08:39:23Z","event":"session_tool_summary","session_id":"019e4488-ae74-7660-af8f-0fdec1408008","wrk":"none","tool_calls":4,"edits":0,"reads":2}
+{"ts":"2026-05-20T08:39:23Z","event":"stop_signal_captured","session_id":"019e4488-ae74-7660-af8f-0fdec1408008"}
+{"ts":"2026-05-20T08:51:42Z","event":"session_tool_summary","session_id":"019e4494-21a9-7413-b9c1-eeb219732070","wrk":"none","tool_calls":7,"edits":0,"reads":2}
+{"ts":"2026-05-20T08:51:42Z","event":"stop_signal_captured","session_id":"019e4494-21a9-7413-b9c1-eeb219732070"}
+{"ts":"2026-05-20T08:55:56Z","event":"session_tool_summary","session_id":"019e4498-8f66-7a92-816e-c2dbf3b09036","wrk":"none","tool_calls":10,"edits":0,"reads":2}
+{"ts":"2026-05-20T08:55:56Z","event":"stop_signal_captured","session_id":"019e4498-8f66-7a92-816e-c2dbf3b09036"}

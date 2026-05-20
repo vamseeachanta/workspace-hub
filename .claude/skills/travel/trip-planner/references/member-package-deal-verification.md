@@ -14,8 +14,9 @@ Use this reference when the user asks to explore or price Costco Travel, member-
 3. **Distinguish package types.** Hotel/resort packages may have online date-driven pricing; guided-vacation/tour pages may be brochure-style and route to phone quote. Do not generalize one page's behavior to all Costco Travel inventory.
 4. **If the page is phone-quote only, record that as the booking state.** Capture the visible CTA/phone number, valid travel season/date range, package ID if shown, included/excluded items, and which facts remain unknown until quote.
 5. **Separate included land package from airfare.** Many guided vacations list lodging/meals/activities/internal transport but exclude optional add-ons or flights to/from the destination. State this explicitly before comparing to self-built trips.
-6. **Preserve deal math as provisional until checkout/quote.** Digital shop cards, executive rewards, taxes, insurance, add-ons, and airfare may be calculated later. Use “quote required” or “all-in unverified,” not “total cost,” unless the payable amount is visible.
-7. **When browser automation is partial, use a normal logged-in browser session if available.** If the accessible page text or copied UI is the only reliable evidence, quote only what was actually visible and avoid negative claims that the site/tool is categorically unusable.
+6. **When exact vendor pricing is blocked by quote flow, still produce a useful call-prep benchmark.** Use public package/operator examples and current flight/hotel benchmarks to create conservative per-person and family-range estimates, clearly labeled as planning ranges rather than vendor quotes. Rank destinations/packages by first-call priority and include negotiation/quote targets.
+7. **Preserve deal math as provisional until checkout/quote.** Digital shop cards, executive rewards, taxes, insurance, add-ons, and airfare may be calculated later. Use “quote required,” “planning benchmark,” or “all-in unverified,” not “total cost,” unless the payable amount is visible.
+8. **When browser automation is partial, use a normal logged-in browser session if available.** If the accessible page text or copied UI is the only reliable evidence, quote only what was actually visible and avoid negative claims that the site/tool is categorically unusable.
 
 ## Evidence fields to capture in issues
 
@@ -32,6 +33,36 @@ Use this reference when the user asks to explore or price Costco Travel, member-
 | Deal credit | shop card / rewards / promo, with calculation status |
 | Booking confidence | verified online / quote required / lead only |
 ```
+
+## Phone-quote call-prep comment pattern
+
+When the user needs to call Costco/member travel or another quote-only vendor, add a compact issue comment that makes the call actionable:
+
+```markdown
+## Quote-call prep: <vendor / destination set>
+
+### Benchmark ranges, not vendor quotes
+| Option | Public package benchmark | Airfare/hotel assumptions | Family all-in planning range | Confidence |
+|---|---:|---:|---:|---|
+| <destination/package> | <$X–$Y pp> | <$X pp airfare + notes> | <$X–$Y for N travelers> | benchmark / quote required |
+
+### First-call ranking
+1. <best fit> — why it should be priced first
+2. <fallback> — why
+
+### Ask on the call
+- Exact dates/seasons available for <family size>
+- Land-only vs air-inclusive quote
+- Included internal flights/transfers/meals/activities
+- Taxes/fees, cancellation/payment deadlines, travel insurance
+- Shop card / executive reward / promo credit applicability
+- Child pricing/room configuration constraints
+
+### Decision rule
+Book only if the quoted all-in price beats the self-built benchmark by <threshold> or adds enough inclusion/coordination value to justify the premium.
+```
+
+Keep the numbers traceable to cited public pages or clearly labeled assumptions. Do not imply the benchmark is a Costco/member-vendor quote.
 
 ## Costco Travel guided-vacation example
 

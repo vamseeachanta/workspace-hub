@@ -1,10 +1,10 @@
 # Plan for #2754: throughput(workstations): activate ace-linux-1 provider/machine lane
 
-> **Status:** draft — r1 adversarial review returned MAJOR; patched locally and awaiting re-review
+> **Status:** draft — r3 Codex adversarial review returned MAJOR; patched locally and awaiting r4 re-review
 > **Complexity:** T2
 > **Date:** 2026-05-19
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2754
-> **Review artifacts:** scripts/review/results/2026-05-19-plan-2754-claude.md | scripts/review/results/2026-05-19-plan-2754-codex.md | scripts/review/results/2026-05-19-plan-2754-gemini.md
+> **Review artifacts:** scripts/review/results/2026-05-19-plan-2754-claude.md | scripts/review/results/2026-05-19-plan-2754-codex.md | scripts/review/results/2026-05-19-plan-2754-gemini.md | scripts/review/results/2026-05-20-plan-2754-codex-r2.md | scripts/review/results/2026-05-20-plan-2754-gemini-r2.md | scripts/review/results/2026-05-20-plan-2754-codex-r3.md | scripts/review/results/2026-05-20-plan-2754-gemini-r3.md
 
 ---
 
@@ -138,6 +138,10 @@ Distinct sources consulted: issue body/comments, live `gh issue view` output, li
 | Plan review — Claude | `scripts/review/results/2026-05-19-plan-2754-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-05-19-plan-2754-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-05-19-plan-2754-gemini.md` |
+| Plan re-review — Codex r2 | `scripts/review/results/2026-05-20-plan-2754-codex-r2.md` |
+| Plan re-review — Gemini r2 | `scripts/review/results/2026-05-20-plan-2754-gemini-r2.md` |
+| Plan re-review — Codex r3 | `scripts/review/results/2026-05-20-plan-2754-codex-r3.md` |
+| Plan re-review — Gemini r3 | `scripts/review/results/2026-05-20-plan-2754-gemini-r3.md` |
 
 ---
 
@@ -146,6 +150,19 @@ Distinct sources consulted: issue body/comments, live `gh issue view` output, li
 A repo-tracked ace-linux-1 workstation baseline will extend the existing workstation registry to define the machine's throughput role, required/on-demand tier-1 repos, primary/reference checkout roles, `/mnt/ace` constraint for `worldenergydata`, readiness gating, and first approved dispatch target without moving, cloning, deleting, or sync-rewriting repos inline.
 
 Completion note: after this story lands, ace-linux-1 must provide the first concrete, repeatable pattern for consistent tier-1 repo folder structure, methodical repo placement decisions, and handling of the repo harness/file ecosystem through a single repo-tracked authority. The result should be reusable for ace-linux-2, licensed-win-1, licensed-win-2, and later machines rather than becoming another machine-specific convention.
+
+Closeout note: #2754 is not complete merely because the registry baseline and checker land. The implementation must either (a) pass the ace-linux-1 readiness gate and record a concrete first dispatch artifact for the already-approved [#2738](https://github.com/vamseeachanta/workspace-hub/issues/2738), or (b) leave #2754 open with a blocker comment that names the readiness failures preventing dispatch. The plan-review gate may proceed for this implementation contract, but issue closeout requires dispatch proof or explicit blocked-open evidence.
+
+### Registry authority reconciliation
+
+The implementation must keep `config/workstations/registry.yaml` as one authority, but not by adding a disconnected `tier1_baseline` island. The new baseline must reconcile with the existing `machines.dev-primary.repos` and `machines.dev-primary.telegram_hermes.data_access_profile.repos` lists:
+
+- `tier1_baseline.required` and `tier1_baseline.optional` define the tier-1 repo placement contract for this issue.
+- `repos` remains a broad machine-access inventory and may include non-tier-1 repos such as `OGManufacturing`, but every entry must be classified as `tier1_required`, `tier1_optional`, or `non_tier1_machine_access` in documentation or derived validation output.
+- `telegram_hermes.data_access_profile.repos` must be validated as a subset/declared projection of the same machine-access inventory, not a competing repo list.
+- Tests must fail when `tier1_baseline`, `repos`, and `telegram_hermes.data_access_profile.repos` disagree without an explicit classification.
+
+`llm-wiki` must be present in the ace-linux-1 tier-1 baseline even if it is absent from older broad repo lists. `OGManufacturing` must remain classified as non-tier-1 machine/license access unless a separate tier-1 decision issue promotes it.
 
 ---
 
@@ -180,11 +197,15 @@ function load_baseline(registry_path, host):
     require hostname == ace-linux-1
     require repos plus tier1_baseline.required and tier1_baseline.optional are explicit
     require each tier1_baseline repo declares role, expected_path_policy, and dispatch_rationale
+    reconcile tier1_baseline against existing repos and telegram_hermes.data_access_profile.repos
+    fail if any repo appears in one list without explicit classification/projection semantics
     return normalized baseline object from the single workstation registry
 
 function discover_tier1_repos(registry_machine, tier1_repo_names):
     candidate_roots = ordered unique existing directories from:
-        dirname(workspace_root), workspace_root, storage.local, each storage.remote_mount, and user-provided extra roots
+        dirname(workspace_root), workspace_root, and declared machine-local storage.local only
+    explicitly exclude storage.remote_mounts from required-present validation unless a repo is declared remote_reference_only
+    reject all user-provided extra roots for required repo pass/fail decisions unless the exact checkout path is declared in the registry as an approved primary/reference/remote_reference_only path for that repo
     for each candidate root and tier1 repo name:
         probe <root>/<repo> and, when root is workspace_root, nested <workspace_root>/<repo>
         if path exists and is git worktree:
@@ -194,6 +215,7 @@ function discover_tier1_repos(registry_machine, tier1_repo_names):
 function validate_baseline(baseline, discovery, mounts):
     for each required repo:
         fail if no discovered checkout exists
+        fail if the only discovered checkout is on a remote mount or unapproved extra root
         fail if more than one checkout exists and no primary/reference role is declared
         fail if repo has data_mount_required and mount path is missing
     for each optional repo:
@@ -237,7 +259,11 @@ function integrate_with_readiness(host):
 | `test_worldenergydata_requires_mnt_ace` | `worldenergydata` baseline encodes `/mnt/ace` dependency. | Baseline declares `data_mount_required: /mnt/ace`; mount probe missing. | Failure naming `/mnt/ace`. |
 | `test_duplicate_checkout_requires_primary_role_failure` | Duplicate `digitalmodel` / `assetutilities` checkouts are fail-closed unless primary/reference roles are declared. | Discovery has sibling and nested paths with no role declaration. | Failure lists both paths and refuses to choose silently. |
 | `test_declared_primary_reference_duplicates_pass` | Duplicate checkouts become valid only when the registry declares primary/reference roles. | Discovery has sibling and nested paths; registry names one primary and one reference. | Success with observed paths retained in evidence. |
+| `test_registry_repo_lists_reconcile` | `tier1_baseline`, existing `repos`, and `telegram_hermes.data_access_profile.repos` cannot drift into conflicting authorities. | Registry fixture where `llm-wiki` is required but absent from broad lists, and `OGManufacturing` is present without non-tier-1 classification. | Failure names the unclassified/mismatched repo entries and explains expected projection semantics. |
+| `test_required_repo_remote_mount_only_fails` | Required ace-linux-1 repos are not satisfied by ace-linux-2 remote mounts or arbitrary extra roots. | Discovery finds `worldenergydata` only under `/mnt/remote/ace-linux-2/local-analysis/worldenergydata`. | Failure states required repo is remote-only for ace-linux-1. |
+| `test_required_repo_arbitrary_local_extra_root_fails` | A local path under `storage.local` cannot satisfy a required repo unless the exact checkout path is declared in the registry role/path contract. | Discovery finds `worldenergydata` only under `/mnt/local-analysis/tmp/worldenergydata` from an extra root. | Failure states required repo is in an undeclared local extra root. |
 | `test_readonly_checker_does_not_mutate_paths` | Checker never runs clone/move/delete/sync operations. | Fake repos plus monkeypatched dangerous functions (`os.remove`, `shutil.rmtree`, write/open modes) and subprocess allowlist. | Only read-only git/path probes are invoked; destructive calls fail the test. |
+| `test_checker_entrypoint_is_readonly_integration` | The actual checker CLI is read-only, not just helper functions. | Fixture registry/repos plus pre/post snapshots of files, git status, and monkeypatched subprocess commands blocking clone/fetch/pull/push/move/delete. | CLI exits with expected validation result and leaves fixture trees and git state unchanged. |
 | `test_readiness_includes_tier1_baseline_failures` | Existing Python readiness collector incorporates baseline failures. | Stub checker returns missing required repo. | `dispatchable=false` and failure appears alongside existing gates. |
 | `test_readiness_preserves_existing_gate_failures` | Baseline integration does not mask Telegram env or dirty workspace failures. | Stub existing readiness failures + passing baseline. | Existing failure strings remain present. |
 | `test_readiness_fail_closed_on_checker_error` | Checker crash, timeout, malformed JSON, or missing checker blocks dispatch. | Stub checker non-zero/timeout/bad output. | Host failure states baseline checker error and `dispatchable=false`. |
@@ -251,11 +277,13 @@ function integrate_with_readiness(host):
 - [ ] Optional/on-demand repo list is exactly: `assethold`, `aceengineer-website`, `aceengineer-strategy`.
 - [ ] `worldenergydata` includes an explicit `/mnt/ace` data-access constraint and a note that moving it elsewhere requires a separate approved data-access design.
 - [ ] The read-only checker validates required vs optional repos without performing clone/move/delete/sync operations.
+- [ ] Registry validation reconciles `tier1_baseline`, existing `repos`, and `telegram_hermes.data_access_profile.repos`; unclassified mismatches such as tier-1 `llm-wiki` absence or non-tier-1 `OGManufacturing` presence fail tests until explicitly classified.
+- [ ] Required ace-linux-1 repos are only satisfied by registry-declared expected paths or declared primary/reference checkout paths; remote mounts and arbitrary extra roots cannot make a required repo pass unless the exact path is explicitly declared for that repo as `primary`, `reference`, or `remote_reference_only`.
 - [ ] The checker surfaces duplicate sibling/nested checkouts as fail-closed until primary/reference roles are declared, not as cleanup targets.
 - [ ] `scripts/readiness/telegram-hermes-readiness.sh --host dev-primary` includes tier-1 baseline evidence from the Python readiness collector and still fails closed on Telegram env, checker errors, or dirty workspace state.
 - [ ] Tests pass: `uv run pytest tests/workstations/test_check_tier1_repo_baseline.py tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py -v`.
 - [ ] Legal/security scan passes: `scripts/legal/legal-sanity-scan.sh`.
-- [ ] The first approved dispatch target is linked as [#2738](https://github.com/vamseeachanta/workspace-hub/issues/2738), and the issue comment records the concrete artifact produced once dispatch is attempted after readiness passes.
+- [ ] The first approved dispatch target is linked as [#2738](https://github.com/vamseeachanta/workspace-hub/issues/2738); #2754 closeout requires either a concrete first-dispatch artifact after readiness passes or a blocker comment leaving #2754 open with the exact readiness failures preventing dispatch.
 - [ ] Completion leaves a reusable machine-placement pattern for subsequent workstation issues: consistent tier-1 repo folder structure, methodical primary/reference repo placement decisions, and repo harness/file ecosystem handling all routed through the single workstation registry authority.
 - [ ] No repo is moved, deleted, cloned, renamed, or sync-rewritten by this issue.
 - [ ] Plan review artifacts are saved under `scripts/review/results/` before this issue moves to `status:plan-review`.
@@ -267,10 +295,14 @@ function integrate_with_readiness(host):
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | UNAVAILABLE | Fanout timed out before a usable Claude review was produced; `scripts/review/results/2026-05-19-plan-2754-claude.md` records the timeout/unavailability. |
-| Codex | MAJOR | Real blockers: wrong registry path, missing repo-location reference, competing baseline truth source, wrong readiness integration target, weak fail-closed/readiness tests, and issue acceptance mismatch. |
-| Gemini | MAJOR | Real blockers: missing/incorrect cited paths, brittle discovery roots, duplicate checkout warnings not fail-closed, unsafe bash parsing/readiness integration, and weak read-only proof. Some path findings were stale/false after local verification, but the plan still needed correction. |
+| Codex r1 | MAJOR | Real blockers: wrong registry path, missing repo-location reference, competing baseline truth source, wrong readiness integration target, weak fail-closed/readiness tests, and issue acceptance mismatch. |
+| Gemini r1 | MAJOR | Real blockers: missing/incorrect cited paths, brittle discovery roots, duplicate checkout warnings not fail-closed, unsafe bash parsing/readiness integration, and weak read-only proof. Some path findings were stale/false after local verification, but the plan still needed correction. |
+| Codex r2 | MAJOR | Real blockers: registry list reconciliation was still missing, remote mounts/extra roots could satisfy ace-linux-1 required repos, #2754 closeout could land without first dispatch proof, review status was stale, and read-only proof needed an entrypoint integration test. |
+| Gemini r2 | FAILED | `scripts/review/results/2026-05-20-plan-2754-gemini-r2.md` records provider trust failure (`GEMINI_CLI_TRUST_WORKSPACE`/trusted-folder issue); rerun was required. |
+| Codex r3 | MAJOR | Remaining blocker: arbitrary local extra roots under `storage.local` could still satisfy required repos; review bookkeeping was stale. |
+| Gemini r3 | APPROVE | Approved the r3 blocker fixes; asked an implementation question about whether broad `repos` is permanent or dynamically projected. |
 
-**Overall result:** MAJOR — this draft is not approval-ready. The corrections below have been applied locally and require re-review before `status:plan-review`.
+**Overall result:** MAJOR — this draft is not approval-ready. The r3 Codex corrections below have been applied locally and require r4 re-review before `status:plan-review`.
 
 Revisions made based on review:
 - Replaced the non-existent `config/machines/telegram-hermes-machines.yaml` authority with `config/workstations/registry.yaml`.
@@ -279,6 +311,10 @@ Revisions made based on review:
 - Added `scripts/readiness/telegram_hermes_readiness.py` as the actual readiness integration target and kept the shell wrapper as compatibility/no-op.
 - Made duplicate checkout ambiguity fail-closed unless primary/reference roles are declared.
 - Added checker crash/timeout/malformed-output fail-closed tests and stronger read-only mutation guards.
+- Added registry reconciliation across `tier1_baseline`, existing `repos`, and `telegram_hermes.data_access_profile.repos`, including explicit handling for tier-1 `llm-wiki` and non-tier-1 `OGManufacturing`.
+- Restricted required repo validation to declared machine-local roots unless explicitly declared `remote_reference_only`; remote mounts and arbitrary extra roots cannot satisfy ace-linux-1 required placement.
+- Tightened #2754 closeout so the issue remains open until first-dispatch proof exists or a blocker comment records exact readiness failures.
+- Added an entrypoint-level read-only checker integration test requirement.
 
 ---
 

@@ -143,6 +143,8 @@ When the user asks to "document and prepare to exit," do **not** run the heavywe
 
 For the concrete closeout checklist, use `references/exit-handoff-closeout.md`. Key requirements: write the handoff under `docs/session-handoffs/` when no task-specific location exists, include final clean/sync proof for every touched tier-1 repo, commit and push the handoff unless blocked, inspect any hook-generated dirt before claiming clean state, and explicitly state that no external send/action was performed unless the user approved it.
 
+For travel-planning sessions captured primarily as GitHub issues/comments rather than repo files, use `references/github-issue-backed-travel-exit-closeout.md`: verify issue/comment URLs live, write the control-repo handoff when the issue repo has no local checkout, stage only the handoff, and report synced-but-dirty control repo state precisely.
+
 ## Iron Law
 
 > No learning pipeline phase (/insights, /reflect, /knowledge, /improve) shall run standalone during an active work session — learning is deferred to the nightly pipeline, always.

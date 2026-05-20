@@ -60,6 +60,8 @@ Use “no material drift detected at the status level” when repo statuses are 
 
 When including verification evidence, avoid embedding exact `stat` size/mtime/checksum values inside the report until all report edits are complete. A safer pattern is: write the full report, finish all patches, run final `stat`/`sha256sum`, then put exact verification values in the final cron response (or append them only as the last report edit).
 
+Before final delivery, deduplicate generated broken-reference evidence by `(repo, source file, line, target)`. The scanner/generator may surface the same Markdown link through multiple paths; keep one confirmed finding in the summary table and detailed section rather than inflating broken-link counts.
+
 If the existing `tier-1-indexing-freshness-latest.md` contains stale status or stale broken-link counts from a prior generator, explicitly note the correction in the refreshed report. Do not silently preserve stale counts: re-run false-positive-filtered checks, keep `aceengineer-website` red until `docs/registry/module-routing.yaml` exists, and keep `assetutilities` yellow when the only confirmed remaining issue is trusted-path runtime/cache/log/report noise.
 
 ### 1. Load context and identify tier-1 repos
@@ -159,6 +161,7 @@ Latest evidence references:
 - `references/2026-05-12-freshness-audit-lessons.md` — status-level baseline, unchanged-status wording, current stale-reference evidence, and the report verification pitfall about not embedding exact checksums before final report edits.
 - `references/2026-05-14-freshness-audit-lessons.md` — status-level baseline, corrected stale previous-report content (`assetutilities` broken-link false positive and `aceengineer-website` RED registry status), and current evidence snapshot.
 - `references/2026-05-15-freshness-audit-lessons.md` — latest status-level baseline, report readback/verification pattern, historical-scorecard-as-context guardrail, and current evidence snapshot.
+- `references/2026-05-20-freshness-audit-lessons.md` — dedupe generated broken-reference evidence before finalizing, verify file status/mtime/hash after all report patches, and preserve the corrected RED/YELLOW tier-1 status baseline.
 
 
 ## Daily freshness automation pattern
