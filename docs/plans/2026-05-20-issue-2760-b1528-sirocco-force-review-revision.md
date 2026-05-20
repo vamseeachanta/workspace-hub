@@ -10,32 +10,39 @@
 > - `scripts/review/results/2026-05-20-plan-2760-codex.md` — Round 1 MAJOR, addressed by this patched plan
 > - `scripts/review/results/2026-05-20-plan-2760-gemini.md` — Round 1 MAJOR, addressed by this patched plan
 > - `scripts/review/results/2026-05-20-plan-2760-r2-hermes.md` — Round 2 synthesis, APPROVE for plan-review transition
+> - `scripts/review/results/2026-05-20-plan-2760-focused-source-update-hermes-r3.md` — Focused OCIMF source/provenance re-review synthesis, APPROVE/MINOR/APPROVE with no blocking findings after final patch
 
 ---
 
 ## Gate State
 
-Implementation is blocked until the user explicitly approves this plan. This revision is now ready to be labeled `status:plan-review`; it is **not** `status:plan-approved`.
+Implementation remains blocked pending explicit user approval. The issue is currently labeled `status:plan-review`; it is **not** `status:plan-approved`.
 
 The first adversarial review returned three MAJOR verdicts against a draft that left engineering source/model choices unresolved. The owner's latest instruction is to get #2760 to `status:plan-review`; this patched plan converts those blockers into explicit **approval-scope assumptions** and fail-closed implementation gates. Approval of this plan means approval of the assumptions below; if any required source/citation cannot be resolved during implementation, work stops and returns to the issue thread instead of substituting invented data.
 
 ### Approval-scope assumptions for user review
 
-1. **OCIMF MEG4 coefficient source and citation gate**
-   - Use only generic/digitized OCIMF MEG4 current coefficient data that is backed by a repo-safe source artifact and citation sidecar.
-   - Citation/provenance must follow `.claude/rules/calc-citation-contract.md`; the expected durable wiki/registry target is under `knowledge/wikis/engineering/wiki/standards/` when implementation can materialize it safely.
-   - Known local state: `ocimf_coefficients_production.csv` is not present under `/mnt/local-analysis`; workspace-hub indexes candidate MEG4 coefficient source PDFs in `docs/CONTENT_INDEX.md`, but those PDFs were not materialized in the local checkout during planning.
-   - Implementation may add a limited checked-in digitized fixture only if it records figure/source identity, extraction provenance, licensing/limitation text, and a fail-closed `Citation` sidecar. It must not freehand, synthesize, or silently fall back to placeholder trigonometric coefficients.
-   - If no source-pinned coefficient fixture can be established, implementation stops and posts a blocker rather than producing report numbers.
+1. **OCIMF MEG3/MEG4 coefficient source and citation gate**
+   - The earlier `ocimf_coefficients_production.csv` blocker is resolved for planning: the approved source route is the licensed off-repo workbook `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`, with generated/research artifacts at `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html`, `/mnt/local-analysis/digitalmodel/docs/data/OCIMF_CORPUS_README.md`, and `/mnt/local-analysis/digitalmodel/scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py`.
+   - Treat this as a generic/reference OCIMF tanker-current coefficient basis for B1528 SIROCCO, not as ship-specific SIROCCO coefficients. The report must state that limitation explicitly.
+   - Citation/provenance must follow `.claude/rules/calc-citation-contract.md`; implementation must emit a fail-closed `Citation` sidecar tied to the workbook/provenance route and must never commit the licensed workbook or licensed PDFs into a repo. Expected citation target identity is `code_id: ocimf-meg3-current-coefficients` and/or `code_id: ocimf-meg4-current-coefficients`, resolved to standards/concepts wiki pages outside `knowledge/wikis/*/wiki/sources/`; implementation may retarget only if an existing registry-canonical OCIMF code_id is found and documented in the issue thread before calculations run.
+   - Licensing boundary: the numeric OCIMF coefficient corpus/table is presumed license-restricted even when derived from the workbook. Do **not** commit extracted coefficient tables/corpora as CSV, JSON, YAML, Python literals, or embedded HTML unless a separate legal/license review or explicit owner decision verifies redistribution is permitted. Default implementation should resolve coefficient values locally from the off-repo workbook or an off-repo derived cache at calculation time.
+   - Commit-safe by default: parser code, pointer/provenance metadata, figure identifiers, checksums, citation sidecars, limitation text, and tests that verify fail-closed behavior without embedding a reusable coefficient corpus. Any minimal numeric golden values must be justified as non-redistributive review/test evidence or kept in the issue thread/off-repo artifact rather than committed.
+   - The generated HTML explorer is a local/provenance aid, not automatically repo-safe publication material; implementation must verify whether it embeds licensed coefficient data before copying, committing, or publishing any derived content.
+   - Known extracted coverage from #2768/#2760 decision ledger: 1033 rows across figures `A5-A14` and `A16-A19`; `A15` is absent. Current-relevant families are loaded tanker current `A5-A11`, ballast 40%T tanker current `A12-A14`, and current velocity correction `A16`.
+   - If the workbook/provenance route, license-safe data access path, or required citation target cannot be read and verified during implementation, implementation stops and posts a blocker rather than producing report numbers.
 
 2. **Generic OCIMF curve/class basis**
-   - Because no ship-specific coefficients exist, the report will use a clearly labeled **generic/reference OCIMF MEG4 basis** for B1528 SIROCCO.
+   - Because no ship-specific coefficients exist, the report will use a clearly labeled **generic/reference OCIMF MEG4 tanker-current basis** for B1528 SIROCCO.
    - Selection rule: choose the nearest available generic MEG4 curve/class by documented geometry fit to existing B1528 dimensions (`LBP/LOA`, beam, draft/projected areas); record the selected class, interpolation domain, and limitation in the report metadata and limitations section.
+   - Tie-break rule: if multiple generic curves/classes fit similarly, prefer the more conservative larger-magnitude force/moment envelope and record the rejected alternatives; if required geometry inputs are unavailable, implementation stops for a decision rather than silently choosing a class.
+   - If B1528 SIROCCO is not a tanker-class vessel, the report must state that the tanker-current basis is applied off-class as a screening/reference limitation rather than a ship-specific or class-validated coefficient set.
    - This is an owner-approved reference assumption, not hidden implementation discretion.
 
 3. **Default simple rudder model basis**
    - Default rudder model is a bounded screening-level area/drag or normal-force estimate using ambient current at **3.08 kn**, propeller rpm **0**, neutral `Cr=1.0`, default current heading **+5° port/off-bow**, and default rudder angle **28° port w.r.t. ship**.
-   - The model must cite its coefficient/CN/Cd basis and emit citation/provenance metadata. Preferred in-repo precedent is the existing `digitalmodel.naval_architecture.maneuverability.rudder_normal_force` / Whicker-and-Fehlner-style normal-force helper where applicable; any simpler area/drag fixture must be explicitly labeled preliminary/screening-level.
+   - The model must cite its coefficient/CN/Cd basis and emit citation/provenance metadata. Default to the existing `digitalmodel.naval_architecture.maneuverability.rudder_normal_force` / Whicker-and-Fehlner-style normal-force helper where applicable; any simpler area/drag fallback is allowed only if that helper is demonstrably inapplicable and must be explicitly labeled preliminary/screening-level.
+   - Fallback criterion: area/drag fallback is allowed only when the helper cannot represent the available B1528 rudder geometry/input set or cannot provide a citation-compatible coefficient basis; the reason must be recorded in the manifest and issue thread before report generation.
    - No additional stall correction is assumed unless the cited model requires it; the report must state the large-angle limitation at 28°.
    - Sign mapping: `+X` forward, `+Y` port, `+N` bow-to-port; the rudder side force and moment signs must be independently asserted in tests.
    - Existing hydrodynamic/Barrass-family behavior remains side-by-side comparison only, not the hidden default.
@@ -52,7 +59,7 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
    - Opposite sign in the approved default case is a hard-fail sign-convention error unless a cited coefficient convention explicitly explains it.
 
 6. **Presentation/output assumptions**
-   - Remove resultant-force calculations from the main report, remove heatmap, keep charts single-variable, use kN/kN·m rounded to 0 decimals for result values with magnitude `>= 1.0`, use 2 decimals for smaller displayed force/moment values if any, and render all angle columns/labels to 1 decimal.
+   - Remove resultant-force calculations from the main report, remove heatmap, keep charts single-variable, use kN/kN·m rounded to 0 decimals for result values with magnitude `>= 1.0`, use 2 decimals for smaller displayed force/moment values if any, render all angle columns/labels to 1 decimal, and use readable labels such as `Current heading θ (deg)` and `Rudder angle α (deg)` instead of dense subscript notation.
    - Markdown + generated HTML land in sibling repo `digitalmodel`; generated Word + PDF land under `workspace-hub/acma-projects/B1528/output` unless live implementation preflight finds a different canonical location.
 
 ---
@@ -72,13 +79,17 @@ The first adversarial review returned three MAJOR verdicts against a draft that 
 | `/mnt/local-analysis/digitalmodel/src/digitalmodel/marine_ops/marine_engineering/environmental_loading/ocimf.py` | Found | OCIMF database/interpolation module with `OCIMFDatabase`, `OCIMFCoefficients`, `VesselGeometry`, and current force/moment structures for `CXc`, `CYc`, `CMc`. |
 | `/mnt/local-analysis/digitalmodel/docs/domains/marine-engineering/b1528-sirocco-moored-current-report.md` | Found | Existing durable Markdown report; stale for #2760 because it reflects prior scenario/presentation. |
 | `/mnt/local-analysis/workspace-hub/acma-projects/B1528/output/b1528_sirocco_moored_current_report.pdf` | Found | Existing ACMA PDF package; confirms old 3.5 kn / ±1–5° report basis. |
-| `ocimf_coefficients_production.csv` | **Not found** | Searched `/mnt/local-analysis`; no live copy found. Implementation must either land a source-pinned digitized fixture with citation sidecar or stop with a blocker; no placeholder fallback. |
+| `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` | Found off-repo/licensed | Approved source route from #2768/#2760 decision ledger. Do not commit workbook/PDFs or extracted coefficient corpora; implementation must read values locally from workbook/off-repo cache, commit only license-safe metadata/code/citation artifacts, and fail closed if unavailable. |
+| `/mnt/local-analysis/digitalmodel/docs/domains/charts/phase2/ocimf/ocimf_coefficient_explorer.html` | Found local/provenance aid | Generated explorer: `OCIMF MEG3/MEG4 Coefficient Explorer`, 15 Plotly figures, extracted coverage `A5-A14` and `A16-A19`; `A15` absent. Treat as potentially embedding licensed coefficient data; do not copy/commit/publish derived coefficient content without license review or explicit owner decision. |
+| `/mnt/local-analysis/digitalmodel/docs/data/OCIMF_CORPUS_README.md` | Found | Data-routing/provenance map for licensed OCIMF corpus. |
+| `/mnt/local-analysis/digitalmodel/scripts/python/digitalmodel/ocimf/build_coefficient_explorer.py` | Found | Parser/prototype route; current verified extraction count is 1033 rows. |
+| `ocimf_coefficients_production.csv` | Not required / not found | Earlier blocker is superseded by the workbook/provenance route above; no placeholder fallback remains allowed. |
 
 ### Standards / domain sources
 
 | Source | Use | Gate |
 |---|---|---|
-| OCIMF MEG4 current coefficient method | Required current-on-ship force/moment model | Must be tied to actual coefficient data and citation sidecar before implementation. |
+| OCIMF MEG3/MEG4 current coefficient method | Required current-on-ship force/moment model | Source route resolved to licensed off-repo workbook `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` plus license-safe metadata/code/citation sidecar only; coefficient values must resolve from workbook/off-repo cache at calc time unless redistribution is explicitly approved. Fail closed if unavailable. |
 | `digitalmodel/docs/domains/project-docs/PHASE3_OCIMF_FINDINGS.md` | Existing OCIMF dataset notes and coefficient ranges (`CXc`, `CYc`, `CMc`) | Useful for bounds/tests, but not sufficient by itself as coefficient source unless backed by source data/citation. |
 | Existing B1528/Barrass rudder force family | Retain as alternate comparison model only | Must not become the hidden default if user asked for simple area/drag default. |
 | Workspace engineering gate | Issue → resource intel → plan → adversarial review → user approval → TDD implementation | Applies because issue is labeled `cat:engineering-calculations`. |
@@ -110,11 +121,11 @@ Posted: https://github.com/vamseeachanta/workspace-hub/issues/2760#issuecomment-
 | Rudder default | 28° port w.r.t. ship | Confirmed |
 | Propeller | rpm = 0; neutral `Cr=1.0` unless a future model explicitly changes it | Confirmed |
 | Retired old sweep | Previous 3.5 kn / ±1–5° rudder sweep removed from main report | Confirmed |
-| Current on ship | Use generic/digitized OCIMF MEG4 current coefficients; no ship-specific coefficients exist; fail closed if source/citation cannot be resolved | Approval-scope assumption |
+| Current on ship | Use generic/reference OCIMF MEG3/MEG4 tanker-current coefficients through the licensed off-repo workbook route `/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx`; no ship-specific coefficients exist; report limitation explicitly; fail closed if workbook/provenance/citation cannot be resolved; do not commit extracted coefficient corpora without license approval | Approval-scope assumption updated after #2768 review |
 | Ship geometry | Reuse existing B1528 geometry; CoG longitudinal datum = midship; vertical CoG = 6.1 m above keel | Confirmed |
 | Current force/moment display | OCIMF direct yaw moment default; include side-by-side explanatory chart against force × lever-arm method; not an equality criterion | Approval-scope assumption |
 | Rudder sweep | 0° to 28° port in 2° increments | Confirmed |
-| Rudder models | Show cited screening-level simple area/drag or normal-force calculation as default and existing/alternate hydrodynamic model side-by-side | Approval-scope assumption |
+| Rudder models | Default to cited `rudder_normal_force` / Whicker-and-Fehlner-style normal-force basis where applicable; only use a simpler area/drag fallback if that helper is inapplicable and the report labels it preliminary/screening-level. Existing/alternate hydrodynamic model remains side-by-side comparison only | Approval-scope assumption |
 | Schematics | Plan views using transparent/small ship outline; each calculation section shows default values, `X`, `Y`, and `N` about CoG | Confirmed |
 | Results | Remove resultant force calculations from main presentation; remove heatmap; single-variable charts; kN/kN·m rounded to 0 decimals for values with magnitude `>= 1.0`, 2 decimals for smaller displayed values if any, and angles to 1 decimal | Approval-scope assumption |
 | Output split | Markdown + HTML in `digitalmodel`; Word + PDF in `acma-projects` output | Confirmed |
@@ -128,10 +139,12 @@ Do not execute this section until the user explicitly approves this `status:plan
 ### Phase 0 — Preflight and source locking
 
 1. Re-check `workspace-hub` and `digitalmodel` worktree states; identify unrelated dirty files before any write.
-2. Resolve the approved generic/digitized OCIMF coefficient source path or stop with a blocker; no placeholder fallback.
-3. Add or identify citation source page/artifact and `Citation` sidecar for OCIMF coefficients.
-4. Add or identify citation/model source and provenance sidecar for the default rudder model.
-5. Define exact output filenames and supersession policy for old Markdown/HTML/Word/PDF outputs.
+2. Verify the licensed off-repo OCIMF workbook/provenance route (`/mnt/ace/acma-codes/OCIMF/OCIMF Coef.xlsx` plus explorer/README/parser artifacts) or stop with a blocker; no placeholder fallback and no committing licensed source documents or extracted coefficient corpora.
+3. Locate or create citation target wiki page(s) for OCIMF MEG3 and/or MEG4 outside `knowledge/wikis/*/wiki/sources/`, with #2471 frontmatter (`code_id`, `publisher: OCIMF`, `revision`). Expected code_ids are `ocimf-meg3-current-coefficients` and/or `ocimf-meg4-current-coefficients` unless an existing registry-canonical target is found. Confirm `digitalmodel.citations.registry` or equivalent resolves the code_id(s). If MEG3 and MEG4 figures both feed coefficients, emit per-figure/per-family citations or document the selected revision explicitly; stop with a blocker if no acceptable target can be created.
+4. Define the license-safe coefficient access pattern: default is pointer-only repo metadata plus local/off-repo workbook or off-repo derived-cache resolution at calculation time. Do not commit numeric coefficient tables/corpora as CSV, JSON, YAML, Python literals, or embedded HTML unless legal/license review or explicit owner decision permits redistribution.
+5. Pre-stage the default-case numerical oracle in the issue thread or a referenced off-repo/source-controlled review artifact before implementation uses it; do not derive the expected values from production code.
+6. Add or identify citation/model source and provenance sidecar for the default rudder model, locking the `rudder_normal_force` / Whicker-and-Fehlner-style basis unless it is demonstrably inapplicable.
+7. Define exact output filenames and supersession policy for old Markdown/HTML/Word/PDF outputs.
 
 ### Phase 1 — TDD RED tests
 
@@ -139,12 +152,14 @@ Write failing tests before implementation. Required tests include:
 
 | Test | Purpose | Required assertions |
 |---|---|---|
-| `test_issue_2760_ocimf_source_required` | Fail closed if OCIMF coefficient source/citation missing | Missing source raises explicit error; no placeholder/trigonometric fallback; citation sidecar resolves or raises. |
+| `test_issue_2760_ocimf_source_required` | Fail closed if OCIMF workbook/provenance/citation missing | Missing workbook/provenance/license-safe access route raises explicit error; no placeholder/trigonometric fallback; citation sidecar resolves or raises. |
+| `test_issue_2760_ocimf_no_coefficient_corpus_leakage` | Enforce license boundary in generated/repo-bound artifacts | Repo-bound outputs, manifests, sidecars, HTML, JSON/CSV, and code fixtures do not serialize a reusable OCIMF coefficient table/corpus; only pointer/provenance metadata, figure IDs, checksums, selected coefficients needed for the specific report/oracle, and citation metadata may appear unless license approval is recorded. |
+| `test_issue_2760_citation_sidecars_resolve` | Verify successful provenance path | Generated outputs include resolvable OCIMF and rudder citation/provenance sidecars with approved code_id/revision mapping, and fail if the registry cannot resolve them. |
 | `test_issue_2760_ocimf_placeholder_constants_removed` | Prevent silent reuse of old placeholder functions | Source does not contain `OCIMF_CURRENT_CX_BASE`, `OCIMF_CURRENT_CM_SCALE`, or `ocimf_cy = heading_sin`. |
 | `test_issue_2760_current_speed_unit_conversion` | Catch kn→m/s errors | `3.08 kn × 0.51444 = 1.5844752 m/s` within numeric tolerance. |
-| `test_issue_2760_current_positive_heading_signs` | Catch sign flips | Approved `+5°` port current yields expected sign for `Y` and `N`; opposite-sign yaw comparison in the default case hard-fails unless the approved coefficient convention explains it. |
-| `test_issue_2760_current_default_sample_calculation` | Independent numerical oracle | Table-driven expected `CXc/CYc/CMc`, `X/Y/N`, units, signs, and tolerances for default case. Expected values must come from approved source/hand calculation, not production code. |
-| `test_issue_2760_ocimf_coefficients_in_documented_range` | Catch digitization/source mapping errors | Approved fixture coefficients remain within documented OCIMF/PHASE3 sanity ranges for `CXc`, `CYc`, and `CMc`; out-of-range values fail unless the cited source explicitly supports them. |
+| `test_issue_2760_current_positive_heading_signs` | Catch sign flips | Approved `+5°` port current asserts explicit expected signs for `Y` and `N` under the cited convention (default expectation: `+Y` port and `+N` bow-to-port unless the OCIMF coefficient convention proves otherwise); opposite-sign yaw comparison in the default case hard-fails unless the approved coefficient convention explains it. |
+| `test_issue_2760_current_default_sample_calculation` | Independent numerical oracle | Table-driven expected `CXc/CYc/CMc`, `X/Y/N`, units, signs, and tolerances for default case. Expected values must come from an approved source/hand calculation pre-staged in the issue thread or referenced oracle artifact, not production code. |
+| `test_issue_2760_ocimf_coefficients_in_documented_range` | Catch digitization/source mapping errors | Coefficients resolved from the approved workbook/off-repo route remain within documented OCIMF/PHASE3 sanity ranges for `CXc`, `CYc`, and `CMc`; out-of-range values fail unless the cited source explicitly supports them. |
 | `test_issue_2760_current_speed_sweep_domain` | Confirm 0..4 kn sweep | Rows/charts include approved speeds and default marker. |
 | `test_issue_2760_current_heading_plot_domain` | Confirm approved heading plot domain | Assert exact heading range/step: `-5..+5°` in `1°` increments, with +5° default marker and port-positive sign convention. |
 | `test_issue_2760_rudder_model_source_required` | Fail closed for uncited rudder model | Missing rudder model source/citation/provenance raises explicit error; screening-level limitation text is required. |
@@ -159,7 +174,7 @@ Write failing tests before implementation. Required tests include:
 
 ### Phase 2 — Calculation/source implementation
 
-1. Replace placeholder current coefficient path with approved source-pinned generic/digitized OCIMF lookup or stop with a blocker.
+1. Replace placeholder current coefficient path with a source-pinned generic/reference OCIMF lookup resolved from the verified workbook/off-repo cache route, or stop with a blocker. Do not commit extracted coefficient corpora unless license approval is explicitly recorded.
 2. Use existing OCIMF API where possible; if a new source wrapper is needed, keep formula/reference area/reference length/sign convention explicit and tested.
 3. Implement fail-closed citation sidecars for OCIMF coefficients and rudder model constants.
 4. Implement the approved screening-level simple rudder default with cited coefficient basis, rpm=0 velocity basis, 28° limitation text, lever arm/reference point, and sign mapping.
