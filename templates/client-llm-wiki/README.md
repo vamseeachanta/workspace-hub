@@ -1,4 +1,4 @@
-# <CLIENT_SHORT_NAME>-llm-wiki
+# llm-wiki-<CLIENT_SHORT_NAME>
 
 Private <CLIENT_SHORT_NAME> LLM wiki and evidence workspace.
 
@@ -26,9 +26,10 @@ reports/README.md             # Report and chatbot output provenance
 
 ## Naming decision
 
-Recommended repo name for the private wiki is `<CLIENT_SHORT_NAME>-llm-wiki`:
+Recommended repo name for the private wiki is `llm-wiki-<CLIENT_SHORT_NAME>` (per [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4'-amended convention):
 
-- short and client-scoped
+- `llm-wiki-` prefix groups all private client wikis under a single namespace alongside the public `llm-wiki` trunk
+- client-scoped suffix keeps each wiki short and identifiable
 - avoids implying only "projects"
 - separates private wiki knowledge from local raw project archive
-- distinct from public `llm-wiki`
+- distinct from public `llm-wiki` while making the family relationship obvious at a glance
