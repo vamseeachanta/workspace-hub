@@ -35,9 +35,17 @@ Do not use this as a substitute for the full planning route.
 
 1. Intake
 - Read the full issue, acceptance criteria, references, and labels.
+- If the user asks to use the issue as an interactive discussion thread, prioritize showing the live GitHub issue URL and a compact comment-ready decision map before deeper fan-out inspection. Do not bury the comment surface under long resource-intel output.
 - Classify T1/T2/T3.
 - Post planning-start comment before any implementation.
 - Decision gate: continue, blocker, or future issue.
+
+1b. Interactive review-thread mode
+- Use when planning depends on user comments one topic at a time (for example engineering force-by-force review, API contract decisions, acceptance-criteria triage).
+- First response shape: issue link, current known decisions, unresolved prompts grouped in the order the user should comment, and explicit implementation block status.
+- Keep resource intelligence read-only and bounded; avoid launching broad code/doc/test reads in the same turn if the user only asked for the issue/commenting surface.
+- After each user comment batch, update the issue-plan assumptions and unresolved-blockers list before continuing resource intelligence.
+- See `references/interactive-review-thread-mode.md` for an example pattern from the B1528 SIROCCO force-calculation planning thread.
 
 2. Resource intelligence
 - Stay read-only.

@@ -61,6 +61,8 @@ If the user asks to explore alternatives to a known trip/destination vibe (for e
 
 If the user asks to compare package deals across multiple countries, regions, resorts, or operators, create/reuse a parent comparison issue and one child issue per serious option instead of forcing the full single-trip template into one issue. Keep vendor-access confidence explicit: search-index snippets identify leads only; live package names/prices/inclusions need normal/member-session verification before booking claims. See `references/package-deal-comparison-issue-tree.md`.
 
+For Costco Travel, member-only portals, guided vacations, or other package vendors where pricing may require a logged-in session or phone quote, follow `references/member-package-deal-verification.md`: capture the visible CTA, package ID/date season/inclusions, and classify the price as `verified online`, `quote required`, or `lead only` rather than implying an all-in total.
+
 ## Workflow
 
 1. Detect trip archetype (above), unless this is a lightweight trip-maintenance update.

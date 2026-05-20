@@ -28,6 +28,47 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:engineering-calculations",
+          "domain:hydrodynamics",
+          "domain:visualization",
+          "domain:naval-architecture"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2760,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
         "reviews not clean: major_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -1001,8 +1042,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1017,10 +1057,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `docs/ROUTING_INDEX.md` \u2014 identifies `workspace-hub` as the portfolio control plane for issue planning, agent harness, durable standards, document-intelligence registries, and cross-repo routing. This supports making `workspace-hub` the governance/documentation owner rat",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `/mnt/local-analysis` cleanup state can change quickly. The implementer will re-run live filesystem probes and will record only observed repos, not assumed tier-1 coverage. | **Risk:** `docs/CONTENT_INDEX.md` is large and may contain generated/stale inventory. The plan will classify/correct canonical path claims without turning this issue into a full content-index regeneration unless tes",
+        "tests": "9 TDD tests defined",
         "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion"
       },
       "lane": "planning_feedstock",
@@ -1030,13 +1070,15 @@
       "machine_route": null,
       "number": 2731,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-05-19-issue-2731-data-repo-location-contract.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2731",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -7965,52 +8007,55 @@
       "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2353",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
-          "domain:gtm",
-          "claude:design"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(gtm): Day-7/14/21/30 checkpoint dashboard \u2014 surface plan metrics for weekly review"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2351,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(gtm): Day-7/14/21/30 checkpoint dashboard \u2014 surface plan metrics for weekly review",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2351",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-05-19T21:20:10Z",
+  "generated_at": "2026-05-20T01:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:visualization",
+            "domain:naval-architecture"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2760,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8987,8 +9032,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9003,10 +9047,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `docs/ROUTING_INDEX.md` \u2014 identifies `workspace-hub` as the portfolio control plane for issue planning, agent harness, durable standards, document-intelligence registries, and cross-repo routing. This supports making `workspace-hub` the governance/documentation owner rat",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `/mnt/local-analysis` cleanup state can change quickly. The implementer will re-run live filesystem probes and will record only observed repos, not assumed tier-1 coverage. | **Risk:** `docs/CONTENT_INDEX.md` is large and may contain generated/stale inventory. The plan will classify/correct canonical path claims without turning this issue into a full content-index regeneration unless tes",
+          "tests": "9 TDD tests defined",
           "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion"
         },
         "lane": "planning_feedstock",
@@ -9016,13 +9060,15 @@
         "machine_route": null,
         "number": 2731,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-05-19-issue-2731-data-repo-location-contract.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(data-governance): inventory and normalize canonical data/repo locations for llm-wiki promotion",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2731",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -15951,44 +15997,6 @@
         "title": "feat(enforcement): port queue-git-tracked rule to solver queue (was scope-3 of #2322)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2353",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
-            "domain:gtm",
-            "claude:design"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(gtm): Day-7/14/21/30 checkpoint dashboard \u2014 surface plan metrics for weekly review"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2351,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(gtm): Day-7/14/21/30 checkpoint dashboard \u2014 surface plan metrics for weekly review",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2351",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15999,9 +16007,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-19T21:20:06.629017Z",
+  "scorecard_generated_at": "2026-05-20T01:20:06.572647Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-19T21:20:06.503963Z",
+  "utilization_generated_at": "2026-05-20T01:20:06.436136Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 4,
@@ -16009,7 +16017,7 @@
     "legacy_review_no_sha": 27,
     "major_review": 18,
     "marker_without_open_approved_issue": 134,
-    "missing_review": 27,
+    "missing_review": 28,
     "unavailable_review": 14,
     "unknown_review": 3
   }

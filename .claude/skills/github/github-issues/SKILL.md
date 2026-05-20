@@ -332,6 +332,16 @@ curl -s -X POST \
 
 ### Commenting
 
+#### Interactive clarification threads
+
+When an issue is being used as a live review/clarification thread, keep the GitHub discussion actionable and correction-friendly:
+
+1. Post user corrections back to the issue as concise decision bullets, not as a long narrative.
+2. When the user asks for unresolved blockers, post one consolidated comment with only the open confirmations/blockers; do not mix in already-settled decisions except as short context.
+3. End interpretation comments with an explicit correction invitation, e.g. "Please correct if any part of this interpretation is wrong."
+4. Prefer issue comments for engineering review clarifications so the user can edit/respond inline and the implementation plan has a durable trace.
+5. Separate defaults from ranges/comparison cases. Example: "default = 3.08 kn; plots may show 0–4 kn; 4 kn is range upper bound, not default."
+
 **With gh:**
 
 ```bash

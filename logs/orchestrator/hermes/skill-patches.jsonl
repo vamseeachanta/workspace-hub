@@ -781,3 +781,9 @@
 {"ts":"2026-05-19T21:02:32Z","agent":"unknown","action":"modify","skill_path":".claude/skills/development/html-report-verify/references/client-review-export-closeout.md","commit":"0f2b431655a39261894300b41e760e9a78680ff5"}
 {"ts":"2026-05-19T21:02:32Z","agent":"unknown","action":"modify","skill_path":".claude/skills/travel/lodging-selection/SKILL.md","commit":"0f2b431655a39261894300b41e760e9a78680ff5"}
 {"ts":"2026-05-19T21:02:32Z","agent":"unknown","action":"modify","skill_path":".claude/skills/travel/trip-planner/SKILL.md","commit":"0f2b431655a39261894300b41e760e9a78680ff5"}
+{"ts":"2026-05-20T01:02:29Z","agent":"unknown","action":"modify","skill_path":".claude/skills/coordination/issue-planning-mode/SKILL.md","commit":"f7d7139591adbaf206912cfdfde4701a3a693d84"}
+{"ts":"2026-05-20T01:02:29Z","agent":"unknown","action":"modify","skill_path":".claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md","commit":"f7d7139591adbaf206912cfdfde4701a3a693d84"}
+{"ts":"2026-05-20T01:02:29Z","agent":"unknown","action":"modify","skill_path":".claude/skills/coordination/workstation-aware-provider-orchestration/SKILL.md","commit":"f7d7139591adbaf206912cfdfde4701a3a693d84"}
+{"ts":"2026-05-20T01:02:29Z","agent":"unknown","action":"modify","skill_path":".claude/skills/github/github-issues/SKILL.md","commit":"f7d7139591adbaf206912cfdfde4701a3a693d84"}
+{"ts":"2026-05-20T01:02:29Z","agent":"unknown","action":"modify","skill_path":".claude/skills/travel/lodging-selection/SKILL.md","commit":"f7d7139591adbaf206912cfdfde4701a3a693d84"}
+{"ts":"2026-05-20T01:02:29Z","agent":"unknown","action":"modify","skill_path":".claude/skills/travel/trip-planner/SKILL.md","commit":"f7d7139591adbaf206912cfdfde4701a3a693d84"}

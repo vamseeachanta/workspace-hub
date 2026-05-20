@@ -239,18 +239,16 @@ function validate_docs_contract():
 
 ## Adversarial Review Summary
 
-<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
-
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Not yet run |
-| Codex | PENDING | Not yet run |
-| Gemini | PENDING | Not yet run |
+| Claude | MAJOR | Misquoted operating-model proof; live `/mnt/ace/*llm-wiki*` directories contradict planned/absent wording; stale-path scan scope undefined; new ledger overlaps existing inventory; `tier-1` undefined; worktree/temp nested-repo exemption missing; per-machine vs portfolio-canonical ledger scope unresolved. |
+| Codex | MAJOR | Named-path classifications and naming-mismatch decisions from issue body are not acceptance-gated; scope is over-delegated to #2732; `docs/CONTENT_INDEX.md` premise needs verification; enforcement does not actually block future stale paths; inventory report/follow-up issue requirements are underspecified. |
+| Gemini | MAJOR | Classifier/validator contradiction for temporary nested paths; acceptance criteria for source-class and citation/provenance separation are not implemented in pseudocode; mandatory legal/security scan is listed only in acceptance, not execution flow; optional scanner is incompatible with required selected-docs validation. |
 
-**Overall result:** PENDING — adversarial plan review required before `status:plan-review`.
+**Overall result:** MAJOR — not approval-ready and not eligible for `status:plan-review` until the plan is revised and re-reviewed.
 
 Revisions made based on review:
-- None yet.
+- 2026-05-19: Recorded initial T3 adversarial review results and preserved plan status as `draft`. No implementation is authorized.
 
 ---
 

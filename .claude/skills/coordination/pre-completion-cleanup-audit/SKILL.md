@@ -61,12 +61,23 @@ ls -la <repo-parent-dir>
 # Cross-reference each non-canonical entry against the mnt-analysis-cleanup taxonomy
 ```
 
+If a repo-location / working-style contract issue is active, do not treat remaining sibling tier-1 checkouts as disposable cleanup residue merely because a cleanup pass was reported. Verify the live parent directory, report the observed set, and classify sibling repos as one of:
+- **EXPECTED** — legitimate adjacent checkout under a pending/approved placement contract, or task-scoped output;
+- **UNEXPECTED** — duplicate/orphan/dirty checkout with no traced role;
+- **DEFER** — needs a repo-location contract plan before any move/delete.
+
+Phrase cleanup evidence precisely: “first-level entries observed are …” rather than “all folders were cleaned except …” when live probes show additional siblings. Repo placement changes require the issue-planning route; this audit reports state and must not opportunistically finish cleanup.
+
 ### 3. Scratch artifacts under /tmp
 ```bash
 find /tmp -maxdepth 3 -user "$USER" -mmin -240 -type f \
-  ! -path '*/claude-*/tasks/*' ! -path '*/snapshot-*' 2>/dev/null | head
+  ! -path '*/claude-*/tasks/*' \
+  ! -path '*/snapshot-*' \
+  ! -path '*/com.google.Chrome.scoped_dir.*/*' \
+  ! -path '*/playwright-*/*' \
+  2>/dev/null | sed -n '1,40p'
 ```
-(Exclude harness-managed paths; surface only user-meaningful scratch.)
+(Exclude harness/browser-managed paths; surface only user-meaningful scratch.) If browser automation profiles exist, summarize them by top-level directory instead of listing cached files. The useful closeout signal is usually ad-hoc issue/comment drafts, screenshots, downloads, or manually named scratch files — not Chrome cache internals.
 
 ### 4. Lock/trash-stage state
 ```bash

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-19T21:20:08.370881Z",
+  "generated_at": "2026-05-20T01:20:08.493593Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-19T21:20:06.629017Z",
+  "scorecard_generated_at": "2026-05-20T01:20:06.572647Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -1404,7 +1404,7 @@
             "cat:document-intelligence",
             "domain:knowledge"
           ],
-          "updatedAt": "2026-05-18T19:34:22Z",
+          "updatedAt": "2026-05-19T23:59:17Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1603,7 +1603,7 @@
             "machine:ace-linux-1",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-19T17:59:59Z",
+          "updatedAt": "2026-05-19T23:55:44Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1631,7 +1631,7 @@
             "machine:ace-linux-2",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-19T18:00:03Z",
+          "updatedAt": "2026-05-19T23:55:45Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1659,7 +1659,7 @@
             "machine:licensed-win-1",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-19T18:00:07Z",
+          "updatedAt": "2026-05-19T23:55:46Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1687,7 +1687,7 @@
             "machine:licensed-win-2",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-05-19T18:00:10Z",
+          "updatedAt": "2026-05-19T23:55:47Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1696,6 +1696,30 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2760,
+          "title": "revise(naval-arch): B1528 SIROCCO force calculation review updates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2760",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:engineering-calculations",
+            "domain:hydrodynamics",
+            "domain:visualization",
+            "domain:naval-architecture"
+          ],
+          "updatedAt": "2026-05-19T23:50:50Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -3856,27 +3880,6 @@
           "work_type": [
             "research",
             "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2351,
-          "title": "feat(gtm): Day-7/14/21/30 checkpoint dashboard \u2014 surface plan metrics for weekly review",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2351",
-          "labels": [
-            "priority:low",
-            "domain:gtm",
-            "claude:design"
-          ],
-          "updatedAt": "2026-05-18T19:43:20Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "strategy"
           ]
         },
