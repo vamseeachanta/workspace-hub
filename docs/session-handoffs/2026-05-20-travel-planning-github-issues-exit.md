@@ -102,60 +102,28 @@ This proof section update itself is committed separately during closeout; the fi
 
 ## Final refresh — repeated exit request
 
-Refresh captured: 
+Refresh captured: 2026-05-20T04:10-05:00
 
-- Current branch: 
-- Current local : 
-- Current : 
-- Ahead/behind: 
+- Current branch: `main`
+- Current local `HEAD` before this repair commit: `fb08707da9effd647f0b52286e6da1c1599f8c00`
+- Current `origin/main` before this repair commit: `fb08707da9effd647f0b52286e6da1c1599f8c00`
+- Ahead/behind before this repair commit: `0/0`
 - Additional closeout commits after original handoff proof:
-  -  — added the travel-exit closeout reference file required by .
-  -  — recorded the skill ledger entry for that reference file.
-- Remaining dirty/untracked paths at refresh time: , unrelated to this travel handoff and intentionally not staged.
-- Push note: the skill-ledger push emitted a remote ref-lock race, but follow-up fetch verified 400 URL must be absolute
-Content-Type: text/plain
-Client-Date: Wed, 20 May 2026 09:08:59 GMT
-Client-Warning: Internal response
+  - `430234027703f2267ea4c16d363eabaf53b6862c` — added the travel-exit closeout reference file required by `comprehensive-learning/SKILL.md`.
+  - `896186ab1b120b138a5af6986220e00d98c2cb13` — recorded the skill ledger entry for that reference file.
+  - `fb08707da9effd647f0b52286e6da1c1599f8c00` — attempted the repeated-exit refresh; the shell heredoc expanded Markdown backticks, so this repair commit rewrites the refresh block cleanly.
+- Remaining dirty/untracked paths before this repair commit: `5`, unrelated to this travel handoff and intentionally not staged.
+- Push note: earlier pushes emitted remote ref-lock race messages, but follow-up fetches verified the pushed commits were present on `origin/main` with ahead/behind `0/0`.
 
-200 OK
-Cache-Control: max-age=430
-Connection: close
-Date: Wed, 20 May 2026 09:09:07 GMT
-Content-Type: text/html; charset=UTF-8
-Expires: Wed, 20 May 2026 09:16:17 GMT
-Last-Modified: Wed, 20 May 2026 09:01:57 UTC
-Alt-Svc: h3=":443"; ma=93600
-Client-Date: Wed, 20 May 2026 09:09:07 GMT
-Client-Peer: 2600:1404:a00:1b1::1127:443
-Client-Response-Num: 1
-Client-SSL-Cert-Issuer: /C=US/O=DigiCert Inc/CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1
-Client-SSL-Cert-Subject: /C=US/ST=California/L=Redwood City/O=Electronic Arts Inc./CN=starwarssquadrongame.com
-Client-SSL-Cipher: TLS_AES_256_GCM_SHA384
-Client-SSL-Socket-Class: IO::Socket::SSL
-Client-SSL-Version: TLSv1_3
-Content-Security-Policy: frame-ancestors 'self'
-Set-Cookie: jobs-locale=en; SameSite=Strict; Path=/; Secure
-Set-Cookie: PLAY_LANG=en-US; SameSite=Lax; Path=/
-Set-Cookie: EDGESCAPE_COUNTRY=US; path=/
-Set-Cookie: EDGESCAPE_REGION=TX; path=/
-Set-Cookie: EDGESCAPE_TIMEZONE=CST; path=/
-Set-Cookie: ealocale=en-us; expires=Thu, 20-May-2027 09:09:07 GMT; path=/; domain=.ea.com; secure
-Strict-Transport-Security: max-age=15768000
-X-Application-Context: eacom
-X-Environment-Context: prod
-X-Frame-Options: SAMEORIGIN
-X-L-Path: inert
+Remaining dirty/untracked paths before this repair commit:
 
-400 URL must be absolute
-Content-Type: text/plain
-Client-Date: Wed, 20 May 2026 09:09:07 GMT
-Client-Warning: Internal response
+```text
+ M .claude/skills/coordination/gh-work-planning-checklist/SKILL.md
+ M .claude/state/corrections/.edit_sequence_counter
+ M .claude/state/corrections/.recent_edits
+?? .claude/skills/workspace-hub/tier1-indexing-scorecard-and-freshness-audit/references/2026-05-20-freshness-audit-lessons.md
+?? .claude/state/corrections/session_20260520.jsonl
+```
 
-500 Can't connect to 896186ab1b120b138a5af6986220e00d98c2cb13:80 (Temporary failure in name resolution)
-Content-Type: text/plain
-Client-Date: Wed, 20 May 2026 09:09:14 GMT
-Client-Warning: Internal response and ahead/behind .
-
-Remaining dirty/untracked paths at refresh time:
-
+This refresh block is repaired and committed separately; the final user response carries the latest live post-commit `HEAD == origin/main` proof.
 
