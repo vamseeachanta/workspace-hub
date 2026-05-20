@@ -1,9 +1,11 @@
 # Plan for #2746: create private llm-wiki repo target llm-wiki-acma
 
-> **Status:** draft (r1 self-review applied; codex r1 deferred)
+> **Status:** draft (r1 + r2 review applied; r2-codex MAJOR resolved inline)
 > **Complexity:** T2
 > **Date:** 2026-05-20
-> **Revision history:** 2026-05-20 r1-claude — MINOR; blockers 1/2/3 (TDD fixture design, factory-skill step 9 commit semantics, NTFS sync verification depth) resolved inline
+> **Revision history:**
+> - 2026-05-20 r1-claude — MINOR; blockers 1/2/3 (TDD fixture design, factory-skill step 9 commit semantics, NTFS sync verification depth) resolved inline
+> - 2026-05-20 r2-codex — MAJOR; 6 blockers resolved inline: (1) `cp -r */*` glob excluding dotfiles (privacy-firewall failure), (2) DATA-CYCLE.md client-agnostic-ness, (3) existing scaffold stale after D4 rename, (4) TDD test 9 ordering inconsistency, (5) checker missing `isArchived` + remote-URL-match validations, (6) yq python-fallback false comment removed
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2746
 > **Paired plan:** [`docs/plans/2026-05-20-issue-2745-acma-projects-freeze.md`](2026-05-20-issue-2745-acma-projects-freeze.md)
 > **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md) (commit `277a855ee`)
@@ -76,7 +78,7 @@ No relevant pages (this issue creates infrastructure, doesn't consume wiki conte
 | Path | Purpose |
 |---|---|
 | `templates/client-llm-wiki/README.md` | Per-wiki README with `<CLIENT_SHORT_NAME>` placeholders |
-| `templates/client-llm-wiki/DATA-CYCLE.md` | Client-agnostic copy of existing acma DATA-CYCLE.md |
+| `templates/client-llm-wiki/DATA-CYCLE.md` | Client-agnostic version using `<CLIENT_SHORT_NAME>` placeholder; sed-substituted during factory step 6. NOT a verbatim copy of the existing acma DATA-CYCLE.md (which hardcodes ACMA + pre-rename repo name `acma-llm-wiki`). |
 | `templates/client-llm-wiki/LICENSE` | Proprietary marker — NOT OSS |
 | `templates/client-llm-wiki/.gitignore` | Blocks raw/, private/, large binaries, secrets |
 | `templates/client-llm-wiki/.claude/CLAUDE.md` | Private-posture override for instantiated wikis |
@@ -101,7 +103,8 @@ No relevant pages (this issue creates infrastructure, doesn't consume wiki conte
 | `REDACTION-POSTURE.md` | ACMA-specific redaction rules |
 
 ### Existing files preserved (in `vamseeachanta/llm-wiki-acma`)
-- `README.md`, `DATA-CYCLE.md`, `sources/README.md`, `pages/README.md`, `reports/README.md`, `ledgers/promotion-ledger.example.yml` — kept as-is (they were the seed for the workspace-hub template).
+- `sources/README.md`, `pages/README.md`, `reports/README.md`, `ledgers/promotion-ledger.example.yml` — kept as-is (no naming references that diverge from `acma`)
+- `README.md` + `DATA-CYCLE.md` — **MUST be updated** in T6 to reflect the D4-amended repo name (`llm-wiki-acma`, not `acma-llm-wiki`). Per r2-codex finding 3, the current acma `README.md` still says "Recommended repo name `acma-llm-wiki`" and `DATA-CYCLE.md` still names `vamseeachanta/acma-llm-wiki`. T6 substitutes these references; checker T7 verifies no stale `acma-llm-wiki` strings remain.
 
 ## Deliverable
 
@@ -159,7 +162,7 @@ FAILED=0
 # 1. Registry exists
 [[ -f "$REGISTRY" ]] || { echo "FAIL: registry missing at $REGISTRY"; exit 1; }
 
-# 2. Parse with yq (require yq v4+); fall back to python if needed
+# 2. Parse with yq (v4+ required; precheck above)
 SHORT_NAMES=$(yq '.wikis[].short_name' "$REGISTRY")
 REPOS=$(yq '.wikis[].repo' "$REGISTRY")
 POSTURES=$(yq '.wikis[].posture' "$REGISTRY")
@@ -175,18 +178,34 @@ for i in $(yq '.wikis | keys | .[]' "$REGISTRY"); do
   POSTURE=$(yq ".wikis[$i].posture" "$REGISTRY")
   STATUS=$(yq ".wikis[$i].status" "$REGISTRY")
 
-  # Only check repo existence for bootstrapped/live (not planned/retired)
+  # Only check repo existence + archived for bootstrapped/live (not planned/retired)
   if [[ "$STATUS" =~ ^(bootstrapped|live)$ ]]; then
-    VIS=$(gh repo view "$REPO" --json visibility -q .visibility 2>/dev/null || echo MISSING)
-    [[ "$VIS" == "MISSING" ]] && { echo "FAIL: $SHORT repo $REPO not found on GH"; FAILED=1; }
-    [[ "$POSTURE" == "client-private" && "$VIS" != "PRIVATE" ]] && \
-      { echo "FAIL: $SHORT posture=client-private but visibility=$VIS"; FAILED=1; }
+    REPO_JSON=$(gh repo view "$REPO" --json visibility,isArchived 2>/dev/null || echo "")
+    if [[ -z "$REPO_JSON" ]]; then
+      echo "FAIL: $SHORT repo $REPO not found on GH"; FAILED=1
+    else
+      VIS=$(echo "$REPO_JSON" | yq -r '.visibility')
+      ARCHIVED=$(echo "$REPO_JSON" | yq -r '.isArchived')
+      [[ "$POSTURE" == "client-private" && "$VIS" != "PRIVATE" ]] && \
+        { echo "FAIL: $SHORT posture=client-private but visibility=$VIS"; FAILED=1; }
+      # r2-codex finding 5: governance spec §4.3 requires isArchived=false for non-retired entries
+      [[ "$ARCHIVED" == "true" ]] && \
+        { echo "FAIL: $SHORT status=$STATUS but GH repo isArchived=true"; FAILED=1; }
+    fi
   fi
 
   # Local clone check (machine-aware: skip if mount root absent)
   CLONE=$(yq ".wikis[$i].local_working_clone" "$REGISTRY")
   if [[ -d "$(dirname "$CLONE")" ]]; then
     [[ -d "$CLONE/.git" ]] || { echo "FAIL: $SHORT clone $CLONE missing or not a git repo"; FAILED=1; }
+    # r2-codex finding 5: governance spec §4.3 requires clone's remote to match `repo`
+    if [[ -d "$CLONE/.git" ]]; then
+      CLONE_REMOTE=$(git -C "$CLONE" config --get remote.origin.url 2>/dev/null || echo "")
+      EXPECTED=("https://github.com/$REPO" "https://github.com/$REPO.git" "git@github.com:$REPO.git")
+      MATCH=0
+      for u in "${EXPECTED[@]}"; do [[ "$CLONE_REMOTE" == "$u" ]] && MATCH=1 && break; done
+      [[ $MATCH -eq 1 ]] || { echo "FAIL: $SHORT clone $CLONE remote=$CLONE_REMOTE doesn't match expected $REPO"; FAILED=1; }
+    fi
   fi
 
   # Firewall guard: client-private raw_roots must not match a public llm-wiki path
@@ -214,7 +233,7 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 2. Confirm `/mnt/ace/<bucket>/` exists (per #2731 D3 raw-root canonical).
 3. `gh repo create vamseeachanta/llm-wiki-<short_name> --private --description "Private client llm-wiki for <short_name>"`
 4. `git clone https://github.com/vamseeachanta/llm-wiki-<short_name>.git /mnt/local-analysis/llm-wiki-<short_name>/`
-5. `cp -r workspace-hub/templates/client-llm-wiki/* /mnt/local-analysis/llm-wiki-<short_name>/`
+5. `cp -a workspace-hub/templates/client-llm-wiki/. /mnt/local-analysis/llm-wiki-<short_name>/` — **r2-codex finding 1**: use trailing-dot form (`SRC/.`), NOT `SRC/*`. Plain `cp -r SRC/* DEST/` SKIPS dotfiles, omitting `.gitignore` and `.claude/CLAUDE.md` from new repos — privacy-firewall failure. `cp -a SRC/. DEST/` copies all entries including dotfiles and preserves attributes.
 6. Placeholder substitution: `find /mnt/local-analysis/llm-wiki-<short_name> -type f -exec sed -i "s/<CLIENT_SHORT_NAME>/<short_name>/g" {} +`
 7. Open `REDACTION-POSTURE.md` and add client-specific redaction rules beyond the 6 defaults.
 8. Initial commit in the NEW client wiki repo (pathspec form per `feedback_multi_agent_commit_serialization`) AND push to origin.
@@ -266,10 +285,15 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 - Include front-matter (`name`, `description`, `version`, `category: coordination`, `tags`, `related_skills`)
 - Commit: `git commit -m "feat(client-wiki-factory): operator-checklist skill" -- .claude/skills/coordination/client-llm-wiki-factory/SKILL.md`
 
-**T6 — Firewall files in llm-wiki-acma** (separate repo, single commit there)
+**T6 — Firewall files + post-rename text updates in llm-wiki-acma** (separate repo, single commit there)
+- Per r2-codex finding 3: existing `README.md` + `DATA-CYCLE.md` still contain pre-rename name `acma-llm-wiki`. Must be updated here.
+- `cd /mnt/local-analysis/llm-wiki-acma/`
+- `sed -i 's|acma-llm-wiki|llm-wiki-acma|g' README.md DATA-CYCLE.md` (single-G substitution; verify no over-match on legitimate uses)
+- Verify post-edit: `grep -n 'acma-llm-wiki' README.md DATA-CYCLE.md` → 0 hits
 - `cd /mnt/local-analysis/llm-wiki-acma/`
 - Copy `LICENSE`, `.gitignore`, `.claude/CLAUDE.md`, `REDACTION-POSTURE.md` from `workspace-hub/templates/client-llm-wiki/` — substitute `<CLIENT_SHORT_NAME>` with `acma`
-- Customize `REDACTION-POSTURE.md` with acma-specific rules (deferred to operator review; defaults stand if no customization needed)
+- Customize `REDACTION-POSTURE.md` with acma-specific rules (defaults stand if no customization needed)
+- Verify dotfile firewall artifacts present: `[[ -f .gitignore && -f .claude/CLAUDE.md ]]` → both must be true. If not, the `cp -a SRC/. DEST/` form failed and the privacy firewall is broken — ABORT before commit. (Defends r2-codex finding 1.)
 - Commit (in llm-wiki-acma repo): `git add LICENSE .gitignore .claude/ REDACTION-POSTURE.md && git commit -m "feat: add firewall files per workspace-hub#2746 spec"`
 - Push to `vamseeachanta/llm-wiki-acma`
 
@@ -346,7 +370,8 @@ main() {
 
 ## Acceptance Criteria
 
-- [ ] All 9 TDD tests in `tests/enforcement/test_client_wiki_registry.sh` pass
+- [ ] **Registry-suite tests (1–8)** in `tests/enforcement/test_client_wiki_registry.sh` all pass at T3 RED → T4 GREEN; this is the suite gated before T4 implementation
+- [ ] **Instantiation-suite test (9)** runs as a post-T6 verification check (not part of T3 RED) — `grep` for OSS-license boilerplate AND proprietary markers in `/mnt/local-analysis/llm-wiki-acma/LICENSE` per r2-codex finding 4 (tests cannot run before LICENSE file exists)
 - [ ] `scripts/enforcement/check-client-wiki-registry.sh` exits 0 against the seeded registry (acma `bootstrapped`)
 - [ ] `templates/client-llm-wiki/` contains all 11 files (README, DATA-CYCLE, LICENSE, .gitignore, .claude/CLAUDE.md, REDACTION-POSTURE, 3 sub-READMEs, ledger example, ledger README)
 - [ ] `config/client-wikis.yml` contains 6 wiki entries with correct posture, raw_roots, status
@@ -378,7 +403,7 @@ Plan must reach APPROVE or APPROVE-MINOR-NITS from both T2 reviewers before labe
 | [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 final differs from D4' (`llm-wiki-<client>`) | Medium | Medium | Acceptance criterion: ratify post-[#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731)-approval; reconciliation as separate issue |
 | `yq v4+` not installed on operator's machine | Low | Low | Checker script's `command -v yq` precheck; document install in skill |
 | GH rate-limit during checker's per-entry `gh repo view` calls | Low | Low | Batch with `gh api graphql` if N grows; for 6 entries, sequential is fine |
-| Operator runs `sed -i` on macOS without `''` empty-suffix | Low | Low | Factory skill uses `find -exec sed -i.bak` and removes `.bak` files explicitly |
+| Operator runs `sed -i` on macOS without `''` empty-suffix | Low | Low | Factory skill currently uses bare `sed -i` (Linux-only); per r2-codex finding 7, mitigation in factory skill must be updated to use `sed -i.bak ... && find ... -name '*.bak' -delete` for cross-platform safety, OR pin operator OS to Linux. Resolution deferred to skill-author at implementation; documented in T5 implementation notes. |
 | Multi-agent commit race on `config/client-wikis.yml` during Phase 4–5 rollout | Medium | Low | Pathspec commit form mandatory per `feedback_multi_agent_commit_serialization` |
 | Subagent-write phantom if T1 template tree dispatched via subagent | Low | Medium | Main session does T1 directly; subagent dispatch only for parallelizable read-only tasks per `feedback_subagent_write_phantom` |
 

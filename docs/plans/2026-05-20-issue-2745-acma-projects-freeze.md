@@ -1,9 +1,11 @@
 # Plan for #2745: freeze acma-projects and move to local-only archive posture
 
-> **Status:** draft (r1 self-review applied; codex r1 deferred)
+> **Status:** draft (r1 + r2 review applied; r2-codex MAJOR resolved inline)
 > **Complexity:** T2
 > **Date:** 2026-05-20
-> **Revision history:** 2026-05-20 r1-claude — MAJOR finding (`/mnt/ace` at 95% > 85% trigger) resolved by scoping backup disposition OUT of this plan; filed dedicated [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769)
+> **Revision history:**
+> - 2026-05-20 r1-claude — MAJOR (95% disk vs 85% trigger); resolved by scoping backup disposition out + filing [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769)
+> - 2026-05-20 r2-codex — MAJOR; 7 blockers resolved inline: (1) missing guard/checker (issue acceptance requirement), (2) missing execution-stage adversarial review task, (3) backup-unchanged verification underspecified, (4) STATUS-FROZEN.md contradicts scope (backup-disposition section), (5) STATUS-FROZEN.md dangling "revisit criteria below" pointer, (6) missing legal-sanity scan task, (7) push-block test ordering after archive could give false-success; also: (8) #2746 completion gate not concretely verifiable, (9) missing "check parallel work" precondition
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2745
 > **Paired plan:** [`docs/plans/2026-05-20-issue-2746-llm-wiki-acma.md`](2026-05-20-issue-2746-llm-wiki-acma.md)
 > **Brainstorming spec:** [`docs/governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md`](../governance/2026-05-20-client-llm-wiki-feature-and-acma-instance-design.md) (commit `277a855ee`)
@@ -107,13 +109,18 @@ The 1.8 TB pre-move backup `/mnt/ace/acma-projects.preexisting-before-repo-move-
 
 | Task | Files | Net LOC | Repo/Location |
 |---|---|---|---|
-| T1 — Write STATUS-FROZEN.md (RED — verify-absence) | 0 | n/a | local FS check |
-| T2 — Write STATUS-FROZEN.md (GREEN) | 1 new file | ~60 | `vamseeachanta/acma-projects` repo |
+| T0 — Parallel-work precondition check | 0 | n/a | runtime (pgrep, hermes sessions) |
+| T0.5 — Backup pre-snapshot (file count + top-dir listing) | 2 tmp files | n/a | local FS |
+| T1 — RED: verify pre-state | 0 | n/a | local FS + GH check |
+| T2 — Write STATUS-FROZEN.md (GREEN) | 1 new file | ~50 | `vamseeachanta/acma-projects` repo |
 | T3 — Commit + push STATUS-FROZEN.md | n/a | n/a | `vamseeachanta/acma-projects` repo |
-| T4 — Archive GH remote | 0 | n/a | GitHub API |
-| T5 — Local push-disable | `.git/config` mod | ~2 | `/mnt/ace/acma-projects/` |
-| T6 — Verification: state checks | n/a | n/a | runtime |
-| T7 — Backup disposition note (already in STATUS-FROZEN.md) | n/a | n/a | n/a |
+| T4 — Local push-disable + verify push-blocked (re-ordered BEFORE archive) | `.git/config` mod | ~2 | `/mnt/ace/acma-projects/` |
+| T5 — Add freeze pre-commit hook | `.git/hooks/pre-commit` | ~8 | `/mnt/ace/acma-projects/` |
+| T6 — Archive GH remote | 0 | n/a | GitHub API |
+| T7 — Verification + strict backup-unchanged diff | 0 | n/a | runtime |
+| T8 — Legal-sanity scan | 0 | n/a | scripts/legal/legal-sanity-scan.sh |
+| T9 — Execution-stage adversarial review (T2) | 2 review artifacts | ~250 | `scripts/review/results/` |
+| T10 — Concrete #2746 state check + comment + close | n/a | n/a | GitHub |
 
 ## Pseudocode
 
@@ -145,16 +152,10 @@ See `vamseeachanta/llm-wiki-acma/DATA-CYCLE.md` for the full contract.
 - The local working copy at `/mnt/ace/acma-projects/` is **read-mostly**:
   - Existing files preserved as historical archive
   - `remote.origin.pushurl` set to `no_push` to prevent accidental push
-- The pre-move backup `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/`
-  (~1.8 TB) is **retained indefinitely** with revisit criteria below.
-
-## Backup disposition (out of this plan's scope)
-
-The adjacent 1.8 TB pre-move backup at `/mnt/ace/acma-projects.preexisting-*` is
-**preserved AS-IS** by this freeze. Disposition (retain / tar+offload / selective
-deletion) is deferred to workspace-hub#2769, which plans the decision under the
-standard hard gate. Current `/mnt/ace` mount pressure is 95% (verified 2026-05-20),
-so #2769 is a near-term decision but not coupled to this freeze.
+- The adjacent pre-move backup directory `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/`
+  is **untouched** by this freeze. Disposition planning is workspace-hub#2769's
+  scope, NOT this freeze's. See [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) for the disposition decision and any
+  revisit criteria.
 
 ## Reversal
 
@@ -214,27 +215,71 @@ gh repo view vamseeachanta/acma-projects --json isArchived,pushedAt -q '"archive
 - Verify: `git log -1 --pretty=oneline` → shows the freeze commit
 - Verify on GH: `gh api repos/vamseeachanta/acma-projects/contents/STATUS-FROZEN.md -q .name` → `STATUS-FROZEN.md`
 
-**T4 — Archive GH remote**
-- `gh repo archive vamseeachanta/acma-projects --yes`
-- Verify: `gh repo view vamseeachanta/acma-projects --json isArchived` → `{"isArchived": true}`
-- Verify: web UI shows "This repository has been archived by the owner" banner
+**T0 — Pre-execution parallel-work check** (r2-codex finding 9, must-fire rule `feedback_check_parallel_work`)
+- Run `pgrep -af "claude|codex|hermes" | grep -v grep` to inventory in-flight agent sessions
+- Scan `~/.hermes/sessions/` for active session_ids touching `/mnt/ace/acma-projects/`
+- If any session is actively writing to acma-projects, ABORT and coordinate; otherwise proceed
+- Capture inventory snapshot for the T9 evidence comment
 
-**T5 — Local push-disable**
+**T0.5 — Pre-execution backup-state snapshot** (r2-codex finding 3, strengthened verification)
+- Capture file count BEFORE any work: `find /mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928 -type f | wc -l > /tmp/acma-backup-precount.txt`
+- Capture top-level dir listing: `ls -1 /mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/ | sort > /tmp/acma-backup-pretopdirs.txt`
+- These snapshots are the invariants T7 must match exactly (file count + top-dir listing); `du -sh` alone is insufficient because it can mask material mutation
+
+**T4 — Local push-disable** (re-ordered before archive per r2-codex finding 7)
 - `cd /mnt/ace/acma-projects`
-- `git config --local remote.origin.pushurl "no_push://vamseeachanta/acma-projects (frozen per workspace-hub#2745)"`
+- `git config --local remote.origin.pushurl "no_push://vamseeachanta/acma-projects-frozen"`
 - Verify pushurl set: `git config --local --get remote.origin.pushurl` → returns the no_push URL
 - Verify fetch URL intact: `git config --local --get remote.origin.url` → `https://github.com/vamseeachanta/acma-projects` (or `.git`)
-- Try push (should fail): `git push --dry-run origin main` → expect failure with "could not resolve hostname no_push" or similar
+- **Test push-block BEFORE archive** (so failure is pushurl-attributable, not archive-attributable): `git push --dry-run origin main 2>&1 | tee /tmp/acma-pushblock-evidence.txt | grep -i "could not resolve\|no_push"` → must match; capture the evidence line for T9
 
-**T6 — Verification: state checks all green**
+**T5 — Add freeze-pre-commit hook in acma-projects** (r2-codex finding 1, epic #2744 acceptance "guard/checker that fails if new files are staged")
+- `cd /mnt/ace/acma-projects`
+- Create `.git/hooks/pre-commit` (executable):
+  ```bash
+  #!/usr/bin/env bash
+  echo "ERROR: acma-projects is FROZEN per workspace-hub#2745."
+  echo "New data should go to vamseeachanta/llm-wiki-acma instead."
+  echo "See STATUS-FROZEN.md."
+  echo "To override (rare ops only): git commit --no-verify"
+  exit 1
+  ```
+- `chmod +x .git/hooks/pre-commit`
+- Verify: `touch /tmp/dummy && cp /tmp/dummy /mnt/ace/acma-projects/.test-guard-fires && cd /mnt/ace/acma-projects && git add .test-guard-fires && git commit -m "test" 2>&1 | grep "FROZEN" && git restore --staged .test-guard-fires && rm .test-guard-fires` → expects guard message
+- Note: local hooks are NOT under version control (`.git/hooks/` is in `.gitignore` by default); the hook persists per-clone only. Document in STATUS-FROZEN.md that clones should add the same hook.
+
+**T6 — Archive GH remote**
+- `gh repo archive vamseeachanta/acma-projects --yes`
+- Verify: `gh repo view vamseeachanta/acma-projects --json isArchived -q .isArchived` → `true`
+- Verify: web UI shows "This repository has been archived by the owner" banner
+
+**T7 — Verification: state checks all green**
 - All T1 RED checks now GREEN:
   - `[[ -f /mnt/ace/acma-projects/STATUS-FROZEN.md ]] && echo "GREEN: present"`
   - `gh repo view vamseeachanta/acma-projects --json isArchived -q .isArchived` → `true`
   - `git -C /mnt/ace/acma-projects config --local --get remote.origin.pushurl` → returns no_push URL
-- Backup directory still present: `[[ -d /mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/ ]] && du -sh ...` → ~1.8 TB
+- **Strict backup-unchanged verification** (r2-codex finding 3):
+  - Re-count files: `find /mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928 -type f | wc -l > /tmp/acma-backup-postcount.txt`
+  - Re-list top-dirs: `ls -1 /mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/ | sort > /tmp/acma-backup-posttopdirs.txt`
+  - Match invariants from T0.5: `diff /tmp/acma-backup-precount.txt /tmp/acma-backup-postcount.txt && diff /tmp/acma-backup-pretopdirs.txt /tmp/acma-backup-posttopdirs.txt` → must be silent (zero diff). If non-empty, ABORT — backup mutation under freeze is unexpected.
 
-**T7 — Comment on #2745 with implementation evidence**
-- Post comment with: STATUS-FROZEN.md commit SHA, GH archive timestamp, local pushurl config, backup state verification, link to #2746 paired completion
+**T8 — Legal-sanity scan** (r2-codex finding 6)
+- Run `bash scripts/legal/legal-sanity-scan.sh` from `/mnt/local-analysis/workspace-hub/` repo root (scoped to workspace-hub, the repo where the plan + STATUS-FROZEN.md text content originated; `vamseeachanta/acma-projects` is the target of the freeze action but the new content `STATUS-FROZEN.md` is committed there and is short-label-only — re-scan there too)
+- Run the same script with `--repo=/mnt/ace/acma-projects` if it supports per-repo invocation; otherwise document that STATUS-FROZEN.md content was scanned via grep prior to commit
+- Expected: exit 0 (no client legal names, no deny-list patterns, no secrets)
+
+**T9 — Execution-stage adversarial review** (r2-codex finding 2; required by `SHARED_SOUL.md` adversarial-review-at-both-stages)
+- After T0–T8 execute successfully, dispatch T2 cross-review on the *executed work* (not the plan):
+  - Provider review prompts target: the freeze commit SHA, archive evidence, pushurl config output, pre-commit hook content, backup invariant verification, legal-sanity output
+- Land outputs at `scripts/review/results/2026-05-20-execute-2745-{claude,codex}.md`
+- Reviews must reach APPROVE / MINOR-NITS from both providers before T10 close
+
+**T10 — Verify #2746 paired completion before close** (r2-codex finding 8, was "T7 paired completion confirmed")
+- Concrete checks required before closing #2745:
+  - `gh issue view 2746 --json state -q .state` → `OPEN` is acceptable (siblings can close independently); plan-approved status implies in-progress, OK
+  - `gh issue view 2746 --json labels | jq -r '[.labels[].name]'` → must NOT contain `status:plan-review` or earlier (i.e., #2746 must have already progressed past plan-review)
+  - If #2746 is still at `status:needs-plan` or `status:plan-review`, PAUSE this close until #2746 catches up to at least `status:plan-approved`
+- Post evidence comment on #2745 with: STATUS-FROZEN.md commit SHA, GH archive timestamp, local pushurl config, backup-unchanged diff output, legal-sanity scan exit, T9 review URLs, #2746 state at close-time
 - Close #2745 with `gh issue close 2745 --comment "<evidence>"` per `feedback_gh_issue_comment`
 
 ## TDD Test List
@@ -254,19 +299,20 @@ This issue is operational (no code module produced), so "TDD" here = state-verif
 
 ## Acceptance Criteria
 
+- [ ] T0 parallel-work check completed; in-flight session inventory captured for T10 evidence comment
 - [ ] `STATUS-FROZEN.md` committed and pushed to `vamseeachanta/acma-projects:main` BEFORE archive (so visible on archived repo)
-- [ ] `vamseeachanta/acma-projects` has `isArchived: true` on GitHub (verified via `gh repo view`)
-- [ ] Local repo at `/mnt/ace/acma-projects/` has `remote.origin.pushurl` set to no_push (verified via `git config`)
-- [ ] Local fetch URL preserved (still `vamseeachanta/acma-projects`) so historical inspection still works
-- [ ] Attempted push to origin fails (verified via `git push --dry-run`)
-- [ ] Backup directory `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` is unchanged (size, timestamp)
-- [ ] `STATUS-FROZEN.md` documents: freeze date, successor repo (`vamseeachanta/llm-wiki-acma`), reversal procedure, link to [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) for backup-disposition planning
-- [ ] Adversarial review (T2: Claude + Codex) produces APPROVE on plan and execution stages
-- [ ] Legal-sanity scan passes — only short labels (`acma`) and standard repo identifiers, no client legal names
-- [ ] Comment posted on [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) with evidence (commit SHA, archive timestamp, config output, backup `du -sh` output)
+- [ ] `STATUS-FROZEN.md` content matches plan §Pseudocode: freeze date, successor repo (`vamseeachanta/llm-wiki-acma`), reversal procedure, link to [#2769](https://github.com/vamseeachanta/workspace-hub/issues/2769) for backup-disposition planning; does NOT contain backup-disposition decision content (r2-codex finding 4)
+- [ ] Local repo `/mnt/ace/acma-projects/` has `remote.origin.pushurl` set to `no_push://...` (T4); push-dry-run failure attributable to pushurl, NOT archive (T4 runs BEFORE T6 per r2-codex finding 7)
+- [ ] Local fetch URL preserved (still `vamseeachanta/acma-projects`)
+- [ ] Freeze pre-commit hook installed at `/mnt/ace/acma-projects/.git/hooks/pre-commit` and verified rejecting test commits (T5; epic #2744 acceptance "guard/checker fails on new data ingestion" per r2-codex finding 1)
+- [ ] `vamseeachanta/acma-projects` has `isArchived: true` on GitHub (T6)
+- [ ] Backup directory file count + top-dir listing match T0.5 pre-snapshot exactly (T7 strict invariant per r2-codex finding 3; `du -sh` alone is insufficient)
+- [ ] Legal-sanity scan runs at T8 on workspace-hub AND captures STATUS-FROZEN.md content scan; exit 0 (r2-codex finding 6)
+- [ ] T9 execution-stage adversarial review: outputs at `scripts/review/results/2026-05-20-execute-2745-{claude,codex}.md`; both APPROVE / MINOR-NITS (r2-codex finding 2; required per `SHARED_SOUL.md` review-at-both-stages)
+- [ ] T10 concrete #2746 state check before close: #2746 must be at `status:plan-approved` or later (r2-codex finding 8)
+- [ ] Comment posted on [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) with T10 evidence package: commit SHA, archive timestamp, pushurl config, hook verification, backup-unchanged diff output, legal-sanity exit, T9 review URLs, #2746 state at close-time
 - [ ] [#2745](https://github.com/vamseeachanta/workspace-hub/issues/2745) closed with `gh issue close --comment "<evidence>"` per `feedback_gh_issue_comment`
 - [ ] Pre-completion cleanup audit per `coordination/pre-completion-cleanup-audit` skill: CLEAN or EXPECTED only; no UNEXPECTED residue
-- [ ] Paired plan [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) completion confirmed BEFORE this freeze closes (avoid orphaning if [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) reverts)
 
 ## Adversarial Review Summary
 
