@@ -1,3 +1,22 @@
+Reading prompt from stdin...
+OpenAI Codex v0.132.0
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019e4819-2296-7b82-b936-74368ccbf26e
+--------
+user
+Adversarial rerun review for revised Issue #2766 plan R6.
+Rules: adversarial, no tools, review only the plan text below, cite exact sections, return APPROVE only if ready for status:plan-review.
+Grounded facts: #2770 required repos are workspace-hub,digitalmodel,assetutilities,worldenergydata,llm-wiki,assethold; optional aceengineer-website,aceengineer-strategy. Existing readiness warnings-only behavior is status=warn, dispatchable=false, overall_status=warn. R5 blockers were fixed in R6.
+
+Plan:
+```markdown
 # Plan for #2766: ace-linux-1 checkout normalization and registry reconciliation
 
 > **Status:** draft R6 — R1/R2/R3/R4/R5 adversarial reviews returned MAJOR; this revision addresses R5 compact-review findings; no implementation approval
@@ -14,7 +33,7 @@
 - `config/workstations/registry.yaml` is the current workstation authority. `machines.dev-primary` maps to ace-linux-1 and currently declares `workspace_root: /mnt/local-analysis/workspace-hub`, `tier1_repo_root: /mnt/local-analysis`, `repo_layout: sibling`, `repos`, and `telegram_hermes.data_access_profile.repos`.
 - `scripts/readiness/telegram_hermes_readiness.py` already emits top-level `overall_status`, `hosts`, and `errors`; any repo-placement readiness must attach to the relevant host entry, not create ambiguous top-level state.
 - Issue #2770 is the ace-linux-1 tier-1 placement decision: required = `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`; optional = `aceengineer-website`, `aceengineer-strategy`.
-- Issue #2766 contains historical relocation evidence for direct nested checkouts already moved out of `/mnt/local-analysis/workspace-hub`. This R6 plan does **not** retroactively authorize those moves; it reconciles and prevents drift.
+- Issue #2766 contains historical relocation evidence for direct nested checkouts already moved out of `/mnt/local-analysis/workspace-hub`. This R5 plan does **not** retroactively authorize those moves; it reconciles and prevents drift.
 - Latest live probe found `0` direct nested git repos under `/mnt/local-analysis/workspace-hub` after excluding root self metadata.
 - Latest live probe found `/mnt/local-analysis/agent-worktrees` present as a non-git infrastructure directory. It must be explicitly allowed as infrastructure and must not mask git siblings.
 
@@ -67,8 +86,6 @@ Issue-comment-only repos from #2766 that were earlier reported as moved-to-sibli
 | Compact R5 prompt | `.planning/quick/review-2766-r5-compact-prompt.md` |
 | R1/R2/R3/R4 review evidence | `scripts/review/results/2026-05-20-plan-2766-r*-*.md`, including compact R4 artifacts `...-r4-claude-compact.md` and `...-r4-codex-compact.md` |
 | R5 review evidence | `scripts/review/results/2026-05-20-plan-2766-r5-claude-compact.md`, `scripts/review/results/2026-05-20-plan-2766-r5-codex-compact.md`, plus matching `.err` files if non-empty |
-| Compact R6 prompt | `.planning/quick/review-2766-r6-compact-prompt.md` |
-| R6 review evidence | `scripts/review/results/2026-05-20-plan-2766-r6-claude-compact.md`, `scripts/review/results/2026-05-20-plan-2766-r6-codex-compact.md`, plus matching `.err` files if non-empty |
 | Label-time checklist evidence | issue comment on #2766 containing reviewed commit SHA, artifact paths, and `git ls-remote` equality check before applying `status:plan-review` |
 
 ---
@@ -219,7 +236,7 @@ machines:
 ## Pseudocode
 
 ```text
-parse CLI args: --machine dev-primary (default), --registry config/workstations/registry.yaml, --repo-root optional override, --now optional ISO timestamp for deterministic tests, --format json|html (default json), --output optional path
+parse CLI args: --machine dev-primary (default), --registry config/workstations/registry.yaml, --repo-root optional override, --now optional ISO timestamp for deterministic tests
 load registry and machine = machines[args.machine]
 if args.machine != "dev-primary": raise ValueError("#2766 checker scope is dev-primary/ace-linux-1 only")
 if machine.hostname != "ace-linux-1": raise ValueError("machines.dev-primary.hostname must be ace-linux-1")
@@ -234,9 +251,11 @@ classification_sets = [
   historically_moved_not_currently_present.keys(),
 ]
 if any classification bucket keys overlap: raise ValueError with the overlapping repo names and bucket names
-assert machine.repos == required + optional + non_tier1_machine_access_current  # exact group-concatenation order: required declaration order, then optional declaration order, then non-tier-1 declaration order
+assert machine.repos == required + optional + non_tier1_machine_access_current  # order normalized
 assert every data_access_profile repo is in machine.repos
-if data_access_profile.repos != required: raise ValueError("data_access_profile.repos must equal exactly the required tier-1 set")
+assert every data_access_profile repo is in required ∪ optional ∪ non_tier1_machine_access_current
+assert required ⊆ data_access_profile.repos
+assert data_access_profile.repos == required
 assert historically_moved_not_currently_present.keys() ∩ data_access_profile.repos == ∅
 
 inventory = immediate child git repos under repo_root, treating both child/.git directory and child/.git file as git repos
@@ -302,7 +321,7 @@ readiness integration:
 | Modify | `scripts/readiness/telegram_hermes_readiness.py` | Add host-scoped `repo_placement` and merge its dispatchability into the existing host dispatchability. |
 | Create | `tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py` | TDD coverage for host-scoped readiness integration. |
 | Create | `docs/reports/ace-linux-1-tier1-checkout-normalization.html` | Human-facing final report. |
-| Modify | `docs/plans/README.md` | Upsert one #2766 row; after final no-MAJOR review, row status must be `plan-review` only if no MAJOR remains. |
+| Modify | `docs/plans/README.md` | Upsert one #2766 row; after R3 review, row status must be `plan-review` only if no MAJOR remains. |
 
 ---
 
@@ -380,13 +399,13 @@ This issue's implementation does not move repos. The report must preserve this f
 - [ ] HTML report satisfies the structural section contract above.
 - [ ] All tests in the TDD list are written before implementation and pass after implementation.
 - [ ] `docs/plans/README.md` contains exactly one #2766 row with this plan path and current gate status.
-- [ ] All adversarial review artifacts through the final no-MAJOR review round, including R4/R5/R6 compact artifacts, are copied to durable suffixed filenames and committed/pushed before any `status:plan-review` label is applied; label-time operator checklist must verify `git ls-remote` HEAD contains the reviewed plan and review artifacts.
+- [ ] R4/R5 adversarial review artifacts are copied to durable suffixed filenames and committed/pushed before any `status:plan-review` label is applied; label-time operator checklist must verify `git ls-remote` HEAD contains the reviewed plan and review artifacts.
 
 ---
 
 ## Review Disposition
 
-| Review | Verdict | Disposition |
+| Review | Verdict | R3 response |
 |---|---|---|
 | R1 Claude/Codex | MAJOR | Preserved as `r1-*`; R2 incorporated schema, gitlink, readiness, and historical-state concerns. |
 | R2 Claude | MAJOR | Fixed durable review artifact naming, data-access AC, `repos` semantics, disjointness including non-tier-1/historical, historical bucket population, source issue split, synthetic fixture language, falsifiable README AC, HTML structural contract. |
@@ -394,7 +413,6 @@ This issue's implementation does not move repos. The report must preserve this f
 | R3 Claude/Codex | MAJOR | R4 response: classify `OGManufacturing` as explicit historical/runtime-access removal, define machine binding via `--machine dev-primary`, make placement rules table-driven, pin readiness status/failures/overall-status updates, define `agent-worktrees` infrastructure handling, make read-only/timestamp tests falsifiable, and require commit/push before plan-review. |
 | R4 compact Claude/Codex | MAJOR | R5 response: exact data-access target set, explicit warning-only readiness outcome, concrete historical provenance schema, distinct historical anomaly warning, HTML generation command, and R4/R5 artifact map cleanup. |
 | R5 compact Claude/Codex | MAJOR | R6 response: fixed data-access contradiction, added hostname field, explicit overall_status aggregation, historical mapping-key disjointness, concrete R5 artifact/checklist paths, infra-dir non-recursive scope, readonly monkeypatch surface, and JSON+HTML checker output. |
-| R6 compact Claude/Codex | MINOR | No blockers. Minor stale-text/operator clarity fixes incorporated before `status:plan-review`: R6 artifact paths, final-review artifact AC, exact CLI args, exact data-access equality validation, group-concatenation order, and disposition column. |
 | Gemini | UNAVAILABLE | Quota/API unavailable; R3 can proceed with Claude+Codex for T2 unless user requests waiting. |
 
 ---
@@ -408,3 +426,50 @@ This issue's implementation does not move repos. The report must preserve this f
 
 
 
+```
+
+Required output:
+## Verdict
+APPROVE | MINOR | MAJOR
+## Retrieval adequacy
+adequate | inadequate
+## Findings
+- ...
+## Blockers
+1. ...
+
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+## Verdict
+MINOR
+
+## Retrieval adequacy
+adequate
+
+## Findings
+- `Resource Intelligence Summary` still says “This R5 plan does not retroactively authorize those moves” inside an R6 plan. That is stale text and should be corrected to R6 before label transition.
+- `Files to Change` says the `docs/plans/README.md` row status changes “after R3 review,” but this is R6 after R5 blockers. Update to “after this R6 review” or “after no MAJOR remains.”
+- `Review Disposition` uses “R3 response” as the table column for all rounds, including R4/R5/R6 disposition. Rename to “Disposition” or “Plan response” to avoid stale gate language.
+
+## Blockers
+1. None. The R5 blockers described in the prompt appear addressed: data-access target is exact required set, warnings-only readiness remains `status=warn`, `dispatchable=false`, `overall_status=warn`, historical absent repos are preserved with explicit anomaly warnings, `agent-worktrees` is scoped as non-recursive infrastructure, and label-time pushed-artifact verification is specified.
+hook: Stop
+hook: Stop
+hook: Stop
+hook: Stop
+hook: Stop
+hook: Stop Completed
+hook: Stop Completed
+hook: Stop Completed
+hook: Stop Completed
+hook: Stop Completed
+tokens used
+45,962
