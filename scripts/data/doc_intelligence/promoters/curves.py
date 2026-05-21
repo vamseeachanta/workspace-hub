@@ -130,6 +130,10 @@ def promote_curves(
         domain = rec.get("domain", "unknown")
         by_domain[domain].append((rec, key))
 
+    # Render and validate every output before writing anything. This preserves
+    # fail-closed batch semantics: one invalid record cannot leave an earlier
+    # scaffold or CSV on disk.
+    pending_outputs: list[tuple[Path, str]] = []
     for domain, pairs in by_domain.items():
         entries = [r for r, _ in pairs]
         domain_keys = [k for _, k in pairs]
@@ -145,11 +149,7 @@ def promote_curves(
         except SourceDocKeyError as exc:
             result.errors.append(str(exc))
             return result
-        written = write_atomic(py_out, scaffold, dry_run=dry_run)
-        if written:
-            result.files_written.append(str(py_out))
-        else:
-            result.files_skipped.append(str(py_out))
+        pending_outputs.append((py_out, scaffold))
 
         # Placeholder CSVs — one per curve; each carries its own doc_key.
         for entry, doc_key in pairs:
@@ -169,11 +169,14 @@ def promote_curves(
             except SourceDocKeyError as exc:
                 result.errors.append(str(exc))
                 return result
-            written = write_atomic(csv_out, csv_body, dry_run=dry_run)
-            if written:
-                result.files_written.append(str(csv_out))
-            else:
-                result.files_skipped.append(str(csv_out))
+            pending_outputs.append((csv_out, csv_body))
+
+    for out_path, body in pending_outputs:
+        written = write_atomic(out_path, body, dry_run=dry_run)
+        if written:
+            result.files_written.append(str(out_path))
+        else:
+            result.files_skipped.append(str(out_path))
 
     return result
 
