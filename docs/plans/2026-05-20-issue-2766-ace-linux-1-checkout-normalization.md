@@ -1,48 +1,26 @@
-# Plan for #2766: ops(workstations): ace-linux-1 checkout normalization and registry reconciliation
+# Plan for #2766: ace-linux-1 checkout normalization and registry reconciliation
 
-> **Status:** draft R2 — R1 adversarial review returned MAJOR; this revision addresses R1 findings; no implementation approval
+> **Status:** draft R4 — R1/R2/R3 adversarial reviews returned MAJOR; this revision addresses R3 findings; no implementation approval
 > **Complexity:** T2
 > **Date:** 2026-05-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2766
-> **Review artifacts:** R1: `scripts/review/results/2026-05-20-plan-2766-claude.md`, `scripts/review/results/2026-05-20-plan-2766-codex.md`, `scripts/review/results/2026-05-20-plan-2766-gemini.md`, `scripts/review/results/2026-05-20-plan-2766-disagreement.md`; R2 re-review pending.
 
 ---
 
 ## Resource Intelligence Summary
 
-### Existing repo code
+### Live issue and code state
 
-- Found: `config/workstations/registry.yaml` is the current machine authority. `dev-primary` declares `hostname: ace-linux-1`, `workspace_root: /mnt/local-analysis/workspace-hub`, `tier1_repo_root: /mnt/local-analysis`, `repo_layout: sibling`, and a broad `repos` list.
-- Found: `scripts/readiness/telegram_hermes_readiness.py` has a `--registry` option and is the existing readiness surface. This issue must extend that readiness path instead of creating another dispatch authority.
-- Found: issue #2770 records the ace-linux-1 placement decision: required = `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`; optional = `aceengineer-website`, `aceengineer-strategy`; `OGManufacturing` is not a tier-1 decision repo unless later promoted.
-- Found: issue #2766 comments record already-executed relocation steps for nested checkouts. This plan is therefore not a fresh move plan; it is a reconciliation, registry, checker, readiness, and final evidence plan for the state already reached plus future drift prevention.
-- Gap: no committed `tier1_baseline` projection exists in `config/workstations/registry.yaml` for ace-linux-1.
-- Gap: no read-only checker exists yet to verify required sibling checkouts, optional presence/warnings, no direct nested git repos under `workspace-hub`, and classification of non-tier-1 machine-access repos.
+- `config/workstations/registry.yaml` is the current workstation authority. `machines.dev-primary` maps to ace-linux-1 and currently declares `workspace_root: /mnt/local-analysis/workspace-hub`, `tier1_repo_root: /mnt/local-analysis`, `repo_layout: sibling`, `repos`, and `telegram_hermes.data_access_profile.repos`.
+- `scripts/readiness/telegram_hermes_readiness.py` already emits top-level `overall_status`, `hosts`, and `errors`; any repo-placement readiness must attach to the relevant host entry, not create ambiguous top-level state.
+- Issue #2770 is the ace-linux-1 tier-1 placement decision: required = `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`; optional = `aceengineer-website`, `aceengineer-strategy`.
+- Issue #2766 contains historical relocation evidence for direct nested checkouts already moved out of `/mnt/local-analysis/workspace-hub`. This R3 plan does **not** retroactively authorize those moves; it reconciles and prevents drift.
+- Latest live probe found `0` direct nested git repos under `/mnt/local-analysis/workspace-hub` after excluding root self metadata.
+- Latest live probe found `/mnt/local-analysis/agent-worktrees` present as a non-git infrastructure directory. It must be explicitly allowed as infrastructure and must not mask git siblings.
 
-### Standards and policy inputs
+### Live ace-linux-1 inventory, verified 2026-05-20T23:34Z-23:45Z
 
-| Governance source | Status | Use in this plan |
-|---|---|---|
-| `docs/plans/README.md` / hard gates | applicable | Plan + adversarial review + `status:plan-review` + user approval precede implementation. |
-| `.claude/skills/coordination/issue-planning-mode/references/per-machine-repo-placement-outcome-contract.md` | applicable | First machine must leave a reusable registry-backed placement pattern for later machines. |
-| Issue #2731 data/repo location contract plan | draft / not yet authoritative | Treated as related prior art only; this plan must not cite #2731 as an already-established sibling-checkout standard. |
-| `config/agents/SHARED_SOUL.md` HTML artifact rule | applicable | Final human-facing report should be HTML; harness/plan files remain Markdown per existing `docs/plans/` convention. |
-
-### Issue and document evidence consulted
-
-- Issue #2766 body and comments, including live inventory, per-repo relocation evidence, and remaining nested-repo relocation summary.
-- Issue #2770 decision comment for ace-linux-1 placement.
-- `docs/plans/2026-05-19-issue-2754-ace-linux-1-throughput-lane-tier1-baseline.md` for the prior throughput-lane baseline.
-- `config/workstations/registry.yaml` for current registry state.
-- R1 adversarial review artifacts named above.
-
-### Live state evidence, verified 2026-05-20T23:34Z–23:45Z on ace-linux-1
-
-Direct nested git repos below `/mnt/local-analysis/workspace-hub` with root self-excluded: `0`.
-
-Top-level git checkouts under `/mnt/local-analysis` include:
-
-| repo | role for this issue | branch | ahead/behind | dirty | head | remote |
+| repo | classification for this issue | branch | ahead/behind | dirty | head | remote |
 |---|---|---|---:|---:|---|---|
 | `workspace-hub` | required tier-1 control plane | main | 0/0 | 85 | bad2169e | `https://github.com/vamseeachanta/workspace-hub.git` |
 | `digitalmodel` | required tier-1 | main | 0/0 | 6 | 8669b0ab | `https://github.com/vamseeachanta/digitalmodel.git` |
@@ -52,42 +30,59 @@ Top-level git checkouts under `/mnt/local-analysis` include:
 | `assethold` | required tier-1 | main | 0/0 | 0 | b2b1131e | `https://github.com/vamseeachanta/assethold.git` |
 | `aceengineer-website` | optional tier-1 | main | 0/0 | 0 | 39d2488d | `https://github.com/vamseeachanta/aceengineer-website.git` |
 | `aceengineer-strategy` | optional tier-1 | main | 0/0 | 0 | 19a0e054 | `https://github.com/vamseeachanta/aceengineer-strategy.git` |
-| `aceengineer-admin` | non-tier-1 machine-access | main | 0/0 | 0 | 0ad85b69 | `https://github.com/vamseeachanta/aceengineer-admin` |
-| `achantas-data` | non-tier-1 machine-access | main | 0/0 | 3 | 764fffe1 | `https://github.com/vamseeachanta/achantas-data` |
-| `achantas-media` | non-tier-1 machine-access | main | 0/0 | 0 | 0f48048e | `https://github.com/vamseeachanta/achantas-media` |
-| `CAD-DEVELOPMENTS` | non-tier-1 machine-access | main | 0/0 | 0 | 641ee137 | `https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS` |
-| `hobbies` | non-tier-1 machine-access | main | 0/0 | 0 | 408399d3 | `https://github.com/vamseeachanta/hobbies.git` |
-| `kaggle-rogii-2026` | non-tier-1 machine-access | main | 0/0 | 1 | d23e2608 | `https://github.com/vamseeachanta/kaggle-rogii-2026.git` |
-| `llm-wiki-acma` | non-tier-1 machine-access | main | 0/0 | 0 | 1d813086 | `https://github.com/vamseeachanta/llm-wiki-acma.git` |
-| `sabithaandkrishnaestates` | non-tier-1 machine-access | main | 0/0 | 0 | 941b96c3 | `https://github.com/vamseeachanta/sabithaandkrishnaestates` |
-| `teamresumes` | non-tier-1 machine-access | main | 0/0 | 0 | e09c0eb9 | `https://github.com/vamseeachanta/teamresumes` |
+| `aceengineer-admin` | non-tier-1 machine-access/current | main | 0/0 | 0 | 0ad85b69 | `https://github.com/vamseeachanta/aceengineer-admin` |
+| `achantas-data` | non-tier-1 machine-access/current | main | 0/0 | 3 | 764fffe1 | `https://github.com/vamseeachanta/achantas-data` |
+| `achantas-media` | non-tier-1 machine-access/current | main | 0/0 | 0 | 0f48048e | `https://github.com/vamseeachanta/achantas-media` |
+| `CAD-DEVELOPMENTS` | non-tier-1 machine-access/current | main | 0/0 | 0 | 641ee137 | `https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS` |
+| `hobbies` | non-tier-1 machine-access/current | main | 0/0 | 0 | 408399d3 | `https://github.com/vamseeachanta/hobbies.git` |
+| `kaggle-rogii-2026` | non-tier-1 machine-access/current | main | 0/0 | 1 | d23e2608 | `https://github.com/vamseeachanta/kaggle-rogii-2026.git` |
+| `llm-wiki-acma` | non-tier-1 machine-access/current | main | 0/0 | 0 | 1d813086 | `https://github.com/vamseeachanta/llm-wiki-acma.git` |
+| `sabithaandkrishnaestates` | non-tier-1 machine-access/current | main | 0/0 | 0 | 941b96c3 | `https://github.com/vamseeachanta/sabithaandkrishnaestates` |
+| `teamresumes` | non-tier-1 machine-access/current | main | 0/0 | 0 | e09c0eb9 | `https://github.com/vamseeachanta/teamresumes` |
 
-Known issue-comment evidence also names additional non-tier-1 repos moved earlier (`acma-projects`, `client_projects`, `doris`, `frontierdeepwater`, `OGManufacturing`, `rock-oil-field`, `saipem`, `sd-work`, `seanation`). They were not present in the latest top-level git inventory; the implementation report must reconcile them as `historically_moved_not_currently_present` or equivalent, not ignore them.
+Issue-comment-only repos from #2766 that were earlier reported as moved-to-sibling but were absent from the latest top-level git inventory: `acma-projects`, `client_projects`, `doris`, `frontierdeepwater`, `OGManufacturing`, `rock-oil-field`, `saipem`, `sd-work`, `seanation`. This is an explicit **state contradiction/anomaly**: prior issue comments say `sibling=git`; current probe says absent. The implementation must not hide this. It must classify them under `historically_moved_not_currently_present`, preserve source-comment provenance, and emit `historical_state_changed_since_prior_comment` warnings in checker/readiness/report output. `OGManufacturing` is additionally a deliberate runtime-access cleanup: it is currently in `machines.dev-primary.repos` and `telegram_hermes.data_access_profile.repos` but absent on disk and not tier-1 per #2770; this plan removes it from current local/runtime sets only while preserving it as a historical/anomaly entry.
+
+### R1/R2 review evidence
+
+- R1 copies: `scripts/review/results/2026-05-20-plan-2766-r1-claude.md`, `...-r1-codex.md`, `...-r1-gemini.md`, `...-r1-disagreement.md`.
+- R2 copies: `scripts/review/results/2026-05-20-plan-2766-r2-claude.md`, `...-r2-codex.md`, `...-r2-gemini.md`, `...-r2-disagreement.md`.
+- Base fanout artifact names are not cited as durable evidence because `plan-review-fanout.sh` overwrites them on rerun; suffixed copies must be committed/pushed before any `status:plan-review` transition.
+
+---
+
+## Artifact Map
+
+| Kind | Path |
+|---|---|
+| Plan | `docs/plans/2026-05-20-issue-2766-ace-linux-1-checkout-normalization.md` |
+| Plan index | `docs/plans/README.md` |
+| Registry implementation | `config/workstations/registry.yaml` |
+| Checker implementation | `scripts/workstations/check-tier1-repo-baseline.py` |
+| Readiness implementation | `scripts/readiness/telegram_hermes_readiness.py` |
+| Checker tests | `tests/workstations/test_check_tier1_repo_baseline.py` |
+| Readiness tests | `tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py` |
+| HTML final report | `docs/reports/ace-linux-1-tier1-checkout-normalization.html` |
+| R1/R2 review evidence | `scripts/review/results/2026-05-20-plan-2766-r*-*.md` |
+| R3 review evidence | to be generated after this revision; must be copied to `scripts/review/results/2026-05-20-plan-2766-r3-*.md` before `status:plan-review` |
 
 ---
 
 ## Deliverable
 
-A registry-backed, test-covered ace-linux-1 checkout normalization contract that:
-
-1. records the #2770 placement decision in `config/workstations/registry.yaml`,
-2. verifies the current sibling checkout state without cloning, moving, deleting, or syncing repos,
-3. rejects future direct nested git repos under `workspace-hub` while excluding `workspace-hub`'s own root `.git`,
-4. distinguishes `.git/` directories from `.git` gitlink files,
-5. classifies non-tier-1 machine-access repos affected by #2766,
-6. feeds readiness output with distinct `repo_placement` findings, and
-7. publishes an HTML final evidence report with inventory, runbook/rollback policy, and issue-comment reconciliation.
+Implement a **read-only**, registry-backed ace-linux-1 checkout normalization contract. The implementation must not clone, pull, fetch, push, move, delete, or sync repositories. It only reads filesystem/git metadata, updates workspace-hub registry/checker/readiness code, and emits an HTML evidence report.
 
 ---
 
-## Proposed Registry Schema
+## Proposed Registry Semantics
 
-Add a concrete `tier1_baseline` mapping under `machines.dev-primary`:
+`tier1_baseline` is the authoritative placement contract. Existing `machines.dev-primary.repos` becomes a **derived local-checkout allowlist**: it must equal `required + optional + non_tier1_machine_access_current`, sorted or generated by the implementation rule. It must not include `historically_moved_not_currently_present`.
+
+`telegram_hermes.data_access_profile.repos` is a runtime-access subset of `machines.dev-primary.repos`: it must include every `required` repo and may include explicitly classified current non-tier-1 repos used by dispatch. Every entry must be classified in `tier1_baseline` and locally present. Historical/reference-only/absent repos, including `OGManufacturing`, must be removed from runtime access unless a later approved issue promotes them back to current local access.
 
 ```yaml
 machines:
   dev-primary:
-    repos:
+    repos:  # derived local-checkout allowlist
       - workspace-hub
       - digitalmodel
       - assetutilities
@@ -96,10 +91,20 @@ machines:
       - assethold
       - aceengineer-website
       - aceengineer-strategy
-      - OGManufacturing
+      - aceengineer-admin
+      - achantas-data
+      - achantas-media
+      - CAD-DEVELOPMENTS
+      - hobbies
+      - kaggle-rogii-2026
+      - llm-wiki-acma
+      - sabithaandkrishnaestates
+      - teamresumes
     tier1_baseline:
       version: 1
-      source_issue: 2770
+      source_issues:
+        tier1_decision: 2770
+        relocation_reconciliation: 2766
       repo_root: /mnt/local-analysis
       workspace_root: /mnt/local-analysis/workspace-hub
       layout: sibling
@@ -115,94 +120,108 @@ machines:
         - aceengineer-strategy
       reference_only: []
       not_planned: []
-      non_tier1_machine_access:
-        - OGManufacturing
+      non_tier1_machine_access_current:
         - aceengineer-admin
         - achantas-data
         - achantas-media
-        - acma-projects
         - CAD-DEVELOPMENTS
-        - client_projects
-        - doris
-        - frontierdeepwater
         - hobbies
         - kaggle-rogii-2026
         - llm-wiki-acma
-        - rock-oil-field
         - sabithaandkrishnaestates
+        - teamresumes
+      historically_moved_not_currently_present:
+        - acma-projects
+        - client_projects
+        - doris
+        - frontierdeepwater
+        - OGManufacturing
+        - rock-oil-field
         - saipem
         - sd-work
         - seanation
-        - teamresumes
-      historically_moved_not_currently_present: []
+      infrastructure_dirs:
+        - agent-worktrees
       placement_rules:
         root_git_self_allowed: true
         direct_nested_git_policy: error
+        required_absence_policy: error
         optional_absence_policy: warning
         non_tier1_absence_policy: warning
+        historical_absence_policy: warning
+        historical_state_changed_since_prior_comment_policy: warning
+        unknown_sibling_git_policy: warning
         dirty_policy:
           required: warning
           optional: warning
-          non_tier1_machine_access: warning
+          non_tier1_machine_access_current: warning
         ahead_policy:
           required: warning
           optional: warning
-          non_tier1_machine_access: warning
+          non_tier1_machine_access_current: warning
 ```
-
-Reconciliation rule: `telegram_hermes.data_access_profile.repos` must include all `required` tier-1 repos needed for dispatch data access. It may include `non_tier1_machine_access` repos such as `OGManufacturing`, but such entries must also be explicitly classified under `tier1_baseline.non_tier1_machine_access`; no unclassified overlap is allowed.
 
 ---
 
 ## Pseudocode
 
 ```text
-function load_registry(path):
-    machine = registry.machines.dev-primary
-    assert machine.hostname == "ace-linux-1"
-    assert machine.tier1_baseline.version == 1
-    assert machine.tier1_baseline.layout == "sibling"
-    return machine
+parse CLI args: --machine dev-primary (default), --registry config/workstations/registry.yaml, --repo-root optional override, --now optional ISO timestamp for deterministic tests
+load registry and machine = machines[args.machine]
+assert args.machine == "dev-primary" for #2766 implementation scope
+assert machine.hostname == "ace-linux-1"
+assert baseline.version == 1
 
-function validate_registry_baseline(machine):
-    required = set(machine.tier1_baseline.required)
-    optional = set(machine.tier1_baseline.optional)
-    non_tier1 = set(machine.tier1_baseline.non_tier1_machine_access)
-    assert required == {workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold}
-    assert optional == {aceengineer-website, aceengineer-strategy}
-    assert required, optional, reference_only, not_planned are pairwise disjoint
-    assert every data_access_profile repo appears in required ∪ optional ∪ non_tier1 ∪ reference_only
-    assert no repo appears in machine.repos without classification, except explicitly ignored infrastructure dirs
+classification_sets = [
+  required,
+  optional,
+  reference_only,
+  not_planned,
+  non_tier1_machine_access_current,
+  historically_moved_not_currently_present,
+]
+assert all classification_sets are pairwise disjoint
+assert machine.repos == required + optional + non_tier1_machine_access_current  # order normalized
+assert every data_access_profile repo is in machine.repos
+assert every data_access_profile repo is in required ∪ optional ∪ non_tier1_machine_access_current
+assert required ⊆ data_access_profile.repos
+assert historically_moved_not_currently_present ∩ data_access_profile.repos == ∅
 
-function discover_top_level_git_repos(repo_root):
-    for each immediate child of repo_root:
-        if child/.git is directory OR child/.git is file:
-            collect repo name, branch, remote, HEAD, ahead/behind if upstream exists, dirty count
+inventory = immediate child git repos under repo_root, treating both child/.git directory and child/.git file as git repos
+infra_dirs = baseline.infrastructure_dirs, currently [agent-worktrees]
+assert every infra dir either absent or present as non-git directory; if infra dir contains .git file/dir, warn/error per unknown_sibling_git_policy
+nested = immediate children under workspace_root where child/.git directory or child/.git file exists
+ignore workspace_root/.git only; do not recurse below immediate children
 
-function discover_direct_nested_git_repos(workspace_root):
-    for each immediate child under workspace_root only:
-        if child name == ".git": ignore root self metadata
-        if child/.git is directory: emit nested_git_dir error
-        if child/.git is file: emit nested_gitlink error
-    do not recurse into .claude/worktrees or /mnt/local-analysis/agent-worktrees; those are separate worktree lanes
+blockers = []
+warnings = []
+apply baseline.placement_rules table, not hardcoded severities:
+  required absence => severity from required_absence_policy
+  optional absence => severity from optional_absence_policy
+  current non-tier-1 absence => severity from non_tier1_absence_policy
+  historical absence => severity from historical_absence_policy plus source-provenance warning if prior comment claimed sibling=git
+  unknown sibling git repo => severity from unknown_sibling_git_policy unless name in infra_dirs and is non-git directory
+  direct nested git dir/gitlink => severity from direct_nested_git_policy
+  dirty/ahead state => severity from dirty_policy/ahead_policy by classification
+append blockers for severity=error; append warnings for severity=warning
 
-function evaluate(machine, inventory):
-    missing_required = required - inventory.top_level_names - {workspace-hub if workspace_root is git repo}
-    missing_optional = optional - inventory.top_level_names
-    missing_non_tier1 = non_tier1 - inventory.top_level_names
-    blockers = nested_git_errors + missing_required
-    warnings = missing_optional + missing_non_tier1 + dirty/ahead states by policy
-    return structured result
-
-function readiness_projection(result):
-    append readiness.repo_placement = {
-      dispatchable: result.blockers.empty,
-      blockers: result.blockers,
-      warnings: result.warnings,
-      inventory_timestamp_utc: now,
-      source: "scripts/workstations/check-tier1-repo-baseline.py"
-    }
-    do not modify filesystems or run git pull/push/fetch/mv/rm/clone
+readiness integration:
+  host_entry = readiness["hosts"]["dev-primary"]
+  host_entry["repo_placement"] = {
+    "dispatchable": blockers.empty,
+    "blockers": blockers,
+    "warnings": warnings,
+    "inventory_timestamp_utc": args.now or injected_clock.now_utc(),
+    "source": "scripts/workstations/check-tier1-repo-baseline.py",
+  }
+  if repo_placement.blockers:
+    host_entry["failures"].append(repo_placement.blockers_summary)
+    host_entry["status"] = "fail"
+    host_entry["dispatchable"] = False
+  elif repo_placement.warnings:
+    host_entry["warnings"].append(repo_placement.warnings_summary)
+    # preserve existing readiness semantics for warnings: if the existing readiness code blocks dispatch on any warning, keep that behavior explicit; otherwise do not newly block dispatch for repo-placement warnings. Tests must pin the chosen behavior.
+  recompute overall_status from host_entry.status after mutation
 ```
 
 ---
@@ -211,88 +230,109 @@ function readiness_projection(result):
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `config/workstations/registry.yaml` | Add concrete ace-linux-1 `tier1_baseline` schema and reconcile `repos` / `data_access_profile.repos`. |
-| Create | `scripts/workstations/check-tier1-repo-baseline.py` | Read-only placement checker with JSON output. |
-| Create | `tests/workstations/test_check_tier1_repo_baseline.py` | TDD coverage for schema, path, classification, gitdir/gitlink, and read-only behavior. |
-| Modify | `scripts/readiness/telegram_hermes_readiness.py` | Import or subprocess checker and add `repo_placement` readiness section. |
-| Create/Modify | `tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py` | TDD coverage for readiness integration and blocker/warning separation. |
-| Create | `docs/reports/ace-linux-1-tier1-checkout-normalization.html` | Human-facing final evidence report: live inventory, #2766 issue-comment reconciliation, per-repo runbook status, rollback policy. |
-| Modify | `docs/plans/README.md` | Only refine the existing #2766 row status/notes after this plan passes review; do not add a duplicate index row. |
+| Modify | `config/workstations/registry.yaml` | Add `tier1_baseline`; update `repos`; update `telegram_hermes.data_access_profile.repos` to include all required repos and classified runtime non-tier-1 repos only. |
+| Create | `scripts/workstations/check-tier1-repo-baseline.py` | Read-only checker with JSON output. |
+| Create | `tests/workstations/test_check_tier1_repo_baseline.py` | TDD coverage for schema, classification, read-only behavior, nested gitdir/gitlink, unknown sibling drift, and historical bucket semantics. |
+| Modify | `scripts/readiness/telegram_hermes_readiness.py` | Add host-scoped `repo_placement` and merge its dispatchability into the existing host dispatchability. |
+| Create | `tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py` | TDD coverage for host-scoped readiness integration. |
+| Create | `docs/reports/ace-linux-1-tier1-checkout-normalization.html` | Human-facing final report. |
+| Modify | `docs/plans/README.md` | Upsert one #2766 row; after R3 review, row status must be `plan-review` only if no MAJOR remains. |
 
 ---
 
 ## TDD Test List
 
-| Test name | What it verifies | Expected input | Expected output |
-|---|---|---|---|
-| `test_dev_primary_tier1_baseline_schema_v1_matches_2770_decision` | Concrete schema path and required/optional sets. | Registry fixture with `machines.dev-primary.tier1_baseline.version: 1`. | Required/optional sets exactly match #2770. |
-| `test_registry_repos_are_classified_or_explicitly_ignored` | No silent drift among `repos`, `data_access_profile.repos`, and baseline classification buckets. | Registry fixture including `OGManufacturing`. | `OGManufacturing` accepted only under `non_tier1_machine_access`; unclassified repo fails. |
-| `test_data_access_profile_includes_required_repos_and_allows_classified_non_tier1` | Reconciliation rule for dispatch data access. | Fixture missing `llm-wiki` from `data_access_profile.repos`; fixture including classified `OGManufacturing`. | Missing required dispatch repo fails; classified `OGManufacturing` passes as non-tier-1. |
-| `test_workspace_hub_root_git_is_not_reported_as_nested` | Self-exclusion boundary. | Fake filesystem with `/root/workspace-hub/.git`. | No nested-git error. |
-| `test_direct_nested_git_directory_under_workspace_hub_is_blocker` | Nested repo directory rejection. | Fake filesystem with `/root/workspace-hub/digitalmodel/.git/`. | Blocker `nested_git_dir` names path. |
-| `test_direct_nested_gitlink_under_workspace_hub_is_blocker` | Worktree/gitfile rejection. | Fake filesystem with `/root/workspace-hub/digitalmodel/.git` as file. | Blocker `nested_gitlink` names path. |
-| `test_required_sibling_repos_present` | Required placement. | Fixture with all required repos at `/mnt/local-analysis/<repo>` plus root `workspace-hub`. | `dispatchable=true` for placement blockers, warnings allowed. |
-| `test_missing_required_repo_blocks_readiness` | Missing required checkout is a blocker. | Fixture missing `llm-wiki`. | JSON contains `repo_placement.dispatchable=false` and blocker `missing_required_repo: llm-wiki`. |
-| `test_optional_repo_absence_is_warning_only` | Optional absence does not block. | Fixture missing `aceengineer-website`. | JSON contains warning `missing_optional_repo: aceengineer-website`; `dispatchable` unchanged by that warning. |
-| `test_non_tier1_absence_is_warning_only` | Non-tier-1 registry entries such as `OGManufacturing` may be absent without blocking. | Fixture missing `OGManufacturing`. | Warning `missing_non_tier1_machine_access: OGManufacturing`; no blocker. |
-| `test_dirty_and_ahead_states_are_warnings_not_repo_placement_blockers` | Dirty/ahead policy is explicit. | Fixture with dirty `workspace-hub` and ahead `llm-wiki`. | Warnings include dirty/ahead records; placement dispatchability remains governed by missing/nested blockers. |
-| `test_checker_is_readonly` | No clone/move/delete/sync/fetch/pull/push. | Monkeypatched subprocess/filesystem mutators. | Checker performs only stat/list/read-only git metadata commands. |
-| `test_readiness_payload_adds_repo_placement_section` | Existing readiness script receives checker result. | Fixture checker JSON with one missing required repo. | Readiness JSON includes `repo_placement.blockers`, separate from provider/env blockers. |
-| `test_html_report_includes_issue_comment_reconciliation` | Final report covers #2766 historical moves and latest inventory. | Fixture with issue-comment moved repo list and current inventory. | HTML contains current, missing/historical, required, optional, non-tier-1 tables. |
+All filesystem and git inputs below are synthetic fixtures unless a test explicitly states it uses the live registry file.
+
+| Test name | Verifies |
+|---|---|
+| `test_dev_primary_tier1_baseline_schema_v1_matches_2770_decision` | Required/optional sets match #2770. |
+| `test_all_classification_buckets_are_pairwise_disjoint_including_non_tier1_and_historical` | No repo can appear in multiple buckets, including non-tier-1 and historical buckets. |
+| `test_machine_repos_equals_required_optional_current_non_tier1` | `machines.dev-primary.repos` is the derived local-checkout allowlist and excludes historical entries. |
+| `test_data_access_profile_includes_required_repos_and_only_classified_repos` | `data_access_profile.repos` contains all required repos and no unclassified repo. |
+| `test_historical_repos_are_not_expected_as_current_checkouts` | Repos in `historically_moved_not_currently_present` do not trigger missing-current warnings. |
+| `test_workspace_hub_root_git_is_not_reported_as_nested` | Root self `.git` is excluded. |
+| `test_direct_nested_git_directory_under_workspace_hub_is_blocker` | Immediate child `.git/` under workspace root blocks. |
+| `test_direct_nested_gitlink_under_workspace_hub_is_blocker` | Immediate child `.git` file under workspace root blocks. |
+| `test_required_sibling_repos_present` | Required sibling checkouts pass placement blockers. |
+| `test_missing_required_repo_blocks_readiness` | Missing required checkout blocks. |
+| `test_optional_repo_absence_is_warning_only` | Optional absence warns only. |
+| `test_current_non_tier1_absence_is_warning_only` | Missing current non-tier-1 checkout warns only. |
+| `test_ogmanufacturing_current_runtime_removal_is_explicit_historical_anomaly` | `OGManufacturing` is removed from current `repos`/data access but preserved under historical/anomaly with source-comment provenance. |
+| `test_agent_worktrees_is_allowed_only_as_non_git_infrastructure_dir` | `/mnt/local-analysis/agent-worktrees` is ignored only when non-git; git metadata there is surfaced. |
+| `test_unknown_top_level_sibling_git_repo_warns` | Unexpected `/mnt/local-analysis/<repo>` git checkout is surfaced as drift. |
+| `test_dirty_and_ahead_states_are_synthetic_warnings_not_blockers` | Synthetic dirty/ahead metadata is reported as warning by policy. |
+| `test_checker_is_readonly` | Use monkeypatch around subprocess/path mutation helpers plus before/after fixture tree snapshots to prove no clone/fetch/pull/push/mv/rm/delete/sync invocation or filesystem mutation. |
+| `test_readiness_payload_adds_host_scoped_repo_placement` | Missing-required blocker appends host failure, sets host status fail, sets host dispatchable false, and recomputes overall status. |
+| `test_warning_only_repo_placement_preserves_or_blocks_dispatch_by_existing_policy` | Warning-only repo-placement behavior is pinned against current readiness policy, with explicit expected `status`, `warnings`, `dispatchable`, and `overall_status`. |
+| `test_inventory_timestamp_is_injected_for_deterministic_readiness_payload` | `--now`/injected clock makes readiness output deterministic. |
+| `test_html_report_sections_and_data_attributes` | HTML report contains required semantic sections and machine-readable data attributes. |
+| `test_plan_index_row_is_upserted_once` | README contains exactly one #2766 row with current status and plan path. |
+
+---
+
+## HTML Report Contract
+
+`docs/reports/ace-linux-1-tier1-checkout-normalization.html` must be self-contained and include semantic sections with stable IDs/data attributes:
+
+- `<section id="summary" data-machine="ace-linux-1">`
+- `<section id="required-tier1">` table of required repos and status
+- `<section id="optional-tier1">` table of optional repos and status
+- `<section id="current-non-tier1-machine-access">` table of current non-tier-1 repos
+- `<section id="historical-reconciliation">` table of issue-comment-only historical entries with source issue/comment references
+- `<section id="nested-git-check">` nested gitdir/gitlink result
+- `<section id="readiness-projection">` JSON snippet or table for host-scoped `repo_placement`
+- `<section id="runbook-rollback-policy">` future movement guardrails
+
+Tests must parse HTML structurally, not only grep substrings.
 
 ---
 
 ## Per-Repo Runbook and Rollback Policy
 
-This plan does not authorize additional repo movement. It records the policy the final report must preserve for any future move/removal request:
+This issue's implementation does not move repos. The report must preserve this future-move policy:
 
-1. **Preflight per repo:** record path, remote, branch, HEAD, upstream ahead/behind, dirty/untracked count, `.git` directory vs gitfile, active processes with cwd under path, target path existence, same-filesystem status.
-2. **If clean duplicate and target verified:** preserve primary sibling; remove nested duplicate only after independent verification and issue comment evidence.
-3. **If unique nested checkout:** move with `mv` only after target absence is proven; rollback is `mv <target> <source>` before any subsequent mutation.
-4. **If dirty/untracked:** copy or commit/merge artifacts into chosen primary first; verify byte-identical preservation before delete/move.
-5. **If post-move verification fails:** stop; do not continue batch; restore from source/target backup if available; comment issue with blocker and exact command/evidence.
-
-For #2766 closeout, the HTML report must reconcile already-recorded comments against this runbook, identify any gaps as historical evidence gaps, and avoid pretending future approval can retroactively authorize prior operations.
+1. Preflight path, remote, branch, HEAD, upstream ahead/behind, dirty/untracked count, `.git` directory vs gitfile, active cwd processes, target existence, and same-filesystem status.
+2. If duplicate and clean: preserve primary sibling and remove duplicate only after independent verification.
+3. If unique nested checkout: move only after target absence is proven; rollback before mutation is `mv <target> <source>`.
+4. If dirty/untracked: copy or commit artifacts into chosen primary first; verify byte-identical preservation before delete/move.
+5. If verification fails: stop, do not continue batch, restore if possible, and comment exact evidence.
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] `config/workstations/registry.yaml` contains `machines.dev-primary.tier1_baseline.version: 1` with the schema above.
-- [ ] Required ace-linux-1 tier-1 repos are exactly: `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`.
-- [ ] Optional ace-linux-1 tier-1 repos are exactly: `aceengineer-website`, `aceengineer-strategy`.
-- [ ] `OGManufacturing` and other affected machine-access repos are explicitly classified outside the tier-1 decision set or as `historically_moved_not_currently_present`; no affected repo from #2766 comments is silently omitted.
-- [ ] Checker excludes `workspace-hub` root `.git` but blocks direct nested child `.git/` directories and `.git` gitlink files under `/mnt/local-analysis/workspace-hub/<child>`.
-- [ ] Missing required repos are blockers; missing optional and missing non-tier-1 machine-access repos are warnings.
-- [ ] Dirty/ahead/behind required-repo states are warnings in `repo_placement` unless a later policy explicitly promotes them to blockers; they must be surfaced separately from missing/nested blockers.
-- [ ] Readiness output contains a `repo_placement` section with `dispatchable`, `blockers`, `warnings`, `inventory_timestamp_utc`, and `source`.
-- [ ] `docs/reports/ace-linux-1-tier1-checkout-normalization.html` contains live inventory, #2766 issue-comment reconciliation, runbook/rollback policy, and final path state evidence.
-- [ ] Checker and readiness integration have tests proving read-only behavior; implementation performs no clone/move/delete/sync/fetch/pull/push.
-- [ ] `docs/plans/README.md` existing #2766 row is updated only after the re-review result is known.
+- [ ] Registry contains `machines.dev-primary.tier1_baseline.version: 1` with `source_issues.tier1_decision: 2770` and `source_issues.relocation_reconciliation: 2766`.
+- [ ] Required ace-linux-1 tier-1 repos exactly equal `workspace-hub`, `digitalmodel`, `assetutilities`, `worldenergydata`, `llm-wiki`, `assethold`.
+- [ ] Optional ace-linux-1 tier-1 repos exactly equal `aceengineer-website`, `aceengineer-strategy`.
+- [ ] `machines.dev-primary.repos` equals `required + optional + non_tier1_machine_access_current` and excludes `historically_moved_not_currently_present`.
+- [ ] `telegram_hermes.data_access_profile.repos` includes every required repo, is a subset of `machines.dev-primary.repos`, contains no unclassified repo, and excludes historical/reference-only/absent repos including `OGManufacturing` unless later approved.
+- [ ] Historical issue-comment-only repos absent from live inventory are classified under `historically_moved_not_currently_present` with source-comment provenance and a state-changed-since-prior-comment warning; no repo is silently dropped.
+- [ ] Checker excludes workspace root `.git` but blocks immediate child `.git/` directories and `.git` gitlink files under `/mnt/local-analysis/workspace-hub/<child>`.
+- [ ] Severity is driven by `placement_rules`; missing required and direct nested git metadata are blockers by default; missing optional/current-non-tier-1/historical anomaly/unknown sibling/dirty/ahead states are warnings by default.
+- [ ] Readiness output contains `hosts.dev-primary.repo_placement`; blockers append host failures, set host status `fail`, set dispatchable false, and recompute top-level `overall_status`. Warning-only behavior is pinned by tests against existing readiness policy.
+- [ ] HTML report satisfies the structural section contract above.
+- [ ] All tests in the TDD list are written before implementation and pass after implementation.
+- [ ] `docs/plans/README.md` contains exactly one #2766 row with this plan path and current gate status.
+- [ ] R3/R4 adversarial review artifacts are copied to durable suffixed filenames and committed/pushed before any `status:plan-review` label is applied; label-time operator checklist must verify `git ls-remote` HEAD contains the reviewed plan and review artifacts.
 
 ---
 
-## Adversarial Review Summary
+## Review Disposition
 
-| Provider | R1 Verdict | R1 disposition in R2 |
+| Review | Verdict | R3 response |
 |---|---|---|
-| Claude | MAJOR | Addressed undefined schema, self `.git` exclusion, gitlink hazard, data-access reconciliation, readiness payload shape, TDD hedges, non-falsifiable ACs, stale #2731 authority claim, index drift. |
-| Codex | MAJOR | Addressed issue deliverable coverage, stale already-moved state, affected repo enumeration, gitlink hazard, dirty/ahead policy, HTML report artifact. Artifact not on GitHub `main` remains a publication gap until selected plan/review files are committed/pushed. |
-| Gemini | UNAVAILABLE | Quota exhausted; no signal. R2 can proceed with Claude+Codex for T2 unless the user specifically requests waiting for Gemini quota. |
-
-**Overall R1 result:** MAJOR — no `status:plan-review` until R2 review returns no MAJOR findings and selected artifacts are published.
+| R1 Claude/Codex | MAJOR | Preserved as `r1-*`; R2 incorporated schema, gitlink, readiness, and historical-state concerns. |
+| R2 Claude | MAJOR | Fixed durable review artifact naming, data-access AC, `repos` semantics, disjointness including non-tier-1/historical, historical bucket population, source issue split, synthetic fixture language, falsifiable README AC, HTML structural contract. |
+| R2 Codex | MAJOR | Added Artifact Map, changed README action to upsert, fixed historical bucket contradiction, specified host-scoped readiness merge, defined `repos` semantics, added unknown sibling drift test. |
+| R3 Claude/Codex | MAJOR | R4 response: classify `OGManufacturing` as explicit historical/runtime-access removal, define machine binding via `--machine dev-primary`, make placement rules table-driven, pin readiness status/failures/overall-status updates, define `agent-worktrees` infrastructure handling, make read-only/timestamp tests falsifiable, and require commit/push before plan-review. |
+| Gemini | UNAVAILABLE | Quota/API unavailable; R3 can proceed with Claude+Codex for T2 unless user requests waiting. |
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk:** #2766 includes already-executed relocation commands before this R2 plan. The implementation must report them as historical facts and close evidence gaps rather than implying this plan authorized them.
-- **Risk:** `workspace-hub`, `digitalmodel`, and `llm-wiki` currently have dirty/ahead states. This plan classifies those as visibility/readiness warnings, not repo-placement blockers; separate sync/dirty cleanup may still block other workflows.
-- **Risk:** Some repos named in #2766 comments are absent from the latest top-level inventory. The final report must distinguish `not currently present` from `not affected`.
-- **Open:** Whether #2770 should be closed as decision-captured is independent from #2766 implementation approval. Recommended handling: leave #2770 open until #2766 reaches `status:plan-review`, then close #2770 with a link to the reviewed decision-consuming plan, without adding `status:plan-approved` to #2766.
+- Some live repos are dirty or ahead (`workspace-hub`, `digitalmodel`, `llm-wiki`). This plan surfaces that state; it does not clean or sync those repos.
+- Historical entries came from #2766 comments, not from current live inventory. The report must clearly label their provenance.
+- Closing #2770 is separate. Recommended sequence: #2766 reaches `status:plan-review`, user approves, implementation lands, then #2770 can be closed as consumed by #2766.
 
----
-
-## Complexity: T2
-
-T2 because implementation is bounded to registry schema, read-only checker, readiness projection, tests, and one HTML evidence report. R2 review should use two providers by default (Claude + Codex). Gemini may be added if quota is available, but unavailable Gemini should not block a T2 re-review when two independent reviews are available.
