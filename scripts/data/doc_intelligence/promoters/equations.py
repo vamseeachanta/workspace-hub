@@ -11,9 +11,13 @@ from scripts.data.doc_intelligence.promoters.coordinator import (
     register_promoter,
 )
 from scripts.data.doc_intelligence.promoters.text_utils import (
+    SourceDocKeyError,
     content_hash,
+    extract_source_doc_key,
+    format_source_doc_key_header,
     sanitize_identifier,
     source_citation,
+    validate_source_doc_key,
     write_atomic,
 )
 
@@ -47,6 +51,7 @@ class ParsedEquation:
     return_unit: str
     citation: str
     domain: str
+    source_doc_key: str = ""
 
 
 def parse_equation(record: dict) -> Optional[ParsedEquation]:
@@ -100,6 +105,10 @@ def parse_equation(record: dict) -> Optional[ParsedEquation]:
     if not function_name:
         return None
 
+    # parse_equation raises SourceDocKeyError if the form is invalid so callers
+    # get fail-closed semantics at the parse step.
+    source_doc_key = extract_source_doc_key(record)
+
     return ParsedEquation(
         function_name=function_name,
         display_name=display_name,
@@ -109,6 +118,7 @@ def parse_equation(record: dict) -> Optional[ParsedEquation]:
         return_unit=return_unit,
         citation=source_citation(source),
         domain=domain,
+        source_doc_key=source_doc_key,
     )
 
 
@@ -172,17 +182,33 @@ def render_function(eq: ParsedEquation) -> str:
 
 
 def render_module(equations: List[ParsedEquation], domain: str) -> str:
-    """Render a complete Python module from a list of parsed equations."""
+    """Render a complete Python module from a list of parsed equations.
+
+    Emits both an output-integrity stamp (``# content-hash:``, unchanged
+    semantics — computed over the function-body string) and one or more
+    source-traceability fields (``# source_doc_key:``, one per distinct L1
+    source) inside the module docstring.
+    """
     # Build the function bodies first to compute content hash
     func_blocks = [render_function(eq) for eq in equations]
     body = "\n\n\n".join(func_blocks) + "\n"
 
-    # Module-level docstring with content hash
+    h = content_hash(body)
+    # Self-loop guard at the latest possible point — re-validate every
+    # source_doc_key against the computed body hash.
+    doc_keys = [eq.source_doc_key for eq in equations if eq.source_doc_key]
+    for key in doc_keys:
+        validate_source_doc_key(key, output_content_hash=h)
+
+    sdk_header = format_source_doc_key_header(doc_keys)
+    sdk_block = f"\n{sdk_header}" if sdk_header else ""
+
+    # Module-level docstring with content hash + source_doc_key field(s)
     domain_label = domain.replace("-", " ").title()
     header = (
         f'"""{domain_label} Equations — auto-promoted from doc-intelligence.\n'
         f"\n"
-        f"# content-hash: {content_hash(body)}\n"
+        f"# content-hash: {h}{sdk_block}\n"
         f'"""\n'
     )
     return header + "\n\n" + body
@@ -202,10 +228,16 @@ def promote_equations(
     if not records:
         return result
 
-    # Group records by domain
+    # Group records by domain. parse_equation enforces the source_doc_key
+    # contract per record; an invalid doc_key raises SourceDocKeyError which
+    # we convert to a structured error and fail the whole batch closed.
     by_domain: dict[str, List[ParsedEquation]] = defaultdict(list)
     for rec in records:
-        parsed = parse_equation(rec)
+        try:
+            parsed = parse_equation(rec)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
         if parsed is None:
             result.errors.append(
                 f"Failed to parse equation: {rec.get('text', '')[:60]}..."
@@ -222,7 +254,11 @@ def promote_equations(
         out_path = (
             project_root / "digitalmodel" / "src" / "digitalmodel" / rel_path
         )
-        content = render_module(equations, domain)
+        try:
+            content = render_module(equations, domain)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
         written = write_atomic(out_path, content, dry_run=dry_run)
         target = str(out_path)
         if written:

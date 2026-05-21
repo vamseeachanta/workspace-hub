@@ -9,9 +9,13 @@ from scripts.data.doc_intelligence.promoters.coordinator import (
     register_promoter,
 )
 from scripts.data.doc_intelligence.promoters.text_utils import (
+    SourceDocKeyError,
     content_hash,
+    extract_source_doc_key,
+    format_source_doc_key_header,
     sanitize_identifier,
     source_citation,
+    validate_source_doc_key,
     write_atomic,
 )
 
@@ -54,11 +58,15 @@ def _parse_constant(record: dict) -> Optional[dict]:
     }
 
 
-def _render_module(parsed: List[dict]) -> str:
+def _render_module(
+    parsed: List[dict],
+    source_doc_keys: Optional[List[str]] = None,
+) -> str:
     """Render parsed constants into a Python module string.
 
     Output format mirrors digitalmodel dynacard/constants.py:
-    - content-hash header for idempotency
+    - content-hash header (output-integrity stamp; unchanged semantics)
+    - source_doc_key header(s) (source-traceability field, one per L1 source)
     - SCREAMING_SNAKE_CASE assignments
     - Docstrings with unit and source citation
     """
@@ -102,9 +110,24 @@ def _render_module(parsed: List[dict]) -> str:
 
     body = "\n".join(lines)
 
-    # Prepend content-hash (computed over body without the hash line)
+    # Prepend content-hash (computed over body without the hash line) and the
+    # source_doc_key header(s). The content-hash is the output-integrity stamp
+    # and is computed over the body ONLY, so adding source_doc_key headers
+    # does not change content-hash semantics.
     h = content_hash(body)
-    return f"# content-hash: {h}\n{body}"
+
+    header_parts = [f"# content-hash: {h}"]
+    if source_doc_keys:
+        # Self-loop guard: re-run the validator now that the body hash is
+        # known. The promote_constants caller already checked canonical form;
+        # this enforces that no doc_key claims to be the artifact's own hash.
+        for key in source_doc_keys:
+            validate_source_doc_key(key, output_content_hash=h)
+        sdk_header = format_source_doc_key_header(source_doc_keys)
+        if sdk_header:
+            header_parts.append(sdk_header)
+
+    return "\n".join(header_parts) + "\n" + body
 
 
 def promote_constants(
@@ -122,16 +145,32 @@ def promote_constants(
     """
     result = PromoteResult()
 
-    parsed = []
+    # Validate the source_doc_key contract BEFORE parsing or writing anything.
+    # A single invalid record fails the whole batch closed — promoted artifacts
+    # without verifiable source identity must never be written.
+    parsed: List[dict] = []
+    doc_keys: List[str] = []
     for rec in records:
         entry = _parse_constant(rec)
-        if entry is not None:
-            parsed.append(entry)
+        if entry is None:
+            continue
+        try:
+            key = extract_source_doc_key(rec)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
+        entry["source_doc_key"] = key
+        parsed.append(entry)
+        doc_keys.append(key)
 
     if not parsed:
         return result
 
-    content = _render_module(parsed)
+    try:
+        content = _render_module(parsed, source_doc_keys=doc_keys)
+    except SourceDocKeyError as exc:
+        result.errors.append(str(exc))
+        return result
     out_path = project_root / OUTPUT_REL
 
     written = write_atomic(out_path, content, dry_run=dry_run)
