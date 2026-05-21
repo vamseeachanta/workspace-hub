@@ -212,7 +212,11 @@ Purpose: clean routing metadata without starting implementation.
 
 ## Verification notes
 
-- GitHub issue triage was read-only.
 - Three delegated lane reviews completed: data layer, execution layer, results layer.
-- Existing `WRK Lifecycle` project was detected by the execution-lane reviewer, but sampled target issues were not attached to a project board (`projectItems: []`).
+- GitHub Project board: [`WRK Lifecycle`](https://github.com/users/vamseeachanta/projects/1).
+- The 44 scoped issues in this report were added to `WRK Lifecycle` and assigned project fields:
+  - `Status`: `Todo` except #2755 set to `In Progress`.
+  - `Stage Group`: `1-Plan (1-4)`, `2-Review Plan (5-7)`, `3-Execute (8-16)`, `4-Close (17-20)`, or `Backlog` per the board lane mapping above.
+- GitHub issue status labels were **not** changed. No issue was closed. No `status:plan-approved` label was added.
+- Comment posted on #2744 with the board link and routing summary: https://github.com/vamseeachanta/workspace-hub/issues/2744#issuecomment-4504177065
 - Local worktree was already dirty before this artifact was created; unrelated changes were not touched.
