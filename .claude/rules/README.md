@@ -5,4 +5,5 @@ Files:
 - `coding-style.md` — edit safety, path handling, harness file size
 - `patterns.md` — enforcement gradient (prose → script → hook)
 - `calc-citation-contract.md` — citation emission for standards-derived constants (per [#2481](https://github.com/vamseeachanta/workspace-hub/issues/2481), [#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685))
+- `codes-standards-data-routing.md` — vendor-licensed codes/standards data → private `vamseeachanta/llm-wiki` (post 2026-05-20 visibility flip)
 - `goal-invocation.md` — `/goal` invocation contract; consult [#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695) catalog before invoking
