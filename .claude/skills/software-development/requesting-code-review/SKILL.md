@@ -229,11 +229,25 @@ After the fix agent completes, re-run Steps 1-6 (full verification cycle).
 
 ## Step 8 — Commit
 
-If verification passed:
+If verification passed, **stage by explicit allowlist**. Do not use `git add -A` unless `git status --short` shows only intentional files for this task.
 
 ```bash
-git add -A && git commit -m "[verified] <description>"
+# Inspect and classify every dirty/untracked path first.
+git status --short
+
+# Preferred: stage only the files verified for this issue/task.
+git add path/to/intentional_file.py path/to/intentional_test.py
+
+git diff --cached --stat
+git diff --cached --check
+git commit -m "[verified] <description>"
 ```
+
+Commit-safety rules:
+- If unrelated dirty/untracked files exist (other issue plans, generated chart/image noise, local scratch files), leave them unstaged and name them in the final status.
+- Generated binary artifacts require explicit acceptance evidence before staging; otherwise treat them as noise even if tests generated them.
+- Re-run or at least re-check verification against the exact staged diff if staging excludes files from the working tree.
+- Prefer `git add <allowlisted paths>` over `git add -A`; broad staging is only acceptable after a clean classification pass.
 
 The `[verified]` prefix indicates an independent reviewer approved this change.
 
@@ -247,9 +261,9 @@ cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")
 cursor.execute("SELECT * FROM users WHERE id = ?", (user_id,))
 
 # Bad: shell injection
-os.system(f"ls {user_input}")
+os.system(f"ls {user_input}")  # scanner-allow:python_os_system (teaching example)
 # Good: safe subprocess
-subprocess.run(["ls", user_input], check=True)
+subprocess.run(["ls", user_input], check=True)  # scanner-allow:python_subprocess (teaching example)
 ```
 
 ### JavaScript
