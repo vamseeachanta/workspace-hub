@@ -17,7 +17,7 @@ A repo-safe reporting tool that compares one backup root against the correspondi
 - never executes a destructive disposition action (`move`/`delete`/`archive`/`compress`/`merge`/`tar`) — the helper raises `DestructiveActionBlocked`;
 - declares `disposition_status` as either `blocked` or `ready_for_recommendation`, never `proceed`.
 
-The live ACMA scan against `/mnt/ace/acma-projects.preexisting-before-repo-move-20260520-075928/` is **not** invoked here. It is an operator action gated on a separate execution issue.
+The live ACMA scan against the redacted pre-move backup root is **not** invoked here. It is an operator action gated on a separate execution issue.
 
 ## Module surface
 
@@ -90,7 +90,7 @@ uv run python -m py_compile scripts/data/backup_disposition.py tests/test_backup
 
 ## Out of scope for this phase
 
-- Live execution against `/mnt/ace/...`.
+- Live execution against the local ACMA data root.
 - Multi-backup batch comparison (Phase A is one backup vs one active).
 - Bounded-sampling strategy for very large trees — Phase A relies on the upstream `preexisting_inventory` walker's existing inaccessible-path handling and would degrade to `incomplete_scan` rather than risk an unbounded scan in a constrained environment.
-- Any `/mnt/ace` mount expansion or hardware decision.
+- Any local data-mount expansion or hardware decision.

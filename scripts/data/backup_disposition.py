@@ -37,6 +37,10 @@ class DestructiveActionBlocked(RuntimeError):
     """Raised when a disposition action would mutate source data at Phase A."""
 
 
+class OutputResidencyBlocked(RuntimeError):
+    """Raised when Phase A output would write outside repo-controlled space."""
+
+
 class DiskUsageTriple(NamedTuple):
     total: int
     used: int
@@ -283,9 +287,21 @@ def write_disposition_report(
         blocked_by=blocked_by,
         disk_usage_fn=disk_usage_fn,
     )
-    output = Path(output_path)
+    output = _validated_output_path(output_path)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(render_public_report(report)) + "\n", encoding="utf-8")
+    return output
+
+
+def _validated_output_path(output_path: Path | str) -> Path:
+    output = Path(output_path)
+    resolved = output.expanduser().resolve(strict=False)
+    mnt_ace = Path("/mnt/ace").resolve(strict=False)
+    if resolved == mnt_ace or mnt_ace in resolved.parents:
+        raise OutputResidencyBlocked(
+            "Phase A reports must be written to repo-controlled report paths, "
+            "not to /mnt/ace data roots."
+        )
     return output
 
 

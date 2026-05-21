@@ -257,6 +257,34 @@ def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path) -> N
     assert "private.xlsx" not in rendered
 
 
+def test_write_disposition_report_rejects_mnt_ace_output_target(tmp_path: Path) -> None:
+    backup, active = _backup_and_active(tmp_path)
+    _write(backup / "f.txt", "x")
+    _write(active / "f.txt", "x")
+
+    with pytest.raises(module.OutputResidencyBlocked):
+        module.write_disposition_report(
+            backup_root=backup,
+            active_root=active,
+            mount_path=tmp_path,
+            output_path=Path("/mnt/ace/issue-2769-report.md"),
+            disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
+        )
+
+
+def test_phase_a_report_artifact_does_not_leak_raw_mnt_ace_path() -> None:
+    report_path = (
+        Path(__file__).resolve().parents[1]
+        / "docs"
+        / "reports"
+        / "issue-2769-acma-premove-backup-disposition.md"
+    )
+
+    rendered = report_path.read_text(encoding="utf-8")
+
+    assert "/mnt/ace" not in rendered
+
+
 def test_cli_writes_redacted_metadata_only_report(tmp_path: Path) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "ClientStuff" / "data.dat", "payload")
