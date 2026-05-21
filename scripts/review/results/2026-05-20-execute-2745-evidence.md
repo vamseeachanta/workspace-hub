@@ -321,3 +321,42 @@ See STATUS-FROZEN.md.
 To override (rare ops only): git commit --no-verify
 (commit BLOCKED; no commit landed; working tree restored clean)
 ```
+
+## T9 final cross-review verdict (post-fix-loop)
+
+**Round 1 verdicts:**
+- **Claude r1**: APPROVE_WITH_MINOR (5 minor + 2 non-blocking; no BLOCKERS)
+- **Codex r1**: MAJOR (2 BLOCKERS + 2 MAJORS — all resolved via fix loop below)
+
+**Fix loop resolutions:**
+
+| Finding | Source | Resolution |
+|---|---|---|
+| Evidence file 404 on workspace-hub:main | Codex BLOCKER 1 | Committed at `f6086ccbd` (this file), pushed to origin/main, 0/0 divergence verified |
+| Backup file-count not literally re-run | Codex BLOCKER 2, Claude MINOR | Find succeeded once ext4 contention eased (post-T3 D-state exit): 10729 = 10729 ✓ |
+| Hook tested via direct-exec only | Codex MAJOR 1, Claude MINOR | Verified via actual `git add + git commit` invocation: FROZEN message + commit blocked + working tree restored ✓ |
+| Broad legal-sanity-scan substituted | Codex MAJOR 2, Claude MINOR | Ran broad scan; surfaced 161+ BLOCK matches — ALL in pre-existing log files (`logs/quality/comprehensive-learning-*.log`, `logs/orchestrator/hermes/session_*.jsonl`) recording past legal-mitigation work. ZERO matches in #2745 artifacts. Follow-up: file issue for scanner to exclude logs/ scope. |
+| Reversal procedure missing fetch+reset step | Claude MINOR | Documented in T10 evidence comment. STATUS-FROZEN.md cannot be updated without unarchive; future-operator-facing reversal addendum noted in #2745 comment. |
+| Pre-completion cleanup audit not in evidence | Claude MINOR | Run inline: CLEAN + EXPECTED only, no UNEXPECTED residue. See T9 appendix below. |
+
+**Reviewer artifacts:**
+- `scripts/review/results/2026-05-20-execute-2745-claude.md` (in this commit)
+- `scripts/review/results/2026-05-20-execute-2745-codex.md` (in this commit)
+
+**Final post-fix-loop verdict: APPROVE (both reviewers' substantive findings resolved or documented).**
+
+## Pre-completion cleanup audit (Claude MINOR resolution)
+
+| Residue class | State | Verdict |
+|---|---|---|
+| workspace-hub commit f6086ccbd (T9 evidence) | Pushed to origin/main, 0/0 divergence | CLEAN |
+| acma-projects local working tree | Clean (test-commit reset) | CLEAN |
+| acma-projects GH state | isArchived=true, STATUS-FROZEN.md visible, blob sha 8bed2d97 | CLEAN |
+| Auto-sync push | All commits pushed | CLEAN |
+| acma-projects local commit `a81d3c7c` vs origin/main `a7727671` | Same content, different SHA; contained by pushurl=no_push | EXPECTED (named in T3/T7 evidence) |
+| /tmp/2745-evidence/* scratch | 9 files, <15KB total | EXPECTED |
+| /tmp/2745-codex-review-prompt.txt + /tmp/2745-t10-comment-draft.md | Dispatch scratch | EXPECTED |
+| D-state processes | All exited; no residual locks | CLEAN |
+| Other-session WIP (`scripts/review/results/2026-05-20-plan-2766-*`) | Not mine; predates session, untouched by pathspec commits | EXPECTED |
+
+**Audit verdict: CLEAN + EXPECTED only. No UNEXPECTED residue. Safe to relay completion.**
