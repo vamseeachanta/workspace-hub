@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import importlib.util
+import re
 import shutil
 import sys
 from dataclasses import dataclass
@@ -342,7 +343,15 @@ def _parse_blocked_by(values: Iterable[str]) -> list[BlockedByItem]:
         if ":" not in raw:
             raise ValueError(f"--blocked-by entry must be 'issue_id:status', got {raw!r}")
         issue_id, status = raw.split(":", 1)
-        parsed.append(BlockedByItem(issue_id=issue_id.strip(), status=status.strip()))
+        issue_id = issue_id.strip()
+        status = status.strip().lower()
+        if not re.fullmatch(r"#\d+", issue_id):
+            raise ValueError(
+                "--blocked-by issue_id must be a redacted GitHub issue reference like '#2747'"
+            )
+        if not re.fullmatch(r"[a-z][a-z0-9_-]{0,31}", status):
+            raise ValueError("--blocked-by status must be a compact status token")
+        parsed.append(BlockedByItem(issue_id=issue_id, status=status))
     return parsed
 
 

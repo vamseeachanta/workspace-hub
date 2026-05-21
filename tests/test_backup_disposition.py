@@ -285,6 +285,17 @@ def test_phase_a_report_artifact_does_not_leak_raw_mnt_ace_path() -> None:
     assert "/mnt/ace" not in rendered
 
 
+def test_parse_blocked_by_rejects_raw_path_dependency_identifier() -> None:
+    with pytest.raises(ValueError):
+        module._parse_blocked_by(["/mnt/ace/private-client-path:open"])
+
+
+def test_parse_blocked_by_accepts_github_issue_dependency_identifier() -> None:
+    assert module._parse_blocked_by(["#2747:open"]) == [
+        module.BlockedByItem(issue_id="#2747", status="open")
+    ]
+
+
 def test_cli_writes_redacted_metadata_only_report(tmp_path: Path) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "ClientStuff" / "data.dat", "payload")
