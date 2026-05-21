@@ -29,6 +29,12 @@ Every report-published claim must bind to:
 
 `source_manifest`, `command_manifest`, `validation_result`, `legal_scan`, `checksum`, `review_verdict`, `output_residency`, and `promotion_decision`.
 
+## Source evidence contract
+
+Every evidence bundle also carries a `sources[]` section. Each source entry must include a stable `source_id`, canonical non-path `source_doc_key`, source class, input/output residency, confidence score, report-readiness score, evidence-completeness score, durable promotion-record reference, and explicit private/public release gates. Unscored sources, scored-but-not-review-cleared sources, self-attested promotions without durable evidence, raw path-like source keys, and sources without residency/provenance fail closed.
+
+Client-private outputs require private release clearance, sanitization review, reviewer clearance, and client-private audience classification for every source. Public outputs require public-safe audience classification, public source/input/output residency, public release clearance, legal pass, and the full public promotion gate set.
+
 ## Report-derived learning
 
 Keyword: report-derived learning.

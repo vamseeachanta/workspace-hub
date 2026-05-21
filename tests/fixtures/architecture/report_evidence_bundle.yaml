@@ -2,6 +2,43 @@ bundle_id: report-2729-contract-seed
 issue: '#2729'
 artifact_type: client_facing_html
 output_residency: registered_client_private_corpus
+corpus_scope:
+  corpus_id: client-private-wiki
+  corpus_name: client-private-llm-wiki
+  registry_ref: config/client-wikis.yml#wikis[short_name=example-client]
+  scope_statement: Client-private curated wiki output only; raw project archive and public llm-wiki are excluded.
+audience_classification: client-private
+source_class_mix:
+  - registered_client_private_corpus
+freshness:
+  as_of: '2026-05-21'
+  disclosure: Evidence bundle fixture is a contract seed; production reports must update freshness before delivery.
+execution_metadata:
+  command: uv run pytest tests/architecture/test_report_layer_contract.py -v
+  run_id: report-2729-contract-seed
+  generated_at: '2026-05-21T00:00:00Z'
+artifact_derivation_chain:
+  - step: source-contract
+    artifact: tests/fixtures/architecture/report_evidence_bundle.yaml
+    derivation: Seed fixture proving output-layer provenance fields for client-private report artifacts.
+sources:
+  - source_id: example-source-doc-001
+    source_doc_key: source-doc-key:example-client:contract-seed-001
+    source_class: source-doc-key
+    input_residency: registered_client_private_corpus
+    output_residency: registered_client_private_corpus
+    confidence:
+      overall: 0.82
+      report_readiness: 0.75
+      evidence_completeness: 0.80
+    promotion:
+      decision: client-private-report-only
+      promotion_record: tests/fixtures/architecture/report_promotion_record.yaml
+      gates:
+        private_release_clearance: true
+        public_release_clearance: false
+        sanitization_review: true
+        reviewer_clearance: true
 legal_scan:
   command: scripts/legal/legal-sanity-scan.sh --diff-only
   result: required-before-publication
