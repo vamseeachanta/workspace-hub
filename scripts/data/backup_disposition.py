@@ -300,8 +300,8 @@ def _validated_output_path(output_path: Path | str) -> Path:
     mnt_ace = Path("/mnt/ace").resolve(strict=False)
     if resolved == mnt_ace or mnt_ace in resolved.parents:
         raise OutputResidencyBlocked(
-            "Phase A reports must be written to repo-controlled report paths, "
-            "not to /mnt/ace data roots."
+            "Phase A reports must not be written to /mnt/ace data roots. "
+            "Write reports to repo-controlled paths for tracked closeout evidence."
         )
     return output
 
