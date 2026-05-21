@@ -46,4 +46,13 @@ Raw data never moves directly to public `llm-wiki`. Promotion path is:
 raw source -> readable derivative -> private <CLIENT_SHORT_NAME> wiki -> reviewed/sanitized derivative -> public llm-wiki, if appropriate
 ```
 
-Each transition needs a ledger entry.
+Each transition needs a ledger entry. The ledger schema and readiness classifier are defined in `ledgers/README.md` and validated programmatically by `scripts/client_llm_wiki/promotion_ledger.py` (issue #2747).
+
+## Score is not approval
+
+A high confidence score (`confidence.overall ≥ 0.75`) does **not** by itself make an entry client-ready. Promotion to client-facing artifacts requires the explicit release-clearance gates in `promotion.gates`:
+
+- private wiki page: `reviewer_clearance` + `private_release_clearance`
+- public llm-wiki: `reviewer_clearance` + `legal_clearance` + `sanitization_review` + `public_release_clearance` + non-empty rationale
+
+`classify_readiness` enforces this separation: a scored-but-unclearance entry classifies as `needs-human-review`, never `client-ready`. Downstream dashboards, reports, and chatbot retrieval indexes must consume `classify_readiness` (or the equivalent dashboard summary), not raw scores.

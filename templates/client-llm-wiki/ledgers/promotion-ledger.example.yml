@@ -1,16 +1,22 @@
 # Example only. Copy to a dated ledger file before use.
-ledger_version: 0.1
+# Schema reference for issue #2747 promotion ledger with completion confidence scoring.
+ledger_version: 0.2
 client: <CLIENT_SHORT_NAME>
 entries:
   - source_id: <CLIENT_SHORT_NAME_UPPER>-SOURCE-0001
+    # source_doc_key is the stable identifier shared with #2389 doc-intel surface.
+    source_doc_key: <CLIENT_SHORT_NAME_UPPER>-DOC-0001
     source_path: /mnt/ace/<CLIENT_RAW_ROOT>/<project>/<source-file>
-    source_class: raw-data
+    source_class: raw-data                      # raw-data | readable-raw-data | private-wiki | public-derivative
+    input_residency: private-client             # private-client | private-internal | public-eligible
+    output_residency: private-wiki              # readable-local | private-wiki | public-llm-wiki
     readable_derivative_path: null
     private_wiki_page: null
     extraction:
-      method: null
+      version: 0                                # bumps with each AI-model revision; preserved in revision_lineage
+      method: null                              # e.g. pdftotext, pymupdf, tesseract, docling
       tool_version: null
-      extracted_at: null
+      extracted_at: null                        # ISO-8601 UTC
     confidence:
       raw_source_presence: 0.0
       readability_or_ocr_quality: 0.0
@@ -20,12 +26,28 @@ entries:
       privacy_redaction_classification: 0.0
       engineering_domain_confidence: 0.0
       report_readiness: 0.0
-      overall: 0.0
+      overall: 0.0                              # operator-set per README guidance; NOT the readiness classifier
+    score_metadata:
+      scored_by: null                           # actor that emitted the score (human handle, model id, automation)
+      scored_with: null                         # tool/model + version used to score
+      scored_at: null                           # ISO-8601 UTC
+      rationale_bucket: not_started             # not_started | mechanical | model | human_review | mixed
     promotion:
-      status: not_started
+      status: not_started                       # not_started | partial | usable_with_caveats | client_ready | needs_human_review
       private_wiki_allowed: false
       public_llm_wiki_allowed: false
       rationale: "Initial placeholder; not reviewed."
-    revision_trigger:
-      revisit_when_models_improve: true
-      notes: null
+      gates:
+        reviewer_clearance: false               # operator/SME signed off content
+        legal_clearance: false                  # legal/compliance signed off
+        sanitization_review: false              # REDACT/FLAG-FOR-REVIEW pass applied
+        public_release_clearance: false         # explicit "ok for public llm-wiki" gate
+        private_release_clearance: false        # explicit "ok for private wiki" gate
+    revision_lineage:
+      current_extraction_version: 0
+      previous_extraction_versions: []          # list of prior extraction snapshots; never destructive
+      supersedes: null                          # source_id this entry supersedes, if any
+      superseded_by: null                       # source_id that supersedes this entry, if any
+      revision_trigger:
+        revisit_when_models_improve: true
+        notes: null
