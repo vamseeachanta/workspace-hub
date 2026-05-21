@@ -235,11 +235,12 @@ def test_rendered_report_redacts_client_names_and_raw_paths(tmp_path: Path) -> N
     assert "/mnt/ace" not in rendered
 
 
-def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path) -> None:
+def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "Confidential" / "private.xlsx", "payload")
     _write(active / "Confidential" / "private.xlsx", "payload")
-    output = tmp_path / "out" / "issue-2769-report.md"
+    monkeypatch.chdir(tmp_path)
+    output = Path("out") / "issue-2769-report.md"
 
     written = module.write_disposition_report(
         backup_root=backup,
@@ -255,6 +256,21 @@ def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path) -> N
     assert "metadata-only" in rendered
     assert "Confidential" not in rendered
     assert "private.xlsx" not in rendered
+
+
+def test_write_disposition_report_rejects_absolute_output_outside_repo(tmp_path: Path) -> None:
+    backup, active = _backup_and_active(tmp_path)
+    _write(backup / "f.txt", "x")
+    _write(active / "f.txt", "x")
+
+    with pytest.raises(module.OutputResidencyBlocked):
+        module.write_disposition_report(
+            backup_root=backup,
+            active_root=active,
+            mount_path=tmp_path,
+            output_path=tmp_path.parent / "outside-report.md",
+            disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
+        )
 
 
 def test_write_disposition_report_rejects_mnt_ace_output_target(tmp_path: Path) -> None:
@@ -290,17 +306,26 @@ def test_parse_blocked_by_rejects_raw_path_dependency_identifier() -> None:
         module._parse_blocked_by(["/mnt/ace/private-client-path:open"])
 
 
+def test_parse_blocked_by_rejects_no_colon_without_echoing_raw_value() -> None:
+    with pytest.raises(ValueError) as exc:
+        module._parse_blocked_by(["/mnt/ace/private-client-path"])
+
+    assert "/mnt/ace" not in str(exc.value)
+    assert "private-client-path" not in str(exc.value)
+
+
 def test_parse_blocked_by_accepts_github_issue_dependency_identifier() -> None:
     assert module._parse_blocked_by(["#2747:open"]) == [
         module.BlockedByItem(issue_id="#2747", status="open")
     ]
 
 
-def test_cli_writes_redacted_metadata_only_report(tmp_path: Path) -> None:
+def test_cli_writes_redacted_metadata_only_report(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "ClientStuff" / "data.dat", "payload")
     _write(active / "ClientStuff" / "data.dat", "payload")
-    output = tmp_path / "out" / "issue-2769-report.md"
+    monkeypatch.chdir(tmp_path)
+    output = Path("out") / "issue-2769-report.md"
 
     rc = module.main(
         [

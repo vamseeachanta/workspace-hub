@@ -299,9 +299,11 @@ def _validated_output_path(output_path: Path | str) -> Path:
     resolved = output.expanduser().resolve(strict=False)
     mnt_ace = Path("/mnt/ace").resolve(strict=False)
     if resolved == mnt_ace or mnt_ace in resolved.parents:
+        raise OutputResidencyBlocked("Phase A reports must not be written to data roots.")
+    repo_root = Path.cwd().resolve(strict=False)
+    if output.is_absolute() and resolved != repo_root and repo_root not in resolved.parents:
         raise OutputResidencyBlocked(
-            "Phase A reports must not be written to /mnt/ace data roots. "
-            "Write reports to repo-controlled paths for tracked closeout evidence."
+            "Phase A reports must be written inside the current repo/worktree."
         )
     return output
 
@@ -341,7 +343,7 @@ def _parse_blocked_by(values: Iterable[str]) -> list[BlockedByItem]:
         if not raw:
             continue
         if ":" not in raw:
-            raise ValueError(f"--blocked-by entry must be 'issue_id:status', got {raw!r}")
+            raise ValueError("--blocked-by entry must be 'issue_id:status'")
         issue_id, status = raw.split(":", 1)
         issue_id = issue_id.strip()
         status = status.strip().lower()
