@@ -1,0 +1,55 @@
+I'll perform a focused adversarial re-review of the patched plan, defaulting to non-APPROVE per the adversarial-review stance.
+
+`★ Insight ─────────────────────────────────────`
+- A "source-resolved" plan can still fail provenance: extracted numeric coefficients from a paywalled publication are typically still license-restricted, even when the workbook itself stays off-repo. The licensing question is about the *data values*, not just the *file*.
+- The repo's calc-citation contract (`.claude/rules/calc-citation-contract.md`) is fail-closed at calc time on a *named wiki target* with specific frontmatter — a plan that names "citation per contract" without naming the target is just deferring the blocker to implementation.
+- The contract explicitly deny-lists `knowledge/wikis/*/wiki/sources/` (vendor-derivative). For OCIMF MEG3/MEG4 (vendor publication), the citation target must be a `standards/` or `concepts/` page that may or may not exist yet.
+`─────────────────────────────────────────────────`
+
+## Verdict: **MAJOR**
+
+The plan has materially improved from round 1 — placeholder fallbacks are now tested-against, fail-closed source gating is real, repo boundary and supersession are clearer. But two licensing/provenance gaps remain that the reviewers would catch at implementation time, and the user-approval gate is the right place to close them.
+
+## Blocking findings
+
+### 1. Licensing line for "repo-safe derived fixtures" is undefined (Approval-scope assumption 1, Resource Intelligence row "OCIMF Coef.xlsx", Phase 0 step 3)
+
+The plan repeatedly says "do not commit the licensed workbook or licensed PDFs" and that implementation "may add only repo-safe derived fixtures/metadata if they record figure/source identity, extraction provenance, licensing/limitation text, and a fail-closed Citation sidecar." That gives the implementer permission to commit a derived fixture without naming what's commit-safe vs license-restricted.
+
+For OCIMF MEG3/MEG4 (paid IP), the numeric CXc/CYc/CMc tables themselves are typically derivative and subject to the same licensing as the source workbook. A CSV/JSON of extracted coefficient values committed to `digitalmodel` would likely violate the workbook license even though the workbook stayed off-repo. The 1033-row extracted dataset is exactly this kind of artifact.
+
+**Minimal required patch (Approval-scope assumption 1):** name the specific derived-fixture form that is allowed in-repo. Suggested split:
+- Commit-safe: parser/explorer code, structured citation metadata (figure IDs, code_id, publisher, revision, page refs), extraction provenance manifest, limitation/licensing text, and *pointer-only* lookup that resolves coefficient values from the off-repo workbook at calc time.
+- Not commit-safe (must stay under `/mnt/ace/` or equivalent licensed off-repo location): the numeric coefficient table itself in any form (CSV, JSON, YAML, Python literal).
+
+OR add an explicit owner-confirmation line to assumption 1 that committing extracted OCIMF coefficient values to `digitalmodel` is legally acceptable (e.g., under an OCIMF data-license the owner holds and has verified covers this use). User approval of the plan is then approval of that license posture, not implementation discretion.
+
+### 2. Citation target not pre-verified; implementation will hit fail-closed citation resolution (Approval-scope assumption 1, Phase 0)
+
+Per `.claude/rules/calc-citation-contract.md`:
+- Citations target a wiki page with #2471 frontmatter (`code_id`, `publisher`, `revision`).
+- Pages under `knowledge/wikis/*/wiki/sources/` are deny-listed.
+- Validation is fail-closed at calc time: missing page or frontmatter mismatch raises `CitationResolutionError`.
+
+The plan says "citation/provenance must follow `.claude/rules/calc-citation-contract.md`" and references the DNV-OS-E301 pilot. It does not name the specific OCIMF MEG3/MEG4 wiki target, confirm it exists, or specify that it carries the required frontmatter (`code_id`, `publisher: OCIMF`, `revision: MEG3` vs `MEG4`). The extracted figures span MEG3 *and* MEG4 (per the explorer title), so there may be two `code_id`s, not one.
+
+This means implementation Phase 2 step 3 ("Implement fail-closed citation sidecars for OCIMF coefficients") will block on a missing wiki page — the exact "stop with blocker" outcome the plan anticipates, but it can be avoided pre-approval.
+
+**Minimal required patch (Phase 0):** add a Phase 0 step:
+> Locate or create wiki target page(s) for OCIMF MEG3 and/or MEG4 with #2471 frontmatter (`code_id`, `publisher: OCIMF`, `revision`), outside `knowledge/wikis/*/wiki/sources/`. Confirm `digitalmodel.citations.registry` (or equivalent) resolves the `code_id`(s). If MEG3 and MEG4 figures both feed coefficients, decide and document which revision the report cites, or emit per-figure citations. Stop with a blocker if no acceptable target can be created.
+
+Additionally, name the expected `code_id`(s) in Approval-scope assumption 1 so user approval covers the citation identity, not just the route.
+
+## Non-blocking notes
+
+- **SIROCCO vessel class vs tanker basis (Approval-scope 2):** The plan applies generic OCIMF *tanker* current coefficients to B1528 SIROCCO. If SIROCCO is not a tanker (the existing config name doesn't disclose class), applying tanker current basis even as a labeled "generic/reference" is a stronger limitation than the plan currently states. Consider adding a one-line note in assumption 2 stating SIROCCO's actual vessel class and that the tanker basis is being applied off-class with the limitation documented in the report.
+- **A15 absence coverage (Resource Intelligence + Decision Ledger):** The plan notes A15 is absent from the extracted figures but does not state what A15 covers or whether its absence affects the +5° default case or the 0..4 kn current sweep. If A15 carries (say) low-heading-angle data, missing it could systematically bias the default case.
+- **Sign-convention test specificity (`test_issue_2760_current_positive_heading_signs`):** The test description hard-fails *opposite* sign in the default case but does not assert the *expected* sign. Per the +Y-port / +N-bow-to-port convention with +5° port current, the test should assert positive Y and positive N (or whichever the cited coefficient convention dictates) explicitly, not "not opposite."
+- **Oracle source assignment (`test_issue_2760_current_default_sample_calculation`):** "Expected values must come from approved source/hand calculation, not production code" is correct but does not say who provides the hand calculation. If the implementer computes it during implementation, the oracle becomes self-referential. Phase 0 should pre-stage the default-case hand calculation in the issue thread or a referenced artifact before approval.
+- **Rudder model selection (`Approval-scope 3`):** "Preferred in-repo precedent is `rudder_normal_force` … where applicable; any simpler area/drag fixture must be explicitly labeled preliminary/screening-level" lets the implementer pick the model. Owner approval should lock the choice (e.g., "use `rudder_normal_force` with Whicker-Fehlner basis at 28°, with the stall-region limitation noted"), not delegate it.
+
+## Status guidance
+
+The plan can remain in `status:plan-review` — both blocking findings are scoped to license posture and citation-target identity, which are exactly the kinds of decisions that belong in user approval, not in re-routing. Patch the two blockers into Approval-scope assumption 1 and Phase 0, then approval is well-formed.
+
+Do **not** advance to `status:plan-approved` without those two patches; otherwise implementation either commits license-restricted data or stops mid-stride on missing wiki frontmatter — both outcomes already cataloged as risk classes in the workspace's must-fire rules.
