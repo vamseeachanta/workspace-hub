@@ -254,7 +254,7 @@ Requires user-approved plan per SHARED_SOUL.md gates before invocation.
 
 **T1 — Template tree scaffold** (workspace-hub, single commit)
 - Create `templates/client-llm-wiki/README.md` with `<CLIENT_SHORT_NAME>` placeholders
-- Create `templates/client-llm-wiki/DATA-CYCLE.md` (copy verbatim from `/mnt/local-analysis/llm-wiki-acma/DATA-CYCLE.md`)
+- Create `templates/client-llm-wiki/DATA-CYCLE.md` as a **client-agnostic version** with `<CLIENT_SHORT_NAME>` placeholder replacing every ACMA/acma reference and `<CLIENT_PRIVATE_REPO>` placeholder replacing `vamseeachanta/acma-llm-wiki` (per r2-codex finding 2; NOT a verbatim copy of `/mnt/local-analysis/llm-wiki-acma/DATA-CYCLE.md`). Preserve the 4-layer table structure (raw → readable → private wiki → public llm-wiki) and gate-rule from the original.
 - Create `templates/client-llm-wiki/LICENSE` (proprietary marker; no OSS keywords)
 - Create `templates/client-llm-wiki/.gitignore` (raw/, private/, *.dwg, *.sim, *.dat>10MB, credential patterns)
 - Create `templates/client-llm-wiki/.claude/CLAUDE.md` (private-posture override; explicit no-public-promotion clause)

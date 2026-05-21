@@ -1,6 +1,6 @@
 # Plan for #2760: B1528 SIROCCO force calculation review updates
 
-> **Status:** ready-for-plan-review; implementation blocked pending explicit user approval.
+> **Status:** plan-approved; implementation authorized by issue label `status:plan-approved` and current owner instruction to continue.
 > **Complexity:** T3
 > **Date:** 2026-05-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2760
@@ -16,7 +16,7 @@
 
 ## Gate State
 
-Implementation remains blocked pending explicit user approval. The issue is currently labeled `status:plan-review`; it is **not** `status:plan-approved`.
+Implementation is authorized by explicit approval evidence: GitHub issue #2760 is labeled `status:plan-approved`, and the current owner instruction is to continue the outlined recommended steps.
 
 The first adversarial review returned three MAJOR verdicts against a draft that left engineering source/model choices unresolved. The owner's latest instruction is to get #2760 to `status:plan-review`; this patched plan converts those blockers into explicit **approval-scope assumptions** and fail-closed implementation gates. Approval of this plan means approval of the assumptions below; if any required source/citation cannot be resolved during implementation, work stops and returns to the issue thread instead of substituting invented data.
 
@@ -134,7 +134,7 @@ Posted: https://github.com/vamseeachanta/workspace-hub/issues/2760#issuecomment-
 
 ## Revised Implementation Outline
 
-Do not execute this section until the user explicitly approves this `status:plan-review` plan. The assumptions above are part of the approval request; implementation remains fail-closed on source/citation availability.
+Execute this section under the approved issue gate. The assumptions above are part of the approved implementation scope; implementation remains fail-closed on source/citation availability.
 
 ### Phase 0 — Preflight and source locking
 
@@ -251,4 +251,4 @@ Main-session synthesis plus three read-only subagent reviews concluded that movi
 
 Residual risk: implementation may still stop if the OCIMF source PDFs/tables or rudder model citation cannot be materialized in a repo-safe form. That risk is intentionally preserved as a blocker-return gate, not hidden implementation discretion.
 
-Approval request: user approval of this plan authorizes TDD implementation under the assumptions above, but no implementation begins until `status:plan-approved` is applied after explicit user approval.
+Approval evidence: issue #2760 is currently labeled `status:plan-approved`; current owner instruction authorizes continuing with the recommended implementation steps.
