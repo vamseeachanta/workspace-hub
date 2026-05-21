@@ -12,6 +12,9 @@ from scripts.data.doc_intelligence.promoters.text_utils import content_hash
 FIXTURES = Path(__file__).parent / "fixtures" / "promote"
 
 
+_DK_DEFAULT = "sha256:" + "a" * 64
+
+
 def _make_record(
     text,
     document="test.pdf",
@@ -19,11 +22,17 @@ def _make_record(
     page=1,
     domain="naval-architecture",
     manifest="test.pdf",
+    doc_key=_DK_DEFAULT,
 ):
-    """Helper to build a procedure record."""
+    """Helper to build a procedure record (carries canonical doc_key)."""
     return {
         "text": text,
-        "source": {"document": document, "section": section, "page": page},
+        "source": {
+            "document": document,
+            "section": section,
+            "page": page,
+            "doc_key": doc_key,
+        },
         "domain": domain,
         "manifest": manifest,
     }
@@ -143,7 +152,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         # Split on --- delimiters to get frontmatter and body
         parts = output.split("---")
         # parts[0] is empty (before first ---), parts[1] is frontmatter,
@@ -160,7 +169,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         parts = output.split("---")
         frontmatter = yaml.safe_load(parts[1])
         assert "content_hash" in frontmatter
@@ -172,7 +181,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         parts = output.split("---")
         frontmatter = yaml.safe_load(parts[1])
         assert "DNV-RP-B401.pdf" in frontmatter["source"]
@@ -184,7 +193,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         parts = output.split("---")
         frontmatter = yaml.safe_load(parts[1])
         assert frontmatter["name"] == "cathodic-protection-survey"
@@ -195,7 +204,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         parts = output.split("---")
         frontmatter = yaml.safe_load(parts[1])
         assert frontmatter["type"] == "procedure"
@@ -206,7 +215,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         parts = output.split("---")
         body = yaml.safe_load(parts[2])
         assert "steps" in body
@@ -219,7 +228,7 @@ class TestRenderYaml:
         )
 
         parsed = self._get_parsed()
-        output = _render_yaml(parsed)
+        output = _render_yaml(parsed, _DK_DEFAULT)
         parts = output.split("---")
         frontmatter = yaml.safe_load(parts[1])
         assert frontmatter["domain"] == "naval-architecture"

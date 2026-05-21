@@ -51,50 +51,60 @@ class TestParseDefinition:
 # ── render_glossary_yaml ───────────────────────────────────────────────
 
 
+_DK_A = "sha256:" + "a" * 64
+_DK_B = "sha256:" + "b" * 64
+
+
 class TestRenderGlossaryYaml:
     def _make_records(self):
         return [
             {
                 "text": "Cathodic Protection (CP): A technique to control corrosion.",
-                "source": {"document": "DNV-RP-B401.pdf", "section": "1.3", "page": 5},
+                "source": {
+                    "document": "DNV-RP-B401.pdf", "section": "1.3", "page": 5,
+                    "doc_key": _DK_A,
+                },
                 "domain": "naval-architecture",
             },
             {
                 "text": "Sacrificial Anode: An anode for galvanic protection.",
-                "source": {"document": "DNV-RP-B401.pdf", "section": "1.3", "page": 5},
+                "source": {
+                    "document": "DNV-RP-B401.pdf", "section": "1.3", "page": 5,
+                    "doc_key": _DK_A,
+                },
                 "domain": "naval-architecture",
             },
         ]
 
+    def _render(self):
+        recs = self._make_records()
+        keys = [r["source"]["doc_key"] for r in recs]
+        return render_glossary_yaml(recs, "naval-architecture", keys)
+
     def test_output_is_valid_yaml(self):
-        content = render_glossary_yaml(self._make_records(), "naval-architecture")
-        parsed = yaml.safe_load(content)
+        parsed = yaml.safe_load(self._render())
         assert "terms" in parsed
 
     def test_terms_count(self):
-        content = render_glossary_yaml(self._make_records(), "naval-architecture")
-        parsed = yaml.safe_load(content)
+        parsed = yaml.safe_load(self._render())
         assert len(parsed["terms"]) == 2
 
     def test_term_fields(self):
-        content = render_glossary_yaml(self._make_records(), "naval-architecture")
-        parsed = yaml.safe_load(content)
+        parsed = yaml.safe_load(self._render())
         first = parsed["terms"][0]
         assert first["term"] == "Cathodic Protection (CP)"
         assert "corrosion" in first["definition"]
         assert first["source"] == "DNV-RP-B401.pdf §1.3 p.5"
 
     def test_content_hash_header_present(self):
-        content = render_glossary_yaml(self._make_records(), "naval-architecture")
-        assert "# content_hash:" in content
+        # Canonical comment-form header (dash) per #2389.
+        assert "# content-hash:" in self._render()
 
     def test_domain_in_header(self):
-        content = render_glossary_yaml(self._make_records(), "naval-architecture")
-        assert "# Glossary — naval-architecture" in content
+        assert "# Glossary — naval-architecture" in self._render()
 
     def test_do_not_edit_warning(self):
-        content = render_glossary_yaml(self._make_records(), "naval-architecture")
-        assert "Do not edit manually" in content
+        assert "Do not edit manually" in self._render()
 
 
 # ── promote_definitions ────────────────────────────────────────────────
@@ -164,12 +174,18 @@ class TestPromoteDefinitions:
         records = [
             {
                 "text": "Term A: Definition A.",
-                "source": {"document": "doc1.pdf", "section": "1", "page": 1},
+                "source": {
+                    "document": "doc1.pdf", "section": "1", "page": 1,
+                    "doc_key": _DK_A,
+                },
                 "domain": "domain-one",
             },
             {
                 "text": "Term B: Definition B.",
-                "source": {"document": "doc2.pdf", "section": "2", "page": 2},
+                "source": {
+                    "document": "doc2.pdf", "section": "2", "page": 2,
+                    "doc_key": _DK_B,
+                },
                 "domain": "domain-two",
             },
         ]
@@ -182,7 +198,7 @@ class TestPromoteDefinitions:
         records = [
             {
                 "text": "Standalone term without colon",
-                "source": {"document": "doc.pdf"},
+                "source": {"document": "doc.pdf", "doc_key": _DK_A},
                 "domain": "misc",
             },
         ]

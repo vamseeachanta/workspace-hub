@@ -128,7 +128,12 @@ class TestPromoteCurvesCSV:
             / "sn_curve_for_tubular_joints_in_seawater.csv"
         )
         content = csv_path.read_text(encoding="utf-8")
-        assert content == "x,y\n"
+        # CSV carries provenance headers (# content-hash, # source_doc_key)
+        # per #2389; the only non-comment data line is the canonical x,y header.
+        non_comment = [
+            ln for ln in content.splitlines() if not ln.startswith("#")
+        ]
+        assert non_comment == ["x,y", ""] or non_comment == ["x,y"]
 
 
 class TestPromoteCurvesContentHash:

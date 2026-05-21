@@ -10,6 +10,9 @@ from scripts.data.doc_intelligence.promoters.text_utils import content_hash
 FIXTURES = Path(__file__).parent / "fixtures" / "promote"
 
 
+_DK_DEFAULT = "sha256:" + "a" * 64
+
+
 def _make_record(
     text,
     document="test.pdf",
@@ -17,11 +20,17 @@ def _make_record(
     page=1,
     domain="naval-architecture",
     manifest="test.pdf",
+    doc_key=_DK_DEFAULT,
 ):
-    """Helper to build a worked-example record."""
+    """Helper to build a worked-example record (carries canonical doc_key)."""
     return {
         "text": text,
-        "source": {"document": document, "section": section, "page": page},
+        "source": {
+            "document": document,
+            "section": section,
+            "page": page,
+            "doc_key": doc_key,
+        },
         "domain": domain,
         "manifest": manifest,
     }
@@ -150,7 +159,7 @@ class TestRenderTestFile:
                 "domain": "naval-architecture",
             }
         ]
-        output = _render_test_file("test.pdf", examples)
+        output = _render_test_file("test.pdf", examples, [_DK_DEFAULT])
         assert "# content-hash: " in output
         # Hash is 64 hex chars
         for line in output.split("\n"):
@@ -173,7 +182,7 @@ class TestRenderTestFile:
                 "domain": "naval-architecture",
             }
         ]
-        output = _render_test_file("test.pdf", examples)
+        output = _render_test_file("test.pdf", examples, [_DK_DEFAULT])
         assert "@pytest.mark.parametrize" in output
         assert "description,expected_approx" in output
 
@@ -191,7 +200,7 @@ class TestRenderTestFile:
                 "domain": "naval-architecture",
             }
         ]
-        output = _render_test_file("DNV-RP-C205.pdf", examples)
+        output = _render_test_file("DNV-RP-C205.pdf", examples, [_DK_DEFAULT])
         assert "DNV-RP-C205.pdf" in output
 
     def test_multiple_examples_rendered(self):
@@ -215,7 +224,7 @@ class TestRenderTestFile:
                 "domain": "naval-architecture",
             },
         ]
-        output = _render_test_file("test.pdf", examples)
+        output = _render_test_file("test.pdf", examples, [_DK_DEFAULT])
         assert "Pressure calc" in output
         assert "Buoyancy force" in output
         assert "1005525" in output
@@ -226,7 +235,7 @@ class TestRenderTestFile:
             _render_test_file,
         )
 
-        output = _render_test_file("test.pdf", [])
+        output = _render_test_file("test.pdf", [], [])
         assert output == ""
 
     def test_integer_values_no_decimal(self):
@@ -243,7 +252,7 @@ class TestRenderTestFile:
                 "domain": "naval-architecture",
             }
         ]
-        output = _render_test_file("test.pdf", examples)
+        output = _render_test_file("test.pdf", examples, [_DK_DEFAULT])
         assert "50)" in output or "50," in output
         assert "50.0" not in output
 
@@ -261,7 +270,7 @@ class TestRenderTestFile:
                 "domain": "naval-architecture",
             }
         ]
-        output = _render_test_file("test.pdf", examples)
+        output = _render_test_file("test.pdf", examples, [_DK_DEFAULT])
         compile(output, "<test>", "exec")
 
 

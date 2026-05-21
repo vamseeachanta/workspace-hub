@@ -9,9 +9,13 @@ from scripts.data.doc_intelligence.promoters.coordinator import (
     register_promoter,
 )
 from scripts.data.doc_intelligence.promoters.text_utils import (
+    SourceDocKeyError,
     content_hash,
+    extract_source_doc_key,
+    format_source_doc_key_header,
     sanitize_identifier,
     source_citation,
+    validate_source_doc_key,
     write_atomic,
 )
 
@@ -19,8 +23,12 @@ from scripts.data.doc_intelligence.promoters.text_utils import (
 def _parse_procedure(record: dict) -> Optional[dict]:
     """Extract procedure title and numbered steps from a record.
 
-    Returns a dict with keys: title, procedure_id, steps, source, domain.
-    Returns None if the record cannot be parsed.
+    Returns a dict with keys: title, procedure_id, steps, source, domain,
+    source_doc_key. Returns None if the record cannot be parsed.
+
+    Caller is responsible for extracting and validating source_doc_key
+    BEFORE invoking this helper; if the record was validated upstream, the
+    validated key is passed in via the ``source_doc_key`` argument.
     """
     text = record.get("text", "")
     lines = text.strip().split("\n")
@@ -53,11 +61,13 @@ def _parse_procedure(record: dict) -> Optional[dict]:
     }
 
 
-def _render_yaml(parsed: dict) -> str:
+def _render_yaml(parsed: dict, source_doc_key: str) -> str:
     """Render a parsed procedure as a YAML skill file.
 
-    Output has YAML frontmatter (between --- delimiters) followed by
-    a steps block.
+    The output carries canonical comment-form headers (``# content-hash:``,
+    ``# source_doc_key:``) at the very top of the file — these are valid
+    YAML comments and survive any downstream YAML parser that ignores
+    comments. The frontmatter that follows is unchanged in shape.
     """
     citation = source_citation(parsed["source"])
     procedure_id = parsed["procedure_id"]
@@ -65,7 +75,7 @@ def _render_yaml(parsed: dict) -> str:
     domain = parsed["domain"]
     steps = parsed["steps"]
 
-    # Build the steps block for hashing (the semantic content)
+    # Build the steps block for hashing (the semantic content).
     steps_lines = []
     for step in steps:
         steps_lines.append(f"  - {step}")
@@ -73,10 +83,20 @@ def _render_yaml(parsed: dict) -> str:
 
     body_hash = content_hash(steps_block)
 
+    # Self-loop guard now that the body hash is known.
+    validate_source_doc_key(source_doc_key, output_content_hash=body_hash)
+
     # Build the frontmatter as a kebab-case name
     name = procedure_id.replace("_", "-")
 
+    sdk_header = format_source_doc_key_header([source_doc_key])
+
     lines = [
+        f"# content-hash: {body_hash}",
+    ]
+    if sdk_header:
+        lines.append(sdk_header)
+    lines.extend([
         "---",
         f"name: {name}",
         f"description: {title} procedure from {citation}",
@@ -87,7 +107,7 @@ def _render_yaml(parsed: dict) -> str:
         "---",
         "",
         "steps:",
-    ]
+    ])
     lines.extend(steps_lines)
     lines.append("")  # trailing newline
     return "\n".join(lines)
@@ -98,16 +118,30 @@ def promote_procedures(
 ) -> PromoteResult:
     """Promote procedure records to YAML skill files.
 
+    Validates ``source.doc_key`` on every parseable record before writing
+    anything. A single invalid record fails the whole batch closed.
+
     Each procedure is written to:
         {project_root}/.claude/skills/engineering/{domain}/{procedure_id}.yaml
     """
     result = PromoteResult()
 
+    # Two-pass: validate all doc_keys first so we never write a partial
+    # batch. Records that fail _parse_procedure() are skipped (legacy
+    # behaviour — not enough structure to promote).
+    work: list[tuple[dict, str]] = []
     for record in records:
         parsed = _parse_procedure(record)
         if parsed is None:
             continue
+        try:
+            key = extract_source_doc_key(record)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
+        work.append((parsed, key))
 
+    for parsed, source_doc_key in work:
         domain = parsed["domain"]
         procedure_id = parsed["procedure_id"]
         out_dir = (
@@ -115,7 +149,11 @@ def promote_procedures(
         )
         out_path = out_dir / f"{procedure_id}.yaml"
 
-        content = _render_yaml(parsed)
+        try:
+            content = _render_yaml(parsed, source_doc_key)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
         written = write_atomic(out_path, content, dry_run=dry_run)
         if written:
             result.files_written.append(str(out_path))

@@ -10,9 +10,13 @@ from scripts.data.doc_intelligence.promoters.coordinator import (
     register_promoter,
 )
 from scripts.data.doc_intelligence.promoters.text_utils import (
+    SourceDocKeyError,
     content_hash,
+    extract_source_doc_key,
+    format_source_doc_key_header,
     sanitize_identifier,
     source_citation,
+    validate_source_doc_key,
     write_atomic,
 )
 
@@ -88,11 +92,14 @@ def _parse_example(record: dict) -> Optional[dict]:
 
 
 def _render_test_file(
-    manifest: str, examples: list[dict],
+    manifest: str, examples: list[dict], doc_keys: list[str],
 ) -> str:
     """Render a pytest test file for a set of worked examples.
 
     Returns the full file content string (empty string if no examples).
+    Emits both ``# content-hash:`` and one or more ``# source_doc_key:``
+    lines inside the module docstring per the standards-codes-provenance
+    contract §8.3.
     """
     if not examples:
         return ""
@@ -114,7 +121,7 @@ def _render_test_file(
     body = (
         f'"""Worked examples from {manifest} — auto-promoted.\n'
         "\n"
-        "# content-hash: {{HASH}}\n"
+        "# content-hash: {{HASH}}{{SDK_BLOCK}}\n"
         '"""\n'
         "\n"
         "import pytest\n"
@@ -136,11 +143,20 @@ def _render_test_file(
         '    assert expected_approx > 0, f"Placeholder for: {description}"\n'
     )
 
-    # Replace hash placeholder with actual hash of the body (minus the hash line)
-    hash_placeholder = body.replace("{{HASH}}", "")
-    digest = content_hash(hash_placeholder)
-    body = body.replace("{{HASH}}", digest)
+    # Compute hash over the body with placeholders stripped — this matches
+    # the prior commit's hash semantics: the hash covers the rendered code
+    # without the hash/sdk_block self-referent fields.
+    hashable = body.replace("{{HASH}}", "").replace("{{SDK_BLOCK}}", "")
+    digest = content_hash(hashable)
+    # Self-loop guard against the digest.
+    for key in doc_keys:
+        validate_source_doc_key(key, output_content_hash=digest)
 
+    sdk_header = format_source_doc_key_header(doc_keys)
+    sdk_block = f"\n{sdk_header}" if sdk_header else ""
+
+    body = body.replace("{{HASH}}", digest)
+    body = body.replace("{{SDK_BLOCK}}", sdk_block)
     return body
 
 
@@ -151,6 +167,9 @@ def promote_worked_examples(
 ) -> PromoteResult:
     """Promote worked-example records into pytest test files.
 
+    Validates ``source.doc_key`` on every parseable record before writing
+    anything. A single invalid record fails the whole batch closed.
+
     Groups records by manifest, renders one test file per manifest at
     ``{project_root}/tests/promoted/{domain}/test_{manifest_id}_examples.py``.
     """
@@ -158,26 +177,43 @@ def promote_worked_examples(
     if not records:
         return result
 
-    # Group parsed examples by manifest
-    by_manifest: dict[str, list[dict]] = defaultdict(list)
-    manifest_domain: dict[str, str] = {}
-
+    # Two-pass: validate doc_keys on every parseable record first.
+    work: list[tuple[str, dict, str]] = []
     for rec in records:
         parsed = _parse_example(rec)
         if parsed is None:
             continue
+        try:
+            key = extract_source_doc_key(rec)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
         manifest = rec.get("manifest") or rec.get("source_book") or "unknown"
+        work.append((manifest, parsed, key))
+
+    # Group parsed examples by manifest.
+    by_manifest: dict[str, list[dict]] = defaultdict(list)
+    manifest_domain: dict[str, str] = {}
+    manifest_keys: dict[str, list[str]] = defaultdict(list)
+    for manifest, parsed, key in work:
         by_manifest[manifest].append(parsed)
         manifest_domain[manifest] = parsed["domain"]
+        manifest_keys[manifest].append(key)
 
-    # Render and write one file per manifest
+    # Render and write one file per manifest.
     for manifest, examples in by_manifest.items():
         manifest_id = sanitize_identifier(manifest)
         domain = manifest_domain[manifest]
         out_dir = project_root / "tests" / "promoted" / domain
         out_path = out_dir / f"test_{manifest_id}_examples.py"
 
-        content = _render_test_file(manifest, examples)
+        try:
+            content = _render_test_file(
+                manifest, examples, manifest_keys[manifest],
+            )
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
         if not content:
             continue
 

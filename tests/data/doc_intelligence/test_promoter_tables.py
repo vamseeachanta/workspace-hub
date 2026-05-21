@@ -67,7 +67,17 @@ class TestPromoteTablesBasic:
             / rec["domain"]
             / Path(rec["csv_path"]).name
         )
-        assert src.read_text(encoding="utf-8") == dest.read_text(encoding="utf-8")
+        # Promoted CSV carries prepended provenance headers per #2389;
+        # the source body must still appear verbatim after the comment block.
+        src_text = src.read_text(encoding="utf-8")
+        dest_text = dest.read_text(encoding="utf-8")
+        non_comment_dest = "\n".join(
+            ln for ln in dest_text.splitlines() if not ln.startswith("#")
+        )
+        # Account for trailing newline preservation.
+        if dest_text.endswith("\n") and not non_comment_dest.endswith("\n"):
+            non_comment_dest += "\n"
+        assert non_comment_dest == src_text
 
     def test_domain_directory_created(self, tmp_dir):
         project_root = _setup_project(tmp_dir)
@@ -101,7 +111,16 @@ class TestPromoteTablesMissing:
                 "columns": ["A"],
                 "row_count": 1,
                 "csv_path": "tables/nonexistent.csv",
-                "source": {"document": "ghost.pdf", "page": 1},
+                "source": {
+                    "document": "ghost.pdf",
+                    "page": 1,
+                    # Valid doc_key so the missing-CSV error path is reachable
+                    # under the #2389 fail-closed provenance contract.
+                    "doc_key": (
+                        "sha256:"
+                        "9999999999999999999999999999999999999999999999999999999999999999"
+                    ),
+                },
                 "domain": "naval-architecture",
                 "manifest": "ghost.pdf",
             }

@@ -10,12 +10,21 @@ from scripts.data.doc_intelligence.promoters.text_utils import content_hash
 FIXTURES = Path(__file__).parent / "fixtures" / "promote"
 
 
+_DK_DEFAULT = "sha256:" + "a" * 64
+
+
 def _make_record(text, document="test.pdf", section="1.0", page=1,
-                 domain="naval-architecture", manifest="test.pdf"):
-    """Helper to build a requirements record."""
+                 domain="naval-architecture", manifest="test.pdf",
+                 doc_key=_DK_DEFAULT):
+    """Helper to build a requirements record (carries canonical doc_key)."""
     return {
         "text": text,
-        "source": {"document": document, "section": section, "page": page},
+        "source": {
+            "document": document,
+            "section": section,
+            "page": page,
+            "doc_key": doc_key,
+        },
         "domain": domain,
         "manifest": manifest,
     }

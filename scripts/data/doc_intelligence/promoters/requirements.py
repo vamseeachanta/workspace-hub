@@ -10,8 +10,12 @@ from scripts.data.doc_intelligence.promoters.coordinator import (
     register_promoter,
 )
 from scripts.data.doc_intelligence.promoters.text_utils import (
+    SourceDocKeyError,
     content_hash,
+    extract_source_doc_key,
+    format_source_doc_key_header,
     source_citation,
+    validate_source_doc_key,
     write_atomic,
 )
 
@@ -33,11 +37,14 @@ def _wrap_requirement_text(text: str) -> str:
     return "(\n" + "\n".join(parts) + "\n)"
 
 
-def _render_module(domain: str, records: List[dict]) -> str:
+def _render_module(
+    domain: str, records: List[dict], doc_keys: List[str],
+) -> str:
     """Render a list of requirement records into a Python module string.
 
-    Each requirement becomes a REQ_NNN string constant with a source
-    citation docstring.
+    Emits both ``# content-hash:`` (output integrity) and one or more
+    ``# source_doc_key:`` lines (source traceability) per the
+    standards-codes-provenance-reuse contract §8.3.
     """
     if not records:
         return ""
@@ -56,13 +63,20 @@ def _render_module(domain: str, records: List[dict]) -> str:
         lines.append("")
 
     body = "\n".join(lines)
+    h = content_hash(body)
+    # Self-loop guard: re-validate every doc_key against the body hash.
+    for key in doc_keys:
+        validate_source_doc_key(key, output_content_hash=h)
 
-    # Build module docstring
+    sdk_header = format_source_doc_key_header(doc_keys)
+    sdk_block = f"\n{sdk_header}" if sdk_header else ""
+
+    # Build module docstring with content-hash and source_doc_key headers.
     header = (
         f'"""Requirements — {domain} — '
         f"auto-promoted from doc-intelligence.\n"
         f"\n"
-        f"# content-hash: {content_hash(body)}\n"
+        f"# content-hash: {h}{sdk_block}\n"
         f'"""\n\n'
     )
     return header + body
@@ -74,6 +88,9 @@ def promote_requirements(
     dry_run: bool = False,
 ) -> PromoteResult:
     """Group requirement records by domain and write one module per domain.
+
+    Validates ``source.doc_key`` on every record before writing anything.
+    A single invalid record fails the whole batch closed.
 
     Args:
         records: JSONL records from requirements.jsonl.
@@ -88,14 +105,30 @@ def promote_requirements(
     if not records:
         return result
 
-    # Group by domain
-    by_domain: dict[str, list[dict]] = defaultdict(list)
+    # Validate every doc_key up front.
+    validated: List[tuple[dict, str]] = []
     for rec in records:
-        domain = rec.get("domain", "general")
-        by_domain[domain].append(rec)
+        try:
+            key = extract_source_doc_key(rec)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
+        validated.append((rec, key))
 
-    for domain, domain_records in sorted(by_domain.items()):
-        content = _render_module(domain, domain_records)
+    # Group by domain, preserving keys alongside records.
+    by_domain: dict[str, list[tuple[dict, str]]] = defaultdict(list)
+    for rec, key in validated:
+        domain = rec.get("domain", "general")
+        by_domain[domain].append((rec, key))
+
+    for domain, pairs in sorted(by_domain.items()):
+        domain_records = [r for r, _ in pairs]
+        domain_keys = [k for _, k in pairs]
+        try:
+            content = _render_module(domain, domain_records, domain_keys)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
         if not content:
             continue
 

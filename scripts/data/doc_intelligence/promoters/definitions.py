@@ -9,8 +9,12 @@ from scripts.data.doc_intelligence.promoters.coordinator import (
     register_promoter,
 )
 from scripts.data.doc_intelligence.promoters.text_utils import (
+    SourceDocKeyError,
     content_hash,
+    extract_source_doc_key,
+    format_source_doc_key_header,
     source_citation,
+    validate_source_doc_key,
     write_atomic,
 )
 
@@ -28,14 +32,16 @@ def parse_definition(text: str) -> Tuple[str, str]:
     return (term.strip(), definition.strip())
 
 
-def render_glossary_yaml(records: List[dict], domain: str) -> str:
+def render_glossary_yaml(
+    records: List[dict],
+    domain: str,
+    doc_keys: List[str],
+) -> str:
     """Render a list of definition records into a glossary YAML string.
 
-    Generates YAML manually via string formatting to avoid yaml.dump
-    quirks with multiline strings and quoting.
+    Emits canonical ``# content-hash:`` and ``# source_doc_key:`` comment-form
+    headers per the standards-codes-provenance-reuse contract §8.3.
     """
-    lines: List[str] = []
-
     # Build the terms body first so we can hash it
     term_lines: List[str] = []
     term_lines.append("terms:")
@@ -49,9 +55,19 @@ def render_glossary_yaml(records: List[dict], domain: str) -> str:
     body = "\n".join(term_lines) + "\n"
     chash = content_hash(body)
 
+    # Self-loop guard now that the body hash is known.
+    for key in doc_keys:
+        validate_source_doc_key(key, output_content_hash=chash)
+
+    lines: List[str] = []
     lines.append(f"# Glossary — {domain}")
-    lines.append(f"# content_hash: {chash}")
-    lines.append("# Auto-promoted from doc-intelligence indexes. Do not edit manually.")
+    lines.append(f"# content-hash: {chash}")
+    sdk_header = format_source_doc_key_header(doc_keys)
+    if sdk_header:
+        lines.append(sdk_header)
+    lines.append(
+        "# Auto-promoted from doc-intelligence indexes. Do not edit manually."
+    )
     lines.append("")
     lines.append(body)
 
@@ -68,6 +84,9 @@ def promote_definitions(
 ) -> PromoteResult:
     """Promote definition records into per-domain glossary YAML files.
 
+    Validates ``source.doc_key`` on every record before writing anything.
+    A single invalid record fails the whole batch closed.
+
     Args:
         records: List of definition dicts from definitions.jsonl.
         project_root: Workspace root; output goes under
@@ -82,13 +101,23 @@ def promote_definitions(
     if not records:
         return result
 
-    # Group records by domain
-    by_domain: dict[str, List[dict]] = defaultdict(list)
+    # Validate every doc_key up front.
+    validated: List[tuple[dict, str]] = []
     for rec in records:
-        domain = rec.get("domain", "unknown")
-        by_domain[domain].append(rec)
+        try:
+            key = extract_source_doc_key(rec)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
+        validated.append((rec, key))
 
-    for domain, domain_records in sorted(by_domain.items()):
+    # Group by domain, preserving keys alongside records.
+    by_domain: dict[str, list[tuple[dict, str]]] = defaultdict(list)
+    for rec, key in validated:
+        domain = rec.get("domain", "unknown")
+        by_domain[domain].append((rec, key))
+
+    for domain, pairs in sorted(by_domain.items()):
         out_path = (
             Path(project_root)
             / "data"
@@ -97,7 +126,13 @@ def promote_definitions(
             / domain
             / "glossary.yaml"
         )
-        content = render_glossary_yaml(domain_records, domain)
+        domain_records = [r for r, _ in pairs]
+        domain_keys = [k for _, k in pairs]
+        try:
+            content = render_glossary_yaml(domain_records, domain, domain_keys)
+        except SourceDocKeyError as exc:
+            result.errors.append(str(exc))
+            return result
 
         try:
             written = write_atomic(out_path, content, dry_run=dry_run)
