@@ -96,6 +96,18 @@ gh issue list -L 100 --label "agent:codex,priority:high" --json number,title
 gh issue edit 1234 --remove-label "agent:gemini" --add-label "agent:codex"
 ```
 
+### Provider Fallback / Reroute Pattern
+
+When a routed agent cannot complete the assigned lane after work has started, preserve traceability and reroute instead of abandoning or silently switching providers.
+
+Use `references/provider-reroute-traceability.md` for the detailed pattern. Minimum steps:
+
+1. Preserve the original worktree, prompt, process/log path, and failure evidence.
+2. Add an issue comment with the attempted provider, failure mode, artifact paths, and reroute decision.
+3. Update only the `agent:` routing label (`--remove-label agent:<old> --add-label agent:<new>`); do not mutate lifecycle labels unless the plan gate actually changed.
+4. Reuse the existing worktree/prompt context where safe, or write a fresh provider-specific prompt in `.planning/quick/`.
+5. Verify the replacement agent's claimed writes with filesystem diff/tests before reporting success.
+
 ## Gemini Batch Execution Pattern
 
 After labeling, execute research tasks in batches of 5-6 per Gemini session:
@@ -129,9 +141,22 @@ TASK 2-5: same pattern...
 - After Gemini sessions, verify files on disk with `ls -la` since sandbox isolation can sometimes prevent writes from persisting.
 - Free providers (`h-nemotron`, `h-qwen`) timeout after 5 min — too short for 5+ task batches. Gemini via OpenRouter takes ~2 min per session of 5 tasks.
 
+## Layered Kanban Flow Boards
+
+When the user asks to review related GitHub issues and prepare a board for a flow such as **data layer → execution layer → result/output layer**, do not treat `agent:` labels as the only source of truth. Build a dependency-aware Kanban using issue metadata, parent/child links, plan state, and GitHub Project fields.
+
+Use `references/layered-kanban-flow-routing.md` for the detailed pattern. Key guardrails:
+
+- Classify each issue by flow layer and workflow gate/stage.
+- Route Gemini to broad inventory/research/dedup work, Claude to architecture/orchestration/complex approved execution, and Codex to bounded implementation/tests/reporting/provenance.
+- Prefer project fields plus a durable `docs/reports/YYYY-MM-DD-<topic>-kanban.md` artifact when the work is coordination/planning.
+- Do not self-apply `status:plan-approved`, close issues, or mutate lifecycle labels just to populate the board.
+
 ## Output Artifacts
-- GitHub issues with `agent:` labels applied
+- GitHub issues with `agent:` labels applied, when label routing is explicitly part of the task
+- GitHub Project fields/status updated, when preparing a workflow Kanban without lifecycle-label mutation
 - `notes/agent-work-queue.md` (auto-generated view)
+- `docs/reports/YYYY-MM-DD-<topic>-kanban.md` (layered Kanban flow report)
 - `docs/plans/overnight-prompts-YYYY-MM-DD.md` (weekly overnight plan)
 - `scripts/refresh-agent-work-queue.sh` (cron-ready refresh script)
 

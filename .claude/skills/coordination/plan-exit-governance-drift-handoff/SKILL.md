@@ -25,6 +25,8 @@ Before finishing, check all four surfaces:
 3. `docs/plans/README.md` row status
 4. Latest valid provider review verdicts in `scripts/review/results/`
 
+When review reruns are in scope, audit both canonical and timestamped review artifacts. Canonical files named in plans/README may still be stale, zero-byte, or MAJOR while newer timestamped reruns exist beside them. List mtime, size, and verdict for both artifact families; treat zero-byte/tiny stubs and quota/capacity outputs as invalid/unavailable evidence, not approval. If canonical and timestamped artifacts disagree, document the drift and block advancement until a next session canonicalizes, discards, or reruns the evidence. See `references/canonical-vs-timestamped-review-artifacts.md`.
+
 ## Required handoff contents
 Document explicitly:
 - current local plan status (`draft`, `plan-review`, `plan-approved`, etc.)

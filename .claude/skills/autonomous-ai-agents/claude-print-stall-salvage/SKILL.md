@@ -53,6 +53,8 @@ Use when a delegated `claude -p` implementation run is launched in a worktree an
 - Do not judge a `claude -p` run by stdout alone. Verify with git/file state.
 - Do not let a stalled delegated process monopolize the worktree indefinitely.
 - Prefer preserving good partial edits over restarting from scratch when the path contract is clean.
+- If a background `claude -p` run exits with `-15`/SIGTERM, an empty log, and no remaining matching process, treat it as a salvage triage event, not an implementation result. Check the log size, process table, scoped git status, issue labels/gate state, and remote artifact presence before claiming anything changed.
+- In dirty control-plane repos, distinguish broad pre-existing operational churn from useful partial edits by checking approved/owned paths and committed/remote artifacts. Do not attribute unrelated workspace dirt to the terminated Claude process.
 - If a repo-wide Python test or scan is slow because it walks ignored/untracked/generated files, prefer tracked-file approaches such as `git ls-files` or `git grep` in tests and validators.
 
 ## Example checks

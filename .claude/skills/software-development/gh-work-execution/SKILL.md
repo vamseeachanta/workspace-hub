@@ -11,7 +11,11 @@ related_skills:
 tags: [execution, github, issue-workflow, tdd, review, verification]
 ---
 
-# GH Work Execution
+# GitHub Issue Execution
+
+## Resume after compaction or tool-call ceiling
+
+When resuming an issue from preserved todos/context compaction, first rehydrate live GitHub issue + repo/artifact state before continuing. Treat restored todos as hints, not proof. If an expected plan/artifact path is missing, pivot to issue comments and repo search as source of truth. See `references/resume-after-compaction.md`.
 
 This is the canonical execution route for approved GitHub issue work.
 
@@ -340,6 +344,7 @@ Strengthen resource intelligence whenever you hit uncertainty about:
 - whether the approved plan missed an adjacent dependency
 - whether another issue/PR/comment already solved part of the problem
 - whether an upstream/external dependency constrains the fix
+- whether a required source artifact exists only in an off-repo, licensed, confidential, or local corpus location
 
 Resource intelligence during execution may include:
 - broader code/test/doc search
@@ -348,8 +353,24 @@ Resource intelligence during execution may include:
 - session recall
 - upstream or package/API verification
 - searching for alternate or legacy terminology
+- verifying controlled off-repo sources and safe tracked derivatives without copying restricted raw artifacts into the repo
 
 Post a short GitHub note when this changes the implementation understanding materially.
+
+### Licensed/off-repo source resolution
+
+When a blocker is resolved by finding a licensed or off-repo source artifact:
+1. verify the source with deterministic evidence: absolute path or controlled route, title/metadata when available, parser/report counts, and generated-artifact sanity checks
+2. post a GitHub decision-ledger update that separates blocker resolution, source location, safe tracked derivatives, raw artifacts that must not be committed, and interpretation limits
+3. patch any stale plan text that still says the source is unresolved
+4. rerun focused plan review only if the source update changes scope, acceptance criteria, or validation path
+5. require fail-closed implementation behavior if the source/provenance/citation sidecar is unavailable
+
+Do not overstate generic/reference source data as asset-specific or client-specific. Keep raw licensed workbooks/PDFs/client files off-repo; track only safe derived artifacts and routing documentation.
+
+Reference: `references/licensed-offrepo-source-resolution.md`.
+
+For licensed standards workbooks used by generated engineering reports, also use `references/generic-ocimf-workbook-adapter-tdd.md`: it covers adapter-first TDD, no-corpus-leakage boundaries, generic/reference limitation language, and cross-surface HTML/DOCX/PDF verification.
 
 ## Execution pattern per issue
 
@@ -413,6 +434,8 @@ Validation discipline:
 - broaden only when the risk surface justifies it
 - do not substitute a broad green suite for missing targeted proof
 - if a validator flakes or is environment-blocked, do not wave it through; either stabilize it, document the blocker, or stop
+- for composite readiness/checker work, separate component acceptance from umbrella host readiness: a repo-placement checker can be `dispatchable: true` while the broader readiness command is `fail` because the active worktree is dirty/ahead/behind during implementation; record both results and do not misclassify component acceptance as failed unless the broader failure is part of the issue acceptance criteria
+- when hardening checkers with injected/synthetic state, distinguish an absent key from an explicit bad value: treat `{"upstream": None}` as missing-upstream evidence only when the key is present, not when a partial injected state omits the field for unrelated tests
 
 Required evidence bundle:
 - exact commands run
@@ -628,8 +651,11 @@ If execution is interrupted by context compression, tool-call exhaustion, provid
 - Do not present the issue as complete or imply closeout succeeded.
 - Preserve the active gate state explicitly: implementation complete vs validation in progress vs commit/push/close pending.
 - Name the exact next checkpoint to resume from, starting with `git status`, changed-file inspection, targeted validators, adversarial review, then commit/push/issue closeout.
+- When the user or runtime explicitly says no more tools are allowed, do not attempt more inspection. Produce a compact restart checkpoint from already-observed evidence only: worktree path, branch, issue state/labels if known, dirty files, untracked files, implemented surfaces observed in diffs, what has not been verified, and exact next commands/checkpoints for the next session.
+- Separate observed evidence from inferred state. If tests, review, commit, push, or closeout were not run in the current visible context, say so plainly and keep the issue open in the status narrative.
 - If skill loading fails due to ambiguous duplicate skill names, do not retry the same `skill_view` arguments. Continue with already-loaded governing skills or load the repo-local/canonical path explicitly in the next session.
 - Treat the resulting final answer as a restart checkpoint, not a substitute for GitHub closeout evidence.
+- For interrupted generated engineering/report closeouts, use `references/interrupted-engineering-report-closeout.md` before resuming commit/push/close. It adds the artifact-surface and source-truthfulness checks that are easy to miss after a focused green test run.
 
 ## Git pitfalls
 When an approved parent issue has become an umbrella/decomposition contract and child issues own the source-level remediation:
@@ -654,6 +680,8 @@ If unrelated edits block the push, stash them temporarily when safe. If stash si
 
 Before commit, check for runtime artifacts and temporary outputs.
 Do not stage them unless the issue explicitly requires them.
+
+For issues that implement in one sibling repo but publish generated deliverables into another checkout or embedded output tree, use `references/mixed-repo-output-artifact-closeout.md`. Key rule: classify the actual Git boundary for every output path, commit implementation and packaged outputs separately when they live in different repos, stage only explicit paths from dirty orchestration repos, and parse/extract DOCX/PDF content before claiming client-ready artifacts.
 
 ## Recommended progress report
 

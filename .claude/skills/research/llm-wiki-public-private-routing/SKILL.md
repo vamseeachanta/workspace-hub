@@ -269,5 +269,6 @@ Pathspec form per `feedback_multi_agent_commit_serialization`.
 - `feedback_service_provider_data_routing` — 6-row matrix; vendor brochures → off-repo; SEC / conference / regulator → public
 - `feedback_per_repo_metadata_is_firewall` — license + .gitignore + per-repo .claude + .git are the file-system firewall
 - `feedback_credential_issuer_copy_paste_leak` — never commit raw "save this token" output; same hygiene applies to client identifiers
+- `feedback_external_permission_email_hygiene` — when a rights-holder approval email is supplied, record the minimum permission/citation conclusion needed for traceability; do not persist personal contact details, and do not inflate “citation looks appropriate” into unlimited bulk-copy permission
 - `feedback_never_offer_to_self_label_plan_approved` — borderline exception cases route through user, not self-approval
 - `feedback_offrepo_intel_routing` — for published repos, side-channel notes go to `/mnt/ace/<repo-name>/docs/`, not in-repo

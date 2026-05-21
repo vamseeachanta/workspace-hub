@@ -87,8 +87,10 @@ ls -la /mnt/local-analysis/.cleanup-trash/ 2>/dev/null | head
 
 ### 5. Session-local handoff/session-doc state
 ```bash
-git status --short docs/sessions/ docs/session-handoffs/ 2>/dev/null
+git status --short docs/sessions/ docs/session-handoffs/ docs/handoffs/ 2>/dev/null
 ```
+
+When the user says **"document and prepare to exit"**, write a concise handoff before final audit if the session changed repo state or closed an issue. Include: active task, completed actions, verified repo/issue state, uncommitted expected residue, blockers, and exact next checkpoint. If the canonical task repo is clean but the control-plane repo is dirty/divergent with unrelated pre-existing changes, do **not** force a mixed commit; classify the new handoff/skill patch as **EXPECTED** residue and name the unrelated dirty state separately.
 
 ## Verdict format
 

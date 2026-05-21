@@ -55,6 +55,8 @@ For per-machine throughput-lane issues, prefer `throughput(workstations): activa
 
 If the user explicitly asks to decide which tier-1 repos should live on each machine, treat that as a separate repo-placement decision issue class, not a throughput activation issue. Use `github-issues` → `references/machine-repo-placement-decision-issues.md`: create/reuse one decision issue per machine in the requested order, separate recommendations from implementation, and tier evidence by live/remote/registry verification.
 
+When the user asks to make these decisions interactively, do not batch assumptions across machines. Finish the current machine's repo-placement decision surface before moving to the next. For each machine, separate **repo clone placement** from **large data residency**: a worker may need a local tier-1 repo clone for code/tests/agents while the repo's large raw data remains on a canonical data host and is mounted read-only/read-mostly or staged as bounded subsets. Do not recommend running development, tests, agents, commits, or package installs against another machine's live working tree; use local clones per machine and reconcile through GitHub. Detailed pattern: `references/machine-repo-placement-data-boundary.md`.
+
 1. **Open or update a GitHub issue first**
    - Use `gh-work-planning` and `github-issues`.
    - Capture the objective, workstation priority, provider urgency, and hard gates.

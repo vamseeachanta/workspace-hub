@@ -1,7 +1,7 @@
 ---
 name: tier1-indexing-scorecard-and-freshness-audit
 description: Audit tier-1 repos for code-placement/retrieval readiness, write scorecard/freshness reports, create follow-up GitHub issues when requested, and handle daily freshness checks without reinforcing legacy product-doc reference patterns.
-version: 1.0.3
+version: 1.0.4
 category: workspace-hub
 ---
 
@@ -162,6 +162,7 @@ Latest evidence references:
 - `references/2026-05-14-freshness-audit-lessons.md` — status-level baseline, corrected stale previous-report content (`assetutilities` broken-link false positive and `aceengineer-website` RED registry status), and current evidence snapshot.
 - `references/2026-05-15-freshness-audit-lessons.md` — latest status-level baseline, report readback/verification pattern, historical-scorecard-as-context guardrail, and current evidence snapshot.
 - `references/2026-05-20-freshness-audit-lessons.md` — dedupe generated broken-reference evidence before finalizing, verify file status/mtime/hash after all report patches, and preserve the corrected RED/YELLOW tier-1 status baseline.
+- `references/2026-05-21-freshness-audit-lessons.md` — compaction-resume closeout pattern, byte-identical dated/latest verification, status-level drift wording, and sibling-checkout generator path drift handling.
 
 
 ## Daily freshness automation pattern
