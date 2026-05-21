@@ -27,12 +27,23 @@ machines:
         - /mnt/remote/ace-linux-2/dde      # sshfs to ace-linux-2:/mnt/dde
         - /mnt/remote/ace-linux-2/local-analysis
     repos:
-      - worldenergydata
+      - workspace-hub
       - digitalmodel
       - assetutilities
+      - worldenergydata
+      - llm-wiki
       - assethold
-      - workspace-hub
-      - OGManufacturing
+      - aceengineer-website
+      - aceengineer-strategy
+      - aceengineer-admin
+      - achantas-data
+      - achantas-media
+      - CAD-DEVELOPMENTS
+      - hobbies
+      - kaggle-rogii-2026
+      - llm-wiki-acma
+      - sabithaandkrishnaestates
+      - teamresumes
     telegram_hermes:
       dispatch_enabled: true
       telegram_mode: coordinator
@@ -41,13 +52,117 @@ machines:
       allowed_user_ids_env: TELEGRAM_ALLOWED_USERS
       sync_policy: pull-before-work-push-after-work
       data_access_profile:
-        repos: [workspace-hub, digitalmodel, assetutilities, worldenergydata, assethold, OGManufacturing]
+        repos: [workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold]
         storage_roots: [/mnt/local-analysis, /mnt/ace]
         remote_mounts:
           - /mnt/remote/ace-linux-2/dde
           - /mnt/remote/ace-linux-2/local-analysis
       readiness_freshness_thresholds:
         report_hours: 25
+    tier1_baseline:
+      version: 1
+      source_issues:
+        tier1_decision: 2770
+        relocation_reconciliation: 2766
+      repo_root: /mnt/local-analysis
+      workspace_root: /mnt/local-analysis/workspace-hub
+      layout: sibling
+      required: [workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold]
+      optional: [aceengineer-website, aceengineer-strategy]
+      reference_only: []
+      not_planned: []
+      non_tier1_machine_access_current:
+        - aceengineer-admin
+        - achantas-data
+        - achantas-media
+        - CAD-DEVELOPMENTS
+        - hobbies
+        - kaggle-rogii-2026
+        - llm-wiki-acma
+        - sabithaandkrishnaestates
+        - teamresumes
+      historically_moved_not_currently_present:
+        acma-projects:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        client_projects:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        doris:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        frontierdeepwater:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        OGManufacturing:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git and registry-runtime-access
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+          runtime_access_change: remove_from_data_access_profile
+        rock-oil-field:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        saipem:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        sd-work:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        seanation:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+      infrastructure_dirs: [agent-worktrees]
+      placement_rules:
+        root_git_self_allowed: true
+        direct_nested_git_policy: error
+        required_absence_policy: error
+        optional_absence_policy: warning
+        non_tier1_absence_policy: warning
+        historical_absence_policy: warning
+        historical_state_changed_since_prior_comment_policy: warning
+        unknown_sibling_git_policy: warning
+        upstream_policy:
+          required: error
+          optional: warning
+          non_tier1_machine_access_current: warning
+        dirty_policy:
+          required: warning
+          optional: warning
+          non_tier1_machine_access_current: warning
+        ahead_policy:
+          required: warning
+          optional: warning
+          non_tier1_machine_access_current: warning
+        behind_policy:
+          required: warning
+          optional: warning
+          non_tier1_machine_access_current: warning
     notes: >
       Primary dev workstation. All nightly scheduled tasks run here.
       NFS server for /mnt/ace knowledge center.
