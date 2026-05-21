@@ -1,6 +1,34 @@
+Adversarial rerun review for revised Issue #2766 plan R5.
+
+Rules:
+- You are adversarial. Assume defects until proven otherwise.
+- Do not praise. Do not restate the plan.
+- Focus only on what is still wrong, missing, risky, ambiguous, or insufficiently grounded.
+- IMPORTANT: Do NOT use tools, repo search, file reads, web access, or shell commands.
+- Review ONLY the grounded facts and plan text included below.
+- Return APPROVE only if the revised draft is truly implementation-ready for status:plan-review.
+- Each finding must cite a specific plan section or quoted claim.
+
+Grounded facts already verified by orchestrator:
+- Current repo root is /mnt/local-analysis/workspace-hub.
+- Issue #2770 user decision: ace-linux-1 tier-1 required repos are workspace-hub, digitalmodel, assetutilities, worldenergydata, assethold, llm-wiki; optional/reference repos are aceengineer-website and aceengineer-strategy.
+- Existing readiness policy verified in scripts/readiness/telegram_hermes_readiness.py lines 407-419: warnings-only => status=warn, dispatchable=false, overall_status=warn.
+- Live /mnt/local-analysis probe found agent-worktrees present as non-git infrastructure.
+- Live /mnt/local-analysis probe found acma-projects, client_projects, doris, frontierdeepwater, OGManufacturing, rock-oil-field, saipem, sd-work, seanation absent, despite older #2766 comment claiming these were moved to sibling git repos.
+- Current registry before implementation has OGManufacturing in machines.dev-primary.repos and telegram_hermes.data_access_profile.repos, but OGManufacturing is absent on disk and not tier-1 per #2770.
+- R1/R2/R3/R4 artifacts and R5 plan are pushed in commit e931cd59d287ca6734746334262491228ca5c362.
+- R5 should be judged on the plan text below, not older review findings.
+
+Review questions:
+1. Does R5 resolve the R4 blockers enough to move to status:plan-review?
+2. Are there remaining MAJOR blockers that would cause implementation ambiguity, silent data/repo loss, or invalid readiness behavior?
+3. Are acceptance criteria and tests falsifiable enough for TDD?
+
+Plan under review:
+```markdown
 # Plan for #2766: ace-linux-1 checkout normalization and registry reconciliation
 
-> **Status:** draft R6 — R1/R2/R3/R4/R5 adversarial reviews returned MAJOR; this revision addresses R5 compact-review findings; no implementation approval
+> **Status:** draft R5 — R1/R2/R3/R4 adversarial reviews returned MAJOR; this revision addresses R4 compact-review findings; no implementation approval
 > **Complexity:** T2
 > **Date:** 2026-05-20
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2766
@@ -64,10 +92,8 @@ Issue-comment-only repos from #2766 that were earlier reported as moved-to-sibli
 | HTML final report | `docs/reports/ace-linux-1-tier1-checkout-normalization.html` |
 | HTML report generation path | `scripts/workstations/check-tier1-repo-baseline.py --machine dev-primary --format html --output docs/reports/ace-linux-1-tier1-checkout-normalization.html` |
 | Compact R4 prompt | `.planning/quick/review-2766-r4-compact-prompt.md` |
-| Compact R5 prompt | `.planning/quick/review-2766-r5-compact-prompt.md` |
 | R1/R2/R3/R4 review evidence | `scripts/review/results/2026-05-20-plan-2766-r*-*.md`, including compact R4 artifacts `...-r4-claude-compact.md` and `...-r4-codex-compact.md` |
-| R5 review evidence | `scripts/review/results/2026-05-20-plan-2766-r5-claude-compact.md`, `scripts/review/results/2026-05-20-plan-2766-r5-codex-compact.md`, plus matching `.err` files if non-empty |
-| Label-time checklist evidence | issue comment on #2766 containing reviewed commit SHA, artifact paths, and `git ls-remote` equality check before applying `status:plan-review` |
+| R5 review evidence | to be generated after this revision; must be copied to `scripts/review/results/2026-05-20-plan-2766-r5-*.md` before `status:plan-review` |
 
 ---
 
@@ -86,7 +112,6 @@ Implement a **read-only**, registry-backed ace-linux-1 checkout normalization co
 ```yaml
 machines:
   dev-primary:
-    hostname: ace-linux-1
     repos:  # derived local-checkout allowlist
       - workspace-hub
       - digitalmodel
@@ -219,9 +244,9 @@ machines:
 ```text
 parse CLI args: --machine dev-primary (default), --registry config/workstations/registry.yaml, --repo-root optional override, --now optional ISO timestamp for deterministic tests
 load registry and machine = machines[args.machine]
-if args.machine != "dev-primary": raise ValueError("#2766 checker scope is dev-primary/ace-linux-1 only")
-if machine.hostname != "ace-linux-1": raise ValueError("machines.dev-primary.hostname must be ace-linux-1")
-if baseline.version != 1: raise ValueError("tier1_baseline.version must be 1")
+assert args.machine == "dev-primary" for #2766 implementation scope
+assert machine.hostname == "ace-linux-1"
+assert baseline.version == 1
 
 classification_sets = [
   required,
@@ -229,9 +254,9 @@ classification_sets = [
   reference_only,
   not_planned,
   non_tier1_machine_access_current,
-  historically_moved_not_currently_present.keys(),
+  historically_moved_not_currently_present,
 ]
-if any classification bucket keys overlap: raise ValueError with the overlapping repo names and bucket names
+assert all classification_sets are pairwise disjoint
 assert machine.repos == required + optional + non_tier1_machine_access_current  # order normalized
 assert every data_access_profile repo is in machine.repos
 assert every data_access_profile repo is in required ∪ optional ∪ non_tier1_machine_access_current
@@ -241,7 +266,7 @@ assert historically_moved_not_currently_present.keys() ∩ data_access_profile.r
 
 inventory = immediate child git repos under repo_root, treating both child/.git directory and child/.git file as git repos
 infra_dirs = baseline.infrastructure_dirs, currently [agent-worktrees]
-assert every infra dir either absent or present as a non-git directory at exactly repo_root/<infra_dir>; if repo_root/<infra_dir> itself contains a .git file/dir, warn/error per unknown_sibling_git_policy; do not recurse into child worktrees under agent-worktrees for this issue
+assert every infra dir either absent or present as non-git directory; if infra dir contains .git file/dir, warn/error per unknown_sibling_git_policy
 nested = immediate children under workspace_root where child/.git directory or child/.git file exists
 ignore workspace_root/.git only; do not recurse below immediate children
 
@@ -284,10 +309,7 @@ readiness integration:
   else:
     host_entry["status"] = "pass"
     host_entry["dispatchable"] = True
-  recompute overall_status from all host statuses using the existing readiness aggregation rule:
-    overall_status = "fail" if any host.status == "fail"
-    else "warn" if any host.status in {"warn", "status-only", "not-onboarded"}
-    else "pass"
+  recompute overall_status from host_entry.status after mutation
 ```
 
 ---
@@ -296,8 +318,8 @@ readiness integration:
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `config/workstations/registry.yaml` | Add `hostname: ace-linux-1` if absent; add `tier1_baseline`; update `repos`; set `telegram_hermes.data_access_profile.repos` to exactly the required tier-1 set and remove `OGManufacturing` plus all non-tier-1 runtime access. |
-| Create | `scripts/workstations/check-tier1-repo-baseline.py` | Read-only checker with JSON and HTML output. |
+| Modify | `config/workstations/registry.yaml` | Add `tier1_baseline`; update `repos`; update `telegram_hermes.data_access_profile.repos` to include all required repos and classified runtime non-tier-1 repos only. |
+| Create | `scripts/workstations/check-tier1-repo-baseline.py` | Read-only checker with JSON output. |
 | Create | `tests/workstations/test_check_tier1_repo_baseline.py` | TDD coverage for schema, classification, read-only behavior, nested gitdir/gitlink, unknown sibling drift, and historical bucket semantics. |
 | Modify | `scripts/readiness/telegram_hermes_readiness.py` | Add host-scoped `repo_placement` and merge its dispatchability into the existing host dispatchability. |
 | Create | `tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py` | TDD coverage for host-scoped readiness integration. |
@@ -328,11 +350,11 @@ All filesystem and git inputs below are synthetic fixtures unless a test explici
 | `test_agent_worktrees_is_allowed_only_as_non_git_infrastructure_dir` | `/mnt/local-analysis/agent-worktrees` is ignored only when non-git; git metadata there is surfaced. |
 | `test_unknown_top_level_sibling_git_repo_warns` | Unexpected `/mnt/local-analysis/<repo>` git checkout is surfaced as drift. |
 | `test_dirty_and_ahead_states_are_synthetic_warnings_not_blockers` | Synthetic dirty/ahead metadata is reported as warning by policy. |
-| `test_checker_is_readonly` | Monkeypatch `subprocess.run`, `subprocess.Popen`, `os.rename`, `os.remove`, `os.unlink`, `shutil.move`, `shutil.rmtree`, `pathlib.Path.unlink`, `pathlib.Path.rename`, and `pathlib.Path.replace`; combine with before/after fixture tree snapshots to prove no clone/fetch/pull/push/mv/rm/delete/sync invocation or filesystem mutation. |
+| `test_checker_is_readonly` | Use monkeypatch around subprocess/path mutation helpers plus before/after fixture tree snapshots to prove no clone/fetch/pull/push/mv/rm/delete/sync invocation or filesystem mutation. |
 | `test_readiness_payload_adds_host_scoped_repo_placement` | Missing-required blocker appends host failure, sets host status fail, sets host dispatchable false, and recomputes overall status. |
 | `test_warning_only_repo_placement_matches_existing_readiness_policy` | With repo-placement warnings only: `status=warn`, `dispatchable=false`, top-level `overall_status=warn`, no `failures`; this matches existing readiness lines 407-419. |
 | `test_inventory_timestamp_is_injected_for_deterministic_readiness_payload` | `--now`/injected clock makes readiness output deterministic. |
-| `test_html_report_sections_and_data_attributes` | Run checker `--format html` against deterministic synthetic fixture inventory; parse HTML structurally and verify required semantic sections/machine-readable data attributes. |
+| `test_html_report_sections_and_data_attributes` | HTML report contains required semantic sections and machine-readable data attributes. |
 | `test_plan_index_row_is_upserted_once` | README contains exactly one #2766 row with current status and plan path. |
 
 ---
@@ -393,7 +415,6 @@ This issue's implementation does not move repos. The report must preserve this f
 | R2 Codex | MAJOR | Added Artifact Map, changed README action to upsert, fixed historical bucket contradiction, specified host-scoped readiness merge, defined `repos` semantics, added unknown sibling drift test. |
 | R3 Claude/Codex | MAJOR | R4 response: classify `OGManufacturing` as explicit historical/runtime-access removal, define machine binding via `--machine dev-primary`, make placement rules table-driven, pin readiness status/failures/overall-status updates, define `agent-worktrees` infrastructure handling, make read-only/timestamp tests falsifiable, and require commit/push before plan-review. |
 | R4 compact Claude/Codex | MAJOR | R5 response: exact data-access target set, explicit warning-only readiness outcome, concrete historical provenance schema, distinct historical anomaly warning, HTML generation command, and R4/R5 artifact map cleanup. |
-| R5 compact Claude/Codex | MAJOR | R6 response: fixed data-access contradiction, added hostname field, explicit overall_status aggregation, historical mapping-key disjointness, concrete R5 artifact/checklist paths, infra-dir non-recursive scope, readonly monkeypatch surface, and JSON+HTML checker output. |
 | Gemini | UNAVAILABLE | Quota/API unavailable; R3 can proceed with Claude+Codex for T2 unless user requests waiting. |
 
 ---
@@ -406,3 +427,17 @@ This issue's implementation does not move repos. The report must preserve this f
 
 
 
+```
+
+Required output format:
+## Verdict
+APPROVE | MINOR | MAJOR
+
+## Retrieval adequacy
+adequate | inadequate
+
+## Findings
+- <severity> <finding>
+
+## Blockers
+1. <item>
