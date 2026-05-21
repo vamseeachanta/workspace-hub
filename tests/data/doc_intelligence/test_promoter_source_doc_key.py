@@ -79,12 +79,14 @@ class TestValidateSourceDocKey:
         v = "sha256:" + "0" * 64
         assert validate_source_doc_key(v) == v
 
-    def test_accepts_sha512(self):
+    def test_rejects_sha512(self):
         from scripts.data.doc_intelligence.promoters.text_utils import (
+            SourceDocKeyError,
             validate_source_doc_key,
         )
         v = "sha512:" + "f" * 128
-        assert validate_source_doc_key(v) == v
+        with pytest.raises(SourceDocKeyError):
+            validate_source_doc_key(v)
 
     def test_accepts_md5(self):
         from scripts.data.doc_intelligence.promoters.text_utils import (
@@ -93,12 +95,14 @@ class TestValidateSourceDocKey:
         v = "md5:" + "1" * 32
         assert validate_source_doc_key(v) == v
 
-    def test_accepts_sha1(self):
+    def test_rejects_sha1(self):
         from scripts.data.doc_intelligence.promoters.text_utils import (
+            SourceDocKeyError,
             validate_source_doc_key,
         )
         v = "sha1:" + "2" * 40
-        assert validate_source_doc_key(v) == v
+        with pytest.raises(SourceDocKeyError):
+            validate_source_doc_key(v)
 
     def test_rejects_none(self):
         from scripts.data.doc_intelligence.promoters.text_utils import (

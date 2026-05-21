@@ -12,9 +12,9 @@ from typing import Iterable, Optional
 # "<algorithm>:<lowercase-hex>" with namespace and hex length both load-bearing.
 _DOC_KEY_ALGORITHMS = {
     "sha256": 64,
-    "sha512": 128,
+    # Legacy L1 registry compatibility only; new source_doc_key values should
+    # use sha256 per the provenance-reuse contract.
     "md5": 32,
-    "sha1": 40,
 }
 _DOC_KEY_RE = re.compile(r"^([a-z0-9]+):([a-f0-9]+)$")
 
@@ -44,7 +44,7 @@ def validate_source_doc_key(
 
     The contract (see Section 3 + 8.3 of the provenance-reuse doc):
     - Form is ``<algorithm>:<lowercase-hex>``.
-    - Algorithm is one of sha256/sha512/md5/sha1.
+    - Algorithm is sha256; md5 is accepted only for legacy L1 records.
     - Hex length matches the algorithm's digest length.
     - The value MUST NOT contain path separators, whitespace, or uppercase.
     - The value MUST NOT equal the promoted artifact's own content_hash
