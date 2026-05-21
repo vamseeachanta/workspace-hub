@@ -1,0 +1,2 @@
+{"ts":"2026-05-21T11:09:59Z","event":"stop_signal_captured","session_id":"d6419dab-59cd-4c0b-880d-0d6d750caebc"}
+{"ts":"2026-05-21T11:09:59Z","event":"session_tool_summary","session_id":"d6419dab-59cd-4c0b-880d-0d6d750caebc","wrk":"none","tool_calls":23,"edits":0,"reads":0}
