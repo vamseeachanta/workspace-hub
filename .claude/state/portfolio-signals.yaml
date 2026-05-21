@@ -1,4 +1,4 @@
-generated_at: '2026-05-20T07:01:53Z'
+generated_at: '2026-05-21T07:03:28Z'
 lookback_days: 30
 provider_activity:
   claude:
@@ -177,8 +177,8 @@ capability_signals:
 l3_meta:
   query_attempted: true
   query_mode: engineering
-  parse_success: true
-  signals_added: 1
-  signals_pruned: 1
-  carry_forward: false
-  source_verified: true
+  parse_success: false
+  signals_added: 0
+  signals_pruned: 0
+  carry_forward: true
+  source_verified: false

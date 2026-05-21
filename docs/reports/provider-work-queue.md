@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-05-20T05:20:11.135248Z
+Generated: 2026-05-21T17:20:09.140806Z
 Current week: 2026-W21
 Recommended provider order: gemini, codex, claude
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 20
-- Total routed candidates: 177
+- Execution-ready candidates: 28
+- Total routed candidates: 175
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 2
-- Total routed candidates: 19
+- Total routed candidates: 21
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -37,8 +37,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #2474 feat(canonical-spec): add OrcaFlex native reverse-parser equivalence proof | no | implementation/test/fix language | enhancement, priority:high, cat:engineering, domain:marine, machine:dev-primary |
 | #2647 ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up) | no | implementation/test/fix language | priority:high |
 | #2718 audit(hermes): kanban-worker dispatch hazards — parallel-spawn race + silent-hang (#2715-affected) | no | implementation/test/fix language | priority:high, cat:ai-orchestration, cat:harness, domain:agent-cost-tracking |
-| #2359 chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json | no | implementation/test/fix language | bug, priority:medium |
-| #2420 fix(skills): restore repo-portfolio-steering balance snapshot contract and threshold behavior | no | implementation/test/fix language | bug, priority:medium, cat:ai-orchestration |
+| #2763 plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent | no | implementation/test/fix language | enhancement, priority:high, cat:ai-orchestration, cat:operations, cat:harness, status:needs-plan |
+| #2764 fix(operations): harden Hermes session exporter for undated session files | no | implementation/test/fix language | bug, priority:high, cat:operations, cat:harness, status:needs-plan |
 
 ## gemini
 

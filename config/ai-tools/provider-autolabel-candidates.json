@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20T05:20:11.280915Z",
+  "generated_at": "2026-05-21T17:20:09.283824Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -22,7 +22,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -57,7 +57,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -91,7 +91,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -125,7 +125,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -158,7 +158,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -186,13 +186,13 @@
         "domain:agent-cost-tracking",
         "status:plan-approved"
       ],
-      "updatedAt": "2026-05-18T19:36:47Z",
+      "updatedAt": "2026-05-21T02:57:39Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -225,7 +225,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -258,7 +258,7 @@
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
-      "provider_status": "underused",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation",
@@ -394,16 +394,20 @@
       "eligible": false
     },
     {
-      "number": 2359,
-      "title": "chore(plugins): remove or fix failing semantic-scholar-mcp in .claude/settings.local.json",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2359",
+      "number": 2763,
+      "title": "plan(operations): migrate gsd-researcher scheduled AI work through Hermes Agent",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2763",
       "labels": [
-        "bug",
-        "priority:medium"
+        "enhancement",
+        "priority:high",
+        "cat:ai-orchestration",
+        "cat:operations",
+        "cat:harness",
+        "status:needs-plan"
       ],
-      "updatedAt": "2026-05-18T19:43:08Z",
+      "updatedAt": "2026-05-20T11:40:49Z",
       "execution_ready": false,
-      "priority_rank": 2,
+      "priority_rank": 1,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
@@ -422,17 +426,19 @@
       "eligible": false
     },
     {
-      "number": 2420,
-      "title": "fix(skills): restore repo-portfolio-steering balance snapshot contract and threshold behavior",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2420",
+      "number": 2764,
+      "title": "fix(operations): harden Hermes session exporter for undated session files",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2764",
       "labels": [
         "bug",
-        "priority:medium",
-        "cat:ai-orchestration"
+        "priority:high",
+        "cat:operations",
+        "cat:harness",
+        "status:needs-plan"
       ],
-      "updatedAt": "2026-05-18T19:41:30Z",
+      "updatedAt": "2026-05-20T11:40:50Z",
       "execution_ready": false,
-      "priority_rank": 2,
+      "priority_rank": 1,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",

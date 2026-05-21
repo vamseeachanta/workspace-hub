@@ -95,3 +95,5 @@ shown:
     tips: [eco-compound, cc-loop]
   - date: 2026-05-20
     tips: [cc-schedule, cc-diff]
+  - date: 2026-05-21
+    tips: [bp-compact-50pct, gsd-thread]
