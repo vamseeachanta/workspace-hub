@@ -655,6 +655,7 @@ If execution is interrupted by context compression, tool-call exhaustion, provid
 - Separate observed evidence from inferred state. If tests, review, commit, push, or closeout were not run in the current visible context, say so plainly and keep the issue open in the status narrative.
 - If skill loading fails due to ambiguous duplicate skill names, do not retry the same `skill_view` arguments. Continue with already-loaded governing skills or load the repo-local/canonical path explicitly in the next session.
 - Treat the resulting final answer as a restart checkpoint, not a substitute for GitHub closeout evidence.
+- When the runtime reports preserved active todos after context compression or max tool-call exhaustion, fold those todos into the checkpoint but do not upgrade them to evidence. State the live gate still pending (for example validation in progress, adversarial review pending, commit/push pending), the exact worktree/branch if observed, dirty files if observed, commands already run with results, and the next tool-backed resume sequence. Do not claim issue closure, review completion, or push success unless those were observed in the current visible context.
 - For interrupted generated engineering/report closeouts, use `references/interrupted-engineering-report-closeout.md` before resuming commit/push/close. It adds the artifact-surface and source-truthfulness checks that are easy to miss after a focused green test run.
 
 ## Git pitfalls

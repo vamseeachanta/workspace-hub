@@ -36,6 +36,48 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:data-pipeline",
+          "cat:harness",
+          "domain:knowledge",
+          "domain:repo-organization",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2778,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2778",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "documentation"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8014,54 +8056,56 @@
         "legacy_review_no_sha",
         "unavailable_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data-pipeline",
-          "domain:knowledge-management"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "<!-- RETRIEVAL CONTRACT (per #2208):",
-        "provider_route": "claude",
-        "risks": "**Risk: Stale issue counts** \u2014 The issue body cites 74+13; actual counts are now 92+15 (106 deduped). The script must query GitHub live, not rely on hardcoded counts. The ledger should record the query timestamp. | **Risk: Scoring heuristics are subjective** \u2014 The 0-5 scoring dimensions (methodology, durability, evidence, overlap) are text-heuristic based. Without embeddings or LLM scoring, keywor",
-        "tests": "15 TDD tests defined",
-        "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2370,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
-      "warnings": [
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-05-22T09:20:10Z",
+  "generated_at": "2026-05-22T13:20:11Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:harness",
+            "domain:knowledge",
+            "domain:repo-organization",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2778,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2778",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16051,46 +16095,6 @@
           "legacy_review_no_sha",
           "unavailable_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:knowledge-management"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "<!-- RETRIEVAL CONTRACT (per #2208):",
-          "provider_route": "claude",
-          "risks": "**Risk: Stale issue counts** \u2014 The issue body cites 74+13; actual counts are now 92+15 (106 deduped). The script must query GitHub live, not rely on hardcoded counts. The ledger should record the query timestamp. | **Risk: Scoring heuristics are subjective** \u2014 The 0-5 scoring dimensions (methodology, durability, evidence, overlap) are text-heuristic based. Without embeddings or LLM scoring, keywor",
-          "tests": "15 TDD tests defined",
-          "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2370,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
-        "warnings": [
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16101,9 +16105,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-22T09:20:07.180763Z",
+  "scorecard_generated_at": "2026-05-22T13:20:06.996514Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-22T09:20:07.057392Z",
+  "utilization_generated_at": "2026-05-22T13:20:06.847790Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 4,
@@ -16111,7 +16115,7 @@
     "legacy_review_no_sha": 34,
     "major_review": 25,
     "marker_without_open_approved_issue": 136,
-    "missing_review": 35,
+    "missing_review": 34,
     "unavailable_review": 15,
     "unknown_review": 2
   }

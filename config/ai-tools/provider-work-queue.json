@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-22T09:20:09.103716Z",
+  "generated_at": "2026-05-22T13:20:08.941030Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-22T09:20:07.180763Z",
+  "scorecard_generated_at": "2026-05-22T13:20:06.996514Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -560,7 +560,7 @@
             "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-22T04:21:17Z",
+          "updatedAt": "2026-05-22T10:42:30Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -986,32 +986,9 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-05-21T11:45:06Z",
+          "updatedAt": "2026-05-22T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2370,
-          "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "domain:knowledge-management"
-          ],
-          "updatedAt": "2026-05-18T19:42:56Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1589,7 +1566,7 @@
             "domain:knowledge",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-21T18:56:20Z",
+          "updatedAt": "2026-05-22T10:11:39Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1748,6 +1725,32 @@
             "machine:licensed-win-2"
           ],
           "updatedAt": "2026-05-21T01:43:10Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2778,
+          "title": "feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2778",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:harness",
+            "domain:knowledge",
+            "domain:repo-organization",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-05-22T10:11:18Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2923,7 +2926,7 @@
             "cat:infrastructure",
             "maintenance"
           ],
-          "updatedAt": "2026-05-21T12:04:39Z",
+          "updatedAt": "2026-05-22T12:17:37Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4114,7 +4117,7 @@
           "labels": [
             "repo-readiness"
           ],
-          "updatedAt": "2026-05-21T11:09:49Z",
+          "updatedAt": "2026-05-22T11:06:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
