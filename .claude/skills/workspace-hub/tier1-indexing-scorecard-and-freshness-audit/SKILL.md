@@ -150,6 +150,8 @@ When extracting broken references from canonical docs, avoid these common false 
 - descriptive module names in overview tables (for example `engine.py`, `calculation.py`, `math_helpers.py`) are not broken paths unless the surrounding text presents them as canonical file links
 - naming-convention placeholders such as `feature-name.md` are examples, not missing files
 - relative links should be resolved from the file that contains the link; if the visible label is bare but the Markdown target includes a directory (for example `modules/ai/AI_AGENT_GUIDELINES.md`), check the target, not only the label
+- explicit warnings that say not to use retired/legacy product-doc paths are not active stale references; count only active links/usages that route readers to legacy paths
+- for scheduled freshness mode, scan the repo-local `docs/maps/<repo>-operator-map.md` as the canonical operator map; do not treat unrelated cross-repo maps living under a workspace-level `docs/maps/` directory as canonical surfaces for `workspace-hub` itself
 
 Known current evidence pattern from 2026-05-08: `digitalmodel/docs/maps/digitalmodel-operator-map.md` referenced `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md` as if repo-local while the matching file existed at the workspace-level map path; report this as a stale repo-local routing reference unless fixed.
 
