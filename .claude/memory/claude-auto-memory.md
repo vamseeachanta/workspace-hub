@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-05-21
+> Last captured: 2026-05-22
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -146,6 +146,7 @@
 - [llm-wiki spun out to dedicated public repo](project_llm_wiki_spunout.md) — SUPERSEDED 2026-05-20 by privacy flip; historical context only
 - [llm-wiki strategic role](project_llm_wiki_strategic_role.md) — partial supersede; "public + legally-sanitized" replaced by "private + full-fidelity"
 - [Codes/standards data in private llm-wiki](feedback_codes_standards_data_in_private_wiki.md) — OCIMF/API/DNV/ABS/IACS/ASCE/ASME → private llm-wiki; verbatim+tables allowed; raw PDFs stay `/mnt/ace/acma-codes/`
+- [Cross-review finds what self-review misses](feedback_cross_review_finds_what_self_review_misses.md) — code-stage adversarial cross-review consistently surfaces public-repo leaks, LICENSE-detection bugs, duplicated-resolver drift, asymmetric error handling, OR-disjunction test fences. Single-provider multi-angle dispatch works as fallback. 2026-05-21 verdict: 4 MAJOR + multiple MINOR on #617+#429 close-out.
 - [llm-wiki external-post ingest workflow](project_llm_wiki_external_post_ingest_workflow.md) — 8-step LinkedIn/blog → wiki ingest; first-run 2026-05-07 (Sherwood, Rötzer); 14-URL 2026-05-18 batch added 2 domains + AskUserQuestion-pivot pattern
 - [llm-wiki geotechnical-engineering founded](project_llm_wiki_geotechnical_engineering_founded.md) — 13th domain 2026-05-18; soil constitutive models, foundations, earthquake-geotech; founding source Xu SoilModelsPy
 - [llm-wiki trends-and-strategies founded](project_llm_wiki_trends_and_strategies_founded.md) — 14th domain 2026-05-18; first non-technical wiki; workforce / forecast / strategy framing; founding source Nagar petroleum workforce crisis
@@ -164,7 +165,7 @@
 ## References
 > ai-orchestration.md, network_machines.md
 - [devaKrishna videos canonical source](reference_krishna_videos_youtube.md) — all progress videos on YouTube `achantav@gmail.com`; grounds skill-analysis evidence
-- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json` *stale: 2026-05-22*
+- [Kaggle CLI KGAT auth](reference_kaggle_cli_kgat_auth.md) — Kaggle CLI 2.x reads `~/.kaggle/access_token` (KGAT prefix, 38B), not legacy `kaggle.json`
 - [achantas-data](reference_achantas_data.md) — personal data + travel as GitHub issues
 - [VA job applications log](reference_va_job_applications_log.md) — `teamresumes/cv/va/applications-YYYY.md` (markdown, not issues); started 2026-05-06
 - [Google CLI](reference_google_cli_paid.md) — paid GWS API access
