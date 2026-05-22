@@ -185,8 +185,7 @@ validate_yaml_file() {
     local target="$1"
     local label="$2"
 
-    if command -v python3 >/dev/null 2>&1; then
-        if python3 - "$target" <<'PY' >/dev/null
+    if run_config_python - "$target" <<'PY' >/dev/null
 import pathlib
 import sys
 import yaml
@@ -194,24 +193,12 @@ import yaml
 with pathlib.Path(sys.argv[1]).open() as fh:
     yaml.safe_load(fh)
 PY
-        then
-            return
-        fi
-    fi
-
-    if command -v uv >/dev/null 2>&1; then
-        uv run --no-project python - "$target" <<'PY' >/dev/null
-import pathlib
-import sys
-import yaml
-
-with pathlib.Path(sys.argv[1]).open() as fh:
-    yaml.safe_load(fh)
-PY
+    then
         return
     fi
 
-    echo "[WARN] Skipping YAML validation for $label -> $target (python3/uv unavailable)" >&2
+    echo "[ERROR] YAML validation failed for $label -> $target" >&2
+    return 1
 }
 
 sanitize_codex_managed_keys() {
@@ -1089,8 +1076,7 @@ sync_hermes_yaml_config() {
         merged="$(mktemp)"
     fi
 
-    if command -v python3 >/dev/null 2>&1; then
-        if ! python3 - "$target" "$resolved_template" "$merged" <<'PY' 2>/dev/null
+    if ! run_config_python - "$target" "$resolved_template" "$merged" <<'PY' 2>/dev/null
 import yaml, sys
 
 MANAGED_KEYS = {
@@ -1128,63 +1114,12 @@ for key, value in template.items():
 
 with open(merged_path, 'w') as f:
     yaml.dump(merged, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
 PY
-        then
-            rm -f "$merged"
-            merged=""
-        fi
-    fi
-
-    if [[ -z "$merged" || ! -s "$merged" ]] && command -v uv >/dev/null 2>&1; then
-        if [[ "$DRY_RUN" != "true" ]]; then
-            merged="$(sync_make_target_tmp "$target")"
-        else
-            merged="$(mktemp)"
-        fi
-        if ! uv run --no-project python - "$target" "$resolved_template" "$merged" <<'PY' 2>/dev/null
-import yaml, sys
-
-MANAGED_KEYS = {
-    "model",
-    "fallback_providers",
-    "credential_pool_strategies",
-    "toolsets",
-    "agent",
-    "browser",
-    "checkpoints",
-    "compression",
-    "skills",
-}
-TERMINAL_PRESERVE_KEYS = {"backend", "cwd"}
-
-target_path, template_path, merged_path = sys.argv[1], sys.argv[2], sys.argv[3]
-with open(target_path) as f:
-    existing = yaml.safe_load(f) or {}
-with open(template_path) as f:
-    template = yaml.safe_load(f) or {}
-
-merged = dict(existing)
-for key, value in template.items():
-    if key == "terminal" and isinstance(value, dict):
-        existing_terminal = existing.get("terminal") if isinstance(existing.get("terminal"), dict) else {}
-        merged_terminal = dict(value)
-        for preserve_key in TERMINAL_PRESERVE_KEYS:
-            if preserve_key in existing_terminal:
-                merged_terminal[preserve_key] = existing_terminal[preserve_key]
-        merged[key] = merged_terminal
-    elif key in MANAGED_KEYS:
-        merged[key] = value
-    elif key not in merged:
-        merged[key] = value
-
-with open(merged_path, 'w') as f:
-    yaml.dump(merged, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
-PY
-        then
-            trap - RETURN
-            rm -f "$resolved_template" "$merged"
-            return 1
-        fi
+    then
+        trap - RETURN
+        rm -f "$resolved_template" "$merged"
+        return 1
     fi
 
     if [[ -n "$merged" ]] && [[ -s "$merged" ]]; then

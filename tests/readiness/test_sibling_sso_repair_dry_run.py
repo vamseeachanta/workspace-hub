@@ -189,6 +189,72 @@ def test_repair_manifest_rewrites_mixed_stale_parent_contract(monkeypatch, tmp_p
     )
 
 
+def test_repair_manifest_rewrites_inherits_prose_parent_contract(monkeypatch, tmp_path):
+    repair = load_repair()
+    repo = tmp_path / "digitalmodel"
+    repo.mkdir()
+    (repo / "AGENTS.md").write_text(
+        "# digitalmodel\n"
+        "This repository inherits the canonical contract from:\n"
+        "../AGENTS.md\n"
+    )
+    registry = {
+        "machines": {
+            "dev-primary": {
+                "hostname": "ace-linux-1",
+                "workspace_root": str(tmp_path / "workspace-hub"),
+                "tier1_repo_root": str(tmp_path),
+                "repos": ["digitalmodel"],
+            }
+        }
+    }
+    monkeypatch.setattr(repair, "load_registry", lambda: registry)
+
+    manifest = repair.build_manifest("dev-primary")
+
+    actions = manifest["repos"][0]["actions"]
+    assert any(
+        action["kind"] == "rewrite_agents_pointer" and action["from"] == "../AGENTS.md"
+        for action in actions
+    )
+
+
+def test_repair_manifest_accepts_inherits_prose_workspace_hub_contract(monkeypatch, tmp_path):
+    repair = load_repair()
+    hub = tmp_path / "workspace-hub"
+    hub.mkdir()
+    (hub / "AGENTS.md").write_text("# workspace-hub\n")
+    skill_root = hub / ".claude" / "skills"
+    skill_root.mkdir(parents=True)
+    (skill_root / "SKILL.md").write_text("---\nname: central\n---\n")
+    repo = tmp_path / "digitalmodel"
+    repo.mkdir()
+    (repo / ".codex").mkdir()
+    (repo / ".gemini").mkdir()
+    (repo / ".codex" / "skills").symlink_to("../../workspace-hub/.claude/skills")
+    (repo / ".gemini" / "skills").symlink_to("../../workspace-hub/.claude/skills")
+    (repo / "AGENTS.md").write_text(
+        "# digitalmodel\n"
+        "This repository inherits the canonical contract from:\n"
+        "../workspace-hub/AGENTS.md\n"
+    )
+    registry = {
+        "machines": {
+            "dev-primary": {
+                "hostname": "ace-linux-1",
+                "workspace_root": str(hub),
+                "tier1_repo_root": str(tmp_path),
+                "repos": ["digitalmodel"],
+            }
+        }
+    }
+    monkeypatch.setattr(repair, "load_registry", lambda: registry)
+
+    manifest = repair.build_manifest("dev-primary")
+
+    assert manifest["repos"][0]["actions"] == []
+
+
 def test_preflight_blocks_unexpected_owned_regular_file(monkeypatch, tmp_path):
     repair = load_repair()
     subprocess.run(["git", "init"], cwd=tmp_path, check=True, stdout=subprocess.PIPE)
@@ -285,3 +351,58 @@ def test_rewrite_agents_pointer_updates_contract_lines_only(tmp_path):
         "Notes: literal ../AGENTS.md in prose should remain unchanged.\n"
         "Legacy contract: ../workspace-hub/AGENTS.md\n"
     )
+
+
+def test_rewrite_agents_pointer_updates_inherits_prose_target_line(tmp_path):
+    repair = load_repair()
+    agents = tmp_path / "AGENTS.md"
+    agents.write_text(
+        "# Repo\n"
+        "This repository inherits the canonical contract from:\n"
+        "../AGENTS.md\n"
+        "Notes: literal ../AGENTS.md in prose should remain unchanged.\n"
+    )
+
+    repair.rewrite_agents_pointer(agents, "../AGENTS.md", "../workspace-hub/AGENTS.md")
+
+    assert agents.read_text() == (
+        "# Repo\n"
+        "This repository inherits the canonical contract from:\n"
+        "../workspace-hub/AGENTS.md\n"
+        "Notes: literal ../AGENTS.md in prose should remain unchanged.\n"
+    )
+
+def test_apply_manifest_applies_repairable_symlinks_despite_blocked_agents(monkeypatch, tmp_path):
+    repair = load_repair()
+    hub = tmp_path / "workspace-hub"
+    skill_root = hub / ".claude" / "skills"
+    skill_root.mkdir(parents=True)
+    (skill_root / "SKILL.md").write_text("---\nname: central\n---\n")
+    repo = tmp_path / "digitalmodel"
+    (repo / ".codex").mkdir(parents=True)
+    (repo / ".gemini").mkdir(parents=True)
+    codex_link = repo / ".codex" / "skills"
+    gemini_link = repo / ".gemini" / "skills"
+    codex_link.symlink_to("../../.claude/skills")
+    gemini_link.symlink_to("../../.claude/skills")
+    (repo / "AGENTS.md").write_text("# digitalmodel\nLocal-only divergent contract\n")
+
+    manifest = {
+        "repos": [
+            {
+                "repo": "digitalmodel",
+                "path": str(repo),
+                "actions": [
+                    {"kind": "rewrite_symlink", "path": str(codex_link), "target": "../../workspace-hub/.claude/skills"},
+                    {"kind": "rewrite_symlink", "path": str(gemini_link), "target": "../../workspace-hub/.claude/skills"},
+                    {"kind": "blocked", "path": str(repo / "AGENTS.md"), "reason": "missing_workspace_hub_contract"},
+                ],
+            }
+        ]
+    }
+    monkeypatch.setattr(repair, "require_user_approval", lambda _issue: True)
+    monkeypatch.setattr(repair, "preflight_sibling_repo", lambda _repo: {"status": "pass"})
+
+    assert repair.apply_manifest(manifest) == 3
+    assert codex_link.readlink().as_posix() == "../../workspace-hub/.claude/skills"
+    assert gemini_link.readlink().as_posix() == "../../workspace-hub/.claude/skills"

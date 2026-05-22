@@ -195,6 +195,25 @@ def _stale_agents_contract_line(text: str) -> bool:
     return False
 
 
+def _agents_inherits_prose_target(text: str, target: str) -> bool:
+    """Return True for the safe two-line inherited-contract pointer pattern."""
+    previous_was_inherits = False
+    for line in text.splitlines():
+        stripped = line.strip()
+        if previous_was_inherits and stripped == target:
+            return True
+        previous_was_inherits = stripped == "This repository inherits the canonical contract from:"
+    return False
+
+
+def _stale_agents_inherits_prose_target(text: str) -> bool:
+    return _agents_inherits_prose_target(text, "../AGENTS.md")
+
+
+def _has_stale_agents_contract_pointer(text: str) -> bool:
+    return _stale_agents_contract_line(text) or _stale_agents_inherits_prose_target(text)
+
+
 def classify_agents_contract(repo_path: Path, tier1_repo_root: Path) -> dict[str, Any]:
     agents = repo_path / "AGENTS.md"
     if agents.is_symlink():
@@ -204,7 +223,7 @@ def classify_agents_contract(repo_path: Path, tier1_repo_root: Path) -> dict[str
     if not agents.is_file():
         return {"status": "blocked", "reason": "agents_not_regular_file", "path": str(agents)}
     text = agents.read_text(errors="replace")
-    if _stale_agents_contract_line(text):
+    if _has_stale_agents_contract_pointer(text):
         return {
             "status": "rewrite",
             "kind": "rewrite_agents_pointer",
@@ -221,7 +240,7 @@ def classify_agents_contract(repo_path: Path, tier1_repo_root: Path) -> dict[str
         }
     target = tier1_repo_root / "workspace-hub" / "AGENTS.md"
     contract_re = re.compile(r"^Contract:\s+\.\./workspace-hub/AGENTS\.md(?:\s|\||$)", re.MULTILINE)
-    if contract_re.search(text):
+    if contract_re.search(text) or _agents_inherits_prose_target(text, "../workspace-hub/AGENTS.md"):
         if target.exists():
             return {"status": "ok", "kind": "workspace_hub_contract", "target": str(target)}
         return {
@@ -269,17 +288,58 @@ def build_manifest(machine: str) -> dict[str, Any]:
 def rewrite_agents_pointer(path: Path, old: str, new: str) -> None:
     """Rewrite stale AGENTS contract pointer lines without mutating arbitrary prose."""
     rewritten_lines = []
+    previous_was_inherits = False
     for line in path.read_text(errors="replace").splitlines(keepends=True):
+        stripped = line.strip()
         if re.match(r"^\s*(Contract|Legacy contract):", line):
             line = line.replace(old, new)
+        elif previous_was_inherits and stripped == old:
+            line = line.replace(old, new)
         rewritten_lines.append(line)
+        previous_was_inherits = stripped == "This repository inherits the canonical contract from:"
     path.write_text("".join(rewritten_lines))
+
+
+REPAIRABLE_ACTION_KINDS = frozenset({"rewrite_symlink", "rewrite_agents_pointer"})
+
+
+def _split_actions(actions: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    repairable = [action for action in actions if action.get("kind") in REPAIRABLE_ACTION_KINDS]
+    blocked = [action for action in actions if action.get("kind") not in REPAIRABLE_ACTION_KINDS]
+    return repairable, blocked
+
+
+def _apply_repairable_actions(repo_name: str, actions: list[dict[str, Any]]) -> int:
+    backups = capture_owned_paths([Path(action["path"]) for action in actions])
+    try:
+        for action in actions:
+            path = Path(action["path"])
+            if action["kind"] == "rewrite_symlink":
+                if path.exists() or path.is_symlink():
+                    remove_path(path)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.symlink_to(action["target"])
+                verified = verify_symlink(path, action["target"])
+                if verified["status"] != "pass":
+                    raise RuntimeError(f"symlink verification failed: {verified}")
+            elif action["kind"] == "rewrite_agents_pointer":
+                rewrite_agents_pointer(path, action["from"], action["to"])
+                rewritten_text = path.read_text(errors="replace")
+                if _has_stale_agents_contract_pointer(rewritten_text):
+                    raise RuntimeError(f"AGENTS pointer rewrite verification failed: {path}")
+        print(f"applied {repo_name}: {len(actions)} repairable actions")
+        return 0
+    except Exception as exc:
+        restore_owned_paths(backups)
+        print(f"rollback {repo_name}: {exc}", file=sys.stderr)
+        return 4
 
 
 def apply_manifest(manifest: dict[str, Any]) -> int:
     if not require_user_approval(ISSUE_NUMBER):
         print("blocked: live GitHub status:plan-approved label missing or unavailable", file=sys.stderr)
         return 2
+    residual_blockers: list[dict[str, Any]] = []
     for repo in manifest["repos"]:
         if not repo["actions"]:
             continue
@@ -288,31 +348,16 @@ def apply_manifest(manifest: dict[str, Any]) -> int:
         if preflight["status"] != "pass":
             print(json.dumps({"repo": repo["repo"], "preflight": preflight}, indent=2), file=sys.stderr)
             return 3
-        if any(action["kind"] == "blocked" for action in repo["actions"]):
-            print(json.dumps({"repo": repo["repo"], "blocked_actions": repo["actions"]}, indent=2), file=sys.stderr)
-            return 3
-        backups = capture_owned_paths([Path(action["path"]) for action in repo["actions"]])
-        try:
-            for action in repo["actions"]:
-                path = Path(action["path"])
-                if action["kind"] == "rewrite_symlink":
-                    if path.exists() or path.is_symlink():
-                        remove_path(path)
-                    path.parent.mkdir(parents=True, exist_ok=True)
-                    path.symlink_to(action["target"])
-                    verified = verify_symlink(path, action["target"])
-                    if verified["status"] != "pass":
-                        raise RuntimeError(f"symlink verification failed: {verified}")
-                elif action["kind"] == "rewrite_agents_pointer":
-                    rewrite_agents_pointer(path, action["from"], action["to"])
-                    rewritten_text = path.read_text(errors="replace")
-                    if _stale_agents_contract_line(rewritten_text) or action["from"] in rewritten_text:
-                        raise RuntimeError(f"AGENTS pointer rewrite verification failed: {path}")
-            print(f"applied {repo['repo']}: {len(repo['actions'])} actions")
-        except Exception as exc:
-            restore_owned_paths(backups)
-            print(f"rollback {repo['repo']}: {exc}", file=sys.stderr)
-            return 4
+        repairable_actions, blocked_actions = _split_actions(repo["actions"])
+        if repairable_actions:
+            result = _apply_repairable_actions(repo["repo"], repairable_actions)
+            if result != 0:
+                return result
+        if blocked_actions:
+            residual_blockers.append({"repo": repo["repo"], "blocked_actions": blocked_actions})
+    if residual_blockers:
+        print(json.dumps({"residual_blockers": residual_blockers}, indent=2), file=sys.stderr)
+        return 3
     return 0
 
 

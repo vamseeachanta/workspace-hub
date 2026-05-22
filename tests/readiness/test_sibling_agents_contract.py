@@ -82,6 +82,25 @@ def test_agents_pointer_to_workspace_hub_passes(tmp_path):
     assert result["status"] == "pass"
 
 
+def test_agents_inherits_prose_pointer_to_workspace_hub_passes(tmp_path):
+    checker = load_checker()
+    ws = tmp_path / "workspace-hub"
+    ws.mkdir()
+    (ws / "AGENTS.md").write_text("# Workspace Hub\n")
+    repo = tmp_path / "digitalmodel"
+    repo.mkdir()
+    (repo / "AGENTS.md").write_text(
+        "# Digitalmodel\n"
+        "This repository inherits the canonical contract from:\n"
+        "../workspace-hub/AGENTS.md\n"
+    )
+
+    result = checker.check_agents_contract(repo, ws, tmp_path)
+
+    assert result["status"] == "pass"
+    assert result["kind"] == "workspace_hub_contract"
+
+
 def test_agents_contract_with_workspace_hub_and_stale_parent_pointer_fails(tmp_path):
     checker = load_checker()
     ws = tmp_path / "workspace-hub"

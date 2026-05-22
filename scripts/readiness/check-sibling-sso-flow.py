@@ -127,16 +127,30 @@ def classify_provider_skill_path(path: Path, expected_target: str, allow_set: se
     return {"status": "fail", "kind": "unexpected_file_type", "path": str(path)}
 
 
+def _has_inherits_prose_target(text: str, target: str) -> bool:
+    """Return True when an inherited-contract prose line points to target."""
+    previous_was_inherits = False
+    for line in text.splitlines():
+        stripped = line.strip()
+        if previous_was_inherits and stripped == target:
+            return True
+        previous_was_inherits = stripped == "This repository inherits the canonical contract from:"
+    return False
+
+
 def check_agents_contract(repo_path: Path, workspace_root: Path, tier1_repo_root: Path) -> dict[str, Any]:
     agents = repo_path / "AGENTS.md"
     if not agents.exists():
         return {"status": "fail", "kind": "missing_agents", "path": str(agents)}
     text = agents.read_text(errors="replace")
-    if repo_path.name != "workspace-hub" and "../AGENTS.md" in text:
+    if repo_path.name != "workspace-hub" and (
+        re.search(r"^\s*(Contract|Legacy contract):\s+\.\./AGENTS\.md(?:\s|\||$)", text, re.MULTILINE)
+        or _has_inherits_prose_target(text, "../AGENTS.md")
+    ):
         target = tier1_repo_root / "workspace-hub" / "AGENTS.md"
         return {"status": "fail", "kind": "stale_parent_contract", "target": str(target), "path": str(agents)}
     contract_re = re.compile(r"^Contract:\s+\.\./workspace-hub/AGENTS\.md(?:\s|\||$)", re.MULTILINE)
-    if contract_re.search(text):
+    if contract_re.search(text) or _has_inherits_prose_target(text, "../workspace-hub/AGENTS.md"):
         target = tier1_repo_root / "workspace-hub" / "AGENTS.md"
         return {"status": "pass" if target.exists() else "fail", "kind": "workspace_hub_contract", "target": str(target)}
     if repo_path.name != "workspace-hub":
