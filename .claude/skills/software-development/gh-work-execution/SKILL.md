@@ -681,7 +681,7 @@ If unrelated edits block the push, stash them temporarily when safe. If stash si
 Before commit, check for runtime artifacts and temporary outputs.
 Do not stage them unless the issue explicitly requires them.
 
-When generating Markdown closeout/review artifacts from shell, avoid unquoted heredocs that contain backticks, `$(...)`, or command-like text. Use `write_file`, a single-quoted heredoc delimiter (`<<'EOF'`), or escape every substitution surface; otherwise Bash may execute inline artifact prose and corrupt evidence files before commit.
+When generating Markdown closeout/review artifacts from shell, avoid unquoted heredocs that contain backticks, command-substitution syntax, or command-like text. Use `write_file`, a single-quoted heredoc delimiter (`<<'EOF'`), or escape every substitution surface; otherwise Bash may execute inline artifact prose and corrupt evidence files before commit.
 
 For issues that implement in one sibling repo but publish generated deliverables into another checkout or embedded output tree, use `references/mixed-repo-output-artifact-closeout.md`. Key rule: classify the actual Git boundary for every output path, commit implementation and packaged outputs separately when they live in different repos, stage only explicit paths from dirty orchestration repos, and parse/extract DOCX/PDF content before claiming client-ready artifacts.
 
