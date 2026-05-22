@@ -1,10 +1,3 @@
-2026-05-22T05:19:03-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23250
-2026-05-22T05:22:11-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/reference_ocimf_meg4_citation_style.md|23251
-2026-05-22T05:22:35-05:00|/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/reference_ocimf_annex_a_graphic_style.md|23252
-2026-05-22T05:23:13-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23253
-2026-05-22T05:24:02-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23254
-2026-05-22T05:25:37-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23255
-2026-05-22T05:26:29-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23256
 2026-05-22T05:28:59-05:00|/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py|23257
 2026-05-22T05:32:15-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23258
 2026-05-22T05:32:35-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23259
@@ -48,3 +41,10 @@
 2026-05-22T11:26:35-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23297
 2026-05-22T11:26:55-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23298
 2026-05-22T11:27:18-05:00|/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py|23299
+2026-05-22T14:13:27-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml|23300
+2026-05-22T14:13:40-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23301
+2026-05-22T14:14:51-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23302
+2026-05-22T14:15:14-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23303
+2026-05-22T14:15:47-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23304
+2026-05-22T14:16:05-05:00|/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py|23305
+2026-05-22T14:21:09-05:00|/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_issue_2760_sirocco_current_rudder_revision.py|23306
