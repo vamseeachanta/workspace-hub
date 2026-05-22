@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Sync managed agent configs from workspace-hub templates into home directories.
-# Usage: bash scripts/_core/sync-agent-configs.sh [--force] [--dry-run]
+# Usage: bash scripts/_core/sync-agent-configs.sh [--force] [--dry-run] [--machine <name>]
 
 set -euo pipefail
 
@@ -9,22 +9,32 @@ WS_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 FORCE=false
 DRY_RUN=false
-for arg in "$@"; do
-    case "$arg" in
-        --force) FORCE=true ;;
-        --dry-run) DRY_RUN=true ;;
+MACHINE=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --force) FORCE=true; shift ;;
+        --dry-run) DRY_RUN=true; shift ;;
+        --machine)
+            if [[ $# -lt 2 ]]; then
+                echo "Missing value for --machine" >&2
+                exit 1
+            fi
+            MACHINE="$2"
+            shift 2
+            ;;
         --help|-h)
             cat <<'USAGE'
-Usage: bash scripts/_core/sync-agent-configs.sh [--force] [--dry-run]
+Usage: bash scripts/_core/sync-agent-configs.sh [--force] [--dry-run] [--machine <name>]
 
 Options:
-  --force    Overwrite plain-copy targets when merge is not possible
-  --dry-run  Show planned actions without writing files
+  --force      Overwrite plain-copy targets when merge is not possible
+  --dry-run    Show planned actions without writing files
+  --machine N  Resolve machine roots from config/workstations/registry.yaml
 USAGE
             exit 0
             ;;
         *)
-            echo "Unknown option: $arg" >&2
+            echo "Unknown option: $1" >&2
             exit 1
             ;;
     esac
@@ -60,48 +70,77 @@ sync_make_target_tmp() {
     mktemp "$dir/.${base}.tmp.XXXXXX"
 }
 
+run_config_python() {
+    if command -v uv >/dev/null 2>&1; then
+        uv run --with pyyaml --no-project python "$@"
+        return
+    fi
+    if command -v python3 >/dev/null 2>&1; then
+        if python3 -c 'import yaml' >/dev/null 2>&1; then
+            python3 "$@"
+            return
+        fi
+        echo "[ERROR] python3 is available but PyYAML is missing, and uv is unavailable for agent config sync" >&2
+        return 1
+    fi
+    echo "[ERROR] python3 or uv is required for agent config sync" >&2
+    return 127
+}
+
 render_hermes_template() {
     local template="$1"
     local output_path="$2"
-    local ws_hub_path="$3"
+    local machine_name="$3"
+    local ws_hub_path="$4"
+    local tier1_repo_root="$5"
 
-    if [[ "$ws_hub_path" == *$'\n'* ]]; then
-        echo "[ERROR] ws_hub_path contains newline; refusing to render Hermes template" >&2
+    if [[ "$ws_hub_path" == *$'\n'* || "$tier1_repo_root" == *$'\n'* ]]; then
+        echo "[ERROR] machine root contains newline; refusing to render Hermes template" >&2
         return 1
     fi
 
-    if command -v python3 >/dev/null 2>&1; then
-        if WS_HUB_PATH="$ws_hub_path" python3 - "$template" "$output_path" <<'PY'
-import os
+    local registry_path="$WS_HUB/config/workstations/registry.yaml"
+
+    WS_HUB_PATH="$ws_hub_path" TIER1_REPO_ROOT="$tier1_repo_root" MACHINE_NAME="$machine_name" REGISTRY_PATH="$registry_path" run_config_python - "$template" "$output_path" <<'PY'
+import json, os
 import pathlib
+import re
 import sys
+import yaml
 
 template_path = pathlib.Path(sys.argv[1])
 output_path = pathlib.Path(sys.argv[2])
-rendered = template_path.read_text().replace("__WS_HUB_PATH__", os.environ["WS_HUB_PATH"])
+ws_hub = os.environ["WS_HUB_PATH"]
+tier1 = os.environ["TIER1_REPO_ROOT"]
+machine_name = os.environ["MACHINE_NAME"]
+registry_path = pathlib.Path(os.environ["REGISTRY_PATH"])
+if registry_path.exists():
+    registry = yaml.safe_load(registry_path.read_text()) or {}
+    repos = ((registry.get("machines") or {}).get(machine_name) or {}).get("repos") or []
+else:
+    repos = []
+repo_skill_dirs = []
+for repo in repos:
+    if repo == "workspace-hub":
+        continue
+    path = pathlib.Path(tier1) / str(repo) / ".claude" / "skills"
+    if path.exists() and any(path.rglob("SKILL.md")):
+        repo_skill_dirs.append(f"- {json.dumps(str(path))}")
+registry_repo_skill_dirs = "\n    ".join(repo_skill_dirs) if repo_skill_dirs else ""
+rendered = (
+    template_path.read_text()
+    .replace("__WS_HUB_PATH__", ws_hub)
+    .replace("__TIER1_REPO_ROOT__", tier1)
+    .replace("__REGISTRY_REPO_SKILL_DIRS__", registry_repo_skill_dirs)
+)
+remaining = sorted(set(re.findall(r"__[A-Z_][A-Z0-9_]*__", rendered)))
+if remaining:
+    raise SystemExit(f"unresolved token(s): {', '.join(remaining)}")
+stale = re.findall(re.escape(ws_hub) + r"/(?!\.claude/)[^\n]+/\.claude/skills", rendered)
+if stale:
+    raise SystemExit("stale nested workspace-hub skill path(s): " + ", ".join(stale))
 output_path.write_text(rendered)
 PY
-        then
-            return
-        fi
-    fi
-
-    if command -v uv >/dev/null 2>&1; then
-        WS_HUB_PATH="$ws_hub_path" uv run --no-project python - "$template" "$output_path" <<'PY'
-import os
-import pathlib
-import sys
-
-template_path = pathlib.Path(sys.argv[1])
-output_path = pathlib.Path(sys.argv[2])
-rendered = template_path.read_text().replace("__WS_HUB_PATH__", os.environ["WS_HUB_PATH"])
-output_path.write_text(rendered)
-PY
-        return
-    fi
-
-    echo "[ERROR] render_hermes_template requires python3 or uv" >&2
-    return 1
 }
 
 validate_json_file() {
@@ -893,62 +932,103 @@ EOF
     rm -f "$tmp" "$tmp_new" "$template_clean"
 }
 
+resolve_machine_roots() {
+    # Prints machine name, workspace_root, and tier1_repo_root separated by tabs. Registry is authoritative.
+    local registry="$WS_HUB/config/workstations/registry.yaml"
+    local harness="$WS_HUB/scripts/readiness/harness-config.yaml"
+    MACHINE="$MACHINE" run_config_python - "$registry" "$harness" <<'PY'
+import os, pathlib, re, socket, sys, yaml
+registry_path, harness_path = sys.argv[1], sys.argv[2]
+requested = os.environ.get("MACHINE") or ""
+host = socket.gethostname().split(".")[0].lower()
+
+if os.path.exists(registry_path):
+    with open(registry_path) as f:
+        machines = (yaml.safe_load(f) or {}).get("machines") or {}
+    harness_workstations = {}
+    if os.path.exists(harness_path):
+        with open(harness_path) as f:
+            harness_workstations = (yaml.safe_load(f) or {}).get("workstations") or {}
+        for candidate, cfg in machines.items():
+            harness_cfg = harness_workstations.get(candidate) or {}
+            h_root = harness_cfg.get("ws_hub_path")
+            r_root = cfg.get("workspace_root")
+            if h_root and r_root and str(h_root) != str(r_root):
+                raise SystemExit(f"registry/harness workspace_root divergence for {candidate}: {r_root} != {h_root}")
+    def machine_aliases(candidate, cfg):
+        aliases = [str(candidate), str(cfg.get("hostname") or "")]
+        aliases += [str(a) for a in (cfg.get("hostname_aliases") or [])]
+        return [alias.split(".")[0].lower() for alias in aliases if alias]
+    if requested:
+        requested_key = requested.split(".")[0].lower()
+        name = None
+        for candidate, cfg in machines.items():
+            if requested_key in machine_aliases(candidate, cfg):
+                name = candidate
+                break
+        if name is None:
+            raise SystemExit(f"unknown machine: {requested}")
+    else:
+        name = None
+        for candidate, cfg in machines.items():
+            if host in machine_aliases(candidate, cfg):
+                name = candidate
+                break
+        if name is None:
+            name = f"local-fallback-{host}"
+            workspace_root = str(pathlib.Path(registry_path).resolve().parents[2])
+            tier1_repo_root = str(pathlib.Path(workspace_root).parent)
+            print(f"[WARN] unknown machine for hostname {host}; falling back to local workspace {workspace_root}", file=sys.stderr)
+            print(f"{name}\t{workspace_root}\t{tier1_repo_root}")
+            raise SystemExit(0)
+    cfg = machines[name]
+    workspace_root = cfg.get("workspace_root")
+    tier1_repo_root = cfg.get("tier1_repo_root")
+    if cfg.get("repo_layout") == "sibling" and (not workspace_root or not tier1_repo_root):
+        raise SystemExit(f"machine {name} missing workspace_root/tier1_repo_root for sibling layout")
+else:
+    if not os.path.exists(harness_path):
+        raise SystemExit(f"missing registry and harness config: {registry_path}, {harness_path}")
+    with open(harness_path) as f:
+        workstations = (yaml.safe_load(f) or {}).get("workstations") or {}
+    name = requested or host
+    cfg = workstations.get(name) or {}
+    if not cfg and not requested:
+        for candidate, candidate_cfg in workstations.items():
+            if str(candidate).split(".")[0].lower() == host:
+                name = candidate
+                cfg = candidate_cfg or {}
+                break
+    if not cfg:
+        raise SystemExit(f"unknown machine: {name}")
+    workspace_root = cfg.get("workspace_root") or cfg.get("ws_hub_path")
+    tier1_repo_root = cfg.get("tier1_repo_root")
+if not workspace_root:
+    raise SystemExit(f"machine {name} missing workspace_root")
+if not tier1_repo_root:
+    workspace_text = str(workspace_root).rstrip('/\\')
+    slash = max(workspace_text.rfind('/'), workspace_text.rfind('\\'))
+    if slash <= 0:
+        raise SystemExit(f"machine {name} missing tier1_repo_root and cannot derive parent from workspace_root: {workspace_root}")
+    tier1_repo_root = workspace_text[:slash]
+    if re.match(r"^[A-Za-z]:$", tier1_repo_root):
+        tier1_repo_root += "\\"
+if os.path.exists(registry_path) and os.path.exists(harness_path):
+    with open(harness_path) as f:
+        harness = ((yaml.safe_load(f) or {}).get("workstations") or {}).get(name) or {}
+    h_root = harness.get("ws_hub_path")
+    if h_root and str(h_root) != str(workspace_root):
+        raise SystemExit(f"registry/harness workspace_root divergence for {name}: {workspace_root} != {h_root}")
+print(f"{name}\t{workspace_root}\t{tier1_repo_root}")
+PY
+}
+
 resolve_ws_hub_path() {
-    # Determine workspace-hub path for this machine from harness-config.yaml.
-    # Resolution order: hostname field match → hostname_aliases match → key substring → fallback.
-    local config="$WS_HUB/scripts/readiness/harness-config.yaml"
-    local ws_path=""
+    resolve_machine_roots | cut -f2
+}
 
-    if [[ -f "$config" ]]; then
-        if command -v python3 >/dev/null 2>&1; then
-            ws_path=$(python3 - "$config" <<'PY' 2>/dev/null || true
-import yaml, socket, sys
-hostname_short = socket.gethostname().split(".")[0].lower()
-with open(sys.argv[1]) as f:
-    cfg = yaml.safe_load(f)
-for name, ws in (cfg.get("workstations") or {}).items():
-    ws_path = ws.get("ws_hub_path") or ""
-    if not ws_path:
-        continue
-    cfg_hostname = (ws.get("hostname") or "").lower()
-    if cfg_hostname and cfg_hostname == hostname_short:
-        print(ws_path); sys.exit(0)
-    for alias in (ws.get("hostname_aliases") or []):
-        if alias.split(".")[0].lower() == hostname_short:
-            print(ws_path); sys.exit(0)
-    if hostname_short in name.lower():
-        print(ws_path); sys.exit(0)
-PY
-)
-        fi
-        if [[ -z "$ws_path" ]] && command -v uv >/dev/null 2>&1; then
-            ws_path=$(uv run --no-project python - "$config" <<'PY' 2>/dev/null || true
-import yaml, socket, sys
-hostname_short = socket.gethostname().split(".")[0].lower()
-with open(sys.argv[1]) as f:
-    cfg = yaml.safe_load(f)
-for name, ws in (cfg.get("workstations") or {}).items():
-    ws_path = ws.get("ws_hub_path") or ""
-    if not ws_path:
-        continue
-    cfg_hostname = (ws.get("hostname") or "").lower()
-    if cfg_hostname and cfg_hostname == hostname_short:
-        print(ws_path); sys.exit(0)
-    for alias in (ws.get("hostname_aliases") or []):
-        if alias.split(".")[0].lower() == hostname_short:
-            print(ws_path); sys.exit(0)
-    if hostname_short in name.lower():
-        print(ws_path); sys.exit(0)
-PY
-)
-        fi
-    fi
-
-    # Fallback: use the workspace-hub we're running from
-    if [[ -z "$ws_path" ]]; then
-        ws_path="$WS_HUB"
-    fi
-    echo "$ws_path"
+resolve_tier1_repo_root() {
+    resolve_machine_roots | cut -f3
 }
 
 sync_hermes_yaml_config() {
@@ -956,12 +1036,18 @@ sync_hermes_yaml_config() {
     local target="$2"
     local label="$3"
     local ws_hub_path
+    local tier1_repo_root
+    local roots
     local resolved_template=""
     local merged=""
 
     trap 'rm -f "$resolved_template" "$merged"' RETURN
 
-    ws_hub_path="$(resolve_ws_hub_path)"
+    local machine_name
+    roots="$(resolve_machine_roots)"
+    machine_name="$(printf '%s\n' "$roots" | cut -f1)"
+    ws_hub_path="$(printf '%s\n' "$roots" | cut -f2)"
+    tier1_repo_root="$(printf '%s\n' "$roots" | cut -f3)"
 
     if [[ "$DRY_RUN" != "true" ]]; then
         ensure_parent_dir "$target"
@@ -970,7 +1056,7 @@ sync_hermes_yaml_config() {
         resolved_template="$(mktemp)"
     fi
 
-    if ! render_hermes_template "$template" "$resolved_template" "$ws_hub_path"; then
+    if ! render_hermes_template "$template" "$resolved_template" "$machine_name" "$ws_hub_path" "$tier1_repo_root"; then
         trap - RETURN
         rm -f "$resolved_template" "$merged"
         return 1
@@ -984,11 +1070,11 @@ sync_hermes_yaml_config() {
 
     if [[ ! -f "$target" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
-            log_change "$label -> $target (create, ws_hub=$ws_hub_path)"
+            log_change "$label -> $target (create, ws_hub=$ws_hub_path, tier1_repo_root=$tier1_repo_root)"
         else
             mv -f "$resolved_template" "$target"
             resolved_template=""
-            log_change "$label -> $target (create, ws_hub=$ws_hub_path)"
+            log_change "$label -> $target (create, ws_hub=$ws_hub_path, tier1_repo_root=$tier1_repo_root)"
         fi
         trap - RETURN
         rm -f "$resolved_template" "$merged"

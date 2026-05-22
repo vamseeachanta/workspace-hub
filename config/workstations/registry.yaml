@@ -173,6 +173,8 @@ machines:
     os: linux
     role: secondary-dev
     workspace_root: /mnt/local-analysis/workspace-hub
+    tier1_repo_root: /mnt/local-analysis
+    repo_layout: sibling
     schedule_variant: contribute
     ssh: ace-linux-2
     tailscale_ip: 10.1.0.2
@@ -211,13 +213,15 @@ machines:
     os: windows
     role: simulation-license-host
     workspace_root: 'D:\workspace-hub'
+    tier1_repo_root: 'D:\'
+    repo_layout: sibling
     schedule_variant: contribute-minimal
     ssh: null  # no SSH — physical/GUI access only
     tailscale_ip: null
     capabilities:
       agent_clis: [claude, codex, gemini]
       languages: [bash]  # git-bash / MINGW64
-      tools: [orcaflex, ansys, git]
+      tools: [orcaflex, ansys, git, uv]
       gpu: false
     storage:
       local: 'D:\'                        # primary drive
@@ -246,13 +250,15 @@ machines:
     os: windows
     role: simulation-secondary
     workspace_root: 'D:\workspace-hub'
+    tier1_repo_root: 'D:\'
+    repo_layout: sibling
     schedule_variant: contribute-minimal
     ssh: null
     tailscale_ip: null
     capabilities:
       agent_clis: [claude, codex, gemini]
       languages: [bash]
-      tools: [orcaflex, ansys, git]
+      tools: [orcaflex, ansys, git, uv]
       gpu: false
     repos:
       - OGManufacturing
