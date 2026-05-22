@@ -51,6 +51,6 @@ Git IS the sync mechanism.
 ## Legal Compliance
 
 - `.legal-deny-list.yaml` — 15 client name patterns, repo root
-- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents
+- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents *verified: 2026-05-22*
 - Catalogs (`dde-*`, `conference-*`) are excluded from scanning
 - MANDATORY for all document-intelligence and resource work

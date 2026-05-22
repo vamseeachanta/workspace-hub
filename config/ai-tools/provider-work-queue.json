@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-22T01:20:08.472722Z",
+  "generated_at": "2026-05-22T05:20:07.874938Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-22T01:20:06.805029Z",
+  "scorecard_generated_at": "2026-05-22T05:20:06.194709Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -560,7 +560,7 @@
             "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-21T19:30:03Z",
+          "updatedAt": "2026-05-22T04:21:17Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -584,7 +584,7 @@
             "domain:repo-organization",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-21T13:46:03Z",
+          "updatedAt": "2026-05-22T02:21:18Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4945,7 +4945,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-21T04:00:56Z",
+          "updatedAt": "2026-05-22T04:01:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
@@ -5032,7 +5032,7 @@
             "agent:codex",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-21T04:00:56Z",
+          "updatedAt": "2026-05-22T04:01:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "gemini",
