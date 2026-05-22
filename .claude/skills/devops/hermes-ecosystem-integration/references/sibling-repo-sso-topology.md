@@ -63,4 +63,19 @@ When the user asks whether sibling repos now share memory, skills, and harness a
 - Stale nested paths are removed from `config/agents/hermes/config.yaml.template` or explicitly documented as legacy.
 - `scripts/memory/check-memory-drift.sh` reports no missing sibling-topology memory entries on the relevant machine; remote machines require remote execution or an explicit not-present/fail state.
 - Repo AGENTS pointers resolve to an existing canonical contract and AGENTS remediation skips symlinked/non-regular files.
+- Tools/scripts/commands are explicitly classified. Do not imply they are centralized simply because skills or memory are centralized; inspect `.claude/tools`, `.claude/commands`, `tools/`, and `scripts/` per repo and state whether they are repo-local or harness-shared.
 - Any associated GitHub issue has no unresolved MAJOR plan-review findings before it is moved to `status:plan-review`, and implementation does not start until user-applied `status:plan-approved` is present.
+
+## Answer Format for User SSoT Questions
+
+When asked “are memory, skills, tools accessible by sibling repos as SSoT?”, answer as a status table rather than a binary unless every channel is green:
+
+| Channel | What to verify | Possible state |
+|---|---|---|
+| Memory | Bridge drift + repo `.claude/memory/agents.md` freshness | SSoT / drift / not bridged |
+| Hermes skills | Live `~/.hermes/config.yaml` `skills.external_dirs` vs registry repos | complete / partial / stale-template |
+| Codex/Gemini skills | `.codex/skills` and `.gemini/skills` `test -e` + `readlink -f` | resolved / broken / autonomous |
+| AGENTS contract | repo `AGENTS.md` pointer resolves to workspace-hub contract | resolved / stale / symlink-blocked |
+| Tools/scripts/commands | per-repo inventory of `.claude/tools`, `.claude/commands`, `tools`, `scripts` | centralized / repo-local / mixed |
+
+Use “workspace-hub is the intended control-plane/SSoT, but not fully verified” when any row is partial, broken, or drifted.
