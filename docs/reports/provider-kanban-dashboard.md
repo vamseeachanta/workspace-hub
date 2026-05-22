@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-21T17:20:10Z
+Generated: 2026-05-21T21:20:10Z
 Mode: static (read-only)
 
 ## How to approve
@@ -65,9 +65,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2751 | Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
 | #2750 | Hermes: integrate pre-completion-cleanup-audit into sub-agent completion relay | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2749 | Compliance alert: W21 — 50% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2748 | feat(acma): client output scaffolding for reports chatbots and evidence packs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #2746 | feat(acma): create private llm-wiki repo target llm-wiki-acma | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #2745 | feat(acma): freeze acma-projects and move to local-only archive posture | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
 | #2744 | epic(acma): client project data-cycle readiness and private llm-wiki launch | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2742 | plan(hermes): Windows and macOS Telegram/Hermes dispatch parity path | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2741 | test(hermes): validate Telegram dispatch smoke tests and destructive-action canary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +240,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2381 | chore(governance): add computable expiration metadata to session handoffs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2379 | feat(knowledge): generate task and asset explorer views from the intelligence accessibility registry | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2377 | feat(harness): add missing session-signal event emitters to unblock deferred provider-assessment dimensions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2376 | feat(harness): provider assessment — corpus-honest subset (descoped from #43) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #2374 | feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2370 | feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 

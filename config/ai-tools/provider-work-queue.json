@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-21T17:20:09.140806Z",
+  "generated_at": "2026-05-21T21:20:08.614619Z",
   "current_week": "2026-W21",
-  "scorecard_generated_at": "2026-05-21T17:20:07.465181Z",
+  "scorecard_generated_at": "2026-05-21T21:20:06.563238Z",
   "recommended_provider_order": [
     "gemini",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 28,
+      "execution_ready_count": 25,
       "total_candidates": 175,
       "top_issues": [
         {
@@ -467,81 +467,6 @@
           ]
         },
         {
-          "number": 2745,
-          "title": "feat(acma): freeze acma-projects and move to local-only archive posture",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2745",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:operations",
-            "domain:repo-organization",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-21T00:49:58Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2746,
-          "title": "feat(acma): create private llm-wiki repo target llm-wiki-acma",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2746",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:document-intelligence",
-            "domain:knowledge",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-20T22:32:40Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 2748,
-          "title": "feat(acma): client output scaffolding for reports chatbots and evidence packs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2748",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data-pipeline",
-            "cat:documentation",
-            "domain:knowledge-management",
-            "status:plan-approved"
-          ],
-          "updatedAt": "2026-05-21T03:37:36Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 2751,
           "title": "Cross-platform harness setup: integrate AI-provider bootstrap, auth orchestration, macOS+PowerShell, per-machine status registry",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/2751",
@@ -635,7 +560,7 @@
             "domain:naval-architecture",
             "status:plan-approved"
           ],
-          "updatedAt": "2026-05-20T23:32:44Z",
+          "updatedAt": "2026-05-21T19:30:03Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1064,6 +989,53 @@
           "updatedAt": "2026-05-21T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2370,
+          "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge-management"
+          ],
+          "updatedAt": "2026-05-18T19:42:56Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2374,
+          "title": "feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2374",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:harness",
+            "domain:knowledge-management"
+          ],
+          "updatedAt": "2026-05-18T19:42:53Z",
+          "execution_ready": false,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1617,7 +1589,7 @@
             "domain:knowledge",
             "domain:repo-organization"
           ],
-          "updatedAt": "2026-05-21T11:08:24Z",
+          "updatedAt": "2026-05-21T18:56:20Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1780,6 +1752,30 @@
           "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 2376,
+          "title": "feat(harness): provider assessment \u2014 corpus-honest subset (descoped from #43)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/2376",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:session",
+            "agent:claude"
+          ],
+          "updatedAt": "2026-05-18T19:42:50Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "existing claude agent label",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [

@@ -25,6 +25,7 @@ A green report-generation test is not enough when the numerical model still uses
 5. Check every emitted surface before closeout.
    - CSV/JSON numerical output, provenance JSON, manifest, Markdown, HTML, DOCX, and PDF must all reflect the same source-gated model and limitation language.
    - Search report templates and generated copy for stale placeholder phrases such as `transparent reference heading coefficients`, `first-cut placeholder`, or generic trig/coefficient language after the model changes. Treat stale explanatory text as an artifact-contract failure even when numeric tests are green.
+   - If issue body, comments, and existing artifacts disagree on default cases (for example baseline current speed vs chart upper bound vs selected default), re-read the full issue/comment ledger and lock the resolved policy in config, tests, and report copy before regenerating outputs. Do not infer the governing default from a stale generated artifact.
 
 ## Example acceptance checks
 
