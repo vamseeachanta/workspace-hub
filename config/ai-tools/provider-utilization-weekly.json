@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T05:20:06.070868Z",
+  "generated_at": "2026-05-22T09:20:07.057392Z",
   "current_week": "2026-W21",
   "report_weeks": 8,
   "subscriptions": {
@@ -1031,15 +1031,15 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W21",
-        "sessions": 96,
-        "post_records": 3955,
+        "sessions": 97,
+        "post_records": 3957,
         "activity_utilization_pct": 9.7,
         "quota_utilization_pct": null,
         "reported_utilization_pct": 9.7,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-05-22T05:20:01Z",
+        "quota_snapshot_ts": "2026-05-22T09:20:02Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -1051,7 +1051,7 @@
           },
           {
             "tool": "unknown",
-            "count": 577
+            "count": 579
           },
           {
             "tool": "Edit",
@@ -1063,21 +1063,21 @@
           }
         ],
         "first_ts": "2026-05-18T01:14:44Z",
-        "last_ts": "2026-05-22T04:21:29Z",
+        "last_ts": "2026-05-22T06:35:58Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
         "provider": "codex",
         "week": "2026-W21",
         "sessions": 120,
-        "post_records": 2044,
-        "activity_utilization_pct": 22.4,
+        "post_records": 2100,
+        "activity_utilization_pct": 23.0,
         "quota_utilization_pct": 1.1,
         "reported_utilization_pct": 1.1,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl",
-        "quota_snapshot_ts": "2026-05-22T05:20:01Z",
+        "quota_snapshot_ts": "2026-05-22T09:20:02Z",
         "top_tools": [
           {
             "tool": "Read",
@@ -1085,7 +1085,7 @@
           },
           {
             "tool": "Bash",
-            "count": 722
+            "count": 778
           },
           {
             "tool": "Grep",
@@ -1101,7 +1101,7 @@
           }
         ],
         "first_ts": "2026-05-18T01:37:40.930000Z",
-        "last_ts": "2026-05-22T01:44:04.269000Z",
+        "last_ts": "2026-05-22T01:50:53.975000Z",
         "note": "week_messages/weekly_limit from history.jsonl"
       },
       "gemini": {
@@ -1115,7 +1115,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "estimated_daily_quota",
         "quota_source": "estimated",
-        "quota_snapshot_ts": "2026-05-22T05:20:01Z",
+        "quota_snapshot_ts": "2026-05-22T09:20:02Z",
         "top_tools": [
           {
             "tool": "Browser",
@@ -1129,11 +1129,11 @@
       "hermes": {
         "provider": "hermes",
         "week": "2026-W21",
-        "sessions": 855,
-        "post_records": 36191,
-        "activity_utilization_pct": 46.2,
+        "sessions": 1267,
+        "post_records": 66138,
+        "activity_utilization_pct": 84.4,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 46.2,
+        "reported_utilization_pct": 84.4,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
@@ -1141,27 +1141,27 @@
         "top_tools": [
           {
             "tool": "Read",
-            "count": 13512
+            "count": 26889
           },
           {
             "tool": "Bash",
-            "count": 13151
+            "count": 23637
           },
           {
             "tool": "Grep",
-            "count": 4646
+            "count": 8093
           },
           {
             "tool": "Write",
-            "count": 1895
+            "count": 3457
           },
           {
             "tool": "Browser",
-            "count": 1449
+            "count": 1596
           }
         ],
         "first_ts": "2026-05-18T03:30:43.743526Z",
-        "last_ts": "2026-05-21T00:13:10.584773Z",
+        "last_ts": "2026-05-21T14:09:23.947524Z",
         "note": "no quota snapshot; using activity fallback"
       }
     }

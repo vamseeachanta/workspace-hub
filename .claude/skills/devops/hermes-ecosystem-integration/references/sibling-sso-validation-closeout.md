@@ -40,5 +40,10 @@ Do not summarize the issue as complete. Emit a resume checkpoint with:
 - Passed test/runtime commands with observed result.
 - Remaining blocker: usually post-fix adversarial review, commit/push, and GitHub closeout.
 - Exact next commands/checkpoints for the next session.
+- Staged-file inventory and `git diff --cached --check` result if files were already staged.
+- Untracked/generated review artifacts that were intentionally not staged.
+- Latest adversarial-review verdicts, distinguishing clean verdicts from failed/empty/tool-confused review attempts.
 
-This prevents a future agent from closing an issue based on pre-review local validation only.
+When resuming from a staged-but-uncommitted SSoT fix, first verify `git status --short` and `git diff --cached --stat`; do not re-run implementation or restage broad paths unless the staged inventory differs from the handoff. Then run one fresh compact adversarial review against `git diff --cached` before commit/push/issue closeout.
+
+This prevents a future agent from closing an issue based on pre-review local validation only, and prevents duplicate implementation churn after a tool-budget cutoff.
