@@ -13,6 +13,22 @@
 5. Resolver is **direct file read** for v1 per #2481 D3. Migrate to MCP `wiki_search` when [#2400](https://github.com/vamseeachanta/workspace-hub/issues/2400) ships; the schema doesn't change.
 6. Citations emit to a **sidecar**, not the primary numeric payload — preserves downstream-consumer compatibility.
 7. Do NOT cite wiki pages under `knowledge/wikis/*/wiki/sources/` — those are vendor-derivative deny-list per the governance doc #2482. Cite the standards-page (under `standards/`) the sources-page references, or the methodology/concept page under `concepts/`.
+8. **Sidecar must declare source sibling** (per [`.claude/rules/wiki-sibling-routing.md`](wiki-sibling-routing.md) Layer 4, #2778). Every `Citation` sidecar carries:
+   - `source_sibling:` **(required)** — `"generic"` (sourced from `vamseeachanta/llm-wiki`) or a client slug (e.g., `"acma"` when sourced from `vamseeachanta/llm-wiki-acma`).
+   - `source_project:` **(optional)** — populated when the citation is project-scoped (e.g., `"sirocco"` for content under `llm-wiki-acma/projects/sirocco/`); `null` for client-level or generic citations.
+   Default during digitalmodel cross-repo migration: `source_sibling: "generic"`. Resolver raises `CitationResolutionError` when `source_sibling` mismatches the wiki target the resolver actually reaches (e.g., citation claims `generic` but slug resolves under `llm-wiki-acma/`).
+
+**Sidecar schema (extended for #2778):**
+
+```yaml
+citations:
+  - code_id: DNV-OS-E301
+    publisher: DNV
+    revision: 2018-07
+    section: §2.2
+    source_sibling: generic            # required — 'generic' or <client-slug>
+    source_project: null               # optional — project-scoped if non-null
+```
 
 **Do NOT apply when:** the constant is derived from the code itself (not a standard), is a convention-only numeric (e.g., array size), or is already in a scope where the caller has wired citations upstream. Don't double-cite.
 

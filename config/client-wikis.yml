@@ -15,6 +15,8 @@ wikis:
     posture: client-private
     status: bootstrapped
     instantiated_at: 2026-05-18
+    projects:                              # per #2778 — declarative roster of known projects; consumed by check-wiki-sibling-frontmatter.py Rule E
+      - sirocco                            # B1528 SIROCCO project (live engagement, #2760)
     notes: "Instance #1. Firewall files (LICENSE/.gitignore/.claude/CLAUDE.md/REDACTION-POSTURE.md) + post-rename text fixes landed at llm-wiki-acma commit 1d813086a (2026-05-20). NTFS secondary clone deleted in T8 of #2746 (2026-05-20)."
 
   - short_name: rock-oil-field
