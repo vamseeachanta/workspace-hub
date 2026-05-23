@@ -1,0 +1,497 @@
+board:
+  slug: repo-worldenergydata-quality
+  display_name: worldenergydata · quality
+  tier: domain
+  repo: vamseeachanta/worldenergydata
+  domain: quality
+  parent_slug: repo-worldenergydata
+  workspace_path: /mnt/local-analysis/worldenergydata
+  description: 'Quality, CI, scheduler health, completeness/freshness scorecards,
+    test-suite reconciliation, hygiene verifiers, plan-approved follow-ups.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/worldenergydata#422
+  title: 'chore(legal): exclude reports/coverage/htmlcov/ from legal-deny-list scan
+    (or gitignore)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/422
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:maintenance
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Surfaced during [#416 Phase 0 exploration](https://github.com/vamseeachanta/worldenergydata/issues/416).
+    When running workspace-hub''s legal-sanity-scan against worldenergydata, the scan
+    reports **125 BLOCK violations** — all in `reports/coverage/htmlcov/*.html` files
+    (pytest-cov HTML output).'
+- idempotency_key: gh:vamseeachanta/worldenergydata#368
+  title: 'chore(hygiene): periodic verifier for recently-closed issues — catch claimed-shipped
+    vs not-actually-shipped drift'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/368
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:automation
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+
+    Issue #298 (closed 2026-04-16, commit `eedecf5a`, titled *\"extend catalog and
+    metadata to cover /mnt/ace symlinked data\"*) was caught by a 2026-05-01 audit
+    to have not actually wired the symlinks/path resolution it claimed. 9.5 GB of
+    relocated data is still unreachable through the catalog. This is the **closed-issue-was-not-actually-done**
+    failure mode — issues get closed, work is assumed shipped, and audits months later
+    expose the gap.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#360
+  title: 'ops(scheduler): verify and instrument refresh health — last successful run
+    2026-03-25 (37 days stale)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/360
+  gh_state: open
+  gh_labels:
+  - bug
+  - priority:high
+  - cat:data
+  - cat:automation
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Problem
+
+
+    Last successful scheduler refresh across the production data sources is 2026-03-25.
+    Today is 2026-05-01 — **37 days of silence**. The data-product narrative (\"weekly
+    auto-refresh of BSEE/EIA/SODIR/UKCS/Brazil ANP\") is currently unsupported by
+    live state.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#351
+  title: 'audit(scheduler): prepare source refresh runtime readiness matrix'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/351
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - cat:automation
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Audit the `worldenergydata` scheduler/runtime refresh pipeline and prepare a safe
+    overnight batch plan for source refreshes, endpoint probes, and configuration
+    fixes.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#350
+  title: 'audit(data): build data completeness and freshness scorecard'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/350
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:engineering
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Build a data completeness and freshness scorecard for `worldenergydata`, using
+    the live data catalog, source adapters, scheduler jobs, and local data tree to
+    identify which datasets are complete, sample-only, stale, missing, or blocked
+    by credentials/API/runtime contracts.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#349
+  title: 'audit(repo): build capability inventory and module readiness matrix'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/349
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:high
+  - cat:engineering
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Build a repo-grounded capability inventory and readiness matrix for `worldenergydata`
+    so overnight agents can understand what the repo can actually do versus what README/MODULE_INDEX/docs
+    claim.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#342
+  title: 'bug(cost): restore broken proxy comparison regression boundary'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/342
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:engineering
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Repair the broken sanction-layer proxy comparison regression boundary so the annual
+    disclosure cost wave can verify compatibility without false failures.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#341
+  title: 'follow-up(tests): reconcile remaining NPV comparison suite drift after #2451
+    stabilization'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/341
+  gh_state: open
+  gh_labels:
+  - ci
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    After the #2451 stabilization work removes the benchmark/fixture/legacy-API runtime
+    failures, the broader `tests/modules/bsee/analysis/npv-data-source-comparison/`
+    directory still contains additional pre-existing failures unrelated to the original
+    three #2451 signatures.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#339
+  title: 'follow-up(tests): re-enable or delete legacy NPV comparison tests after
+    financial-module audit'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/339
+  gh_state: open
+  gh_labels:
+  - ci
+  - priority:medium
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Legacy NPV-oriented tests under `tests/modules/bsee/analysis/npv-data-source-comparison/`
+    still target the pre-refactor `ProductionAPI12Analysis.perform_npv_calculation`
+    API shape and/or the old import path namespace.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#328
+  title: 'Tooling: flake8 reports different F821 counts across runs on same codebase
+    (uv env race?)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/328
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    During the #314 Block B sweep, three independent `uv run --extra dev flake8 src/
+    tests/ --select=F821` runs on main returned **three different counts** on the
+    same code. This undercount caused the sweep to miss 33 errors, which required
+    a follow-up mop-up (#322).'
+- idempotency_key: gh:vamseeachanta/worldenergydata#325
+  title: 'Bugs: 8 pre-existing defects surfaced by PR #320''s xfail markers'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/325
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    PR #320 (part of #314) replaced a broken `exec()` hack in two compliance test
+    files and resurrected 63 tests that had been silently non-executing since a `modules/`
+    refactor. Of those, 53 pass cleanly and **10 fail on real implementation bugs**
+    — not import issues. They were marked `@pytest.mark.xfail` with specific reasons
+    rather than silenced, so they surface in test reports without breaking CI.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#316
+  title: 'Type: incremental mypy cleanup — ~2918 untyped-def errors'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/316
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    After PR #308 (mypy python_version bump + type stubs), mypy runs to completion
+    instead of crashing on torch''s match syntax. The full error count revealed is
+    ~2918, previously hidden behind the crash.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#315
+  title: 'Lint: evaluate ruff migration to replace black + isort + flake8'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/315
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Proposal
+
+
+    Replace the current 3-tool linting stack (\`black\` + \`isort\` + \`flake8\`)
+    with a single tool: [\`ruff\`](https://docs.astral.sh/ruff/).'
+- idempotency_key: gh:vamseeachanta/worldenergydata#313
+  title: Test infrastructure cleanup — unify pytest config, restore type_curves, fix
+    broken imports
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/313
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Follow-up from the closed [PR #310](https://github.com/vamseeachanta/worldenergydata/pull/310).
+    Scope turned out larger than "5 broken imports" — needs a focused test-infra cleanup
+    pass.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#277
+  title: 'perf: investigate test suite performance regressions flagged in Phase 2B
+    run'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/277
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Findings
+
+
+    The Phase 2B test run (`182s` for 87 tests) flagged three regressions:'
+- idempotency_key: gh:vamseeachanta/worldenergydata#276
+  title: 'test: add integration test for DataValidator.generate_interactive_report
+    (HTML output)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/276
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Background
+
+
+    Phase 2B (`6303df0`) added 22 unit tests for `src/validators/data_validator.py`
+    covering `validate_dataframe`, `_check_missing_data`, `_get_quality_color`, and
+    `generate_report`. The `generate_interactive_report` method (Plotly → HTML file)
+    was intentionally left out of unit tests as it requires filesystem + plotly rendering.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#274
+  title: 'fix(ci): remove || true from bandit security scan step'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/274
+  gh_state: open
+  gh_labels:
+  - ci
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+
+    `ci.yml` line 155 still has `|| true` on the bandit step:'
+- idempotency_key: gh:vamseeachanta/worldenergydata#273
+  title: Fix SODIR scheduler runtime endpoint contract
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/273
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Objective
+
+
+    Fix the `sodir_refresh` scheduler job so live scheduler runs succeed against the
+    current SODIR API.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#271
+  title: Wire `output_dir` into all scheduler jobs
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/271
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+
+    No scheduler job knows where to write output files. There is no `output_dir` wiring
+    between the adapter jobs and the `data/modules/` directory structure.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#267
+  title: Fix BSEE scheduler runtime download/extraction compatibility
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/267
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Objective
+
+
+    Fix the `bsee_refresh` scheduler job so it can complete successfully against current
+    live BSEE download formats.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#266
+  title: Operationalize EIA scheduler job — config, API key, first successful data
+    write
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/266
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Objective
+
+
+    Operationalize the `eia_us_refresh` scheduler job so it can complete a real production
+    run and write data successfully.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#119
+  title: Nightly build failed - 2026-01-30
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/119
+  gh_state: open
+  gh_labels:
+  - nightly-failure
+  - ci
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Nightly Build Failure
+
+
+    The nightly build has failed. Please investigate.'
+- idempotency_key: gh:vamseeachanta/worldenergydata#52
+  title: AI Native practices
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/52
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [x] Add ai guidelines in .ai fodler\n- [ ] implement uv best practices\n\
+    \  - [x] update pyproject.toml"
+- idempotency_key: gh:vamseeachanta/worldenergydata#48
+  title: Repository AI-enablement
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/48
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- context\n  - repository context\n- task execution guidelines"
+- idempotency_key: gh:vamseeachanta/worldenergydata#46
+  title: NPV Analysis
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/46
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: tracking in the repo spec.
+- idempotency_key: gh:vamseeachanta/worldenergydata#37
+  title: Field Reserve Map
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/37
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective: Create a simple geo map  showing below blocks in one image
+    .
+
+    - Jack Field - Walker Ridge blocks 758 & 759
+
+    - St. Malo Field - Walker Ridge block 678'
+- idempotency_key: gh:vamseeachanta/worldenergydata#18
+  title: engg debt | TXRRC | Data
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/18
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Review if any useful data from below repo code:
+
+    https://github.com/mlbelobraydi/TXRRC_data_harvest'
+- idempotency_key: gh:vamseeachanta/worldenergydata#2
+  title: engg debt | wind | data APIs
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/worldenergydata/issues/2
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: Get wind farm and structural data from public sources

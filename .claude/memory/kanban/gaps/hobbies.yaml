@@ -1,0 +1,62 @@
+gaps:
+- idempotency_key: gap:repo-hobbies:001
+  title: 'Phase 1 cleanup: redact credentials in sports/soccer/soccer.md'
+  source: detected_gap
+  detection_basis: docs/roadmap.md Phase 1 checkbox unchecked; target 2026-03-31 already
+    passed.
+  needs_issue: true
+  priority: 2
+  body_excerpt: Remove any credentials/PII from sports/soccer/soccer.md. Confirm via
+    git log scrub if previously committed.
+- idempotency_key: gap:repo-hobbies:002
+  title: 'Phase 1 cleanup: remove agent-framework scaffolding (.agent-os, agents/,
+    coordination/, scripts/, src/, tests/, htmlcov/)'
+  source: detected_gap
+  detection_basis: 'docs/repo-audit.md (WRK-041): ~155 scaffolding files vs ~67 content
+    files. Phase 1 target 2026-03-31 passed; ls shows .agent-os/, agents/, .benchmarks/,
+    .coverage still present.'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Strip software/agent scaffolding per roadmap Phase 1 list.
+- idempotency_key: gap:repo-hobbies:003
+  title: 'Phase 1 cleanup: remove root-level Python scripts, pyproject.toml, uv.toml,
+    Makefile'
+  source: detected_gap
+  detection_basis: roadmap Phase 1 item; ls confirms create-module-agent.py, create-spec.py,
+    create-spec-enhanced.py at root.
+  needs_issue: true
+  priority: 1
+  body_excerpt: Delete root build/scripting files — repo is markdown-only PKM.
+- idempotency_key: gap:repo-hobbies:004
+  title: 'Phase 2: decide fate of empty sports/waterpolo/ directory'
+  source: detected_gap
+  detection_basis: roadmap Phase 2 checkbox; audit recommends removal.
+  needs_issue: false
+  priority: 0
+  body_excerpt: Either populate or rmdir per audit.
+- idempotency_key: gap:repo-hobbies:005
+  title: 'Phase 1: replace .claude/CLAUDE.md 500-line software ruleset with 20-line
+    PKM context'
+  source: detected_gap
+  detection_basis: roadmap Phase 1 checkbox; current CLAUDE.md is trimmed but legacy
+    backup CLAUDE.md.backup-20251023-081047 is 28KB and still committed.
+  needs_issue: false
+  priority: 0
+  body_excerpt: Confirm trim landed; delete CLAUDE.md.backup-* files.
+- idempotency_key: gap:repo-hobbies:006
+  title: 'Content: gardening/ growing guides + seasonal calendar (audit gap)'
+  source: detected_gap
+  detection_basis: 'docs/repo-audit.md: gardening/ has 4 picking guides but no growing
+    guides, no seasonal calendar, no soil/zone notes.'
+  needs_issue: true
+  priority: 0
+  body_excerpt: Add growing guides + Houston-area zone 9a seasonal calendar.
+- idempotency_key: gap:repo-hobbies:007
+  title: 'Content: sports/swimming/ links-only stubs need expansion (freestyle, training)'
+  source: detected_gap
+  detection_basis: 'docs/repo-audit.md: freestyle.md and training.md flagged as link-only
+    stubs.'
+  needs_issue: false
+  priority: 0
+  body_excerpt: Convert link dumps to notes with drill-level prescriptions tied to
+    swimmer logs (bar/dpt/kanna).

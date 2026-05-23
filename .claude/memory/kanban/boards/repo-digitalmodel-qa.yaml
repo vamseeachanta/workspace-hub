@@ -1,0 +1,282 @@
+board:
+  slug: repo-digitalmodel-qa
+  display_name: digitalmodel · qa
+  tier: domain
+  repo: vamseeachanta/digitalmodel
+  domain: qa
+  parent_slug: repo-digitalmodel
+  workspace_path: /mnt/local-analysis/digitalmodel
+  description: 'Tests, CI, packaging, infra, docs, IO/data formats — pytest suite, coverage, uv-sync, mkdocs, parsers/readers/writers.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/digitalmodel#146
+  title: 'WRK-1180: Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/146
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## WRK-1180: Prototype: USNA EN400 worked examples → pytest test fixtures for naval architecture
+
+    **Status:** done | **Priority:** high | **Category:** engineering | **Subcategory:** naval-architecture
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#171
+  title: 'WRK-343: OpenFOAM technical debt and exploration — tutorials, ecosystem audit, WRK-047 refresh'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/171
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-084: Integrate metocean data sources into unified aggregation interface
+
+    **Status:** Stage 17: Reclaim (n) | **Priority:** medium | **Category:** engineering | **Subcategory:** metocean
+
+    **Repo:** [''worldenergydata''] | **Complexity:** complex | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/digitalmodel#163
+  title: 'WRK-1283: Rudder types survey — video references and digitalmodel coverage'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/163
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1283: Rudder types survey — video references and digitalmodel coverage
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** hydrodynamics
+
+    **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#154
+  title: 'WRK-1250: OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/154
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1250: OpenFOAM deep solver workflows — tutorial reproduction, marine templates, convergence automation
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** pipeline
+
+    **Repo:** [''digitalmodel'', ''workspace-hub''] | **Complexity:** complex | **Machine:** dev-secondary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#152
+  title: 'WRK-1233: Add test coverage for platform and pipeline loaders'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/152
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:medium
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1233: Add test coverage for platform and pipeline loaders
+
+    **Status:** pending | **Priority:** medium | **Category:** engineering | **Subcategory:** testing
+
+    **Repo:** [''worldenergydata''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/digitalmodel#610
+  title: 'OrcaWave: add licensed end-to-end acceptance test for arbitrary mesh workflow'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/610
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    There is smoke-test coverage for known OrcaWave inputs, but the future workflow needs proof that an arbitrary mesh-driven DigitalModel spec can run end-to-end on a licensed host.
+
+    ## Required work'
+- idempotency_key: gh:vamseeachanta/digitalmodel#603
+  title: 'test(orcaflex): add regression coverage for Ballymore spec-to-modular pipeline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/603
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+
+    The current test suite has broad `modular_generator` coverage, but no focused regression test proving the two Ballymore jumper specs can travel through the intended path:'
+- idempotency_key: gh:vamseeachanta/digitalmodel#590
+  title: 'fix(marine_ops): test_database_performance has flaky 1ms perf assertion (observed 1–2ms)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/590
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Surfaced during execution of #555 (PR #587). Not a slice/array bug — a flaky timing assertion.
+
+    ## Root cause'
+- idempotency_key: gh:vamseeachanta/digitalmodel#589
+  title: 'fix(marine_ops): test_weight_scales_with_diameter_squared queries 20mm not in chain DB array'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/589
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Surfaced during execution of #555 (PR #587). Different orthogonal root cause from the slice off-by-one.
+
+    ## Root cause'
+- idempotency_key: gh:vamseeachanta/digitalmodel#530
+  title: 'OrcaFlex tests: hoist class-scoped fixtures in test_orcaflex_converter_enhanced.py to module level'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/530
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `tests/solvers/orcaflex/test_orcaflex_converter_enhanced.py` defines 4 pytest fixtures inside class `TestOrcaFlexConverterEnhanced` (L35-62). Sibling test classes in the same file (`TestPerformance`
+    at L415, `TestCLI` at L448) reference these fixtures by method signature but are not subclasses — pytest class-scoped fixtures only propagate down the inheritance chain, not sideways.
+
+    Result: 3 ERRORs at test setup.'
+- idempotency_key: gh:vamseeachanta/digitalmodel#514
+  title: Resolve or document the conftest ignore policy around async checkpoint tests
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/514
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    While fixing #513, a follow-up gap remained: the repository still has conftest/test policy around checkpoint tests that appears to intentionally sidestep some async coverage for reasons unrelated to
+    packaging.
+
+    Evidence'
+- idempotency_key: gh:vamseeachanta/digitalmodel#512
+  title: Fix GTM Demo 2 --from-cache path and make GTM validation tests hermetic
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/512
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    The last 24h review found a real functional regression in the GTM demo suite and a test-harness flaw that hides environment dependence.
+
+    Evidence'
+- idempotency_key: gh:vamseeachanta/digitalmodel#475
+  title: Add pytest test suite for jumper_lift.py (81 tests)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/475
+  gh_state: open
+  gh_labels:
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Task
+
+    Create comprehensive pytest test suite at tests/marine_ops/installation/test_jumper_lift.py
+
+    ## Source'
+- idempotency_key: gh:vamseeachanta/digitalmodel#123
+  title: 'TASK 1.1: Configuration Framework Consolidation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/123
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## Phase 1 Task: Infrastructure Foundation (Week 1)\n**Assigned to:** Infrastructure Lead  \n**Duration:** 1 week (25-30 hours)  "
+- idempotency_key: gh:vamseeachanta/digitalmodel#65
+  title: optimization | shells | migrate to gitbash
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/65
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  - getsivakumar
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] basic gitbash setup\n  - [x] profile setups - checked in 202409 branch\n  - [x] run script templating - checked in 202409 branch"
+- idempotency_key: gh:vamseeachanta/digitalmodel#63
+  title: engg debt | openFOAM
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/63
+  gh_state: open
+  gh_labels:
+  - feature
+  - package
+  - wrk-item
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Develop ecosystem and documentation\n  - [ ] Installation\n  - [ ] AceEngineer Linux machine"
+- idempotency_key: gh:vamseeachanta/digitalmodel#59
+  title: engg debt | Pipe Capacity | Documentation and Calculations
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/digitalmodel/issues/59
+  gh_state: open
+  gh_labels:
+  - feature
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective: Calculate pipe size or capacity.
+
+    - [ ] Complete all basic tests. Write all other tests to ensure results stay consistent when any other changes
+
+    - [ ] gitbash for running all tests?'

@@ -1,0 +1,123 @@
+board:
+  slug: repo-llm-wiki-content
+  display_name: llm-wiki · content
+  tier: domain
+  repo: vamseeachanta/llm-wiki
+  domain: content
+  parent_slug: repo-llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'Wiki page authoring + promotion — CSA Z276 promotion, marine-engineering
+    page additions, standards summary promotion, batch packs.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/llm-wiki#35
+  title: 'feat: engineering wiki cross-link discovery with domain wikis'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/35
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+
+    Run cross-wiki link discovery between the engineering wiki and the 3 domain wikis
+    (marine-engineering, maritime-law, naval-architecture) to surface implicit connections.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#33
+  title: 'WRK-1126: Add maritime law domain: skill, data, public cases, liabilities'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/33
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:knowledge-domain
+  - domain:maritime-law
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1126: Add maritime law domain: skill, data, public cases,
+    liabilities'
+- idempotency_key: gh:vamseeachanta/llm-wiki#32
+  title: 'feat: career-learnings seed migration — pipeline integrity, OrcaFlex VIV,
+    FEA, CFD, energy economics'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/32
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - domain:knowledge
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+
+    Migrate career-learnings YAML seed into appropriate wiki domains.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#25
+  title: 'feat(knowledge): execute Batch Pack 1 to promote API/standards-portal metadata
+    into thin wiki domains'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/25
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  - status:blocked
+  - cat:documentation
+  - domain:knowledge-management
+  - agent:codex
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Execute the already-designed external-source Batch Pack 1 so the repo promotes
+    metadata-rich online data APIs and standards portals into wiki-ready stubs for
+    the thin LLM-wiki domains.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#24
+  title: 'Phase 2: Promote CSA Z276.1-20 + Z276.18 into marine-engineering wiki/standards/'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/24
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:documentation
+  - agent:codex
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Phase split off from vamseeachanta/workspace-hub#2227 to decouple
+    CSA work from OCIMF Tandem.
+
+
+    Targets:'
+- idempotency_key: gh:vamseeachanta/llm-wiki#23
+  title: 'feat(knowledge): update wiki CLAUDE.md files to declare doc_key in L3 frontmatter
+    required-set'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/23
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    Parent vamseeachanta/workspace-hub#2205 operating model Section 8.1 (amendment
+    2026-04-19, [comment](https://github.com/vamseeachanta/workspace-hub/issues/2205#issuecomment-4277238819))
+    mandates a baseline floor of `{title, last_updated, doc_key}` as required fields
+    in every wiki `CLAUDE.md` schema declaration. No wiki `CLAUDE.md` currently declares
+    `doc_key` as required.'

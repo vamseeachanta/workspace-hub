@@ -1,0 +1,242 @@
+board:
+  slug: ecosystem
+  display_name: Ecosystem · cross-repo themes
+  tier: ecosystem
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: |
+    Tier-0 master board. Cards are strategic themes that span ≥2 repos.
+    They are NOT mirrored from GitHub issues — they synthesize directions
+    captured in workspace-hub MEMORY.md and in cross-repo project plans.
+    Each card points (via hermes kanban link) at the tier-1/tier-2 boards
+    where the work actually lands. Use `hermes kanban decompose` on a card
+    to fan it out into per-repo child tasks.
+
+cards:
+  - idempotency_key: eco:hermes-canonical-memory
+    title: "Consolidate per-provider memory into Hermes as canonical store"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 2
+    body_excerpt: |
+      Per feedback_memory_aspire_to_hermes_level: Claude auto-memory, Codex state,
+      Gemini session should consolidate to Hermes rather than evolve in parallel.
+      Hermes is the canonical memory backend; aim for Hermes-bar on capture /
+      retrieval / cross-machine + cross-provider sync.
+    spans_repos: [workspace-hub]
+    spans_boards: [repo-workspace-hub-hermes, repo-workspace-hub-governance]
+
+  - idempotency_key: eco:llm-wiki-privacy-flip-aftermath
+    title: "Execute llm-wiki private-corpus program post 2026-05-20 privacy flip"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 2
+    body_excerpt: |
+      llm-wiki flipped PRIVATE 2026-05-20. Codes/standards data (OCIMF/API/DNV/ABS/
+      IACS/ASCE/ASME) lands at full fidelity; verbatim+tables allowed; raw PDFs stay
+      /mnt/ace/acma-codes/. Run private corpus-ingest program.
+      Refs: project_llm_wiki_privacy_flip, feedback_codes_standards_data_in_private_wiki.
+    spans_repos: [llm-wiki, llm-wiki-acma, workspace-hub]
+    spans_boards: [repo-llm-wiki, repo-llm-wiki-acma]
+
+  - idempotency_key: eco:wiki-sibling-naming-locked
+    title: "Enforce llm-wiki-<client> sibling naming + ref-not-duplicate routing"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 1
+    body_excerpt: |
+      Per project_wiki_sibling_naming_locked: suffix `llm-wiki-<client>` (NOT prefix);
+      one per CLIENT not project (SIROCCO -> llm-wiki-acma/projects/sirocco/);
+      ref-not-duplicate generic content. Lock data/knowledge/result search routing
+      across llm-wiki + llm-wiki-<client> siblings. workspace-hub#2778, #2744 rename.
+    spans_repos: [llm-wiki, llm-wiki-acma, workspace-hub]
+    spans_boards: [repo-llm-wiki, repo-llm-wiki-acma]
+
+  - idempotency_key: eco:codes-standards-corpus
+    title: "Codes & standards corpus: ingest, route, surface in digitalmodel + wiki"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 1
+    body_excerpt: |
+      Codes/standards data flows: raw PDFs at /mnt/ace/acma-codes/, structured
+      content in private llm-wiki, applied code-checks in digitalmodel/codes.
+      Silent verdict-flip defect class needs section+edition not just code_id.
+    spans_repos: [digitalmodel, llm-wiki, workspace-hub]
+    spans_boards: [repo-digitalmodel-codes, repo-llm-wiki]
+
+  - idempotency_key: eco:cross-review-gates
+    title: "Cross-review policy: gate scripts + pre-push hook + audit cron"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 1
+    body_excerpt: |
+      Per project_cross_review_policy: cross-provider review is LIVE.
+      Codex finds non-overlapping defects vs Claude; verify Codex GitHub-connector
+      evidence locally. Adversarial-review stance is mandatory; dial depth to scope.
+    spans_repos: [workspace-hub, digitalmodel, llm-wiki]
+    spans_boards: [repo-workspace-hub-governance]
+
+  - idempotency_key: eco:gtm-worldenergydata
+    title: "worldenergydata GTM: ship reports, close BSEE backlog, customer-ready"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 2
+    body_excerpt: |
+      Per project_worldenergydata_gtm_state: reports ready, BSEE fix landed.
+      Plus GTM artifact layout inconsistency (#2662): 3 layout roots × 3 date
+      conventions × 3 bundle formats — scan all 4 paths.
+    spans_repos: [worldenergydata, worldenergydata-wiki, workspace-hub]
+    spans_boards: [repo-worldenergydata, repo-worldenergydata-gtm]
+
+  - idempotency_key: eco:kaggle-oil-gas-backlog
+    title: "Kaggle oil-gas backlog: gate on consumer, then ingest curated top 12"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_kaggle_oil_gas_backlog: ~250 datasets surveyed 2026-05-05;
+      top 12 curated in SOURCES_kaggle.md; gate on consumer before pulling further.
+    spans_repos: [kaggle-rogii-2026, worldenergydata]
+    spans_boards: [repo-kaggle-rogii-2026, repo-worldenergydata]
+
+  - idempotency_key: eco:doc-intel-operating-model
+    title: "Doc-intel operating model — #2205 parent + #2206/#2207/#2209 + follow-ons"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 1
+    body_excerpt: |
+      Per project_doc_intel_operating_model: #2205 parent; #2206/#2207/#2209
+      direct children; follow-ons #2360/#2361/#2362. CAD tooling review (#2327-9)
+      paused pending doc/resource intel review.
+    spans_repos: [workspace-hub, digitalmodel]
+    spans_boards: [repo-workspace-hub-intel, repo-workspace-hub-governance]
+
+  - idempotency_key: eco:devakrishna-tennis-track
+    title: "devaKrishna serious-track tennis development (Green Ball, Lobster Elite IV)"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 1
+    body_excerpt: |
+      Per project_devakrishna_tennis_development: 9y5mo, Green Ball division,
+      movement phase; Lobster Elite Grand IV + green-dot balls; Houston venue TBD.
+      Developmental pace: 5+ yr generalization horizon; calibrate 6-24mo per milestone.
+    spans_repos: [achantas-data]
+    spans_boards: [repo-achantas-data-devakrishna]
+
+  - idempotency_key: eco:krishna-typing-rotation
+    title: "Krishna typing tools rotation — functional > lesson-tree"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_krishna_typing_tools: typing.com stall 2026-05-12;
+      rotate TypingClub / Dance Mat / Keybr; functional > lesson-tree.
+    spans_repos: [achantas-data]
+    spans_boards: [repo-achantas-data-krishna]
+
+  - idempotency_key: eco:goal-catalog-d7
+    title: "/goal catalog rollout: D7 brain/hands model + weekly picklist"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 1
+    body_excerpt: |
+      Per project_goal_catalog: workspace-hub#2695 catalog + rule + weekly picklist;
+      D7 brain/hands model; workspace-hub#2696 Hermes dependency.
+    spans_repos: [workspace-hub]
+    spans_boards: [repo-workspace-hub-governance, repo-workspace-hub-hermes]
+
+  - idempotency_key: eco:daily-readiness-cron
+    title: "Daily readiness cron (6am CT) + repo-readiness issue automation"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_daily_readiness_cron: cron trig_019GWtRosbZ9rw1HxrGpsvy9
+      runs 6am CT daily; posts to repo-readiness issue. Keep healthy.
+    spans_repos: [workspace-hub]
+    spans_boards: [repo-workspace-hub-cron, repo-workspace-hub-hermes]
+
+  - idempotency_key: eco:solver-queue-production
+    title: "Solver queue production health (batch + retry + dashboard)"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_solver_queue_architecture: PRODUCTION. Plus overnight batch:
+      5 parallel terminals nightly. Keep batch+retry+dashboard healthy.
+    spans_repos: [digitalmodel, workspace-hub]
+    spans_boards: [repo-digitalmodel-solver, repo-workspace-hub-cron]
+
+  - idempotency_key: eco:nightly-researchers
+    title: "Nightly researchers — Mon-Fri rotation LIVE"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_nightly_researchers: LIVE, rotating Mon-Fri.
+      N-night blocker rule: 3+ nightly-batch comments with same root-cause = halt polling.
+    spans_repos: [workspace-hub]
+    spans_boards: [repo-workspace-hub-cron, repo-workspace-hub-intel]
+
+  - idempotency_key: eco:hermes-installation-codex-quota
+    title: "Hermes v0.4.0 maintenance + Codex quota follow-ups"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_hermes_installation, project_hermes_codex_quota:
+      Hermes v0.4.0, shebang reverts (3x). Codex quota #6551, follow-ups #6564-6567.
+    spans_repos: [workspace-hub]
+    spans_boards: [repo-workspace-hub-hermes]
+
+  - idempotency_key: eco:ai-harness-evaluations
+    title: "AI harness evals — #1466-1470"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_ai_harness_evaluations: track #1466-1470.
+    spans_repos: [workspace-hub]
+    spans_boards: [repo-workspace-hub-governance]
+
+  - idempotency_key: eco:claude-design-adoption
+    title: "Claude Design adoption — epic #2426, trial #2435 in-flight"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_claude_design_adoption: epic #2426, trial #2435 in-flight
+      (10 cards pending); brand+visual-DNA locked 2026-04-21.
+    spans_repos: [workspace-hub, aceengineer-website]
+    spans_boards: [repo-workspace-hub-governance, repo-aceengineer-website]
+
+  - idempotency_key: eco:aceengineer-canonical-copy
+    title: "AceEngineer canonical-copy sources — live site + aceengineer-strategy"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_aceengineer_copy_canonical_sources: llm-wiki OUT OF SCOPE;
+      real canonical = live site + aceengineer-strategy; first exec aces-#6.
+    spans_repos: [aceengineer-website, aceengineer-strategy, aceengineer-admin]
+    spans_boards: [repo-aceengineer-website, repo-aceengineer-strategy, repo-aceengineer-admin]
+
+  - idempotency_key: eco:tier1-refactor-ph2
+    title: "Tier-1 refactor Ph2A/Ph2B ready (Ph1 done)"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_tier1_refactor: Ph1 DONE; Ph2A/2B ready to start.
+    spans_repos: [digitalmodel]
+    spans_boards: [repo-digitalmodel]
+
+  - idempotency_key: eco:mooring-knowledge-seeds
+    title: "Mooring knowledge — 40 entries at knowledge/seeds/"
+    source: ecosystem_theme
+    initial_status: triage
+    priority: 0
+    body_excerpt: |
+      Per project_mooring_failures_knowledge: 40 entries at knowledge/seeds/.
+      Surface in digitalmodel/mooring + llm-wiki.
+    spans_repos: [digitalmodel, llm-wiki]
+    spans_boards: [repo-digitalmodel-mooring, repo-llm-wiki]

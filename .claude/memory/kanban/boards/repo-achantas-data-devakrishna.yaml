@@ -1,0 +1,310 @@
+board:
+  slug: repo-achantas-data-devakrishna
+  display_name: achantas-data · devaKrishna
+  tier: domain
+  repo: vamseeachanta/achantas-data
+  domain: devakrishna
+  parent_slug: repo-achantas-data
+  workspace_path: /mnt/local-analysis/achantas-data
+  description: devaKrishna development tracking — activity planning, video-evidence
+    analysis, IEP transition (Gate-1 2030), tennis serious-track decisions.
+cards:
+- idempotency_key: gh:vamseeachanta/achantas-data#92
+  title: 'Family — devaKrishna tennis: serious-track execution decisions (coaches
+    · equipment · venue)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/92
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** [#73](https://github.com/vamseeachanta/achantas-data/issues/73)
+    · **Sibling (analysis):** [#87](https://github.com/vamseeachanta/achantas-data/issues/87)
+    · **Activity menu:** [#83](https://github.com/vamseeachanta/achantas-data/issues/83)
+    · **Status:** OPEN / decisions pending
+
+    ## What this issue tracks
+
+    Execution-decision tracker for devaKrishna''s tennis serious-track. Distinct from
+    [#87](https://github.com/vamseeachanta/achantas-data/issues/87) (video-evidence
+    analysis) — this issue tracks the operational decisions: coach selection, equipment
+    purchase, venue scouting.'
+- idempotency_key: gh:vamseeachanta/achantas-data#89
+  title: 'Family — Video-evidence analysis: Swimming (devaKrishna)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/89
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Umbrella:** #84 · **Status:** OPEN / awaiting
+    baseline videos
+
+    ## Goal
+
+    Apply the analysis rubric (`_family/krishna_video_analysis.md`) to baseline videos
+    of devaKrishna''s Swimming from YouTube `achantav@gmail.com`. Produce:'
+- idempotency_key: gh:vamseeachanta/achantas-data#88
+  title: 'Family — Video-evidence analysis: Soccer (devaKrishna)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/88
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Umbrella:** #84 · **Status:** OPEN / awaiting
+    baseline videos
+
+    ## Goal
+
+    Apply the analysis rubric (`_family/krishna_video_analysis.md`) to baseline videos
+    of devaKrishna''s Soccer from YouTube `achantav@gmail.com`. Produce:'
+- idempotency_key: gh:vamseeachanta/achantas-data#87
+  title: 'Family — Video-evidence analysis: Tennis (devaKrishna)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/87
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Umbrella:** #84 · **Status:** OPEN / awaiting
+    baseline videos
+
+    ## Goal
+
+    Apply the analysis rubric (`_family/krishna_video_analysis.md`) to baseline videos
+    of devaKrishna''s Tennis from YouTube `achantav@gmail.com`. Produce:'
+- idempotency_key: gh:vamseeachanta/achantas-data#86
+  title: 'Family — Video-evidence analysis: Typing (devaKrishna)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/86
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Umbrella:** #84 · **Status:** OPEN / awaiting
+    baseline videos
+
+    ## Goal
+
+    Apply the analysis rubric (`_family/krishna_video_analysis.md`) to baseline videos
+    of devaKrishna''s Typing from YouTube `achantav@gmail.com`. Produce:'
+- idempotency_key: gh:vamseeachanta/achantas-data#85
+  title: 'Family — Video-evidence analysis: Reading (devaKrishna)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/85
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Umbrella:** #84 · **Status:** OPEN / awaiting
+    baseline videos
+
+    ## Goal
+
+    Apply the analysis rubric (`_family/krishna_video_analysis.md`) to baseline videos
+    of devaKrishna''s Reading from YouTube `achantav@gmail.com`. Produce:'
+- idempotency_key: gh:vamseeachanta/achantas-data#84
+  title: Family — devaKrishna video-evidence analysis (umbrella workstream)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/84
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Workstream:** video-evidence analysis · **Status:**
+    OPEN / ongoing
+
+    ## What this issue tracks
+
+    Umbrella workstream for analyzing devaKrishna''s YouTube skill-demonstration videos.'
+- idempotency_key: gh:vamseeachanta/achantas-data#83
+  title: Family — devaKrishna activity planning (reading · typing · tennis · soccer)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/83
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Parent:** #73 · **Status:** OPEN / ongoing workstream
+
+    ## What this issue tracks
+
+    Weekly activity planning for devaKrishna across four skill areas: **reading ·
+    typing · tennis · soccer** (or swim).'
+- idempotency_key: gh:vamseeachanta/achantas-data#82
+  title: Family — Gate-1 (2030) prep checklist for devaKrishna IEP transition
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/82
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Status:** AWAITING USER REVIEW
+
+    ## Goal
+
+    "6 months before Gate 1" prep checklist that pre-stages the 2030 IEP transition
+    assessment + Plan-A vs Plan-B trajectory signal read. Filed **now** (4 years early)
+    so the checklist is dormant-but-ready when 2029 starts.'
+- idempotency_key: gh:vamseeachanta/achantas-data#81
+  title: Family — Risk-mitigation matrix (parental, devaKrishna, financial, other)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/81
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Related:** #75, #76 · **Status:** AWAITING USER
+    REVIEW
+
+    ## Goal
+
+    One-page risk-mitigation matrix listing major risks to the 30-yr plan, with potential
+    impact, current mitigations, gaps, and recommended actions. Lives at `_family/risk_matrix.md`.'
+- idempotency_key: gh:vamseeachanta/achantas-data#80
+  title: 'Family — Tooling: SNT corpus + term-life sizing calculator'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/80
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Related:** #75, #76 · **Status:** AWAITING USER
+    REVIEW
+
+    ## Goal
+
+    Two-part calculator:'
+- idempotency_key: gh:vamseeachanta/achantas-data#78
+  title: Family — devaKrishna Letter of Intent (drafting + incremental maintenance)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/78
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Horizon:** v1 draft within 6 months; revised
+    annually thereafter
+
+    **Why:** The Letter of Intent (LOI) is the **most important non-legal document**
+    for devaKrishna''s lifetime care. It captures everything a successor caregiver
+    needs to know — daily routine, preferences, medical, communication patterns, who-knows-him
+    list, education history, therapies, social context, financial picture, advocacy
+    notes. Builds incrementally over years; legally non-binding but referenced by
+    the SNT trustee.
+
+    ## Action'
+- idempotency_key: gh:vamseeachanta/achantas-data#75
+  title: Family — EA Phillips wills review (SNT pour-over + Plan-B fallback dual-path)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/75
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 · **Horizon:** 90-day immediate action
+
+    **Why:** Current wills in `_will/eaphillipslaw/` need to direct devaKrishna''s
+    inheritance to an SNT (Plan A) or provide direct-inheritance fallback (Plan B).
+    The same document must work either way — single update, no rewrites needed later.
+
+    ## Action'
+- idempotency_key: gh:vamseeachanta/achantas-data#74
+  title: Family — TX Medicaid waitlist enrollment for devaKrishna (MDCP/HCS/CLASS)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/74
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '**Parent:** #73 (Family 5/10/15/20/25/30-yr goals) · **Horizon:**
+    90-day immediate action
+
+    **Why time-sensitive:** TX Medicaid waiver waitlists run 10–17 years. Each calendar
+    week without enrollment is permanently lost — this item has the worst regret-asymmetry
+    in the whole plan.
+
+    ## Action'
+- idempotency_key: gh:vamseeachanta/achantas-data#73
+  title: Family — 5/10/15/20/25/30-year goals (Vamsee/Sabitha/Krishna)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/73
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Achanta Family — 5/10/15/20/25/30-Year Goals
+
+    **Baseline (2026-05-10):** Vamsee 46 · Sabitha (Bangaram) 40 · Krishna (devaKrishna)
+    10 (developmental ≈ 5).
+
+    **Current cash-flow snapshot** (`_family/finances.md`): combined ≈ $27k/mo income,
+    $10k/mo min living, $17k/mo savings capacity.'
+- idempotency_key: gh:vamseeachanta/achantas-data#11
+  title: DA | Cheatsheets
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/11
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Ground work\n  - [ ] AI agent for special needs to prepare\
+    \ cheatsheet\n    - [ ] Add images to text"
+- idempotency_key: gh:vamseeachanta/achantas-data#10
+  title: DA | Activity Schedule
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/10
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- Guidelines:\n  - Mix or alternate 1 indoor & 1 outdoor activity\n\
+    \  - Prioritize group over individual (development)"

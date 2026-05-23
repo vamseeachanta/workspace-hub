@@ -1,0 +1,56 @@
+gaps:
+- idempotency_key: gap:repo-worldenergydata:001
+  title: Scheduler refresh health — no observability beyond last successful run
+  source: detected_gap
+  detection_basis: 'memory: GTM state notes BSEE fix landed; #360 ops(scheduler) requests
+    instrumentation but no live dashboard exists'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Need a single readiness panel (last-run, expected-cadence, source
+    freshness, retry count) surfaced into repo-readiness issue daily.
+- idempotency_key: gap:repo-worldenergydata:002
+  title: GTM artifact layout inconsistency — 3 layout roots x 3 date conventions x
+    3 bundle formats
+  source: detected_gap
+  detection_basis: 'memory: gtm_artifact_layout_inconsistency feedback; #2662 umbrella;
+    scan needs to cover all 4 paths'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Pick one canonical layout (likely reports/<year>/<artifact>/) and
+    migrate the other three; lint via pre-commit.
+- idempotency_key: gap:repo-worldenergydata:003
+  title: Capability matrix lint — ensure 'production-ready vs sample-only vs roadmap'
+    columns stay consistent across docs/reports/notebooks
+  source: detected_gap
+  detection_basis: '#364 docs(gtm) capability matrix is plan-approved but no linter
+    enforces drift'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Author a CI check that diffs claimed capability vs evidence cells
+    in the matrix.
+- idempotency_key: gap:repo-worldenergydata:004
+  title: Calc-citation contract adoption status — coverage report
+  source: detected_gap
+  detection_basis: '#361 plan-approved; no rollout tracker; provenance gaps invisible
+    to GTM'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Per-module coverage report (HSE, cost, intervention, decommissioning)
+    with red/yellow/green.
+- idempotency_key: gap:repo-worldenergydata:005
+  title: Data completeness/freshness scorecard runtime artifact missing
+  source: detected_gap
+  detection_basis: '#350 plan-approved but no artifact under reports/ found'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Materialize the scorecard nightly to reports/scorecard/<date>.html
+    and link from README badge.
+- idempotency_key: gap:repo-worldenergydata:006
+  title: Vendor-curated metadata pipeline (Noble/Seadrill) lacks regression fixture
+  source: detected_gap
+  detection_basis: '#407 plan adopted; dry-run-only state risks silent vendor schema
+    drift'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Pin a small sample dataset + golden-output test to detect upstream
+    schema changes.

@@ -1,0 +1,12 @@
+board:
+  slug: repo-sabithaandkrishnaestates
+  display_name: sabithaandkrishnaestates
+  tier: repo
+  repo: vamseeachanta/sabithaandkrishnaestates
+  workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+  description: 'Estates management — tax filings, HOA / property-vendor admin, entity
+    housekeeping, tenant reimbursements. Tier-2 sub-boards: tax-1099, hoa-vendors,
+    admin-comms.
+
+    '
+cards: []

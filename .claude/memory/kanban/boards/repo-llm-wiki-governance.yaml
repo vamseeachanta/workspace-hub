@@ -1,0 +1,146 @@
+board:
+  slug: repo-llm-wiki-governance
+  display_name: llm-wiki · governance
+  tier: domain
+  repo: vamseeachanta/llm-wiki
+  domain: governance
+  parent_slug: repo-llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'Privacy-flip aftermath, README, structure, cross-link regeneration,
+    uplink/back-navigation blocks, index pagination, meta follow-ups.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/llm-wiki#36
+  title: 'feat: cross-wiki link discovery and infrastructure'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/36
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - domain:knowledge
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+
+    Build tooling to discover and maintain cross-links between the 3 domain wikis
+    (marine-engineering, maritime-law, naval-architecture).'
+- idempotency_key: gh:vamseeachanta/llm-wiki#31
+  title: 'feat(knowledge): promote design-code registry into standards overviews and
+    repo-target backlinks'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/31
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Promote the design code registry into first-class LLM-wiki strengthening outputs:
+    standards-family overview pages, edition-awareness cross-links, and repo-target
+    backlinks that connect standards knowledge to downstream engineering repos.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#28
+  title: 'feat(knowledge): chunk and paginate the canonical marine-engineering wiki
+    index'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/28
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Chunk and paginate the canonical marine-engineering wiki index so it remains authoritative
+    but no longer forces users and agents through a single 21K-line navigation surface.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#27
+  title: 'docs(knowledge): add standard uplink/back-navigation block to wiki index
+    pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/27
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:low
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Add a small, consistent navigation block to every `knowledge/wikis/*/wiki/index.md`
+    so wiki index pages expose both an upward link into the intelligence ecosystem
+    and local back-navigation to sibling wiki surfaces.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#21
+  title: 'feat(llm-wiki): regenerate cross-links.md across 8 wikis after Tier C page
+    additions'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/21
+  gh_state: open
+  gh_labels:
+  - priority:low
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Tier C added ~75 new wiki pages across 6 wikis (asset-management, naval-architecture,
+    maritime-law, lng-projects, engineering riser, engineering pipeline). The auto-generated
+    `wiki/cross-links.md` files and any faceted-portal pages (#2368 territory) are
+    now stale and need a regeneration pass.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#20
+  title: 'feat(llm-wiki): backfill engineering-wiki reverse cross-links to Tier C
+    riser/pipeline pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/20
+  gh_state: open
+  gh_labels:
+  - priority:low
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    The 20 new engineering-wiki concept pages added in Tier C Batch C (#2597 risers
+    + vamseeachanta/workspace-hub#2602 pipelines, commit `6d3483bc5`) have one-way
+    cross-links to existing related pages but the inbound (reverse) links from those
+    existing pages were intentionally deferred to avoid cross-agent races on shared
+    files during the parallel-dispatch phase.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#13
+  title: 'epic(knowledge): llm-wiki strengthening roadmap and execution waves'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/13
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:documentation
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Create an umbrella roadmap for the current llm-wiki strengthening program, grouping
+    the recently created issues into execution waves with explicit dependencies, parallelization
+    notes, and staging guidance.'

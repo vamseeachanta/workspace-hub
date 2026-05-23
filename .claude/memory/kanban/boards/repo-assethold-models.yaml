@@ -1,0 +1,251 @@
+board:
+  slug: repo-assethold-models
+  display_name: assethold | models
+  tier: domain
+  repo: vamseeachanta/assethold
+  domain: models
+  parent_slug: repo-assethold
+  workspace_path: /mnt/local-analysis/assethold
+  description: 'Portfolio / factor / valuation models (Fama-French, dividend yield,
+    multifamily, fixed_interest, net_lease, insider, real-time feeds).
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/assethold#43
+  title: Wire insider_tracker into WatchlistRunner.insider_flags_provider
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/43
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Context
+
+
+    `WatchlistRunner.insider_flags_provider` (landed in #39, commit `fd0bc33`) is
+    a `Callable[[str], list[dict]] | None` slot. When `None` (current default), the
+    runner logs a one-shot WARNING at `__init__` and `AlertEngine.build_alerts` is
+    called with `insider_flags=[]` — meaning CRITICAL-severity `unusual_insider_activity`
+    alerts never fire.'
+- idempotency_key: gh:vamseeachanta/assethold#42
+  title: Wire settings.cache_ttl_hours through StockDataSource consumers (orphan config)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/42
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:low
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Surfaced during #39 adversarial review: `config/stocks/watchlist.yml:settings.cache_ttl_hours`
+    (value `24`) is declared but **never read** by any fetcher. The `Watchlist` class
+    reads only the `stocks:` block; the `settings:` block is effectively orphan config.'
+- idempotency_key: gh:vamseeachanta/assethold#40
+  title: Phase 1.5 — pre-market/after-hours support + configurable bell buffer
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/40
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:low
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    #35 Phase 1 delivered NYSE regular-session awareness (9:30–16:00 ET). The design
+    doc explicitly deferred two extensions to a follow-up:'
+- idempotency_key: gh:vamseeachanta/assethold#36
+  title: Multifamily sensitivity and stress-test scenarios (TODOs a–e)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/36
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:low
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Spun off from #32 as a dedicated tracker. #32 covers completing skeletal modules;
+    these items are **extensions to an already-working module**, not scaffolding work.'
+- idempotency_key: gh:vamseeachanta/assethold#34
+  title: Assess and integrate real-time stock price feeds across modules
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/34
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+
+    Every module in assethold consumes stock prices through **batch polling with 4–24
+    hour cache TTLs**. During market hours (9:30 AM–4:00 PM ET), this means:'
+- idempotency_key: gh:vamseeachanta/assethold#32
+  title: Complete skeletal modules — fixed_interest, multifamily, net_lease
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/32
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:engineering
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+
+    Three financial analysis modules have code structure but incomplete implementations:'
+- idempotency_key: gh:vamseeachanta/assethold#28
+  title: Portfolio future outlook — probabilistic high/low projection bands
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/28
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Project the portfolio''s probable future value range over multiple horizons —
+    from 3 months out to **10 years** — using historical return distributions. Display
+    as high/low confidence bands (P10/P50/P90) with Monte Carlo simulation lines to
+    visualize the full range of possible outcomes.'
+- idempotency_key: gh:vamseeachanta/assethold#27
+  title: Portfolio performance benchmark vs SPY
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/27
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Calculate time-weighted portfolio returns and benchmark against SPY to answer:
+    "Am I beating the index?"'
+- idempotency_key: gh:vamseeachanta/assethold#26
+  title: Dividend reinvestment and ex-date calendar
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/26
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Track upcoming ex-dividend dates for held symbols and calculate expected dividend
+    income. Alert when a DCA buy can be timed to capture an upcoming dividend.'
+- idempotency_key: gh:vamseeachanta/assethold#25
+  title: Tax lot aging report — long-term capital gains optimizer
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/25
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+
+    Track purchase-date aging for each tax lot to identify positions approaching or
+    exceeding the 1-year long-term capital gains threshold. Prioritize selling long-term
+    lots when trim signals fire (lower tax rate).'
+- idempotency_key: gh:vamseeachanta/assethold#18
+  title: 'WRK-1199: Fama-French factor model'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/18
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:engineering
+  - priority:low
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1199: Fama-French factor model'
+- idempotency_key: gh:vamseeachanta/assethold#17
+  title: 'WRK-1198: Dividend yield forecasting'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/17
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:engineering
+  - wrk-item
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1198: Dividend yield forecasting'
+- idempotency_key: gh:vamseeachanta/assethold#8
+  title: Literature | Running Board
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/8
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [x] Add the below to our documentation.
+
+    https://www.linkedin.com/company/pyquant-news/posts/'
+- idempotency_key: gh:vamseeachanta/assethold#5
+  title: Breakout | Trends | Backtesting
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assethold/issues/5
+  gh_state: open
+  gh_labels:
+  - wrk-item
+  - status:plan-approved
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective: Identify the most important criteria which will give good
+    returns for robust stocks.
+
+
+    Utilize **machine learning** on stocks on uptrend. Identify the most important
+    breakout conditions to pass.  Visually identified that below is the most important
+    criteria order by :'

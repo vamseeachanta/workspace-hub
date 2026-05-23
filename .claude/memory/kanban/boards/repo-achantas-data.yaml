@@ -1,0 +1,10 @@
+board:
+  slug: repo-achantas-data
+  display_name: achantas-data
+  tier: repo
+  repo: vamseeachanta/achantas-data
+  workspace_path: /mnt/local-analysis/achantas-data
+  description: Personal + family data and planning repo. Sub-boards cover travel,
+    devaKrishna development, family-planning (estates/insurance/health), finance,
+    and household. This tier-1 board catches any issues that do not fit a sub-domain.
+cards: []

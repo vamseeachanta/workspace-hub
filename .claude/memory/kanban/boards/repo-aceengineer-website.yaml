@@ -1,0 +1,102 @@
+board:
+  slug: repo-aceengineer-website
+  display_name: aceengineer-website
+  tier: repo
+  repo: vamseeachanta/aceengineer-website
+  workspace_path: /mnt/local-analysis/aceengineer-website
+  description: 'AceEngineer public website — content, deploy, and tooling. Per memory:
+    llm-wiki is OUT OF SCOPE; canonical is live site + aceengineer-strategy repo.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/aceengineer-website#9
+  title: Canonical firm-copy home for reusable About/Services text
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-website/issues/9
+  gh_state: open
+  gh_labels:
+  - content
+  - design-system
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Source
+
+    Structural gap surfaced by #6. The workspace-hub `llm-wiki` is intentionally out
+    of scope for firm marketing copy (methodology only), and the private strategy
+    repo is privacy-walled. That leaves no single public canonical home for reusable
+    firm-description text — today each page (`about.html`, `services.html`, `contact.html`,
+    future pages) duplicates the firm framing, and drift between them is what triggered
+    #6 in the first place.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/aceengineer-website#8
+  title: engineering.html — rename capability headings for CAP parallel naming
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-website/issues/8
+  gh_state: open
+  gh_labels:
+  - content
+  - design-system
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Source
+
+    Follow-up from #6. Once the About page ships CAP-01/02/03 language ("computational
+    fatigue assessment", "riser & mooring analysis", "diffraction analysis"), the
+    four Core Automation Capability headings on `engineering.html` use a different
+    vocabulary — click-through experience is slightly jarring.
+
+    ## Proposed renames (SEO-sensitive — test before shipping)'
+- idempotency_key: gh:vamseeachanta/aceengineer-website#7
+  title: About hero — add FPSO + panel-mesh imagery for diffraction-analysis CAP
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-website/issues/7
+  gh_state: open
+  gh_labels:
+  - content
+  - design-system
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Source
+
+    Follow-up from #6 (About page canonical alignment). The revised lede introduces
+    `CAP-03: diffraction analysis` — that span currently has no visual anchor on the
+    About page.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/aceengineer-website#6
+  title: About page — align services phrasing with llm-wiki (workspace-hub) canonical
+    copy
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-website/issues/6
+  gh_state: open
+  gh_labels:
+  - content
+  - design-system
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Source
+
+    Flagged during A&CE Design System review of `about.html` (2026-04-24). The design-system
+    project couldn''t reach `workspace-hub`; deferred to claude-code working in the
+    hub.
+
+    ## Proposed About page lede (under review)'
+- idempotency_key: gh:vamseeachanta/aceengineer-website#5
+  title: 'GTM Demo 4: Subsea Jumper Installation Analysis'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-website/issues/5
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# GTM Demo 4: Subsea Jumper Installation Analysis
+
+    ## Executive Summary
+
+    Convert our validated jumper installation code into a client-facing demo'

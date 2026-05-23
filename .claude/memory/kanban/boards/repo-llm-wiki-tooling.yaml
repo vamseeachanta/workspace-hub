@@ -1,0 +1,147 @@
+board:
+  slug: repo-llm-wiki-tooling
+  display_name: llm-wiki · tooling
+  tier: domain
+  repo: vamseeachanta/llm-wiki
+  domain: tooling
+  parent_slug: repo-llm-wiki
+  workspace_path: /mnt/local-analysis/llm-wiki
+  description: 'Harness + tooling — validator hardening, CLI/MCP query surface, retrieval/knowledge-graph
+    manifests, WRK normalization into seeds, document-intel arch.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/llm-wiki#114
+  title: '[specialist-corpus] reservoir-simulation OSS + meshing — opm-common, gmsh'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/114
+  gh_state: open
+  gh_labels:
+  - documentation
+  - priority:low
+  - cat:data
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '**Target wiki domain**: `wikis/reservoir-engineering/wiki/`
+
+    **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+- idempotency_key: gh:vamseeachanta/llm-wiki#102
+  title: 'Validator hardening: address cross-review findings before closing #77'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/102
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:harness
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Context
+
+
+    Cross-review of [#77](https://github.com/vamseeachanta/llm-wiki/issues/77) (public-safe
+    knowledge graph manifests) produced split verdicts on 2026-05-18:'
+- idempotency_key: gh:vamseeachanta/llm-wiki#80
+  title: 'arch(agent-access): plan CLI/MCP query surface for llm-wiki manifests and
+    retrieval'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/80
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:medium
+  - cat:tooling
+  - cat:ai-orchestration
+  - status:plan-approved
+  - domain:knowledge-management
+  - llm-wiki
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    Plan an MCP/CLI query surface for llm-wiki so agents can ask focused questions
+    against curated manifests, graph outputs, and evaluation-backed retrieval instead
+    of traversing the repository manually.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#77
+  title: 'feat(retrieval): generate public-safe knowledge graph and link-graph manifests'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/77
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - status:plan-approved
+  - cat:data-pipeline
+  - cat:harness
+  - domain:knowledge-management
+  - llm-wiki
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Build a public-safe knowledge-graph/link-graph layer over llm-wiki pages to make
+    engineering concepts, tools, standards, datasets, code modules, and result artifacts
+    traversable by agents.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#39
+  title: 'feat: engineering wiki — ingest skill metadata as wiki pages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/39
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - cat:harness
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Ingest the 691+ skill definitions from `.claude/skills/` into the engineering
+    wiki as entity/concept pages.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#38
+  title: 'feat(knowledge): normalize WRK completions into structured seeds and wiki-candidate
+    corpus'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/38
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - priority:high
+  - cat:data-pipeline
+  - cat:harness
+  - domain:knowledge-management
+  gh_assignees: []
+  initial_status: triage
+  priority: 2
+  body_excerpt: '## Summary
+
+    Normalize `knowledge-base/wrk-completions.jsonl` into structured seeds and a wiki-candidate
+    corpus, so archived work completions become queryable durable knowledge instead
+    of raw memory-migration blobs.'
+- idempotency_key: gh:vamseeachanta/llm-wiki#19
+  title: 'feat(llm-wiki): plan offshore raw-source family wiki backfill candidates
+    from /mnt/ace-data'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/llm-wiki/issues/19
+  gh_state: open
+  gh_labels:
+  - priority:medium
+  - status:plan-approved
+  - status:blocked
+  - cat:data-pipeline
+  - domain:knowledge-management
+  - domain:document-intelligence
+  - llm-wiki
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '# feat(llm-wiki): plan offshore raw-source family wiki backfill candidates
+    from /mnt/ace-data
+
+
+    ## Context'

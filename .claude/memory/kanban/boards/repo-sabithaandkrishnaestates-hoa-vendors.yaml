@@ -1,0 +1,86 @@
+board:
+  slug: repo-sabithaandkrishnaestates-hoa-vendors
+  display_name: sabithaandkrishnaestates | hoa-vendors
+  tier: domain
+  repo: vamseeachanta/sabithaandkrishnaestates
+  domain: hoa-vendors
+  parent_slug: repo-sabithaandkrishnaestates
+  workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+  description: 'HOA / POA dues, ClickPay AutoPay, ACH debit verification, FSR transfer
+    fees, vendor / maintenance coordination, HOA-meeting communications.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#37
+  title: 'Verify ACH debit on Middlesex statement: $1,145.66 ClickPay PropertyPay'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/37
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    2026-04-28 ClickPay payment of \$1,145.66 from Middlesex Federal Savings checking
+    (account 103244414, routing 211370150) for Clayton Park POA HOA. Receipt confirms
+    24-48h to debit bank.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#36
+  title: Send Kevin Straight maintenance follow-up email (Gmail draft r267250050559172937)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/36
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    On 2026-04-28 a draft email was created (Gmail draft ID r267250050559172937) covering:'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#35
+  title: Submit 2026 HOA reimbursement ($802.66) to Family Dollar — deadline 2026-10-05
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/35
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    Per FD lease (May 14, 2012) Section 13, tenant reimburses landlord for HOA fees.
+    Lease summary at `investments/cre/fd_15645_westpark/due_diligence/02_legal/lease_documents/lease_reimbursement_summary.md`:'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#34
+  title: Set up ClickPay AutoPay for 2027 Clayton Park POA annual assessment
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/34
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    ClickPay portal allows ACH AutoPay enrollment which waives the \$3 one-time ACH
+    service fee. The 2026-04-28 first payment was made one-time (paid \$3 fee) because
+    AutoPay setup needed 3-5 business-day lead time and the late date was 2 days out.'
+- idempotency_key: gh:vamseeachanta/sabithaandkrishnaestates#32
+  title: Reply to Zaykeah Johnson confirming HOA payment + reiterate Amber HOA-meeting
+    ask
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/sabithaandkrishnaestates/issues/32
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+
+    On 2026-04-28 Zaykeah Johnson (FSR AR Supervisor) emailed the corrected routing
+    address (Account.Services@FSCommercial.com) and CC''d Amber Ellison (Association
+    Manager, amber.ellison@fscommercial.com) for HOA-meeting formalities.'

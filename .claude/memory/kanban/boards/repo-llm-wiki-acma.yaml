@@ -1,0 +1,12 @@
+board:
+  slug: repo-llm-wiki-acma
+  display_name: llm-wiki-acma
+  tier: repo
+  repo: vamseeachanta/llm-wiki-acma
+  workspace_path: /mnt/local-analysis/llm-wiki-acma
+  description: |
+    ACMA private llm-wiki sibling — per memory project_wiki_sibling_naming_locked
+    (2026-05-22): suffix form llm-wiki-acma, one per CLIENT (SIROCCO project nests
+    under acma/projects/sirocco/). Zero open GitHub issues; carrying uncommitted
+    deliverable for workspace-hub#2760 (SIROCCO current rudder-force report).
+cards: []

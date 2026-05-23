@@ -1,0 +1,10 @@
+board:
+  slug: repo-hobbies
+  display_name: hobbies
+  tier: repo
+  repo: vamseeachanta/hobbies
+  workspace_path: /mnt/local-analysis/hobbies
+  description: Personal knowledge base (gardening, sports, cultural, autism, sdev).
+    Markdown + binaries only — no software. Phase 1/2 cleanup plan from docs/roadmap.md
+    (WRK-041) is the live workstream.
+cards: []

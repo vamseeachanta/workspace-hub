@@ -1,0 +1,947 @@
+board:
+  slug: repo-achantas-data-travel
+  display_name: achantas-data · travel
+  tier: domain
+  repo: vamseeachanta/achantas-data
+  domain: travel
+  parent_slug: repo-achantas-data
+  workspace_path: /mnt/local-analysis/achantas-data
+  description: Domestic and international travel planning — destinations, cabin shortlists,
+    road-trip itineraries, Costco Travel deal research.
+cards:
+- idempotency_key: gh:vamseeachanta/achantas-data#113
+  title: 'Travel Plan: South America — Colombia Costco Travel deal research'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/113
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Costco Travel deal/package options for **Colombia** as one candidate
+    in the South America trip comparison.
+
+    Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+- idempotency_key: gh:vamseeachanta/achantas-data#112
+  title: 'Travel Plan: South America — Brazil Costco Travel deal research'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/112
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Costco Travel deal/package options for **Brazil** as one candidate in
+    the South America trip comparison.
+
+    Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+- idempotency_key: gh:vamseeachanta/achantas-data#111
+  title: 'Travel Plan: South America — Chile Costco Travel deal research'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/111
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Costco Travel deal/package options for **Chile** as one candidate in
+    the South America trip comparison.
+
+    Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+- idempotency_key: gh:vamseeachanta/achantas-data#110
+  title: 'Travel Plan: South America — Argentina Costco Travel deal research'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/110
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Costco Travel deal/package options for **Argentina** as one candidate
+    in the South America trip comparison.
+
+    Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+- idempotency_key: gh:vamseeachanta/achantas-data#109
+  title: 'Travel Plan: South America — Ecuador / Galapagos Costco Travel deal research'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/109
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Costco Travel deal/package options for **Ecuador / Galapagos** as one
+    candidate in the South America trip comparison.
+
+    Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+- idempotency_key: gh:vamseeachanta/achantas-data#108
+  title: 'Travel Plan: South America — Peru Costco Travel deal research'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/108
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Costco Travel deal/package options for **Peru** as one candidate in the
+    South America trip comparison.
+
+    Parent comparison hub: https://github.com/vamseeachanta/achantas-data/issues/107'
+- idempotency_key: gh:vamseeachanta/achantas-data#107
+  title: 'Travel Plan: South America Costco Travel comparison hub'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/107
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Compare Costco Travel South America / South-and-Central-America tour options and
+    decide which country-specific trip plans are worth developing into booking-ready
+    itineraries.
+
+    This is the comparison hub. Each child issue should hold one country’s Costco
+    Travel deal research, itinerary fit, cost posture, and watch-outs.'
+- idempotency_key: gh:vamseeachanta/achantas-data#106
+  title: 'Travel Explore: Petit Jean / Mount Magazine fallback cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/106
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Petit Jean / Mount Magazine as Arkansas fallback lanes: good scenic parks
+    and cabin communities, stronger value evidence, but generally less like the Broken
+    Bow lake/hot-tub luxury-cabin pattern.
+
+    Parent: [#101](https://github.com/vamseeachanta/achantas-data/issues/101)'
+- idempotency_key: gh:vamseeachanta/achantas-data#105
+  title: 'Travel Explore: Buffalo National River / Jasper cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/105
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Buffalo National River / Jasper / Ponca as an Arkansas Broken Bow-style
+    cabin lane: strongest nature payoff, mountain/river scenery, hiking/floating,
+    and secluded cabins, but with a long drive from west Houston.
+
+    Parent: [#101](https://github.com/vamseeachanta/achantas-data/issues/101)'
+- idempotency_key: gh:vamseeachanta/achantas-data#104
+  title: 'Travel Explore: Mena / Ouachita Mountains cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/104
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Mena / Ouachita Mountains as a shorter-drive Arkansas stretch alternative
+    focused on seclusion, mountain/forest views, hot tubs, and Ouachita National Forest
+    / Queen Wilhelmina / Talimena-style scenery.
+
+    Parent: [#101](https://github.com/vamseeachanta/achantas-data/issues/101)'
+- idempotency_key: gh:vamseeachanta/achantas-data#103
+  title: 'Travel Explore: Lake Ouachita / Hot Springs cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/103
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Lake Ouachita / Hot Springs / Mount Ida as an Arkansas Broken Bow-style
+    cabin lane: lake + forest + hiking, with Hot Springs restaurants/activities nearby
+    and Mount Ida/Ouachita National Forest for more secluded cabin inventory.
+
+    Parent: [#101](https://github.com/vamseeachanta/achantas-data/issues/101)'
+- idempotency_key: gh:vamseeachanta/achantas-data#102
+  title: 'Travel Explore: Eureka Springs / Beaver Lake cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/102
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Research Eureka Springs / Beaver Lake as the best overall Arkansas Broken Bow
+    analog: wooded cabins, hot tubs, lake access, family-size options, and a destination
+    town. Main tradeoff is the long drive from west Houston.
+
+    Parent: [#101](https://github.com/vamseeachanta/achantas-data/issues/101)'
+- idempotency_key: gh:vamseeachanta/achantas-data#101
+  title: 'Travel Explore: Arkansas Broken Bow-style cabin alternatives'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/101
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Explore Arkansas Broken Bow-style cabin alternatives for a west-Houston family:
+    secluded cabin, private hot tub, forest/mountain setting, hiking or water nearby,
+    dog-friendly if possible, and Airbnb/Vrbo acceptable as search channels.
+
+    This is a lodging-first research issue. Existing Arkansas destination issues remain
+    useful for activities; this issue tracks booking-fit and cabin-market leads.'
+- idempotency_key: gh:vamseeachanta/achantas-data#100
+  title: 'Travel Explore: Caddo Lake / Uncertain stretch cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/100
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Caddo Lake / Uncertain is the most visually distinctive Texas option — cypress
+    swamp, Spanish moss, kayaking, still water — but it is a **stretch**, not a clean
+    substitute. Live routing from a west-Houston/Katy proxy returned roughly **266.7
+    miles / 5.13 hours**, outside the preferred ~4-hour gate.
+
+    Parent exploration: https://github.com/vamseeachanta/achantas-data/issues/95'
+- idempotency_key: gh:vamseeachanta/achantas-data#99
+  title: 'Travel Explore: New Braunfels / Gruene river-town option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/99
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    New Braunfels / Gruene is a good family river-town getaway, but a weaker Broken
+    Bow / Lookout substitute. It wins on Guadalupe/Comal access, Gruene character,
+    walkability, and family activities; it loses on secluded hot-tub cabin feel. Prior
+    OSRM screen put this cluster around **2.8–3.0 hours** from west Houston.
+
+    Parent exploration: https://github.com/vamseeachanta/achantas-data/issues/95'
+- idempotency_key: gh:vamseeachanta/achantas-data#98
+  title: 'Travel Explore: Bastrop / Lost Pines cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/98
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Bastrop / Lost Pines is the shortest practical pine-region fallback from west
+    Houston, roughly **2.0 hours** by prior OSRM screen. It can approach the **~$500
+    / 3 nights** target if the family accepts state-park/simple cabins or drops hot
+    tub, but it is a weaker match for the full Broken Bow spec when dog-friendly +
+    private hot tub + secluded cabin are all required.
+
+    Parent exploration: https://github.com/vamseeachanta/achantas-data/issues/95'
+- idempotency_key: gh:vamseeachanta/achantas-data#97
+  title: 'Travel Explore: Lake Livingston / Sam Houston NF cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/97
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Lake Livingston / Sam Houston National Forest is the best short-drive pine/lake/hiking
+    substitute for Broken Bow. It preserves the **woods + water + cabin** logic within
+    roughly **1.7–2.2 hours** of west Houston, but the better hot-tub/dog-friendly
+    cabin options appear closer to the OK baseline than the requested **~$500 / 3
+    nights** target.
+
+    Parent exploration: https://github.com/vamseeachanta/achantas-data/issues/95'
+- idempotency_key: gh:vamseeachanta/achantas-data#96
+  title: 'Travel Explore: Wimberley / Canyon Lake cabin option details'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/96
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Wimberley / Canyon Lake is the strongest Texas Hill Country substitute for the
+    Broken Bow / Lookout feel: private hot tubs, cottage/cabin inventory, decks, kitchens,
+    pet-friendly options, nearby swimming holes, river/lake access, and a scenic setting
+    within roughly **3.0–3.3 hours** of west Houston.
+
+    Parent exploration: https://github.com/vamseeachanta/achantas-data/issues/95'
+- idempotency_key: gh:vamseeachanta/achantas-data#95
+  title: 'Travel Explore: Broken Bow-style cabin alternatives within 4 hours of west
+    Houston'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/95
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Explore drivable alternatives to the Broken Bow / Lookout cabin feel within roughly
+    4 hours of west Houston: secluded cabin, hot tub, forest, hiking, dog-friendly,
+    and ideally water nearby.
+
+    This is an exploration issue, not a booking decision yet. The goal is to compare
+    realistic destination clusters, identify cabin-search lanes, and surface specific
+    next-search targets.'
+- idempotency_key: gh:vamseeachanta/achantas-data#94
+  title: 'Trip planning: Austin / Texas Hill Country options'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/94
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Separate future-reference issue for the **Austin / Texas Hill Country trip** so
+    it stays independent from Oklahoma / Broken Bow booking work.
+
+    Background related issue: #25 — Weekend Trip: Houston → Fredericksburg / Texas
+    Hill Country.'
+- idempotency_key: gh:vamseeachanta/achantas-data#93
+  title: 'Booking shortlist: OK / Broken Bow cabin with kitchen + verified view'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/93
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Booking-focused issue for the **Oklahoma / Broken Bow / Beavers Bend trip** so
+    lodging decisions are not buried inside broader vacation-trip planning.
+
+    Parent/background planning issue: #41.'
+- idempotency_key: gh:vamseeachanta/achantas-data#91
+  title: 'trip: plan Broken Bow OK family road trip (Jun 6-9 2026 vs September variant)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/91
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Source — 3 emails from Sabitha on 2026-05-13 night CT
+
+    | Time (CT) | Subject | Thread | Snippet |
+
+    |---|---|---|---|'
+- idempotency_key: gh:vamseeachanta/achantas-data#90
+  title: 'trip: plan Colorado road trip from Houston (4-day itinerary received from
+    Sabitha)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/90
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Source
+
+    - Gmail thread `19e246501cf1a80b` — subject "Colorado Trip itinerary"
+
+    - From: d.sabitha@ymail.com, To: vamsee.achanta@aceengineer.com'
+- idempotency_key: gh:vamseeachanta/achantas-data#71
+  title: 'Feature: Travel apps shortlist — install/login checklist for smoother domestic
+    + international trips'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/71
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Feature: travel apps shortlist for smoother trips
+
+    Companion to #70 (digital ID tracker). That issue tracks **which credentials we
+    digitalize**; this issue tracks **which apps we install, log into, and pre-configure**
+    so those credentials and the rest of the trip flow work end-to-end.
+
+    ## Goal'
+- idempotency_key: gh:vamseeachanta/achantas-data#70
+  title: 'Feature: Digitalize family IDs for domestic + international travel (US,
+    India e-OCI, others)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/70
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Feature: digitalize family IDs to streamline travel
+
+    > **Companion:** #71 — Travel apps shortlist (which apps hold and activate these
+    credentials end-to-end for a trip).
+
+    Build a single tracking matrix for digitalizing every ID our family carries, so
+    domestic and international travel uses verified digital wallets / digital cards
+    instead of physical-only documents wherever possible.'
+- idempotency_key: gh:vamseeachanta/achantas-data#68
+  title: 'Travel Plan: Switzerland 1-week train + scenic family trip'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/68
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    A 7-day, 6-night family trip to Switzerland built around scenic rail rather than
+    driving. We fly into and out of **Zurich (ZRH)**, then chain together three classic
+    Swiss-rail experiences — Lucerne / Jungfrau region / Zermatt (or Engadin) — using
+    the Swiss Travel Pass. The trip mixes one full-service hotel (arrival city, easiest
+    with jet lag) and two Airbnb/Vrbo stays (mountain towns where apartments give
+    space, kitchens, and balcony views). Aimed at May–June or September for green
+    meadows, low avalanche/closure risk, and pre-/post-peak crowds.
+
+    ## Trip parameters'
+- idempotency_key: gh:vamseeachanta/achantas-data#67
+  title: 'Feature: Travel ranking matrix for family trip review'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/67
+  gh_state: open
+  gh_labels:
+  - documentation
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Feature: family travel ranking decision matrix
+
+    Create and maintain a single review-friendly matrix for the top travel options
+    so family members can compare choices quickly without opening every issue first.
+
+    ## Purpose'
+- idempotency_key: gh:vamseeachanta/achantas-data#66
+  title: 'Destination Base: Cottonwood Falls, Kansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/66
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Cottonwood Falls](https://www.travelks.com/cities/cottonwood-falls/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#65
+  title: 'Destination Base: Council Grove, Kansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/65
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Council Grove](https://www.travelks.com/cities/council-grove/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#64
+  title: 'Destination: Konza Prairie, Kansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/64
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Konza Prairie](https://kpbs.konza.k-state.edu/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#63
+  title: 'Destination: Flint Hills Scenic Byway, Kansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/63
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Flint Hills Scenic Byway](https://www.fhwa.dot.gov/byways/byways/2062)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#62
+  title: 'Destination: Tallgrass Prairie National Preserve, Kansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/62
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Tallgrass Prairie National Preserve](https://www.nps.gov/tapr/index.htm)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#61
+  title: 'Destination: Grayton Beach State Park, Florida'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/61
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Grayton Beach State Park](https://www.floridastateparks.org/parks-and-trails/grayton-beach-state-park)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#60
+  title: 'Destination: Henderson Beach State Park, Florida'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/60
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Henderson Beach State Park](https://www.floridastateparks.org/parks-and-trails/henderson-beach-state-park)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#59
+  title: 'Destination: 30A and South Walton, Florida'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/59
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [30A / South Walton](https://www.visitsouthwalton.com/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#58
+  title: 'Destination: Pensacola Beach, Florida'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/58
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Pensacola Beach](https://www.visitpensacola.com/beaches/pensacola-beach/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#57
+  title: 'Destination: Gulf Islands National Seashore, Florida'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/57
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Gulf Islands National Seashore](https://www.nps.gov/guis/index.htm)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#56
+  title: 'Destination: Destin, Florida Panhandle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/56
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Destin](https://www.visitflorida.com/places-to-go/northwest/destin/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#55
+  title: 'Destination Base: Lafayette and Breaux Bridge, Louisiana'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/55
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Lafayette / Breaux Bridge base](https://www.lafayettetravel.com/)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#54
+  title: 'Destination: Atchafalaya Basin, Louisiana'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/54
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Atchafalaya Basin / National Heritage Area](https://www.louisianatravel.com/attractions/atchafalaya-national-heritage-area)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#53
+  title: 'Destination: Kisatchie National Forest, Louisiana'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/53
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Kisatchie National Forest](https://www.fs.usda.gov/kisatchie)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#52
+  title: 'Destination: Jean Lafitte Barataria Preserve, Louisiana'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/52
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Jean Lafitte Barataria Preserve](https://www.nps.gov/jela/index.htm)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#51
+  title: 'Destination: Devil''s Den State Park, Arkansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/51
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Devil''s Den State Park](https://www.arkansasstateparks.com/parks/devils-den-state-park)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#50
+  title: 'Destination: Buffalo National River, Arkansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/50
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Buffalo National River](https://www.nps.gov/buff/index.htm)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#49
+  title: 'Destination: Lake Ouachita State Park, Arkansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/49
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Lake Ouachita State Park](https://www.arkansasstateparks.com/parks/lake-ouachita-state-park)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#48
+  title: 'Destination: Mount Magazine State Park, Arkansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/48
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Mount Magazine State Park](https://www.arkansasstateparks.com/parks/mount-magazine-state-park)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#47
+  title: 'Destination: Petit Jean State Park, Arkansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/47
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Petit Jean State Park](https://www.arkansasstateparks.com/parks/petit-jean-state-park)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#46
+  title: 'Destination: Hot Springs National Park, Arkansas'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/46
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Destination link
+
+    - Official planning link: [Hot Springs National Park](https://www.nps.gov/hosp/index.htm)
+
+    ## Why consider this destination'
+- idempotency_key: gh:vamseeachanta/achantas-data#45
+  title: 'Travel Plan: Houston to Kansas Flint Hills prairie scenic trip'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/45
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Kansas is a niche but distinct scenic alternative: rolling tallgrass prairie,
+    big-sky sunsets, bison/prairie wildlife, and quiet byways. It is less dramatic
+    than mountains/beaches but can be very scenic in late spring.
+
+    **Route:** Houston → Flint Hills / Tallgrass Prairie, Kansas → Houston'
+- idempotency_key: gh:vamseeachanta/achantas-data#44
+  title: 'Travel Plan: Houston to Florida Panhandle emerald coast scenic trip'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/44
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Florida Panhandle is a longer but high-confidence scenic option from Houston:
+    white sand beaches, emerald water, dunes, coastal state parks, and sunset/sunrise
+    views.
+
+    **Route:** Houston → Pensacola / Gulf Islands / Destin / 30A, Florida → Houston'
+- idempotency_key: gh:vamseeachanta/achantas-data#43
+  title: 'Travel Plan: Houston to Louisiana bayou and forest scenic trip'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/43
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Louisiana is the easiest scenic-state alternative from Houston: bayous, cypress/tupelo
+    swamp, wildlife, Cajun food, and pine/longleaf forest without a huge drive.
+
+    **Route:** Houston → Lafayette / Atchafalaya / Jean Lafitte / Kisatchie, Louisiana
+    → Houston'
+- idempotency_key: gh:vamseeachanta/achantas-data#42
+  title: 'Travel Plan: Houston to Arkansas Ozarks and Hot Springs scenic trip'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/42
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Arkansas is the strongest near-term scenic upgrade from Houston if we want mountains,
+    bluffs, waterfalls, lake/river scenery, and a cabin/lodge style trip within a
+    long but reasonable drive.
+
+    **Route:** Houston → Hot Springs / Petit Jean / Buffalo River, Arkansas → Houston'
+- idempotency_key: gh:vamseeachanta/achantas-data#41
+  title: 'Travel Plan: Houston to Oklahoma Mountains and Lake to Houston (Post-Tulip
+    Season)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/41
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Tulip season has passed, so this replaces the seasonal tulip-detour plan in #19
+    with a direct nature/lake road trip:
+
+    **Houston → Broken Bow / Beavers Bend, Oklahoma → Houston**'
+- idempotency_key: gh:vamseeachanta/achantas-data#26
+  title: 'Weekend Trip: Houston → New Orleans (Food, Music & Culture)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/26
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## Trip Overview\n**Type:** 2–3 day weekend getaway (food, music,\
+    \ culture, architecture)  \n**Route:** Houston → New Orleans, LA (I-10 E, straight\
+    \ shot)  "
+- idempotency_key: gh:vamseeachanta/achantas-data#25
+  title: 'Weekend Trip: Houston → Fredericksburg / Texas Hill Country'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/25
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## Trip Overview\n**Type:** 2–3 day weekend getaway (wine, nature,\
+    \ small-town charm)  \n**Route:** Houston → Fredericksburg, TX (via I-10 W → US-290\
+    \ W)  "
+- idempotency_key: gh:vamseeachanta/achantas-data#21
+  title: Galveston trip — bicycle ride + ferry
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/21
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Galveston Bicycle + Ferry Trip
+
+    ### Concept
+
+    Bike ride along Galveston Seawall + round-trip ferry ride to Bolivar for sightseeing.'
+- idempotency_key: gh:vamseeachanta/achantas-data#20
+  title: 'Weekend Trip Ideas: Houston to Surrounding Areas (Nature/Scenic)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/20
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Overview
+
+    Curate a collection of **weekend road trips from Houston** to surrounding nature/scenic
+    destinations. Each trip should follow a similar format to [#19](https://github.com/vamseeachanta/achantas-data/issues/19)
+    — drive out, stay overnight 1–2 nights, and return.
+
+    **Criteria for each trip:**'
+- idempotency_key: gh:vamseeachanta/achantas-data#19
+  title: 'Travel Plan: Houston → Dallas Tulip Gardens → Oklahoma Mountains & Lake
+    → Houston'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/19
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "## Trip Overview\n**Type:** 3-day road trip (nature/scenic)  \n**Route:**\
+    \ Houston → Dallas Tulip Gardens → Broken Bow, OK (mountains + lake) → Houston\
+    \  "

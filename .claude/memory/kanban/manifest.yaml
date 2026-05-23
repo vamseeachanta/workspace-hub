@@ -1,0 +1,451 @@
+manifest:
+  generated_at: '2026-05-22'
+  source_machine: ace-linux-1
+  total_boards: 45
+  total_cards: 1536
+  total_gaps: 75
+  tier_counts:
+    ecosystem: 1
+    repo: 14
+    domain: 30
+  boards:
+  - slug: ecosystem
+    tier: ecosystem
+    repo: null
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/ecosystem.yaml
+    card_count: 20
+  - slug: repo-aceengineer-admin
+    tier: repo
+    repo: vamseeachanta/aceengineer-admin
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/aceengineer-admin
+    file: boards/repo-aceengineer-admin.yaml
+    card_count: 16
+  - slug: repo-aceengineer-strategy
+    tier: repo
+    repo: vamseeachanta/aceengineer-strategy
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/aceengineer-strategy
+    file: boards/repo-aceengineer-strategy.yaml
+    card_count: 20
+  - slug: repo-aceengineer-website
+    tier: repo
+    repo: vamseeachanta/aceengineer-website
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/aceengineer-website
+    file: boards/repo-aceengineer-website.yaml
+    card_count: 5
+  - slug: repo-achantas-data
+    tier: repo
+    repo: vamseeachanta/achantas-data
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data.yaml
+    card_count: 0
+    children:
+    - repo-achantas-data-devakrishna
+    - repo-achantas-data-family-planning
+    - repo-achantas-data-finance
+    - repo-achantas-data-household
+    - repo-achantas-data-travel
+  - slug: repo-assethold
+    tier: repo
+    repo: vamseeachanta/assethold
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/assethold
+    file: boards/repo-assethold.yaml
+    card_count: 0
+    children:
+    - repo-assethold-infra
+    - repo-assethold-models
+    - repo-assethold-reports
+  - slug: repo-assetutilities
+    tier: repo
+    repo: vamseeachanta/assetutilities
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/assetutilities
+    file: boards/repo-assetutilities.yaml
+    card_count: 20
+  - slug: repo-digitalmodel
+    tier: repo
+    repo: vamseeachanta/digitalmodel
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel.yaml
+    card_count: 18
+    children:
+    - repo-digitalmodel-codes
+    - repo-digitalmodel-hydro
+    - repo-digitalmodel-qa
+    - repo-digitalmodel-solver
+    - repo-digitalmodel-subsea
+  - slug: repo-hobbies
+    tier: repo
+    repo: vamseeachanta/hobbies
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/hobbies
+    file: boards/repo-hobbies.yaml
+    card_count: 0
+  - slug: repo-kaggle-rogii-2026
+    tier: repo
+    repo: vamseeachanta/kaggle-rogii-2026
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/kaggle-rogii-2026
+    file: boards/repo-kaggle-rogii-2026.yaml
+    card_count: 9
+  - slug: repo-llm-wiki
+    tier: repo
+    repo: vamseeachanta/llm-wiki
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki.yaml
+    card_count: 0
+    children:
+    - repo-llm-wiki-content
+    - repo-llm-wiki-governance
+    - repo-llm-wiki-ingest
+    - repo-llm-wiki-tooling
+  - slug: repo-llm-wiki-acma
+    tier: repo
+    repo: vamseeachanta/llm-wiki-acma
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/llm-wiki-acma
+    file: boards/repo-llm-wiki-acma.yaml
+    card_count: 0
+  - slug: repo-sabithaandkrishnaestates
+    tier: repo
+    repo: vamseeachanta/sabithaandkrishnaestates
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+    file: boards/repo-sabithaandkrishnaestates.yaml
+    card_count: 0
+    children:
+    - repo-sabithaandkrishnaestates-admin-comms
+    - repo-sabithaandkrishnaestates-hoa-vendors
+    - repo-sabithaandkrishnaestates-tax-1099
+  - slug: repo-workspace-hub
+    tier: repo
+    repo: vamseeachanta/workspace-hub
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub.yaml
+    card_count: 19
+    children:
+    - repo-workspace-hub-ai-orchestration
+    - repo-workspace-hub-business
+    - repo-workspace-hub-data
+    - repo-workspace-hub-engineering
+    - repo-workspace-hub-harness
+    - repo-workspace-hub-ops
+  - slug: repo-worldenergydata
+    tier: repo
+    repo: vamseeachanta/worldenergydata
+    domain: null
+    parent_slug: null
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata.yaml
+    card_count: 0
+    children:
+    - repo-worldenergydata-gtm
+    - repo-worldenergydata-ingestion
+    - repo-worldenergydata-quality
+    - repo-worldenergydata-reports
+  - slug: repo-achantas-data-devakrishna
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: devakrishna
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-devakrishna.yaml
+    card_count: 17
+  - slug: repo-achantas-data-family-planning
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: family-planning
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-family-planning.yaml
+    card_count: 7
+  - slug: repo-achantas-data-finance
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: finance
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-finance.yaml
+    card_count: 10
+  - slug: repo-achantas-data-household
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: household
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-household.yaml
+    card_count: 12
+  - slug: repo-achantas-data-travel
+    tier: domain
+    repo: vamseeachanta/achantas-data
+    domain: travel
+    parent_slug: repo-achantas-data
+    workspace_path: /mnt/local-analysis/achantas-data
+    file: boards/repo-achantas-data-travel.yaml
+    card_count: 58
+  - slug: repo-assethold-infra
+    tier: domain
+    repo: vamseeachanta/assethold
+    domain: infra
+    parent_slug: repo-assethold
+    workspace_path: /mnt/local-analysis/assethold
+    file: boards/repo-assethold-infra.yaml
+    card_count: 7
+  - slug: repo-assethold-models
+    tier: domain
+    repo: vamseeachanta/assethold
+    domain: models
+    parent_slug: repo-assethold
+    workspace_path: /mnt/local-analysis/assethold
+    file: boards/repo-assethold-models.yaml
+    card_count: 14
+  - slug: repo-assethold-reports
+    tier: domain
+    repo: vamseeachanta/assethold
+    domain: reports
+    parent_slug: repo-assethold
+    workspace_path: /mnt/local-analysis/assethold
+    file: boards/repo-assethold-reports.yaml
+    card_count: 6
+  - slug: repo-digitalmodel-codes
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: codes
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-codes.yaml
+    card_count: 29
+  - slug: repo-digitalmodel-hydro
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: hydro
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-hydro.yaml
+    card_count: 44
+  - slug: repo-digitalmodel-qa
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: qa
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-qa.yaml
+    card_count: 17
+  - slug: repo-digitalmodel-solver
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: solver
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-solver.yaml
+    card_count: 44
+  - slug: repo-digitalmodel-subsea
+    tier: domain
+    repo: vamseeachanta/digitalmodel
+    domain: subsea
+    parent_slug: repo-digitalmodel
+    workspace_path: /mnt/local-analysis/digitalmodel
+    file: boards/repo-digitalmodel-subsea.yaml
+    card_count: 131
+  - slug: repo-llm-wiki-content
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: content
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-content.yaml
+    card_count: 6
+  - slug: repo-llm-wiki-governance
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: governance
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-governance.yaml
+    card_count: 7
+  - slug: repo-llm-wiki-ingest
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: ingest
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-ingest.yaml
+    card_count: 33
+  - slug: repo-llm-wiki-tooling
+    tier: domain
+    repo: vamseeachanta/llm-wiki
+    domain: tooling
+    parent_slug: repo-llm-wiki
+    workspace_path: /mnt/local-analysis/llm-wiki
+    file: boards/repo-llm-wiki-tooling.yaml
+    card_count: 7
+  - slug: repo-sabithaandkrishnaestates-admin-comms
+    tier: domain
+    repo: vamseeachanta/sabithaandkrishnaestates
+    domain: admin-comms
+    parent_slug: repo-sabithaandkrishnaestates
+    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+    file: boards/repo-sabithaandkrishnaestates-admin-comms.yaml
+    card_count: 5
+  - slug: repo-sabithaandkrishnaestates-hoa-vendors
+    tier: domain
+    repo: vamseeachanta/sabithaandkrishnaestates
+    domain: hoa-vendors
+    parent_slug: repo-sabithaandkrishnaestates
+    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+    file: boards/repo-sabithaandkrishnaestates-hoa-vendors.yaml
+    card_count: 5
+  - slug: repo-sabithaandkrishnaestates-tax-1099
+    tier: domain
+    repo: vamseeachanta/sabithaandkrishnaestates
+    domain: tax-1099
+    parent_slug: repo-sabithaandkrishnaestates
+    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
+    file: boards/repo-sabithaandkrishnaestates-tax-1099.yaml
+    card_count: 12
+  - slug: repo-workspace-hub-ai-orchestration
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: ai-orchestration
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-ai-orchestration.yaml
+    card_count: 93
+  - slug: repo-workspace-hub-business
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: business
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-business.yaml
+    card_count: 60
+  - slug: repo-workspace-hub-data
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: data
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-data.yaml
+    card_count: 63
+  - slug: repo-workspace-hub-engineering
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: engineering
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-engineering.yaml
+    card_count: 234
+  - slug: repo-workspace-hub-harness
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: harness
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-harness.yaml
+    card_count: 300
+  - slug: repo-workspace-hub-ops
+    tier: domain
+    repo: vamseeachanta/workspace-hub
+    domain: ops
+    parent_slug: repo-workspace-hub
+    workspace_path: /mnt/local-analysis/workspace-hub
+    file: boards/repo-workspace-hub-ops.yaml
+    card_count: 120
+  - slug: repo-worldenergydata-gtm
+    tier: domain
+    repo: vamseeachanta/worldenergydata
+    domain: gtm
+    parent_slug: repo-worldenergydata
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata-gtm.yaml
+    card_count: 9
+  - slug: repo-worldenergydata-ingestion
+    tier: domain
+    repo: vamseeachanta/worldenergydata
+    domain: ingestion
+    parent_slug: repo-worldenergydata
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata-ingestion.yaml
+    card_count: 24
+  - slug: repo-worldenergydata-quality
+    tier: domain
+    repo: vamseeachanta/worldenergydata
+    domain: quality
+    parent_slug: repo-worldenergydata
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata-quality.yaml
+    card_count: 28
+  - slug: repo-worldenergydata-reports
+    tier: domain
+    repo: vamseeachanta/worldenergydata
+    domain: reports
+    parent_slug: repo-worldenergydata
+    workspace_path: /mnt/local-analysis/worldenergydata
+    file: boards/repo-worldenergydata-reports.yaml
+    card_count: 7
+  gap_files:
+  - file: gaps/aceengineer-admin.yaml
+    repo_stem: aceengineer-admin
+    gap_count: 3
+  - file: gaps/aceengineer-strategy.yaml
+    repo_stem: aceengineer-strategy
+    gap_count: 3
+  - file: gaps/aceengineer-website.yaml
+    repo_stem: aceengineer-website
+    gap_count: 2
+  - file: gaps/achantas-data.yaml
+    repo_stem: achantas-data
+    gap_count: 7
+  - file: gaps/assethold.yaml
+    repo_stem: assethold
+    gap_count: 5
+  - file: gaps/assetutilities.yaml
+    repo_stem: assetutilities
+    gap_count: 4
+  - file: gaps/digitalmodel.yaml
+    repo_stem: digitalmodel
+    gap_count: 10
+  - file: gaps/hobbies.yaml
+    repo_stem: hobbies
+    gap_count: 7
+  - file: gaps/kaggle-rogii-2026.yaml
+    repo_stem: kaggle-rogii-2026
+    gap_count: 3
+  - file: gaps/llm-wiki-acma.yaml
+    repo_stem: llm-wiki-acma
+    gap_count: 3
+  - file: gaps/llm-wiki.yaml
+    repo_stem: llm-wiki
+    gap_count: 7
+  - file: gaps/sabithaandkrishnaestates.yaml
+    repo_stem: sabithaandkrishnaestates
+    gap_count: 5
+  - file: gaps/workspace-hub.yaml
+    repo_stem: workspace-hub
+    gap_count: 10
+  - file: gaps/worldenergydata.yaml
+    repo_stem: worldenergydata
+    gap_count: 6

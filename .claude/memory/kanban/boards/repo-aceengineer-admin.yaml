@@ -1,0 +1,243 @@
+board:
+  slug: repo-aceengineer-admin
+  display_name: aceengineer-admin
+  tier: repo
+  repo: vamseeachanta/aceengineer-admin
+  workspace_path: /mnt/local-analysis/aceengineer-admin
+  description: 'AceEngineer admin and operations — back-office, accounting, contracts,
+    business compliance.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#25
+  title: 'ops: download/archive all Google Drive data from AceEngineer workspace'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/25
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Ask
+
+    User directive 2026-05-14: "Download all GDrive data from AceEngineer."
+
+    ## Account'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#23
+  title: 'Evaluate e-filing options for Form 1120: TaxAct vs paper vs other'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/23
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    AceEngineer currently has a programmatically filled Form 1120 PDF (`taxes/2025/2025-form-1120-filled.pdf`)
+    ready for paper filing. Need to evaluate whether e-filing via TaxAct or similar
+    software is viable and preferable.
+
+    ## Options to Evaluate'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#22
+  title: Locate 2023 filed Form 1120 and add to repo
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/22
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The 2023 Form 1120 for AceEngineer Inc was confirmed filed (per owner, 2026-04-15).
+    However, the filed return PDF is not in the repo.
+
+    ### Searched locations (not found):'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#21
+  title: Amend 2025 Form 1120 to claim NOL deduction — $4,864 refund
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/21
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Once 2024 Form 1120 is filed (showing -$12,360 loss), AceEngineer has $27,784
+    in NOL carryforward available for 2025. Filing an amended 2025 return recovers
+    $4,864.
+
+    ## NOL Calculation'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#20
+  title: Evaluate Form 1042-S requirement for foreign contractor payments (2025)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/20
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    AceEngineer paid $16,551.09 to foreign contractors in India during 2025:
+
+    - Prasad Bakki (engineer)'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#18
+  title: Verify SKEI/Sabitha loan documentation is complete (separate from AceEngineer)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/18
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    As part of 2025 Form 1120 filing, the SKEI receivable ($1,475,141) and Sabitha
+    payable ($980,000) were removed from AceEngineer''s books. The loans are now documented
+    directly between SKEI and Sabitha.
+
+    ## Action Items'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#17
+  title: '2028: Evaluate AI R&D Productization — Licensing Revenue Model'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/17
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Evaluate Commercialization of AI Engineering Tools
+
+    ### Background
+
+    By 2028, 2+ years of $200K/year R&D investment will have produced:'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#16
+  title: '2027: Annual Tax Filing — 2026 1120 + TX Franchise + R&D Credit'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/16
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## 2026 Annual Tax Filing Checklist
+
+    ### Scope
+
+    - Form 1120 (federal) — AceEngineer Inc'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#15
+  title: '2026 Q2: R&D Documentation System — Project Charters and QRE Tracking'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/15
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Build R&D documentation pipeline for Form 6765 (R&D Credit)
+
+    ### Problem
+
+    The $58,253 R&D spend in 2025 has no project-level documentation.'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#14
+  title: '2026 Q1: Officer W-2 Setup + Solo 401(k) for Vamsee'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/14
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Start Vamsee W-2 Salary from AceEngineer (Jan 2026 onward)
+
+    ### Why
+
+    - Current $0 officer comp is #1 IRS audit trigger for C-Corps'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#13
+  title: Set Up 2026 Estimated Tax Payments (Federal + TX)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/13
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Prevent 2026 Underpayment Penalty
+
+    ### Background
+
+    2025 had ~$505 underpayment penalty on personal return and will have'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#9
+  title: Establish AI R&D Program — $200K/year Budget (2026-2030)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/9
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## 5-Year AI Transformation Budget
+
+    ### Thesis
+
+    AI will transform offshore/marine engineering consulting within 3-5 years.'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#6
+  title: Retrieve Chase Bank Statements (2025) from home-win for tax filing
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/6
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Priority: HIGH — blocks accurate Form 1120 preparation
+
+    ### What
+
+    Chase bank statements for AceEngineer account (ending 2827) for all of 2025.'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#5
+  title: File 2025 Texas Franchise Tax by May 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/5
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Deadline: May 15, 2026
+
+    ### Entity
+
+    - Achanta AceEngineer Inc (C-Corp)'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#4
+  title: File 2025 Form 1120 (Federal C-Corp) by April 15, 2026
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/4
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Deadline: April 15, 2026
+
+    ### Entity
+
+    - Achanta AceEngineer Inc (C-Corp)'
+- idempotency_key: gh:vamseeachanta/aceengineer-admin#3
+  title: 'BLOCKER: File 2024 Form 1120 (Federal) — unfiled prior year'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/3
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Priority: CRITICAL — blocks 2025 filing
+
+    ### Problem
+
+    2024 federal Form 1120 was NEVER FILED. Only Texas state (Tax/2024/2024_TX_tax.pdf)
+    exists.'

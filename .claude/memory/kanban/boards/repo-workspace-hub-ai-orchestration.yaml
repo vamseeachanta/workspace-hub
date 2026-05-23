@@ -1,0 +1,1635 @@
+board:
+  slug: repo-workspace-hub-ai-orchestration
+  display_name: workspace-hub · ai-orchestration
+  tier: domain
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: 'AI orchestration: skills, agents, multi-provider review, prompts, cross-review fan-out, planning automation.
+
+    '
+  domain: ai-orchestration
+  parent_slug: repo-workspace-hub
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2757
+  title: 'throughput(workstations): activate licensed-win-2 provider/machine lane'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2757
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:operations
+  - domain:agent-cost-tracking
+  - domain:ai-orchestration
+  - domain:workstations
+  - enhancement
+  - machine:licensed-win-2
+  - priority:high
+  - status:needs-plan
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Purpose
+
+    Activate **licensed-win-2** as a throughput lane in the multi-machine / multi-provider execution system.
+
+    The decision is **not** repo placement, memory shape, skill layout, artifact format, or cross-repo file structure. Those are canonical infrastructure and should be enforced consistently rather than repeatedly debated.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2756
+  title: 'throughput(workstations): activate licensed-win-1 provider/machine lane'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2756
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:operations
+  - domain:agent-cost-tracking
+  - domain:ai-orchestration
+  - domain:workstations
+  - enhancement
+  - machine:licensed-win-1
+  - priority:high
+  - status:needs-plan
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Purpose
+
+    Activate **licensed-win-1** as a throughput lane in the multi-machine / multi-provider execution system.
+
+    The decision is **not** repo placement, memory shape, skill layout, artifact format, or cross-repo file structure. Those are canonical infrastructure and should be enforced consistently rather than repeatedly debated.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2755
+  title: 'throughput(workstations): activate ace-linux-2 provider/machine lane'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2755
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:operations
+  - domain:agent-cost-tracking
+  - domain:ai-orchestration
+  - domain:workstations
+  - enhancement
+  - machine:ace-linux-2
+  - priority:high
+  - status:plan-approved
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Purpose
+
+    Activate **ace-linux-2** as a throughput lane in the multi-machine / multi-provider execution system.
+
+    The decision is **not** repo placement, memory shape, skill layout, artifact format, or cross-repo file structure. Those are canonical infrastructure and should be enforced consistently rather than repeatedly debated.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2754
+  title: 'throughput(workstations): activate ace-linux-1 provider/machine lane'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2754
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:operations
+  - domain:agent-cost-tracking
+  - domain:ai-orchestration
+  - domain:workstations
+  - enhancement
+  - machine:ace-linux-1
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Purpose
+
+    Activate **ace-linux-1** as a throughput lane in the multi-machine / multi-provider execution system.
+
+    The decision is **not** repo placement, memory shape, skill layout, artifact format, or cross-repo file structure. Those are canonical infrastructure and should be enforced consistently rather than repeatedly debated.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2733
+  title: 'epic: make Hermes agent memory canonical across all AI providers'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2733
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - agent:codex
+  - agent:gemini
+  - cat:ai-orchestration
+  - domain:knowledge-management
+  - priority:high
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: 'Recorded user feedback 2026-05-17 (auto-memory `feedback_memory_aspire_to_hermes_level`): **all AI provider work should flow through Hermes agent''s memory strategy**. Hermes-memory is the canonical backend; per-provider stores (Claude Code auto-memory, Codex state, Gemini session memory) should consolidate to Hermes rather than evolve in parallel.
+
+    ## Architectural ask
+
+    Current state is fragmented:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2730
+  title: 'fix(gemini): remove unsupported permissionMode keys from agent definitions'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2730
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:ai-orchestration
+  - domain:ai-config
+  - domain:tooling
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Gemini CLI review runs in `workspace-hub` emit agent loading errors because two `.gemini/agents/*.md` frontmatter blocks include `permissionMode: acceptEdits`, which the current Gemini agent definition schema rejects.
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2715
+  title: 'bug(infra): codex-cli 0.130.0 stdin-hang regression (recurrence of v0.124 #2479) + Hermes route affected'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2715
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:ai-orchestration
+  - cat:infrastructure
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Summary
+
+    `codex-cli 0.130.0` (current installed via `~/.npm-global/bin/codex`) reproduces the v0.124-era stdin-hang regression on **both** stdin and positional invocations, **and** affects Hermes-routed Codex calls because `hermes -z` shells out to `codex exec` subprocess for tool execution. Multiple downstream paths are blocked.
+
+    ## Reproduction (verified 2026-05-15)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2700
+  title: 'feat(ai-orchestration): "Memory-to-Surface" map maintenance contract for AI_ECOSYSTEM_DESIGN.md §E'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2700
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    [`docs/standards/AI_ECOSYSTEM_DESIGN.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/AI_ECOSYSTEM_DESIGN.md) §E ("Failure-mode design contract") maps **20 memory feedback files** from `~/.claude/projects/.../memory/feedback_*.md` to their **durable mitigation surfaces** in the repo. This is the *anti-orphaning contract*: lessons in memory are connected to artifacts that enforce them.
+
+    The map declares a maintenance contract at the bottom of §E and again in §AI_ECOSYSTEM_DESIGN.md''s `Maintenance contract` section:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2699
+  title: 'chore(ai-tools): refresh agent-capability-scores.yaml from 2026-04/05 incident data'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2699
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    `config/ai-tools/agent-capability-scores.yaml` (declared `version: \"2026-03-13\"`, `next_review: \"2026-06-06\"`) drives the radar visualization at [`config/ai-tools/agent-capability-radar.html`](https://github.com/vamseeachanta/workspace-hub/blob/main/config/ai-tools/agent-capability-radar.html) — the user-facing representation of provider capability vs. cost across 6 dimensions.
+
+    The scored dimensions in `provider_comparison.dimensions` are: `Reasoning, Code Generation, Context Window, Cost Efficiency, Research & Docs, Orchestration`. Per-provider scores are 0–10 integers.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2698
+  title: 'feat(ai-orchestration): migration plan for AI_ECOSYSTEM_DESIGN.md adoption (day-1 / month-1 / quarter-1)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2698
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    [`docs/standards/AI_ECOSYSTEM_DESIGN.md`](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/AI_ECOSYSTEM_DESIGN.md) landed at commit `f30a8fe2d` (parent: [#2675](https://github.com/vamseeachanta/workspace-hub/issues/2675), closed) as the durable design contract for how the repo ecosystem uses Claude, Hermes, Codex, and Gemini together. It declares **what good looks like** per work class (§A), **who owns what** (§B), and **how the work flows** (§C–§D), plus the **failure-mode contract** (§E).
+
+    What''s missing: an **adoption schedule**. The design contract is correct in intent, but the operational world doesn''t reorganize itself overnight to match. Existing `config/agents/`, `config/ai-tools/`, `scripts/review/`, and skill files were written incrementally over months and contain settings that the standards doc supersedes — but no sequence-of-changes is defined to bring them into alignment.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2697
+  title: 'chore(ai-tools): refresh subscriptions.yaml with current Codex paid plan + bump declared totals'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2697
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - enhancement
+  - priority:high
+  - status:plan-review
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Problem
+
+    `config/ai-tools/subscriptions.yaml` (`last_updated: 2025-12-23`) declares a monthly subscription total of **\$156.75/mo** across 4 services (Claude Max, OpenAI Plus, Google AI Pro, GitHub Copilot Pro). It does **not include the Codex paid plan (\$200/mo)** that has been in active use throughout the 2026-04/05 wave and across multiple plan executions (verified at [#2675](https://github.com/vamseeachanta/workspace-hub/issues/2675), [#2683](https://github.com/vamseeachanta/workspace-hub/issues/2683), [#2684](https://github.com/vamseeachanta/workspace-hub/issues/2684) review cycles).
+
+    Net effect: the declared total understates monthly spend by **~\$200/mo (~56% understatement)**. Any cost-routing decision based on this file is wrong; any spend report based on `totals.monthly_subscriptions` ships stale.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2650
+  title: 'chore(knowledge): post-spinout cleanup for llm-wiki migration'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2650
+  gh_state: open
+  gh_labels:
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Track post-migration cleanup work after llm-wiki spinout to vamseeachanta/llm-wiki on 2026-05-05.
+
+    ## Tasks'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2506
+  title: 'feat(ai-orchestration): validate Lane E implementation handoff readiness'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2506
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Create a Lane E handoff validator so next-day review/QA packets can separate open PRs from genuinely review-ready implementation artifacts.
+
+    Parent stream: #2489'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2505
+  title: 'feat(ai-orchestration): add golden-output contract for morning approval and QA packet'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2505
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Make the #2489 morning packet human-actionable by defining golden Markdown/JSON outputs, top-action ordering, truncation rules, and warning/noise budgets.
+
+    Parent stream: #2489'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2504
+  title: 'feat(ai-orchestration): define dispatch-ledger trust contract and lease lifecycle writer'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2504
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Create the follow-up contract for dispatch-ledger trust, lease lifecycle, and eventual writer authority so #2489 can consume active-work evidence without becoming a scheduler.
+
+    Parent stream: #2489'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2503
+  title: 'feat(ai-orchestration): standardize canonical approval-request comments for plan-review issues'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2503
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Define and backfill a canonical approval-request comment schema so Lane A approval candidates are machine-readable without treating fuzzy comments as authority.
+
+    Parent stream: #2489'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2502
+  title: 'feat(ai-orchestration): harden plan-review artifact metadata and stale-SHA handling'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2502
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Harden plan-review artifacts so continuous planning reports can reliably distinguish current clean reviews from stale, missing, empty, disagreement-only, or legacy/no-SHA artifacts.
+
+    Parent stream: #2489'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2440
+  title: 'decision: visual DNA coherence across aceengineer.com + digitalmodel'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2440
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Decide whether aceengineer.com''s visual identity should inherit or differentiate from digitalmodel''s established navy+teal brand. ADR-style decision issue — the deliverable is a documented choice, not code.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2439
+  title: 'chore(aceengineer-website): Bootstrap design-debt audit + token consolidation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2439
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Systematic cleanup of the Bootstrap-era design debt across aceengineer.com CSS. Surfaced by Claude Design''s repo analysis during the #2435 trial — which correctly identified three different orange hexes in use and proposed a single consolidation target.
+
+    ## Evidence from Claude Design generation (2026-04-21)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2436
+  title: 'feat(aceengineer-website): redesign templated page chrome (case study + calculator + methodology) via Claude Design'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2436
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Redesign the three template-driven page types on aceengineer.com — case study, calculator, methodology — in a single Claude Design session. All three share structure (title, intro, body, CTA, related); redesigning them together enforces a consistent template pattern.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2435
+  title: 'feat(aceengineer-website): establish design system in Claude Design — one-time compounding unlock'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2435
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Set up a Claude Design design system for aceengineer.com as the first concrete adoption artifact. This is the one-time investment that compounds: every future Claude Design session for the site inherits tokens + components + brand.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2434
+  title: 'epic(aceengineer-website): Claude Design adoption — site-wide visual refresh'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2434
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Adopt Claude Design for visual design work across aceengineer.com. Distinct from content-migration efforts (#2022, #2030) and CTA expansion (#2422) — this epic is about the **visual/layout** layer, not the content itself.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2432
+  title: 'feat(claude-design): adoption trial protocol — measure cost/value on first real artifact'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2432
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Define the measurement protocol for the Claude Design adoption trial so the first session produces comparable data, not just a design.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2430
+  title: 'feat(skills): claude-design-handoff — post-handoff receiver that reconciles with UI-SPEC + 6-pillar audit'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2430
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Create workspace-hub skill `claude-design-handoff` — post-handoff receiver. When Claude Design clicks "Send to Claude Code," this skill integrates the handoff with existing ecosystem patterns before implementation.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2429
+  title: 'feat(skills): claude-design-prep — CLI-side input-pack generator for Claude Design sessions'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2429
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Create a workspace-hub skill `claude-design-prep` that builds a "design input pack" for a Claude Design session from any repo artifact.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2428
+  title: 'feat(claude-design): upstream enhancement feedback bundle — 7 product asks from ecosystem review'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2428
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Upstream product feedback bundle for Claude Design — 7 enhancement requests derived from the 2026-04-21 ecosystem fit analysis (#2426).
+
+    Not workspace-hub implementation work. This issue exists so we have a canonical reference when an Anthropic feedback channel is available.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2426
+  title: 'epic: Claude Design (research preview) — ecosystem adoption trial + CLI integration'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2426
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    [Claude Design](https://support.claude.com/en/articles/14604416-get-started-with-claude-design) is Anthropic''s research-preview web tool for interactive design (chat+canvas, repo-aware, PDF/PPTX/HTML export). This epic tracks our ecosystem''s adoption trial, CLI integration options, and upstream product feedback bundle.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2420
+  title: 'fix(skills): restore repo-portfolio-steering balance snapshot contract and threshold behavior'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2420
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:ai-orchestration
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    - Parent umbrella: #2080
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2419
+  title: 'fix(tests): reconcile skill markdown contract drift in dark-intelligence/doc-extraction/research-literature/parity tests'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2419
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:ai-orchestration
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Parent
+
+    - Parent umbrella: #2080
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2418
+  title: 'feat(automation): add compounding multi-iteration autoresearch with budget guards'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2418
+  gh_state: open
+  gh_labels:
+  - cat:automation
+  - cat:harness
+  - domain:skills
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    The repo''s current autoresearch loop is single-pass per target per run:
+
+    - one candidate selected'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2341
+  title: 'bug(pre-push): ModuleNotFoundError: yaml in uv run --no-project python invocations (config-drift + ratchet checks)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2341
+  gh_state: open
+  gh_labels:
+  - bug
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Symptom
+
+    Running `git push` from any worktree with recent uv / Python state currently aborts with:
+
+    \`\`\`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2335
+  title: 'chore(cron): retro-refactor state-size-report.sh to use cadence-common.sh helpers'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2335
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    `scripts/cron/state-size-report.sh` (from #2070) pre-dates the shared `scripts/cron/lib/cadence-common.sh` helpers introduced in commit 07c246513 and rolls its own status-band logic. Claude''s P2 finding from the #2313-#2319 rollout pinned this for retrofit.
+
+    ## Scope'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2294
+  title: 'chore(skills): salvage #2290 follow-on learnings for regression coverage and github-code-review scope'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2294
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:documentation
+  - cat:maintenance
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    The preserved local duplicate branch from #2290 (`issue-2290-implementation`) contains two potentially useful follow-on learnings that did not land upstream and should be evaluated deliberately rather than cherry-picked wholesale:
+
+    1. stronger regression coverage for skill-dedup fallout, especially dangling references across agent/config surfaces'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2292
+  title: 'fix(queue-refresh): restore weekly queue refresh evidence and cron execution'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2292
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:ai-orchestration
+  - cat:operations
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    `queue-refresh-weekly` is configured in `schedule-tasks.yaml` but currently produces no evidence logs and is marked `[MISSING]` by cron health.
+
+    ## Evidence'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2253
+  title: 'feat(provider-routing): harden Gemini auto-label confidence with research-readiness signals'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2253
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Strengthen Gemini-specific routing confidence so research-oriented issues can be auto-labeled safely only when they are actually execution-ready for Gemini work.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2252
+  title: 'feat(provider-routing): add explanatory comments for high-confidence auto-label actions'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2252
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - cat:harness
+  - domain:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Add an optional GitHub comment path for high-confidence provider auto-label actions so the issue itself records why it was routed to Claude, Codex, or Gemini.
+
+    ## Why'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2222
+  title: Follow up Claude auth drift hardening with stronger observability, recovery signals, and operator playbook
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2222
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    We hardened ecosystem/provider health scoring and now surface manual Claude remediation in summaries/docs, but Claude still degrades to `warn` / `fallback_only` after recovered auth drift.
+
+    Current snapshot:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2221
+  title: 'feat(daily-report): refresh stale data sources and complete reflect pipeline'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2221
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The `/today` daily report pipeline now works end-to-end (fixed 2026-04-11), but several data sources are stale or incomplete.
+
+    ## What Was Fixed This Session'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2143
+  title: Track security remediation for archived simpledigitalmarketing credential exposure
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2143
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    A review of work on this machine found a committed cloud credential in the archived `simpledigitalmarketing` repository. That repository is archived/read-only, so a normal repo-local issue could not be created.
+
+    Scope note'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2142
+  title: Standardize tracked skill-link handling across repos to avoid symlink delete/recreate churn
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2142
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    Multiple repos in the workspace show the same `.claude/skills/meta` and `.claude/skills/workflows` paths as deleted tracked entries plus untracked replacements. This points to a systemic symlink-handling problem rather than normal content changes.
+
+    Affected repos observed during review'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2111
+  title: 'feat(governance): Phase 4b inter-session continuity validation from session reports'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2111
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Implement Phase 4b of session governance: validate prior session state before starting new work by reading the structured session-close report produced by Phase 4a.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2110
+  title: 'feat(governance): Phase 4a session-close structured report generation'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2110
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    Implement Phase 4a of session governance: generate a structured session-close report at every session end, using the existing governance checkpoint and hook infrastructure.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2083
+  title: 'chore(skills): reconcile duplicate session-corpus-audit (coordination/ vs workspace-hub/)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2083
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Two versions of \`session-corpus-audit\` exist after #2057 infrastructure restoration:
+
+    | Path | Lines | Origin | Content quality |'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2080
+  title: 'fix(tests): repair 14 pre-existing skill test failures in tests/skills/'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2080
+  gh_state: open
+  gh_labels:
+  - bug
+  - cat:ai-orchestration
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    During #2057 cleanup (2026-04-10), \`uv run pytest tests/skills/\` shows 14 pre-existing failures
+
+    unrelated to the #2057 work. The skills under test have evolved but their tests weren''t updated.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2073
+  title: Expose stage-prompt drift doctor/status in CI and operator summaries
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2073
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Summary
+
+    A local doctor command now exists for the stage-prompt drift guard:
+
+    - `scripts/enforcement/stage-prompt-drift-status.sh`'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2061
+  title: 'Session governance Phase 4: Hermes-orchestrated session lifecycle'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2061
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    #1839 Phases 1-3 deliver the checkpoint model, runtime enforcement, and restored infrastructure. Phase 4 is the final step: having Hermes orchestrate the full session lifecycle with gate transitions.
+
+    ## Task'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2052
+  title: 'Queue refresh: auto-generate ''This Week''s Focus'' and dependency chains'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2052
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:medium
+  - wip:ace-linux-1
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    #1857 delivered deterministic queue generation with priority breakdown. The manually curated queue had two features the auto-generator doesn''t yet produce:
+
+    1. **"This Week''s Focus"** — a curated top-5/top-7 per agent highlighting the most impactful items'
+- idempotency_key: gh:vamseeachanta/workspace-hub#2046
+  title: Audit compliance of strict issue planning workflow after rollout
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2046
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:ai-orchestration
+  - cat:operations
+  - priority:medium
+  - status:plan-approved
+  - status:working
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'After the new strict planning workflow has been used for a short period, audit compliance across agent activity.
+
+    Audit focus:
+
+    - Was `issue-planning-mode` used for all issues?'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1977
+  title: 'chore(memory): remaining memory ecosystem work — backup/rollback, Windows sync, quick-ref card'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1977
+  gh_state: open
+  gh_labels:
+  - cat:ai-orchestration
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '# Summary
+
+    Consolidated tracking for remaining memory ecosystem tasks from the skill unification stream (#1941-#1952).
+
+    # What was done in the skill unification stream (all CLOSED)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1917
+  title: 'memory: backup and rollback mechanism for .claude/memory/'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1917
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Bridge script pushes to .claude/memory/ on every run. If something goes wrong (bad memory state, bridge bug, corrupted output), there is no rollback.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1899
+  title: 'Claude: workflow governance sprint (#1839+#1855+#1856+#1782)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1899
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - priority:high
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## Workflow Governance — Implementation Sprint
+
+    ### Tasks
+
+    1. #1839 Workflow hard-stops and session governance'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1837
+  title: 'MODULE: Pipeline CAPEX cost model (steel + coating + installation)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1837
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Purpose
+
+    Build a parametric pipeline CAPEX cost model for field development trade-off studies.
+
+    ## Cost Categories'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1833
+  title: 'GTM Demo 2: Review findings -- pressure insensitivity at large D/t, lifecycle phase chart clarity'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1833
+  gh_state: open
+  gh_labels:
+  - gtm
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Review Findings from Demo 2
+
+    ### Finding 1: Pressure insensitivity for 16" and 20" pipes
+
+    At 16" and 20" with mid-range WT at 500m depth, propagation buckling governs across ALL pressure levels (10-25 MPa). This is technically correct (propagation buckling is D/t-dependent, not pressure-dependent) but may confuse non-specialist viewers who expect different pressures to show different utilisations.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1751
+  title: 'feat(skills): auto-convert pipeline — detect new agents and generate SKILL.md drafts (#1721 Phase 4)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1751
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:automation
+  - cat:skills
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from #1721. Manual conversion is done. Now automate it going forward.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1749
+  title: 'feat(skills): convert .claude/commands to SKILL.md — 306 command files across repos (#1721 Phase 3)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1749
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:skills
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from #1721 (Terminal 4). Agent-to-skill conversion is done. Commands are the next layer.
+
+    ## Scale'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1748
+  title: 'feat(skills): convert CAD-DEVELOPMENTS + aceengineer-admin agents to SKILL.md (#1721 follow-up)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1748
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:skills
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from #1721 (Terminal 4 complete). The conversion script is ready at `scripts/skills/convert-agent-to-skill.py`.
+
+    ## Remaining repos with unconverted agents'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1736
+  title: 'chore: standardize cross-review verdict format across Codex and Gemini'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1736
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    Cross-review logs use 7+ different verdict strings, making automated agreement analysis unreliable.
+
+    ## Observed Verdict Strings'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1734
+  title: 'chore: add domain skills to assethold (tier-1 with 0 skills)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1734
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    assethold is a tier-1 repo with 62 commits in 90 days but has 0 skills. Combined with its CLAUDE.md merge conflict (#1728), this repo is significantly under-served by the AI ecosystem.
+
+    ## Context'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1733
+  title: 'chore: promote 5 domain-critical skills from CAD-DEVELOPMENTS to workspace-hub'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1733
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    CAD-DEVELOPMENTS has 5 domain-critical engineering skills that are not available in workspace-hub, limiting cross-repo access.
+
+    ## Promotion Candidates'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1732
+  title: 'chore: deduplicate 13 skills in achantas-data that are copies of workspace-hub'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1732
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - cat:skills
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Problem
+
+    achantas-data has 13 skills that are 100% duplicates of workspace-hub skills. This creates drift risk — if workspace-hub skills are updated, achantas-data copies become stale.
+
+    ## Duplicate Skills'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1726
+  title: 'chore(skills): resurrect 27 dead skills covering active domains (#1720)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1726
+  gh_state: open
+  gh_labels:
+  - cat:maintenance
+  - cat:skills
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    From cross-agent audit Phase B, 27 skills scored as **dead** cover domains with active work.
+
+    ## Problem'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1635
+  title: 152 MODERATE docs approaching staleness — triage and prioritize refreshes
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1635
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The staleness scanner run on 2026-04-02 found:
+
+    - 103 FRESH (< 30 days)'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1632
+  title: 'Test coverage: field_development matplotlib tests — skipped without matplotlib in venv (#1589 follow-up)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1632
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from overnight agent run (2026-04-01) on #1589.
+
+    15 tests in `digitalmodel/tests/field_development/test_field_development.py` are skipped because matplotlib is not installed in the digitalmodel venv. The tests use `pytest.importorskip(''matplotlib'')` so they gracefully skip, but the field_development package cannot fully reach DEVELOPMENT maturity without matplotlib present.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1630
+  title: 'Test coverage: web package Flask integration tests — requires Flask in venv (#1584 follow-up)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1630
+  gh_state: open
+  gh_labels:
+  - agent:codex
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Follow-up from overnight agent run (2026-04-01) on #1584.
+
+    102 source-analysis tests were added to `digitalmodel/tests/web/` but all use file-based source inspection because Flask is not installed in the digitalmodel venv. These tests verify structure, patterns, and blueprint existence but do NOT exercise Flask route handlers at runtime.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1615
+  title: Schedule download-and-catalog pipeline as recurring cron task
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1615
+  gh_state: open
+  gh_labels:
+  - cat:automation
+  - domain:ops
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    The download-and-catalog pipeline (#1578, commit 1beb6c8a) is ready for scheduled operation. Currently 230 entries in `online-resource-registry.yaml` have `download_status: not_started`.
+
+    ## Tasks'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1582
+  title: Install and configure Hermes on ace-linux-2
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1582
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Hermes agent is installed and working on ace-linux-1 (dev-primary). Need to replicate on ace-linux-2 (dev-secondary) for multi-machine AI harness parity.
+
+    Parent: #1504'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1565
+  title: Verify cron-health-check.sh runs correctly on ace-linux-2
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1565
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Cron health monitoring (#1512) is now live on ace-linux-1. ace-linux-2 needs:
+
+    1. **Crontab sync** (see #1564) — ensures `cron-health` task is installed'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1545
+  title: Agentic feature progression for repo ecosystem productivity under GSD
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1545
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - domain:ai-orchestration
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Workspace-hub already has a workflow framework: GSD. The goal is not to replace that framework, but to improve repo ecosystem productivity by adding stronger agentic capabilities around the existing control plane.
+
+    Prior decision points:'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1510
+  title: 'Verify Claude Desktop install: ACMA-WS014'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1510
+  gh_state: open
+  gh_labels:
+  - machine:acma-ws014
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1504
+
+    ## Machine: ACMA-WS014 (Windows workstation)
+
+    ### Install Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1508
+  title: 'Verify Claude Desktop install: macbook-portable'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1508
+  gh_state: open
+  gh_labels:
+  - machine:macbook-portable
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1504
+
+    ## Machine: macbook-portable (macOS ARM64 M1)
+
+    ### Install Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1507
+  title: 'Verify Claude Desktop install: home-win'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1507
+  gh_state: open
+  gh_labels:
+  - machine:home-win
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1504
+
+    ## Machine: home-win (Windows)
+
+    ### Install Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1506
+  title: 'Verify Claude Desktop install: ace-linux-2'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1506
+  gh_state: open
+  gh_labels:
+  - machine:dev-secondary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1504
+
+    ## Machine: ace-linux-2 (Linux, secondary workstation)
+
+    ### Install Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1505
+  title: 'Verify Claude Desktop install: ace-linux-1'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1505
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Parent: #1504
+
+    ## Machine: ace-linux-1 (Linux, primary workstation)
+
+    ### Install Method'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1504
+  title: Install Claude Desktop on all ecosystem machines
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1504
+  gh_state: open
+  gh_labels:
+  - machine:multi
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Objective
+
+    Install Claude Desktop on all machines in the ecosystem to enable MCP integration and local file system access across the network.
+
+    ## Machines'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1476
+  title: GWS (Google Workspace CLI) integration — Gmail, Docs, Sheets automation
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1476
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    From Chase AI video review (March 2026): GWS enables Claude Code control over Gmail, Docs, Sheets from terminal.
+
+    ## Current State'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1426
+  title: Accelerate correction-to-skill promotion pipeline (8% to 40% target)
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1426
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Source: video-review + WRK-1405 Phase 3. Self-learning loop.'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1378
+  title: 'WRK-PENDING: Review local-analysis folders for relocation to knowledge center'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1378
+  gh_state: open
+  gh_labels:
+  - machine:multi
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+- idempotency_key: gh:vamseeachanta/workspace-hub#1352
+  title: 'whats-next: targeted index refresh before display + parallel agent updates'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1352
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Mission
+
+    whats-next.sh reads a pre-computed wrk-status-index.json that goes stale when files move between pending/working/done or stages advance. Users see incorrect status. Fix by refreshing only displayed items, not the full index.
+
+    ## Design'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1351
+  title: Lifecycle HTML still referenced in stage prompts and micro-skills
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1351
+  gh_state: open
+  gh_labels:
+  - machine:dev-primary
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Discrepancy
+
+    Lifecycle HTML was removed from the workflow, but references to it persist in:
+
+    1. **Stage prompt packages** — `stage-4-prompt.md` for workspace-hub-1291 lists `assets/WRK-NNN/WRK-NNN-lifecycle.html` as an exit artifact and includes instructions to "Record plan in lifecycle HTML Stage 4 section" and "Update lifecycle HTML Stage 4 chip to done"'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1297
+  title: 'WRK-1382: Naval architect expert skill — engineering + legal consultant agent'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1297
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1382: Naval architect expert skill — engineering + legal consultant agent
+
+    **Status:** pending | **Priority:** high | **Category:** ai-orchestration | **Subcategory:** expert-agent
+
+    **Repo:** [workspace-hub, digitalmodel] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#1296
+  title: 'WRK-1379: Naval architecture expert skill — knowledge synthesis agent'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/1296
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - enhancement
+  - priority:high
+  - wrk-item
+  gh_assignees: []
+  initial_status: triage
+  priority: 1
+  body_excerpt: '## WRK-1379: Naval architecture expert skill — knowledge synthesis agent
+
+    **Status:** pending | **Priority:** high | **Category:** ai-orchestration | **Subcategory:** expert-agent
+
+    **Repo:** [workspace-hub, digitalmodel] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#375
+  title: 'WRK-306: feat: AI agent readiness check — claude/codex/gemini CLI versions + default models'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/375
+  gh_state: open
+  gh_labels:
+  - archived
+  - domain:ai-tools
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-306: feat: AI agent readiness check — claude/codex/gemini CLI versions + default models
+
+    | Field | Value |
+
+    |-------|-------|'
+- idempotency_key: gh:vamseeachanta/workspace-hub#121
+  title: 'WRK-5002: Task complexity tier → model routing (extend task_classifier.sh)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/121
+  gh_state: open
+  gh_labels:
+  - cat:automation
+  - domain:labor-market
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-5002: Task complexity tier → model routing (extend task_classifier.sh)
+
+    **Status:** pending | **Priority:** medium | **Category:** automation | **Subcategory:** labor-market
+
+    **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#92
+  title: 'WRK-1288: Review article (trq212 thread) — identify skill gaps and honing opportunities for ecosystem'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/92
+  gh_state: open
+  gh_labels:
+  - domain:skills
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1288: Review article (trq212 thread) — identify skill gaps and honing opportunities for ecosystem
+
+    **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** skills
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** unset'
+- idempotency_key: gh:vamseeachanta/workspace-hub#80
+  title: 'WRK-1243: Standardize WRK file structure anatomy across all lifecycle stages'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/80
+  gh_state: open
+  gh_labels:
+  - cat:skills-improvement
+  - domain:work-queue-workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1243: Standardize WRK file structure anatomy across all lifecycle stages
+
+    **Status:** pending | **Priority:** medium | **Category:** skills-improvement | **Subcategory:** work-queue-workflow
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#76
+  title: 'WRK-1208: [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/76
+  gh_state: open
+  gh_labels:
+  - domain:workflow
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1208: [script]: Missing back-link: workspace-hub/workflow-gatepass should list workspa
+
+    **Status:** pending | **Priority:** low | **Category:** harness | **Subcategory:** workflow
+
+    **Repo:** workspace-hub | **Complexity:** unset | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#74
+  title: 'WRK-1206: fix: recurring correction correction pattern on Edit'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/74
+  gh_state: open
+  gh_labels:
+  - domain:ai-config
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1206: fix: recurring correction correction pattern on Edit
+
+    **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** ai-config
+
+    **Repo:** workspace-hub | **Complexity:** unset | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#73
+  title: 'WRK-1205: fix: recurring correction correction pattern on Write'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/73
+  gh_state: open
+  gh_labels:
+  - domain:ai-config
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1205: fix: recurring correction correction pattern on Write
+
+    **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** ai-config
+
+    **Repo:** workspace-hub | **Complexity:** unset | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#72
+  title: 'WRK-1201: Create calculation-implementation-workflow orchestration skill'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/72
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:skills
+  - domain:workflow
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1201: Create calculation-implementation-workflow orchestration skill
+
+    **Status:** pending | **Priority:** medium | **Category:** skills | **Subcategory:** workflow
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#66
+  title: 'WRK-1176: Two-agent pattern — initializer vs coder session roles'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/66
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - domain:agent-patterns
+  - enhancement
+  - priority:low
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1176: Two-agent pattern — initializer vs coder session roles
+
+    **Status:** pending | **Priority:** low | **Category:** ai-orchestration | **Subcategory:** agent-patterns
+
+    **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#65
+  title: 'WRK-1175: Structured progress log for cross-session WRK continuity'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/65
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - domain:work-queue
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1175: Structured progress log for cross-session WRK continuity
+
+    **Status:** pending | **Priority:** medium | **Category:** ai-orchestration | **Subcategory:** work-queue
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#46
+  title: 'WRK-1116: Extract + integrate website-building skill patterns from Nate Herk video'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/46
+  gh_state: open
+  gh_labels:
+  - cat:skills
+  - claude:design
+  - domain:frontend-design
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1116: Extract + integrate website-building skill patterns from Nate Herk video
+
+    **Status:** pending | **Priority:** medium | **Category:** skills | **Subcategory:** frontend-design
+
+    **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+- idempotency_key: gh:vamseeachanta/workspace-hub#31
+  title: 'WRK-1001: Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/31
+  gh_state: open
+  gh_labels:
+  - agent:claude
+  - cat:ai-orchestration
+  - domain:cleanup
+  - enhancement
+  - priority:medium
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## WRK-1001: Workspace cleanup: .claude/, root artifacts, data moves, worktree, strategy repo
+
+    **Status:** Stage 18: Reclaim (n) | **Priority:** medium | **Category:** maintenance | **Subcategory:** cleanup
+
+    **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'

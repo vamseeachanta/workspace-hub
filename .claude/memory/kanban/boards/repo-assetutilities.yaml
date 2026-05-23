@@ -1,0 +1,289 @@
+board:
+  slug: repo-assetutilities
+  display_name: assetutilities
+  tier: repo
+  repo: vamseeachanta/assetutilities
+  workspace_path: /mnt/local-analysis/assetutilities
+  description: 'Shared utility library across asset projects (YAML utils, plotting,
+    engine registry, loguru). Mixed with productivity / consolidation tracking issues.
+    Single tier-1 board; volume below sub-board threshold since productivity issues
+    lack a code-domain partition.
+
+    '
+cards:
+- idempotency_key: gh:vamseeachanta/assetutilities#79
+  title: Client-deliverable templates binding to private llm-wiki citation slugs
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/79
+  gh_state: open
+  gh_labels:
+  - enhancement
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Goal
+
+
+    Now that `vamseeachanta/llm-wiki` is private and holds full-fidelity codes/standards
+    content (per [.claude/rules/codes-standards-data-routing.md](https://github.com/vamseeachanta/workspace-hub/blob/main/.claude/rules/codes-standards-data-routing.md)),
+    the bottleneck for client deliverables shifts from "where do we cite from?" to
+    "how do we standardize the binding pattern in delivery templates?"'
+- idempotency_key: gh:vamseeachanta/assetutilities#60
+  title: repo | package development
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/60
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] develop git bash scripts to manage package uploads to PyPI\
+    \ for all repo's. \n- [ ] Migrate to GitHub Actions (Twine under the hood) over\
+    \ time\n  - [ ] https://www.caktusgroup.com/blog/2021/02/11/automating-pypi-releases/"
+- idempotency_key: gh:vamseeachanta/assetutilities#59
+  title: yaml_utilities | Variable Definition
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/59
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective: establish the best way to define variables in YAML files
+    to identify the following scenarios
+
+
+    - [ ] incorporate the logic in our repos. ( together ) , see image below'
+- idempotency_key: gh:vamseeachanta/assetutilities#58
+  title: YAML Plotting
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/58
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: placeholder for yml plots
+- idempotency_key: gh:vamseeachanta/assetutilities#56
+  title: productivity | Meetings
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/56
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [ ] Develop an AI tool for meetings, recognizing voice  and giving summary
+    out of it'
+- idempotency_key: gh:vamseeachanta/assetutilities#52
+  title: YAML file split
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/52
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [x] create individual function for ruamel as module
+
+    - [x] refactor save yml files
+
+    - [x] make an X-Y plot out of 2 arrays in the yml file using our visualization
+    template'
+- idempotency_key: gh:vamseeachanta/assetutilities#42
+  title: productivity | PB Hardware and Utility Readiness
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/42
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] clone client project, https://github.com/vamseeachanta/seanation\n\
+    - [ ] Install programs\n  - [x] Github account (login and comment) (PB)"
+- idempotency_key: gh:vamseeachanta/assetutilities#41
+  title: tech debt | Clean code
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/41
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees:
+  - samdansk2
+  initial_status: triage
+  priority: 0
+  body_excerpt: "Objective: Assumption that consistent code will help AI add new code/documentation\
+    \ faster, seamless, \n\nhttps://github.com/vamseeachanta/assetutilities/blob/202502/docs/clean_code.md"
+- idempotency_key: gh:vamseeachanta/assetutilities#40
+  title: ' productivity | Marketing'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/40
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Actively manage LinkedIn and X \n- [ ] website simplification\
+    \ and revamp for AceEngineer"
+- idempotency_key: gh:vamseeachanta/assetutilities#39
+  title: productivity | email clean up
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/39
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [x] email is not for storage\n- [x] method or script to clean up\
+    \ \n  - [x] emails with starred & important should reside forever"
+- idempotency_key: gh:vamseeachanta/assetutilities#38
+  title: productivity | Knowledge Management
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/38
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Read obsidian resources provided by Siva\n  - [ ] https://www.youtube.com/watch?v=cBm95iCcX2E\n\
+    \  - [ ] https://www.youtube.com/watch?v=nJ660t5ku9A"
+- idempotency_key: gh:vamseeachanta/assetutilities#37
+  title: Scalability | Process, People
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/37
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Sales\n  - [ ] ?\n- [ ] Process"
+- idempotency_key: gh:vamseeachanta/assetutilities#36
+  title: productivity | Consolidate hardware
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/36
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] setup linux machine\n  - [x] Advanced graphics card\n  - [\
+    \ ] sound card seem to exist via graphics card"
+- idempotency_key: gh:vamseeachanta/assetutilities#35
+  title: productivity | Consolidate repos
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/35
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Repo management\n  - [ ] Remove/Consolidate stale repos\n \
+    \ - [ ] Issues only in select repos i.e. digitalmodel, aceengineer_admin, assetutilities"
+- idempotency_key: gh:vamseeachanta/assetutilities#33
+  title: productivity | Consolidate data
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/33
+  gh_state: open
+  gh_labels:
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] setup linux machine\n  - [ ] ?"
+- idempotency_key: gh:vamseeachanta/assetutilities#31
+  title: tech debt | ACMA | Source Files | Sync vs. Copy
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/31
+  gh_state: open
+  gh_labels:
+  - feature
+  - status:plan-approved
+  gh_assignees:
+  - getsivakumar
+  initial_status: triage
+  priority: 0
+  body_excerpt: "Objective: \n- [ ] Determine the best way from one of methods below\
+    \ and implement in ACMA WLNG project\n- [ ] Prepare boiler plate code for ignoring\
+    \ at folder level not file level"
+- idempotency_key: gh:vamseeachanta/assetutilities#30
+  title: tech debt | AI agents
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/30
+  gh_state: open
+  gh_labels:
+  - feature
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective:
+
+    - Utilize AI agents in day to day work to help with code
+
+    - Interface AI agent configurations with copilot (?)'
+- idempotency_key: gh:vamseeachanta/assetutilities#29
+  title: tech debt | switch engine to registry design pattern
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/29
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "siva used it with writers.py, doris_writer.py. \n\nThe way reportgen\
+    \ uses the registry design (to read a writer class name from config yml, then\
+    \ initialize the appropriate writer class and initiate the run method) is similar/\
+    \ same as what engine is doing."
+- idempotency_key: gh:vamseeachanta/assetutilities#28
+  title: tech debt | switch to loguru
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/28
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '- [x] currently assetutilities uses python built-in logging. Log
+    files are also crated.
+
+
+    - [x] loguru has color coded logging and much more detailed diagnostic context.'
+- idempotency_key: gh:vamseeachanta/assetutilities#19
+  title: tech debt | git | branch, computer and multiuser merge
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/assetutilities/issues/19
+  gh_state: open
+  gh_labels:
+  - enhancement
+  - status:plan-approved
+  gh_assignees:
+  - vamseeachanta
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Objective:
+
+    - Repo developers will have a daily (1 hr) gitbash script that will execute automatically.
+
+    - Test requirements: New code (by any user in any computer) should not fail existing
+    tests in master.'

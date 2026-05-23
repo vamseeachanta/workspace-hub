@@ -1,0 +1,174 @@
+board:
+  slug: repo-achantas-data-household
+  display_name: achantas-data · household
+  tier: domain
+  repo: vamseeachanta/achantas-data
+  domain: household
+  parent_slug: repo-achantas-data
+  workspace_path: /mnt/local-analysis/achantas-data
+  description: 11511 maintenance, hardware purchases, household decisions, SD/RK/ACH
+    personal admin items, repo plumbing fixes.
+cards:
+- idempotency_key: gh:vamseeachanta/achantas-data#72
+  title: 'Hardware: Replace lost Jabra USB dongle (or migrate to Bluetooth-only)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/72
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Situation
+
+    - Own a pair of Jabra headphones; lost the accompanying USB BT dongle.
+
+    - Headphones themselves are intact — only the dongle is missing.'
+- idempotency_key: gh:vamseeachanta/achantas-data#69
+  title: 'Purchase Decision: Hacksaw blades for HDX saw (tree-cutting use)'
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/69
+  gh_state: open
+  gh_labels:
+  - documentation
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## Context
+
+    Household tool already on hand: **HDX Steel Hacksaw** (Home Depot house brand).
+
+    Package specs (from photo `/home/vamsee/Downloads/IMG_0249.jpeg`):'
+- idempotency_key: gh:vamseeachanta/achantas-data#24
+  title: Repair partial .claude/skills migration and remove leftover upstream-conflict
+    artifacts
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/24
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Summary
+
+    This repo appears to be in a worse state than the other symlink-affected repos:
+    it looks partially migrated from in-repo skill directories to shared/internal
+    skill links, with leftover conflict-style artifacts.
+
+    Evidence'
+- idempotency_key: gh:vamseeachanta/achantas-data#18
+  title: rp house builder
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/18
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: '## **Grout & Tile Work**
+
+    - [ ] Bathroom walls grouting
+
+    - [ ] Bathroom soap holders using tiles?'
+- idempotency_key: gh:vamseeachanta/achantas-data#17
+  title: Buy Hall Sofa and remove bed
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/17
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: ''
+- idempotency_key: gh:vamseeachanta/achantas-data#16
+  title: RK | Apology Letter
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/16
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Requirements:
+
+    Okay ologizing to sabi to your parents inka done okay so soia and parents and
+    it will involve all the background that has happened. Try to involve all the background
+    if Sabi wants to add something, that is fine'
+- idempotency_key: gh:vamseeachanta/achantas-data#15
+  title: 11511 | Maid Research
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/15
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Mendu:
+
+    - Rosita’s number - +1 (832) 988-3932
+
+    - USD 100 '
+- idempotency_key: gh:vamseeachanta/achantas-data#14
+  title: 11511 Piping Rock
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/14
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Cooktop middle burner\n  - [ ] spare part check\n  - [ ] Get\
+    \ Heriberto to fix (or you fix)"
+- idempotency_key: gh:vamseeachanta/achantas-data#13
+  title: ACH | Mobile Service
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/13
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'https://www.reddit.com/r/NoContract/comments/6so6wj/mint_sim_vs_h20_wireless/?rdt=56862
+
+    https://www.pcworld.com/article/431600/cheapest-cell-phone-plans.html
+
+    https://world-wire.com/h2o-wireless-vs-mint-mobile/'
+- idempotency_key: gh:vamseeachanta/achantas-data#12
+  title: 'SD | APSP House for Sale '
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/12
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: "- [ ] Digital Marketing:\n  - [ ] https://www.nobroker.in/ (pending)\n\
+    \  - [ ] https://www.magicbricks.com/ (pending)"
+- idempotency_key: gh:vamseeachanta/achantas-data#9
+  title: SDEV | Physcology
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/9
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'End of Life:
+
+    - Share experiences as companion for day to day activities
+
+    - Good life for immediate family and dependents'
+- idempotency_key: gh:vamseeachanta/achantas-data#8
+  title: SDEV | Summary
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/achantas-data/issues/8
+  gh_state: open
+  gh_labels: []
+  gh_assignees: []
+  initial_status: triage
+  priority: 0
+  body_excerpt: 'Problem
+
+    - [ ] could not maintain or foster relations with family
+
+    - [ ] could not maintain or foster relations with Cousins'
