@@ -14,44 +14,59 @@ if ! command -v xtigervncviewer &>/dev/null; then
     exit 1
 fi
 
-# Check x11vnc is running on ace-linux-2; auto-start if not
-echo "Checking x11vnc on ${ACE2_HOST}..."
-if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
-    echo "x11vnc not running — attempting to start it via SSH..."
-
-    # Dynamically find display + auth from the live Xorg process
-    XINFO=$(ssh "${ACE2_HOST}" "ps wwwaux | grep -E ' /usr/lib/xorg/Xorg ' | grep -v grep | head -1")
-    XAUTH=$(echo "${XINFO}" | grep -oP '(?<=-auth )\S+')
-    # Determine display from X11 socket (e.g. :0 or :1)
-    XDISP=$(ssh "${ACE2_HOST}" "ls /tmp/.X11-unix/ | head -1 | sed 's/X/:/'" 2>/dev/null)
-    XDISP="${XDISP:-:0}"
-
-    if [ -z "${XAUTH}" ]; then
-        echo "ERROR: Could not find Xorg process on ace-linux-2. Is a display running?"
-        exit 1
-    fi
-    echo "Found display ${XDISP}, auth ${XAUTH}"
-
-    # Check if vamsee owns the display (no sudo needed) or root required
-    XOWNER=$(echo "${XINFO}" | awk '{print $1}')
-    if [ "${XOWNER}" = "vamsee" ]; then
-        ssh "${ACE2_HOST}" \
-            "x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -noxdamage -noscr -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /dev/null && echo 'x11vnc launched'"
-    else
-        echo "Display owned by ${XOWNER} — enter sudo password for ace-linux-2:"
-        ssh -t "${ACE2_HOST}" \
-            "sudo x11vnc -display ${XDISP} -auth ${XAUTH} -noshm -noxdamage -noscr -forever -nopw -listen localhost -rfbport ${REMOTE_PORT} -bg -o /dev/null && echo 'x11vnc launched'"
-    fi
-
-    # Give x11vnc a moment to bind the port
-    sleep 2
-    if ! ssh "${ACE2_HOST}" "ss -tlnp 2>/dev/null | grep -q ':${REMOTE_PORT}'"; then
-        echo "ERROR: x11vnc still not listening on port ${REMOTE_PORT}."
-        echo "  Try manually: ssh ace-linux-2 then run x11vnc with -o /tmp/x11vnc.log to debug"
-        exit 1
-    fi
-    echo "x11vnc is up."
+# Ensure a FRESH, healthy x11vnc on ace-linux-2.
+#
+# A port merely bound on :5900 is NOT proof of health. If the GNOME/Wayland
+# session restarts underneath a long-lived x11vnc, the process keeps its TCP
+# socket but its X connection is dead: it accepts viewers, completes the RFB
+# handshake, then serves 0 frames ("End of stream" / "0 rects" on the viewer).
+# The old "if not listening, start it" check happily reused such a zombie.
+# So we always kill any existing instance and relaunch against the current
+# display, after verifying that display is actually reachable with its auth.
+echo "Ensuring fresh x11vnc on ${ACE2_HOST}..."
+LAUNCH_STATUS=$(ssh "${ACE2_HOST}" "bash -s ${REMOTE_PORT}" <<'REMOTE'
+PORT="$1"
+# Display from the live X socket — works for both Xorg and Xwayland (:0, :1, …).
+XDISP=$(ls /tmp/.X11-unix/ 2>/dev/null | head -1 | sed 's/X/:/')
+XDISP="${XDISP:-:0}"
+# Auth, in order of likelihood: classic Xorg/Xwayland -auth, then the GDM
+# Wayland Xauthority, then mutter's Xwayland auth, then let x11vnc guess.
+XAUTH=$(ps wwwaux | grep -E ' /usr/lib/xorg/Xorg | Xwayland ' | grep -v grep \
+        | grep -oP '(?<=-auth )\S+' | head -1)
+if [ -z "$XAUTH" ] || [ ! -r "$XAUTH" ]; then
+    for c in "/run/user/$(id -u)/gdm/Xauthority" /run/user/$(id -u)/.mutter-Xwaylandauth.*; do
+        [ -r "$c" ] && XAUTH="$c" && break
+    done
 fi
+[ -z "$XAUTH" ] && XAUTH=guess
+# Refuse to launch against a dead display — surfaces "no graphical session"
+# instead of producing another silently-broken VNC server.
+if ! XAUTHORITY="$XAUTH" DISPLAY="$XDISP" xdpyinfo >/dev/null 2>&1; then
+    echo "UNREACHABLE display=$XDISP auth=$XAUTH"; exit 0
+fi
+pkill -x x11vnc 2>/dev/null || true
+sleep 1
+x11vnc -display "$XDISP" -auth "$XAUTH" -forever -nopw \
+       -listen localhost -rfbport "$PORT" -bg -o /tmp/x11vnc.log >/dev/null 2>&1
+sleep 2
+if ss -tlnp 2>/dev/null | grep -q ":$PORT"; then
+    echo "OK display=$XDISP auth=$XAUTH"
+else
+    echo "FAILED display=$XDISP auth=$XAUTH"; tail -n 5 /tmp/x11vnc.log
+fi
+REMOTE
+)
+echo "  ${LAUNCH_STATUS}"
+case "${LAUNCH_STATUS}" in
+    OK*) : ;;  # fresh server up
+    UNREACHABLE*)
+        echo "ERROR: display is not reachable on ace-linux-2 — is anyone logged into the desktop?"
+        echo "  Log in graphically on ace-linux-2, then re-run this script."
+        exit 1 ;;
+    *)
+        echo "ERROR: x11vnc failed to start (see /tmp/x11vnc.log on ace-linux-2)."
+        exit 1 ;;
+esac
 
 echo "Starting SSH tunnel ${LOCAL_PORT} → ${ACE2_HOST}:${REMOTE_PORT}..."
 ssh -L "${LOCAL_PORT}:localhost:${REMOTE_PORT}" "${ACE2_HOST}" -N &
