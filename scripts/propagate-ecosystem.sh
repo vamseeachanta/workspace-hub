@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# propagate-ecosystem.sh — Unified hook + skill propagation for all submodules
-# Replaces propagate-hooks.sh. Cross-platform: Windows (MINGW64), Linux, macOS.
+# propagate-ecosystem.sh — Unified hook + skill propagation for all ecosystem repos
+# Layout-aware: handles both nested (workspace-hub/<repo>) and flat-sibling
+# (<parent>/workspace-hub + <parent>/<repo>) checkouts. Replaces propagate-hooks.sh.
+# Cross-platform: Windows (MINGW64), Linux, macOS.
 # Usage: bash scripts/propagate-ecosystem.sh [--hooks-only|--skills-only] [--dry-run] [--verbose]
 set -uo pipefail
 
@@ -16,7 +18,7 @@ EXCLUDE_DIRS=(".claude" "scripts" "specs" "docs" "node_modules" ".git"
               "skills" "src" "templates" "tests" "flow-nexus" "ruv-swarm" "claude-flow")
 LINK_MARKER=".link-marker"
 
-OPT_HOOKS=true; OPT_SKILLS=true; OPT_DRY_RUN=false; OPT_VERBOSE=false
+OPT_HOOKS=true; OPT_SKILLS=true; OPT_DRY_RUN=false; OPT_VERBOSE=false; OPT_ONLY=""
 HOOKS_ADDED=0; HOOKS_SKIPPED=0; HOOKS_FAILED=0
 SKILLS_LINKED=0; SKILLS_SKIPPED_MODIFIED=0; SKILLS_ALREADY_LINKED=0; SKILLS_CREATED=0
 
@@ -128,16 +130,28 @@ sys.exit(0)
 PYEOF
 }
 
-# --- discover_submodules: list dirs with .claude/skills/ ---
+# --- discover_submodules: list ecosystem repos with .claude/skills/ ---
+# Supports two checkout layouts, transparently:
+#   nested — repos live under workspace-hub/   (git-submodule layout)
+#   flat   — repos are siblings of workspace-hub/  (e.g. /mnt/.../digitalmodel)
+# Both directories are scanned; the hub itself is never a target. Link targets
+# stay correct in either layout because create_directory_link() computes the
+# symlink relative to the real workspace-hub location at link time.
 discover_submodules() {
-    for repo_dir in "$WS_HUB"/*/; do
+    local hub_name; hub_name="$(basename "$WS_HUB")"
+    local hub_parent; hub_parent="$(dirname "$WS_HUB")"
+    {
+        for repo_dir in "$WS_HUB"/*/;     do echo "$repo_dir"; done
+        for repo_dir in "$hub_parent"/*/; do echo "$repo_dir"; done
+    } | while IFS= read -r repo_dir; do
         [[ ! -d "$repo_dir" ]] && continue
         local dir_name; dir_name="$(basename "$repo_dir")"
+        [[ "$dir_name" == "$hub_name" ]] && continue
         local excluded=false
         for ex in "${EXCLUDE_DIRS[@]}"; do [[ "$dir_name" == "$ex" ]] && excluded=true && break; done
         [[ "$excluded" == "true" ]] && continue
         [[ -d "$repo_dir/.claude/skills" ]] && echo "$repo_dir"
-    done
+    done | sort -u
 }
 
 # --- propagate_hooks(repo_dir) ---
@@ -181,9 +195,12 @@ propagate_hooks() {
 update_gitignore() {
     local repo_dir="$1" gitignore="$repo_dir/.claude/skills/.gitignore"
     local header="# Shared skills (linked from workspace-hub)"
+    # Patterns are written without a trailing slash: the shared dirs are
+    # materialized as symlinks, and a "dir/" pattern matches only real
+    # directories, never a symlink — so it would fail to ignore our own output.
     local dirs_to_add=()
     for dir in "${SHARED_SKILL_DIRS[@]}"; do
-        [[ -f "$gitignore" ]] && grep -qx "${dir}/" "$gitignore" 2>/dev/null && continue
+        [[ -f "$gitignore" ]] && grep -qx "${dir}" "$gitignore" 2>/dev/null && continue
         dirs_to_add+=("$dir")
     done
     [[ ${#dirs_to_add[@]} -eq 0 ]] && return 0
@@ -194,7 +211,7 @@ update_gitignore() {
         [[ -f "$gitignore" && -s "$gitignore" ]] && printf '\n' >> "$gitignore"
         printf '%s\n' "$header" >> "$gitignore"
     fi
-    for dir in "${dirs_to_add[@]}"; do printf '%s/\n' "$dir" >> "$gitignore"; done
+    for dir in "${dirs_to_add[@]}"; do printf '%s\n' "$dir" >> "$gitignore"; done
 }
 
 # --- untrack_shared_dirs(repo_dir) ---
@@ -222,9 +239,24 @@ propagate_skills() {
         local target="$internal_dir/$shared_dir" link_path="$skills_dir/$shared_dir"
         [[ ! -d "$target" ]] && { log_verbose "Template $shared_dir not in _internal/"; continue; }
 
-        # Already linked — idempotent
+        # Already a link — keep only if it still resolves to the intended target.
+        # A dangling or wrong-target link (e.g. created for a different layout) is
+        # repaired rather than trusted. Windows junctions resolve in place, so the
+        # strict realpath check is unix-only.
         if is_link "$link_path"; then
-            log_ok "$repo_name/$shared_dir (link exists)"; SKILLS_ALREADY_LINKED=$((SKILLS_ALREADY_LINKED+1)); continue; fi
+            if [[ "$PLATFORM" == "windows" ]] || { [[ -d "$link_path" ]] \
+                 && [[ "$(realpath "$link_path" 2>/dev/null)" == "$(realpath "$target" 2>/dev/null)" ]]; }; then
+                log_ok "$repo_name/$shared_dir (link exists)"; SKILLS_ALREADY_LINKED=$((SKILLS_ALREADY_LINKED+1)); continue; fi
+            if [[ "$OPT_DRY_RUN" == "true" ]]; then
+                log_link "$repo_name/$shared_dir -> _internal/$shared_dir (would repair stale link)"
+                SKILLS_LINKED=$((SKILLS_LINKED+1)); continue; fi
+            rm -f "$link_path" 2>/dev/null
+            if create_directory_link "$target" "$link_path"; then
+                log_link "$repo_name/$shared_dir -> _internal/$shared_dir (repaired stale link)"
+                SKILLS_LINKED=$((SKILLS_LINKED+1))
+            else
+                log_fail "$repo_name/$shared_dir — stale-link repair failed"; fi
+            continue; fi
 
         # Real directory exists
         if [[ -d "$link_path" ]]; then
@@ -249,6 +281,16 @@ propagate_skills() {
             continue
         fi
 
+        # A leftover non-directory blocks linking — e.g. a symlink that a Windows
+        # or ntfs3 checkout flattened into a regular file holding "IntxLNK<path>".
+        # For a shared-skill slot this is always wrong, so clear it before linking.
+        if [[ -e "$link_path" && ! -d "$link_path" ]]; then
+            if [[ "$OPT_DRY_RUN" == "true" ]]; then
+                log_link "$repo_name/$shared_dir -> _internal/$shared_dir (would replace broken file)"
+                SKILLS_CREATED=$((SKILLS_CREATED+1)); continue; fi
+            rm -f "$link_path" 2>/dev/null
+        fi
+
         # Nothing exists — create fresh
         if [[ "$OPT_DRY_RUN" == "true" ]]; then
             log_link "$repo_name/$shared_dir -> _internal/$shared_dir (new)"
@@ -270,6 +312,7 @@ parse_arguments() {
             --hooks-only)  OPT_HOOKS=true;  OPT_SKILLS=false;;
             --skills-only) OPT_HOOKS=false; OPT_SKILLS=true;;
             --dry-run)     OPT_DRY_RUN=true;;
+            --only)        OPT_ONLY="${2:-}"; shift;;
             --verbose)     OPT_VERBOSE=true;;
             --help|-h)     usage; exit 0;;
             *) echo "Unknown option: $1" >&2; usage; exit 1;;
@@ -281,12 +324,14 @@ usage() {
     cat <<'EOF'
 Usage: bash scripts/propagate-ecosystem.sh [OPTIONS]
 
-Propagate hooks and shared skills to all workspace-hub submodules.
+Propagate hooks and shared skills to all workspace-hub ecosystem repos.
+Discovers repos in both nested (workspace-hub/<repo>) and flat-sibling layouts.
 
 Options:
   --hooks-only    Only propagate hooks (skip skill linking)
   --skills-only   Only propagate skill links (skip hooks)
   --dry-run       Preview changes without modifying anything
+  --only <repo>   Limit to a single ecosystem repo (by directory name)
   --verbose       Show detailed output
   --help, -h      Show this help message
 EOF
@@ -311,6 +356,12 @@ main() {
 
     local submodules=()
     while IFS= read -r line; do submodules+=("$line"); done < <(discover_submodules)
+    if [[ -n "$OPT_ONLY" ]]; then
+        local filtered=()
+        for r in "${submodules[@]}"; do [[ "$(basename "$r")" == "$OPT_ONLY" ]] && filtered+=("$r"); done
+        submodules=("${filtered[@]}")
+        [[ ${#submodules[@]} -eq 0 ]] && { echo "No ecosystem repo named '$OPT_ONLY' with .claude/skills/ found."; exit 1; }
+    fi
     local count=${#submodules[@]}
     [[ $count -eq 0 ]] && { echo "No submodules with .claude/skills/ found."; exit 0; }
 
@@ -334,24 +385,30 @@ main() {
 
     if [[ "$OPT_SKILLS" == "true" ]]; then
         printf "${C_BOLD}PROVIDER ADAPTERS:${C_RESET}\n"
+        local hub_skills="$WS_HUB/.claude/skills"
         for provider in codex gemini; do
             for repo_dir in "${submodules[@]}"; do
                 local repo_name; repo_name="$(basename "$repo_dir")"
                 local adapter_dir="$repo_dir/.$provider"
                 local link="$adapter_dir/skills"
-                local target="../../.claude/skills"
+                # Valid link that still resolves to the hub skills tree — keep it.
+                if is_link "$link" && { [[ "$PLATFORM" == "windows" ]] || { [[ -d "$link" ]] \
+                     && [[ "$(realpath "$link" 2>/dev/null)" == "$(realpath "$hub_skills" 2>/dev/null)" ]]; }; }; then
+                    log_ok "$repo_name/.$provider/skills (exists)"
+                    continue
+                fi
                 if [[ "$OPT_DRY_RUN" == "true" ]]; then
-                    [[ -L "$link" ]] \
-                        && log_ok "$repo_name/.$provider/skills (exists)" \
-                        || log_add "$repo_name/.$provider/skills -> $target (would create)"
+                    log_add "$repo_name/.$provider/skills -> hub skills (would create/repair)"
                     continue
                 fi
                 mkdir -p "$adapter_dir"
-                if [[ ! -L "$link" ]]; then
-                    ln -sf "$target" "$link"
-                    log_link "$repo_name/.$provider/skills -> $target"
+                # Clear a stale link or flattened pseudo-link before recreating
+                # (a real populated dir is left alone — ln will then log a failure).
+                [[ -L "$link" || ( -e "$link" && ! -d "$link" ) ]] && rm -f "$link" 2>/dev/null
+                if create_directory_link "$hub_skills" "$link"; then
+                    log_link "$repo_name/.$provider/skills -> hub skills"
                 else
-                    log_ok "$repo_name/.$provider/skills (exists)"
+                    log_fail "$repo_name/.$provider/skills — link creation failed"
                 fi
             done
         done
