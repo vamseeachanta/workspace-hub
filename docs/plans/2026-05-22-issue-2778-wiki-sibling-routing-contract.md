@@ -1,6 +1,6 @@
 # Plan for #2778: Lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings
 
-> **Status:** draft
+> **Status:** draft (r1 review complete: Gemini MAJOR x4 + MINOR x1, all absorbed via revisions; Claude+Codex UNAVAILABLE due to known CLI issues; r2 re-review pending)
 > **Complexity:** T3
 > **Date:** 2026-05-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2778
@@ -195,20 +195,52 @@ operator checklist).
 
 ### Enforcement script (`scripts/enforcement/check-wiki-sibling-frontmatter.sh`)
 
+**Repo-scope contract.** The script is intended to live in workspace-hub (so it can be tested, audited, and version-controlled in one place) but is **installed into each wiki repo via the existing cross-repo hook installer** (`scripts/agents/install-pre-commit-hook-cross-repo.sh`, prior art from #2722). It runs **inside** the wiki repo at hook time; it does not scan from workspace-hub. This boundary is load-bearing for the corrections below.
+
+**Two modes** (auto-detected): **pre-commit** (default — `git diff --cached`) and **CI** (`git diff --name-only --diff-filter=ACM ${BASE_REF}..HEAD`, where `BASE_REF` defaults to `origin/main` and is overridable via `--base=<ref>` or `$WIKI_FRONTMATTER_BASE_REF`). The script auto-detects CI mode when `CI=true` env var is set; otherwise pre-commit.
+
 ```
-function check_wiki_sibling_frontmatter():
-    # Stage scope: act on staged content only, matching existing pattern of
-    # scripts/enforcement/check-no-abs-paths.sh.
+function check_wiki_sibling_frontmatter(mode, base_ref):
+    # 1. Establish repo identity from inside the wiki repo (NOT from workspace-hub).
+    repo_root = $(git rev-parse --show-toplevel)
+    repo_name = basename(repo_root)
 
-    staged_files = git diff --cached --name-only --diff-filter=ACM
-    # Filter to wiki content paths only.
-    wiki_files = filter(staged_files, path matches:
-        - llm-wiki/wikis/**/*.md
-        - llm-wiki-*/wikis/**/*.md
-        - llm-wiki-*/projects/**/*.md
-        - templates/client-llm-wiki/**/*.md)
+    # Bail early if not a wiki repo. Authoritative naming: `llm-wiki` (generic)
+    # or `llm-wiki-<client>` (suffix form per the rule). Anything else exits 0.
+    if repo_name != "llm-wiki" and not repo_name.startswith("llm-wiki-"):
+        exit 0  # not a wiki repo; nothing to check
 
-    if wiki_files is empty: exit 0  # nothing to check
+    is_client_wiki = repo_name.startswith("llm-wiki-")  # suffix-form clients only
+    expected_client_slug = repo_name[len("llm-wiki-"):] if is_client_wiki else None
+
+    # 2. Gather candidate files per mode.
+    if mode == "ci":
+        changed_files = git diff --name-only --diff-filter=ACM "${base_ref}..HEAD"
+    else:  # pre-commit
+        changed_files = git diff --cached --name-only --diff-filter=ACM
+
+    if changed_files is empty: exit 0
+
+    # 3. Filter to wiki content paths (RELATIVE TO REPO ROOT — git diff already returns repo-relative paths).
+    #    Both `wikis/` and `pages/` exist in the template tree (Finding 3 of plan-r1 review).
+    #    `projects/` is valid only inside client wikis.
+    wiki_files = []
+    for path in changed_files:
+        if path matches wikis/**/*.md OR path matches pages/**/*.md:
+            wiki_files.append(path)
+        elif is_client_wiki and path matches projects/**/*.md:
+            wiki_files.append(path)
+        # else: ignore (frontmatter contract does not apply)
+
+    if wiki_files is empty: exit 0
+
+    # 4. Frontmatter validation against the routing contract.
+    #    Registry path: the script ships with a copy of the latest
+    #    config/client-wikis.yml fetched at hook-install time; or, if
+    #    the wiki repo has a parallel checkout of workspace-hub at a known
+    #    sibling path, the script reads the live file. The hook installer
+    #    resolves this — the script itself accepts $WIKI_SIBLING_REGISTRY_PATH.
+    registry = load_client_wikis_registry()
 
     errors = []
     for file in wiki_files:
@@ -218,38 +250,55 @@ function check_wiki_sibling_frontmatter():
             continue
 
         visibility = frontmatter.get("visibility")
-        client = frontmatter.get("client")
-        project = frontmatter.get("project")
+        client     = frontmatter.get("client")
+        project    = frontmatter.get("project")
 
         # Rule A: visibility must be from the allowed set.
         if visibility not in ALLOWED_VISIBILITY:
             errors.append(f"{file}: visibility='{visibility}' not in {ALLOWED_VISIBILITY}")
+            continue  # downstream rules assume valid visibility
 
         # Rule B: private-client-llm-wiki requires client:.
         if visibility == "private-client-llm-wiki" and not client:
             errors.append(f"{file}: visibility=private-client-llm-wiki requires client:")
 
-        # Rule C: client: requires the repo path to match the client slug.
-        # Bucket-name edge cases (#2731 D5, D6) handled via the registry lookup.
+        # Rule C: client slug must match the repo's identity AND exist in the registry.
+        #         Repo identity comes from repo_name (Finding 1 fix: derived from
+        #         git rev-parse --show-toplevel, NOT from path prefix).
         if client:
-            expected_repo_prefix = derive_repo_prefix_from_path(file)  # e.g., "llm-wiki-acma" from path
-            registered = lookup_in_client_wikis_yml(client)
-            if registered is None:
+            if is_client_wiki and client != expected_client_slug:
+                errors.append(f"{file}: client='{client}' but repo identity is '{expected_client_slug}'")
+            elif not is_client_wiki:
+                errors.append(f"{file}: client='{client}' set but repo is generic llm-wiki")
+            entry = registry.lookup(client)
+            if entry is None:
                 errors.append(f"{file}: client='{client}' not in config/client-wikis.yml")
-            elif expected_repo_prefix != registered.repo_local_clone_basename:
-                errors.append(f"{file}: client='{client}' but path={expected_repo_prefix} mismatches registry={registered.repo_local_clone_basename}")
 
         # Rule D: project: only valid when visibility=private-client-llm-wiki.
         if project and visibility != "private-client-llm-wiki":
             errors.append(f"{file}: project='{project}' set but visibility is not private-client-llm-wiki")
 
+        # Rule E (Finding 5 fix): project value, when set, must be enumerated in
+        #         the registry's client.projects list. Forward-compatible: an empty
+        #         or absent projects list disables the check (warning only) so
+        #         operators can onboard projects without immediately failing closed.
+        if project and client:
+            entry = registry.lookup(client)
+            if entry and entry.get("projects"):
+                if project not in entry["projects"]:
+                    errors.append(f"{file}: project='{project}' not in registry.projects for client='{client}'")
+            # else: warn-only (registry projects: list not yet populated)
+
     if errors:
-        print each error to stderr
+        for e in errors: print(e, to=stderr)
         exit 1
     exit 0
 ```
 
-Per-line sentinel allowlist (per `.claude/rules/patterns.md` enforcement gradient): the script's own plan + tests + this rule file would otherwise trip rule (A) — use the path-restricted whole-file allowlist already established by `scripts/enforcement/check-no-conflict-markers.sh:111` (5-prefix set). Specifically, paths under `.claude/rules/`, `docs/plans/`, `tests/enforcement/`, `templates/`, and `scripts/enforcement/` are exempt — these author the rule rather than carry wiki content.
+**Bypass + scope discipline:**
+- `WIKI_FRONTMATTER_ALLOW=1` — explicit bypass (logged), matching the existing pattern of `ALLOW_ABS_PATHS=1` in `check-no-abs-paths.sh`.
+- The script does **not** scan workspace-hub. The plan + template + this rule + the script's own tests all live in workspace-hub, where the script never fires — so the self-blocking hazard called out in plan-r1's Risk #6 does not apply (Finding 4 fix: templates are excluded structurally, not via line-allowlist).
+- Workspace-hub gets a separate `tests/enforcement/test_check_wiki_sibling_frontmatter.sh` that constructs fixture wiki repos under `tmp_path/llm-wiki-foo/` and invokes the script against them, exercising both pre-commit and CI modes.
 
 ### Project-folder template skeleton (`templates/client-llm-wiki/projects/_template-project/`)
 
@@ -308,7 +357,8 @@ Update `digitalmodel/src/digitalmodel/citations/schema.py` (sidecar dataclass) t
 | Modify | `templates/client-llm-wiki/DATA-CYCLE.md` | document the project-nesting layout |
 | Modify | `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` | add Step 5b (after template copy) instantiating per-project skeletons |
 | Modify | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | require `client:` context in the planning template reference |
-| Modify | `config/client-wikis.yml` | add optional `projects:` list per client (declarative roster of known projects) |
+| Modify | `config/client-wikis.yml` | add optional `projects:` list per client (declarative roster of known projects); consumed by Rule E of the enforcement script |
+| Modify | `scripts/agents/install-pre-commit-hook-cross-repo.sh` | extend the existing #2722 cross-repo installer to also install `check-wiki-sibling-frontmatter.sh` into each wiki sibling (`llm-wiki`, `llm-wiki-acma`, plus the 5 planned per `config/client-wikis.yml`); vendor a copy of `config/client-wikis.yml` into each wiki repo's `.workspace-hub/` at install time |
 | Update | `docs/plans/README.md` | add this plan to the index |
 | Modify | `digitalmodel/src/digitalmodel/citations/schema.py` (CROSS-REPO) | extend `Citation` dataclass with `source_sibling`, `source_project` — committed in digitalmodel repo, not workspace-hub |
 
@@ -328,10 +378,16 @@ Update `digitalmodel/src/digitalmodel/citations/schema.py` (sidecar dataclass) t
 | `test_enforcement_fails_when_private_client_missing_client` | `private-client-llm-wiki` without `client:` fails | frontmatter has visibility but no client | exit 1, stderr explains rule B |
 | `test_enforcement_fails_when_client_not_in_registry` | `client: nonexistent` (not in config/client-wikis.yml) fails | client slug unknown | exit 1, stderr names the unregistered client |
 | `test_enforcement_fails_when_project_without_private_client_visibility` | `project:` set without `visibility: private-client-llm-wiki` fails | frontmatter has project but visibility is generic | exit 1, stderr explains rule D |
+| `test_enforcement_passes_on_pages_dir_frontmatter` | a wiki page under `pages/` (not just `wikis/`) is also validated — Finding 3 of plan-r1 | staged: `pages/handbook/foo.md` with valid frontmatter | exit 0, no stderr |
 | `test_enforcement_skips_non_wiki_paths` | staged file outside wiki path globs is ignored | staged: `docs/reports/foo.md` | exit 0, no inspection |
 | `test_enforcement_skips_unstaged_files` | only staged files trigger check; working-tree-only changes don't | unstaged wiki file with bad frontmatter | exit 0 |
-| `test_enforcement_allowlist_exempts_rule_authoring_paths` | this plan/rule/template files are exempt | staged: `.claude/rules/wiki-sibling-routing.md` | exit 0, no inspection |
-| `test_enforcement_handles_bucket_name_edge_cases` | `client_projects` (underscore raw-root) and `frontierdeepwater` (no hyphen) resolve via registry | staged in `llm-wiki-client-projects/` and `llm-wiki-frontierdeepwater/` | exit 0 |
+| `test_enforcement_skips_when_not_in_wiki_repo` | repo identity check bails early outside wiki repos — Finding 1 of plan-r1 | run from a repo named `workspace-hub` | exit 0, no inspection |
+| `test_enforcement_fails_when_client_slug_mismatches_repo_identity` | `client:` value must match the wiki repo's identity (suffix after `llm-wiki-`) — Finding 1 of plan-r1 | client: `acma` inside repo `llm-wiki-doris` | exit 1, stderr names the mismatch |
+| `test_enforcement_ci_mode_uses_base_ref_diff` | CI mode auto-detection (`CI=true`) uses `${BASE_REF}..HEAD` instead of `--cached` — Finding 2 of plan-r1 | `CI=true` env, committed change between base and HEAD | exit 1 (wiki file with bad frontmatter detected via committed diff) |
+| `test_enforcement_pre_commit_mode_uses_cached_diff` | pre-commit mode (no CI env) uses `git diff --cached` | no `CI` env, staged change | exit 1 (wiki file with bad frontmatter detected via staged diff) |
+| `test_enforcement_handles_bucket_name_edge_cases` | `client_projects` (underscore raw-root) and `frontierdeepwater` (no hyphen) resolve via registry inside their respective repo names | runs inside repo `llm-wiki-client-projects` and `llm-wiki-frontierdeepwater` | exit 0 |
+| `test_enforcement_fails_when_project_not_in_registry_projects_list` | Rule E — when client.projects list is populated, project must be enumerated — Finding 5 of plan-r1 | client: acma with `projects: [sirocco]`; staged file claims `project: unknown` | exit 1, stderr names the missing project |
+| `test_enforcement_warns_when_registry_projects_list_absent` | Rule E forward-compat — empty/absent projects list disables hard fail, warn only | client has no projects: key in registry | exit 0, warning to stderr |
 | `test_planning_template_carries_client_field` | `docs/plans/_template-issue-plan.md` contains the required `Client:` marker | parse template markdown | assertion: `> **Client:**` present |
 | `test_planning_template_carries_project_field` | `docs/plans/_template-issue-plan.md` contains the optional `Project:` marker | parse template markdown | assertion: `> **Project:**` present |
 | `test_citation_sidecar_schema_has_source_sibling` | digitalmodel `Citation` dataclass has `source_sibling` field | import + reflect | assertion: field present and required |
@@ -352,7 +408,7 @@ Per #2778 issue body, plus corrections for OBE items:
 - [ ] Citation contract updated to include `source_sibling:` and optional `source_project:` in sidecar schema. **(per #2778 AC #4)**
 - [ ] Frontmatter schema extended for `private-client-llm-wiki` visibility tier with required `client:` and optional `project:`. **(per #2778 AC #5)**
 - [ ] Cross-sibling link discipline added to #2776 (post comment with proposed text) — client→generic allowed; generic→client forbidden; client→client forbidden. **(per #2778 AC #6)**
-- [ ] Level-2 enforcement script verifies frontmatter visibility/client/project consistency on staged content; all 10 TDD tests pass. **(per #2778 AC #7)**
+- [ ] Level-2 enforcement script verifies frontmatter visibility/client/project consistency on staged content AND on `${BASE_REF}..HEAD` diffs (CI mode); auto-detects mode via `CI` env var; runs only inside wiki repos (early bail by `git rev-parse --show-toplevel` + basename matching `llm-wiki` or `llm-wiki-*`); installable into each wiki repo via `scripts/agents/install-pre-commit-hook-cross-repo.sh` (prior art from #2722); all 20 TDD tests pass. **(per #2778 AC #7)**
 - [ ] Memory entries `feedback_wiki_sibling_routing` and `project_wiki_sibling_pattern` land after issue closes (post-implementation, not part of this plan). **(per #2778 AC #8)**
 - [ ] First-client pilot validation: instantiate `templates/client-llm-wiki/projects/_template-project/` into `llm-wiki-acma/projects/sirocco/` as the end-to-end smoke test; record commit SHA in closeout. **(per #2778 AC #9)**
 - [ ] All new tests pass: `uv run pytest tests/contract/ tests/enforcement/ -v` (where applicable; shell tests run via `bash tests/enforcement/...`).
@@ -363,16 +419,33 @@ Per #2778 issue body, plus corrections for OBE items:
 
 ## Adversarial Review Summary
 
+### Round 1 (2026-05-22 19:55–20:30 UTC, plan commit `72fc77c1`)
+
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | (to be filled after Step 4) |
-| Codex | PENDING | (to be filled after Step 4) |
-| Gemini | PENDING | (to be filled after Step 4) |
+| Claude | UNAVAILABLE | `claude` CLI rc=124, SessionEnd hook cancellation. Likely Claude-Code self-invocation collision (this fanout was dispatched FROM a Claude session). To be retried in r2. |
+| Codex | UNAVAILABLE | `codex exec` rc=3, INCOMPATIBLE under `CLAUDECODE=1` — `stdin` hangs (workspace-hub #2684, openai/codex#19945). r2 will dispatch via `env -u CLAUDECODE bash scripts/review/plan-review-fanout.sh ...`. |
+| Gemini | MAJOR | 4 MAJOR + 1 MINOR findings, all valid: (1) git-diff repo-context mismatch; (2) CI vs pre-commit env flaw; (3) `pages/` path discrepancy; (4) regex allowlist applied to YAML parser; (5) missing registry-array validation. Artifact: `scripts/review/results/2026-05-22-plan-2778-gemini.md`. |
 
-**Overall result:** PENDING
+**Round 1 overall result:** FAIL (single-provider MAJOR with two UNAVAILABLE is not consensus per `feedback_codex_sustained_major_loop` — re-review required after revisions).
 
-Revisions made based on review:
-- (none yet)
+**Round 1 revisions applied to plan (in commit r1→r2):**
+- **Finding 1 (repo-context mismatch):** Pseudocode rewritten to derive repo identity via `git rev-parse --show-toplevel` + basename match against `llm-wiki` / `llm-wiki-*`; early bail when not a wiki repo; client-slug check verifies against repo identity, not path prefix. New test `test_enforcement_skips_when_not_in_wiki_repo` and `test_enforcement_fails_when_client_slug_mismatches_repo_identity`.
+- **Finding 2 (CI vs pre-commit):** Added two-mode support — pre-commit (default, `--cached`) and CI (`${BASE_REF}..HEAD`, auto-detected via `CI=true`). New tests `test_enforcement_ci_mode_uses_base_ref_diff` and `test_enforcement_pre_commit_mode_uses_cached_diff`. AC #7 wording updated.
+- **Finding 3 (`pages/` omission):** Filter extended to include `pages/**/*.md` (in addition to `wikis/**/*.md`); `projects/**/*.md` only checked in client-wiki repos. New test `test_enforcement_passes_on_pages_dir_frontmatter`.
+- **Finding 4 (line-allowlist vs YAML):** Structural correction — script is now scoped to **run only inside wiki repos** (workspace-hub paths are never inspected), so templates in workspace-hub are out-of-scope by construction, not by line allowlist. Old Risk #6 (self-blocking enforcement) deleted.
+- **Finding 5 (registry projects unused):** Added Rule E — when `client.projects:` list is populated in registry, the file's `project:` value must be enumerated there. Forward-compatible (warn-only when projects list is absent so onboarding doesn't immediately fail closed). New tests `test_enforcement_fails_when_project_not_in_registry_projects_list` and `test_enforcement_warns_when_registry_projects_list_absent`.
+- **Files-to-Change extension:** Added `scripts/agents/install-pre-commit-hook-cross-repo.sh` modification (extend the existing #2722 cross-repo installer to also install the new wiki-frontmatter hook into each wiki sibling).
+
+### Round 2 (pending)
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | r2 retry — direct dispatch from main shell, may also need fallback per `feedback_permission_gate_blocks_cross_review` |
+| Codex | PENDING | r2 retry with `env -u CLAUDECODE` per `feedback_codex_cli_0_124_upstream_regression` |
+| Gemini | PENDING | r2 re-review against revised plan |
+
+**Round 2 overall result:** PENDING
 
 ---
 
@@ -383,10 +456,11 @@ Revisions made based on review:
 1. **#2776 dependency.** This plan extends the cross-wiki linking rules introduced by #2776. #2776 is OPEN with no plan yet, so the "generic→client forbidden" addition may conflict with whatever #2776's plan ultimately specifies. **Mitigation:** post the proposed addition as a comment on #2776 rather than directly modifying its body; defer to #2776's plan-author for final wording.
 2. **Cross-repo schema change (digitalmodel `Citation`).** The new `source_sibling:` field is a breaking change to the `Citation` dataclass — any code constructing `Citation(...)` without it would break unless we provide a sensible default. **Mitigation:** make `source_sibling` default to `"generic"` for backward compatibility; emit a `DeprecationWarning` when default is used; bump the citation-contract minor version.
 3. **Sparse-checkout overlay blindness.** Per `feedback_gemini_sandbox_overlay_blindness`, Gemini reviews may not see sparse-checkout overlays. The new rule file + enforcement script live in workspace-hub, not in overlay paths — confirm by `git ls-files` before dispatching Gemini review.
-4. **Bucket-name edge cases.** `config/client-wikis.yml` already documents `client_projects` (underscore) and `frontierdeepwater` (no hyphen) per #2731 D5/D6. The enforcement script's `derive_repo_prefix_from_path()` helper must handle both — the test `test_enforcement_handles_bucket_name_edge_cases` covers this.
-5. **Frontmatter migration scope creep.** Existing wiki pages on `llm-wiki` and `llm-wiki-acma` may not carry the new `visibility:` / `client:` / `project:` fields. **Mitigation:** the enforcement script acts on STAGED content only (matching `check-no-abs-paths.sh` pattern) so legacy pages don't trip it until edited. A separate audit issue (post-#2778) handles backfill.
-6. **Self-blocking enforcement.** The new rule file and this plan would technically contain `visibility:` etc. mentions that the regex might trip. **Mitigation:** path-restricted whole-file allowlist for `.claude/rules/`, `docs/plans/`, `tests/`, `templates/`, `scripts/enforcement/` paths (per `feedback_enforcement_self_blocking_hazard` from `SHARED_SOUL.md` r1 #3 prior art).
+4. **Bucket-name edge cases.** `config/client-wikis.yml` already documents `client_projects` (underscore raw-root) and `frontierdeepwater` (no hyphen) per #2731 D5/D6. The post-r1 redesign uses **repo identity from `basename(git rev-parse --show-toplevel)`** rather than path-prefix derivation, so the underscore/no-hyphen edge cases resolve naturally as long as the repo names themselves are `llm-wiki-client-projects` and `llm-wiki-frontierdeepwater` (verified by `test_enforcement_handles_bucket_name_edge_cases`).
+5. **Frontmatter migration scope creep.** Existing wiki pages on `llm-wiki` and `llm-wiki-acma` may not carry the new `visibility:` / `client:` / `project:` fields. **Mitigation:** the enforcement script acts on STAGED content (pre-commit mode) or `${BASE_REF}..HEAD` (CI mode) only — legacy pages don't trip it until edited. A separate audit issue (post-#2778) handles backfill.
+6. ~~**Self-blocking enforcement.**~~ ✓ **RESOLVED in r1→r2 revision.** The post-Finding-4 redesign scopes the script to **run only inside wiki repos** (early bail via `git rev-parse --show-toplevel` + basename match). Workspace-hub paths (rules, plans, tests, templates) are out-of-scope by construction — no allowlist needed. The script's tests run against fixture wiki repos under `tmp_path/`, not against workspace-hub itself.
 7. **Planning-template churn.** Changing `_template-issue-plan.md` mid-flight affects every in-progress plan. **Mitigation:** make `Client:` accept `"N/A"` for plans that don't touch wiki content; document migration in `docs/plans/README.md`.
+8. **Registry path resolution inside wiki repos.** The script needs `config/client-wikis.yml` from workspace-hub to validate client/project. Wiki repos don't ship with workspace-hub; install-time the hook installer must either (a) vendor a copy of the registry into the wiki repo, or (b) require `$WIKI_SIBLING_REGISTRY_PATH` env pointing to a sibling workspace-hub checkout. **Mitigation:** the install script vendors the registry at install time; a periodic cron re-syncs it. Stale-registry behavior is `warn-only` so an out-of-date copy doesn't block all wiki commits.
 
 ### Open Questions (recommendations for user at plan-approval review)
 
