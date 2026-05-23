@@ -57,3 +57,17 @@
 {"ts":"2026-05-22T19:26:30Z","event":"stop_signal_captured","session_id":"ea3c0fbd-33d7-41f3-a92e-42b0026c13c7"}
 {"ts":"2026-05-22T19:47:47Z","event":"session_tool_summary","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19","wrk":"none","tool_calls":209,"edits":130,"reads":56}
 {"ts":"2026-05-22T19:47:47Z","event":"stop_signal_captured","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19"}
+{"ts":"2026-05-22T22:27:30Z","event":"session_tool_summary","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19","wrk":"none","tool_calls":221,"edits":130,"reads":56}
+{"ts":"2026-05-22T22:27:30Z","event":"stop_signal_captured","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19"}
+{"ts":"2026-05-22T22:30:25Z","event":"session_tool_summary","session_id":"ea3c0fbd-33d7-41f3-a92e-42b0026c13c7","wrk":"none","tool_calls":235,"edits":132,"reads":64}
+{"ts":"2026-05-22T22:30:25Z","event":"stop_signal_captured","session_id":"ea3c0fbd-33d7-41f3-a92e-42b0026c13c7"}
+{"ts":"2026-05-22T22:31:58Z","event":"stop_signal_captured","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19"}
+{"ts":"2026-05-22T22:31:58Z","event":"session_tool_summary","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19","wrk":"none","tool_calls":242,"edits":132,"reads":64}
+{"ts":"2026-05-22T22:35:25Z","event":"stop_signal_captured","session_id":"721b0f0b-2e7f-4368-9d11-6836c232136c"}
+{"ts":"2026-05-22T22:35:25Z","event":"session_tool_summary","session_id":"721b0f0b-2e7f-4368-9d11-6836c232136c","wrk":"none","tool_calls":265,"edits":138,"reads":68}
+{"ts":"2026-05-22T22:43:30Z","event":"stop_signal_captured","session_id":"18ff7d76-2507-45e7-ac51-a371dca7fc79"}
+{"ts":"2026-05-22T22:43:30Z","event":"session_tool_summary","session_id":"18ff7d76-2507-45e7-ac51-a371dca7fc79","wrk":"none","tool_calls":275,"edits":142,"reads":74}
+{"ts":"2026-05-22T22:48:30Z","event":"session_tool_summary","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19","wrk":"none","tool_calls":278,"edits":144,"reads":74}
+{"ts":"2026-05-22T22:48:30Z","event":"stop_signal_captured","session_id":"6d3e8596-025a-4bb9-881c-0fdba8bb6c19"}
+{"ts":"2026-05-23T01:02:46Z","event":"session_tool_summary","session_id":"18ff7d76-2507-45e7-ac51-a371dca7fc79","wrk":"none","tool_calls":322,"edits":146,"reads":78}
+{"ts":"2026-05-23T01:05:11Z","event":"session_tool_summary","session_id":"18ff7d76-2507-45e7-ac51-a371dca7fc79","wrk":"none","tool_calls":325,"edits":146,"reads":78}

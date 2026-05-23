@@ -106,51 +106,6 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: major_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:high",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "cat:skills",
-          "domain:repo-organization",
-          "status:plan-approved"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `config/workstations/registry.yaml` \u2014 declares `dev-primary` as `hostname: ace-linux-1`, `workspace_root: /mnt/local-analysis/workspace-hub`, `tier1_repo_root: /mnt/local-analysis`, and `repo_layout: sibling`. This is the right existing authority for machine/repo topolog",
-        "provider_route": "claude",
-        "risks": "**Risk:** Some sibling repos may intentionally own repo-local skills. Mitigation: require explicit registry/overlay registration before treating repo-local skills as a source; do not delete/dedupe repo-local skills in this issue. | **Risk:** Fixing provider symlinks across sibling repos can dirty multiple repos. Mitigation: dry-run manifest first; `--apply` requires ONLY live GitHub `status:plan-a",
-        "tests": "TDD section present",
-        "title": "fix(harness): restore workspace-hub SSoT flow across sibling repos"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 2775,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-05-21-issue-2775-workspace-hub-sibling-sso-flow.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "fix(harness): restore workspace-hub SSoT flow across sibling repos",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2775",
-      "warnings": [
-        "approved_no_marker",
-        "legacy_review_no_sha",
-        "major_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
         "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -8056,9 +8011,49 @@
         "legacy_review_no_sha",
         "unavailable_review"
       ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:high",
+          "cat:data-pipeline",
+          "domain:knowledge-management"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "<!-- RETRIEVAL CONTRACT (per #2208):",
+        "provider_route": "claude",
+        "risks": "**Risk: Stale issue counts** \u2014 The issue body cites 74+13; actual counts are now 92+15 (106 deduped). The script must query GitHub live, not rely on hardcoded counts. The ledger should record the query timestamp. | **Risk: Scoring heuristics are subjective** \u2014 The 0-5 scoring dimensions (methodology, durability, evidence, overlap) are text-heuristic based. Without embeddings or LLM scoring, keywor",
+        "tests": "15 TDD tests defined",
+        "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 2370,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
+      "warnings": [
+        "missing_review"
+      ]
     }
   ],
-  "generated_at": "2026-05-22T17:20:11Z",
+  "generated_at": "2026-05-22T21:20:10Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8141,51 +8136,6 @@
         "title": "Cross-wiki linking discipline \u2014 supersede stale governance + add enforcement script",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/2776",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: major_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:high",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "cat:skills",
-            "domain:repo-organization",
-            "status:plan-approved"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `config/workstations/registry.yaml` \u2014 declares `dev-primary` as `hostname: ace-linux-1`, `workspace_root: /mnt/local-analysis/workspace-hub`, `tier1_repo_root: /mnt/local-analysis`, and `repo_layout: sibling`. This is the right existing authority for machine/repo topolog",
-          "provider_route": "claude",
-          "risks": "**Risk:** Some sibling repos may intentionally own repo-local skills. Mitigation: require explicit registry/overlay registration before treating repo-local skills as a source; do not delete/dedupe repo-local skills in this issue. | **Risk:** Fixing provider symlinks across sibling repos can dirty multiple repos. Mitigation: dry-run manifest first; `--apply` requires ONLY live GitHub `status:plan-a",
-          "tests": "TDD section present",
-          "title": "fix(harness): restore workspace-hub SSoT flow across sibling repos"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 2775,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-05-21-issue-2775-workspace-hub-sibling-sso-flow.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "fix(harness): restore workspace-hub SSoT flow across sibling repos",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2775",
-        "warnings": [
-          "approved_no_marker",
-          "legacy_review_no_sha",
-          "major_review"
-        ]
       },
       {
         "approval_blockers": [
@@ -16095,6 +16045,46 @@
           "legacy_review_no_sha",
           "unavailable_review"
         ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "domain:knowledge-management"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "<!-- RETRIEVAL CONTRACT (per #2208):",
+          "provider_route": "claude",
+          "risks": "**Risk: Stale issue counts** \u2014 The issue body cites 74+13; actual counts are now 92+15 (106 deduped). The script must query GitHub live, not rely on hardcoded counts. The ledger should record the query timestamp. | **Risk: Scoring heuristics are subjective** \u2014 The 0-5 scoring dimensions (methodology, durability, evidence, overlap) are text-heuristic based. Without embeddings or LLM scoring, keywor",
+          "tests": "15 TDD tests defined",
+          "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 2370,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/2370",
+        "warnings": [
+          "missing_review"
+        ]
       }
     ],
     "qa_closeout": [],
@@ -16105,17 +16095,17 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-05-22T17:20:07.385389Z",
+  "scorecard_generated_at": "2026-05-22T21:20:07.374951Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-05-22T17:20:07.257525Z",
+  "utilization_generated_at": "2026-05-22T21:20:07.238444Z",
   "warning_summary": {
-    "approved_no_marker": 13,
+    "approved_no_marker": 12,
     "approved_no_plan": 4,
     "empty_review": 3,
-    "legacy_review_no_sha": 34,
-    "major_review": 25,
+    "legacy_review_no_sha": 33,
+    "major_review": 24,
     "marker_without_open_approved_issue": 136,
-    "missing_review": 34,
+    "missing_review": 35,
     "unavailable_review": 15,
     "unknown_review": 2
   }

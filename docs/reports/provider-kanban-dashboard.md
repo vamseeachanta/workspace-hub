@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-05-22T17:20:11Z
+Generated: 2026-05-22T21:20:10Z
 Mode: static (read-only)
 
 ## How to approve
@@ -45,7 +45,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 |---|---|---|---|---|---|
 | #2778 | feat(architecture): lock data/knowledge/result search routing across llm-wiki + llm-wiki-<client> siblings | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2776 | Cross-wiki linking discipline — supersede stale governance + add enforcement script | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #2775 | fix(harness): restore workspace-hub SSoT flow across sibling repos | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review |
 | #2774 | Private llm-wiki corpus-ingest program (post-2026-05-20 privacy flip) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2773 | decision(workstations): choose tier-1 repo placement for licensed-win-2 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #2772 | decision(workstations): choose tier-1 repo placement for licensed-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #2377 | feat(harness): add missing session-signal event emitters to unblock deferred provider-assessment dimensions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2376 | feat(harness): provider assessment — corpus-honest subset (descoped from #43) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #2374 | feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #2370 | feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 
